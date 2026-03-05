@@ -7,7 +7,7 @@ import math
 app = Flask(__name__)
 
 # ═══════════════════════════════════════════════════════
-# IMAGE CDN CONFIGURATION
+# IMAGE CDN CONFIGURATION & FILE INDEX
 # ═══════════════════════════════════════════════════════
 
 IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
@@ -26,11 +26,17 @@ def convert_image_urls(obj):
         return [convert_image_urls(item) for item in obj]
     return obj
 
+# Load the image map so we don't have to scan the hard drive
+IMAGE_INDEX_PATH = os.path.join(os.path.dirname(__file__), 'image_index.json')
+IMAGE_INDEX = {}
+if os.path.exists(IMAGE_INDEX_PATH):
+    with open(IMAGE_INDEX_PATH, 'r') as f:
+        IMAGE_INDEX = json.load(f)
+
 # ═══════════════════════════════════════════════════════
 # LANGUAGE CONFIGURATION (DEPLOYMENT VERSION)
 # ═══════════════════════════════════════════════════════
 
-# Detect if running locally or deployed
 IS_LOCAL = os.path.exists(r"C:\Users\Mikew0911\Desktop\GGen_Database")
 
 if IS_LOCAL:
@@ -89,14 +95,9 @@ def get_ui_label(lang_code, key):
     return labels.get(key, UI_LABELS[DEFAULT_LANG].get(key, key))
 
 def get_latest_folder(base_path, prefix):
-    if not os.path.exists(base_path):
-        return None
-    candidates = [
-        f for f in os.listdir(base_path)
-        if f.startswith(prefix) and os.path.isdir(os.path.join(base_path, f))
-    ]
-    if not candidates:
-        return None
+    if not os.path.exists(base_path): return None
+    candidates = [f for f in os.listdir(base_path) if f.startswith(prefix) and os.path.isdir(os.path.join(base_path, f))]
+    if not candidates: return None
     candidates.sort(reverse=True)
     return os.path.join(base_path, candidates[0])
 
@@ -114,8 +115,6 @@ LANG_PATHS = {}
 for lang_code in LANG_CONFIG:
     base_dir, lang_dir = get_lang_paths(lang_code)
     LANG_PATHS[lang_code] = {'base': base_dir, 'lang': lang_dir}
-    print(f"{lang_code} - BASE_DIR: {base_dir}")
-    print(f"{lang_code} - LANG_DIR: {lang_dir}")
 
 BASE_DIR = LANG_PATHS['EN']['base']
 
@@ -124,7 +123,6 @@ def load_json(path):
     try:
         with open(path, 'r', encoding='utf-8') as f: return json.load(f)
     except Exception as e:
-        print(f"Error loading {path}: {e}")
         return None
 
 def extract_data_list(json_data):
@@ -764,25 +762,42 @@ def create_weapon_capability_map(base_dir, lang_dir):
 def resolve_weapon_icon(wt, ai, ubr, il):
     if wt == '3': return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
     if wt == '2':
-        tf = find_trait_icon(ubr, il) if ubr else None
+        tf = find_trait_icon(ubr) if ubr else None
         return {'icon': f"/static/images/Trait/{tf}" if tf else '', 'overlay': EX_WEAPON_OVERLAY, 'is_ex': True, 'is_map': False}
     ai2 = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
 
 def build_trait_icon_lookup(td):
-    # This function is kept for backwards compatibility but we no longer rely on its disk scan.
+    # Obsolete. Image index handles this now.
     return {}
 
-def find_trait_icon(rid, il):
-    """Generates the icon filename directly from the ID."""
+def find_trait_icon(rid, il=None):
     if not rid or str(rid) == '0': return None
-    return f"{rid}.png"
+    rl = str(rid).lower()
+    
+    # Check main trait folder using map
+    for fn in IMAGE_INDEX.get('images/Trait', []):
+        if rl in fn.lower(): return fn
+
+    # Check thum folder using map
+    for fn in IMAGE_INDEX.get('images/Trait/thum', []):
+        if rl in fn.lower(): return f"thum/{fn}"
+
+    return None
 
 def find_portrait(rid, pd):
-    """Generates the portrait path directly from the ID."""
     if not rid or str(rid) == '0': return None
+    rl = str(rid).lower()
+    
+    # pd is usually "static/images/portraits"
+    # we convert it to "images/portraits" to match our map
+    folder_key = pd.replace("static/images", "images").replace("\\", "/")
     pfx = "/" + pd.replace("\\", "/")
-    return f"{pfx}/{rid}.png"
+    
+    for fn in IMAGE_INDEX.get(folder_key, []):
+        if rl in fn.lower(): return f"{pfx}/{fn}"
+        
+    return None
 
 def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN'):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
@@ -929,7 +944,7 @@ def build_ability_entry(
             details.append({'text': t, 'conditions': []})
 
     res_id = ability_resource_map.get(ab_id, '')
-    icon_file = find_trait_icon(res_id, trait_icon_lookup)
+    icon_file = find_trait_icon(res_id)
 
     return {
         'id': ab_id,
@@ -1011,9 +1026,6 @@ for item in extract_data_list(unit_master_data):
         if uid != '0' and sid != '0': unit_ser_map[uid] = sid
 
 TRAIT_ICON_DIR = os.path.join("static", "images", "Trait")
-os.makedirs(TRAIT_ICON_DIR, exist_ok=True)
-os.makedirs(os.path.join(TRAIT_ICON_DIR, "thum"), exist_ok=True)
-trait_icon_lookup = build_trait_icon_lookup(TRAIT_ICON_DIR)
 CHAR_PORTRAIT_DIR = os.path.join("static", "images", "portraits")
 UNIT_PORTRAIT_DIR = os.path.join("static", "images", "unit_portraits")
 
@@ -1190,7 +1202,7 @@ def get_character(char_id):
                 ld['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
-                ability_resource_map, trait_icon_lookup,
+                ability_resource_map, None,
                 ld['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)),
                 lang_code=lang_code
             ))
@@ -1204,7 +1216,7 @@ def get_character(char_id):
                 ld_calc['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld_calc['lineage_lookup'], ld_calc['series_name_map'],
-                ability_resource_map, trait_icon_lookup,
+                ability_resource_map, None,
                 ld_calc['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)),
                 lang_code=CALC_LANG
             ))
@@ -1236,7 +1248,7 @@ def get_character(char_id):
             name = entries[0]["text"] if entries else "Unknown"
             details = [x["text"] for x in entries[1:]] if len(entries) > 1 else []
             rid2 = ld['skill_resource_map'].get(si,'') or ld['skill_resource_map'].get(bi,'')
-            ic = find_trait_icon(rid2, trait_icon_lookup)
+            ic = find_trait_icon(rid2)
             skills.append({'id': si, 'name': name, 'sort': sk.get('SortOrder',0), 'details': details, 'icon': f"/static/images/Trait/{ic}" if ic else '', 'resource_id': rid2})
 
         return jsonify(convert_image_urls({
@@ -1285,7 +1297,7 @@ def get_unit(unit_id):
                 ld['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
-                ability_resource_map, trait_icon_lookup,
+                ability_resource_map, None,
                 ld['abil_desc_map'], sort_order=ab['sort'],
                 lang_code=lang_code
             ))
@@ -1298,7 +1310,7 @@ def get_unit(unit_id):
                 ld_calc['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld_calc['lineage_lookup'], ld_calc['series_name_map'],
-                ability_resource_map, trait_icon_lookup,
+                ability_resource_map, None,
                 ld_calc['abil_desc_map'], sort_order=ab['sort'],
                 lang_code=CALC_LANG
             ))
@@ -1334,7 +1346,7 @@ def get_unit(unit_id):
             ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, trait_change_level5_map, ld['weapon_trait_detail_map'], wid, lang_code=lang_code)
-            ic = resolve_weapon_icon(wt, ai, ubr, trait_icon_lookup)
+            ic = resolve_weapon_icon(wt, ai, ubr, None)
             weapons.append({
                 'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai,
                 'weapon_type': wt, 'attack_types': at, 'power': ws['power'],
@@ -1373,6 +1385,4 @@ def get_unit(unit_id):
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background"]:
-        os.makedirs(d, exist_ok=True)
     app.run(debug=True, port=5000)
