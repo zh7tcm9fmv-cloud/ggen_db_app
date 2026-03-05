@@ -7,6 +7,26 @@ import math
 app = Flask(__name__)
 
 # ═══════════════════════════════════════════════════════
+# IMAGE CDN CONFIGURATION
+# ═══════════════════════════════════════════════════════
+
+IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
+
+def convert_image_urls(obj):
+    """Recursively replace /static/images/ paths with CDN URLs in API responses."""
+    if not IMAGE_CDN:
+        return obj
+    if isinstance(obj, str):
+        if obj.startswith('/static/images/'):
+            return IMAGE_CDN + '/images/' + obj[len('/static/images/'):]
+        return obj
+    elif isinstance(obj, dict):
+        return {k: convert_image_urls(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_image_urls(item) for item in obj]
+    return obj
+
+# ═══════════════════════════════════════════════════════
 # LANGUAGE CONFIGURATION (DEPLOYMENT VERSION)
 # ═══════════════════════════════════════════════════════
 
@@ -14,7 +34,6 @@ app = Flask(__name__)
 IS_LOCAL = os.path.exists(r"C:\Users\Mikew0911\Desktop\GGen_Database")
 
 if IS_LOCAL:
-    # Local development paths (your original setup)
     LANG_CONFIG = {
         'EN': {
             'root': r"C:\Users\Mikew0911\Desktop\GGen_Database",
@@ -28,7 +47,6 @@ if IS_LOCAL:
         }
     }
 else:
-    # Deployed paths - uses data/ directory in project
     LANG_CONFIG = {
         'EN': {
             'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'EN', 'master'),
@@ -70,7 +88,6 @@ def get_ui_label(lang_code, key):
     labels = UI_LABELS.get(lang_code, UI_LABELS[DEFAULT_LANG])
     return labels.get(key, UI_LABELS[DEFAULT_LANG].get(key, key))
 
-
 def get_latest_folder(base_path, prefix):
     if not os.path.exists(base_path):
         return None
@@ -83,21 +100,15 @@ def get_latest_folder(base_path, prefix):
     candidates.sort(reverse=True)
     return os.path.join(base_path, candidates[0])
 
-
 def get_lang_paths(lang_code):
     config = LANG_CONFIG.get(lang_code, LANG_CONFIG[DEFAULT_LANG])
-
     if IS_LOCAL:
-        # Original local logic: scan for latest dated folders
         base_dir = get_latest_folder(config['root'], config['master_prefix'])
         lang_dir = get_latest_folder(config['root'], config['lang_prefix'])
     else:
-        # Deployed: direct paths
         base_dir = config.get('master_dir')
         lang_dir = config.get('lang_dir')
-
     return base_dir, lang_dir
-
 
 LANG_PATHS = {}
 for lang_code in LANG_CONFIG:
@@ -107,6 +118,35 @@ for lang_code in LANG_CONFIG:
     print(f"{lang_code} - LANG_DIR: {lang_dir}")
 
 BASE_DIR = LANG_PATHS['EN']['base']
+
+def load_json(path):
+    if not path or not os.path.exists(path): return None
+    try:
+        with open(path, 'r', encoding='utf-8') as f: return json.load(f)
+    except Exception as e:
+        print(f"Error loading {path}: {e}")
+        return None
+
+def extract_data_list(json_data):
+    if json_data is None: return []
+    if isinstance(json_data, dict):
+        if "data" in json_data and isinstance(json_data["data"], list): return json_data["data"]
+        return list(json_data.values())
+    elif isinstance(json_data, list): return json_data
+    return []
+
+def normalize_id(value, default='0'):
+    if value is None or value == '' or value == 'None': return default
+    try:
+        if isinstance(value, (int, float)): return str(int(value))
+        elif isinstance(value, str):
+            value = value.strip()
+            if value == '' or value.lower() == 'none': return default
+            try: return str(int(float(value)))
+            except ValueError: return value
+        return str(value)
+    except (ValueError, TypeError): return default
+
 # ═══════════════════════════════════════════════════════
 # CONSTANTS
 # ═══════════════════════════════════════════════════════
@@ -153,7 +193,6 @@ ATTACK_ATTR_TYPES = {
 }
 MP_CONSUMPTION_WEAPON_IDS = ['120000395006']
 
-# Unit acquisition route icons
 ACQUISITION_ROUTE_ICONS = {
     '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.png',
     '2': '',
@@ -191,7 +230,6 @@ def create_lineage_list(d):
 def create_lineage_lookup(d):
     lookup = {}
     entries = []
-    
     for item in extract_data_list(d):
         if isinstance(item, dict):
             rid = normalize_id(item.get('id') or item.get('Id'))
@@ -199,14 +237,12 @@ def create_lineage_lookup(d):
             if rid != '0' and val:
                 entries.append((rid, val))
                 lookup[rid] = val
-    
     for rid, val in entries:
         for suffix_len in [4, 5, 6, 7, 8]:
             if len(rid) >= suffix_len:
                 suffix = rid[-suffix_len:]
                 if suffix not in lookup:
                     lookup[suffix] = val
-    
     return lookup
 
 def create_series_name_map(d):
@@ -325,8 +361,7 @@ def create_trait_condition_raw_map(cond_data):
         if sid == '0': continue
         if sid not in raw:
             raw[sid] = {'tags': [], 'series': [], 'types': []}
-        
-        tag_keys = ['UnitTags', 'unitTags', 'CharacterTags', 'characterTags', 
+        tag_keys = ['UnitTags', 'unitTags', 'CharacterTags', 'characterTags',
                     'GroupTags', 'groupTags', 'GroupTag', 'groupTag']
         for key in tag_keys:
             val = str(item.get(key) or '')
@@ -335,7 +370,6 @@ def create_trait_condition_raw_map(cond_data):
                     v = v.strip()
                     if v and v != '0' and v not in raw[sid]['tags']:
                         raw[sid]['tags'].append(v)
-        
         for key in ['UnitSeries', 'unitSeries']:
             val = str(item.get(key) or '')
             if val and val != '0' and val.strip():
@@ -343,7 +377,6 @@ def create_trait_condition_raw_map(cond_data):
                     v = v.strip()
                     if v and v != '0' and v not in raw[sid]['series']:
                         raw[sid]['series'].append(v)
-        
         for key in ['UnitRoleTypes', 'unitRoleTypes']:
             val = str(item.get(key) or '')
             if val and val != '0' and val.strip():
@@ -351,7 +384,6 @@ def create_trait_condition_raw_map(cond_data):
                     v = v.strip()
                     if v and v != '0' and v not in raw[sid]['types']:
                         raw[sid]['types'].append(v)
-    
     return raw
 
 UNIT_ROLE_TYPE_LANG_MAP = {
@@ -362,28 +394,23 @@ UNIT_ROLE_TYPE_LANG_MAP = {
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0':
         return []
-    
     raw = trait_condition_raw_map.get(cond_id, {})
     resolved = []
-    
     for tag_id in raw.get('tags', []):
         name = lineage_lookup.get(tag_id)
         if not name:
             name = series_name_map.get(tag_id)
         if name and name not in resolved:
             resolved.append(name)
-    
     for ser_id in raw.get('series', []):
         name = series_name_map.get(ser_id)
         if name and name not in resolved:
             resolved.append(name)
-    
     role_type_map = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
     for type_id in raw.get('types', []):
         name = role_type_map.get(type_id)
         if name and name not in resolved:
             resolved.append(name)
-    
     return resolved
 
 # ═══════════════════════════════════════════════════════
@@ -467,17 +494,13 @@ def create_unit_info_map(m):
         if isinstance(item, dict):
             uid = normalize_id(item.get('id') or item.get('Id'))
             if uid != '0':
-                # Check IsUltimateDevelopment
                 is_ult_raw = item.get('IsUltimateDevelopment') or item.get('isUltimateDevelopment')
                 is_ult = False
                 if is_ult_raw is True or str(is_ult_raw).lower() == 'true' or is_ult_raw == 1 or str(is_ult_raw) == '1':
                     is_ult = True
-                
-                # Check UnitAcquisitionRouteTypeIndex
                 acq_route = normalize_id(
                     item.get('UnitAcquisitionRouteTypeIndex') or item.get('unitAcquisitionRouteTypeIndex'), '0'
                 )
-                
                 lookup[uid] = {
                     'rarity': normalize_id(item.get('RarityTypeIndex'),'1'),
                     'role': normalize_id(item.get('RoleTypeIndex'),'0'),
@@ -546,7 +569,7 @@ def calc_growth_unit(base, max_val, ri):
 def extract_stat_bonus_unit(text, final_stats):
     bonuses = {}
     tl = text.lower()
-    for kw in ['when ','if ','during ','at the start']: 
+    for kw in ['when ','if ','during ','at the start']:
         if kw in tl: return bonuses
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
     m = re.search(fr"Increase (?:own )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
@@ -835,7 +858,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
 
 def build_ability_entry(
     ab_id, abil_name_map, abil_link_map,
-    trait_set_traits_map, trait_data_map, 
+    trait_set_traits_map, trait_data_map,
     lang_text_map,
     en_lang_text_map,
     trait_condition_raw_map, lineage_lookup, series_name_map,
@@ -855,25 +878,20 @@ def build_ability_entry(
     for tid in trait_ids:
         t_data = trait_data_map.get(tid, {})
         desc_lang_id = t_data.get('desc_lang_id', '0')
-        
         display_text = lang_text_map.get(desc_lang_id, '').strip()
         en_text = en_lang_text_map.get(desc_lang_id, '').strip()
-        
         if display_text == ab_name.strip():
             display_text = ""
         if en_text == ab_name.strip():
             en_text = ""
-
         active_cid = t_data.get('active_cond_id', '0')
         target_cid = t_data.get('target_cond_id', '0')
-        
         trait_conds = []
         for cid in [active_cid, target_cid]:
             resolved = resolve_condition_tags(cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
             for c in resolved:
                 if c not in trait_conds:
                     trait_conds.append(c)
-        
         trait_info.append({
             'display_text': display_text,
             'en_text': en_text,
@@ -881,20 +899,16 @@ def build_ability_entry(
         })
 
     details = []
-    
     for i, info in enumerate(trait_info):
         display_text = info['display_text']
         en_text = info['en_text']
         conds = list(info['conditions'])
-        
         if display_text:
             en_text_lower = en_text.lower() if en_text else ''
             cond_matches = re.findall(r'\[condition\s*(\d+)\]', en_text_lower)
-            
             if cond_matches:
                 max_cond_num = max(int(m) for m in cond_matches)
                 needed = max_cond_num - len(conds)
-                
                 lookahead_idx = i + 1
                 while needed > 0 and lookahead_idx < len(trait_info):
                     for c in trait_info[lookahead_idx]['conditions']:
@@ -904,20 +918,17 @@ def build_ability_entry(
                             if needed <= 0:
                                 break
                     lookahead_idx += 1
-            
             existing = None
             for d in details:
                 if d['text'] == display_text:
                     existing = d
                     break
-            
             if existing:
                 for c in conds:
                     if c not in existing['conditions']:
                         existing['conditions'].append(c)
             else:
                 details.append({'text': display_text, 'conditions': conds})
-        
         else:
             if details:
                 for c in conds:
@@ -1035,11 +1046,9 @@ LANG_DATA = {}
 for lang_code, paths in LANG_PATHS.items():
     print(f"Loading {lang_code} language data...")
     lang_dir = paths['lang']
-    
     if not lang_dir:
         print(f"  Warning: {lang_code} language directory not found, skipping...")
         continue
-    
     series_text = load_json(os.path.join(lang_dir, "m_series.json"))
     lineage_text = load_json(os.path.join(lang_dir, "m_lineage.json"))
     trait_name_data = load_json(os.path.join(lang_dir, "m_trait_set_detail.json"))
@@ -1048,7 +1057,7 @@ for lang_code, paths in LANG_PATHS.items():
     skill_text_data = load_json(os.path.join(lang_dir, "m_character_skill_trait.json"))
     unit_text_data = load_json(os.path.join(lang_dir, "m_unit.json"))
     weapon_text_data = load_json(os.path.join(lang_dir, "m_weapon.json"))
-    
+
     abil_name_map, abil_desc_map = create_ability_maps(extract_data_list(trait_name_data), extract_data_list(trait_desc_data))
     lineage_list = create_lineage_list(lineage_text)
     lineage_lookup = create_lineage_lookup(lineage_text)
@@ -1062,7 +1071,7 @@ for lang_code, paths in LANG_PATHS.items():
     weapon_trait_map = create_weapon_trait_map(BASE_DIR, lang_dir)
     weapon_capability_map = create_weapon_capability_map(BASE_DIR, lang_dir)
     weapon_trait_detail_map = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
-    
+
     skill_resource_map = {}
     for item in extract_data_list(trait_set_data):
         if isinstance(item, dict):
@@ -1084,9 +1093,9 @@ for lang_code, paths in LANG_PATHS.items():
                     if len(si) > 2:
                         bs = si[:-2]
                         if bs not in skill_resource_map: skill_resource_map[bs] = ri
-    
+
     print(f"  {lang_code} lineage lookup - Tag 1047: {lineage_lookup.get('1047')}, Tag 1129: {lineage_lookup.get('1129')}")
-    
+
     LANG_DATA[lang_code] = {
         'abil_name_map': abil_name_map,
         'abil_desc_map': abil_desc_map,
@@ -1108,7 +1117,6 @@ for lang_code, paths in LANG_PATHS.items():
         'weapon_capability_map': weapon_capability_map,
         'weapon_trait_detail_map': weapon_trait_detail_map,
     }
-    
     print(f"  {lang_code}: Loaded {len(char_text_map)} characters, {len(unit_text_map)} units, {len(lineage_lookup)} lineage entries")
 
 print("Database ready!")
@@ -1130,7 +1138,6 @@ def resolve_series(ser_set_id, lang_code):
     ld = get_lang_data(lang_code)
     ser_set_map = ld.get('ser_set_map', {})
     series_list = ld.get('series_list', [])
-    
     sd = []
     if ser_set_id and ser_set_id != '0':
         for sid in ser_set_map.get(ser_set_id, []):
@@ -1142,7 +1149,6 @@ def resolve_tags(lin_map, eid, lang_code):
     ld = get_lang_data(lang_code)
     lineage_lookup = ld.get('lineage_lookup', {})
     lineage_list = ld.get('lineage_list', [])
-    
     tags = []
     for lid in lin_map.get(eid, []):
         name = lineage_lookup.get(lid)
@@ -1161,7 +1167,7 @@ def resolve_tags(lin_map, eid, lang_code):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', image_cdn=IMAGE_CDN)
 
 @app.route('/api/languages')
 def get_languages():
@@ -1176,7 +1182,7 @@ def get_character(char_id):
         lang_code = request.args.get('lang', DEFAULT_LANG).upper()
         ld = get_lang_data(lang_code)
         ld_calc = get_calc_lang_data()
-        
+
         char_id = normalize_id(char_id)
         info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
@@ -1195,7 +1201,7 @@ def get_character(char_id):
             aid = normalize_id(ab.get('AbilityId',''))
             abilities.append(build_ability_entry(
                 aid, ld['abil_name_map'], abil_link_map,
-                trait_set_traits_map, trait_data_map, 
+                trait_set_traits_map, trait_data_map,
                 ld['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
@@ -1209,7 +1215,7 @@ def get_character(char_id):
             aid = normalize_id(ab.get('AbilityId',''))
             abilities_calc.append(build_ability_entry(
                 aid, ld_calc['abil_name_map'], abil_link_map,
-                trait_set_traits_map, trait_data_map, 
+                trait_set_traits_map, trait_data_map,
                 ld_calc['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld_calc['lineage_lookup'], ld_calc['series_name_map'],
@@ -1248,7 +1254,7 @@ def get_character(char_id):
             ic = find_trait_icon(rid2, trait_icon_lookup)
             skills.append({'id': si, 'name': name, 'sort': sk.get('SortOrder',0), 'details': details, 'icon': f"/static/images/Trait/{ic}" if ic else '', 'resource_id': rid2})
 
-        return jsonify({
+        return jsonify(convert_image_urls({
             'id': char_id, 'name': char_name,
             'rarity': RARITY_MAP.get(ri, "Unknown"),
             'role': ROLE_MAP.get(info.get('role','0'), "Unknown"),
@@ -1257,7 +1263,7 @@ def get_character(char_id):
             'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lang_code),
             'abilities': abilities, 'skills': skills, 'portrait': portrait,
             'lang': lang_code,
-        })
+        }))
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'error': str(e)}), 500
@@ -1268,7 +1274,7 @@ def get_unit(unit_id):
         lang_code = request.args.get('lang', DEFAULT_LANG).upper()
         ld = get_lang_data(lang_code)
         ld_calc = get_calc_lang_data()
-        
+
         unit_id = normalize_id(unit_id)
         info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
@@ -1290,7 +1296,7 @@ def get_unit(unit_id):
         for ab in sorted(ua, key=lambda x: x['sort']):
             abilities.append(build_ability_entry(
                 str(ab['id']), ld['abil_name_map'], abil_link_map,
-                trait_set_traits_map, trait_data_map, 
+                trait_set_traits_map, trait_data_map,
                 ld['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
@@ -1303,7 +1309,7 @@ def get_unit(unit_id):
         for ab in sorted(ua, key=lambda x: x['sort']):
             abilities_calc.append(build_ability_entry(
                 str(ab['id']), ld_calc['abil_name_map'], abil_link_map,
-                trait_set_traits_map, trait_data_map, 
+                trait_set_traits_map, trait_data_map,
                 ld_calc['lang_text_map'],
                 ld_calc['lang_text_map'],
                 trait_condition_raw_map, ld_calc['lineage_lookup'], ld_calc['series_name_map'],
@@ -1356,7 +1362,6 @@ def get_unit(unit_id):
             })
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
 
-        # Build special icon list for this unit
         special_icons = []
         if info.get('is_ultimate', False):
             special_icons.append(ULT_ICON)
@@ -1365,7 +1370,7 @@ def get_unit(unit_id):
         if acq_icon:
             special_icons.append(acq_icon)
 
-        return jsonify({
+        return jsonify(convert_image_urls({
             'id': unit_id, 'name': unit_name,
             'rarity': RARITY_MAP.get(ri,"Unknown"),
             'role': ROLE_MAP.get(info.get('role','0'),"Unknown"),
@@ -1377,7 +1382,7 @@ def get_unit(unit_id):
             'is_ultimate': info.get('is_ultimate', False),
             'acquisition_route': acq_route,
             'special_icons': special_icons,
-        })
+        }))
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'error': str(e)}), 500
