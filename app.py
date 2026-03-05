@@ -770,34 +770,19 @@ def resolve_weapon_icon(wt, ai, ubr, il):
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
 
 def build_trait_icon_lookup(td):
-    lookup = {}
-    if not os.path.exists(td): return lookup
-    for fn in os.listdir(td):
-        if os.path.isfile(os.path.join(td, fn)) and fn.lower().endswith(('.png','.jpg','.jpeg','.webp')):
-            lookup[os.path.splitext(fn)[0].lower()] = fn
-    thum = os.path.join(td, "thum")
-    if os.path.exists(thum):
-        for fn in os.listdir(thum):
-            if os.path.isfile(os.path.join(thum, fn)) and fn.lower().endswith(('.png','.jpg','.jpeg','.webp')):
-                lookup[os.path.splitext(fn)[0].lower()] = f"thum/{fn}"
-    return lookup
+    # This function is kept for backwards compatibility but we no longer rely on its disk scan.
+    return {}
 
 def find_trait_icon(rid, il):
-    if not rid: return None
-    rl = str(rid).lower()
-    if rl in il: return il[rl]
-    for k, v in il.items():
-        if rl in k or k in rl: return v
-    return None
+    """Generates the icon filename directly from the ID."""
+    if not rid or str(rid) == '0': return None
+    return f"{rid}.png"
 
 def find_portrait(rid, pd):
-    if not rid or not os.path.exists(pd): return None
-    rl = str(rid).lower()
+    """Generates the portrait path directly from the ID."""
+    if not rid or str(rid) == '0': return None
     pfx = "/" + pd.replace("\\", "/")
-    for fn in os.listdir(pd):
-        if fn.lower().endswith(('.png','.jpg','.jpeg','.webp')) and rl in fn.lower():
-            return f"{pfx}/{fn}"
-    return None
+    return f"{pfx}/{rid}.png"
 
 def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN'):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
