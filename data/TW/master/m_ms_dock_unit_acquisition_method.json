@@ -1,0 +1,266 @@
+[
+  {
+    "MsDockUnitId": 1001000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 101404,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1001001100,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 10,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1009000100,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 901501,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1017000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 201701,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1022000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 202201,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1031000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 203201,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1060000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 206001,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1060000300,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 206001,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1080000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 8101504,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1080003200,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 810,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1095000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 9501806,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1095002500,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 950,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1110000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 11000505,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1110000500,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 1100,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1125000200,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 12501007,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1125001100,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 1250,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1150000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 15000305,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1200000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 20001003,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1200001300,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 20001804,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1200003900,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 2000,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1210000300,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 21001705,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1210000900,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 2100,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1230000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 23000803,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1230003800,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 2300,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1230003900,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 23001905,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1300004200,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 30001705,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1300004400,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 3000,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1305000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 230501,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1308000400,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 230801,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1310000300,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 3100,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1310000400,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 31001901,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1330000300,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 33001405,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1330000700,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 3300,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1330005200,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 33002305,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1370000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 37001105,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1400000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 40001503,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1400000500,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 4000,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1430000200,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 43001303,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1430003400,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 4300,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1430003600,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 43003203,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1431000100,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 243101,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
+    "MsDockUnitId": 1501000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 50100706,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1501001600,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 50101406,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1501002000,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 5010,
+    "IsDisplayWhenNotAcquired": true
+  }
+]

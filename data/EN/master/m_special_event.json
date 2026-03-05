@@ -1,0 +1,30 @@
+[
+  {
+    "EventId": 220001,
+    "GroupId": 220001,
+    "ResourceId": "sp_stage_event_top_220001",
+    "BackgroundResourceId": "sp_stage_event_bg_220001",
+    "PromotionTextLanguageId": 310100000000220001
+  },
+  {
+    "EventId": 220002,
+    "GroupId": 220002,
+    "ResourceId": "sp_stage_event_top_220001",
+    "BackgroundResourceId": "sp_stage_event_bg_220001",
+    "PromotionTextLanguageId": 310100000000220001
+  },
+  {
+    "EventId": 220003,
+    "GroupId": 220003,
+    "ResourceId": "sp_stage_event_top_220001",
+    "BackgroundResourceId": "sp_stage_event_bg_220001",
+    "PromotionTextLanguageId": 310100000000220001
+  },
+  {
+    "EventId": 220004,
+    "GroupId": 220004,
+    "ResourceId": "sp_stage_event_top_220004",
+    "BackgroundResourceId": "sp_stage_event_bg_220004",
+    "PromotionTextLanguageId": 310100000000220004
+  }
+]

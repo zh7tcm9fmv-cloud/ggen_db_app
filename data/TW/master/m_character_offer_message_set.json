@@ -1,0 +1,4212 @@
+[
+  {
+    "CharacterOfferMessageSetId": 1100100010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000401011
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000401012
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000401021
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000401022
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000401031
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000401032
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000401041
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000401042
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000401051
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100040105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001000401052
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001001801011
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001001801012
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001001801021
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001001801022
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001001801031
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001001801032
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001001801041
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001001801042
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001001801051
+  },
+  {
+    "CharacterOfferMessageSetId": 1100100180105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811001001801052
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700011
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700012
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700021
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700022
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700031
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700032
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700041
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700042
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700051
+  },
+  {
+    "CharacterOfferMessageSetId": 1108000270005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700052
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000201011
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000201012
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000201021
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000201022
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000201031
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000201032
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000201041
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000201042
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000201051
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500020105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000201052
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800011
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800012
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800021
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800022
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800031
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800032
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800041
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800042
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800051
+  },
+  {
+    "CharacterOfferMessageSetId": 1109500180005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800052
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000201011
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000201012
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000201021
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000201022
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000201031
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000201032
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000201041
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000201042
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000201051
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000020105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000201052
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811110000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 1111000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811110000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000300011
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000300012
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000300021
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000300022
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000300031
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000300032
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000300041
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000300042
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125000300051
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500030005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125000300052
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125002001011
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125002001012
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125002001021
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125002001022
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125002001031
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125002001032
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125002001041
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125002001042
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811125002001051
+  },
+  {
+    "CharacterOfferMessageSetId": 1112500200105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811125002001052
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811150000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811150000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811150000500021
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811150000500022
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811150000500031
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811150000500032
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811150000500041
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811150000500042
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811150000500051
+  },
+  {
+    "CharacterOfferMessageSetId": 1115000050005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811150000500052
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120301,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200001203011
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120301,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200001203012
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120302,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200001203021
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120302,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200001203022
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120303,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200001203031
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120303,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200001203032
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120304,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200001203041
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120304,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200001203042
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120305,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811200001203051
+  },
+  {
+    "CharacterOfferMessageSetId": 1120000120305,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811200001203052
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210001602011
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210001602012
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210001602021
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210001602022
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210001602031
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210001602032
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210001602041
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000160204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210001602042
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300011
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300012
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300021
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300022
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300031
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300032
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300041
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300042
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300051
+  },
+  {
+    "CharacterOfferMessageSetId": 1121000230005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300052
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000200021
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000200022
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000200031
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000200032
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000200041
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000200042
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230000200051
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000020005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230000200052
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230001200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230001200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230001200021
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230001200022
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230001200031
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230001200032
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230001200041
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230001200042
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811230001200051
+  },
+  {
+    "CharacterOfferMessageSetId": 1123000120005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811230001200052
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300001700011
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300001700012
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300001700021
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300001700022
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300001700031
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300001700032
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300001700041
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300001700042
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300001700051
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000170005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300001700052
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300003200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300003200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300003200021
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300003200022
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300003200031
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300003200032
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300003200041
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300003200042
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300003200051
+  },
+  {
+    "CharacterOfferMessageSetId": 1130000320005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811300003200052
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010501,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000105011
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010501,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000105012
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010502,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000105021
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010502,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000105022
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010503,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000105031
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010503,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000105032
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010504,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000105041
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010504,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000105042
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010505,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000105051
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000010505,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000105052
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000401011
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000401012
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000401021
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000401022
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000401031
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000401032
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000401041
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000401042
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000401051
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000040105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000401052
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000502011
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000502012
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000502021
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000502022
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000502031
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000502032
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000502041
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000502042
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811330000502051
+  },
+  {
+    "CharacterOfferMessageSetId": 1133000050205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811330000502052
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000500021
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000500022
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000500031
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000500032
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000500041
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000500042
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811370000500051
+  },
+  {
+    "CharacterOfferMessageSetId": 1137000050005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811370000500052
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400002002011
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400002002012
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400002002021
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400002002022
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400002002031
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400002002032
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400002002041
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400002002042
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811400002002051
+  },
+  {
+    "CharacterOfferMessageSetId": 1140000200205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811400002002052
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430001700011
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430001700012
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430001700021
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430001700022
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430001700031
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430001700032
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430001700041
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430001700042
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430001700051
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000170005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430001700052
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430002500011
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430002500012
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430002500021
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430002500022
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430002500031
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430002500032
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430002500041
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430002500042
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811430002500051
+  },
+  {
+    "CharacterOfferMessageSetId": 1143000250005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811430002500052
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000200021
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000200022
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000200031
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000200032
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000200041
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000200042
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000200051
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100020005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000200052
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000302011
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000302012
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000302021
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000302022
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000302031
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000302032
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000302041
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000302042
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811501000302051
+  },
+  {
+    "CharacterOfferMessageSetId": 1150100030205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811501000302052
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000030001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000300011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000030001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000300012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000040001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000400011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000040001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000400012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000060001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000600011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000060001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000600012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000070001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000700011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000070001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000700012
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000401011
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000401012
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000401021
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000401022
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000401031
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000401032
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000401041
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000401042
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001000401051
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100040105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001000401052
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001001801011
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001001801012
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001001801021
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001001801022
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001001801031
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001001801032
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001001801041
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001001801042
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821001001801051
+  },
+  {
+    "CharacterOfferMessageSetId": 2100100180105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821001001801052
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080002700011
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080002700012
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080002700021
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080002700022
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080002700031
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080002700032
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080002700041
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080002700042
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821080002700051
+  },
+  {
+    "CharacterOfferMessageSetId": 2108000270005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821080002700052
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000201011
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000201012
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000201021
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000201022
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000201031
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000201032
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000201041
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000201042
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095000201051
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500020105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095000201052
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095001800011
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095001800012
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095001800021
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095001800022
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095001800031
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095001800032
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095001800041
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095001800042
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821095001800051
+  },
+  {
+    "CharacterOfferMessageSetId": 2109500180005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821095001800052
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000201011
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000201012
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000201021
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000201022
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000201031
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000201032
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000201041
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000201042
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000201051
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000020105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000201052
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821110000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 2111000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821110000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000300011
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000300012
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000300021
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000300022
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000300031
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000300032
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000300041
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000300042
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125000300051
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500030005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125000300052
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125002001011
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125002001012
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125002001021
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125002001022
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125002001031
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125002001032
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125002001041
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125002001042
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821125002001051
+  },
+  {
+    "CharacterOfferMessageSetId": 2112500200105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821125002001052
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821150000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821150000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821150000500021
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821150000500022
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821150000500031
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821150000500032
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821150000500041
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821150000500042
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821150000500051
+  },
+  {
+    "CharacterOfferMessageSetId": 2115000050005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821150000500052
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000701011
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000701012
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000701021
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000701022
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000701031
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000701032
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000701041
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000701042
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200000701051
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000070105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200000701052
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120301,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200001203011
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120301,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200001203012
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120302,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200001203021
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120302,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200001203022
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120303,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200001203031
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120303,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200001203032
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120304,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200001203041
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120304,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200001203042
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120305,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821200001203051
+  },
+  {
+    "CharacterOfferMessageSetId": 2120000120305,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821200001203052
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210001602011
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210001602012
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210001602021
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210001602022
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210001602031
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210001602032
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210001602041
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210001602042
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210001602051
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000160205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210001602052
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210002300011
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210002300012
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210002300021
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210002300022
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210002300031
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210002300032
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210002300041
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210002300042
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821210002300051
+  },
+  {
+    "CharacterOfferMessageSetId": 2121000230005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821210002300052
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000200021
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000200022
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000200031
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000200032
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000200041
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000200042
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230000200051
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000020005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230000200052
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230001200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230001200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230001200021
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230001200022
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230001200031
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230001200032
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230001200041
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230001200042
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821230001200051
+  },
+  {
+    "CharacterOfferMessageSetId": 2123000120005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821230001200052
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300001700011
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300001700012
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300001700021
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300001700022
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300001700031
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300001700032
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300001700041
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300001700042
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300001700051
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000170005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300001700052
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300003200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300003200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300003200021
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300003200022
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300003200031
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300003200032
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300003200041
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300003200042
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821300003200051
+  },
+  {
+    "CharacterOfferMessageSetId": 2130000320005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821300003200052
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010501,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000105011
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010501,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000105012
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010502,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000105021
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010502,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000105022
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010503,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000105031
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010503,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000105032
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010504,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000105041
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010504,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000105042
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010505,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000105051
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000010505,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000105052
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000401011
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000401012
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000401021
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000401022
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000401031
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000401032
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000401041
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000401042
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000401051
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000040105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000401052
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000502011
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000502012
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000502021
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000502022
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000502031
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000502032
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000502041
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000502042
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821330000502051
+  },
+  {
+    "CharacterOfferMessageSetId": 2133000050205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821330000502052
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000500021
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000500022
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000500031
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000500032
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000500041
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000500042
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821370000500051
+  },
+  {
+    "CharacterOfferMessageSetId": 2137000050005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821370000500052
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400000101011
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400000101012
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010102,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400000101021
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010102,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400000101022
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010103,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400000101031
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010103,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400000101032
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010104,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400000101041
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010104,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400000101042
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010105,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400000101051
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000010105,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400000101052
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400002002011
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400002002012
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400002002021
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400002002022
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400002002031
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400002002032
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400002002041
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400002002042
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821400002002051
+  },
+  {
+    "CharacterOfferMessageSetId": 2140000200205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821400002002052
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430001700011
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430001700012
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430001700021
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430001700022
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430001700031
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430001700032
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430001700041
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430001700042
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430001700051
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000170005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430001700052
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430002500011
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430002500012
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430002500021
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430002500022
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430002500031
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430002500032
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430002500041
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430002500042
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821430002500051
+  },
+  {
+    "CharacterOfferMessageSetId": 2143000250005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821430002500052
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000100021
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000100022
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000100031
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000100032
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000100041
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000100042
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000100051
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100010005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000100052
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020002,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000200021
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020002,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000200022
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020003,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000200031
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020003,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000200032
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020004,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000200041
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020004,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000200042
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020005,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000200051
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100020005,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000200052
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030201,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000302011
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030201,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000302012
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030202,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000302021
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030202,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000302022
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030203,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000302031
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030203,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000302032
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030204,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000302041
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030204,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000302042
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030205,
+    "SortOrder": 1,
+    "MessageLanguageId": 100821501000302051
+  },
+  {
+    "CharacterOfferMessageSetId": 2150100030205,
+    "SortOrder": 2,
+    "MessageLanguageId": 100821501000302052
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000020001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000020001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000030001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000300011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000030001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000300012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000040001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000400011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000040001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000400012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000050001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000500011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000050001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000500012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000060001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000600011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000060001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000600012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000070001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000700011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000070001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000700012
+  }
+]

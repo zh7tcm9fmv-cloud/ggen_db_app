@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 1,
+    "Priority": 100001,
+    "DisplayTypeIndex": 2,
+    "ColorTypeIndex": 2,
+    "TextLanguageId": 0
+  },
+  {
+    "Id": 2,
+    "Priority": 400002,
+    "DisplayTypeIndex": 1,
+    "ColorTypeIndex": 1,
+    "TextLanguageId": 221300000000000002
+  },
+  {
+    "Id": 3,
+    "Priority": 400001,
+    "DisplayTypeIndex": 1,
+    "ColorTypeIndex": 1,
+    "TextLanguageId": 221300000000000003
+  },
+  {
+    "Id": 4,
+    "Priority": 300002,
+    "DisplayTypeIndex": 3,
+    "ColorTypeIndex": 1,
+    "TextLanguageId": 0
+  },
+  {
+    "Id": 6,
+    "Priority": 200002,
+    "DisplayTypeIndex": 1,
+    "ColorTypeIndex": 1,
+    "TextLanguageId": 221300000000000006
+  }
+]

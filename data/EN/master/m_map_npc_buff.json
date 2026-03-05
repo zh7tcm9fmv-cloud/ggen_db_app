@@ -1,0 +1,450 @@
+[
+  {
+    "Id": 90700101001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700102001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510061001,
+    "BuffTypeIndex": 1,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700103001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700104001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700105001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700106001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700106002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700108001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510060501,
+    "BuffTypeIndex": 1,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700109001,
+    "RangeMin": 1,
+    "RangeMax": 5,
+    "TraitSetId": 510500701,
+    "BuffTypeIndex": 6,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700109002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700109003,
+    "RangeMin": 1,
+    "RangeMax": 4,
+    "TraitSetId": 510500701,
+    "BuffTypeIndex": 6,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700109004,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510500701,
+    "BuffTypeIndex": 6,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700109005,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700110001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510060501,
+    "BuffTypeIndex": 1,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700111001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700113001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700113002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700114001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510060501,
+    "BuffTypeIndex": 1,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700114002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700115001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700115002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700115003,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510060501,
+    "BuffTypeIndex": 1,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700115004,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700116001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700116002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700117001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510016001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700117002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700117003,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700118001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700119001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700119002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700120001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700120002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700120003,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510022001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700201001,
+    "RangeMin": 1,
+    "RangeMax": 4,
+    "TraitSetId": 510012001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700202001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510061001,
+    "BuffTypeIndex": 1,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700203001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700204001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700205001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700206001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700206002,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700208001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510012001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700208002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700209001,
+    "RangeMin": 1,
+    "RangeMax": 6,
+    "TraitSetId": 510500901,
+    "BuffTypeIndex": 6,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700209002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700209003,
+    "RangeMin": 1,
+    "RangeMax": 4,
+    "TraitSetId": 510013001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700210001,
+    "RangeMin": 1,
+    "RangeMax": 3,
+    "TraitSetId": 510022001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": "AllyOrFriendly"
+  },
+  {
+    "Id": 90700211001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510010501,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700212001,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700212002,
+    "RangeMin": 1,
+    "RangeMax": 2,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700213001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700213002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700214001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700214002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510023001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700215001,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510011001,
+    "BuffTypeIndex": 3,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 90700215002,
+    "RangeMin": 1,
+    "RangeMax": 1,
+    "TraitSetId": 510021001,
+    "BuffTypeIndex": 4,
+    "TargetTypes": ""
+  }
+]

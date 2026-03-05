@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 1,
+    "ResourceId": "mechanism_0003",
+    "NameLanguageId": 140900000000000001,
+    "DescriptionLanguageId": 141000000000000001,
+    "MechanismTypeIndex": 1,
+    "Value": 20
+  },
+  {
+    "Id": 2,
+    "ResourceId": "mechanism_0001",
+    "NameLanguageId": 140900000000000002,
+    "DescriptionLanguageId": 141000000000000002,
+    "MechanismTypeIndex": 2,
+    "Value": 0
+  },
+  {
+    "Id": 3,
+    "ResourceId": "mechanism_0004",
+    "NameLanguageId": 140900000000000003,
+    "DescriptionLanguageId": 141000000000000003,
+    "MechanismTypeIndex": 3,
+    "Value": 0
+  },
+  {
+    "Id": 4,
+    "ResourceId": "mechanism_0005",
+    "NameLanguageId": 140900000000000004,
+    "DescriptionLanguageId": 141000000000000004,
+    "MechanismTypeIndex": 4,
+    "Value": 0
+  },
+  {
+    "Id": 5,
+    "ResourceId": "mechanism_0006",
+    "NameLanguageId": 140900000000000005,
+    "DescriptionLanguageId": 141000000000000005,
+    "MechanismTypeIndex": 5,
+    "Value": 0
+  },
+  {
+    "Id": 6,
+    "ResourceId": "mechanism_0007",
+    "NameLanguageId": 140900000000000006,
+    "DescriptionLanguageId": 141000000000000006,
+    "MechanismTypeIndex": 4,
+    "Value": 8
+  },
+  {
+    "Id": 7,
+    "ResourceId": "mechanism_0008",
+    "NameLanguageId": 140900000000000007,
+    "DescriptionLanguageId": 141000000000000007,
+    "MechanismTypeIndex": 5,
+    "Value": 0
+  }
+]

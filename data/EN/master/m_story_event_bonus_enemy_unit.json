@@ -1,0 +1,428 @@
+[
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000102000012,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000102000013,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000102000014,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000102000015,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000012,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000013,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000014,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000015,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000016,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000202000017,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000012,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000013,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000014,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000015,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000016,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000017,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000018,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000019,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000020,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000021,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000022,
+    "EventPoint": 5,
+    "PointGainEffectIconCount": 5
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000023,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000024,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17005000302000025,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000010,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000011,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000012,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000013,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000014,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000102000015,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000012,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000013,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000014,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000015,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000016,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000017,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000018,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000019,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000020,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000021,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000022,
+    "EventPoint": 5,
+    "PointGainEffectIconCount": 5
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000023,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000024,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000025,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000202000026,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000016,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000017,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000018,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000019,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000020,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000021,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000022,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000023,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000024,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000025,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000026,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000027,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000028,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000029,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000030,
+    "EventPoint": 7,
+    "PointGainEffectIconCount": 7
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000031,
+    "EventPoint": 7,
+    "PointGainEffectIconCount": 7
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000032,
+    "EventPoint": 5,
+    "PointGainEffectIconCount": 5
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000033,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000034,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000035,
+    "EventPoint": 4,
+    "PointGainEffectIconCount": 4
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000036,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000037,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000038,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000039,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000040,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  },
+  {
+    "StoryEventId": 200008,
+    "MapNpcId": 17006000302000041,
+    "EventPoint": 2,
+    "PointGainEffectIconCount": 2
+  }
+]

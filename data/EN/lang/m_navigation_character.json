@@ -1,0 +1,1246 @@
+[
+  {
+    "id": 101200000010000010,
+    "value": "Welcome to SD Gundam G Generation ETERNAL!"
+  },
+  {
+    "id": 101200000010000020,
+    "value": "To make sure you're ready to begin exploring the various Gundam\nuniverses, it's time for some combat training."
+  },
+  {
+    "id": 101200000010000030,
+    "value": "Use your squad to destroy enemy units!"
+  },
+  {
+    "id": 101200000010000040,
+    "value": "For starters, let's move a unit closer to the enemy."
+  },
+  {
+    "id": 101200000010000050,
+    "value": "The red area shows your attack range."
+  },
+  {
+    "id": 101200000010000060,
+    "value": "Now, give the enemy your best shot!"
+  },
+  {
+    "id": 101200000010000070,
+    "value": "Check the Damage Estimate here."
+  },
+  {
+    "id": 101200000010000080,
+    "value": "Once you're ready, let's get this battle started!"
+  },
+  {
+    "id": 101200000010000090,
+    "value": "You're getting the hang of it! Try following up with another unit."
+  },
+  {
+    "id": 101200000010000100,
+    "value": "Each weapon has its own range and power."
+  },
+  {
+    "id": 101200000010000110,
+    "value": "The weapons you use in battle are selected\nautomatically, but you can switch to a\ndifferent one as long as it is within range."
+  },
+  {
+    "id": 101200000010000120,
+    "value": "Let's attack with the beam rifle now!"
+  },
+  {
+    "id": 101200000010000130,
+    "value": "Each weapon has its advantages, so if you want to come out on\ntop, choose the right one for the situation."
+  },
+  {
+    "id": 101200000010000140,
+    "value": "All right, I'll leave the last unit to you."
+  },
+  {
+    "id": 101200000010000150,
+    "value": "Since all your units have finished taking action, the battle will\nnow move to the enemy phase."
+  },
+  {
+    "id": 101200000010000160,
+    "value": "Watch out! Here it comes!"
+  },
+  {
+    "id": 101200000010000170,
+    "value": "When attacked, you can choose to counter, defend, or evade."
+  },
+  {
+    "id": 101200000010000180,
+    "value": "Check the Damage Estimate to see how much damage you might take."
+  },
+  {
+    "id": 101200000010000190,
+    "value": "Okay, it looks like you can withstand the attack without\nneeding to defend or evade."
+  },
+  {
+    "id": 101200000010000200,
+    "value": "You might as well counter this one!"
+  },
+  {
+    "id": 101200000010000210,
+    "value": "Since your phase has started, your EN has recovered."
+  },
+  {
+    "id": 101200000010000220,
+    "value": "Your units need EN to use weapons. A small amount will\nrecover at the start of your phase."
+  },
+  {
+    "id": 101200000010000230,
+    "value": "If you run out of EN, you won't be able to attack, so\nkeep a close eye on the remaining amount."
+  },
+  {
+    "id": 101200000010000240,
+    "value": "All right, it's your turn to attack! But before doing so, let's\ncheck the units' HP."
+  },
+  {
+    "id": 101200000010000250,
+    "value": "You have very low HP remaining and likely cannot\nwithstand another attack."
+  },
+  {
+    "id": 101200000010000260,
+    "value": "Use a character skill to destroy the enemy before they get a\nchance to counter!"
+  },
+  {
+    "id": 101200000010000270,
+    "value": "You can check skill details here."
+  },
+  {
+    "id": 101200000010000280,
+    "value": "Your skill has increased the damage dealt for the next fight!"
+  },
+  {
+    "id": 101200000010000290,
+    "value": "This time, use an EX weapon to attack."
+  },
+  {
+    "id": 101200000010000300,
+    "value": "These are powerful weapons that only specified units can use."
+  },
+  {
+    "id": 101200000010000310,
+    "value": "That should be all you need to defeat the enemy.\nCommence attack!"
+  },
+  {
+    "id": 101200000010000320,
+    "value": "Target destroyed!\nCombat training complete!"
+  },
+  {
+    "id": 101200000010000330,
+    "value": "Good work!\nI'll see you in the briefing room."
+  },
+  {
+    "id": 101200000010000340,
+    "value": "I've been waiting for you!"
+  },
+  {
+    "id": 101200000010000350,
+    "value": "Let's mark that you've officially completed training.\nPlease sign here."
+  },
+  {
+    "id": 101200000010000360,
+    "value": "Once again, I am Maria Owens, your Navigator, and I am glad to\nassist you however I can."
+  },
+  {
+    "id": 101200000010000370,
+    "value": "Allow me to move forward with your preliminary instruction."
+  },
+  {
+    "id": 101200000010000380,
+    "value": "Our objective is to investigate the numerous Gundam universes."
+  },
+  {
+    "id": 101200000010000390,
+    "value": "We gather information on each universe's history and units."
+  },
+  {
+    "id": 101200000010000400,
+    "value": "Investigating isn't as easy as it may sound.\nEach universe has its own tough battles."
+  },
+  {
+    "id": 101200000010000410,
+    "value": "To face off in battle, you must form and command your own squad."
+  },
+  {
+    "id": 101200000010000420,
+    "value": "Now, let's venture into the Gundam universes!"
+  },
+  {
+    "id": 101200000010000430,
+    "value": "These are the Main Stages, wherefrom you can access the\nGundam universes."
+  },
+  {
+    "id": 101200000010000440,
+    "value": "More universes will open up as you proceed through the stages!"
+  },
+  {
+    "id": 101200000010000450,
+    "value": "You are now ready to explore the first Mobile Suit Gundam\nuniverse. Let's not waste any time!"
+  },
+  {
+    "id": 101200000010000460,
+    "value": "Don't worry, I'll be guiding you every step of the way."
+  },
+  {
+    "id": 101200000010000470,
+    "value": "All right, then. Let's go!"
+  },
+  {
+    "id": 101200000010000480,
+    "value": "Battles have distinct Mission Objectives."
+  },
+  {
+    "id": 101200000010000490,
+    "value": "Complete them to progress through battle and\nfulfill the Victory Conditions."
+  },
+  {
+    "id": 101200000010000500,
+    "value": "First, let's work on completing the mission objectives.\nStart up your Gundam!"
+  },
+  {
+    "id": 101200000010000510,
+    "value": "With the mission objectives completed,\nthe victory conditions have been fulfilled."
+  },
+  {
+    "id": 101200000010000520,
+    "value": "Complete the stage by defeating the remaining Zaku II!"
+  },
+  {
+    "id": 101200000010000530,
+    "value": "The character's Vigor has increased due to the successful attack."
+  },
+  {
+    "id": 101200000010000540,
+    "value": "When Vigor increases, so does the damage dealt."
+  },
+  {
+    "id": 101200000010000550,
+    "value": "Moreover, destroying the enemy unit has triggered a Bonus Action!"
+  },
+  {
+    "id": 101200000010000560,
+    "value": "When a Bonus Action occurs, your unit can perform one more action."
+  },
+  {
+    "id": 101200000010000570,
+    "value": "Operate your Gundam and fulfill the victory conditions!"
+  },
+  {
+    "id": 101200000010000580,
+    "value": "Stage complete! Nice work!"
+  },
+  {
+    "id": 101200000010000590,
+    "value": "It looks like you made a capture during the earlier battle."
+  },
+  {
+    "id": 101200000010000600,
+    "value": "There's a set chance for you to capture certain enemy units upon\ndestroying them."
+  },
+  {
+    "id": 101200000010000610,
+    "value": "You can collect all captured units once the stage is cleared."
+  },
+  {
+    "id": 101200000010000620,
+    "value": "Before moving on to the next stage, let's perform Squad Formation\nwith the units you have obtained."
+  },
+  {
+    "id": 101200000010000630,
+    "value": "In the Main Stages, you can deploy up to two squads: a Series\nSquad composed solely of units and characters associated with\na specific series, and..."
+  },
+  {
+    "id": 101200000010000640,
+    "value": "...a Free Squad which can be organized in any manner you choose."
+  },
+  {
+    "id": 101200000010000650,
+    "value": "Series Squads have limited units and characters you can\nchoose from."
+  },
+  {
+    "id": 101200000010000660,
+    "value": "However, during battles in the corresponding series, your stats\nwill increase, granting you a sizable advantage!"
+  },
+  {
+    "id": 101200000010000670,
+    "value": "Let's get started by creating a Series Squad."
+  },
+  {
+    "id": 101200000010000680,
+    "value": "Next, assign the characters who will pilot the units in\nyour formation."
+  },
+  {
+    "id": 101200000010000690,
+    "value": "This completes Squad Formation."
+  },
+  {
+    "id": 101200000010000750,
+    "value": "Now that we've created a squad, let's proceed to the next stage."
+  },
+  {
+    "id": 101200000010000760,
+    "value": "Take control of your units and fulfill the victory conditions."
+  },
+  {
+    "id": 101200000010000770,
+    "value": "By using various weapons and skills, you can turn the battle in\nyour favor. Be sure to keep this in mind!"
+  },
+  {
+    "id": 101200000010000780,
+    "value": "Nice work!\nLooks like you have no trouble maneuvering your squad."
+  },
+  {
+    "id": 101200000010000790,
+    "value": "However, expect to face stronger opponents from here on."
+  },
+  {
+    "id": 101200000010000800,
+    "value": "Enhance the strength of your Squad by using Develop on your units!"
+  },
+  {
+    "id": 101200000010000810,
+    "value": "This is a Development Diagram."
+  },
+  {
+    "id": 101200000010000820,
+    "value": "Based on the information from a Development Diagram, you can\ntransform a unit into another."
+  },
+  {
+    "id": 101200000010000830,
+    "value": "Try using the Zaku II to develop the High Mobility Zaku\nGround Type!"
+  },
+  {
+    "id": 101200000010000840,
+    "value": "In order to develop this unit, it seems that the Zaku II needs to\nbe above a certain level..."
+  },
+  {
+    "id": 101200000010000850,
+    "value": "We'll provide Unit Upgrade Data this time as an exception!\nUse this to raise the level."
+  },
+  {
+    "id": 101200000010000860,
+    "value": "If you have Unit Upgrade Data, the required amount for\ndevelopment will be set automatically."
+  },
+  {
+    "id": 101200000010000870,
+    "value": "The development of High Mobility Zaku Ground Type from Zaku II\nis complete!"
+  },
+  {
+    "id": 101200000010000880,
+    "value": "Each Gundam universe has its own Development Diagram."
+  },
+  {
+    "id": 101200000010000890,
+    "value": "When a new Gundam universe is unlocked, so is the\ncorresponding Development Diagram."
+  },
+  {
+    "id": 101200000010000900,
+    "value": "Progress through the Main Stages to increase the number of units\nyou can develop!"
+  },
+  {
+    "id": 101200000010000910,
+    "value": "Moreover, by completing the units in a Development Diagram,\nyou can obtain rare units and items."
+  },
+  {
+    "id": 101200000010000920,
+    "value": "Aim for Development Diagram completion by progressing through\nthe Main Stages."
+  },
+  {
+    "id": 101200000010000930,
+    "value": "Finally, allow me to explain the area we are in right now."
+  },
+  {
+    "id": 101200000010000940,
+    "value": "This is our Base, which serves as pivot to all our operations."
+  },
+  {
+    "id": 101200000010000950,
+    "value": "It is equipped with various functions and facilities that\nsupport our investigation."
+  },
+  {
+    "id": 101200000010000960,
+    "value": "It looks like the White Base has docked!"
+  },
+  {
+    "id": 101200000010000970,
+    "value": "Tap \"Collect All\" to gather your items in one go."
+  },
+  {
+    "id": 101200000010000980,
+    "value": "You can collect items in the Base's Warship Cruise\nat regular intervals."
+  },
+  {
+    "id": 101200000010000990,
+    "value": "The functions within the Base will expand as you progress in your\ninvestigation, so be sure to check in regularly."
+  },
+  {
+    "id": 101200000010001000,
+    "value": "This concludes your preliminary instruction."
+  },
+  {
+    "id": 101200000010001010,
+    "value": "From here, you can start exploring the Gundam universes with the\nBeginner Missions!"
+  },
+  {
+    "id": 101200000010001020,
+    "value": "Also, a Unit Assembly has been specially set up to lend you an\nextra hand."
+  },
+  {
+    "id": 101200000010001030,
+    "value": "Feel free to give it a go as many times as needed to get your\nfavorite unit."
+  },
+  {
+    "id": 101200000010001040,
+    "value": "I'm looking forward to your achievements from here on out!"
+  },
+  {
+    "id": 101200000010001050,
+    "value": "We're in this together, so let's give it our all!"
+  },
+  {
+    "id": 101200000011010001,
+    "value": "Hold on a moment.\nIt seems this stage has secrets not found anywhere else..."
+  },
+  {
+    "id": 101200000011010002,
+    "value": "Look here. A Secret Battle will occur on stages with this mark,\nbut only if you perform specific actions during battle."
+  },
+  {
+    "id": 101200000011010003,
+    "value": "Secret Battles are highly challenging, but allow you to earn\nspecial rewards needed for development and weapon upgrades!"
+  },
+  {
+    "id": 101200000011010004,
+    "value": "You can check the Secret Battle requirements in the stage details."
+  },
+  {
+    "id": 101200000011010005,
+    "value": "You can check the Secret Battle requirements here. They're tough\nto trigger automatically, so manual battles might be best."
+  },
+  {
+    "id": 101200000011010006,
+    "value": "Expect fierce opponents during Secret Battles. Check the\nRecommended Combat Power and plan your strategy carefully."
+  },
+  {
+    "id": 101200000011020001,
+    "value": "You did it! You successfully triggered the Secret Battle!"
+  },
+  {
+    "id": 101200000011020002,
+    "value": "This is where the real challenge begins. Secret Battles are\nhighly difficult, and you'll have to restart them entirely if\nyou lose."
+  },
+  {
+    "id": 101200000011020003,
+    "value": "If you lack Combat Power, just opt out, then give it a try after\nyou have strengthened your forces!"
+  },
+  {
+    "id": 101200000011030001,
+    "value": "I have a report for you! The MS Dock is now available in the Base.\nLet's check it out."
+  },
+  {
+    "id": 101200000011030002,
+    "value": "This is the MS Dock. Try it out!"
+  },
+  {
+    "id": 101200000011030003,
+    "value": "This is a space where you can display MS Dock Units you've\nacquired and create your very own dock. Let's go set it up!"
+  },
+  {
+    "id": 101200000011040001,
+    "value": "This just in!\nCharacter Requests are available at the Base.\nLet's go have a look."
+  },
+  {
+    "id": 101200000011040002,
+    "value": "These are Character Requests.\nGive them a try!"
+  },
+  {
+    "id": 101200000011040003,
+    "value": "Here you'll receive requests from various characters.\nEarn a variety of rewards by completing them!"
+  },
+  {
+    "id": 101200000011040004,
+    "value": "Special requests will become available as you rank higher.\nComplete them to earn rare items!"
+  },
+  {
+    "id": 101200000011040005,
+    "value": "It looks like you already have a request!"
+  },
+  {
+    "id": 101200000011050001,
+    "value": "These are Panel Missions.\nFirst, let's try Beginner Missions!"
+  },
+  {
+    "id": 101200000011050002,
+    "value": "As you progress through the missions, you can limit-break the [SSR] GQuuuuuuX (Omega Psycommu) to its maximum. Try to aim for that!"
+  },
+  {
+    "id": 101200000011060001,
+    "value": "This just in!\nNew characters are available for scouting.\nGo ahead and have a look!"
+  },
+  {
+    "id": 101200000011060002,
+    "value": "You can scout characters by using Capital."
+  },
+  {
+    "id": 101200000011060003,
+    "value": "More characters will become available for scouting as you\nprogress through the stages."
+  },
+  {
+    "id": 101200000011060004,
+    "value": "I'll let you try out scouting Capital-free, just this once!\nGive it a shot!"
+  },
+  {
+    "id": 101200000011070001,
+    "value": "It's finally time for a proper sortie."
+  },
+  {
+    "id": 101200000011070002,
+    "value": "Before we jump in, let me tell you more about squad formation."
+  },
+  {
+    "id": 101200000011070003,
+    "value": "Last time, we formed a Series Squad, which can only be composed of\nunits and characters related to a specific series."
+  },
+  {
+    "id": 101200000011070004,
+    "value": "Let me explain the Free Squad now."
+  },
+  {
+    "id": 101200000011070005,
+    "value": "A Free Squad allows you to form units and characters without\nrestrictions. Let's go ahead and try it!"
+  },
+  {
+    "id": 101200000011070006,
+    "value": "Here are some units and characters to help you prepare for future\nbattles! Feel free to use them if you think your current formation\nis lacking."
+  },
+  {
+    "id": 101200000011070007,
+    "value": "Free Squads can be organized without any series restrictions."
+  },
+  {
+    "id": 101200000011070008,
+    "value": "If you want to include units or characters that don't match the\nseries in the Main Stages, you can add them into a Free Squad."
+  },
+  {
+    "id": 101200000011070009,
+    "value": "Moreover, the Auto-Form feature automatically sets up a formation\nfor you based on the units and characters in your possession!"
+  },
+  {
+    "id": 101200000011070010,
+    "value": "Feel free to try Auto-Form out until you get used to the process."
+  },
+  {
+    "id": 101200000011070011,
+    "value": "Moving on, let's form a Series Squad."
+  },
+  {
+    "id": 101200000011080001,
+    "value": "You've collected enhancement materials! It looks like you can\ndevelop a new unit with these! Let's get started!"
+  },
+  {
+    "id": 101200000011080002,
+    "value": "It looks like you'll be able to develop a Prototype Gundam if you\nuse the enhancement materials to level up the GM!"
+  },
+  {
+    "id": 101200000011080003,
+    "value": "Development went without a hitch!"
+  },
+  {
+    "id": 101200000011080004,
+    "value": "You'll be able to develop a Gundam if you level up the Prototype\nGundam!"
+  },
+  {
+    "id": 101200000011080005,
+    "value": "After that, you'll be able to develop the SSR unit G-3 Gundam!"
+  },
+  {
+    "id": 101200000011080006,
+    "value": "You can obtain powerful SSR units through development too! Try it out!"
+  },
+  {
+    "id": 101200000011080007,
+    "value": "Great work so far! It looks like you're making steady progress\nthrough the stages, but you'll need development and training\nmaterials."
+  },
+  {
+    "id": 101200000011080008,
+    "value": "You can obtain a lot of materials in a short time by using the\nSkip feature on cleared stages. Give it a try if you're running\nlow on materials."
+  },
+  {
+    "id": 101200000011080009,
+    "value": "The Skip feature becomes available for a stage once you have\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"> on it."
+  },
+  {
+    "id": 101200000011080010,
+    "value": "Take advantage of the Skip feature for stages where you've\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">!"
+  },
+  {
+    "id": 101200000011080011,
+    "value": "Upgrade Stages unlocked."
+  },
+  {
+    "id": 101200000011080012,
+    "value": "Upgrade Stages are special stages for earning capital\nand training units, characters, and supporters."
+  },
+  {
+    "id": 101200000011080013,
+    "value": "You can access Upgrade Stages from the Stages screen."
+  },
+  {
+    "id": 101200000011080014,
+    "value": "Keep in mind that you have a limited number of attempts per day,\nso be sure to keep track of them."
+  },
+  {
+    "id": 101200000011080015,
+    "value": "It seems that you have acquired the G-3 Gundam Research Journal."
+  },
+  {
+    "id": 101200000011080016,
+    "value": "You will now be able to develop the G-3 Gundam by using the Mobile\nSuit Gundam EFF Develop Diagram."
+  },
+  {
+    "id": 101200000011080017,
+    "value": "Level up the base Gundam material to the required level and\ndevelop the G-3 Gundam!"
+  },
+  {
+    "id": 101200000011080018,
+    "value": "Great work so far! It looks like you're making steady progress\nthrough the stages, but you'll need development and training\nmaterials."
+  },
+  {
+    "id": 101200000011080019,
+    "value": "You can obtain a lot of materials in a short time by using the\nSkip feature on cleared stages. Give it a try if you're running\nlow on materials."
+  },
+  {
+    "id": 101200000011080020,
+    "value": "The Skip feature becomes available for a stage once you have\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"> on it."
+  },
+  {
+    "id": 101200000011080021,
+    "value": "Take advantage of the Skip feature for stages where you've\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">!"
+  },
+  {
+    "id": 101200000012010001,
+    "value": "Let me tell you about the EN of the units."
+  },
+  {
+    "id": 101200000012010002,
+    "value": "Using weapons drains your EN. Once it runs out, you can no longer\nuse your weapons."
+  },
+  {
+    "id": 101200000012010003,
+    "value": "Always keep an eye on your EN while in battle."
+  },
+  {
+    "id": 101200000012020001,
+    "value": "Now, allow me to explain what Counter Prediction is!"
+  },
+  {
+    "id": 101200000012020002,
+    "value": "If you launch an attack while within the enemy's range, you will\nlikely face a counterattack."
+  },
+  {
+    "id": 101200000012020003,
+    "value": "The enemy's attack range can be determined by the exclamation mark\nshown inside the movement range."
+  },
+  {
+    "id": 101200000012020004,
+    "value": "Attack from outside the enemy unit's range to deal damage while\navoiding a counterattack. Keep checking the Counter Prediction to\nturn the battle in your favor!"
+  },
+  {
+    "id": 101200000012030001,
+    "value": "Let's have a look at Bonus Actions now."
+  },
+  {
+    "id": 101200000012030002,
+    "value": "Once you deliver the final blow to an enemy unit, you are allowed\none more action, called Bonus Action."
+  },
+  {
+    "id": 101200000012030003,
+    "value": "There is a limited number of Bonus Actions during each phase.\nIt all depends on your character."
+  },
+  {
+    "id": 101200000012030004,
+    "value": "Consider the attack order and the unit delivering the final blow.\nKeep Bonus Actions in mind when planning your strategy."
+  },
+  {
+    "id": 101200000012040001,
+    "value": "Let me tell you about support skills."
+  },
+  {
+    "id": 101200000012040002,
+    "value": "Every supporter possesses their own support skills that can\nprovide you with an advantage."
+  },
+  {
+    "id": 101200000012040003,
+    "value": "Support skills are applied to all allied units within the\nrange of effect."
+  },
+  {
+    "id": 101200000012040004,
+    "value": "Each supporter can activate their support skills only\nonce per battle. However, these skills can be used\nat any time during your phase."
+  },
+  {
+    "id": 101200000012040005,
+    "value": "As you progress, think about when you can best utilize\nthe support skills!"
+  },
+  {
+    "id": 101200000012050001,
+    "value": "I will now cover character skills."
+  },
+  {
+    "id": 101200000012050002,
+    "value": "Each character has their own unique character skills that help\nyou gain an advantage."
+  },
+  {
+    "id": 101200000012050003,
+    "value": "If the unit has a possible action, you can use SP to activate\na skill."
+  },
+  {
+    "id": 101200000012050004,
+    "value": "Keep track of the remaining amount. SP will not recover\nduring battle."
+  },
+  {
+    "id": 101200000012050005,
+    "value": "As you engage in battle, think carefully about when and which\ncharacter skills to use!"
+  },
+  {
+    "id": 101200000012060001,
+    "value": "I will now tell you about Support Defense."
+  },
+  {
+    "id": 101200000012060002,
+    "value": "You can tell whether a unit can provide Support Defense by looking at this icon.There is a limited number of times it can be triggered during a phase, which varies by character."
+  },
+  {
+    "id": 101200000012060003,
+    "value": "If an allied unit is attacked within the movement range,\nSupport Defense will activate, allowing this unit to take\nthe hit instead."
+  },
+  {
+    "id": 101200000012060004,
+    "value": "First, let's have the unit that can provide Support Defense\n take action."
+  },
+  {
+    "id": 101200000012060005,
+    "value": "Next, let's have the unit that will receive Support Defense\ntake action."
+  },
+  {
+    "id": 101200000012060006,
+    "value": "You can check the movement range for units capable of providing\nSupport Defense here. When you want to receive support, be sure\nto check the space's icon and move accordingly."
+  },
+  {
+    "id": 101200000012060007,
+    "value": "Carefully position your units to gain an advantage in battle!"
+  },
+  {
+    "id": 101200000012060008,
+    "value": "When Support Defense occurs, it will be displayed here, so be sure\nto keep an eye on it."
+  },
+  {
+    "id": 101200000012060009,
+    "value": "If you don't want to trigger Support Defense, you can change the\nparticipation status of the unit in battle."
+  },
+  {
+    "id": 101200000012060010,
+    "value": "This unit can only use Support Defense once per turn.\nTo preserve it, let's set the unit to \"not participating.\""
+  },
+  {
+    "id": 101200000012060011,
+    "value": "The unit will be destroyed if it takes another hit. Let's change\nits participation status to enable the use of Support Defense."
+  },
+  {
+    "id": 101200000012060012,
+    "value": "The unit survived thanks to Support Defense!"
+  },
+  {
+    "id": 101200000012060013,
+    "value": "Now, all that's left is to wipe out the enemy!"
+  },
+  {
+    "id": 101200000012060014,
+    "value": "Great job! It looks like you've successfully defeated them!"
+  },
+  {
+    "id": 101200000012060015,
+    "value": "Support Defense can be a useful tool, but always keep the usage limit\nand remaining HP in mind."
+  },
+  {
+    "id": 101200000012060016,
+    "value": "Timing is key—master the right moment to use them and\nturn the battle in your favor."
+  },
+  {
+    "id": 101200000012070001,
+    "value": "I'll now go over Support Attacks with you."
+  },
+  {
+    "id": 101200000012070002,
+    "value": "You can use Support Attacks by having a support-type\ncharacter on board the unit."
+  },
+  {
+    "id": 101200000012070003,
+    "value": "Support Attacks will activate when an allied unit attacks\nwithin the defined range."
+  },
+  {
+    "id": 101200000012070004,
+    "value": "You can tell whether a unit can perform Support Attacks by\nlooking at this icon."
+  },
+  {
+    "id": 101200000012070005,
+    "value": "There is a limited number of times it can be triggered during a\nturn, which varies by character."
+  },
+  {
+    "id": 101200000012070006,
+    "value": "Support Attacks can be carried out even after the unit has\nperformed an action. Start by having the support-type unit\ntake action."
+  },
+  {
+    "id": 101200000012070007,
+    "value": "Next, let's have another unit move and attack."
+  },
+  {
+    "id": 101200000012070008,
+    "value": "When a Support Attack occurs, it will be displayed here, so be\nsure to keep an eye on it."
+  },
+  {
+    "id": 101200000012070009,
+    "value": "Great job! It looks like you successfully defeated them!"
+  },
+  {
+    "id": 101200000012070010,
+    "value": "Support Attack is very powerful, but you need to keep the unit's\nrange and EN in mind."
+  },
+  {
+    "id": 101200000012070011,
+    "value": "Carefully position your units to gain an advantage in battle."
+  },
+  {
+    "id": 101200000012080001,
+    "value": "Let's touch upon Vigor now."
+  },
+  {
+    "id": 101200000012080002,
+    "value": "A character's Vigor changes based on the amount of MP they have."
+  },
+  {
+    "id": 101200000012080003,
+    "value": "Vigor has four levels: Normal, High, Max, and Supercharged.\nThe amount of damage dealt increases based on the Vigor level."
+  },
+  {
+    "id": 101200000012080004,
+    "value": "MP increases by landing attacks on enemy units, as well as by\nperforming Support Attack and Support Defense."
+  },
+  {
+    "id": 101200000012080005,
+    "value": "On the other hand, MP decreases when your unit is attacked or\nwhen the enemy evades your attack."
+  },
+  {
+    "id": 101200000012080006,
+    "value": "Think about how you can keep your Vigor high as you progress\nthrough the battle!"
+  },
+  {
+    "id": 101200000012090001,
+    "value": "Let me explain the Transform function!"
+  },
+  {
+    "id": 101200000012090002,
+    "value": "Some units are able to transform during battle."
+  },
+  {
+    "id": 101200000012090003,
+    "value": "Transforming a unit can alter its MOV and the\nweapons it can utilize."
+  },
+  {
+    "id": 101200000012090004,
+    "value": "Use Transform to your advantage in battle!"
+  },
+  {
+    "id": 101200000012100001,
+    "value": "Let me explain MAP Weapons."
+  },
+  {
+    "id": 101200000012100002,
+    "value": "MAP Weapons are powerful weapons wielded by specific units.\nUnlike regular weapons, they can simultaneously attack multiple\nunits within their range."
+  },
+  {
+    "id": 101200000012100003,
+    "value": "However, MAP Weapons cannot be used after moving, and they\ndo not trigger a Bonus Action."
+  },
+  {
+    "id": 101200000012100004,
+    "value": "There are various conditions, such as limited usage and Vigor-level\nrequirements depending on the weapon, but in return, they are\nextremely powerful."
+  },
+  {
+    "id": 101200000012100005,
+    "value": "Give MAP Weapons a try and experience their power for yourself!"
+  },
+  {
+    "id": 101200000012110001,
+    "value": "Let me tell you about weapon types."
+  },
+  {
+    "id": 101200000012110002,
+    "value": "There are three kinds of weapon types: Ranged, Melee, and Awaken."
+  },
+  {
+    "id": 101200000012110003,
+    "value": "Each character has weapons that they excel at using,\nas well as those they struggle with. By looking at the Ranged,\nMelee, and Awaken stats, you can determine the best weapon\nfor your character."
+  },
+  {
+    "id": 101200000012110004,
+    "value": "Deal more damage to enemy units by utilizing the weapon that\nyour character is best at."
+  },
+  {
+    "id": 101200000012110005,
+    "value": "On the other hand, using a weapon your character isn't proficient\nwith will weaken your attack, so pay close attention!"
+  },
+  {
+    "id": 101200000012110006,
+    "value": "Be conscious of weapon types and keep your characters'\nproficiency in mind!"
+  },
+  {
+    "id": 101200000012120001,
+    "value": "Let me tell you about weapon attributes."
+  },
+  {
+    "id": 101200000012120002,
+    "value": "There are three weapon attributes: Beam, Physical, and Special.\nEach weapon has at least one attribute."
+  },
+  {
+    "id": 101200000012120003,
+    "value": "Some abilities are effective against specific weapon attributes.\nTherefore, it's best to check enemy unit data before attacking."
+  },
+  {
+    "id": 101200000012120004,
+    "value": "In this case, the enemy unit has an ability that can reduce\nBeam-type damage."
+  },
+  {
+    "id": 101200000012120005,
+    "value": "Be sure to keep weapon attributes in mind as you proceed\nthrough battles!"
+  },
+  {
+    "id": 101200000012130001,
+    "value": "Let's take a look at terrain capabilities."
+  },
+  {
+    "id": 101200000012130002,
+    "value": "The battle stages feature various terrains: Space, Atmospheric,\nLand, Sea, and Underwater."
+  },
+  {
+    "id": 101200000012130003,
+    "value": "Units have three levels of capability for each terrain type:\n\"circle\" (good), \"triangle\" (average), and \"dash\" (poor)."
+  },
+  {
+    "id": 101200000012130004,
+    "value": "If the terrain capability is \"triangle,\" the unit's MOV is reduced by half.\nIf it's \"dash,\" the unit cannot sortie on that stage."
+  },
+  {
+    "id": 101200000012130005,
+    "value": "Consider the differences in MOV due to terrain capability\nto gain an advantage in battle!"
+  },
+  {
+    "id": 101200000012140001,
+    "value": "Let me tell you about weapon effects."
+  },
+  {
+    "id": 101200000012140002,
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
+  },
+  {
+    "id": 101200000012140003,
+    "value": "Attack-type units excel at dealing damage. Certain weapons\nincrease damage dealt based on certain conditions."
+  },
+  {
+    "id": 101200000012140004,
+    "value": "In this case, the unit has a weapon that increases damage\ndepending on the distance between you and the enemy unit."
+  },
+  {
+    "id": 101200000012140005,
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
+  },
+  {
+    "id": 101200000012150001,
+    "value": "Let me tell you about weapon effects."
+  },
+  {
+    "id": 101200000012150002,
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
+  },
+  {
+    "id": 101200000012150003,
+    "value": "Support-type unit weapons can weaken enemy units."
+  },
+  {
+    "id": 101200000012150004,
+    "value": "In this case, the unit has a weapon that reduces the enemy unit's\nDEF after you attack."
+  },
+  {
+    "id": 101200000012150005,
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
+  },
+  {
+    "id": 101200000012160001,
+    "value": "Let me tell you about weapon effects."
+  },
+  {
+    "id": 101200000012160002,
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
+  },
+  {
+    "id": 101200000012160003,
+    "value": "Weapons used by Durability-type units can hinder the actions\nof enemy units."
+  },
+  {
+    "id": 101200000012160004,
+    "value": "In this case, the unit's weapon can reduce the enemy unit's\nATK after attacking."
+  },
+  {
+    "id": 101200000012160005,
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
+  },
+  {
+    "id": 101200000013000010,
+    "value": "Today's login bonus is waiting for you! Don't forget to claim it!"
+  },
+  {
+    "id": 101200000013000020,
+    "value": "Today's supplies have arrived!"
+  },
+  {
+    "id": 101200000013000030,
+    "value": "The supplies have arrived, so be sure to take a look!"
+  },
+  {
+    "id": 101200000014000010,
+    "value": "Complete missions for awesome rewards!"
+  },
+  {
+    "id": 101200000014000020,
+    "value": "Looking good! Keep it up!"
+  },
+  {
+    "id": 101200000014000030,
+    "value": "It's perfectly fine to take things one step at a time.\n\"A journey of a thousand miles begins with a single step!\""
+  },
+  {
+    "id": 101200000014000040,
+    "value": "You did it! Persistence is key!"
+  },
+  {
+    "id": 101200000014000050,
+    "value": "Impressive! Keep that momentum!"
+  },
+  {
+    "id": 101200000014000060,
+    "value": "Amazing work! I expect great things from you."
+  },
+  {
+    "id": 101200000014000070,
+    "value": "Your daily efforts are paying off!"
+  },
+  {
+    "id": 101200000014000080,
+    "value": "Let's give our best, from here on out!"
+  },
+  {
+    "id": 101200000015000010,
+    "value": "If you are having difficulty, consider <color=#ffc600>changing opponents</color> to help\nboost your score."
+  },
+  {
+    "id": 101200000015000020,
+    "value": "You can change opponents up to 5 times per day."
+  },
+  {
+    "id": 101200000015000030,
+    "value": "Challenge new opponents, rethink your strategy, and\naim for a high score!"
+  },
+  {
+    "id": 101200000015010010,
+    "value": "The Grand Offensive has kicked off."
+  },
+  {
+    "id": 101200000015010020,
+    "value": "Clear out the enemies lurking in each zone,\nreinforce your squad,"
+  },
+  {
+    "id": 101200000015010030,
+    "value": "and push toward resolving the anomaly."
+  },
+  {
+    "id": 101200000015010040,
+    "value": "In the Grand Offensive,\nSquadmates will fight on your side."
+  },
+  {
+    "id": 101200000015010050,
+    "value": "Your Squadmates can be upgraded at any of the bases you encounter on the way.\nThey will surely prove an invaluable asset,\nespecially in Danger Zones."
+  },
+  {
+    "id": 101200000015010055,
+    "value": ""
+  },
+  {
+    "id": 101200000015010060,
+    "value": "Use this window to check your\nSquadmates' strength."
+  },
+  {
+    "id": 101200000015010070,
+    "value": "Our intel suggests that the culprit behind\nthis anomaly lies at the far end of the\nInspection Zone."
+  },
+  {
+    "id": 101200000015010071,
+    "value": ""
+  },
+  {
+    "id": 101200000015010072,
+    "value": "Press the offensive with your Squadmates\nand build up your combat power to defeat\nthe enemy at the end, \nand bring this situation under control."
+  },
+  {
+    "id": 101200000015010080,
+    "value": "Well, then, let's go!"
+  },
+  {
+    "id": 101200000015010085,
+    "value": "We've arrived at a Communications Base."
+  },
+  {
+    "id": 101200000015010090,
+    "value": "Here, you can increase the stats of\nunits with specific tags."
+  },
+  {
+    "id": 101200000015010100,
+    "value": "Any acquired boost effects will persist throughout\nthe Grand Offensive, giving you an advantage as\nyou move forward."
+  },
+  {
+    "id": 101200000015010110,
+    "value": "Now, check these effects, then try acquiring them."
+  },
+  {
+    "id": 101200000015010120,
+    "value": "It would appear that an enemy of\nimmense power is lurking in this zone!"
+  },
+  {
+    "id": 101200000015010130,
+    "value": "Train your Squadmates and\nacquire boosts to ensure that your squad has\nsufficient combat power,\nthen commence the offensive fully prepared."
+  },
+  {
+    "id": 101200000015010140,
+    "value": "Target confirmed!"
+  },
+  {
+    "id": 101200000015010150,
+    "value": "A powerful enemy is lying in wait,\nbut if you defeat them,\nyou can proceed to the next zone!"
+  },
+  {
+    "id": 101200000015010160,
+    "value": "Target for this zone confirmed!"
+  },
+  {
+    "id": 101200000015010170,
+    "value": "You can proceed to the final zone by\ndestroying the target."
+  },
+  {
+    "id": 101200000015010180,
+    "value": "Build up your combat power and fight!"
+  },
+  {
+    "id": 101200000015010185,
+    "value": "Enemy in sight—we've spotted the final target!"
+  },
+  {
+    "id": 101200000015010190,
+    "value": "By capturing this Danger Zone,\nwe may be able to resolve the current anomaly."
+  },
+  {
+    "id": 101200000015010200,
+    "value": "It's going to be a tough fight...\nGood luck out there!"
+  },
+  {
+    "id": 101200000015010210,
+    "value": "This is a special space that allows you to upgrade\nSquadmate units or Squadmate characters."
+  },
+  {
+    "id": 101200000015010220,
+    "value": "Now, check the details."
+  },
+  {
+    "id": 101200000015010230,
+    "value": "We have entered a Key Combat Zone."
+  },
+  {
+    "id": 101200000015010240,
+    "value": "Here, powerful and special units appear."
+  },
+  {
+    "id": 101200000015010245,
+    "value": "By defeating them, you can acquire special boosts\nthat activate during Score Attack attempts."
+  },
+  {
+    "id": 101200000015010250,
+    "value": "To gain an advantage in the Score Attack,\nset your sights on conquering stages!"
+  },
+  {
+    "id": 101200000015010260,
+    "value": "Key Combat Zone capture confirmed!\nYou have acquired a special boost!"
+  },
+  {
+    "id": 101200000015010270,
+    "value": "Keep up the pace and capture the\nremaining Key Combat Zones."
+  },
+  {
+    "id": 101200000015010280,
+    "value": "The capture of every Key Combat Zone\nhas been confirmed!"
+  },
+  {
+    "id": 101200000015010290,
+    "value": "Acquired boosts will activate when\nyou attempt the Score Attack."
+  },
+  {
+    "id": 101200000015010300,
+    "value": "I wonder how high a score you can get...\nMy, things are getting exciting!"
+  },
+  {
+    "id": 101200000015010310,
+    "value": "Final target destruction confirmed!"
+  },
+  {
+    "id": 101200000015010320,
+    "value": "With the source eliminated,\nthe anomaly should resolve."
+  },
+  {
+    "id": 101200000015010325,
+    "value": "If there are any zones which you have\nyet to capture,\nI suggest conducting an inspection."
+  },
+  {
+    "id": 101200000015010330,
+    "value": "Also, to guard against similar anomalies\nin the future, we have set up a place where\nyou can practice fighting the final target enemy."
+  },
+  {
+    "id": 101200000015010340,
+    "value": "We have readied fitting rewards according to\nyour success in the offensive."
+  },
+  {
+    "id": 101200000015010350,
+    "value": "Set your sights on even greater success with\nSquadmate upgrades and boosts."
+  },
+  {
+    "id": 101200000015011010,
+    "value": "Unusual readings have been detected in the zone ahead."
+  },
+  {
+    "id": 101200000015011020,
+    "value": "A powerful enemy may be lurking."
+  },
+  {
+    "id": 101200000015011030,
+    "value": "Beyond this point, you should proceed with caution."
+  },
+  {
+    "id": 101200000015011040,
+    "value": "Another unusual reading in the zone ahead detected."
+  },
+  {
+    "id": 101200000015011050,
+    "value": "As before, there is a high probability of a powerful enemy lurking!"
+  },
+  {
+    "id": 101200000015011060,
+    "value": "Commence the offensive once your preparations are complete."
+  }
+]

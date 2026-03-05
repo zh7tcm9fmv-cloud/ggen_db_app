@@ -1,0 +1,1878 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 240111001000000001,
+    "value": "Gundam Rising"
+  },
+  {
+    "id": 240111001000000002,
+    "value": "Encounters in Space"
+  },
+  {
+    "id": 240111081000000001,
+    "value": "The Black Gundam"
+  },
+  {
+    "id": 240111081000000002,
+    "value": "Love is the Pulse of the Stars"
+  },
+  {
+    "id": 240111095000000001,
+    "value": "Young Man From Shangri-La"
+  },
+  {
+    "id": 240111095000000002,
+    "value": "Warrior, Once More"
+  },
+  {
+    "id": 240111110000000001,
+    "value": "The Battle of 5th Luna"
+  },
+  {
+    "id": 240111110000000002,
+    "value": "The Light Within Human Hearts"
+  },
+  {
+    "id": 240111125000000001,
+    "value": "Day of the Unicorn"
+  },
+  {
+    "id": 240111125000000002,
+    "value": "Over the Rainbow"
+  },
+  {
+    "id": 240111150000000001,
+    "value": "Contact"
+  },
+  {
+    "id": 240111150000000002,
+    "value": "Takeoff"
+  },
+  {
+    "id": 240111200000000001,
+    "value": "Let the G Fight Begin! The Gundam that Fell to Earth."
+  },
+  {
+    "id": 240111200000000002,
+    "value": "Burning Gundam's Great Triumph: A Hopeful Future; Ready, Go!"
+  },
+  {
+    "id": 240111210000000001,
+    "value": "The Shooting Star She Saw"
+  },
+  {
+    "id": 240111210000000002,
+    "value": "The Final Victor"
+  },
+  {
+    "id": 240111230000000001,
+    "value": "Is the Moon Out?"
+  },
+  {
+    "id": 240111230000000002,
+    "value": "The Moon Will Always Be There"
+  },
+  {
+    "id": 240111300000000001,
+    "value": "Its Name: Gundam"
+  },
+  {
+    "id": 240111300000000002,
+    "value": "To a Future that Never Ends"
+  },
+  {
+    "id": 240111310000000001,
+    "value": "The Dawn of Chaos"
+  },
+  {
+    "id": 240111310000000002,
+    "value": "Recollections"
+  },
+  {
+    "id": 240111330000000001,
+    "value": "Ireful Eyes"
+  },
+  {
+    "id": 240111330000000002,
+    "value": "The Chosen Future"
+  },
+  {
+    "id": 240111430000000001,
+    "value": "Iron and Blood"
+  },
+  {
+    "id": 240111430000000002,
+    "value": "Their Place"
+  },
+  {
+    "id": 240111501000000001,
+    "value": "The Witch and the Bride"
+  },
+  {
+    "id": 240111501000000002,
+    "value": "May All Blessings Find Their Way To You, I'm Wishing It"
+  },
+  {
+    "id": 240112001000000001,
+    "value": "Mobile Suit Gundam Expert"
+  },
+  {
+    "id": 240112081000000001,
+    "value": "Mobile Suit Z Gundam Expert"
+  },
+  {
+    "id": 240112095000000001,
+    "value": "Mobile Suit Gundam ZZ Expert"
+  },
+  {
+    "id": 240112110000000001,
+    "value": "Mobile Suit Gundam: Char's Counterattack Expert"
+  },
+  {
+    "id": 240112125000000001,
+    "value": "Mobile Suit Gundam Unicorn Expert"
+  },
+  {
+    "id": 240112150000000001,
+    "value": "Mobile Suit Gundam HATHAWAY Expert"
+  },
+  {
+    "id": 240112200000000001,
+    "value": "Mobile Fighter G Gundam Expert"
+  },
+  {
+    "id": 240112210000000001,
+    "value": "Mobile Suit Gundam Wing Expert"
+  },
+  {
+    "id": 240112230000000001,
+    "value": "Mobile Suit After War Gundam X Expert"
+  },
+  {
+    "id": 240112300000000001,
+    "value": "Mobile Suit Gundam SEED Expert"
+  },
+  {
+    "id": 240112330000000001,
+    "value": "Mobile Suit Gundam SEED Destiny Expert"
+  },
+  {
+    "id": 240112430000000001,
+    "value": "Mobile Suit Gundam Iron-Blooded Orphans Expert"
+  },
+  {
+    "id": 240112501000000001,
+    "value": "Mobile Suit Gundam the Witch from Mercury Expert"
+  },
+  {
+    "id": 240113100100010101,
+    "value": "Friend of Amuro Ray"
+  },
+  {
+    "id": 240113100100040101,
+    "value": "Friend of Sayla Mass"
+  },
+  {
+    "id": 240113100100180101,
+    "value": "Friend of Char Aznable"
+  },
+  {
+    "id": 240113108000010001,
+    "value": "Friend of Kamille Bidan"
+  },
+  {
+    "id": 240113108000070101,
+    "value": "Friend of Fa Yuiry"
+  },
+  {
+    "id": 240113108000270001,
+    "value": "Friend of Paptimus Scirocco"
+  },
+  {
+    "id": 240113109500010101,
+    "value": "Friend of Judau Ashta"
+  },
+  {
+    "id": 240113109500020101,
+    "value": "Friend of Roux Louka"
+  },
+  {
+    "id": 240113109500180001,
+    "value": "Friend of Haman Karn"
+  },
+  {
+    "id": 240113111000010101,
+    "value": "Friend of Amuro Ray (U.C.0093)"
+  },
+  {
+    "id": 240113111000020101,
+    "value": "Friend of Char Aznable (U.C.0093)"
+  },
+  {
+    "id": 240113111000070101,
+    "value": "Friend of Quess Paraya"
+  },
+  {
+    "id": 240113112500010101,
+    "value": "Friend of Banagher Links"
+  },
+  {
+    "id": 240113112500030001,
+    "value": "Friend of Full Frontal"
+  },
+  {
+    "id": 240113112500200101,
+    "value": "Friend of Audrey Burne"
+  },
+  {
+    "id": 240113115000500001,
+    "value": "Friend of Gigi Andalucia"
+  },
+  {
+    "id": 240113120000010101,
+    "value": "Friend of Domon Kasshu"
+  },
+  {
+    "id": 240113120000070101,
+    "value": "Friend of Rain Mikamura"
+  },
+  {
+    "id": 240113120000120301,
+    "value": "Friend of Master Asia, Undefeated of the East"
+  },
+  {
+    "id": 240113121000010001,
+    "value": "Friend of Heero Yuy"
+  },
+  {
+    "id": 240113121000160201,
+    "value": "Friend of Milliardo Peacecraft"
+  },
+  {
+    "id": 240113121000230001,
+    "value": "Friend of Relena Darlian"
+  },
+  {
+    "id": 240113123000010001,
+    "value": "Friend of Garrod Ran"
+  },
+  {
+    "id": 240113123000020001,
+    "value": "Friend of Tiffa Adill"
+  },
+  {
+    "id": 240113123000120001,
+    "value": "Friend of Carris Nautilus"
+  },
+  {
+    "id": 240113130000010001,
+    "value": "Friend of Kira Yamato"
+  },
+  {
+    "id": 240113130000170001,
+    "value": "Friend of Athrun Zala"
+  },
+  {
+    "id": 240113130000320001,
+    "value": "Friend of Lacus Clyne"
+  },
+  {
+    "id": 240113133000010501,
+    "value": "Friend of Shinn Asuka"
+  },
+  {
+    "id": 240113133000040101,
+    "value": "Friend of Lunamaria Hawke"
+  },
+  {
+    "id": 240113133000050201,
+    "value": "Friend of Rey Za Burrel"
+  },
+  {
+    "id": 240113137000010101,
+    "value": "Friend of Setsuna F. Seiei"
+  },
+  {
+    "id": 240113137000050001,
+    "value": "Friend of Sumeragi Lee Noriega"
+  },
+  {
+    "id": 240113140000010101,
+    "value": "Friend of Flit Asuno"
+  },
+  {
+    "id": 240113140000200201,
+    "value": "Friend of Asemu Asuno"
+  },
+  {
+    "id": 240113143000010001,
+    "value": "Friend of Mikazuki Augus"
+  },
+  {
+    "id": 240113143000170001,
+    "value": "Friend of Kudelia Aina Bernstein"
+  },
+  {
+    "id": 240113143000250001,
+    "value": "Friend of McGillis Fareed"
+  },
+  {
+    "id": 240113150100010001,
+    "value": "Friend of Suletta Mercury"
+  },
+  {
+    "id": 240113150100020101,
+    "value": "Friend of Miorine Rembran"
+  },
+  {
+    "id": 240113150100030201,
+    "value": "Friend of Guel Jeturk"
+  },
+  {
+    "id": 240114010000000001,
+    "value": "MS Fan"
+  },
+  {
+    "id": 240114010000000002,
+    "value": "MS Collector"
+  },
+  {
+    "id": 240114010000000003,
+    "value": "MS Fanatic"
+  },
+  {
+    "id": 240114010000000004,
+    "value": "MS Expert"
+  },
+  {
+    "id": 240114010000000005,
+    "value": "MS Master"
+  },
+  {
+    "id": 240114011000000001,
+    "value": "50 Max Level Units"
+  },
+  {
+    "id": 240114011000000002,
+    "value": "200 Max Level Units"
+  },
+  {
+    "id": 240114011000000003,
+    "value": "400 Max Level Units"
+  },
+  {
+    "id": 240114011000000004,
+    "value": "500 Max Level Units"
+  },
+  {
+    "id": 240114012000000001,
+    "value": "50 Max Limit Break Units"
+  },
+  {
+    "id": 240114012000000002,
+    "value": "200 Max Limit Break Units"
+  },
+  {
+    "id": 240114012000000003,
+    "value": "400 Max Limit Break Units"
+  },
+  {
+    "id": 240114012000000004,
+    "value": "500 Max Limit Break Units"
+  },
+  {
+    "id": 240115022506300001,
+    "value": "GUNDAM FAN CLUB"
+  },
+  {
+    "id": 240115022509600001,
+    "value": "Producer Meeting 2025"
+  },
+  {
+    "id": 240116905200010001,
+    "value": "Zeon"
+  },
+  {
+    "id": 240116905200020001,
+    "value": "Holder"
+  },
+  {
+    "id": 240116905200150001,
+    "value": "Tekkadan"
+  },
+  {
+    "id": 240116905200160001,
+    "value": "GUND-ARM"
+  },
+  {
+    "id": 240116905200170001,
+    "value": "Z.A.F.T."
+  },
+  {
+    "id": 240116905200190001,
+    "value": "Orb"
+  },
+  {
+    "id": 240116905200220001,
+    "value": "Sleeves"
+  },
+  {
+    "id": 240210100004000001,
+    "value": "Red Gundam(0085)"
+  },
+  {
+    "id": 240210100004000002,
+    "value": "Saikoro Gundam"
+  },
+  {
+    "id": 240210100004000003,
+    "value": "Over.on (Armor Form)"
+  },
+  {
+    "id": 240210100004000004,
+    "value": "Destiny Impulse"
+  },
+  {
+    "id": 240210100004000005,
+    "value": "Full Armor Hyaku-Shiki Kai"
+  },
+  {
+    "id": 240210100004000006,
+    "value": "Command Gundam"
+  },
+  {
+    "id": 240210100004000007,
+    "value": "Musha Gundam"
+  },
+  {
+    "id": 240210100004000008,
+    "value": "Titania"
+  },
+  {
+    "id": 240210100004000009,
+    "value": "Byarlant Custom 02"
+  },
+  {
+    "id": 240210100004000010,
+    "value": "Shining Gundam (Super Mode)"
+  },
+  {
+    "id": 240210100004000011,
+    "value": "Gundam Hajiroboshi"
+  },
+  {
+    "id": 240210100004000012,
+    "value": "Full Armor Gundam Mk-III"
+  },
+  {
+    "id": 240210100004000013,
+    "value": "ZAKU Warrior (Live Concert Type)"
+  },
+  {
+    "id": 240210100004000014,
+    "value": "G-Falcon GX"
+  },
+  {
+    "id": 240210100004000015,
+    "value": "G-Xiphos"
+  },
+  {
+    "id": 240210110001000001,
+    "value": "EAST TOWER 15F"
+  },
+  {
+    "id": 240210110003000001,
+    "value": "WEST TOWER 15F"
+  },
+  {
+    "id": 240210200001000001,
+    "value": "Mobile Suit Gundam Thunderbolt: December Sky"
+  },
+  {
+    "id": 240210200002000001,
+    "value": "Mobile Suit Gundam SEED Astray"
+  },
+  {
+    "id": 240210200003000001,
+    "value": "Mobile Suit Gundam 0083: Stardust Memory Part 1"
+  },
+  {
+    "id": 240210200004000001,
+    "value": "SD Gundam Side Story: Sieg Zeon Chronicle Lacroan Hero"
+  },
+  {
+    "id": 240210200005000001,
+    "value": "Mobile Suit Gundam Iron-Blooded Orphans Gekko"
+  },
+  {
+    "id": 240210200006000001,
+    "value": "Mobile Suit Gundam 0083: Stardust Memory Part 2"
+  },
+  {
+    "id": 240210200007000001,
+    "value": "Mobile Suit Gundam Side Story: The Blue Destiny"
+  },
+  {
+    "id": 240210200008000001,
+    "value": "Mobile Suit Gundam 0080: War in the Pocket"
+  },
+  {
+    "id": 240210200009000001,
+    "value": "Mobile Suit Gundam MS IGLOO"
+  },
+  {
+    "id": 240210200010000001,
+    "value": "Mobile Suit Gundam SEED X Astray"
+  },
+  {
+    "id": 240210210003000001,
+    "value": "The Changemakers"
+  },
+  {
+    "id": 240210240001000001,
+    "value": "Grand Offensive Vol. 1"
+  },
+  {
+    "id": 240211001000000001,
+    "value": "Gundam Rising"
+  },
+  {
+    "id": 240211001000000002,
+    "value": "Encounters in Space"
+  },
+  {
+    "id": 240211081000000001,
+    "value": "The Black Gundam"
+  },
+  {
+    "id": 240211081000000002,
+    "value": "Love is the Pulse of the Stars"
+  },
+  {
+    "id": 240211095000000001,
+    "value": "Young Man From Shangri-La"
+  },
+  {
+    "id": 240211095000000002,
+    "value": "Warrior, Once More"
+  },
+  {
+    "id": 240211110000000001,
+    "value": "The Battle of 5th Luna"
+  },
+  {
+    "id": 240211110000000002,
+    "value": "The Light Within Human Hearts"
+  },
+  {
+    "id": 240211125000000001,
+    "value": "Day of the Unicorn"
+  },
+  {
+    "id": 240211125000000002,
+    "value": "Over the Rainbow"
+  },
+  {
+    "id": 240211150000000001,
+    "value": "Contact"
+  },
+  {
+    "id": 240211150000000002,
+    "value": "Takeoff"
+  },
+  {
+    "id": 240211200000000001,
+    "value": "Let the G Fight Begin! The Gundam that Fell to Earth."
+  },
+  {
+    "id": 240211200000000002,
+    "value": "Burning Gundam's Great Triumph: A Hopeful Future; Ready, Go!"
+  },
+  {
+    "id": 240211210000000001,
+    "value": "The Shooting Star She Saw"
+  },
+  {
+    "id": 240211210000000002,
+    "value": "The Final Victor"
+  },
+  {
+    "id": 240211230000000001,
+    "value": "Is the Moon Out?"
+  },
+  {
+    "id": 240211230000000002,
+    "value": "The Moon Will Always Be There"
+  },
+  {
+    "id": 240211300000000001,
+    "value": "Its Name: Gundam"
+  },
+  {
+    "id": 240211300000000002,
+    "value": "To a Future that Never Ends"
+  },
+  {
+    "id": 240211310000000001,
+    "value": "The Dawn of Chaos"
+  },
+  {
+    "id": 240211310000000002,
+    "value": "Recollections"
+  },
+  {
+    "id": 240211330000000001,
+    "value": "Ireful Eyes"
+  },
+  {
+    "id": 240211330000000002,
+    "value": "The Chosen Future"
+  },
+  {
+    "id": 240211430000000001,
+    "value": "Iron and Blood"
+  },
+  {
+    "id": 240211430000000002,
+    "value": "Their Place"
+  },
+  {
+    "id": 240211501000000001,
+    "value": "The Witch and the Bride"
+  },
+  {
+    "id": 240211501000000002,
+    "value": "May All Blessings Find Their Way To You, I'm Wishing It"
+  },
+  {
+    "id": 240212001000000001,
+    "value": "Mobile Suit Gundam Expert"
+  },
+  {
+    "id": 240212081000000001,
+    "value": "Mobile Suit Z Gundam Expert"
+  },
+  {
+    "id": 240212095000000001,
+    "value": "Mobile Suit Gundam ZZ Expert"
+  },
+  {
+    "id": 240212110000000001,
+    "value": "Mobile Suit Gundam: Char's Counterattack Expert"
+  },
+  {
+    "id": 240212125000000001,
+    "value": "Mobile Suit Gundam Unicorn Expert"
+  },
+  {
+    "id": 240212150000000001,
+    "value": "Mobile Suit Gundam HATHAWAY Expert"
+  },
+  {
+    "id": 240212200000000001,
+    "value": "Mobile Fighter G Gundam Expert"
+  },
+  {
+    "id": 240212210000000001,
+    "value": "Mobile Suit Gundam Wing Expert"
+  },
+  {
+    "id": 240212230000000001,
+    "value": "Mobile Suit After War Gundam X Expert"
+  },
+  {
+    "id": 240212300000000001,
+    "value": "Mobile Suit Gundam SEED Expert"
+  },
+  {
+    "id": 240212330000000001,
+    "value": "Mobile Suit Gundam SEED Destiny Expert"
+  },
+  {
+    "id": 240212430000000001,
+    "value": "Mobile Suit Gundam Iron-Blooded Orphans Expert"
+  },
+  {
+    "id": 240212501000000001,
+    "value": "Mobile Suit Gundam the Witch from Mercury Expert"
+  },
+  {
+    "id": 240213100100010101,
+    "value": "Friend of Amuro Ray"
+  },
+  {
+    "id": 240213100100040101,
+    "value": "Friend of Sayla Mass"
+  },
+  {
+    "id": 240213100100180101,
+    "value": "Friend of Char Aznable"
+  },
+  {
+    "id": 240213108000010001,
+    "value": "Friend of Kamille Bidan"
+  },
+  {
+    "id": 240213108000070101,
+    "value": "Friend of Fa Yuiry"
+  },
+  {
+    "id": 240213108000270001,
+    "value": "Friend of Paptimus Scirocco"
+  },
+  {
+    "id": 240213109500010101,
+    "value": "Friend of Judau Ashta"
+  },
+  {
+    "id": 240213109500020101,
+    "value": "Friend of Roux Louka"
+  },
+  {
+    "id": 240213109500180001,
+    "value": "Friend of Haman Karn"
+  },
+  {
+    "id": 240213111000010101,
+    "value": "Friend of Amuro Ray (U.C.0093)"
+  },
+  {
+    "id": 240213111000020101,
+    "value": "Friend of Char Aznable (U.C.0093)"
+  },
+  {
+    "id": 240213111000070101,
+    "value": "Friend of Quess Paraya"
+  },
+  {
+    "id": 240213112500010101,
+    "value": "Friend of Banagher Links"
+  },
+  {
+    "id": 240213112500030001,
+    "value": "Friend of Full Frontal"
+  },
+  {
+    "id": 240213112500200101,
+    "value": "Friend of Audrey Burne"
+  },
+  {
+    "id": 240213115000500001,
+    "value": "Friend of Gigi Andalucia"
+  },
+  {
+    "id": 240213120000010101,
+    "value": "Friend of Domon Kasshu"
+  },
+  {
+    "id": 240213120000070101,
+    "value": "Friend of Rain Mikamura"
+  },
+  {
+    "id": 240213120000120301,
+    "value": "Friend of Master Asia, Undefeated of the East"
+  },
+  {
+    "id": 240213121000010001,
+    "value": "Friend of Heero Yuy"
+  },
+  {
+    "id": 240213121000160201,
+    "value": "Friend of Milliardo Peacecraft"
+  },
+  {
+    "id": 240213121000230001,
+    "value": "Friend of Relena Darlian"
+  },
+  {
+    "id": 240213123000010001,
+    "value": "Friend of Garrod Ran"
+  },
+  {
+    "id": 240213123000020001,
+    "value": "Friend of Tiffa Adill"
+  },
+  {
+    "id": 240213123000120001,
+    "value": "Friend of Carris Nautilus"
+  },
+  {
+    "id": 240213130000010001,
+    "value": "Friend of Kira Yamato"
+  },
+  {
+    "id": 240213130000170001,
+    "value": "Friend of Athrun Zala"
+  },
+  {
+    "id": 240213130000320001,
+    "value": "Friend of Lacus Clyne"
+  },
+  {
+    "id": 240213133000010501,
+    "value": "Friend of Shinn Asuka"
+  },
+  {
+    "id": 240213133000040101,
+    "value": "Friend of Lunamaria Hawke"
+  },
+  {
+    "id": 240213133000050201,
+    "value": "Friend of Rey Za Burrel"
+  },
+  {
+    "id": 240213137000010101,
+    "value": "Friend of Setsuna F. Seiei"
+  },
+  {
+    "id": 240213137000050001,
+    "value": "Friend of Sumeragi Lee Noriega"
+  },
+  {
+    "id": 240213140000010101,
+    "value": "Friend of Flit Asuno"
+  },
+  {
+    "id": 240213140000200201,
+    "value": "Friend of Asemu Asuno"
+  },
+  {
+    "id": 240213143000010001,
+    "value": "Friend of Mikazuki Augus"
+  },
+  {
+    "id": 240213143000170001,
+    "value": "Friend of Kudelia Aina Bernstein"
+  },
+  {
+    "id": 240213143000250001,
+    "value": "Friend of McGillis Fareed"
+  },
+  {
+    "id": 240213150100010001,
+    "value": "Friend of Suletta Mercury"
+  },
+  {
+    "id": 240213150100020101,
+    "value": "Friend of Miorine Rembran"
+  },
+  {
+    "id": 240213150100030201,
+    "value": "Friend of Guel Jeturk"
+  },
+  {
+    "id": 240214010000000001,
+    "value": "MS Fan"
+  },
+  {
+    "id": 240214010000000002,
+    "value": "MS Collector"
+  },
+  {
+    "id": 240214010000000003,
+    "value": "MS Fanatic"
+  },
+  {
+    "id": 240214010000000004,
+    "value": "MS Expert"
+  },
+  {
+    "id": 240214010000000005,
+    "value": "MS Master"
+  },
+  {
+    "id": 240214011000000001,
+    "value": "50 Max Level Units"
+  },
+  {
+    "id": 240214011000000002,
+    "value": "200 Max Level Units"
+  },
+  {
+    "id": 240214011000000003,
+    "value": "400 Max Level Units"
+  },
+  {
+    "id": 240214011000000004,
+    "value": "500 Max Level Units"
+  },
+  {
+    "id": 240214012000000001,
+    "value": "50 Max Limit Break Units"
+  },
+  {
+    "id": 240214012000000002,
+    "value": "200 Max Limit Break Units"
+  },
+  {
+    "id": 240214012000000003,
+    "value": "400 Max Limit Break Units"
+  },
+  {
+    "id": 240214012000000004,
+    "value": "500 Max Limit Break Units"
+  },
+  {
+    "id": 240215022506300001,
+    "value": "GUNDAM FAN CLUB"
+  },
+  {
+    "id": 240215022509600001,
+    "value": "Producer Meeting 2025"
+  },
+  {
+    "id": 240216905200010001,
+    "value": "Zeon"
+  },
+  {
+    "id": 240216905200020001,
+    "value": "Holder"
+  },
+  {
+    "id": 240216905200150001,
+    "value": "Tekkadan"
+  },
+  {
+    "id": 240216905200160001,
+    "value": "GUND-ARM"
+  },
+  {
+    "id": 240216905200170001,
+    "value": "Z.A.F.T."
+  },
+  {
+    "id": 240216905200190001,
+    "value": "Orb"
+  },
+  {
+    "id": 240216905200220001,
+    "value": "Sleeves"
+  },
+  {
+    "id": 240310100004000001,
+    "value": "Fierce Enemy Assault Red Gundam(0085) CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000002,
+    "value": "Fierce Enemy Assault Saikoro Gundam CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000003,
+    "value": "Fierce Enemy Assault Over.on (Armor Form) CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000004,
+    "value": "Fierce Enemy Assault Destiny Impulse CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000005,
+    "value": "Fierce Enemy Assault Full Armor Hyaku-Shiki Kai CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000006,
+    "value": "Fierce Enemy Assault Command Gundam CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000007,
+    "value": "Fierce Enemy Assault Musha Gundam CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000008,
+    "value": "Fierce Enemy Assault Titania CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000009,
+    "value": "Fierce Enemy Assault Byarlant Custom 02 CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000010,
+    "value": "Fierce Enemy Assault Shining Gundam (Super Mode) CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000011,
+    "value": "Fierce Enemy Assault Gundam Hajiroboshi CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000012,
+    "value": "Fierce Enemy Assault Full Armor Gundam Mk-III CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000013,
+    "value": "Fierce Enemy Assault ZAKU Warrior (Live Concert Type) CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000014,
+    "value": "Fierce Enemy Assault G-Falcon GX CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310100004000015,
+    "value": "Fierce Enemy Assault G-Xiphos CHALLENGE LV12 First-Clear Reward"
+  },
+  {
+    "id": 240310110001000001,
+    "value": "Clear EAST TOWER 15F in Generation Tower"
+  },
+  {
+    "id": 240310110002000001,
+    "value": "Clear EAST TOWER 20F in Generation Tower"
+  },
+  {
+    "id": 240310110003000001,
+    "value": "Clear WEST TOWER 15F in Generation Tower"
+  },
+  {
+    "id": 240310200001000001,
+    "value": "Clear \"Vs. Psycho Zaku (EXPERT)\" from the story event \"Mobile Suit Gundam Thunderbolt: December Sky\"."
+  },
+  {
+    "id": 240310200002000001,
+    "value": "Clear \"Vs. Gundam Astray Blue Frame Second L (EXPERT)\" from the story event \"Mobile Suit Gundam SEED Astray\"."
+  },
+  {
+    "id": 240310200003000001,
+    "value": "Clear \"Vs. Gundam GP01 (Chobham Armor)(EXPERT)\" from the story event \"Mobile Suit Gundam 0083: Stardust Memory Part 1\"."
+  },
+  {
+    "id": 240310200004000001,
+    "value": "Clear \"Vs. Satan Gundam (EXPERT)\" from the story event \"SD Gundam Side Story: Sieg Zeon Chronicle Lacroan Hero\"."
+  },
+  {
+    "id": 240310200005000001,
+    "value": "Clear \"Vs. Gundam Dantalion T-Booster(EXPERT)\" from the story event \"Mobile Suit Gundam Iron-Blooded Orphans Gekko\"."
+  },
+  {
+    "id": 240310200006000001,
+    "value": "Clear \"Vs. Gundam GP03(EXPERT)\" from the story event \"Mobile Suit Gundam 0083: Stardust Memory Part 2\"."
+  },
+  {
+    "id": 240310200007000001,
+    "value": "Clear \"Vs. Efreet Custom(EXPERT)\" from the story event \"Mobile Suit Gundam Side Story: The Blue Destiny\"."
+  },
+  {
+    "id": 240310200008000001,
+    "value": "Clear \"Vs. Zaku II FZ (EXPERT)\" from the story event \"Mobile Suit Gundam 0080: War in the Pocket\"."
+  },
+  {
+    "id": 240310200009000001,
+    "value": "Acquire Technical Evaluation Report x6000 in the story event \"Mobile Suit Gundam MS IGLOO.\""
+  },
+  {
+    "id": 240310200010000001,
+    "value": "Clear \"Vs. Hyperion Gundam(EXPERT)\" from the story event \"Mobile Suit Gundam SEED X Astray\"."
+  },
+  {
+    "id": 240310210001000001,
+    "value": "Clear [Area3] Area Boss Stage of \"Map Event Vol.1.\""
+  },
+  {
+    "id": 240310210002000001,
+    "value": "Clear [Area3] Area Boss Stage of \"Map Event Vol.2.\""
+  },
+  {
+    "id": 240310210003000001,
+    "value": "Special Stages The Changemakers Stage 6 First-Clear Reward"
+  },
+  {
+    "id": 240310240001000001,
+    "value": "Clear \"Danger Zone 3\" in Grand Offensive Vol. 1."
+  },
+  {
+    "id": 240310300001000001,
+    "value": "Master League Season 0: Gold League Reward"
+  },
+  {
+    "id": 240310300001000002,
+    "value": "Master League Season 0: Platinum League Reward"
+  },
+  {
+    "id": 240310300001000003,
+    "value": "Master League Season 0: Diamond League Reward"
+  },
+  {
+    "id": 240310300001000004,
+    "value": "Master League Season 0: Master League Reward"
+  },
+  {
+    "id": 240310300002000001,
+    "value": "Master League Season 1: Gold League Reward"
+  },
+  {
+    "id": 240310300002000002,
+    "value": "Master League Season 1: Platinum League Reward"
+  },
+  {
+    "id": 240310300002000003,
+    "value": "Master League Season 1: Diamond League Reward"
+  },
+  {
+    "id": 240310300002000004,
+    "value": "Master League Season 1: Master League Reward"
+  },
+  {
+    "id": 240310300002000005,
+    "value": "Master League Season 1: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300002000006,
+    "value": "Master League Season 1: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300002000007,
+    "value": "Master League Season 1: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300002000008,
+    "value": "Master League Season 1: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300002000009,
+    "value": "Master League Season 1: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300003000001,
+    "value": "Master League Season 2: Gold League Reward"
+  },
+  {
+    "id": 240310300003000002,
+    "value": "Master League Season 2: Platinum League Reward"
+  },
+  {
+    "id": 240310300003000003,
+    "value": "Master League Season 2: Diamond League Reward"
+  },
+  {
+    "id": 240310300003000004,
+    "value": "Master League Season 2: Master League Reward"
+  },
+  {
+    "id": 240310300003000005,
+    "value": "Master League Season 2: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300003000006,
+    "value": "Master League Season 2: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300003000007,
+    "value": "Master League Season 2: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300003000008,
+    "value": "Master League Season 2: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300003000009,
+    "value": "Master League Season 2: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300004000001,
+    "value": "Master League Season 3: Gold League Reward"
+  },
+  {
+    "id": 240310300004000002,
+    "value": "Master League Season 3: Platinum League Reward"
+  },
+  {
+    "id": 240310300004000003,
+    "value": "Master League Season 3: Diamond League Reward"
+  },
+  {
+    "id": 240310300004000004,
+    "value": "Master League Season 3: Master League Reward"
+  },
+  {
+    "id": 240310300004000005,
+    "value": "Master League Season 3: Master League Top Score 136000 Reward"
+  },
+  {
+    "id": 240310300004000006,
+    "value": "Master League Season 3: Master League Top Score 144500 Reward"
+  },
+  {
+    "id": 240310300004000007,
+    "value": "Master League Season 3: Master League Top Score 153000 Reward"
+  },
+  {
+    "id": 240310300004000008,
+    "value": "Master League Season 3: Master League Top Score 161500 Reward"
+  },
+  {
+    "id": 240310300004000009,
+    "value": "Master League Season 3: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300005000001,
+    "value": "Master League Season 4: Gold League Reward"
+  },
+  {
+    "id": 240310300005000002,
+    "value": "Master League Season 4: Platinum League Reward"
+  },
+  {
+    "id": 240310300005000003,
+    "value": "Master League Season 4: Diamond League Reward"
+  },
+  {
+    "id": 240310300005000004,
+    "value": "Master League Season 4: Master League Reward"
+  },
+  {
+    "id": 240310300005000005,
+    "value": "Master League Season 4: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300005000006,
+    "value": "Master League Season 4: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300005000007,
+    "value": "Master League Season 4: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300005000008,
+    "value": "Master League Season 4: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300005000009,
+    "value": "Master League Season 4: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300006000001,
+    "value": "Master League Season 5: Gold League Reward"
+  },
+  {
+    "id": 240310300006000002,
+    "value": "Master League Season 5: Platinum League Reward"
+  },
+  {
+    "id": 240310300006000003,
+    "value": "Master League Season 5: Diamond League Reward"
+  },
+  {
+    "id": 240310300006000004,
+    "value": "Master League Season 5: Master League Reward"
+  },
+  {
+    "id": 240310300006000005,
+    "value": "Master League Season 5: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300006000006,
+    "value": "Master League Season 5: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300006000007,
+    "value": "Master League Season 5: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300006000008,
+    "value": "Master League Season 5: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300006000009,
+    "value": "Master League Season 5: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300007000001,
+    "value": "Master League Season 6: Gold League Reward"
+  },
+  {
+    "id": 240310300007000002,
+    "value": "Master League Season 6: Platinum League Reward"
+  },
+  {
+    "id": 240310300007000003,
+    "value": "Master League Season 6: Diamond League Reward"
+  },
+  {
+    "id": 240310300007000004,
+    "value": "Master League Season 6: Master League Reward"
+  },
+  {
+    "id": 240310300007000005,
+    "value": "Master League Season 6: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300007000006,
+    "value": "Master League Season 6: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300007000007,
+    "value": "Master League Season 6: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300007000008,
+    "value": "Master League Season 6: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300007000009,
+    "value": "Master League Season 6: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300008000001,
+    "value": "Master League Season 7: Gold League Reward"
+  },
+  {
+    "id": 240310300008000002,
+    "value": "Master League Season 7: Platinum League Reward"
+  },
+  {
+    "id": 240310300008000003,
+    "value": "Master League Season 7: Diamond League Reward"
+  },
+  {
+    "id": 240310300008000004,
+    "value": "Master League Season 7: Master League Reward"
+  },
+  {
+    "id": 240310300008000005,
+    "value": "Master League Season 7: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300008000006,
+    "value": "Master League Season 7: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300008000007,
+    "value": "Master League Season 7: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300008000008,
+    "value": "Master League Season 7: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300008000009,
+    "value": "Master League Season 7: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300009000001,
+    "value": "Master League Season 8: Gold League Reward"
+  },
+  {
+    "id": 240310300009000002,
+    "value": "Master League Season 8: Platinum League Reward"
+  },
+  {
+    "id": 240310300009000003,
+    "value": "Master League Season 8: Diamond League Reward"
+  },
+  {
+    "id": 240310300009000004,
+    "value": "Master League Season 8: Master League Reward"
+  },
+  {
+    "id": 240310300009000005,
+    "value": "Master League Season 8: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300009000006,
+    "value": "Master League Season 8: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300009000007,
+    "value": "Master League Season 8: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300009000008,
+    "value": "Master League Season 8: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300009000009,
+    "value": "Master League Season 8: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300010000001,
+    "value": "Master League Season 9 - Gundam Fight: Gold League Reward"
+  },
+  {
+    "id": 240310300010000002,
+    "value": "Master League Season 9 - Gundam Fight: Platinum League Reward"
+  },
+  {
+    "id": 240310300010000003,
+    "value": "Master League Season 9 - Gundam Fight: Diamond League Reward"
+  },
+  {
+    "id": 240310300010000004,
+    "value": "Master League Season 9 - Gundam Fight: Master League Reward"
+  },
+  {
+    "id": 240310300010000005,
+    "value": "Master League Season 9 - Gundam Fight: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300010000006,
+    "value": "Master League Season 9 - Gundam Fight: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300010000007,
+    "value": "Master League Season 9 - Gundam Fight: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300010000008,
+    "value": "Master League Season 9 - Gundam Fight: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300010000009,
+    "value": "Master League Season 9 - Gundam Fight: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300011000001,
+    "value": "Master League Season 10: Gold League Reward"
+  },
+  {
+    "id": 240310300011000002,
+    "value": "Master League Season 10: Platinum League Reward"
+  },
+  {
+    "id": 240310300011000003,
+    "value": "Master League Season 10: Diamond League Reward"
+  },
+  {
+    "id": 240310300011000004,
+    "value": "Master League Season 10: Master League Reward"
+  },
+  {
+    "id": 240310300011000005,
+    "value": "Master League Season 10: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300011000006,
+    "value": "Master League Season 10: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300011000007,
+    "value": "Master League Season 10: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300011000008,
+    "value": "Master League Season 10: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300011000009,
+    "value": "Master League Season 10: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240311001000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam\"."
+  },
+  {
+    "id": 240311001000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311081000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Z Gundam: A New Translation\"."
+  },
+  {
+    "id": 240311081000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Z Gundam: A New Translation\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311095000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam ZZ\"."
+  },
+  {
+    "id": 240311095000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam ZZ\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311110000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam: Char's Counterattack\"."
+  },
+  {
+    "id": 240311110000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam: Char's Counterattack\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311125000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Unicorn\"."
+  },
+  {
+    "id": 240311125000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Unicorn\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311150000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam HATHAWAY\"."
+  },
+  {
+    "id": 240311150000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam HATHAWAY\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311200000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Fighter G Gundam\"."
+  },
+  {
+    "id": 240311200000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Fighter G Gundam\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311210000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Wing\"."
+  },
+  {
+    "id": 240311210000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Wing\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311230000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"After War Gundam X.\""
+  },
+  {
+    "id": 240311230000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"After War Gundam X\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311300000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED\"."
+  },
+  {
+    "id": 240311300000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311310000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED Recollection\"."
+  },
+  {
+    "id": 240311310000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED Recollection\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311330000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED DESTINY\"."
+  },
+  {
+    "id": 240311330000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam SEED DESTINY\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311430000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam: Iron-Blooded Orphans.\""
+  },
+  {
+    "id": 240311430000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam: Iron-Blooded Orphans\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240311501000000001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam the Witch from Mercury\"."
+  },
+  {
+    "id": 240311501000000002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam the Witch from Mercury\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 240312001000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam\" to 100%."
+  },
+  {
+    "id": 240312081000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Z Gundam: A New Translation\" to 100%."
+  },
+  {
+    "id": 240312095000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam ZZ\" to 100%."
+  },
+  {
+    "id": 240312110000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam: Char's Counterattack\" to 100%."
+  },
+  {
+    "id": 240312125000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam Unicorn\" to 100%."
+  },
+  {
+    "id": 240312150000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam HATHAWAY\" to 100%."
+  },
+  {
+    "id": 240312200000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Fighter G Gundam\" to 100%."
+  },
+  {
+    "id": 240312210000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam Wing\" to 100%."
+  },
+  {
+    "id": 240312230000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit After War Gundam X\" to 100%."
+  },
+  {
+    "id": 240312300000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam SEED\" to 100%."
+  },
+  {
+    "id": 240312330000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam SEED DESTINY\" to 100%."
+  },
+  {
+    "id": 240312430000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam: Iron-Blooded Orphans\" to 100%."
+  },
+  {
+    "id": 240312501000000001,
+    "value": "Get all Development Diagrams from the main stages in \"Mobile Suit Gundam the Witch from Mercury\" to 100%."
+  },
+  {
+    "id": 240313100100010101,
+    "value": "Reach a rank of 5 for Amuro Ray's request."
+  },
+  {
+    "id": 240313100100040101,
+    "value": "Reach a rank of 5 for Sayla Mass's request."
+  },
+  {
+    "id": 240313100100180101,
+    "value": "Reach a rank of 5 for Char Aznable's request."
+  },
+  {
+    "id": 240313108000010001,
+    "value": "Reach a rank of 5 for Kamille Bidan's request."
+  },
+  {
+    "id": 240313108000070101,
+    "value": "Reach a rank of 5 for Fa Yuiry's request."
+  },
+  {
+    "id": 240313108000270001,
+    "value": "Reach a rank of 5 for Paptimus Scirocco's request."
+  },
+  {
+    "id": 240313109500010101,
+    "value": "Reach a rank of 5 for Judau Ashta's request."
+  },
+  {
+    "id": 240313109500020101,
+    "value": "Reach a rank of 5 for Roux Louka's request."
+  },
+  {
+    "id": 240313109500180001,
+    "value": "Reach a rank of 5 for Haman Karn's request."
+  },
+  {
+    "id": 240313111000010101,
+    "value": "Reach a rank of 5 for Amuro Ray (U.C.0093)'s request."
+  },
+  {
+    "id": 240313111000020101,
+    "value": "Reach a rank of 5 for Char Aznable (U.C.0093)'s request."
+  },
+  {
+    "id": 240313111000070101,
+    "value": "Reach a rank of 5 for Quess Paraya's request."
+  },
+  {
+    "id": 240313112500010101,
+    "value": "Reach a rank of 5 for Banagher Links's request."
+  },
+  {
+    "id": 240313112500030001,
+    "value": "Reach a rank of 5 for Full Frontal's request."
+  },
+  {
+    "id": 240313112500200101,
+    "value": "Reach a rank of 5 for Audrey Burne's request."
+  },
+  {
+    "id": 240313115000500001,
+    "value": "Reach a rank of 5 for Gigi Andalucia's request."
+  },
+  {
+    "id": 240313120000010101,
+    "value": "Reach a rank of 5 for Domon Kasshu's request."
+  },
+  {
+    "id": 240313120000070101,
+    "value": "Reach a rank of 5 for Rain Mikamura's request."
+  },
+  {
+    "id": 240313120000120301,
+    "value": "Reach a rank of 5 for Master Asia, Undefeated of the East's request."
+  },
+  {
+    "id": 240313121000010001,
+    "value": "Reach a rank of 5 for Heero Yuy's request."
+  },
+  {
+    "id": 240313121000160201,
+    "value": "Reach a rank of 5 for Milliardo Peacecraft's request."
+  },
+  {
+    "id": 240313121000230001,
+    "value": "Reach a rank of 5 for Relena Darlian's request."
+  },
+  {
+    "id": 240313123000010001,
+    "value": "Reach a rank of 5 for Garrod Ran's request."
+  },
+  {
+    "id": 240313123000020001,
+    "value": "Reach a rank of 5 for Tiffa Adill's request."
+  },
+  {
+    "id": 240313123000120001,
+    "value": "Reach a rank of 5 for Carris Nautilus's request."
+  },
+  {
+    "id": 240313130000010001,
+    "value": "Reach a rank of 5 for Kira Yamato's request."
+  },
+  {
+    "id": 240313130000170001,
+    "value": "Reach a rank of 5 for Athrun Zala's request."
+  },
+  {
+    "id": 240313130000320001,
+    "value": "Reach a rank of 5 for Lacus Clyne's request."
+  },
+  {
+    "id": 240313133000010501,
+    "value": "Reach a rank of 5 for Shinn Asuka's request."
+  },
+  {
+    "id": 240313133000040101,
+    "value": "Reach a rank of 5 for Lunamaria Hawke's request."
+  },
+  {
+    "id": 240313133000050201,
+    "value": "Reach a rank of 5 for Rey Za Burrel's request."
+  },
+  {
+    "id": 240313137000010101,
+    "value": "Reach a rank of 5 for Setsuna F. Seiei's request."
+  },
+  {
+    "id": 240313137000050001,
+    "value": "Reach a rank of 5 for Sumeragi Lee Noriega's request."
+  },
+  {
+    "id": 240313140000010101,
+    "value": "Reach a rank of 5 for Flit Asuno's request."
+  },
+  {
+    "id": 240313140000200201,
+    "value": "Reach a rank of 5 for Asemu Asuno's request."
+  },
+  {
+    "id": 240313143000010001,
+    "value": "Reach a rank of 5 for Mikazuki Augus's request."
+  },
+  {
+    "id": 240313143000170001,
+    "value": "Reach a rank of 5 for Kudelia Aina Bernstein's request."
+  },
+  {
+    "id": 240313143000250001,
+    "value": "Reach a rank of 5 for McGillis Fareed's request."
+  },
+  {
+    "id": 240313150100010001,
+    "value": "Reach a rank of 5 for Suletta Mercury's request."
+  },
+  {
+    "id": 240313150100020101,
+    "value": "Reach a rank of 5 for Miorine Rembran's request."
+  },
+  {
+    "id": 240313150100030201,
+    "value": "Reach a rank of 5 for Guel Jeturk's request."
+  },
+  {
+    "id": 240314010000000001,
+    "value": "Register 100 different types of units to the database."
+  },
+  {
+    "id": 240314010000000002,
+    "value": "Register 200 different types of units to the database."
+  },
+  {
+    "id": 240314010000000003,
+    "value": "Register 300 different types of units to the database."
+  },
+  {
+    "id": 240314010000000004,
+    "value": "Register 400 different types of units to the database."
+  },
+  {
+    "id": 240314010000000005,
+    "value": "Register 500 different types of units to the database."
+  },
+  {
+    "id": 240314011000000001,
+    "value": "Register 50 types of Max Level Units to the database."
+  },
+  {
+    "id": 240314011000000002,
+    "value": "Register 200 types of Max Level Units to the database."
+  },
+  {
+    "id": 240314011000000003,
+    "value": "Register 400 types of Max Level Units to the database."
+  },
+  {
+    "id": 240314011000000004,
+    "value": "Register 500 types of Max Level Units to the database."
+  },
+  {
+    "id": 240314012000000001,
+    "value": "Register 50 types of Max Limit Break Units to the database."
+  },
+  {
+    "id": 240314012000000002,
+    "value": "Register 200 types of Max Limit Break Units to the database."
+  },
+  {
+    "id": 240314012000000003,
+    "value": "Register 400 types of Max Limit Break Units to the database."
+  },
+  {
+    "id": 240314012000000004,
+    "value": "Register 500 types of Max Limit Break Units to the database."
+  },
+  {
+    "id": 240315022506300001,
+    "value": "Secret"
+  },
+  {
+    "id": 240315022509600001,
+    "value": "Producer Meeting 2025"
+  },
+  {
+    "id": 240316905200010001,
+    "value": "Clear EXPERT No.1 U.C. Series with only units with the Zeon tag."
+  },
+  {
+    "id": 240316905200020001,
+    "value": "Clear EXPERT No.2 Alternative Series with only units with the Specialized Unit tag."
+  },
+  {
+    "id": 240316905200150001,
+    "value": "Clear EXPERT No.14 Mobile Suit Gundam Iron-Blooded Orphans with only units with the Tekkadan tag."
+  },
+  {
+    "id": 240316905200160001,
+    "value": "Clear EXPERT No.17 Mobile Suit Gundam the Witch from Mercury with only units with the GUND-ARM tag."
+  },
+  {
+    "id": 240316905200170001,
+    "value": "Clear EXPERT No.3 SEED Series with only units with the ZAFT tag."
+  },
+  {
+    "id": 240316905200190001,
+    "value": "Clear EXPERT No.18 Mobile Suit Gundam SEED Destiny with only units with the Orb tag."
+  },
+  {
+    "id": 240316905200220001,
+    "value": "Clear EXPERT No.13 Mobile Suit Gundam Unicorn with only units with the Neo Zeon tag."
+  },
+  {
+    "id": 290500000090700120,
+    "value": "EAST TOWER 20F"
+  }
+]

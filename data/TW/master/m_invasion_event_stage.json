@@ -1,0 +1,422 @@
+[
+  {
+    "Id": 90200001,
+    "InvasionEventStageGroupId": 90200001,
+    "SortOrder": 4,
+    "StageId": 90200001,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200002,
+    "InvasionEventStageGroupId": 90200002,
+    "SortOrder": 4,
+    "StageId": 90200002,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200003,
+    "InvasionEventStageGroupId": 90200003,
+    "SortOrder": 4,
+    "StageId": 90200003,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200004,
+    "InvasionEventStageGroupId": 90200004,
+    "SortOrder": 4,
+    "StageId": 90200004,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200005,
+    "InvasionEventStageGroupId": 90200005,
+    "SortOrder": 4,
+    "StageId": 90200005,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200006,
+    "InvasionEventStageGroupId": 90200006,
+    "SortOrder": 4,
+    "StageId": 90200006,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200007,
+    "InvasionEventStageGroupId": 90200007,
+    "SortOrder": 4,
+    "StageId": 90200007,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200008,
+    "InvasionEventStageGroupId": 90200008,
+    "SortOrder": 4,
+    "StageId": 90200008,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200009,
+    "InvasionEventStageGroupId": 90200009,
+    "SortOrder": 4,
+    "StageId": 90200009,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200010,
+    "InvasionEventStageGroupId": 90200010,
+    "SortOrder": 4,
+    "StageId": 90200010,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200011,
+    "InvasionEventStageGroupId": 90200011,
+    "SortOrder": 4,
+    "StageId": 90200011,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200012,
+    "InvasionEventStageGroupId": 90200012,
+    "SortOrder": 4,
+    "StageId": 90200012,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200013,
+    "InvasionEventStageGroupId": 90200013,
+    "SortOrder": 4,
+    "StageId": 90200013,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200014,
+    "InvasionEventStageGroupId": 90200014,
+    "SortOrder": 4,
+    "StageId": 90200014,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90200015,
+    "InvasionEventStageGroupId": 90200015,
+    "SortOrder": 4,
+    "StageId": 90200015,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
+    "Id": 90210001,
+    "InvasionEventStageGroupId": 90200001,
+    "SortOrder": 3,
+    "StageId": 90210001,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210002,
+    "InvasionEventStageGroupId": 90200002,
+    "SortOrder": 3,
+    "StageId": 90210002,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210003,
+    "InvasionEventStageGroupId": 90200003,
+    "SortOrder": 3,
+    "StageId": 90210003,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210004,
+    "InvasionEventStageGroupId": 90200004,
+    "SortOrder": 3,
+    "StageId": 90210004,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210005,
+    "InvasionEventStageGroupId": 90200005,
+    "SortOrder": 3,
+    "StageId": 90210005,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210006,
+    "InvasionEventStageGroupId": 90200006,
+    "SortOrder": 3,
+    "StageId": 90210006,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210007,
+    "InvasionEventStageGroupId": 90200007,
+    "SortOrder": 3,
+    "StageId": 90210007,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210008,
+    "InvasionEventStageGroupId": 90200008,
+    "SortOrder": 3,
+    "StageId": 90210008,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210009,
+    "InvasionEventStageGroupId": 90200009,
+    "SortOrder": 3,
+    "StageId": 90210009,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210010,
+    "InvasionEventStageGroupId": 90200010,
+    "SortOrder": 3,
+    "StageId": 90210010,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210011,
+    "InvasionEventStageGroupId": 90200011,
+    "SortOrder": 3,
+    "StageId": 90210011,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210012,
+    "InvasionEventStageGroupId": 90200012,
+    "SortOrder": 3,
+    "StageId": 90210012,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210013,
+    "InvasionEventStageGroupId": 90200013,
+    "SortOrder": 3,
+    "StageId": 90210013,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210014,
+    "InvasionEventStageGroupId": 90200014,
+    "SortOrder": 3,
+    "StageId": 90210014,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210015,
+    "InvasionEventStageGroupId": 90200015,
+    "SortOrder": 3,
+    "StageId": 90210015,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90220001,
+    "InvasionEventStageGroupId": 90200001,
+    "SortOrder": 2,
+    "StageId": 90220001,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220002,
+    "InvasionEventStageGroupId": 90200002,
+    "SortOrder": 2,
+    "StageId": 90220002,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220003,
+    "InvasionEventStageGroupId": 90200003,
+    "SortOrder": 2,
+    "StageId": 90220003,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220004,
+    "InvasionEventStageGroupId": 90200004,
+    "SortOrder": 2,
+    "StageId": 90220004,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220005,
+    "InvasionEventStageGroupId": 90200005,
+    "SortOrder": 2,
+    "StageId": 90220005,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220006,
+    "InvasionEventStageGroupId": 90200006,
+    "SortOrder": 2,
+    "StageId": 90220006,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220007,
+    "InvasionEventStageGroupId": 90200007,
+    "SortOrder": 2,
+    "StageId": 90220007,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220008,
+    "InvasionEventStageGroupId": 90200008,
+    "SortOrder": 2,
+    "StageId": 90220008,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220009,
+    "InvasionEventStageGroupId": 90200009,
+    "SortOrder": 2,
+    "StageId": 90220009,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220010,
+    "InvasionEventStageGroupId": 90200010,
+    "SortOrder": 2,
+    "StageId": 90220010,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220011,
+    "InvasionEventStageGroupId": 90200011,
+    "SortOrder": 2,
+    "StageId": 90220011,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220012,
+    "InvasionEventStageGroupId": 90200012,
+    "SortOrder": 2,
+    "StageId": 90220012,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220013,
+    "InvasionEventStageGroupId": 90200013,
+    "SortOrder": 2,
+    "StageId": 90220013,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220014,
+    "InvasionEventStageGroupId": 90200014,
+    "SortOrder": 2,
+    "StageId": 90220014,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90220015,
+    "InvasionEventStageGroupId": 90200015,
+    "SortOrder": 2,
+    "StageId": 90220015,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
+    "Id": 90230001,
+    "InvasionEventStageGroupId": 90200001,
+    "SortOrder": 1,
+    "StageId": 90230001,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230002,
+    "InvasionEventStageGroupId": 90200002,
+    "SortOrder": 1,
+    "StageId": 90230002,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230003,
+    "InvasionEventStageGroupId": 90200003,
+    "SortOrder": 1,
+    "StageId": 90230003,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230004,
+    "InvasionEventStageGroupId": 90200004,
+    "SortOrder": 1,
+    "StageId": 90230004,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230005,
+    "InvasionEventStageGroupId": 90200005,
+    "SortOrder": 1,
+    "StageId": 90230005,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230006,
+    "InvasionEventStageGroupId": 90200006,
+    "SortOrder": 1,
+    "StageId": 90230006,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230007,
+    "InvasionEventStageGroupId": 90200007,
+    "SortOrder": 1,
+    "StageId": 90230007,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230008,
+    "InvasionEventStageGroupId": 90200008,
+    "SortOrder": 1,
+    "StageId": 90230008,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230009,
+    "InvasionEventStageGroupId": 90200009,
+    "SortOrder": 1,
+    "StageId": 90230009,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230010,
+    "InvasionEventStageGroupId": 90200010,
+    "SortOrder": 1,
+    "StageId": 90230010,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230011,
+    "InvasionEventStageGroupId": 90200011,
+    "SortOrder": 1,
+    "StageId": 90230011,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230012,
+    "InvasionEventStageGroupId": 90200012,
+    "SortOrder": 1,
+    "StageId": 90230012,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230013,
+    "InvasionEventStageGroupId": 90200013,
+    "SortOrder": 1,
+    "StageId": 90230013,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230014,
+    "InvasionEventStageGroupId": 90200014,
+    "SortOrder": 1,
+    "StageId": 90230014,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230015,
+    "InvasionEventStageGroupId": 90200015,
+    "SortOrder": 1,
+    "StageId": 90230015,
+    "StageDifficultyTypeIndex": 6
+  }
+]

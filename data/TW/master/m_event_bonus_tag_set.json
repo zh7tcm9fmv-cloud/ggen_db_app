@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 20000211,
+    "EventBonusRaritySetId": 20000211,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "Id": 20000411,
+    "EventBonusRaritySetId": 20000411,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "Id": 20001022,
+    "EventBonusRaritySetId": 20001022,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  }
+]

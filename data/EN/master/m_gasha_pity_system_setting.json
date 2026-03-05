@@ -1,0 +1,42 @@
+[
+  {
+    "GashaId": 2512300401,
+    "FixCount": 50,
+    "GashaContentSetId": 251230040103
+  },
+  {
+    "GashaId": 2512400301,
+    "FixCount": 100,
+    "GashaContentSetId": 251240030103
+  },
+  {
+    "GashaId": 2601200302,
+    "FixCount": 100,
+    "GashaContentSetId": 260120030203
+  },
+  {
+    "GashaId": 2601400401,
+    "FixCount": 100,
+    "GashaContentSetId": 260140040103
+  },
+  {
+    "GashaId": 2601500301,
+    "FixCount": 100,
+    "GashaContentSetId": 260150030103
+  },
+  {
+    "GashaId": 2602200302,
+    "FixCount": 100,
+    "GashaContentSetId": 260220030203
+  },
+  {
+    "GashaId": 2602300401,
+    "FixCount": 100,
+    "GashaContentSetId": 260230040103
+  },
+  {
+    "GashaId": 2602400301,
+    "FixCount": 100,
+    "GashaContentSetId": 260240030103
+  }
+]

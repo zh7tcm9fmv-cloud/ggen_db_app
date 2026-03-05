@@ -1,0 +1,22 @@
+[
+  {
+    "StageScoreEvaluationTypeIndex": 1,
+    "Percent": 20
+  },
+  {
+    "StageScoreEvaluationTypeIndex": 2,
+    "Percent": 20
+  },
+  {
+    "StageScoreEvaluationTypeIndex": 3,
+    "Percent": 40
+  },
+  {
+    "StageScoreEvaluationTypeIndex": 4,
+    "Percent": 20
+  },
+  {
+    "StageScoreEvaluationTypeIndex": 5,
+    "Percent": 40
+  }
+]

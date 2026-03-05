@@ -1,0 +1,290 @@
+[
+  {
+    "Id": 240001010101,
+    "MapEventPartnerQuoteTimingTypeIndex": 1,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010101,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001010102,
+    "MapEventPartnerQuoteTimingTypeIndex": 1,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010101,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001020101,
+    "MapEventPartnerQuoteTimingTypeIndex": 2,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010201,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001020102,
+    "MapEventPartnerQuoteTimingTypeIndex": 2,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010201,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001030101,
+    "MapEventPartnerQuoteTimingTypeIndex": 3,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010301,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001030102,
+    "MapEventPartnerQuoteTimingTypeIndex": 3,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010301,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040101,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010401,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040102,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010401,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040201,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010402,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040202,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010402,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040301,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010403,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040302,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010403,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040401,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010404,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040402,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010404,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040501,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010405,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040502,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010405,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040601,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010406,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040602,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010406,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040701,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010407,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040702,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010407,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040801,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010408,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001040802,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010408,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050101,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010501,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050201,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010502,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050301,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010503,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050401,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010504,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050501,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010505,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050601,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010506,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050701,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010507,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050801,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010508,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001050901,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010509,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  },
+  {
+    "Id": 240001051001,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000101,
+    "MapEventPartnerQuoteSetId": 2400010510,
+    "Unknown_Col_4": 0,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0
+  }
+]

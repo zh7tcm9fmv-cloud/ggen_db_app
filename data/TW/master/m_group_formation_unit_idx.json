@@ -1,0 +1,7382 @@
+[
+  {
+    "Id": 13617242,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 13712851,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 13718917,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 21406118,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 24938106,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 25594737,
+    "GroupFormationIdxId": 2666659552,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 30324873,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 30394861,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 30490470,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 30896286,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 36733658,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 38183737,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 41715725,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 47673905,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 53230128,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 53511277,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 54588744,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 54961356,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 56674928,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 61931078,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 64451524,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 70007747,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 71366363,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 71738975,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 73452547,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 75927594,
+    "GroupFormationIdxId": 2666659552,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 78708697,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 80657730,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 81229143,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 86785366,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 92705213,
+    "GroupFormationIdxId": 2666659552,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 95486316,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 97435349,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 97600946,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 104921601,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 105294213,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 107007785,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 112263935,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 114378565,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 128270998,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 145048617,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 145819173,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 150371168,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 153895842,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 155254458,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 157340642,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 161826236,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 167699528,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 170673461,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 172032077,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 174118261,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 178603855,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 183926406,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 184211254,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 184477147,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 195381474,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 200704025,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 200988873,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 205636856,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 208880080,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 217481644,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 217766492,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 218032385,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 222414475,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 225657699,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 234259263,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 234544111,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 238928968,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 239192094,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 241415342,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 242435318,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 251321730,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 255706587,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 258192961,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 268365242,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 272484206,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 274970580,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 285142861,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 286399790,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 291748199,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 303177409,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 306302570,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 307253480,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 309545794,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 319955028,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 323080189,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 324031099,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 325303437,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 326323413,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 328290286,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 329692408,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 336732647,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 339594682,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 340808718,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 341658800,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 345067905,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 346470027,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 351301875,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 351823558,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 356372301,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 358436419,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 361845524,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 364618339,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 368079494,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 368601177,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 370287885,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 378506256,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 378623143,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 381395958,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 381943080,
+    "GroupFormationIdxId": 2733770028,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 384857113,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 385378796,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 395400762,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 396802884,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 398173577,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 398720699,
+    "GroupFormationIdxId": 2733770028,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 401634732,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 402156415,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 407919194,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 408769276,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 409554632,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 412061494,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 414951196,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 418412351,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 424696813,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 428839113,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 430358122,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 431728815,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 435711653,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 442324514,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 443109870,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 445616732,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 447135741,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 447877832,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 449053556,
+    "GroupFormationIdxId": 2733770028,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 455483302,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 459102133,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 459887489,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 462394351,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 472260921,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 476665108,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 481433070,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 482608794,
+    "GroupFormationIdxId": 2733770028,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 488415683,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 489038540,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 493442727,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 496984022,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 498210689,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 499386413,
+    "GroupFormationIdxId": 2733770028,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 505193302,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 505816159,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 513761641,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 514988308,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 521970921,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 522593778,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 530539260,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 531765927,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 538748540,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 547316879,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 555526159,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 557421315,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 566684536,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 574198934,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 578711736,
+    "GroupFormationIdxId": 2684226727,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 580872117,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 583462155,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 584998520,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 590976553,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 595489355,
+    "GroupFormationIdxId": 2684226727,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 600239774,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 601588536,
+    "GroupFormationIdxId": 2700214790,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 601776139,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 607754172,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 607897598,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 612830512,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 618366155,
+    "GroupFormationIdxId": 2700214790,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 618857376,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 624531791,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 624675217,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 626662824,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 629044593,
+    "GroupFormationIdxId": 2684226727,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 629608131,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 633412848,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 641452836,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 642600224,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 643440443,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 646385750,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 650190467,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 652108996,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 652412614,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 657267718,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 658230455,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 659377843,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 661799368,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 667350250,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 669190233,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 674045337,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 675008074,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 678576987,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 678877246,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 678992862,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 679377450,
+    "GroupFormationIdxId": 2684226727,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 684127869,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 685476631,
+    "GroupFormationIdxId": 2700214790,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 685664234,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 685967852,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 690822956,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 692933081,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 693773300,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 695354606,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 695654865,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 695770481,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 696155069,
+    "GroupFormationIdxId": 2684226727,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 702254250,
+    "GroupFormationIdxId": 2700214790,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 702441853,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 702745471,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 707600575,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 712432484,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 712548100,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 713496226,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 717300943,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 718966598,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 719031869,
+    "GroupFormationIdxId": 2700214790,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 724378194,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 727328538,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 729210103,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 729325719,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 730273845,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 734078562,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 735117414,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 735744217,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 743265938,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 744106157,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 745987722,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 746103338,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 750856181,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 751895033,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 752521836,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 760043557,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 760272406,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 762465082,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 767377208,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 767541608,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 767898923,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 768672652,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 769299455,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 777050025,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 779242701,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 784154827,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 784319227,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 784676542,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 785450271,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 786077074,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 793827644,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 801454161,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 805366784,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 806931667,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 810605263,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 817710065,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 818231780,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 819005509,
+    "GroupFormationIdxId": 3804789941,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 822144403,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 823709286,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 827382882,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 835009399,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 840486905,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 851429703,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 857264524,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 859441832,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 868042922,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 868207322,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 874042143,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 874736584,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 876219451,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 884820541,
+    "GroupFormationIdxId": 564168246,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 884984941,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 889254879,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 891514203,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 906032498,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 909774689,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 911227643,
+    "GroupFormationIdxId": 2884768599,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 920150342,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 922810117,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 925069441,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 928005262,
+    "GroupFormationIdxId": 2884768599,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 936927961,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 944782881,
+    "GroupFormationIdxId": 2884768599,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 953705580,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 960107546,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 961560500,
+    "GroupFormationIdxId": 2884768599,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 970483199,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 971431726,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 971447632,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 972302912,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 975402298,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 976885165,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 978338119,
+    "GroupFormationIdxId": 2884768599,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 981804400,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 987260818,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 988209345,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 988225251,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 989080531,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 989758043,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 992179917,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1004986964,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1006535662,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1009222176,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1015359638,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1019256616,
+    "GroupFormationIdxId": 2600338632,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1021764583,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1022635769,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1023313281,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1025999795,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1032137257,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1038558108,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1040090900,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1048914876,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1052811854,
+    "GroupFormationIdxId": 2600338632,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1055319821,
+    "GroupFormationIdxId": 2061316835,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1056868519,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1059204718,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1065692495,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1069589473,
+    "GroupFormationIdxId": 2600338632,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1072113346,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1072968626,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1075982337,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1076332652,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1086367092,
+    "GroupFormationIdxId": 2600338632,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1086946339,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1088890965,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1089746245,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1092759956,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1103144711,
+    "GroupFormationIdxId": 2600338632,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1103723958,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1109537575,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1109887890,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1120501577,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1126315194,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1126665509,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1137279196,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1148259206,
+    "GroupFormationIdxId": 2617116251,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1148665608,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1154056815,
+    "GroupFormationIdxId": 3593714225,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1165036825,
+    "GroupFormationIdxId": 2617116251,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1165443227,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1178117203,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1180318072,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1181814444,
+    "GroupFormationIdxId": 2617116251,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1182542144,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1191133616,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1193235560,
+    "GroupFormationIdxId": 2667449108,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1194894822,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1197095691,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1198592063,
+    "GroupFormationIdxId": 2617116251,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1198998465,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1207911235,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1211672441,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1216097382,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1226790798,
+    "GroupFormationIdxId": 2667449108,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1228450060,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1232147301,
+    "GroupFormationIdxId": 2617116251,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1232875001,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1235863416,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1243568417,
+    "GroupFormationIdxId": 2667449108,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1245227679,
+    "GroupFormationIdxId": 4258572583,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1249331322,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1249652620,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1252641035,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1258244092,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1260346036,
+    "GroupFormationIdxId": 2667449108,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1264206167,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1264525728,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1266108941,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1266430239,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1277123655,
+    "GroupFormationIdxId": 2667449108,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1280983786,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1281303347,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1283232960,
+    "GroupFormationIdxId": 2716992409,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1286196273,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1291799330,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1297761405,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1298578080,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1300010579,
+    "GroupFormationIdxId": 2716992409,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1308576949,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1314858585,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1315355699,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1316788198,
+    "GroupFormationIdxId": 2716992409,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1320708480,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1336529130,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1337486099,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1348910937,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1353306749,
+    "GroupFormationIdxId": 2988607872,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1359692614,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1362530750,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1365191442,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1376470233,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1379308369,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1381969061,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1383898674,
+    "GroupFormationIdxId": 2716992409,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1393247852,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1396085988,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1399243794,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1400676293,
+    "GroupFormationIdxId": 2716992409,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1404596575,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1410025471,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1411956486,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1412863607,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1416021413,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1421374194,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1428734105,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1429641226,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1438151813,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1442486152,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1443580709,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1444097104,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1445511724,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1447994019,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1451774440,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1459263771,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1460874723,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1462289343,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1464771638,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1468552059,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1479066962,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1481549257,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1492017984,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1496131432,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1498326876,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1508795603,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1511453107,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1512909051,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1515076752,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1515104495,
+    "GroupFormationIdxId": 2026256561,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1518884916,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1525573222,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1526374247,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1527985199,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1528230726,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1531854371,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1536003208,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1543151866,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1544762818,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1545008345,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1552440154,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1552780827,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1559929485,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1560229030,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1561540437,
+    "GroupFormationIdxId": 4253616351,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1561785964,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1569217773,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1577006649,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1578563583,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1580019527,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1586336065,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1592683698,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1593784268,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1595460528,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1596797146,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1598964847,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1607081864,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1609461317,
+    "GroupFormationIdxId": 2817644434,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1610561887,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1613574765,
+    "GroupFormationIdxId": 859470647,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1615742466,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1622008910,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1623859483,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1629015766,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1632520085,
+    "GroupFormationIdxId": 4011583621,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1636668922,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1638786529,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1640637102,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1644117125,
+    "GroupFormationIdxId": 2545584958,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1645793385,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1653446541,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1655564148,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1660346910,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1662571004,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1672341767,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1672881768,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1677124529,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1677655816,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1679348623,
+    "GroupFormationIdxId": 439349952,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1689659387,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1693902148,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1694433435,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1704481712,
+    "GroupFormationIdxId": 2533228156,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1705897005,
+    "GroupFormationIdxId": 3718660099,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1707747578,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1708571312,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1710679767,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1713877104,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1721259331,
+    "GroupFormationIdxId": 2533228156,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1724525197,
+    "GroupFormationIdxId": 93016562,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1730654723,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1738036950,
+    "GroupFormationIdxId": 2533228156,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1739992244,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1742126550,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1744235005,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1744766292,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1747432342,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1758904169,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1773547482,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1775681788,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1778321530,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1778759832,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1781336358,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1790325101,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1792459407,
+    "GroupFormationIdxId": 2233382532,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1795099149,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1795537451,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1798113977,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1805147426,
+    "GroupFormationIdxId": 2533228156,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1814542818,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1814891596,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1820906542,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1821925045,
+    "GroupFormationIdxId": 2533228156,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1826341464,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1829092689,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1831320437,
+    "GroupFormationIdxId": 57655342,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1831669215,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1837684161,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1854461780,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1859896702,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1861140872,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1865224453,
+    "GroupFormationIdxId": 50662770,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1871239399,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1876674321,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1877918491,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1879425546,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1881860056,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1893451940,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1896203165,
+    "GroupFormationIdxId": 726502466,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1904794637,
+    "GroupFormationIdxId": 2400899109,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1910229559,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1911473729,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1915415294,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1930286800,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1932192913,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1944748574,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1947064419,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1948970532,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1949547110,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1961526193,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1961806586,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1965748151,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1966324729,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 1978303812,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1978584205,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 1980619657,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1983102348,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 1995081431,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 1999879967,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2011859050,
+    "GroupFormationIdxId": 2894977279,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2014682392,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2016657586,
+    "GroupFormationIdxId": 1306446617,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2030952514,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2031460011,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2034418432,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2047301848,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2047730133,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2051196051,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2076381272,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2080857086,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2093158891,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2097634705,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2098570487,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2108827856,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2109913211,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2114412324,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2115348106,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2116702510,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2118306527,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2121696904,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2125605475,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2126690830,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2128132840,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2131189943,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2132125725,
+    "GroupFormationIdxId": 3069238423,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2133480129,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2135084146,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2138474523,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2143468449,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2144910459,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2150257748,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2151861765,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2159160713,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2159327784,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2159473862,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2160246068,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2160269367,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2165898224,
+    "GroupFormationIdxId": 2784102885,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2167035367,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2176105403,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2176251481,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2177023687,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2177046986,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2182675843,
+    "GroupFormationIdxId": 2784102885,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2183812986,
+    "GroupFormationIdxId": 1454144214,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2188807380,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2193029100,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2193649851,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2193824605,
+    "GroupFormationIdxId": 2611329400,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2198730256,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2199453462,
+    "GroupFormationIdxId": 2784102885,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2209493570,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2209806719,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2210427470,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2212020935,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2215507875,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2222160950,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2222362618,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2226271189,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2226438260,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2227205089,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2228413536,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2228798554,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2238938569,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2239140237,
+    "GroupFormationIdxId": 3600034963,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2240019278,
+    "GroupFormationIdxId": 285571663,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2243361957,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2243982708,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2245191155,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2245576173,
+    "GroupFormationIdxId": 1178028835,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2255716188,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2256796897,
+    "GroupFormationIdxId": 285571663,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2259993498,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2260760327,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2266563938,
+    "GroupFormationIdxId": 2784102885,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2267782374,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2272493807,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2273574516,
+    "GroupFormationIdxId": 285571663,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2276771117,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2277565016,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2282618351,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2283341557,
+    "GroupFormationIdxId": 2784102885,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2284559993,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2289271426,
+    "GroupFormationIdxId": 1908856156,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2290352135,
+    "GroupFormationIdxId": 285571663,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2294342635,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2299395970,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2300021566,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2301337612,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2307129754,
+    "GroupFormationIdxId": 285571663,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2312301631,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2316173589,
+    "GroupFormationIdxId": 3372316863,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2316799185,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2318115231,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2329079250,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2333576804,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2334868088,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2335650368,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2345856869,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2350354423,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2351645707,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2351670469,
+    "GroupFormationIdxId": 491542998,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2361453111,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2367132042,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2367696062,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2369205606,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2378230730,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2384473681,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2385983225,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2395008349,
+    "GroupFormationIdxId": 2535514645,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2400313616,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2401251300,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2402760844,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2411589384,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2415608368,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2418028919,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2418756183,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2419538463,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2428367003,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2433868854,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2435533802,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2449163606,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2450646473,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2451584157,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2451643782,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2452311421,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2465941225,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2467424092,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2468421401,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2478699860,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2482718844,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2484201711,
+    "GroupFormationIdxId": 1150876592,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2485199020,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2487974486,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2499496463,
+    "GroupFormationIdxId": 2179792041,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2501976639,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2504752105,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2512255098,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2518754258,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2521529724,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2529032717,
+    "GroupFormationIdxId": 1844259274,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2538307343,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2555084962,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2556749848,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2570380638,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2573527467,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2585385448,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2585682230,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2587158257,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2602163067,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2602459849,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2603935876,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2619237468,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2620713495,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2623860324,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2626766336,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2627602120,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2631808744,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2632044206,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2635718305,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2636015087,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2643543955,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2644379739,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2648586363,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2648821825,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2654268733,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2657415562,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2665089536,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2665599444,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2669570325,
+    "GroupFormationIdxId": 2140996512,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2674193181,
+    "GroupFormationIdxId": 4099958611,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2677099193,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2681867155,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2682377063,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2683926334,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2686051162,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2689537392,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2698919220,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2699154682,
+    "GroupFormationIdxId": 3052485068,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2700703953,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2702828781,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2711490215,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2715422393,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2717481572,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2720355816,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2723092630,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2727432050,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2728267834,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2732474458,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2734259191,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2739870249,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2740263334,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2744209669,
+    "GroupFormationIdxId": 3268379273,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2745045453,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2749252077,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2753911054,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2756647868,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2757040953,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2765755250,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2767233096,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2767814429,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2769371160,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2770688673,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2773425487,
+    "GroupFormationIdxId": 2408779804,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2773818572,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2782532869,
+    "GroupFormationIdxId": 2616602976,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2783284219,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2784010715,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2786148779,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2787466292,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2789200382,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2790596191,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2800061838,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2800788334,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2804243911,
+    "GroupFormationIdxId": 3404702261,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2805978001,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2816839457,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2822755620,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2824151429,
+    "GroupFormationIdxId": 3333869352,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2833617076,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2834032272,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2839533239,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2840988342,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2850394695,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2850809891,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2853182456,
+    "GroupFormationIdxId": 2701004346,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2853259255,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2854685408,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2856310858,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2857765961,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2859198070,
+    "GroupFormationIdxId": 2717781965,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2867587510,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2867898810,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2869960075,
+    "GroupFormationIdxId": 2701004346,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2870036874,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2871463027,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2874543580,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2875975689,
+    "GroupFormationIdxId": 2717781965,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2884676429,
+    "GroupFormationIdxId": 2146633699,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2886737694,
+    "GroupFormationIdxId": 2701004346,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2886814493,
+    "GroupFormationIdxId": 190121956,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2891321199,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2892753308,
+    "GroupFormationIdxId": 2717781965,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2909530927,
+    "GroupFormationIdxId": 2717781965,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2917768912,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2924876437,
+    "GroupFormationIdxId": 1829756235,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2926308546,
+    "GroupFormationIdxId": 2717781965,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2928863800,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2931868056,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2934546531,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2934697986,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2938573503,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2945641419,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2948645675,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2951324150,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2951475605,
+    "GroupFormationIdxId": 354522303,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2953848170,
+    "GroupFormationIdxId": 2701004346,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2955351122,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2962252160,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2962419038,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2970625789,
+    "GroupFormationIdxId": 2701004346,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 2972128741,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2980975672,
+    "GroupFormationIdxId": 2683437171,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 2982200913,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2995807398,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 2997753291,
+    "GroupFormationIdxId": 2683437171,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3012585017,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3013139192,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3018434626,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3029362636,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3029529514,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3029916811,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3031308529,
+    "GroupFormationIdxId": 2683437171,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3032533770,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3035212245,
+    "GroupFormationIdxId": 2215368101,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3037494888,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3046140255,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3046307133,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3049311389,
+    "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3050058504,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3054272507,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3054799384,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3071050126,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3071577003,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3076874992,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3081641386,
+    "GroupFormationIdxId": 2683437171,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3083613742,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3088354622,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3097027287,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3098419005,
+    "GroupFormationIdxId": 2683437171,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3100391361,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3104004080,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3104097126,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3110430230,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3113804906,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3116677976,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3117168980,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3120781699,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3120874745,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3127207849,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3130582525,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3132601768,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3133455595,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3133946599,
+    "GroupFormationIdxId": 3313190050,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3136221072,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3137365208,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3137652364,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3138160602,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3143985468,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3149379387,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3150233214,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3152998691,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3154142827,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3154429983,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3154938221,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3155465098,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3160763087,
+    "GroupFormationIdxId": 4026467887,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3167663456,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3170920446,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3171114556,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3171207602,
+    "GroupFormationIdxId": 3961164296,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3172242717,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3174637176,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3182934625,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3184441075,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3191414795,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3204669794,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3205259280,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3217343690,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3220109167,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3221447413,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3222036899,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3226200438,
+    "GroupFormationIdxId": 2650671489,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3233267482,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3234121309,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3234773932,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3236886786,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3238030922,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3242978057,
+    "GroupFormationIdxId": 2650671489,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3250045101,
+    "GroupFormationIdxId": 3873154849,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3253664405,
+    "GroupFormationIdxId": 3358754757,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3253892216,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3254808541,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3258525271,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3259755676,
+    "GroupFormationIdxId": 2650671489,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3268329170,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3272369756,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3275302890,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3276533295,
+    "GroupFormationIdxId": 2650671489,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3278116275,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3285106789,
+    "GroupFormationIdxId": 2872393215,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3287447454,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3292080509,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3294893894,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3304225073,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3305924994,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3310088533,
+    "GroupFormationIdxId": 2650671489,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3311671513,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3311921856,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3313226096,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3321002692,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3322702613,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3328449132,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3328699475,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3330003715,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3330379576,
+    "GroupFormationIdxId": 2867990980,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3337780311,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3342281320,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3345226751,
+    "GroupFormationIdxId": 3204998224,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3345754158,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3347157195,
+    "GroupFormationIdxId": 2867990980,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3362531777,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3363558953,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3375836558,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3376333672,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3379309396,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3380712433,
+    "GroupFormationIdxId": 2867990980,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3392614177,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3395809951,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3396087015,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3402012656,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3407276918,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3409391796,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3409888910,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3412587570,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3412864634,
+    "GroupFormationIdxId": 4166091213,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3413891810,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3419458440,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3424054537,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3426169415,
+    "GroupFormationIdxId": 950326165,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3426666529,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3429365189,
+    "GroupFormationIdxId": 2639452235,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3430669429,
+    "GroupFormationIdxId": 2401899526,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3431045290,
+    "GroupFormationIdxId": 2867990980,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3435567894,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3436236059,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3440832156,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3443357048,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3443444148,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3447822909,
+    "GroupFormationIdxId": 2867990980,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3452345513,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3457609775,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3460221767,
+    "GroupFormationIdxId": 3254769431,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3465664638,
+    "GroupFormationIdxId": 2550005775,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3469123132,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3474387394,
+    "GroupFormationIdxId": 3635158417,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3476912286,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3482442257,
+    "GroupFormationIdxId": 2550005775,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3485900751,
+    "GroupFormationIdxId": 3520476511,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3486568916,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3493689905,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3499219876,
+    "GroupFormationIdxId": 2550005775,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3502690928,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3507403280,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3510467524,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3515997495,
+    "GroupFormationIdxId": 2550005775,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3519468547,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3520124154,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3524180899,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3527245143,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3536901773,
+    "GroupFormationIdxId": 1741284444,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3539749262,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3540958518,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3546218464,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3549552733,
+    "GroupFormationIdxId": 2550005775,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3553023785,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3556526881,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3558469848,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3567783467,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3573304500,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3575247467,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3579773702,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3584561086,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3590082119,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3596551321,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3601338705,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3603356642,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3606859738,
+    "GroupFormationIdxId": 3174138880,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3608068994,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3608802705,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3613328940,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3618116324,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3620134261,
+    "GroupFormationIdxId": 371907674,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3624078363,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3624846613,
+    "GroupFormationIdxId": 3283941873,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3625399888,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3630106559,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3634893943,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3640855982,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3642177507,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3657633601,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3659135562,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3662624432,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3674411220,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3675913181,
+    "GroupFormationIdxId": 2926375328,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3679402051,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3691188839,
+    "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3694648470,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3699503752,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3700986675,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3709157736,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3709287983,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3711426089,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3716281371,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3717764294,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3725935355,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3726065602,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3728203708,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3733777006,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3734541913,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3735899912,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3742843221,
+    "GroupFormationIdxId": 262747204,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3744981327,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3746512527,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3750554625,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3751319532,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3752677531,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3761758946,
+    "GroupFormationIdxId": 4136187547,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3763290146,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3767332244,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3768097151,
+    "GroupFormationIdxId": 4167599440,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3776268212,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3778276152,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3779728315,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3780067765,
+    "GroupFormationIdxId": 459142339,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3782368230,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3783391847,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3784109863,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3786232769,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3795053771,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3796505934,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3796872926,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3799145849,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3800169466,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3809058456,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3809823450,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3810173283,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3811831390,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3813283553,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3813650545,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3815923468,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3816947085,
+    "GroupFormationIdxId": 3820689425,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3817612326,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3817665101,
+    "GroupFormationIdxId": 3960555986,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3825836075,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3826601069,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3826950902,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3830061172,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3830428164,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3832701087,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3834389945,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3836565626,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3843728521,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3846838791,
+    "GroupFormationIdxId": 965721132,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3847205783,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3849478706,
+    "GroupFormationIdxId": 2270367437,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3851167564,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3853343245,
+    "GroupFormationIdxId": 1714459297,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3855820558,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3855834920,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3860506140,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3867945183,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3872598177,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3872612539,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3875012608,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3877283759,
+    "GroupFormationIdxId": 3076118701,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3878941866,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3880761021,
+    "GroupFormationIdxId": 3368596615,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3889375796,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3891790227,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3892946551,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3895719485,
+    "GroupFormationIdxId": 2646557347,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3901500421,
+    "GroupFormationIdxId": 3770149501,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3902073496,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3906153415,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3906609712,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3908190512,
+    "GroupFormationIdxId": 2633893870,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3908358611,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3909724170,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3912857286,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3918851115,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3923387331,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3924968131,
+    "GroupFormationIdxId": 2633893870,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3925136230,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3926501789,
+    "GroupFormationIdxId": 2677060513,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3929634905,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3935628734,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3936108867,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3939708653,
+    "GroupFormationIdxId": 465797484,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3939723015,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3941913849,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3942123084,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3943866214,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3946412524,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3951594160,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3952886486,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3956500634,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3958691468,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3960643833,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3963190143,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3968371779,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3969664105,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3971079128,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3973278253,
+    "GroupFormationIdxId": 3545286182,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3973720188,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3975300988,
+    "GroupFormationIdxId": 2633893870,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3975469087,
+    "GroupFormationIdxId": 4058868546,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 3975678322,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3977421452,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3981221560,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3986441724,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 3987856747,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3992455941,
+    "GroupFormationIdxId": 2319620440,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3994199071,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 3996745381,
+    "GroupFormationIdxId": 4101461243,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3997596632,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3997987459,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3997999179,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4002739210,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4003219343,
+    "GroupFormationIdxId": 4198115046,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4004634366,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4007275426,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4008856226,
+    "GroupFormationIdxId": 2633893870,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4010976690,
+    "GroupFormationIdxId": 989569153,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4014765078,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4018674691,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4018704636,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4019516829,
+    "GroupFormationIdxId": 2631113009,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4024053045,
+    "GroupFormationIdxId": 4258356308,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4025633845,
+    "GroupFormationIdxId": 2633893870,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4031151870,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4031542697,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4035452310,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4035746027,
+    "GroupFormationIdxId": 2767325266,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4042836288,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4047929489,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4048320316,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4052229929,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4052259874,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4052523646,
+    "GroupFormationIdxId": 2767325266,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4053998928,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4059613907,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4064707108,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4065097935,
+    "GroupFormationIdxId": 4028835995,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4065109655,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4069007548,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4069037493,
+    "GroupFormationIdxId": 2587430534,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4069301265,
+    "GroupFormationIdxId": 2767325266,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4070776547,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4071744842,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4077697184,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4081484727,
+    "GroupFormationIdxId": 1915167695,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4081887274,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4085785167,
+    "GroupFormationIdxId": 3886351412,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4086078884,
+    "GroupFormationIdxId": 2767325266,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4088522461,
+    "GroupFormationIdxId": 2307624637,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4094474803,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4098664893,
+    "GroupFormationIdxId": 3833793000,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4102856503,
+    "GroupFormationIdxId": 2767325266,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4104331785,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4109517520,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4126257232,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4126295139,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4126724383,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4143502002,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4144807660,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4154664642,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4159812470,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4159850377,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4160279621,
+    "GroupFormationIdxId": 3290262611,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4163224504,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4166021134,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4171442261,
+    "GroupFormationIdxId": 2192398639,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4176137688,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4176590089,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4178362898,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4180002123,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4182798753,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4183678747,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4191242880,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4193367708,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4195140517,
+    "GroupFormationIdxId": 3533165133,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4199576372,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4200456366,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4207918824,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4208020499,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4209692926,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4210145327,
+    "GroupFormationIdxId": 1595882284,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4210183234,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4213557361,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4216353991,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4217233985,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4219239688,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4224696443,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4226470545,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4226960853,
+    "GroupFormationIdxId": 3295971367,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4231035240,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4233131610,
+    "GroupFormationIdxId": 3930604194,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4234011604,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4236017307,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4243248164,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4247812859,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4250789223,
+    "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4258353356,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4260025783,
+    "GroupFormationIdxId": 4007220850,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4263890218,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
+    "Id": 4264590478,
+    "GroupFormationIdxId": 1806370265,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4270229176,
+    "GroupFormationIdxId": 2666659552,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4274959312,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
+    "Id": 4275029300,
+    "GroupFormationIdxId": 1562189401,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4280667837,
+    "GroupFormationIdxId": 2170364751,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 4286350164,
+    "GroupFormationIdxId": 3622002580,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 4287006795,
+    "GroupFormationIdxId": 2666659552,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4291736931,
+    "GroupFormationIdxId": 3470473298,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4291902528,
+    "GroupFormationIdxId": 1983958562,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4291908594,
+    "GroupFormationIdxId": 4166951322,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 4292308344,
+    "GroupFormationIdxId": 63410721,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  }
+]

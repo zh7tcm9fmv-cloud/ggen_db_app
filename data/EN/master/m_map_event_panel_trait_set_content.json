@@ -1,0 +1,152 @@
+[
+  {
+    "MapEventPanelTraitSetId": 1000003,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1000003,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1000004,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1000005,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1000005,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 1100001,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1100001,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1100001,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1100002,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 5
+  },
+  {
+    "MapEventPanelTraitSetId": 1100002,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000001,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000002,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000003,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000004,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000005,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2000006,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2000006,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2000007,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2000007,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2000007,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400011,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400012,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400013,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400014,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400015,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400016,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400016,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400017,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400017,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400017,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 8
+  }
+]

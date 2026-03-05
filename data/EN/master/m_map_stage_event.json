@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 900001,
+    "EventTypeIndex": 1,
+    "TargetId": 1030000001,
+    "MapStageObjectId": 9001
+  },
+  {
+    "Id": 900002,
+    "EventTypeIndex": 1,
+    "TargetId": 1030000002,
+    "MapStageObjectId": 9002
+  },
+  {
+    "Id": 900003,
+    "EventTypeIndex": 1,
+    "TargetId": 1030000003,
+    "MapStageObjectId": 9003
+  }
+]

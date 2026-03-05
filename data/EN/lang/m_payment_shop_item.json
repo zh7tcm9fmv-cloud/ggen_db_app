@@ -1,0 +1,490 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 190110000000100001,
+    "value": "Diamond A (x140)"
+  },
+  {
+    "id": 190110000000200001,
+    "value": "Diamond B (x430)"
+  },
+  {
+    "id": 190110000000300001,
+    "value": "Diamond C (x930)"
+  },
+  {
+    "id": 190110000000400001,
+    "value": "Diamond D (x1430)"
+  },
+  {
+    "id": 190110000000500001,
+    "value": "Diamond E (x3000)"
+  },
+  {
+    "id": 190110000000600001,
+    "value": "Diamond F (x5000)"
+  },
+  {
+    "id": 190110000000700001,
+    "value": "Diamond G (x10000)"
+  },
+  {
+    "id": 190110000000800001,
+    "value": "Diamond Z (x10500)"
+  },
+  {
+    "id": 190110000000900001,
+    "value": "Diamond H (x32200)"
+  },
+  {
+    "id": 190110000001000001,
+    "value": "Diamond I (x52800)"
+  },
+  {
+    "id": 190110000002100001,
+    "value": "Diamond x150"
+  },
+  {
+    "id": 190110000002200001,
+    "value": "Diamond x460"
+  },
+  {
+    "id": 190110000002300001,
+    "value": "Diamond x1,000"
+  },
+  {
+    "id": 190110000002400001,
+    "value": "Diamond x1,540"
+  },
+  {
+    "id": 190110000002500001,
+    "value": "Diamond x3,240"
+  },
+  {
+    "id": 190110000002600001,
+    "value": "Diamond x5,400"
+  },
+  {
+    "id": 190110000002700001,
+    "value": "Diamond x10,800"
+  },
+  {
+    "id": 190110000003000001,
+    "value": "Diamond x25,800"
+  },
+  {
+    "id": 190122504100100001,
+    "value": "Start Dash Super Value Diamond A"
+  },
+  {
+    "id": 190122504100200001,
+    "value": "Start Dash Super Value Diamond B"
+  },
+  {
+    "id": 190122504100300001,
+    "value": "Start Dash Super Value Diamond Pack C"
+  },
+  {
+    "id": 190122504100400001,
+    "value": "Start Dash Super Value Diamond Pack D"
+  },
+  {
+    "id": 190122504100700001,
+    "value": "UR Unit Limit Break Diamond Pack"
+  },
+  {
+    "id": 190122504100800001,
+    "value": "SSR Unit Limit Break Diamond Pack"
+  },
+  {
+    "id": 190122504100900001,
+    "value": "UR Supporter Limit Break Diamond Pack"
+  },
+  {
+    "id": 190122504101000001,
+    "value": "SSR Supporter Limit Break Diamond Pack"
+  },
+  {
+    "id": 190122504101100001,
+    "value": "Series Clear Reward Pack (Mobile Suit Gundam)"
+  },
+  {
+    "id": 190122504101200001,
+    "value": "Series Clear Reward Pack (Z)"
+  },
+  {
+    "id": 190122504101300001,
+    "value": "Series Clear Reward Pack (ZZ)"
+  },
+  {
+    "id": 190122504101400001,
+    "value": "Series Clear Reward Pack (W)"
+  },
+  {
+    "id": 190122504101500001,
+    "value": "Series Clear Reward Pack (SEED)"
+  },
+  {
+    "id": 190122504101600001,
+    "value": ""
+  },
+  {
+    "id": 190122504301100001,
+    "value": "Series Clear Reward Pack (SEED Recollection)"
+  },
+  {
+    "id": 190122506300100001,
+    "value": "Series Clear Reward Pack (CCA)"
+  },
+  {
+    "id": 190122506300200001,
+    "value": "5 Million DLs Value Diamond Pack A"
+  },
+  {
+    "id": 190122506300300001,
+    "value": "5 Million DLs Value Diamond Pack B"
+  },
+  {
+    "id": 190122506300400001,
+    "value": "5 Million DLs Value Diamond Pack C"
+  },
+  {
+    "id": 190122508200100001,
+    "value": "Daily Diamond Pass"
+  },
+  {
+    "id": 190122509600100001,
+    "value": "Series Clear Reward Pack (G)"
+  },
+  {
+    "id": 190122509600200001,
+    "value": "Series Clear Reward Pack (UC)"
+  },
+  {
+    "id": 190122509600300001,
+    "value": "Half Anniversary Diamond Value Pack A"
+  },
+  {
+    "id": 190122509600400001,
+    "value": "Half Anniversary Diamond Value Pack B"
+  },
+  {
+    "id": 190122509600500001,
+    "value": "Half Anniversary Diamond Value Pack C"
+  },
+  {
+    "id": 190122509600600001,
+    "value": "Half Anniversary UR Unit Guaranteed Ticket Pack"
+  },
+  {
+    "id": 190122509600700001,
+    "value": "Music Pack Vol. 1"
+  },
+  {
+    "id": 190122510500100001,
+    "value": "Half Anniversary Diamond Value Pack D"
+  },
+  {
+    "id": 190122510800100001,
+    "value": "Series Clear Reward Pack (Iron-Blooded Orphans)"
+  },
+  {
+    "id": 190122510800200001,
+    "value": "Music Pack Vol. 2"
+  },
+  {
+    "id": 190122511100100001,
+    "value": "7 Million DLs Value Diamond Pack"
+  },
+  {
+    "id": 190122511400100001,
+    "value": "Series Clear Reward Pack (Mobile Suit Gundam HATHAWAY)"
+  },
+  {
+    "id": 190122511400200001,
+    "value": "Music Pack Vol. 3"
+  },
+  {
+    "id": 190122512300100001,
+    "value": "Diamonds x3,000!"
+  },
+  {
+    "id": 190122512300200001,
+    "value": "Value Diamonds"
+  },
+  {
+    "id": 190122512300300001,
+    "value": "-"
+  },
+  {
+    "id": 190122512400100001,
+    "value": "Series Clear Reward Pack (SEED DESTINY)"
+  },
+  {
+    "id": 190122512400200001,
+    "value": "Series Clear Reward Pack (The Witch from Mercury)"
+  },
+  {
+    "id": 190122512400300001,
+    "value": "Eternal Lucky Bag 2026 [Red]"
+  },
+  {
+    "id": 190122512400400001,
+    "value": "Eternal Lucky Bag 2026 [Gold]"
+  },
+  {
+    "id": 190122512400500001,
+    "value": "New Year 2026 Diamond Value Pack A"
+  },
+  {
+    "id": 190122512400600001,
+    "value": "New Year 2026 Diamond Value Pack B"
+  },
+  {
+    "id": 190122512400700001,
+    "value": "New Year 2026 Diamond Value Pack C"
+  },
+  {
+    "id": 190122601500100001,
+    "value": "Series Clear Reward Pack (X)"
+  },
+  {
+    "id": 190122602200100001,
+    "value": "8 Million DLs Value Diamond Pack A"
+  },
+  {
+    "id": 190122602200200001,
+    "value": "8 Million DLs Value Diamond Pack B"
+  },
+  {
+    "id": 190122602200300001,
+    "value": "Web Store-limited 8 Million DLs Diamond Gift"
+  },
+  {
+    "id": 190122602200400001,
+    "value": "Web Store-limited 8 Million DLs Value Diamond Pack"
+  },
+  {
+    "id": 190152510500100001,
+    "value": "Eternal Pass"
+  },
+  {
+    "id": 190210000000100001,
+    "value": "Diamond x140"
+  },
+  {
+    "id": 190210000000200001,
+    "value": "Diamond x430"
+  },
+  {
+    "id": 190210000000300001,
+    "value": "Diamond x930"
+  },
+  {
+    "id": 190210000000400001,
+    "value": "Diamond x1,430"
+  },
+  {
+    "id": 190210000000500001,
+    "value": "Diamond x3,000"
+  },
+  {
+    "id": 190210000000600001,
+    "value": "Diamond x5,000"
+  },
+  {
+    "id": 190210000000700001,
+    "value": "Diamond x10,000"
+  },
+  {
+    "id": 190210000000800001,
+    "value": "Diamond x10,500"
+  },
+  {
+    "id": 190210000000900001,
+    "value": "Diamond x32,200"
+  },
+  {
+    "id": 190210000001000001,
+    "value": "Diamond x52,800"
+  },
+  {
+    "id": 190222504100100001,
+    "value": "[1-Time Only] Value Pack with Diamond x320"
+  },
+  {
+    "id": 190222504100200001,
+    "value": "[1-Time Only] Value Pack with Diamond x1000"
+  },
+  {
+    "id": 190222504100300001,
+    "value": "[1-Time Only] Value Pack containing Diamond x4,500, SSR or Higher Unit Guaranteed Unit Assembly Ticket x1 & AP Pack x5"
+  },
+  {
+    "id": 190222504100400001,
+    "value": "[1-Time Only] Value Pack containing Diamond x15,000, UR Unit Guaranteed Unit Assembly Ticket x1 & AP Pack x10"
+  },
+  {
+    "id": 190222504100700001,
+    "value": "[1-Time Only] Value pack containing Diamond x5,000 & UR Unit Limit Break Material x1"
+  },
+  {
+    "id": 190222504100800001,
+    "value": "[1-Time Only] Value pack containing Diamond x1,430 & SSR Unit Limit Break Material x1"
+  },
+  {
+    "id": 190222504100900001,
+    "value": "[1-Time Only] Value pack containing Diamond x5,000 & UR Supporter Limit Break Material x1"
+  },
+  {
+    "id": 190222504101000001,
+    "value": "[1-Time Only] Value pack containing Diamond x1,430 & SSR Supporter Limit Break Material x1"
+  },
+  {
+    "id": 190222504101100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222504101200001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222504101300001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222504101400001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222504101500001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222504101600001,
+    "value": ""
+  },
+  {
+    "id": 190222504301100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222506300100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x2, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222506300200001,
+    "value": "[1-Time Only] Value Pack containing Diamond x600 & AP Pack x1"
+  },
+  {
+    "id": 190222506300300001,
+    "value": "[1-Time Only] Value Pack containing Diamond x4,000 & AP Pack x5"
+  },
+  {
+    "id": 190222506300400001,
+    "value": "[1-Time Only] Value Pack containing Diamond x13,400 & AP Pack x10"
+  },
+  {
+    "id": 190222508200100001,
+    "value": "Value Pack with Diamond x3,100 *Valid for 20 days"
+  },
+  {
+    "id": 190222509600100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (G) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222509600200001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (UC) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222509600300001,
+    "value": "[1-Time Only] Value Pack containing Diamond x600 & AP Pack x1"
+  },
+  {
+    "id": 190222509600400001,
+    "value": "[1-Time Only] Value Pack containing Diamond x4,000 & AP Pack x5"
+  },
+  {
+    "id": 190222509600500001,
+    "value": "[1-Time Only] Value Pack containing Diamond x13,400 & AP Pack x10"
+  },
+  {
+    "id": 190222509600600001,
+    "value": "[1-Time Only] Value Pack containing Diamond x10,000 & Half Anniversary UR Unit Guaranteed Unit Assembly Ticket x1 & AP Pack x10"
+  },
+  {
+    "id": 190222509600700001,
+    "value": "[Notes]\n* Unlocked music can only be used on the platform where the Music Pack was purchased.\n* Unlocked music cannot be transferred between platforms.\n* Music will be downloaded when a Music Pack is purchased. A Wi-Fi connection is recommended when purchasing.\n\n[Pack Contents]\nSelectalble Music x51\nPremium Unit Assembly Ticket x6\nUnit Upgrade Data SSR x10\nCharacter Upgrade Data SSR x10\nSupporter Upgrade Data SSR x10\n\n[List of Selectalble Music]\nAkai Suisei\nTatakai eno Kyofu\nGundam Daichi ni Tatsu\nKyuchi ni Tatsu Gundam\nSassotaru Char\nOdessa no Gekisen M-5\nJaburo Soryokusen M-15\nTexas no Sogu M-24\nA Baoa Qu Shinko M-65\nTobe! GUNDAM\nCROSS OF THE SAND\nAi Senshi\nMeguriai\nI Can't Do Anything - Sorayo -\nArashi no Naka de Kagayaite\nThunderbolt Main Theme Yo\nSentohaichi Yo\nAnatano Oaite -I'm your baby-\nAwakening Hearts (I_004)\nClan Battle (I_011)\nSecrets (I_017)\nThe Girl on a Space colony (I_006A)\nPlazma (Anime Opening ver.)\nASSAULT WAVES\nFULL BURNER\nDENDROBIUM\nU.N.T.\nFEINT OPERATION\nDER SOLOMONER BOSER TRAUM\nTHE WINNER\nKantaisen\nMOBILE SUIT Sen\nTaikiken-Totsunyu -Jyuryoku no Ido e-\nUcyu wo Kakeru -Gekitotsu!-\nUcyu wo Kakeru -Zeta no Hatsudo-\nMizu no Hoshi e Ai wo Komete\nSenko no Naka no MS\nTobu Mono\nSora no Mon\na point of contact\nMetamorphoze\nShangri-La no Shonen\nUchu no Judau\nShido! Double Ζeta\nNekketsu no Mashymre\nFutaridake no Kecchaku\nAnime Janai ～ Yume wo Wasureta Furui Chikyujin-yo\nSilent Voice\nBEYOND THE TIME ～Over the Moebius skies～\nRE:I AM\nVigilante"
+  },
+  {
+    "id": 190222510500100001,
+    "value": "[1-Time Only] Value Pack containing Diamond x4,000 & SP Conversion Badge x100"
+  },
+  {
+    "id": 190222510800100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (Iron-Blooded Orphans) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222510800200001,
+    "value": "[Notes]\n* Unlocked music can only be used on the platform where the Music Pack was purchased.\n* Unlocked music cannot be transferred between platforms.\n* Music will be downloaded when a Music Pack is purchased. A Wi-Fi connection is recommended when purchasing.\n\n[Pack Contents]\nSelectalble Music x51\nPremium Unit Assembly Ticket x6\nUnit Upgrade Data SSR x10\nCharacter Upgrade Data SSR x10\nSupporter Upgrade Data SSR x10\n\n[List of Selectalble Music]\nSaikyo no Akashi-King of heart\nMoeagare Toshi Imawashiki Syukumei wo koete\nWaga Kokoro Meikyo Shisui - Saredo Kono Te wa Rekka no Gotoku\nGekito no Naka Sorezore no Yakusoku\nKessen no toki Kitari\nYomigaeru Akuma sono Kyukyoku no Sugata wo Arawasu\nIdainaru Eiyu\nKiba wo Hikarase Ryu ga Mau\nYuki toiu Na no Kunsyo wo Mune ni\nKosakusuru Kitai\nFLYING IN THE SKY\nTrust You Forever\nShisyunki wo Koroshita Syonen no Tsubasa\nKuroi Kaze ga Shi e Izanau\nKaerichi to Kayaku no Nioi no naka\nShikabane ni Umoreta Heiwa wo Sagashite\nRyu ga Oyogu Toki Subete wa Owaru\nKyouko-Toppa\nGundam Syugeki\nZero no Densetsu -XXXG-OOWO\nZechs ga Kuru\nOZ Mobile Suit Sekkin\nNinmu-Suiko\nMirai eno Hisyo\nJUST COMMUNICATION\nRHYTHM EMOTION\nWHITE REFLECTION\nSatellite Cannon\nTsuigeki\nShisen\nBoku ga New Type da\nFukkatsu no Garrod\nSemarikuru Kyodaina Chikara\nKakenukeru GX\nNew Weapon Divider\nDREAMS\nResolution\nMobile Suit Gundam : Iron-Blooded Orphans\nDefenders of the Wild\nSigns of Victory\nAll Out\nStrengths Focus\nIn a Fury\nEin System\nLast Extremity\nRaise your flag\nSurvivor\nRAGE OF DUST - New Version -\nFighter\nNibunnoichi\nDaikessen -Theme/Ending1/Ending2"
+  },
+  {
+    "id": 190222511100100001,
+    "value": "[1-Time Only] Value Pack with Diamond x13,400"
+  },
+  {
+    "id": 190222511400100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (HATHAWAY) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222511400200001,
+    "value": "[Notes]\n* Unlocked music can only be used on the platform where the Music Pack was purchased.\n* Unlocked music cannot be transferred between platforms.\n* Music will be downloaded when a Music Pack is purchased. A Wi-Fi connection is recommended when purchasing.\n\n[Pack Contents]\nSelectalble Music x51\nPremium Unit Assembly Ticket x6\nUnit Upgrade Data SSR x10\nCharacter Upgrade Data SSR x10\nSupporter Upgrade Data SSR x10\n\n[List of Selectalble Music]\nGUNDAM Syutsugeki\nSenjo no Ketsui\nTobe! FREEDOM\nSTRIKE Syutsugeki\nSento Taisei\nAku no 3 Heiki\nAseri\nSento-Butai\nInvoke\nmoment\nBelieve\nRealize\nMission Kaishi\nKakusei Shinn Asuka\nYoki to Hohoemi\nCOLONY - Zettai-Zetsumei\nHajimari ga Yue\nSyutsugeki! IMPULSE\nKira, Sono Kokoro no Mama Ni\nKyoki no Hate\nHakai to Zetsubo\nIgnited\nPRIDE\nBokutachinoyukue\nPOWER\nCOUNTERATTACK\nAPPROACH\nUNION\nUPROAR\nSEIZURE\nFIGHT\nRECOVER\nINTERVENTION\nOO GUNDAM\nStrike\nRestart\nMASURAO\nTRANS-AM RAISER\nSCRAMBLE\nDECISIVE BATTLE\nDaybreak's Bell\nAsh Like Snow\nHappy Birthday to You\nThe Witch From Mercury\nGUNDAM PHARACT\nChaos\nEnemy Onslaught\nThe Witches from Earth\nAERIAL REBUILD\nLiberation from the Curse\nThe Blessing"
+  },
+  {
+    "id": 190222512400100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (SEED DESTINY) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222512400200001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (The Witch from Mercury) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222512400300001,
+    "value": "[1-Time Only]\nEternal Lucky Bag!\n\n[Pack Contents]\n- Diamond x1,600\n- [Lucky Bag 2026] 1 SSR or Higher Unit Guaranteed Unit Assembly Ticket x1\n- Unit Upgrade Data SSR x30\n- Character Upgrade Data SSR x30\n- Supporter Upgrade Data SSR x30"
+  },
+  {
+    "id": 190222512400400001,
+    "value": "[1-Time Only]\nEternal Lucky Bag!\n\n[Pack Contents]\n- Diamond x10,000\n- [Lucky Bag 2026] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket x1\n- Unit Upgrade Data SSR x200\n- Character Upgrade Data SSR x200\n- Supporter Upgrade Data SSR x200"
+  },
+  {
+    "id": 190222512400500001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x600\n- AP Pack x1"
+  },
+  {
+    "id": 190222512400600001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x4,000\n- AP Pack x5"
+  },
+  {
+    "id": 190222512400700001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x13,400\n- AP Pack x10"
+  },
+  {
+    "id": 190222601500100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (X) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222602200100001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x1,500\n- [8 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly Ticket x1"
+  },
+  {
+    "id": 190222602200200001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x10,000\n- [8 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket x1"
+  },
+  {
+    "id": 190252510500100001,
+    "value": "Eternal Pass is a monthly service that increases your number of daily stage attempts and includes gift items."
+  }
+]

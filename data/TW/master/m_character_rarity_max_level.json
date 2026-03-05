@@ -1,0 +1,26 @@
+[
+  {
+    "RarityTypeIndex": 0,
+    "MaxLevel": 100
+  },
+  {
+    "RarityTypeIndex": 1,
+    "MaxLevel": 60
+  },
+  {
+    "RarityTypeIndex": 2,
+    "MaxLevel": 70
+  },
+  {
+    "RarityTypeIndex": 3,
+    "MaxLevel": 80
+  },
+  {
+    "RarityTypeIndex": 4,
+    "MaxLevel": 90
+  },
+  {
+    "RarityTypeIndex": 5,
+    "MaxLevel": 100
+  }
+]

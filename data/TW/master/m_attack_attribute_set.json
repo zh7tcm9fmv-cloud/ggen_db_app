@@ -1,0 +1,50 @@
+[
+  {
+    "AttackAttributeSetId": 1,
+    "AttackAttributeTypeIndex": 1
+  },
+  {
+    "AttackAttributeSetId": 2,
+    "AttackAttributeTypeIndex": 2
+  },
+  {
+    "AttackAttributeSetId": 3,
+    "AttackAttributeTypeIndex": 3
+  },
+  {
+    "AttackAttributeSetId": 4,
+    "AttackAttributeTypeIndex": 1
+  },
+  {
+    "AttackAttributeSetId": 4,
+    "AttackAttributeTypeIndex": 2
+  },
+  {
+    "AttackAttributeSetId": 5,
+    "AttackAttributeTypeIndex": 1
+  },
+  {
+    "AttackAttributeSetId": 5,
+    "AttackAttributeTypeIndex": 3
+  },
+  {
+    "AttackAttributeSetId": 6,
+    "AttackAttributeTypeIndex": 2
+  },
+  {
+    "AttackAttributeSetId": 6,
+    "AttackAttributeTypeIndex": 3
+  },
+  {
+    "AttackAttributeSetId": 7,
+    "AttackAttributeTypeIndex": 1
+  },
+  {
+    "AttackAttributeSetId": 7,
+    "AttackAttributeTypeIndex": 2
+  },
+  {
+    "AttackAttributeSetId": 7,
+    "AttackAttributeTypeIndex": 3
+  }
+]

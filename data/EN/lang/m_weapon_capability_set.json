@@ -1,0 +1,18 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 120200000000000001,
+    "value": "Cannot be used underwater"
+  },
+  {
+    "id": 120300000000000001,
+    "value": "Damage to underwater enemies is halved"
+  },
+  {
+    "id": 120300000000000002,
+    "value": "Damage to underwater enemies has no effect"
+  }
+]

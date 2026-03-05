@@ -1,0 +1,1002 @@
+[
+  {
+    "id": 140500000001000601,
+    "value": "HP Repair LV1"
+  },
+  {
+    "id": 140500000001000602,
+    "value": "HP Repair LV2"
+  },
+  {
+    "id": 140500000001000603,
+    "value": "HP Repair LV3"
+  },
+  {
+    "id": 140500000001000604,
+    "value": "HP Repair LV4"
+  },
+  {
+    "id": 140500000001000605,
+    "value": "HP Repair LV5"
+  },
+  {
+    "id": 140500000001100701,
+    "value": "EN Charge LV1"
+  },
+  {
+    "id": 140500000001100702,
+    "value": "EN Charge LV2"
+  },
+  {
+    "id": 140500000001100703,
+    "value": "EN Charge LV3"
+  },
+  {
+    "id": 140500000001100704,
+    "value": "EN Charge LV4"
+  },
+  {
+    "id": 140500000001100705,
+    "value": "EN Charge LV5"
+  },
+  {
+    "id": 140500000001200901,
+    "value": "Boost Range LV1"
+  },
+  {
+    "id": 140500000001200902,
+    "value": "Boost Range LV2"
+  },
+  {
+    "id": 140500000001200903,
+    "value": "Boost Range LV3"
+  },
+  {
+    "id": 140500000001200904,
+    "value": "Boost Range LV4"
+  },
+  {
+    "id": 140500000001200905,
+    "value": "Boost Range LV5"
+  },
+  {
+    "id": 140500000001300801,
+    "value": "MP Up LV1"
+  },
+  {
+    "id": 140500000001300802,
+    "value": "MP Up LV2"
+  },
+  {
+    "id": 140500000001300803,
+    "value": "MP Up LV3"
+  },
+  {
+    "id": 140500000001300804,
+    "value": "MP Up LV4"
+  },
+  {
+    "id": 140500000001300805,
+    "value": "MP Up LV5"
+  },
+  {
+    "id": 140500000001600501,
+    "value": "High Speed LV1"
+  },
+  {
+    "id": 140500000001600502,
+    "value": "High Speed LV2"
+  },
+  {
+    "id": 140500000001600503,
+    "value": "High Speed LV3"
+  },
+  {
+    "id": 140500000001600504,
+    "value": "High Speed LV4"
+  },
+  {
+    "id": 140500000001600505,
+    "value": "High Speed LV5"
+  },
+  {
+    "id": 140500000001700101,
+    "value": "Attack Burst LV1"
+  },
+  {
+    "id": 140500000001700102,
+    "value": "Attack Burst LV2"
+  },
+  {
+    "id": 140500000001700103,
+    "value": "Attack Burst LV3"
+  },
+  {
+    "id": 140500000001700104,
+    "value": "Attack Burst LV4"
+  },
+  {
+    "id": 140500000001700105,
+    "value": "Attack Burst LV5"
+  },
+  {
+    "id": 140500000002101001,
+    "value": "Boost Critical LV1"
+  },
+  {
+    "id": 140500000002101002,
+    "value": "Boost Critical LV2"
+  },
+  {
+    "id": 140500000002101003,
+    "value": "Boost Critical LV3"
+  },
+  {
+    "id": 140500000002101004,
+    "value": "Boost Critical LV4"
+  },
+  {
+    "id": 140500000002101005,
+    "value": "Boost Critical LV5"
+  },
+  {
+    "id": 140500000002200201,
+    "value": "Lock On LV1"
+  },
+  {
+    "id": 140500000002200202,
+    "value": "Lock On LV2"
+  },
+  {
+    "id": 140500000002200203,
+    "value": "Lock On LV3"
+  },
+  {
+    "id": 140500000002200204,
+    "value": "Lock On LV4"
+  },
+  {
+    "id": 140500000002200205,
+    "value": "Lock On LV5"
+  },
+  {
+    "id": 140500000002300301,
+    "value": "Sway LV1"
+  },
+  {
+    "id": 140500000002300302,
+    "value": "Sway LV2"
+  },
+  {
+    "id": 140500000002300303,
+    "value": "Sway LV3"
+  },
+  {
+    "id": 140500000002300304,
+    "value": "Sway LV4"
+  },
+  {
+    "id": 140500000002300305,
+    "value": "Sway LV5"
+  },
+  {
+    "id": 140500000002401101,
+    "value": "Save EN LV1"
+  },
+  {
+    "id": 140500000002401102,
+    "value": "Save EN LV2"
+  },
+  {
+    "id": 140500000002401103,
+    "value": "Save EN LV3"
+  },
+  {
+    "id": 140500000002401104,
+    "value": "Save EN LV4"
+  },
+  {
+    "id": 140500000002401105,
+    "value": "Save EN LV5"
+  },
+  {
+    "id": 140500000002600401,
+    "value": "Force Guard LV1"
+  },
+  {
+    "id": 140500000002600402,
+    "value": "Force Guard LV2"
+  },
+  {
+    "id": 140500000002600403,
+    "value": "Force Guard LV3"
+  },
+  {
+    "id": 140500000002600404,
+    "value": "Force Guard LV4"
+  },
+  {
+    "id": 140500000002600405,
+    "value": "Force Guard LV5"
+  },
+  {
+    "id": 140500000009000100,
+    "value": "MP Up (Range) "
+  },
+  {
+    "id": 140500000009000101,
+    "value": "Attack Burst (Range) "
+  },
+  {
+    "id": 140500000009000105,
+    "value": "Force Guard (Range) "
+  },
+  {
+    "id": 140500000130140101,
+    "value": "MP Up (Range) LV1"
+  },
+  {
+    "id": 140500000130140201,
+    "value": "MP Up (Range) LV2"
+  },
+  {
+    "id": 140500000130140301,
+    "value": "MP Up (Range) LV3"
+  },
+  {
+    "id": 140500000130140401,
+    "value": "MP Up (Range) LV4"
+  },
+  {
+    "id": 140500000130140501,
+    "value": "MP Up (Range) LV5"
+  },
+  {
+    "id": 140500000180160101,
+    "value": "Ranged Boost LV 1"
+  },
+  {
+    "id": 140500000180160201,
+    "value": "Ranged Boost LV 2"
+  },
+  {
+    "id": 140500000180160301,
+    "value": "Ranged Boost LV 3"
+  },
+  {
+    "id": 140500000180160401,
+    "value": "Ranged Boost LV 4"
+  },
+  {
+    "id": 140500000180160501,
+    "value": "Ranged Boost LV 5"
+  },
+  {
+    "id": 140500000190150101,
+    "value": "Melee Boost LV 1"
+  },
+  {
+    "id": 140500000190150201,
+    "value": "Melee Boost LV 2"
+  },
+  {
+    "id": 140500000190150301,
+    "value": "Melee Boost LV 3"
+  },
+  {
+    "id": 140500000190150401,
+    "value": "Melee Boost LV 4"
+  },
+  {
+    "id": 140500000190150501,
+    "value": "Melee Boost LV 5"
+  },
+  {
+    "id": 140500000200170101,
+    "value": "Awaken Boost LV 1"
+  },
+  {
+    "id": 140500000200170201,
+    "value": "Awaken Boost LV 2"
+  },
+  {
+    "id": 140500000200170301,
+    "value": "Awaken Boost LV 3"
+  },
+  {
+    "id": 140500000200170401,
+    "value": "Awaken Boost LV 4"
+  },
+  {
+    "id": 140500000200170501,
+    "value": "Awaken Boost LV 5"
+  },
+  {
+    "id": 140500000280140101,
+    "value": "EN and HP Restoration LV 1"
+  },
+  {
+    "id": 140500000280140102,
+    "value": ""
+  },
+  {
+    "id": 140500000280140201,
+    "value": "EN and HP Restoration LV 2"
+  },
+  {
+    "id": 140500000280140202,
+    "value": ""
+  },
+  {
+    "id": 140500000280140301,
+    "value": "EN and HP Restoration LV 3"
+  },
+  {
+    "id": 140500000280140302,
+    "value": ""
+  },
+  {
+    "id": 140500000280140401,
+    "value": "EN and HP Restoration LV 4"
+  },
+  {
+    "id": 140500000280140402,
+    "value": ""
+  },
+  {
+    "id": 140500000280140501,
+    "value": "EN and HP Restoration LV 5"
+  },
+  {
+    "id": 140500000280140502,
+    "value": ""
+  },
+  {
+    "id": 140500000290180101,
+    "value": "Chance Step Count Increase LV 1 (once per battle)"
+  },
+  {
+    "id": 140500000290180201,
+    "value": "Chance Step Count Increase LV 2 (once per battle)"
+  },
+  {
+    "id": 140500000290180301,
+    "value": "Chance Step Count Increase LV 3 (once per battle)"
+  },
+  {
+    "id": 140500000290180401,
+    "value": "Chance Step Count Increase LV 4 (once per battle)"
+  },
+  {
+    "id": 140500000290180501,
+    "value": "Chance Step Count Increase LV 5 (once per battle)"
+  },
+  {
+    "id": 140500000300190101,
+    "value": "Support Attack Count Increase LV 1 (once per battle)"
+  },
+  {
+    "id": 140500000300190201,
+    "value": "Support Attack Count Increase LV 2 (once per battle)"
+  },
+  {
+    "id": 140500000300190301,
+    "value": "Support Attack Count Increase LV 3 (once per battle)"
+  },
+  {
+    "id": 140500000300190401,
+    "value": "Support Attack Count Increase LV 4 (once per battle)"
+  },
+  {
+    "id": 140500000300190501,
+    "value": "Support Attack Count Increase LV 5 (once per battle)"
+  },
+  {
+    "id": 140500000310200101,
+    "value": "Support Defense Count Increase LV 1 (once per battle)"
+  },
+  {
+    "id": 140500000310200201,
+    "value": "Support Defense Count Increase LV 2 (once per battle)"
+  },
+  {
+    "id": 140500000310200301,
+    "value": "Support Defense Count Increase LV 3 (once per battle)"
+  },
+  {
+    "id": 140500000310200401,
+    "value": "Support Defense Count Increase LV 4 (once per battle)"
+  },
+  {
+    "id": 140500000310200501,
+    "value": "Support Defense Count Increase LV 5 (once per battle)"
+  },
+  {
+    "id": 140500000320210101,
+    "value": "Attack Burst (Range) LV 1"
+  },
+  {
+    "id": 140500000320210201,
+    "value": "Attack Burst (Range) LV 2"
+  },
+  {
+    "id": 140500000320210301,
+    "value": "Attack Burst (Range) LV 3"
+  },
+  {
+    "id": 140500000320210401,
+    "value": "Attack Burst (Range) LV 4"
+  },
+  {
+    "id": 140500000320210501,
+    "value": "Attack Burst (Range) LV 5"
+  },
+  {
+    "id": 140500000340230201,
+    "value": "Force Guard (Range) LV 2"
+  },
+  {
+    "id": 140600000001000601,
+    "value": "Restore HP by 30%."
+  },
+  {
+    "id": 140600000001000602,
+    "value": "Restore HP by 40%."
+  },
+  {
+    "id": 140600000001000603,
+    "value": "Restore HP by 50%."
+  },
+  {
+    "id": 140600000001000604,
+    "value": "Restore HP by 60%."
+  },
+  {
+    "id": 140600000001000605,
+    "value": "Restore HP by 70%."
+  },
+  {
+    "id": 140600000001100701,
+    "value": "Restore EN by 30%."
+  },
+  {
+    "id": 140600000001100702,
+    "value": "Restore EN by 40%."
+  },
+  {
+    "id": 140600000001100703,
+    "value": "Restore EN by 50%."
+  },
+  {
+    "id": 140600000001100704,
+    "value": "Restore EN by 60%."
+  },
+  {
+    "id": 140600000001100705,
+    "value": "Restore EN by 70%."
+  },
+  {
+    "id": 140600000001200901,
+    "value": "During the next fight after activating the effect Increase range by 1."
+  },
+  {
+    "id": 140600000001200902,
+    "value": "During the next fight after activating the effect Increase range by 2."
+  },
+  {
+    "id": 140600000001200903,
+    "value": "During the next fight after activating the effect Increase range by 3."
+  },
+  {
+    "id": 140600000001200904,
+    "value": "During the next fight after activating the effect Increase range by 4."
+  },
+  {
+    "id": 140600000001200905,
+    "value": "During the next fight after activating the effect Increase range by 5."
+  },
+  {
+    "id": 140600000001300801,
+    "value": "Increase MP by 3."
+  },
+  {
+    "id": 140600000001300802,
+    "value": "Increase MP by 4."
+  },
+  {
+    "id": 140600000001300803,
+    "value": "Increase MP by 5."
+  },
+  {
+    "id": 140600000001300804,
+    "value": "Increase MP by 6."
+  },
+  {
+    "id": 140600000001300805,
+    "value": "Increase MP by 7."
+  },
+  {
+    "id": 140600000001600501,
+    "value": "During the next movement after activating the effect MOV +1 in all terrain."
+  },
+  {
+    "id": 140600000001600502,
+    "value": "During the next movement after activating the effect MOV +2 in all terrain."
+  },
+  {
+    "id": 140600000001600503,
+    "value": "During the next movement after activating the effect MOV +3 in all terrain."
+  },
+  {
+    "id": 140600000001600504,
+    "value": "During the next movement after activating the effect MOV +4 in all terrain."
+  },
+  {
+    "id": 140600000001600505,
+    "value": "During the next movement after activating the effect MOV +5 in all terrain."
+  },
+  {
+    "id": 140600000001700101,
+    "value": "When fighting, increase damage dealt to enemies by 5% [1turn(s)]."
+  },
+  {
+    "id": 140600000001700102,
+    "value": "When fighting, increase damage dealt to enemies by 10% [1turn(s)]."
+  },
+  {
+    "id": 140600000001700103,
+    "value": "When fighting, increase damage dealt to enemies by 15% [1turn(s)]."
+  },
+  {
+    "id": 140600000001700104,
+    "value": "When fighting, increase damage dealt to enemies by 20% [1turn(s)]."
+  },
+  {
+    "id": 140600000001700105,
+    "value": "When fighting, increase damage dealt to enemies by 25% [1 turn]."
+  },
+  {
+    "id": 140600000002101001,
+    "value": "Increase Critical Rate by 10% [1 turn]."
+  },
+  {
+    "id": 140600000002101002,
+    "value": "Increase Critical Rate by 20% [1 turn]."
+  },
+  {
+    "id": 140600000002101003,
+    "value": "Increase Critical Rate by 30% [1 turn]."
+  },
+  {
+    "id": 140600000002101004,
+    "value": "Increase Critical Rate by 40% [1 turn]."
+  },
+  {
+    "id": 140600000002101005,
+    "value": "Increase Critical Rate by 50% [1 turn]."
+  },
+  {
+    "id": 140600000002200201,
+    "value": "During the next fight after activating the effect Increases Accuracy by 100%."
+  },
+  {
+    "id": 140600000002200202,
+    "value": "During the next fight after activating the effect Increases Accuracy by 100%."
+  },
+  {
+    "id": 140600000002200203,
+    "value": "During the next fight after activating the effect Increases Accuracy by 100%."
+  },
+  {
+    "id": 140600000002200204,
+    "value": "During the next fight after activating the effect Increases Accuracy by 100%."
+  },
+  {
+    "id": 140600000002200205,
+    "value": "During the next fight after activating the effect Increases Accuracy by 100%."
+  },
+  {
+    "id": 140600000002300301,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
+  },
+  {
+    "id": 140600000002300302,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
+  },
+  {
+    "id": 140600000002300303,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
+  },
+  {
+    "id": 140600000002300304,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
+  },
+  {
+    "id": 140600000002300305,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
+  },
+  {
+    "id": 140600000002401101,
+    "value": "Reduce weapons EN consumption by 5% [1turn(s)]."
+  },
+  {
+    "id": 140600000002401102,
+    "value": "Reduce weapons EN consumption by 10% [1turn(s)]."
+  },
+  {
+    "id": 140600000002401103,
+    "value": "Reduce weapons EN consumption by 15% [1turn(s)]."
+  },
+  {
+    "id": 140600000002401104,
+    "value": "Reduce weapons EN consumption by 20% [1turn(s)]."
+  },
+  {
+    "id": 140600000002401105,
+    "value": "Reduce weapons EN consumption by 25% [1turn(s)]."
+  },
+  {
+    "id": 140600000002600401,
+    "value": "Reduce damage taken by 5% [1turn(s)]."
+  },
+  {
+    "id": 140600000002600402,
+    "value": "Reduce damage taken by 10% [1turn(s)]."
+  },
+  {
+    "id": 140600000002600403,
+    "value": "Reduce damage taken by 15% [1turn(s)]."
+  },
+  {
+    "id": 140600000002600404,
+    "value": "Reduce damage taken by 20% [1turn(s)]."
+  },
+  {
+    "id": 140600000002600405,
+    "value": "Reduce damage taken by 25% [1turn(s)]."
+  },
+  {
+    "id": 140600000009000100,
+    "value": "Characters piloting squad units within range\nIncrease MP by 12."
+  },
+  {
+    "id": 140600000009000101,
+    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 200% [1turn]."
+  },
+  {
+    "id": 140600000009000105,
+    "value": "Characters piloting squad units within range\nReduce damage taken by 50% [1turn]."
+  },
+  {
+    "id": 140600000130140101,
+    "value": "Characters piloting squad units within range\nIncrease MP by 3."
+  },
+  {
+    "id": 140600000130140201,
+    "value": "Characters piloting squad units within range\nIncrease MP by 4."
+  },
+  {
+    "id": 140600000130140301,
+    "value": "Characters piloting squad units within range\nIncrease MP by 5."
+  },
+  {
+    "id": 140600000130140401,
+    "value": "Characters piloting squad units within range\nIncrease MP by 6."
+  },
+  {
+    "id": 140600000130140501,
+    "value": "Characters piloting squad units within range\nIncrease MP by 7."
+  },
+  {
+    "id": 140600000180160101,
+    "value": "Increase Ranged by 5% [1turn]."
+  },
+  {
+    "id": 140600000180160201,
+    "value": "Increase Ranged by10% [1turn]."
+  },
+  {
+    "id": 140600000180160301,
+    "value": "Increase Ranged by15% [1turn]."
+  },
+  {
+    "id": 140600000180160401,
+    "value": "Increase Ranged by20% [1turn]."
+  },
+  {
+    "id": 140600000180160501,
+    "value": "Increase Ranged by25% [1turn]."
+  },
+  {
+    "id": 140600000190150101,
+    "value": "Increase Melee by 5% [1turn]."
+  },
+  {
+    "id": 140600000190150201,
+    "value": "Increase Melee by 10% [1turn]."
+  },
+  {
+    "id": 140600000190150301,
+    "value": "Increase Melee by 15% [1turn]."
+  },
+  {
+    "id": 140600000190150401,
+    "value": "Increase Melee by 20% [1turn]."
+  },
+  {
+    "id": 140600000190150501,
+    "value": "Increase Melee by 25% [1turn]."
+  },
+  {
+    "id": 140600000200170101,
+    "value": "Increase Awaken by 5% [1turn]."
+  },
+  {
+    "id": 140600000200170201,
+    "value": "Increase Awaken by 10% [1turn]."
+  },
+  {
+    "id": 140600000200170301,
+    "value": "Increase Awaken by 15% [1turn]."
+  },
+  {
+    "id": 140600000200170401,
+    "value": "Increase Awaken by 20% [1turn]."
+  },
+  {
+    "id": 140600000200170501,
+    "value": "Increase Awaken by 25% [1turn]."
+  },
+  {
+    "id": 140600000280140101,
+    "value": "Restore own HP and EN 15%."
+  },
+  {
+    "id": 140600000280140102,
+    "value": ""
+  },
+  {
+    "id": 140600000280140201,
+    "value": "Restore own HP and EN 20%."
+  },
+  {
+    "id": 140600000280140202,
+    "value": ""
+  },
+  {
+    "id": 140600000280140301,
+    "value": "Restore own HP and EN 25%."
+  },
+  {
+    "id": 140600000280140302,
+    "value": ""
+  },
+  {
+    "id": 140600000280140401,
+    "value": "Restore own HP and EN 30%."
+  },
+  {
+    "id": 140600000280140402,
+    "value": ""
+  },
+  {
+    "id": 140600000280140501,
+    "value": "Restore own HP and EN 35%."
+  },
+  {
+    "id": 140600000280140502,
+    "value": ""
+  },
+  {
+    "id": 140600000290180101,
+    "value": "Chance Step +1 time.\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000290180201,
+    "value": "Chance Step +2 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000290180301,
+    "value": "Chance Step +3 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000290180401,
+    "value": "Chance Step +4 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000290180501,
+    "value": "Chance Step +5 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000300190101,
+    "value": "Support Attack/Counter +1 time.\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000300190201,
+    "value": "Support Attack/Counter +2 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000300190301,
+    "value": "Support Attack/Counter +3 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000300190401,
+    "value": "Support Attack/Counter +4 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000300190501,
+    "value": "Support Attack/Counter +5 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000310200101,
+    "value": "Support Defense +1 time.\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000310200201,
+    "value": "Support Defense +2 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000310200301,
+    "value": "Support Defense +3 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000310200401,
+    "value": "Support Defense +4 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000310200501,
+    "value": "Support Defense +5 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 140600000340230201,
+    "value": "Characters piloting squad units within range\nReduce damage taken by 12% [1turn]."
+  },
+  {
+    "id": 141300000270130101,
+    "value": "Increased ACC LV 1"
+  },
+  {
+    "id": 141300000270130102,
+    "value": "Increased EVA LV 1"
+  },
+  {
+    "id": 141300000270130201,
+    "value": "Increased ACC LV 2"
+  },
+  {
+    "id": 141300000270130202,
+    "value": "Increased EVA LV 2"
+  },
+  {
+    "id": 141300000270130301,
+    "value": "Increased ACC LV 3"
+  },
+  {
+    "id": 141300000270130302,
+    "value": "Increased EVA LV 3"
+  },
+  {
+    "id": 141300000270130401,
+    "value": "Increased ACC LV 4"
+  },
+  {
+    "id": 141300000270130402,
+    "value": "Increased EVA LV 4"
+  },
+  {
+    "id": 141300000270130501,
+    "value": "Increased ACC LV 5"
+  },
+  {
+    "id": 141300000270130502,
+    "value": "Increased EVA LV 5"
+  },
+  {
+    "id": 141300000330220101,
+    "value": "Zero EN LV 1"
+  },
+  {
+    "id": 141300000330220102,
+    "value": "Zero Ammo LV 1"
+  },
+  {
+    "id": 141300000330220201,
+    "value": "Zero EN LV 2"
+  },
+  {
+    "id": 141300000330220202,
+    "value": "Zero Ammo LV 2"
+  },
+  {
+    "id": 141300000330220301,
+    "value": "Zero EN LV 3"
+  },
+  {
+    "id": 141300000330220302,
+    "value": "Zero Ammo LV 3"
+  },
+  {
+    "id": 141400000270130101,
+    "value": "Increases Accuracy by 15% [1 turn]."
+  },
+  {
+    "id": 141400000270130102,
+    "value": "Increase Evasion by 15% [1 turn]."
+  },
+  {
+    "id": 141400000270130201,
+    "value": "Increases Accuracy by 20% [1 turn]."
+  },
+  {
+    "id": 141400000270130202,
+    "value": "Increase Evasion by 20% [1 turn]."
+  },
+  {
+    "id": 141400000270130301,
+    "value": "Increases Accuracy by 25% [1 turn]."
+  },
+  {
+    "id": 141400000270130302,
+    "value": "Increase Evasion by 25% [1 turn]."
+  },
+  {
+    "id": 141400000270130401,
+    "value": "Increases Accuracy by 35% [1 turn]."
+  },
+  {
+    "id": 141400000270130402,
+    "value": "Increase Evasion by 35% [1 turn]."
+  },
+  {
+    "id": 141400000270130501,
+    "value": "Increases Accuracy by 35% [1 turn]."
+  },
+  {
+    "id": 141400000270130502,
+    "value": "Increase Evasion by 35% [1 turn]."
+  },
+  {
+    "id": 141400000320210101,
+    "value": "When fighting, increase damage dealt to enemies by 10% [1turn]."
+  },
+  {
+    "id": 141400000320210201,
+    "value": "When fighting, increase damage dealt to enemies by 12% [1turn]."
+  },
+  {
+    "id": 141400000320210301,
+    "value": "When fighting, increase damage dealt to enemies by 15% [1turn]."
+  },
+  {
+    "id": 141400000320210401,
+    "value": "When fighting, increase damage dealt to enemies by 17% [1turn]."
+  },
+  {
+    "id": 141400000320210501,
+    "value": "When fighting, increase damage dealt to enemies by 20% [1turn]."
+  },
+  {
+    "id": 141400000330220101,
+    "value": "Can be used once without consuming EN from own weapon."
+  },
+  {
+    "id": 141400000330220102,
+    "value": "Can be used once without consuming MAP Weapon's remaining ammo."
+  },
+  {
+    "id": 141400000330220201,
+    "value": "Can be used once without consuming EN from own weapon."
+  },
+  {
+    "id": 141400000330220202,
+    "value": "Can be used once without consuming MAP Weapon's remaining ammo."
+  },
+  {
+    "id": 141400000330220301,
+    "value": "Can be used once without consuming EN from own weapon."
+  },
+  {
+    "id": 141400000330220302,
+    "value": "Can be used once without consuming MAP Weapon's remaining ammo."
+  }
+]

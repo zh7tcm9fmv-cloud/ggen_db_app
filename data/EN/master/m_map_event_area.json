@@ -1,0 +1,101 @@
+[
+  {
+    "MapEventId": 210001,
+    "AreaNumber": 1,
+    "AreaPositionX": 1,
+    "AreaPositionY": 1,
+    "ScheduleId": 2506101401,
+    "ReleaseConditionMapEventPanelId": 0,
+    "FirstMapEventPanelId": 2100010101,
+    "NameLanguageId": 280100000021000101,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 210001,
+    "AreaNumber": 2,
+    "AreaPositionX": 1,
+    "AreaPositionY": 2,
+    "ScheduleId": 2506101401,
+    "ReleaseConditionMapEventPanelId": 2100010118,
+    "FirstMapEventPanelId": 2100010201,
+    "NameLanguageId": 280100000021000102,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 210001,
+    "AreaNumber": 3,
+    "AreaPositionX": 1,
+    "AreaPositionY": 3,
+    "ScheduleId": 2506101401,
+    "ReleaseConditionMapEventPanelId": 2100010221,
+    "FirstMapEventPanelId": 2100010301,
+    "NameLanguageId": 280100000021000103,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 210002,
+    "AreaNumber": 1,
+    "AreaPositionX": 1,
+    "AreaPositionY": 1,
+    "ScheduleId": 2508301401,
+    "ReleaseConditionMapEventPanelId": 0,
+    "FirstMapEventPanelId": 2100020101,
+    "NameLanguageId": 280100000021000101,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 210002,
+    "AreaNumber": 2,
+    "AreaPositionX": 1,
+    "AreaPositionY": 2,
+    "ScheduleId": 2508301401,
+    "ReleaseConditionMapEventPanelId": 2100020119,
+    "FirstMapEventPanelId": 2100020201,
+    "NameLanguageId": 280100000021000102,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 210002,
+    "AreaNumber": 3,
+    "AreaPositionX": 1,
+    "AreaPositionY": 3,
+    "ScheduleId": 2508301401,
+    "ReleaseConditionMapEventPanelId": 2100020228,
+    "FirstMapEventPanelId": 2100020301,
+    "NameLanguageId": 280100000021000103,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 240001,
+    "AreaNumber": 1,
+    "AreaPositionX": 1,
+    "AreaPositionY": 1,
+    "ScheduleId": 2512103001,
+    "ReleaseConditionMapEventPanelId": 0,
+    "FirstMapEventPanelId": 2400010101,
+    "NameLanguageId": 280100000024000101,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 240001,
+    "AreaNumber": 2,
+    "AreaPositionX": 1,
+    "AreaPositionY": 2,
+    "ScheduleId": 2512103001,
+    "ReleaseConditionMapEventPanelId": 2400010126,
+    "FirstMapEventPanelId": 2400010201,
+    "NameLanguageId": 280100000024000102,
+    "BgEffectLevel": 0
+  },
+  {
+    "MapEventId": 240001,
+    "AreaNumber": 3,
+    "AreaPositionX": 1,
+    "AreaPositionY": 3,
+    "ScheduleId": 2512103001,
+    "ReleaseConditionMapEventPanelId": 2400010230,
+    "FirstMapEventPanelId": 2400010301,
+    "NameLanguageId": 280100000024000103,
+    "BgEffectLevel": 0
+  }
+]

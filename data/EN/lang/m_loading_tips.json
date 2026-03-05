@@ -1,0 +1,202 @@
+[
+  {
+    "id": 170500000000000001,
+    "value": "Upgrade your weapons."
+  },
+  {
+    "id": 170500000000000002,
+    "value": "Use bonus actions to your advantage."
+  },
+  {
+    "id": 170500000000000003,
+    "value": "Aim for a Support Attack."
+  },
+  {
+    "id": 170500000000000004,
+    "value": "Protect allies with a Support Defense."
+  },
+  {
+    "id": 170500000000000005,
+    "value": "Give SP conversion a try."
+  },
+  {
+    "id": 170500000000000006,
+    "value": "Give scouting a try."
+  },
+  {
+    "id": 170500000000000007,
+    "value": "Give dismantlement a try."
+  },
+  {
+    "id": 170500000000000008,
+    "value": "Aim for Development Diagram completion."
+  },
+  {
+    "id": 170500000000000009,
+    "value": "Take on secret battles."
+  },
+  {
+    "id": 170500000000000010,
+    "value": "Try saving formations."
+  },
+  {
+    "id": 170500000000000011,
+    "value": "Take advantage of the Warship Cruise."
+  },
+  {
+    "id": 170500000000000012,
+    "value": "Take advantage of character requests."
+  },
+  {
+    "id": 170500000000000013,
+    "value": "Always be mindful of your remaining EN."
+  },
+  {
+    "id": 170500000000000014,
+    "value": "Be wary of the enemy's range of attack."
+  },
+  {
+    "id": 170500000000000015,
+    "value": "Try using support skills."
+  },
+  {
+    "id": 170500000000000016,
+    "value": "Try using character skills."
+  },
+  {
+    "id": 170500000000000017,
+    "value": "Keep an eye on your Vigor."
+  },
+  {
+    "id": 170500000000000018,
+    "value": "Try using MAP Weapons."
+  },
+  {
+    "id": 170500000000000019,
+    "value": "Formations: mind terrain capability."
+  },
+  {
+    "id": 170500000000000020,
+    "value": "Formations: consider types."
+  },
+  {
+    "id": 170500000000000021,
+    "value": "Formations: consider attack traits."
+  },
+  {
+    "id": 170500000000000022,
+    "value": "Formations: utilize leader skills."
+  },
+  {
+    "id": 170500000000000023,
+    "value": "Give unit limit-breaking a try."
+  },
+  {
+    "id": 170500000000000024,
+    "value": "Give supporter limit-breaking a try."
+  },
+  {
+    "id": 170500000000000025,
+    "value": "Try equipping modifications."
+  },
+  {
+    "id": 170600000000000001,
+    "value": "As you level up your weapons, their Power increases while their EN\nconsumption decreases. Collect weapon upgrade material to enhance your weapons."
+  },
+  {
+    "id": 170600000000000002,
+    "value": "When you destroy an enemy with an attack, you can take another action\nduring the same turn. Therefore, think carefully about which units to use to\nfinish off enemies."
+  },
+  {
+    "id": 170600000000000003,
+    "value": "When another one of your units attacks, they will be able to perform an\nadditional attack. This action is only possible for characters\nwith Support Attack."
+  },
+  {
+    "id": 170600000000000004,
+    "value": "When your units or guest force units are attacked, characters with\nSupport Defense can take damage in place of the attacked unit."
+  },
+  {
+    "id": 170600000000000005,
+    "value": "After performing SP conversion on a unit, its base stats increase and it can\nbe leveled up to 100."
+  },
+  {
+    "id": 170600000000000006,
+    "value": "Characters can be recruited from \"Scout.\" You can access \"Scout\" by going to\n\"Upgrade,\" then \"Character.\""
+  },
+  {
+    "id": 170600000000000007,
+    "value": "Acquired mobile suits can be dismantled. You can obtain G-Shop Pts and rare\nmedals through dismantlement."
+  },
+  {
+    "id": 170600000000000008,
+    "value": "Some Development Diagrams allow you to obtain Ultimate Units upon completion.\nUltimate Units have their own Development Diagrams and require special\nmaterials for development."
+  },
+  {
+    "id": 170600000000000009,
+    "value": "Some battles will let you unlock secret battles upon meeting certain\nconditions. Clearing secret battles will net you valuable development\nmaterials."
+  },
+  {
+    "id": 170600000000000010,
+    "value": "Save your frequently used formations. You will then be able to load them when\nsortieing."
+  },
+  {
+    "id": 170600000000000011,
+    "value": "As time passes, you will be able to acquire items from the \"Warship Cruise\"\nat your Base. Be sure to check your Base regularly."
+  },
+  {
+    "id": 170600000000000012,
+    "value": "You can accept requests from \"Character Requests.\" Completing requests\nimproves your rank, allowing you then to acquire development materials and\nModifications."
+  },
+  {
+    "id": 170600000000000013,
+    "value": "EN is consumed whenever you use weapons. It recovers gradually each turn.\nYou cannot activate your weapons if you do not have enough EN, so always\nkeep an eye on your remaining EN."
+  },
+  {
+    "id": 170600000000000014,
+    "value": "Areas marked with \"!\" indicate the enemy's counter range. As long as you stay\noutside of this area, you can attack the enemy without suffering any\ncounterattack."
+  },
+  {
+    "id": 170600000000000015,
+    "value": "Supporters possess support skills. As some of these can restore HP and EN to\nunits, determining the best time to use them is key."
+  },
+  {
+    "id": 170600000000000016,
+    "value": "Characters have character skills. These provide various effects, so choose\nthe best time to use them according to your strategy."
+  },
+  {
+    "id": 170600000000000017,
+    "value": "Vigor increases with MP, which in turn increases the damage you deal.\nBuild up MP by landing attacks and performing Support Attack and\nSupport Defense."
+  },
+  {
+    "id": 170600000000000018,
+    "value": "MAP Weapons are powerful weapons that can attack multiple enemies\nsimultaneously. They can only be activated before moving, so pay attention\nto the units' positions when using them."
+  },
+  {
+    "id": 170600000000000019,
+    "value": "Stages have different terrains. If units do not have suitable terrain\ncapabilities, they will be restricted when sortieing or moving."
+  },
+  {
+    "id": 170600000000000020,
+    "value": "Units and characters belong to one of three types: attack, durability, or\nsupport. By matching types when making formations, you can enhance the\neffects of their abilities."
+  },
+  {
+    "id": 170600000000000021,
+    "value": "Weapons have weapon attributes, such as beam and physical. Certain attacks\nwill deal less damage to certain enemies, so be sure to use them judiciously."
+  },
+  {
+    "id": 170600000000000022,
+    "value": "Supporters have leader skills that enhance your entire formation. Put units\ninto your formation that have tags or are from series that leader skills\napply to."
+  },
+  {
+    "id": 170600000000000023,
+    "value": "Performing limit breaks on units greatly increases their stats.\nLimit breaking may also unlock a home screen animation for some UR units."
+  },
+  {
+    "id": 170600000000000024,
+    "value": "Performing limit breaks on supporters enhances their leader skills.\nLimit breaks require either duplicate supporters or supporter limit break materials."
+  },
+  {
+    "id": 170600000000000025,
+    "value": "Units can be equipped with Modifications. Modifications are also referred to\nas mods and mainly grant effects that alter stats."
+  }
+]

@@ -1,0 +1,862 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 300100000100109001,
+    "value": "Akai Suisei"
+  },
+  {
+    "id": 300100000100109002,
+    "value": "Tatakai eno Kyofu"
+  },
+  {
+    "id": 300100000100109003,
+    "value": "Gundam Daichi ni Tatsu"
+  },
+  {
+    "id": 300100000100109004,
+    "value": "Kyuchi ni Tatsu Gundam"
+  },
+  {
+    "id": 300100000100109005,
+    "value": "Sassotaru Char"
+  },
+  {
+    "id": 300100000100109006,
+    "value": "Odessa no Gekisen M-5"
+  },
+  {
+    "id": 300100000100109007,
+    "value": "Jaburo Soryokusen M-15"
+  },
+  {
+    "id": 300100000100109008,
+    "value": "Texas no Sogu M-24"
+  },
+  {
+    "id": 300100000100109009,
+    "value": "A Baoa Qu Shinko M-65"
+  },
+  {
+    "id": 300100000100109010,
+    "value": "Tobe! GUNDAM"
+  },
+  {
+    "id": 300100000100109011,
+    "value": "CROSS OF THE SAND"
+  },
+  {
+    "id": 300100000100109012,
+    "value": "Ai Senshi"
+  },
+  {
+    "id": 300100000100109013,
+    "value": "Meguriai"
+  },
+  {
+    "id": 300100000100309001,
+    "value": "I Can't Do Anything - Sorayo -"
+  },
+  {
+    "id": 300100000100700001,
+    "value": "真·松永專用戰鬥BGM"
+  },
+  {
+    "id": 300100000100700002,
+    "value": "強尼‧萊汀專用戰鬥BGM"
+  },
+  {
+    "id": 300100000101309001,
+    "value": "Arashi no Naka de Kagayaite"
+  },
+  {
+    "id": 300100000102100001,
+    "value": "機動戰士鋼彈 CROSS DIMENSION 0079篇BGM01"
+  },
+  {
+    "id": 300100000102100002,
+    "value": "機動戰士鋼彈 CROSS DIMENSION 0079篇BGM02"
+  },
+  {
+    "id": 300100000102200001,
+    "value": "THUNDER CLAP"
+  },
+  {
+    "id": 300100000102200002,
+    "value": "EXECUTION"
+  },
+  {
+    "id": 300100000102200003,
+    "value": "THE FRONT"
+  },
+  {
+    "id": 300100000102200004,
+    "value": "機動戰士鋼彈外傳 THE BLUE DESTINY篇BGM01"
+  },
+  {
+    "id": 300100000102200005,
+    "value": "機動戰士鋼彈外傳 THE BLUE DESTINY篇BGM02"
+  },
+  {
+    "id": 300100000102200006,
+    "value": "機動戰士鋼彈外傳 THE BLUE DESTINY篇BGM03"
+  },
+  {
+    "id": 300100000102200007,
+    "value": "機動戰士鋼彈外傳 THE BLUE DESTINY篇BGM04"
+  },
+  {
+    "id": 300100000102200008,
+    "value": "機動戰士鋼彈外傳 THE BLUE DESTINY篇BGM05"
+  },
+  {
+    "id": 300100000103209001,
+    "value": "Thunderbolt Main Theme Yo"
+  },
+  {
+    "id": 300100000103209002,
+    "value": "Sentohaichi Yo"
+  },
+  {
+    "id": 300100000103209003,
+    "value": "Anatano Oaite -I'm your baby-"
+  },
+  {
+    "id": 300100000105509001,
+    "value": "Awakening Hearts (I_004)"
+  },
+  {
+    "id": 300100000105509002,
+    "value": "Clan Battle (I_011)"
+  },
+  {
+    "id": 300100000105509003,
+    "value": "Secrets (I_017)"
+  },
+  {
+    "id": 300100000105509004,
+    "value": "The Girl on a Space colony (I_006A)"
+  },
+  {
+    "id": 300100000105509005,
+    "value": "Plazma (Anime Opening ver.)"
+  },
+  {
+    "id": 300100000106009001,
+    "value": "ASSAULT WAVES"
+  },
+  {
+    "id": 300100000106009002,
+    "value": "FULL BURNER"
+  },
+  {
+    "id": 300100000106009003,
+    "value": "DENDROBIUM"
+  },
+  {
+    "id": 300100000106009004,
+    "value": "U.N.T."
+  },
+  {
+    "id": 300100000106009005,
+    "value": "FEINT OPERATION"
+  },
+  {
+    "id": 300100000106009006,
+    "value": "DER SOLOMONER BOSER TRAUM"
+  },
+  {
+    "id": 300100000106009007,
+    "value": "THE WINNER"
+  },
+  {
+    "id": 300100000108009001,
+    "value": "Kantaisen"
+  },
+  {
+    "id": 300100000108009002,
+    "value": "MOBILE SUIT Sen"
+  },
+  {
+    "id": 300100000108009003,
+    "value": "Taikiken-Totsunyu -Jyuryoku no Ido e-"
+  },
+  {
+    "id": 300100000108009004,
+    "value": "Ucyu wo Kakeru -Gekitotsu!-"
+  },
+  {
+    "id": 300100000108009005,
+    "value": "Ucyu wo Kakeru -Zeta no Hatsudo-"
+  },
+  {
+    "id": 300100000108009006,
+    "value": "Mizu no Hoshi e Ai wo Komete"
+  },
+  {
+    "id": 300100000108109001,
+    "value": "Senko no Naka no MS"
+  },
+  {
+    "id": 300100000108109002,
+    "value": "Tobu Mono"
+  },
+  {
+    "id": 300100000108109003,
+    "value": "Sora no Mon"
+  },
+  {
+    "id": 300100000108109004,
+    "value": "a point of contact"
+  },
+  {
+    "id": 300100000108109005,
+    "value": "Metamorphoze"
+  },
+  {
+    "id": 300100000108500001,
+    "value": "Superior Attack"
+  },
+  {
+    "id": 300100000109509001,
+    "value": "Shangri-La no Shonen"
+  },
+  {
+    "id": 300100000109509002,
+    "value": "Uchu no Judau"
+  },
+  {
+    "id": 300100000109509003,
+    "value": "Shido! Double Ζeta"
+  },
+  {
+    "id": 300100000109509004,
+    "value": "Nekketsu no Mashymre"
+  },
+  {
+    "id": 300100000109509005,
+    "value": "Futaridake no Kecchaku"
+  },
+  {
+    "id": 300100000109509006,
+    "value": "Anime Janai ～ Yume wo Wasureta Furui Chikyujin-yo"
+  },
+  {
+    "id": 300100000109509007,
+    "value": "Silent Voice"
+  },
+  {
+    "id": 300100000111009001,
+    "value": "BEYOND THE TIME ～Over the Moebius skies～"
+  },
+  {
+    "id": 300100000112509001,
+    "value": "RE:I AM"
+  },
+  {
+    "id": 300100000114409001,
+    "value": "Vigilante"
+  },
+  {
+    "id": 300100000116600001,
+    "value": "機動戰士海盜鋼彈"
+  },
+  {
+    "id": 300100000116600002,
+    "value": "來自帝國的襲擊"
+  },
+  {
+    "id": 300100000120009001,
+    "value": "Saikyo no Akashi-King of heart"
+  },
+  {
+    "id": 300100000120009002,
+    "value": "Moeagare Toshi Imawashiki Syukumei wo koete"
+  },
+  {
+    "id": 300100000120009003,
+    "value": "Waga Kokoro Meikyo Shisui - Saredo Kono Te wa Rekka no Gotoku"
+  },
+  {
+    "id": 300100000120009004,
+    "value": "Gekito no Naka Sorezore no Yakusoku"
+  },
+  {
+    "id": 300100000120009005,
+    "value": "Kessen no toki Kitari"
+  },
+  {
+    "id": 300100000120009006,
+    "value": "Yomigaeru Akuma sono Kyukyoku no Sugata wo Arawasu"
+  },
+  {
+    "id": 300100000120009007,
+    "value": "Idainaru Eiyu"
+  },
+  {
+    "id": 300100000120009008,
+    "value": "Kiba wo Hikarase Ryu ga Mau"
+  },
+  {
+    "id": 300100000120009009,
+    "value": "Yuki toiu Na no Kunsyo wo Mune ni"
+  },
+  {
+    "id": 300100000120009010,
+    "value": "Kosakusuru Kitai"
+  },
+  {
+    "id": 300100000120009011,
+    "value": "FLYING IN THE SKY"
+  },
+  {
+    "id": 300100000120009012,
+    "value": "Trust You Forever"
+  },
+  {
+    "id": 300100000121009001,
+    "value": "Shisyunki wo Koroshita Syonen no Tsubasa"
+  },
+  {
+    "id": 300100000121009002,
+    "value": "Kuroi Kaze ga Shi e Izanau"
+  },
+  {
+    "id": 300100000121009003,
+    "value": "Kaerichi to Kayaku no Nioi no naka"
+  },
+  {
+    "id": 300100000121009004,
+    "value": "Shikabane ni Umoreta Heiwa wo Sagashite"
+  },
+  {
+    "id": 300100000121009005,
+    "value": "Ryu ga Oyogu Toki Subete wa Owaru"
+  },
+  {
+    "id": 300100000121009006,
+    "value": "Kyouko-Toppa"
+  },
+  {
+    "id": 300100000121009007,
+    "value": "Gundam Syugeki"
+  },
+  {
+    "id": 300100000121009008,
+    "value": "Zero no Densetsu -XXXG-OOWO"
+  },
+  {
+    "id": 300100000121009009,
+    "value": "Zechs ga Kuru"
+  },
+  {
+    "id": 300100000121009010,
+    "value": "OZ Mobile Suit Sekkin"
+  },
+  {
+    "id": 300100000121009011,
+    "value": "Ninmu-Suiko"
+  },
+  {
+    "id": 300100000121009012,
+    "value": "Mirai eno Hisyo"
+  },
+  {
+    "id": 300100000121009013,
+    "value": "JUST COMMUNICATION"
+  },
+  {
+    "id": 300100000121009014,
+    "value": "RHYTHM EMOTION"
+  },
+  {
+    "id": 300100000121700001,
+    "value": "新機動戰記鋼彈W DUAL STORY G-UNIT篇BGM01"
+  },
+  {
+    "id": 300100000121700002,
+    "value": "新機動戰記鋼彈W DUAL STORY G-UNIT篇BGM02"
+  },
+  {
+    "id": 300100000121909001,
+    "value": "WHITE REFLECTION"
+  },
+  {
+    "id": 300100000123009001,
+    "value": "Satellite Cannon"
+  },
+  {
+    "id": 300100000123009002,
+    "value": "Tsuigeki"
+  },
+  {
+    "id": 300100000123009003,
+    "value": "Shisen"
+  },
+  {
+    "id": 300100000123009004,
+    "value": "Boku ga New Type da"
+  },
+  {
+    "id": 300100000123009005,
+    "value": "Fukkatsu no Garrod"
+  },
+  {
+    "id": 300100000123009006,
+    "value": "Semarikuru Kyodaina Chikara"
+  },
+  {
+    "id": 300100000123009007,
+    "value": "Kakenukeru GX"
+  },
+  {
+    "id": 300100000123009008,
+    "value": "New Weapon Divider"
+  },
+  {
+    "id": 300100000123009009,
+    "value": "DREAMS"
+  },
+  {
+    "id": 300100000123009010,
+    "value": "Resolution"
+  },
+  {
+    "id": 300100000130009001,
+    "value": "GUNDAM Syutsugeki"
+  },
+  {
+    "id": 300100000130009002,
+    "value": "Senjo no Ketsui"
+  },
+  {
+    "id": 300100000130009003,
+    "value": "Tobe! FREEDOM"
+  },
+  {
+    "id": 300100000130009004,
+    "value": "STRIKE Syutsugeki"
+  },
+  {
+    "id": 300100000130009005,
+    "value": "Sento Taisei"
+  },
+  {
+    "id": 300100000130009006,
+    "value": "Aku no 3 Heiki"
+  },
+  {
+    "id": 300100000130009007,
+    "value": "Aseri"
+  },
+  {
+    "id": 300100000130009008,
+    "value": "Sento-Butai"
+  },
+  {
+    "id": 300100000130009009,
+    "value": "Invoke"
+  },
+  {
+    "id": 300100000130009010,
+    "value": "moment"
+  },
+  {
+    "id": 300100000130009011,
+    "value": "Believe"
+  },
+  {
+    "id": 300100000130009012,
+    "value": "Realize"
+  },
+  {
+    "id": 300100000130500001,
+    "value": "羅·裘爾專用戰鬥BGM"
+  },
+  {
+    "id": 300100000130500002,
+    "value": "叢雲劾專用戰鬥BGM"
+  },
+  {
+    "id": 300100000130500003,
+    "value": "隆德·吉納·薩哈克專用戰鬥BGM"
+  },
+  {
+    "id": 300100000130500004,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM01"
+  },
+  {
+    "id": 300100000130500005,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM02"
+  },
+  {
+    "id": 300100000130500006,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM03"
+  },
+  {
+    "id": 300100000130500007,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM04"
+  },
+  {
+    "id": 300100000130500008,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM05"
+  },
+  {
+    "id": 300100000130500009,
+    "value": "機動戰士鋼彈SEED ASTRAY篇BGM06"
+  },
+  {
+    "id": 300100000130800001,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM01"
+  },
+  {
+    "id": 300100000130800002,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM02"
+  },
+  {
+    "id": 300100000130800003,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM03"
+  },
+  {
+    "id": 300100000130800004,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM04"
+  },
+  {
+    "id": 300100000130800005,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM05"
+  },
+  {
+    "id": 300100000130800006,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM06"
+  },
+  {
+    "id": 300100000130800007,
+    "value": "機動戰士鋼彈SEED X ASTRAY篇BGM07"
+  },
+  {
+    "id": 300100000133009001,
+    "value": "Mission Kaishi"
+  },
+  {
+    "id": 300100000133009002,
+    "value": "Kakusei Shinn Asuka"
+  },
+  {
+    "id": 300100000133009003,
+    "value": "Yoki to Hohoemi"
+  },
+  {
+    "id": 300100000133009004,
+    "value": "COLONY - Zettai-Zetsumei"
+  },
+  {
+    "id": 300100000133009005,
+    "value": "Hajimari ga Yue"
+  },
+  {
+    "id": 300100000133009006,
+    "value": "Syutsugeki! IMPULSE"
+  },
+  {
+    "id": 300100000133009007,
+    "value": "Kira, Sono Kokoro no Mama Ni"
+  },
+  {
+    "id": 300100000133009008,
+    "value": "Kyoki no Hate"
+  },
+  {
+    "id": 300100000133009009,
+    "value": "Hakai to Zetsubo"
+  },
+  {
+    "id": 300100000133009010,
+    "value": "Ignited"
+  },
+  {
+    "id": 300100000133009011,
+    "value": "PRIDE"
+  },
+  {
+    "id": 300100000133009012,
+    "value": "Bokutachinoyukue"
+  },
+  {
+    "id": 300100000137009001,
+    "value": "POWER"
+  },
+  {
+    "id": 300100000137009002,
+    "value": "COUNTERATTACK"
+  },
+  {
+    "id": 300100000137009003,
+    "value": "APPROACH"
+  },
+  {
+    "id": 300100000137009004,
+    "value": "UNION"
+  },
+  {
+    "id": 300100000137009005,
+    "value": "UPROAR"
+  },
+  {
+    "id": 300100000137009006,
+    "value": "SEIZURE"
+  },
+  {
+    "id": 300100000137009007,
+    "value": "FIGHT"
+  },
+  {
+    "id": 300100000137009008,
+    "value": "RECOVER"
+  },
+  {
+    "id": 300100000137009009,
+    "value": "INTERVENTION"
+  },
+  {
+    "id": 300100000137009010,
+    "value": "OO GUNDAM"
+  },
+  {
+    "id": 300100000137009011,
+    "value": "Strike"
+  },
+  {
+    "id": 300100000137009012,
+    "value": "Restart"
+  },
+  {
+    "id": 300100000137009013,
+    "value": "MASURAO"
+  },
+  {
+    "id": 300100000137009014,
+    "value": "TRANS-AM RAISER"
+  },
+  {
+    "id": 300100000137009015,
+    "value": "SCRAMBLE"
+  },
+  {
+    "id": 300100000137009016,
+    "value": "DECISIVE BATTLE"
+  },
+  {
+    "id": 300100000137009017,
+    "value": "Daybreak's Bell"
+  },
+  {
+    "id": 300100000137009018,
+    "value": "Ash Like Snow"
+  },
+  {
+    "id": 300100000137500001,
+    "value": "機動戰士鋼彈00P篇BGM01"
+  },
+  {
+    "id": 300100000137500002,
+    "value": "機動戰士鋼彈00P篇BGM02"
+  },
+  {
+    "id": 300100000143009001,
+    "value": "Mobile Suit Gundam : Iron-Blooded Orphans"
+  },
+  {
+    "id": 300100000143009002,
+    "value": "Defenders of the Wild"
+  },
+  {
+    "id": 300100000143009003,
+    "value": "Signs of Victory"
+  },
+  {
+    "id": 300100000143009004,
+    "value": "All Out"
+  },
+  {
+    "id": 300100000143009005,
+    "value": "Strengths Focus"
+  },
+  {
+    "id": 300100000143009006,
+    "value": "In a Fury"
+  },
+  {
+    "id": 300100000143009007,
+    "value": "Ein System"
+  },
+  {
+    "id": 300100000143009008,
+    "value": "Last Extremity"
+  },
+  {
+    "id": 300100000143009009,
+    "value": "Raise your flag"
+  },
+  {
+    "id": 300100000143009010,
+    "value": "Survivor"
+  },
+  {
+    "id": 300100000143009011,
+    "value": "RAGE OF DUST - New Version -"
+  },
+  {
+    "id": 300100000143009012,
+    "value": "Fighter"
+  },
+  {
+    "id": 300100000143100001,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM01"
+  },
+  {
+    "id": 300100000143100002,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM02"
+  },
+  {
+    "id": 300100000143100003,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM03"
+  },
+  {
+    "id": 300100000143100004,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM04"
+  },
+  {
+    "id": 300100000143100005,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM05"
+  },
+  {
+    "id": 300100000143100006,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM06"
+  },
+  {
+    "id": 300100000143100007,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM07"
+  },
+  {
+    "id": 300100000143100008,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM08"
+  },
+  {
+    "id": 300100000143100009,
+    "value": "機動戰士鋼彈 鐵血孤兒 月鋼篇BGM09"
+  },
+  {
+    "id": 300100000150109001,
+    "value": "Happy Birthday to You"
+  },
+  {
+    "id": 300100000150109002,
+    "value": "The Witch From Mercury"
+  },
+  {
+    "id": 300100000150109003,
+    "value": "GUNDAM PHARACT"
+  },
+  {
+    "id": 300100000150109004,
+    "value": "Chaos"
+  },
+  {
+    "id": 300100000150109005,
+    "value": "Enemy Onslaught"
+  },
+  {
+    "id": 300100000150109006,
+    "value": "The Witches from Earth"
+  },
+  {
+    "id": 300100000150109007,
+    "value": "AERIAL REBUILD"
+  },
+  {
+    "id": 300100000150109008,
+    "value": "Liberation from the Curse"
+  },
+  {
+    "id": 300100000150109009,
+    "value": "The Blessing"
+  },
+  {
+    "id": 300100000160409001,
+    "value": "Nibunnoichi"
+  },
+  {
+    "id": 300100000170500001,
+    "value": "SD鋼彈外傳吉翁萬歲篇用BGM01"
+  },
+  {
+    "id": 300100000170500002,
+    "value": "SD鋼彈外傳吉翁萬歲篇用BGM02"
+  },
+  {
+    "id": 300100000170500003,
+    "value": "SD鋼彈外傳吉翁萬歲篇用BGM03"
+  },
+  {
+    "id": 300100000170500004,
+    "value": "SD鋼彈外傳吉翁萬歲篇用BGM04"
+  },
+  {
+    "id": 300100000170500005,
+    "value": "SD鋼彈外傳吉翁萬歲篇用BGM05"
+  },
+  {
+    "id": 300100000170509001,
+    "value": "Daikessen -Theme/Ending1/Ending2"
+  },
+  {
+    "id": 300100000176400001,
+    "value": "零·村雨BGM"
+  },
+  {
+    "id": 300100000185000001,
+    "value": "G GENERATION系列 BGM01"
+  },
+  {
+    "id": 300100000185000002,
+    "value": "G GENERATION系列 BGM02"
+  },
+  {
+    "id": 300100000185000003,
+    "value": "G GENERATION系列 BGM03"
+  },
+  {
+    "id": 300100000185000004,
+    "value": "G GENERATION系列 BGM04"
+  },
+  {
+    "id": 300100000185000005,
+    "value": "G GENERATION系列 BGM05"
+  },
+  {
+    "id": 300100000185000006,
+    "value": "G GENERATION系列 BGM06"
+  },
+  {
+    "id": 300100000185000007,
+    "value": "齊格菲‧維特納專用戰鬥BGM"
+  },
+  {
+    "id": 300100000185000008,
+    "value": "艾米利愛絲專用戰鬥BGM"
+  },
+  {
+    "id": 300100000185000009,
+    "value": "亞芙蘿蒂雅專用戰鬥BGM"
+  },
+  {
+    "id": 300100000185000010,
+    "value": "代碼‧艾米利愛絲專用戰鬥BGM"
+  },
+  {
+    "id": 300100000185000011,
+    "value": "代碼‧菲尼克斯專用戰鬥BGM"
+  }
+]

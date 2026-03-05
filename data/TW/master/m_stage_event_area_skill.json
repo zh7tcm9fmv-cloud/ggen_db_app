@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1030000001,
+    "NameLanguageId": 131100001030000001,
+    "DescriptionLanguageId": 131200001030000001,
+    "ResourceId": "trait_10860400",
+    "StageEventAreaSkillTraitSetId": 103000000101,
+    "Duration": 0
+  },
+  {
+    "Id": 1030000002,
+    "NameLanguageId": 131100001030000002,
+    "DescriptionLanguageId": 131200001030000002,
+    "ResourceId": "trait_10860400",
+    "StageEventAreaSkillTraitSetId": 103000000201,
+    "Duration": 0
+  },
+  {
+    "Id": 1030000003,
+    "NameLanguageId": 131100001030000003,
+    "DescriptionLanguageId": 131200001030000003,
+    "ResourceId": "trait_10860400",
+    "StageEventAreaSkillTraitSetId": 103000000301,
+    "Duration": 0
+  }
+]

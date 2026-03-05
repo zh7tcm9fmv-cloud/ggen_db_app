@@ -1,0 +1,29 @@
+[
+  {
+    "Id": 90300110,
+    "StageId": 90300138,
+    "MapEventId": 210001,
+    "MapEventScoreAttackRewardId": 210001,
+    "MapEventScoreAttackStageEvaluationTargetSetId": 1,
+    "BossMapNpcId": 903000103802000001,
+    "StageNameLanguageId": 0
+  },
+  {
+    "Id": 90300236,
+    "StageId": 90300236,
+    "MapEventId": 210002,
+    "MapEventScoreAttackRewardId": 210002,
+    "MapEventScoreAttackStageEvaluationTargetSetId": 2,
+    "BossMapNpcId": 903000203602000024,
+    "StageNameLanguageId": 0
+  },
+  {
+    "Id": 91010314,
+    "StageId": 91010314,
+    "MapEventId": 240001,
+    "MapEventScoreAttackRewardId": 240001,
+    "MapEventScoreAttackStageEvaluationTargetSetId": 3,
+    "BossMapNpcId": 910100301402000001,
+    "StageNameLanguageId": 130100000091010314
+  }
+]

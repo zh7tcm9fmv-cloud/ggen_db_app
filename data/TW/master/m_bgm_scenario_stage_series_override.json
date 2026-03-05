@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1500,
+    "ScenarioStageSeriesId": 1500,
+    "ScheduleId": 2512309904,
+    "Bgm": "bgm_1500_0001"
+  },
+  {
+    "Id": 2300,
+    "ScenarioStageSeriesId": 2300,
+    "ScheduleId": 2601509902,
+    "Bgm": "bgm_2300_0008"
+  },
+  {
+    "Id": 3300,
+    "ScenarioStageSeriesId": 3300,
+    "ScheduleId": 2512409902,
+    "Bgm": "bgm_3300_0003"
+  },
+  {
+    "Id": 4000,
+    "ScenarioStageSeriesId": 4000,
+    "ScheduleId": 2602409902,
+    "Bgm": "bgm_4000_0001"
+  },
+  {
+    "Id": 5010,
+    "ScenarioStageSeriesId": 5010,
+    "ScheduleId": 2512409902,
+    "Bgm": "bgm_5010_0014"
+  }
+]

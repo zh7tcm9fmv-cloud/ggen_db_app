@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 5,
+    "PlayerRank": 5,
+    "Point": 20
+  },
+  {
+    "Id": 10,
+    "PlayerRank": 10,
+    "Point": 20
+  },
+  {
+    "Id": 15,
+    "PlayerRank": 15,
+    "Point": 20
+  },
+  {
+    "Id": 20,
+    "PlayerRank": 20,
+    "Point": 40
+  }
+]

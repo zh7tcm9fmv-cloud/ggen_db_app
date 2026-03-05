@@ -1,0 +1,5022 @@
+[
+  {
+    "UnitCollectionBookId": 100001,
+    "DisplayPriority": 1,
+    "UnitId": 1001000100
+  },
+  {
+    "UnitCollectionBookId": 100001,
+    "DisplayPriority": 2,
+    "UnitId": 1001000150
+  },
+  {
+    "UnitCollectionBookId": 100002,
+    "DisplayPriority": 1,
+    "UnitId": 1001000200
+  },
+  {
+    "UnitCollectionBookId": 100003,
+    "DisplayPriority": 1,
+    "UnitId": 1001000300
+  },
+  {
+    "UnitCollectionBookId": 100004,
+    "DisplayPriority": 1,
+    "UnitId": 1001000400
+  },
+  {
+    "UnitCollectionBookId": 100004,
+    "DisplayPriority": 2,
+    "UnitId": 1001000410
+  },
+  {
+    "UnitCollectionBookId": 100005,
+    "DisplayPriority": 1,
+    "UnitId": 1001000500
+  },
+  {
+    "UnitCollectionBookId": 100006,
+    "DisplayPriority": 1,
+    "UnitId": 1001000600
+  },
+  {
+    "UnitCollectionBookId": 100006,
+    "DisplayPriority": 2,
+    "UnitId": 1001000610
+  },
+  {
+    "UnitCollectionBookId": 100007,
+    "DisplayPriority": 1,
+    "UnitId": 1001000700
+  },
+  {
+    "UnitCollectionBookId": 100007,
+    "DisplayPriority": 2,
+    "UnitId": 1001000710
+  },
+  {
+    "UnitCollectionBookId": 100008,
+    "DisplayPriority": 1,
+    "UnitId": 1001003800
+  },
+  {
+    "UnitCollectionBookId": 100009,
+    "DisplayPriority": 1,
+    "UnitId": 1001000800
+  },
+  {
+    "UnitCollectionBookId": 100009,
+    "DisplayPriority": 2,
+    "UnitId": 1001000810
+  },
+  {
+    "UnitCollectionBookId": 100010,
+    "DisplayPriority": 1,
+    "UnitId": 1001000900
+  },
+  {
+    "UnitCollectionBookId": 100010,
+    "DisplayPriority": 2,
+    "UnitId": 1001000910
+  },
+  {
+    "UnitCollectionBookId": 100011,
+    "DisplayPriority": 1,
+    "UnitId": 1001001110
+  },
+  {
+    "UnitCollectionBookId": 100012,
+    "DisplayPriority": 1,
+    "UnitId": 1001001200
+  },
+  {
+    "UnitCollectionBookId": 100013,
+    "DisplayPriority": 1,
+    "UnitId": 1001001300
+  },
+  {
+    "UnitCollectionBookId": 100014,
+    "DisplayPriority": 1,
+    "UnitId": 1001001400
+  },
+  {
+    "UnitCollectionBookId": 100015,
+    "DisplayPriority": 1,
+    "UnitId": 1001001500
+  },
+  {
+    "UnitCollectionBookId": 100016,
+    "DisplayPriority": 1,
+    "UnitId": 1001001610
+  },
+  {
+    "UnitCollectionBookId": 100017,
+    "DisplayPriority": 1,
+    "UnitId": 1001001700
+  },
+  {
+    "UnitCollectionBookId": 100018,
+    "DisplayPriority": 1,
+    "UnitId": 1001001800
+  },
+  {
+    "UnitCollectionBookId": 100019,
+    "DisplayPriority": 1,
+    "UnitId": 1001001900
+  },
+  {
+    "UnitCollectionBookId": 100020,
+    "DisplayPriority": 1,
+    "UnitId": 1001002000
+  },
+  {
+    "UnitCollectionBookId": 100021,
+    "DisplayPriority": 1,
+    "UnitId": 1001002110
+  },
+  {
+    "UnitCollectionBookId": 100022,
+    "DisplayPriority": 1,
+    "UnitId": 1001002200
+  },
+  {
+    "UnitCollectionBookId": 100023,
+    "DisplayPriority": 1,
+    "UnitId": 1001002300
+  },
+  {
+    "UnitCollectionBookId": 100024,
+    "DisplayPriority": 1,
+    "UnitId": 1001002500
+  },
+  {
+    "UnitCollectionBookId": 100025,
+    "DisplayPriority": 1,
+    "UnitId": 1001002600
+  },
+  {
+    "UnitCollectionBookId": 100026,
+    "DisplayPriority": 1,
+    "UnitId": 1001002700
+  },
+  {
+    "UnitCollectionBookId": 100027,
+    "DisplayPriority": 1,
+    "UnitId": 1001002800
+  },
+  {
+    "UnitCollectionBookId": 100028,
+    "DisplayPriority": 1,
+    "UnitId": 1001002900
+  },
+  {
+    "UnitCollectionBookId": 100029,
+    "DisplayPriority": 1,
+    "UnitId": 1001003000
+  },
+  {
+    "UnitCollectionBookId": 100029,
+    "DisplayPriority": 1001003050,
+    "UnitId": 1001003050
+  },
+  {
+    "UnitCollectionBookId": 100030,
+    "DisplayPriority": 1,
+    "UnitId": 1001003100
+  },
+  {
+    "UnitCollectionBookId": 100030,
+    "DisplayPriority": 2,
+    "UnitId": 1001003110
+  },
+  {
+    "UnitCollectionBookId": 100031,
+    "DisplayPriority": 1,
+    "UnitId": 1001003300
+  },
+  {
+    "UnitCollectionBookId": 100032,
+    "DisplayPriority": 1,
+    "UnitId": 1001003410
+  },
+  {
+    "UnitCollectionBookId": 100033,
+    "DisplayPriority": 1,
+    "UnitId": 1001003700
+  },
+  {
+    "UnitCollectionBookId": 100033,
+    "DisplayPriority": 2,
+    "UnitId": 1001003710
+  },
+  {
+    "UnitCollectionBookId": 300001,
+    "DisplayPriority": 1,
+    "UnitId": 1003000110
+  },
+  {
+    "UnitCollectionBookId": 300002,
+    "DisplayPriority": 1,
+    "UnitId": 1003000250
+  },
+  {
+    "UnitCollectionBookId": 300003,
+    "DisplayPriority": 1,
+    "UnitId": 1003000310
+  },
+  {
+    "UnitCollectionBookId": 500001,
+    "DisplayPriority": 1,
+    "UnitId": 1005000110
+  },
+  {
+    "UnitCollectionBookId": 500002,
+    "DisplayPriority": 1,
+    "UnitId": 1005000210
+  },
+  {
+    "UnitCollectionBookId": 700001,
+    "DisplayPriority": 1,
+    "UnitId": 1007000100
+  },
+  {
+    "UnitCollectionBookId": 700002,
+    "DisplayPriority": 1,
+    "UnitId": 1007000200
+  },
+  {
+    "UnitCollectionBookId": 700003,
+    "DisplayPriority": 1,
+    "UnitId": 1007000310
+  },
+  {
+    "UnitCollectionBookId": 700004,
+    "DisplayPriority": 1,
+    "UnitId": 1007000410
+  },
+  {
+    "UnitCollectionBookId": 700005,
+    "DisplayPriority": 1,
+    "UnitId": 1007000510
+  },
+  {
+    "UnitCollectionBookId": 700006,
+    "DisplayPriority": 1,
+    "UnitId": 1007000600
+  },
+  {
+    "UnitCollectionBookId": 700007,
+    "DisplayPriority": 1,
+    "UnitId": 1007000710
+  },
+  {
+    "UnitCollectionBookId": 800001,
+    "DisplayPriority": 1,
+    "UnitId": 1008000100
+  },
+  {
+    "UnitCollectionBookId": 800001,
+    "DisplayPriority": 2,
+    "UnitId": 1008000110
+  },
+  {
+    "UnitCollectionBookId": 800002,
+    "DisplayPriority": 1,
+    "UnitId": 1008000210
+  },
+  {
+    "UnitCollectionBookId": 800003,
+    "DisplayPriority": 1,
+    "UnitId": 1008000300
+  },
+  {
+    "UnitCollectionBookId": 900001,
+    "DisplayPriority": 1,
+    "UnitId": 1009000410
+  },
+  {
+    "UnitCollectionBookId": 900001,
+    "DisplayPriority": 1009000400,
+    "UnitId": 1009000400
+  },
+  {
+    "UnitCollectionBookId": 900002,
+    "DisplayPriority": 1,
+    "UnitId": 1009000110
+  },
+  {
+    "UnitCollectionBookId": 900002,
+    "DisplayPriority": 1009000100,
+    "UnitId": 1009000100
+  },
+  {
+    "UnitCollectionBookId": 900003,
+    "DisplayPriority": 1,
+    "UnitId": 1009000210
+  },
+  {
+    "UnitCollectionBookId": 900003,
+    "DisplayPriority": 1009000200,
+    "UnitId": 1009000200
+  },
+  {
+    "UnitCollectionBookId": 900004,
+    "DisplayPriority": 1,
+    "UnitId": 1009000310
+  },
+  {
+    "UnitCollectionBookId": 900004,
+    "DisplayPriority": 1009000300,
+    "UnitId": 1009000300
+  },
+  {
+    "UnitCollectionBookId": 900005,
+    "DisplayPriority": 1,
+    "UnitId": 1009000510
+  },
+  {
+    "UnitCollectionBookId": 900005,
+    "DisplayPriority": 1009000500,
+    "UnitId": 1009000500
+  },
+  {
+    "UnitCollectionBookId": 900005,
+    "DisplayPriority": 1009000550,
+    "UnitId": 1009000550
+  },
+  {
+    "UnitCollectionBookId": 900006,
+    "DisplayPriority": 1,
+    "UnitId": 1009000610
+  },
+  {
+    "UnitCollectionBookId": 900006,
+    "DisplayPriority": 1009000600,
+    "UnitId": 1009000600
+  },
+  {
+    "UnitCollectionBookId": 900007,
+    "DisplayPriority": 1,
+    "UnitId": 1009000710
+  },
+  {
+    "UnitCollectionBookId": 900007,
+    "DisplayPriority": 1009000700,
+    "UnitId": 1009000700
+  },
+  {
+    "UnitCollectionBookId": 900008,
+    "DisplayPriority": 1,
+    "UnitId": 1009000810
+  },
+  {
+    "UnitCollectionBookId": 900008,
+    "DisplayPriority": 1009000800,
+    "UnitId": 1009000800
+  },
+  {
+    "UnitCollectionBookId": 1100001,
+    "DisplayPriority": 1,
+    "UnitId": 1011000110
+  },
+  {
+    "UnitCollectionBookId": 1200001,
+    "DisplayPriority": 1,
+    "UnitId": 1012000110
+  },
+  {
+    "UnitCollectionBookId": 1300001,
+    "DisplayPriority": 1,
+    "UnitId": 1013000110
+  },
+  {
+    "UnitCollectionBookId": 1300002,
+    "DisplayPriority": 1,
+    "UnitId": 1013000210
+  },
+  {
+    "UnitCollectionBookId": 1300003,
+    "DisplayPriority": 1,
+    "UnitId": 1013000350
+  },
+  {
+    "UnitCollectionBookId": 1300004,
+    "DisplayPriority": 1,
+    "UnitId": 1013001410
+  },
+  {
+    "UnitCollectionBookId": 1300005,
+    "DisplayPriority": 1,
+    "UnitId": 1013000510
+  },
+  {
+    "UnitCollectionBookId": 1300006,
+    "DisplayPriority": 1,
+    "UnitId": 1013000610
+  },
+  {
+    "UnitCollectionBookId": 1300007,
+    "DisplayPriority": 1,
+    "UnitId": 1013000710
+  },
+  {
+    "UnitCollectionBookId": 1300008,
+    "DisplayPriority": 1,
+    "UnitId": 1013001510
+  },
+  {
+    "UnitCollectionBookId": 1700001,
+    "DisplayPriority": 1,
+    "UnitId": 1017000610
+  },
+  {
+    "UnitCollectionBookId": 1700001,
+    "DisplayPriority": 1017000600,
+    "UnitId": 1017000600
+  },
+  {
+    "UnitCollectionBookId": 1700002,
+    "DisplayPriority": 1,
+    "UnitId": 1017000110
+  },
+  {
+    "UnitCollectionBookId": 1700002,
+    "DisplayPriority": 1017000100,
+    "UnitId": 1017000100
+  },
+  {
+    "UnitCollectionBookId": 1700003,
+    "DisplayPriority": 1,
+    "UnitId": 1017000310
+  },
+  {
+    "UnitCollectionBookId": 1700003,
+    "DisplayPriority": 1017000300,
+    "UnitId": 1017000300
+  },
+  {
+    "UnitCollectionBookId": 1700004,
+    "DisplayPriority": 1,
+    "UnitId": 1017000410
+  },
+  {
+    "UnitCollectionBookId": 1700004,
+    "DisplayPriority": 1017000400,
+    "UnitId": 1017000400
+  },
+  {
+    "UnitCollectionBookId": 1700005,
+    "DisplayPriority": 1,
+    "UnitId": 1017000510
+  },
+  {
+    "UnitCollectionBookId": 1700005,
+    "DisplayPriority": 1017000500,
+    "UnitId": 1017000500
+  },
+  {
+    "UnitCollectionBookId": 1700006,
+    "DisplayPriority": 1,
+    "UnitId": 1017001210
+  },
+  {
+    "UnitCollectionBookId": 1700006,
+    "DisplayPriority": 1017001200,
+    "UnitId": 1017001200
+  },
+  {
+    "UnitCollectionBookId": 1700007,
+    "DisplayPriority": 1017000700,
+    "UnitId": 1017000700
+  },
+  {
+    "UnitCollectionBookId": 1700008,
+    "DisplayPriority": 1017000800,
+    "UnitId": 1017000800
+  },
+  {
+    "UnitCollectionBookId": 1700009,
+    "DisplayPriority": 1017000900,
+    "UnitId": 1017000900
+  },
+  {
+    "UnitCollectionBookId": 1700009,
+    "DisplayPriority": 1017000950,
+    "UnitId": 1017000950
+  },
+  {
+    "UnitCollectionBookId": 1700010,
+    "DisplayPriority": 1017001000,
+    "UnitId": 1017001000
+  },
+  {
+    "UnitCollectionBookId": 1700011,
+    "DisplayPriority": 1017001100,
+    "UnitId": 1017001100
+  },
+  {
+    "UnitCollectionBookId": 1700012,
+    "DisplayPriority": 1017000200,
+    "UnitId": 1017000200
+  },
+  {
+    "UnitCollectionBookId": 2100001,
+    "DisplayPriority": 1,
+    "UnitId": 1021000110
+  },
+  {
+    "UnitCollectionBookId": 2100002,
+    "DisplayPriority": 1,
+    "UnitId": 1021000210
+  },
+  {
+    "UnitCollectionBookId": 2200001,
+    "DisplayPriority": 1,
+    "UnitId": 1022000210
+  },
+  {
+    "UnitCollectionBookId": 2200001,
+    "DisplayPriority": 1022000200,
+    "UnitId": 1022000200
+  },
+  {
+    "UnitCollectionBookId": 2200002,
+    "DisplayPriority": 1022000100,
+    "UnitId": 1022000100
+  },
+  {
+    "UnitCollectionBookId": 2200002,
+    "DisplayPriority": 1022000150,
+    "UnitId": 1022000150
+  },
+  {
+    "UnitCollectionBookId": 2200003,
+    "DisplayPriority": 1022000400,
+    "UnitId": 1022000400
+  },
+  {
+    "UnitCollectionBookId": 2200004,
+    "DisplayPriority": 1022000500,
+    "UnitId": 1022000500
+  },
+  {
+    "UnitCollectionBookId": 2200005,
+    "DisplayPriority": 1022000600,
+    "UnitId": 1022000600
+  },
+  {
+    "UnitCollectionBookId": 2200006,
+    "DisplayPriority": 1022000700,
+    "UnitId": 1022000700
+  },
+  {
+    "UnitCollectionBookId": 2200007,
+    "DisplayPriority": 1022000300,
+    "UnitId": 1022000300
+  },
+  {
+    "UnitCollectionBookId": 2300001,
+    "DisplayPriority": 1,
+    "UnitId": 1023000110
+  },
+  {
+    "UnitCollectionBookId": 2300001,
+    "DisplayPriority": 1023000100,
+    "UnitId": 1023000100
+  },
+  {
+    "UnitCollectionBookId": 2600001,
+    "DisplayPriority": 1,
+    "UnitId": 1026000110
+  },
+  {
+    "UnitCollectionBookId": 2900001,
+    "DisplayPriority": 1,
+    "UnitId": 1029000210
+  },
+  {
+    "UnitCollectionBookId": 2900002,
+    "DisplayPriority": 1,
+    "UnitId": 1029002110
+  },
+  {
+    "UnitCollectionBookId": 3100001,
+    "DisplayPriority": 1,
+    "UnitId": 1031000100
+  },
+  {
+    "UnitCollectionBookId": 3100001,
+    "DisplayPriority": 2,
+    "UnitId": 1031000150
+  },
+  {
+    "UnitCollectionBookId": 3100002,
+    "DisplayPriority": 1,
+    "UnitId": 1031000200
+  },
+  {
+    "UnitCollectionBookId": 3100003,
+    "DisplayPriority": 1,
+    "UnitId": 1031000700
+  },
+  {
+    "UnitCollectionBookId": 3100004,
+    "DisplayPriority": 1,
+    "UnitId": 1031000500
+  },
+  {
+    "UnitCollectionBookId": 3100005,
+    "DisplayPriority": 1,
+    "UnitId": 1031000600
+  },
+  {
+    "UnitCollectionBookId": 3100006,
+    "DisplayPriority": 1,
+    "UnitId": 1031000400
+  },
+  {
+    "UnitCollectionBookId": 3100007,
+    "DisplayPriority": 1,
+    "UnitId": 1031000900
+  },
+  {
+    "UnitCollectionBookId": 3100008,
+    "DisplayPriority": 1,
+    "UnitId": 1031000300
+  },
+  {
+    "UnitCollectionBookId": 3100008,
+    "DisplayPriority": 2,
+    "UnitId": 1031000350
+  },
+  {
+    "UnitCollectionBookId": 3100009,
+    "DisplayPriority": 1,
+    "UnitId": 1031001000
+  },
+  {
+    "UnitCollectionBookId": 3100010,
+    "DisplayPriority": 1,
+    "UnitId": 1031000800
+  },
+  {
+    "UnitCollectionBookId": 4400001,
+    "DisplayPriority": 1,
+    "UnitId": 1044000410
+  },
+  {
+    "UnitCollectionBookId": 5500001,
+    "DisplayPriority": 1,
+    "UnitId": 1055000160
+  },
+  {
+    "UnitCollectionBookId": 5500002,
+    "DisplayPriority": 1,
+    "UnitId": 1055000260
+  },
+  {
+    "UnitCollectionBookId": 5500003,
+    "DisplayPriority": 1,
+    "UnitId": 1055000610
+  },
+  {
+    "UnitCollectionBookId": 5500004,
+    "DisplayPriority": 1055000360,
+    "UnitId": 1055000360
+  },
+  {
+    "UnitCollectionBookId": 6000001,
+    "DisplayPriority": 1,
+    "UnitId": 1060002110
+  },
+  {
+    "UnitCollectionBookId": 6000002,
+    "DisplayPriority": 1,
+    "UnitId": 1060002010
+  },
+  {
+    "UnitCollectionBookId": 6000003,
+    "DisplayPriority": 1,
+    "UnitId": 1060001410
+  },
+  {
+    "UnitCollectionBookId": 6000004,
+    "DisplayPriority": 1,
+    "UnitId": 1060000100
+  },
+  {
+    "UnitCollectionBookId": 6000005,
+    "DisplayPriority": 1,
+    "UnitId": 1060000200
+  },
+  {
+    "UnitCollectionBookId": 6000006,
+    "DisplayPriority": 1,
+    "UnitId": 1060000300
+  },
+  {
+    "UnitCollectionBookId": 6000006,
+    "DisplayPriority": 2,
+    "UnitId": 1060000350
+  },
+  {
+    "UnitCollectionBookId": 6000007,
+    "DisplayPriority": 1,
+    "UnitId": 1060000800
+  },
+  {
+    "UnitCollectionBookId": 6000008,
+    "DisplayPriority": 1,
+    "UnitId": 1060000900
+  },
+  {
+    "UnitCollectionBookId": 6000009,
+    "DisplayPriority": 1,
+    "UnitId": 1060000700
+  },
+  {
+    "UnitCollectionBookId": 6000010,
+    "DisplayPriority": 1,
+    "UnitId": 1060001900
+  },
+  {
+    "UnitCollectionBookId": 6000011,
+    "DisplayPriority": 1,
+    "UnitId": 1060001200
+  },
+  {
+    "UnitCollectionBookId": 6000012,
+    "DisplayPriority": 1,
+    "UnitId": 1060001300
+  },
+  {
+    "UnitCollectionBookId": 6000013,
+    "DisplayPriority": 1,
+    "UnitId": 1060002200
+  },
+  {
+    "UnitCollectionBookId": 6000014,
+    "DisplayPriority": 1,
+    "UnitId": 1060002300
+  },
+  {
+    "UnitCollectionBookId": 6000015,
+    "DisplayPriority": 1,
+    "UnitId": 1060001700
+  },
+  {
+    "UnitCollectionBookId": 6000016,
+    "DisplayPriority": 1060000400,
+    "UnitId": 1060000400
+  },
+  {
+    "UnitCollectionBookId": 6000017,
+    "DisplayPriority": 1060000500,
+    "UnitId": 1060000500
+  },
+  {
+    "UnitCollectionBookId": 6000017,
+    "DisplayPriority": 1060000550,
+    "UnitId": 1060000550
+  },
+  {
+    "UnitCollectionBookId": 6000018,
+    "DisplayPriority": 1060000600,
+    "UnitId": 1060000600
+  },
+  {
+    "UnitCollectionBookId": 6000019,
+    "DisplayPriority": 1060001000,
+    "UnitId": 1060001000
+  },
+  {
+    "UnitCollectionBookId": 6000020,
+    "DisplayPriority": 1060001800,
+    "UnitId": 1060001800
+  },
+  {
+    "UnitCollectionBookId": 6000020,
+    "DisplayPriority": 1060001850,
+    "UnitId": 1060001850
+  },
+  {
+    "UnitCollectionBookId": 6000021,
+    "DisplayPriority": 1060001500,
+    "UnitId": 1060001500
+  },
+  {
+    "UnitCollectionBookId": 6000022,
+    "DisplayPriority": 1060001600,
+    "UnitId": 1060001600
+  },
+  {
+    "UnitCollectionBookId": 6300001,
+    "DisplayPriority": 1,
+    "UnitId": 1063000110
+  },
+  {
+    "UnitCollectionBookId": 6700001,
+    "DisplayPriority": 1,
+    "UnitId": 1067000110
+  },
+  {
+    "UnitCollectionBookId": 6800001,
+    "DisplayPriority": 1,
+    "UnitId": 1068000150
+  },
+  {
+    "UnitCollectionBookId": 6900001,
+    "DisplayPriority": 1,
+    "UnitId": 1069000150
+  },
+  {
+    "UnitCollectionBookId": 6900002,
+    "DisplayPriority": 1,
+    "UnitId": 1069000210
+  },
+  {
+    "UnitCollectionBookId": 7000001,
+    "DisplayPriority": 1,
+    "UnitId": 1070000110
+  },
+  {
+    "UnitCollectionBookId": 7000002,
+    "DisplayPriority": 1,
+    "UnitId": 1070000210
+  },
+  {
+    "UnitCollectionBookId": 7000003,
+    "DisplayPriority": 1,
+    "UnitId": 1070000310
+  },
+  {
+    "UnitCollectionBookId": 7000004,
+    "DisplayPriority": 1,
+    "UnitId": 1070000510
+  },
+  {
+    "UnitCollectionBookId": 8000001,
+    "DisplayPriority": 1,
+    "UnitId": 1080000100
+  },
+  {
+    "UnitCollectionBookId": 8000001,
+    "DisplayPriority": 2,
+    "UnitId": 1080000150
+  },
+  {
+    "UnitCollectionBookId": 8000002,
+    "DisplayPriority": 1,
+    "UnitId": 1080000300
+  },
+  {
+    "UnitCollectionBookId": 8000002,
+    "DisplayPriority": 1080000360,
+    "UnitId": 1080000360
+  },
+  {
+    "UnitCollectionBookId": 8000003,
+    "DisplayPriority": 1,
+    "UnitId": 1080000400
+  },
+  {
+    "UnitCollectionBookId": 8000004,
+    "DisplayPriority": 1,
+    "UnitId": 1080000600
+  },
+  {
+    "UnitCollectionBookId": 8000005,
+    "DisplayPriority": 1,
+    "UnitId": 1080000700
+  },
+  {
+    "UnitCollectionBookId": 8000006,
+    "DisplayPriority": 1,
+    "UnitId": 1080004300
+  },
+  {
+    "UnitCollectionBookId": 8000007,
+    "DisplayPriority": 1,
+    "UnitId": 1080000800
+  },
+  {
+    "UnitCollectionBookId": 8000008,
+    "DisplayPriority": 1,
+    "UnitId": 1080000900
+  },
+  {
+    "UnitCollectionBookId": 8000009,
+    "DisplayPriority": 1,
+    "UnitId": 1080001000
+  },
+  {
+    "UnitCollectionBookId": 8000010,
+    "DisplayPriority": 1,
+    "UnitId": 1080001100
+  },
+  {
+    "UnitCollectionBookId": 8000010,
+    "DisplayPriority": 2,
+    "UnitId": 1080001110
+  },
+  {
+    "UnitCollectionBookId": 8000011,
+    "DisplayPriority": 1,
+    "UnitId": 1080001200
+  },
+  {
+    "UnitCollectionBookId": 8000012,
+    "DisplayPriority": 1,
+    "UnitId": 1080001300
+  },
+  {
+    "UnitCollectionBookId": 8000012,
+    "DisplayPriority": 2,
+    "UnitId": 1080001310
+  },
+  {
+    "UnitCollectionBookId": 8000013,
+    "DisplayPriority": 1,
+    "UnitId": 1080001400
+  },
+  {
+    "UnitCollectionBookId": 8000013,
+    "DisplayPriority": 2,
+    "UnitId": 1080001410
+  },
+  {
+    "UnitCollectionBookId": 8000014,
+    "DisplayPriority": 1,
+    "UnitId": 1080001500
+  },
+  {
+    "UnitCollectionBookId": 8000014,
+    "DisplayPriority": 2,
+    "UnitId": 1080001510
+  },
+  {
+    "UnitCollectionBookId": 8000015,
+    "DisplayPriority": 1,
+    "UnitId": 1080001600
+  },
+  {
+    "UnitCollectionBookId": 8000015,
+    "DisplayPriority": 2,
+    "UnitId": 1080001610
+  },
+  {
+    "UnitCollectionBookId": 8000016,
+    "DisplayPriority": 1,
+    "UnitId": 1080001710
+  },
+  {
+    "UnitCollectionBookId": 8000017,
+    "DisplayPriority": 1,
+    "UnitId": 1080001800
+  },
+  {
+    "UnitCollectionBookId": 8000017,
+    "DisplayPriority": 2,
+    "UnitId": 1080001810
+  },
+  {
+    "UnitCollectionBookId": 8000018,
+    "DisplayPriority": 1,
+    "UnitId": 1080001900
+  },
+  {
+    "UnitCollectionBookId": 8000018,
+    "DisplayPriority": 2,
+    "UnitId": 1080001910
+  },
+  {
+    "UnitCollectionBookId": 8000019,
+    "DisplayPriority": 1,
+    "UnitId": 1080002000
+  },
+  {
+    "UnitCollectionBookId": 8000019,
+    "DisplayPriority": 2,
+    "UnitId": 1080002010
+  },
+  {
+    "UnitCollectionBookId": 8000020,
+    "DisplayPriority": 1,
+    "UnitId": 1080002100
+  },
+  {
+    "UnitCollectionBookId": 8000021,
+    "DisplayPriority": 1,
+    "UnitId": 1080002300
+  },
+  {
+    "UnitCollectionBookId": 8000022,
+    "DisplayPriority": 1,
+    "UnitId": 1080002500
+  },
+  {
+    "UnitCollectionBookId": 8000023,
+    "DisplayPriority": 1,
+    "UnitId": 1080002600
+  },
+  {
+    "UnitCollectionBookId": 8000024,
+    "DisplayPriority": 1,
+    "UnitId": 1080002800
+  },
+  {
+    "UnitCollectionBookId": 8000025,
+    "DisplayPriority": 1,
+    "UnitId": 1080003000
+  },
+  {
+    "UnitCollectionBookId": 8000026,
+    "DisplayPriority": 1,
+    "UnitId": 1080003100
+  },
+  {
+    "UnitCollectionBookId": 8000027,
+    "DisplayPriority": 1,
+    "UnitId": 1080003200
+  },
+  {
+    "UnitCollectionBookId": 8000027,
+    "DisplayPriority": 2,
+    "UnitId": 1080003250
+  },
+  {
+    "UnitCollectionBookId": 8000028,
+    "DisplayPriority": 1,
+    "UnitId": 1080003300
+  },
+  {
+    "UnitCollectionBookId": 8000028,
+    "DisplayPriority": 2,
+    "UnitId": 1080003310
+  },
+  {
+    "UnitCollectionBookId": 8000029,
+    "DisplayPriority": 1,
+    "UnitId": 1080003400
+  },
+  {
+    "UnitCollectionBookId": 8000030,
+    "DisplayPriority": 1,
+    "UnitId": 1080003600
+  },
+  {
+    "UnitCollectionBookId": 8000031,
+    "DisplayPriority": 1,
+    "UnitId": 1080003800
+  },
+  {
+    "UnitCollectionBookId": 8000032,
+    "DisplayPriority": 1,
+    "UnitId": 1080004000
+  },
+  {
+    "UnitCollectionBookId": 8000033,
+    "DisplayPriority": 1,
+    "UnitId": 1080004200
+  },
+  {
+    "UnitCollectionBookId": 8100001,
+    "DisplayPriority": 1,
+    "UnitId": 1081000110
+  },
+  {
+    "UnitCollectionBookId": 8200001,
+    "DisplayPriority": 1,
+    "UnitId": 1082000110
+  },
+  {
+    "UnitCollectionBookId": 8300001,
+    "DisplayPriority": 1,
+    "UnitId": 1083000100
+  },
+  {
+    "UnitCollectionBookId": 8300002,
+    "DisplayPriority": 1,
+    "UnitId": 1083000310
+  },
+  {
+    "UnitCollectionBookId": 8300003,
+    "DisplayPriority": 1,
+    "UnitId": 1083000400
+  },
+  {
+    "UnitCollectionBookId": 8300004,
+    "DisplayPriority": 1,
+    "UnitId": 1083000510
+  },
+  {
+    "UnitCollectionBookId": 8300005,
+    "DisplayPriority": 1,
+    "UnitId": 1083000600
+  },
+  {
+    "UnitCollectionBookId": 8300005,
+    "DisplayPriority": 2,
+    "UnitId": 1083000610
+  },
+  {
+    "UnitCollectionBookId": 8300006,
+    "DisplayPriority": 1,
+    "UnitId": 1084000110
+  },
+  {
+    "UnitCollectionBookId": 8300007,
+    "DisplayPriority": 1,
+    "UnitId": 1085000110
+  },
+  {
+    "UnitCollectionBookId": 8300008,
+    "DisplayPriority": 1,
+    "UnitId": 1085000310
+  },
+  {
+    "UnitCollectionBookId": 9500001,
+    "DisplayPriority": 1,
+    "UnitId": 1095000100
+  },
+  {
+    "UnitCollectionBookId": 9500002,
+    "DisplayPriority": 1,
+    "UnitId": 1095000300
+  },
+  {
+    "UnitCollectionBookId": 9500002,
+    "DisplayPriority": 1095000350,
+    "UnitId": 1095000350
+  },
+  {
+    "UnitCollectionBookId": 9500003,
+    "DisplayPriority": 1,
+    "UnitId": 1095004500
+  },
+  {
+    "UnitCollectionBookId": 9500004,
+    "DisplayPriority": 1,
+    "UnitId": 1095004200
+  },
+  {
+    "UnitCollectionBookId": 9500005,
+    "DisplayPriority": 1,
+    "UnitId": 1095000400
+  },
+  {
+    "UnitCollectionBookId": 9500005,
+    "DisplayPriority": 2,
+    "UnitId": 1095000410
+  },
+  {
+    "UnitCollectionBookId": 9500006,
+    "DisplayPriority": 1,
+    "UnitId": 1095000500
+  },
+  {
+    "UnitCollectionBookId": 9500006,
+    "DisplayPriority": 2,
+    "UnitId": 1095000510
+  },
+  {
+    "UnitCollectionBookId": 9500007,
+    "DisplayPriority": 1,
+    "UnitId": 1095000700
+  },
+  {
+    "UnitCollectionBookId": 9500008,
+    "DisplayPriority": 1,
+    "UnitId": 1095000900
+  },
+  {
+    "UnitCollectionBookId": 9500008,
+    "DisplayPriority": 2,
+    "UnitId": 1095000910
+  },
+  {
+    "UnitCollectionBookId": 9500009,
+    "DisplayPriority": 1,
+    "UnitId": 1095001000
+  },
+  {
+    "UnitCollectionBookId": 9500009,
+    "DisplayPriority": 2,
+    "UnitId": 1095001010
+  },
+  {
+    "UnitCollectionBookId": 9500010,
+    "DisplayPriority": 1,
+    "UnitId": 1095001100
+  },
+  {
+    "UnitCollectionBookId": 9500011,
+    "DisplayPriority": 1,
+    "UnitId": 1095001200
+  },
+  {
+    "UnitCollectionBookId": 9500012,
+    "DisplayPriority": 1,
+    "UnitId": 1095001300
+  },
+  {
+    "UnitCollectionBookId": 9500013,
+    "DisplayPriority": 1,
+    "UnitId": 1095001510
+  },
+  {
+    "UnitCollectionBookId": 9500014,
+    "DisplayPriority": 1,
+    "UnitId": 1095003700
+  },
+  {
+    "UnitCollectionBookId": 9500015,
+    "DisplayPriority": 1,
+    "UnitId": 1095001700
+  },
+  {
+    "UnitCollectionBookId": 9500016,
+    "DisplayPriority": 1,
+    "UnitId": 1095004300
+  },
+  {
+    "UnitCollectionBookId": 9500017,
+    "DisplayPriority": 1,
+    "UnitId": 1095001800
+  },
+  {
+    "UnitCollectionBookId": 9500018,
+    "DisplayPriority": 1,
+    "UnitId": 1095001900
+  },
+  {
+    "UnitCollectionBookId": 9500019,
+    "DisplayPriority": 1,
+    "UnitId": 1095002000
+  },
+  {
+    "UnitCollectionBookId": 9500020,
+    "DisplayPriority": 1,
+    "UnitId": 1095002200
+  },
+  {
+    "UnitCollectionBookId": 9500021,
+    "DisplayPriority": 1,
+    "UnitId": 1095002300
+  },
+  {
+    "UnitCollectionBookId": 9500022,
+    "DisplayPriority": 1,
+    "UnitId": 1095002400
+  },
+  {
+    "UnitCollectionBookId": 9500023,
+    "DisplayPriority": 1,
+    "UnitId": 1095002500
+  },
+  {
+    "UnitCollectionBookId": 9500023,
+    "DisplayPriority": 1095002550,
+    "UnitId": 1095002550
+  },
+  {
+    "UnitCollectionBookId": 9500024,
+    "DisplayPriority": 1,
+    "UnitId": 1095002600
+  },
+  {
+    "UnitCollectionBookId": 9500024,
+    "DisplayPriority": 1095002660,
+    "UnitId": 1095002660
+  },
+  {
+    "UnitCollectionBookId": 9500025,
+    "DisplayPriority": 1,
+    "UnitId": 1095002700
+  },
+  {
+    "UnitCollectionBookId": 9500026,
+    "DisplayPriority": 1,
+    "UnitId": 1095002800
+  },
+  {
+    "UnitCollectionBookId": 9500027,
+    "DisplayPriority": 1,
+    "UnitId": 1095002910
+  },
+  {
+    "UnitCollectionBookId": 9500028,
+    "DisplayPriority": 1,
+    "UnitId": 1095003000
+  },
+  {
+    "UnitCollectionBookId": 9500029,
+    "DisplayPriority": 1,
+    "UnitId": 1095003110
+  },
+  {
+    "UnitCollectionBookId": 9500030,
+    "DisplayPriority": 1,
+    "UnitId": 1095003200
+  },
+  {
+    "UnitCollectionBookId": 9500031,
+    "DisplayPriority": 1,
+    "UnitId": 1095003400
+  },
+  {
+    "UnitCollectionBookId": 9500032,
+    "DisplayPriority": 1,
+    "UnitId": 1095003500
+  },
+  {
+    "UnitCollectionBookId": 9500032,
+    "DisplayPriority": 2,
+    "UnitId": 1095003510
+  },
+  {
+    "UnitCollectionBookId": 9500033,
+    "DisplayPriority": 1,
+    "UnitId": 1095003600
+  },
+  {
+    "UnitCollectionBookId": 9500034,
+    "DisplayPriority": 1,
+    "UnitId": 1095004410
+  },
+  {
+    "UnitCollectionBookId": 9500035,
+    "DisplayPriority": 1,
+    "UnitId": 1095003810
+  },
+  {
+    "UnitCollectionBookId": 9500036,
+    "DisplayPriority": 1,
+    "UnitId": 1095003910
+  },
+  {
+    "UnitCollectionBookId": 9500037,
+    "DisplayPriority": 1,
+    "UnitId": 1095004000
+  },
+  {
+    "UnitCollectionBookId": 9500037,
+    "DisplayPriority": 2,
+    "UnitId": 1095004010
+  },
+  {
+    "UnitCollectionBookId": 9500038,
+    "DisplayPriority": 1,
+    "UnitId": 1095004110
+  },
+  {
+    "UnitCollectionBookId": 9800001,
+    "DisplayPriority": 1,
+    "UnitId": 1098000110
+  },
+  {
+    "UnitCollectionBookId": 9800002,
+    "DisplayPriority": 1,
+    "UnitId": 1098000210
+  },
+  {
+    "UnitCollectionBookId": 9800003,
+    "DisplayPriority": 1,
+    "UnitId": 1098000310
+  },
+  {
+    "UnitCollectionBookId": 9800004,
+    "DisplayPriority": 1,
+    "UnitId": 1098000400
+  },
+  {
+    "UnitCollectionBookId": 9800005,
+    "DisplayPriority": 1,
+    "UnitId": 1098000510
+  },
+  {
+    "UnitCollectionBookId": 9800006,
+    "DisplayPriority": 1,
+    "UnitId": 1098000610
+  },
+  {
+    "UnitCollectionBookId": 9800007,
+    "DisplayPriority": 1,
+    "UnitId": 1098000700
+  },
+  {
+    "UnitCollectionBookId": 9800008,
+    "DisplayPriority": 1,
+    "UnitId": 1098000800
+  },
+  {
+    "UnitCollectionBookId": 9800009,
+    "DisplayPriority": 1,
+    "UnitId": 1098000900
+  },
+  {
+    "UnitCollectionBookId": 9800010,
+    "DisplayPriority": 1,
+    "UnitId": 1098001000
+  },
+  {
+    "UnitCollectionBookId": 9900001,
+    "DisplayPriority": 1,
+    "UnitId": 1099000110
+  },
+  {
+    "UnitCollectionBookId": 9900002,
+    "DisplayPriority": 1,
+    "UnitId": 1099000210
+  },
+  {
+    "UnitCollectionBookId": 10000001,
+    "DisplayPriority": 1,
+    "UnitId": 1100000210
+  },
+  {
+    "UnitCollectionBookId": 10100001,
+    "DisplayPriority": 1,
+    "UnitId": 1101000110
+  },
+  {
+    "UnitCollectionBookId": 11000001,
+    "DisplayPriority": 1,
+    "UnitId": 1110000150
+  },
+  {
+    "UnitCollectionBookId": 11000001,
+    "DisplayPriority": 2,
+    "UnitId": 1110000100
+  },
+  {
+    "UnitCollectionBookId": 11000002,
+    "DisplayPriority": 1,
+    "UnitId": 1110000550
+  },
+  {
+    "UnitCollectionBookId": 11000002,
+    "DisplayPriority": 2,
+    "UnitId": 1110000500
+  },
+  {
+    "UnitCollectionBookId": 11000003,
+    "DisplayPriority": 1,
+    "UnitId": 1110000200
+  },
+  {
+    "UnitCollectionBookId": 11000004,
+    "DisplayPriority": 1,
+    "UnitId": 1110000400
+  },
+  {
+    "UnitCollectionBookId": 11000005,
+    "DisplayPriority": 1,
+    "UnitId": 1110000300
+  },
+  {
+    "UnitCollectionBookId": 11000006,
+    "DisplayPriority": 1,
+    "UnitId": 1110000900
+  },
+  {
+    "UnitCollectionBookId": 11000007,
+    "DisplayPriority": 1,
+    "UnitId": 1110001000
+  },
+  {
+    "UnitCollectionBookId": 11000008,
+    "DisplayPriority": 1,
+    "UnitId": 1110000810
+  },
+  {
+    "UnitCollectionBookId": 11000009,
+    "DisplayPriority": 1,
+    "UnitId": 1110000600
+  },
+  {
+    "UnitCollectionBookId": 11000010,
+    "DisplayPriority": 1,
+    "UnitId": 1110000700
+  },
+  {
+    "UnitCollectionBookId": 11400001,
+    "DisplayPriority": 1,
+    "UnitId": 1114000150
+  },
+  {
+    "UnitCollectionBookId": 11400001,
+    "DisplayPriority": 2,
+    "UnitId": 1114000100
+  },
+  {
+    "UnitCollectionBookId": 11400002,
+    "DisplayPriority": 1114000200,
+    "UnitId": 1114000200
+  },
+  {
+    "UnitCollectionBookId": 11400003,
+    "DisplayPriority": 1114000600,
+    "UnitId": 1114000600
+  },
+  {
+    "UnitCollectionBookId": 11400004,
+    "DisplayPriority": 1114000900,
+    "UnitId": 1114000900
+  },
+  {
+    "UnitCollectionBookId": 11400005,
+    "DisplayPriority": 1114001000,
+    "UnitId": 1114001000
+  },
+  {
+    "UnitCollectionBookId": 11400006,
+    "DisplayPriority": 1114000300,
+    "UnitId": 1114000300
+  },
+  {
+    "UnitCollectionBookId": 11400007,
+    "DisplayPriority": 1114000800,
+    "UnitId": 1114000800
+  },
+  {
+    "UnitCollectionBookId": 11400007,
+    "DisplayPriority": 1114000801,
+    "UnitId": 1114000801
+  },
+  {
+    "UnitCollectionBookId": 11400007,
+    "DisplayPriority": 1114000802,
+    "UnitId": 1114000802
+  },
+  {
+    "UnitCollectionBookId": 11500001,
+    "DisplayPriority": 1,
+    "UnitId": 1115000100
+  },
+  {
+    "UnitCollectionBookId": 11500002,
+    "DisplayPriority": 1,
+    "UnitId": 1115000200
+  },
+  {
+    "UnitCollectionBookId": 11500003,
+    "DisplayPriority": 1,
+    "UnitId": 1115000300
+  },
+  {
+    "UnitCollectionBookId": 11500004,
+    "DisplayPriority": 1115000400,
+    "UnitId": 1115000400
+  },
+  {
+    "UnitCollectionBookId": 12500001,
+    "DisplayPriority": 1,
+    "UnitId": 1125000250
+  },
+  {
+    "UnitCollectionBookId": 12500001,
+    "DisplayPriority": 1125000200,
+    "UnitId": 1125000200
+  },
+  {
+    "UnitCollectionBookId": 12500002,
+    "DisplayPriority": 1,
+    "UnitId": 1125001150
+  },
+  {
+    "UnitCollectionBookId": 12500002,
+    "DisplayPriority": 1125001100,
+    "UnitId": 1125001100
+  },
+  {
+    "UnitCollectionBookId": 12500003,
+    "DisplayPriority": 1125000100,
+    "UnitId": 1125000100
+  },
+  {
+    "UnitCollectionBookId": 12500004,
+    "DisplayPriority": 1125004700,
+    "UnitId": 1125004700
+  },
+  {
+    "UnitCollectionBookId": 12500005,
+    "DisplayPriority": 1125004800,
+    "UnitId": 1125004800
+  },
+  {
+    "UnitCollectionBookId": 12500006,
+    "DisplayPriority": 1125001450,
+    "UnitId": 1125001450
+  },
+  {
+    "UnitCollectionBookId": 12500007,
+    "DisplayPriority": 1125000800,
+    "UnitId": 1125000800
+  },
+  {
+    "UnitCollectionBookId": 12500008,
+    "DisplayPriority": 1125000900,
+    "UnitId": 1125000900
+  },
+  {
+    "UnitCollectionBookId": 12500009,
+    "DisplayPriority": 1125001000,
+    "UnitId": 1125001000
+  },
+  {
+    "UnitCollectionBookId": 12500010,
+    "DisplayPriority": 1125000300,
+    "UnitId": 1125000300
+  },
+  {
+    "UnitCollectionBookId": 12500011,
+    "DisplayPriority": 1125000510,
+    "UnitId": 1125000510
+  },
+  {
+    "UnitCollectionBookId": 12500012,
+    "DisplayPriority": 1125001600,
+    "UnitId": 1125001600
+  },
+  {
+    "UnitCollectionBookId": 12500013,
+    "DisplayPriority": 1125002000,
+    "UnitId": 1125002000
+  },
+  {
+    "UnitCollectionBookId": 12500014,
+    "DisplayPriority": 1125002100,
+    "UnitId": 1125002100
+  },
+  {
+    "UnitCollectionBookId": 12500015,
+    "DisplayPriority": 1125002200,
+    "UnitId": 1125002200
+  },
+  {
+    "UnitCollectionBookId": 12500016,
+    "DisplayPriority": 1125002300,
+    "UnitId": 1125002300
+  },
+  {
+    "UnitCollectionBookId": 12500017,
+    "DisplayPriority": 1125002400,
+    "UnitId": 1125002400
+  },
+  {
+    "UnitCollectionBookId": 12500018,
+    "DisplayPriority": 1125001900,
+    "UnitId": 1125001900
+  },
+  {
+    "UnitCollectionBookId": 12500019,
+    "DisplayPriority": 1125002800,
+    "UnitId": 1125002800
+  },
+  {
+    "UnitCollectionBookId": 12500020,
+    "DisplayPriority": 1125002700,
+    "UnitId": 1125002700
+  },
+  {
+    "UnitCollectionBookId": 12500021,
+    "DisplayPriority": 1125002500,
+    "UnitId": 1125002500
+  },
+  {
+    "UnitCollectionBookId": 12500022,
+    "DisplayPriority": 1125002900,
+    "UnitId": 1125002900
+  },
+  {
+    "UnitCollectionBookId": 12500023,
+    "DisplayPriority": 1125005110,
+    "UnitId": 1125005110
+  },
+  {
+    "UnitCollectionBookId": 12500024,
+    "DisplayPriority": 1125004900,
+    "UnitId": 1125004900
+  },
+  {
+    "UnitCollectionBookId": 12500025,
+    "DisplayPriority": 1125003000,
+    "UnitId": 1125003000
+  },
+  {
+    "UnitCollectionBookId": 12500026,
+    "DisplayPriority": 1125003100,
+    "UnitId": 1125003100
+  },
+  {
+    "UnitCollectionBookId": 12500027,
+    "DisplayPriority": 1125000700,
+    "UnitId": 1125000700
+  },
+  {
+    "UnitCollectionBookId": 12500028,
+    "DisplayPriority": 1125003310,
+    "UnitId": 1125003310
+  },
+  {
+    "UnitCollectionBookId": 12500029,
+    "DisplayPriority": 1125003400,
+    "UnitId": 1125003400
+  },
+  {
+    "UnitCollectionBookId": 12500030,
+    "DisplayPriority": 1125005300,
+    "UnitId": 1125005300
+  },
+  {
+    "UnitCollectionBookId": 12500031,
+    "DisplayPriority": 1125003500,
+    "UnitId": 1125003500
+  },
+  {
+    "UnitCollectionBookId": 12500032,
+    "DisplayPriority": 1125005500,
+    "UnitId": 1125005500
+  },
+  {
+    "UnitCollectionBookId": 12500033,
+    "DisplayPriority": 1125001200,
+    "UnitId": 1125001200
+  },
+  {
+    "UnitCollectionBookId": 12500033,
+    "DisplayPriority": 1125001250,
+    "UnitId": 1125001250
+  },
+  {
+    "UnitCollectionBookId": 12500034,
+    "DisplayPriority": 1125001500,
+    "UnitId": 1125001500
+  },
+  {
+    "UnitCollectionBookId": 12500035,
+    "DisplayPriority": 1125006000,
+    "UnitId": 1125006000
+  },
+  {
+    "UnitCollectionBookId": 12500036,
+    "DisplayPriority": 1125003600,
+    "UnitId": 1125003600
+  },
+  {
+    "UnitCollectionBookId": 12500037,
+    "DisplayPriority": 1125003800,
+    "UnitId": 1125003800
+  },
+  {
+    "UnitCollectionBookId": 12500038,
+    "DisplayPriority": 1125003900,
+    "UnitId": 1125003900
+  },
+  {
+    "UnitCollectionBookId": 12500039,
+    "DisplayPriority": 1125004100,
+    "UnitId": 1125004100
+  },
+  {
+    "UnitCollectionBookId": 12500040,
+    "DisplayPriority": 1125004400,
+    "UnitId": 1125004400
+  },
+  {
+    "UnitCollectionBookId": 12500041,
+    "DisplayPriority": 1125004500,
+    "UnitId": 1125004500
+  },
+  {
+    "UnitCollectionBookId": 13300001,
+    "DisplayPriority": 1133000600,
+    "UnitId": 1133000600
+  },
+  {
+    "UnitCollectionBookId": 13300002,
+    "DisplayPriority": 1133000700,
+    "UnitId": 1133000700
+  },
+  {
+    "UnitCollectionBookId": 13300003,
+    "DisplayPriority": 1133000900,
+    "UnitId": 1133000900
+  },
+  {
+    "UnitCollectionBookId": 13300004,
+    "DisplayPriority": 1133000100,
+    "UnitId": 1133000100
+  },
+  {
+    "UnitCollectionBookId": 13300005,
+    "DisplayPriority": 1133000300,
+    "UnitId": 1133000300
+  },
+  {
+    "UnitCollectionBookId": 13300005,
+    "DisplayPriority": 1133000301,
+    "UnitId": 1133000301
+  },
+  {
+    "UnitCollectionBookId": 13300005,
+    "DisplayPriority": 1133000302,
+    "UnitId": 1133000302
+  },
+  {
+    "UnitCollectionBookId": 13300006,
+    "DisplayPriority": 1133000500,
+    "UnitId": 1133000500
+  },
+  {
+    "UnitCollectionBookId": 13300007,
+    "DisplayPriority": 1133001310,
+    "UnitId": 1133001310
+  },
+  {
+    "UnitCollectionBookId": 13300008,
+    "DisplayPriority": 1133001410,
+    "UnitId": 1133001410
+  },
+  {
+    "UnitCollectionBookId": 13300009,
+    "DisplayPriority": 1133001500,
+    "UnitId": 1133001500
+  },
+  {
+    "UnitCollectionBookId": 13300010,
+    "DisplayPriority": 1133001100,
+    "UnitId": 1133001100
+  },
+  {
+    "UnitCollectionBookId": 14400001,
+    "DisplayPriority": 1,
+    "UnitId": 1144000150
+  },
+  {
+    "UnitCollectionBookId": 15000001,
+    "DisplayPriority": 1150000100,
+    "UnitId": 1150000100
+  },
+  {
+    "UnitCollectionBookId": 15000001,
+    "DisplayPriority": 1150000150,
+    "UnitId": 1150000150
+  },
+  {
+    "UnitCollectionBookId": 15000002,
+    "DisplayPriority": 1150000410,
+    "UnitId": 1150000410
+  },
+  {
+    "UnitCollectionBookId": 15000003,
+    "DisplayPriority": 1150000500,
+    "UnitId": 1150000500
+  },
+  {
+    "UnitCollectionBookId": 15000004,
+    "DisplayPriority": 1150000600,
+    "UnitId": 1150000600
+  },
+  {
+    "UnitCollectionBookId": 15000005,
+    "DisplayPriority": 1150000700,
+    "UnitId": 1150000700
+  },
+  {
+    "UnitCollectionBookId": 15000007,
+    "DisplayPriority": 1150000200,
+    "UnitId": 1150000200
+  },
+  {
+    "UnitCollectionBookId": 15000007,
+    "DisplayPriority": 1150000250,
+    "UnitId": 1150000250
+  },
+  {
+    "UnitCollectionBookId": 15000008,
+    "DisplayPriority": 1150001000,
+    "UnitId": 1150001000
+  },
+  {
+    "UnitCollectionBookId": 15000009,
+    "DisplayPriority": 1150001360,
+    "UnitId": 1150001360
+  },
+  {
+    "UnitCollectionBookId": 15500001,
+    "DisplayPriority": 2,
+    "UnitId": 1155000110
+  },
+  {
+    "UnitCollectionBookId": 16200001,
+    "DisplayPriority": 1162000150,
+    "UnitId": 1162000150
+  },
+  {
+    "UnitCollectionBookId": 16600001,
+    "DisplayPriority": 1166000250,
+    "UnitId": 1166000250
+  },
+  {
+    "UnitCollectionBookId": 16600002,
+    "DisplayPriority": 1166000510,
+    "UnitId": 1166000510
+  },
+  {
+    "UnitCollectionBookId": 17500001,
+    "DisplayPriority": 1,
+    "UnitId": 1175000110
+  },
+  {
+    "UnitCollectionBookId": 17500002,
+    "DisplayPriority": 1,
+    "UnitId": 1175000410
+  },
+  {
+    "UnitCollectionBookId": 17500003,
+    "DisplayPriority": 1,
+    "UnitId": 1175000510
+  },
+  {
+    "UnitCollectionBookId": 17500004,
+    "DisplayPriority": 1,
+    "UnitId": 1175000910
+  },
+  {
+    "UnitCollectionBookId": 20000001,
+    "DisplayPriority": 1,
+    "UnitId": 1200000100
+  },
+  {
+    "UnitCollectionBookId": 20000002,
+    "DisplayPriority": 1,
+    "UnitId": 1200000300
+  },
+  {
+    "UnitCollectionBookId": 20000003,
+    "DisplayPriority": 1,
+    "UnitId": 1200000500
+  },
+  {
+    "UnitCollectionBookId": 20000004,
+    "DisplayPriority": 1,
+    "UnitId": 1200000700
+  },
+  {
+    "UnitCollectionBookId": 20000005,
+    "DisplayPriority": 1,
+    "UnitId": 1200000900
+  },
+  {
+    "UnitCollectionBookId": 20000006,
+    "DisplayPriority": 1,
+    "UnitId": 1200001100
+  },
+  {
+    "UnitCollectionBookId": 20000007,
+    "DisplayPriority": 1,
+    "UnitId": 1200001200
+  },
+  {
+    "UnitCollectionBookId": 20000008,
+    "DisplayPriority": 1,
+    "UnitId": 1200001600
+  },
+  {
+    "UnitCollectionBookId": 20000009,
+    "DisplayPriority": 1,
+    "UnitId": 1200001500
+  },
+  {
+    "UnitCollectionBookId": 20000010,
+    "DisplayPriority": 1,
+    "UnitId": 1200003500
+  },
+  {
+    "UnitCollectionBookId": 20000010,
+    "DisplayPriority": 2,
+    "UnitId": 1200003510
+  },
+  {
+    "UnitCollectionBookId": 20000011,
+    "DisplayPriority": 1,
+    "UnitId": 1200003600
+  },
+  {
+    "UnitCollectionBookId": 20000012,
+    "DisplayPriority": 1,
+    "UnitId": 1200003700
+  },
+  {
+    "UnitCollectionBookId": 20000013,
+    "DisplayPriority": 1,
+    "UnitId": 1200003800
+  },
+  {
+    "UnitCollectionBookId": 20000014,
+    "DisplayPriority": 1,
+    "UnitId": 1200003400
+  },
+  {
+    "UnitCollectionBookId": 20000014,
+    "DisplayPriority": 2,
+    "UnitId": 1200003410
+  },
+  {
+    "UnitCollectionBookId": 20000015,
+    "DisplayPriority": 1,
+    "UnitId": 1200003300
+  },
+  {
+    "UnitCollectionBookId": 20000015,
+    "DisplayPriority": 2,
+    "UnitId": 1200003310
+  },
+  {
+    "UnitCollectionBookId": 20000016,
+    "DisplayPriority": 1,
+    "UnitId": 1200003100
+  },
+  {
+    "UnitCollectionBookId": 20000017,
+    "DisplayPriority": 1,
+    "UnitId": 1200002700
+  },
+  {
+    "UnitCollectionBookId": 20000018,
+    "DisplayPriority": 1,
+    "UnitId": 1200002500
+  },
+  {
+    "UnitCollectionBookId": 20000019,
+    "DisplayPriority": 1,
+    "UnitId": 1200002900
+  },
+  {
+    "UnitCollectionBookId": 20000020,
+    "DisplayPriority": 1,
+    "UnitId": 1200002400
+  },
+  {
+    "UnitCollectionBookId": 20000021,
+    "DisplayPriority": 1,
+    "UnitId": 1200001300
+  },
+  {
+    "UnitCollectionBookId": 20000021,
+    "DisplayPriority": 2,
+    "UnitId": 1200001350
+  },
+  {
+    "UnitCollectionBookId": 20000022,
+    "DisplayPriority": 1,
+    "UnitId": 1200002300
+  },
+  {
+    "UnitCollectionBookId": 20000023,
+    "DisplayPriority": 1,
+    "UnitId": 1200002210
+  },
+  {
+    "UnitCollectionBookId": 20000024,
+    "DisplayPriority": 1,
+    "UnitId": 1200001700
+  },
+  {
+    "UnitCollectionBookId": 20000024,
+    "DisplayPriority": 2,
+    "UnitId": 1200001710
+  },
+  {
+    "UnitCollectionBookId": 20000025,
+    "DisplayPriority": 1,
+    "UnitId": 1200001900
+  },
+  {
+    "UnitCollectionBookId": 20000026,
+    "DisplayPriority": 1,
+    "UnitId": 1200002100
+  },
+  {
+    "UnitCollectionBookId": 20000027,
+    "DisplayPriority": 1200000200,
+    "UnitId": 1200000200
+  },
+  {
+    "UnitCollectionBookId": 20000028,
+    "DisplayPriority": 1200000410,
+    "UnitId": 1200000410
+  },
+  {
+    "UnitCollectionBookId": 20000029,
+    "DisplayPriority": 1200000610,
+    "UnitId": 1200000610
+  },
+  {
+    "UnitCollectionBookId": 20000030,
+    "DisplayPriority": 1200000810,
+    "UnitId": 1200000810
+  },
+  {
+    "UnitCollectionBookId": 20000031,
+    "DisplayPriority": 1200001010,
+    "UnitId": 1200001010
+  },
+  {
+    "UnitCollectionBookId": 20000032,
+    "DisplayPriority": 1200003900,
+    "UnitId": 1200003900
+  },
+  {
+    "UnitCollectionBookId": 20000032,
+    "DisplayPriority": 1200003950,
+    "UnitId": 1200003950
+  },
+  {
+    "UnitCollectionBookId": 20000033,
+    "DisplayPriority": 1200004800,
+    "UnitId": 1200004800
+  },
+  {
+    "UnitCollectionBookId": 20000034,
+    "DisplayPriority": 1200004700,
+    "UnitId": 1200004700
+  },
+  {
+    "UnitCollectionBookId": 20000035,
+    "DisplayPriority": 1200005100,
+    "UnitId": 1200005100
+  },
+  {
+    "UnitCollectionBookId": 20000036,
+    "DisplayPriority": 1200005000,
+    "UnitId": 1200005000
+  },
+  {
+    "UnitCollectionBookId": 20000037,
+    "DisplayPriority": 1200004900,
+    "UnitId": 1200004900
+  },
+  {
+    "UnitCollectionBookId": 20000038,
+    "DisplayPriority": 1200005200,
+    "UnitId": 1200005200
+  },
+  {
+    "UnitCollectionBookId": 20000039,
+    "DisplayPriority": 1200005300,
+    "UnitId": 1200005300
+  },
+  {
+    "UnitCollectionBookId": 20000040,
+    "DisplayPriority": 1200005600,
+    "UnitId": 1200005600
+  },
+  {
+    "UnitCollectionBookId": 20000040,
+    "DisplayPriority": 1200005601,
+    "UnitId": 1200005601
+  },
+  {
+    "UnitCollectionBookId": 20000040,
+    "DisplayPriority": 1200005602,
+    "UnitId": 1200005602
+  },
+  {
+    "UnitCollectionBookId": 21000001,
+    "DisplayPriority": 1,
+    "UnitId": 1210000100
+  },
+  {
+    "UnitCollectionBookId": 21000002,
+    "DisplayPriority": 1,
+    "UnitId": 1210000300
+  },
+  {
+    "UnitCollectionBookId": 21000003,
+    "DisplayPriority": 1,
+    "UnitId": 1210000500
+  },
+  {
+    "UnitCollectionBookId": 21000004,
+    "DisplayPriority": 1,
+    "UnitId": 1210003300
+  },
+  {
+    "UnitCollectionBookId": 21000005,
+    "DisplayPriority": 1,
+    "UnitId": 1210000700
+  },
+  {
+    "UnitCollectionBookId": 21000006,
+    "DisplayPriority": 1,
+    "UnitId": 1210003500
+  },
+  {
+    "UnitCollectionBookId": 21000007,
+    "DisplayPriority": 1,
+    "UnitId": 1210000600
+  },
+  {
+    "UnitCollectionBookId": 21000008,
+    "DisplayPriority": 1,
+    "UnitId": 1210003400
+  },
+  {
+    "UnitCollectionBookId": 21000009,
+    "DisplayPriority": 1,
+    "UnitId": 1210000800
+  },
+  {
+    "UnitCollectionBookId": 21000010,
+    "DisplayPriority": 1,
+    "UnitId": 1210003600
+  },
+  {
+    "UnitCollectionBookId": 21000011,
+    "DisplayPriority": 1,
+    "UnitId": 1210002200
+  },
+  {
+    "UnitCollectionBookId": 21000012,
+    "DisplayPriority": 1,
+    "UnitId": 1210001100
+  },
+  {
+    "UnitCollectionBookId": 21000013,
+    "DisplayPriority": 1,
+    "UnitId": 1210001200
+  },
+  {
+    "UnitCollectionBookId": 21000014,
+    "DisplayPriority": 2,
+    "UnitId": 1210001300
+  },
+  {
+    "UnitCollectionBookId": 21000014,
+    "DisplayPriority": 1210001310,
+    "UnitId": 1210001310
+  },
+  {
+    "UnitCollectionBookId": 21000015,
+    "DisplayPriority": 1,
+    "UnitId": 1210001410
+  },
+  {
+    "UnitCollectionBookId": 21000016,
+    "DisplayPriority": 1,
+    "UnitId": 1210001510
+  },
+  {
+    "UnitCollectionBookId": 21000017,
+    "DisplayPriority": 1,
+    "UnitId": 1210001700
+  },
+  {
+    "UnitCollectionBookId": 21000017,
+    "DisplayPriority": 2,
+    "UnitId": 1210001710
+  },
+  {
+    "UnitCollectionBookId": 21000018,
+    "DisplayPriority": 1,
+    "UnitId": 1210001610
+  },
+  {
+    "UnitCollectionBookId": 21000019,
+    "DisplayPriority": 1,
+    "UnitId": 1210001810
+  },
+  {
+    "UnitCollectionBookId": 21000020,
+    "DisplayPriority": 1,
+    "UnitId": 1210001900
+  },
+  {
+    "UnitCollectionBookId": 21000021,
+    "DisplayPriority": 1,
+    "UnitId": 1210002100
+  },
+  {
+    "UnitCollectionBookId": 21000022,
+    "DisplayPriority": 1,
+    "UnitId": 1210002010
+  },
+  {
+    "UnitCollectionBookId": 21000023,
+    "DisplayPriority": 1,
+    "UnitId": 1210002700
+  },
+  {
+    "UnitCollectionBookId": 21000024,
+    "DisplayPriority": 1,
+    "UnitId": 1210002900
+  },
+  {
+    "UnitCollectionBookId": 21000025,
+    "DisplayPriority": 1,
+    "UnitId": 1210003110
+  },
+  {
+    "UnitCollectionBookId": 21000026,
+    "DisplayPriority": 1,
+    "UnitId": 1210002500
+  },
+  {
+    "UnitCollectionBookId": 21000027,
+    "DisplayPriority": 1,
+    "UnitId": 1210002600
+  },
+  {
+    "UnitCollectionBookId": 21000028,
+    "DisplayPriority": 1,
+    "UnitId": 1210002300
+  },
+  {
+    "UnitCollectionBookId": 21000029,
+    "DisplayPriority": 1,
+    "UnitId": 1210002400
+  },
+  {
+    "UnitCollectionBookId": 21000030,
+    "DisplayPriority": 1,
+    "UnitId": 1210000900
+  },
+  {
+    "UnitCollectionBookId": 21100001,
+    "DisplayPriority": 1211000360,
+    "UnitId": 1211000360
+  },
+  {
+    "UnitCollectionBookId": 21700001,
+    "DisplayPriority": 1,
+    "UnitId": 1217000110
+  },
+  {
+    "UnitCollectionBookId": 21700002,
+    "DisplayPriority": 1,
+    "UnitId": 1217000310
+  },
+  {
+    "UnitCollectionBookId": 21700003,
+    "DisplayPriority": 1,
+    "UnitId": 1217000510
+  },
+  {
+    "UnitCollectionBookId": 21900001,
+    "DisplayPriority": 1,
+    "UnitId": 1219000250
+  },
+  {
+    "UnitCollectionBookId": 23000001,
+    "DisplayPriority": 1,
+    "UnitId": 1230000100
+  },
+  {
+    "UnitCollectionBookId": 23000002,
+    "DisplayPriority": 1,
+    "UnitId": 1230000200
+  },
+  {
+    "UnitCollectionBookId": 23000003,
+    "DisplayPriority": 1,
+    "UnitId": 1230000300
+  },
+  {
+    "UnitCollectionBookId": 23000004,
+    "DisplayPriority": 1,
+    "UnitId": 1230000500
+  },
+  {
+    "UnitCollectionBookId": 23000005,
+    "DisplayPriority": 1,
+    "UnitId": 1230000600
+  },
+  {
+    "UnitCollectionBookId": 23000006,
+    "DisplayPriority": 1,
+    "UnitId": 1230000900
+  },
+  {
+    "UnitCollectionBookId": 23000007,
+    "DisplayPriority": 1,
+    "UnitId": 1230000700
+  },
+  {
+    "UnitCollectionBookId": 23000008,
+    "DisplayPriority": 1,
+    "UnitId": 1230001000
+  },
+  {
+    "UnitCollectionBookId": 23000009,
+    "DisplayPriority": 1,
+    "UnitId": 1230001100
+  },
+  {
+    "UnitCollectionBookId": 23000010,
+    "DisplayPriority": 1,
+    "UnitId": 1230003700
+  },
+  {
+    "UnitCollectionBookId": 23000011,
+    "DisplayPriority": 1,
+    "UnitId": 1230003300
+  },
+  {
+    "UnitCollectionBookId": 23000012,
+    "DisplayPriority": 1,
+    "UnitId": 1230002800
+  },
+  {
+    "UnitCollectionBookId": 23000013,
+    "DisplayPriority": 1,
+    "UnitId": 1230003400
+  },
+  {
+    "UnitCollectionBookId": 23000014,
+    "DisplayPriority": 1,
+    "UnitId": 1230001200
+  },
+  {
+    "UnitCollectionBookId": 23000014,
+    "DisplayPriority": 2,
+    "UnitId": 1230001210
+  },
+  {
+    "UnitCollectionBookId": 23000015,
+    "DisplayPriority": 1,
+    "UnitId": 1230001300
+  },
+  {
+    "UnitCollectionBookId": 23000015,
+    "DisplayPriority": 2,
+    "UnitId": 1230001310
+  },
+  {
+    "UnitCollectionBookId": 23000016,
+    "DisplayPriority": 1,
+    "UnitId": 1230001410
+  },
+  {
+    "UnitCollectionBookId": 23000017,
+    "DisplayPriority": 1,
+    "UnitId": 1230001500
+  },
+  {
+    "UnitCollectionBookId": 23000018,
+    "DisplayPriority": 1,
+    "UnitId": 1230001600
+  },
+  {
+    "UnitCollectionBookId": 23000019,
+    "DisplayPriority": 1,
+    "UnitId": 1230003100
+  },
+  {
+    "UnitCollectionBookId": 23000020,
+    "DisplayPriority": 1,
+    "UnitId": 1230002700
+  },
+  {
+    "UnitCollectionBookId": 23000021,
+    "DisplayPriority": 1,
+    "UnitId": 1230001700
+  },
+  {
+    "UnitCollectionBookId": 23000021,
+    "DisplayPriority": 2,
+    "UnitId": 1230001710
+  },
+  {
+    "UnitCollectionBookId": 23000022,
+    "DisplayPriority": 1,
+    "UnitId": 1230001810
+  },
+  {
+    "UnitCollectionBookId": 23000023,
+    "DisplayPriority": 1,
+    "UnitId": 1230001910
+  },
+  {
+    "UnitCollectionBookId": 23000024,
+    "DisplayPriority": 1,
+    "UnitId": 1230002000
+  },
+  {
+    "UnitCollectionBookId": 23000025,
+    "DisplayPriority": 1,
+    "UnitId": 1230002110
+  },
+  {
+    "UnitCollectionBookId": 23000026,
+    "DisplayPriority": 1,
+    "UnitId": 1230002200
+  },
+  {
+    "UnitCollectionBookId": 23000027,
+    "DisplayPriority": 1,
+    "UnitId": 1230002310
+  },
+  {
+    "UnitCollectionBookId": 23000028,
+    "DisplayPriority": 1,
+    "UnitId": 1230002500
+  },
+  {
+    "UnitCollectionBookId": 23000029,
+    "DisplayPriority": 1,
+    "UnitId": 1230002610
+  },
+  {
+    "UnitCollectionBookId": 23000030,
+    "DisplayPriority": 1,
+    "UnitId": 1230003600
+  },
+  {
+    "UnitCollectionBookId": 23000031,
+    "DisplayPriority": 1,
+    "UnitId": 1230003200
+  },
+  {
+    "UnitCollectionBookId": 23000032,
+    "DisplayPriority": 1,
+    "UnitId": 1230003000
+  },
+  {
+    "UnitCollectionBookId": 23000033,
+    "DisplayPriority": 1,
+    "UnitId": 1230003500
+  },
+  {
+    "UnitCollectionBookId": 23000033,
+    "DisplayPriority": 2,
+    "UnitId": 1230003510
+  },
+  {
+    "UnitCollectionBookId": 23000034,
+    "DisplayPriority": 1,
+    "UnitId": 1230002910
+  },
+  {
+    "UnitCollectionBookId": 23000035,
+    "DisplayPriority": 1,
+    "UnitId": 1230002400
+  },
+  {
+    "UnitCollectionBookId": 23000036,
+    "DisplayPriority": 1230003800,
+    "UnitId": 1230003800
+  },
+  {
+    "UnitCollectionBookId": 23000036,
+    "DisplayPriority": 1230003850,
+    "UnitId": 1230003850
+  },
+  {
+    "UnitCollectionBookId": 23000037,
+    "DisplayPriority": 1230004000,
+    "UnitId": 1230004000
+  },
+  {
+    "UnitCollectionBookId": 23000038,
+    "DisplayPriority": 1230004200,
+    "UnitId": 1230004200
+  },
+  {
+    "UnitCollectionBookId": 23000039,
+    "DisplayPriority": 1230004910,
+    "UnitId": 1230004910
+  },
+  {
+    "UnitCollectionBookId": 23000040,
+    "DisplayPriority": 1230004700,
+    "UnitId": 1230004700
+  },
+  {
+    "UnitCollectionBookId": 23000041,
+    "DisplayPriority": 1230005400,
+    "UnitId": 1230005400
+  },
+  {
+    "UnitCollectionBookId": 23000042,
+    "DisplayPriority": 1230005300,
+    "UnitId": 1230005300
+  },
+  {
+    "UnitCollectionBookId": 23000043,
+    "DisplayPriority": 1230005510,
+    "UnitId": 1230005510
+  },
+  {
+    "UnitCollectionBookId": 23000044,
+    "DisplayPriority": 1230005610,
+    "UnitId": 1230005610
+  },
+  {
+    "UnitCollectionBookId": 23000045,
+    "DisplayPriority": 1230003900,
+    "UnitId": 1230003900
+  },
+  {
+    "UnitCollectionBookId": 23000045,
+    "DisplayPriority": 1230003950,
+    "UnitId": 1230003950
+  },
+  {
+    "UnitCollectionBookId": 23000046,
+    "DisplayPriority": 1230004300,
+    "UnitId": 1230004300
+  },
+  {
+    "UnitCollectionBookId": 23000047,
+    "DisplayPriority": 1230004600,
+    "UnitId": 1230004600
+  },
+  {
+    "UnitCollectionBookId": 23000048,
+    "DisplayPriority": 1230005200,
+    "UnitId": 1230005200
+  },
+  {
+    "UnitCollectionBookId": 23000049,
+    "DisplayPriority": 1230005000,
+    "UnitId": 1230005000
+  },
+  {
+    "UnitCollectionBookId": 23000050,
+    "DisplayPriority": 1230005100,
+    "UnitId": 1230005100
+  },
+  {
+    "UnitCollectionBookId": 23000051,
+    "DisplayPriority": 1230004510,
+    "UnitId": 1230004510
+  },
+  {
+    "UnitCollectionBookId": 23000052,
+    "DisplayPriority": 1230004800,
+    "UnitId": 1230004800
+  },
+  {
+    "UnitCollectionBookId": 24000001,
+    "DisplayPriority": 1,
+    "UnitId": 1240000110
+  },
+  {
+    "UnitCollectionBookId": 24000002,
+    "DisplayPriority": 1,
+    "UnitId": 1240001010
+  },
+  {
+    "UnitCollectionBookId": 24000003,
+    "DisplayPriority": 1,
+    "UnitId": 1240001110
+  },
+  {
+    "UnitCollectionBookId": 30000001,
+    "DisplayPriority": 1,
+    "UnitId": 1300000100
+  },
+  {
+    "UnitCollectionBookId": 30000002,
+    "DisplayPriority": 1,
+    "UnitId": 1300000200
+  },
+  {
+    "UnitCollectionBookId": 30000003,
+    "DisplayPriority": 1,
+    "UnitId": 1300000300
+  },
+  {
+    "UnitCollectionBookId": 30000004,
+    "DisplayPriority": 1,
+    "UnitId": 1300000400
+  },
+  {
+    "UnitCollectionBookId": 30000005,
+    "DisplayPriority": 1,
+    "UnitId": 1300000500
+  },
+  {
+    "UnitCollectionBookId": 30000006,
+    "DisplayPriority": 1,
+    "UnitId": 1300000800
+  },
+  {
+    "UnitCollectionBookId": 30000007,
+    "DisplayPriority": 1,
+    "UnitId": 1300000900
+  },
+  {
+    "UnitCollectionBookId": 30000007,
+    "DisplayPriority": 1300000960,
+    "UnitId": 1300000960
+  },
+  {
+    "UnitCollectionBookId": 30000007,
+    "DisplayPriority": 1300000970,
+    "UnitId": 1300000970
+  },
+  {
+    "UnitCollectionBookId": 30000008,
+    "DisplayPriority": 1,
+    "UnitId": 1300001000
+  },
+  {
+    "UnitCollectionBookId": 30000009,
+    "DisplayPriority": 1,
+    "UnitId": 1300001100
+  },
+  {
+    "UnitCollectionBookId": 30000010,
+    "DisplayPriority": 1,
+    "UnitId": 1300000600
+  },
+  {
+    "UnitCollectionBookId": 30000011,
+    "DisplayPriority": 1,
+    "UnitId": 1300001200
+  },
+  {
+    "UnitCollectionBookId": 30000012,
+    "DisplayPriority": 1,
+    "UnitId": 1300001300
+  },
+  {
+    "UnitCollectionBookId": 30000013,
+    "DisplayPriority": 1,
+    "UnitId": 1300001400
+  },
+  {
+    "UnitCollectionBookId": 30000014,
+    "DisplayPriority": 1,
+    "UnitId": 1300001700
+  },
+  {
+    "UnitCollectionBookId": 30000014,
+    "DisplayPriority": 2,
+    "UnitId": 1300001710
+  },
+  {
+    "UnitCollectionBookId": 30000015,
+    "DisplayPriority": 1,
+    "UnitId": 1300004100
+  },
+  {
+    "UnitCollectionBookId": 30000016,
+    "DisplayPriority": 1,
+    "UnitId": 1300003900
+  },
+  {
+    "UnitCollectionBookId": 30000016,
+    "DisplayPriority": 2,
+    "UnitId": 1300003910
+  },
+  {
+    "UnitCollectionBookId": 30000017,
+    "DisplayPriority": 1,
+    "UnitId": 1300004000
+  },
+  {
+    "UnitCollectionBookId": 30000018,
+    "DisplayPriority": 1,
+    "UnitId": 1300003200
+  },
+  {
+    "UnitCollectionBookId": 30000018,
+    "DisplayPriority": 2,
+    "UnitId": 1300003210
+  },
+  {
+    "UnitCollectionBookId": 30000019,
+    "DisplayPriority": 1,
+    "UnitId": 1300003300
+  },
+  {
+    "UnitCollectionBookId": 30000020,
+    "DisplayPriority": 1,
+    "UnitId": 1300003500
+  },
+  {
+    "UnitCollectionBookId": 30000021,
+    "DisplayPriority": 1,
+    "UnitId": 1300003400
+  },
+  {
+    "UnitCollectionBookId": 30000022,
+    "DisplayPriority": 1,
+    "UnitId": 1300003600
+  },
+  {
+    "UnitCollectionBookId": 30000023,
+    "DisplayPriority": 1,
+    "UnitId": 1300002200
+  },
+  {
+    "UnitCollectionBookId": 30000023,
+    "DisplayPriority": 2,
+    "UnitId": 1300002210
+  },
+  {
+    "UnitCollectionBookId": 30000024,
+    "DisplayPriority": 1,
+    "UnitId": 1300002300
+  },
+  {
+    "UnitCollectionBookId": 30000024,
+    "DisplayPriority": 2,
+    "UnitId": 1300002310
+  },
+  {
+    "UnitCollectionBookId": 30000025,
+    "DisplayPriority": 1,
+    "UnitId": 1300002400
+  },
+  {
+    "UnitCollectionBookId": 30000025,
+    "DisplayPriority": 2,
+    "UnitId": 1300002410
+  },
+  {
+    "UnitCollectionBookId": 30000026,
+    "DisplayPriority": 1,
+    "UnitId": 1300002500
+  },
+  {
+    "UnitCollectionBookId": 30000027,
+    "DisplayPriority": 1,
+    "UnitId": 1300002600
+  },
+  {
+    "UnitCollectionBookId": 30000028,
+    "DisplayPriority": 1,
+    "UnitId": 1300002700
+  },
+  {
+    "UnitCollectionBookId": 30000029,
+    "DisplayPriority": 1,
+    "UnitId": 1300002810
+  },
+  {
+    "UnitCollectionBookId": 30000030,
+    "DisplayPriority": 1,
+    "UnitId": 1300003100
+  },
+  {
+    "UnitCollectionBookId": 30000031,
+    "DisplayPriority": 1,
+    "UnitId": 1300002000
+  },
+  {
+    "UnitCollectionBookId": 30000032,
+    "DisplayPriority": 1,
+    "UnitId": 1300004700
+  },
+  {
+    "UnitCollectionBookId": 30000033,
+    "DisplayPriority": 1,
+    "UnitId": 1300001900
+  },
+  {
+    "UnitCollectionBookId": 30000034,
+    "DisplayPriority": 1,
+    "UnitId": 1300002100
+  },
+  {
+    "UnitCollectionBookId": 30000034,
+    "DisplayPriority": 2,
+    "UnitId": 1300002110
+  },
+  {
+    "UnitCollectionBookId": 30000035,
+    "DisplayPriority": 1,
+    "UnitId": 1300003000
+  },
+  {
+    "UnitCollectionBookId": 30000036,
+    "DisplayPriority": 1,
+    "UnitId": 1300002900
+  },
+  {
+    "UnitCollectionBookId": 30000037,
+    "DisplayPriority": 1,
+    "UnitId": 1300004600
+  },
+  {
+    "UnitCollectionBookId": 30000037,
+    "DisplayPriority": 1300004650,
+    "UnitId": 1300004650
+  },
+  {
+    "UnitCollectionBookId": 30000038,
+    "DisplayPriority": 1,
+    "UnitId": 1300001800
+  },
+  {
+    "UnitCollectionBookId": 30000039,
+    "DisplayPriority": 1,
+    "UnitId": 1300001600
+  },
+  {
+    "UnitCollectionBookId": 30000040,
+    "DisplayPriority": 1,
+    "UnitId": 1300004200
+  },
+  {
+    "UnitCollectionBookId": 30000040,
+    "DisplayPriority": 2,
+    "UnitId": 1300004250
+  },
+  {
+    "UnitCollectionBookId": 30000041,
+    "DisplayPriority": 1,
+    "UnitId": 1300004300
+  },
+  {
+    "UnitCollectionBookId": 30000042,
+    "DisplayPriority": 1,
+    "UnitId": 1300004400
+  },
+  {
+    "UnitCollectionBookId": 30000042,
+    "DisplayPriority": 2,
+    "UnitId": 1300004450
+  },
+  {
+    "UnitCollectionBookId": 30000043,
+    "DisplayPriority": 1,
+    "UnitId": 1300004500
+  },
+  {
+    "UnitCollectionBookId": 30400001,
+    "DisplayPriority": 1,
+    "UnitId": 1304001210
+  },
+  {
+    "UnitCollectionBookId": 30400002,
+    "DisplayPriority": 1,
+    "UnitId": 1304000200
+  },
+  {
+    "UnitCollectionBookId": 30400003,
+    "DisplayPriority": 1,
+    "UnitId": 1304000300
+  },
+  {
+    "UnitCollectionBookId": 30400004,
+    "DisplayPriority": 1,
+    "UnitId": 1304000400
+  },
+  {
+    "UnitCollectionBookId": 30400005,
+    "DisplayPriority": 1,
+    "UnitId": 1304000500
+  },
+  {
+    "UnitCollectionBookId": 30400006,
+    "DisplayPriority": 1,
+    "UnitId": 1304000800
+  },
+  {
+    "UnitCollectionBookId": 30400007,
+    "DisplayPriority": 1,
+    "UnitId": 1304000900
+  },
+  {
+    "UnitCollectionBookId": 30400008,
+    "DisplayPriority": 1,
+    "UnitId": 1304000600
+  },
+  {
+    "UnitCollectionBookId": 30400009,
+    "DisplayPriority": 1,
+    "UnitId": 1304001000
+  },
+  {
+    "UnitCollectionBookId": 30400010,
+    "DisplayPriority": 1,
+    "UnitId": 1304001100
+  },
+  {
+    "UnitCollectionBookId": 30400011,
+    "DisplayPriority": 1,
+    "UnitId": 1304000700
+  },
+  {
+    "UnitCollectionBookId": 30400012,
+    "DisplayPriority": 1,
+    "UnitId": 1304000110
+  },
+  {
+    "UnitCollectionBookId": 30500001,
+    "DisplayPriority": 1,
+    "UnitId": 1305000100
+  },
+  {
+    "UnitCollectionBookId": 30500002,
+    "DisplayPriority": 1,
+    "UnitId": 1305000200
+  },
+  {
+    "UnitCollectionBookId": 30500003,
+    "DisplayPriority": 1,
+    "UnitId": 1305000400
+  },
+  {
+    "UnitCollectionBookId": 30500004,
+    "DisplayPriority": 1,
+    "UnitId": 1305000500
+  },
+  {
+    "UnitCollectionBookId": 30500005,
+    "DisplayPriority": 1,
+    "UnitId": 1305000610
+  },
+  {
+    "UnitCollectionBookId": 30500006,
+    "DisplayPriority": 1,
+    "UnitId": 1305000700
+  },
+  {
+    "UnitCollectionBookId": 30500007,
+    "DisplayPriority": 1,
+    "UnitId": 1305000810
+  },
+  {
+    "UnitCollectionBookId": 30500008,
+    "DisplayPriority": 1,
+    "UnitId": 1305001100
+  },
+  {
+    "UnitCollectionBookId": 30500009,
+    "DisplayPriority": 1,
+    "UnitId": 1305000900
+  },
+  {
+    "UnitCollectionBookId": 30500010,
+    "DisplayPriority": 1,
+    "UnitId": 1305001000
+  },
+  {
+    "UnitCollectionBookId": 30500011,
+    "DisplayPriority": 1305000350,
+    "UnitId": 1305000350
+  },
+  {
+    "UnitCollectionBookId": 30600001,
+    "DisplayPriority": 1,
+    "UnitId": 1306000110
+  },
+  {
+    "UnitCollectionBookId": 30700001,
+    "DisplayPriority": 1,
+    "UnitId": 1307000110
+  },
+  {
+    "UnitCollectionBookId": 30700002,
+    "DisplayPriority": 1,
+    "UnitId": 1307000210
+  },
+  {
+    "UnitCollectionBookId": 30700003,
+    "DisplayPriority": 1,
+    "UnitId": 1307000410
+  },
+  {
+    "UnitCollectionBookId": 30800001,
+    "DisplayPriority": 1,
+    "UnitId": 1308000500
+  },
+  {
+    "UnitCollectionBookId": 30800001,
+    "DisplayPriority": 2,
+    "UnitId": 1308000501
+  },
+  {
+    "UnitCollectionBookId": 30800001,
+    "DisplayPriority": 3,
+    "UnitId": 1308000502
+  },
+  {
+    "UnitCollectionBookId": 30800002,
+    "DisplayPriority": 1308000100,
+    "UnitId": 1308000100
+  },
+  {
+    "UnitCollectionBookId": 30800003,
+    "DisplayPriority": 1308000200,
+    "UnitId": 1308000200
+  },
+  {
+    "UnitCollectionBookId": 30800004,
+    "DisplayPriority": 1308000400,
+    "UnitId": 1308000400
+  },
+  {
+    "UnitCollectionBookId": 30800005,
+    "DisplayPriority": 1308000300,
+    "UnitId": 1308000300
+  },
+  {
+    "UnitCollectionBookId": 30800006,
+    "DisplayPriority": 1308000600,
+    "UnitId": 1308000600
+  },
+  {
+    "UnitCollectionBookId": 30800007,
+    "DisplayPriority": 1308000710,
+    "UnitId": 1308000710
+  },
+  {
+    "UnitCollectionBookId": 31000001,
+    "DisplayPriority": 1,
+    "UnitId": 1310000100
+  },
+  {
+    "UnitCollectionBookId": 31000002,
+    "DisplayPriority": 1,
+    "UnitId": 1310000300
+  },
+  {
+    "UnitCollectionBookId": 31000003,
+    "DisplayPriority": 1,
+    "UnitId": 1310000400
+  },
+  {
+    "UnitCollectionBookId": 31000004,
+    "DisplayPriority": 1,
+    "UnitId": 1310000200
+  },
+  {
+    "UnitCollectionBookId": 33000001,
+    "DisplayPriority": 1,
+    "UnitId": 1330000150
+  },
+  {
+    "UnitCollectionBookId": 33000001,
+    "DisplayPriority": 1330000100,
+    "UnitId": 1330000100
+  },
+  {
+    "UnitCollectionBookId": 33000002,
+    "DisplayPriority": 1330000200,
+    "UnitId": 1330000200
+  },
+  {
+    "UnitCollectionBookId": 33000003,
+    "DisplayPriority": 1330000300,
+    "UnitId": 1330000300
+  },
+  {
+    "UnitCollectionBookId": 33000003,
+    "DisplayPriority": 1330000350,
+    "UnitId": 1330000350
+  },
+  {
+    "UnitCollectionBookId": 33000004,
+    "DisplayPriority": 1330000400,
+    "UnitId": 1330000400
+  },
+  {
+    "UnitCollectionBookId": 33000005,
+    "DisplayPriority": 1330000500,
+    "UnitId": 1330000500
+  },
+  {
+    "UnitCollectionBookId": 33000006,
+    "DisplayPriority": 1330000800,
+    "UnitId": 1330000800
+  },
+  {
+    "UnitCollectionBookId": 33000007,
+    "DisplayPriority": 1330000900,
+    "UnitId": 1330000900
+  },
+  {
+    "UnitCollectionBookId": 33000008,
+    "DisplayPriority": 1330001000,
+    "UnitId": 1330001000
+  },
+  {
+    "UnitCollectionBookId": 33000009,
+    "DisplayPriority": 1330001100,
+    "UnitId": 1330001100
+  },
+  {
+    "UnitCollectionBookId": 33000010,
+    "DisplayPriority": 1330001800,
+    "UnitId": 1330001800
+  },
+  {
+    "UnitCollectionBookId": 33000011,
+    "DisplayPriority": 1330003300,
+    "UnitId": 1330003300
+  },
+  {
+    "UnitCollectionBookId": 33000012,
+    "DisplayPriority": 1330003400,
+    "UnitId": 1330003400
+  },
+  {
+    "UnitCollectionBookId": 33000013,
+    "DisplayPriority": 1330003000,
+    "UnitId": 1330003000
+  },
+  {
+    "UnitCollectionBookId": 33000014,
+    "DisplayPriority": 1330003500,
+    "UnitId": 1330003500
+  },
+  {
+    "UnitCollectionBookId": 33000015,
+    "DisplayPriority": 1330003710,
+    "UnitId": 1330003710
+  },
+  {
+    "UnitCollectionBookId": 33000016,
+    "DisplayPriority": 1330003210,
+    "UnitId": 1330003210
+  },
+  {
+    "UnitCollectionBookId": 33000017,
+    "DisplayPriority": 1330003110,
+    "UnitId": 1330003110
+  },
+  {
+    "UnitCollectionBookId": 33000018,
+    "DisplayPriority": 1330003610,
+    "UnitId": 1330003610
+  },
+  {
+    "UnitCollectionBookId": 33000019,
+    "DisplayPriority": 1330002000,
+    "UnitId": 1330002000
+  },
+  {
+    "UnitCollectionBookId": 33000020,
+    "DisplayPriority": 1330002300,
+    "UnitId": 1330002300
+  },
+  {
+    "UnitCollectionBookId": 33000021,
+    "DisplayPriority": 1330001900,
+    "UnitId": 1330001900
+  },
+  {
+    "UnitCollectionBookId": 33000022,
+    "DisplayPriority": 1330002200,
+    "UnitId": 1330002200
+  },
+  {
+    "UnitCollectionBookId": 33000023,
+    "DisplayPriority": 1330003900,
+    "UnitId": 1330003900
+  },
+  {
+    "UnitCollectionBookId": 33000024,
+    "DisplayPriority": 1330000700,
+    "UnitId": 1330000700
+  },
+  {
+    "UnitCollectionBookId": 33000024,
+    "DisplayPriority": 1330000750,
+    "UnitId": 1330000750
+  },
+  {
+    "UnitCollectionBookId": 33000025,
+    "DisplayPriority": 1330005200,
+    "UnitId": 1330005200
+  },
+  {
+    "UnitCollectionBookId": 33000026,
+    "DisplayPriority": 1330005100,
+    "UnitId": 1330005100
+  },
+  {
+    "UnitCollectionBookId": 33000027,
+    "DisplayPriority": 1330001700,
+    "UnitId": 1330001700
+  },
+  {
+    "UnitCollectionBookId": 33000028,
+    "DisplayPriority": 1330004500,
+    "UnitId": 1330004500
+  },
+  {
+    "UnitCollectionBookId": 33000029,
+    "DisplayPriority": 1330004600,
+    "UnitId": 1330004600
+  },
+  {
+    "UnitCollectionBookId": 33000030,
+    "DisplayPriority": 1330004700,
+    "UnitId": 1330004700
+  },
+  {
+    "UnitCollectionBookId": 33000031,
+    "DisplayPriority": 1330001600,
+    "UnitId": 1330001600
+  },
+  {
+    "UnitCollectionBookId": 33000032,
+    "DisplayPriority": 1330004800,
+    "UnitId": 1330004800
+  },
+  {
+    "UnitCollectionBookId": 33000033,
+    "DisplayPriority": 1330004910,
+    "UnitId": 1330004910
+  },
+  {
+    "UnitCollectionBookId": 33000034,
+    "DisplayPriority": 1330002400,
+    "UnitId": 1330002400
+  },
+  {
+    "UnitCollectionBookId": 33000035,
+    "DisplayPriority": 1330002500,
+    "UnitId": 1330002500
+  },
+  {
+    "UnitCollectionBookId": 33000036,
+    "DisplayPriority": 1330002600,
+    "UnitId": 1330002600
+  },
+  {
+    "UnitCollectionBookId": 33000037,
+    "DisplayPriority": 1330002700,
+    "UnitId": 1330002700
+  },
+  {
+    "UnitCollectionBookId": 33000038,
+    "DisplayPriority": 1330005500,
+    "UnitId": 1330005500
+  },
+  {
+    "UnitCollectionBookId": 33000039,
+    "DisplayPriority": 1330001300,
+    "UnitId": 1330001300
+  },
+  {
+    "UnitCollectionBookId": 33000040,
+    "DisplayPriority": 1330005710,
+    "UnitId": 1330005710
+  },
+  {
+    "UnitCollectionBookId": 33000041,
+    "DisplayPriority": 1330001200,
+    "UnitId": 1330001200
+  },
+  {
+    "UnitCollectionBookId": 33000042,
+    "DisplayPriority": 1330001400,
+    "UnitId": 1330001400
+  },
+  {
+    "UnitCollectionBookId": 33000043,
+    "DisplayPriority": 1330001500,
+    "UnitId": 1330001500
+  },
+  {
+    "UnitCollectionBookId": 33000044,
+    "DisplayPriority": 1330002100,
+    "UnitId": 1330002100
+  },
+  {
+    "UnitCollectionBookId": 33000045,
+    "DisplayPriority": 1330002800,
+    "UnitId": 1330002800
+  },
+  {
+    "UnitCollectionBookId": 33000046,
+    "DisplayPriority": 1330005900,
+    "UnitId": 1330005900
+  },
+  {
+    "UnitCollectionBookId": 33000047,
+    "DisplayPriority": 1330006010,
+    "UnitId": 1330006010
+  },
+  {
+    "UnitCollectionBookId": 33000048,
+    "DisplayPriority": 1330006110,
+    "UnitId": 1330006110
+  },
+  {
+    "UnitCollectionBookId": 33000049,
+    "DisplayPriority": 1330005310,
+    "UnitId": 1330005310
+  },
+  {
+    "UnitCollectionBookId": 33000050,
+    "DisplayPriority": 1330006510,
+    "UnitId": 1330006510
+  },
+  {
+    "UnitCollectionBookId": 33000051,
+    "DisplayPriority": 1330006700,
+    "UnitId": 1330006700
+  },
+  {
+    "UnitCollectionBookId": 33000052,
+    "DisplayPriority": 1330006900,
+    "UnitId": 1330006900
+  },
+  {
+    "UnitCollectionBookId": 33300001,
+    "DisplayPriority": 1333000100,
+    "UnitId": 1333000100
+  },
+  {
+    "UnitCollectionBookId": 33900001,
+    "DisplayPriority": 1339000150,
+    "UnitId": 1339000150
+  },
+  {
+    "UnitCollectionBookId": 34200001,
+    "DisplayPriority": 1342000100,
+    "UnitId": 1342000100
+  },
+  {
+    "UnitCollectionBookId": 34200001,
+    "DisplayPriority": 1342000101,
+    "UnitId": 1342000101
+  },
+  {
+    "UnitCollectionBookId": 34200001,
+    "DisplayPriority": 1342000102,
+    "UnitId": 1342000102
+  },
+  {
+    "UnitCollectionBookId": 35000001,
+    "DisplayPriority": 1,
+    "UnitId": 1350000110
+  },
+  {
+    "UnitCollectionBookId": 37000001,
+    "DisplayPriority": 1,
+    "UnitId": 1370000100
+  },
+  {
+    "UnitCollectionBookId": 37000001,
+    "DisplayPriority": 2,
+    "UnitId": 1370000150
+  },
+  {
+    "UnitCollectionBookId": 37000002,
+    "DisplayPriority": 1,
+    "UnitId": 1370000300
+  },
+  {
+    "UnitCollectionBookId": 37000003,
+    "DisplayPriority": 1,
+    "UnitId": 1370000500
+  },
+  {
+    "UnitCollectionBookId": 37000004,
+    "DisplayPriority": 1,
+    "UnitId": 1370000900
+  },
+  {
+    "UnitCollectionBookId": 37000005,
+    "DisplayPriority": 1,
+    "UnitId": 1370001100
+  },
+  {
+    "UnitCollectionBookId": 37000006,
+    "DisplayPriority": 1,
+    "UnitId": 1370001810
+  },
+  {
+    "UnitCollectionBookId": 37000007,
+    "DisplayPriority": 1,
+    "UnitId": 1370001710
+  },
+  {
+    "UnitCollectionBookId": 37000008,
+    "DisplayPriority": 1,
+    "UnitId": 1370002100
+  },
+  {
+    "UnitCollectionBookId": 37000009,
+    "DisplayPriority": 1,
+    "UnitId": 1370001900
+  },
+  {
+    "UnitCollectionBookId": 37000010,
+    "DisplayPriority": 1,
+    "UnitId": 1370001300
+  },
+  {
+    "UnitCollectionBookId": 37000011,
+    "DisplayPriority": 1,
+    "UnitId": 1370001400
+  },
+  {
+    "UnitCollectionBookId": 37000012,
+    "DisplayPriority": 1,
+    "UnitId": 1370001500
+  },
+  {
+    "UnitCollectionBookId": 37000013,
+    "DisplayPriority": 1,
+    "UnitId": 1370001600
+  },
+  {
+    "UnitCollectionBookId": 37000014,
+    "DisplayPriority": 1,
+    "UnitId": 1370004900
+  },
+  {
+    "UnitCollectionBookId": 37000014,
+    "DisplayPriority": 2,
+    "UnitId": 1370004910
+  },
+  {
+    "UnitCollectionBookId": 37000015,
+    "DisplayPriority": 1,
+    "UnitId": 1370003400
+  },
+  {
+    "UnitCollectionBookId": 37000016,
+    "DisplayPriority": 1,
+    "UnitId": 1370003200
+  },
+  {
+    "UnitCollectionBookId": 37000017,
+    "DisplayPriority": 1,
+    "UnitId": 1370005600
+  },
+  {
+    "UnitCollectionBookId": 37000018,
+    "DisplayPriority": 1,
+    "UnitId": 1370003610
+  },
+  {
+    "UnitCollectionBookId": 37000019,
+    "DisplayPriority": 1,
+    "UnitId": 1370003710
+  },
+  {
+    "UnitCollectionBookId": 37000020,
+    "DisplayPriority": 1,
+    "UnitId": 1370005200
+  },
+  {
+    "UnitCollectionBookId": 37000020,
+    "DisplayPriority": 2,
+    "UnitId": 1370005210
+  },
+  {
+    "UnitCollectionBookId": 37000021,
+    "DisplayPriority": 1,
+    "UnitId": 1370003800
+  },
+  {
+    "UnitCollectionBookId": 37000021,
+    "DisplayPriority": 2,
+    "UnitId": 1370003810
+  },
+  {
+    "UnitCollectionBookId": 37000022,
+    "DisplayPriority": 1,
+    "UnitId": 1370004010
+  },
+  {
+    "UnitCollectionBookId": 37000023,
+    "DisplayPriority": 1,
+    "UnitId": 1370004200
+  },
+  {
+    "UnitCollectionBookId": 37000024,
+    "DisplayPriority": 1,
+    "UnitId": 1370005400
+  },
+  {
+    "UnitCollectionBookId": 37000024,
+    "DisplayPriority": 2,
+    "UnitId": 1370005410
+  },
+  {
+    "UnitCollectionBookId": 37000025,
+    "DisplayPriority": 1,
+    "UnitId": 1370002900
+  },
+  {
+    "UnitCollectionBookId": 37000026,
+    "DisplayPriority": 1,
+    "UnitId": 1370002300
+  },
+  {
+    "UnitCollectionBookId": 37000026,
+    "DisplayPriority": 2,
+    "UnitId": 1370002310
+  },
+  {
+    "UnitCollectionBookId": 37000027,
+    "DisplayPriority": 1,
+    "UnitId": 1370002400
+  },
+  {
+    "UnitCollectionBookId": 37000027,
+    "DisplayPriority": 2,
+    "UnitId": 1370002410
+  },
+  {
+    "UnitCollectionBookId": 37000028,
+    "DisplayPriority": 1,
+    "UnitId": 1370002510
+  },
+  {
+    "UnitCollectionBookId": 37000029,
+    "DisplayPriority": 1,
+    "UnitId": 1370002800
+  },
+  {
+    "UnitCollectionBookId": 37000029,
+    "DisplayPriority": 2,
+    "UnitId": 1370002810
+  },
+  {
+    "UnitCollectionBookId": 37000030,
+    "DisplayPriority": 1,
+    "UnitId": 1370002600
+  },
+  {
+    "UnitCollectionBookId": 37000031,
+    "DisplayPriority": 1,
+    "UnitId": 1370002710
+  },
+  {
+    "UnitCollectionBookId": 37000032,
+    "DisplayPriority": 1,
+    "UnitId": 1370003000
+  },
+  {
+    "UnitCollectionBookId": 37000033,
+    "DisplayPriority": 1,
+    "UnitId": 1370003100
+  },
+  {
+    "UnitCollectionBookId": 37000033,
+    "DisplayPriority": 2,
+    "UnitId": 1370003110
+  },
+  {
+    "UnitCollectionBookId": 37000034,
+    "DisplayPriority": 1,
+    "UnitId": 1370004800
+  },
+  {
+    "UnitCollectionBookId": 37000035,
+    "DisplayPriority": 1,
+    "UnitId": 1370004700
+  },
+  {
+    "UnitCollectionBookId": 37000036,
+    "DisplayPriority": 1,
+    "UnitId": 1370005100
+  },
+  {
+    "UnitCollectionBookId": 37000037,
+    "DisplayPriority": 1,
+    "UnitId": 1370004400
+  },
+  {
+    "UnitCollectionBookId": 37000038,
+    "DisplayPriority": 1,
+    "UnitId": 1370004600
+  },
+  {
+    "UnitCollectionBookId": 37000039,
+    "DisplayPriority": 1,
+    "UnitId": 1375000210
+  },
+  {
+    "UnitCollectionBookId": 37000040,
+    "DisplayPriority": 1,
+    "UnitId": 1375000310
+  },
+  {
+    "UnitCollectionBookId": 37000041,
+    "DisplayPriority": 1,
+    "UnitId": 1375000410
+  },
+  {
+    "UnitCollectionBookId": 37800001,
+    "DisplayPriority": 1,
+    "UnitId": 1378000110
+  },
+  {
+    "UnitCollectionBookId": 37900001,
+    "DisplayPriority": 1,
+    "UnitId": 1379000510
+  },
+  {
+    "UnitCollectionBookId": 37900002,
+    "DisplayPriority": 1,
+    "UnitId": 1379000610
+  },
+  {
+    "UnitCollectionBookId": 40000001,
+    "DisplayPriority": 1,
+    "UnitId": 1400000110
+  },
+  {
+    "UnitCollectionBookId": 40000001,
+    "DisplayPriority": 1400000100,
+    "UnitId": 1400000100
+  },
+  {
+    "UnitCollectionBookId": 40000001,
+    "DisplayPriority": 1400000150,
+    "UnitId": 1400000150
+  },
+  {
+    "UnitCollectionBookId": 40000002,
+    "DisplayPriority": 1,
+    "UnitId": 1400002810
+  },
+  {
+    "UnitCollectionBookId": 40000002,
+    "DisplayPriority": 1400002800,
+    "UnitId": 1400002800
+  },
+  {
+    "UnitCollectionBookId": 40000003,
+    "DisplayPriority": 1,
+    "UnitId": 1400002910
+  },
+  {
+    "UnitCollectionBookId": 40000003,
+    "DisplayPriority": 1400002900,
+    "UnitId": 1400002900
+  },
+  {
+    "UnitCollectionBookId": 40000004,
+    "DisplayPriority": 1,
+    "UnitId": 1400003010
+  },
+  {
+    "UnitCollectionBookId": 40000004,
+    "DisplayPriority": 1400003000,
+    "UnitId": 1400003000
+  },
+  {
+    "UnitCollectionBookId": 40000005,
+    "DisplayPriority": 1,
+    "UnitId": 1400003110
+  },
+  {
+    "UnitCollectionBookId": 40000005,
+    "DisplayPriority": 1400003100,
+    "UnitId": 1400003100
+  },
+  {
+    "UnitCollectionBookId": 40000006,
+    "DisplayPriority": 1,
+    "UnitId": 1400003310
+  },
+  {
+    "UnitCollectionBookId": 40000006,
+    "DisplayPriority": 1400003300,
+    "UnitId": 1400003300
+  },
+  {
+    "UnitCollectionBookId": 40000007,
+    "DisplayPriority": 1,
+    "UnitId": 1400004210
+  },
+  {
+    "UnitCollectionBookId": 40000007,
+    "DisplayPriority": 1400004200,
+    "UnitId": 1400004200
+  },
+  {
+    "UnitCollectionBookId": 40000008,
+    "DisplayPriority": 1400000200,
+    "UnitId": 1400000200
+  },
+  {
+    "UnitCollectionBookId": 40000009,
+    "DisplayPriority": 1400000300,
+    "UnitId": 1400000300
+  },
+  {
+    "UnitCollectionBookId": 40000010,
+    "DisplayPriority": 1400004800,
+    "UnitId": 1400004800
+  },
+  {
+    "UnitCollectionBookId": 40000011,
+    "DisplayPriority": 1400001900,
+    "UnitId": 1400001900
+  },
+  {
+    "UnitCollectionBookId": 40000012,
+    "DisplayPriority": 1400001800,
+    "UnitId": 1400001800
+  },
+  {
+    "UnitCollectionBookId": 40000013,
+    "DisplayPriority": 1400002200,
+    "UnitId": 1400002200
+  },
+  {
+    "UnitCollectionBookId": 40000014,
+    "DisplayPriority": 1400003800,
+    "UnitId": 1400003810
+  },
+  {
+    "UnitCollectionBookId": 40000015,
+    "DisplayPriority": 1400004000,
+    "UnitId": 1400004000
+  },
+  {
+    "UnitCollectionBookId": 40000016,
+    "DisplayPriority": 1400003400,
+    "UnitId": 1400003400
+  },
+  {
+    "UnitCollectionBookId": 40000017,
+    "DisplayPriority": 1400003600,
+    "UnitId": 1400003600
+  },
+  {
+    "UnitCollectionBookId": 40000018,
+    "DisplayPriority": 1400003200,
+    "UnitId": 1400003200
+  },
+  {
+    "UnitCollectionBookId": 40000019,
+    "DisplayPriority": 1400000500,
+    "UnitId": 1400000500
+  },
+  {
+    "UnitCollectionBookId": 40000019,
+    "DisplayPriority": 1400000550,
+    "UnitId": 1400000550
+  },
+  {
+    "UnitCollectionBookId": 40000020,
+    "DisplayPriority": 1400006400,
+    "UnitId": 1400006400
+  },
+  {
+    "UnitCollectionBookId": 40000021,
+    "DisplayPriority": 1400008110,
+    "UnitId": 1400008110
+  },
+  {
+    "UnitCollectionBookId": 40000022,
+    "DisplayPriority": 1400001500,
+    "UnitId": 1400001500
+  },
+  {
+    "UnitCollectionBookId": 40000023,
+    "DisplayPriority": 1400001710,
+    "UnitId": 1400001710
+  },
+  {
+    "UnitCollectionBookId": 40000024,
+    "DisplayPriority": 1400001600,
+    "UnitId": 1400001600
+  },
+  {
+    "UnitCollectionBookId": 40000025,
+    "DisplayPriority": 1400007400,
+    "UnitId": 1400007400
+  },
+  {
+    "UnitCollectionBookId": 40000026,
+    "DisplayPriority": 1400006700,
+    "UnitId": 1400006700
+  },
+  {
+    "UnitCollectionBookId": 40000027,
+    "DisplayPriority": 1400002100,
+    "UnitId": 1400002100
+  },
+  {
+    "UnitCollectionBookId": 40000028,
+    "DisplayPriority": 1400004300,
+    "UnitId": 1400004300
+  },
+  {
+    "UnitCollectionBookId": 40000029,
+    "DisplayPriority": 1400004700,
+    "UnitId": 1400004700
+  },
+  {
+    "UnitCollectionBookId": 40000030,
+    "DisplayPriority": 1400004500,
+    "UnitId": 1400004500
+  },
+  {
+    "UnitCollectionBookId": 40000031,
+    "DisplayPriority": 1400002600,
+    "UnitId": 1400002600
+  },
+  {
+    "UnitCollectionBookId": 40000032,
+    "DisplayPriority": 1400002400,
+    "UnitId": 1400002400
+  },
+  {
+    "UnitCollectionBookId": 40000033,
+    "DisplayPriority": 1400007310,
+    "UnitId": 1400007310
+  },
+  {
+    "UnitCollectionBookId": 40000034,
+    "DisplayPriority": 1400004400,
+    "UnitId": 1400004400
+  },
+  {
+    "UnitCollectionBookId": 40100001,
+    "DisplayPriority": 1,
+    "UnitId": 1401000110
+  },
+  {
+    "UnitCollectionBookId": 40800001,
+    "DisplayPriority": 1,
+    "UnitId": 1408000110
+  },
+  {
+    "UnitCollectionBookId": 40800002,
+    "DisplayPriority": 1408000500,
+    "UnitId": 1408000500
+  },
+  {
+    "UnitCollectionBookId": 40800003,
+    "DisplayPriority": 1408000300,
+    "UnitId": 1408000300
+  },
+  {
+    "UnitCollectionBookId": 40800004,
+    "DisplayPriority": 1408000410,
+    "UnitId": 1408000410
+  },
+  {
+    "UnitCollectionBookId": 40900001,
+    "DisplayPriority": 1409000600,
+    "UnitId": 1409000600
+  },
+  {
+    "UnitCollectionBookId": 40900002,
+    "DisplayPriority": 1409000200,
+    "UnitId": 1409000200
+  },
+  {
+    "UnitCollectionBookId": 40900003,
+    "DisplayPriority": 1409000700,
+    "UnitId": 1409000700
+  },
+  {
+    "UnitCollectionBookId": 42000001,
+    "DisplayPriority": 1,
+    "UnitId": 1420000110
+  },
+  {
+    "UnitCollectionBookId": 42000002,
+    "DisplayPriority": 1,
+    "UnitId": 1420005310
+  },
+  {
+    "UnitCollectionBookId": 42000003,
+    "DisplayPriority": 1,
+    "UnitId": 1420005910
+  },
+  {
+    "UnitCollectionBookId": 42000004,
+    "DisplayPriority": 1,
+    "UnitId": 1420001810
+  },
+  {
+    "UnitCollectionBookId": 42000005,
+    "DisplayPriority": 1,
+    "UnitId": 1420004710
+  },
+  {
+    "UnitCollectionBookId": 42000006,
+    "DisplayPriority": 1,
+    "UnitId": 1420004910
+  },
+  {
+    "UnitCollectionBookId": 42000007,
+    "DisplayPriority": 1,
+    "UnitId": 1420005710
+  },
+  {
+    "UnitCollectionBookId": 42000008,
+    "DisplayPriority": 1,
+    "UnitId": 1420005810
+  },
+  {
+    "UnitCollectionBookId": 43000001,
+    "DisplayPriority": 1,
+    "UnitId": 1430000100
+  },
+  {
+    "UnitCollectionBookId": 43000002,
+    "DisplayPriority": 1,
+    "UnitId": 1430000200
+  },
+  {
+    "UnitCollectionBookId": 43000003,
+    "DisplayPriority": 1,
+    "UnitId": 1430000300
+  },
+  {
+    "UnitCollectionBookId": 43000003,
+    "DisplayPriority": 2,
+    "UnitId": 1430000350
+  },
+  {
+    "UnitCollectionBookId": 43000004,
+    "DisplayPriority": 1,
+    "UnitId": 1430000400
+  },
+  {
+    "UnitCollectionBookId": 43000005,
+    "DisplayPriority": 1,
+    "UnitId": 1430000500
+  },
+  {
+    "UnitCollectionBookId": 43000006,
+    "DisplayPriority": 1,
+    "UnitId": 1430001900
+  },
+  {
+    "UnitCollectionBookId": 43000007,
+    "DisplayPriority": 1,
+    "UnitId": 1430002000
+  },
+  {
+    "UnitCollectionBookId": 43000008,
+    "DisplayPriority": 1,
+    "UnitId": 1430003000
+  },
+  {
+    "UnitCollectionBookId": 43000009,
+    "DisplayPriority": 1,
+    "UnitId": 1430003110
+  },
+  {
+    "UnitCollectionBookId": 43000010,
+    "DisplayPriority": 1,
+    "UnitId": 1430000900
+  },
+  {
+    "UnitCollectionBookId": 43000011,
+    "DisplayPriority": 1,
+    "UnitId": 1430001000
+  },
+  {
+    "UnitCollectionBookId": 43000012,
+    "DisplayPriority": 1,
+    "UnitId": 1430001110
+  },
+  {
+    "UnitCollectionBookId": 43000013,
+    "DisplayPriority": 1,
+    "UnitId": 1430001200
+  },
+  {
+    "UnitCollectionBookId": 43000014,
+    "DisplayPriority": 1,
+    "UnitId": 1430000600
+  },
+  {
+    "UnitCollectionBookId": 43000015,
+    "DisplayPriority": 1,
+    "UnitId": 1430000700
+  },
+  {
+    "UnitCollectionBookId": 43000016,
+    "DisplayPriority": 1,
+    "UnitId": 1430000800
+  },
+  {
+    "UnitCollectionBookId": 43000017,
+    "DisplayPriority": 1,
+    "UnitId": 1430001400
+  },
+  {
+    "UnitCollectionBookId": 43000017,
+    "DisplayPriority": 2,
+    "UnitId": 1430001410
+  },
+  {
+    "UnitCollectionBookId": 43000018,
+    "DisplayPriority": 1,
+    "UnitId": 1430001500
+  },
+  {
+    "UnitCollectionBookId": 43000019,
+    "DisplayPriority": 1,
+    "UnitId": 1430001610
+  },
+  {
+    "UnitCollectionBookId": 43000020,
+    "DisplayPriority": 1,
+    "UnitId": 1430001810
+  },
+  {
+    "UnitCollectionBookId": 43000021,
+    "DisplayPriority": 1,
+    "UnitId": 1430002100
+  },
+  {
+    "UnitCollectionBookId": 43000022,
+    "DisplayPriority": 1,
+    "UnitId": 1430002210
+  },
+  {
+    "UnitCollectionBookId": 43000023,
+    "DisplayPriority": 1,
+    "UnitId": 1430002310
+  },
+  {
+    "UnitCollectionBookId": 43000024,
+    "DisplayPriority": 1,
+    "UnitId": 1430002600
+  },
+  {
+    "UnitCollectionBookId": 43000025,
+    "DisplayPriority": 1,
+    "UnitId": 1430002500
+  },
+  {
+    "UnitCollectionBookId": 43000026,
+    "DisplayPriority": 1,
+    "UnitId": 1430002400
+  },
+  {
+    "UnitCollectionBookId": 43000027,
+    "DisplayPriority": 1,
+    "UnitId": 1430002800
+  },
+  {
+    "UnitCollectionBookId": 43000028,
+    "DisplayPriority": 1,
+    "UnitId": 1430002700
+  },
+  {
+    "UnitCollectionBookId": 43000029,
+    "DisplayPriority": 1,
+    "UnitId": 1430003200
+  },
+  {
+    "UnitCollectionBookId": 43000030,
+    "DisplayPriority": 1,
+    "UnitId": 1430003310
+  },
+  {
+    "UnitCollectionBookId": 43000031,
+    "DisplayPriority": 1,
+    "UnitId": 1430002900
+  },
+  {
+    "UnitCollectionBookId": 43000031,
+    "DisplayPriority": 2,
+    "UnitId": 1430002910
+  },
+  {
+    "UnitCollectionBookId": 43000032,
+    "DisplayPriority": 1,
+    "UnitId": 1430001300
+  },
+  {
+    "UnitCollectionBookId": 43000033,
+    "DisplayPriority": 1430003400,
+    "UnitId": 1430003400
+  },
+  {
+    "UnitCollectionBookId": 43000033,
+    "DisplayPriority": 1430003450,
+    "UnitId": 1430003450
+  },
+  {
+    "UnitCollectionBookId": 43000034,
+    "DisplayPriority": 1430003600,
+    "UnitId": 1430003600
+  },
+  {
+    "UnitCollectionBookId": 43000035,
+    "DisplayPriority": 1430003800,
+    "UnitId": 1430003800
+  },
+  {
+    "UnitCollectionBookId": 43000036,
+    "DisplayPriority": 1430003900,
+    "UnitId": 1430003900
+  },
+  {
+    "UnitCollectionBookId": 43000037,
+    "DisplayPriority": 1430004000,
+    "UnitId": 1430004000
+  },
+  {
+    "UnitCollectionBookId": 43000038,
+    "DisplayPriority": 1430004110,
+    "UnitId": 1430004110
+  },
+  {
+    "UnitCollectionBookId": 43000039,
+    "DisplayPriority": 1430004200,
+    "UnitId": 1430004200
+  },
+  {
+    "UnitCollectionBookId": 43000040,
+    "DisplayPriority": 1430004300,
+    "UnitId": 1430004300
+  },
+  {
+    "UnitCollectionBookId": 43000041,
+    "DisplayPriority": 1430004400,
+    "UnitId": 1430004400
+  },
+  {
+    "UnitCollectionBookId": 43000042,
+    "DisplayPriority": 1430004600,
+    "UnitId": 1430004600
+  },
+  {
+    "UnitCollectionBookId": 43000043,
+    "DisplayPriority": 1430004700,
+    "UnitId": 1430004700
+  },
+  {
+    "UnitCollectionBookId": 43000044,
+    "DisplayPriority": 1430004800,
+    "UnitId": 1430004800
+  },
+  {
+    "UnitCollectionBookId": 43000044,
+    "DisplayPriority": 1430004850,
+    "UnitId": 1430004850
+  },
+  {
+    "UnitCollectionBookId": 43000045,
+    "DisplayPriority": 1430005200,
+    "UnitId": 1430005200
+  },
+  {
+    "UnitCollectionBookId": 43000046,
+    "DisplayPriority": 1430005310,
+    "UnitId": 1430005310
+  },
+  {
+    "UnitCollectionBookId": 43000047,
+    "DisplayPriority": 1430005410,
+    "UnitId": 1430005410
+  },
+  {
+    "UnitCollectionBookId": 43000048,
+    "DisplayPriority": 1430007700,
+    "UnitId": 1430007700
+  },
+  {
+    "UnitCollectionBookId": 43000049,
+    "DisplayPriority": 1430007800,
+    "UnitId": 1430007800
+  },
+  {
+    "UnitCollectionBookId": 43000050,
+    "DisplayPriority": 1430005010,
+    "UnitId": 1430005010
+  },
+  {
+    "UnitCollectionBookId": 43000051,
+    "DisplayPriority": 1430005100,
+    "UnitId": 1430005100
+  },
+  {
+    "UnitCollectionBookId": 43000052,
+    "DisplayPriority": 1430004910,
+    "UnitId": 1430004910
+  },
+  {
+    "UnitCollectionBookId": 43000053,
+    "DisplayPriority": 1430007200,
+    "UnitId": 1430007200
+  },
+  {
+    "UnitCollectionBookId": 43000054,
+    "DisplayPriority": 1430007610,
+    "UnitId": 1430007610
+  },
+  {
+    "UnitCollectionBookId": 43000055,
+    "DisplayPriority": 1430006700,
+    "UnitId": 1430006700
+  },
+  {
+    "UnitCollectionBookId": 43000056,
+    "DisplayPriority": 1430006500,
+    "UnitId": 1430006500
+  },
+  {
+    "UnitCollectionBookId": 43000057,
+    "DisplayPriority": 1430006600,
+    "UnitId": 1430006600
+  },
+  {
+    "UnitCollectionBookId": 43000058,
+    "DisplayPriority": 1430005500,
+    "UnitId": 1430005500
+  },
+  {
+    "UnitCollectionBookId": 43000059,
+    "DisplayPriority": 1430005610,
+    "UnitId": 1430005610
+  },
+  {
+    "UnitCollectionBookId": 43000060,
+    "DisplayPriority": 1430005710,
+    "UnitId": 1430005710
+  },
+  {
+    "UnitCollectionBookId": 43000061,
+    "DisplayPriority": 1430005800,
+    "UnitId": 1430005800
+  },
+  {
+    "UnitCollectionBookId": 43000062,
+    "DisplayPriority": 1430005910,
+    "UnitId": 1430005910
+  },
+  {
+    "UnitCollectionBookId": 43000063,
+    "DisplayPriority": 1430006010,
+    "UnitId": 1430006010
+  },
+  {
+    "UnitCollectionBookId": 43000064,
+    "DisplayPriority": 1430006100,
+    "UnitId": 1430006100
+  },
+  {
+    "UnitCollectionBookId": 43000065,
+    "DisplayPriority": 1430006210,
+    "UnitId": 1430006210
+  },
+  {
+    "UnitCollectionBookId": 43000066,
+    "DisplayPriority": 1430006400,
+    "UnitId": 1430006400
+  },
+  {
+    "UnitCollectionBookId": 43000067,
+    "DisplayPriority": 1430006800,
+    "UnitId": 1430006800
+  },
+  {
+    "UnitCollectionBookId": 43000068,
+    "DisplayPriority": 1430006900,
+    "UnitId": 1430006900
+  },
+  {
+    "UnitCollectionBookId": 43000069,
+    "DisplayPriority": 1430008000,
+    "UnitId": 1430008000
+  },
+  {
+    "UnitCollectionBookId": 43000069,
+    "DisplayPriority": 1430008001,
+    "UnitId": 1430008001
+  },
+  {
+    "UnitCollectionBookId": 43000069,
+    "DisplayPriority": 1430008002,
+    "UnitId": 1430008002
+  },
+  {
+    "UnitCollectionBookId": 43000070,
+    "DisplayPriority": 1430008260,
+    "UnitId": 1430008260
+  },
+  {
+    "UnitCollectionBookId": 43100001,
+    "DisplayPriority": 1,
+    "UnitId": 1431000110
+  },
+  {
+    "UnitCollectionBookId": 43100001,
+    "DisplayPriority": 1431000100,
+    "UnitId": 1431000100
+  },
+  {
+    "UnitCollectionBookId": 43100002,
+    "DisplayPriority": 1,
+    "UnitId": 1431000410
+  },
+  {
+    "UnitCollectionBookId": 43100002,
+    "DisplayPriority": 1431000400,
+    "UnitId": 1431000400
+  },
+  {
+    "UnitCollectionBookId": 43100003,
+    "DisplayPriority": 1431000300,
+    "UnitId": 1431000300
+  },
+  {
+    "UnitCollectionBookId": 43100004,
+    "DisplayPriority": 1431000500,
+    "UnitId": 1431000500
+  },
+  {
+    "UnitCollectionBookId": 43100004,
+    "DisplayPriority": 1431000550,
+    "UnitId": 1431000550
+  },
+  {
+    "UnitCollectionBookId": 43100005,
+    "DisplayPriority": 1431001300,
+    "UnitId": 1431001310
+  },
+  {
+    "UnitCollectionBookId": 43100006,
+    "DisplayPriority": 1431000200,
+    "UnitId": 1431000200
+  },
+  {
+    "UnitCollectionBookId": 43100007,
+    "DisplayPriority": 1431000600,
+    "UnitId": 1431000600
+  },
+  {
+    "UnitCollectionBookId": 43100008,
+    "DisplayPriority": 1431000700,
+    "UnitId": 1431000700
+  },
+  {
+    "UnitCollectionBookId": 43100009,
+    "DisplayPriority": 1431000900,
+    "UnitId": 1431000900
+  },
+  {
+    "UnitCollectionBookId": 43100010,
+    "DisplayPriority": 1431000800,
+    "UnitId": 1431000800
+  },
+  {
+    "UnitCollectionBookId": 43100011,
+    "DisplayPriority": 1431001400,
+    "UnitId": 1431001400
+  },
+  {
+    "UnitCollectionBookId": 43100012,
+    "DisplayPriority": 1431001100,
+    "UnitId": 1431001100
+  },
+  {
+    "UnitCollectionBookId": 43100013,
+    "DisplayPriority": 1431001200,
+    "UnitId": 1431001200
+  },
+  {
+    "UnitCollectionBookId": 43100014,
+    "DisplayPriority": 1431001500,
+    "UnitId": 1431001500
+  },
+  {
+    "UnitCollectionBookId": 43100015,
+    "DisplayPriority": 1431001600,
+    "UnitId": 1431001600
+  },
+  {
+    "UnitCollectionBookId": 43100016,
+    "DisplayPriority": 1431001710,
+    "UnitId": 1431001710
+  },
+  {
+    "UnitCollectionBookId": 43100017,
+    "DisplayPriority": 1431001810,
+    "UnitId": 1431001810
+  },
+  {
+    "UnitCollectionBookId": 43100018,
+    "DisplayPriority": 1431001910,
+    "UnitId": 1431001910
+  },
+  {
+    "UnitCollectionBookId": 43100019,
+    "DisplayPriority": 1431002000,
+    "UnitId": 1431002000
+  },
+  {
+    "UnitCollectionBookId": 43300001,
+    "DisplayPriority": 1433000100,
+    "UnitId": 1433000100
+  },
+  {
+    "UnitCollectionBookId": 43400001,
+    "DisplayPriority": 1434000100,
+    "UnitId": 1434000160
+  },
+  {
+    "UnitCollectionBookId": 50000001,
+    "DisplayPriority": 1,
+    "UnitId": 1500000100
+  },
+  {
+    "UnitCollectionBookId": 50000002,
+    "DisplayPriority": 1,
+    "UnitId": 1500000200
+  },
+  {
+    "UnitCollectionBookId": 50000003,
+    "DisplayPriority": 1,
+    "UnitId": 1500000300
+  },
+  {
+    "UnitCollectionBookId": 50000004,
+    "DisplayPriority": 1,
+    "UnitId": 1500000400
+  },
+  {
+    "UnitCollectionBookId": 50100001,
+    "DisplayPriority": 1,
+    "UnitId": 1501000100
+  },
+  {
+    "UnitCollectionBookId": 50100001,
+    "DisplayPriority": 2,
+    "UnitId": 1501000150
+  },
+  {
+    "UnitCollectionBookId": 50100001,
+    "DisplayPriority": 1501000160,
+    "UnitId": 1501000160
+  },
+  {
+    "UnitCollectionBookId": 50100002,
+    "DisplayPriority": 1,
+    "UnitId": 1501000200
+  },
+  {
+    "UnitCollectionBookId": 50100003,
+    "DisplayPriority": 1,
+    "UnitId": 1501001600
+  },
+  {
+    "UnitCollectionBookId": 50100003,
+    "DisplayPriority": 1501001650,
+    "UnitId": 1501001650
+  },
+  {
+    "UnitCollectionBookId": 50100004,
+    "DisplayPriority": 1,
+    "UnitId": 1501000300
+  },
+  {
+    "UnitCollectionBookId": 50100005,
+    "DisplayPriority": 1,
+    "UnitId": 1501000700
+  },
+  {
+    "UnitCollectionBookId": 50100006,
+    "DisplayPriority": 1,
+    "UnitId": 1501001200
+  },
+  {
+    "UnitCollectionBookId": 50100007,
+    "DisplayPriority": 1,
+    "UnitId": 1501001710
+  },
+  {
+    "UnitCollectionBookId": 50100008,
+    "DisplayPriority": 1,
+    "UnitId": 1501000400
+  },
+  {
+    "UnitCollectionBookId": 50100009,
+    "DisplayPriority": 1,
+    "UnitId": 1501000800
+  },
+  {
+    "UnitCollectionBookId": 50100010,
+    "DisplayPriority": 1,
+    "UnitId": 1501000900
+  },
+  {
+    "UnitCollectionBookId": 50100011,
+    "DisplayPriority": 1,
+    "UnitId": 1501001300
+  },
+  {
+    "UnitCollectionBookId": 50100012,
+    "DisplayPriority": 1,
+    "UnitId": 1501000500
+  },
+  {
+    "UnitCollectionBookId": 50100013,
+    "DisplayPriority": 1,
+    "UnitId": 1501001000
+  },
+  {
+    "UnitCollectionBookId": 50100013,
+    "DisplayPriority": 2,
+    "UnitId": 1501001010
+  },
+  {
+    "UnitCollectionBookId": 50100014,
+    "DisplayPriority": 1,
+    "UnitId": 1501000600
+  },
+  {
+    "UnitCollectionBookId": 50100015,
+    "DisplayPriority": 1,
+    "UnitId": 1501001100
+  },
+  {
+    "UnitCollectionBookId": 50100016,
+    "DisplayPriority": 1,
+    "UnitId": 1501001400
+  },
+  {
+    "UnitCollectionBookId": 50100017,
+    "DisplayPriority": 1,
+    "UnitId": 1501001500
+  },
+  {
+    "UnitCollectionBookId": 50100018,
+    "DisplayPriority": 1501001800,
+    "UnitId": 1501001800
+  },
+  {
+    "UnitCollectionBookId": 50100019,
+    "DisplayPriority": 1501001900,
+    "UnitId": 1501001900
+  },
+  {
+    "UnitCollectionBookId": 50100020,
+    "DisplayPriority": 1501002000,
+    "UnitId": 1501002000
+  },
+  {
+    "UnitCollectionBookId": 50100021,
+    "DisplayPriority": 1501002250,
+    "UnitId": 1501002250
+  },
+  {
+    "UnitCollectionBookId": 50100022,
+    "DisplayPriority": 1501002400,
+    "UnitId": 1501002400
+  },
+  {
+    "UnitCollectionBookId": 50100023,
+    "DisplayPriority": 1501002500,
+    "UnitId": 1501002500
+  },
+  {
+    "UnitCollectionBookId": 50100024,
+    "DisplayPriority": 1501003010,
+    "UnitId": 1501003010
+  },
+  {
+    "UnitCollectionBookId": 50100025,
+    "DisplayPriority": 1501003310,
+    "UnitId": 1501003310
+  },
+  {
+    "UnitCollectionBookId": 50100026,
+    "DisplayPriority": 1501003400,
+    "UnitId": 1501003400
+  },
+  {
+    "UnitCollectionBookId": 50100027,
+    "DisplayPriority": 1501003910,
+    "UnitId": 1501003910
+  },
+  {
+    "UnitCollectionBookId": 50100028,
+    "DisplayPriority": 1501004200,
+    "UnitId": 1501004200
+  },
+  {
+    "UnitCollectionBookId": 50100028,
+    "DisplayPriority": 1501004201,
+    "UnitId": 1501004201
+  },
+  {
+    "UnitCollectionBookId": 50100028,
+    "DisplayPriority": 1501004202,
+    "UnitId": 1501004202
+  },
+  {
+    "UnitCollectionBookId": 60000001,
+    "DisplayPriority": 1,
+    "UnitId": 1600000110
+  },
+  {
+    "UnitCollectionBookId": 60000002,
+    "DisplayPriority": 1,
+    "UnitId": 1600000210
+  },
+  {
+    "UnitCollectionBookId": 60400150,
+    "DisplayPriority": 1,
+    "UnitId": 1604000150
+  },
+  {
+    "UnitCollectionBookId": 65000001,
+    "DisplayPriority": 1,
+    "UnitId": 1650000110
+  },
+  {
+    "UnitCollectionBookId": 70010001,
+    "DisplayPriority": 1700000100,
+    "UnitId": 1700000100
+  },
+  {
+    "UnitCollectionBookId": 70500001,
+    "DisplayPriority": 1705000100,
+    "UnitId": 1705000100
+  },
+  {
+    "UnitCollectionBookId": 70500002,
+    "DisplayPriority": 1705000600,
+    "UnitId": 1705000600
+  },
+  {
+    "UnitCollectionBookId": 70500003,
+    "DisplayPriority": 1705000700,
+    "UnitId": 1705000700
+  },
+  {
+    "UnitCollectionBookId": 70500004,
+    "DisplayPriority": 1705000800,
+    "UnitId": 1705000800
+  },
+  {
+    "UnitCollectionBookId": 70500005,
+    "DisplayPriority": 1705000400,
+    "UnitId": 1705000400
+  },
+  {
+    "UnitCollectionBookId": 70500006,
+    "DisplayPriority": 1705000550,
+    "UnitId": 1705000550
+  },
+  {
+    "UnitCollectionBookId": 70500007,
+    "DisplayPriority": 1705001510,
+    "UnitId": 1705001510
+  },
+  {
+    "UnitCollectionBookId": 70500008,
+    "DisplayPriority": 1705000900,
+    "UnitId": 1705000900
+  },
+  {
+    "UnitCollectionBookId": 70500009,
+    "DisplayPriority": 1705001000,
+    "UnitId": 1705001000
+  },
+  {
+    "UnitCollectionBookId": 70500010,
+    "DisplayPriority": 1705001100,
+    "UnitId": 1705001100
+  },
+  {
+    "UnitCollectionBookId": 70500011,
+    "DisplayPriority": 1705001200,
+    "UnitId": 1705001200
+  },
+  {
+    "UnitCollectionBookId": 70500012,
+    "DisplayPriority": 1705001300,
+    "UnitId": 1705001300
+  },
+  {
+    "UnitCollectionBookId": 70500013,
+    "DisplayPriority": 1705001400,
+    "UnitId": 1705001400
+  },
+  {
+    "UnitCollectionBookId": 70900001,
+    "DisplayPriority": 1709000100,
+    "UnitId": 1709000100
+  },
+  {
+    "UnitCollectionBookId": 72500001,
+    "DisplayPriority": 1725000150,
+    "UnitId": 1725000150
+  },
+  {
+    "UnitCollectionBookId": 72800001,
+    "DisplayPriority": 1,
+    "UnitId": 1728000100
+  },
+  {
+    "UnitCollectionBookId": 75000001,
+    "DisplayPriority": 1,
+    "UnitId": 1750000110
+  },
+  {
+    "UnitCollectionBookId": 75000002,
+    "DisplayPriority": 1,
+    "UnitId": 1750000300
+  },
+  {
+    "UnitCollectionBookId": 75000002,
+    "DisplayPriority": 2,
+    "UnitId": 1750000301
+  },
+  {
+    "UnitCollectionBookId": 75000002,
+    "DisplayPriority": 3,
+    "UnitId": 1750000302
+  },
+  {
+    "UnitCollectionBookId": 76000001,
+    "DisplayPriority": 1,
+    "UnitId": 1760000100
+  },
+  {
+    "UnitCollectionBookId": 76000001,
+    "DisplayPriority": 2,
+    "UnitId": 1760000110
+  },
+  {
+    "UnitCollectionBookId": 76100001,
+    "DisplayPriority": 1,
+    "UnitId": 1761000100
+  },
+  {
+    "UnitCollectionBookId": 76100001,
+    "DisplayPriority": 2,
+    "UnitId": 1761000101
+  },
+  {
+    "UnitCollectionBookId": 76100001,
+    "DisplayPriority": 3,
+    "UnitId": 1761000102
+  },
+  {
+    "UnitCollectionBookId": 76300001,
+    "DisplayPriority": 1,
+    "UnitId": 1763000110
+  },
+  {
+    "UnitCollectionBookId": 76300002,
+    "DisplayPriority": 1,
+    "UnitId": 1763000200
+  },
+  {
+    "UnitCollectionBookId": 76400001,
+    "DisplayPriority": 1,
+    "UnitId": 1764000200
+  },
+  {
+    "UnitCollectionBookId": 76400001,
+    "DisplayPriority": 2,
+    "UnitId": 1764000201
+  },
+  {
+    "UnitCollectionBookId": 76400001,
+    "DisplayPriority": 3,
+    "UnitId": 1764000202
+  },
+  {
+    "UnitCollectionBookId": 76400002,
+    "DisplayPriority": 1,
+    "UnitId": 1764000310
+  },
+  {
+    "UnitCollectionBookId": 76400003,
+    "DisplayPriority": 1,
+    "UnitId": 1764000110
+  },
+  {
+    "UnitCollectionBookId": 77100001,
+    "DisplayPriority": 1,
+    "UnitId": 1771000110
+  },
+  {
+    "UnitCollectionBookId": 77100002,
+    "DisplayPriority": 1,
+    "UnitId": 1771000210
+  },
+  {
+    "UnitCollectionBookId": 77900001,
+    "DisplayPriority": 1,
+    "UnitId": 1779000110
+  },
+  {
+    "UnitCollectionBookId": 85000001,
+    "DisplayPriority": 1,
+    "UnitId": 1850000100
+  },
+  {
+    "UnitCollectionBookId": 85000002,
+    "DisplayPriority": 1,
+    "UnitId": 1850000200
+  },
+  {
+    "UnitCollectionBookId": 85000002,
+    "DisplayPriority": 2,
+    "UnitId": 1850000250
+  },
+  {
+    "UnitCollectionBookId": 85000003,
+    "DisplayPriority": 1,
+    "UnitId": 1850000310
+  },
+  {
+    "UnitCollectionBookId": 85000004,
+    "DisplayPriority": 1,
+    "UnitId": 1850000610
+  },
+  {
+    "UnitCollectionBookId": 85000005,
+    "DisplayPriority": 1,
+    "UnitId": 1850001210
+  },
+  {
+    "UnitCollectionBookId": 85000006,
+    "DisplayPriority": 1,
+    "UnitId": 1850001500
+  },
+  {
+    "UnitCollectionBookId": 85000007,
+    "DisplayPriority": 1,
+    "UnitId": 1850001800
+  },
+  {
+    "UnitCollectionBookId": 85000008,
+    "DisplayPriority": 1,
+    "UnitId": 1850002110
+  },
+  {
+    "UnitCollectionBookId": 85000009,
+    "DisplayPriority": 1,
+    "UnitId": 1850002410
+  },
+  {
+    "UnitCollectionBookId": 85000010,
+    "DisplayPriority": 1,
+    "UnitId": 1850002510
+  },
+  {
+    "UnitCollectionBookId": 85000011,
+    "DisplayPriority": 1,
+    "UnitId": 1850002910
+  },
+  {
+    "UnitCollectionBookId": 85000012,
+    "DisplayPriority": 1,
+    "UnitId": 1850003010
+  },
+  {
+    "UnitCollectionBookId": 85000013,
+    "DisplayPriority": 1,
+    "UnitId": 1850003200
+  },
+  {
+    "UnitCollectionBookId": 85000013,
+    "DisplayPriority": 2,
+    "UnitId": 1850003201
+  },
+  {
+    "UnitCollectionBookId": 85000013,
+    "DisplayPriority": 3,
+    "UnitId": 1850003202
+  },
+  {
+    "UnitCollectionBookId": 85000014,
+    "DisplayPriority": 1850002200,
+    "UnitId": 1850002200
+  },
+  {
+    "UnitCollectionBookId": 85000015,
+    "DisplayPriority": 1850002360,
+    "UnitId": 1850002360
+  },
+  {
+    "UnitCollectionBookId": 85000016,
+    "DisplayPriority": 1850005310,
+    "UnitId": 1850005310
+  },
+  {
+    "UnitCollectionBookId": 85000018,
+    "DisplayPriority": 1850003300,
+    "UnitId": 1850003300
+  },
+  {
+    "UnitCollectionBookId": 85000018,
+    "DisplayPriority": 1850003301,
+    "UnitId": 1850003301
+  },
+  {
+    "UnitCollectionBookId": 85000018,
+    "DisplayPriority": 1850003302,
+    "UnitId": 1850003302
+  }
+]

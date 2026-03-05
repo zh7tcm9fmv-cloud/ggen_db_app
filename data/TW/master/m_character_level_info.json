@@ -1,0 +1,502 @@
+[
+  {
+    "Level": 1,
+    "Exp": 0,
+    "GrowthRate": 0
+  },
+  {
+    "Level": 2,
+    "Exp": 200,
+    "GrowthRate": 102
+  },
+  {
+    "Level": 3,
+    "Exp": 500,
+    "GrowthRate": 204
+  },
+  {
+    "Level": 4,
+    "Exp": 900,
+    "GrowthRate": 306
+  },
+  {
+    "Level": 5,
+    "Exp": 1400,
+    "GrowthRate": 408
+  },
+  {
+    "Level": 6,
+    "Exp": 2000,
+    "GrowthRate": 510
+  },
+  {
+    "Level": 7,
+    "Exp": 2700,
+    "GrowthRate": 612
+  },
+  {
+    "Level": 8,
+    "Exp": 3500,
+    "GrowthRate": 714
+  },
+  {
+    "Level": 9,
+    "Exp": 4500,
+    "GrowthRate": 816
+  },
+  {
+    "Level": 10,
+    "Exp": 5700,
+    "GrowthRate": 918
+  },
+  {
+    "Level": 11,
+    "Exp": 7100,
+    "GrowthRate": 1020
+  },
+  {
+    "Level": 12,
+    "Exp": 8700,
+    "GrowthRate": 1122
+  },
+  {
+    "Level": 13,
+    "Exp": 10500,
+    "GrowthRate": 1224
+  },
+  {
+    "Level": 14,
+    "Exp": 12500,
+    "GrowthRate": 1326
+  },
+  {
+    "Level": 15,
+    "Exp": 14700,
+    "GrowthRate": 1428
+  },
+  {
+    "Level": 16,
+    "Exp": 17100,
+    "GrowthRate": 1530
+  },
+  {
+    "Level": 17,
+    "Exp": 19700,
+    "GrowthRate": 1632
+  },
+  {
+    "Level": 18,
+    "Exp": 22700,
+    "GrowthRate": 1734
+  },
+  {
+    "Level": 19,
+    "Exp": 26100,
+    "GrowthRate": 1836
+  },
+  {
+    "Level": 20,
+    "Exp": 30000,
+    "GrowthRate": 1938
+  },
+  {
+    "Level": 21,
+    "Exp": 34500,
+    "GrowthRate": 2040
+  },
+  {
+    "Level": 22,
+    "Exp": 39500,
+    "GrowthRate": 2142
+  },
+  {
+    "Level": 23,
+    "Exp": 45000,
+    "GrowthRate": 2244
+  },
+  {
+    "Level": 24,
+    "Exp": 51000,
+    "GrowthRate": 2346
+  },
+  {
+    "Level": 25,
+    "Exp": 57000,
+    "GrowthRate": 2448
+  },
+  {
+    "Level": 26,
+    "Exp": 63000,
+    "GrowthRate": 2550
+  },
+  {
+    "Level": 27,
+    "Exp": 70000,
+    "GrowthRate": 2652
+  },
+  {
+    "Level": 28,
+    "Exp": 78000,
+    "GrowthRate": 2754
+  },
+  {
+    "Level": 29,
+    "Exp": 88000,
+    "GrowthRate": 2856
+  },
+  {
+    "Level": 30,
+    "Exp": 100000,
+    "GrowthRate": 2958
+  },
+  {
+    "Level": 31,
+    "Exp": 112000,
+    "GrowthRate": 3060
+  },
+  {
+    "Level": 32,
+    "Exp": 125000,
+    "GrowthRate": 3162
+  },
+  {
+    "Level": 33,
+    "Exp": 140000,
+    "GrowthRate": 3264
+  },
+  {
+    "Level": 34,
+    "Exp": 157000,
+    "GrowthRate": 3366
+  },
+  {
+    "Level": 35,
+    "Exp": 176000,
+    "GrowthRate": 3468
+  },
+  {
+    "Level": 36,
+    "Exp": 197000,
+    "GrowthRate": 3570
+  },
+  {
+    "Level": 37,
+    "Exp": 220000,
+    "GrowthRate": 3672
+  },
+  {
+    "Level": 38,
+    "Exp": 245000,
+    "GrowthRate": 3774
+  },
+  {
+    "Level": 39,
+    "Exp": 272000,
+    "GrowthRate": 3876
+  },
+  {
+    "Level": 40,
+    "Exp": 300000,
+    "GrowthRate": 3978
+  },
+  {
+    "Level": 41,
+    "Exp": 330000,
+    "GrowthRate": 4080
+  },
+  {
+    "Level": 42,
+    "Exp": 360000,
+    "GrowthRate": 4181
+  },
+  {
+    "Level": 43,
+    "Exp": 390000,
+    "GrowthRate": 4282
+  },
+  {
+    "Level": 44,
+    "Exp": 420000,
+    "GrowthRate": 4383
+  },
+  {
+    "Level": 45,
+    "Exp": 450000,
+    "GrowthRate": 4484
+  },
+  {
+    "Level": 46,
+    "Exp": 480000,
+    "GrowthRate": 4585
+  },
+  {
+    "Level": 47,
+    "Exp": 510000,
+    "GrowthRate": 4686
+  },
+  {
+    "Level": 48,
+    "Exp": 540000,
+    "GrowthRate": 4787
+  },
+  {
+    "Level": 49,
+    "Exp": 570000,
+    "GrowthRate": 4888
+  },
+  {
+    "Level": 50,
+    "Exp": 600000,
+    "GrowthRate": 4989
+  },
+  {
+    "Level": 51,
+    "Exp": 640000,
+    "GrowthRate": 5090
+  },
+  {
+    "Level": 52,
+    "Exp": 680000,
+    "GrowthRate": 5191
+  },
+  {
+    "Level": 53,
+    "Exp": 720000,
+    "GrowthRate": 5292
+  },
+  {
+    "Level": 54,
+    "Exp": 760000,
+    "GrowthRate": 5393
+  },
+  {
+    "Level": 55,
+    "Exp": 800000,
+    "GrowthRate": 5494
+  },
+  {
+    "Level": 56,
+    "Exp": 840000,
+    "GrowthRate": 5595
+  },
+  {
+    "Level": 57,
+    "Exp": 880000,
+    "GrowthRate": 5696
+  },
+  {
+    "Level": 58,
+    "Exp": 920000,
+    "GrowthRate": 5797
+  },
+  {
+    "Level": 59,
+    "Exp": 960000,
+    "GrowthRate": 5898
+  },
+  {
+    "Level": 60,
+    "Exp": 1000000,
+    "GrowthRate": 6000
+  },
+  {
+    "Level": 61,
+    "Exp": 1040000,
+    "GrowthRate": 6100
+  },
+  {
+    "Level": 62,
+    "Exp": 1080000,
+    "GrowthRate": 6200
+  },
+  {
+    "Level": 63,
+    "Exp": 1120000,
+    "GrowthRate": 6300
+  },
+  {
+    "Level": 64,
+    "Exp": 1160000,
+    "GrowthRate": 6400
+  },
+  {
+    "Level": 65,
+    "Exp": 1200000,
+    "GrowthRate": 6500
+  },
+  {
+    "Level": 66,
+    "Exp": 1240000,
+    "GrowthRate": 6600
+  },
+  {
+    "Level": 67,
+    "Exp": 1280000,
+    "GrowthRate": 6700
+  },
+  {
+    "Level": 68,
+    "Exp": 1320000,
+    "GrowthRate": 6800
+  },
+  {
+    "Level": 69,
+    "Exp": 1360000,
+    "GrowthRate": 6900
+  },
+  {
+    "Level": 70,
+    "Exp": 1400000,
+    "GrowthRate": 7000
+  },
+  {
+    "Level": 71,
+    "Exp": 1446000,
+    "GrowthRate": 7100
+  },
+  {
+    "Level": 72,
+    "Exp": 1492000,
+    "GrowthRate": 7200
+  },
+  {
+    "Level": 73,
+    "Exp": 1538000,
+    "GrowthRate": 7300
+  },
+  {
+    "Level": 74,
+    "Exp": 1584000,
+    "GrowthRate": 7400
+  },
+  {
+    "Level": 75,
+    "Exp": 1630000,
+    "GrowthRate": 7500
+  },
+  {
+    "Level": 76,
+    "Exp": 1676000,
+    "GrowthRate": 7600
+  },
+  {
+    "Level": 77,
+    "Exp": 1722000,
+    "GrowthRate": 7700
+  },
+  {
+    "Level": 78,
+    "Exp": 1768000,
+    "GrowthRate": 7800
+  },
+  {
+    "Level": 79,
+    "Exp": 1814000,
+    "GrowthRate": 7900
+  },
+  {
+    "Level": 80,
+    "Exp": 1860000,
+    "GrowthRate": 8000
+  },
+  {
+    "Level": 81,
+    "Exp": 1914000,
+    "GrowthRate": 8100
+  },
+  {
+    "Level": 82,
+    "Exp": 1968000,
+    "GrowthRate": 8200
+  },
+  {
+    "Level": 83,
+    "Exp": 2022000,
+    "GrowthRate": 8300
+  },
+  {
+    "Level": 84,
+    "Exp": 2076000,
+    "GrowthRate": 8400
+  },
+  {
+    "Level": 85,
+    "Exp": 2130000,
+    "GrowthRate": 8500
+  },
+  {
+    "Level": 86,
+    "Exp": 2184000,
+    "GrowthRate": 8600
+  },
+  {
+    "Level": 87,
+    "Exp": 2238000,
+    "GrowthRate": 8700
+  },
+  {
+    "Level": 88,
+    "Exp": 2292000,
+    "GrowthRate": 8800
+  },
+  {
+    "Level": 89,
+    "Exp": 2346000,
+    "GrowthRate": 8900
+  },
+  {
+    "Level": 90,
+    "Exp": 2400000,
+    "GrowthRate": 9000
+  },
+  {
+    "Level": 91,
+    "Exp": 2460000,
+    "GrowthRate": 9100
+  },
+  {
+    "Level": 92,
+    "Exp": 2520000,
+    "GrowthRate": 9200
+  },
+  {
+    "Level": 93,
+    "Exp": 2580000,
+    "GrowthRate": 9300
+  },
+  {
+    "Level": 94,
+    "Exp": 2640000,
+    "GrowthRate": 9400
+  },
+  {
+    "Level": 95,
+    "Exp": 2700000,
+    "GrowthRate": 9500
+  },
+  {
+    "Level": 96,
+    "Exp": 2760000,
+    "GrowthRate": 9600
+  },
+  {
+    "Level": 97,
+    "Exp": 2820000,
+    "GrowthRate": 9700
+  },
+  {
+    "Level": 98,
+    "Exp": 2880000,
+    "GrowthRate": 9800
+  },
+  {
+    "Level": 99,
+    "Exp": 2940000,
+    "GrowthRate": 9900
+  },
+  {
+    "Level": 100,
+    "Exp": 3000000,
+    "GrowthRate": 10000
+  }
+]

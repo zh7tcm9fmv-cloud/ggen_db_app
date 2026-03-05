@@ -1,0 +1,17 @@
+[
+  {
+    "RecoveryCountFrom": 1,
+    "RecoveryCountTo": 5,
+    "ConsumeCount": 50
+  },
+  {
+    "RecoveryCountFrom": 6,
+    "RecoveryCountTo": 10,
+    "ConsumeCount": 100
+  },
+  {
+    "RecoveryCountFrom": 11,
+    "RecoveryCountTo": 20,
+    "ConsumeCount": 150
+  }
+]

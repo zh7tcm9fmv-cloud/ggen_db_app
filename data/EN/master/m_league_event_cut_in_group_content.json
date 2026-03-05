@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 30001001,
+    "LeagueEventCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 2,
+    "PlayPriority": 11,
+    "LeagueEventCutInSetId": 30001001,
+    "ReachLeagueRankIndex": 6,
+    "ReachMaxScore": 0,
+    "EnemyKilledCount": 1,
+    "AllyKilledCount": 0,
+    "AllyOneUnitKillCount": 0
+  },
+  {
+    "Id": 30001002,
+    "LeagueEventCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 3,
+    "PlayPriority": 21,
+    "LeagueEventCutInSetId": 30001002,
+    "ReachLeagueRankIndex": 6,
+    "ReachMaxScore": 0,
+    "EnemyKilledCount": 0,
+    "AllyKilledCount": 1,
+    "AllyOneUnitKillCount": 0
+  },
+  {
+    "Id": 30001003,
+    "LeagueEventCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 2,
+    "PlayPriority": 12,
+    "LeagueEventCutInSetId": 30001003,
+    "ReachLeagueRankIndex": 6,
+    "ReachMaxScore": 0,
+    "EnemyKilledCount": 3,
+    "AllyKilledCount": 0,
+    "AllyOneUnitKillCount": 0
+  },
+  {
+    "Id": 30001004,
+    "LeagueEventCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 3,
+    "PlayPriority": 22,
+    "LeagueEventCutInSetId": 30001004,
+    "ReachLeagueRankIndex": 6,
+    "ReachMaxScore": 0,
+    "EnemyKilledCount": 0,
+    "AllyKilledCount": 3,
+    "AllyOneUnitKillCount": 0
+  }
+]

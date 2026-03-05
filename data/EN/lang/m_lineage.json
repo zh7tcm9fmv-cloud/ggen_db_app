@@ -1,0 +1,938 @@
+[
+  {
+    "id": 110600000000001001,
+    "value": "U.C. Series"
+  },
+  {
+    "id": 110600000000001002,
+    "value": "Alternative Series"
+  },
+  {
+    "id": 110600000000001003,
+    "value": "Gundam"
+  },
+  {
+    "id": 110600000000001004,
+    "value": "Mono-Eye"
+  },
+  {
+    "id": 110600000000001005,
+    "value": "Protagonist"
+  },
+  {
+    "id": 110600000000001006,
+    "value": "Rival"
+  },
+  {
+    "id": 110600000000001007,
+    "value": "Specialized Unit"
+  },
+  {
+    "id": 110600000000001008,
+    "value": "Mobile Armor"
+  },
+  {
+    "id": 110600000000001009,
+    "value": "Transforming Unit"
+  },
+  {
+    "id": 110600000000001010,
+    "value": "Test Type"
+  },
+  {
+    "id": 110600000000001011,
+    "value": "Psycommu"
+  },
+  {
+    "id": 110600000000001012,
+    "value": "Final Battle"
+  },
+  {
+    "id": 110600000000001013,
+    "value": "Pressure"
+  },
+  {
+    "id": 110600000000001014,
+    "value": "EFSF (U.C.)"
+  },
+  {
+    "id": 110600000000001015,
+    "value": "Zeon"
+  },
+  {
+    "id": 110600000000001016,
+    "value": "AEUG"
+  },
+  {
+    "id": 110600000000001017,
+    "value": "Titans"
+  },
+  {
+    "id": 110600000000001018,
+    "value": "Axis"
+  },
+  {
+    "id": 110600000000001019,
+    "value": "Neo Zeon"
+  },
+  {
+    "id": 110600000000001020,
+    "value": "O.M.N.I."
+  },
+  {
+    "id": 110600000000001021,
+    "value": "ZAFT"
+  },
+  {
+    "id": 110600000000001022,
+    "value": "Orb"
+  },
+  {
+    "id": 110600000000001023,
+    "value": "Triple Ships Alliance"
+  },
+  {
+    "id": 110600000000001024,
+    "value": "National Representatives"
+  },
+  {
+    "id": 110600000000001025,
+    "value": "Dark Gundam Army"
+  },
+  {
+    "id": 110600000000001026,
+    "value": "Operation Meteor"
+  },
+  {
+    "id": 110600000000001027,
+    "value": "OZ"
+  },
+  {
+    "id": 110600000000001028,
+    "value": "UESA"
+  },
+  {
+    "id": 110600000000001029,
+    "value": "White Fang"
+  },
+  {
+    "id": 110600000000001030,
+    "value": "MO-V"
+  },
+  {
+    "id": 110600000000001031,
+    "value": "Sanc Kingdom"
+  },
+  {
+    "id": 110600000000001032,
+    "value": "Freeden"
+  },
+  {
+    "id": 110600000000001033,
+    "value": "Space Revolutionary Army"
+  },
+  {
+    "id": 110600000000001034,
+    "value": "United Nations Earth Forces (X)"
+  },
+  {
+    "id": 110600000000001035,
+    "value": "New United Nations Earth"
+  },
+  {
+    "id": 110600000000001036,
+    "value": "Vulture"
+  },
+  {
+    "id": 110600000000001037,
+    "value": "Militia"
+  },
+  {
+    "id": 110600000000001038,
+    "value": "Dianna Counter"
+  },
+  {
+    "id": 110600000000001039,
+    "value": "Junk Guild"
+  },
+  {
+    "id": 110600000000001040,
+    "value": "Serpent Tale"
+  },
+  {
+    "id": 110600000000001041,
+    "value": "Celestial Being"
+  },
+  {
+    "id": 110600000000001042,
+    "value": "Human Reform League"
+  },
+  {
+    "id": 110600000000001043,
+    "value": "Union"
+  },
+  {
+    "id": 110600000000001044,
+    "value": "AEU"
+  },
+  {
+    "id": 110600000000001045,
+    "value": "UN Forces"
+  },
+  {
+    "id": 110600000000001046,
+    "value": "Earth Sphere Federation (00)"
+  },
+  {
+    "id": 110600000000001047,
+    "value": "Earth Federation Forces (AGE)"
+  },
+  {
+    "id": 110600000000001048,
+    "value": "Megafauna"
+  },
+  {
+    "id": 110600000000001049,
+    "value": "Capital Army"
+  },
+  {
+    "id": 110600000000001050,
+    "value": "Capital Guard"
+  },
+  {
+    "id": 110600000000001051,
+    "value": "Towasanga"
+  },
+  {
+    "id": 110600000000001052,
+    "value": "Tekkadan"
+  },
+  {
+    "id": 110600000000001053,
+    "value": "Gjallarhorn"
+  },
+  {
+    "id": 110600000000001054,
+    "value": "Turbines"
+  },
+  {
+    "id": 110600000000001055,
+    "value": "SD Gundam"
+  },
+  {
+    "id": 110600000000001056,
+    "value": "G GENERATION Series"
+  },
+  {
+    "id": 110600000000001057,
+    "value": "Zero System"
+  },
+  {
+    "id": 110600000000001058,
+    "value": "Alaya-Vijnana System"
+  },
+  {
+    "id": 110600000000001059,
+    "value": "GUND-ARM"
+  },
+  {
+    "id": 110600000000001060,
+    "value": "Reuse Psycho Device"
+  },
+  {
+    "id": 110600000000001061,
+    "value": "NT-D"
+  },
+  {
+    "id": 110600000000001062,
+    "value": "ALICE"
+  },
+  {
+    "id": 110600000000001063,
+    "value": "Biosensor"
+  },
+  {
+    "id": 110600000000001064,
+    "value": "Nanoskin"
+  },
+  {
+    "id": 110600000000001065,
+    "value": "Mobile Trace System"
+  },
+  {
+    "id": 110600000000001066,
+    "value": "Gunpla"
+  },
+  {
+    "id": 110600000000001067,
+    "value": "Large Machine"
+  },
+  {
+    "id": 110600000000001068,
+    "value": "A-Laws"
+  },
+  {
+    "id": 110600000000001072,
+    "value": "Montag Company"
+  },
+  {
+    "id": 110600000000001081,
+    "value": "Lightning-Fast"
+  },
+  {
+    "id": 110600000000001082,
+    "value": "One-Shot Killer"
+  },
+  {
+    "id": 110600000000001083,
+    "value": "Tough as Nails"
+  },
+  {
+    "id": 110600000000001084,
+    "value": "Unstoppable"
+  },
+  {
+    "id": 110600000000001085,
+    "value": "Crossbone Vanguard"
+  },
+  {
+    "id": 110600000000001086,
+    "value": "League Militaire"
+  },
+  {
+    "id": 110600000000001087,
+    "value": "Zanscare Empire"
+  },
+  {
+    "id": 110600000000001088,
+    "value": "Mercenary"
+  },
+  {
+    "id": 110600000000001089,
+    "value": "SEED Series"
+  },
+  {
+    "id": 110600000000001090,
+    "value": "Wing Series"
+  },
+  {
+    "id": 110600000000001091,
+    "value": "Ace Unit"
+  },
+  {
+    "id": 110600000000001092,
+    "value": "Commander Type"
+  },
+  {
+    "id": 110600000000001094,
+    "value": "Newtype Machine"
+  },
+  {
+    "id": 110600000000001095,
+    "value": "Fierce Enemy Assault"
+  },
+  {
+    "id": 110600000000001096,
+    "value": "Neuro-Link System"
+  },
+  {
+    "id": 110600000000001097,
+    "value": "Mei Kyo Shisui"
+  },
+  {
+    "id": 110600000000001099,
+    "value": "Mask"
+  },
+  {
+    "id": 110600000000001100,
+    "value": "Civilian"
+  },
+  {
+    "id": 110600000000001101,
+    "value": "Soldier"
+  },
+  {
+    "id": 110600000000001102,
+    "value": "Rookie"
+  },
+  {
+    "id": 110600000000001103,
+    "value": "Veteran"
+  },
+  {
+    "id": 110600000000001104,
+    "value": "Leader"
+  },
+  {
+    "id": 110600000000001105,
+    "value": "Gundam Pilot"
+  },
+  {
+    "id": 110600000000001106,
+    "value": "Mono-Eye Pilot"
+  },
+  {
+    "id": 110600000000001107,
+    "value": "Mobile Armor Pilot"
+  },
+  {
+    "id": 110600000000001108,
+    "value": "Transforming Unit Pilot"
+  },
+  {
+    "id": 110600000000001109,
+    "value": "Newtype"
+  },
+  {
+    "id": 110600000000001110,
+    "value": "Physically Enhanced"
+  },
+  {
+    "id": 110600000000001111,
+    "value": "Coordinator"
+  },
+  {
+    "id": 110600000000001112,
+    "value": "Zaku"
+  },
+  {
+    "id": 110600000000001113,
+    "value": "GM"
+  },
+  {
+    "id": 110600000000001114,
+    "value": "Underwater Use"
+  },
+  {
+    "id": 110600000000001115,
+    "value": "Aerial Use"
+  },
+  {
+    "id": 110600000000001116,
+    "value": "Mass-Produced"
+  },
+  {
+    "id": 110600000000001117,
+    "value": "Red"
+  },
+  {
+    "id": 110600000000001118,
+    "value": "Gold"
+  },
+  {
+    "id": 110600000000001119,
+    "value": "White"
+  },
+  {
+    "id": 110600000000001120,
+    "value": "Black"
+  },
+  {
+    "id": 110600000000001121,
+    "value": "Alaya-Vijnana Type E"
+  },
+  {
+    "id": 110600000000001122,
+    "value": "Mafty"
+  },
+  {
+    "id": 110600000000001123,
+    "value": "Asticassia School of Technology"
+  },
+  {
+    "id": 110600000000001124,
+    "value": "Songstress"
+  },
+  {
+    "id": 110600000000001125,
+    "value": "Tank"
+  },
+  {
+    "id": 110600000000001126,
+    "value": "Flash System"
+  },
+  {
+    "id": 110600000000001127,
+    "value": "Rearm"
+  },
+  {
+    "id": 110600000000001128,
+    "value": "Vagan"
+  },
+  {
+    "id": 110600000000001129,
+    "value": "AGE System"
+  },
+  {
+    "id": 110600000000001130,
+    "value": "X-Rounder"
+  },
+  {
+    "id": 110700000000001001,
+    "value": "U.C. Series"
+  },
+  {
+    "id": 110700000000001002,
+    "value": "Alternative Series"
+  },
+  {
+    "id": 110700000000001003,
+    "value": "Gundam"
+  },
+  {
+    "id": 110700000000001004,
+    "value": "Mono-Eye"
+  },
+  {
+    "id": 110700000000001005,
+    "value": "Protagonist"
+  },
+  {
+    "id": 110700000000001006,
+    "value": "Rival"
+  },
+  {
+    "id": 110700000000001007,
+    "value": "Specialized Unit"
+  },
+  {
+    "id": 110700000000001008,
+    "value": "Mobile Armor"
+  },
+  {
+    "id": 110700000000001009,
+    "value": "Transforming Unit"
+  },
+  {
+    "id": 110700000000001010,
+    "value": "Test Type"
+  },
+  {
+    "id": 110700000000001011,
+    "value": "Psycommu"
+  },
+  {
+    "id": 110700000000001012,
+    "value": "Final Battle"
+  },
+  {
+    "id": 110700000000001013,
+    "value": "Pressure"
+  },
+  {
+    "id": 110700000000001014,
+    "value": "EFSF (U.C.)"
+  },
+  {
+    "id": 110700000000001015,
+    "value": "Zeon"
+  },
+  {
+    "id": 110700000000001016,
+    "value": "AEUG"
+  },
+  {
+    "id": 110700000000001017,
+    "value": "Titans"
+  },
+  {
+    "id": 110700000000001018,
+    "value": "Axis"
+  },
+  {
+    "id": 110700000000001019,
+    "value": "Neo Zeon"
+  },
+  {
+    "id": 110700000000001020,
+    "value": "O.M.N.I."
+  },
+  {
+    "id": 110700000000001021,
+    "value": "ZAFT"
+  },
+  {
+    "id": 110700000000001022,
+    "value": "Orb"
+  },
+  {
+    "id": 110700000000001023,
+    "value": "Triple Ships Alliance"
+  },
+  {
+    "id": 110700000000001024,
+    "value": "National Representatives"
+  },
+  {
+    "id": 110700000000001025,
+    "value": "Dark Gundam Army"
+  },
+  {
+    "id": 110700000000001026,
+    "value": "Operation Meteor"
+  },
+  {
+    "id": 110700000000001027,
+    "value": "OZ"
+  },
+  {
+    "id": 110700000000001028,
+    "value": "UESA"
+  },
+  {
+    "id": 110700000000001029,
+    "value": "White Fang"
+  },
+  {
+    "id": 110700000000001030,
+    "value": "MO-V"
+  },
+  {
+    "id": 110700000000001031,
+    "value": "Sanc Kingdom"
+  },
+  {
+    "id": 110700000000001032,
+    "value": "Freeden"
+  },
+  {
+    "id": 110700000000001033,
+    "value": "Space Revolutionary Army"
+  },
+  {
+    "id": 110700000000001034,
+    "value": "United Nations Earth Forces (X)"
+  },
+  {
+    "id": 110700000000001035,
+    "value": "New United Nations Earth"
+  },
+  {
+    "id": 110700000000001036,
+    "value": "Vulture"
+  },
+  {
+    "id": 110700000000001037,
+    "value": "Militia"
+  },
+  {
+    "id": 110700000000001038,
+    "value": "Dianna Counter"
+  },
+  {
+    "id": 110700000000001039,
+    "value": "Junk Guild"
+  },
+  {
+    "id": 110700000000001040,
+    "value": "Serpent Tale"
+  },
+  {
+    "id": 110700000000001041,
+    "value": "Celestial Being"
+  },
+  {
+    "id": 110700000000001042,
+    "value": "Human Reform League"
+  },
+  {
+    "id": 110700000000001043,
+    "value": "Union"
+  },
+  {
+    "id": 110700000000001044,
+    "value": "AEU"
+  },
+  {
+    "id": 110700000000001045,
+    "value": "UN Forces"
+  },
+  {
+    "id": 110700000000001046,
+    "value": "Earth Sphere Federation (00)"
+  },
+  {
+    "id": 110700000000001047,
+    "value": "Earth Federation Forces (AGE)"
+  },
+  {
+    "id": 110700000000001048,
+    "value": "Megafauna"
+  },
+  {
+    "id": 110700000000001049,
+    "value": "Capital Army"
+  },
+  {
+    "id": 110700000000001050,
+    "value": "Capital Guard"
+  },
+  {
+    "id": 110700000000001051,
+    "value": "Towasanga"
+  },
+  {
+    "id": 110700000000001052,
+    "value": "Tekkadan"
+  },
+  {
+    "id": 110700000000001053,
+    "value": "Gjallarhorn"
+  },
+  {
+    "id": 110700000000001054,
+    "value": "Turbines"
+  },
+  {
+    "id": 110700000000001055,
+    "value": "SD Gundam"
+  },
+  {
+    "id": 110700000000001056,
+    "value": "GGENERATION Series"
+  },
+  {
+    "id": 110700000000001057,
+    "value": "Zero System"
+  },
+  {
+    "id": 110700000000001058,
+    "value": "Alaya-Vijnana System"
+  },
+  {
+    "id": 110700000000001059,
+    "value": "GUND-ARM"
+  },
+  {
+    "id": 110700000000001060,
+    "value": "Reuse Psycho Device"
+  },
+  {
+    "id": 110700000000001061,
+    "value": "NT-D"
+  },
+  {
+    "id": 110700000000001062,
+    "value": "ALICE"
+  },
+  {
+    "id": 110700000000001063,
+    "value": "Biosensor"
+  },
+  {
+    "id": 110700000000001064,
+    "value": "Nanoskin"
+  },
+  {
+    "id": 110700000000001065,
+    "value": "Mobile Trace System"
+  },
+  {
+    "id": 110700000000001066,
+    "value": "Gunpla"
+  },
+  {
+    "id": 110700000000001067,
+    "value": "Large Machine"
+  },
+  {
+    "id": 110700000000001068,
+    "value": "A-Laws"
+  },
+  {
+    "id": 110700000000001072,
+    "value": "Montag Company"
+  },
+  {
+    "id": 110700000000001081,
+    "value": "Lightning-Fast"
+  },
+  {
+    "id": 110700000000001082,
+    "value": "One-Shot Killer"
+  },
+  {
+    "id": 110700000000001083,
+    "value": "Tough as Nails"
+  },
+  {
+    "id": 110700000000001084,
+    "value": "Unstoppable"
+  },
+  {
+    "id": 110700000000001085,
+    "value": "Crossbone Vanguard"
+  },
+  {
+    "id": 110700000000001086,
+    "value": "League Militaire"
+  },
+  {
+    "id": 110700000000001087,
+    "value": "Zanscare Empire"
+  },
+  {
+    "id": 110700000000001088,
+    "value": "Mercenary"
+  },
+  {
+    "id": 110700000000001089,
+    "value": "SEED Series"
+  },
+  {
+    "id": 110700000000001090,
+    "value": "Wing Series"
+  },
+  {
+    "id": 110700000000001091,
+    "value": "Ace Unit"
+  },
+  {
+    "id": 110700000000001092,
+    "value": "Commander Type"
+  },
+  {
+    "id": 110700000000001094,
+    "value": "Newtype Machine"
+  },
+  {
+    "id": 110700000000001095,
+    "value": "Fierce Enemy Assault"
+  },
+  {
+    "id": 110700000000001096,
+    "value": "Neuro-Link System"
+  },
+  {
+    "id": 110700000000001097,
+    "value": "Mei Kyo Shisui"
+  },
+  {
+    "id": 110700000000001099,
+    "value": "Mask"
+  },
+  {
+    "id": 110700000000001100,
+    "value": "Civilian"
+  },
+  {
+    "id": 110700000000001101,
+    "value": "Soldier"
+  },
+  {
+    "id": 110700000000001102,
+    "value": "Rookie"
+  },
+  {
+    "id": 110700000000001103,
+    "value": "Veteran"
+  },
+  {
+    "id": 110700000000001104,
+    "value": "Leader"
+  },
+  {
+    "id": 110700000000001105,
+    "value": "Gundam Pilot"
+  },
+  {
+    "id": 110700000000001106,
+    "value": "Mono-Eye Pilot"
+  },
+  {
+    "id": 110700000000001107,
+    "value": "Mobile Armor Pilot"
+  },
+  {
+    "id": 110700000000001108,
+    "value": "Transforming Unit Pilot"
+  },
+  {
+    "id": 110700000000001109,
+    "value": "Newtype"
+  },
+  {
+    "id": 110700000000001110,
+    "value": "Physically Enhanced"
+  },
+  {
+    "id": 110700000000001111,
+    "value": "Coordinator"
+  },
+  {
+    "id": 110700000000001112,
+    "value": "Zaku"
+  },
+  {
+    "id": 110700000000001113,
+    "value": "GM"
+  },
+  {
+    "id": 110700000000001114,
+    "value": "Underwater Use"
+  },
+  {
+    "id": 110700000000001115,
+    "value": "Aerial Use"
+  },
+  {
+    "id": 110700000000001116,
+    "value": "Mass-Produced"
+  },
+  {
+    "id": 110700000000001117,
+    "value": "Red"
+  },
+  {
+    "id": 110700000000001118,
+    "value": "Gold"
+  },
+  {
+    "id": 110700000000001119,
+    "value": "White"
+  },
+  {
+    "id": 110700000000001120,
+    "value": "Black"
+  },
+  {
+    "id": 110700000000001121,
+    "value": "Alaya-Vijnana System Type-E"
+  },
+  {
+    "id": 110700000000001122,
+    "value": "Mafty"
+  },
+  {
+    "id": 110700000000001123,
+    "value": "Asticassia School of Technology"
+  },
+  {
+    "id": 110700000000001124,
+    "value": "Songstress"
+  },
+  {
+    "id": 110700000000001125,
+    "value": "Tank"
+  },
+  {
+    "id": 110700000000001126,
+    "value": "Flash System"
+  },
+  {
+    "id": 110700000000001127,
+    "value": "Rearm"
+  },
+  {
+    "id": 110700000000001128,
+    "value": "Vagan"
+  },
+  {
+    "id": 110700000000001129,
+    "value": "AGE System"
+  },
+  {
+    "id": 110700000000001130,
+    "value": "X-Rounder"
+  }
+]

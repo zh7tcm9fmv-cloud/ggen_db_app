@@ -1,0 +1,610 @@
+[
+  {
+    "Id": 9070001004001,
+    "X": 6,
+    "Y": 8,
+    "MapStageId": 907000100402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001005001,
+    "X": 3,
+    "Y": 8,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001005002,
+    "X": 7,
+    "Y": 8,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001005003,
+    "X": 12,
+    "Y": 13,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001005004,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009001,
+    "X": 12,
+    "Y": 7,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009002,
+    "X": 15,
+    "Y": 3,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009003,
+    "X": 7,
+    "Y": 1,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009004,
+    "X": 19,
+    "Y": 11,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009005,
+    "X": 0,
+    "Y": 3,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009006,
+    "X": 16,
+    "Y": 18,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001009007,
+    "X": 4,
+    "Y": 14,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001011001,
+    "X": 8,
+    "Y": 13,
+    "MapStageId": 907000101102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001011002,
+    "X": 8,
+    "Y": 6,
+    "MapStageId": 907000101102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001013001,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001013002,
+    "X": 12,
+    "Y": 12,
+    "MapStageId": 907000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014001,
+    "X": 4,
+    "Y": 2,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014002,
+    "X": 8,
+    "Y": 2,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014003,
+    "X": 5,
+    "Y": 6,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014004,
+    "X": 9,
+    "Y": 6,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014005,
+    "X": 5,
+    "Y": 10,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001014006,
+    "X": 10,
+    "Y": 10,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015001,
+    "X": 6,
+    "Y": 15,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015002,
+    "X": 6,
+    "Y": 8,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015005,
+    "X": 21,
+    "Y": 17,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015006,
+    "X": 21,
+    "Y": 8,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015007,
+    "X": 27,
+    "Y": 15,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001015008,
+    "X": 27,
+    "Y": 10,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001016001,
+    "X": 18,
+    "Y": 9,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001016002,
+    "X": 21,
+    "Y": 6,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001016003,
+    "X": 18,
+    "Y": 3,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001016004,
+    "X": 24,
+    "Y": 9,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001016005,
+    "X": 24,
+    "Y": 3,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001017001,
+    "X": 11,
+    "Y": 14,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001017002,
+    "X": 18,
+    "Y": 14,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001017005,
+    "X": 13,
+    "Y": 10,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001017006,
+    "X": 16,
+    "Y": 10,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001019002,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001019003,
+    "X": 14,
+    "Y": 13,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001019005,
+    "X": 14,
+    "Y": 25,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001020001,
+    "X": 7,
+    "Y": 15,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001020002,
+    "X": 14,
+    "Y": 11,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001020003,
+    "X": 21,
+    "Y": 15,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070001020004,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002003001,
+    "X": 9,
+    "Y": 13,
+    "MapStageId": 907000200302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002004001,
+    "X": 11,
+    "Y": 14,
+    "MapStageId": 907000200402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002004002,
+    "X": 10,
+    "Y": 10,
+    "MapStageId": 907000200402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009001,
+    "X": 5,
+    "Y": 13,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009002,
+    "X": 17,
+    "Y": 13,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009003,
+    "X": 7,
+    "Y": 12,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009004,
+    "X": 7,
+    "Y": 7,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009005,
+    "X": 7,
+    "Y": 2,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009006,
+    "X": 15,
+    "Y": 12,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009007,
+    "X": 15,
+    "Y": 7,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002009008,
+    "X": 15,
+    "Y": 2,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002011002,
+    "X": 8,
+    "Y": 19,
+    "MapStageId": 907000201102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002011003,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000201102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002012001,
+    "X": 12,
+    "Y": 9,
+    "MapStageId": 907000201202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002012002,
+    "X": 7,
+    "Y": 9,
+    "MapStageId": 907000201202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013001,
+    "X": 4,
+    "Y": 8,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013002,
+    "X": 4,
+    "Y": 14,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013004,
+    "X": 12,
+    "Y": 11,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013005,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013006,
+    "X": 12,
+    "Y": 23,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002013007,
+    "X": 7,
+    "Y": 19,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002014001,
+    "X": 9,
+    "Y": 5,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002014002,
+    "X": 15,
+    "Y": 5,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002014003,
+    "X": 7,
+    "Y": 13,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002014004,
+    "X": 17,
+    "Y": 13,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015001,
+    "X": 12,
+    "Y": 13,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015002,
+    "X": 9,
+    "Y": 27,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015003,
+    "X": 15,
+    "Y": 27,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015004,
+    "X": 9,
+    "Y": 21,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015005,
+    "X": 15,
+    "Y": 21,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015006,
+    "X": 6,
+    "Y": 12,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  },
+  {
+    "Id": 9070002015007,
+    "X": 18,
+    "Y": 12,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0
+  }
+]

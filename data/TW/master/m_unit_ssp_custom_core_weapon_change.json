@@ -1,0 +1,5102 @@
+[
+  {
+    "Id": 100100010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100010090
+  },
+  {
+    "Id": 100100020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100020090
+  },
+  {
+    "Id": 100100030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100030090
+  },
+  {
+    "Id": 100100040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100040090
+  },
+  {
+    "Id": 100100041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100041090
+  },
+  {
+    "Id": 100100050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100050090
+  },
+  {
+    "Id": 100100060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100060090
+  },
+  {
+    "Id": 100100061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100061090
+  },
+  {
+    "Id": 100100070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100070090
+  },
+  {
+    "Id": 100100071001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100071090
+  },
+  {
+    "Id": 100100080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100080090
+  },
+  {
+    "Id": 100100081001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100081090
+  },
+  {
+    "Id": 100100090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100090090
+  },
+  {
+    "Id": 100100091001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100091090
+  },
+  {
+    "Id": 100100111001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100111090
+  },
+  {
+    "Id": 100100120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100120090
+  },
+  {
+    "Id": 100100130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100130090
+  },
+  {
+    "Id": 100100140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100140090
+  },
+  {
+    "Id": 100100150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100150090
+  },
+  {
+    "Id": 100100161001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100161090
+  },
+  {
+    "Id": 100100170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100170090
+  },
+  {
+    "Id": 100100180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100180090
+  },
+  {
+    "Id": 100100190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100190090
+  },
+  {
+    "Id": 100100200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100200090
+  },
+  {
+    "Id": 100100211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100211090
+  },
+  {
+    "Id": 100100220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100220090
+  },
+  {
+    "Id": 100100230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100230090
+  },
+  {
+    "Id": 100100250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100250090
+  },
+  {
+    "Id": 100100260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100260090
+  },
+  {
+    "Id": 100100270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100270090
+  },
+  {
+    "Id": 100100280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100280090
+  },
+  {
+    "Id": 100100290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100290090
+  },
+  {
+    "Id": 100100300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100300090
+  },
+  {
+    "Id": 100100310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100310090
+  },
+  {
+    "Id": 100100311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100311090
+  },
+  {
+    "Id": 100100330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100330090
+  },
+  {
+    "Id": 100100341001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100341090
+  },
+  {
+    "Id": 100100370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100370090
+  },
+  {
+    "Id": 100100371001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100371090
+  },
+  {
+    "Id": 100100380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100100380090
+  },
+  {
+    "Id": 100300011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100300011090
+  },
+  {
+    "Id": 100300031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100300031090
+  },
+  {
+    "Id": 100500011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100500011090
+  },
+  {
+    "Id": 100500021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100500021090
+  },
+  {
+    "Id": 100700010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700010090
+  },
+  {
+    "Id": 100700020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700020090
+  },
+  {
+    "Id": 100700031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700031090
+  },
+  {
+    "Id": 100700041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700041090
+  },
+  {
+    "Id": 100700051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700051090
+  },
+  {
+    "Id": 100700060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700060090
+  },
+  {
+    "Id": 100700071001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100700071090
+  },
+  {
+    "Id": 100800010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100800010090
+  },
+  {
+    "Id": 100800011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100800011090
+  },
+  {
+    "Id": 100800021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100800021090
+  },
+  {
+    "Id": 100800030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100800030090
+  },
+  {
+    "Id": 100900011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900011090
+  },
+  {
+    "Id": 100900020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900020090
+  },
+  {
+    "Id": 100900020002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900020080
+  },
+  {
+    "Id": 100900021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900021090
+  },
+  {
+    "Id": 100900021002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900021080
+  },
+  {
+    "Id": 100900030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900030090
+  },
+  {
+    "Id": 100900031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900031090
+  },
+  {
+    "Id": 100900040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900040090
+  },
+  {
+    "Id": 100900041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900041090
+  },
+  {
+    "Id": 100900050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900050090
+  },
+  {
+    "Id": 100900051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900051090
+  },
+  {
+    "Id": 100900060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900060090
+  },
+  {
+    "Id": 100900061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900061090
+  },
+  {
+    "Id": 100900070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900070090
+  },
+  {
+    "Id": 100900071001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900071090
+  },
+  {
+    "Id": 100900080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900080090
+  },
+  {
+    "Id": 100900081001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 100900081090
+  },
+  {
+    "Id": 101100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101100011090
+  },
+  {
+    "Id": 101200011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101200011090
+  },
+  {
+    "Id": 101300011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300011090
+  },
+  {
+    "Id": 101300021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300021090
+  },
+  {
+    "Id": 101300051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300051090
+  },
+  {
+    "Id": 101300061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300061090
+  },
+  {
+    "Id": 101300071001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300071090
+  },
+  {
+    "Id": 101300141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300141090
+  },
+  {
+    "Id": 101300151001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101300151090
+  },
+  {
+    "Id": 101700010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700010090
+  },
+  {
+    "Id": 101700011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700011090
+  },
+  {
+    "Id": 101700020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700020090
+  },
+  {
+    "Id": 101700030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700030090
+  },
+  {
+    "Id": 101700031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700031090
+  },
+  {
+    "Id": 101700040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700040090
+  },
+  {
+    "Id": 101700041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700041090
+  },
+  {
+    "Id": 101700050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700050090
+  },
+  {
+    "Id": 101700051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700051090
+  },
+  {
+    "Id": 101700060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700060090
+  },
+  {
+    "Id": 101700061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700061090
+  },
+  {
+    "Id": 101700070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700070090
+  },
+  {
+    "Id": 101700080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700080090
+  },
+  {
+    "Id": 101700090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700090090
+  },
+  {
+    "Id": 101700100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700100090
+  },
+  {
+    "Id": 101700110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700110090
+  },
+  {
+    "Id": 101700120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700120090
+  },
+  {
+    "Id": 101700121001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 101700121090
+  },
+  {
+    "Id": 102100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102100011090
+  },
+  {
+    "Id": 102100021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102100021090
+  },
+  {
+    "Id": 102200010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200010090
+  },
+  {
+    "Id": 102200020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200020090
+  },
+  {
+    "Id": 102200021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200021090
+  },
+  {
+    "Id": 102200030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200030090
+  },
+  {
+    "Id": 102200040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200040090
+  },
+  {
+    "Id": 102200050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200050090
+  },
+  {
+    "Id": 102200060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200060090
+  },
+  {
+    "Id": 102200070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102200070090
+  },
+  {
+    "Id": 102300010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102300010090
+  },
+  {
+    "Id": 102300011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102300011090
+  },
+  {
+    "Id": 102600011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102600011090
+  },
+  {
+    "Id": 102900021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102900021090
+  },
+  {
+    "Id": 102900211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 102900211090
+  },
+  {
+    "Id": 103100010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100010090
+  },
+  {
+    "Id": 103100020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100020090
+  },
+  {
+    "Id": 103100030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100030090
+  },
+  {
+    "Id": 103100040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100040090
+  },
+  {
+    "Id": 103100040002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100040080
+  },
+  {
+    "Id": 103100050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100050090
+  },
+  {
+    "Id": 103100060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100060090
+  },
+  {
+    "Id": 103100070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100070090
+  },
+  {
+    "Id": 103100080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100080090
+  },
+  {
+    "Id": 103100090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100090090
+  },
+  {
+    "Id": 103100100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100100090
+  },
+  {
+    "Id": 103100100002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 103100100080
+  },
+  {
+    "Id": 104400041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 104400041090
+  },
+  {
+    "Id": 105500016001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 105500016090
+  },
+  {
+    "Id": 105500026001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 105500026090
+  },
+  {
+    "Id": 105500036001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 105500036090
+  },
+  {
+    "Id": 105500061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 105500061090
+  },
+  {
+    "Id": 106000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000010090
+  },
+  {
+    "Id": 106000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000020090
+  },
+  {
+    "Id": 106000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000030090
+  },
+  {
+    "Id": 106000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000040090
+  },
+  {
+    "Id": 106000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000050090
+  },
+  {
+    "Id": 106000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000060090
+  },
+  {
+    "Id": 106000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000070090
+  },
+  {
+    "Id": 106000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000080090
+  },
+  {
+    "Id": 106000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000090090
+  },
+  {
+    "Id": 106000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000100090
+  },
+  {
+    "Id": 106000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000120090
+  },
+  {
+    "Id": 106000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000130090
+  },
+  {
+    "Id": 106000141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000141090
+  },
+  {
+    "Id": 106000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000150090
+  },
+  {
+    "Id": 106000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000160090
+  },
+  {
+    "Id": 106000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000170090
+  },
+  {
+    "Id": 106000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000180090
+  },
+  {
+    "Id": 106000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000190090
+  },
+  {
+    "Id": 106000201001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000201090
+  },
+  {
+    "Id": 106000211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000211090
+  },
+  {
+    "Id": 106000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000220090
+  },
+  {
+    "Id": 106000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106000230090
+  },
+  {
+    "Id": 106300011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106300011090
+  },
+  {
+    "Id": 106700011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106700011090
+  },
+  {
+    "Id": 106900021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 106900021090
+  },
+  {
+    "Id": 107000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000011090
+  },
+  {
+    "Id": 107000021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000021090
+  },
+  {
+    "Id": 107000031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000031090
+  },
+  {
+    "Id": 107000041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000041090
+  },
+  {
+    "Id": 107000051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000051090
+  },
+  {
+    "Id": 107000061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 107000061090
+  },
+  {
+    "Id": 108000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000010090
+  },
+  {
+    "Id": 108000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000020090
+  },
+  {
+    "Id": 108000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000030090
+  },
+  {
+    "Id": 108000036001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000036090
+  },
+  {
+    "Id": 108000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000040090
+  },
+  {
+    "Id": 108000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000050090
+  },
+  {
+    "Id": 108000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000060090
+  },
+  {
+    "Id": 108000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000070090
+  },
+  {
+    "Id": 108000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000080090
+  },
+  {
+    "Id": 108000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000090090
+  },
+  {
+    "Id": 108000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000100090
+  },
+  {
+    "Id": 108000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000110090
+  },
+  {
+    "Id": 108000111001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000111090
+  },
+  {
+    "Id": 108000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000120090
+  },
+  {
+    "Id": 108000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000130090
+  },
+  {
+    "Id": 108000131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000131090
+  },
+  {
+    "Id": 108000140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000140090
+  },
+  {
+    "Id": 108000141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000141090
+  },
+  {
+    "Id": 108000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000150090
+  },
+  {
+    "Id": 108000151001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000151090
+  },
+  {
+    "Id": 108000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000160090
+  },
+  {
+    "Id": 108000161001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000161090
+  },
+  {
+    "Id": 108000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000171090
+  },
+  {
+    "Id": 108000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000180090
+  },
+  {
+    "Id": 108000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000181090
+  },
+  {
+    "Id": 108000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000190090
+  },
+  {
+    "Id": 108000191001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000191090
+  },
+  {
+    "Id": 108000200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000200090
+  },
+  {
+    "Id": 108000201001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000201090
+  },
+  {
+    "Id": 108000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000210090
+  },
+  {
+    "Id": 108000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000220090
+  },
+  {
+    "Id": 108000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000230090
+  },
+  {
+    "Id": 108000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000240090
+  },
+  {
+    "Id": 108000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000250090
+  },
+  {
+    "Id": 108000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000260090
+  },
+  {
+    "Id": 108000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000270090
+  },
+  {
+    "Id": 108000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000280090
+  },
+  {
+    "Id": 108000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000290090
+  },
+  {
+    "Id": 108000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000300090
+  },
+  {
+    "Id": 108000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000310090
+  },
+  {
+    "Id": 108000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000320090
+  },
+  {
+    "Id": 108000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000330090
+  },
+  {
+    "Id": 108000331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000331090
+  },
+  {
+    "Id": 108000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000340090
+  },
+  {
+    "Id": 108000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000350090
+  },
+  {
+    "Id": 108000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000360090
+  },
+  {
+    "Id": 108000370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000370090
+  },
+  {
+    "Id": 108000380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000380090
+  },
+  {
+    "Id": 108000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000390090
+  },
+  {
+    "Id": 108000400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000400090
+  },
+  {
+    "Id": 108000410001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000410090
+  },
+  {
+    "Id": 108000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000420090
+  },
+  {
+    "Id": 108000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000430090
+  },
+  {
+    "Id": 108100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108100011090
+  },
+  {
+    "Id": 108100021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108100021090
+  },
+  {
+    "Id": 108200011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108200011090
+  },
+  {
+    "Id": 108300010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300010090
+  },
+  {
+    "Id": 108300020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300020090
+  },
+  {
+    "Id": 108300031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300031090
+  },
+  {
+    "Id": 108300040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300040090
+  },
+  {
+    "Id": 108300051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300051090
+  },
+  {
+    "Id": 108300060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300060090
+  },
+  {
+    "Id": 108300061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108300061090
+  },
+  {
+    "Id": 108400011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108400011090
+  },
+  {
+    "Id": 108400021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108400021090
+  },
+  {
+    "Id": 108500011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108500011090
+  },
+  {
+    "Id": 108500021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108500021090
+  },
+  {
+    "Id": 108500031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108500031090
+  },
+  {
+    "Id": 109500010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500010090
+  },
+  {
+    "Id": 109500020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500020090
+  },
+  {
+    "Id": 109500030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500030090
+  },
+  {
+    "Id": 109500040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500040090
+  },
+  {
+    "Id": 109500041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500041090
+  },
+  {
+    "Id": 109500050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500050090
+  },
+  {
+    "Id": 109500051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500051090
+  },
+  {
+    "Id": 109500060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500060090
+  },
+  {
+    "Id": 109500061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500061090
+  },
+  {
+    "Id": 109500070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500070090
+  },
+  {
+    "Id": 109500080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500080090
+  },
+  {
+    "Id": 109500090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500090090
+  },
+  {
+    "Id": 109500091001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500091090
+  },
+  {
+    "Id": 109500100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500100090
+  },
+  {
+    "Id": 109500101001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500101090
+  },
+  {
+    "Id": 109500110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500110090
+  },
+  {
+    "Id": 109500120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500120090
+  },
+  {
+    "Id": 109500130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500130090
+  },
+  {
+    "Id": 109500140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500140090
+  },
+  {
+    "Id": 109500151001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500151090
+  },
+  {
+    "Id": 109500170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500170090
+  },
+  {
+    "Id": 109500180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500180090
+  },
+  {
+    "Id": 109500190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500190090
+  },
+  {
+    "Id": 109500200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500200090
+  },
+  {
+    "Id": 109500210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500210090
+  },
+  {
+    "Id": 109500220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500220090
+  },
+  {
+    "Id": 109500230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500230090
+  },
+  {
+    "Id": 109500240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500240090
+  },
+  {
+    "Id": 109500250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500250090
+  },
+  {
+    "Id": 109500260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500260090
+  },
+  {
+    "Id": 109500266001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500266090
+  },
+  {
+    "Id": 109500266002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500266080
+  },
+  {
+    "Id": 109500270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500270090
+  },
+  {
+    "Id": 109500280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500280090
+  },
+  {
+    "Id": 109500291001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500291090
+  },
+  {
+    "Id": 109500300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500300090
+  },
+  {
+    "Id": 109500311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500311090
+  },
+  {
+    "Id": 109500320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500320090
+  },
+  {
+    "Id": 109500330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500330090
+  },
+  {
+    "Id": 109500340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500340090
+  },
+  {
+    "Id": 109500350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500350090
+  },
+  {
+    "Id": 109500351001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500351090
+  },
+  {
+    "Id": 109500360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500360090
+  },
+  {
+    "Id": 109500370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500370090
+  },
+  {
+    "Id": 109500381001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500381090
+  },
+  {
+    "Id": 109500391001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500391090
+  },
+  {
+    "Id": 109500400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500400090
+  },
+  {
+    "Id": 109500401001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500401090
+  },
+  {
+    "Id": 109500411001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500411090
+  },
+  {
+    "Id": 109500420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500420090
+  },
+  {
+    "Id": 109500430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500430090
+  },
+  {
+    "Id": 109500441001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500441090
+  },
+  {
+    "Id": 109500450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109500450090
+  },
+  {
+    "Id": 109800011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800011090
+  },
+  {
+    "Id": 109800021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800021090
+  },
+  {
+    "Id": 109800031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800031090
+  },
+  {
+    "Id": 109800040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800040090
+  },
+  {
+    "Id": 109800051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800051090
+  },
+  {
+    "Id": 109800061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800061090
+  },
+  {
+    "Id": 109800070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800070090
+  },
+  {
+    "Id": 109800080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800080090
+  },
+  {
+    "Id": 109800090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800090090
+  },
+  {
+    "Id": 109800100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109800100090
+  },
+  {
+    "Id": 109900011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109900011090
+  },
+  {
+    "Id": 109900021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109900021090
+  },
+  {
+    "Id": 109900031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 109900031090
+  },
+  {
+    "Id": 110000021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 110000021090
+  },
+  {
+    "Id": 110100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 110100011090
+  },
+  {
+    "Id": 111000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000010090
+  },
+  {
+    "Id": 111000010002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000010080
+  },
+  {
+    "Id": 111000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000020090
+  },
+  {
+    "Id": 111000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000030090
+  },
+  {
+    "Id": 111000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000040090
+  },
+  {
+    "Id": 111000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000050090
+  },
+  {
+    "Id": 111000050002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000050080
+  },
+  {
+    "Id": 111000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000060090
+  },
+  {
+    "Id": 111000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000070090
+  },
+  {
+    "Id": 111000081001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000081090
+  },
+  {
+    "Id": 111000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000090090
+  },
+  {
+    "Id": 111000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111000100090
+  },
+  {
+    "Id": 111400010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400010090
+  },
+  {
+    "Id": 111400020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400020090
+  },
+  {
+    "Id": 111400030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400030090
+  },
+  {
+    "Id": 111400060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400060090
+  },
+  {
+    "Id": 111400070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400070090
+  },
+  {
+    "Id": 111400090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400090090
+  },
+  {
+    "Id": 111400100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111400100090
+  },
+  {
+    "Id": 111500010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111500010090
+  },
+  {
+    "Id": 111500020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111500020090
+  },
+  {
+    "Id": 111500030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111500030090
+  },
+  {
+    "Id": 111500040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 111500040090
+  },
+  {
+    "Id": 112500010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500010090
+  },
+  {
+    "Id": 112500020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500020090
+  },
+  {
+    "Id": 112500030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500030090
+  },
+  {
+    "Id": 112500040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500040090
+  },
+  {
+    "Id": 112500051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500051090
+  },
+  {
+    "Id": 112500051002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500051080
+  },
+  {
+    "Id": 112500061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500061090
+  },
+  {
+    "Id": 112500061002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500061080
+  },
+  {
+    "Id": 112500070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500070090
+  },
+  {
+    "Id": 112500080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500080090
+  },
+  {
+    "Id": 112500090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500090090
+  },
+  {
+    "Id": 112500100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500100090
+  },
+  {
+    "Id": 112500110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500110090
+  },
+  {
+    "Id": 112500120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500120090
+  },
+  {
+    "Id": 112500150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500150090
+  },
+  {
+    "Id": 112500160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500160090
+  },
+  {
+    "Id": 112500170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500170090
+  },
+  {
+    "Id": 112500190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500190090
+  },
+  {
+    "Id": 112500200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500200090
+  },
+  {
+    "Id": 112500210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500210090
+  },
+  {
+    "Id": 112500220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500220090
+  },
+  {
+    "Id": 112500230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500230090
+  },
+  {
+    "Id": 112500240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500240090
+  },
+  {
+    "Id": 112500250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500250090
+  },
+  {
+    "Id": 112500260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500260090
+  },
+  {
+    "Id": 112500270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500270090
+  },
+  {
+    "Id": 112500280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500280090
+  },
+  {
+    "Id": 112500290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500290090
+  },
+  {
+    "Id": 112500300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500300090
+  },
+  {
+    "Id": 112500310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500310090
+  },
+  {
+    "Id": 112500331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500331090
+  },
+  {
+    "Id": 112500340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500340090
+  },
+  {
+    "Id": 112500350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500350090
+  },
+  {
+    "Id": 112500360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500360090
+  },
+  {
+    "Id": 112500380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500380090
+  },
+  {
+    "Id": 112500390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500390090
+  },
+  {
+    "Id": 112500410001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500410090
+  },
+  {
+    "Id": 112500440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500440090
+  },
+  {
+    "Id": 112500450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500450090
+  },
+  {
+    "Id": 112500470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500470090
+  },
+  {
+    "Id": 112500480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500480090
+  },
+  {
+    "Id": 112500490001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500490090
+  },
+  {
+    "Id": 112500511001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500511090
+  },
+  {
+    "Id": 112500530001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500530090
+  },
+  {
+    "Id": 112500550001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500550090
+  },
+  {
+    "Id": 112500550002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500550080
+  },
+  {
+    "Id": 112500600001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 112500600090
+  },
+  {
+    "Id": 113300010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300010090
+  },
+  {
+    "Id": 113300020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300020090
+  },
+  {
+    "Id": 113300050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300050090
+  },
+  {
+    "Id": 113300060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300060090
+  },
+  {
+    "Id": 113300070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300070090
+  },
+  {
+    "Id": 113300080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300080090
+  },
+  {
+    "Id": 113300090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300090090
+  },
+  {
+    "Id": 113300100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300100090
+  },
+  {
+    "Id": 113300110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300110090
+  },
+  {
+    "Id": 113300120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300120090
+  },
+  {
+    "Id": 113300131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300131090
+  },
+  {
+    "Id": 113300141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300141090
+  },
+  {
+    "Id": 113300150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 113300150090
+  },
+  {
+    "Id": 115000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000010090
+  },
+  {
+    "Id": 115000010002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000010080
+  },
+  {
+    "Id": 115000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000020090
+  },
+  {
+    "Id": 115000020002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000020080
+  },
+  {
+    "Id": 115000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000030090
+  },
+  {
+    "Id": 115000030002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000030080
+  },
+  {
+    "Id": 115000041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000041090
+  },
+  {
+    "Id": 115000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000050090
+  },
+  {
+    "Id": 115000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000060090
+  },
+  {
+    "Id": 115000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000070090
+  },
+  {
+    "Id": 115000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000100090
+  },
+  {
+    "Id": 115000136001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115000136090
+  },
+  {
+    "Id": 115500011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 115500011090
+  },
+  {
+    "Id": 116600051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 116600051090
+  },
+  {
+    "Id": 117500011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 117500011090
+  },
+  {
+    "Id": 117500021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 117500021090
+  },
+  {
+    "Id": 117500041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 117500041090
+  },
+  {
+    "Id": 117500051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 117500051090
+  },
+  {
+    "Id": 117500091001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 117500091090
+  },
+  {
+    "Id": 120000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000010090
+  },
+  {
+    "Id": 120000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000020090
+  },
+  {
+    "Id": 120000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000030090
+  },
+  {
+    "Id": 120000041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000041090
+  },
+  {
+    "Id": 120000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000050090
+  },
+  {
+    "Id": 120000061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000061090
+  },
+  {
+    "Id": 120000061002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000061080
+  },
+  {
+    "Id": 120000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000070090
+  },
+  {
+    "Id": 120000081001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000081090
+  },
+  {
+    "Id": 120000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000090090
+  },
+  {
+    "Id": 120000101001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000101090
+  },
+  {
+    "Id": 120000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000110090
+  },
+  {
+    "Id": 120000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000120090
+  },
+  {
+    "Id": 120000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000130090
+  },
+  {
+    "Id": 120000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000150090
+  },
+  {
+    "Id": 120000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000160090
+  },
+  {
+    "Id": 120000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000170090
+  },
+  {
+    "Id": 120000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000171090
+  },
+  {
+    "Id": 120000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000190090
+  },
+  {
+    "Id": 120000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000210090
+  },
+  {
+    "Id": 120000221001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000221090
+  },
+  {
+    "Id": 120000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000230090
+  },
+  {
+    "Id": 120000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000240090
+  },
+  {
+    "Id": 120000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000250090
+  },
+  {
+    "Id": 120000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000260090
+  },
+  {
+    "Id": 120000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000270090
+  },
+  {
+    "Id": 120000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000280090
+  },
+  {
+    "Id": 120000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000290090
+  },
+  {
+    "Id": 120000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000300090
+  },
+  {
+    "Id": 120000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000310090
+  },
+  {
+    "Id": 120000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000320090
+  },
+  {
+    "Id": 120000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000330090
+  },
+  {
+    "Id": 120000331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000331090
+  },
+  {
+    "Id": 120000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000340090
+  },
+  {
+    "Id": 120000341001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000341090
+  },
+  {
+    "Id": 120000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000350090
+  },
+  {
+    "Id": 120000351001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000351090
+  },
+  {
+    "Id": 120000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000360090
+  },
+  {
+    "Id": 120000370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000370090
+  },
+  {
+    "Id": 120000380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000380090
+  },
+  {
+    "Id": 120000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000390090
+  },
+  {
+    "Id": 120000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000470090
+  },
+  {
+    "Id": 120000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000480090
+  },
+  {
+    "Id": 120000490001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000490090
+  },
+  {
+    "Id": 120000500001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000500090
+  },
+  {
+    "Id": 120000510001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000510090
+  },
+  {
+    "Id": 120000520001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000520090
+  },
+  {
+    "Id": 120000530001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 120000530090
+  },
+  {
+    "Id": 121000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000010090
+  },
+  {
+    "Id": 121000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000020090
+  },
+  {
+    "Id": 121000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000030090
+  },
+  {
+    "Id": 121000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000040090
+  },
+  {
+    "Id": 121000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000050090
+  },
+  {
+    "Id": 121000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000060090
+  },
+  {
+    "Id": 121000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000070090
+  },
+  {
+    "Id": 121000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000080090
+  },
+  {
+    "Id": 121000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000090090
+  },
+  {
+    "Id": 121000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000100090
+  },
+  {
+    "Id": 121000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000110090
+  },
+  {
+    "Id": 121000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000120090
+  },
+  {
+    "Id": 121000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000130090
+  },
+  {
+    "Id": 121000131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000131090
+  },
+  {
+    "Id": 121000141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000141090
+  },
+  {
+    "Id": 121000151001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000151090
+  },
+  {
+    "Id": 121000161001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000161090
+  },
+  {
+    "Id": 121000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000170090
+  },
+  {
+    "Id": 121000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000171090
+  },
+  {
+    "Id": 121000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000181090
+  },
+  {
+    "Id": 121000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000190090
+  },
+  {
+    "Id": 121000201001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000201090
+  },
+  {
+    "Id": 121000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000210090
+  },
+  {
+    "Id": 121000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000220090
+  },
+  {
+    "Id": 121000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000230090
+  },
+  {
+    "Id": 121000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000240090
+  },
+  {
+    "Id": 121000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000250090
+  },
+  {
+    "Id": 121000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000260090
+  },
+  {
+    "Id": 121000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000270090
+  },
+  {
+    "Id": 121000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000280090
+  },
+  {
+    "Id": 121000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000290090
+  },
+  {
+    "Id": 121000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000300090
+  },
+  {
+    "Id": 121000311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000311090
+  },
+  {
+    "Id": 121000321001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000321090
+  },
+  {
+    "Id": 121000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000330090
+  },
+  {
+    "Id": 121000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000340090
+  },
+  {
+    "Id": 121000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000350090
+  },
+  {
+    "Id": 121000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000360090
+  },
+  {
+    "Id": 121100036001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100036090
+  },
+  {
+    "Id": 121100046001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100046090
+  },
+  {
+    "Id": 121700011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121700011090
+  },
+  {
+    "Id": 121700031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121700031090
+  },
+  {
+    "Id": 121700051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121700051090
+  },
+  {
+    "Id": 123000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000010090
+  },
+  {
+    "Id": 123000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000020090
+  },
+  {
+    "Id": 123000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000030090
+  },
+  {
+    "Id": 123000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000040090
+  },
+  {
+    "Id": 123000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000050090
+  },
+  {
+    "Id": 123000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000060090
+  },
+  {
+    "Id": 123000060002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000060080
+  },
+  {
+    "Id": 123000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000070090
+  },
+  {
+    "Id": 123000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000080090
+  },
+  {
+    "Id": 123000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000090090
+  },
+  {
+    "Id": 123000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000100090
+  },
+  {
+    "Id": 123000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000110090
+  },
+  {
+    "Id": 123000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000120090
+  },
+  {
+    "Id": 123000121001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000121090
+  },
+  {
+    "Id": 123000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000130090
+  },
+  {
+    "Id": 123000131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000131090
+  },
+  {
+    "Id": 123000141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000141090
+  },
+  {
+    "Id": 123000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000150090
+  },
+  {
+    "Id": 123000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000160090
+  },
+  {
+    "Id": 123000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000170090
+  },
+  {
+    "Id": 123000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000171090
+  },
+  {
+    "Id": 123000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000181090
+  },
+  {
+    "Id": 123000191001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000191090
+  },
+  {
+    "Id": 123000200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000200090
+  },
+  {
+    "Id": 123000211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000211090
+  },
+  {
+    "Id": 123000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000220090
+  },
+  {
+    "Id": 123000231001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000231090
+  },
+  {
+    "Id": 123000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000240090
+  },
+  {
+    "Id": 123000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000250090
+  },
+  {
+    "Id": 123000261001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000261090
+  },
+  {
+    "Id": 123000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000270090
+  },
+  {
+    "Id": 123000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000280090
+  },
+  {
+    "Id": 123000291001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000291090
+  },
+  {
+    "Id": 123000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000300090
+  },
+  {
+    "Id": 123000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000310090
+  },
+  {
+    "Id": 123000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000320090
+  },
+  {
+    "Id": 123000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000330090
+  },
+  {
+    "Id": 123000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000340090
+  },
+  {
+    "Id": 123000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000350090
+  },
+  {
+    "Id": 123000351001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000351090
+  },
+  {
+    "Id": 123000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000360090
+  },
+  {
+    "Id": 123000370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000370090
+  },
+  {
+    "Id": 123000380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000380090
+  },
+  {
+    "Id": 123000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000390090
+  },
+  {
+    "Id": 123000390002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000390080
+  },
+  {
+    "Id": 123000400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000400090
+  },
+  {
+    "Id": 123000410001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000410090
+  },
+  {
+    "Id": 123000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000420090
+  },
+  {
+    "Id": 123000420002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000420080
+  },
+  {
+    "Id": 123000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000430090
+  },
+  {
+    "Id": 123000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000440090
+  },
+  {
+    "Id": 123000451001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000451090
+  },
+  {
+    "Id": 123000460001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000460090
+  },
+  {
+    "Id": 123000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000470090
+  },
+  {
+    "Id": 123000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000480090
+  },
+  {
+    "Id": 123000491001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000491090
+  },
+  {
+    "Id": 123000500001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000500090
+  },
+  {
+    "Id": 123000510001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000510090
+  },
+  {
+    "Id": 123000520001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000520090
+  },
+  {
+    "Id": 123000530001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000530090
+  },
+  {
+    "Id": 123000540001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000540090
+  },
+  {
+    "Id": 123000551001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000551090
+  },
+  {
+    "Id": 123000561001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 123000561090
+  },
+  {
+    "Id": 124000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 124000011090
+  },
+  {
+    "Id": 124000101001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 124000101090
+  },
+  {
+    "Id": 124000111001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 124000111090
+  },
+  {
+    "Id": 124000111002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 124000111080
+  },
+  {
+    "Id": 130000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000010090
+  },
+  {
+    "Id": 130000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000020090
+  },
+  {
+    "Id": 130000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000030090
+  },
+  {
+    "Id": 130000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000040090
+  },
+  {
+    "Id": 130000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000050090
+  },
+  {
+    "Id": 130000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000060090
+  },
+  {
+    "Id": 130000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000070090
+  },
+  {
+    "Id": 130000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000080090
+  },
+  {
+    "Id": 130000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000090090
+  },
+  {
+    "Id": 130000096001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000096090
+  },
+  {
+    "Id": 130000097001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000097090
+  },
+  {
+    "Id": 130000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000100090
+  },
+  {
+    "Id": 130000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000110090
+  },
+  {
+    "Id": 130000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000120090
+  },
+  {
+    "Id": 130000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000130090
+  },
+  {
+    "Id": 130000140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000140090
+  },
+  {
+    "Id": 130000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000150090
+  },
+  {
+    "Id": 130000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000160090
+  },
+  {
+    "Id": 130000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000170090
+  },
+  {
+    "Id": 130000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000171090
+  },
+  {
+    "Id": 130000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000180090
+  },
+  {
+    "Id": 130000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000190090
+  },
+  {
+    "Id": 130000200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000200090
+  },
+  {
+    "Id": 130000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000210090
+  },
+  {
+    "Id": 130000211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000211090
+  },
+  {
+    "Id": 130000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000220090
+  },
+  {
+    "Id": 130000221001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000221090
+  },
+  {
+    "Id": 130000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000230090
+  },
+  {
+    "Id": 130000231001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000231090
+  },
+  {
+    "Id": 130000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000240090
+  },
+  {
+    "Id": 130000241001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000241090
+  },
+  {
+    "Id": 130000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000250090
+  },
+  {
+    "Id": 130000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000260090
+  },
+  {
+    "Id": 130000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000270090
+  },
+  {
+    "Id": 130000281001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000281090
+  },
+  {
+    "Id": 130000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000290090
+  },
+  {
+    "Id": 130000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000300090
+  },
+  {
+    "Id": 130000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000310090
+  },
+  {
+    "Id": 130000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000320090
+  },
+  {
+    "Id": 130000321001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000321090
+  },
+  {
+    "Id": 130000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000330090
+  },
+  {
+    "Id": 130000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000340090
+  },
+  {
+    "Id": 130000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000350090
+  },
+  {
+    "Id": 130000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000360090
+  },
+  {
+    "Id": 130000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000390090
+  },
+  {
+    "Id": 130000391001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000391090
+  },
+  {
+    "Id": 130000400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000400090
+  },
+  {
+    "Id": 130000400002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000400080
+  },
+  {
+    "Id": 130000410001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000410090
+  },
+  {
+    "Id": 130000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000420090
+  },
+  {
+    "Id": 130000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000430090
+  },
+  {
+    "Id": 130000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000440090
+  },
+  {
+    "Id": 130000450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000450090
+  },
+  {
+    "Id": 130000460001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000460090
+  },
+  {
+    "Id": 130000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130000470090
+  },
+  {
+    "Id": 130400011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400011090
+  },
+  {
+    "Id": 130400020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400020090
+  },
+  {
+    "Id": 130400030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400030090
+  },
+  {
+    "Id": 130400040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400040090
+  },
+  {
+    "Id": 130400050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400050090
+  },
+  {
+    "Id": 130400060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400060090
+  },
+  {
+    "Id": 130400070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400070090
+  },
+  {
+    "Id": 130400080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400080090
+  },
+  {
+    "Id": 130400090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400090090
+  },
+  {
+    "Id": 130400100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400100090
+  },
+  {
+    "Id": 130400110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400110090
+  },
+  {
+    "Id": 130400121001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130400121090
+  },
+  {
+    "Id": 130500010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500010090
+  },
+  {
+    "Id": 130500020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500020090
+  },
+  {
+    "Id": 130500040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500040090
+  },
+  {
+    "Id": 130500050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500050090
+  },
+  {
+    "Id": 130500061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500061090
+  },
+  {
+    "Id": 130500070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500070090
+  },
+  {
+    "Id": 130500081001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500081090
+  },
+  {
+    "Id": 130500090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500090090
+  },
+  {
+    "Id": 130500100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500100090
+  },
+  {
+    "Id": 130500110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130500110090
+  },
+  {
+    "Id": 130600011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130600011090
+  },
+  {
+    "Id": 130600021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130600021090
+  },
+  {
+    "Id": 130700011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130700011090
+  },
+  {
+    "Id": 130700021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130700021090
+  },
+  {
+    "Id": 130700041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130700041090
+  },
+  {
+    "Id": 130800010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800010090
+  },
+  {
+    "Id": 130800020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800020090
+  },
+  {
+    "Id": 130800030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800030090
+  },
+  {
+    "Id": 130800040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800040090
+  },
+  {
+    "Id": 130800060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800060090
+  },
+  {
+    "Id": 130800071001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 130800071090
+  },
+  {
+    "Id": 131000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 131000010090
+  },
+  {
+    "Id": 131000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 131000020090
+  },
+  {
+    "Id": 131000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 131000030090
+  },
+  {
+    "Id": 131000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 131000040090
+  },
+  {
+    "Id": 131000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 131000050090
+  },
+  {
+    "Id": 133000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000010090
+  },
+  {
+    "Id": 133000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000020090
+  },
+  {
+    "Id": 133000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000030090
+  },
+  {
+    "Id": 133000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000040090
+  },
+  {
+    "Id": 133000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000050090
+  },
+  {
+    "Id": 133000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000060090
+  },
+  {
+    "Id": 133000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000070090
+  },
+  {
+    "Id": 133000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000080090
+  },
+  {
+    "Id": 133000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000090090
+  },
+  {
+    "Id": 133000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000100090
+  },
+  {
+    "Id": 133000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000110090
+  },
+  {
+    "Id": 133000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000120090
+  },
+  {
+    "Id": 133000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000130090
+  },
+  {
+    "Id": 133000140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000140090
+  },
+  {
+    "Id": 133000140002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000140080
+  },
+  {
+    "Id": 133000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000150090
+  },
+  {
+    "Id": 133000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000160090
+  },
+  {
+    "Id": 133000170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000170090
+  },
+  {
+    "Id": 133000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000180090
+  },
+  {
+    "Id": 133000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000190090
+  },
+  {
+    "Id": 133000200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000200090
+  },
+  {
+    "Id": 133000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000210090
+  },
+  {
+    "Id": 133000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000220090
+  },
+  {
+    "Id": 133000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000230090
+  },
+  {
+    "Id": 133000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000240090
+  },
+  {
+    "Id": 133000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000250090
+  },
+  {
+    "Id": 133000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000260090
+  },
+  {
+    "Id": 133000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000270090
+  },
+  {
+    "Id": 133000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000280090
+  },
+  {
+    "Id": 133000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000290090
+  },
+  {
+    "Id": 133000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000300090
+  },
+  {
+    "Id": 133000311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000311090
+  },
+  {
+    "Id": 133000321001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000321090
+  },
+  {
+    "Id": 133000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000330090
+  },
+  {
+    "Id": 133000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000340090
+  },
+  {
+    "Id": 133000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000350090
+  },
+  {
+    "Id": 133000361001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000361090
+  },
+  {
+    "Id": 133000371001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000371090
+  },
+  {
+    "Id": 133000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000390090
+  },
+  {
+    "Id": 133000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000420090
+  },
+  {
+    "Id": 133000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000430090
+  },
+  {
+    "Id": 133000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000440090
+  },
+  {
+    "Id": 133000450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000450090
+  },
+  {
+    "Id": 133000460001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000460090
+  },
+  {
+    "Id": 133000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000470090
+  },
+  {
+    "Id": 133000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000480090
+  },
+  {
+    "Id": 133000491001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000491090
+  },
+  {
+    "Id": 133000510001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000510090
+  },
+  {
+    "Id": 133000520001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000520090
+  },
+  {
+    "Id": 133000520002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000520080
+  },
+  {
+    "Id": 133000531001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000531090
+  },
+  {
+    "Id": 133000540001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000540090
+  },
+  {
+    "Id": 133000550001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000550090
+  },
+  {
+    "Id": 133000560001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000560090
+  },
+  {
+    "Id": 133000571001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000571090
+  },
+  {
+    "Id": 133000581001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000581090
+  },
+  {
+    "Id": 133000590001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000590090
+  },
+  {
+    "Id": 133000601001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000601090
+  },
+  {
+    "Id": 133000611001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000611090
+  },
+  {
+    "Id": 133000651001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000651090
+  },
+  {
+    "Id": 133000661001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000661090
+  },
+  {
+    "Id": 133000670001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000670090
+  },
+  {
+    "Id": 133000690001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133000690090
+  },
+  {
+    "Id": 133300010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 133300010090
+  },
+  {
+    "Id": 135000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 135000011090
+  },
+  {
+    "Id": 135000011002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 135000011080
+  },
+  {
+    "Id": 135000021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 135000021090
+  },
+  {
+    "Id": 135000021002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 135000021080
+  },
+  {
+    "Id": 137000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000010090
+  },
+  {
+    "Id": 137000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000030090
+  },
+  {
+    "Id": 137000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000050090
+  },
+  {
+    "Id": 137000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000070090
+  },
+  {
+    "Id": 137000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000090090
+  },
+  {
+    "Id": 137000110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000110090
+  },
+  {
+    "Id": 137000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000130090
+  },
+  {
+    "Id": 137000140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000140090
+  },
+  {
+    "Id": 137000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000150090
+  },
+  {
+    "Id": 137000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000160090
+  },
+  {
+    "Id": 137000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000171090
+  },
+  {
+    "Id": 137000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000181090
+  },
+  {
+    "Id": 137000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000190090
+  },
+  {
+    "Id": 137000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000210090
+  },
+  {
+    "Id": 137000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000230090
+  },
+  {
+    "Id": 137000231001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000231090
+  },
+  {
+    "Id": 137000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000240090
+  },
+  {
+    "Id": 137000241001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000241090
+  },
+  {
+    "Id": 137000251001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000251090
+  },
+  {
+    "Id": 137000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000260090
+  },
+  {
+    "Id": 137000271001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000271090
+  },
+  {
+    "Id": 137000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000280090
+  },
+  {
+    "Id": 137000281001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000281090
+  },
+  {
+    "Id": 137000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000290090
+  },
+  {
+    "Id": 137000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000300090
+  },
+  {
+    "Id": 137000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000310090
+  },
+  {
+    "Id": 137000311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000311090
+  },
+  {
+    "Id": 137000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000320090
+  },
+  {
+    "Id": 137000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000330090
+  },
+  {
+    "Id": 137000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000340090
+  },
+  {
+    "Id": 137000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000350090
+  },
+  {
+    "Id": 137000361001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000361090
+  },
+  {
+    "Id": 137000371001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000371090
+  },
+  {
+    "Id": 137000380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000380090
+  },
+  {
+    "Id": 137000381001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000381090
+  },
+  {
+    "Id": 137000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000390090
+  },
+  {
+    "Id": 137000391001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000391090
+  },
+  {
+    "Id": 137000401001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000401090
+  },
+  {
+    "Id": 137000411001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000411090
+  },
+  {
+    "Id": 137000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000420090
+  },
+  {
+    "Id": 137000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000430090
+  },
+  {
+    "Id": 137000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000440090
+  },
+  {
+    "Id": 137000450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000450090
+  },
+  {
+    "Id": 137000460001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000460090
+  },
+  {
+    "Id": 137000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000470090
+  },
+  {
+    "Id": 137000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000480090
+  },
+  {
+    "Id": 137000490001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000490090
+  },
+  {
+    "Id": 137000491001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000491090
+  },
+  {
+    "Id": 137000500001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000500090
+  },
+  {
+    "Id": 137000501001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000501090
+  },
+  {
+    "Id": 137000510001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000510090
+  },
+  {
+    "Id": 137000520001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000520090
+  },
+  {
+    "Id": 137000521001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000521090
+  },
+  {
+    "Id": 137000540001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000540090
+  },
+  {
+    "Id": 137000541001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000541090
+  },
+  {
+    "Id": 137000560001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137000560090
+  },
+  {
+    "Id": 137500021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137500021090
+  },
+  {
+    "Id": 137500031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137500031090
+  },
+  {
+    "Id": 137500041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137500041090
+  },
+  {
+    "Id": 137800011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137800011090
+  },
+  {
+    "Id": 137900051001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137900051090
+  },
+  {
+    "Id": 137900061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 137900061090
+  },
+  {
+    "Id": 140000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000010090
+  },
+  {
+    "Id": 140000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000011090
+  },
+  {
+    "Id": 140000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000020090
+  },
+  {
+    "Id": 140000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000030090
+  },
+  {
+    "Id": 140000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000050090
+  },
+  {
+    "Id": 140000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000060090
+  },
+  {
+    "Id": 140000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000150090
+  },
+  {
+    "Id": 140000160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000160090
+  },
+  {
+    "Id": 140000171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000171090
+  },
+  {
+    "Id": 140000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000180090
+  },
+  {
+    "Id": 140000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000190090
+  },
+  {
+    "Id": 140000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000210090
+  },
+  {
+    "Id": 140000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000220090
+  },
+  {
+    "Id": 140000230001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000230090
+  },
+  {
+    "Id": 140000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000240090
+  },
+  {
+    "Id": 140000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000250090
+  },
+  {
+    "Id": 140000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000260090
+  },
+  {
+    "Id": 140000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000270090
+  },
+  {
+    "Id": 140000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000280090
+  },
+  {
+    "Id": 140000281001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000281090
+  },
+  {
+    "Id": 140000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000290090
+  },
+  {
+    "Id": 140000291001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000291090
+  },
+  {
+    "Id": 140000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000300090
+  },
+  {
+    "Id": 140000301001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000301090
+  },
+  {
+    "Id": 140000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000310090
+  },
+  {
+    "Id": 140000311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000311090
+  },
+  {
+    "Id": 140000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000320090
+  },
+  {
+    "Id": 140000330001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000330090
+  },
+  {
+    "Id": 140000331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000331090
+  },
+  {
+    "Id": 140000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000340090
+  },
+  {
+    "Id": 140000350001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000350090
+  },
+  {
+    "Id": 140000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000360090
+  },
+  {
+    "Id": 140000370001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000370090
+  },
+  {
+    "Id": 140000381001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000381090
+  },
+  {
+    "Id": 140000400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000400090
+  },
+  {
+    "Id": 140000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000420090
+  },
+  {
+    "Id": 140000421001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000421090
+  },
+  {
+    "Id": 140000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000430090
+  },
+  {
+    "Id": 140000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000440090
+  },
+  {
+    "Id": 140000450001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000450090
+  },
+  {
+    "Id": 140000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000470090
+  },
+  {
+    "Id": 140000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000480090
+  },
+  {
+    "Id": 140000640001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000640090
+  },
+  {
+    "Id": 140000650001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000650090
+  },
+  {
+    "Id": 140000670001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000670090
+  },
+  {
+    "Id": 140000731001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000731090
+  },
+  {
+    "Id": 140000740001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000740090
+  },
+  {
+    "Id": 140000811001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140000811090
+  },
+  {
+    "Id": 140100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140100011090
+  },
+  {
+    "Id": 140800011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140800011090
+  },
+  {
+    "Id": 140800030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140800030090
+  },
+  {
+    "Id": 140800041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140800041090
+  },
+  {
+    "Id": 140800050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140800050090
+  },
+  {
+    "Id": 140900020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140900020090
+  },
+  {
+    "Id": 140900030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140900030090
+  },
+  {
+    "Id": 140900060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140900060090
+  },
+  {
+    "Id": 140900070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 140900070090
+  },
+  {
+    "Id": 142000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000011090
+  },
+  {
+    "Id": 142000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000181090
+  },
+  {
+    "Id": 142000191001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000191090
+  },
+  {
+    "Id": 142000471001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000471090
+  },
+  {
+    "Id": 142000491001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000491090
+  },
+  {
+    "Id": 142000531001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000531090
+  },
+  {
+    "Id": 142000571001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000571090
+  },
+  {
+    "Id": 142000581001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000581090
+  },
+  {
+    "Id": 142000591001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 142000591090
+  },
+  {
+    "Id": 143000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000010090
+  },
+  {
+    "Id": 143000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000020090
+  },
+  {
+    "Id": 143000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000030090
+  },
+  {
+    "Id": 143000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000040090
+  },
+  {
+    "Id": 143000050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000050090
+  },
+  {
+    "Id": 143000060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000060090
+  },
+  {
+    "Id": 143000070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000070090
+  },
+  {
+    "Id": 143000080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000080090
+  },
+  {
+    "Id": 143000090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000090090
+  },
+  {
+    "Id": 143000100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000100090
+  },
+  {
+    "Id": 143000111001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000111090
+  },
+  {
+    "Id": 143000120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000120090
+  },
+  {
+    "Id": 143000130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000130090
+  },
+  {
+    "Id": 143000140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000140090
+  },
+  {
+    "Id": 143000141001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000141090
+  },
+  {
+    "Id": 143000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000150090
+  },
+  {
+    "Id": 143000161001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000161090
+  },
+  {
+    "Id": 143000181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000181090
+  },
+  {
+    "Id": 143000190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000190090
+  },
+  {
+    "Id": 143000200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000200090
+  },
+  {
+    "Id": 143000210001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000210090
+  },
+  {
+    "Id": 143000221001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000221090
+  },
+  {
+    "Id": 143000231001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000231090
+  },
+  {
+    "Id": 143000240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000240090
+  },
+  {
+    "Id": 143000250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000250090
+  },
+  {
+    "Id": 143000260001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000260090
+  },
+  {
+    "Id": 143000270001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000270090
+  },
+  {
+    "Id": 143000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000280090
+  },
+  {
+    "Id": 143000290001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000290090
+  },
+  {
+    "Id": 143000291001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000291090
+  },
+  {
+    "Id": 143000300001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000300090
+  },
+  {
+    "Id": 143000311001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000311090
+  },
+  {
+    "Id": 143000320001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000320090
+  },
+  {
+    "Id": 143000331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000331090
+  },
+  {
+    "Id": 143000340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000340090
+  },
+  {
+    "Id": 143000360001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000360090
+  },
+  {
+    "Id": 143000380001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000380090
+  },
+  {
+    "Id": 143000390001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000390090
+  },
+  {
+    "Id": 143000400001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000400090
+  },
+  {
+    "Id": 143000411001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000411090
+  },
+  {
+    "Id": 143000420001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000420090
+  },
+  {
+    "Id": 143000430001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000430090
+  },
+  {
+    "Id": 143000440001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000440090
+  },
+  {
+    "Id": 143000460001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000460090
+  },
+  {
+    "Id": 143000470001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000470090
+  },
+  {
+    "Id": 143000480001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000480090
+  },
+  {
+    "Id": 143000491001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000491090
+  },
+  {
+    "Id": 143000501001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000501090
+  },
+  {
+    "Id": 143000510001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000510090
+  },
+  {
+    "Id": 143000520001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000520090
+  },
+  {
+    "Id": 143000531001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000531090
+  },
+  {
+    "Id": 143000541001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000541090
+  },
+  {
+    "Id": 143000550001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000550090
+  },
+  {
+    "Id": 143000561001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000561090
+  },
+  {
+    "Id": 143000571001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000571090
+  },
+  {
+    "Id": 143000580001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000580090
+  },
+  {
+    "Id": 143000591001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000591090
+  },
+  {
+    "Id": 143000601001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000601090
+  },
+  {
+    "Id": 143000610001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000610090
+  },
+  {
+    "Id": 143000621001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000621090
+  },
+  {
+    "Id": 143000640001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000640090
+  },
+  {
+    "Id": 143000650001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000650090
+  },
+  {
+    "Id": 143000660001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000660090
+  },
+  {
+    "Id": 143000670001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000670090
+  },
+  {
+    "Id": 143000680001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000680090
+  },
+  {
+    "Id": 143000690001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000690090
+  },
+  {
+    "Id": 143000720001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000720090
+  },
+  {
+    "Id": 143000761001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000761090
+  },
+  {
+    "Id": 143000770001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000770090
+  },
+  {
+    "Id": 143000780001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000780090
+  },
+  {
+    "Id": 143000826001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143000826090
+  },
+  {
+    "Id": 143100010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100010090
+  },
+  {
+    "Id": 143100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100011090
+  },
+  {
+    "Id": 143100020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100020090
+  },
+  {
+    "Id": 143100030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100030090
+  },
+  {
+    "Id": 143100040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100040090
+  },
+  {
+    "Id": 143100041001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100041090
+  },
+  {
+    "Id": 143100050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100050090
+  },
+  {
+    "Id": 143100060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100060090
+  },
+  {
+    "Id": 143100070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100070090
+  },
+  {
+    "Id": 143100080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100080090
+  },
+  {
+    "Id": 143100090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100090090
+  },
+  {
+    "Id": 143100110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100110090
+  },
+  {
+    "Id": 143100120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100120090
+  },
+  {
+    "Id": 143100131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100131090
+  },
+  {
+    "Id": 143100140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100140090
+  },
+  {
+    "Id": 143100140002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100140080
+  },
+  {
+    "Id": 143100150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100150090
+  },
+  {
+    "Id": 143100160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100160090
+  },
+  {
+    "Id": 143100171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100171090
+  },
+  {
+    "Id": 143100181001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100181090
+  },
+  {
+    "Id": 143100191001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100191090
+  },
+  {
+    "Id": 143100200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143100200090
+  },
+  {
+    "Id": 143300010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143300010090
+  },
+  {
+    "Id": 143400016001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 143400016090
+  },
+  {
+    "Id": 150000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150000010090
+  },
+  {
+    "Id": 150000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150000020090
+  },
+  {
+    "Id": 150000030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150000030090
+  },
+  {
+    "Id": 150000040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150000040090
+  },
+  {
+    "Id": 150100010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100010090
+  },
+  {
+    "Id": 150100016001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100016090
+  },
+  {
+    "Id": 150100020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100020090
+  },
+  {
+    "Id": 150100030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100030090
+  },
+  {
+    "Id": 150100040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100040090
+  },
+  {
+    "Id": 150100050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100050090
+  },
+  {
+    "Id": 150100060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100060090
+  },
+  {
+    "Id": 150100070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100070090
+  },
+  {
+    "Id": 150100080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100080090
+  },
+  {
+    "Id": 150100090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100090090
+  },
+  {
+    "Id": 150100100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100100090
+  },
+  {
+    "Id": 150100101001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100101090
+  },
+  {
+    "Id": 150100110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100110090
+  },
+  {
+    "Id": 150100120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100120090
+  },
+  {
+    "Id": 150100130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100130090
+  },
+  {
+    "Id": 150100140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100140090
+  },
+  {
+    "Id": 150100150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100150090
+  },
+  {
+    "Id": 150100160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100160090
+  },
+  {
+    "Id": 150100171001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100171090
+  },
+  {
+    "Id": 150100180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100180090
+  },
+  {
+    "Id": 150100190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100190090
+  },
+  {
+    "Id": 150100200001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100200090
+  },
+  {
+    "Id": 150100240001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100240090
+  },
+  {
+    "Id": 150100240002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100240080
+  },
+  {
+    "Id": 150100250001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100250090
+  },
+  {
+    "Id": 150100301001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100301090
+  },
+  {
+    "Id": 150100331001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100331090
+  },
+  {
+    "Id": 150100340001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100340090
+  },
+  {
+    "Id": 150100391001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 150100391090
+  },
+  {
+    "Id": 160000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 160000011090
+  },
+  {
+    "Id": 160000021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 160000021090
+  },
+  {
+    "Id": 165000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 165000011090
+  },
+  {
+    "Id": 170000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170000010090
+  },
+  {
+    "Id": 170500010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500010090
+  },
+  {
+    "Id": 170500040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500040090
+  },
+  {
+    "Id": 170500060001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500060090
+  },
+  {
+    "Id": 170500070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500070090
+  },
+  {
+    "Id": 170500080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500080090
+  },
+  {
+    "Id": 170500090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500090090
+  },
+  {
+    "Id": 170500100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500100090
+  },
+  {
+    "Id": 170500110001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500110090
+  },
+  {
+    "Id": 170500120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500120090
+  },
+  {
+    "Id": 170500130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500130090
+  },
+  {
+    "Id": 170500140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500140090
+  },
+  {
+    "Id": 170500151001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170500151090
+  },
+  {
+    "Id": 170900010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 170900010090
+  },
+  {
+    "Id": 172800010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 172800010090
+  },
+  {
+    "Id": 175000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 175000011090
+  },
+  {
+    "Id": 175000021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 175000021090
+  },
+  {
+    "Id": 176000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176000010090
+  },
+  {
+    "Id": 176000011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176000011090
+  },
+  {
+    "Id": 176300011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176300011090
+  },
+  {
+    "Id": 176300020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176300020090
+  },
+  {
+    "Id": 176400011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176400011090
+  },
+  {
+    "Id": 176400031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 176400031090
+  },
+  {
+    "Id": 177100011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 177100011090
+  },
+  {
+    "Id": 177100021001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 177100021090
+  },
+  {
+    "Id": 177900011001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 177900011090
+  },
+  {
+    "Id": 185000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000010090
+  },
+  {
+    "Id": 185000020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000020090
+  },
+  {
+    "Id": 185000031001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000031090
+  },
+  {
+    "Id": 185000061001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000061090
+  },
+  {
+    "Id": 185000121001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000121090
+  },
+  {
+    "Id": 185000150001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000150090
+  },
+  {
+    "Id": 185000180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000180090
+  },
+  {
+    "Id": 185000211001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000211090
+  },
+  {
+    "Id": 185000220001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000220090
+  },
+  {
+    "Id": 185000220002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000220080
+  },
+  {
+    "Id": 185000236001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000236090
+  },
+  {
+    "Id": 185000241001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000241090
+  },
+  {
+    "Id": 185000251001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000251090
+  },
+  {
+    "Id": 185000291001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000291090
+  },
+  {
+    "Id": 185000301001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000301090
+  },
+  {
+    "Id": 185000531001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000531090
+  }
+]

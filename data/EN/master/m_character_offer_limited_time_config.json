@@ -1,0 +1,10 @@
+[
+  {
+    "Id": 2509509903,
+    "SlotTypeIndex": 1,
+    "LotteryRatePercent": 100,
+    "CharacterOfferGroupLotterySetId": 3,
+    "ScheduleId": 2509509903,
+    "LotteryIntervalMinute": 1200
+  }
+]

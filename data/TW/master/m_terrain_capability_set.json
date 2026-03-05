@@ -1,0 +1,522 @@
+[
+  {
+    "Id": 1,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 2,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 3,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 4,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 5,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 6,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 7,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 8,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 9,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 10,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 11,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 12,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 13,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 14,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 15,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 16,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 17,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 18,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 19,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 20,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 21,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 22,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 23,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 24,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 25,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 26,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 27,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 28,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 29,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 30,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 31,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 32,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 33,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 34,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 35,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 36,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 37,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 38,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 39,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 40,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 41,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 2,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 42,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 1,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 43,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 2,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 44,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 45,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 46,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 2,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 47,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 48,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 49,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 50,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 51,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 1,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 52,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 53,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 54,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 55,
+    "SpaceIndex": 1,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 56,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 57,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 58,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 1,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 59,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 60,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 61,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 2
+  },
+  {
+    "Id": 62,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 2,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
+  },
+  {
+    "Id": 63,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 64,
+    "SpaceIndex": 3,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  },
+  {
+    "Id": 65,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 2,
+    "GroundIndex": 3,
+    "SurfaceIndex": 3,
+    "UnderwaterIndex": 1
+  }
+]

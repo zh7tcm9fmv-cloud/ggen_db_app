@@ -1,0 +1,34 @@
+[
+  {
+    "Id": 10001,
+    "HpBuffRatePercent": 20,
+    "EnBuffRatePercent": 0,
+    "AttackBuffRatePercent": 20,
+    "DefenseBuffRatePercent": 20,
+    "MobilityBuffRatePercent": 20
+  },
+  {
+    "Id": 300001,
+    "HpBuffRatePercent": 20,
+    "EnBuffRatePercent": 20,
+    "AttackBuffRatePercent": 20,
+    "DefenseBuffRatePercent": 20,
+    "MobilityBuffRatePercent": 20
+  },
+  {
+    "Id": 300002,
+    "HpBuffRatePercent": 50,
+    "EnBuffRatePercent": 50,
+    "AttackBuffRatePercent": 50,
+    "DefenseBuffRatePercent": 50,
+    "MobilityBuffRatePercent": 50
+  },
+  {
+    "Id": 300003,
+    "HpBuffRatePercent": 50,
+    "EnBuffRatePercent": 50,
+    "AttackBuffRatePercent": 50,
+    "DefenseBuffRatePercent": 50,
+    "MobilityBuffRatePercent": 50
+  }
+]

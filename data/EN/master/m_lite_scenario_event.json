@@ -1,0 +1,12 @@
+[
+  {
+    "EventId": 230001,
+    "ResourceId": "230001",
+    "BackgroundResourceId": "lite_scenario_event_bg_230001",
+    "PromotionTextLanguageId": 330100000000230001,
+    "MemoryResourceId": "lite_scenario_event_memory_230001",
+    "TopResourceId": "lite_scenario_event_top_230001",
+    "TopBgLogoResourceId1": "lite_scenario_event_top_title_logo_230001",
+    "BgmResourceId": ""
+  }
+]

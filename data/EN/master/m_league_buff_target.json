@@ -1,0 +1,112 @@
+[
+  {
+    "LeagueBuffTargetSetId": 300001,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1005
+  },
+  {
+    "LeagueBuffTargetSetId": 300001,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1006
+  },
+  {
+    "LeagueBuffTargetSetId": 300002,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1001
+  },
+  {
+    "LeagueBuffTargetSetId": 300002,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1083
+  },
+  {
+    "LeagueBuffTargetSetId": 300003,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1005
+  },
+  {
+    "LeagueBuffTargetSetId": 300003,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1081
+  },
+  {
+    "LeagueBuffTargetSetId": 300004,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1006
+  },
+  {
+    "LeagueBuffTargetSetId": 300004,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1007
+  },
+  {
+    "LeagueBuffTargetSetId": 300005,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1001
+  },
+  {
+    "LeagueBuffTargetSetId": 300005,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1084
+  },
+  {
+    "LeagueBuffTargetSetId": 300006,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1005
+  },
+  {
+    "LeagueBuffTargetSetId": 300006,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1010
+  },
+  {
+    "LeagueBuffTargetSetId": 300007,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1002
+  },
+  {
+    "LeagueBuffTargetSetId": 300007,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1082
+  },
+  {
+    "LeagueBuffTargetSetId": 300008,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1006
+  },
+  {
+    "LeagueBuffTargetSetId": 300008,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1081
+  },
+  {
+    "LeagueBuffTargetSetId": 300009,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1002
+  },
+  {
+    "LeagueBuffTargetSetId": 300009,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1015
+  },
+  {
+    "LeagueBuffTargetSetId": 300010,
+    "LeagueBuffTargetTypeIndex": 1,
+    "TargetId": 2000
+  },
+  {
+    "LeagueBuffTargetSetId": 300010,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1091
+  },
+  {
+    "LeagueBuffTargetSetId": 300011,
+    "LeagueBuffTargetTypeIndex": 1,
+    "TargetId": 10
+  },
+  {
+    "LeagueBuffTargetSetId": 300011,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1006
+  }
+]

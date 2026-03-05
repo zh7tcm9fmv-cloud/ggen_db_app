@@ -1,0 +1,572 @@
+[
+  {
+    "Id": 7050010201,
+    "AreaUniqueName": "7050010201",
+    "X": 14,
+    "Y": 14,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000100202000000
+  },
+  {
+    "Id": 7050010202,
+    "AreaUniqueName": "7050010202",
+    "X": 18,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000100202000000
+  },
+  {
+    "Id": 7050020301,
+    "AreaUniqueName": "7050020301",
+    "X": 18,
+    "Y": 10,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000200302000000
+  },
+  {
+    "Id": 7050020302,
+    "AreaUniqueName": "7050020302",
+    "X": 13,
+    "Y": 10,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000200302000000
+  },
+  {
+    "Id": 7050020303,
+    "AreaUniqueName": "7050020303",
+    "X": 8,
+    "Y": 9,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000200302000000
+  },
+  {
+    "Id": 7050030101,
+    "AreaUniqueName": "7050030101",
+    "X": 16,
+    "Y": 7,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000300102000000
+  },
+  {
+    "Id": 7050030102,
+    "AreaUniqueName": "7050030102",
+    "X": 11,
+    "Y": 8,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000300102000000
+  },
+  {
+    "Id": 7050040201,
+    "AreaUniqueName": "7050040201",
+    "X": 6,
+    "Y": 18,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000400202000000
+  },
+  {
+    "Id": 7050040202,
+    "AreaUniqueName": "7050040202",
+    "X": 8,
+    "Y": 16,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000400202000000
+  },
+  {
+    "Id": 7050050201,
+    "AreaUniqueName": "7050050201",
+    "X": 15,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705000500202000000
+  },
+  {
+    "Id": 7050050202,
+    "AreaUniqueName": "7050050202",
+    "X": 11,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000500202000000
+  },
+  {
+    "Id": 7050050203,
+    "AreaUniqueName": "7050050203",
+    "X": 23,
+    "Y": 10,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705000500202000000
+  },
+  {
+    "Id": 7050060101,
+    "AreaUniqueName": "7050060101",
+    "X": 21,
+    "Y": 10,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000600102000000
+  },
+  {
+    "Id": 7050060102,
+    "AreaUniqueName": "7050060102",
+    "X": 12,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705000600102000000
+  },
+  {
+    "Id": 7050070201,
+    "AreaUniqueName": "7050070201",
+    "X": 17,
+    "Y": 15,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000700202000000
+  },
+  {
+    "Id": 7050070202,
+    "AreaUniqueName": "7050070202",
+    "X": 19,
+    "Y": 19,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000700202000000
+  },
+  {
+    "Id": 7050070203,
+    "AreaUniqueName": "7050070203",
+    "X": 15,
+    "Y": 22,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705000700202000000
+  },
+  {
+    "Id": 7050080101,
+    "AreaUniqueName": "7050080101",
+    "X": 19,
+    "Y": 16,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000800102000000
+  },
+  {
+    "Id": 7050080102,
+    "AreaUniqueName": "7050080102",
+    "X": 13,
+    "Y": 15,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000800102000000
+  },
+  {
+    "Id": 7050090101,
+    "AreaUniqueName": "7050090101",
+    "X": 13,
+    "Y": 10,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705000900102000000
+  },
+  {
+    "Id": 7050090102,
+    "AreaUniqueName": "7050090102",
+    "X": 22,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705000900102000000
+  },
+  {
+    "Id": 7050100101,
+    "AreaUniqueName": "7050100101",
+    "X": 20,
+    "Y": 20,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705001000102000000
+  },
+  {
+    "Id": 7050100102,
+    "AreaUniqueName": "7050100102",
+    "X": 14,
+    "Y": 20,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705001000102000000
+  },
+  {
+    "Id": 7050500101,
+    "AreaUniqueName": "7050500101",
+    "X": 11,
+    "Y": 14,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705005000102000000
+  },
+  {
+    "Id": 7050500102,
+    "AreaUniqueName": "7050500102",
+    "X": 11,
+    "Y": 9,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000102000000
+  },
+  {
+    "Id": 7050500103,
+    "AreaUniqueName": "7050500103",
+    "X": 19,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000102000000
+  },
+  {
+    "Id": 7050500201,
+    "AreaUniqueName": "7050500201",
+    "X": 11,
+    "Y": 14,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705005000202000000
+  },
+  {
+    "Id": 7050500202,
+    "AreaUniqueName": "7050500202",
+    "X": 11,
+    "Y": 9,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000202000000
+  },
+  {
+    "Id": 7050500203,
+    "AreaUniqueName": "7050500203",
+    "X": 19,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000202000000
+  },
+  {
+    "Id": 7050500301,
+    "AreaUniqueName": "7050500301",
+    "X": 11,
+    "Y": 14,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705005000302000000
+  },
+  {
+    "Id": 7050500302,
+    "AreaUniqueName": "7050500302",
+    "X": 11,
+    "Y": 9,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000302000000
+  },
+  {
+    "Id": 7050500303,
+    "AreaUniqueName": "7050500303",
+    "X": 19,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705005000302000000
+  },
+  {
+    "Id": 7050600101,
+    "AreaUniqueName": "7050600101",
+    "X": 14,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705006000102000000
+  },
+  {
+    "Id": 7050600102,
+    "AreaUniqueName": "7050600102",
+    "X": 14,
+    "Y": 18,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705006000102000000
+  },
+  {
+    "Id": 7050600103,
+    "AreaUniqueName": "7050600103",
+    "X": 20,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705006000102000000
+  },
+  {
+    "Id": 7050600201,
+    "AreaUniqueName": "7050600201",
+    "X": 14,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705006000202000000
+  },
+  {
+    "Id": 7050600202,
+    "AreaUniqueName": "7050600202",
+    "X": 14,
+    "Y": 18,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705006000202000000
+  },
+  {
+    "Id": 7050600203,
+    "AreaUniqueName": "7050600203",
+    "X": 20,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705006000202000000
+  },
+  {
+    "Id": 7050600301,
+    "AreaUniqueName": "7050600301",
+    "X": 14,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 705006000302000000
+  },
+  {
+    "Id": 7050600302,
+    "AreaUniqueName": "7050600302",
+    "X": 14,
+    "Y": 18,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900002,
+    "MapStageId": 705006000302000000
+  },
+  {
+    "Id": 7050600303,
+    "AreaUniqueName": "7050600303",
+    "X": 20,
+    "Y": 24,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900003,
+    "MapStageId": 705006000302000000
+  },
+  {
+    "Id": 9020000701,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902000000702000000
+  },
+  {
+    "Id": 9020000702,
+    "AreaUniqueName": "",
+    "X": 8,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902000000702000000
+  },
+  {
+    "Id": 9020000703,
+    "AreaUniqueName": "",
+    "X": 10,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902000000702000000
+  },
+  {
+    "Id": 9020000704,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902000000702000000
+  },
+  {
+    "Id": 9021000701,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902100000702000000
+  },
+  {
+    "Id": 9021000702,
+    "AreaUniqueName": "",
+    "X": 8,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902100000702000000
+  },
+  {
+    "Id": 9021000703,
+    "AreaUniqueName": "",
+    "X": 10,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902100000702000000
+  },
+  {
+    "Id": 9021000704,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902100000702000000
+  },
+  {
+    "Id": 9022000701,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902200000702000000
+  },
+  {
+    "Id": 9022000702,
+    "AreaUniqueName": "",
+    "X": 8,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902200000702000000
+  },
+  {
+    "Id": 9022000703,
+    "AreaUniqueName": "",
+    "X": 10,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902200000702000000
+  },
+  {
+    "Id": 9022000704,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902200000702000000
+  },
+  {
+    "Id": 9023000701,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 13,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902300000702000000
+  },
+  {
+    "Id": 9023000702,
+    "AreaUniqueName": "",
+    "X": 8,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902300000702000000
+  },
+  {
+    "Id": 9023000703,
+    "AreaUniqueName": "",
+    "X": 10,
+    "Y": 12,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902300000702000000
+  },
+  {
+    "Id": 9023000704,
+    "AreaUniqueName": "",
+    "X": 9,
+    "Y": 11,
+    "Width": 1,
+    "Height": 1,
+    "MapStageEventId": 900001,
+    "MapStageId": 902300000702000000
+  }
+]

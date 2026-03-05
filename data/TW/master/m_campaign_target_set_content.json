@@ -1,0 +1,1367 @@
+[
+  {
+    "Id": 126012001,
+    "CampaignTargetSetId": 126012001,
+    "CampaignTargetTypeIndex": 10,
+    "TargetId": 200009,
+    "TransitionId": 10000000200009
+  },
+  {
+    "Id": 126012002,
+    "CampaignTargetSetId": 126012002,
+    "CampaignTargetTypeIndex": 10,
+    "TargetId": 200009,
+    "TransitionId": 10000000200009
+  },
+  {
+    "Id": 12504300101,
+    "CampaignTargetSetId": 125043001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12504300102,
+    "CampaignTargetSetId": 125043001,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12504300103,
+    "CampaignTargetSetId": 125043001,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12504300104,
+    "CampaignTargetSetId": 125043001,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12506100101,
+    "CampaignTargetSetId": 125061001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12506100102,
+    "CampaignTargetSetId": 125061002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12506200101,
+    "CampaignTargetSetId": 125062001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12506200201,
+    "CampaignTargetSetId": 125062002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12506200301,
+    "CampaignTargetSetId": 125062003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12506200401,
+    "CampaignTargetSetId": 125062004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12506200501,
+    "CampaignTargetSetId": 125062005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12506200601,
+    "CampaignTargetSetId": 125062006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12506200701,
+    "CampaignTargetSetId": 125062007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12506200801,
+    "CampaignTargetSetId": 125062008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12506200901,
+    "CampaignTargetSetId": 125062009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12506201001,
+    "CampaignTargetSetId": 125062010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12506201101,
+    "CampaignTargetSetId": 125062011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12506201201,
+    "CampaignTargetSetId": 125062012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12506201301,
+    "CampaignTargetSetId": 125062013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12506201401,
+    "CampaignTargetSetId": 125062014,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12506201501,
+    "CampaignTargetSetId": 125062015,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12506201601,
+    "CampaignTargetSetId": 125062016,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12506201701,
+    "CampaignTargetSetId": 125062017,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12506201801,
+    "CampaignTargetSetId": 125062018,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12506300101,
+    "CampaignTargetSetId": 125063001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12506300102,
+    "CampaignTargetSetId": 125063002,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12506300103,
+    "CampaignTargetSetId": 125063003,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12506300104,
+    "CampaignTargetSetId": 125063004,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12507200101,
+    "CampaignTargetSetId": 125072001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12507200201,
+    "CampaignTargetSetId": 125072002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12507200301,
+    "CampaignTargetSetId": 125072003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12507200401,
+    "CampaignTargetSetId": 125072004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12507200501,
+    "CampaignTargetSetId": 125072005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12507200601,
+    "CampaignTargetSetId": 125072006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12507200701,
+    "CampaignTargetSetId": 125072007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12507200801,
+    "CampaignTargetSetId": 125072008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12507200901,
+    "CampaignTargetSetId": 125072009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12507201001,
+    "CampaignTargetSetId": 125072010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12507201101,
+    "CampaignTargetSetId": 125072011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12507201201,
+    "CampaignTargetSetId": 125072012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12507201301,
+    "CampaignTargetSetId": 125072013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12507300101,
+    "CampaignTargetSetId": 125073001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12507300102,
+    "CampaignTargetSetId": 125073002,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12507300103,
+    "CampaignTargetSetId": 125073003,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12507300104,
+    "CampaignTargetSetId": 125073004,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12508200101,
+    "CampaignTargetSetId": 125082001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12508200201,
+    "CampaignTargetSetId": 125082002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12508200301,
+    "CampaignTargetSetId": 125082003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12508200401,
+    "CampaignTargetSetId": 125082004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12508200501,
+    "CampaignTargetSetId": 125082005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12508200601,
+    "CampaignTargetSetId": 125082006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12508200701,
+    "CampaignTargetSetId": 125082007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12508200801,
+    "CampaignTargetSetId": 125082008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12508200901,
+    "CampaignTargetSetId": 125082009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12508201001,
+    "CampaignTargetSetId": 125082010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12508201101,
+    "CampaignTargetSetId": 125082011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12508201201,
+    "CampaignTargetSetId": 125082012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12508201301,
+    "CampaignTargetSetId": 125082013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12509600101,
+    "CampaignTargetSetId": 125096001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12509600102,
+    "CampaignTargetSetId": 125096002,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12509600103,
+    "CampaignTargetSetId": 125096003,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12509600104,
+    "CampaignTargetSetId": 125096004,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12510700101,
+    "CampaignTargetSetId": 125107001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12510700201,
+    "CampaignTargetSetId": 125107002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12510700301,
+    "CampaignTargetSetId": 125107003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12510700401,
+    "CampaignTargetSetId": 125107004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12510700501,
+    "CampaignTargetSetId": 125107005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12510700601,
+    "CampaignTargetSetId": 125107006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12510700701,
+    "CampaignTargetSetId": 125107007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12510700801,
+    "CampaignTargetSetId": 125107008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12510700901,
+    "CampaignTargetSetId": 125107009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12510701001,
+    "CampaignTargetSetId": 125107010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12510701101,
+    "CampaignTargetSetId": 125107011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12510701201,
+    "CampaignTargetSetId": 125107012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12510701301,
+    "CampaignTargetSetId": 125107013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12510701401,
+    "CampaignTargetSetId": 125107014,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12510701501,
+    "CampaignTargetSetId": 125107015,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12510701601,
+    "CampaignTargetSetId": 125107016,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12510701701,
+    "CampaignTargetSetId": 125107017,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12510701801,
+    "CampaignTargetSetId": 125107018,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12510701901,
+    "CampaignTargetSetId": 125107019,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12510702001,
+    "CampaignTargetSetId": 125107020,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12510702101,
+    "CampaignTargetSetId": 125107021,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12510702201,
+    "CampaignTargetSetId": 125107022,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12510702301,
+    "CampaignTargetSetId": 125107023,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12510702401,
+    "CampaignTargetSetId": 125107024,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12510702501,
+    "CampaignTargetSetId": 125107025,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12510702601,
+    "CampaignTargetSetId": 125107026,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12510702701,
+    "CampaignTargetSetId": 125107027,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12510702801,
+    "CampaignTargetSetId": 125107028,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12511300101,
+    "CampaignTargetSetId": 125113001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12511300201,
+    "CampaignTargetSetId": 125113002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12511300301,
+    "CampaignTargetSetId": 125113003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12511300401,
+    "CampaignTargetSetId": 125113004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12511300501,
+    "CampaignTargetSetId": 125113005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12511300601,
+    "CampaignTargetSetId": 125113006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12511300701,
+    "CampaignTargetSetId": 125113007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12511300801,
+    "CampaignTargetSetId": 125113008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12511300901,
+    "CampaignTargetSetId": 125113009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12511301001,
+    "CampaignTargetSetId": 125113010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12511301101,
+    "CampaignTargetSetId": 125113011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12511301201,
+    "CampaignTargetSetId": 125113012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12511301301,
+    "CampaignTargetSetId": 125113013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12511301401,
+    "CampaignTargetSetId": 125113014,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12511301501,
+    "CampaignTargetSetId": 125113015,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12511301601,
+    "CampaignTargetSetId": 125113016,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12511301701,
+    "CampaignTargetSetId": 125113017,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12511301801,
+    "CampaignTargetSetId": 125113018,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12511301901,
+    "CampaignTargetSetId": 125113019,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12511302001,
+    "CampaignTargetSetId": 125113020,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12511302101,
+    "CampaignTargetSetId": 125113021,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12511302201,
+    "CampaignTargetSetId": 125113022,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12511302301,
+    "CampaignTargetSetId": 125113023,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12511302401,
+    "CampaignTargetSetId": 125113024,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12511302501,
+    "CampaignTargetSetId": 125113025,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12511302601,
+    "CampaignTargetSetId": 125113026,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12511302701,
+    "CampaignTargetSetId": 125113027,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12511302801,
+    "CampaignTargetSetId": 125113028,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12512300101,
+    "CampaignTargetSetId": 125123001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12512300201,
+    "CampaignTargetSetId": 125123002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12512300301,
+    "CampaignTargetSetId": 125123003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12512300401,
+    "CampaignTargetSetId": 125123004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12512300501,
+    "CampaignTargetSetId": 125123005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12512300601,
+    "CampaignTargetSetId": 125123006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12512300701,
+    "CampaignTargetSetId": 125123007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12512300801,
+    "CampaignTargetSetId": 125123008,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12512300901,
+    "CampaignTargetSetId": 125123009,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12512301001,
+    "CampaignTargetSetId": 125123010,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12512301101,
+    "CampaignTargetSetId": 125123011,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12601400101,
+    "CampaignTargetSetId": 260140001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12601400102,
+    "CampaignTargetSetId": 260140002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12601400103,
+    "CampaignTargetSetId": 260140003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12601400104,
+    "CampaignTargetSetId": 260140004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12601400105,
+    "CampaignTargetSetId": 260140005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12601400106,
+    "CampaignTargetSetId": 260140006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1500,
+    "TransitionId": 20000015000105
+  },
+  {
+    "Id": 12601400107,
+    "CampaignTargetSetId": 260140007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12601400108,
+    "CampaignTargetSetId": 260140008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12601400109,
+    "CampaignTargetSetId": 260140009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12601400110,
+    "CampaignTargetSetId": 260140010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12601400111,
+    "CampaignTargetSetId": 260140011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12601400112,
+    "CampaignTargetSetId": 260140012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12601400113,
+    "CampaignTargetSetId": 260140013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12601400114,
+    "CampaignTargetSetId": 260140014,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12601400115,
+    "CampaignTargetSetId": 260140015,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12601400116,
+    "CampaignTargetSetId": 260140016,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12601400117,
+    "CampaignTargetSetId": 260140017,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12601400118,
+    "CampaignTargetSetId": 260140018,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12601400119,
+    "CampaignTargetSetId": 260140019,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12601400120,
+    "CampaignTargetSetId": 260140020,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12601400121,
+    "CampaignTargetSetId": 260140021,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1500,
+    "TransitionId": 20000015000105
+  },
+  {
+    "Id": 12601400122,
+    "CampaignTargetSetId": 260140022,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12601400123,
+    "CampaignTargetSetId": 260140023,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12601400124,
+    "CampaignTargetSetId": 260140024,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12601400125,
+    "CampaignTargetSetId": 260140025,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12601400126,
+    "CampaignTargetSetId": 260140026,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12601400127,
+    "CampaignTargetSetId": 260140027,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12601400128,
+    "CampaignTargetSetId": 260140028,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12601400129,
+    "CampaignTargetSetId": 260140029,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12601400130,
+    "CampaignTargetSetId": 260140030,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12602300101,
+    "CampaignTargetSetId": 260230001,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12602300102,
+    "CampaignTargetSetId": 260230002,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12602300103,
+    "CampaignTargetSetId": 260230003,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12602300104,
+    "CampaignTargetSetId": 260230004,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12602300105,
+    "CampaignTargetSetId": 260230005,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12602300106,
+    "CampaignTargetSetId": 260230006,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1500,
+    "TransitionId": 20000015000105
+  },
+  {
+    "Id": 12602300107,
+    "CampaignTargetSetId": 260230007,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12602300108,
+    "CampaignTargetSetId": 260230008,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12602300109,
+    "CampaignTargetSetId": 260230009,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12602300110,
+    "CampaignTargetSetId": 260230010,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12602300111,
+    "CampaignTargetSetId": 260230011,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12602300112,
+    "CampaignTargetSetId": 260230012,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12602300113,
+    "CampaignTargetSetId": 260230013,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12602300114,
+    "CampaignTargetSetId": 260230014,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12602300115,
+    "CampaignTargetSetId": 260230015,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 12602300116,
+    "CampaignTargetSetId": 260230016,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 10,
+    "TransitionId": 20000000100103
+  },
+  {
+    "Id": 12602300117,
+    "CampaignTargetSetId": 260230017,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 810,
+    "TransitionId": 20000008100103
+  },
+  {
+    "Id": 12602300118,
+    "CampaignTargetSetId": 260230018,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 950,
+    "TransitionId": 20000009500105
+  },
+  {
+    "Id": 12602300119,
+    "CampaignTargetSetId": 260230019,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1100,
+    "TransitionId": 20000011000103
+  },
+  {
+    "Id": 12602300120,
+    "CampaignTargetSetId": 260230020,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1250,
+    "TransitionId": 20000012500104
+  },
+  {
+    "Id": 12602300121,
+    "CampaignTargetSetId": 260230021,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 1500,
+    "TransitionId": 20000015000105
+  },
+  {
+    "Id": 12602300122,
+    "CampaignTargetSetId": 260230022,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "TransitionId": 20000030000103
+  },
+  {
+    "Id": 12602300123,
+    "CampaignTargetSetId": 260230023,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3100,
+    "TransitionId": 20000031000301
+  },
+  {
+    "Id": 12602300124,
+    "CampaignTargetSetId": 260230024,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3300,
+    "TransitionId": 20000033000104
+  },
+  {
+    "Id": 12602300125,
+    "CampaignTargetSetId": 260230025,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2300,
+    "TransitionId": 20000023000104
+  },
+  {
+    "Id": 12602300126,
+    "CampaignTargetSetId": 260230026,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 4300,
+    "TransitionId": 20000043000105
+  },
+  {
+    "Id": 12602300127,
+    "CampaignTargetSetId": 260230027,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "TransitionId": 20000021000103
+  },
+  {
+    "Id": 12602300128,
+    "CampaignTargetSetId": 260230028,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "TransitionId": 20000050100204
+  },
+  {
+    "Id": 12602300129,
+    "CampaignTargetSetId": 260230029,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 2000,
+    "TransitionId": 20000020000104
+  },
+  {
+    "Id": 12602300130,
+    "CampaignTargetSetId": 260230030,
+    "CampaignTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "TransitionId": 20000037000204
+  },
+  {
+    "Id": 42510500101,
+    "CampaignTargetSetId": 425105001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 42510500201,
+    "CampaignTargetSetId": 425105002,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 42510500301,
+    "CampaignTargetSetId": 425105003,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 42510500401,
+    "CampaignTargetSetId": 425105004,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  }
+]

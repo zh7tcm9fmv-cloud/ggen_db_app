@@ -1,0 +1,706 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 160100001001000150,
+    "value": "Bright Noa & White Base"
+  },
+  {
+    "id": 160100001001000250,
+    "value": "Fraw Bow & White Base"
+  },
+  {
+    "id": 160100001001000450,
+    "value": "Dren & Musai"
+  },
+  {
+    "id": 160100001001000550,
+    "value": "Kycilia Zabi & Gwazine"
+  },
+  {
+    "id": 160100001001000650,
+    "value": "Gihren Zabi & A BAOA QU"
+  },
+  {
+    "id": 160100001001000750,
+    "value": "Lalah Sune & Zanzibar"
+  },
+  {
+    "id": 160100001022000150,
+    "value": "Morline Kitamura & Medea"
+  },
+  {
+    "id": 160100001031000150,
+    "value": "Claudia Peer & Beehive"
+  },
+  {
+    "id": 160100001055000360,
+    "value": "Kycilia Zabi (GQ)(0085) & Chivvay [Purple Widow]"
+  },
+  {
+    "id": 160100001060000150,
+    "value": "Eyphar Sinapus & Albion"
+  },
+  {
+    "id": 160100001060000250,
+    "value": "Cima Garahau & Lili Marleen"
+  },
+  {
+    "id": 160100001080000150,
+    "value": "Fa Yuiry & Argama"
+  },
+  {
+    "id": 160100001080000250,
+    "value": "Henken Bekkener & Radish"
+  },
+  {
+    "id": 160100001080000450,
+    "value": "Ben Wooder & Sudley"
+  },
+  {
+    "id": 160100001080000550,
+    "value": "Beltorchika Irma & Audhumla"
+  },
+  {
+    "id": 160100001095000150,
+    "value": "Beecha Oleg & Nahel Argama"
+  },
+  {
+    "id": 160100001095000250,
+    "value": "Gottn Goh & Endra"
+  },
+  {
+    "id": 160100001095000350,
+    "value": "Glemy Toto & Sandra"
+  },
+  {
+    "id": 160100001095000450,
+    "value": "Emary Ounce & La Vie en Rose"
+  },
+  {
+    "id": 160100001095000560,
+    "value": "Hayato Kobayashi & Audhumla"
+  },
+  {
+    "id": 160100001110000150,
+    "value": "Bright Noa & Ra Cailum"
+  },
+  {
+    "id": 160100001110000250,
+    "value": "Chan Agi &  Ra Cailum"
+  },
+  {
+    "id": 160100001125000150,
+    "value": "Suberoa Zinnerman & Garencieres"
+  },
+  {
+    "id": 160100001125000250,
+    "value": "Otto Mitas & Nahel Argama (Londo Bell)"
+  },
+  {
+    "id": 160100001125000350,
+    "value": "Hill Dawson & Rewloola (Sleeves)"
+  },
+  {
+    "id": 160100001125000450,
+    "value": "Mineva Lao Zabi & Garencieres"
+  },
+  {
+    "id": 160100001150000150,
+    "value": "Gigi Andalucia & Haunzen Flight 356"
+  },
+  {
+    "id": 160100001150000260,
+    "value": "Mobile Suit Gundam HATHAWAY The Sorcery of Nymph Circe"
+  },
+  {
+    "id": 160100001200000150,
+    "value": "Rain Mikamura & Bud Carrier"
+  },
+  {
+    "id": 160100001200000250,
+    "value": "Nastasha Zabigov & Gorby II"
+  },
+  {
+    "id": 160100001200000350,
+    "value": "Kyoji Kasshu & Dark Gundam (Second Form)"
+  },
+  {
+    "id": 160100001210000150,
+    "value": "Relena Darlian & Peacemillion"
+  },
+  {
+    "id": 160100001210000250,
+    "value": "Lady Une & Bulge"
+  },
+  {
+    "id": 160100001210000350,
+    "value": "Lucrezia Noin & Supersonic Transporter"
+  },
+  {
+    "id": 160100001210000460,
+    "value": "Doctor J & Peacemillion"
+  },
+  {
+    "id": 160100001230000150,
+    "value": "Tiffa Adill & Freeden"
+  },
+  {
+    "id": 160100001230000250,
+    "value": "Sara Tyrell & Freeden"
+  },
+  {
+    "id": 160100001230000350,
+    "value": "Jamil Neate & Freeden II"
+  },
+  {
+    "id": 160100001300000150,
+    "value": "Murrue Ramius & Archangel"
+  },
+  {
+    "id": 160100001300000250,
+    "value": "Frederick Ades & Vesalius"
+  },
+  {
+    "id": 160100001300000350,
+    "value": "Natarle Badgiruel & Dominion"
+  },
+  {
+    "id": 160100001300000450,
+    "value": "Lacus Clyne & Eternal"
+  },
+  {
+    "id": 160100001300000550,
+    "value": "Andrew Waldfeld & Eternal"
+  },
+  {
+    "id": 160100001300000650,
+    "value": "Multa Azrael & Dominion"
+  },
+  {
+    "id": 160100001300000760,
+    "value": "Flay Allster & Archangel"
+  },
+  {
+    "id": 160100001305000150,
+    "value": "Captain GG & ReHOME"
+  },
+  {
+    "id": 160100001305000250,
+    "value": "Kazahana Azure & Laurasia Class"
+  },
+  {
+    "id": 160100001305000350,
+    "value": "Professor & ReHOME"
+  },
+  {
+    "id": 160100001330000150,
+    "value": "Meyrin Hawke & Minerva"
+  },
+  {
+    "id": 160100001330000250,
+    "value": "Talia Gladys & Minerva"
+  },
+  {
+    "id": 160100001370000150,
+    "value": "Sumeragi Lee Noriega & Ptolemaios"
+  },
+  {
+    "id": 160100001370000250,
+    "value": "Kati Mannequin & Virginia"
+  },
+  {
+    "id": 160100001370000450,
+    "value": "Marina Ismail & Ptolemaios 2"
+  },
+  {
+    "id": 160100001400000150,
+    "value": "Grodek Ainoa & Diva"
+  },
+  {
+    "id": 160100001400000250,
+    "value": "Desil Galette & Fa Bose"
+  },
+  {
+    "id": 160100001430000150,
+    "value": "Orga Itsuka & Isaribi"
+  },
+  {
+    "id": 160100001430000250,
+    "value": "Naze Turbine & Hammerhead"
+  },
+  {
+    "id": 160100001430000350,
+    "value": "Kudelia Aina Bernstein & Isaribi"
+  },
+  {
+    "id": 160100001430000450,
+    "value": "Rustal Elion & Skipjack-class Warship"
+  },
+  {
+    "id": 160100001430000550,
+    "value": "Atra Mixta & Hotarubi"
+  },
+  {
+    "id": 160100001431000150,
+    "value": "Liarina Morugaton & Biscoe-class Cruiser"
+  },
+  {
+    "id": 160100001501000150,
+    "value": "Miorine Rembran & Academy Ship"
+  },
+  {
+    "id": 160100001501000250,
+    "value": "Kenanji Avery & Ulysses"
+  },
+  {
+    "id": 160100001705000150,
+    "value": "Knight Amuro & Pegasus White Base"
+  },
+  {
+    "id": 160100001705000260,
+    "value": "Knight Sayla & Pegasus White Base"
+  },
+  {
+    "id": 160100001850000160,
+    "value": "Xenon Teegel & Carry Base 2"
+  },
+  {
+    "id": 160100001850000260,
+    "value": "Rachel Ransom & Carry Base 2"
+  },
+  {
+    "id": 160100001850000360,
+    "value": "Luna Mana & Carry Base"
+  },
+  {
+    "id": 160100001850000460,
+    "value": "Koo Sea & Carry Base"
+  },
+  {
+    "id": 160300001001000150,
+    "value": "Bright Noa & White Base"
+  },
+  {
+    "id": 160300001001000250,
+    "value": "Fraw Bow & White Base"
+  },
+  {
+    "id": 160300001001000450,
+    "value": "Dren & Musai"
+  },
+  {
+    "id": 160300001001000550,
+    "value": "Kycilia Zabi & Gwazine"
+  },
+  {
+    "id": 160300001001000650,
+    "value": "Gihren Zabi & A BAOA QU"
+  },
+  {
+    "id": 160300001001000750,
+    "value": "Lalah Sune & Zanzibar"
+  },
+  {
+    "id": 160300001022000150,
+    "value": "Morline Kitamura & Medea"
+  },
+  {
+    "id": 160300001031000150,
+    "value": "Claudia Peer & Beehive"
+  },
+  {
+    "id": 160300001055000360,
+    "value": "Kycilia Zabi (GQ)(0085) & Chivvay [Purple Widow]"
+  },
+  {
+    "id": 160300001060000150,
+    "value": "Eyphar Sinapus & Albion"
+  },
+  {
+    "id": 160300001060000250,
+    "value": "Cima Garahau & Lili Marleen"
+  },
+  {
+    "id": 160300001080000150,
+    "value": "Fa Yuiry & Argama"
+  },
+  {
+    "id": 160300001080000250,
+    "value": "Henken Bekkener & Radish"
+  },
+  {
+    "id": 160300001080000450,
+    "value": "Ben Wooder & Sudley"
+  },
+  {
+    "id": 160300001080000550,
+    "value": "Beltorchika Irma & Audhumla"
+  },
+  {
+    "id": 160300001095000150,
+    "value": "Beecha Oleg & Nahel Argama"
+  },
+  {
+    "id": 160300001095000250,
+    "value": "Gottn Goh & Endra"
+  },
+  {
+    "id": 160300001095000350,
+    "value": "Glemy Toto & Sandra"
+  },
+  {
+    "id": 160300001095000450,
+    "value": "Emary Ounce & La Vie en Rose"
+  },
+  {
+    "id": 160300001095000560,
+    "value": "Hayato Kobayashi & Audhumla"
+  },
+  {
+    "id": 160300001110000150,
+    "value": "Bright Noa & Ra Cailum"
+  },
+  {
+    "id": 160300001110000250,
+    "value": "Chan Agi &  Ra Cailum"
+  },
+  {
+    "id": 160300001125000150,
+    "value": "Suberoa Zinnerman & Garencieres"
+  },
+  {
+    "id": 160300001125000250,
+    "value": "Otto Mitas & Nahel Argama (Londo Bell)"
+  },
+  {
+    "id": 160300001125000350,
+    "value": "Hill Dawson & Rewloola (Sleeves)"
+  },
+  {
+    "id": 160300001125000450,
+    "value": "Mineva Lao Zabi & Garencieres"
+  },
+  {
+    "id": 160300001150000150,
+    "value": "Gigi Andalucia & Haunzen Flight 356"
+  },
+  {
+    "id": 160300001150000260,
+    "value": "Mobile Suit Gundam HATHAWAY The Sorcery of Nymph Circe"
+  },
+  {
+    "id": 160300001200000150,
+    "value": "Rain Mikamura & Bud Carrier"
+  },
+  {
+    "id": 160300001200000250,
+    "value": "Nastasha Zabigov & Gorby II"
+  },
+  {
+    "id": 160300001200000350,
+    "value": "Kyoji Kasshu & Dark Gundam (Second Form)"
+  },
+  {
+    "id": 160300001210000150,
+    "value": "Relena Darlian & Peacemillion"
+  },
+  {
+    "id": 160300001210000250,
+    "value": "Lady Une & Bulge"
+  },
+  {
+    "id": 160300001210000350,
+    "value": "Lucrezia Noin & Supersonic Transporter"
+  },
+  {
+    "id": 160300001210000460,
+    "value": "Doctor J & Peacemillion"
+  },
+  {
+    "id": 160300001230000150,
+    "value": "Tiffa Adill & Freeden"
+  },
+  {
+    "id": 160300001230000250,
+    "value": "Sara Tyrell & Freeden"
+  },
+  {
+    "id": 160300001230000350,
+    "value": "Jamil Neate & Freeden II"
+  },
+  {
+    "id": 160300001300000150,
+    "value": "Murrue Ramius & Archangel"
+  },
+  {
+    "id": 160300001300000250,
+    "value": "Frederick Ades & Vesalius"
+  },
+  {
+    "id": 160300001300000350,
+    "value": "Natarle Badgiruel & Dominion"
+  },
+  {
+    "id": 160300001300000450,
+    "value": "Lacus Clyne & Eternal"
+  },
+  {
+    "id": 160300001300000550,
+    "value": "Andrew Waldfeld & Eternal"
+  },
+  {
+    "id": 160300001300000650,
+    "value": "Multa Azrael & Dominion"
+  },
+  {
+    "id": 160300001300000760,
+    "value": "Flay Allster & Archangel"
+  },
+  {
+    "id": 160300001305000150,
+    "value": "Captain GG & ReHOME"
+  },
+  {
+    "id": 160300001305000250,
+    "value": "Kazahana Azure & Laurasia Class"
+  },
+  {
+    "id": 160300001305000350,
+    "value": "Professor & ReHOME"
+  },
+  {
+    "id": 160300001330000150,
+    "value": "Meyrin Hawke & Minerva"
+  },
+  {
+    "id": 160300001330000250,
+    "value": "Talia Gladys & Minerva"
+  },
+  {
+    "id": 160300001370000150,
+    "value": "Sumeragi Lee Noriega & Ptolemaios"
+  },
+  {
+    "id": 160300001370000250,
+    "value": "Kati Mannequin & Virginia"
+  },
+  {
+    "id": 160300001370000450,
+    "value": "Marina Ismail & Ptolemaios 2"
+  },
+  {
+    "id": 160300001400000150,
+    "value": "Grodek Ainoa & Diva"
+  },
+  {
+    "id": 160300001400000250,
+    "value": "Desil Galette & Fa Bose"
+  },
+  {
+    "id": 160300001430000150,
+    "value": "Orga Itsuka & Isaribi"
+  },
+  {
+    "id": 160300001430000250,
+    "value": "Naze Turbine & Hammerhead"
+  },
+  {
+    "id": 160300001430000350,
+    "value": "Kudelia Aina Bernstein & Isaribi"
+  },
+  {
+    "id": 160300001430000450,
+    "value": "Rustal Elion & Skipjack-class Warship"
+  },
+  {
+    "id": 160300001430000550,
+    "value": "Atra Mixta & Hotarubi"
+  },
+  {
+    "id": 160300001431000150,
+    "value": "Liarina Morugaton & Biscoe-class Cruiser"
+  },
+  {
+    "id": 160300001501000150,
+    "value": "Miorine Rembran & Academy Ship"
+  },
+  {
+    "id": 160300001501000250,
+    "value": "Kenanji Avery & Ulysses"
+  },
+  {
+    "id": 160300001705000150,
+    "value": "Knight Amuro & Pegasus White Base"
+  },
+  {
+    "id": 160300001705000260,
+    "value": "Knight Sayla & Pegasus White Base"
+  },
+  {
+    "id": 160300001850000160,
+    "value": "Xenon Teegel & Carry Base 2"
+  },
+  {
+    "id": 160300001850000260,
+    "value": "Rachel Ransom & Carry Base 2"
+  },
+  {
+    "id": 160300001850000360,
+    "value": "Luna Mana & Carry Base"
+  },
+  {
+    "id": 160300001850000460,
+    "value": "Koo Sea & Carry Base"
+  },
+  {
+    "id": 160800001001000150,
+    "value": "You can never become a real man without getting a few bruises!"
+  },
+  {
+    "id": 160800001001000250,
+    "value": "You're right. We'd all be dead if it wasn't for you."
+  },
+  {
+    "id": 160800001001000750,
+    "value": "Hehe, you really didn't feel anything?"
+  },
+  {
+    "id": 160800001031000150,
+    "value": "I have to stop loving you. Then, I'll be able to order you to meet your demise."
+  },
+  {
+    "id": 160800001060000150,
+    "value": "Stay alert! Lose focus and you'll die in the blink\nof an eye!"
+  },
+  {
+    "id": 160800001060000250,
+    "value": "You won't be leaving Cima behind!"
+  },
+  {
+    "id": 160800001080000150,
+    "value": "Our only option now is to fight... I have to do my part."
+  },
+  {
+    "id": 160800001080000250,
+    "value": "Lieutenant Emma is the flower of the Radish, and this ship will always be there for her."
+  },
+  {
+    "id": 160800001080000550,
+    "value": "You just need to wake up.\nThen, you'll be yourself again."
+  },
+  {
+    "id": 160800001095000150,
+    "value": "All right! All hands, to your stations! Nahel Argama, launch!"
+  },
+  {
+    "id": 160800001095000350,
+    "value": "If you don't stand with me for justice, then get out of my sight!"
+  },
+  {
+    "id": 160800001110000150,
+    "value": "This is an independent operation. Forward, Londo Bell!"
+  },
+  {
+    "id": 160800001125000250,
+    "value": "I'm counting on you all!"
+  },
+  {
+    "id": 160800001125000450,
+    "value": "I shoulder much responsibility\nas heir to the Zabi bloodline!"
+  },
+  {
+    "id": 160800001150000150,
+    "value": "Mafty doesn't handle things the right way."
+  },
+  {
+    "id": 160800001200000150,
+    "value": "But...we're partners! \nYou have to let me fight with you!"
+  },
+  {
+    "id": 160800001200000350,
+    "value": "Bwahahaha!"
+  },
+  {
+    "id": 160800001210000150,
+    "value": "Peace can never come out of war."
+  },
+  {
+    "id": 160800001210000350,
+    "value": "You don't treat the battle field seriously enough!"
+  },
+  {
+    "id": 160800001230000150,
+    "value": "I'll Give You Power..."
+  },
+  {
+    "id": 160800001230000350,
+    "value": "Can Newtypes really create a new future?\nI have to see for myself."
+  },
+  {
+    "id": 160800001300000150,
+    "value": "Ready the Lohengrin!"
+  },
+  {
+    "id": 160800001300000450,
+    "value": "Power or desire alone is not enough..."
+  },
+  {
+    "id": 160800001300000550,
+    "value": "Welcome to the ship of the songstress.\nI am Andrew Waltfeld."
+  },
+  {
+    "id": 160800001300000650,
+    "value": "Violence isn't the answer, you know."
+  },
+  {
+    "id": 160800001305000250,
+    "value": "Communications, maintenance, I can do it all!"
+  },
+  {
+    "id": 160800001305000350,
+    "value": "-"
+  },
+  {
+    "id": 160800001330000250,
+    "value": "Tannhäuser online! Targeting enemy ahead!\nFire!"
+  },
+  {
+    "id": 160800001370000150,
+    "value": "This is the big debut for Celestial Being."
+  },
+  {
+    "id": 160800001370000450,
+    "value": "Conflict doesn't create anything.\nIt only destroys!"
+  },
+  {
+    "id": 160800001400000150,
+    "value": "The specter of revenge haunts me!"
+  },
+  {
+    "id": 160800001430000150,
+    "value": "We'll get there...together!"
+  },
+  {
+    "id": 160800001430000350,
+    "value": "I must live up to my responsibilities, for those who believe in me."
+  },
+  {
+    "id": 160800001430000450,
+    "value": "Gjallarhorn exists to maintain order in the world."
+  },
+  {
+    "id": 160800001430000550,
+    "value": "I-I need to do my part!"
+  },
+  {
+    "id": 160800001501000150,
+    "value": "I refuse to lose what is dearest to my heart."
+  },
+  {
+    "id": 160800001705000150,
+    "value": "Power is countered by magic, and magic by power. That's the basic rule of battle."
+  }
+]

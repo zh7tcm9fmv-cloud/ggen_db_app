@@ -1,0 +1,307 @@
+[
+  {
+    "Id": 1001,
+    "FunctionTypeIndex": 1,
+    "FunctionTipsDetailSetId": 1001
+  },
+  {
+    "Id": 1101,
+    "FunctionTypeIndex": 2,
+    "FunctionTipsDetailSetId": 1101
+  },
+  {
+    "Id": 1201,
+    "FunctionTypeIndex": 3,
+    "FunctionTipsDetailSetId": 1201
+  },
+  {
+    "Id": 1301,
+    "FunctionTypeIndex": 4,
+    "FunctionTipsDetailSetId": 1301
+  },
+  {
+    "Id": 1401,
+    "FunctionTypeIndex": 5,
+    "FunctionTipsDetailSetId": 1401
+  },
+  {
+    "Id": 1501,
+    "FunctionTypeIndex": 6,
+    "FunctionTipsDetailSetId": 1501
+  },
+  {
+    "Id": 1601,
+    "FunctionTypeIndex": 7,
+    "FunctionTipsDetailSetId": 1601
+  },
+  {
+    "Id": 1701,
+    "FunctionTypeIndex": 8,
+    "FunctionTipsDetailSetId": 1701
+  },
+  {
+    "Id": 1801,
+    "FunctionTypeIndex": 9,
+    "FunctionTipsDetailSetId": 1801
+  },
+  {
+    "Id": 1901,
+    "FunctionTypeIndex": 10,
+    "FunctionTipsDetailSetId": 1901
+  },
+  {
+    "Id": 2001,
+    "FunctionTypeIndex": 11,
+    "FunctionTipsDetailSetId": 2001
+  },
+  {
+    "Id": 2101,
+    "FunctionTypeIndex": 12,
+    "FunctionTipsDetailSetId": 2101
+  },
+  {
+    "Id": 2201,
+    "FunctionTypeIndex": 13,
+    "FunctionTipsDetailSetId": 2201
+  },
+  {
+    "Id": 2301,
+    "FunctionTypeIndex": 14,
+    "FunctionTipsDetailSetId": 2301
+  },
+  {
+    "Id": 2401,
+    "FunctionTypeIndex": 15,
+    "FunctionTipsDetailSetId": 2401
+  },
+  {
+    "Id": 2501,
+    "FunctionTypeIndex": 31,
+    "FunctionTipsDetailSetId": 2501
+  },
+  {
+    "Id": 2601,
+    "FunctionTypeIndex": 32,
+    "FunctionTipsDetailSetId": 2601
+  },
+  {
+    "Id": 2701,
+    "FunctionTypeIndex": 30,
+    "FunctionTipsDetailSetId": 2701
+  },
+  {
+    "Id": 2702,
+    "FunctionTypeIndex": 39,
+    "FunctionTipsDetailSetId": 2702
+  },
+  {
+    "Id": 2801,
+    "FunctionTypeIndex": 25,
+    "FunctionTipsDetailSetId": 2801
+  },
+  {
+    "Id": 2901,
+    "FunctionTypeIndex": 34,
+    "FunctionTipsDetailSetId": 2901
+  },
+  {
+    "Id": 2902,
+    "FunctionTypeIndex": 35,
+    "FunctionTipsDetailSetId": 2902
+  },
+  {
+    "Id": 3001,
+    "FunctionTypeIndex": 28,
+    "FunctionTipsDetailSetId": 3001
+  },
+  {
+    "Id": 3101,
+    "FunctionTypeIndex": 41,
+    "FunctionTipsDetailSetId": 3101
+  },
+  {
+    "Id": 3201,
+    "FunctionTypeIndex": 51,
+    "FunctionTipsDetailSetId": 3201
+  },
+  {
+    "Id": 5001,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5001
+  },
+  {
+    "Id": 5002,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5002
+  },
+  {
+    "Id": 5003,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5003
+  },
+  {
+    "Id": 5004,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5004
+  },
+  {
+    "Id": 5005,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5005
+  },
+  {
+    "Id": 5008,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5008
+  },
+  {
+    "Id": 5009,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5009
+  },
+  {
+    "Id": 5010,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5010
+  },
+  {
+    "Id": 5011,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5011
+  },
+  {
+    "Id": 5012,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5012
+  },
+  {
+    "Id": 5013,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5013
+  },
+  {
+    "Id": 5014,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5014
+  },
+  {
+    "Id": 5015,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5015
+  },
+  {
+    "Id": 5016,
+    "FunctionTypeIndex": 17,
+    "FunctionTipsDetailSetId": 5016
+  },
+  {
+    "Id": 5201,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5201
+  },
+  {
+    "Id": 5202,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5202
+  },
+  {
+    "Id": 5203,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5203
+  },
+  {
+    "Id": 5204,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5204
+  },
+  {
+    "Id": 5205,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5205
+  },
+  {
+    "Id": 5206,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5206
+  },
+  {
+    "Id": 5207,
+    "FunctionTypeIndex": 52,
+    "FunctionTipsDetailSetId": 5207
+  },
+  {
+    "Id": 9001,
+    "FunctionTypeIndex": 20,
+    "FunctionTipsDetailSetId": 9001
+  },
+  {
+    "Id": 9002,
+    "FunctionTypeIndex": 37,
+    "FunctionTipsDetailSetId": 9002
+  },
+  {
+    "Id": 9003,
+    "FunctionTypeIndex": 47,
+    "FunctionTipsDetailSetId": 9003
+  },
+  {
+    "Id": 9004,
+    "FunctionTypeIndex": 45,
+    "FunctionTipsDetailSetId": 9004
+  },
+  {
+    "Id": 9005,
+    "FunctionTypeIndex": 49,
+    "FunctionTipsDetailSetId": 9005
+  },
+  {
+    "Id": 9101,
+    "FunctionTypeIndex": 19,
+    "FunctionTipsDetailSetId": 9101
+  },
+  {
+    "Id": 9201,
+    "FunctionTypeIndex": 21,
+    "FunctionTipsDetailSetId": 9201
+  },
+  {
+    "Id": 9211,
+    "FunctionTypeIndex": 42,
+    "FunctionTipsDetailSetId": 9211
+  },
+  {
+    "Id": 9212,
+    "FunctionTypeIndex": 43,
+    "FunctionTipsDetailSetId": 9212
+  },
+  {
+    "Id": 9213,
+    "FunctionTypeIndex": 44,
+    "FunctionTipsDetailSetId": 9213
+  },
+  {
+    "Id": 9301,
+    "FunctionTypeIndex": 33,
+    "FunctionTipsDetailSetId": 9301
+  },
+  {
+    "Id": 9401,
+    "FunctionTypeIndex": 23,
+    "FunctionTipsDetailSetId": 9401
+  },
+  {
+    "Id": 9402,
+    "FunctionTypeIndex": 36,
+    "FunctionTipsDetailSetId": 9402
+  },
+  {
+    "Id": 9501,
+    "FunctionTypeIndex": 22,
+    "FunctionTipsDetailSetId": 9501
+  },
+  {
+    "Id": 9701,
+    "FunctionTypeIndex": 40,
+    "FunctionTipsDetailSetId": 9701
+  }
+]

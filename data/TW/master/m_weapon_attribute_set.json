@@ -1,0 +1,54 @@
+[
+  {
+    "WeaponAttributeSetId": 1,
+    "WeaponAttributeTypeIndex": 1
+  },
+  {
+    "WeaponAttributeSetId": 2,
+    "WeaponAttributeTypeIndex": 2
+  },
+  {
+    "WeaponAttributeSetId": 3,
+    "WeaponAttributeTypeIndex": 3
+  },
+  {
+    "WeaponAttributeSetId": 4,
+    "WeaponAttributeTypeIndex": 1
+  },
+  {
+    "WeaponAttributeSetId": 4,
+    "WeaponAttributeTypeIndex": 2
+  },
+  {
+    "WeaponAttributeSetId": 5,
+    "WeaponAttributeTypeIndex": 1
+  },
+  {
+    "WeaponAttributeSetId": 5,
+    "WeaponAttributeTypeIndex": 3
+  },
+  {
+    "WeaponAttributeSetId": 6,
+    "WeaponAttributeTypeIndex": 2
+  },
+  {
+    "WeaponAttributeSetId": 6,
+    "WeaponAttributeTypeIndex": 3
+  },
+  {
+    "WeaponAttributeSetId": 7,
+    "WeaponAttributeTypeIndex": 1
+  },
+  {
+    "WeaponAttributeSetId": 7,
+    "WeaponAttributeTypeIndex": 2
+  },
+  {
+    "WeaponAttributeSetId": 7,
+    "WeaponAttributeTypeIndex": 3
+  },
+  {
+    "WeaponAttributeSetId": 8,
+    "WeaponAttributeTypeIndex": 4
+  }
+]

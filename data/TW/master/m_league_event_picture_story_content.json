@@ -1,0 +1,142 @@
+[
+  {
+    "Id": 3000100101,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0010",
+    "SubtitleLanguageId": 250500003000100101,
+    "SortOrder": 1,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100102,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0020",
+    "SubtitleLanguageId": 250500003000100102,
+    "SortOrder": 2,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100103,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0030",
+    "SubtitleLanguageId": 250500003000100103,
+    "SortOrder": 3,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100104,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_03",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0040",
+    "SubtitleLanguageId": 250500003000100104,
+    "SortOrder": 4,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100105,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_03",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0050",
+    "SubtitleLanguageId": 250500003000100105,
+    "SortOrder": 5,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100106,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_02",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0060",
+    "SubtitleLanguageId": 250500003000100106,
+    "SortOrder": 6,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100107,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_opening_300010",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0070",
+    "SubtitleLanguageId": 250500003000100107,
+    "SortOrder": 7,
+    "IsShowTag": true,
+    "TagPositionAdjustValueY": 236
+  },
+  {
+    "Id": 3000100108,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_opening_300010",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0080",
+    "SubtitleLanguageId": 250500003000100108,
+    "SortOrder": 8,
+    "IsShowTag": true,
+    "TagPositionAdjustValueY": 236
+  },
+  {
+    "Id": 3000100109,
+    "LeagueEventPictureStoryGroupId": 30001001,
+    "SceneShotResourceId": "ml_picture_story_300010_04",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0090",
+    "SubtitleLanguageId": 250500003000100109,
+    "SortOrder": 9,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100201,
+    "LeagueEventPictureStoryGroupId": 30001002,
+    "SceneShotResourceId": "ml_picture_story_300010_02",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0100",
+    "SubtitleLanguageId": 250500003000100201,
+    "SortOrder": 1,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100202,
+    "LeagueEventPictureStoryGroupId": 30001002,
+    "SceneShotResourceId": "ml_picture_story_300010_02",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0110",
+    "SubtitleLanguageId": 250500003000100202,
+    "SortOrder": 2,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100203,
+    "LeagueEventPictureStoryGroupId": 30001002,
+    "SceneShotResourceId": "ml_picture_story_300010_02",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0130",
+    "SubtitleLanguageId": 250500003000100203,
+    "SortOrder": 3,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100204,
+    "LeagueEventPictureStoryGroupId": 30001002,
+    "SceneShotResourceId": "ml_picture_story_300010_04",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0140",
+    "SubtitleLanguageId": 250500003000100204,
+    "SortOrder": 4,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000100205,
+    "LeagueEventPictureStoryGroupId": 30001002,
+    "SceneShotResourceId": "ml_picture_story_300010_00",
+    "VoiceResourceId": "",
+    "SubtitleLanguageId": 0,
+    "SortOrder": 5,
+    "IsShowTag": true,
+    "TagPositionAdjustValueY": 0
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "StageScoreEvaluationSetId": 1,
+    "Step": 1,
+    "Score": 4000
+  },
+  {
+    "StageScoreEvaluationSetId": 1,
+    "Step": 2,
+    "Score": 7000
+  },
+  {
+    "StageScoreEvaluationSetId": 1,
+    "Step": 3,
+    "Score": 10000
+  }
+]

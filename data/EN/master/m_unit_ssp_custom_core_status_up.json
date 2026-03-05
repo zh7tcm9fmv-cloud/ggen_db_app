@@ -1,0 +1,2502 @@
+[
+  {
+    "Id": 100100010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100071002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100111002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100130002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100161002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100170002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100211002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100310002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100370002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100100380002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100300011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100300031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100500011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100700071002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100800010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100800021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100800030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 100900071002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 100900081002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300071002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101700121002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102100011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 102100021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 102200010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102200021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102200040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102200060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102300010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102300011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102600011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102900021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 102900211002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 103100020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 103100030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 103100090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 104400041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 105500016002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 105500026002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 106000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000130002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000141002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000170002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000211002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106000230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 106700011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 107000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 107000021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 107000051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 107000061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000131002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000141002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000151002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000161002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000220002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000310002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000331002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000360002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000370002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108000420002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108300010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108300020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108300031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108300051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108300061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108400011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108400021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 108500031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500091002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500130002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500151002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500220002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500311002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500351002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500370002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 109500381002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 109500391002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 109500401002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500420002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109500430002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109800011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109800031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109800051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109800061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 109800070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 109800100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 110000021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 110100011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111000081002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111000090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111000100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111400030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111400060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111400070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111400090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111400100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111500020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111500030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 111500040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500220002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500331002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500410002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500450002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500490002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 112500511002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 113300070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 113300080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 113300131002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 115000050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 115500011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 117500011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 117500041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 117500091002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000081002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000170002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000221002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000290002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000310002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000331002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000341002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000351002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000370002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 120000510002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000131002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000141002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000151002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000171002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000280002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000290002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000311002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000321002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121000340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700051002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 123000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000121002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000131002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000141002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000160002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000171002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000191002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 123000220002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000261002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 123000280002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 123000291002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000351002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000370002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 123000380002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000390002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000400002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000410002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000451002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000460002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000480002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000500002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000510002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000551002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 123000561002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 130000140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000160002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000170002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000221002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000231002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000281002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000290002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000321002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000330002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000350002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000360002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000390002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130000400002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130400020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130400070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130400080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130400110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130400121002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130500010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 130500050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130500061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130500081002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130800020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 130800030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 131000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000130002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 133000160002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000170002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000230002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 133000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000280002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000311002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000350002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000361002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000371002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 133000390002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000440002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000450002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000470002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000480002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000491002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000510002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000540002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000550002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000560002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000571002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000581002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000590002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 133000601002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000171002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000231002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000241002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000251002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 137000271002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000280002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000311002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000320002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000330002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000350002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000361002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000371002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000380002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000390002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000420002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000430002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000440002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000450002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000460002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000490002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000500002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000520002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000540002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137000560002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137500021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137500031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137500041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 137900061002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000160002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000171002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000190002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000281002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000291002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000300002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000310002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000320002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000331002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000420002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000421002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 2
+  },
+  {
+    "Id": 140000430002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140000731002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140100011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140800011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 140800041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 142000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 142000181002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 142000191002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 142000491002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 142000571002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000111002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000141002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000150002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000181002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000210002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000221002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000231002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000240002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000250002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000260002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000270002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000280002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000291002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000311002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000411002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000420002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000430002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000460002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000470002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000501002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000510002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000520002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000531002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000541002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000550002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000571002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000580002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000601002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000621002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000640002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000660002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000670002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000690002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000720002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000761002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143000826002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100041002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100131002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100171002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100191002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 143100200002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150000020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150000030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100070002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100090002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100110002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100130002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100180002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100301002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100340002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 150100391002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 160000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 165000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 170500060002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 170500080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 175000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 175000021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 176000010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 176000011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 176300020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 177100011002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 177100021002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 185000031002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 185000211002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 185000241002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 185000251002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 185000291002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  }
+]

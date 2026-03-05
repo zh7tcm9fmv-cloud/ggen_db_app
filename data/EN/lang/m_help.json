@@ -1,0 +1,770 @@
+[
+  {
+    "id": 170200000001001011,
+    "value": "Home"
+  },
+  {
+    "id": 170200000001001021,
+    "value": "Player Rank"
+  },
+  {
+    "id": 170200000001001031,
+    "value": "AP"
+  },
+  {
+    "id": 170200000001001041,
+    "value": "Capital"
+  },
+  {
+    "id": 170200000001001051,
+    "value": "Notices"
+  },
+  {
+    "id": 170200000001001061,
+    "value": "Gifts"
+  },
+  {
+    "id": 170200000001001071,
+    "value": "Missions"
+  },
+  {
+    "id": 170200000001001081,
+    "value": "Panel Missions"
+  },
+  {
+    "id": 170200000001001091,
+    "value": "Shop"
+  },
+  {
+    "id": 170200000001001101,
+    "value": "Diamond Shop"
+  },
+  {
+    "id": 170200000001001111,
+    "value": "Sortie"
+  },
+  {
+    "id": 170200000001001121,
+    "value": "Home Screen Unit"
+  },
+  {
+    "id": 170200000001011011,
+    "value": "Units"
+  },
+  {
+    "id": 170200000001011021,
+    "value": "Unit Stats"
+  },
+  {
+    "id": 170200000001011031,
+    "value": "Unit Types"
+  },
+  {
+    "id": 170200000001011041,
+    "value": "Weapons"
+  },
+  {
+    "id": 170200000001011051,
+    "value": "Weapon Attributes"
+  },
+  {
+    "id": 170200000001011061,
+    "value": "Weapon Effect"
+  },
+  {
+    "id": 170200000001011071,
+    "value": "MAP Weapon"
+  },
+  {
+    "id": 170200000001011081,
+    "value": "Unit Ability"
+  },
+  {
+    "id": 170200000001011091,
+    "value": "Modification"
+  },
+  {
+    "id": 170200000001011101,
+    "value": "Terrain Capability"
+  },
+  {
+    "id": 170200000001011111,
+    "value": "Mechanisms"
+  },
+  {
+    "id": 170200000001021011,
+    "value": "Characters"
+  },
+  {
+    "id": 170200000001021021,
+    "value": "Character Stats"
+  },
+  {
+    "id": 170200000001021031,
+    "value": "Character Types"
+  },
+  {
+    "id": 170200000001021041,
+    "value": "Character Abilities"
+  },
+  {
+    "id": 170200000001021051,
+    "value": "Character Skills"
+  },
+  {
+    "id": 170200000001021061,
+    "value": "Support Attack"
+  },
+  {
+    "id": 170200000001021071,
+    "value": "Support Defense"
+  },
+  {
+    "id": 170200000001031011,
+    "value": "Supporters"
+  },
+  {
+    "id": 170200000001031021,
+    "value": "HP and Attack Support"
+  },
+  {
+    "id": 170200000001031031,
+    "value": "Leader Skills"
+  },
+  {
+    "id": 170200000001031041,
+    "value": "Support Skills"
+  },
+  {
+    "id": 170200000001041011,
+    "value": "Upgrade"
+  },
+  {
+    "id": 170200000001041021,
+    "value": "Unit Level Upgrade"
+  },
+  {
+    "id": 170200000001041031,
+    "value": "Unit Limit Break"
+  },
+  {
+    "id": 170200000001041041,
+    "value": "Weapon Upgrade"
+  },
+  {
+    "id": 170200000001041051,
+    "value": "SP Conversion"
+  },
+  {
+    "id": 170200000001041052,
+    "value": "SSP Conversion"
+  },
+  {
+    "id": 170200000001041061,
+    "value": "Character Level Upgrade"
+  },
+  {
+    "id": 170200000001041071,
+    "value": "Supporter Level Upgrade"
+  },
+  {
+    "id": 170200000001041081,
+    "value": "Supporter Limit Break"
+  },
+  {
+    "id": 170200000001041091,
+    "value": "Dismantle"
+  },
+  {
+    "id": 170200000001051011,
+    "value": "Develop"
+  },
+  {
+    "id": 170200000001051021,
+    "value": "Development Diagram"
+  },
+  {
+    "id": 170200000001051031,
+    "value": "Ultimate Units"
+  },
+  {
+    "id": 170200000001061011,
+    "value": "Sortie Preparations"
+  },
+  {
+    "id": 170200000001061021,
+    "value": "Forces"
+  },
+  {
+    "id": 170200000001061031,
+    "value": "Saving Formations"
+  },
+  {
+    "id": 170200000001061041,
+    "value": "Type Match"
+  },
+  {
+    "id": 170200000001071011,
+    "value": "Stages"
+  },
+  {
+    "id": 170200000001071021,
+    "value": "Sortie Restrictions"
+  },
+  {
+    "id": 170200000001071031,
+    "value": "Victory and Defeat Conditions"
+  },
+  {
+    "id": 170200000001071041,
+    "value": "Mission Objectives"
+  },
+  {
+    "id": 170200000001071051,
+    "value": "Recommended CP"
+  },
+  {
+    "id": 170200000001071061,
+    "value": "First-Clear Rewards"
+  },
+  {
+    "id": 170200000001071071,
+    "value": "Capturing Units"
+  },
+  {
+    "id": 170200000001071081,
+    "value": "Stage Skip"
+  },
+  {
+    "id": 170200000001071091,
+    "value": "Terrain"
+  },
+  {
+    "id": 170200000001081011,
+    "value": "Battle Basics"
+  },
+  {
+    "id": 170200000001081021,
+    "value": "Vigor and MP"
+  },
+  {
+    "id": 170200000001081031,
+    "value": "Chance Step"
+  },
+  {
+    "id": 170200000001081041,
+    "value": "Auto Mode"
+  },
+  {
+    "id": 170200000001081051,
+    "value": "Double Speed"
+  },
+  {
+    "id": 170200000001081061,
+    "value": "Battle Score"
+  },
+  {
+    "id": 170200000001081071,
+    "value": "Support Attacks and Counter Supports"
+  },
+  {
+    "id": 170200000001081081,
+    "value": "Support Defense"
+  },
+  {
+    "id": 170200000001081091,
+    "value": "Counter Prediction"
+  },
+  {
+    "id": 170200000001091011,
+    "value": "Main Stages"
+  },
+  {
+    "id": 170200000001091021,
+    "value": "Boss Stages"
+  },
+  {
+    "id": 170200000001091031,
+    "value": "Hard Stages"
+  },
+  {
+    "id": 170200000001091041,
+    "value": "Secret Battles"
+  },
+  {
+    "id": 170200000001091051,
+    "value": "Boost"
+  },
+  {
+    "id": 170200000001091061,
+    "value": "History Stage"
+  },
+  {
+    "id": 170200000001101011,
+    "value": "Upgrade Stages"
+  },
+  {
+    "id": 170200000001111011,
+    "value": "Eternal Road"
+  },
+  {
+    "id": 170200000001112011,
+    "value": "Master League"
+  },
+  {
+    "id": 170200000001112021,
+    "value": "Rules"
+  },
+  {
+    "id": 170200000001112031,
+    "value": "Challenge Mode"
+  },
+  {
+    "id": 170200000001121011,
+    "value": "Event Stages"
+  },
+  {
+    "id": 170200000001121021,
+    "value": "Tactical Training"
+  },
+  {
+    "id": 170200000001121031,
+    "value": "Instructor's Challenge"
+  },
+  {
+    "id": 170200000001131011,
+    "value": "Mobile Suit Dock"
+  },
+  {
+    "id": 170200000001131021,
+    "value": "MS Dock Units"
+  },
+  {
+    "id": 170200000001131031,
+    "value": "Character Requests"
+  },
+  {
+    "id": 170200000001131041,
+    "value": "Request Rank"
+  },
+  {
+    "id": 170200000001131051,
+    "value": "Warship Cruise"
+  },
+  {
+    "id": 170200000001141011,
+    "value": "Unit Assembly"
+  },
+  {
+    "id": 170200000001141021,
+    "value": "Unit Assembly Ticket"
+  },
+  {
+    "id": 170200000001141031,
+    "value": "Exchange Pts and Exchange"
+  },
+  {
+    "id": 170200000001151011,
+    "value": "Menu"
+  },
+  {
+    "id": 170200000001151021,
+    "value": "Configuration"
+  },
+  {
+    "id": 170200000001151031,
+    "value": "Gallery"
+  },
+  {
+    "id": 170200000001151041,
+    "value": "Inventory"
+  },
+  {
+    "id": 170200000001151051,
+    "value": "Source"
+  },
+  {
+    "id": 170300000001001011,
+    "value": "Access Notices, Gifts, Missions, and navigate to various stages and shops from the Home screen."
+  },
+  {
+    "id": 170300000001001021,
+    "value": "Increasing your Player Rank will restore your AP to max value and increase the max limit.\n\nYou will need to earn Player Rank EXP from stages to rank up.\nAP will fully restore when you rank up.\n\nOnce you've reached the max Player Rank level, you won't be able to rank up further unless you increase its max level. Any additional Player Rank EXP earned will be lost."
+  },
+  {
+    "id": 170300000001001031,
+    "value": "AP is used when deploying to stages such as Main Stages, story events, and more.\n\nThey are consumed upon stage completion.\nNo AP is consumed when giving up or retrying a stage.\nAP recovers once every five minutes, except when they exceed the limit.\n\nYou can recover AP by using AP packs or diamonds.\nThere is a daily limit on restoring AP with diamonds. The cost increases with each recovery made throughout the day."
+  },
+  {
+    "id": 170300000001001041,
+    "value": "Capital can be used for unit development, shop purchases, and more.\n\nCapital can be obtained by dismantling units, clearing stages, and more."
+  },
+  {
+    "id": 170300000001001051,
+    "value": "Check game updates, event announcements, and bug reports by accessing Notices from the Home screen."
+  },
+  {
+    "id": 170300000001001061,
+    "value": "Access Gifts from the Home screen to receive in-game items and rewards.\n*Most rewards are directly added to your inventory. However, items exceeding the Inventory limit will be sent to Gifts.\n*Some rewards will be sent to Gifts regardless of the Inventory limit.\n\nItems and rewards in the Gifts section may have expiration dates.\n*Gifts will automatically be deleted after the expiry date."
+  },
+  {
+    "id": 170300000001001071,
+    "value": "You can check the conditions for each mission from the Missions section on the home screen.\nEarn various rewards by fulfilling these conditions.\n\nMission types:\n\n- Daily Missions\nThese missions reset daily at 01:00 AM JST, allowing multiple attempts.\n\n- Cumulative Missions\nThese are set missions for various in-game content. There is no deadline and they can be attempted at any time.\n\n- Event Missions\nThese are available only during a specific period. Event missions have deadlines for attempts and expiry dates for rewards. Be careful as you will no longer be able to attempt those missions nor claim their rewards past the deadline. Be aware that once the deadline passes, you will no longer be able to attempt the missions or claim the rewards."
+  },
+  {
+    "id": 170300000001001081,
+    "value": "Earn various rewards by meeting set conditions.\nThese missions are unlocked after clearing the tutorial and can be attempted without limit thereafter.\n\nYou will not be able to obtain rewards from the missions that aren't unlocked, even if the conditions are met.\n\nIf all beginner, intermediate, and advanced missions are completed, the advanced missions will not be shown on the Home screen."
+  },
+  {
+    "id": 170300000001001091,
+    "value": "Here are the different shop types found in the game:\n\n- Capital Shop\nItems can be purchased with Capital.\n\n- G-Shop\nItems can be purchased with G-Shop Pts.\n\n- Premium Shop\nItems can be purchased with diamonds .\n\n- Rare Medal Shop\nItems can be purchased with rare medals."
+  },
+  {
+    "id": 170300000001001101,
+    "value": "This is the shop where you can purchase diamonds and pack items."
+  },
+  {
+    "id": 170300000001001111,
+    "value": "Tap Sortie on the home screen to proceed to the ongoing Main Stages."
+  },
+  {
+    "id": 170300000001001121,
+    "value": "You can change the units, backgrounds, and other elements displayed on the home screen.\n\nUp to five home units can be set based on the style.\nFor each style, you can set up to five units.\n\nDifferent styles are unlocked based on the number of units registered in the database.\n\nIf multiple units are set, you can switch the displayed unit by tapping on it on the Home screen.\n\nHome screen animations can be obtained through limit breaking and developing specific UR units."
+  },
+  {
+    "id": 170300000001011011,
+    "value": "Units can be obtained from Unit Assemblies, developed through the Development Diagrams, or acquired by capturing enemy units in various stages.\n\nUnits have five rarity levels: N, R, SR, SSR, and UR.\n\nThere are two ways to obtain the units.\n\n- Development Units\nThese can be obtained through the use of a Development Diagram. Units that can be captured in various stages are also categorized as development units.\n\n- Unit Assembly-Obtained Units\nThese can only be obtained through Unit Assemblies. These units cannot be obtained by developing or capturing enemy units, and they cannot be used as materials for development.\n\n- Other Obtainable Units\nThese are units that can be obtained through events, gift distributions, etc."
+  },
+  {
+    "id": 170300000001011021,
+    "value": "Units have the following stats:\n\n- HP\nThe unit's durability. HP decreases when the unit is attacked by enemies, and the unit is destroyed once its HP reaches 0.\n\n- EN\nEN is consumed when weapons are used. Weapons cannot be used without EN.\n\n- ATK\nAffects the amount of damage dealt to enemy units.\n\n- DEF\nAffects the amount of damage taken from enemy units.\n\n- MOB\nAffects unit's Accuracy and Evasion.\n\n- MOV\nDetermines how far a unit can move."
+  },
+  {
+    "id": 170300000001011031,
+    "value": "Here are the different types of units:\n\n- Attack Type\nUnits with relatively high ATK, specializing in dealing damage.\n\n- Support Type\nThese units have relatively high EN and mobility, making them excellent at supporting allied units' attacks.\n\n- Durability Type\nUnits with relatively high HP and DEF, specializing in reducing damage taken."
+  },
+  {
+    "id": 170300000001011041,
+    "value": "Every unit is equipped with at least one weapon.\n\nWeapons have the following stats:\n\n- Range\nThe weapon's firing range.\n\n- Power\nThe weapon's attack power.\n\n- EN\nThe amount of EN consumed upon use.\n\n- Accuracy\nThe weapon's accuracy rate against enemy units.\n\n- Critical\nThe probability of a critical hit occurring."
+  },
+  {
+    "id": 170300000001011051,
+    "value": "Each weapon has at least one of three attributes: Beam, Physical, and Special.\n\nEX Weapons possess various attributes such as Beam, Physical, and Special.\nAbilities that reduce damage from specific weapon attributes do not affect EX Weapons.\n\nSome weapons may have usage restrictions based on the conditions.\nYou can check these restrictions in the weapon details."
+  },
+  {
+    "id": 170300000001011061,
+    "value": "Weapons have effects that vary depending on unit type.\n\nTypes of weapon effects:\n\n- Powerful Type\nEffects: Primarily deals significant damage to enemies.\nIcon Color: Red\n\n- Impairing Type\nEffects: Primarily weakens enemy units.\nIcon Color: Yellow\n\n- Interference Type\nEffects: Primarily disrupts enemy units' actions.\nIcon Color: Purple\n\n- Preemptive Strike\nEnables attack at the start of battle.\nBattles begin in the preemptive phase, then proceed to the normal phase. Weapons with preemptive strike will employ it in the preemptive phase.\nThe effect applies to Counters, Support Attacks, and Counter Supports, enabling their use at the start of battle.\n*If both the attacker and the counterattacker have Preemptive Strike, the attacker is prioritized.\n*If an enemy's HP falls to 0 in the preemptive phase, they will not take part in the normal phase.\n\n- Other\nEffects: No special effects, but consumes less EN\nIcon Color: Green\n\n*Stacking Rules for Impairing Effects:\nIdentical impairing effects do not stack. Instead, the effect with the higher value will overwrite the lower one.\nAdditionally, the duration (number of turns) of the impairing effect will be replaced by the duration of the higher-value effect.\n\n*Maximum Range Reduction Disruptive Effect Rules\nThe maximum range reduction Weapon Effect does not get applied until after the resolution of the initial attack and all triggered actions such as counterattacks.\nThe maximum range reduction Weapon Effect only reduces the maximum range. The maximum range can never go below the minimum range."
+  },
+  {
+    "id": 170300000001011071,
+    "value": "Certain units can wield special weapons.\nUnlike regular weapons, MAP Weapons can attack multiple units within range at once, deal damage to the entire area, restore HP or increase MP of allies, etc.\n\nNotes on MAP Weapons:\n- MAP Weapons cannot be used after moving.\n- Bonus Actions will not be triggered upon destroying an enemy unit with a MAP Weapon.\n- Auto Bonus Actions will not activate after using MAP Weapons.\n- MAP Weapons have a limited number of uses."
+  },
+  {
+    "id": 170300000001011081,
+    "value": "Unit Abilities are unique effects that units possess."
+  },
+  {
+    "id": 170300000001011091,
+    "value": "Modifications can be equipped to grant abilities, boost stats, and allow for customizations to your liking.\nOnly one modification can be equipped per unit.\n\nModifications can be obtained from the Shop, Character Requests, etc."
+  },
+  {
+    "id": 170300000001011101,
+    "value": "There are various types of terrains for battle stages: Space, Atmospheric, Land, Sea, and Underwater.\nUnits have a terrain capability rating of \"circle\", \"triangle\", or \"dash\" for each terrain type:\n\n- Terrain Capability \"circle\"\nWhen placed on the corresponding terrain, the unit can move as usual.\n\n- Terrain Capability \"triangle\"\nWhen placed on the corresponding terrain, the unit's movement range is halved.\n\n- Terrain Capability \"dash\"\nThe unit cannot be placed on the corresponding terrain. With no available spaces, the unit will not be able to sortie in stages."
+  },
+  {
+    "id": 170300000001011111,
+    "value": "Units possess distinctive functions called Mechanisms.\n\nExamples of Mechanisms:\n\n- Shield Defense\nThis further reduces damage when defending or using Support Defense.\n\n- Occupied Space\nSome units display different sizes during battle.\n\n- Transformation\nSome units can transform during battle.\nTransforming may cause the unit's range of movement and usable weapons to change.\n\n- SD\nCertain units can only be piloted by a specified Linked Character.\n\n- Evacuation\nWhen their HP falls to 0 during battle, certain units will transform into a different unit.\nThey cannot be transformed back into the original unit during the same battle.\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  },
+  {
+    "id": 170300000001021011,
+    "value": "Characters can be obtained through scouting or by acquiring specific units from the Unit Assemblies.\n*Once acquired, you cannot obtain the same character twice.\n\nCharacters have four rarity levels: R, SR, SSR, and UR.\nUnits with no assigned characters cannot be sortied."
+  },
+  {
+    "id": 170300000001021021,
+    "value": "Characters have the following stats:\n\n- Ranged\nThe higher the value, the greater the power when using Ranged-type weapons.\n\n- Melee\nThe higher the value, the greater the power when using Melee-type weapons.\n\n- Awaken\nThe higher the value, the greater the power when using Awaken-type weapons.\n\n- Defense\nThe higher the value, the less damage the character takes when attacked by enemy units.\n\n- Reaction\nThe higher the value, the higher the character's evasion rate when attacked by enemy units.\n\n- SP\nConsumed when using character skills."
+  },
+  {
+    "id": 170300000001021031,
+    "value": "A character type represents the role in which a given character excels.\nHere are the different character types:\n\n- Attack Type\nCharacters with skills and abilities that make it easier to deal damage to enemy units.\nThey may also have abilities that trigger more Bonus Actions.\n\n- Support Type\nCharacters with skills and abilities that weaken enemy units. They often have the Support Attack ability, which allows them to assist in attacks made by allied units within range, even when they have already performed an action.\n\n- Durability Type\nCharacters with skills and abilities that disrupt or hinder enemy units.\nThey typically have the Support Defense ability, which allows them to take damage of allied units within movement range."
+  },
+  {
+    "id": 170300000001021041,
+    "value": "Characters possess unique effects called Character Abilities.\n\nNew abilities can be learned by raising characters' level."
+  },
+  {
+    "id": 170300000001021051,
+    "value": "Characters possess unique skills called Character Skills.\nCharacters may learn skills by reaching certain levels.\n\nIf a unit has not yet taken action during your phase, you can spend SP to activate a skill.\nAfter activating a character skill, you cannot activate another character skill with the same effect on that unit until the previous effect expires.\n\nAdditionally, skills have a priority order for their effects.\n\nUsing the character skill Sway will not allow you to evade attacks made with the weapon effect Absolute Hit.\nSimilarly, using the character skill Lock On will not enable you to hit a unit that has activated the character skill Sway.\n\nChance Step, Support Attack, and Support Defense count increases granted by a Character Skill will remain until used."
+  },
+  {
+    "id": 170300000001021061,
+    "value": "These are unique abilities possessed by Support-type characters.\nThey allow the character to perform Support Attack and Counter Support during battle.\n\nThese can only be used a limited number of times during a phase, which depends on the character."
+  },
+  {
+    "id": 170300000001021071,
+    "value": "These are unique abilities possessed by Durability-type characters.\nDuring battle, they can perform Support Defense for units within movement range.\n\nThese can only be used a limited number of times during a phase, which depends on the character."
+  },
+  {
+    "id": 170300000001031011,
+    "value": "One supporter can be assigned per squad, increasing the squad's stats.\n\nSupporters have leader skills and support skills.\n\nYou cannot assign the same supporter to both Squad 1 and Squad 2 during unit formation."
+  },
+  {
+    "id": 170300000001031021,
+    "value": "HP Support and Attack Support refer to the increased stats of the squad when a supporter is assigned.\n\n- HP Support\nThe squad's HP will increase by the displayed value when a supporter is added.\n\n- Attack Support\nThe squad's ATK will increase by the displayed value when a supporter is added."
+  },
+  {
+    "id": 170300000001031031,
+    "value": "Leader skills are among the skills that supporters possess.\nLeader skills can boost the stats of units that meet the specified conditions.\n\nThe conditions for activating leader skills are based on the following:\n\n- Tags\nThe tags vary in type and number based on the units' characteristics.\n\n- Series\nThe title of the work associated with the unit."
+  },
+  {
+    "id": 170300000001031041,
+    "value": "Support skills are one type of skill that supporters possess.\n\nEach supporter can use a support skill once per battle.\n\nSupport skills can be used during your phase by units that have not yet taken action.\n\nSupport skills are activated based on units within the same squad.\nUnits that have already taken action can also serve as a base for support skills."
+  },
+  {
+    "id": 170300000001041011,
+    "value": "Upgrading allows you to strengthen units, characters, and supporters.\n\nUpgrade materials are required to perform an upgrade.\nThese materials can be acquired in many ways, including Main Stages and Upgrade Stages."
+  },
+  {
+    "id": 170300000001041021,
+    "value": "Using unit upgrade data will raise the levels and stats of the units."
+  },
+  {
+    "id": 170300000001041031,
+    "value": "To limit break a unit, consume either an identical unit or appropriate limit break materials.\nThe unit's Limit Break Level will increase by one for each unit used, regardless of the Limit Break Level of the unit used as material.\n\nLimit breaking a unit increases its stats.\n\nLimit breaking may also unlock a home screen animation for some UR units."
+  },
+  {
+    "id": 170300000001041041,
+    "value": "Upgrade weapons by using weapon upgrade Material.\nWhen you raise the level of the weapon, its power and weapon effects also increase.\nAdditionally, the EN cost when using the weapon may decrease. "
+  },
+  {
+    "id": 170300000001041051,
+    "value": "Convert units and characters into SP by using SP conversion items.\nOnce a unit or character is converted into SP, their stats are boosted and their level cap is raised to 100.\nThe character skills and abilities of certain characters may be enhanced when they are converted into SP.\nCharacter skills and abilities that can be acquired by leveling up may also be added.\n\n*SP conversion can only be performed on units and characters of SSR rarity or lower.\n*SP-converted units cannot be used in Development as material."
+  },
+  {
+    "id": 170300000001041052,
+    "value": "By using an SSP Conversion Chip on a unit that reached level 100 and maximum limit break, SSP conversion can be performed.\nSSP-converted units unlock retrofit levels and Custom Cores.\n\n・Retrofit Level Upgrade\nBy consuming Unit Upgrade Data, the unit's retrofit level can be upgraded.\nRaising retrofit levels increases a unit's stats, and reaching a specific level unlocks the Custom Core feature.\n\n・Learning Custom Core\nBy consuming Series Development Materials, etc., the unlocked Custom Cores can be learned.\nLearning it enhances unit performance, adding new weapons and increasing mobility for some units.\n\n*SSP conversion can only be performed on units of SSR rarity or lower.\n*Weapons added through Custom Cores can only be upgraded using Custom Cores and do not follow the usual weapon-leveling process.\n*The upgrades obtained through Custom Cores vary by unit.\n*Units that have undergone SSP Conversion cannot be dismantled."
+  },
+  {
+    "id": 170300000001041061,
+    "value": "Perform level upgrades by using Character Upgrade Data.\nCharacters' stats will improve as their level increases. \n\nMoreover, when characters reach certain levels, they may acquire new character skills and abilities."
+  },
+  {
+    "id": 170300000001041071,
+    "value": "Perform level upgrades by using Supporter Upgrade Data.\nHP support and Attack Support increase as you level up."
+  },
+  {
+    "id": 170300000001041081,
+    "value": "Limit break a supporter by using an identical supporter or appropriate limit break materials.\nThe supporter's stats will increase when performing a limit break."
+  },
+  {
+    "id": 170300000001041091,
+    "value": "You can dismantle any units and supporters you no longer need from the Upgrade screen.\n\nDepending on the specific unit or supporter you dismantle, you will receive various rewards such as Capital, Rare Medals, G-Shop Points, and more.\n\nIf you dismantle a limit broken unit, you will receive unit-specific limit break materials based on the number of limit breaks performed.\n*For example, if a unit has reached Limit Break Level 2, you will receive two exclusive limit break materials."
+  },
+  {
+    "id": 170300000001051011,
+    "value": "To develop a unit, you will need Capital and materials such as unit materials that meet specific requirements.\n\n- Materials\nCertain unique materials are required to develop specific units.\nYou can obtain these unique materials from the Main Stages.\n\n- Conditions for Unit Materials\nUnits must reach the required level to be used as materials.\nWhen a unit is used as material for development, its level will carry over to the newly developed unit.\n\n*Other enhancements (excluding level) will not carry over.\n*If multiple units are consumed, the highest level will carry over.\n*If a limit broken unit is used as material for development, you will receive unit-specific limit break materials based on the number of limit breaks performed."
+  },
+  {
+    "id": 170300000001051021,
+    "value": "When you acquire units through development or Main Stages, they will be registered in the Development Diagram.\nEach Diagram is arranged by series. Obtain completion rewards by registering all the units listed in a given Diagram."
+  },
+  {
+    "id": 170300000001051031,
+    "value": "Ultimate Units are special units that can be obtained by completing specific Development Diagrams.\nOnce obtained, Ultimate Units are registered in the Ultimate Diagram. You can further enhance Ultimate Units by conducting additional development.\n\nTo develop this type of unit, special materials known as Ultimate Unit materials are required."
+  },
+  {
+    "id": 170300000001061011,
+    "value": "Sortie Preparations is a feature that allows you to create a squad by combining units, characters, and supporters.\n\nYou can form a squad of five units (each with a character onboard) and one supporter.\n\nThere are two types of squads:\n\n- Series Squad\nThe squad's formation is restricted to units and characters tagged with specific series and are intended for use in the Main Stages. During battles for a matching series, the stats will increase.\n\n- Free Squad\nThis squad's formation has no restrictions."
+  },
+  {
+    "id": 170300000001061021,
+    "value": "Forces represent the affiliation of each unit during battle.\nBelow are the different types of forces:\n\n- Your Forces\nForces that are controlled and assembled by the player.\nYou can perform actions during your designated phase.\n\n- Guest Forces\nForces that are part of the storyline and are assigned for each stage.\nWhile they are not assembled by the player, they can still be controlled during your designated phase.\nCaptures are possible when Guest Forces destroy enemy units.\n\n- Enemy Forces\nThe opposing forces against Your (Player) Forces, Third Forces, and Friendly Forces.\nTheir actions are automatically executed during the Enemy phase.\n\n- Third Forces\nThe opposing forces against Your (Player) Forces, Enemy Forces, and Friendly Forces.\nTheir actions are automatically executed during the Third phase.\n\n- Friendly Forces\nThe opposing forces against Enemy Forces and Third Forces.\nTheir actions are automatically executed during the Friendly phase."
+  },
+  {
+    "id": 170300000001061031,
+    "value": "You can save up to twenty of your favorite formations, which can be edited from the Formations screen.\nYou can assign a custom name to each saved formation.\n\nLoad saved formations from the Sortie screen."
+  },
+  {
+    "id": 170300000001061041,
+    "value": "The unit and character types in a squad must match.\n\nBy matching the types, ability effects are maximized, enhancing the overall effectiveness of units in battle."
+  },
+  {
+    "id": 170300000001071011,
+    "value": "Access various stages, such as Main Stages and Upgrade Stages, from the Stage screen by tapping Stages located at the bottom menu of the screen.\n\n- Main Stages\nYou can access various Gundam universes.\n\n- Events\nYou can access Tactical Training or view a list of various events.\n\n- Upgrade Stages\nThese are stages where you can easily obtain various materials such as Capital and Unit Upgrade materials."
+  },
+  {
+    "id": 170300000001071021,
+    "value": "Series squads can only include units and characters that belong to the same series, and these can be acquired through Development Diagrams or scouting.\n\nRestrictions apply only to units and characters.\n*Supporters are not subject to these restrictions and can be chosen regardless of the series.\n*A Linked Unit and Linked Character can only be deployed when both the Unit and Character satisfy the Sortie Restrictions."
+  },
+  {
+    "id": 170300000001071031,
+    "value": "Each stage has specific Victory and Defeat Conditions."
+  },
+  {
+    "id": 170300000001071041,
+    "value": "There may be Mission Objectives set for a given stage.\nClear the mission objectives to progress through battles and unlock Victory Conditions."
+  },
+  {
+    "id": 170300000001071051,
+    "value": "The Recommended Combat Power is an indication of the required combat power to successfully clear a stage."
+  },
+  {
+    "id": 170300000001071061,
+    "value": "First-clear rewards are one-time reward that can be acquired after clearing a battle for the first time."
+  },
+  {
+    "id": 170300000001071071,
+    "value": "Certain enemy units that are defeated in battle can be captured.\n\nAny captured units will be obtained after clearing the stage.\n*Captured units will not be obtained if the stage is not cleared."
+  },
+  {
+    "id": 170300000001071081,
+    "value": "Clear a stage with a Battle Score of 3 to unlock the skip feature.\n\nThe number of times you can skip a stage is limited each day, depending on the stage."
+  },
+  {
+    "id": 170300000001071091,
+    "value": "There are five types of terrain:\n- Space\n- Atmospheric\n- Land\n- Sea\n- Underwater"
+  },
+  {
+    "id": 170300000001081011,
+    "value": "Basic battle flow:\n\nThe flow of the phases are listed below.\nYour Forces → Friendly Forces → Enemy Forces → Third Forces\n\nAfter the Third Forces phase ends, the cycle returns to Your Forces phase.\n\n\nDuring your phase:\n\n- Choose the unit you want to control.\n- Move the unit on the battlefield.\n- After moving, select the weapon you want to use.\n- Choose the enemy unit you wish to attack.\n- Attack the selected enemy.\n\nAfter performing the attack, the process loops back to selecting a unit to control.\nIf there are no more units to control, your phase ends, and the next one begins."
+  },
+  {
+    "id": 170300000001081021,
+    "value": "Vigor causes a change in character's stats during battle based on MP value.\nVigor increases the damage dealt during attacks.\n\nVigor has four levels: Normal, High, Max, and Supercharged.\nAttack damage increases depending on the Vigor level.\nSome weapons can only be used when your Vigor reaches a certain level.\n\nSome characters have abilities that, when their Vigor is Supercharged, apply buffs for several turns. When the effect ends, their MP is reduced to 0.\nDuring the effect, MP Lock is applied.\n\nMP increases through the following actions:\n- By successfully landing an attack.\n- By performing Support Attack or Support Defense.\n\nMP decreases under the following conditions:\n- By receiving an attack from an enemy unit.\n- By having an attack evaded by an enemy unit."
+  },
+  {
+    "id": 170300000001081031,
+    "value": "A Chance Step occurs during battle when an enemy unit is destroyed.\n\nWhen a Chance Step occurs, a unit that has destroyed another unit can perform an additional action.\nThere is a limited number of Bonus Actions during each phase, which depends on the abilities of the character on board."
+  },
+  {
+    "id": 170300000001081041,
+    "value": "Auto is a feature that allows battles to proceed automatically.\n\nYou can enable Auto by tapping Auto located at the top right of the screen during battle.\nWhen enabled, actions such as using skills will be executed automatically.\n\n\nThe Auto mode can be switched to the following options:\n\n- Auto-Advance All Phases\nAll phases of battle will advance automatically.\n\n- Auto-Advance Auxiliary Force\nOnly the Enemy Phase, Friendly phase, and Third phase progress automatically, while the player phase is manually controlled.\n\n- Manual Operation\nThe entire battle is manually controlled."
+  },
+  {
+    "id": 170300000001081051,
+    "value": "In battle, tap the Double Speed Button located at the top right of the screen to change the progress speed.\n\nTap to toggle the battle speed between normal and double."
+  },
+  {
+    "id": 170300000001081061,
+    "value": "Battle Score is a feature that evaluates the outcome of a battle.\n\nBattles are rated using stars, with the number of stars awarded depending on the score achieved in the stage.\nAchieving a Battle Score of 3 will unlock the ability to skip that stage."
+  },
+  {
+    "id": 170300000001081071,
+    "value": "Support Attack is an ability only possessed by certain characters.\n\nWhen one unit in your forces attacks, another unit within range can perform a Support Attack.\n\nSupport Attack and Counter Support can be used even if the character has already performed an action during the phase.\nThe number of Support Attacks and Counter Supports that can be used per phase is limited, depending on the characters.\nUp to three allied units can take part in a Support Attack or Support Counter in a single battle.\nThe order for Support Attack is determined by Mobility, with higher-Mobility units acting first."
+  },
+  {
+    "id": 170300000001081081,
+    "value": "Support Defense is an ability only possessed by certain characters.\n\nWhen an enemy attacks an allied unit within the character's movement range, the character can take damage in place of the attacked allied unit. However, Units who are not able to move into specific spaces (for example, due to Terrain Capabilities) won't be able to perform Support Defense.\n\nSupport Defense can be used even if the character has already performed an action during the phase.\nThe number of Support Defense that can be used per phase is limited, depending on the characters."
+  },
+  {
+    "id": 170300000001081091,
+    "value": "Exclamation marks displayed on the field when moving a unit indicate the attack range of enemy units. \nYou can avoid a counterattack by attacking from outside the enemy unit's attack range."
+  },
+  {
+    "id": 170300000001091011,
+    "value": "Main Stages are where you can play out scenarios from various Gundam series.\nBy clearing all the stages of a series on Normal difficulty, a new series will unlock."
+  },
+  {
+    "id": 170300000001091021,
+    "value": "Boss Stages are special stages within the Main Stages.\n\nPowerful enemy forces will emerge, so make sure to prepare thoroughly before taking on the challenge."
+  },
+  {
+    "id": 170300000001091031,
+    "value": "Hard Stages are high-difficulty stages within the Main Stages.\n\nThey are unlocked after completing all Normal difficulty stages of a series."
+  },
+  {
+    "id": 170300000001091041,
+    "value": "Secret Battles are special battles that occur in certain stages.\n\nThese battles are triggered by meeting set conditions during the battle, and powerful enemy forces will appear.\nClearing Secret Battles allow you to earn special rewards.\n\nThe conditions for triggering a Secret Battle vary by stage, and these conditions can be viewed via Stage Details."
+  },
+  {
+    "id": 170300000001091051,
+    "value": "Certain stages have Boost effects.\n\nIn these stages, the stats will increase for units that belong to the specified series or tags."
+  },
+  {
+    "id": 170300000001091061,
+    "value": "In History Stages, you can play through past Story Events.\n\nGameplay differs slightly from when the event was originally held, but you can still experience the same story and receive rewards."
+  },
+  {
+    "id": 170300000001101011,
+    "value": "Upgrade Stages are a stage type where you can obtain items such as Capital and any type of Upgrade Data.\n\nEach category can only be played a limited number of times per day.\nThe limit resets daily at 01:00 AM JST.\n\nAvailable Upgrade Stages:\n\n- Upgrade Stages (Capital)\nStages where you can earn Capital.\n\n- Upgrade Stages (Units)\nStages where you can acquire a lot of EXP for your sortied units.\n*You will receive unit upgrade data if you skip the stage.\n\n- Upgrade Stages (Characters)\nStages where you can acquire a lot of EXP for your sortied characters.\n*You will receive character upgrade data if you skip the stage.\n\n- Upgrade Stages (Supporters)\nStages where you can acquire a lot of EXP for your sortied supporters.\n*You will receive supporter upgrade data if you skip the stage."
+  },
+  {
+    "id": 170300000001111011,
+    "value": "Eternal Road has restrictions on units and characters in your formation.\n\nAlthough the difficulty is high, clearing these stages rewards you with special items."
+  },
+  {
+    "id": 170300000001112011,
+    "value": "In Master League, you will compete against various players and be able to earn incredible rewards.\nBased on how well you do in a simulation, you will be given a score.\nYour score will be determined by the strength of your opponent and how well you did in a simulation.\nWhen your total score after facing 5 opponents reaches the required threshold, you will be promoted to a higher league where you will be matched against even stronger opponents, allowing you to earn higher scores.\nYou will receive a reward each time you are promoted to a higher league and at the end of the event. Your reward at the end of the event will be determined by your Event Top Score."
+  },
+  {
+    "id": 170300000001112021,
+    "value": "- Rules\nIn Master League, the same unit cannot be included in a Formation more than once.\n\nAll units will also move and act automatically during battle simulations.\nAdditionally, unlike standard battle rules, only the sum of a Unit's MOB + Reaction determines when it gets to act. The force a Unit belongs to has no bearing on action order.\n\n- Season-Specific Rules\nTerrain type and boosts differ every Season.\n*Boosts are stat increases that apply to all Units with a specific Tag."
+  },
+  {
+    "id": 170300000001112031,
+    "value": "Challenge Mode can be unlocked by reaching a certain score after being promoted to the Master League.\nIn Challenge Mode, your opponents will become stronger each time you win, allowing you to earn an even higher score.\n*In some cases, even when you win, you may be forced to face opponents who are on the same level as you if the other participants are determined to be significantly stronger than you."
+  },
+  {
+    "id": 170300000001121011,
+    "value": "There are stages available for a limited time during specific periods, as well as events like Tactical Training."
+  },
+  {
+    "id": 170300000001121021,
+    "value": "Tactical Training is a stage type designed to help you learn the controls and functions used in battle."
+  },
+  {
+    "id": 170300000001121031,
+    "value": "\"Instructor's Challenge\" is a special stage where you can learn battle gameplay techniques through hands-on practice."
+  },
+  {
+    "id": 170300000001131011,
+    "value": "The MS Dock is a feature within your Base, where you can display your MS Dock Units.\n\nArrange and place your favorite MS Dock Units to create your very own MS Dock."
+  },
+  {
+    "id": 170300000001131021,
+    "value": "MS Dock Units are units that can be displayed in the MS Dock.\n\nCommon method to obtain:\n\n- Series Clear Rewards\nAchieve a Battle Score of 3 in all stages of the series on Normal difficulty.\n\n- Series Completion Rewards\nAchieve a Battle Score of 3 in all stages of the series on both Normal and Hard difficulties.\nClear a stage with secret conditions with a Battle Score of 4."
+  },
+  {
+    "id": 170300000001131031,
+    "value": "Character Requests are a feature within your Base.\n\nYou can receive requests from characters and earn various rewards by completing them."
+  },
+  {
+    "id": 170300000001131041,
+    "value": "Raise a character's Request Rank by completing their Character Requests.\n\nSpecial requests will unlock as the Request Rank rises.\nGet rewarded with modifications for completing these special requests."
+  },
+  {
+    "id": 170300000001131051,
+    "value": "Warship Cruise is a feature within your Base where you can obtain resources such as AP and Capital at regular intervals.\n\nThe number of items you can acquire increases with your Player Rank."
+  },
+  {
+    "id": 170300000001141011,
+    "value": "Unit Assembly is a feature where you can use Diamonds to obtain units and supporters.\n\nThe Premium Unit Assembly, available at all times, as well as the limited-time Unit Assembly, available only during specific periods, will appear in the list.\nEach Unit Assembly offers different units and supporters.\n\nThere are two Unit Assembly options available: a single pull and a 10 pull.\nSome 10-pull Unit Assemblies guarantee a unit or supporter of a specified rarity or higher.\n*More information can be found in the details of each Unit Assembly."
+  },
+  {
+    "id": 170300000001141021,
+    "value": "Unit Assembly Tickets are items that let you use the Unit Assemblies.\n\nSome Unit Assemblies require the use of Unit Assembly Tickets instead of Diamonds.\nEach Unit Assembly Ticket is associated with a specific Unit Assembly."
+  },
+  {
+    "id": 170300000001141031,
+    "value": "Some Unit Assemblies have an Exchange Pts system.\nExchange Pts are points you can acquire from the Unit Assembly. They can be used at the Exchange to trade for various items.\n\nSome Unit Assemblies come with Exchange Pts.\nEach time you obtain a unit or supporter, you will earn 1 Exchange Pt, regardless of the rarity.\n\nUsing Unit Assembly Tickets will contribute to the corresponding Exchange Pts.\n\nYou can trade your Exchange Pts for items such as units or Unit Assembly Tickets at the Exchange.\nThe selection of items available for exchange will vary depending on the Unit Assemblies.\nPlease check the Exchange for more details."
+  },
+  {
+    "id": 170300000001151011,
+    "value": "Access various features, such as Diamond Shop and Gallery, from the Menu screen.\n\nNavigate to Menu from the far-right bottom of the screen.\nAvailable features from the Menu:\n\n- Diamond Shop\nYou can purchase diamonds, check your balance, and more.\n\n- Profile\nCheck your Player Rank EXP progress, choose your player name, and review your overall progress in G Generation Eternal.\n\n- Inventory\nYou can view a list of your acquired items, upgrade materials, development materials, modifications, and Limit Break materials.\n\n- Gallery\nView completed stories, unit database, character database, series database, and more.\n\n- Friend Invitations\nYou can view your invitation code and enter codes received from other players.\n\n- Configuration\nYou can adjust the volume and in-game frame rate.\n\n- Link Data\nYou can link your current game data with your Bandai Namco ID.\nBy linking your data, you can continue playing with the same data on a different device.\n\n- Help\nYou can access in-game help for guidance and information.\n\n- Inquiries\nYou can reach out to the SD Gundam G Generation ETERNAL Team.\n\n- Other\nYou can view the terms of use, copyright information, as well as delete your account.\n\n- Batch Download\nYou can download certain images and battle animations in advance.\n*Wi-Fi connection is recommended for the download.\n\n- To the Official Website\nYou can visit the official SD Gundam G Generation ETERNAL website.\n\n- Return to Title\nYou can go back to the game's title screen."
+  },
+  {
+    "id": 170300000001151021,
+    "value": "Configuration lets you change various in-game settings.\n\n- System\nYou can change the settings such as screen orientation detection, frame rate, and display quality.\n\n- Volume\nAdjust the volume for music, SFX, and character voices.\n\n- Battle\nAdjust various settings related to battle gameplay.\n\n- Notifications\nYou can enable or disable game notifications."
+  },
+  {
+    "id": 170300000001151031,
+    "value": "Gallery is a feature where you can play back the stories from cleared stages and access various databases.\n\n- Story Review\nYou can play back stories from cleared stages.\n\n- Series Database\nYou can view detailed information for series available in the game.\n\n- Unit Database\nYou can view detailed information on the units that you have obtained.\n\n- Character Database\nYou can view detailed information on the characters that you have obtained."
+  },
+  {
+    "id": 170300000001151041,
+    "value": "The Inventory is a feature where you can view the items and upgrade materials in your possession.\n\n- Items\nYou can view items such as AP Packs and various Unit Assembly Tickets.\n\n- Upgrades\nYou can view materials such as Unit Upgrade Data, Character Upgrade Data, Supporter Upgrade Data, and Weapon Upgrade Material.\n\n- Development\nYou can view Development Materials and Technical Journals.\n\n- Modifications\nYou can view your Modifications.\n\n- Limit Break\nYou can view your Limit Break Materials.\n\n- SP\nYou can view items such as SP Conversion Chips, SP Conversion Badges, and SSP Conversion Chips."
+  },
+  {
+    "id": 170300000001151051,
+    "value": "For items obtained through Development, Unit Assembly, or stages, the location for acquiring them will be displayed.\n\nIt will not be shown if the item has no specific location where it can be acquired."
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "StageTerrainTypeIndex": 1,
+    "RecommendedSortieTerrainTypeIndex": 1
+  },
+  {
+    "StageTerrainTypeIndex": 2,
+    "RecommendedSortieTerrainTypeIndex": 5
+  },
+  {
+    "StageTerrainTypeIndex": 3,
+    "RecommendedSortieTerrainTypeIndex": 2
+  },
+  {
+    "StageTerrainTypeIndex": 3,
+    "RecommendedSortieTerrainTypeIndex": 5
+  },
+  {
+    "StageTerrainTypeIndex": 4,
+    "RecommendedSortieTerrainTypeIndex": 3
+  },
+  {
+    "StageTerrainTypeIndex": 4,
+    "RecommendedSortieTerrainTypeIndex": 5
+  },
+  {
+    "StageTerrainTypeIndex": 5,
+    "RecommendedSortieTerrainTypeIndex": 4
+  },
+  {
+    "StageTerrainTypeIndex": 5,
+    "RecommendedSortieTerrainTypeIndex": 5
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "MapEventPanelStageId": 2400010329,
+    "Number": 1,
+    "ScoreAttackBossReductionHpPercent": 0,
+    "ScoreAttackBossReductionAttackPercent": 0,
+    "ScoreAttackBossReductionDefencePercent": 50,
+    "ScoreAttackBossReductionMobilityPercent": 0,
+    "BossCharacterId": 1300002001
+  },
+  {
+    "MapEventPanelStageId": 2400010330,
+    "Number": 2,
+    "ScoreAttackBossReductionHpPercent": 0,
+    "ScoreAttackBossReductionAttackPercent": 0,
+    "ScoreAttackBossReductionDefencePercent": 0,
+    "ScoreAttackBossReductionMobilityPercent": 50,
+    "BossCharacterId": 1304000100
+  }
+]

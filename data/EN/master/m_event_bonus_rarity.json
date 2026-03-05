@@ -1,0 +1,714 @@
+[
+  {
+    "EventBonusRaritySetId": 20000106,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000106,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000106,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000106,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000107,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000107,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000107,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000107,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000107,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000211,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000211,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000211,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000211,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000211,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000221,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000221,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000321,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000321,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000321,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000321,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000322,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000322,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000322,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000322,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000322,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3
+  },
+  {
+    "EventBonusRaritySetId": 20000411,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000411,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000411,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000411,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000412,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000412,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000412,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000412,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000412,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000521,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000521,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000521,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000521,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000522,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000522,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000522,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000522,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000522,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000621,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000621,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000621,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000621,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000622,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000622,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000622,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000622,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000622,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000721,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000721,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000721,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000721,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000722,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000722,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000722,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000722,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000722,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000821,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000821,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000821,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000821,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000822,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000822,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000822,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000822,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000822,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000921,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000921,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000921,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000921,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20000922,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000922,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000922,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000922,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20000922,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 0,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20001021,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001021,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001021,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001021,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20001021,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20001022,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001022,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001022,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001022,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001022,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
+  }
+]

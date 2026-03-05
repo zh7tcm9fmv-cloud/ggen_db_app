@@ -1,0 +1,222 @@
+[
+  {
+    "Id": 10,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0010",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 10,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 170,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0170",
+    "IsVisibleTop": false,
+    "ScenarioStageSeriesId": 170,
+    "ScheduleId": 2512309901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 220,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0220",
+    "IsVisibleTop": false,
+    "ScenarioStageSeriesId": 220,
+    "ScheduleId": 2511109901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 320,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0320",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 320,
+    "ScheduleId": 2510509901,
+    "SeriesId": 320
+  },
+  {
+    "Id": 600,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0600",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 600,
+    "ScheduleId": 2601109901,
+    "SeriesId": 600
+  },
+  {
+    "Id": 810,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0810",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 810,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 950,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_0950",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 950,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 1100,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_1100",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 1100,
+    "ScheduleId": 2506309901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 1250,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_1250",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 1250,
+    "ScheduleId": 2509609901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 1500,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_1500",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 1500,
+    "ScheduleId": 2511409903,
+    "SeriesId": 0
+  },
+  {
+    "Id": 2000,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_2000",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 2000,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 2100,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_2100",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 2100,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 2300,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_2300",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 2300,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 3000,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_3000",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 3000,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 3050,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_3050",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 3050,
+    "ScheduleId": 2510509901,
+    "SeriesId": 3050
+  },
+  {
+    "Id": 3080,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_3080",
+    "IsVisibleTop": false,
+    "ScenarioStageSeriesId": 3080,
+    "ScheduleId": 2602209901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 3300,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_3300",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 3300,
+    "ScheduleId": 2506309901,
+    "SeriesId": 0
+  },
+  {
+    "Id": 3700,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_3700",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 3700,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 4000,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_4000",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 4000,
+    "ScheduleId": 2602401801,
+    "SeriesId": 4000
+  },
+  {
+    "Id": 4300,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_4300",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 4300,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  },
+  {
+    "Id": 4310,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_4310",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 4310,
+    "ScheduleId": 2601109901,
+    "SeriesId": 4310
+  },
+  {
+    "Id": 5010,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_5010",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 5010,
+    "ScheduleId": 0,
+    "SeriesId": 0
+  }
+]

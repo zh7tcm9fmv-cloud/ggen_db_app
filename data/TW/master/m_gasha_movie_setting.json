@@ -1,0 +1,11 @@
+[
+  {
+    "Id": 1000000001,
+    "GashaBgmResourceId": "bgm_0000_0090",
+    "GashaBgmDelayMilliseconds": 4000,
+    "SortieMovieResourceId": "c01_d",
+    "ShouldUseSpecialAssaultButton": true,
+    "ShouldPlayCutInMovie": false,
+    "FallContainerMovieResourceId": "c03_1"
+  }
+]

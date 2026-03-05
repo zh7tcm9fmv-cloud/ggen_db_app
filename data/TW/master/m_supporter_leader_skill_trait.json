@@ -1,0 +1,462 @@
+[
+  {
+    "SupporterLeaderSkillTraitSetId": 100100,
+    "SupporterLeaderSkillTraitContentId": 1001001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100100,
+    "SupporterLeaderSkillTraitContentId": 1001002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100100,
+    "SupporterLeaderSkillTraitContentId": 1001003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100100,
+    "SupporterLeaderSkillTraitContentId": 1001004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100120,
+    "SupporterLeaderSkillTraitContentId": 1001201,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100120,
+    "SupporterLeaderSkillTraitContentId": 1001202,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100120,
+    "SupporterLeaderSkillTraitContentId": 1001203,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100120,
+    "SupporterLeaderSkillTraitContentId": 1001204,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100130,
+    "SupporterLeaderSkillTraitContentId": 1001301,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100130,
+    "SupporterLeaderSkillTraitContentId": 1001302,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100130,
+    "SupporterLeaderSkillTraitContentId": 1001303,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100130,
+    "SupporterLeaderSkillTraitContentId": 1001304,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100140,
+    "SupporterLeaderSkillTraitContentId": 1001401,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100140,
+    "SupporterLeaderSkillTraitContentId": 1001402,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100140,
+    "SupporterLeaderSkillTraitContentId": 1001403,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100140,
+    "SupporterLeaderSkillTraitContentId": 1001404,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100150,
+    "SupporterLeaderSkillTraitContentId": 1001501,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100150,
+    "SupporterLeaderSkillTraitContentId": 1001502,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100150,
+    "SupporterLeaderSkillTraitContentId": 1001503,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100150,
+    "SupporterLeaderSkillTraitContentId": 1001504,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100170,
+    "SupporterLeaderSkillTraitContentId": 1001701,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100170,
+    "SupporterLeaderSkillTraitContentId": 1001702,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100170,
+    "SupporterLeaderSkillTraitContentId": 1001703,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100170,
+    "SupporterLeaderSkillTraitContentId": 1001704,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "SupporterLeaderSkillTraitContentId": 1001801,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "SupporterLeaderSkillTraitContentId": 1001802,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "SupporterLeaderSkillTraitContentId": 1001803,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "SupporterLeaderSkillTraitContentId": 1001804,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "SupporterLeaderSkillTraitContentId": 1002001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "SupporterLeaderSkillTraitContentId": 1002002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "SupporterLeaderSkillTraitContentId": 1002003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "SupporterLeaderSkillTraitContentId": 1002004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "SupporterLeaderSkillTraitContentId": 1002201,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "SupporterLeaderSkillTraitContentId": 1002202,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "SupporterLeaderSkillTraitContentId": 1002203,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "SupporterLeaderSkillTraitContentId": 1002204,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "SupporterLeaderSkillTraitContentId": 1002401,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "SupporterLeaderSkillTraitContentId": 1002402,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "SupporterLeaderSkillTraitContentId": 1002403,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "SupporterLeaderSkillTraitContentId": 1002404,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "SupporterLeaderSkillTraitContentId": 1002501,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "SupporterLeaderSkillTraitContentId": 1002502,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "SupporterLeaderSkillTraitContentId": 1002503,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "SupporterLeaderSkillTraitContentId": 1002504,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "SupporterLeaderSkillTraitContentId": 1002601,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "SupporterLeaderSkillTraitContentId": 1002602,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "SupporterLeaderSkillTraitContentId": 1002603,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "SupporterLeaderSkillTraitContentId": 1002604,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100270,
+    "SupporterLeaderSkillTraitContentId": 1002701,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100270,
+    "SupporterLeaderSkillTraitContentId": 1002702,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100270,
+    "SupporterLeaderSkillTraitContentId": 1002703,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100270,
+    "SupporterLeaderSkillTraitContentId": 1002704,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100280,
+    "SupporterLeaderSkillTraitContentId": 1002801,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100280,
+    "SupporterLeaderSkillTraitContentId": 1002802,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100280,
+    "SupporterLeaderSkillTraitContentId": 1002803,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100280,
+    "SupporterLeaderSkillTraitContentId": 1002804,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "SupporterLeaderSkillTraitContentId": 1003001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "SupporterLeaderSkillTraitContentId": 1003002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "SupporterLeaderSkillTraitContentId": 1003003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "SupporterLeaderSkillTraitContentId": 1003004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "SupporterLeaderSkillTraitContentId": 1003301,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "SupporterLeaderSkillTraitContentId": 1003302,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "SupporterLeaderSkillTraitContentId": 1003303,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "SupporterLeaderSkillTraitContentId": 1003304,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "SupporterLeaderSkillTraitContentId": 1003601,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "SupporterLeaderSkillTraitContentId": 1003602,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "SupporterLeaderSkillTraitContentId": 1003603,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "SupporterLeaderSkillTraitContentId": 1003604,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "SupporterLeaderSkillTraitContentId": 1004001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "SupporterLeaderSkillTraitContentId": 1004002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "SupporterLeaderSkillTraitContentId": 1004003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "SupporterLeaderSkillTraitContentId": 1004004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "SupporterLeaderSkillTraitContentId": 1004401,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "SupporterLeaderSkillTraitContentId": 1004402,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "SupporterLeaderSkillTraitContentId": 1004403,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "SupporterLeaderSkillTraitContentId": 1004404,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200100,
+    "SupporterLeaderSkillTraitContentId": 2001001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200100,
+    "SupporterLeaderSkillTraitContentId": 2001002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200100,
+    "SupporterLeaderSkillTraitContentId": 2001003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200100,
+    "SupporterLeaderSkillTraitContentId": 2001004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200200,
+    "SupporterLeaderSkillTraitContentId": 2002001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200200,
+    "SupporterLeaderSkillTraitContentId": 2002002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200200,
+    "SupporterLeaderSkillTraitContentId": 2002003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200200,
+    "SupporterLeaderSkillTraitContentId": 2002004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200400,
+    "SupporterLeaderSkillTraitContentId": 2004001,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200400,
+    "SupporterLeaderSkillTraitContentId": 2004002,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200400,
+    "SupporterLeaderSkillTraitContentId": 2004003,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200400,
+    "SupporterLeaderSkillTraitContentId": 2004004,
+    "SortOrder": 3
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200440,
+    "SupporterLeaderSkillTraitContentId": 2004401,
+    "SortOrder": 0
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200440,
+    "SupporterLeaderSkillTraitContentId": 2004402,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200440,
+    "SupporterLeaderSkillTraitContentId": 2004403,
+    "SortOrder": 2
+  },
+  {
+    "SupporterLeaderSkillTraitSetId": 200440,
+    "SupporterLeaderSkillTraitContentId": 2004404,
+    "SortOrder": 3
+  }
+]

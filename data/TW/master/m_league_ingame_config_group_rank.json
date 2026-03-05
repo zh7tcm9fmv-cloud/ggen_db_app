@@ -1,0 +1,38 @@
+[
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "BonusRate": 0,
+    "BonusValue": 5000
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "BonusRate": 0,
+    "BonusValue": 4000
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "BonusRate": 0,
+    "BonusValue": 3000
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "BonusRate": 0,
+    "BonusValue": 2000
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "BonusRate": 0,
+    "BonusValue": 1000
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "BonusRate": 0,
+    "BonusValue": 0
+  }
+]

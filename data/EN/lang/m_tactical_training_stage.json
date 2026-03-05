@@ -1,0 +1,170 @@
+[
+  {
+    "id": 130800000090100101,
+    "value": "EN Cost"
+  },
+  {
+    "id": 130800000090100102,
+    "value": "Counter Prediction"
+  },
+  {
+    "id": 130800000090100103,
+    "value": "Chance Step"
+  },
+  {
+    "id": 130800000090100104,
+    "value": "Support Skills"
+  },
+  {
+    "id": 130800000090100105,
+    "value": "Character Skills"
+  },
+  {
+    "id": 130800000090100106,
+    "value": "Support Defense"
+  },
+  {
+    "id": 130800000090100107,
+    "value": "Support Attack"
+  },
+  {
+    "id": 130800000090100108,
+    "value": "Vigor"
+  },
+  {
+    "id": 130800000090100109,
+    "value": "Transform"
+  },
+  {
+    "id": 130800000090100110,
+    "value": "MAP Weapon"
+  },
+  {
+    "id": 130800000090100111,
+    "value": "Weapon Type"
+  },
+  {
+    "id": 130800000090100112,
+    "value": "Weapon Attributes"
+  },
+  {
+    "id": 130800000090100113,
+    "value": "Terrain Capability"
+  },
+  {
+    "id": 130800000090100114,
+    "value": "Weapon Effect (Attack)"
+  },
+  {
+    "id": 130800000090100115,
+    "value": "Weapon Effect (Support)"
+  },
+  {
+    "id": 130800000090100116,
+    "value": "Weapon Effect (Durability)"
+  },
+  {
+    "id": 130800000090110101,
+    "value": "Challenge from South Burning1"
+  },
+  {
+    "id": 130800000090110102,
+    "value": "Challenge from Rau Le Creuset1"
+  },
+  {
+    "id": 130800000090110103,
+    "value": "Challenge from South Burning2"
+  },
+  {
+    "id": 130800000090110104,
+    "value": "Challenge from South Burning3"
+  },
+  {
+    "id": 130800000090110105,
+    "value": "Challenge from Schwarz Bruder1"
+  },
+  {
+    "id": 130900000090100101,
+    "value": "Learn: EN (energy), which is needed to\nuse weapons."
+  },
+  {
+    "id": 130900000090100102,
+    "value": "Learn: Counter Prediction, which shows\nenemy attack range."
+  },
+  {
+    "id": 130900000090100103,
+    "value": "Learn: bonus actions, which allow units\nto act again."
+  },
+  {
+    "id": 130900000090100104,
+    "value": "Learn: support skills, which affect all\nunits within range."
+  },
+  {
+    "id": 130900000090100105,
+    "value": "Learn: character skills, which give an\nadvantage in battle."
+  },
+  {
+    "id": 130900000090100106,
+    "value": "Learn: Support Defense, where durability\ncharacters take attacks."
+  },
+  {
+    "id": 130900000090100107,
+    "value": "Learn: Support Attacks, where support\ncharacters assist attacks."
+  },
+  {
+    "id": 130900000090100108,
+    "value": "Learn: Vigor, which raises attack damage\naccording to MP."
+  },
+  {
+    "id": 130900000090100109,
+    "value": "Learn: Transform, which alters weapons\nand MOV."
+  },
+  {
+    "id": 130900000090100110,
+    "value": "Learn: MAP Weapons, which can attack\nmultiple units within range."
+  },
+  {
+    "id": 130900000090100111,
+    "value": "Learn: the three kinds of weapon types."
+  },
+  {
+    "id": 130900000090100112,
+    "value": "Learn: the three kinds of weapon\nattributes."
+  },
+  {
+    "id": 130900000090100113,
+    "value": "Learn: terrain capability, which limits\nunit mobility and sortie."
+  },
+  {
+    "id": 130900000090100114,
+    "value": "Learn: weapon effects that raise damage\ndealt for attack units."
+  },
+  {
+    "id": 130900000090100115,
+    "value": "Learn: weapon effects that reduce enemy\nDEF for support units."
+  },
+  {
+    "id": 130900000090100116,
+    "value": "Learn: weapon effects that reduce enemy\nATK for durability units."
+  },
+  {
+    "id": 130900000090110101,
+    "value": "In this lesson, I'm gonna teach you how to take down big targets.\ndeliver a decisive Support Attack."
+  },
+  {
+    "id": 130900000090110102,
+    "value": "Allow me to teach you the proper way of using Support Defense.\nI have no doubt that you can overcome this challenge."
+  },
+  {
+    "id": 130900000090110103,
+    "value": "It's fine when an ally uses it, but you don't want the enemy to use it.\nThink of a way to prevent Support Defense from occurring."
+  },
+  {
+    "id": 130900000090110104,
+    "value": "You gotta avoid simultaneous attacks from multiple enemies, or you're in for a world of hurt.\nNever forget the measures needed to avoid getting blasted by the enemy's Support Attack."
+  },
+  {
+    "id": 130900000090110105,
+    "value": "You must have seen certain enemies carrying a red aura.This indicates a powerful ability in their possession!"
+  }
+]

@@ -1,0 +1,1058 @@
+[
+  {
+    "Id": 1000501,
+    "TraitTypeIndex": 5,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 1000502,
+    "TraitTypeIndex": 1,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 1000503,
+    "TraitTypeIndex": 3,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 1000504,
+    "TraitTypeIndex": 9,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 1001001,
+    "TraitTypeIndex": 5,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 1001002,
+    "TraitTypeIndex": 1,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 1001003,
+    "TraitTypeIndex": 3,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 1001004,
+    "TraitTypeIndex": 9,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 1001201,
+    "TraitTypeIndex": 5,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 1001202,
+    "TraitTypeIndex": 1,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 1001203,
+    "TraitTypeIndex": 3,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 1001204,
+    "TraitTypeIndex": 9,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 1001301,
+    "TraitTypeIndex": 5,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 1001302,
+    "TraitTypeIndex": 1,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 1001303,
+    "TraitTypeIndex": 3,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 1001304,
+    "TraitTypeIndex": 9,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 1001401,
+    "TraitTypeIndex": 5,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 1001402,
+    "TraitTypeIndex": 1,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 1001403,
+    "TraitTypeIndex": 3,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 1001404,
+    "TraitTypeIndex": 9,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 1001501,
+    "TraitTypeIndex": 5,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 1001502,
+    "TraitTypeIndex": 1,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 1001503,
+    "TraitTypeIndex": 3,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 1001504,
+    "TraitTypeIndex": 9,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 1001701,
+    "TraitTypeIndex": 5,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 1001702,
+    "TraitTypeIndex": 1,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 1001703,
+    "TraitTypeIndex": 3,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 1001704,
+    "TraitTypeIndex": 9,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 1001801,
+    "TraitTypeIndex": 5,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 1001802,
+    "TraitTypeIndex": 1,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 1001803,
+    "TraitTypeIndex": 3,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 1001804,
+    "TraitTypeIndex": 9,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 1002001,
+    "TraitTypeIndex": 5,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 1002002,
+    "TraitTypeIndex": 1,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 1002003,
+    "TraitTypeIndex": 3,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 1002004,
+    "TraitTypeIndex": 9,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 1002201,
+    "TraitTypeIndex": 5,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 1002202,
+    "TraitTypeIndex": 1,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 1002203,
+    "TraitTypeIndex": 3,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 1002204,
+    "TraitTypeIndex": 9,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 1002401,
+    "TraitTypeIndex": 5,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 1002402,
+    "TraitTypeIndex": 1,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 1002403,
+    "TraitTypeIndex": 3,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 1002404,
+    "TraitTypeIndex": 9,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 1002501,
+    "TraitTypeIndex": 5,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 1002502,
+    "TraitTypeIndex": 1,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 1002503,
+    "TraitTypeIndex": 3,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 1002504,
+    "TraitTypeIndex": 9,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 1002601,
+    "TraitTypeIndex": 5,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 1002602,
+    "TraitTypeIndex": 1,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 1002603,
+    "TraitTypeIndex": 3,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 1002604,
+    "TraitTypeIndex": 9,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 1002701,
+    "TraitTypeIndex": 5,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 1002702,
+    "TraitTypeIndex": 1,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 1002703,
+    "TraitTypeIndex": 3,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 1002704,
+    "TraitTypeIndex": 9,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 1002801,
+    "TraitTypeIndex": 5,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 1002802,
+    "TraitTypeIndex": 1,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 1002803,
+    "TraitTypeIndex": 3,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 1002804,
+    "TraitTypeIndex": 9,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 1003001,
+    "TraitTypeIndex": 5,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 1003002,
+    "TraitTypeIndex": 1,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 1003003,
+    "TraitTypeIndex": 3,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 1003004,
+    "TraitTypeIndex": 9,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 1003201,
+    "TraitTypeIndex": 5,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 1003202,
+    "TraitTypeIndex": 1,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 1003203,
+    "TraitTypeIndex": 3,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 1003204,
+    "TraitTypeIndex": 9,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 1003301,
+    "TraitTypeIndex": 5,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 1003302,
+    "TraitTypeIndex": 1,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 1003303,
+    "TraitTypeIndex": 3,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 1003304,
+    "TraitTypeIndex": 9,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 1003501,
+    "TraitTypeIndex": 5,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 1003502,
+    "TraitTypeIndex": 1,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 1003503,
+    "TraitTypeIndex": 3,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 1003504,
+    "TraitTypeIndex": 9,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 1003601,
+    "TraitTypeIndex": 5,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 1003602,
+    "TraitTypeIndex": 1,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 1003603,
+    "TraitTypeIndex": 3,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 1003604,
+    "TraitTypeIndex": 9,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 1004001,
+    "TraitTypeIndex": 5,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 1004002,
+    "TraitTypeIndex": 1,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 1004003,
+    "TraitTypeIndex": 3,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 1004004,
+    "TraitTypeIndex": 9,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 1004401,
+    "TraitTypeIndex": 5,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 1004402,
+    "TraitTypeIndex": 1,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 1004403,
+    "TraitTypeIndex": 3,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 1004404,
+    "TraitTypeIndex": 9,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 2000501,
+    "TraitTypeIndex": 5,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 2000502,
+    "TraitTypeIndex": 1,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 2000503,
+    "TraitTypeIndex": 3,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 2000504,
+    "TraitTypeIndex": 9,
+    "Value": 5,
+    "BattlePowerValueRatePercent": 5
+  },
+  {
+    "Id": 2001001,
+    "TraitTypeIndex": 5,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 2001002,
+    "TraitTypeIndex": 1,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 2001003,
+    "TraitTypeIndex": 3,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 2001004,
+    "TraitTypeIndex": 9,
+    "Value": 10,
+    "BattlePowerValueRatePercent": 10
+  },
+  {
+    "Id": 2001201,
+    "TraitTypeIndex": 5,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 2001202,
+    "TraitTypeIndex": 1,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 2001203,
+    "TraitTypeIndex": 3,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 2001204,
+    "TraitTypeIndex": 9,
+    "Value": 12,
+    "BattlePowerValueRatePercent": 12
+  },
+  {
+    "Id": 2001301,
+    "TraitTypeIndex": 5,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 2001302,
+    "TraitTypeIndex": 1,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 2001303,
+    "TraitTypeIndex": 3,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 2001304,
+    "TraitTypeIndex": 9,
+    "Value": 13,
+    "BattlePowerValueRatePercent": 13
+  },
+  {
+    "Id": 2001401,
+    "TraitTypeIndex": 5,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 2001402,
+    "TraitTypeIndex": 1,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 2001403,
+    "TraitTypeIndex": 3,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 2001404,
+    "TraitTypeIndex": 9,
+    "Value": 14,
+    "BattlePowerValueRatePercent": 14
+  },
+  {
+    "Id": 2001501,
+    "TraitTypeIndex": 5,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 2001502,
+    "TraitTypeIndex": 1,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 2001503,
+    "TraitTypeIndex": 3,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 2001504,
+    "TraitTypeIndex": 9,
+    "Value": 15,
+    "BattlePowerValueRatePercent": 15
+  },
+  {
+    "Id": 2001701,
+    "TraitTypeIndex": 5,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 2001702,
+    "TraitTypeIndex": 1,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 2001703,
+    "TraitTypeIndex": 3,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 2001704,
+    "TraitTypeIndex": 9,
+    "Value": 17,
+    "BattlePowerValueRatePercent": 17
+  },
+  {
+    "Id": 2001801,
+    "TraitTypeIndex": 5,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 2001802,
+    "TraitTypeIndex": 1,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 2001803,
+    "TraitTypeIndex": 3,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 2001804,
+    "TraitTypeIndex": 9,
+    "Value": 18,
+    "BattlePowerValueRatePercent": 18
+  },
+  {
+    "Id": 2002001,
+    "TraitTypeIndex": 5,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 2002002,
+    "TraitTypeIndex": 1,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 2002003,
+    "TraitTypeIndex": 3,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 2002004,
+    "TraitTypeIndex": 9,
+    "Value": 20,
+    "BattlePowerValueRatePercent": 20
+  },
+  {
+    "Id": 2002201,
+    "TraitTypeIndex": 5,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 2002202,
+    "TraitTypeIndex": 1,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 2002203,
+    "TraitTypeIndex": 3,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 2002204,
+    "TraitTypeIndex": 9,
+    "Value": 22,
+    "BattlePowerValueRatePercent": 22
+  },
+  {
+    "Id": 2002401,
+    "TraitTypeIndex": 5,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 2002402,
+    "TraitTypeIndex": 1,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 2002403,
+    "TraitTypeIndex": 3,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 2002404,
+    "TraitTypeIndex": 9,
+    "Value": 24,
+    "BattlePowerValueRatePercent": 24
+  },
+  {
+    "Id": 2002501,
+    "TraitTypeIndex": 5,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 2002502,
+    "TraitTypeIndex": 1,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 2002503,
+    "TraitTypeIndex": 3,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 2002504,
+    "TraitTypeIndex": 9,
+    "Value": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "Id": 2002601,
+    "TraitTypeIndex": 5,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 2002602,
+    "TraitTypeIndex": 1,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 2002603,
+    "TraitTypeIndex": 3,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 2002604,
+    "TraitTypeIndex": 9,
+    "Value": 26,
+    "BattlePowerValueRatePercent": 26
+  },
+  {
+    "Id": 2002701,
+    "TraitTypeIndex": 5,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 2002702,
+    "TraitTypeIndex": 1,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 2002703,
+    "TraitTypeIndex": 3,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 2002704,
+    "TraitTypeIndex": 9,
+    "Value": 27,
+    "BattlePowerValueRatePercent": 27
+  },
+  {
+    "Id": 2002801,
+    "TraitTypeIndex": 5,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 2002802,
+    "TraitTypeIndex": 1,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 2002803,
+    "TraitTypeIndex": 3,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 2002804,
+    "TraitTypeIndex": 9,
+    "Value": 28,
+    "BattlePowerValueRatePercent": 28
+  },
+  {
+    "Id": 2003001,
+    "TraitTypeIndex": 5,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 2003002,
+    "TraitTypeIndex": 1,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 2003003,
+    "TraitTypeIndex": 3,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 2003004,
+    "TraitTypeIndex": 9,
+    "Value": 30,
+    "BattlePowerValueRatePercent": 30
+  },
+  {
+    "Id": 2003201,
+    "TraitTypeIndex": 5,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 2003202,
+    "TraitTypeIndex": 1,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 2003203,
+    "TraitTypeIndex": 3,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 2003204,
+    "TraitTypeIndex": 9,
+    "Value": 32,
+    "BattlePowerValueRatePercent": 32
+  },
+  {
+    "Id": 2003301,
+    "TraitTypeIndex": 5,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 2003302,
+    "TraitTypeIndex": 1,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 2003303,
+    "TraitTypeIndex": 3,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 2003304,
+    "TraitTypeIndex": 9,
+    "Value": 33,
+    "BattlePowerValueRatePercent": 33
+  },
+  {
+    "Id": 2003501,
+    "TraitTypeIndex": 5,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 2003502,
+    "TraitTypeIndex": 1,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 2003503,
+    "TraitTypeIndex": 3,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 2003504,
+    "TraitTypeIndex": 9,
+    "Value": 35,
+    "BattlePowerValueRatePercent": 35
+  },
+  {
+    "Id": 2003601,
+    "TraitTypeIndex": 5,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 2003602,
+    "TraitTypeIndex": 1,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 2003603,
+    "TraitTypeIndex": 3,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 2003604,
+    "TraitTypeIndex": 9,
+    "Value": 36,
+    "BattlePowerValueRatePercent": 36
+  },
+  {
+    "Id": 2004001,
+    "TraitTypeIndex": 5,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 2004002,
+    "TraitTypeIndex": 1,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 2004003,
+    "TraitTypeIndex": 3,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 2004004,
+    "TraitTypeIndex": 9,
+    "Value": 40,
+    "BattlePowerValueRatePercent": 40
+  },
+  {
+    "Id": 2004401,
+    "TraitTypeIndex": 5,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 2004402,
+    "TraitTypeIndex": 1,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 2004403,
+    "TraitTypeIndex": 3,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  },
+  {
+    "Id": 2004404,
+    "TraitTypeIndex": 9,
+    "Value": 44,
+    "BattlePowerValueRatePercent": 44
+  }
+]

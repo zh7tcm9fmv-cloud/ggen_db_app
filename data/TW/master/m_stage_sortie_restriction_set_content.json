@@ -1,0 +1,410 @@
+[
+  {
+    "StageSortieRestrictionSetId": 24,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 24
+  },
+  {
+    "StageSortieRestrictionSetId": 25,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 25
+  },
+  {
+    "StageSortieRestrictionSetId": 26,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 26
+  },
+  {
+    "StageSortieRestrictionSetId": 27,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 27
+  },
+  {
+    "StageSortieRestrictionSetId": 28,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 28
+  },
+  {
+    "StageSortieRestrictionSetId": 29,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 29
+  },
+  {
+    "StageSortieRestrictionSetId": 30,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 30
+  },
+  {
+    "StageSortieRestrictionSetId": 31,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 31
+  },
+  {
+    "StageSortieRestrictionSetId": 32,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 32
+  },
+  {
+    "StageSortieRestrictionSetId": 34,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 34
+  },
+  {
+    "StageSortieRestrictionSetId": 37,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 37
+  },
+  {
+    "StageSortieRestrictionSetId": 120001,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120001
+  },
+  {
+    "StageSortieRestrictionSetId": 120002,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": true,
+    "StageSortieRestrictionSetGroupId": 120002
+  },
+  {
+    "StageSortieRestrictionSetId": 120003,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120003
+  },
+  {
+    "StageSortieRestrictionSetId": 120004,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120004
+  },
+  {
+    "StageSortieRestrictionSetId": 120005,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120005
+  },
+  {
+    "StageSortieRestrictionSetId": 120006,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120006
+  },
+  {
+    "StageSortieRestrictionSetId": 120007,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120007
+  },
+  {
+    "StageSortieRestrictionSetId": 120008,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120008
+  },
+  {
+    "StageSortieRestrictionSetId": 120009,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120009
+  },
+  {
+    "StageSortieRestrictionSetId": 120010,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120010
+  },
+  {
+    "StageSortieRestrictionSetId": 120011,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120011
+  },
+  {
+    "StageSortieRestrictionSetId": 120012,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120012
+  },
+  {
+    "StageSortieRestrictionSetId": 120013,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120013
+  },
+  {
+    "StageSortieRestrictionSetId": 120014,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120014
+  },
+  {
+    "StageSortieRestrictionSetId": 120015,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120015
+  },
+  {
+    "StageSortieRestrictionSetId": 120016,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120016
+  },
+  {
+    "StageSortieRestrictionSetId": 120017,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120017
+  },
+  {
+    "StageSortieRestrictionSetId": 130001,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130001
+  },
+  {
+    "StageSortieRestrictionSetId": 130002,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130002
+  },
+  {
+    "StageSortieRestrictionSetId": 130003,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130003
+  },
+  {
+    "StageSortieRestrictionSetId": 130004,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130004
+  },
+  {
+    "StageSortieRestrictionSetId": 130005,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130005
+  },
+  {
+    "StageSortieRestrictionSetId": 130006,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130006
+  },
+  {
+    "StageSortieRestrictionSetId": 130007,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130007
+  },
+  {
+    "StageSortieRestrictionSetId": 130008,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130008
+  },
+  {
+    "StageSortieRestrictionSetId": 130019,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130019
+  },
+  {
+    "StageSortieRestrictionSetId": 130020,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130020
+  },
+  {
+    "StageSortieRestrictionSetId": 150001,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130018
+  },
+  {
+    "StageSortieRestrictionSetId": 150001,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140001
+  },
+  {
+    "StageSortieRestrictionSetId": 150002,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130009
+  },
+  {
+    "StageSortieRestrictionSetId": 150002,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140002
+  },
+  {
+    "StageSortieRestrictionSetId": 150003,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130010
+  },
+  {
+    "StageSortieRestrictionSetId": 150003,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140003
+  },
+  {
+    "StageSortieRestrictionSetId": 150004,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130011
+  },
+  {
+    "StageSortieRestrictionSetId": 150004,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140004
+  },
+  {
+    "StageSortieRestrictionSetId": 150005,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130012
+  },
+  {
+    "StageSortieRestrictionSetId": 150005,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140005
+  },
+  {
+    "StageSortieRestrictionSetId": 150006,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130013
+  },
+  {
+    "StageSortieRestrictionSetId": 150006,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140006
+  },
+  {
+    "StageSortieRestrictionSetId": 150007,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130014
+  },
+  {
+    "StageSortieRestrictionSetId": 150007,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140007
+  },
+  {
+    "StageSortieRestrictionSetId": 150008,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130015
+  },
+  {
+    "StageSortieRestrictionSetId": 150008,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140008
+  },
+  {
+    "StageSortieRestrictionSetId": 150009,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130016
+  },
+  {
+    "StageSortieRestrictionSetId": 150009,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140009
+  },
+  {
+    "StageSortieRestrictionSetId": 150010,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130017
+  },
+  {
+    "StageSortieRestrictionSetId": 150010,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140010
+  },
+  {
+    "StageSortieRestrictionSetId": 900001,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900001
+  },
+  {
+    "StageSortieRestrictionSetId": 900002,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900002
+  },
+  {
+    "StageSortieRestrictionSetId": 900003,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900003
+  },
+  {
+    "StageSortieRestrictionSetId": 900004,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900004
+  },
+  {
+    "StageSortieRestrictionSetId": 900005,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900005
+  },
+  {
+    "StageSortieRestrictionSetId": 900006,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900006
+  },
+  {
+    "StageSortieRestrictionSetId": 900007,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900007
+  },
+  {
+    "StageSortieRestrictionSetId": 900008,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900008
+  },
+  {
+    "StageSortieRestrictionSetId": 900009,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900009
+  },
+  {
+    "StageSortieRestrictionSetId": 900010,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900010
+  }
+]

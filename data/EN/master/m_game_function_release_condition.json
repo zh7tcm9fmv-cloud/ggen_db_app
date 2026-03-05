@@ -1,0 +1,122 @@
+[
+  {
+    "GameFunctionReleaseGroupId": 100,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 100303
+  },
+  {
+    "GameFunctionReleaseGroupId": 101,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 7
+  },
+  {
+    "GameFunctionReleaseGroupId": 101,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 101402
+  },
+  {
+    "GameFunctionReleaseGroupId": 102,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 100902
+  },
+  {
+    "GameFunctionReleaseGroupId": 103,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 101402
+  },
+  {
+    "GameFunctionReleaseGroupId": 104,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 5
+  },
+  {
+    "GameFunctionReleaseGroupId": 105,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 5
+  },
+  {
+    "GameFunctionReleaseGroupId": 106,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 101402
+  },
+  {
+    "GameFunctionReleaseGroupId": 107,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 10
+  },
+  {
+    "GameFunctionReleaseGroupId": 108,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 100303
+  },
+  {
+    "GameFunctionReleaseGroupId": 109,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 15
+  },
+  {
+    "GameFunctionReleaseGroupId": 110,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 16
+  },
+  {
+    "GameFunctionReleaseGroupId": 111,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 101402
+  },
+  {
+    "GameFunctionReleaseGroupId": 112,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 100202
+  },
+  {
+    "GameFunctionReleaseGroupId": 113,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 3
+  },
+  {
+    "GameFunctionReleaseGroupId": 114,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 101402
+  },
+  {
+    "GameFunctionReleaseGroupId": 115,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 3
+  },
+  {
+    "GameFunctionReleaseGroupId": 116,
+    "ReleaseConditionTypeIndex": 2,
+    "TargetValue": 100202
+  },
+  {
+    "GameFunctionReleaseGroupId": 117,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 118,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 15
+  },
+  {
+    "GameFunctionReleaseGroupId": 119,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 120,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 15
+  },
+  {
+    "GameFunctionReleaseGroupId": 121,
+    "ReleaseConditionTypeIndex": 3,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 122,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  }
+]

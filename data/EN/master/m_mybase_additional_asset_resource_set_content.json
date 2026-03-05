@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 250950010101,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 1,
+    "ResourceId": "bgm_0000_0141"
+  },
+  {
+    "Id": 250950010201,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03800"
+  },
+  {
+    "Id": 250950010202,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03900"
+  },
+  {
+    "Id": 250950010203,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04000"
+  },
+  {
+    "Id": 250950010204,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04100"
+  },
+  {
+    "Id": 250950010205,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04200"
+  },
+  {
+    "Id": 250950010206,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04300"
+  },
+  {
+    "Id": 250950010301,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1250u00400"
+  },
+  {
+    "Id": 250950010302,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1250u00401"
+  },
+  {
+    "Id": 250950010303,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00200"
+  },
+  {
+    "Id": 250950010304,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00201"
+  },
+  {
+    "Id": 250950010305,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00400"
+  },
+  {
+    "Id": 250950010306,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00401"
+  },
+  {
+    "Id": 250950010401,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 4,
+    "ResourceId": "deco_1001"
+  },
+  {
+    "Id": 250950010501,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 5,
+    "ResourceId": "confetti_01"
+  }
+]

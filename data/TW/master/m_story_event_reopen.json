@@ -1,0 +1,22 @@
+[
+  {
+    "StoryEventId": 200001,
+    "ScheduleId": 2510509901,
+    "DailyBossSkipCountLimit": 0
+  },
+  {
+    "StoryEventId": 200002,
+    "ScheduleId": 2510509901,
+    "DailyBossSkipCountLimit": 0
+  },
+  {
+    "StoryEventId": 200005,
+    "ScheduleId": 2601109901,
+    "DailyBossSkipCountLimit": 0
+  },
+  {
+    "StoryEventId": 200006,
+    "ScheduleId": 2601109901,
+    "DailyBossSkipCountLimit": 0
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "Id": 1,
+    "SlotNumber": 1,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 400
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 2,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 500
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 3,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 600
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 4,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 500
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 5,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 400
+  }
+]

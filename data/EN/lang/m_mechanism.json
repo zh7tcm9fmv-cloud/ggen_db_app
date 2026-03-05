@@ -1,0 +1,58 @@
+[
+  {
+    "id": 140900000000000001,
+    "value": "Shield Defense"
+  },
+  {
+    "id": 140900000000000002,
+    "value": "Transform"
+  },
+  {
+    "id": 140900000000000003,
+    "value": "SD"
+  },
+  {
+    "id": 140900000000000004,
+    "value": "Escape Function"
+  },
+  {
+    "id": 140900000000000005,
+    "value": "Escape Function"
+  },
+  {
+    "id": 140900000000000006,
+    "value": "Escape Function (Max)"
+  },
+  {
+    "id": 140900000000000007,
+    "value": "Escape Function (Max)"
+  },
+  {
+    "id": 141000000000000001,
+    "value": "This further reduces damage when defending or using Support Defense.\nReduce damage taken by 20%."
+  },
+  {
+    "id": 141000000000000002,
+    "value": "Some units can transform during battle.\nTransforming may cause the unit's Movement or usable weapons to change."
+  },
+  {
+    "id": 141000000000000003,
+    "value": "This Unit can only be piloted by its designated Linked Character."
+  },
+  {
+    "id": 141000000000000004,
+    "value": "Transforms into a different unit when HP falls to 0 during battle (once per battle)\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  },
+  {
+    "id": 141000000000000005,
+    "value": "Transforms into a different unit when HP falls to 0 during battle (once per battle)\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  },
+  {
+    "id": 141000000000000006,
+    "value": "Transforms into a different unit when HP falls to 0 during battle and Vigor is Max or higher (once per battle)\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  },
+  {
+    "id": 141000000000000007,
+    "value": "Transforms into a different unit when HP falls to 0 during battle and Vigor is Max or higher (once per battle)\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  }
+]

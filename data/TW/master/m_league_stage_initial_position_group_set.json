@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 1,
+    "PlayerSideTypeIndex": 1,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 3,
+    "LeagueStageInitialPositionGroupId": 1
+  },
+  {
+    "Id": 1,
+    "PlayerSideTypeIndex": 2,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 1,
+    "LeagueStageInitialPositionGroupId": 2
+  },
+  {
+    "Id": 2,
+    "PlayerSideTypeIndex": 1,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 3,
+    "LeagueStageInitialPositionGroupId": 11
+  },
+  {
+    "Id": 2,
+    "PlayerSideTypeIndex": 2,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 1,
+    "LeagueStageInitialPositionGroupId": 12
+  }
+]

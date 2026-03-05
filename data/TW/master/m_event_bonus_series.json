@@ -1,0 +1,92 @@
+[
+  {
+    "EventBonusSeriesSetId": 20000106,
+    "SeriesId": 310,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000107,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000221,
+    "SeriesId": 3050,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000321,
+    "SeriesId": 600,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000322,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000412,
+    "SeriesId": 10,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000521,
+    "SeriesId": 4310,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000522,
+    "SeriesId": 4300,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000621,
+    "SeriesId": 600,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000622,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000721,
+    "SeriesId": 220,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000721,
+    "SeriesId": 230,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000722,
+    "SeriesId": 10,
+    "SortOrder": 3
+  },
+  {
+    "EventBonusSeriesSetId": 20000821,
+    "SeriesId": 170,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000822,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20000921,
+    "SeriesId": 90,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20000922,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20001021,
+    "SeriesId": 3080,
+    "SortOrder": 1
+  }
+]

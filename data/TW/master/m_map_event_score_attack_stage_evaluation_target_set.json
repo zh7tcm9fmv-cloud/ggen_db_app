@@ -1,0 +1,62 @@
+[
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 1,
+    "TargetTypeIndex": 1,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 1
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 1,
+    "TargetTypeIndex": 2,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 2
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 1,
+    "TargetTypeIndex": 3,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 3
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 1,
+    "TargetTypeIndex": 4,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 5
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 2,
+    "TargetTypeIndex": 1,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 21
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 2,
+    "TargetTypeIndex": 2,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 22
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 2,
+    "TargetTypeIndex": 3,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 23
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 2,
+    "TargetTypeIndex": 4,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 24
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 3,
+    "TargetTypeIndex": 1,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 31
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 3,
+    "TargetTypeIndex": 2,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 32
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 3,
+    "TargetTypeIndex": 3,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 33
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 3,
+    "TargetTypeIndex": 4,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 34
+  }
+]

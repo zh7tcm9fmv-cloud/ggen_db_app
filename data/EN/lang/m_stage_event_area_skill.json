@@ -1,0 +1,26 @@
+[
+  {
+    "id": 131100001030000001,
+    "value": "Healing Herb"
+  },
+  {
+    "id": 131100001030000002,
+    "value": "Potion"
+  },
+  {
+    "id": 131100001030000003,
+    "value": "Hyper Potion"
+  },
+  {
+    "id": 131200001030000001,
+    "value": "HP Restoration (Low)"
+  },
+  {
+    "id": 131200001030000002,
+    "value": "HP Restoration (Middle)"
+  },
+  {
+    "id": 131200001030000003,
+    "value": "HP Restoration (High)"
+  }
+]

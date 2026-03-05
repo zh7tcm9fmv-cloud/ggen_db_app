@@ -1,0 +1,110 @@
+[
+  {
+    "Id": 1001,
+    "FunctionTutorialTypeIndex": 1,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 1101,
+    "FunctionTutorialTypeIndex": 2,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 2
+  },
+  {
+    "Id": 1201,
+    "FunctionTutorialTypeIndex": 3,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 3
+  },
+  {
+    "Id": 1301,
+    "FunctionTutorialTypeIndex": 4,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 4
+  },
+  {
+    "Id": 1401,
+    "FunctionTutorialTypeIndex": 5,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 5
+  },
+  {
+    "Id": 1501,
+    "FunctionTutorialTypeIndex": 6,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 6
+  },
+  {
+    "Id": 1601,
+    "FunctionTutorialTypeIndex": 9,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 7
+  },
+  {
+    "Id": 1701,
+    "FunctionTutorialTypeIndex": 10,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 8
+  },
+  {
+    "Id": 1801,
+    "FunctionTutorialTypeIndex": 7,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 9
+  },
+  {
+    "Id": 1901,
+    "FunctionTutorialTypeIndex": 8,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 10
+  },
+  {
+    "Id": 2001,
+    "FunctionTutorialTypeIndex": 11,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 11
+  },
+  {
+    "Id": 2101,
+    "FunctionTutorialTypeIndex": 12,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 12
+  },
+  {
+    "Id": 2201,
+    "FunctionTutorialTypeIndex": 13,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 13
+  },
+  {
+    "Id": 2301,
+    "FunctionTutorialTypeIndex": 14,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 14
+  },
+  {
+    "Id": 2401,
+    "FunctionTutorialTypeIndex": 15,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 15
+  },
+  {
+    "Id": 2501,
+    "FunctionTutorialTypeIndex": 16,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 16
+  },
+  {
+    "Id": 2601,
+    "FunctionTutorialTypeIndex": 17,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 17
+  },
+  {
+    "Id": 2701,
+    "FunctionTutorialTypeIndex": 18,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 18
+  }
+]

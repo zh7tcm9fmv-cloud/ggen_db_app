@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 21000101,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 2100,
+    "MapEventPanelTraitRuleSetId": 21000101001
+  },
+  {
+    "Id": 21000102,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 800,
+    "MapEventPanelTraitRuleSetId": 21000101001
+  },
+  {
+    "Id": 21000103,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1083,
+    "MapEventPanelTraitRuleSetId": 21000101001
+  },
+  {
+    "Id": 21000104,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1084,
+    "MapEventPanelTraitRuleSetId": 21000101001
+  },
+  {
+    "Id": 21000201,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 950,
+    "MapEventPanelTraitRuleSetId": 21000201001
+  },
+  {
+    "Id": 21000202,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 8500,
+    "MapEventPanelTraitRuleSetId": 21000201001
+  },
+  {
+    "Id": 21000203,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1081,
+    "MapEventPanelTraitRuleSetId": 21000201001
+  },
+  {
+    "Id": 21000204,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1084,
+    "MapEventPanelTraitRuleSetId": 21000201001
+  },
+  {
+    "Id": 24000101,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 3000,
+    "MapEventPanelTraitRuleSetId": 24000101001
+  },
+  {
+    "Id": 24000102,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1081,
+    "MapEventPanelTraitRuleSetId": 24000101001
+  },
+  {
+    "Id": 24000103,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 10,
+    "MapEventPanelTraitRuleSetId": 24000101001
+  },
+  {
+    "Id": 24000104,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1082,
+    "MapEventPanelTraitRuleSetId": 24000101001
+  }
+]

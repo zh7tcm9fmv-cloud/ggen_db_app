@@ -1,0 +1,614 @@
+[
+  {
+    "id": 170800000000100101,
+    "value": "A feature that upgrades units, characters, and supporters."
+  },
+  {
+    "id": 170800000000100102,
+    "value": "You can scout characters by using Capital."
+  },
+  {
+    "id": 170800000000100103,
+    "value": "You can acquire Capital, rare medals, and G-Shop Pts by dismantling units\nand supporters."
+  },
+  {
+    "id": 170800000000110101,
+    "value": "You can perform limit breaks, level upgrades, weapon level upgrades,\nand modification swaps."
+  },
+  {
+    "id": 170800000000110102,
+    "value": "Using unit upgrade data raises the levels and stats of units. You can acquire unit\nupgrade data in Upgrade Stages, among other places."
+  },
+  {
+    "id": 170800000000110103,
+    "value": "You can perform limit breaks on units by using identical units or unit limit break\nmaterials. When you perform limit breaks on units, their stats increase significantly."
+  },
+  {
+    "id": 170800000000120101,
+    "value": "Using character upgrade data raises the levels and stats of characters. When you raise\ncharacters' levels, they may learn new skills and abilities."
+  },
+  {
+    "id": 170800000000120102,
+    "value": "Characters have unique skills that give　them advantages in battle.\nDuring battle, these skills can be activated by using SP (Skill Points)."
+  },
+  {
+    "id": 170800000000120103,
+    "value": "How many times you can perform Support Attacks, Support Defenses, and Bonus Actions\ndepends on character abilities."
+  },
+  {
+    "id": 170800000000130101,
+    "value": "With a higher level, a supporter's stats will grant more benefit to the formation.\nThis benefit may be increased by performing limit breaks."
+  },
+  {
+    "id": 170800000000130102,
+    "value": "Leader skills have the effect of improving the stats of compatible units, which can be\nfurther improved by performing limit breaks."
+  },
+  {
+    "id": 170800000000130103,
+    "value": "Support skills can restore HP or EN to allies within range during battle and activate\neffects that support formations."
+  },
+  {
+    "id": 170800000000130104,
+    "value": "One supporter can be assigned to a squad formation, and doing so improves that squad's\nstats. Moreover, supporters possess leader and support skills."
+  },
+  {
+    "id": 170800000000140101,
+    "value": "Development is a feature that allows you to remake units into new ones."
+  },
+  {
+    "id": 170800000000140102,
+    "value": "When main stages are unlocked, so too are the corresponding Development Diagrams.\nBy developing units, you can earn rewards based on completion rate."
+  },
+  {
+    "id": 170800000000140103,
+    "value": "You can develop common units with Capital alone, but you may need multiple units or\nspecial items to develop rare units."
+  },
+  {
+    "id": 170800000000140104,
+    "value": "By reaching a 100% completion rate, you can acquire completion rewards. You may acquire\nspecial units through completion rewards."
+  },
+  {
+    "id": 170800000000150102,
+    "value": "Here you can relive the original stories of Mobile Suit Gundam.\nBy clearing a series, a new one may be unlocked."
+  },
+  {
+    "id": 170800000000150103,
+    "value": "Stages are comprised of stories and battles. You can play back stories from cleared\nstages with Story Review in the Gallery."
+  },
+  {
+    "id": 170800000000150104,
+    "value": "Battle performance is <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">. After earning three of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">, you can skip that stage."
+  },
+  {
+    "id": 170800000000150105,
+    "value": "You can use AP to skip battles and earn rewards. You can only perform a limited number\nof skips in a day, and that count resets daily."
+  },
+  {
+    "id": 170800000000150106,
+    "value": "On some stages, secret battles will be unlocked upon fulfilling certain conditions.\nYou may then earn special rewards by clearing said secret battles."
+  },
+  {
+    "id": 170800000000160101,
+    "value": "A stage type where you can earn Capital and any type of upgrade materials, which can\nonly be played a limited number of times per day."
+  },
+  {
+    "id": 170800000000170101,
+    "value": "Content that imposes unit and character restrictions on your formation. While the\ndifficulty may be high, it is an opportunity to earn special rewards."
+  },
+  {
+    "id": 170800000000170102,
+    "value": "These stages have restrictions on the units you can have in your formation.\nTake on the challenge by obtaining the required units through Development Diagrams or Unit Assemblies."
+  },
+  {
+    "id": 170800000000180101,
+    "value": "You can have five units piloted by characters and one supporter in a squad formation.\nYou can sortie into battle with up to two squads."
+  },
+  {
+    "id": 170800000000180102,
+    "value": "Some stages impose unit and character restrictions on your formation."
+  },
+  {
+    "id": 170800000000180103,
+    "value": "By matching units with characters of the same type, you can maximize\nsaid units' performance."
+  },
+  {
+    "id": 170800000000190101,
+    "value": "You can save up to twenty squad formations and edit them from the Formations screen.\nYou may also give your favorite squads any name you like."
+  },
+  {
+    "id": 170800000000200101,
+    "value": "The player's base, where various features are available. As you make progress in the\ngame, you will unlock new features."
+  },
+  {
+    "id": 170800000000200102,
+    "value": "Warships resupply you with AP and items at set intervals. As your Player Rank increases,\nyou will be able to obtain more items."
+  },
+  {
+    "id": 170800000000200103,
+    "value": "You can accept requests from characters. Completing requests improves your Request Rank,\nallowing you to acquire development materials and modifications."
+  },
+  {
+    "id": 170800000000200104,
+    "value": "A space where you can display the MS Dock Units acquired from main stages. Deploy your\nfavorite MS Dock Units and create your very own MS Dock."
+  },
+  {
+    "id": 170800000000210101,
+    "value": "You can earn rewards by fulfilling certain conditions. Try to fulfill these upon\nnavigating to each feature from the Attempt button."
+  },
+  {
+    "id": 170800000000220101,
+    "value": "The place where you can purchase items using Capital, diamonds, and so on. You can\nacquire various upgrade materials and modifications there."
+  },
+  {
+    "id": 170800000000230101,
+    "value": "You can change the units and characters displayed on the Profile screen. You can also\nchange your player name and title."
+  },
+  {
+    "id": 170800000000240101,
+    "value": "See the various databases for detailed information on the units and characters that you\nhave obtained as well as the series in which they appear."
+  },
+  {
+    "id": 170800000000240102,
+    "value": "You can rewatch the stories from the stages that you have cleared."
+  },
+  {
+    "id": 170800000000250101,
+    "value": "As you level up a weapon, its power increases and its EN consumption decreases.\nCollect weapon upgrade material to enhance your weapons."
+  },
+  {
+    "id": 170800000000250102,
+    "value": "Weapon icon colors indicate weapon effect type. For example, fire weapons can deal\nsignificant damage."
+  },
+  {
+    "id": 170800000000260101,
+    "value": "Units can be equipped with modifications. These are also referred to as mods and mainly\ngrant effects that alter stats."
+  },
+  {
+    "id": 170800000000260102,
+    "value": "Unique abilities that units possess. They have various effects activated\nduring battle."
+  },
+  {
+    "id": 170800000000270101,
+    "value": "You can perform SP conversion on certain units to raise their Max Level to 100, but note\nthat units that have undergone SP conversion cannot be used as development materials."
+  },
+  {
+    "id": 170800000000270102,
+    "value": "Once a character is converted into SP, their stats are boosted and their level cap is raised to 100.\nCharacter skills and abilities that can be acquired by leveling up may also be added."
+  },
+  {
+    "id": 170800000000280101,
+    "value": "Complete missions to open panels. After you have opened every panel, you will receive a\ncompletion reward and advance onto the next mission level."
+  },
+  {
+    "id": 170800000000290101,
+    "value": "This feature allows you to freely customize your home screen by arranging your favorite units.\nCreate a home screen that's uniquely yours!"
+  },
+  {
+    "id": 170800000000290201,
+    "value": "The combination of a background and a layout is called a style.\nStyles are unlocked based on different factors, such as the number of entries in your databases."
+  },
+  {
+    "id": 170800000000290202,
+    "value": "Some UR units have special unlockable home screen animations.\nAdd flavor to your home screen by obtaining animations through limit breaking or development!"
+  },
+  {
+    "id": 170800000000300001,
+    "value": "This feature allows you to receive rewards by entering an invitation code issued by another player.\nThe player who sends the invitation can also earn rewards based on the progress of the invited player."
+  },
+  {
+    "id": 170800000000300002,
+    "value": "You can earn rewards by entering another player's invitation code.\nThe invitation code must be entered within 7 days of starting the game."
+  },
+  {
+    "id": 170800000000300003,
+    "value": "The player who entered the invitation code will be added to your friend invitation list once they reach Player Rank 5.\nYou can earn rewards based on the invitee's Player Rank."
+  },
+  {
+    "id": 170800000000310101,
+    "value": "By using an SSP Conversion Chip on a unit that reached level 100 and maximum limit break, SSP conversion can be performed.\nSSP-converted units unlock retrofit levels and Custom Cores."
+  },
+  {
+    "id": 170800000000310102,
+    "value": "Upgrading retrofit levels increases unit stats, and once a specific retrofit level is reached, the Custom Core feature is unlocked."
+  },
+  {
+    "id": 170800000000310103,
+    "value": "Unlocked Custom Cores can be learned by using materials.\nLearning it enhances unit performance, adding new weapons and increasing mobility for some units."
+  },
+  {
+    "id": 170800000000320101,
+    "value": "If your pull count is 1 or higher, you can use the 10-Pull Unit Assembly for free.\nYour pull count will increase by 1 daily at 12:00 (JST)."
+  },
+  {
+    "id": 170800000000320102,
+    "value": "Unit Assembly results are temporarily kept instead of immediately acquired.\nOn subsequent pulls, select between your previously kept result or the new one."
+  },
+  {
+    "id": 170800000000320103,
+    "value": "Once all pulls have been received and used,\nyou will be able to claim the last result you kept."
+  },
+  {
+    "id": 170800000000500101,
+    "value": "Choose weapons with low EN consumption to annihilate enemy units with your\nremaining EN."
+  },
+  {
+    "id": 170800000000500102,
+    "value": "If you choose weapons with high EN consumption, you will run out of EN before you can\nannihilate enemy units."
+  },
+  {
+    "id": 170800000000500201,
+    "value": "There are positions within the enemy units' attack range where they won't counter.\nTry moving your units to those positions to attack them unilaterally."
+  },
+  {
+    "id": 170800000000500301,
+    "value": "Destroy enemy units with weapons in your possession to trigger\nbonus actions."
+  },
+  {
+    "id": 170800000000500401,
+    "value": "When you run low on EN, use support skills to fight while recovering EN."
+  },
+  {
+    "id": 170800000000500501,
+    "value": "Use character skills to boost Accuracy before attacking."
+  },
+  {
+    "id": 170800000000500801,
+    "value": "Destroying enemy units raises Vigor. Raising Vigor increases damage, allowing you to\ndestroy units with high HP."
+  },
+  {
+    "id": 170800000000500901,
+    "value": "Destroy enemy units by using Transform to extend Movement and range."
+  },
+  {
+    "id": 170800000000501001,
+    "value": "Use MAP Weapons to destroy multiple enemy units at once."
+  },
+  {
+    "id": 170800000000501101,
+    "value": "Attack with weapons that the characters piloting units are proficient with."
+  },
+  {
+    "id": 170800000000501201,
+    "value": "Enemy units have an ability that reduces beam damage. Attack them with\nnon-beam weapons."
+  },
+  {
+    "id": 170800000000501301,
+    "value": "Units with \"triangle\" suitability have their Movement halved."
+  },
+  {
+    "id": 170800000000501401,
+    "value": "Use weapons from a distance where Power is maximized to destroy enemy units by\ninflicting maximum damage."
+  },
+  {
+    "id": 170800000000501501,
+    "value": "First, use weapons with the effect of reducing enemy units' Defense, then destroy them\nwhile the damage you deal is increased."
+  },
+  {
+    "id": 170800000000501601,
+    "value": "First, use weapons with the effect of reducing enemy units' Attack, then destroy them\nwhile the damage you receive is decreased."
+  },
+  {
+    "id": 170800000000510001,
+    "value": "Certain units will result in a defeat when destroyed.\nStrategize so that their HP does not get too low."
+  },
+  {
+    "id": 170800000000510002,
+    "value": "For stages that have a set number of turns, you'll need a plan to take out enemy units.\nMake sure to review your deployment and formation before battle."
+  },
+  {
+    "id": 170800000000510003,
+    "value": "In stages where enemies try to raid a defense area, be sure to gather allied units\naround the defense area and intercept enemy attacks."
+  },
+  {
+    "id": 170800000000510004,
+    "value": "Damage from certain beam weapons may be halved underwater."
+  },
+  {
+    "id": 170800000000510005,
+    "value": "Since they deal more damage in event stages and boss battles, be sure to include them in\nyour formation."
+  },
+  {
+    "id": 170800000000510006,
+    "value": "Pay close attention to the enemy units' stats and weapon ranges.\nThey may hide strategic clues."
+  },
+  {
+    "id": 170800000000510007,
+    "value": "Units eligible for event bonuses deal more damage in event stages.\nBe sure to include them in your formation."
+  },
+  {
+    "id": 170800000000520101,
+    "value": "Some weapons can inflict harmful effects on the enemy. Start by assessing \nthe enemy MAP Weapon's range, then move the Units who can inflict effects on the enemy out of its way!"
+  },
+  {
+    "id": 170800000000520102,
+    "value": "As you can see from the above picture, the enemy MAP Weapon's range is displayed on the board.\nIn this stage, the enemy will fire their MAP Weapon if two or more allied Units are within that range."
+  },
+  {
+    "id": 170800000000520103,
+    "value": "Move the Units out of its way, then strike the enemy with weapons capable of inflicting an effect.\nThis way, you'll destroy them with a single counterattack!"
+  },
+  {
+    "id": 170800000000520201,
+    "value": "Units with a red aura are Boss Units and have high Attack.\nTo deal with them, use Support Defense!"
+  },
+  {
+    "id": 170800000000520202,
+    "value": "If you don't want to use Support Defense, choose \"Opt Out\".\nTo do so, tap the Character's Icon and then Opt Out!"
+  },
+  {
+    "id": 170800000000520301,
+    "value": "Here, if the enemy uses Support Defense,\nthe Guest Forces won't be able to inflict much damage."
+  },
+  {
+    "id": 170800000000520302,
+    "value": "Focus your attacks on the above Units,\nand save your Support Attacks for Support Defense!"
+  },
+  {
+    "id": 170800000000520303,
+    "value": "Use Support Attacks to destroy the first Unit on the list,\nthen focus on the Boss Unit!"
+  },
+  {
+    "id": 170800000000520401,
+    "value": "During the next fight, try to use the Character Skill \"Sway\" to evade enemy attacks!\n(excluding guaranteed-hit attacks such as MAP Weapons)"
+  },
+  {
+    "id": 170800000000520402,
+    "value": "Using \"Sway\" will allow you to make the enemy use up their Support Attack without dealing any damage."
+  },
+  {
+    "id": 170800000000520403,
+    "value": "This Stage's Boss has an incredibly high Melee Attack.\nUse Long Range Attacks to take it down!"
+  },
+  {
+    "id": 170800000000520501,
+    "value": "First, check out the abilities of the Units highlighted in red!\nDestroy all Units with \"Increased DEF\" first!"
+  },
+  {
+    "id": 170800000000520502,
+    "value": "Attack with MAP Weapons to prevent Support Defense from activating!\nTry to hit as many Units capable of Support Defense as possible!"
+  },
+  {
+    "id": 170800000000520503,
+    "value": "The Char Aznable from the Guest Forces has the \"Attack Burst\" Skill.\nUse it if you don't manage to destroy the enemy in one hit!"
+  },
+  {
+    "id": 170800000000520601,
+    "value": "In \"Instructor's Challenge\", you will learn actual battle tips and strategies from the instructor."
+  },
+  {
+    "id": 170800000000520602,
+    "value": "During the Instructor's Challenge, you will be given control of a preformed Guest Force.\nThere may be tips about formations as well."
+  },
+  {
+    "id": 170800000000520701,
+    "value": "Tap on the \"i\" icon on the upper right side of the screen to check the tips."
+  },
+  {
+    "id": 170800000000900001,
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
+  },
+  {
+    "id": 170800000000900002,
+    "value": "Earn Boss Challenge Tickets by clearing event-exclusive stages. Use the tickets you've\nearned to attempt the boss battle and win Unit Assembly Medals."
+  },
+  {
+    "id": 170800000000900003,
+    "value": "Any damage dealt to the boss unit carries over between attempts. If you manage to clear\na boss battle in a single attempt, you will be able to skip that stage."
+  },
+  {
+    "id": 170800000000900004,
+    "value": "You can use Unit Assembly Medals to obtain a variety of event rewards."
+  },
+  {
+    "id": 170800000000900005,
+    "value": "When you defeat a boss, a rare boss may appear. If you manage to defeat the rare boss,\nyou may earn a large number of Unit Assembly Medals."
+  },
+  {
+    "id": 170800000000900006,
+    "value": "Units eligible for event bonuses deal more damage in event stages and boss battles. They\nalso earn more Boss Challenge Tickets upon clearing stages."
+  },
+  {
+    "id": 170800000000900007,
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
+  },
+  {
+    "id": 170800000000900008,
+    "value": "Earn Boss Challenge Tickets by clearing event-exclusive stages. Use the tickets you've\nearned to attempt the boss battle and win Carddass coins."
+  },
+  {
+    "id": 170800000000900009,
+    "value": "Any damage dealt to the boss unit carries over between attempts. If you manage to clear\na boss battle in a single attempt, you will be able to skip that stage."
+  },
+  {
+    "id": 170800000000900010,
+    "value": "You can use Carddass coins to obtain Carddass cards."
+  },
+  {
+    "id": 170800000000900011,
+    "value": "Collect Carddass cards\nto earn valuable items."
+  },
+  {
+    "id": 170800000000900012,
+    "value": "When you defeat a boss, a rare boss may appear.\nIf you manage to defeat the rare boss, you will earn a large number of Carddass coins."
+  },
+  {
+    "id": 170800000000900014,
+    "value": "Dummy balloons appear during the Mobile Suit Gundam 0080: War in the Pocket boss battle.\nThe more you destroy, the more Supplier Medals you can acquire."
+  },
+  {
+    "id": 170800000000900015,
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics.\nBattle your way through the stages, acquire units, and complete the evaluations."
+  },
+  {
+    "id": 170800000000900016,
+    "value": "Make your way through the evaluation for each unit and achieve 100% progress.\nDuring evaluation, you can also limit break units."
+  },
+  {
+    "id": 170800000000900017,
+    "value": "After clearing a NORMAL Stage, why don't you go for ANOTHER?\nANOTHER Stages will yield x10 EXP for Units and Characters from \"Mobile Suit Gundam MS IGLOO\"."
+  },
+  {
+    "id": 170800000000900018,
+    "value": "Units eligible for event bonuses deal more damage in event stages.\nBe sure to include them in your formation."
+  },
+  {
+    "id": 170800000000910001,
+    "value": "By clearing Fierce Enemy Assault stages, you can acquire SSR units. Obtain special limit\nbreak materials as mission rewards and aim for limit breaks."
+  },
+  {
+    "id": 170800000000910002,
+    "value": "You can obtain special weapon upgrade materials for units appearing in Fierce Enemy\nAssault from event stages. Try upgrading your weapons once you obtain the materials!"
+  },
+  {
+    "id": 170800000000910003,
+    "value": "History Battle is a feature that allows you to face off against powerful enemies from past events.\nYou'll be able to take on previous enemies every time a Fierce Enemy Assault event is held."
+  },
+  {
+    "id": 170800000000910004,
+    "value": "These are new difficulty in battles where all enemy stats (EN excluded) are gradually increased.\nThe victory conditions are changed to \"Destroy all enemy units,\" and clearing a stage unlocks the next level."
+  },
+  {
+    "id": 170800000000920001,
+    "value": "Progress through the map to earn event-exclusive characters and supporters."
+  },
+  {
+    "id": 170800000000920002,
+    "value": "Map Events are special events that progress by consuming a dedicated action point called PP.\nPick the best route as you navigate through spaces with various effects!"
+  },
+  {
+    "id": 170800000000920004,
+    "value": "The map is divided into areas, each with its own Area Boss. \nDefeating the Area Boss will unlock the next area."
+  },
+  {
+    "id": 170800000000920006,
+    "value": "Boost spaces that enhance your stats can be obtained repeatedly up to their limit.\nIf you're short on power, be sure to collect them as much as you can."
+  },
+  {
+    "id": 170800000000920008,
+    "value": "You can obtain PP from Supply Base spaces, and rewards such as Map Medals from Item Box spaces."
+  },
+  {
+    "id": 170800000000920009,
+    "value": "This will become available once you clear the Area Boss space in the final area. \nUse your collected boosts to aim for a high score!"
+  },
+  {
+    "id": 170800000000920010,
+    "value": "If your team is short on power, collect the boost effects on the map.\nIf you don't have the units that benefit from the effect, progress through the Main Stages to develop them."
+  },
+  {
+    "id": 170800000000920011,
+    "value": "There are 3 types of spaces that trigger battles, and 3 types that offer support effects."
+  },
+  {
+    "id": 170800000000921101,
+    "value": "The Grand Offensive is an event where you are to inspect various zones with your Squadmates and\nattempt to defeat a powerful enemy waiting at the end."
+  },
+  {
+    "id": 170800000000921102,
+    "value": "Squadmates are units that sortie alongside you in the Grand Offensive.\nAs you press the offensive, you can upgrade them, including their rarity, level, and limit break level."
+  },
+  {
+    "id": 170800000000921103,
+    "value": "At the Enhancement Base, you can upgrade your Squadmates' level, weapon level, and limit break level.\nUpgrade your Squadmates to gain an advantage, whether in Score Attack or capturing spaces."
+  },
+  {
+    "id": 170800000000921104,
+    "value": "At the end of the event, you can acquire your Squadmate while keeping their updated stats from the event.\n*Maximum upgrade bonuses and event bonuses are not applied."
+  },
+  {
+    "id": 170800000000921105,
+    "value": "As you press the offensive, you can acquire event-exclusive supporters.\nYou can also exchange duplicates at the Inspection Shop to perform limit breaks."
+  },
+  {
+    "id": 170800000000921106,
+    "value": "In the Grand Offensive, you can use special points called PP to facilitate capturing spaces.\nSince spaces with different effects are scattered across the map, plan your route accordingly."
+  },
+  {
+    "id": 170800000000921107,
+    "value": "There are eight different types of spaces throughout the map.\nHalf of them trigger battles, while the other half assist the offensive."
+  },
+  {
+    "id": 170800000000921108,
+    "value": "The Grand Offensive features three Inspection Zones, with a Danger Zone in the innermost part of each.\nClearing a Danger Zone unlocks the next Inspection Zone."
+  },
+  {
+    "id": 170800000000921109,
+    "value": "Maps contain Key Combat Zones.\nBy clearing them, you can acquire special boosts that impair Score Attack bosses."
+  },
+  {
+    "id": 170800000000921110,
+    "value": "You can acquire PP from the Supply Base.\nYou can also acquire rewards from containers such as Inspection Medals."
+  },
+  {
+    "id": 170800000000921111,
+    "value": "At the Communications Base, you can acquire boosts that increase your squad's stats during the event.\nYou will need to fulfill the conditions set at each Communications Base, such as using PP or developing specific units."
+  },
+  {
+    "id": 170800000000921112,
+    "value": "When you max out a Squadmate unit's rarity, level, weapon level, and limit break level,\nthey receive a maximum upgrade bonus, increasing their stats by 1.5x (excluding EN and MOV)."
+  },
+  {
+    "id": 170800000000921113,
+    "value": "You can attempt the Score Attack once you have cleared the final Danger Zone.\nAim for the highest score by leveraging upgraded Squadmates and boosts."
+  },
+  {
+    "id": 170800000000940101,
+    "value": "Master League pits you against five players chosen randomly. By reaching a higher\ntotal battle score against them, you will earn more rewards."
+  },
+  {
+    "id": 170800000000940102,
+    "value": "Get promoted by reaching the promotion score. In higher leagues, you will be facing\nstronger opponents."
+  },
+  {
+    "id": 170800000000940103,
+    "value": "There are daily limits for challenging and switching opponents. Aim for a high score\nwithin these limits!"
+  },
+  {
+    "id": 170800000000940104,
+    "value": "Battles are automated in Master League, unlike normal battles.\nThe order of actions depends on Mobility and Reaction rather than phases."
+  },
+  {
+    "id": 170800000000940201,
+    "value": "Challenge Mode is a mode that makes it easier to aim for a higher score.\nBy increasing your score, you'll earn even greater titles."
+  },
+  {
+    "id": 170800000000940202,
+    "value": "In Challenge Mode, the opponents you defeat can be switched out for stronger opponents.\n*You will sometimes be matched against opponents who are on the same level as you if the other participants are determined to be significantly stronger."
+  },
+  {
+    "id": 170800000000950001,
+    "value": "Create two free squads and aim to clear stages starting from level 1. Earn rewards upon\nstage completion!"
+  },
+  {
+    "id": 170800000000950002,
+    "value": "Certain stages feature units with strong area-based modifiers and debuffs. Use them\nwisely to get the upper hand!"
+  },
+  {
+    "id": 170800000000950003,
+    "value": "You may encounter enemies equipped with large-area MAP weapons. Keep an eye on their\nrange to reduce incoming damage."
+  },
+  {
+    "id": 170800000000950004,
+    "value": "Clear a stage for the first time to earn characters, titles, and diamonds! *Diamonds are\navailable in all events; characters and titles are one-time rewards at certain levels."
+  },
+  {
+    "id": 170800000000950005,
+    "value": "Strategy info reveals noteworthy elements in each stage, such as bosses, key units."
+  },
+  {
+    "id": 170800000000950006,
+    "value": "You can check the clearing info to see how other players built their teams to clear the\nstage. Useful when strategy becomes arduous."
+  },
+  {
+    "id": 170800000000970001,
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
+  },
+  {
+    "id": 170800000000970002,
+    "value": "The Boss Battle can be attempted once the History Stage has been cleared."
+  },
+  {
+    "id": 170800000000970003,
+    "value": "Any damage dealt to the boss unit carries over between attempts."
+  }
+]

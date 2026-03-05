@@ -1,0 +1,23 @@
+[
+  {
+    "SlotTypeIndex": 1,
+    "ReleasePlayerRank": 7,
+    "OffsetHour": 0,
+    "IntervalHour": 8,
+    "DefaultCharacterOfferGroupLotterySetId": 1
+  },
+  {
+    "SlotTypeIndex": 2,
+    "ReleasePlayerRank": 10,
+    "OffsetHour": 0,
+    "IntervalHour": 8,
+    "DefaultCharacterOfferGroupLotterySetId": 1
+  },
+  {
+    "SlotTypeIndex": 3,
+    "ReleasePlayerRank": 15,
+    "OffsetHour": 0,
+    "IntervalHour": 8,
+    "DefaultCharacterOfferGroupLotterySetId": 1
+  }
+]

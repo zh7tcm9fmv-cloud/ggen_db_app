@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD Gundam G Generation Eternal - Database</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #e0e0ff;
+            min-height: 100vh;
+            padding: 20px;
+            background: url('/static/images/Background/obg_021_office.png') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #0a1428;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        .header {
+            background: rgba(10, 20, 40, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 20px 20px 0;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100,180,255,0.3);
+            position: relative;
+        }
+        
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+        .lang-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.1);
+            color: #8090b0;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: #c0d0ff;
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #4080ff, #0055cc);
+            color: white;
+            border-color: #4080ff;
+        }
+        
+        h1 {
+            color: #a0d0ff;
+            font-size: 26px;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px #000;
+            text-align: center;
+            padding-right: 120px;
+        }
+
+        .tab-bar { display: flex; gap: 4px; }
+        .tab-btn {
+            padding: 12px 36px; font-size: 15px; font-weight: 700;
+            background: rgba(255,255,255,0.06); color: #8090b0;
+            border: 1px solid rgba(255,255,255,0.1); border-bottom: none;
+            border-radius: 12px 12px 0 0; cursor: pointer; transition: all 0.2s;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.12); color: #c0d0ff; }
+        .tab-btn.active {
+            background: rgba(30, 60, 120, 0.8); color: #a0d0ff;
+            border-color: rgba(100,180,255,0.4);
+        }
+        .tab-content {
+            background: rgba(30, 60, 120, 0.4); padding: 20px;
+            border-radius: 0 12px 12px 12px;
+            border: 1px solid rgba(100,180,255,0.2); border-top: none;
+        }
+
+        .search-box { display: flex; gap: 12px; max-width: 600px; margin: 0 auto; }
+        input[type="text"] {
+            flex: 1; padding: 12px 16px; font-size: 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(100,180,255,0.4);
+            border-radius: 10px; color: white;
+        }
+        input:focus {
+            outline: none;
+            border-color: #60a0ff;
+            box-shadow: 0 0 12px rgba(96,160,255,0.5);
+        }
+        input::placeholder { color: rgba(255,255,255,0.5); }
+        button {
+            padding: 12px 32px; font-size: 16px; font-weight: 600;
+            background: linear-gradient(135deg, #4080ff, #0055cc);
+            color: white; border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(64,128,255,0.5);
+        }
+        button:active { transform: translateY(0); }
+        button:disabled {
+            opacity: 0.6; cursor: not-allowed; transform: none;
+            box-shadow: none;
+        }
+
+        .loading { text-align: center; padding: 60px; display: none; }
+        .spinner {
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid #60a0ff;
+            border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .result-box {
+            background: rgba(20, 40, 80, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(100,180,255,0.25);
+            overflow: hidden;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .profile-header {
+            display: flex; align-items: flex-start; gap: 40px; padding: 40px;
+            background: linear-gradient(rgba(0,10,30,0.4), rgba(0,10,30,0.6)),
+                url('/static/images/Background/obg_021_office_tablet.png');
+            background-size: cover; background-position: center;
+        }
+        .char-portrait {
+            width: 260px; height: auto; border-radius: 12px;
+            border: 3px solid #60a0ff;
+            box-shadow: 0 0 25px rgba(96,160,255,0.5);
+            background: rgba(0,0,0,0.3);
+        }
+        .no-portrait {
+            width: 260px; height: 340px; background: #112244;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: #6080aa; border: 2px dashed #6080aa;
+        }
+
+        .unit-header {
+            display: flex; align-items: flex-start; gap: 30px; padding: 30px;
+            background: linear-gradient(rgba(0,10,30,0.4), rgba(0,10,30,0.6)),
+                url('/static/images/Background/obg_011_garage.png');
+            background-size: cover; background-position: center;
+        }
+        .unit-portrait {
+            width: 390px; height: auto; border-radius: 12px;
+            border: 3px solid #60a0ff;
+            box-shadow: 0 0 25px rgba(96,160,255,0.5);
+            background: rgba(0,0,0,0.3); flex-shrink: 0;
+        }
+        .no-portrait-unit {
+            width: 390px; height: 260px; background: #112244;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: #6080aa; border: 2px dashed #6080aa;
+            flex-shrink: 0;
+        }
+
+        .profile-main {
+            flex: 1; display: flex; flex-direction: column; gap: 16px;
+        }
+        .unit-info {
+            flex: 1; display: flex; flex-direction: column; gap: 12px;
+            min-width: 0;
+        }
+        .unit-info .name-series-row { gap: 12px; margin-bottom: 4px; }
+        .unit-info .profile-name { font-size: 28px; }
+        .unit-info .series-mini-logo { height: 36px; }
+        .unit-info .meta-row { gap: 10px; }
+        .unit-info .badge { padding: 4px 12px; font-size: 12px; }
+        .unit-info .badge img { width: 18px; height: 18px; }
+        .unit-info .tag { padding: 3px 10px; font-size: 11px; }
+
+        .name-series-row {
+            display: flex; align-items: center; gap: 20px;
+            margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .profile-name {
+            font-size: 40px; font-weight: bold;
+            text-shadow: 0 2px 6px #000; line-height: 1.1;
+        }
+        .series-mini-logo {
+            height: 50px; width: auto; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+        }
+        .meta-row {
+            display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 20px;
+            font-weight: 700; font-size: 14px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .badge img { width: 22px; height: 22px; }
+        .badge-icon-only {
+            display: inline-flex; align-items: center;
+            padding: 4px 8px; border-radius: 20px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .badge-icon-only img { width: 26px; height: 26px; object-fit: contain; }
+        .tags-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            padding: 4px 12px; border-radius: 12px; font-size: 12px;
+            background: #5070c0; color: white; white-space: nowrap;
+        }
+
+        .stats-container {
+            margin-top: 20px; background: rgba(0,0,0,0.5);
+            padding: 20px; border-radius: 12px;
+            display: flex; gap: 60px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .stats-col {
+            flex: 1; display: flex; flex-direction: column; gap: 10px;
+        }
+        .stat-line {
+            display: flex; align-items: center; font-size: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 4px;
+        }
+        .stat-name {
+            color: #a0d0ff; font-weight: 600; width: 100px;
+        }
+        .stat-value { font-weight: bold; color: white; }
+        .bonus { color: #40ff80; font-size: 0.9em; margin-left: 10px; }
+
+        .unit-stats-container {
+            background: rgba(0,0,0,0.5);
+            padding: 14px; border-radius: 10px;
+            display: flex; gap: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .unit-stats-col {
+            flex: 1; display: flex; flex-direction: column; gap: 6px;
+        }
+        .unit-stat-line {
+            display: flex; align-items: center; font-size: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 3px;
+        }
+        .unit-stat-name {
+            color: #a0d0ff; font-weight: 600; width: 80px;
+        }
+        .unit-stat-value { font-weight: bold; color: white; }
+        .unit-stat-bonus {
+            color: #40ff80; font-size: 0.85em; margin-left: 8px;
+        }
+
+        .unit-terrain-container {
+            background: rgba(0,0,0,0.4);
+            padding: 10px 14px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .unit-terrain-title {
+            font-size: 11px; font-weight: 600; color: #a0d0ff;
+            margin-bottom: 8px; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .unit-terrain-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .unit-terrain-item {
+            display: flex; align-items: center; gap: 4px;
+            background: rgba(0,0,0,0.3); padding: 4px 8px;
+            border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);
+        }
+        .unit-terrain-type-icon {
+            width: 22px; height: 22px; object-fit: contain;
+        }
+        .unit-terrain-level-icon {
+            width: 18px; height: 18px; object-fit: contain;
+        }
+
+        .section-title {
+            font-size: 22px; font-weight: 700; color: #a0d0ff;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 2px solid rgba(96,160,255,0.3);
+            text-shadow: 0 2px 4px #000;
+        }
+        .abilities-skills-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            padding: 30px 40px 40px; background: rgba(10, 20, 35, 0.8);
+        }
+        .abilities-full-width {
+            padding: 30px 40px 40px; background: rgba(10, 20, 35, 0.8);
+        }
+        .abilities-full-width .abilities-columns {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px;
+        }
+
+        .ability-card, .skill-card {
+            background: rgba(30,50,90,0.5); padding: 20px;
+            border-radius: 12px; border-left: 5px solid #60a0ff;
+            margin-bottom: 16px;
+        }
+        .ability-name, .skill-name {
+            font-size: 19px; font-weight: 700; margin-bottom: 12px;
+            color: #c0e0ff;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .ability-icon, .skill-icon {
+            width: 40px; height: 40px; border-radius: 8px;
+            border: 2px solid rgba(96,160,255,0.4);
+            background: rgba(0,0,0,0.3);
+            object-fit: contain; flex-shrink: 0;
+        }
+
+        /* EX ability icon with frame overlay */
+        .ability-icon-ex-container {
+            position: relative;
+            width: 48px; height: 48px;
+            flex-shrink: 0;
+        }
+        .ability-icon-ex-container .ability-icon-inner {
+            position: absolute;
+            top: 4px; left: 4px;
+            width: 40px; height: 40px;
+            object-fit: contain;
+            display: block;
+            border: none;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.3);
+        }
+        .ability-icon-ex-container .ability-frame-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 48px; height: 48px;
+            object-fit: contain;
+            pointer-events: none;
+            display: block;
+        }
+
+        .ability-detail {
+            background: rgba(0,0,0,0.3); padding: 14px;
+            border-radius: 10px; margin-top: 10px; line-height: 1.5;
+        }
+        
+        .condition-tags {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+        }
+        .condition-tag {
+            padding: 5px 12px; background: rgba(255,180,60,0.25);
+            border: 1px solid rgba(255,180,60,0.35);
+            color: #ffd080; border-radius: 14px;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .weapons-section {
+            padding: 30px 40px 40px; background: rgba(10, 20, 35, 0.8);
+            border-top: 1px solid rgba(100,180,255,0.15);
+        }
+        .weapon-entry {
+            background: rgba(30,50,90,0.5);
+            border-radius: 12px; margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .weapon-entry-map { border-left: 5px solid #60e0a0; }
+        .weapon-entry-ex { border-left: 5px solid #ffc040; }
+        .weapon-entry-normal {
+            border-left: 5px solid rgba(100,180,255,0.3);
+        }
+        .weapon-table {
+            width: 100%; border-collapse: collapse; table-layout: fixed;
+        }
+        .weapon-info-cell {
+            padding: 14px 16px;
+            background: rgba(20, 30, 50, 0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .weapon-name-flex {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .weapon-icon-container {
+            position: relative; width: 44px; height: 44px; flex-shrink: 0;
+        }
+        .weapon-icon {
+            width: 44px; height: 44px; border-radius: 6px;
+            border: 2px solid rgba(255,128,64,0.4);
+            background: rgba(0,0,0,0.3); object-fit: contain;
+        }
+        .weapon-ex-overlay {
+            position: absolute; top: -3px; right: -3px;
+            width: 20px; height: 20px; object-fit: contain;
+        }
+        .weapon-details-row {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .weapon-name-text {
+            font-size: 17px; font-weight: 700; color: #fff;
+        }
+        .weapon-stat-header {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            color: #8090b0; text-align: center; padding: 8px 4px 4px;
+        }
+        .weapon-stat-value {
+            font-size: 15px; font-weight: 600; color: #e0e0ff;
+            text-align: center; padding: 2px 4px 12px;
+        }
+        .weapon-trait-row {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.2);
+        }
+        .weapon-trait-header {
+            font-size: 12px; font-weight: 700; color: #ffe080;
+            text-transform: uppercase; padding: 12px 16px;
+            text-align: left; vertical-align: top; width: 160px;
+        }
+        .weapon-trait-content {
+            padding: 12px 16px; font-size: 14px; color: #d0e0ff;
+            line-height: 1.5; text-align: left;
+        }
+        .trait-list { margin: 0; padding-left: 16px; }
+        .trait-list li { margin-bottom: 4px; }
+
+        .weapon-restriction-row {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.15);
+        }
+        .weapon-restriction-header {
+            font-size: 12px; font-weight: 700; color: #ff9080;
+            text-transform: uppercase; padding: 12px 16px;
+            text-align: left; vertical-align: top; width: 160px;
+        }
+        .weapon-restriction-content {
+            padding: 12px 16px; font-size: 14px; color: #ffa090;
+            line-height: 1.5; text-align: left;
+        }
+        .weapon-restriction-content.no-restriction {
+            color: #80c080;
+        }
+        .restriction-list {
+            margin: 0; padding: 0; list-style: none;
+        }
+        .restriction-list li {
+            margin-bottom: 6px;
+        }
+        .restriction-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .weapon-attr-badge {
+            padding: 3px 10px; border-radius: 10px; font-size: 11px;
+            font-weight: 700; white-space: nowrap; display: inline-block;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .attr-physical { background: rgba(255,160,60,0.3); color: #ffcc80; }
+        .attr-beam { background: rgba(60,160,255,0.3); color: #80ccff; }
+        .attr-special { background: rgba(180,60,255,0.3); color: #d0a0ff; }
+        .attr-mixed { background: rgba(255,255,100,0.2); color: #ffe080; }
+
+        .weapon-type-badge {
+            padding: 2px 8px; border-radius: 8px; font-size: 10px;
+            font-weight: 800; letter-spacing: 1px; white-space: nowrap;
+        }
+        .weapon-type-ex {
+            background: rgba(255,180,60,0.3); color: #ffc040;
+            border: 1px solid rgba(255,180,60,0.4);
+        }
+        .weapon-type-map {
+            background: rgba(60,220,160,0.3); color: #60e0a0;
+            border: 1px solid rgba(60,220,160,0.4);
+        }
+        .weapon-attack-types {
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .attack-type-icon {
+            width: 20px; height: 20px; object-fit: contain;
+        }
+
+        .error {
+            background: rgba(200,40,40,0.3); color: #ff8080; padding: 20px;
+            border-radius: 12px; border-left: 5px solid #ff4040;
+            margin: 20px; text-align: center;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 900px) {
+            .profile-header, .unit-header {
+                flex-direction: column; align-items: center;
+            }
+            .abilities-skills-grid { grid-template-columns: 1fr; }
+            .abilities-full-width .abilities-columns {
+                grid-template-columns: 1fr;
+            }
+            .stats-container, .unit-stats-container {
+                flex-direction: column; gap: 20px;
+            }
+            .char-portrait { width: 200px; }
+            .unit-portrait { width: 100%; max-width: 390px; }
+            .no-portrait-unit { width: 100%; max-width: 390px; }
+            .profile-name { font-size: 28px; }
+            .weapons-section { padding: 20px; }
+            .abilities-skills-grid { padding: 20px; }
+            .abilities-full-width { padding: 20px; }
+            h1 { padding-right: 0; font-size: 20px; }
+            .lang-switcher { position: static; margin-bottom: 15px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="lang-switcher">
+                <div class="lang-btn active" onclick="setLanguage('EN')" id="lang-EN">EN</div>
+                <div class="lang-btn" onclick="setLanguage('TW')" id="lang-TW">繁中</div>
+            </div>
+            <h1 id="page-title">SD Gundam G Generation Eternal Database</h1>
+            <div class="tab-bar">
+                <div class="tab-btn active"
+                     onclick="switchTab('character')"
+                     id="tab-character">Character</div>
+                <div class="tab-btn"
+                     onclick="switchTab('unit')"
+                     id="tab-unit">Unit</div>
+            </div>
+            <div class="tab-content" id="section-character">
+                <div class="search-box">
+                    <input type="text" id="charId"
+                           placeholder="Character ID (e.g. 4000xxxxx)"
+                           onkeypress="if(event.key==='Enter') searchCharacter()">
+                    <button onclick="searchCharacter()"
+                            id="charSearchBtn">Search</button>
+                </div>
+            </div>
+            <div class="tab-content hidden" id="section-unit">
+                <div class="search-box">
+                    <input type="text" id="unitId"
+                           placeholder="Unit ID (e.g. 3000xxxxx)"
+                           onkeypress="if(event.key==='Enter') searchUnit()">
+                    <button onclick="searchUnit()"
+                            id="unitSearchBtn">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="char-loading">
+            <div class="spinner"></div>
+            <p style="color:#a0d0ff;" id="char-loading-text">Loading character...</p>
+        </div>
+        <div class="result-box" id="char-result"></div>
+
+        <div class="loading" id="unit-loading">
+            <div class="spinner"></div>
+            <p style="color:#a0d0ff;" id="unit-loading-text">Loading unit...</p>
+        </div>
+        <div class="result-box" id="unit-result"></div>
+    </div>
+
+    <script>
+        let currentTab = 'character';
+        let currentLang = 'EN';
+        let lastCharId = '';
+        let lastUnitId = '';
+
+        var UI_STRINGS = {
+            'EN': {
+                pageTitle: 'SD Gundam G Generation Eternal Database',
+                tabCharacter: 'Character',
+                tabUnit: 'Unit',
+                charPlaceholder: 'Character ID (e.g. 4000xxxxx)',
+                unitPlaceholder: 'Unit ID (e.g. 3000xxxxx)',
+                search: 'Search',
+                loadingCharacter: 'Loading character...',
+                loadingUnit: 'Loading unit...',
+                noPortrait: 'No Portrait',
+                terrainCapability: 'Terrain Capability',
+                abilities: 'Abilities',
+                skills: 'Skills',
+                weapons: 'Weapons',
+                weaponEffect: 'Weapon Effect',
+                usageRestrictions: 'Usage Restrictions',
+                noRestriction: 'None',
+                range: 'Range',
+                power: 'Power',
+                en: 'EN',
+                accuracy: 'Accuracy',
+                critical: 'Critical',
+                ammo: 'Ammo',
+                errorPrefix: 'Error: ',
+                invalidCharId: 'Please enter a valid Character ID (7-12 digits)',
+                invalidUnitId: 'Please enter a valid Unit ID (7-12 digits)',
+                statRanged: 'Ranged', statMelee: 'Melee', statAwaken: 'Awaken',
+                statDefense: 'Defense', statReaction: 'Reaction',
+                statHP: 'HP', statEN: 'EN', statAttack: 'Attack',
+                statUnitDefense: 'Defense', statMobility: 'Mobility', statMove: 'Move',
+                roleAttack: 'Attack', roleDefense: 'Defense', roleSupport: 'Support', roleNPC: 'NPC',
+                attrPhysical: 'Physical', attrBeam: 'Beam', attrSpecial: 'Special',
+                attrBeamPhysical: 'Beam/Physical', attrPhysicalSpecial: 'Physical/Special',
+                attrBeamSpecial: 'Beam/Special', attrBeamPhysicalSpecial: 'Beam/Physical/Special',
+                attrUnknown: 'Unknown',
+                restrictBeforeMoving: 'Useable only before moving.',
+                restrictTensionMax: 'Can be used at Tension Max or greater.',
+                restrictMP: 'Can be used when consuming 5 MP.',
+            },
+            'TW': {
+                pageTitle: 'SD 鋼彈 G 世代 永恆 資料庫',
+                tabCharacter: '角色', tabUnit: '機體',
+                charPlaceholder: '角色 ID（例：4000xxxxx）',
+                unitPlaceholder: '機體 ID（例：3000xxxxx）',
+                search: '搜尋',
+                loadingCharacter: '正在載入角色資料...', loadingUnit: '正在載入機體資料...',
+                noPortrait: '無圖片', terrainCapability: '地形適性',
+                abilities: '能力', skills: '技能', weapons: '武裝',
+                weaponEffect: '武器效果', usageRestrictions: '使用限制', noRestriction: '無',
+                range: '射程', power: '威力', en: 'EN', accuracy: '命中',
+                critical: '暴擊', ammo: '彈數',
+                errorPrefix: '錯誤：',
+                invalidCharId: '請輸入有效的角色 ID（7-12位數字）',
+                invalidUnitId: '請輸入有效的機體 ID（7-12位數字）',
+                statRanged: '射擊', statMelee: '格鬥', statAwaken: '覺醒',
+                statDefense: '守備', statReaction: '反應',
+                statHP: 'HP', statEN: 'EN', statAttack: '攻擊',
+                statUnitDefense: '防禦', statMobility: '機動', statMove: '移動',
+                roleAttack: '攻擊型', roleDefense: '防禦型', roleSupport: '支援型', roleNPC: 'NPC',
+                attrPhysical: '實彈', attrBeam: '光束', attrSpecial: '特殊',
+                attrBeamPhysical: '光束/實彈', attrPhysicalSpecial: '實彈/特殊',
+                attrBeamSpecial: '光束/特殊', attrBeamPhysicalSpecial: '光束/實彈/特殊',
+                attrUnknown: '不明',
+                restrictBeforeMoving: '僅限移動前使用。',
+                restrictTensionMax: '鬥志Max以上時可使用。',
+                restrictMP: '消耗5MP時可使用。',
+            }
+        };
+        
+        var CHAR_STAT_KEY_MAP = {
+            'Ranged': 'statRanged', 'Melee': 'statMelee', 'Awaken': 'statAwaken',
+            'Defense': 'statDefense', 'Reaction': 'statReaction'
+        };
+        var UNIT_STAT_KEY_MAP = {
+            'HP': 'statHP', 'EN': 'statEN', 'Attack': 'statAttack',
+            'Defense': 'statUnitDefense', 'Mobility': 'statMobility', 'Move': 'statMove'
+        };
+        var ROLE_KEY_MAP = {
+            'Attack': 'roleAttack', 'Defense': 'roleDefense',
+            'Support': 'roleSupport', 'NPC': 'roleNPC'
+        };
+        var WEAPON_ATTR_KEY_MAP = {
+            'Physical': 'attrPhysical', 'Beam': 'attrBeam', 'Special': 'attrSpecial',
+            'Beam/Physical': 'attrBeamPhysical', 'Physical/Special': 'attrPhysicalSpecial',
+            'Beam/Special': 'attrBeamSpecial', 'Beam/Physical/Special': 'attrBeamPhysicalSpecial',
+            'Unknown': 'attrUnknown'
+        };
+        var RESTRICTION_KEY_MAP = {
+            'Useable only before moving.': 'restrictBeforeMoving',
+            'Can be used at Tension Max or greater.': 'restrictTensionMax',
+            'Can be used when consuming 5 MP.': 'restrictMP'
+        };
+
+        var CHAR_ABILITY_FRAME = '/static/images/Trait/UI_CharaAbilities_Tmb_Square_Normal_Frame.png';
+
+        function t(key) {
+            var strings = UI_STRINGS[currentLang] || UI_STRINGS['EN'];
+            return strings[key] || UI_STRINGS['EN'][key] || key;
+        }
+        function translateStatName(backendName, isUnit) {
+            var map = isUnit ? UNIT_STAT_KEY_MAP : CHAR_STAT_KEY_MAP;
+            var key = map[backendName]; return key ? t(key) : backendName;
+        }
+        function translateRole(backendRole) {
+            var key = ROLE_KEY_MAP[backendRole]; return key ? t(key) : backendRole;
+        }
+        function translateWeaponAttr(backendAttr) {
+            var key = WEAPON_ATTR_KEY_MAP[backendAttr]; return key ? t(key) : backendAttr;
+        }
+        function translateRestriction(backendText) {
+            var key = RESTRICTION_KEY_MAP[backendText]; return key ? t(key) : backendText;
+        }
+
+        function isExAbility(name) {
+            if (!name) return false;
+            return /(?:^|[\s\-_\[\(])EX(?:$|[\s\-_\]\):])/.test(name)
+                || name.startsWith('EX ') || name.startsWith('EX:') || name === 'EX';
+        }
+
+        function updateUIText() {
+            document.getElementById('page-title').textContent = t('pageTitle');
+            document.getElementById('tab-character').textContent = t('tabCharacter');
+            document.getElementById('tab-unit').textContent = t('tabUnit');
+            document.getElementById('charId').placeholder = t('charPlaceholder');
+            document.getElementById('unitId').placeholder = t('unitPlaceholder');
+            document.getElementById('charSearchBtn').textContent = t('search');
+            document.getElementById('unitSearchBtn').textContent = t('search');
+            document.getElementById('char-loading-text').textContent = t('loadingCharacter');
+            document.getElementById('unit-loading-text').textContent = t('loadingUnit');
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(function(btn) { btn.classList.remove('active'); });
+            document.getElementById('lang-' + lang).classList.add('active');
+            updateUIText();
+            if (lastCharId && document.getElementById('char-result').dataset.shown === '1') searchCharacter();
+            if (lastUnitId && document.getElementById('unit-result').dataset.shown === '1') searchUnit();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-character').classList.toggle('active', tab === 'character');
+            document.getElementById('tab-unit').classList.toggle('active', tab === 'unit');
+            document.getElementById('section-character').classList.toggle('hidden', tab !== 'character');
+            document.getElementById('section-unit').classList.toggle('hidden', tab !== 'unit');
+            var cr = document.getElementById('char-result'), ur = document.getElementById('unit-result');
+            if (tab === 'character') { cr.style.display = cr.dataset.shown === '1' ? 'block' : 'none'; ur.style.display = 'none'; }
+            else { ur.style.display = ur.dataset.shown === '1' ? 'block' : 'none'; cr.style.display = 'none'; }
+        }
+
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            var div = document.createElement('div'); div.textContent = String(text); return div.innerHTML;
+        }
+        function safeLineBreaks(text) { return escapeHtml(text).replace(/\n/g, '<br>'); }
+
+        function makeSeriesHtml(series) {
+            if (!series || !series.length) return '';
+            return series.map(function(s) {
+                var pid = String(s.id).padStart(4, '0'), en = escapeHtml(s.name);
+                return '<img src="/static/images/Logo-Series/logo_l_series_' + pid + '.png" alt="' + en + '" class="series-mini-logo" title="' + en + '" onerror="this.style.display=\'none\'">';
+            }).join('');
+        }
+        function makeTagsHtml(tags) {
+            if (!tags || !tags.length) return '';
+            return tags.map(function(tg) { return '<span class="tag">' + escapeHtml(tg) + '</span>'; }).join('');
+        }
+        function makeStatHtml(stat) {
+            var dn = translateStatName(stat.name, false);
+            var bn = stat.bonus > 0 ? '<span class="bonus">+' + stat.bonus + '</span>' : '';
+            return '<div class="stat-line"><span class="stat-name">' + escapeHtml(dn) + '</span><span class="stat-value">' + stat.total + '</span>' + bn + '</div>';
+        }
+        function makeUnitStatHtml(stat) {
+            var dn = translateStatName(stat.name, true);
+            var bn = stat.bonus > 0 ? '<span class="unit-stat-bonus">+' + stat.bonus + '</span>' : '';
+            return '<div class="unit-stat-line"><span class="unit-stat-name">' + escapeHtml(dn) + '</span><span class="unit-stat-value">' + stat.total + '</span>' + bn + '</div>';
+        }
+
+        function makeAbilityCard(a, isCharacter) {
+            var iconHtml = '';
+            if (a.icon) {
+                if (isCharacter && isExAbility(a.name)) {
+                    iconHtml = '<div class="ability-icon-ex-container">'
+                        + '<img src="' + a.icon + '" alt="" class="ability-icon-inner" onerror="this.style.display=\'none\'">'
+                        + '<img src="' + CHAR_ABILITY_FRAME + '" alt="" class="ability-frame-overlay" onerror="this.style.display=\'none\'">'
+                        + '</div>';
+                } else {
+                    iconHtml = '<img src="' + a.icon + '" alt="" class="ability-icon" onerror="this.style.display=\'none\'">';
+                }
+            }
+            var detailsHtml = (a.details || []).map(function(d) {
+                var condHtml = '';
+                if (d.conditions && d.conditions.length > 0) {
+                    condHtml = '<div class="condition-tags">' + d.conditions.map(function(c) {
+                        return '<span class="condition-tag">' + escapeHtml(c) + '</span>';
+                    }).join('') + '</div>';
+                }
+                return '<div class="ability-detail">' + condHtml + safeLineBreaks(d.text || d) + '</div>';
+            }).join('');
+            return '<div class="ability-card"><div class="ability-name">' + iconHtml + escapeHtml(a.name) + '</div>' + detailsHtml + '</div>';
+        }
+
+        function makeUnitTerrainHtml(terrain) {
+            if (!terrain || !terrain.length) return '';
+            var items = terrain.map(function(tr) {
+                return '<div class="unit-terrain-item">'
+                    + '<img src="' + tr.type_icon + '" alt="' + escapeHtml(tr.name) + '" class="unit-terrain-type-icon" onerror="this.style.display=\'none\'" title="' + escapeHtml(tr.name) + '">'
+                    + '<img src="' + tr.level_icon + '" alt="' + tr.symbol + '" class="unit-terrain-level-icon" onerror="this.style.display=\'none\'">'
+                    + '</div>';
+            }).join('');
+            return '<div class="unit-terrain-container"><div class="unit-terrain-title">' + escapeHtml(t('terrainCapability')) + '</div><div class="unit-terrain-row">' + items + '</div></div>';
+        }
+
+        function getAttrClass(attrId) {
+            if (attrId === '1') return 'attr-physical'; if (attrId === '2') return 'attr-beam';
+            if (attrId === '3') return 'attr-special'; return 'attr-mixed';
+        }
+        function makeWeaponIconHtml(w) {
+            if (!w.icon) return '';
+            var html = '<div class="weapon-icon-container"><img src="' + w.icon + '" alt="" class="weapon-icon" onerror="this.style.display=\'none\'">';
+            if (w.is_ex && w.overlay) html += '<img src="' + w.overlay + '" alt="EX" class="weapon-ex-overlay" onerror="this.style.display=\'none\'">';
+            return html + '</div>';
+        }
+        function makeAttackTypeIcons(attackTypes) {
+            if (!attackTypes || !attackTypes.length) return '';
+            return '<span class="weapon-attack-types">' + attackTypes.map(function(at) {
+                return '<img src="' + at.icon + '" alt="' + escapeHtml(at.label) + '" title="' + escapeHtml(at.label) + '" class="attack-type-icon" onerror="this.style.display=\'none\'">';
+            }).join('') + '</span>';
+        }
+        function makeSpecialIconsHtml(specialIcons) {
+            if (!specialIcons || !specialIcons.length) return '';
+            return specialIcons.map(function(iconUrl) {
+                return '<span class="badge-icon-only"><img src="' + iconUrl + '" alt="" onerror="this.parentElement.style.display=\'none\'"></span>';
+            }).join('');
+        }
+
+        function makeWeaponsSection(weapons) {
+            if (!weapons || !weapons.length) return '';
+            var mapW = weapons.filter(function(w) { return w.weapon_type === '3'; });
+            var otherW = weapons.filter(function(w) { return w.weapon_type !== '3'; });
+            var sorted = mapW.concat(otherW);
+            var rows = sorted.map(function(w) {
+                var iconHtml = makeWeaponIconHtml(w), atkIcons = makeAttackTypeIcons(w.attack_types);
+                var typeBadge = '', borderClass = 'weapon-entry-normal';
+                if (w.weapon_type === '2') { typeBadge = '<span class="weapon-type-badge weapon-type-ex">EX</span>'; borderClass = 'weapon-entry-ex'; }
+                else if (w.weapon_type === '3') { typeBadge = '<span class="weapon-type-badge weapon-type-map">MAP</span>'; borderClass = 'weapon-entry-map'; }
+                var tAttr = translateWeaponAttr(w.attribute);
+                var rangeText = w.weapon_type === '3' ? 'MAP' : (w.min_range === w.max_range ? '' + w.min_range : w.min_range + '-' + w.max_range);
+                var isMap = w.weapon_type === '3', colSpan = isMap ? 6 : 5;
+                var ammoH = isMap ? '<th class="weapon-stat-header">' + escapeHtml(t('ammo')) + '</th>' : '';
+                var ammoV = isMap ? '<td class="weapon-stat-value">' + w.ammo + '</td>' : '';
+                var traitRow = '';
+                if (w.traits && w.traits.length > 0) {
+                    var tc = w.traits.length === 1 ? safeLineBreaks(w.traits[0]) : '<ul class="trait-list">' + w.traits.map(function(tr) { return '<li>' + safeLineBreaks(tr) + '</li>'; }).join('') + '</ul>';
+                    traitRow = '<tr class="weapon-trait-row"><th class="weapon-trait-header">' + escapeHtml(t('weaponEffect')) + '</th><td colspan="' + (colSpan-1) + '" class="weapon-trait-content">' + tc + '</td></tr>';
+                }
+                var rests = w.usage_restrictions || [], rClass = '', rContent = '';
+                if (rests.length === 0) { rClass = 'no-restriction'; rContent = escapeHtml(t('noRestriction')); }
+                else if (rests.length === 1) rContent = escapeHtml(translateRestriction(rests[0]));
+                else rContent = '<ul class="restriction-list">' + rests.map(function(r) { return '<li>' + escapeHtml(translateRestriction(r)) + '</li>'; }).join('') + '</ul>';
+                var rRow = '<tr class="weapon-restriction-row"><th class="weapon-restriction-header">' + escapeHtml(t('usageRestrictions')) + '</th><td colspan="' + (colSpan-1) + '" class="weapon-restriction-content ' + rClass + '">' + rContent + '</td></tr>';
+                return '<div class="weapon-entry ' + borderClass + '"><table class="weapon-table">'
+                    + '<tr><td colspan="' + colSpan + '" class="weapon-info-cell"><div class="weapon-name-flex">' + iconHtml + '<div class="weapon-details-row"><span class="weapon-name-text">' + escapeHtml(w.name) + '</span>' + typeBadge + '<span class="weapon-attr-badge ' + getAttrClass(w.attribute_id) + '">' + escapeHtml(tAttr) + '</span>' + atkIcons + '</div></div></td></tr>'
+                    + '<tr><th class="weapon-stat-header">' + escapeHtml(t('range')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('power')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('en')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('accuracy')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('critical')) + '</th>' + ammoH + '</tr>'
+                    + '<tr><td class="weapon-stat-value">' + rangeText + '</td><td class="weapon-stat-value">' + w.power + '</td><td class="weapon-stat-value">' + w.en_cost + '</td><td class="weapon-stat-value">' + w.accuracy + '%</td><td class="weapon-stat-value">' + w.critical + '%</td>' + ammoV + '</tr>'
+                    + traitRow + rRow + '</table></div>';
+            }).join('');
+            return '<div>' + rows + '</div>';
+        }
+
+        async function searchCharacter() {
+            var charId = document.getElementById('charId').value.trim();
+            if (!charId || !/^\d{7,12}$/.test(charId)) { alert(t('invalidCharId')); return; }
+            lastCharId = charId;
+            var btn = document.getElementById('charSearchBtn'); btn.disabled = true;
+            document.getElementById('char-loading').style.display = 'block';
+            document.getElementById('char-result').style.display = 'none';
+            try {
+                var resp = await fetch('/api/character/' + charId + '?lang=' + currentLang);
+                var data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Not found');
+                if (!data.name) throw new Error('Invalid data received');
+                displayCharacter(data);
+            } catch (err) {
+                var el = document.getElementById('char-result');
+                el.innerHTML = '<div class="error">' + escapeHtml(t('errorPrefix')) + escapeHtml(err.message) + '</div>';
+                el.style.display = 'block'; el.dataset.shown = '1';
+            } finally { document.getElementById('char-loading').style.display = 'none'; btn.disabled = false; }
+        }
+
+        function displayCharacter(data) {
+            var result = document.getElementById('char-result');
+            var stats = data.stats || [];
+            var col1 = stats.slice(0, 3).map(makeStatHtml).join('');
+            var col2 = stats.slice(3, 5).map(makeStatHtml).join('');
+            var tagsHtml = makeTagsHtml(data.tags);
+            var tRole = translateRole(data.role);
+            var portraitHtml = data.portrait
+                ? '<img src="' + data.portrait + '" alt="' + escapeHtml(data.name) + '" class="char-portrait" onerror="this.outerHTML=\'<div class=no-portrait>' + escapeHtml(t('noPortrait')) + '</div>\'">'
+                : '<div class="no-portrait">' + escapeHtml(t('noPortrait')) + '</div>';
+            var skillsHtml = (data.skills || []).map(function(s) {
+                var ih = s.icon ? '<img src="' + s.icon + '" alt="" class="skill-icon" onerror="this.style.display=\'none\'">' : '';
+                var dh = (s.details || []).map(function(d) { return '<div class="ability-detail">' + safeLineBreaks(d) + '</div>'; }).join('');
+                return '<div class="skill-card"><div class="skill-name">' + ih + escapeHtml(s.name) + '</div>' + dh + '</div>';
+            }).join('');
+            var abilitiesHtml = (data.abilities || []).map(function(a) { return makeAbilityCard(a, true); }).join('');
+            result.innerHTML =
+                '<div class="profile-header">' + portraitHtml + '<div class="profile-main">'
+                + '<div class="name-series-row"><div class="profile-name">' + escapeHtml(data.name) + '</div>' + makeSeriesHtml(data.series) + '</div>'
+                + '<div class="meta-row"><span class="badge"><img src="/static/images/UI/UI_Common_RarityIcon_' + data.rarity + '.png" onerror="this.style.display=\'none\'">' + escapeHtml(data.rarity) + '</span>'
+                + '<span class="badge"><img src="/static/images/UI/UI_Common_TypeIcon_' + data.role + '_S.png" onerror="this.style.display=\'none\'">' + escapeHtml(tRole) + '</span>'
+                + '<span class="badge">ID: ' + escapeHtml(data.id) + '</span></div>'
+                + (tagsHtml ? '<div class="tags-row">' + tagsHtml + '</div>' : '')
+                + '<div class="stats-container"><div class="stats-col">' + col1 + '</div><div class="stats-col">' + col2 + '</div></div>'
+                + '</div></div>'
+                + '<div class="abilities-skills-grid">'
+                + (abilitiesHtml ? '<div><div class="section-title">' + escapeHtml(t('abilities')) + ' (' + (data.abilities ? data.abilities.length : 0) + ')</div>' + abilitiesHtml + '</div>' : '')
+                + (skillsHtml ? '<div><div class="section-title">' + escapeHtml(t('skills')) + ' (' + (data.skills ? data.skills.length : 0) + ')</div>' + skillsHtml + '</div>' : '')
+                + '</div>';
+            result.style.display = 'block'; result.dataset.shown = '1';
+        }
+
+        async function searchUnit() {
+            var unitId = document.getElementById('unitId').value.trim();
+            if (!unitId || !/^\d{7,12}$/.test(unitId)) { alert(t('invalidUnitId')); return; }
+            lastUnitId = unitId;
+            var btn = document.getElementById('unitSearchBtn'); btn.disabled = true;
+            document.getElementById('unit-loading').style.display = 'block';
+            document.getElementById('unit-result').style.display = 'none';
+            try {
+                var resp = await fetch('/api/unit/' + unitId + '?lang=' + currentLang);
+                var data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Not found');
+                if (!data.name) throw new Error('Invalid data received');
+                displayUnit(data);
+            } catch (err) {
+                var el = document.getElementById('unit-result');
+                el.innerHTML = '<div class="error">' + escapeHtml(t('errorPrefix')) + escapeHtml(err.message) + '</div>';
+                el.style.display = 'block'; el.dataset.shown = '1';
+            } finally { document.getElementById('unit-loading').style.display = 'none'; btn.disabled = false; }
+        }
+
+        function displayUnit(data) {
+            var result = document.getElementById('unit-result');
+            var stats = data.stats || [];
+            var sHP = stats.find(function(s){return s.name==='HP';}), sEN = stats.find(function(s){return s.name==='EN';});
+            var sATK = stats.find(function(s){return s.name==='Attack';}), sDEF = stats.find(function(s){return s.name==='Defense';});
+            var sMOB = stats.find(function(s){return s.name==='Mobility';}), sMOV = stats.find(function(s){return s.name==='Move';});
+            var col1 = [sHP,sEN,sMOV].filter(Boolean).map(makeUnitStatHtml).join('');
+            var col2 = [sATK,sDEF,sMOB].filter(Boolean).map(makeUnitStatHtml).join('');
+            var tagsHtml = makeTagsHtml(data.tags), tRole = translateRole(data.role);
+            var modelBadge = data.model ? '<span class="badge">' + escapeHtml(data.model) + '</span>' : '';
+            var specIcons = makeSpecialIconsHtml(data.special_icons);
+            var abilitiesHtml = (data.abilities || []).map(function(a) { return makeAbilityCard(a, false); }).join('');
+            var weaponsHtml = makeWeaponsSection(data.weapons);
+            var portraitHtml = data.portrait
+                ? '<img src="' + data.portrait + '" alt="' + escapeHtml(data.name) + '" class="unit-portrait" onerror="this.outerHTML=\'<div class=no-portrait-unit>' + escapeHtml(t('noPortrait')) + '</div>\'">'
+                : '<div class="no-portrait-unit">' + escapeHtml(t('noPortrait')) + '</div>';
+            result.innerHTML =
+                '<div class="unit-header">' + portraitHtml + '<div class="unit-info">'
+                + '<div class="name-series-row"><div class="profile-name">' + escapeHtml(data.name) + '</div>' + makeSeriesHtml(data.series) + '</div>'
+                + '<div class="meta-row"><span class="badge"><img src="/static/images/UI/UI_Common_RarityIcon_' + data.rarity + '.png" onerror="this.style.display=\'none\'">' + escapeHtml(data.rarity) + '</span>'
+                + '<span class="badge"><img src="/static/images/UI/UI_Common_TypeIcon_' + data.role + '_S.png" onerror="this.style.display=\'none\'">' + escapeHtml(tRole) + '</span>'
+                + specIcons + modelBadge
+                + '<span class="badge">ID: ' + escapeHtml(data.id) + '</span></div>'
+                + (tagsHtml ? '<div class="tags-row">' + tagsHtml + '</div>' : '')
+                + '<div class="unit-stats-container"><div class="unit-stats-col">' + col1 + '</div><div class="unit-stats-col">' + col2 + '</div></div>'
+                + makeUnitTerrainHtml(data.terrain)
+                + '</div></div>'
+                + (weaponsHtml ? '<div class="weapons-section"><div class="section-title">' + escapeHtml(t('weapons')) + ' (' + (data.weapons ? data.weapons.length : 0) + ')</div>' + weaponsHtml + '</div>' : '')
+                + (abilitiesHtml ? '<div class="abilities-full-width"><div class="section-title">' + escapeHtml(t('abilities')) + ' (' + (data.abilities ? data.abilities.length : 0) + ')</div><div class="abilities-columns">' + abilitiesHtml + '</div></div>' : '');
+            result.style.display = 'block'; result.dataset.shown = '1';
+        }
+    </script>
+</body>
+</html>

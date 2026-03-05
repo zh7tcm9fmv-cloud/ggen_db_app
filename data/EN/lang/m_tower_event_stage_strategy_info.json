@@ -1,0 +1,890 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 290200907001010201,
+    "value": "Musai  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907001020201,
+    "value": "Minerva  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907001030201,
+    "value": "Virginia  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907001040101,
+    "value": "Yazan Gable and units piloted by Danny have their <material=MaterialName>ATK increased by neutral units' area effects</material>."
+  },
+  {
+    "id": 290200907001040201,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001050201,
+    "value": "Quin Mantha  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
+  },
+  {
+    "id": 290200907001050202,
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001060101,
+    "value": "Gundam Kimaris Trooper and Schwalbe Graze (McGillis) <material=MaterialName>prioritize attacking the guest force</material>."
+  },
+  {
+    "id": 290200907001060201,
+    "value": "Isaribi  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907001060202,
+    "value": "Hammerhead  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907001060203,
+    "value": "Graze Ein <material=MaterialName>increases ATK  of Gundam Kimaris Trooper</material>."
+  },
+  {
+    "id": 290200907001060204,
+    "value": "Graze Ritter (Instructor/Duel Type) <material=MaterialName>increases ATK  of Schwalbe Graze (McGillis)</material>."
+  },
+  {
+    "id": 290200907001070101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Johnny Ridden and Dozle Zabi</material>."
+  },
+  {
+    "id": 290200907001070201,
+    "value": "Shin Matsunaga's Zaku II and Anavel Gato's Gelgoog are <material=MaterialName>Support Attack / Counter Support</material> units.\n\nSupport Attacks won't trigger if you attack from outside the supporting unit's range."
+  },
+  {
+    "id": 290200907001070202,
+    "value": "Zaku II FZ appears every turn as reinforcements in large numbers, and <material=MaterialName>increases DEF of Johnny Ridden's Zaku II High Mobility Type and Dozle Zabi's Zaku II</material>."
+  },
+  {
+    "id": 290200907001070203,
+    "value": "Hyaku Shiki  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907001080201,
+    "value": "The victory condition for this stage is for <material=MaterialName>White Base  to reach the target area</material>."
+  },
+  {
+    "id": 290200907001080202,
+    "value": "Salamis  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907001080203,
+    "value": "GOUF Ignited (Heine Westenfluss), GOUF Ignited, Zaku I (Thunderbolt), and Dried Fish <material=MaterialName>prioritize attacking White Base</material>."
+  },
+  {
+    "id": 290200907001080204,
+    "value": "Rick Dom, Doven Wolf, and Gelgoog Marine appear in large numbers, and <material=MaterialName>prioritize attacking Salamis</material>."
+  },
+  {
+    "id": 290200907001080205,
+    "value": "Gyan, Zudah, Zamza-Zah and Gells-Ghe appear as reinforcements in large numbers, and <material=MaterialName>prioritize attacking Salamis</material>."
+  },
+  {
+    "id": 290200907001090101,
+    "value": "Gundam Aerial Rebuild and Chuchu's Demi Trainer have <material=MaterialName>high ATK </material>."
+  },
+  {
+    "id": 290200907001090201,
+    "value": "Michaelis, Darilbalde, and Beguir-Beu appear as reinforcements, and <material=MaterialName>obstruct entry into neutral units' area effects</material>."
+  },
+  {
+    "id": 290200907001090202,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Debuff Area: Decreased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001090203,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001100101,
+    "value": "The victory condition for this stage is to <material=MaterialName>protect the guest force for 3 turns</material>.\n\nWing Gundam  has <material=MaterialName>high ATK </material>, and prioritizes attacking the guest force."
+  },
+  {
+    "id": 290200907001100201,
+    "value": "Leo and Tragos are stationary guest force units that serve as <material=MaterialName>defense targets</material>."
+  },
+  {
+    "id": 290200907001100202,
+    "value": "Medea  is a Friendly Forces unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907001100203,
+    "value": "Gundam Heavyarms and Gundam Leopard <material=MaterialName>have an ability with the From turn 3 upon the start of battle, Increase own ATK and DEF by 200% effect</material>."
+  },
+  {
+    "id": 290200907001110101,
+    "value": "The victory condition for this stage is to <material=MaterialName>Kira Yamato and enemy units destroyed</material>.\n\nFreedom Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
+  },
+  {
+    "id": 290200907001110102,
+    "value": "Justice Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
+  },
+  {
+    "id": 290200907001110103,
+    "value": "Freedom Gundam METEOR and Justice Gundam METEOR <material=MaterialName>have an ability with the When Vigor is Supercharged or higher, Increase ATK by 300%. effect</material>."
+  },
+  {
+    "id": 290200907001110201,
+    "value": "Providence Gundam is a guest force unit  <material=MaterialName>has an ability with the Increase own ATK by 100% when executing Support Attack/Counter. effect</material>."
+  },
+  {
+    "id": 290200907001110202,
+    "value": "Lacus Clyne  <material=MaterialName>uses the MP Up (Range) LV 3 character skill</material>."
+  },
+  {
+    "id": 290200907001110203,
+    "value": "Strike Rouge  has <material=MaterialName>high HP and DEF</material>."
+  },
+  {
+    "id": 290200907001110204,
+    "value": "M1 Astray <material=MaterialName>increases ATK  of Strike Rouge</material>."
+  },
+  {
+    "id": 290200907001110205,
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001120101,
+    "value": "Destroy Gundam [MA], Abyss Gundam, and Chaos Gundam are <material=MaterialName>equipped with powerful Beam weaponry</material>."
+  },
+  {
+    "id": 290200907001120201,
+    "value": "ASH, Zamza-Zah, Zock, Z'Gok, and ZnO have <material=MaterialName>a \"circle\" terrain capability for Underwater</material>.\n\nCertain beam weapons may deal less damage to underwater enemies."
+  },
+  {
+    "id": 290200907001120202,
+    "value": "Agrissa and Psycho Gundam [MA] are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907001130101,
+    "value": "Char's Gelgoog and Elmeth appear as reinforcements after mission objectives are met, and has <material=MaterialName>very high stats</material>."
+  },
+  {
+    "id": 290200907001130201,
+    "value": "GM Sniper Custom is a <material=MaterialName>equipped with weaponry that has the Decreased ATK effect</material>."
+  },
+  {
+    "id": 290200907001130202,
+    "value": "GM Sniper II is a <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
+  },
+  {
+    "id": 290200907001130203,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001130204,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001140101,
+    "value": "The defeat condition for this stage is for <material=MaterialName>the enemy to reach the target area</material>.\n\nMaster Gundam  has <material=MaterialName>high ATK </material>."
+  },
+  {
+    "id": 290200907001140102,
+    "value": "Dark Gundam (Second Form)  is <material=MaterialName>equipped with a wide-range MAP weapon</material>."
+  },
+  {
+    "id": 290200907001140201,
+    "value": "Shining Gundam is a guest force unit  <material=MaterialName>has an ability with the Chance Step +4 time(s) effect</material>."
+  },
+  {
+    "id": 290200907001140202,
+    "value": "Shadow Gundam  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907001140203,
+    "value": "Dark Army  <material=MaterialName>focuses on reaching the target area</material>."
+  },
+  {
+    "id": 290200907001140204,
+    "value": "Dark Beast  appears as reinforcements on turn 2, and <material=MaterialName>focuses on reaching the target area</material>."
+  },
+  {
+    "id": 290200907001140205,
+    "value": "Dark Birdy  appears as reinforcements on turn 3, and <material=MaterialName>focuses on reaching the target area</material>."
+  },
+  {
+    "id": 290200907001150201,
+    "value": "Wing Gundam Zero, Nu Gundam, and Destiny Gundam appear as reinforcements, and they <material=MaterialName>have powerful abilities</material>."
+  },
+  {
+    "id": 290200907001150202,
+    "value": "The victory condition for this stage is for <material=MaterialName>your forces to reach the target area</material>.\n\nAlpha Azieru is a <material=MaterialName>prevent your units from reaching the target area</material>."
+  },
+  {
+    "id": 290200907001150203,
+    "value": "Big Zam  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
+  },
+  {
+    "id": 290200907001150204,
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>HP Restoration Area area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001150205,
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001160101,
+    "value": "Gundam X Divider and Gundam Epyon has <material=MaterialName>high ATK and DEF</material>."
+  },
+  {
+    "id": 290200907001160201,
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001160202,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001170101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Mark Guilder</material>.\n\nMark Guilder  <material=MaterialName>has an ability with the When HP is 0% or below,\nrestore Hp by 100%. effect</material>."
+  },
+  {
+    "id": 290200907001170201,
+    "value": "Haro <material=MaterialName>prevents your units from moving</material>."
+  },
+  {
+    "id": 290200907001170202,
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907001170203,
+    "value": "Prototype Newtype-Use GM Juggler  <material=MaterialName>has an ability with the Guaranteed Bonus Action effect</material>."
+  },
+  {
+    "id": 290200907001180101,
+    "value": "Psycho Gundam [MA] and Psycho Gundam Mk-II [MA] has <material=MaterialName>high ATK and DEF</material>."
+  },
+  {
+    "id": 290200907001180201,
+    "value": "The defeat condition for this stage is for <material=MaterialName>Bright Noa to be defeated</material>.\n\nRa Cailum (U.C. 0096)  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907001180202,
+    "value": "Re-GZ (Back Weapon System) is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907001180203,
+    "value": "Baund Doc [MA] is a <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
+  },
+  {
+    "id": 290200907001180204,
+    "value": "Hambrabi [MA], Asshimar [MA], Gaplant [MA], Anksha [MA], and Baund Doc [MA] are units <material=MaterialName>prioritizing attacking Bright Noa</material>."
+  },
+  {
+    "id": 290200907001190101,
+    "value": "Gundam Aerial Rebuild is a unit with high stats that possesses <material=MaterialName> which has an ability with the Chance Step +2 time(s) effect </material>."
+  },
+  {
+    "id": 290200907001190201,
+    "value": "Miorine Rembran  <material=MaterialName>uses the Attack Burst (Range)  character skill</material>."
+  },
+  {
+    "id": 290200907001190202,
+    "value": "Michaelis  <material=MaterialName>has an ability with the Increases all enemies' parameters effect</material>."
+  },
+  {
+    "id": 290200907001190203,
+    "value": "Darilbalde is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907001200101,
+    "value": "Graham's Union Flag Custom II \"GN Flag\" and Gundam Throne Zwei has <material=MaterialName>high ATK and DEF</material>."
+  },
+  {
+    "id": 290200907001200201,
+    "value": "Gundam Nadleeh  <material=MaterialName>has an ability with the Increases all enemies' parameters effect</material>."
+  },
+  {
+    "id": 290200907001200202,
+    "value": "Alvatore is <material=MaterialName> equipped with a powerful MAP weapon </material>."
+  },
+  {
+    "id": 290200907002010201,
+    "value": "Ra Cailum  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907002020201,
+    "value": "Archangel  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907002030201,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907002040201,
+    "value": "Dark Gundam (Second Form)  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
+  },
+  {
+    "id": 290200907002040202,
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907002050201,
+    "value": "Jegan (ECOAS Type) and GM Custom are guest force units that have <material=MaterialName>Attack Enhancement Area: Increased ATK area effects and powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907002060201,
+    "value": "Eternal  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907002060202,
+    "value": "Archangel  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907002060203,
+    "value": "Talia Gladys  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
+  },
+  {
+    "id": 290200907002070201,
+    "value": "Big Zam  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907002070202,
+    "value": "Haman Karn  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
+  },
+  {
+    "id": 290200907002070203,
+    "value": "Glemy Toto  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
+  },
+  {
+    "id": 290200907002070204,
+    "value": "Zaku III and Qubeley Mass Production Type (Glemy) are units that <material=MaterialName>appear as reinforcements at the beginning of turn 2</material>."
+  },
+  {
+    "id": 290200907002080201,
+    "value": "Dolos and Musai are guest force units with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907002080202,
+    "value": "The defeat condition for this stage is for <material=MaterialName>the enemy to reach the target area</material>.\n\nMultiple units, including the Gundam GP03, will appear as reinforcements on turn 2 and <material=MaterialName>prioritize reaching the target area</material>."
+  },
+  {
+    "id": 290200907002090101,
+    "value": "Gundam Vidar  has <material=MaterialName>high HP </material>, and prioritizes attacking the guest force."
+  },
+  {
+    "id": 290200907002090201,
+    "value": "The defeat condition for this stage is for <material=MaterialName>Gundam Bael to be defeated</material>.\n\nGundam Bael  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907002090202,
+    "value": "Multiple units, including the Windam (Neo Roanoke), will <material=MaterialName>appear as reinforcements on turn 2</material>."
+  },
+  {
+    "id": 290200907002090203,
+    "value": "Multiple units, including the Char's Zaku II, will <material=MaterialName>appear as reinforcements on turn 3</material>."
+  },
+  {
+    "id": 290200907002090204,
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Debuff Area: Decreased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907002090205,
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907002100101,
+    "value": "Unicorn Gundam (Destroy Mode / Awakened) and Banshee Norn (Destroy Mode) are units that <material=MaterialName>prioritize targeting Neo Zeong</material>."
+  },
+  {
+    "id": 290200907002100201,
+    "value": "The defeat condition for this stage is for <material=MaterialName>Neo Zeong to be defeated</material>.\n\nNeo Zeong is a friendly force unit that has a <material=MaterialName>powerful MAP Weapon</material>."
+  },
+  {
+    "id": 290200907002100202,
+    "value": "Rewloola (Sleeves)  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907002100203,
+    "value": "Nahel Argama (Londo Bell) is a unit that <material=MaterialName>increases the ATK of all enemy units</material>."
+  },
+  {
+    "id": 290200907002110101,
+    "value": "Char's Z'Gok  has <material=MaterialName>high HP and ATK</material>."
+  },
+  {
+    "id": 290200907002110201,
+    "value": "Mermaid Gundam is a unit that has <material=MaterialName>powerful weapon effects, abilities with the Guaranteed Bonus Action effect, and high MOB</material>."
+  },
+  {
+    "id": 290200907002110202,
+    "value": "Shamblo  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907002110203,
+    "value": "Capule is a unit that has <material=MaterialName>long-range weaponry and high MOV</material>."
+  },
+  {
+    "id": 290200907002120101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nXi Gundam  has <material=MaterialName>high ATK </material>."
+  },
+  {
+    "id": 290200907002120102,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nPenelope  <material=MaterialName>has an ability with the Support Defense (Counter) effect</material>."
+  },
+  {
+    "id": 290200907002120201,
+    "value": "Gundam Flauros \"Ryusei-Go\" and Graze (Dainsleif Team, Arianrhod Fleet) are <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
+  },
+  {
+    "id": 290200907002130101,
+    "value": "Grand Master Gundam is a unit with high stats that possesses <material=MaterialName> which has an ability with the Guaranteed Bonus Action effect </material>."
+  },
+  {
+    "id": 290200907002130201,
+    "value": "Haow Gundam is a guest force unit that has the ability with the <material=MaterialName>Guaranteed Bonus Action effect and powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907002130202,
+    "value": "Royal Gundam is <material=MaterialName>equipped with a powerful MAP Weapon and has an ability with the Increase own ATK by 80% when executing Support Attack/Counter. effect</material>."
+  },
+  {
+    "id": 290200907002140101,
+    "value": "Gundam Double X, Gundam X Divider, Gundam Airmaster Burst, and Gundam Leopard Destroy are units that have <material=MaterialName>extremely high stats</material>."
+  },
+  {
+    "id": 290200907002140201,
+    "value": "Tiffa Adill  <material=MaterialName>uses the Force Guard (Range) character skill</material>."
+  },
+  {
+    "id": 290200907002140202,
+    "value": "Gundam Virsago Chest Break is a guest force unit  <material=MaterialName>has an ability with the ATK is increased every time damage is dealt. effect</material>."
+  },
+  {
+    "id": 290200907002140203,
+    "value": "Gundam Ashtaron Hermit Crab is a guest force unit  <material=MaterialName>has an ability with the DEF is increased every time damage is taken. effect</material>."
+  },
+  {
+    "id": 290200907002150101,
+    "value": "Burning Gundam is a unit that appears after Shining Gundam (Super Mode) has been destroyed, possessing <material=MaterialName>extremely high stats and When the enemy attacks from 2 spaces or more,reduce damage taken by 50%. abilities</material>."
+  },
+  {
+    "id": 290200907002150201,
+    "value": "The victory condition for this stage is for <material=MaterialName>your forces to reach the target area</material>.\n\nShiranui Akatsuki and Strike Rouge (Ootori) <material=MaterialName>prevent your units from reaching the target area</material>."
+  },
+  {
+    "id": 290200907002150202,
+    "value": "Blue Destiny Unit-3 [EXAM] is a unit that appears as a reinforcement and has <material=MaterialName>powerful abilities</material>."
+  },
+  {
+    "id": 290200907002150203,
+    "value": "Psycho Gundam and Psycho Gundam Mk-II are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290300907001010201,
+    "value": "Launch your attack from near Musai."
+  },
+  {
+    "id": 290300907001020201,
+    "value": "Position yourself near Minerva if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907001030201,
+    "value": "Units which will be attacked should be placed near Virginia."
+  },
+  {
+    "id": 290300907001040101,
+    "value": "Intercept the enemy by luring them outside of the neutral units' effect range."
+  },
+  {
+    "id": 290300907001040201,
+    "value": "Watch out for attacks from enemy units positioned near Zweite Guarder."
+  },
+  {
+    "id": 290300907001050201,
+    "value": "Utilize Quin Mantha's MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907001050202,
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
+  },
+  {
+    "id": 290300907001060101,
+    "value": "Protect the guest force from attacks by Gundam Kimaris Trooper and Schwalbe Graze (McGillis)."
+  },
+  {
+    "id": 290300907001060201,
+    "value": "Launch your attack from near Isaribi."
+  },
+  {
+    "id": 290300907001060202,
+    "value": "Units which will be attacked should be placed near Hammerhead."
+  },
+  {
+    "id": 290300907001060203,
+    "value": "Prioritize destroying Graze Ein."
+  },
+  {
+    "id": 290300907001060204,
+    "value": "Prioritize destroying Graze Ritter (Instructor/Duel Type)."
+  },
+  {
+    "id": 290300907001070201,
+    "value": "Try attacking from outside of this unit's range."
+  },
+  {
+    "id": 290300907001070202,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001070203,
+    "value": "Utilize Hyaku Shiki's MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907001080201,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907001080202,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907001080203,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001080204,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001080205,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001090101,
+    "value": "Use neutral units' debuff effects to gain the upper hand."
+  },
+  {
+    "id": 290300907001090201,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001090202,
+    "value": "Draw the boss into the effect range to weaken its attacks."
+  },
+  {
+    "id": 290300907001090203,
+    "value": "Have your units attack the boss from within this area."
+  },
+  {
+    "id": 290300907001100101,
+    "value": "Protect the guest force from attacks by Wing Gundam."
+  },
+  {
+    "id": 290300907001100201,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907001100202,
+    "value": "Position yourself near Medea if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907001100203,
+    "value": "Quickly destroy it before it activates an ability."
+  },
+  {
+    "id": 290300907001110201,
+    "value": "Make use of guest forces to inflict major damage."
+  },
+  {
+    "id": 290300907001110202,
+    "value": "Prioritize destroying Lacus Clyne."
+  },
+  {
+    "id": 290300907001110203,
+    "value": "The ability of Strike Rouge increases ATK, so plan accordingly."
+  },
+  {
+    "id": 290300907001110204,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001110205,
+    "value": "Have your units attack the boss from within this area."
+  },
+  {
+    "id": 290300907001120101,
+    "value": "Damage from certain beam weapons may be reduced underwater."
+  },
+  {
+    "id": 290300907001120201,
+    "value": "Use Physical or Special weapons to launch your attack."
+  },
+  {
+    "id": 290300907001120202,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907001130101,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907001130201,
+    "value": "Prioritize destroying GM Sniper Custom."
+  },
+  {
+    "id": 290300907001130202,
+    "value": "Prioritize destroying GM Sniper II."
+  },
+  {
+    "id": 290300907001130203,
+    "value": "Units that will take damage from the boss should be positioned within this area."
+  },
+  {
+    "id": 290300907001130204,
+    "value": "Have your units attack the boss from within this area."
+  },
+  {
+    "id": 290300907001140101,
+    "value": "Make use of guest forces to defeat the enemies."
+  },
+  {
+    "id": 290300907001140102,
+    "value": "Use the ATK-reducing debuff to minimize incoming damage."
+  },
+  {
+    "id": 290300907001140201,
+    "value": "Make use of guest forces to bring down the enemy count."
+  },
+  {
+    "id": 290300907001140202,
+    "value": "Position yourself near Shadow Gundam if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907001140203,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001140204,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001140205,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001150201,
+    "value": "Avoid combat as much as possible."
+  },
+  {
+    "id": 290300907001150202,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907001150203,
+    "value": "Avoid combat as much as possible."
+  },
+  {
+    "id": 290300907001150204,
+    "value": "Position yourself near Guarder if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907001150205,
+    "value": "Launch your attack from near Guarder."
+  },
+  {
+    "id": 290300907001160101,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907001160201,
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
+  },
+  {
+    "id": 290300907001170201,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907001170202,
+    "value": "Use high multiplying Area Effects zone to defeat Haro."
+  },
+  {
+    "id": 290300907001170203,
+    "value": "Focus on reducing the number of enemies."
+  },
+  {
+    "id": 290300907001180101,
+    "value": "Make use of guest forces to defeat the enemies."
+  },
+  {
+    "id": 290300907001180201,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907001180202,
+    "value": "Make use of guest forces to protect Bright Noa from enemy attacks."
+  },
+  {
+    "id": 290300907001180203,
+    "value": "Protect the guest force from attacks by Baund Doc [MA]."
+  },
+  {
+    "id": 290300907001180204,
+    "value": "Prioritize destroying this unit."
+  },
+  {
+    "id": 290300907001190101,
+    "value": "Prevent enemies from going again by utilizing Support Defense and Character Skills."
+  },
+  {
+    "id": 290300907001190201,
+    "value": "Prioritize destroying Miorine Rembran."
+  },
+  {
+    "id": 290300907001190202,
+    "value": "Do your best to defeat them in one turn."
+  },
+  {
+    "id": 290300907001190203,
+    "value": "Be careful, as powerful weapons have high EN cost."
+  },
+  {
+    "id": 290300907001200101,
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
+  },
+  {
+    "id": 290300907001200201,
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
+  },
+  {
+    "id": 290300907001200202,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907002010201,
+    "value": "Launch your attack from near Ra Cailum."
+  },
+  {
+    "id": 290300907002020201,
+    "value": "Position yourself near Archangel if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907002030201,
+    "value": "Launch your attack from near Zweite Guarder."
+  },
+  {
+    "id": 290300907002040201,
+    "value": "Utilize Dark Gundam (Second Form)'s MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907002040202,
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
+  },
+  {
+    "id": 290300907002050201,
+    "value": "Take out challenging enemies with the help of Guest Forces."
+  },
+  {
+    "id": 290300907002060201,
+    "value": "An area under two simultaneous area effects can receive both."
+  },
+  {
+    "id": 290300907002060202,
+    "value": "Units which will be attacked should be placed near Archangel."
+  },
+  {
+    "id": 290300907002060203,
+    "value": "Prioritize destroying Talia Gladys."
+  },
+  {
+    "id": 290300907002070201,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907002070202,
+    "value": "Prioritize destroying Haman Karn."
+  },
+  {
+    "id": 290300907002070203,
+    "value": "Prioritize destroying Glemy Toto."
+  },
+  {
+    "id": 290300907002080202,
+    "value": "Make use of guest forces to bring down the enemy count."
+  },
+  {
+    "id": 290300907002090101,
+    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
+  },
+  {
+    "id": 290300907002090201,
+    "value": "Have your units attack the boss from within this area."
+  },
+  {
+    "id": 290300907002090202,
+    "value": "Use neutral units' area effects to increase your chances of success."
+  },
+  {
+    "id": 290300907002090203,
+    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
+  },
+  {
+    "id": 290300907002090205,
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
+  },
+  {
+    "id": 290300907002100101,
+    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
+  },
+  {
+    "id": 290300907002100203,
+    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
+  },
+  {
+    "id": 290300907002110101,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907002110201,
+    "value": "Destroy the targets by utilizing Shamblo's MAP Weapon."
+  },
+  {
+    "id": 290300907002110202,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907002120101,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907002130101,
+    "value": "Make use of guest forces to defeat the enemies."
+  },
+  {
+    "id": 290300907002130201,
+    "value": "Be careful, as powerful weapons have high EN cost."
+  },
+  {
+    "id": 290300907002130202,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907002140101,
+    "value": "Make use of guest forces to defeat the enemies."
+  },
+  {
+    "id": 290300907002140202,
+    "value": "Make use of guest forces to inflict major damage."
+  },
+  {
+    "id": 290300907002150201,
+    "value": "Aim to reach the target area by utilizing mobility-type MAP Weapons."
+  },
+  {
+    "id": 290300907002150202,
+    "value": "Avoid combat as much as possible."
+  },
+  {
+    "id": 290300907002150203,
+    "value": "Be mindful of MAP weapons' range."
+  }
+]

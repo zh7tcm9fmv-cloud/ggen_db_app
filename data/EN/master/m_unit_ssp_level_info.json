@@ -1,0 +1,122 @@
+[
+  {
+    "Level": 1,
+    "Exp": 0,
+    "GrowthRate": 0,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 2,
+    "Exp": 500000,
+    "GrowthRate": 1000,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 3,
+    "Exp": 1000000,
+    "GrowthRate": 1500,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 4,
+    "Exp": 1500000,
+    "GrowthRate": 2000,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 5,
+    "Exp": 2250000,
+    "GrowthRate": 2500,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 6,
+    "Exp": 3000000,
+    "GrowthRate": 3000,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 7,
+    "Exp": 3750000,
+    "GrowthRate": 3500,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 8,
+    "Exp": 4500000,
+    "GrowthRate": 4000,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 9,
+    "Exp": 5250000,
+    "GrowthRate": 4500,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 10,
+    "Exp": 6250000,
+    "GrowthRate": 5000,
+    "ScheduleId": 2511209901
+  },
+  {
+    "Level": 11,
+    "Exp": 7250000,
+    "GrowthRate": 5500,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 12,
+    "Exp": 8250000,
+    "GrowthRate": 6000,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 13,
+    "Exp": 9250000,
+    "GrowthRate": 6500,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 14,
+    "Exp": 10250000,
+    "GrowthRate": 7000,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 15,
+    "Exp": 11250000,
+    "GrowthRate": 7500,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 16,
+    "Exp": 12250000,
+    "GrowthRate": 8000,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 17,
+    "Exp": 13250000,
+    "GrowthRate": 8500,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 18,
+    "Exp": 14250000,
+    "GrowthRate": 9000,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 19,
+    "Exp": 15250000,
+    "GrowthRate": 9500,
+    "ScheduleId": 9999990001
+  },
+  {
+    "Level": 20,
+    "Exp": 16250000,
+    "GrowthRate": 10000,
+    "ScheduleId": 9999990001
+  }
+]

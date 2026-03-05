@@ -1,0 +1,107 @@
+[
+  {
+    "Id": 1,
+    "WeaponAttributeTypes": "1",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 2,
+    "WeaponAttributeTypes": "1",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 3,
+    "WeaponAttributeTypes": "1",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 4,
+    "WeaponAttributeTypes": "1",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 5,
+    "WeaponAttributeTypes": "2",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 6,
+    "WeaponAttributeTypes": "2",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 7,
+    "WeaponAttributeTypes": "2",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 8,
+    "WeaponAttributeTypes": "2",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 9,
+    "WeaponAttributeTypes": "3",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 10,
+    "WeaponAttributeTypes": "3",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 11,
+    "WeaponAttributeTypes": "3",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 12,
+    "WeaponAttributeTypes": "3",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 13,
+    "WeaponAttributeTypes": "4",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 14,
+    "WeaponAttributeTypes": "4",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 15,
+    "WeaponAttributeTypes": "4",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 16,
+    "WeaponAttributeTypes": "4",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 17,
+    "WeaponAttributeTypes": "0",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 18,
+    "WeaponAttributeTypes": "0",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 19,
+    "WeaponAttributeTypes": "0",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 20,
+    "WeaponAttributeTypes": "2,3",
+    "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 21,
+    "WeaponAttributeTypes": "1,2",
+    "AttackAttributeTypes": ""
+  }
+]

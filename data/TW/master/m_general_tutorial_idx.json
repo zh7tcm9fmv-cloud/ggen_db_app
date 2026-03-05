@@ -1,0 +1,352 @@
+[
+  {
+    "Id": 1,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1001
+  },
+  {
+    "Id": 2,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1101
+  },
+  {
+    "Id": 3,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1201
+  },
+  {
+    "Id": 4,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1301
+  },
+  {
+    "Id": 5,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1401
+  },
+  {
+    "Id": 6,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1501
+  },
+  {
+    "Id": 7,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1601
+  },
+  {
+    "Id": 8,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1701
+  },
+  {
+    "Id": 9,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1801
+  },
+  {
+    "Id": 10,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1901
+  },
+  {
+    "Id": 11,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2001
+  },
+  {
+    "Id": 12,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2101
+  },
+  {
+    "Id": 13,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2201
+  },
+  {
+    "Id": 14,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2301
+  },
+  {
+    "Id": 15,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2401
+  },
+  {
+    "Id": 16,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5001
+  },
+  {
+    "Id": 17,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5002
+  },
+  {
+    "Id": 18,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5003
+  },
+  {
+    "Id": 19,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5004
+  },
+  {
+    "Id": 20,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5005
+  },
+  {
+    "Id": 23,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5008
+  },
+  {
+    "Id": 24,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5009
+  },
+  {
+    "Id": 25,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5010
+  },
+  {
+    "Id": 26,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5011
+  },
+  {
+    "Id": 27,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5012
+  },
+  {
+    "Id": 28,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5013
+  },
+  {
+    "Id": 29,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2501
+  },
+  {
+    "Id": 30,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2601
+  },
+  {
+    "Id": 31,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2701
+  },
+  {
+    "Id": 32,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2801
+  },
+  {
+    "Id": 33,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9001
+  },
+  {
+    "Id": 34,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9101
+  },
+  {
+    "Id": 35,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9201
+  },
+  {
+    "Id": 36,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9301
+  },
+  {
+    "Id": 37,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1001
+  },
+  {
+    "Id": 38,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1101
+  },
+  {
+    "Id": 39,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1201
+  },
+  {
+    "Id": 40,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1301
+  },
+  {
+    "Id": 41,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1401
+  },
+  {
+    "Id": 42,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1501
+  },
+  {
+    "Id": 43,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1601
+  },
+  {
+    "Id": 44,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1701
+  },
+  {
+    "Id": 45,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1801
+  },
+  {
+    "Id": 46,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 1901
+  },
+  {
+    "Id": 47,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5014
+  },
+  {
+    "Id": 48,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5015
+  },
+  {
+    "Id": 49,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 5016
+  },
+  {
+    "Id": 50,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2001
+  },
+  {
+    "Id": 51,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2101
+  },
+  {
+    "Id": 52,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2201
+  },
+  {
+    "Id": 53,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2901
+  },
+  {
+    "Id": 54,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2902
+  },
+  {
+    "Id": 55,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9401
+  },
+  {
+    "Id": 56,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2301
+  },
+  {
+    "Id": 57,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 3001
+  },
+  {
+    "Id": 58,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9402
+  },
+  {
+    "Id": 59,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9501
+  },
+  {
+    "Id": 60,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9002
+  },
+  {
+    "Id": 61,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2702
+  },
+  {
+    "Id": 66,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 3101
+  },
+  {
+    "Id": 72,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2401
+  },
+  {
+    "Id": 73,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2501
+  },
+  {
+    "Id": 74,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2601
+  },
+  {
+    "Id": 75,
+    "GeneralTutorialTypeIndex": 1,
+    "TargetId": 2701
+  },
+  {
+    "Id": 76,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9211
+  },
+  {
+    "Id": 77,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9212
+  },
+  {
+    "Id": 78,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9213
+  },
+  {
+    "Id": 79,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9301
+  },
+  {
+    "Id": 80,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9005
+  },
+  {
+    "Id": 82,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 9003
+  }
+]

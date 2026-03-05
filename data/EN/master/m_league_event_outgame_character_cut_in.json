@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 30001001,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 1,
+    "OutgameCharacterCutInId": 30001001
+  },
+  {
+    "Id": 30001002,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 2,
+    "OutgameCharacterCutInId": 30001002
+  },
+  {
+    "Id": 30001003,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 3,
+    "OutgameCharacterCutInId": 30001003
+  },
+  {
+    "Id": 30001004,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 4,
+    "OutgameCharacterCutInId": 30001004
+  },
+  {
+    "Id": 30001005,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 5,
+    "OutgameCharacterCutInId": 30001005
+  },
+  {
+    "Id": 30001006,
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "PlayTimingTypeIndex": 6,
+    "OutgameCharacterCutInId": 30001006
+  }
+]
