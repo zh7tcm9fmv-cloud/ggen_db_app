@@ -1,999 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SD Gundam G Generation Eternal - Database</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            color: #e0e0ff;
-            min-height: 100vh;
-            padding: 25px;
-            background: url('{{ image_cdn if image_cdn else "/static" }}/images/Background/obg_021_office.png') no-repeat center center fixed;
-            background-size: cover;
-            background-color: #0a1428;
-        }
-        .container { max-width: 1750px; margin: 0 auto; }
-
-        .header {
-            background: rgba(10, 20, 40, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 25px 25px 0;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            margin-bottom: 25px;
-            border: 1px solid rgba(100,180,255,0.3);
-            position: relative;
-        }
-
-        .lang-switcher {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            display: flex;
-            gap: 12px;
-            z-index: 10;
-        }
-        .lang-btn {
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: 700;
-            background: rgba(255,255,255,0.1);
-            color: #8090b0;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .lang-btn:hover {
-            background: rgba(255,255,255,0.2);
-            color: #c0d0ff;
-        }
-        .lang-btn.active {
-            background: linear-gradient(135deg, #4080ff, #0055cc);
-            color: white;
-            border-color: #4080ff;
-        }
-
-        .header-brand {
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
-            justify-content: center;
-            margin-bottom: 25px;
-            padding-right: 150px; /* offset for lang switcher */
-        }
-        .brand-logo {
-            width: 55px; height: 55px;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
-        }
-        .brand-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-        h1 {
-            color: #a0d0ff;
-            font-size: 32px;
-            margin: 0;
-            text-shadow: 0 2px 5px #000;
-        }
-
-        .tab-bar { display: flex; gap: 5px; }
-        .tab-btn {
-            padding: 15px 45px; font-size: 19px; font-weight: 700;
-            background: rgba(255,255,255,0.06); color: #8090b0;
-            border: 1px solid rgba(255,255,255,0.1); border-bottom: none;
-            border-radius: 15px 15px 0 0; cursor: pointer; transition: all 0.2s;
-        }
-        .tab-btn:hover { background: rgba(255,255,255,0.12); color: #c0d0ff; }
-        .tab-btn.active {
-            background: rgba(30, 60, 120, 0.8); color: #a0d0ff;
-            border-color: rgba(100,180,255,0.4);
-        }
-        .tab-content {
-            background: rgba(30, 60, 120, 0.4); padding: 25px;
-            border-radius: 0 15px 15px 15px;
-            border: 1px solid rgba(100,180,255,0.2); border-top: none;
-        }
-
-        .search-box { display: flex; gap: 15px; max-width: 750px; margin: 0 auto; }
-        input[type="text"] {
-            flex: 1; padding: 15px 20px; font-size: 20px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(100,180,255,0.4);
-            border-radius: 12px; color: white;
-        }
-        input:focus {
-            outline: none;
-            border-color: #60a0ff;
-            box-shadow: 0 0 15px rgba(96,160,255,0.5);
-        }
-        input::placeholder { color: rgba(255,255,255,0.5); }
-        button {
-            padding: 15px 40px; font-size: 20px; font-weight: 600;
-            background: linear-gradient(135deg, #4080ff, #0055cc);
-            color: white; border: none; border-radius: 12px; cursor: pointer;
-            transition: all 0.2s;
-        }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(64,128,255,0.5);
-        }
-        button:active { transform: translateY(0); }
-        button:disabled {
-            opacity: 0.6; cursor: not-allowed; transform: none;
-            box-shadow: none;
-        }
-
-        .loading { text-align: center; padding: 75px; display: none; }
-        .spinner {
-            border: 6px solid rgba(255,255,255,0.1);
-            border-top: 6px solid #60a0ff;
-            border-radius: 50%; width: 62px; height: 62px;
-            animation: spin 1s linear infinite; margin: 0 auto 25px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        #char-loading-text, #unit-loading-text { font-size: 22px; }
-
-        .result-box {
-            background: rgba(20, 40, 80, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 12px 50px rgba(0,0,0,0.6);
-            border: 1px solid rgba(100,180,255,0.25);
-            overflow: hidden;
-            display: none;
-            margin-top: 25px;
-        }
-
-        .profile-header {
-            display: flex; align-items: flex-start; gap: 50px; padding: 50px;
-            background: linear-gradient(rgba(0,10,30,0.4), rgba(0,10,30,0.6)),
-                url('{{ image_cdn if image_cdn else "/static" }}/images/Background/obg_021_office_tablet.png');
-            background-size: cover; background-position: center;
-        }
-        .char-portrait {
-            width: 325px; height: auto; border-radius: 15px;
-            border: 4px solid #60a0ff;
-            box-shadow: 0 0 30px rgba(96,160,255,0.5);
-            background: rgba(0,0,0,0.3);
-        }
-        .no-portrait {
-            width: 325px; height: 425px; background: #112244;
-            border-radius: 15px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; color: #6080aa; border: 3px dashed #6080aa;
-        }
-
-        .unit-header {
-            display: flex; align-items: flex-start; gap: 38px; padding: 38px;
-            background: linear-gradient(rgba(0,10,30,0.4), rgba(0,10,30,0.6)),
-                url('{{ image_cdn if image_cdn else "/static" }}/images/Background/obg_011_garage.png');
-            background-size: cover; background-position: center;
-        }
-        .unit-portrait {
-            width: 487px; height: auto; border-radius: 15px;
-            border: 4px solid #60a0ff;
-            box-shadow: 0 0 30px rgba(96,160,255,0.5);
-            background: rgba(0,0,0,0.3); flex-shrink: 0;
-        }
-        .no-portrait-unit {
-            width: 487px; height: 325px; background: #112244;
-            border-radius: 15px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; color: #6080aa; border: 3px dashed #6080aa;
-            flex-shrink: 0;
-        }
-
-        .profile-main {
-            flex: 1; display: flex; flex-direction: column; gap: 20px;
-        }
-        .unit-info {
-            flex: 1; display: flex; flex-direction: column; gap: 15px;
-            min-width: 0;
-        }
-        .unit-info .name-series-row { gap: 15px; margin-bottom: 5px; }
-        .unit-info .profile-name { font-size: 35px; }
-        .unit-info .series-mini-logo { height: 45px; }
-        .unit-info .meta-row { gap: 12px; }
-        .unit-info .badge { padding: 5px 15px; font-size: 15px; }
-        .unit-info .badge img { width: 22px; height: 22px; }
-
-        .name-series-row {
-            display: flex; align-items: center; gap: 25px;
-            margin-bottom: 10px; flex-wrap: wrap;
-        }
-        .profile-name {
-            font-size: 50px; font-weight: bold;
-            text-shadow: 0 3px 8px #000; line-height: 1.1;
-        }
-        .series-mini-logo {
-            height: 62px; width: auto; border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.1);
-        }
-        .meta-row {
-            display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
-        }
-        .badge {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 8px 20px; border-radius: 25px;
-            font-weight: 700; font-size: 18px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .badge img { width: 28px; height: 28px; }
-        .badge-icon-only {
-            display: inline-flex; align-items: center;
-            padding: 5px 10px; border-radius: 25px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .badge-icon-only img { width: 32px; height: 32px; object-fit: contain; }
-        
-        .tags-row { display: flex; flex-wrap: wrap; gap: 10px; }
-        .tag {
-            padding: 6px 15px; border-radius: 20px; font-size: 16px;
-            background: rgba(0,212,255,0.12);
-            border: 1px solid rgba(0,212,255,0.45);
-            color: #5ee5ff; font-weight: 600; white-space: nowrap;
-            letter-spacing: 0.2px;
-        }
-
-        .stats-container {
-            margin-top: 25px; background: rgba(0,0,0,0.5);
-            padding: 25px; border-radius: 15px;
-            display: flex; gap: 75px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .stats-col {
-            flex: 1; display: flex; flex-direction: column; gap: 12px;
-        }
-        .stat-line {
-            display: flex; align-items: center; font-size: 23px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 5px;
-        }
-        .stat-name {
-            color: #a0d0ff; font-weight: 600; width: 125px;
-        }
-        .stat-value { font-weight: bold; color: white; }
-        .bonus { color: #40ff80; font-size: 0.9em; margin-left: 12px; }
-
-        .unit-stats-container {
-            background: rgba(0,0,0,0.5);
-            padding: 18px; border-radius: 12px;
-            display: flex; gap: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .unit-stats-col {
-            flex: 1; display: flex; flex-direction: column; gap: 8px;
-        }
-        .unit-stat-line {
-            display: flex; align-items: center; font-size: 19px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 4px;
-        }
-        .unit-stat-name {
-            color: #a0d0ff; font-weight: 600; width: 100px;
-        }
-        .unit-stat-value { font-weight: bold; color: white; }
-        .unit-stat-bonus {
-            color: #40ff80; font-size: 0.85em; margin-left: 10px;
-        }
-
-        .unit-terrain-container {
-            background: rgba(0,0,0,0.4);
-            padding: 12px 18px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .unit-terrain-title {
-            font-size: 14px; font-weight: 600; color: #a0d0ff;
-            margin-bottom: 10px; text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .unit-terrain-row { display: flex; gap: 12px; flex-wrap: wrap; }
-        .unit-terrain-item {
-            display: flex; align-items: center; gap: 5px;
-            background: rgba(0,0,0,0.3); padding: 5px 10px;
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
-        }
-        .unit-terrain-type-icon {
-            width: 28px; height: 28px; object-fit: contain;
-        }
-        .unit-terrain-level-icon {
-            width: 22px; height: 22px; object-fit: contain;
-        }
-
-        .section-title {
-            font-size: 28px; font-weight: 700; color: #a0d0ff;
-            margin-bottom: 20px; padding-bottom: 10px;
-            border-bottom: 2px solid rgba(96,160,255,0.3);
-            text-shadow: 0 3px 5px #000;
-        }
-        .abilities-skills-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
-            padding: 38px 50px 50px; background: rgba(10, 20, 35, 0.8);
-        }
-        .abilities-full-width {
-            padding: 38px 50px 50px; background: rgba(10, 20, 35, 0.8);
-        }
-        .abilities-full-width .abilities-columns {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 25px 50px;
-        }
-
-        .ability-card, .skill-card {
-            background: rgba(30,50,90,0.5); padding: 25px;
-            border-radius: 15px; border-left: 6px solid #60a0ff;
-            margin-bottom: 20px;
-        }
-        .ability-name, .skill-name {
-            font-size: 24px; font-weight: 700; margin-bottom: 15px;
-            color: #c0e0ff;
-            display: flex; align-items: center; gap: 12px;
-        }
-        .ability-icon, .skill-icon {
-            width: 50px; height: 50px; border-radius: 10px;
-            border: 2px solid rgba(96,160,255,0.4);
-            background: rgba(0,0,0,0.3);
-            object-fit: contain; flex-shrink: 0;
-        }
-
-        .ability-icon-ex-container {
-            position: relative;
-            width: 60px; height: 60px;
-            flex-shrink: 0;
-        }
-        .ability-icon-ex-container .ability-icon-inner {
-            position: absolute;
-            top: 5px; left: 5px;
-            width: 50px; height: 50px;
-            object-fit: contain;
-            display: block;
-            border: none;
-            border-radius: 5px;
-            background: rgba(0,0,0,0.3);
-        }
-        .ability-icon-ex-container .ability-frame-overlay {
-            position: absolute;
-            top: 0; left: 0;
-            width: 60px; height: 60px;
-            object-fit: contain;
-            pointer-events: none;
-            display: block;
-        }
-
-        .ability-detail {
-            background: rgba(0,0,0,0.3); padding: 18px;
-            border-radius: 12px; margin-top: 12px; line-height: 1.5;
-            font-size: 18px; color: #d0e0ff;
-        }
-
-        .condition-tags {
-            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;
-        }
-        .condition-tag {
-            padding: 6px 15px; background: rgba(255,180,50,0.15);
-            border: 1px solid rgba(255,180,50,0.45);
-            color: #ffc966; border-radius: 18px;
-            font-size: 15px; font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        .weapons-section {
-            padding: 38px 50px 50px; background: rgba(10, 20, 35, 0.8);
-            border-top: 1px solid rgba(100,180,255,0.15);
-        }
-        .weapon-entry {
-            background: rgba(30,50,90,0.5);
-            border-radius: 15px; margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .weapon-entry-map { border-left: 6px solid #60e0a0; }
-        .weapon-entry-ex { border-left: 6px solid #ffc040; }
-        .weapon-entry-normal {
-            border-left: 6px solid rgba(100,180,255,0.3);
-        }
-        .weapon-table {
-            width: 100%; border-collapse: collapse; table-layout: fixed;
-        }
-        .weapon-info-cell {
-            padding: 18px 20px;
-            background: rgba(20, 30, 50, 0.4);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .weapon-name-flex {
-            display: flex; align-items: center; gap: 18px;
-        }
-        .weapon-icon-container {
-            position: relative; width: 55px; height: 55px; flex-shrink: 0;
-        }
-        .weapon-icon {
-            width: 55px; height: 55px; border-radius: 8px;
-            border: 2px solid rgba(255,128,64,0.4);
-            background: rgba(0,0,0,0.3); object-fit: contain;
-        }
-        .weapon-ex-overlay {
-            position: absolute; top: -4px; right: -4px;
-            width: 25px; height: 25px; object-fit: contain;
-        }
-        .weapon-details-row {
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-        }
-        .weapon-name-text {
-            font-size: 21px; font-weight: 700; color: #fff;
-        }
-        .weapon-stat-header {
-            font-size: 14px; font-weight: 700; text-transform: uppercase;
-            color: #8090b0; text-align: center; padding: 10px 5px 5px;
-        }
-        .weapon-stat-value {
-            font-size: 19px; font-weight: 600; color: #e0e0ff;
-            text-align: center; padding: 3px 5px 15px;
-        }
-        .weapon-trait-row {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            background: rgba(0,0,0,0.2);
-        }
-        .weapon-trait-header {
-            font-size: 15px; font-weight: 700; color: #ffe080;
-            text-transform: uppercase; padding: 15px 20px;
-            text-align: left; vertical-align: top; width: 200px;
-        }
-        .weapon-trait-content {
-            padding: 15px 20px; font-size: 18px; color: #d0e0ff;
-            line-height: 1.5; text-align: left;
-        }
-        .trait-list { margin: 0; padding-left: 20px; }
-        .trait-list li { margin-bottom: 5px; }
-
-        .weapon-restriction-row {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            background: rgba(0,0,0,0.15);
-        }
-        .weapon-restriction-header {
-            font-size: 15px; font-weight: 700; color: #ff9080;
-            text-transform: uppercase; padding: 15px 20px;
-            text-align: left; vertical-align: top; width: 200px;
-        }
-        .weapon-restriction-content {
-            padding: 15px 20px; font-size: 18px; color: #ffa090;
-            line-height: 1.5; text-align: left;
-        }
-        .weapon-restriction-content.no-restriction {
-            color: #80c080;
-        }
-        .restriction-list {
-            margin: 0; padding: 0; list-style: none;
-        }
-        .restriction-list li {
-            margin-bottom: 8px;
-        }
-        .restriction-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        .weapon-attr-badge {
-            padding: 4px 12px; border-radius: 12px; font-size: 14px;
-            font-weight: 700; white-space: nowrap; display: inline-block;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .attr-physical { background: rgba(255,160,60,0.3); color: #ffcc80; }
-        .attr-beam { background: rgba(60,160,255,0.3); color: #80ccff; }
-        .attr-special { background: rgba(180,60,255,0.3); color: #d0a0ff; }
-        .attr-mixed { background: rgba(255,255,100,0.2); color: #ffe080; }
-
-        .weapon-type-badge {
-            padding: 3px 10px; border-radius: 10px; font-size: 13px;
-            font-weight: 800; letter-spacing: 1px; white-space: nowrap;
-        }
-        .weapon-type-ex {
-            background: rgba(255,180,60,0.3); color: #ffc040;
-            border: 1px solid rgba(255,180,60,0.4);
-        }
-        .weapon-type-map {
-            background: rgba(60,220,160,0.3); color: #60e0a0;
-            border: 1px solid rgba(60,220,160,0.4);
-        }
-        .weapon-attack-types {
-            display: inline-flex; align-items: center; gap: 5px;
-        }
-        .attack-type-icon {
-            width: 25px; height: 25px; object-fit: contain;
-        }
-
-        .error {
-            background: rgba(200,40,40,0.3); color: #ff8080; padding: 25px;
-            border-radius: 15px; border-left: 6px solid #ff4040;
-            margin: 25px; text-align: center; font-size: 20px;
-        }
-
-        .hidden { display: none !important; }
-
-        @media (max-width: 900px) {
-            .header-brand { flex-direction: column; padding-right: 0; gap: 10px; margin-top: 50px; }
-            .brand-text { font-size: 25px; text-align: center; }
-            .profile-header, .unit-header {
-                flex-direction: column; align-items: center;
-            }
-            .abilities-skills-grid { grid-template-columns: 1fr; }
-            .abilities-full-width .abilities-columns {
-                grid-template-columns: 1fr;
-            }
-            .stats-container, .unit-stats-container {
-                flex-direction: column; gap: 25px;
-            }
-            .char-portrait { width: 250px; }
-            .unit-portrait { width: 100%; max-width: 487px; }
-            .no-portrait-unit { width: 100%; max-width: 487px; }
-            .profile-name { font-size: 35px; }
-            .unit-info .profile-name { font-size: 28px; }
-            .weapons-section { padding: 25px; }
-            .abilities-skills-grid { padding: 25px; }
-            .abilities-full-width { padding: 25px; }
-            h1 { font-size: 25px; padding-right: 0; }
-            .name-series-row { justify-content: center; text-align: center; }
-            .meta-row { justify-content: center; }
-            .tags-row { justify-content: center; }
-            .unit-terrain-row { justify-content: center; }
-            .lang-switcher { position: absolute; top: 20px; right: 20px; }
-            .weapon-trait-header, .weapon-restriction-header { width: auto; display: block; padding-bottom: 5px; }
-            .weapon-trait-content, .weapon-restriction-content { display: block; padding-top: 5px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GGen Database</title>
+<style>
+:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#e8eaf0;--text-secondary:#8896b3;--text-muted:#5a6a8a;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-lg:0 8px 30px rgba(0,0,0,0.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
+.bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
+.app-header{background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(10,14,23,0.95));border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
+.header-brand:hover .brand-text{color:var(--accent-cyan)}
+.brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.brand-logo img{width:100%;height:100%;object-fit:contain}
+.brand-text{font-size:28px;font-weight:700;transition:var(--transition)}
+.brand-sub{font-size:14px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase}
+.header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.lang-selector{position:relative}
+.lang-btn{padding:8px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;font-weight:600;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:6px}
+.lang-btn:hover{border-color:var(--accent-blue)}
+.lang-dropdown{position:absolute;top:calc(100% + 4px);right:0;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:200;display:none;min-width:100px}
+.lang-dropdown.active{display:block}
+.lang-option{padding:8px 16px;cursor:pointer;font-size:16px;font-weight:600;transition:var(--transition);white-space:nowrap}
+.lang-option:hover{background:var(--bg-card-hover);color:var(--accent-cyan)}.lang-option.selected{color:var(--accent-cyan)}
+.nav-tabs{display:flex;gap:0;max-width:1600px;margin:0 auto;padding:0 24px}
+.nav-tab{padding:12px 28px;background:none;border:none;color:var(--text-secondary);font-size:18px;font-weight:600;cursor:pointer;position:relative;transition:var(--transition);letter-spacing:0.3px}
+.nav-tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent-cyan);border-radius:2px;transition:width 0.3s ease}
+.nav-tab:hover{color:var(--text-primary)}.nav-tab:hover::after{width:60%}.nav-tab.active{color:var(--accent-cyan)}.nav-tab.active::after{width:80%}
+.main-content{max-width:1600px;margin:0 auto;padding:20px 24px 40px}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.list-toolbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.list-toolbar-right{display:flex;align-items:center;gap:12px}
+.filter-input{padding:9px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;width:260px;transition:var(--transition)}
+.filter-input::placeholder{color:var(--text-muted)}.filter-input:focus{border-color:var(--accent-blue);box-shadow:0 0 0 2px rgba(74,144,217,0.1)}
+.filter-select{padding:9px 12px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;cursor:pointer}
+.filter-select option{background:var(--bg-secondary)}
+.result-count{font-size:16px;color:var(--text-muted)}.result-count span{color:var(--accent-cyan);font-weight:600}
+.data-table-wrapper{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-secondary)}
+.data-table{width:100%;border-collapse:collapse;font-size:16px;table-layout:fixed}
+.data-table thead th{background:var(--bg-card);padding:12px 6px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border-color);white-space:nowrap;position:sticky;top:0;z-index:5;cursor:pointer;user-select:none;transition:var(--transition);font-size:15px;text-transform:uppercase;letter-spacing:0.5px;overflow:hidden}
+.data-table thead th:hover{color:var(--accent-cyan)}.data-table thead th.sort-active{color:var(--accent-cyan)}
+.sort-arrow{margin-left:4px;font-size:12px;opacity:0.4}.sort-active .sort-arrow{opacity:1}
+.data-table tbody tr{border-bottom:1px solid rgba(42,54,84,0.3);transition:var(--transition);cursor:pointer}
+.data-table tbody tr:hover{background:var(--bg-card-hover)}
+.data-table tbody td{padding:8px 6px;vertical-align:middle;overflow:hidden}
+#charTable .col-thum{width:100px}
+#charTable .col-name{width:28%}
+#charTable .col-rarity{width:7%;text-align:center}
+#charTable .col-role{width:7%;text-align:center}
+#charTable .col-stat{width:11.6%;text-align:center}
+#unitTable .col-thum{width:100px}
+#unitTable .col-name{width:25%}
+#unitTable .col-rarity{width:6%;text-align:center}
+#unitTable .col-role{width:6%;text-align:center}
+#unitTable .col-stat{width:10.5%;text-align:center}
+.row-thum{width:90px;height:90px;border-radius:var(--radius-sm);object-fit:contain;background:var(--bg-input);border:1px solid var(--border-color)}
+.row-thum-placeholder{width:90px;height:90px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:32px}
+.name-cell{display:flex;align-items:center;gap:4px}
+.name-text{font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.name-special-icons{display:flex;gap:4px;flex-shrink:0}.name-special-icon{width:25px;height:25px}
+.rarity-icon-cell{height:30px;display:block;margin:0 auto}
+.role-icon-cell{height:32px;display:block;margin:0 auto}
+.stat-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-primary)}
+.rarity-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:14px;font-weight:800;color:#000;letter-spacing:0.5px}
+.rarity-UR{background:linear-gradient(135deg,#ff6b35,#ffd700,#ff6b35);text-shadow:0 0 4px rgba(255,215,0,0.5)}
+.rarity-SSR{background:linear-gradient(135deg,#ffd700,#ffed4a)}.rarity-SR{background:linear-gradient(135deg,#a855f7,#c084fc);color:#fff}
+.rarity-R{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff}.rarity-N{background:linear-gradient(135deg,#6b7280,#9ca3af);color:#fff}
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px;flex-wrap:wrap}
+.page-btn{padding:7px 13px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:16px;font-weight:600;cursor:pointer;transition:var(--transition);min-width:38px;text-align:center}
+.page-btn:hover:not(.disabled):not(.active){border-color:var(--accent-blue);color:var(--text-primary)}
+.page-btn.active{background:var(--accent-blue);border-color:var(--accent-blue);color:#fff}.page-btn.disabled{opacity:0.35;cursor:not-allowed}
+.page-info{font-size:16px;color:var(--text-muted);margin:0 8px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto}
+.modal-overlay.active{display:flex}
+.modal-content{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:960px;width:100%;position:relative;animation:modalSlideIn 0.3s ease}
+@keyframes modalSlideIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:50%;color:var(--text-secondary);cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10}
+.modal-close:hover{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}
+.detail-header{display:flex;gap:28px;padding:28px 28px 20px;border-bottom:1px solid var(--border-color)}
+.detail-portrait-wrap{flex-shrink:0;width:300px;position:relative}
+.detail-portrait{width:300px;height:400px;object-fit:contain;border-radius:var(--radius-md);border:2px solid var(--border-color);background:var(--bg-input)}
+.detail-portrait-placeholder{width:300px;height:400px;border-radius:var(--radius-md);border:2px solid var(--border-color);background:var(--bg-input);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:80px}
+.detail-title-area{flex:1;min-width:0}
+.detail-name{font-size:32px;font-weight:700;margin-bottom:10px;line-height:1.2}
+.detail-meta{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.detail-rarity-icon{height:50px}
+.detail-role-label{font-size:18px;color:var(--text-secondary);font-weight:600;padding:6px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px}
+.detail-role-label img{height:35px}
+.detail-model{font-size:16px;color:var(--text-muted);margin-bottom:8px}
+.detail-special-icons{display:flex;gap:6px;margin-bottom:10px}.detail-special-icon{width:35px;height:35px}
+.detail-series-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.series-icon-img{height:55px;max-width:250px;object-fit:contain;filter:brightness(1.1);transition:var(--transition)}
+.series-icon-img:hover{filter:brightness(1.3)}
+.series-text-fallback{padding:5px 14px;background:rgba(200,160,255,0.2);border:1px solid rgba(200,160,255,0.5);border-radius:20px;font-size:16px;color:#dcc5ff;font-weight:600}
+.detail-tags-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.detail-tag{padding:5px 14px;background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.45);border-radius:20px;font-size:16px;color:#5ee5ff;font-weight:600;letter-spacing:0.2px}
+.detail-body{padding:24px 28px 28px}
+.detail-section{margin-bottom:28px}.detail-section:last-child{margin-bottom:0}
+.section-title{font-size:19px;font-weight:700;color:var(--text-primary);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-color);text-transform:uppercase;letter-spacing:0.5px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.stat-card-label{font-size:14px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.stat-card-value{font-size:28px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.stat-card-bonus{font-size:14px;color:var(--accent-green);font-weight:600;margin-top:2px}
+.terrain-grid{display:flex;gap:10px;flex-wrap:wrap}
+.terrain-item{display:flex;align-items:center;gap:6px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:8px 12px}
+.terrain-type-icon{width:28px;height:28px}.terrain-level-icon{width:25px;height:25px}
+.terrain-name{font-size:15px;color:var(--text-secondary);font-weight:500}
+.ability-list{display:flex;flex-direction:column;gap:12px}
+.ability-item{display:flex;gap:14px;padding:16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);transition:var(--transition)}
+.ability-item:hover{border-color:var(--border-accent)}
+.ability-icon-wrap{flex-shrink:0;width:70px;height:70px;position:relative;display:flex;align-items:center;justify-content:center}
+.ability-icon{width:60px;height:60px;border-radius:var(--radius-sm);object-fit:cover;background:var(--bg-input)}
+.ability-frame-overlay{position:absolute;inset:0;width:70px;height:70px;pointer-events:none;object-fit:contain}
+.ability-icon-placeholder{width:60px;height:60px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:25px}
+.ability-info{flex:1;min-width:0}
+.ability-name{font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.ability-detail{font-size:16px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px;white-space:pre-wrap}
+.ability-conditions{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.ability-condition-tag{padding:3px 10px;background:rgba(255,180,50,0.15);border:1px solid rgba(255,180,50,0.45);border-radius:12px;font-size:14px;color:#ffc966;font-weight:600}
+.weapon-table-wrap{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border-color)}
+.weapon-table{width:100%;border-collapse:collapse;font-size:16px}
+.weapon-table thead th{background:var(--bg-card);padding:10px 12px;text-align:center;font-weight:600;color:var(--text-muted);border-bottom:2px solid var(--border-color);font-size:14px;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap}
+.weapon-table thead th:first-child{text-align:left}
+.weapon-table tbody tr{border-bottom:1px solid rgba(42,54,84,0.3)}.weapon-table tbody tr:hover{background:rgba(26,34,54,0.5)}
+.weapon-table tbody td{padding:10px 12px;text-align:center;vertical-align:top}.weapon-table tbody td:first-child{text-align:left}
+.weapon-name-cell{display:flex;align-items:center;gap:8px}
+.weapon-icon-wrap{width:40px;height:40px;position:relative;flex-shrink:0}
+.weapon-icon-img{width:40px;height:40px;object-fit:contain}
+.weapon-overlay{position:absolute;top:-5px;right:-5px;width:20px;height:20px}
+.weapon-name-text{font-weight:600;color:var(--text-primary);white-space:nowrap}
+.weapon-attack-types{display:flex;gap:3px;justify-content:center}.weapon-attack-type-icon{width:22px;height:22px}
+.weapon-range{font-weight:600;color:var(--text-secondary)}
+.weapon-traits{text-align:left;padding:8px 12px}
+.weapon-trait-text{font-size:15px;color:var(--text-secondary);line-height:1.5;white-space:pre-wrap}
+.weapon-restrictions{margin-top:4px}.weapon-restriction-text{font-size:14px;color:var(--accent-orange);font-weight:500}
+.loading-overlay{display:flex;align-items:center;justify-content:center;padding:60px 20px}
+.spinner{width:50px;height:50px;border:4px solid var(--border-color);border-top-color:var(--accent-cyan);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}.empty-state-icon{font-size:60px;margin-bottom:12px}.empty-state-text{font-size:19px}
+@media(max-width:768px){
+.header-inner{padding:10px 16px;gap:10px}.brand-text{font-size:22px}.brand-sub{display:none}
+.main-content{padding:14px 12px 30px}
+.detail-header{flex-direction:column;align-items:center;text-align:center;padding:20px 16px 16px}
+.detail-portrait-wrap{width:225px}.detail-portrait{width:225px;height:300px}.detail-portrait-placeholder{width:225px;height:300px;font-size:60px}
+.detail-name{font-size:25px}.detail-body{padding:16px}.detail-series-row,.detail-tags-row{justify-content:center}
+.stats-grid{grid-template-columns:repeat(3,1fr)}.modal-content{border-radius:var(--radius-md)}.modal-overlay{padding:10px}
+.filter-input{width:180px}.nav-tab{font-size:16px}.data-table{font-size:15px}
+.data-table thead th{padding:10px 5px}.data-table tbody td{padding:8px 5px}
+.row-thum,.row-thum-placeholder{width:70px;height:70px;font-size:28px}
+.detail-rarity-icon{height:40px}.detail-role-label img{height:30px}
+.series-icon-img{height:45px}.detail-tag{font-size:15px;padding:5px 12px}
+#charTable .col-thum,#unitTable .col-thum{width:80px}
+#charTable .col-name{width:24%}#unitTable .col-name{width:22%}
+}
+@media(max-width:480px){.stats-grid{grid-template-columns:repeat(2,1fr)}.terrain-grid{flex-direction:column}.list-toolbar-left{width:100%}.filter-input{width:100%}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="lang-switcher">
-                <div class="lang-btn active" onclick="setLanguage('EN')" id="lang-EN">EN</div>
-                <div class="lang-btn" onclick="setLanguage('TW')" id="lang-TW">繁中</div>
-            </div>
-            
-            <div class="header-brand">
-                <div class="brand-logo">
-                    <img src="{{ image_cdn if image_cdn else '' }}/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.outerHTML='<span style=\'font-size:25px;font-weight:900;color:#fff\'>GG</span>'">
-                </div>
-                <h1 id="page-title">SD Gundam G Generation Eternal Database</h1>
-            </div>
+<div class="bg-pattern"></div>
+<header class="app-header">
+<div class="header-inner">
+<div class="header-brand" onclick="goHome()"><div class="brand-logo"><img src="/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.outerHTML='<span style=\'font-size:25px;font-weight:900;color:#fff\'>GG</span>'"></div><div><div class="brand-text">GGen Database</div><div class="brand-sub">SD Gundam G Generation</div></div></div>
+<div class="header-controls"><div class="lang-selector"><button class="lang-btn" id="langBtn" onclick="toggleLangDropdown()"><span id="langLabel">EN</span> ▾</button><div class="lang-dropdown" id="langDropdown"></div></div></div>
+</div>
+<div class="nav-tabs">
+<button class="nav-tab active" data-tab="characters" id="navCharTab" onclick="switchTab('characters')">Characters</button>
+<button class="nav-tab" data-tab="units" id="navUnitTab" onclick="switchTab('units')">Units</button>
+</div>
+</header>
+<main class="main-content">
+<div class="tab-panel active" id="panel-characters">
+<div class="list-toolbar"><div class="list-toolbar-left"><input type="text" class="filter-input" id="charFilter" placeholder="Search characters..." oninput="debounceLoad('characters')"><div class="result-count" id="charCount"></div></div><div class="list-toolbar-right"><select class="filter-select" id="charPerPage" onchange="loadCharacters(1)"><option value="25">25/page</option><option value="50" selected>50/page</option><option value="100">100/page</option></select></div></div>
+<div class="data-table-wrapper"><table class="data-table" id="charTable"><thead id="charThead"></thead><tbody id="charBody"></tbody></table></div>
+<div id="charLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div>
+<div id="charEmpty" class="empty-state" style="display:none"><div class="empty-state-icon">📭</div><div class="empty-state-text" id="charEmptyText">No characters found</div></div>
+<div class="pagination" id="charPagination"></div>
+</div>
+<div class="tab-panel" id="panel-units">
+<div class="list-toolbar"><div class="list-toolbar-left"><input type="text" class="filter-input" id="unitFilter" placeholder="Search units..." oninput="debounceLoad('units')"><div class="result-count" id="unitCount"></div></div><div class="list-toolbar-right"><select class="filter-select" id="unitPerPage" onchange="loadUnits(1)"><option value="25">25/page</option><option value="50" selected>50/page</option><option value="100">100/page</option></select></div></div>
+<div class="data-table-wrapper"><table class="data-table" id="unitTable"><thead id="unitThead"></thead><tbody id="unitBody"></tbody></table></div>
+<div id="unitLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div>
+<div id="unitEmpty" class="empty-state" style="display:none"><div class="empty-state-icon">📭</div><div class="empty-state-text" id="unitEmptyText">No units found</div></div>
+<div class="pagination" id="unitPagination"></div>
+</div>
+</main>
+<div class="modal-overlay" id="detailModal" onclick="closeModalOverlay(event)"><div class="modal-content"><button class="modal-close" onclick="closeModal()">✕</button><div id="detailInner"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
 
-            <div class="tab-bar">
-                <div class="tab-btn active"
-                     onclick="switchTab('character')"
-                     id="tab-character">Character</div>
-                <div class="tab-btn"
-                     onclick="switchTab('unit')"
-                     id="tab-unit">Unit</div>
-            </div>
-            <div class="tab-content" id="section-character">
-                <div class="search-box">
-                    <input type="text" id="charId"
-                           placeholder="Character ID (e.g. 4000xxxxx)"
-                           onkeypress="if(event.key==='Enter') searchCharacter()">
-                    <button onclick="searchCharacter()"
-                            id="charSearchBtn">Search</button>
-                </div>
-            </div>
-            <div class="tab-content hidden" id="section-unit">
-                <div class="search-box">
-                    <input type="text" id="unitId"
-                           placeholder="Unit ID (e.g. 3000xxxxx)"
-                           onkeypress="if(event.key==='Enter') searchUnit()">
-                    <button onclick="searchUnit()"
-                            id="unitSearchBtn">Search</button>
-                </div>
-            </div>
-        </div>
+<script>
+const T={
+EN:{
+  tab_char:'Characters',tab_unit:'Units',search_char:'Search characters...',search_unit:'Search units...',
+  per_page:'/page',count_char:'characters',count_unit:'units',empty_char:'No characters found',empty_unit:'No units found',
+  col_name:'Name',col_rarity:'Rarity',col_role:'Role',
+  col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',
+  col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',
+  sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_weapons:'Weapons',
+  wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',
+  stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',
+  stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',
+  terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',
+  role_attack:'Attack',role_defense:'Defense',role_support:'Support'
+},
+TW:{
+  tab_char:'角色',tab_unit:'機體',search_char:'搜尋角色...',search_unit:'搜尋機體...',
+  per_page:'/頁',count_char:'位角色',count_unit:'台機體',empty_char:'未找到角色',empty_unit:'未找到機體',
+  col_name:'名稱',col_rarity:'稀有度',col_role:'類型',
+  col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',
+  col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',
+  sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_weapons:'武裝',
+  wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',
+  stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',
+  stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',
+  terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',
+  role_attack:'攻擊型',role_defense:'防禦型',role_support:'支援型'
+}
+};
+const STAT_NAME_MAP={EN:{},TW:{
+  'Ranged':'射擊','Melee':'格鬥','Awaken':'覺醒','Defense':'守備','Reaction':'反應',
+  'HP':'HP','EN':'EN','Attack':'攻擊','Mobility':'機動','Move':'移動'
+}};
+const TERRAIN_NAME_MAP={EN:{},TW:{
+  'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'
+}};
+const ROLE_NAME_MAP={EN:{'Attack':'Attack','Defense':'Defense','Support':'Support'},
+TW:{'Attack':'攻擊型','Defense':'防禦型','Support':'支援型'}};
 
-        <div class="loading" id="char-loading">
-            <div class="spinner"></div>
-            <p style="color:#a0d0ff; font-size: 20px;" id="char-loading-text">Loading character...</p>
-        </div>
-        <div class="result-box" id="char-result"></div>
+function t(key){const lang=S.lang||'EN';return(T[lang]&&T[lang][key])||T.EN[key]||key}
+function tStat(name){const m=STAT_NAME_MAP[S.lang];return(m&&m[name])||name}
+function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
+function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 
-        <div class="loading" id="unit-loading">
-            <div class="spinner"></div>
-            <p style="color:#a0d0ff; font-size: 20px;" id="unit-loading-text">Loading unit...</p>
-        </div>
-        <div class="result-box" id="unit-result"></div>
-    </div>
+const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},ft:null};
+document.addEventListener('DOMContentLoaded',async()=>{await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);setupKeys()});
 
-    <script>
-        var IMAGE_CDN = '{{ image_cdn }}';
-        function imgUrl(path) {
-            if (!IMAGE_CDN || !path) return path;
-            if (path.startsWith('/static/images/')) {
-                return IMAGE_CDN + '/images/' + path.substring('/static/images/'.length);
-            }
-            return path;
-        }
+async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];S.lang=d.default||'EN';document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(e){S.languages=['EN']}}
+function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
+function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}
+function selLang(l){S.lang=l;document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1)}
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active')});
 
-        let currentTab = 'character';
-        let currentLang = 'EN';
-        let lastCharId = '';
-        let lastUnitId = '';
+function applyLang(){
+  document.getElementById('navCharTab').textContent=t('tab_char');
+  document.getElementById('navUnitTab').textContent=t('tab_unit');
+  document.getElementById('charFilter').placeholder=t('search_char');
+  document.getElementById('unitFilter').placeholder=t('search_unit');
+  document.getElementById('charEmptyText').textContent=t('empty_char');
+  document.getElementById('unitEmptyText').textContent=t('empty_unit');
+  const pp=t('per_page');
+  document.getElementById('charPerPage').innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`;
+  document.getElementById('unitPerPage').innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`;
+}
 
-        var UI_STRINGS = {
-            'EN': {
-                pageTitle: 'SD Gundam G Generation Eternal Database',
-                tabCharacter: 'Character',
-                tabUnit: 'Unit',
-                charPlaceholder: 'Character ID (e.g. 4000xxxxx)',
-                unitPlaceholder: 'Unit ID (e.g. 3000xxxxx)',
-                search: 'Search',
-                loadingCharacter: 'Loading character...',
-                loadingUnit: 'Loading unit...',
-                noPortrait: 'No Portrait',
-                terrainCapability: 'Terrain Capability',
-                abilities: 'Abilities',
-                skills: 'Skills',
-                weapons: 'Weapons',
-                weaponEffect: 'Weapon Effect',
-                usageRestrictions: 'Usage Restrictions',
-                noRestriction: 'None',
-                range: 'Range',
-                power: 'Power',
-                en: 'EN',
-                accuracy: 'Accuracy',
-                critical: 'Critical',
-                ammo: 'Ammo',
-                errorPrefix: 'Error: ',
-                invalidCharId: 'Please enter a valid Character ID (7-12 digits)',
-                invalidUnitId: 'Please enter a valid Unit ID (7-12 digits)',
-                statRanged: 'Ranged', statMelee: 'Melee', statAwaken: 'Awaken',
-                statDefense: 'Defense', statReaction: 'Reaction',
-                statHP: 'HP', statEN: 'EN', statAttack: 'Attack',
-                statUnitDefense: 'Defense', statMobility: 'Mobility', statMove: 'Move',
-                roleAttack: 'Attack', roleDefense: 'Defense', roleSupport: 'Support', roleNPC: 'NPC',
-                attrPhysical: 'Physical', attrBeam: 'Beam', attrSpecial: 'Special',
-                attrBeamPhysical: 'Beam/Physical', attrPhysicalSpecial: 'Physical/Special',
-                attrBeamSpecial: 'Beam/Special', attrBeamPhysicalSpecial: 'Beam/Physical/Special',
-                attrUnknown: 'Unknown',
-            },
-            'TW': {
-                pageTitle: 'SD 鋼彈 G 世代 永恆 資料庫',
-                tabCharacter: '角色', tabUnit: '機體',
-                charPlaceholder: '角色 ID（例：4000xxxxx）',
-                unitPlaceholder: '機體 ID（例：3000xxxxx）',
-                search: '搜尋',
-                loadingCharacter: '正在載入角色資料...', loadingUnit: '正在載入機體資料...',
-                noPortrait: '無圖片', terrainCapability: '地形適性',
-                abilities: '能力', skills: '技能', weapons: '武裝',
-                weaponEffect: '武器效果', usageRestrictions: '使用條件', noRestriction: '無',
-                range: '射程', power: '威力', en: 'EN', accuracy: '命中',
-                critical: '暴擊', ammo: '彈數',
-                errorPrefix: '錯誤：',
-                invalidCharId: '請輸入有效的角色 ID（7-12位數字）',
-                invalidUnitId: '請輸入有效的機體 ID（7-12位數字）',
-                statRanged: '射擊', statMelee: '格鬥', statAwaken: '覺醒',
-                statDefense: '守備', statReaction: '反應',
-                statHP: 'HP', statEN: 'EN', statAttack: '攻擊',
-                statUnitDefense: '防禦', statMobility: '機動', statMove: '移動',
-                roleAttack: '攻擊型', roleDefense: '防禦型', roleSupport: '支援型', roleNPC: 'NPC',
-                attrPhysical: '實彈', attrBeam: '光束', attrSpecial: '特殊',
-                attrBeamPhysical: '光束/實彈', attrPhysicalSpecial: '實彈/特殊',
-                attrBeamSpecial: '光束/特殊', attrBeamPhysicalSpecial: '光束/實彈/特殊',
-                attrUnknown: '不明',
-            }
-        };
+function buildTableHeaders(){
+  const cs=S.characters,us=S.units;
+  document.getElementById('charThead').innerHTML=`<tr>
+<th class="col-thum" style="cursor:default"></th>
+<th class="col-name ${cs.sort==='name'?'sort-active':''}" data-sort="name" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th>
+<th class="col-rarity ${cs.sort==='rarity'||cs.sort!=='name'&&cs.sort!=='role'?'sort-active':''}" data-sort="rarity" onclick="sortCol('characters','rarity')">${t('col_rarity')} <span class="sort-arrow">▼</span></th>
+<th class="col-role ${cs.sort==='role'?'sort-active':''}" data-sort="role" onclick="sortCol('characters','role')">${t('col_role')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${cs.sort==='Ranged'?'sort-active':''}" data-sort="Ranged" onclick="sortCol('characters','Ranged')">${t('col_ranged')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${cs.sort==='Melee'?'sort-active':''}" data-sort="Melee" onclick="sortCol('characters','Melee')">${t('col_melee')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${cs.sort==='Awaken'?'sort-active':''}" data-sort="Awaken" onclick="sortCol('characters','Awaken')">${t('col_awaken')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${cs.sort==='Defense'?'sort-active':''}" data-sort="Defense" onclick="sortCol('characters','Defense')">${t('col_defense')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${cs.sort==='Reaction'?'sort-active':''}" data-sort="Reaction" onclick="sortCol('characters','Reaction')">${t('col_reaction')} <span class="sort-arrow">▲</span></th>
+</tr>`;
+  document.getElementById('unitThead').innerHTML=`<tr>
+<th class="col-thum" style="cursor:default"></th>
+<th class="col-name ${us.sort==='name'?'sort-active':''}" data-sort="name" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th>
+<th class="col-rarity ${us.sort==='rarity'||us.sort!=='name'&&us.sort!=='role'?'sort-active':''}" data-sort="rarity" onclick="sortCol('units','rarity')">${t('col_rarity')} <span class="sort-arrow">▼</span></th>
+<th class="col-role ${us.sort==='role'?'sort-active':''}" data-sort="role" onclick="sortCol('units','role')">${t('col_role')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='HP'?'sort-active':''}" data-sort="HP" onclick="sortCol('units','HP')">${t('col_hp')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='EN'?'sort-active':''}" data-sort="EN" onclick="sortCol('units','EN')">${t('col_en')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='ATK'?'sort-active':''}" data-sort="ATK" onclick="sortCol('units','ATK')">${t('col_atk')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='DEF'?'sort-active':''}" data-sort="DEF" onclick="sortCol('units','DEF')">${t('col_def')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='MOB'?'sort-active':''}" data-sort="MOB" onclick="sortCol('units','MOB')">${t('col_mob')} <span class="sort-arrow">▲</span></th>
+<th class="col-stat ${us.sort==='MOV'?'sort-active':''}" data-sort="MOV" onclick="sortCol('units','MOV')">${t('col_mov')} <span class="sort-arrow">▲</span></th>
+</tr>`;
+}
 
-        var CHAR_STAT_KEY_MAP = {
-            'Ranged': 'statRanged', 'Melee': 'statMelee', 'Awaken': 'statAwaken',
-            'Defense': 'statDefense', 'Reaction': 'statReaction'
-        };
-        var UNIT_STAT_KEY_MAP = {
-            'HP': 'statHP', 'EN': 'statEN', 'Attack': 'statAttack',
-            'Defense': 'statUnitDefense', 'Mobility': 'statMobility', 'Move': 'statMove'
-        };
-        var ROLE_KEY_MAP = {
-            'Attack': 'roleAttack', 'Defense': 'roleDefense',
-            'Support': 'roleSupport', 'NPC': 'roleNPC'
-        };
-        var WEAPON_ATTR_KEY_MAP = {
-            'Physical': 'attrPhysical', 'Beam': 'attrBeam', 'Special': 'attrSpecial',
-            'Beam/Physical': 'attrBeamPhysical', 'Physical/Special': 'attrPhysicalSpecial',
-            'Beam/Special': 'attrBeamSpecial', 'Beam/Physical/Special': 'attrBeamPhysicalSpecial',
-            'Unknown': 'attrUnknown'
-        };
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`))}
+function goHome(){closeModal();switchTab('characters')}
+function setupKeys(){document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})}
+function debounceLoad(tab){clearTimeout(S.ft);S.ft=setTimeout(()=>{if(tab==='characters')loadCharacters(1);else loadUnits(1)},300)}
 
-        var CHAR_ABILITY_FRAME = imgUrl('/static/images/Trait/UI_CharaAbilities_Tmb_Square_Normal_Frame.png');
+async function loadCharacters(p=1){const s=S.characters;s.page=p;s.q=document.getElementById('charFilter').value.trim();const pp=document.getElementById('charPerPage').value;showLoad('char',true);try{const r=await fetch(`/api/characters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}`);const d=await r.json();renderCharT(d);renderPag('char',d);document.getElementById('charCount').innerHTML=`<span>${d.total}</span> ${t('count_char')}`}catch(e){document.getElementById('charBody').innerHTML='';document.getElementById('charEmpty').style.display='block'}showLoad('char',false)}
 
-        function t(key) {
-            var strings = UI_STRINGS[currentLang] || UI_STRINGS['EN'];
-            return strings[key] || UI_STRINGS['EN'][key] || key;
-        }
-        function translateStatName(backendName, isUnit) {
-            var map = isUnit ? UNIT_STAT_KEY_MAP : CHAR_STAT_KEY_MAP;
-            var key = map[backendName]; return key ? t(key) : backendName;
-        }
-        function translateRole(backendRole) {
-            var key = ROLE_KEY_MAP[backendRole]; return key ? t(key) : backendRole;
-        }
-        function translateWeaponAttr(backendAttr) {
-            var key = WEAPON_ATTR_KEY_MAP[backendAttr]; return key ? t(key) : backendAttr;
-        }
-        
-        function tTerrain(name) {
-            var map = {
-                'Space': currentLang === 'TW' ? '宇宙' : 'Space',
-                'Atmospheric': currentLang === 'TW' ? '空中' : 'Atmospheric',
-                'Ground': currentLang === 'TW' ? '地上' : 'Ground',
-                'Sea': currentLang === 'TW' ? '水上' : 'Sea',
-                'Underwater': currentLang === 'TW' ? '水中' : 'Underwater'
-            };
-            return map[name] || name;
-        }
+async function loadUnits(p=1){const s=S.units;s.page=p;s.q=document.getElementById('unitFilter').value.trim();const pp=document.getElementById('unitPerPage').value;showLoad('unit',true);try{const r=await fetch(`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}`);const d=await r.json();renderUnitT(d);renderPag('unit',d);document.getElementById('unitCount').innerHTML=`<span>${d.total}</span> ${t('count_unit')}`}catch(e){document.getElementById('unitBody').innerHTML='';document.getElementById('unitEmpty').style.display='block'}showLoad('unit',false)}
 
-        function isExAbility(name) {
-            if (!name) return false;
-            return /(?:^|[\s\-_\[\(])EX(?:$|[\s\-_\]\):])/.test(name)
-                || name.startsWith('EX ') || name.startsWith('EX:') || name === 'EX'
-                || name.toLowerCase().includes('ex character ability')
-                || name.toLowerCase().includes('ex機體能力')
-                || name.toLowerCase().includes('ex角色能力')
-                || name.toLowerCase().includes('exキャラクターアビリティ');
-        }
+function showLoad(pfx,s){document.getElementById(`${pfx}Loading`).style.display=s?'flex':'none';document.getElementById(`${pfx}Empty`).style.display='none';if(s)document.getElementById(`${pfx}Body`).innerHTML=''}
 
-        function updateUIText() {
-            document.getElementById('page-title').textContent = t('pageTitle');
-            document.getElementById('tab-character').textContent = t('tabCharacter');
-            document.getElementById('tab-unit').textContent = t('tabUnit');
-            document.getElementById('charId').placeholder = t('charPlaceholder');
-            document.getElementById('unitId').placeholder = t('unitPlaceholder');
-            document.getElementById('charSearchBtn').textContent = t('search');
-            document.getElementById('unitSearchBtn').textContent = t('search');
-            document.getElementById('char-loading-text').textContent = t('loadingCharacter');
-            document.getElementById('unit-loading-text').textContent = t('loadingUnit');
-        }
+function renderCharT(data){const tb=document.getElementById('charBody'),em=document.getElementById('charEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';em.style.display='block';return}em.style.display='none';
+tb.innerHTML=data.rows.map(r=>`<tr onclick="openDetail('character','${r.id}')">
+<td class="col-thum">${r.thum?`<img class="row-thum" src="${r.thum}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>👤</div>'">`:'<div class="row-thum-placeholder">👤</div>'}</td>
+<td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span></div></td>
+<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${r.rarity_icon}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
+<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${r.role_icon}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
+<td class="col-stat"><span class="stat-value">${r.Ranged}</span></td><td class="col-stat"><span class="stat-value">${r.Melee}</span></td><td class="col-stat"><span class="stat-value">${r.Awaken}</span></td><td class="col-stat"><span class="stat-value">${r.Defense}</span></td><td class="col-stat"><span class="stat-value">${r.Reaction}</span></td></tr>`).join('')}
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(function(btn) { btn.classList.remove('active'); });
-            document.getElementById('lang-' + lang).classList.add('active');
-            updateUIText();
-            if (lastCharId && document.getElementById('char-result').dataset.shown === '1') searchCharacter();
-            if (lastUnitId && document.getElementById('unit-result').dataset.shown === '1') searchUnit();
-        }
+function renderUnitT(data){const tb=document.getElementById('unitBody'),em=document.getElementById('unitEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';em.style.display='block';return}em.style.display='none';
+tb.innerHTML=data.rows.map(r=>`<tr onclick="openDetail('unit','${r.id}')">
+<td class="col-thum">${r.thum?`<img class="row-thum" src="${r.thum}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>🤖</div>'">`:'<div class="row-thum-placeholder">🤖</div>'}</td>
+<td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span><span class="name-special-icons">${(r.special_icons||[]).map(ic=>`<img class="name-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</span></div></td>
+<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${r.rarity_icon}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
+<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${r.role_icon}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
+<td class="col-stat"><span class="stat-value">${fmtN(r.HP)}</span></td><td class="col-stat"><span class="stat-value">${r.EN}</span></td><td class="col-stat"><span class="stat-value">${r.ATK}</span></td><td class="col-stat"><span class="stat-value">${r.DEF}</span></td><td class="col-stat"><span class="stat-value">${r.MOB}</span></td><td class="col-stat"><span class="stat-value">${r.MOV}</span></td></tr>`).join('')}
 
-        function switchTab(tab) {
-            currentTab = tab;
-            document.getElementById('tab-character').classList.toggle('active', tab === 'character');
-            document.getElementById('tab-unit').classList.toggle('active', tab === 'unit');
-            document.getElementById('section-character').classList.toggle('hidden', tab !== 'character');
-            document.getElementById('section-unit').classList.toggle('hidden', tab !== 'unit');
-            var cr = document.getElementById('char-result'), ur = document.getElementById('unit-result');
-            if (tab === 'character') { cr.style.display = cr.dataset.shown === '1' ? 'block' : 'none'; ur.style.display = 'none'; }
-            else { ur.style.display = ur.dataset.shown === '1' ? 'block' : 'none'; cr.style.display = 'none'; }
-        }
+function sortCol(type,key){
+    const s=type==='characters'?S.characters:S.units;
+    if(s.sort===key){s.dir=s.dir==='desc'?'asc':'desc'}else{s.sort=key;s.dir=key==='name'?'asc':'desc'}
+    buildTableHeaders();
+    if(type==='characters')loadCharacters(1);else loadUnits(1);
+}
 
-        function escapeHtml(text) {
-            if (text === null || text === undefined) return '';
-            var div = document.createElement('div'); div.textContent = String(text); return div.innerHTML;
-        }
-        function safeLineBreaks(text) { return escapeHtml(text).replace(/\n/g, '<br>'); }
+function renderPag(pfx,data){const el=document.getElementById(`${pfx}Pagination`);const{page,total_pages}=data;if(total_pages<=1){el.innerHTML='';return}const fn=pfx==='char'?'loadCharacters':'loadUnits';let h='';h+=`<button class="page-btn ${page<=1?'disabled':''}" ${page>1?`onclick="${fn}(${page-1})"`:''}>◀</button>`;const mx=7;let sp=Math.max(1,page-Math.floor(mx/2));let ep=Math.min(total_pages,sp+mx-1);if(ep-sp<mx-1)sp=Math.max(1,ep-mx+1);if(sp>1){h+=`<button class="page-btn" onclick="${fn}(1)">1</button>`;if(sp>2)h+=`<span class="page-info">…</span>`}for(let i=sp;i<=ep;i++)h+=`<button class="page-btn ${i===page?'active':''}" onclick="${fn}(${i})">${i}</button>`;if(ep<total_pages){if(ep<total_pages-1)h+=`<span class="page-info">…</span>`;h+=`<button class="page-btn" onclick="${fn}(${total_pages})">${total_pages}</button>`}h+=`<button class="page-btn ${page>=total_pages?'disabled':''}" ${page<total_pages?`onclick="${fn}(${page+1})"`:''}>▶</button>`;el.innerHTML=h}
 
-        function makeSeriesHtml(series) {
-            if (!series || !series.length) return '';
-            return series.map(function(s) {
-                var pid = String(s.id).padStart(4, '0'), en = escapeHtml(s.name);
-                return '<img src="' + imgUrl('/static/images/Logo-Series/logo_l_series_' + pid + '.png') + '" alt="' + en + '" class="series-mini-logo" title="' + en + '" onerror="this.style.display=\'none\'">';
-            }).join('');
-        }
-        function makeTagsHtml(tags) {
-            if (!tags || !tags.length) return '';
-            return tags.map(function(tg) { return '<span class="tag">' + escapeHtml(tg) + '</span>'; }).join('');
-        }
-        function makeStatHtml(stat) {
-            var dn = translateStatName(stat.name, false);
-            var bn = stat.bonus > 0 ? '<span class="bonus">+' + stat.bonus + '</span>' : '';
-            return '<div class="stat-line"><span class="stat-name">' + escapeHtml(dn) + '</span><span class="stat-value">' + stat.total + '</span>' + bn + '</div>';
-        }
-        function makeUnitStatHtml(stat) {
-            var dn = translateStatName(stat.name, true);
-            var bn = stat.bonus > 0 ? '<span class="unit-stat-bonus">+' + stat.bonus + '</span>' : '';
-            return '<div class="unit-stat-line"><span class="unit-stat-name">' + escapeHtml(dn) + '</span><span class="unit-stat-value">' + stat.total + '</span>' + bn + '</div>';
-        }
+async function openDetail(type,id){const m=document.getElementById('detailModal'),inn=document.getElementById('detailInner');m.classList.add('active');document.body.style.overflow='hidden';inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;const r=await fetch(url);if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(d.error)throw new Error(d.error);inn.innerHTML=type==='character'?renderCharD(d):renderUnitD(d)}catch(e){inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
+function closeModal(){document.getElementById('detailModal').classList.remove('active');document.body.style.overflow=''}
+function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 
-        function makeAbilityCard(a, isCharacter) {
-            var iconHtml = '';
-            if (a.icon) {
-                if (isCharacter && isExAbility(a.name)) {
-                    iconHtml = '<div class="ability-icon-ex-container">'
-                        + '<img src="' + imgUrl(a.icon) + '" alt="" class="ability-icon-inner" onerror="this.style.display=\'none\'">'
-                        + '<img src="' + CHAR_ABILITY_FRAME + '" alt="" class="ability-frame-overlay" onerror="this.style.display=\'none\'">'
-                        + '</div>';
-                } else {
-                    iconHtml = '<img src="' + imgUrl(a.icon) + '" alt="" class="ability-icon" onerror="this.style.display=\'none\'">';
-                }
-            }
-            var detailsHtml = (a.details || []).map(function(d) {
-                var condHtml = '';
-                if (d.conditions && d.conditions.length > 0) {
-                    condHtml = '<div class="condition-tags">' + d.conditions.map(function(c) {
-                        return '<span class="condition-tag">' + escapeHtml(c) + '</span>';
-                    }).join('') + '</div>';
-                }
-                return '<div class="ability-detail">' + condHtml + safeLineBreaks(d.text || d) + '</div>';
-            }).join('');
-            return '<div class="ability-card"><div class="ability-name">' + iconHtml + escapeHtml(a.name) + '</div>' + detailsHtml + '</div>';
-        }
+function renderCharD(d){return`<div class="detail-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'">`:'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderAbils(d.abilities,t('sec_abilities'))}${renderSkills(d.skills)}</div>`}
 
-        function makeUnitTerrainHtml(terrain) {
-            if (!terrain || !terrain.length) return '';
-            var items = terrain.map(function(tr) {
-                return '<div class="unit-terrain-item">'
-                    + '<img src="' + imgUrl(tr.type_icon) + '" alt="' + escapeHtml(tr.name) + '" class="unit-terrain-type-icon" onerror="this.style.display=\'none\'" title="' + escapeHtml(tTerrain(tr.name)) + '">'
-                    + '<img src="' + imgUrl(tr.level_icon) + '" alt="' + tr.symbol + '" class="unit-terrain-level-icon" onerror="this.style.display=\'none\'">'
-                    + '</div>';
-            }).join('');
-            return '<div class="unit-terrain-container"><div class="unit-terrain-title">' + escapeHtml(t('terrainCapability')) + '</div><div class="unit-terrain-row">' + items + '</div></div>';
-        }
+function renderUnitD(d){return`<div class="detail-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>🤖</div>'">`:'<div class="detail-portrait-placeholder">🤖</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${d.model?`<div class="detail-model">${esc(d.model)}</div>`:''}<div class="detail-special-icons">${(d.special_icons||[]).map(ic=>`<img class="detail-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderTerrain(d.terrain)}${renderAbils(d.abilities,t('sec_abilities'))}${renderWeapons(d.weapons)}</div>`}
 
-        function getAttrClass(attrId) {
-            if (attrId === '1') return 'attr-physical'; if (attrId === '2') return 'attr-beam';
-            if (attrId === '3') return 'attr-special'; return 'attr-mixed';
-        }
-        function makeWeaponIconHtml(w) {
-            if (!w.icon) return '';
-            var html = '<div class="weapon-icon-container"><img src="' + imgUrl(w.icon) + '" alt="" class="weapon-icon" onerror="this.style.display=\'none\'">';
-            if (w.is_ex && w.overlay) html += '<img src="' + imgUrl(w.overlay) + '" alt="EX" class="weapon-ex-overlay" onerror="this.style.display=\'none\'">';
-            return html + '</div>';
-        }
-        function makeAttackTypeIcons(attackTypes) {
-            if (!attackTypes || !attackTypes.length) return '';
-            return '<span class="weapon-attack-types">' + attackTypes.map(function(at) {
-                return '<img src="' + imgUrl(at.icon) + '" alt="' + escapeHtml(at.label) + '" title="' + escapeHtml(at.label) + '" class="attack-type-icon" onerror="this.style.display=\'none\'">';
-            }).join('') + '</span>';
-        }
-        function makeSpecialIconsHtml(specialIcons) {
-            if (!specialIcons || !specialIcons.length) return '';
-            return specialIcons.map(function(iconUrl) {
-                return '<span class="badge-icon-only"><img src="' + imgUrl(iconUrl) + '" alt="" onerror="this.parentElement.style.display=\'none\'"></span>';
-            }).join('');
-        }
+function renderSeries(s){if(!s||!s.length)return'';return`<div class="detail-series-row">${s.map(x=>x.icon?`<img class="series-icon-img" src="${x.icon}" alt="${esc(x.name)}" title="${esc(x.name)}" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`:`<span class="series-text-fallback">${esc(x.name)}</span>`).join('')}</div>`}
+function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row">${tags.map(x=>`<span class="detail-tag">${esc(x)}</span>`).join('')}</div>`}
 
-        function makeWeaponsSection(weapons) {
-            if (!weapons || !weapons.length) return '';
-            var mapW = weapons.filter(function(w) { return w.weapon_type === '3'; });
-            var otherW = weapons.filter(function(w) { return w.weapon_type !== '3'; });
-            var sorted = mapW.concat(otherW);
-            var rows = sorted.map(function(w) {
-                var iconHtml = makeWeaponIconHtml(w), atkIcons = makeAttackTypeIcons(w.attack_types);
-                var typeBadge = '', borderClass = 'weapon-entry-normal';
-                if (w.weapon_type === '2') { typeBadge = '<span class="weapon-type-badge weapon-type-ex">EX</span>'; borderClass = 'weapon-entry-ex'; }
-                else if (w.weapon_type === '3') { typeBadge = '<span class="weapon-type-badge weapon-type-map">MAP</span>'; borderClass = 'weapon-entry-map'; }
-                var tAttr = translateWeaponAttr(w.attribute);
-                var rangeText = w.weapon_type === '3' ? 'MAP' : (w.min_range === w.max_range ? '' + w.min_range : w.min_range + '-' + w.max_range);
-                var isMap = w.weapon_type === '3', colSpan = isMap ? 6 : 5;
-                var ammoH = isMap ? '<th class="weapon-stat-header">' + escapeHtml(t('ammo')) + '</th>' : '';
-                var ammoV = isMap ? '<td class="weapon-stat-value">' + w.ammo + '</td>' : '';
-                var traitRow = '';
-                if (w.traits && w.traits.length > 0) {
-                    var tc = w.traits.length === 1 ? safeLineBreaks(w.traits[0]) : '<ul class="trait-list">' + w.traits.map(function(tr) { return '<li>' + safeLineBreaks(tr) + '</li>'; }).join('') + '</ul>';
-                    traitRow = '<tr class="weapon-trait-row"><th class="weapon-trait-header">' + escapeHtml(t('weaponEffect')) + '</th><td colspan="' + (colSpan-1) + '" class="weapon-trait-content">' + tc + '</td></tr>';
-                }
-                var rests = w.usage_restrictions || [], rClass = '', rContent = '';
-                if (rests.length === 0) { rClass = 'no-restriction'; rContent = escapeHtml(t('noRestriction')); }
-                else if (rests.length === 1) rContent = escapeHtml(rests[0]);
-                else rContent = '<ul class="restriction-list">' + rests.map(function(r) { return '<li>' + escapeHtml(r) + '</li>'; }).join('') + '</ul>';
-                var rRow = '<tr class="weapon-restriction-row"><th class="weapon-restriction-header">' + escapeHtml(t('usageRestrictions')) + '</th><td colspan="' + (colSpan-1) + '" class="weapon-restriction-content ' + rClass + '">' + rContent + '</td></tr>';
-                return '<div class="weapon-entry ' + borderClass + '"><table class="weapon-table">'
-                    + '<tr><td colspan="' + colSpan + '" class="weapon-info-cell"><div class="weapon-name-flex">' + iconHtml + '<div class="weapon-details-row"><span class="weapon-name-text">' + escapeHtml(w.name) + '</span>' + typeBadge + '<span class="weapon-attr-badge ' + getAttrClass(w.attribute_id) + '">' + escapeHtml(tAttr) + '</span>' + atkIcons + '</div></div></td></tr>'
-                    + '<tr><th class="weapon-stat-header">' + escapeHtml(t('range')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('power')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('en')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('accuracy')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('critical')) + '</th>' + ammoH + '</tr>'
-                    + '<tr><td class="weapon-stat-value">' + rangeText + '</td><td class="weapon-stat-value">' + w.power.toLocaleString() + '</td><td class="weapon-stat-value">' + w.en_cost + '</td><td class="weapon-stat-value">' + w.accuracy + '%</td><td class="weapon-stat-value">' + w.critical + '%</td>' + ammoV + '</tr>'
-                    + traitRow + rRow + '</table></div>';
-            }).join('');
-            return '<div>' + rows + '</div>';
-        }
+function renderStats(stats){if(!stats||!stats.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_stats')}</div><div class="stats-grid">${stats.map(s=>`<div class="stat-card"><div class="stat-card-label">${esc(tStat(s.name))}</div><div class="stat-card-value">${fmtN(s.total)}</div>${s.bonus>0?`<div class="stat-card-bonus">+${fmtN(s.bonus)}</div>`:''}</div>`).join('')}</div></div>`}
 
-        async function searchCharacter() {
-            var charId = document.getElementById('charId').value.trim();
-            if (!charId || !/^\d{7,12}$/.test(charId)) { alert(t('invalidCharId')); return; }
-            lastCharId = charId;
-            var btn = document.getElementById('charSearchBtn'); btn.disabled = true;
-            document.getElementById('char-loading').style.display = 'block';
-            document.getElementById('char-result').style.display = 'none';
-            try {
-                var resp = await fetch('/api/character/' + charId + '?lang=' + currentLang);
-                var data = await resp.json();
-                if (!resp.ok) throw new Error(data.error || 'Not found');
-                if (!data.name) throw new Error('Invalid data received');
-                displayCharacter(data);
-            } catch (err) {
-                var el = document.getElementById('char-result');
-                el.innerHTML = '<div class="error">' + escapeHtml(t('errorPrefix')) + escapeHtml(err.message) + '</div>';
-                el.style.display = 'block'; el.dataset.shown = '1';
-            } finally { document.getElementById('char-loading').style.display = 'none'; btn.disabled = false; }
-        }
+function renderTerrain(ter){if(!ter||!ter.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_terrain')}</div><div class="terrain-grid">${ter.map(x=>`<div class="terrain-item">${x.type_icon?`<img class="terrain-type-icon" src="${x.type_icon}" alt="${x.name}" onerror="this.style.display='none'">`:''}
+<span class="terrain-name">${esc(tTerrain(x.name))}</span>${x.level_icon?`<img class="terrain-level-icon" src="${x.level_icon}" alt="${x.symbol}" onerror="this.textContent='${x.symbol}'">`:`<span>${x.symbol}</span>`}</div>`).join('')}</div></div>`}
 
-        function displayCharacter(data) {
-            var result = document.getElementById('char-result');
-            var stats = data.stats || [];
-            var col1 = stats.slice(0, 3).map(makeStatHtml).join('');
-            var col2 = stats.slice(3, 5).map(makeStatHtml).join('');
-            var tagsHtml = makeTagsHtml(data.tags);
-            var tRole = translateRole(data.role);
-            var portraitHtml = data.portrait
-                ? '<img src="' + imgUrl(data.portrait) + '" alt="' + escapeHtml(data.name) + '" class="char-portrait" onerror="this.outerHTML=\'<div class=no-portrait>' + escapeHtml(t('noPortrait')) + '</div>\'">'
-                : '<div class="no-portrait">' + escapeHtml(t('noPortrait')) + '</div>';
-            var skillsHtml = (data.skills || []).map(function(s) {
-                var ih = s.icon ? '<img src="' + imgUrl(s.icon) + '" alt="" class="skill-icon" onerror="this.style.display=\'none\'">' : '';
-                var dh = (s.details || []).map(function(d) { return '<div class="ability-detail">' + safeLineBreaks(d) + '</div>'; }).join('');
-                return '<div class="skill-card"><div class="skill-name">' + ih + escapeHtml(s.name) + '</div>' + dh + '</div>';
-            }).join('');
-            var abilitiesHtml = (data.abilities || []).map(function(a) { return makeAbilityCard(a, true); }).join('');
-            result.innerHTML =
-                '<div class="profile-header">' + portraitHtml + '<div class="profile-main">'
-                + '<div class="name-series-row"><div class="profile-name">' + escapeHtml(data.name) + '</div>' + makeSeriesHtml(data.series) + '</div>'
-                + '<div class="meta-row"><span class="badge"><img src="' + imgUrl('/static/images/UI/UI_Common_RarityIcon_' + data.rarity + '.png') + '" onerror="this.style.display=\'none\'">' + escapeHtml(data.rarity) + '</span>'
-                + '<span class="badge"><img src="' + imgUrl('/static/images/UI/UI_Common_TypeIcon_' + data.role + '_S.png') + '" onerror="this.style.display=\'none\'">' + escapeHtml(tRole) + '</span>'
-                + '<span class="badge">ID: ' + escapeHtml(data.id) + '</span></div>'
-                + (tagsHtml ? '<div class="tags-row">' + tagsHtml + '</div>' : '')
-                + '<div class="stats-container"><div class="stats-col">' + col1 + '</div><div class="stats-col">' + col2 + '</div></div>'
-                + '</div></div>'
-                + '<div class="abilities-skills-grid">'
-                + (abilitiesHtml ? '<div><div class="section-title">' + escapeHtml(t('abilities')) + ' (' + (data.abilities ? data.abilities.length : 0) + ')</div>' + abilitiesHtml + '</div>' : '')
-                + (skillsHtml ? '<div><div class="section-title">' + escapeHtml(t('skills')) + ' (' + (data.skills ? data.skills.length : 0) + ')</div>' + skillsHtml + '</div>' : '')
-                + '</div>';
-            result.style.display = 'block'; result.dataset.shown = '1';
-        }
+function renderAbilIcon(ab){
+    if(!ab.icon)return'<div class="ability-icon-placeholder">★</div>';
+    let h=`<img class="ability-icon" src="${ab.icon}" alt="" onerror="this.parentElement.innerHTML='<div class=\\'ability-icon-placeholder\\'>★</div>'">`;
+    if(ab.frame_overlay&&ab.is_ex){h+=`<img class="ability-frame-overlay" src="${ab.frame_overlay}" alt="" onerror="this.style.display='none'">`}
+    return h;
+}
 
-        async function searchUnit() {
-            var unitId = document.getElementById('unitId').value.trim();
-            if (!unitId || !/^\d{7,12}$/.test(unitId)) { alert(t('invalidUnitId')); return; }
-            lastUnitId = unitId;
-            var btn = document.getElementById('unitSearchBtn'); btn.disabled = true;
-            document.getElementById('unit-loading').style.display = 'block';
-            document.getElementById('unit-result').style.display = 'none';
-            try {
-                var resp = await fetch('/api/unit/' + unitId + '?lang=' + currentLang);
-                var data = await resp.json();
-                if (!resp.ok) throw new Error(data.error || 'Not found');
-                if (!data.name) throw new Error('Invalid data received');
-                displayUnit(data);
-            } catch (err) {
-                var el = document.getElementById('unit-result');
-                el.innerHTML = '<div class="error">' + escapeHtml(t('errorPrefix')) + escapeHtml(err.message) + '</div>';
-                el.style.display = 'block'; el.dataset.shown = '1';
-            } finally { document.getElementById('unit-loading').style.display = 'none'; btn.disabled = false; }
-        }
+function renderAbils(a,title){if(!a||!a.length)return'';return`<div class="detail-section"><div class="section-title">${title||t('sec_abilities')}</div><div class="ability-list">${a.map(ab=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon(ab)}</div><div class="ability-info"><div class="ability-name">${esc(ab.name)}</div>${(ab.details||[]).map(d=>`<div class="ability-detail">${esc(d.text||d)}</div>${d.conditions&&d.conditions.length?`<div class="ability-conditions">${d.conditions.map(c=>`<span class="ability-condition-tag">${esc(c)}</span>`).join('')}</div>`:''}`).join('')}</div></div>`).join('')}</div></div>`}
 
-        function displayUnit(data) {
-            var result = document.getElementById('unit-result');
-            var stats = data.stats || [];
-            var sHP = stats.find(function(s){return s.name==='HP';}), sEN = stats.find(function(s){return s.name==='EN';});
-            var sATK = stats.find(function(s){return s.name==='Attack';}), sDEF = stats.find(function(s){return s.name==='Defense';});
-            var sMOB = stats.find(function(s){return s.name==='Mobility';}), sMOV = stats.find(function(s){return s.name==='Move';});
-            var col1 = [sHP,sEN,sMOV].filter(Boolean).map(makeUnitStatHtml).join('');
-            var col2 = [sATK,sDEF,sMOB].filter(Boolean).map(makeUnitStatHtml).join('');
-            var tagsHtml = makeTagsHtml(data.tags), tRole = translateRole(data.role);
-            var modelBadge = data.model ? '<span class="badge">' + escapeHtml(data.model) + '</span>' : '';
-            var specIcons = makeSpecialIconsHtml(data.special_icons);
-            var abilitiesHtml = (data.abilities || []).map(function(a) { return makeAbilityCard(a, false); }).join('');
-            var weaponsHtml = makeWeaponsSection(data.weapons);
-            var portraitHtml = data.portrait
-                ? '<img src="' + imgUrl(data.portrait) + '" alt="' + escapeHtml(data.name) + '" class="unit-portrait" onerror="this.outerHTML=\'<div class=no-portrait-unit>' + escapeHtml(t('noPortrait')) + '</div>\'">'
-                : '<div class="no-portrait-unit">' + escapeHtml(t('noPortrait')) + '</div>';
-            result.innerHTML =
-                '<div class="unit-header">' + portraitHtml + '<div class="unit-info">'
-                + '<div class="name-series-row"><div class="profile-name">' + escapeHtml(data.name) + '</div>' + makeSeriesHtml(data.series) + '</div>'
-                + '<div class="meta-row"><span class="badge"><img src="' + imgUrl('/static/images/UI/UI_Common_RarityIcon_' + data.rarity + '.png') + '" onerror="this.style.display=\'none\'">' + escapeHtml(data.rarity) + '</span>'
-                + '<span class="badge"><img src="' + imgUrl('/static/images/UI/UI_Common_TypeIcon_' + data.role + '_S.png') + '" onerror="this.style.display=\'none\'">' + escapeHtml(tRole) + '</span>'
-                + specIcons + modelBadge
-                + '<span class="badge">ID: ' + escapeHtml(data.id) + '</span></div>'
-                + (tagsHtml ? '<div class="tags-row">' + tagsHtml + '</div>' : '')
-                + '<div class="unit-stats-container"><div class="unit-stats-col">' + col1 + '</div><div class="unit-stats-col">' + col2 + '</div></div>'
-                + makeUnitTerrainHtml(data.terrain)
-                + '</div></div>'
-                + (weaponsHtml ? '<div class="weapons-section"><div class="section-title">' + escapeHtml(t('weapons')) + ' (' + (data.weapons ? data.weapons.length : 0) + ')</div>' + weaponsHtml + '</div>' : '')
-                + (abilitiesHtml ? '<div class="abilities-full-width"><div class="section-title">' + escapeHtml(t('abilities')) + ' (' + (data.abilities ? data.abilities.length : 0) + ')</div><div class="abilities-columns">' + abilitiesHtml + '</div></div>' : '');
-            result.style.display = 'block'; result.dataset.shown = '1';
-        }
-    </script>
+function renderSkills(s){if(!s||!s.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_skills')}</div><div class="ability-list">${s.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon(sk)}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div>${(sk.details||[]).map(d=>`<div class="ability-detail">${esc(d)}</div>`).join('')}</div></div>`).join('')}</div></div>`}
+
+function renderWeapons(w){if(!w||!w.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-table-wrap"><table class="weapon-table"><thead><tr><th>${t('wp_weapon')}</th><th>${t('wp_type')}</th><th>${t('wp_range')}</th><th>${t('wp_power')}</th><th>${t('wp_en')}</th><th>${t('wp_acc')}</th><th>${t('wp_crit')}</th></tr></thead><tbody>${w.map(x=>`<tr><td><div class="weapon-name-cell"><div class="weapon-icon-wrap">${x.icon?`<img class="weapon-icon-img" src="${x.icon}" alt="" onerror="this.style.display='none'">`:''}${x.overlay?`<img class="weapon-overlay" src="${x.overlay}" alt="" onerror="this.style.display='none'">`:''}
+</div><span class="weapon-name-text">${esc(x.name)}</span></div></td><td><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>`<img class="weapon-attack-type-icon" src="${at.icon}" alt="${at.label}" title="${at.label}" onerror="this.outerHTML='<span style=\\'font-size:12px\\'>${at.label}</span>'">`).join('')}</div></td><td class="weapon-range">${x.min_range}-${x.max_range}</td><td><strong>${fmtN(x.power)}</strong></td><td>${x.en_cost}</td><td>${x.accuracy}%</td><td>${x.critical}%</td></tr>${(x.traits&&x.traits.length)||(x.usage_restrictions&&x.usage_restrictions.length)||(x.ammo>0)?`<tr><td colspan="7" class="weapon-traits">${x.ammo>0?`<div style="font-size:14px;color:var(--accent-cyan);margin-bottom:4px">${t('wp_ammo')}: ${x.ammo}</div>`:''}${(x.traits||[]).map(tr=>`<div class="weapon-trait-text">${esc(tr)}</div>`).join('')}<div class="weapon-restrictions">${(x.usage_restrictions||[]).map(r=>`<div class="weapon-restriction-text">⚠ ${esc(r)}</div>`).join('')}</div></td></tr>`:''}`).join('')}</tbody></table></div></div>`}
+
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
+</script>
 </body>
 </html>
