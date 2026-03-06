@@ -192,9 +192,7 @@ ATTACK_ATTR_TYPES = {
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
 }
 MP_CONSUMPTION_WEAPON_IDS = ['120000395006']
-HP_CONSUMPTION_UNIT_EX = {
-    '1501002250': 10,
-}
+HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
 
 ACQUISITION_ROUTE_ICONS = {
     '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.png',
@@ -389,11 +387,6 @@ def create_trait_condition_raw_map(cond_data):
                         raw[sid]['types'].append(v)
     return raw
 
-UNIT_ROLE_TYPE_LANG_MAP = {
-    'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'},
-    'TW': {'1': '攻擊型', '2': '防禦型', '3': '支援型'},
-}
-
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0':
         return []
@@ -409,9 +402,10 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
         name = series_name_map.get(ser_id)
         if name and name not in resolved:
             resolved.append(name)
-    role_type_map = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
+    role_type_map = UI_LABELS.get(lang_code, UI_LABELS['EN'])
     for type_id in raw.get('types', []):
-        name = role_type_map.get(type_id)
+        role_key = 'unit_role_attack' if type_id == '1' else 'unit_role_defense' if type_id == '2' else 'unit_role_support'
+        name = role_type_map.get(role_key)
         if name and name not in resolved:
             resolved.append(name)
     return resolved
@@ -783,24 +777,35 @@ def resolve_weapon_icon(wt, ai, ubr, il):
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
 
 def build_trait_icon_lookup(td):
+    # Obsolete. Image index handles this now.
     return {}
 
 def find_trait_icon(rid, il=None):
     if not rid or str(rid) == '0': return None
     rl = str(rid).lower()
+    
+    # Check main trait folder using map
     for fn in IMAGE_INDEX.get('images/Trait', []):
         if rl in fn.lower(): return fn
+
+    # Check thum folder using map
     for fn in IMAGE_INDEX.get('images/Trait/thum', []):
         if rl in fn.lower(): return f"thum/{fn}"
+
     return None
 
 def find_portrait(rid, pd):
     if not rid or str(rid) == '0': return None
     rl = str(rid).lower()
+    
+    # pd is usually "static/images/portraits"
+    # we convert it to "images/portraits" to match our map
     folder_key = pd.replace("static/images", "images").replace("\\", "/")
     pfx = "/" + pd.replace("\\", "/")
+    
     for fn in IMAGE_INDEX.get(folder_key, []):
         if rl in fn.lower(): return f"{pfx}/{fn}"
+        
     return None
 
 def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN', unit_id=''):
@@ -857,7 +862,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
         hp_rate = HP_CONSUMPTION_UNIT_EX[unit_id]
     if hp_rate > 0:
         rest.append(get_ui_label(lang_code, 'restriction_hp').format(hp_rate))
-
+        
     if csid != '0':
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
@@ -1040,11 +1045,6 @@ TRAIT_ICON_DIR = os.path.join("static", "images", "Trait")
 CHAR_PORTRAIT_DIR = os.path.join("static", "images", "portraits")
 UNIT_PORTRAIT_DIR = os.path.join("static", "images", "unit_portraits")
 
-print(f"Raw condition map size: {len(trait_condition_raw_map)}")
-for cid in ['1000084', '1000470']:
-    if cid in trait_condition_raw_map:
-        print(f"  Condition {cid}: {trait_condition_raw_map[cid]}")
-
 # ═══════════════════════════════════════════════════════
 # LOAD LANGUAGE-SPECIFIC DATA
 # ═══════════════════════════════════════════════════════
@@ -1102,8 +1102,6 @@ for lang_code, paths in LANG_PATHS.items():
                         bs = si[:-2]
                         if bs not in skill_resource_map: skill_resource_map[bs] = ri
 
-    print(f"  {lang_code} lineage lookup - Tag 1047: {lineage_lookup.get('1047')}, Tag 1129: {lineage_lookup.get('1129')}")
-
     LANG_DATA[lang_code] = {
         'abil_name_map': abil_name_map,
         'abil_desc_map': abil_desc_map,
@@ -1125,7 +1123,6 @@ for lang_code, paths in LANG_PATHS.items():
         'weapon_capability_map': weapon_capability_map,
         'weapon_trait_detail_map': weapon_trait_detail_map,
     }
-    print(f"  {lang_code}: Loaded {len(char_text_map)} characters, {len(unit_text_map)} units, {len(lineage_lookup)} lineage entries")
 
 print("Database ready!")
 print("=" * 60)

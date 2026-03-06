@@ -135,6 +135,7 @@
             animation: spin 1s linear infinite; margin: 0 auto 25px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        #char-loading-text, #unit-loading-text { font-size: 22px; }
 
         .result-box {
             background: rgba(20, 40, 80, 0.7);
@@ -369,7 +370,7 @@
         .ability-detail {
             background: rgba(0,0,0,0.3); padding: 18px;
             border-radius: 12px; margin-top: 12px; line-height: 1.5;
-            font-size: 18px;
+            font-size: 18px; color: #d0e0ff;
         }
 
         .condition-tags {
@@ -515,6 +516,8 @@
         .hidden { display: none !important; }
 
         @media (max-width: 900px) {
+            .header-brand { flex-direction: column; padding-right: 0; gap: 10px; margin-top: 50px; }
+            .brand-text { font-size: 25px; text-align: center; }
             .profile-header, .unit-header {
                 flex-direction: column; align-items: center;
             }
@@ -529,12 +532,18 @@
             .unit-portrait { width: 100%; max-width: 487px; }
             .no-portrait-unit { width: 100%; max-width: 487px; }
             .profile-name { font-size: 35px; }
+            .unit-info .profile-name { font-size: 28px; }
             .weapons-section { padding: 25px; }
             .abilities-skills-grid { padding: 25px; }
             .abilities-full-width { padding: 25px; }
-            h1 { font-size: 25px; }
-            .header-brand { padding-right: 0; flex-direction: column; gap: 10px; margin-top: 50px; }
+            h1 { font-size: 25px; padding-right: 0; }
+            .name-series-row { justify-content: center; text-align: center; }
+            .meta-row { justify-content: center; }
+            .tags-row { justify-content: center; }
+            .unit-terrain-row { justify-content: center; }
             .lang-switcher { position: absolute; top: 20px; right: 20px; }
+            .weapon-trait-header, .weapon-restriction-header { width: auto; display: block; padding-bottom: 5px; }
+            .weapon-trait-content, .weapon-restriction-content { display: block; padding-top: 5px; }
         }
     </style>
 </head>
@@ -547,7 +556,9 @@
             </div>
             
             <div class="header-brand">
-                <div class="brand-logo"><img src="{{ image_cdn if image_cdn else '/static' }}/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="Logo" onerror="this.outerHTML='<span style=\'font-size:25px;font-weight:900;color:#fff\'>GG</span>'"></div>
+                <div class="brand-logo">
+                    <img src="{{ image_cdn if image_cdn else '' }}/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.outerHTML='<span style=\'font-size:25px;font-weight:900;color:#fff\'>GG</span>'">
+                </div>
                 <h1 id="page-title">SD Gundam G Generation Eternal Database</h1>
             </div>
 
@@ -653,7 +664,7 @@
                 loadingCharacter: '正在載入角色資料...', loadingUnit: '正在載入機體資料...',
                 noPortrait: '無圖片', terrainCapability: '地形適性',
                 abilities: '能力', skills: '技能', weapons: '武裝',
-                weaponEffect: '武器效果', usageRestrictions: '使用限制', noRestriction: '無',
+                weaponEffect: '武器效果', usageRestrictions: '使用條件', noRestriction: '無',
                 range: '射程', power: '威力', en: 'EN', accuracy: '命中',
                 critical: '暴擊', ammo: '彈數',
                 errorPrefix: '錯誤：',
@@ -706,11 +717,26 @@
         function translateWeaponAttr(backendAttr) {
             var key = WEAPON_ATTR_KEY_MAP[backendAttr]; return key ? t(key) : backendAttr;
         }
+        
+        function tTerrain(name) {
+            var map = {
+                'Space': currentLang === 'TW' ? '宇宙' : 'Space',
+                'Atmospheric': currentLang === 'TW' ? '空中' : 'Atmospheric',
+                'Ground': currentLang === 'TW' ? '地上' : 'Ground',
+                'Sea': currentLang === 'TW' ? '水上' : 'Sea',
+                'Underwater': currentLang === 'TW' ? '水中' : 'Underwater'
+            };
+            return map[name] || name;
+        }
 
         function isExAbility(name) {
             if (!name) return false;
             return /(?:^|[\s\-_\[\(])EX(?:$|[\s\-_\]\):])/.test(name)
-                || name.startsWith('EX ') || name.startsWith('EX:') || name === 'EX' || name.toLowerCase().includes('ex');
+                || name.startsWith('EX ') || name.startsWith('EX:') || name === 'EX'
+                || name.toLowerCase().includes('ex character ability')
+                || name.toLowerCase().includes('ex機體能力')
+                || name.toLowerCase().includes('ex角色能力')
+                || name.toLowerCase().includes('exキャラクターアビリティ');
         }
 
         function updateUIText() {
@@ -778,11 +804,11 @@
             if (a.icon) {
                 if (isCharacter && isExAbility(a.name)) {
                     iconHtml = '<div class="ability-icon-ex-container">'
-                        + '<img src="' + a.icon + '" alt="" class="ability-icon-inner" onerror="this.style.display=\'none\'">'
+                        + '<img src="' + imgUrl(a.icon) + '" alt="" class="ability-icon-inner" onerror="this.style.display=\'none\'">'
                         + '<img src="' + CHAR_ABILITY_FRAME + '" alt="" class="ability-frame-overlay" onerror="this.style.display=\'none\'">'
                         + '</div>';
                 } else {
-                    iconHtml = '<img src="' + a.icon + '" alt="" class="ability-icon" onerror="this.style.display=\'none\'">';
+                    iconHtml = '<img src="' + imgUrl(a.icon) + '" alt="" class="ability-icon" onerror="this.style.display=\'none\'">';
                 }
             }
             var detailsHtml = (a.details || []).map(function(d) {
@@ -801,8 +827,8 @@
             if (!terrain || !terrain.length) return '';
             var items = terrain.map(function(tr) {
                 return '<div class="unit-terrain-item">'
-                    + '<img src="' + tr.type_icon + '" alt="' + escapeHtml(tr.name) + '" class="unit-terrain-type-icon" onerror="this.style.display=\'none\'" title="' + escapeHtml(tr.name) + '">'
-                    + '<img src="' + tr.level_icon + '" alt="' + tr.symbol + '" class="unit-terrain-level-icon" onerror="this.style.display=\'none\'">'
+                    + '<img src="' + imgUrl(tr.type_icon) + '" alt="' + escapeHtml(tr.name) + '" class="unit-terrain-type-icon" onerror="this.style.display=\'none\'" title="' + escapeHtml(tTerrain(tr.name)) + '">'
+                    + '<img src="' + imgUrl(tr.level_icon) + '" alt="' + tr.symbol + '" class="unit-terrain-level-icon" onerror="this.style.display=\'none\'">'
                     + '</div>';
             }).join('');
             return '<div class="unit-terrain-container"><div class="unit-terrain-title">' + escapeHtml(t('terrainCapability')) + '</div><div class="unit-terrain-row">' + items + '</div></div>';
@@ -814,20 +840,20 @@
         }
         function makeWeaponIconHtml(w) {
             if (!w.icon) return '';
-            var html = '<div class="weapon-icon-container"><img src="' + w.icon + '" alt="" class="weapon-icon" onerror="this.style.display=\'none\'">';
-            if (w.is_ex && w.overlay) html += '<img src="' + w.overlay + '" alt="EX" class="weapon-ex-overlay" onerror="this.style.display=\'none\'">';
+            var html = '<div class="weapon-icon-container"><img src="' + imgUrl(w.icon) + '" alt="" class="weapon-icon" onerror="this.style.display=\'none\'">';
+            if (w.is_ex && w.overlay) html += '<img src="' + imgUrl(w.overlay) + '" alt="EX" class="weapon-ex-overlay" onerror="this.style.display=\'none\'">';
             return html + '</div>';
         }
         function makeAttackTypeIcons(attackTypes) {
             if (!attackTypes || !attackTypes.length) return '';
             return '<span class="weapon-attack-types">' + attackTypes.map(function(at) {
-                return '<img src="' + at.icon + '" alt="' + escapeHtml(at.label) + '" title="' + escapeHtml(at.label) + '" class="attack-type-icon" onerror="this.style.display=\'none\'">';
+                return '<img src="' + imgUrl(at.icon) + '" alt="' + escapeHtml(at.label) + '" title="' + escapeHtml(at.label) + '" class="attack-type-icon" onerror="this.style.display=\'none\'">';
             }).join('') + '</span>';
         }
         function makeSpecialIconsHtml(specialIcons) {
             if (!specialIcons || !specialIcons.length) return '';
             return specialIcons.map(function(iconUrl) {
-                return '<span class="badge-icon-only"><img src="' + iconUrl + '" alt="" onerror="this.parentElement.style.display=\'none\'"></span>';
+                return '<span class="badge-icon-only"><img src="' + imgUrl(iconUrl) + '" alt="" onerror="this.parentElement.style.display=\'none\'"></span>';
             }).join('');
         }
 
@@ -859,7 +885,7 @@
                 return '<div class="weapon-entry ' + borderClass + '"><table class="weapon-table">'
                     + '<tr><td colspan="' + colSpan + '" class="weapon-info-cell"><div class="weapon-name-flex">' + iconHtml + '<div class="weapon-details-row"><span class="weapon-name-text">' + escapeHtml(w.name) + '</span>' + typeBadge + '<span class="weapon-attr-badge ' + getAttrClass(w.attribute_id) + '">' + escapeHtml(tAttr) + '</span>' + atkIcons + '</div></div></td></tr>'
                     + '<tr><th class="weapon-stat-header">' + escapeHtml(t('range')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('power')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('en')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('accuracy')) + '</th><th class="weapon-stat-header">' + escapeHtml(t('critical')) + '</th>' + ammoH + '</tr>'
-                    + '<tr><td class="weapon-stat-value">' + rangeText + '</td><td class="weapon-stat-value">' + w.power + '</td><td class="weapon-stat-value">' + w.en_cost + '</td><td class="weapon-stat-value">' + w.accuracy + '%</td><td class="weapon-stat-value">' + w.critical + '%</td>' + ammoV + '</tr>'
+                    + '<tr><td class="weapon-stat-value">' + rangeText + '</td><td class="weapon-stat-value">' + w.power.toLocaleString() + '</td><td class="weapon-stat-value">' + w.en_cost + '</td><td class="weapon-stat-value">' + w.accuracy + '%</td><td class="weapon-stat-value">' + w.critical + '%</td>' + ammoV + '</tr>'
                     + traitRow + rRow + '</table></div>';
             }).join('');
             return '<div>' + rows + '</div>';
@@ -893,10 +919,10 @@
             var tagsHtml = makeTagsHtml(data.tags);
             var tRole = translateRole(data.role);
             var portraitHtml = data.portrait
-                ? '<img src="' + data.portrait + '" alt="' + escapeHtml(data.name) + '" class="char-portrait" onerror="this.outerHTML=\'<div class=no-portrait>' + escapeHtml(t('noPortrait')) + '</div>\'">'
+                ? '<img src="' + imgUrl(data.portrait) + '" alt="' + escapeHtml(data.name) + '" class="char-portrait" onerror="this.outerHTML=\'<div class=no-portrait>' + escapeHtml(t('noPortrait')) + '</div>\'">'
                 : '<div class="no-portrait">' + escapeHtml(t('noPortrait')) + '</div>';
             var skillsHtml = (data.skills || []).map(function(s) {
-                var ih = s.icon ? '<img src="' + s.icon + '" alt="" class="skill-icon" onerror="this.style.display=\'none\'">' : '';
+                var ih = s.icon ? '<img src="' + imgUrl(s.icon) + '" alt="" class="skill-icon" onerror="this.style.display=\'none\'">' : '';
                 var dh = (s.details || []).map(function(d) { return '<div class="ability-detail">' + safeLineBreaks(d) + '</div>'; }).join('');
                 return '<div class="skill-card"><div class="skill-name">' + ih + escapeHtml(s.name) + '</div>' + dh + '</div>';
             }).join('');
@@ -951,7 +977,7 @@
             var abilitiesHtml = (data.abilities || []).map(function(a) { return makeAbilityCard(a, false); }).join('');
             var weaponsHtml = makeWeaponsSection(data.weapons);
             var portraitHtml = data.portrait
-                ? '<img src="' + data.portrait + '" alt="' + escapeHtml(data.name) + '" class="unit-portrait" onerror="this.outerHTML=\'<div class=no-portrait-unit>' + escapeHtml(t('noPortrait')) + '</div>\'">'
+                ? '<img src="' + imgUrl(data.portrait) + '" alt="' + escapeHtml(data.name) + '" class="unit-portrait" onerror="this.outerHTML=\'<div class=no-portrait-unit>' + escapeHtml(t('noPortrait')) + '</div>\'">'
                 : '<div class="no-portrait-unit">' + escapeHtml(t('noPortrait')) + '</div>';
             result.innerHTML =
                 '<div class="unit-header">' + portraitHtml + '<div class="unit-info">'
