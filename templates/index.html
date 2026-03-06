@@ -10,13 +10,24 @@
 html{scroll-behavior:smooth}
 body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
+
+/* Background patterns with wallpaper support */
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
+
+/* Tab wallpapers */
+.tab-wallpaper{position:fixed;inset:0;z-index:-2;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 0.5s ease}
+.tab-wallpaper.active{opacity:1}
+.tab-wallpaper-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,14,23,0.85) 0%,rgba(10,14,23,0.92) 50%,rgba(10,14,23,0.98) 100%)}
+#wallpaper-characters{background-image:url('/static/images/Background/obg_021_office.png')}
+#wallpaper-units{background-image:url('/static/images/Background/obg_011_garage.png')}
+
 .app-header{background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(10,14,23,0.95));border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
 .header-brand:hover .brand-text{color:var(--accent-cyan)}
 .brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .brand-logo img{width:100%;height:100%;object-fit:contain}
+.brand-logo-fallback{width:55px;height:55px;border-radius:var(--radius-md);background:linear-gradient(135deg,#4a90d9,#a855f7);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.3)}
 .brand-text{font-size:28px;font-weight:700;transition:var(--transition)}
 .brand-sub{font-size:14px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
@@ -41,9 +52,9 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 .filter-select{padding:9px 12px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;cursor:pointer}
 .filter-select option{background:var(--bg-secondary)}
 .result-count{font-size:16px;color:var(--text-muted)}.result-count span{color:var(--accent-cyan);font-weight:600}
-.data-table-wrapper{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-secondary)}
+.data-table-wrapper{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border-color);background:rgba(17,24,39,0.8);backdrop-filter:blur(10px)}
 .data-table{width:100%;border-collapse:collapse;font-size:16px;table-layout:fixed}
-.data-table thead th{background:var(--bg-card);padding:12px 6px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border-color);white-space:nowrap;position:sticky;top:0;z-index:5;cursor:pointer;user-select:none;transition:var(--transition);font-size:15px;text-transform:uppercase;letter-spacing:0.5px;overflow:hidden}
+.data-table thead th{background:rgba(26,34,54,0.9);padding:12px 6px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border-color);white-space:nowrap;position:sticky;top:0;z-index:5;cursor:pointer;user-select:none;transition:var(--transition);font-size:15px;text-transform:uppercase;letter-spacing:0.5px;overflow:hidden}
 .data-table thead th:hover{color:var(--accent-cyan)}.data-table thead th.sort-active{color:var(--accent-cyan)}
 .sort-arrow{margin-left:4px;font-size:12px;opacity:0.4}.sort-active .sort-arrow{opacity:1}
 .data-table tbody tr{border-bottom:1px solid rgba(42,54,84,0.3);transition:var(--transition);cursor:pointer}
@@ -82,7 +93,9 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 @keyframes modalSlideIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 .modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:50%;color:var(--text-secondary);cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10}
 .modal-close:hover{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}
-.detail-header{display:flex;gap:28px;padding:28px 28px 20px;border-bottom:1px solid var(--border-color)}
+.detail-header{display:flex;gap:28px;padding:28px 28px 20px;border-bottom:1px solid var(--border-color);background:linear-gradient(135deg,rgba(26,34,54,0.95),rgba(20,28,46,0.98))}
+.detail-header.char-header{background:linear-gradient(135deg,rgba(74,144,217,0.1),rgba(168,85,247,0.1)),linear-gradient(135deg,rgba(26,34,54,0.95),rgba(20,28,46,0.98))}
+.detail-header.unit-header{background:linear-gradient(135deg,rgba(46,213,115,0.1),rgba(0,212,255,0.1)),linear-gradient(135deg,rgba(26,34,54,0.95),rgba(20,28,46,0.98))}
 .detail-portrait-wrap{flex-shrink:0;width:300px;position:relative}
 .detail-portrait{width:300px;height:400px;object-fit:contain;border-radius:var(--radius-md);border:2px solid var(--border-color);background:var(--bg-input)}
 .detail-portrait-placeholder{width:300px;height:400px;border-radius:var(--radius-md);border:2px solid var(--border-color);background:var(--bg-input);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:80px}
@@ -163,10 +176,23 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 </style>
 </head>
 <body>
+<!-- Wallpapers for each tab -->
+<div class="tab-wallpaper active" id="wallpaper-characters"></div>
+<div class="tab-wallpaper" id="wallpaper-units"></div>
+<div class="tab-wallpaper-overlay"></div>
 <div class="bg-pattern"></div>
+
 <header class="app-header">
 <div class="header-inner">
-<div class="header-brand" onclick="goHome()"><div class="brand-logo"><img src="/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.outerHTML='<span style=\'font-size:25px;font-weight:900;color:#fff\'>GG</span>'"></div><div><div class="brand-text">GGen Database</div><div class="brand-sub">SD Gundam G Generation</div></div></div>
+<div class="header-brand" onclick="goHome()">
+    <div class="brand-logo">
+        <img src="/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.parentElement.innerHTML='<div class=\'brand-logo-fallback\'>GG</div>'">
+    </div>
+    <div>
+        <div class="brand-text">GGen Database</div>
+        <div class="brand-sub">SD Gundam G Generation</div>
+    </div>
+</div>
 <div class="header-controls"><div class="lang-selector"><button class="lang-btn" id="langBtn" onclick="toggleLangDropdown()"><span id="langLabel">EN</span> ▾</button><div class="lang-dropdown" id="langDropdown"></div></div></div>
 </div>
 <div class="nav-tabs">
@@ -284,7 +310,14 @@ function buildTableHeaders(){
 </tr>`;
 }
 
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`))}
+function switchTab(tab){
+  S.currentTab=tab;
+  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));
+  // Switch wallpapers
+  document.getElementById('wallpaper-characters').classList.toggle('active',tab==='characters');
+  document.getElementById('wallpaper-units').classList.toggle('active',tab==='units');
+}
 function goHome(){closeModal();switchTab('characters')}
 function setupKeys(){document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})}
 function debounceLoad(tab){clearTimeout(S.ft);S.ft=setTimeout(()=>{if(tab==='characters')loadCharacters(1);else loadUnits(1)},300)}
@@ -324,9 +357,9 @@ async function openDetail(type,id){const m=document.getElementById('detailModal'
 function closeModal(){document.getElementById('detailModal').classList.remove('active');document.body.style.overflow=''}
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 
-function renderCharD(d){return`<div class="detail-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'">`:'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderAbils(d.abilities,t('sec_abilities'))}${renderSkills(d.skills)}</div>`}
+function renderCharD(d){return`<div class="detail-header char-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'">`:'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderAbils(d.abilities,t('sec_abilities'))}${renderSkills(d.skills)}</div>`}
 
-function renderUnitD(d){return`<div class="detail-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>🤖</div>'">`:'<div class="detail-portrait-placeholder">🤖</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${d.model?`<div class="detail-model">${esc(d.model)}</div>`:''}<div class="detail-special-icons">${(d.special_icons||[]).map(ic=>`<img class="detail-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderTerrain(d.terrain)}${renderAbils(d.abilities,t('sec_abilities'))}${renderWeapons(d.weapons)}</div>`}
+function renderUnitD(d){return`<div class="detail-header unit-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>🤖</div>'">`:'<div class="detail-portrait-placeholder">🤖</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${d.model?`<div class="detail-model">${esc(d.model)}</div>`:''}<div class="detail-special-icons">${(d.special_icons||[]).map(ic=>`<img class="detail-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderTerrain(d.terrain)}${renderAbils(d.abilities,t('sec_abilities'))}${renderWeapons(d.weapons)}</div>`}
 
 function renderSeries(s){if(!s||!s.length)return'';return`<div class="detail-series-row">${s.map(x=>x.icon?`<img class="series-icon-img" src="${x.icon}" alt="${esc(x.name)}" title="${esc(x.name)}" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`:`<span class="series-text-fallback">${esc(x.name)}</span>`).join('')}</div>`}
 function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row">${tags.map(x=>`<span class="detail-tag">${esc(x)}</span>`).join('')}</div>`}
