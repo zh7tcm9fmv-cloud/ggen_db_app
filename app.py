@@ -76,6 +76,7 @@ UI_LABELS = {
         'restriction_before_moving': 'Useable only before moving.',
         'restriction_tension_max': 'Can be used at Tension Max or greater.',
         'restriction_mp': 'Can be used when consuming 5 MP.',
+        'restriction_hp': 'Can be used when consuming {}% HP.',
         'unit_role_attack': 'Attack Type',
         'unit_role_defense': 'Defense Type',
         'unit_role_support': 'Support Type',
@@ -84,6 +85,7 @@ UI_LABELS = {
         'restriction_before_moving': '僅限移動前使用。',
         'restriction_tension_max': '鬥志Max以上時可使用。',
         'restriction_mp': '消耗5MP時可使用。',
+        'restriction_hp': '消耗{}%HP時可使用。',
         'unit_role_attack': '攻擊型',
         'unit_role_defense': '防禦型',
         'unit_role_support': '支援型',
@@ -190,6 +192,9 @@ ATTACK_ATTR_TYPES = {
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
 }
 MP_CONSUMPTION_WEAPON_IDS = ['120000395006']
+HP_CONSUMPTION_UNIT_EX = {
+    '1501002250': 10,
+}
 
 ACQUISITION_ROUTE_ICONS = {
     '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.png',
@@ -609,6 +614,15 @@ def create_weapon_master_map(d):
         if not isinstance(item, dict): continue
         wid = normalize_id(item.get('Id') or item.get('id'))
         if wid != '0':
+            hp_cost = 0
+            for hp_key in ['HpCostRate','hpCostRate','HpConsumptionRate','hpConsumptionRate','UseHpRate','useHpRate']:
+                v = item.get(hp_key)
+                if v is not None and str(v).strip() not in ('', '0', 'None'):
+                    try:
+                        hp_cost = int(v)
+                        break
+                    except (ValueError, TypeError):
+                        pass
             lookup[wid] = {
                 'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
                 'attribute': normalize_id(item.get('WeaponAttributeSetId') or item.get('weaponAttributeSetId')),
@@ -617,6 +631,7 @@ def create_weapon_master_map(d):
                 'attack_attribute': normalize_id(item.get('AttackAttributeSetId') or item.get('attackAttributeSetId')),
                 'capability_set_id': normalize_id(item.get('WeaponCapabilitySetId') or item.get('weaponCapabilitySetId')),
                 'tension_type': normalize_id(item.get('TensionTypeIndex') or item.get('tensionTypeIndex'), '0'),
+                'hp_cost_rate': hp_cost,
             }
     return lookup
 
@@ -768,38 +783,27 @@ def resolve_weapon_icon(wt, ai, ubr, il):
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
 
 def build_trait_icon_lookup(td):
-    # Obsolete. Image index handles this now.
     return {}
 
 def find_trait_icon(rid, il=None):
     if not rid or str(rid) == '0': return None
     rl = str(rid).lower()
-    
-    # Check main trait folder using map
     for fn in IMAGE_INDEX.get('images/Trait', []):
         if rl in fn.lower(): return fn
-
-    # Check thum folder using map
     for fn in IMAGE_INDEX.get('images/Trait/thum', []):
         if rl in fn.lower(): return f"thum/{fn}"
-
     return None
 
 def find_portrait(rid, pd):
     if not rid or str(rid) == '0': return None
     rl = str(rid).lower()
-    
-    # pd is usually "static/images/portraits"
-    # we convert it to "images/portraits" to match our map
     folder_key = pd.replace("static/images", "images").replace("\\", "/")
     pfx = "/" + pd.replace("\\", "/")
-    
     for fn in IMAGE_INDEX.get(folder_key, []):
         if rl in fn.lower(): return f"{pfx}/{fn}"
-        
     return None
 
-def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN'):
+def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN', unit_id=''):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'usage_restrictions':[]}
@@ -847,6 +851,13 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
     if wt == '3': rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
     if wid in MP_CONSUMPTION_WEAPON_IDS: rest.append(get_ui_label(lang_code, 'restriction_mp'))
+    
+    hp_rate = wm.get('hp_cost_rate', 0)
+    if hp_rate <= 0 and unit_id in HP_CONSUMPTION_UNIT_EX and wt == '2':
+        hp_rate = HP_CONSUMPTION_UNIT_EX[unit_id]
+    if hp_rate > 0:
+        rest.append(get_ui_label(lang_code, 'restriction_hp').format(hp_rate))
+
     if csid != '0':
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
@@ -1345,7 +1356,7 @@ def get_unit(unit_id):
             ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1')
             ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
-            ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, trait_change_level5_map, ld['weapon_trait_detail_map'], wid, lang_code=lang_code)
+            ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, trait_change_level5_map, ld['weapon_trait_detail_map'], wid, lang_code=lang_code, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr, None)
             weapons.append({
                 'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai,
