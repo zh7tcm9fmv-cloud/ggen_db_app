@@ -1121,8 +1121,8 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
 # ═══════════════════════════════════════════════════════
 
 @app.route('/')
-def index(): 
-    return render_template('index.html')
+def index():
+    return render_template('index.html', image_cdn=IMAGE_CDN)
 
 @app.route('/api/languages')
 def get_languages(): 

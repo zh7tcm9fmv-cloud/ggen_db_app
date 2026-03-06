@@ -10,17 +10,10 @@
 html{scroll-behavior:smooth}
 body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
-
-/* Background patterns with wallpaper support */
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
-
-/* Tab wallpapers */
 .tab-wallpaper{position:fixed;inset:0;z-index:-2;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 0.5s ease}
 .tab-wallpaper.active{opacity:1}
 .tab-wallpaper-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,14,23,0.85) 0%,rgba(10,14,23,0.92) 50%,rgba(10,14,23,0.98) 100%)}
-#wallpaper-characters{background-image:url('/static/images/Background/obg_021_office.png')}
-#wallpaper-units{background-image:url('/static/images/Background/obg_011_garage.png')}
-
 .app-header{background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(10,14,23,0.95));border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
@@ -176,7 +169,6 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 </style>
 </head>
 <body>
-<!-- Wallpapers for each tab -->
 <div class="tab-wallpaper active" id="wallpaper-characters"></div>
 <div class="tab-wallpaper" id="wallpaper-units"></div>
 <div class="tab-wallpaper-overlay"></div>
@@ -186,7 +178,7 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 <div class="header-inner">
 <div class="header-brand" onclick="goHome()">
     <div class="brand-logo">
-        <img src="/static/images/UI/IMG_Common_Logo_ETERNALBASE.png" alt="GGen" onerror="this.parentElement.innerHTML='<div class=\'brand-logo-fallback\'>GG</div>'">
+        <img id="brandLogoImg" alt="GGen" onerror="this.parentElement.innerHTML='<div class=\'brand-logo-fallback\'>GG</div>'">
     </div>
     <div>
         <div class="brand-text">GGen Database</div>
@@ -219,6 +211,20 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Roboto',sans-serif
 <div class="modal-overlay" id="detailModal" onclick="closeModalOverlay(event)"><div class="modal-content"><button class="modal-close" onclick="closeModal()">✕</button><div id="detailInner"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
 
 <script>
+// CDN URL from Flask - handles both local and deployed
+const IMAGE_CDN = '{{ image_cdn }}'.replace(/\/+$/, '');
+
+function imgUrl(path) {
+    if (!path) return '';
+    // If already a full URL, return as-is
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    // If CDN is set, convert /static/images/ paths
+    if (IMAGE_CDN && path.startsWith('/static/images/')) {
+        return IMAGE_CDN + '/images/' + path.substring('/static/images/'.length);
+    }
+    return path;
+}
+
 const T={
 EN:{
   tab_char:'Characters',tab_unit:'Units',search_char:'Search characters...',search_unit:'Search units...',
@@ -263,7 +269,15 @@ function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||nam
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 
 const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},ft:null};
-document.addEventListener('DOMContentLoaded',async()=>{await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);setupKeys()});
+
+document.addEventListener('DOMContentLoaded',async()=>{
+    // Set wallpaper images using CDN
+    document.getElementById('wallpaper-characters').style.backgroundImage=`url('${imgUrl('/static/images/Background/obg_021_office.png')}')`;
+    document.getElementById('wallpaper-units').style.backgroundImage=`url('${imgUrl('/static/images/Background/obg_011_garage.png')}')`;
+    // Set logo
+    document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');
+    await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);setupKeys()
+});
 
 async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];S.lang=d.default||'EN';document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(e){S.languages=['EN']}}
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
@@ -314,7 +328,6 @@ function switchTab(tab){
   S.currentTab=tab;
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));
   document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));
-  // Switch wallpapers
   document.getElementById('wallpaper-characters').classList.toggle('active',tab==='characters');
   document.getElementById('wallpaper-units').classList.toggle('active',tab==='units');
 }
@@ -330,18 +343,18 @@ function showLoad(pfx,s){document.getElementById(`${pfx}Loading`).style.display=
 
 function renderCharT(data){const tb=document.getElementById('charBody'),em=document.getElementById('charEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';em.style.display='block';return}em.style.display='none';
 tb.innerHTML=data.rows.map(r=>`<tr onclick="openDetail('character','${r.id}')">
-<td class="col-thum">${r.thum?`<img class="row-thum" src="${r.thum}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>👤</div>'">`:'<div class="row-thum-placeholder">👤</div>'}</td>
+<td class="col-thum">${r.thum?`<img class="row-thum" src="${imgUrl(r.thum)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>👤</div>'">`:'<div class="row-thum-placeholder">👤</div>'}</td>
 <td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span></div></td>
-<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${r.rarity_icon}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
-<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${r.role_icon}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
+<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${imgUrl(r.rarity_icon)}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
+<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${imgUrl(r.role_icon)}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
 <td class="col-stat"><span class="stat-value">${r.Ranged}</span></td><td class="col-stat"><span class="stat-value">${r.Melee}</span></td><td class="col-stat"><span class="stat-value">${r.Awaken}</span></td><td class="col-stat"><span class="stat-value">${r.Defense}</span></td><td class="col-stat"><span class="stat-value">${r.Reaction}</span></td></tr>`).join('')}
 
 function renderUnitT(data){const tb=document.getElementById('unitBody'),em=document.getElementById('unitEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';em.style.display='block';return}em.style.display='none';
 tb.innerHTML=data.rows.map(r=>`<tr onclick="openDetail('unit','${r.id}')">
-<td class="col-thum">${r.thum?`<img class="row-thum" src="${r.thum}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>🤖</div>'">`:'<div class="row-thum-placeholder">🤖</div>'}</td>
-<td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span><span class="name-special-icons">${(r.special_icons||[]).map(ic=>`<img class="name-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</span></div></td>
-<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${r.rarity_icon}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
-<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${r.role_icon}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
+<td class="col-thum">${r.thum?`<img class="row-thum" src="${imgUrl(r.thum)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'row-thum-placeholder\\'>🤖</div>'">`:'<div class="row-thum-placeholder">🤖</div>'}</td>
+<td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span><span class="name-special-icons">${(r.special_icons||[]).map(ic=>`<img class="name-special-icon" src="${imgUrl(ic)}" alt="" onerror="this.style.display='none'">`).join('')}</span></div></td>
+<td class="col-rarity">${r.rarity_icon?`<img class="rarity-icon-cell" src="${imgUrl(r.rarity_icon)}" alt="${r.rarity}" title="${r.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${r.rarity}\\'>${r.rarity}</span>'">`:`<span class="rarity-badge rarity-${r.rarity}">${r.rarity}</span>`}</td>
+<td class="col-role">${r.role_icon?`<img class="role-icon-cell" src="${imgUrl(r.role_icon)}" alt="${r.role}" title="${tRole(r.role)}" onerror="this.outerHTML=''">`:`<span style="font-size:14px;color:var(--text-muted)">${tRole(r.role)}</span>`}</td>
 <td class="col-stat"><span class="stat-value">${fmtN(r.HP)}</span></td><td class="col-stat"><span class="stat-value">${r.EN}</span></td><td class="col-stat"><span class="stat-value">${r.ATK}</span></td><td class="col-stat"><span class="stat-value">${r.DEF}</span></td><td class="col-stat"><span class="stat-value">${r.MOB}</span></td><td class="col-stat"><span class="stat-value">${r.MOV}</span></td></tr>`).join('')}
 
 function sortCol(type,key){
@@ -357,22 +370,22 @@ async function openDetail(type,id){const m=document.getElementById('detailModal'
 function closeModal(){document.getElementById('detailModal').classList.remove('active');document.body.style.overflow=''}
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 
-function renderCharD(d){return`<div class="detail-header char-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'">`:'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderAbils(d.abilities,t('sec_abilities'))}${renderSkills(d.skills)}</div>`}
+function renderCharD(d){return`<div class="detail-header char-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${imgUrl(d.portrait)}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'">`:'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${imgUrl(d.rarity_icon)}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${imgUrl(d.role_icon)}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderAbils(d.abilities,t('sec_abilities'))}${renderSkills(d.skills)}</div>`}
 
-function renderUnitD(d){return`<div class="detail-header unit-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${d.portrait}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>🤖</div>'">`:'<div class="detail-portrait-placeholder">🤖</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${d.rarity_icon}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${d.role_icon}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${d.model?`<div class="detail-model">${esc(d.model)}</div>`:''}<div class="detail-special-icons">${(d.special_icons||[]).map(ic=>`<img class="detail-special-icon" src="${ic}" alt="" onerror="this.style.display='none'">`).join('')}</div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderTerrain(d.terrain)}${renderAbils(d.abilities,t('sec_abilities'))}${renderWeapons(d.weapons)}</div>`}
+function renderUnitD(d){return`<div class="detail-header unit-header"><div class="detail-portrait-wrap">${d.portrait?`<img class="detail-portrait" src="${imgUrl(d.portrait)}" alt="${esc(d.name)}" onerror="this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>🤖</div>'">`:'<div class="detail-portrait-placeholder">🤖</div>'}</div><div class="detail-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta">${d.rarity_icon?`<img class="detail-rarity-icon" src="${imgUrl(d.rarity_icon)}" alt="${d.rarity}" onerror="this.outerHTML='<span class=\\'rarity-badge rarity-${d.rarity}\\'>${d.rarity}</span>'">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${imgUrl(d.role_icon)}" alt="${d.role}" onerror="this.style.display='none'">`:''}${esc(tRole(d.role))}</span></div>${d.model?`<div class="detail-model">${esc(d.model)}</div>`:''}<div class="detail-special-icons">${(d.special_icons||[]).map(ic=>`<img class="detail-special-icon" src="${imgUrl(ic)}" alt="" onerror="this.style.display='none'">`).join('')}</div>${renderSeries(d.series)}${renderTags(d.tags)}</div></div><div class="detail-body">${renderStats(d.stats)}${renderTerrain(d.terrain)}${renderAbils(d.abilities,t('sec_abilities'))}${renderWeapons(d.weapons)}</div>`}
 
-function renderSeries(s){if(!s||!s.length)return'';return`<div class="detail-series-row">${s.map(x=>x.icon?`<img class="series-icon-img" src="${x.icon}" alt="${esc(x.name)}" title="${esc(x.name)}" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`:`<span class="series-text-fallback">${esc(x.name)}</span>`).join('')}</div>`}
+function renderSeries(s){if(!s||!s.length)return'';return`<div class="detail-series-row">${s.map(x=>x.icon?`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`:`<span class="series-text-fallback">${esc(x.name)}</span>`).join('')}</div>`}
 function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row">${tags.map(x=>`<span class="detail-tag">${esc(x)}</span>`).join('')}</div>`}
 
 function renderStats(stats){if(!stats||!stats.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_stats')}</div><div class="stats-grid">${stats.map(s=>`<div class="stat-card"><div class="stat-card-label">${esc(tStat(s.name))}</div><div class="stat-card-value">${fmtN(s.total)}</div>${s.bonus>0?`<div class="stat-card-bonus">+${fmtN(s.bonus)}</div>`:''}</div>`).join('')}</div></div>`}
 
-function renderTerrain(ter){if(!ter||!ter.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_terrain')}</div><div class="terrain-grid">${ter.map(x=>`<div class="terrain-item">${x.type_icon?`<img class="terrain-type-icon" src="${x.type_icon}" alt="${x.name}" onerror="this.style.display='none'">`:''}
-<span class="terrain-name">${esc(tTerrain(x.name))}</span>${x.level_icon?`<img class="terrain-level-icon" src="${x.level_icon}" alt="${x.symbol}" onerror="this.textContent='${x.symbol}'">`:`<span>${x.symbol}</span>`}</div>`).join('')}</div></div>`}
+function renderTerrain(ter){if(!ter||!ter.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_terrain')}</div><div class="terrain-grid">${ter.map(x=>`<div class="terrain-item">${x.type_icon?`<img class="terrain-type-icon" src="${imgUrl(x.type_icon)}" alt="${x.name}" onerror="this.style.display='none'">`:''}
+<span class="terrain-name">${esc(tTerrain(x.name))}</span>${x.level_icon?`<img class="terrain-level-icon" src="${imgUrl(x.level_icon)}" alt="${x.symbol}" onerror="this.textContent='${x.symbol}'">`:`<span>${x.symbol}</span>`}</div>`).join('')}</div></div>`}
 
 function renderAbilIcon(ab){
     if(!ab.icon)return'<div class="ability-icon-placeholder">★</div>';
-    let h=`<img class="ability-icon" src="${ab.icon}" alt="" onerror="this.parentElement.innerHTML='<div class=\\'ability-icon-placeholder\\'>★</div>'">`;
-    if(ab.frame_overlay&&ab.is_ex){h+=`<img class="ability-frame-overlay" src="${ab.frame_overlay}" alt="" onerror="this.style.display='none'">`}
+    let h=`<img class="ability-icon" src="${imgUrl(ab.icon)}" alt="" onerror="this.parentElement.innerHTML='<div class=\\'ability-icon-placeholder\\'>★</div>'">`;
+    if(ab.frame_overlay&&ab.is_ex){h+=`<img class="ability-frame-overlay" src="${imgUrl(ab.frame_overlay)}" alt="" onerror="this.style.display='none'">`}
     return h;
 }
 
@@ -380,8 +393,8 @@ function renderAbils(a,title){if(!a||!a.length)return'';return`<div class="detai
 
 function renderSkills(s){if(!s||!s.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_skills')}</div><div class="ability-list">${s.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon(sk)}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div>${(sk.details||[]).map(d=>`<div class="ability-detail">${esc(d)}</div>`).join('')}</div></div>`).join('')}</div></div>`}
 
-function renderWeapons(w){if(!w||!w.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-table-wrap"><table class="weapon-table"><thead><tr><th>${t('wp_weapon')}</th><th>${t('wp_type')}</th><th>${t('wp_range')}</th><th>${t('wp_power')}</th><th>${t('wp_en')}</th><th>${t('wp_acc')}</th><th>${t('wp_crit')}</th></tr></thead><tbody>${w.map(x=>`<tr><td><div class="weapon-name-cell"><div class="weapon-icon-wrap">${x.icon?`<img class="weapon-icon-img" src="${x.icon}" alt="" onerror="this.style.display='none'">`:''}${x.overlay?`<img class="weapon-overlay" src="${x.overlay}" alt="" onerror="this.style.display='none'">`:''}
-</div><span class="weapon-name-text">${esc(x.name)}</span></div></td><td><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>`<img class="weapon-attack-type-icon" src="${at.icon}" alt="${at.label}" title="${at.label}" onerror="this.outerHTML='<span style=\\'font-size:12px\\'>${at.label}</span>'">`).join('')}</div></td><td class="weapon-range">${x.min_range}-${x.max_range}</td><td><strong>${fmtN(x.power)}</strong></td><td>${x.en_cost}</td><td>${x.accuracy}%</td><td>${x.critical}%</td></tr>${(x.traits&&x.traits.length)||(x.usage_restrictions&&x.usage_restrictions.length)||(x.ammo>0)?`<tr><td colspan="7" class="weapon-traits">${x.ammo>0?`<div style="font-size:14px;color:var(--accent-cyan);margin-bottom:4px">${t('wp_ammo')}: ${x.ammo}</div>`:''}${(x.traits||[]).map(tr=>`<div class="weapon-trait-text">${esc(tr)}</div>`).join('')}<div class="weapon-restrictions">${(x.usage_restrictions||[]).map(r=>`<div class="weapon-restriction-text">⚠ ${esc(r)}</div>`).join('')}</div></td></tr>`:''}`).join('')}</tbody></table></div></div>`}
+function renderWeapons(w){if(!w||!w.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-table-wrap"><table class="weapon-table"><thead><tr><th>${t('wp_weapon')}</th><th>${t('wp_type')}</th><th>${t('wp_range')}</th><th>${t('wp_power')}</th><th>${t('wp_en')}</th><th>${t('wp_acc')}</th><th>${t('wp_crit')}</th></tr></thead><tbody>${w.map(x=>`<tr><td><div class="weapon-name-cell"><div class="weapon-icon-wrap">${x.icon?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.style.display='none'">`:''}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}
+</div><span class="weapon-name-text">${esc(x.name)}</span></div></td><td><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>`<img class="weapon-attack-type-icon" src="${imgUrl(at.icon)}" alt="${at.label}" title="${at.label}" onerror="this.outerHTML='<span style=\\'font-size:12px\\'>${at.label}</span>'">`).join('')}</div></td><td class="weapon-range">${x.min_range}-${x.max_range}</td><td><strong>${fmtN(x.power)}</strong></td><td>${x.en_cost}</td><td>${x.accuracy}%</td><td>${x.critical}%</td></tr>${(x.traits&&x.traits.length)||(x.usage_restrictions&&x.usage_restrictions.length)||(x.ammo>0)?`<tr><td colspan="7" class="weapon-traits">${x.ammo>0?`<div style="font-size:14px;color:var(--accent-cyan);margin-bottom:4px">${t('wp_ammo')}: ${x.ammo}</div>`:''}${(x.traits||[]).map(tr=>`<div class="weapon-trait-text">${esc(tr)}</div>`).join('')}<div class="weapon-restrictions">${(x.usage_restrictions||[]).map(r=>`<div class="weapon-restriction-text">⚠ ${esc(r)}</div>`).join('')}</div></td></tr>`:''}`).join('')}</tbody></table></div></div>`}
 
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
