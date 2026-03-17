@@ -437,7 +437,7 @@ function renderMapGrid(weapon,isLarge){
   let uf=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
   if(t2){uf=isLarge?[{x:tx,y:ty},{x:tx+1,y:ty},{x:tx,y:ty-1},{x:tx+1,y:ty-1}]:[{x:tx,y:ty}]}
   uf.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
-  ec.forEach(c=>{let x=t2?c.x+tx:c.x,y=t2?c.y+ty:c.y;if(x<mnx)mnx=x;if(x>mxx)mxx=x;if(c.y<mny)mny=c.y;if(y>mxy)mxy=y});
+  ec.forEach(c=>{let x=t2?c.x+tx:c.x,y=t2?c.y+ty:c.y;if(x<mnx)mnx=x;if(x>mxx)mxx=x;if(y<mny)mny=y;if(y>mxy)mxy=y});
   if(t2||t3){
     sc.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
     if(t2&&ty>mxy)mxy=ty

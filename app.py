@@ -210,7 +210,7 @@ UNIT_STAT_ORDER = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
 
 TERRAIN_TYPE_ICON_MAP = {
     'Space': 'UI_Common_TerrainIcon_Space.png', 
-    'Atmospheric': 'UI_Common_TerrainIcon_Sky.png',
+    'Atmospheric': 'UI_Common_TerrainIcon_Circle.png',  # atmospheric = air, use circle
     'Ground': 'UI_Common_TerrainIcon_Ground.png', 
     'Sea': 'UI_Common_TerrainIcon_Aquatic.png',
     'Underwater': 'UI_Common_TerrainIcon_Underwater.png',
