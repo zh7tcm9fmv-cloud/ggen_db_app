@@ -456,8 +456,11 @@ function renderMapGrid(weapon,isLarge){
   let ah2=mxy-mny+1,py=Math.max(Math.floor(ah2/3),1);
   let fmny=mny-py,fmxy=mxy+py,fr=fmxy-fmny+1;
 
-  if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;fmnx+=cl;fmxx-=cr;fc=19}
-  if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;fmny+=cb;fmxy-=ct;fr=19}
+  let uxMin=0,uxMax=0,uyMin=0,uyMax=0;
+  if(t2){uxMin=tx;uxMax=isLarge?tx+1:tx;uyMin=isLarge?ty-1:ty;uyMax=ty}
+  else{uxMin=0;uxMax=isLarge?1:0;uyMin=isLarge?-1:0;uyMax=0}
+  if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;cl=Math.min(cl,Math.max(0,uxMin-fmnx));cr=Math.min(cr,Math.max(0,fmxx-uxMax));fmnx+=cl;fmxx-=cr;fc=19}
+  if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
 
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.png');
   let html=`<div class="map-grid" style="grid-template-columns:repeat(${fc},24px);grid-template-rows:repeat(${fr},24px);">`;
