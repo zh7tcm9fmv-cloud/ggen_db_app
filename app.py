@@ -832,7 +832,13 @@ def create_unit_status_map(d):
         if isinstance(item, dict):
             uid = normalize_id(item.get('UnitId') or item.get('unitId') or item.get('id') or item.get('Id'))
             if uid != '0':
-                lookup[uid] = {'HP': (int(item.get('Hp') or 0), int(item.get('MaxHp') or 0)), 'EN': (int(item.get('En') or 0), int(item.get('MaxEn') or 0)), 'Attack': (int(item.get('Attack') or 0), int(item.get('MaxAttack') or 0)), 'Defense': (int(item.get('Defense') or 0), int(item.get('MaxDefense') or 0)), 'Mobility': (int(item.get('Mobility') or 0), int(item.get('MaxMobility') or 0)), 'Move': int(item.get('MaxMovement') or 0)}
+                mhp = int(item.get('MaxHp') or 0); spmhp = int(item.get('SpMaxHp') or item.get('MaxHp') or 0)
+                men = int(item.get('MaxEn') or 0); spmen = int(item.get('SpMaxEn') or item.get('MaxEn') or 0)
+                matk = int(item.get('MaxAttack') or 0); spmatk = int(item.get('SpMaxAttack') or item.get('MaxAttack') or 0)
+                mdef = int(item.get('MaxDefense') or 0); spmdef = int(item.get('SpMaxDefense') or item.get('MaxDefense') or 0)
+                mmob = int(item.get('MaxMobility') or 0); spmmob = int(item.get('SpMaxMobility') or item.get('MaxMobility') or 0)
+                mmov = int(item.get('MaxMovement') or 0); spmmov = int(item.get('SpMaxMovement') or item.get('MaxMovement') or 0)
+                lookup[uid] = {'HP': (int(item.get('Hp') or 0), mhp, spmhp), 'EN': (int(item.get('En') or 0), men, spmen), 'Attack': (int(item.get('Attack') or 0), matk, spmatk), 'Defense': (int(item.get('Defense') or 0), mdef, spmdef), 'Mobility': (int(item.get('Mobility') or 0), mmob, spmmob), 'Move': (mmov, spmmov)}
     return lookup
 
 def create_terrain_map(d):
@@ -1193,6 +1199,11 @@ map_npc_character_skill_set_content_data = load_json(os.path.join(BASE_DIR, "m_m
 map_npc_unit_weapon_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_weapon_set_content.json"))
 map_stage_group_initial_placement_data = load_json(os.path.join(BASE_DIR, "m_map_stage_group_initial_placement.json"))
 char_skill_base_data = load_json(os.path.join(BASE_DIR, "m_character_skill.json"))
+unit_ssp_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_config.json"))
+unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.json"))
+ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
+ssp_custom_core_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core.json"))
+ssp_release_fn_content_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_release_function_set_content.json"))
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
@@ -1250,6 +1261,68 @@ for item in extract_data_list(unit_master_data):
     if isinstance(item, dict):
         uid = normalize_id(item.get('id') or item.get('Id')); sid = normalize_id(item.get('SeriesSetId') or item.get('seriesSetId'))
         if uid != '0' and sid != '0': unit_ser_map[uid] = sid
+
+unit_ssp_config_map = {}
+if unit_ssp_config_data:
+    for item in extract_data_list(unit_ssp_config_data):
+        if not isinstance(item, dict): continue
+        uid = normalize_id(item.get('UnitId') or item.get('unitId') or item.get('Id') or item.get('id'))
+        sid = normalize_id(item.get('UnitSspAddStatusId') or item.get('unitSspAddStatusId') or item.get('SspAddStatusId') or item.get('sspAddStatusId') or item.get('AddStatusId') or item.get('addStatusId'))
+        if uid != '0' and sid != '0': unit_ssp_config_map[uid] = sid
+
+unit_ssp_stat_map = {}
+if unit_ssp_stat_data:
+    for item in extract_data_list(unit_ssp_stat_data):
+        if not isinstance(item, dict): continue
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        if sid != '0': unit_ssp_stat_map[sid] = {'HP': (int(item.get('SspHp') or 0), int(item.get('SspMaxHp') or 0)), 'EN': (int(item.get('SspEn') or 0), int(item.get('SspMaxEn') or 0)), 'Attack': (int(item.get('SspAttack') or 0), int(item.get('SspMaxAttack') or 0)), 'Defense': (int(item.get('SspDefense') or 0), int(item.get('SspMaxDefense') or 0)), 'Mobility': (int(item.get('SspMobility') or 0), int(item.get('SspMaxMobility') or 0))}
+
+unit_ssp_abil_replace_map = {}
+if ssp_abil_replace_data:
+    for item in extract_data_list(ssp_abil_replace_data):
+        if not isinstance(item, dict): continue
+        uid = normalize_id(item.get('UnitId') or item.get('unitId'))
+        if uid == '0':
+            uid_raw = str(normalize_id(item.get('Id') or item.get('id')) or '')
+            uid = uid_raw[:-2] if len(uid_raw) > 2 else '0'
+        b_id = normalize_id(item.get('BeforeAbilityId') or item.get('beforeAbilityId')); a_id = normalize_id(item.get('AfterAbilityId') or item.get('afterAbilityId'))
+        if uid != '0' and b_id != '0' and a_id != '0': unit_ssp_abil_replace_map.setdefault(uid, {})[b_id] = a_id
+
+unit_ssp_custom_core_group_entries = {}
+if ssp_custom_core_data:
+    for item in extract_data_list(ssp_custom_core_data):
+        if not isinstance(item, dict): continue
+        gid = normalize_id(item.get('UnitSspCustomCoreGroupId') or item.get('unitSspCustomCoreGroupId'))
+        sched = normalize_id(item.get('ScheduleId') or item.get('scheduleId'))
+        if sched == '9999990001': continue
+        fnid = normalize_id(item.get('UnitSspCustomCoreReleaseFunctionSetId') or item.get('unitSspCustomCoreReleaseFunctionSetId'))
+        if gid != '0' and fnid != '0': unit_ssp_custom_core_group_entries.setdefault(gid, set()).add(fnid)
+
+ssp_release_fn_content_by_set = {}
+if ssp_release_fn_content_data:
+    for item in extract_data_list(ssp_release_fn_content_data):
+        if not isinstance(item, dict): continue
+        sid = normalize_id(item.get('UnitSspCustomCoreReleaseFunctionSetId') or item.get('unitSspCustomCoreReleaseFunctionSetId'))
+        t = normalize_id(item.get('ReleaseFunctionTypeIndex') or item.get('releaseFunctionTypeIndex'))
+        tid = normalize_id(item.get('TargetId') or item.get('targetId'))
+        if sid != '0': ssp_release_fn_content_by_set.setdefault(sid, []).append({'type': t, 'target_id': tid})
+
+SSP_TERRAIN_TARGET_MAP = {'2': ('Underwater', 1, 2), '4': ('Atmospheric', 1, 2), '6': ('Underwater', 1, 3), '9': ('Underwater', 1, 3), '28': ('Underwater', 2, 3), '29': ('Underwater', 1, 3), '32': ('Underwater', 2, 3), '12': ('Ground', 2, 3), '24': ('Ground', 1, 2), '26': ('Ground', 1, 2), '21': ('Space', 1, 2), '23': ('Space', 1, 2), '30': ('Space', 2, 3), '36': ('Space', 1, 2), '39': ('Space', 2, 3), '51': ('Space', 1, 2), '52': ('Space', 1, 2), '54': ('Space', 1, 2), '57': ('Space', 1, 2), '58': ('Space', 1, 2), '59': ('Space', 1, 2), '22': ('Atmospheric', 1, 2), '31': ('Atmospheric', 2, 3), '38': ('Atmospheric', 1, 2), '44': ('Atmospheric', 1, 2), '61': ('Atmospheric', 2, 3), '64': ('Atmospheric', 1, 2), '41': ('Sea', 1, 2)}
+
+def get_ssp_custom_core_bonuses_for_unit(unit_id):
+    out = {'move': 0, 'terrain_upgrades': []}
+    uid = normalize_id(unit_id)
+    if uid == '0': return out
+    fn_sets = unit_ssp_custom_core_group_entries.get(uid, set())
+    for sid in fn_sets:
+        for it in ssp_release_fn_content_by_set.get(sid, []):
+            t = it.get('type', '0')
+            if t == '3': out['move'] += 1
+            elif t == '4':
+                tid = str(it.get('target_id', '0'))
+                if tid in SSP_TERRAIN_TARGET_MAP and not any(x[0] == SSP_TERRAIN_TARGET_MAP[tid][0] for x in out['terrain_upgrades']):
+                    out['terrain_upgrades'].append(SSP_TERRAIN_TARGET_MAP[tid])
+    return out
 
 # Build series icon to ID mapping
 series_id_to_icon = {}
@@ -1925,12 +1998,27 @@ def get_unit(unit_id):
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
+        has_sp = int(ri) <= 4
+        ssp_id = unit_ssp_config_map.get(unit_id); ssp_bonus = unit_ssp_stat_map.get(ssp_id, {})
+        ssp_core = get_ssp_custom_core_bonuses_for_unit(unit_id) if has_sp else {'move': 0, 'terrain_upgrades': []}
+        rm = unit_ssp_abil_replace_map.get(unit_id, {})
         if raw:
-            for s in ['HP','EN','Attack','Defense','Mobility']: fs[s] = calc_growth_unit(*raw.get(s, (0,0)), ri)
-            fs['Move'] = raw.get('Move', 0)
+            for s in ['HP','EN','Attack','Defense','Mobility']:
+                st = raw.get(s, (0,0,0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
+                fs[s] = calc_growth_unit(st[0], st[1], ri)
+            mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+            fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
         ua = unit_abil_map.get(unit_id, [])
-        abilities = [build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc) for ab in sorted(ua, key=lambda x: x['sort'])]
-        ac = [build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG) for ab in sorted(ua, key=lambda x: x['sort'])]
+        abilities = []
+        for ab in sorted(ua, key=lambda x: x['sort']):
+            bab = build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc)
+            if str(ab['id']) in rm: bab['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc)
+            abilities.append(bab)
+        ac = []
+        for ab in sorted(ua, key=lambda x: x['sort']):
+            bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+            if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+            ac.append(bac)
         sb2 = {s: 0 for s in UNIT_STAT_ORDER}
         for ab in ac:
             for d2 in ab.get('details', []):
@@ -1939,25 +2027,43 @@ def get_unit(unit_id):
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
             cm = 1.0 if info.get('is_ultimate', False) else mult
-            lb_fs = {}
+            lb_fs, lb_fsp, lb_fssp = {}, {}, {}
             if raw:
                 for s in ['HP','EN','Attack','Defense','Mobility']:
-                    st = raw.get(s, (0,0)); lb_fs[s] = math.floor(calc_growth_unit_base(st[0], st[1], ri) * cm)
-                lb_fs['Move'] = raw.get('Move', 0)
+                    st = raw.get(s, (0,0,0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
+                    gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
+                    sb2v, sm2v = ssp_bonus.get(s, (0,0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
+                    scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
+                    lb_fs[s] = math.floor(gs * cm); lb_fsp[s] = math.floor(gsp * cm); lb_fssp[s] = math.floor((gsp + scb) * cm)
+                mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+                lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
+                lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
+                lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
             else:
                 lb_fs = {s: math.floor(fs.get(s,0) * cm / 1.4) for s in UNIT_STAT_ORDER}
+                lb_fsp = dict(lb_fs)
+                lb_fssp = dict(lb_fs)
             lb_sb = {}
             for s in UNIT_STAT_ORDER:
                 bf = fs.get(s, 0)
                 lb_sb[s] = math.floor(lb_fs.get(s,0) * sb2.get(s,0) / bf) if bf and sb2.get(s,0) else sb2.get(s,0)
             snc = [{'name': s, 'total': lb_fs.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER]
-            lb_data.append({'stats_no_cond': snc, 'stats_with_cond': snc, 'sp_stats_no_cond': snc, 'sp_stats_with_cond': snc, 'ssp_stats_no_cond': snc, 'ssp_stats_with_cond': snc})
+            spnc = [{'name': s, 'total': lb_fsp.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER] if has_sp else snc
+            sspnc = [{'name': s, 'total': lb_fssp.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER] if has_sp else snc
+            lb_data.append({'stats_no_cond': snc, 'stats_with_cond': snc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spnc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspnc})
         portrait = find_portrait(info.get('resource_ids', []), unit_id, 'images/unit_portraits', f'unit_{unit_id}')
         ubr = info.get('bromide_resource_id', '') or (info.get('resource_ids', [''])[0] if info.get('resource_ids') else '')
         td = unit_ter_map.get(info.get('terrain_set',''), {}); terrain = []
+        terrain_levels = {tn: int(td.get(tn, 0) or 0) for tn in ['Space','Atmospheric','Ground','Sea','Underwater']}
         for tn in ['Space','Atmospheric','Ground','Sea','Underwater']:
-            lv = td.get(tn, 0)
+            lv = terrain_levels.get(tn, 0)
             terrain.append({'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(lv),'-'), 'level': lv, 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"})
+        terr_ssp_levels = dict(terrain_levels)
+        if has_sp and ssp_core.get('terrain_upgrades'):
+            for tn, fr, to in ssp_core['terrain_upgrades']:
+                cur = int(terr_ssp_levels.get(tn, 0) or 0)
+                terr_ssp_levels[tn] = to if cur == fr else max(cur, to)
+        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(terr_ssp_levels.get(tn,0), TERRAIN_LEVEL_ICON_MAP[0])}"} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
         for wp in unit_weapon_map.get(unit_id, []):
             wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
@@ -1978,8 +2084,7 @@ def get_unit(unit_id):
         msid = str(info.get('mechanism_set_id', '0')); ml = MECH_MAP_TABLE.get(msid, [])
         il = '2x2' in ml
         mechs = [{'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.', 'icon': '/static/images/mechanism/mechanism_0002.png'}] if il else []
-        terr_ssp = terrain
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'special_icons': sicons, 'has_sp': False, 'is_large': il}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': False, 'is_large': il}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
