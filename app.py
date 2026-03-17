@@ -275,6 +275,12 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
         if m.group(2): n2 = norm(m.group(2)); bonuses[n2] = bonuses.get(n2, 0) + pct
     return bonuses
 
+def _extract_stat_flat_move(text, skip_conditional=True):
+    """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1' or 'by1')."""
+    if skip_conditional and _is_conditional_stat_text(text): return 0
+    m = re.search(r"Increase\s+(?:own\s+)?(?:squad\s+)?(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)", text, re.IGNORECASE)
+    return int(m.group(1)) if m else 0
+
 def is_ex_ability(name):
     if not name: return False
     name_lower = name.strip().lower()
@@ -2156,6 +2162,7 @@ def get_unit(unit_id):
         sspc = {s: 0 for s in UNIT_STAT_ORDER}
         nxs = {s: 0 for s in UNIT_STAT_ORDER}
         nxss = {s: 0 for s in UNIT_STAT_ORDER}
+        spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
 
         def _ability_has_condition_word(ad):
             name = (ad.get('name') or '').lower()
@@ -2166,7 +2173,7 @@ def get_unit(unit_id):
                 if any(w in txt for w in cond_words): return True
             return False
 
-        def ep(ad, bd, cd, nd):
+        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
             ability_cond = _ability_has_condition_word(ad)
@@ -2177,7 +2184,16 @@ def get_unit(unit_id):
                 if not parts: parts = [txt]
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
+                    flat_move = _extract_stat_flat_move(part, skip_conditional=False)
+                    if flat_move:
+                        if inx:
+                            pass
+                        elif ability_cond or hc or ie or itc:
+                            cd_move_flat[0] += flat_move
+                        else:
+                            bd_move_flat[0] += flat_move
                     for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
+                        if s == 'Move': continue
                         if unit_id == '1400000550' and s == 'HP' and pct == 5:
                             bd[s] = bd.get(s, 0) + pct
                             continue
@@ -2189,11 +2205,11 @@ def get_unit(unit_id):
                             bd[s] = bd.get(s, 0) + pct
 
         for ab in ac:
-            ep(ab, spb, spc, nxs)
+            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
             if 'ssp_replacement' in ab:
-                ep(ab['ssp_replacement'], sspb, sspc, nxss)
+                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
             else:
-                ep(ab, sspb, sspc, nxss)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
         for s in UNIT_STAT_ORDER:
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
@@ -2228,12 +2244,13 @@ def get_unit(unit_id):
                     mbase = int(lb_fsp.get('Move', 0) or 0)
                     mssp = int(lb_fssp.get('Move', 0) or 0)
                     mbon = max(0, mssp - mbase)
-                    snc.append({'name': s, 'total': lb_fs.get(s, 0), 'bonus': 0})
-                    swc.append({'name': s, 'total': lb_fs.get(s, 0), 'bonus': 0})
-                    spnc.append({'name': s, 'total': mbase, 'bonus': 0})
-                    spwc.append({'name': s, 'total': mbase, 'bonus': 0})
-                    sspnc.append({'name': s, 'total': mssp, 'bonus': mbon})
-                    sspwc.append({'name': s, 'total': mssp, 'bonus': mbon})
+                    bf = spb_move_flat[0]; cf = spc_move_flat[0]; sbf = sspb_move_flat[0]; scf = sspc_move_flat[0]
+                    snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf})
+                    swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf})
+                    spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf})
+                    spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf})
+                    sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf})
+                    sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf})
                     continue
                 bst = lb_fs.get(s, 0); spst = lb_fsp.get(s, 0); sspst = lb_fssp.get(s, 0)
                 bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
