@@ -1795,8 +1795,11 @@ def list_units():
             if sq not in ss.lower(): continue
         raw = unit_stat_map.get(uid, {}); fs = {}
         if raw:
-            for s in ['HP','EN','Attack','Defense','Mobility']: fs[s] = calc_growth_unit(*raw.get(s, (0,0)), ri)
-            fs['Move'] = raw.get('Move', 0)
+            for s in ['HP','EN','Attack','Defense','Mobility']:
+                st = raw.get(s, (0,0,0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1] if len(st) > 1 else st[0])
+                fs[s] = calc_growth_unit(st[0], st[1], ri)
+            mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+            fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
         acq = info.get('acquisition_route','0'); ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
