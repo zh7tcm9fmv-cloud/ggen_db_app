@@ -1430,7 +1430,10 @@ for lang_code, paths in LANG_PATHS.items():
     
     series_text = load_json(os.path.join(lang_dir, "m_series.json")); lineage_text = load_json(os.path.join(lang_dir, "m_lineage.json"))
     trait_name_data = load_json(os.path.join(lang_dir, "m_trait_set_detail.json")); trait_desc_data = load_json(os.path.join(lang_dir, "m_trait.json"))
-    char_text = load_json(os.path.join(lang_dir, "m_character.json")); skill_text_data = load_json(os.path.join(lang_dir, "m_character_skill_trait.json"))
+    char_text = load_json(os.path.join(lang_dir, "m_character.json"))
+    skill_trait_lang = load_json(os.path.join(lang_dir, "m_character_skill_trait.json"))
+    skill_lang = load_json(os.path.join(lang_dir, "m_character_skill.json"))
+    skill_text_data = list(extract_data_list(skill_trait_lang)) + list(extract_data_list(skill_lang) or [])
     unit_text_data = load_json(os.path.join(lang_dir, "m_unit.json")); weapon_text_data = load_json(os.path.join(lang_dir, "m_weapon.json"))
     supporter_text = load_json(os.path.join(lang_dir, "m_supporter.json")); supporter_leader_text = load_json(os.path.join(lang_dir, "m_supporter_leader_skill_content.json"))
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
@@ -1578,11 +1581,21 @@ def resolve_npc_character_abilities(asid, lc):
     return [build_ability_entry(e['id'], ld.get('abil_name_map', {}), abil_link_map, trait_set_traits_map, trait_data_map, ld.get('lang_text_map', {}), ld.get('lang_text_map', {}), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), ability_resource_map, ld.get('abil_desc_map', {}), sort_order=e.get('sort', 0), lang_code=lc) for e in map_npc_character_ability_set_lookup.get(asid, [])]
 
 def resolve_char_skill(sid, ld, sv, isp):
-    ltm = ld.get('lang_text_map', {}); info = char_skill_info_map.get(sid, {}); name = ltm.get(info.get('name_lang_id', ''), 'Unknown'); desc = ltm.get(info.get('desc_lang_id', ''), '')
+    stm = ld.get('skill_text_map', {}); info = char_skill_info_map.get(sid, {})
+    nlid = normalize_id(info.get('name_lang_id', '')); dlid = normalize_id(info.get('desc_lang_id', ''))
+    name, desc = 'Unknown', ''
+    if nlid and nlid != '0':
+        entries = stm.get(nlid)
+        if entries and isinstance(entries, list) and len(entries) > 0: name = entries[0].get('text', '')
+    if dlid and dlid != '0':
+        entries = stm.get(dlid)
+        if entries and isinstance(entries, list) and len(entries) > 0: desc = entries[0].get('text', '')
     if name == 'Unknown':
         bi = sid[:-2] if len(sid) > 2 else sid
         for k in [bi, sid, sid[-9:] if len(sid) >= 9 else None]:
-            if k and k in ld.get('skill_text_map', {}): entries = ld['skill_text_map'][k]; name = entries[0]['text']; desc = '\n'.join([x['text'] for x in entries[1:]]); break
+            if k and k in stm:
+                entries = stm[k]; name = entries[0]['text']; desc = '\n'.join([x['text'] for x in entries[1:]]) if len(entries) > 1 else ''
+                break
     ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(sid, ''); icf = find_trait_icon(ri)
     return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri}
 
@@ -2044,14 +2057,24 @@ def get_character(char_id):
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         has_ex_stats = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
-        fs2 = [x for x in extract_data_list(char_skill) if normalize_id(x.get('CharacterId','')) == char_id]; skills = []
+        fs2 = [x for x in extract_data_list(char_skill) if normalize_id(x.get('CharacterId','')) == char_id]
+        skills = []; ms = 0; spa = []; ex = set()
         for sk in sorted(fs2, key=lambda x: int(x.get('SortOrder', 0))):
-            si = normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')); bi = si[:-2] if len(si) > 2 else si; entries = []
-            for k in [bi, si, si[-9:] if len(si)>=9 else None, bi[-7:] if len(bi)>=7 else None, bi[-6:] if len(bi)>=6 else None]:
-                if k and k in ld['skill_text_map']: entries = ld['skill_text_map'][k]; break
-            name = entries[0]["text"] if entries else "Unknown"; details = [x["text"] for x in entries[1:]] if len(entries) > 1 else []
-            rid2 = ld['skill_resource_map'].get(si,'') or ld['skill_resource_map'].get(bi,''); ic = find_trait_icon(rid2)
-            skills.append({'id': si, 'name': name, 'sort': sk.get('SortOrder',0), 'details': details, 'icon': f"/static/images/Trait/{ic}" if ic else '', 'has_icon': bool(ic), 'is_ex': False, 'frame_overlay': '', 'resource_id': rid2})
+            si = normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId',''))
+            spsi = normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))
+            sv = int(sk.get('SortOrder', 0)); ms = max(ms, sv)
+            if si != '0':
+                resolved = resolve_char_skill(si, ld, sv, False)
+                if spsi and spsi != '0' and spsi != 'None' and spsi != si: resolved['replaced_by_sp_id'] = spsi
+                skills.append(resolved); ex.add(si)
+            if spsi and spsi != '0' and spsi != 'None' and spsi != si: spa.append(spsi)
+        for spsi in spa:
+            if spsi not in ex: ms += 1; skills.append(resolve_char_skill(spsi, ld, ms, True)); ex.add(spsi)
+        spn = {sk['name'].strip().lower() for sk in skills if sk.get('is_sp')}
+        for sk in skills:
+            if not sk.get('is_sp'):
+                if sk.get('replaced_by_sp_id'): sk['replaced_by_sp'] = True
+                elif sk['name'].strip().lower() in spn: sk['replaced_by_sp'] = True
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'lang': lc}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
@@ -2088,11 +2111,41 @@ def get_unit(unit_id):
             bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
             if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
             ac.append(bac)
-        sb2 = {s: 0 for s in UNIT_STAT_ORDER}
+        spb = {s: 0 for s in UNIT_STAT_ORDER}
+        spc = {s: 0 for s in UNIT_STAT_ORDER}
+        sspb = {s: 0 for s in UNIT_STAT_ORDER}
+        sspc = {s: 0 for s in UNIT_STAT_ORDER}
+        nxs = {s: 0 for s in UNIT_STAT_ORDER}
+        nxss = {s: 0 for s in UNIT_STAT_ORDER}
+
+        def ep(ad, bd, cd, nd):
+            hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
+            ie = ad.get('is_ex', False)
+            inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+            for d2 in ad.get('details', []):
+                txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+                itc = _is_conditional_stat_text(txt)
+                for s, pct in _extract_stat_percent_unit(txt).items():
+                    if unit_id == '1400000550' and s == 'HP' and pct == 5:
+                        bd[s] = bd.get(s, 0) + pct
+                        continue
+                    if inx:
+                        nd[s] = max(nd.get(s, 0), pct)
+                    elif hc or ie or itc:
+                        cd[s] = cd.get(s, 0) + pct
+                    else:
+                        bd[s] = bd.get(s, 0) + pct
+
         for ab in ac:
-            for d2 in ab.get('details', []):
-                for s, a in extract_stat_bonus_unit(d2['text'], fs).items(): sb2[s] = sb2.get(s,0) + a
-        stats = [{'name': s, 'total': fs.get(s,0)+sb2.get(s,0), 'bonus': sb2.get(s,0)} for s in UNIT_STAT_ORDER]
+            ep(ab, spb, spc, nxs)
+            if 'ssp_replacement' in ab:
+                ep(ab['ssp_replacement'], sspb, sspc, nxss)
+            else:
+                ep(ab, sspb, sspc, nxss)
+        for s in UNIT_STAT_ORDER:
+            spc[s] = spc.get(s, 0) + nxs.get(s, 0)
+            sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
+        hcond = any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER)
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
             cm = 1.0 if info.get('is_ultimate', False) else mult
@@ -2112,14 +2165,34 @@ def get_unit(unit_id):
                 lb_fs = {s: math.floor(fs.get(s,0) * cm / 1.4) for s in UNIT_STAT_ORDER}
                 lb_fsp = dict(lb_fs)
                 lb_fssp = dict(lb_fs)
-            lb_sb = {}
+            snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
             for s in UNIT_STAT_ORDER:
-                bf = fs.get(s, 0)
-                lb_sb[s] = math.floor(lb_fs.get(s,0) * sb2.get(s,0) / bf) if bf and sb2.get(s,0) else sb2.get(s,0)
-            snc = [{'name': s, 'total': lb_fs.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER]
-            spnc = [{'name': s, 'total': lb_fsp.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER] if has_sp else snc
-            sspnc = [{'name': s, 'total': lb_fssp.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER] if has_sp else snc
-            lb_data.append({'stats_no_cond': snc, 'stats_with_cond': snc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spnc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspnc})
+                if s == 'Move':
+                    mbase = int(lb_fsp.get('Move', 0) or 0)
+                    mssp = int(lb_fssp.get('Move', 0) or 0)
+                    mbon = max(0, mssp - mbase)
+                    snc.append({'name': s, 'total': lb_fs.get(s, 0), 'bonus': 0})
+                    swc.append({'name': s, 'total': lb_fs.get(s, 0), 'bonus': 0})
+                    spnc.append({'name': s, 'total': mbase, 'bonus': 0})
+                    spwc.append({'name': s, 'total': mbase, 'bonus': 0})
+                    sspnc.append({'name': s, 'total': mssp, 'bonus': mbon})
+                    sspwc.append({'name': s, 'total': mssp, 'bonus': mbon})
+                    continue
+                bst = lb_fs.get(s, 0); spst = lb_fsp.get(s, 0); sspst = lb_fssp.get(s, 0)
+                bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
+                cb = math.floor(bst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if bst else 0
+                snc.append({'name': s, 'total': bst + bb, 'bonus': bb})
+                swc.append({'name': s, 'total': bst + cb, 'bonus': cb})
+                spbb = math.floor(spst * spb.get(s, 0) / 100) if spst else 0
+                spcb = math.floor(spst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if spst else 0
+                spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb})
+                spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb})
+                sspbb = math.floor(sspst * sspb.get(s, 0) / 100) if sspst else 0
+                sspcb = math.floor(sspst * (sspb.get(s, 0) + sspc.get(s, 0)) / 100) if sspst else 0
+                sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb})
+                sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb})
+            lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
+        stats = lb_data[3]['stats_no_cond'] if lb_data else [{'name': s, 'total': fs.get(s, 0), 'bonus': 0} for s in UNIT_STAT_ORDER]
         portrait = find_portrait(info.get('resource_ids', []), unit_id, 'images/unit_portraits', f'unit_{unit_id}')
         ubr = info.get('bromide_resource_id', '') or (info.get('resource_ids', [''])[0] if info.get('resource_ids') else '')
         td = unit_ter_map.get(info.get('terrain_set',''), {}); terrain = []
@@ -2180,7 +2253,7 @@ def get_unit(unit_id):
         msid = str(info.get('mechanism_set_id', '0')); ml = MECH_MAP_TABLE.get(msid, [])
         il = '2x2' in ml
         mechs = [{'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.', 'icon': '/static/images/mechanism/mechanism_0002.png'}] if il else []
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': False, 'is_large': il}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
