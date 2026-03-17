@@ -210,7 +210,7 @@ UNIT_STAT_ORDER = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
 
 TERRAIN_TYPE_ICON_MAP = {
     'Space': 'UI_Common_TerrainIcon_Space.png', 
-    'Atmospheric': 'UI_Common_TerrainIcon_Circle.png',  # atmospheric = air, use circle
+    'Atmospheric': 'UI_Common_TerrainIcon_Sky.png',
     'Ground': 'UI_Common_TerrainIcon_Ground.png', 
     'Sea': 'UI_Common_TerrainIcon_Aquatic.png',
     'Underwater': 'UI_Common_TerrainIcon_Underwater.png',
@@ -2310,11 +2310,18 @@ def get_unit(unit_id):
             lv = terrain_levels.get(tn, 0)
             terrain.append({'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(lv),'-'), 'level': lv, 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"})
         terr_ssp_levels = dict(terrain_levels)
+        ssp_enhanced_terrains = set()
         if has_sp and ssp_core.get('terrain_upgrades'):
             for tn, fr, to in ssp_core['terrain_upgrades']:
+                ssp_enhanced_terrains.add(tn)
                 cur = int(terr_ssp_levels.get(tn, 0) or 0)
                 terr_ssp_levels[tn] = to if cur == fr else max(cur, to)
-        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(terr_ssp_levels.get(tn,0), TERRAIN_LEVEL_ICON_MAP[0])}"} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
+        def _ssp_level_icon(tn):
+            lv = terr_ssp_levels.get(tn, 0)
+            if tn in ssp_enhanced_terrains and lv >= 2:
+                return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP[3]}"
+            return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"
+        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn)} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
         for wp in unit_weapon_map.get(unit_id, []):
             wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
