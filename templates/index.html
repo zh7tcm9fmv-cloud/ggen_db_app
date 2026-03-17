@@ -435,6 +435,7 @@ function renderMapGrid(weapon,isLarge){
 
   let mnx=0,mxx=0,mny=0,mxy=0;
   let uf=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
+  if(t2){uf=isLarge?[{x:tx,y:ty},{x:tx+1,y:ty},{x:tx,y:ty-1},{x:tx+1,y:ty-1}]:[{x:tx,y:ty}]}
   uf.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
   ec.forEach(c=>{let x=t2?c.x+tx:c.x,y=t2?c.y+ty:c.y;if(x<mnx)mnx=x;if(x>mxx)mxx=x;if(c.y<mny)mny=c.y;if(y>mxy)mxy=y});
   if(t2||t3){
@@ -467,8 +468,13 @@ function renderMapGrid(weapon,isLarge){
       let cx=fmnx+c;
       let iu=false,im=false,its=false,ieb=false,iem=false,ie=false,isp=false;
 
-      if(isLarge){iu=(cx===0||cx===1)&&(cy===0||cy===-1);im=(cx===0&&cy===0)}
-      else{iu=(cx===0&&cy===0);im=iu}
+      if(t2){
+        if(isLarge){iu=(cx===tx||cx===tx+1)&&(cy===ty||cy===ty-1);im=(cx===tx&&cy===ty)}
+        else{iu=(cx===tx&&cy===ty);im=iu}
+      }else{
+        if(isLarge){iu=(cx===0||cx===1)&&(cy===0||cy===-1);im=(cx===0&&cy===0)}
+        else{iu=(cx===0&&cy===0);im=iu}
+      }
 
       if(t2){
         its=(cx===tx&&cy===ty);

@@ -1448,6 +1448,19 @@ for uid, ui in unit_info_map.items():
     else: miss += 1
 print(f"Unit portraits: {found} found, {miss} missing")
 
+# Audit: units with SSP terrain enhancement (ReleaseFunctionTypeIndex=4 only)
+_ssp_terrain_audit = {}
+for uid in unit_ssp_config_map:
+    core = get_ssp_custom_core_bonuses_for_unit(uid)
+    _ssp_terrain_audit[uid] = bool(core.get('terrain_upgrades'))
+_terrain_yes = [u for u, v in _ssp_terrain_audit.items() if v]
+_terrain_no = [u for u, v in _ssp_terrain_audit.items() if not v]
+print(f"SSP terrain audit: {len(_terrain_yes)} units WITH terrain enhancement (type 4), {len(_terrain_no)} without")
+if '1150000100' in _ssp_terrain_audit:
+    print(f"  1150000100: has_terrain_enhancement={_ssp_terrain_audit['1150000100']} (expected False)")
+if '1300004300' in _ssp_terrain_audit:
+    print(f"  1300004300: has_terrain_enhancement={_ssp_terrain_audit['1300004300']} (expected True - has type 4 in 130000430002)")
+
 # ═══════════════════════════════════════════════════════
 # LOAD LANGUAGE-SPECIFIC DATA
 # ═══════════════════════════════════════════════════════
