@@ -608,7 +608,16 @@ def create_char_status_map(d):
         if isinstance(item, dict):
             cid = normalize_id(item.get('CharacterId') or item.get('characterId') or item.get('id') or item.get('Id'))
             if cid != '0':
-                lookup[cid] = {'Ranged': (int(item.get('Ranged') or 0), int(item.get('MaxRanged') or 0)), 'Melee': (int(item.get('Melee') or 0), int(item.get('MaxMelee') or 0)), 'Defense': (int(item.get('Defense') or 0), int(item.get('MaxDefense') or 0)), 'Reaction': (int(item.get('Reaction') or 0), int(item.get('MaxReaction') or 0)), 'Awaken': (int(item.get('Awaken') or 0), int(item.get('MaxAwaken') or 0))}
+                def cv(k, mk, smk):
+                    v = int(item.get(k) or 0); m = int(item.get(mk) or 0); sm = int(item.get(smk) or item.get(mk) or 0)
+                    return (v, m, sm)
+                lookup[cid] = {
+                    'Ranged': cv('Ranged', 'MaxRanged', 'SpMaxRanged'),
+                    'Melee': cv('Melee', 'MaxMelee', 'SpMaxMelee'),
+                    'Defense': cv('Defense', 'MaxDefense', 'SpMaxDefense'),
+                    'Reaction': cv('Reaction', 'MaxReaction', 'SpMaxReaction'),
+                    'Awaken': cv('Awaken', 'MaxAwaken', 'SpMaxAwaken'),
+                }
     return lookup
 
 def create_char_lineage_link_map(d):
@@ -950,8 +959,9 @@ def create_weapon_correction_map(d):
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('WeaponStatusChangePatternSetId') or item.get('weaponStatusChangePatternSetId'))
-        level = int(item.get('CurrentWeaponLevel') or item.get('currentWeaponLevel') or 0)
-        if sid != '0' and level == 5: lookup[sid] = {'power_rate': int(item.get('PowerCorrectionRate') or 100), 'en_rate': int(item.get('EnCorrectionRate') or 100), 'hit_rate': int(item.get('HitRateCorrectionRate') or 100), 'crit_rate': int(item.get('CriticalRateCorrectionRate') or 100), 'map_ammo': int(item.get('MapWeaponAmmoCapacity') or 0)}
+        lv = int(item.get('CurrentWeaponLevel') or item.get('currentWeaponLevel') or 1)
+        if sid != '0':
+            lookup.setdefault(sid, {})[lv] = {'power_rate': int(item.get('PowerCorrectionRate') or 100), 'en_rate': int(item.get('EnCorrectionRate') or 100), 'hit_rate': int(item.get('HitRateCorrectionRate') or 100), 'crit_rate': int(item.get('CriticalRateCorrectionRate') or 100), 'map_ammo': int(item.get('MapWeaponAmmoCapacity') or 0)}
     return lookup
 
 def create_growth_pattern_map(d):
@@ -965,14 +975,16 @@ def create_growth_pattern_map(d):
         if tc != '0' or sc != '0': lookup[sid] = {'trait_change_set_id': tc, 'status_change_set_id': sc}
     return lookup
 
-def create_trait_change_level5_map(d):
+def create_weapon_trait_change_map(d):
     lookup = {}
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('WeaponTraitChangePatternSetId') or item.get('weaponTraitChangePatternSetId'))
-        level = int(item.get('CurrentWeaponLevel') or item.get('currentWeaponLevel') or 0)
+        lv = int(item.get('CurrentWeaponLevel') or item.get('currentWeaponLevel') or 1)
         tid = normalize_id(item.get('WeaponTraitId') or item.get('weaponTraitId'))
-        if sid != '0' and tid != '0' and level == 5: lookup.setdefault(sid, []); (tid not in lookup[sid] and lookup[sid].append(tid))
+        if sid != '0' and tid != '0':
+            lookup.setdefault(sid, {}).setdefault(lv, [])
+            if tid not in lookup[sid][lv]: lookup[sid][lv].append(tid)
     return lookup
 
 def create_weapon_trait_detail_map(base_data, lang_dir):
@@ -1052,10 +1064,10 @@ def resolve_weapon_icon(wt, ai, ubr):
     ai2 = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
 
-def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN', unit_id=''):
+def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_code='EN', unit_id=''):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
-    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
+    dr = {'range_min':0,'range_max':0,'levels':[{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)],'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
     if mwid == '0': return dr
     ws = wsm.get(mwid)
     if not ws: return dr
@@ -1064,34 +1076,33 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
     csi = ws.get('override_correction_id','0'); tsi = ws.get('trait_correction_id','0'); gi = ws.get('growth_pattern_id','0')
     gd = {}; ug = gi and gi != '0' and gi != '1'
     if ug: gd = gpm.get(gi, {})
-    corr = DEFAULT_CORRECTION
-    if csi and csi != '0': corr = wcm.get(csi, DEFAULT_CORRECTION)
-    elif ug:
-        gsi = gd.get('status_change_set_id','0')
-        if gsi and gsi != '0': corr = wcm.get(gsi, DEFAULT_CORRECTION)
-    fp = math.floor(bp*corr.get('power_rate',100)/100); fe = math.floor(be*corr.get('en_rate',100)/100)
-    fa = math.floor(bh*corr.get('hit_rate',100)/100); fc = math.floor(bc*corr.get('crit_rate',100)/100); ma = corr.get('map_ammo',0)
-    tl = []
-    if tsi and tsi != '0':
-        for tid in tcl5m.get(tsi, []):
-            d2 = wtdm.get(tid,'')
-            if d2 and d2 not in tl: tl.append(d2)
-        if not tl:
-            for k in [tsi, tsi[:-2] if len(tsi)>2 else None, tsi[:-4] if len(tsi)>4 else None]:
-                if k and wtm.get(k): tl = wtm[k]; break
-    if not tl and ug:
-        gti = gd.get('trait_change_set_id','0')
-        if gti and gti != '0':
-            for tid in tcl5m.get(gti, []):
-                d2 = wtdm.get(tid,'')
+    def def_corr(): return {'power_rate':100,'en_rate':100,'hit_rate':100,'crit_rate':100,'map_ammo':0}
+    btl = []
+    fids = [wid, wid[:-2] if wid and len(wid)>2 else None, wid[:-4] if wid and len(wid)>4 else None, mwid, mwid[:-2] if mwid and len(mwid)>2 else None] if wid else [mwid, mwid[:-2] if mwid and len(mwid)>2 else None]
+    for k in fids:
+        if k and wtm.get(k): btl = wtm[k]; break
+    levels = []
+    for lv in range(1, 6):
+        corr = def_corr()
+        spi = '0'
+        if csi and csi != '0': spi = csi
+        elif ug: spi = gd.get('status_change_set_id','0')
+        if spi != '0':
+            pc = wcm.get(spi, {})
+            lv_corr = pc.get(lv) if isinstance(pc, dict) else None
+            if lv_corr: corr = lv_corr
+        fp = math.floor(bp*corr.get('power_rate',100)/100); fe = math.floor(be*corr.get('en_rate',100)/100)
+        fa = math.floor(bh*corr.get('hit_rate',100)/100); fc = math.floor(bc*corr.get('crit_rate',100)/100); ma = corr.get('map_ammo',0)
+        tpi = '0'
+        if tsi and tsi != '0': tpi = tsi
+        elif ug: tpi = gd.get('trait_change_set_id','0')
+        tl = []
+        if tpi != '0':
+            for ti in wtcm.get(tpi, {}).get(lv, []):
+                d2 = wtdm.get(ti,'')
                 if d2 and d2 not in tl: tl.append(d2)
-            if not tl: tl = wtm.get(gti, [])
-    if not tl:
-        fids = []
-        if wid and wid != '0': fids.extend([wid, wid[:-2] if len(wid)>2 else None, wid[:-4] if len(wid)>4 else None])
-        if mwid and mwid != '0': fids.extend([mwid, mwid[:-2] if len(mwid)>2 else None])
-        for k in fids:
-            if k and wtm.get(k): tl = wtm[k]; break
+        if not tl: tl = list(btl)
+        levels.append({'level':lv,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl})
     rest = []
     if wt == '3': rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
@@ -1103,7 +1114,8 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
-    return {'range_min':rn,'range_max':rx,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
+    l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
+    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
 
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN'):
     trait_set_id = abil_link_map.get(ab_id, ab_id)
@@ -1250,7 +1262,7 @@ unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = creat
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
 growth_pattern_map = create_growth_pattern_map(weapon_growth_data)
-trait_change_level5_map = create_trait_change_level5_map(weapon_trait_change_data)
+weapon_trait_change_map = create_weapon_trait_change_map(weapon_trait_change_data)
 
 ability_resource_map = {}
 for item in extract_data_list(ability_master):
@@ -1601,12 +1613,12 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc):
         wid = w.get('weapon_id', '0'); wm = weapon_info_map.get(wid, {}); wn = ld.get('weapon_text_map', {}).get(wm.get('name_lang_id', '0'), 'Unknown')
         ai = wm.get('attribute', '0'); wt = wm.get('weapon_type', '1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label': 'Unknown', 'icon': ''})
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
-        ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, trait_change_level5_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
+        ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr)
         if uid == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.png', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'is_supply': True, 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.png', 'label': 'MP'}]
-        levels = [{'level': i, 'power': w.get('power', 0), 'en': w.get('en', 0), 'accuracy': w.get('hit_rate', 0), 'critical': w.get('critical_rate', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)]
+        levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
-        weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': w.get('range_min', 0), 'max_range': w.get('range_max', 0), 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
+        weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': ws.get('range_min', 0), 'max_range': ws.get('range_max', 0), 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
@@ -1794,7 +1806,7 @@ def list_characters():
         if sq:
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)])
             if sq not in ss.lower(): continue
-        raw = char_stat_map.get(cid, {}); grown = {s: calc_growth_char(*raw.get(s, (0,0)), ri) for s in CHAR_STAT_ORDER}
+        raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
         rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'Ranged': grown.get('Ranged',0), 'Melee': grown.get('Melee',0), 'Awaken': grown.get('Awaken',0), 'Defense': grown.get('Defense',0), 'Reaction': grown.get('Reaction',0)})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
@@ -1995,15 +2007,42 @@ def get_character(char_id):
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['char_id_map'].get(char_id, ""); cn = ld['char_text_map'].get(lid, "Unknown") if lid else "Unknown"
-        raw = char_stat_map.get(char_id, {}); grown = {s: calc_growth_char(*raw.get(s, (0,0)), ri) for s in CHAR_STAT_ORDER}
+        raw = char_stat_map.get(char_id, {}); has_sp = int(ri) <= 4
+        def rv(s): t = raw.get(s, (0,0,0)); return (t[0], t[1], t[2] if len(t) >= 3 else t[1])
+        grown = {s: calc_growth_char(rv(s)[0], rv(s)[1], ri) for s in CHAR_STAT_ORDER}
+        grown_sp = {s: calc_growth_char(rv(s)[0], rv(s)[2], ri) for s in CHAR_STAT_ORDER}
         fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId','')) == char_id]
-        abilities = [build_ability_entry(normalize_id(ab.get('AbilityId','')), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lc) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        ac = [build_ability_entry(normalize_id(ab.get('AbilityId','')), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        sp = {s: 0 for s in CHAR_STAT_ORDER}
-        for ab in ac:
-            for d2 in ab.get('details', []):
-                for s, p in extract_stat_percent_char(d2['text']).items(): sp[s] = sp.get(s,0) + p
-        stats = [{'name': s, 'total': grown.get(s,0) + (math.floor(grown.get(s,0)*sp[s]/100) if grown.get(s,0) > 0 and sp[s] > 0 else 0), 'bonus': math.floor(grown.get(s,0)*sp[s]/100) if grown.get(s,0) > 0 and sp[s] > 0 else 0} for s in CHAR_STAT_ORDER]
+        def build_ab(ab, lang=lc):
+            bid = normalize_id(ab.get('AbilityId','')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+            bab = build_ability_entry(bid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
+            if spid and spid != '0' and spid != 'None' and spid != bid:
+                bab['sp_replacement'] = build_ability_entry(spid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
+            return bab
+        abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
+        ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
+        spbn, spen, spbs, spes = {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}
+        for bab in ac:
+            for d2 in bab.get('details', []):
+                for s, p in extract_stat_percent_char(d2['text']).items():
+                    if bab.get('is_ex', False): spen[s] += p
+                    else: spbn[s] += p
+            sab = bab.get('sp_replacement', bab)
+            for d2 in sab.get('details', []):
+                for s, p in extract_stat_percent_char(d2['text']).items():
+                    if sab.get('is_ex', False): spes[s] += p
+                    else: spbs[s] += p
+        sne = []; swe = []; ssne = []; sswe = []
+        for s in CHAR_STAT_ORDER:
+            bv = grown.get(s, 0); bon = math.floor(bv * spbn[s] / 100) if bv > 0 else 0
+            sne.append({'name': s, 'base': bv, 'total': bv + bon, 'bonus': bon})
+            tb = math.floor(bv * (spbn[s] + spen[s]) / 100) if bv > 0 else 0
+            swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb})
+            sbv = grown_sp.get(s, 0); sbon = math.floor(sbv * spbs[s] / 100) if sbv > 0 else 0
+            ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon})
+            stb = math.floor(sbv * (spbs[s] + spes[s]) / 100) if sbv > 0 else 0
+            sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb})
+        stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
+        has_ex_stats = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
         fs2 = [x for x in extract_data_list(char_skill) if normalize_id(x.get('CharacterId','')) == char_id]; skills = []
         for sk in sorted(fs2, key=lambda x: int(x.get('SortOrder', 0))):
@@ -2013,7 +2052,7 @@ def get_character(char_id):
             name = entries[0]["text"] if entries else "Unknown"; details = [x["text"] for x in entries[1:]] if len(entries) > 1 else []
             rid2 = ld['skill_resource_map'].get(si,'') or ld['skill_resource_map'].get(bi,''); ic = find_trait_icon(rid2)
             skills.append({'id': si, 'name': name, 'sort': sk.get('SortOrder',0), 'details': details, 'icon': f"/static/images/Trait/{ic}" if ic else '', 'has_icon': bool(ic), 'is_ex': False, 'frame_overlay': '', 'resource_id': rid2})
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'stats': stats, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'lang': lc}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'lang': lc}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
@@ -2099,8 +2138,9 @@ def get_unit(unit_id):
             wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
             ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
-            ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, trait_change_level5_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
+            ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr)
+            levels = ws.get('levels', [{'level':i,'power':ws['power'],'en':ws['en'],'accuracy':ws['accuracy'],'critical':ws['critical'],'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)])
             pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
             am = ws['ammo'] if wt == '3' else 0
             trl = ws.get('traits', [])
@@ -2123,7 +2163,6 @@ def get_unit(unit_id):
                             ft = ccl + tt2
                             if ft not in sat: sat.append(ft)
                     break
-            levels = [{'level': i, 'power': pw, 'en': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl} for i in range(1, 6)]
             lv5t = trl
             ip = any('preemptive strike' in (tr or '').lower() or '先制' in (tr or '') for tr in lv5t + sat)
             icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
