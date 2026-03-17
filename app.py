@@ -303,41 +303,54 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
     Find portrait using IMAGE_INDEX.
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
+    Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
     """
     if not IMAGE_INDEX:
         return None
-    
+
+    def pick_best(matches):
+        """Prefer filename without ' #' suffix (cleaner for URLs/CDN)."""
+        if not matches:
+            return None
+        clean = [m for m in matches if ' #' not in m]
+        return clean[0] if clean else matches[0]
+
     candidates = []
     if isinstance(resource_ids, list):
         candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
     elif resource_ids:
         r = str(resource_ids).strip()
-        if r and r != '0': 
+        if r and r != '0':
             candidates = [r]
-    
+
+    files = IMAGE_INDEX.get(portrait_folder_key, [])
+
     # Try resource IDs first
     for rid in candidates:
         rl = rid.lower()
-        for fn in IMAGE_INDEX.get(portrait_folder_key, []):
-            if rl in fn.lower():
-                return f"/static/{portrait_folder_key}/{fn}"
-    
+        matches = [fn for fn in files if rl in fn.lower()]
+        best = pick_best(matches)
+        if best:
+            return f"/static/{portrait_folder_key}/{best}"
+
     # Try entity ID
     if entity_id:
         eid = str(entity_id).strip()
         el = eid.lower()
-        for fn in IMAGE_INDEX.get(portrait_folder_key, []):
-            if el in fn.lower():
-                return f"/static/{portrait_folder_key}/{fn}"
-        
+        matches = [fn for fn in files if el in fn.lower()]
+        best = pick_best(matches)
+        if best:
+            return f"/static/{portrait_folder_key}/{best}"
+
         # Try suffixes
         for slen in [8, 7, 6, 5, 4]:
             if len(eid) >= slen:
                 suffix = eid[-slen:].lower()
-                for fn in IMAGE_INDEX.get(portrait_folder_key, []):
-                    if suffix in fn.lower():
-                        return f"/static/{portrait_folder_key}/{fn}"
-    
+                matches = [fn for fn in files if suffix in fn.lower()]
+                best = pick_best(matches)
+                if best:
+                    return f"/static/{portrait_folder_key}/{best}"
+
     return None
 
 def find_series_icon(series_id):
