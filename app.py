@@ -927,7 +927,13 @@ def create_weapon_status_map(d):
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('Id') or item.get('id'))
-        if sid != '0': lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId'))}
+        if sid != '0':
+            mr = str(item.get('MapWeaponEffectRange') or item.get('mapWeaponEffectRange') or '')
+            co = [{'x': int(x), 'y': int(y)} for x, y in re.findall(r'\((-?\d+),\s*(-?\d+)\)', mr)]
+            sr = str(item.get('MapWeaponShootingRange') or item.get('mapWeaponShootingRange') or '')
+            sc = [{'x': int(x), 'y': int(y)} for x, y in re.findall(r'\((-?\d+),\s*(-?\d+)\)', sr)]
+            id2 = bool(co and sc and len(co) == len(sc) and ({(c['x'], c['y']) for c in co} == {(c['x'], c['y']) for c in sc}))
+            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2}
     return lookup
 
 def create_weapon_text_map(d):
@@ -1049,7 +1055,7 @@ def resolve_weapon_icon(wt, ai, ubr):
 def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang_code='EN', unit_id=''):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
-    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'usage_restrictions':[]}
+    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
     if mwid == '0': return dr
     ws = wsm.get(mwid)
     if not ws: return dr
@@ -1096,7 +1102,8 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, tcl5m, wtdm, wid='', lang
     if csid != '0':
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
-    return {'range_min':rn,'range_max':rx,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl,'usage_restrictions':rest}
+    mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
+    return {'range_min':rn,'range_max':rx,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
 
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN'):
     trait_set_id = abil_link_map.get(ab_id, ab_id)
@@ -1204,6 +1211,8 @@ unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.jso
 ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
 ssp_custom_core_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core.json"))
 ssp_release_fn_content_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_release_function_set_content.json"))
+ssp_weap_enhance_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_enhance_set.json"))
+ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_effect.json"))
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
@@ -1276,6 +1285,24 @@ if unit_ssp_stat_data:
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('Id') or item.get('id'))
         if sid != '0': unit_ssp_stat_map[sid] = {'HP': (int(item.get('SspHp') or 0), int(item.get('SspMaxHp') or 0)), 'EN': (int(item.get('SspEn') or 0), int(item.get('SspMaxEn') or 0)), 'Attack': (int(item.get('SspAttack') or 0), int(item.get('SspMaxAttack') or 0)), 'Defense': (int(item.get('SspDefense') or 0), int(item.get('SspMaxDefense') or 0)), 'Mobility': (int(item.get('SspMobility') or 0), int(item.get('SspMaxMobility') or 0))}
+
+unit_ssp_weapon_enhance_map = {}
+if ssp_weap_enhance_data:
+    for item in extract_data_list(ssp_weap_enhance_data):
+        if not isinstance(item, dict): continue
+        wid = normalize_id(item.get('TargetWeaponId') or item.get('targetWeaponId'))
+        t_idx = str(item.get('WeaponEnhanceTypeIndex') or item.get('weaponEnhanceTypeIndex') or '1')
+        try: val = int(float(item.get('EffectValue') or item.get('effectValue') or 0))
+        except: val = 0
+        if wid != '0': unit_ssp_weapon_enhance_map.setdefault(wid, []).append({'type': t_idx, 'value': val})
+
+unit_ssp_weapon_effect_map = {}
+if ssp_weap_effect_data:
+    for item in extract_data_list(ssp_weap_effect_data):
+        if not isinstance(item, dict): continue
+        wid = normalize_id(item.get('TargetWeaponId') or item.get('targetWeaponId'))
+        tid = normalize_id(item.get('WeaponTraitId') or item.get('weaponTraitId'))
+        if wid != '0' and tid != '0': unit_ssp_weapon_effect_map.setdefault(wid, []).append(tid)
 
 unit_ssp_abil_replace_map = {}
 if ssp_abil_replace_data:
@@ -2077,8 +2104,35 @@ def get_unit(unit_id):
             pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
             am = ws['ammo'] if wt == '3' else 0
             trl = ws.get('traits', [])
+            ssp_power, ssp_ammo, ssp_range = 0, 0, 0
+            mwid = wm.get('main_weapon_id', '0')
+            for cid in [wid, mwid]:
+                if cid and cid != '0' and cid in unit_ssp_weapon_enhance_map:
+                    for enh in unit_ssp_weapon_enhance_map[cid]:
+                        if enh['type'] == '1': ssp_power += enh['value']
+                        elif enh['type'] == '3': ssp_ammo += enh['value']
+                        elif enh['type'] == '4': ssp_range += enh['value']
+                    break
+            sat = []
+            ccl = "[Custom Core Effect] " if lc == 'EN' else "[Custom Core效果] "
+            for cid in [wid, mwid]:
+                if cid and cid != '0' and cid in unit_ssp_weapon_effect_map:
+                    for tid in unit_ssp_weapon_effect_map[cid]:
+                        tt2 = ld.get('weapon_trait_detail_map', {}).get(tid, '')
+                        if tt2:
+                            ft = ccl + tt2
+                            if ft not in sat: sat.append(ft)
+                    break
             levels = [{'level': i, 'power': pw, 'en': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl} for i in range(1, 6)]
-            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': '', 'ssp_icon_color': '', 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': False})
+            lv5t = trl
+            ip = any('preemptive strike' in (tr or '').lower() or '先制' in (tr or '') for tr in lv5t + sat)
+            icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
+            isw = wid.endswith('90') or wid.endswith('80')
+            siu = ''
+            if isw:
+                tf = find_trait_icon(ubr) if ubr else None
+                siu = f"/static/images/Trait/{tf}" if tf else (portrait or '')
+            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
