@@ -860,8 +860,10 @@ def create_unit_ability_map(d):
     for k in lookup: lookup[k].sort(key=lambda x: x['sort'])
     return lookup
 
+def calc_growth_unit_base(base, mx, ri):
+    gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 def calc_growth_unit(base, mx, ri):
-    gr = GROWTH_MAP.get(str(ri), 60); grown = math.floor(base + ((mx - base) * gr / 100)); return math.floor(grown * 1.4)
+    grown = calc_growth_unit_base(base, mx, ri); return math.floor(grown * 1.4)
 
 def extract_stat_bonus_unit(text, fs):
     bonuses = {}; tl = text.lower()
@@ -1934,6 +1936,22 @@ def get_unit(unit_id):
             for d2 in ab.get('details', []):
                 for s, a in extract_stat_bonus_unit(d2['text'], fs).items(): sb2[s] = sb2.get(s,0) + a
         stats = [{'name': s, 'total': fs.get(s,0)+sb2.get(s,0), 'bonus': sb2.get(s,0)} for s in UNIT_STAT_ORDER]
+        lb_data = []
+        for mult in [1.0, 1.2, 1.3, 1.4]:
+            cm = 1.0 if info.get('is_ultimate', False) else mult
+            lb_fs = {}
+            if raw:
+                for s in ['HP','EN','Attack','Defense','Mobility']:
+                    st = raw.get(s, (0,0)); lb_fs[s] = math.floor(calc_growth_unit_base(st[0], st[1], ri) * cm)
+                lb_fs['Move'] = raw.get('Move', 0)
+            else:
+                lb_fs = {s: math.floor(fs.get(s,0) * cm / 1.4) for s in UNIT_STAT_ORDER}
+            lb_sb = {}
+            for s in UNIT_STAT_ORDER:
+                bf = fs.get(s, 0)
+                lb_sb[s] = math.floor(lb_fs.get(s,0) * sb2.get(s,0) / bf) if bf and sb2.get(s,0) else sb2.get(s,0)
+            snc = [{'name': s, 'total': lb_fs.get(s,0) + lb_sb.get(s,0), 'bonus': lb_sb.get(s,0)} for s in UNIT_STAT_ORDER]
+            lb_data.append({'stats_no_cond': snc, 'stats_with_cond': snc, 'sp_stats_no_cond': snc, 'sp_stats_with_cond': snc, 'ssp_stats_no_cond': snc, 'ssp_stats_with_cond': snc})
         portrait = find_portrait(info.get('resource_ids', []), unit_id, 'images/unit_portraits', f'unit_{unit_id}')
         ubr = info.get('bromide_resource_id', '') or (info.get('resource_ids', [''])[0] if info.get('resource_ids') else '')
         td = unit_ter_map.get(info.get('terrain_set',''), {}); terrain = []
@@ -1953,7 +1971,7 @@ def get_unit(unit_id):
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
         acq = info.get('acquisition_route','0'); ai2 = ACQUISITION_ROUTE_ICONS.get(acq, '')
         if ai2: sicons.append(ai2)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'terrain': terrain, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'special_icons': sicons}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'special_icons': sicons}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
