@@ -1008,6 +1008,198 @@
     "value": "I won't let you get away!"
   },
   {
+    "id": 100701013000200001,
+    "value": "See how you like this!"
+  },
+  {
+    "id": 100701013000200002,
+    "value": "See how you like this!"
+  },
+  {
+    "id": 100701013000200003,
+    "value": "Get ready for the real deal!"
+  },
+  {
+    "id": 100701013000200004,
+    "value": "Get ready for the real deal!"
+  },
+  {
+    "id": 100701013000200005,
+    "value": "Now you're mine!"
+  },
+  {
+    "id": 100701013000200006,
+    "value": "Now you're mine!"
+  },
+  {
+    "id": 100701013000200007,
+    "value": "Don't get cocky!"
+  },
+  {
+    "id": 100701013000200008,
+    "value": "Don't get cocky!"
+  },
+  {
+    "id": 100701013000300001,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 100701013000300002,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 100701013000300003,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 100701013000300004,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 100701013000300005,
+    "value": "DIE!!!"
+  },
+  {
+    "id": 100701013000300006,
+    "value": "DIE!!!"
+  },
+  {
+    "id": 100701013000300007,
+    "value": "Gotcha!"
+  },
+  {
+    "id": 100701013000300008,
+    "value": "Gotcha!"
+  },
+  {
+    "id": 100701013000400001,
+    "value": "Yes! I got you locked down!"
+  },
+  {
+    "id": 100701013000400002,
+    "value": "Yes! I got you locked down!"
+  },
+  {
+    "id": 100701013000400003,
+    "value": "And I was just getting bored!"
+  },
+  {
+    "id": 100701013000400004,
+    "value": "And I was just getting bored!"
+  },
+  {
+    "id": 100701013000400005,
+    "value": "Here I come!!!"
+  },
+  {
+    "id": 100701013000400006,
+    "value": "Here I come!!!"
+  },
+  {
+    "id": 100701013000400007,
+    "value": "Like I said, you're not going anywhere!"
+  },
+  {
+    "id": 100701013000400008,
+    "value": "Like I said, you're not going anywhere!"
+  },
+  {
+    "id": 100701013000900001,
+    "value": "It's time to end this!"
+  },
+  {
+    "id": 100701013000900002,
+    "value": "It's time to end this!"
+  },
+  {
+    "id": 100701013000900003,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701013000900004,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701013000900005,
+    "value": "Move aside!"
+  },
+  {
+    "id": 100701013000900006,
+    "value": "Move aside!"
+  },
+  {
+    "id": 100701013000900007,
+    "value": "That's insane!"
+  },
+  {
+    "id": 100701013000900008,
+    "value": "That's insane!"
+  },
+  {
+    "id": 100701013001000001,
+    "value": "Wahahahaha!"
+  },
+  {
+    "id": 100701013001000002,
+    "value": "Wahahahaha!"
+  },
+  {
+    "id": 100701013001000003,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 100701013001000004,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 100701013001000005,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 100701013001000006,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 100701013001000007,
+    "value": "You don't know who you're up against!"
+  },
+  {
+    "id": 100701013001000008,
+    "value": "You don't know who you're up against!"
+  },
+  {
+    "id": 100701013001100001,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701013001100002,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701013001100003,
+    "value": "Hah! Way ahead of you!"
+  },
+  {
+    "id": 100701013001100004,
+    "value": "Hah! Way ahead of you!"
+  },
+  {
+    "id": 100701013001100005,
+    "value": "Die with some dignity!!!"
+  },
+  {
+    "id": 100701013001100006,
+    "value": "Die with some dignity!!!"
+  },
+  {
+    "id": 100701013001100007,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 100701013001100008,
+    "value": "There's no escape!"
+  },
+  {
     "id": 100701017000200001,
     "value": "You...!"
   },
@@ -4790,6 +4982,30 @@
   {
     "id": 100701150000900008,
     "value": "This ends here!"
+  },
+  {
+    "id": 100701150001100001,
+    "value": "I know!"
+  },
+  {
+    "id": 100701150001100002,
+    "value": "I know!"
+  },
+  {
+    "id": 100701150001100003,
+    "value": "Just die already!"
+  },
+  {
+    "id": 100701150001100004,
+    "value": "Just die already!"
+  },
+  {
+    "id": 100701150001100005,
+    "value": "C'mon, hit!"
+  },
+  {
+    "id": 100701150001100006,
+    "value": "C'mon, hit!"
   },
   {
     "id": 100701155000100001,
@@ -13218,5 +13434,37 @@
   {
     "id": 100701850003300006,
     "value": "Take this!"
+  },
+  {
+    "id": 100701850003900001,
+    "value": "Disintegrate!"
+  },
+  {
+    "id": 100701850003900002,
+    "value": "Disintegrate!"
+  },
+  {
+    "id": 100701850003900003,
+    "value": "Obliterate!"
+  },
+  {
+    "id": 100701850003900004,
+    "value": "Obliterate!"
+  },
+  {
+    "id": 100701850003900005,
+    "value": "Destroy!"
+  },
+  {
+    "id": 100701850003900006,
+    "value": "Destroy!"
+  },
+  {
+    "id": 100701850003900007,
+    "value": "Die!"
+  },
+  {
+    "id": 100701850003900008,
+    "value": "Die!"
   }
 ]

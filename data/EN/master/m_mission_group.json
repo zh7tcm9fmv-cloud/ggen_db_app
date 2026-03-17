@@ -3650,6 +3650,86 @@
     "MissionGroupCategoryTypeIndex": 0
   },
   {
+    "Id": 2603200300,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 2,
+    "SortOrder": 1,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 10000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200301,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 2,
+    "SortOrder": 2,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 10000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200302,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 3,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 32000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200303,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 4,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 11000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200304,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 5,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 11000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200305,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 6,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 11000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200306,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 7,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 10000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
+    "Id": 2603200307,
+    "EventId": 200011,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 8,
+    "AvailableScheduleId": 2603201301,
+    "ReceivableScheduleId": 2603201302,
+    "TransitionId": 11000000200011,
+    "MissionGroupCategoryTypeIndex": 2
+  },
+  {
     "Id": 250110080001,
     "EventId": 0,
     "MissionResetTypeIndex": 1,

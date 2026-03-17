@@ -726,9 +726,21 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 101300010003,
+    "TargetWeaponId": 101300010090,
+    "WeaponTraitId": 320170501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 101300011003,
     "TargetWeaponId": 101300011090,
     "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300020003,
+    "TargetWeaponId": 101300020090,
+    "WeaponTraitId": 320350501,
     "BattlePowerRatingPointRatePercent": 5
   },
   {
@@ -738,9 +750,39 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 101300030001,
+    "TargetWeaponId": 101300030003,
+    "WeaponTraitId": 320250501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300030003,
+    "TargetWeaponId": 101300030090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300050003,
+    "TargetWeaponId": 101300050090,
+    "WeaponTraitId": 320230301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 101300051003,
     "TargetWeaponId": 101300051090,
     "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300060001,
+    "TargetWeaponId": 101300060001,
+    "WeaponTraitId": 310040101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300060003,
+    "TargetWeaponId": 101300060090,
+    "WeaponTraitId": 320250501,
     "BattlePowerRatingPointRatePercent": 5
   },
   {
@@ -756,6 +798,18 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 101300070001,
+    "TargetWeaponId": 101300070002,
+    "WeaponTraitId": 310240101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300070003,
+    "TargetWeaponId": 101300070090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 101300071001,
     "TargetWeaponId": 101300071001,
     "WeaponTraitId": 310160101,
@@ -768,6 +822,66 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 101300080001,
+    "TargetWeaponId": 101300080001,
+    "WeaponTraitId": 320190201,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300080003,
+    "TargetWeaponId": 101300080090,
+    "WeaponTraitId": 320230301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300090003,
+    "TargetWeaponId": 101300090090,
+    "WeaponTraitId": 320310301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300100001,
+    "TargetWeaponId": 101300100002,
+    "WeaponTraitId": 310180101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300100003,
+    "TargetWeaponId": 101300100090,
+    "WeaponTraitId": 320310301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300110003,
+    "TargetWeaponId": 101300110090,
+    "WeaponTraitId": 320270501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300120001,
+    "TargetWeaponId": 101300120001,
+    "WeaponTraitId": 320210201,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300120003,
+    "TargetWeaponId": 101300120090,
+    "WeaponTraitId": 320210301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300140001,
+    "TargetWeaponId": 101300140002,
+    "WeaponTraitId": 310010101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300140003,
+    "TargetWeaponId": 101300140090,
+    "WeaponTraitId": 320120301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 101300141001,
     "TargetWeaponId": 101300141002,
     "WeaponTraitId": 310040101,
@@ -777,6 +891,18 @@
     "Id": 101300141003,
     "TargetWeaponId": 101300141090,
     "WeaponTraitId": 320250501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300150001,
+    "TargetWeaponId": 101300150001,
+    "WeaponTraitId": 310220101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 101300150003,
+    "TargetWeaponId": 101300150090,
+    "WeaponTraitId": 320170501,
     "BattlePowerRatingPointRatePercent": 5
   },
   {

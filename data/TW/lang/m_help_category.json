@@ -1,70 +1,70 @@
 [
   {
     "id": 170100000000001001,
-    "value": "主畫面"
+    "value": "Home"
   },
   {
     "id": 170100000000001011,
-    "value": "單位"
+    "value": "Units"
   },
   {
     "id": 170100000000001021,
-    "value": "角色"
+    "value": "Character"
   },
   {
     "id": 170100000000001031,
-    "value": "支援人員"
+    "value": "Supporters"
   },
   {
     "id": 170100000000001041,
-    "value": "強化"
+    "value": "Upgrade"
   },
   {
     "id": 170100000000001051,
-    "value": "開發"
+    "value": "Develop"
   },
   {
     "id": 170100000000001061,
-    "value": "編制"
+    "value": "Formation"
   },
   {
     "id": 170100000000001071,
-    "value": "關卡"
+    "value": "Stages"
   },
   {
     "id": 170100000000001081,
-    "value": "戰鬥"
+    "value": "Battle"
   },
   {
     "id": 170100000000001091,
-    "value": "主要關卡"
+    "value": "Main Stages"
   },
   {
     "id": 170100000000001101,
-    "value": "強化培育關卡"
+    "value": "Upgrade Stages"
   },
   {
     "id": 170100000000001111,
-    "value": "永恆之路"
+    "value": "Eternal Road"
   },
   {
     "id": 170100000000001112,
-    "value": "大師聯盟"
+    "value": "Master League"
   },
   {
     "id": 170100000000001121,
-    "value": "事件關卡"
+    "value": "Event Stages"
   },
   {
     "id": 170100000000001131,
-    "value": "個人基地"
+    "value": "Base"
   },
   {
     "id": 170100000000001141,
-    "value": "機體補給"
+    "value": "Unit Assembly"
   },
   {
     "id": 170100000000001151,
-    "value": "選單"
+    "value": "Menu"
   }
 ]

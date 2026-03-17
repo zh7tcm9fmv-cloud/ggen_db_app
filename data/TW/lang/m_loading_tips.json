@@ -1,202 +1,202 @@
 [
   {
     "id": 170500000000000001,
-    "value": "強化武裝"
+    "value": "Upgrade your weapons."
   },
   {
     "id": 170500000000000002,
-    "value": "善用額外行動來掌握優勢"
+    "value": "Use bonus actions to your advantage."
   },
   {
     "id": 170500000000000003,
-    "value": "試著使用支援攻擊"
+    "value": "Aim for a Support Attack."
   },
   {
     "id": 170500000000000004,
-    "value": "使用支援防禦來保護夥伴"
+    "value": "Protect allies with a Support Defense."
   },
   {
     "id": 170500000000000005,
-    "value": "試著SP化"
+    "value": "Give SP conversion a try."
   },
   {
     "id": 170500000000000006,
-    "value": "試著招募"
+    "value": "Give scouting a try."
   },
   {
     "id": 170500000000000007,
-    "value": "試著解體"
+    "value": "Give dismantlement a try."
   },
   {
     "id": 170500000000000008,
-    "value": "試著完成開發路線圖"
+    "value": "Aim for Development Diagram completion."
   },
   {
     "id": 170500000000000009,
-    "value": "挑戰隱藏戰鬥"
+    "value": "Take on secret battles."
   },
   {
     "id": 170500000000000010,
-    "value": "試著保存編制"
+    "value": "Try saving formations."
   },
   {
     "id": 170500000000000011,
-    "value": "活用戰艦巡航"
+    "value": "Take advantage of the Warship Cruise."
   },
   {
     "id": 170500000000000012,
-    "value": "活用角色要求"
+    "value": "Take advantage of character requests."
   },
   {
     "id": 170500000000000013,
-    "value": "留意己方的EN"
+    "value": "Always be mindful of your remaining EN."
   },
   {
     "id": 170500000000000014,
-    "value": "留意敵方的射程"
+    "value": "Be wary of the enemy's range of attack."
   },
   {
     "id": 170500000000000015,
-    "value": "試著使用支援技能"
+    "value": "Try using support skills."
   },
   {
     "id": 170500000000000016,
-    "value": "試著使用角色技能"
+    "value": "Try using character skills."
   },
   {
     "id": 170500000000000017,
-    "value": "留意己方的戰意"
+    "value": "Keep an eye on your Vigor."
   },
   {
     "id": 170500000000000018,
-    "value": "試著使用MAP兵器"
+    "value": "Try using MAP Weapons."
   },
   {
     "id": 170500000000000019,
-    "value": "考量地形適性來進行編制"
+    "value": "Formations: mind terrain capability."
   },
   {
     "id": 170500000000000020,
-    "value": "考量類型來進行編制"
+    "value": "Formations: consider types."
   },
   {
     "id": 170500000000000021,
-    "value": "考量攻擊屬性來進行編制"
+    "value": "Formations: consider attack traits."
   },
   {
     "id": 170500000000000022,
-    "value": "配合隊長技能來進行編制"
+    "value": "Formations: utilize leader skills."
   },
   {
     "id": 170500000000000023,
-    "value": "試著讓單位突破界限"
+    "value": "Give unit limit-breaking a try."
   },
   {
     "id": 170500000000000024,
-    "value": "試著讓支援人員突破界限"
+    "value": "Give supporter limit-breaking a try."
   },
   {
     "id": 170500000000000025,
-    "value": "試著裝上選擇性零件"
+    "value": "Try equipping modifications."
   },
   {
     "id": 170600000000000001,
-    "value": "武裝等級提升後會提升POWER、減少消耗EN。\n試著收集武裝強化零件來強化武裝吧。"
+    "value": "As you level up your weapons, their Power increases while their EN\nconsumption decreases. Collect weapon upgrade material to enhance your weapons."
   },
   {
     "id": 170600000000000002,
-    "value": "以「攻擊」擊破敵方時，同回合內可再次行動。\n戰鬥時審慎考慮要用哪個單位來給予敵方最後一擊吧。"
+    "value": "When you destroy an enemy with an attack, you can take another action\nduring the same turn. Therefore, think carefully about which units to use to\nfinish off enemies."
   },
   {
     "id": 170600000000000003,
-    "value": "當其他我軍單位發動攻擊時，可進行追加攻擊。\n僅限持有「支援攻擊」的角色可採取此行動。"
+    "value": "When another one of your units attacks, they will be able to perform an\nadditional attack. This action is only possible for characters\nwith Support Attack."
   },
   {
     "id": 170600000000000004,
-    "value": "當我軍或客座軍單位遭受攻擊時，可代為承受攻擊。\n僅限持有「支援防禦」的角色可採取此行動。"
+    "value": "When your units or guest force units are attacked, characters with\nSupport Defense can take damage in place of the attacked unit."
   },
   {
     "id": 170600000000000005,
-    "value": "SP化後基礎能力值會提升，\n並使單位等級上限提升至「100」。"
+    "value": "After performing SP conversion on a unit, its base stats increase and it can\nbe leveled up to 100."
   },
   {
     "id": 170600000000000006,
-    "value": "可透過「招募」來讓角色成為夥伴。\n在「強化」→「角色」裡頭可找到招募的選項。"
+    "value": "Characters can be recruited from \"Scout.\" You can access \"Scout\" by going to\n\"Upgrade,\" then \"Character.\""
   },
   {
     "id": 170600000000000007,
-    "value": "可將獲得的機體「解體」。\n解體後可獲得「G商店Pt」及「稀有獎章」。"
+    "value": "Acquired mobile suits can be dismantled. You can obtain G-Shop Pts and rare\nmedals through dismantlement."
   },
   {
     "id": 170600000000000008,
-    "value": "部分開發路線圖在完成後可獲得「終極單位」。\n終極單位有專用的開發路線圖，需要使用特殊材料來開發。"
+    "value": "Some Development Diagrams allow you to obtain Ultimate Units upon completion.\nUltimate Units have their own Development Diagrams and require special\nmaterials for development."
   },
   {
     "id": 170600000000000009,
-    "value": "部分戰鬥在達成條件後會出現「隱藏戰鬥」。\n完成隱藏戰鬥後將會得到珍貴的開發材料。"
+    "value": "Some battles will let you unlock secret battles upon meeting certain\nconditions. Clearing secret battles will net you valuable development\nmaterials."
   },
   {
     "id": 170600000000000010,
-    "value": "試著用「保存編制」來保存自己慣用的編制吧。\n保存後即可在出擊時呼叫出該編制。"
+    "value": "Save your frequently used formations. You will then be able to load them when\nsortieing."
   },
   {
     "id": 170600000000000011,
-    "value": "使用個人基地的「戰艦巡航」後，可依據經過時間的長短來獲得各種道具。\n定期去個人基地看看吧。"
+    "value": "As time passes, you will be able to acquire items from the \"Warship Cruise\"\nat your Base. Be sure to check your Base regularly."
   },
   {
     "id": 170600000000000012,
-    "value": "「角色要求」裡可接受角色的委託。\n完成委託後會提升「RANK」，並可獲得開發材料或選擇性零件。"
+    "value": "You can accept requests from \"Character Requests.\" Completing requests\nimproves your rank, allowing you then to acquire development materials and\nModifications."
   },
   {
     "id": 170600000000000013,
-    "value": "「EN」於每次使用武裝時消耗，每回合都會慢慢恢復。\nEN不足會導致武裝無法發動，應時時注意剩餘量。"
+    "value": "EN is consumed whenever you use weapons. It recovers gradually each turn.\nYou cannot activate your weapons if you do not have enough EN, so always\nkeep an eye on your remaining EN."
   },
   {
     "id": 170600000000000014,
-    "value": "「！」的區域代表敵方的「反擊範圍」。\n站在「！」區域外就能進行單方面攻擊，而不被敵方反擊。"
+    "value": "Areas marked with \"!\" indicate the enemy's counter range. As long as you stay\noutside of this area, you can attack the enemy without suffering any\ncounterattack."
   },
   {
     "id": 170600000000000015,
-    "value": "支援人員持有「支援技能」。\n有些技能可以恢復單位的HP或EN，所以使用時機十分重要。"
+    "value": "Supporters possess support skills. As some of these can restore HP and EN to\nunits, determining the best time to use them is key."
   },
   {
     "id": 170600000000000016,
-    "value": "角色持有「角色技能」。\n技能效果五花八門，試著把握關鍵使用時機，活用技能來進行攻略吧。"
+    "value": "Characters have character skills. These provide various effects, so choose\nthe best time to use them according to your strategy."
   },
   {
     "id": 170600000000000017,
-    "value": "「戰意」會依據「MP」而提升，並增加給予的損傷。\n當攻擊命中，或發動支援攻擊、支援防禦時，都會累積MP。"
+    "value": "Vigor increases with MP, which in turn increases the damage you deal.\nBuild up MP by landing attacks and performing Support Attack and\nSupport Defense."
   },
   {
     "id": 170600000000000018,
-    "value": "「MAP兵器」是可以同時攻擊多名敵方的強力武裝。\n只有在移動前才能發動，試著找出一個絕佳位置再使用吧。"
+    "value": "MAP Weapons are powerful weapons that can attack multiple enemies\nsimultaneously. They can only be activated before moving, so pay attention\nto the units' positions when using them."
   },
   {
     "id": 170600000000000019,
-    "value": "關卡裡會有許多種「地形」。\n若單位的「地形適性」不適合該地形，在出擊或移動時會受到限制。"
+    "value": "Stages have different terrains. If units do not have suitable terrain\ncapabilities, they will be restricted when sortieing or moving."
   },
   {
     "id": 170600000000000020,
-    "value": "單位與角色都有「攻擊型」、「耐久型」、「支援型」的類型之分。\n編制時讓類型一致，就能強化能力效果。"
+    "value": "Units and characters belong to one of three types: attack, durability, or\nsupport. By matching types when making formations, you can enhance the\neffects of their abilities."
   },
   {
     "id": 170600000000000021,
-    "value": "武裝有「光束」和「物理」的「武裝屬性」之分。\n有些敵方會減輕特定攻擊屬性的損傷，所以能否視情況區分使用將是關鍵。"
+    "value": "Weapons have weapon attributes, such as beam and physical. Certain attacks\nwill deal less damage to certain enemies, so be sure to use them judiciously."
   },
   {
     "id": 170600000000000022,
-    "value": "支援人員持有能強化整體編制的「隊長技能」。\n試著編制特定標籤或系列的單位，來獲得隊長技能的強化效果吧。"
+    "value": "Supporters have leader skills that enhance your entire formation. Put units\ninto your formation that have tags or are from series that leader skills\napply to."
   },
   {
     "id": 170600000000000023,
-    "value": "單位進行「突破界限」後，能力值將會大幅提升。\n部分UR單位於突破界限後，可解放主畫面動畫。"
+    "value": "Performing limit breaks on units greatly increases their stats.\nLimit breaking may also unlock a home screen animation for some UR units."
   },
   {
     "id": 170600000000000024,
-    "value": "支援人員進行「突破界限」後，隊長技能將會強化。\n突破界限必須再消耗同樣的支援人員，或支援人員突破界限材料。"
+    "value": "Performing limit breaks on supporters enhances their leader skills.\nLimit breaks require either duplicate supporters or supporter limit break materials."
   },
   {
     "id": 170600000000000025,
-    "value": "單位可裝備「選擇性零件」。\n選擇性零件也稱作「OP」，大多具備讓能力值變動的效果。"
+    "value": "Units can be equipped with Modifications. Modifications are also referred to\nas mods and mainly grant effects that alter stats."
   }
 ]

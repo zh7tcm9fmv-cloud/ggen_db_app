@@ -1,9 +1,5 @@
 [
   {
-    "id": 0,
-    "value": ""
-  },
-  {
     "id": 140700000300010101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -365,11 +361,11 @@
   },
   {
     "id": 140700000300110101,
-    "value": ""
+    "value": "EN Reduction LV 1"
   },
   {
     "id": 140700000300110201,
-    "value": ""
+    "value": "EN Reduction LV 2"
   },
   {
     "id": 140700000300120101,
@@ -3504,40 +3500,76 @@
     "value": "Preemptive Strike"
   },
   {
+    "id": 140700000300670101,
+    "value": "Scaling Weapon Power (High Max MP) LV 1"
+  },
+  {
     "id": 140700000300670102,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 1"
+  },
+  {
+    "id": 140700000300670201,
+    "value": "Scaling Weapon Power (High Max MP) LV 2"
   },
   {
     "id": 140700000300670202,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 2"
+  },
+  {
+    "id": 140700000300670301,
+    "value": "Scaling Weapon Power (High Max MP) LV 3"
   },
   {
     "id": 140700000300670302,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 3"
+  },
+  {
+    "id": 140700000300670401,
+    "value": "Scaling Weapon Power (High Max MP) LV 4"
   },
   {
     "id": 140700000300670402,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 4"
+  },
+  {
+    "id": 140700000300670501,
+    "value": "Scaling Weapon Power (High Max MP) LV 5"
   },
   {
     "id": 140700000300670502,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 5"
+  },
+  {
+    "id": 140700000300670601,
+    "value": "Scaling Weapon Power (High Max MP) LV 6"
   },
   {
     "id": 140700000300670602,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 6"
+  },
+  {
+    "id": 140700000300670701,
+    "value": "Scaling Weapon Power (High Max MP) LV 7"
   },
   {
     "id": 140700000300670702,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 7"
+  },
+  {
+    "id": 140700000300670801,
+    "value": "Scaling Weapon Power (High Max MP) LV 8"
   },
   {
     "id": 140700000300670802,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 8"
+  },
+  {
+    "id": 140700000300670901,
+    "value": "Scaling Weapon Power (High Max MP) LV 9"
   },
   {
     "id": 140700000300670902,
-    "value": ""
+    "value": "Scaling Weapon Power (High Max MP) LV 9"
   },
   {
     "id": 140700000300680101,
@@ -3649,39 +3681,39 @@
   },
   {
     "id": 140700000300690502,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000300690601,
-    "value": ""
+    "value": "Decreased ATK [1 turn] LV 6"
   },
   {
     "id": 140700000300690602,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000300690701,
-    "value": ""
+    "value": "Decreased ATK [1 turn] LV 7"
   },
   {
     "id": 140700000300690702,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000300690801,
-    "value": ""
+    "value": "Decreased ATK [1 turn] LV 8"
   },
   {
     "id": 140700000300690802,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000300690901,
-    "value": ""
+    "value": "Decreased ATK [1 turn] LV 9"
   },
   {
     "id": 140700000300690902,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000300700101,
@@ -4078,6 +4110,186 @@
   {
     "id": 140700000300790903,
     "value": ""
+  },
+  {
+    "id": 140700000300800101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800102,
+    "value": "Piercing LV 1"
+  },
+  {
+    "id": 140700000300800201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800202,
+    "value": "Piercing LV 2"
+  },
+  {
+    "id": 140700000300800301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800302,
+    "value": "Piercing LV 3"
+  },
+  {
+    "id": 140700000300800401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800402,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140700000300800501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800502,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140700000300800601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800602,
+    "value": "Piercing LV 6"
+  },
+  {
+    "id": 140700000300800701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800702,
+    "value": "Piercing LV 7"
+  },
+  {
+    "id": 140700000300800801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800802,
+    "value": "Piercing LV 8"
+  },
+  {
+    "id": 140700000300800901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300800902,
+    "value": "Piercing LV 9"
+  },
+  {
+    "id": 140700000300810101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810102,
+    "value": "Beam Weapon Power Down [1 turn] LV 1"
+  },
+  {
+    "id": 140700000300810201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810202,
+    "value": "Beam Weapon Power Down [1 turn] LV 2"
+  },
+  {
+    "id": 140700000300810301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810302,
+    "value": "Beam Weapon Power Down [1 turn] LV 3"
+  },
+  {
+    "id": 140700000300810401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810402,
+    "value": "Beam Weapon Power Down [1 turn] LV 4"
+  },
+  {
+    "id": 140700000300810501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810502,
+    "value": "Beam Weapon Power Down [1 turn] LV 5"
+  },
+  {
+    "id": 140700000300810601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810602,
+    "value": "Beam Weapon Power Down [1 turn] LV 6"
+  },
+  {
+    "id": 140700000300810701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810702,
+    "value": "Beam Weapon Power Down [1 turn] LV 7"
+  },
+  {
+    "id": 140700000300810801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810802,
+    "value": "Beam Weapon Power Down [1 turn] LV 8"
+  },
+  {
+    "id": 140700000300810901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300810902,
+    "value": "Beam Weapon Power Down [1 turn] LV 9"
+  },
+  {
+    "id": 140700000300820101,
+    "value": "Piercing LV 1"
+  },
+  {
+    "id": 140700000300820201,
+    "value": "Piercing LV 2"
+  },
+  {
+    "id": 140700000300820301,
+    "value": "Piercing LV 3"
+  },
+  {
+    "id": 140700000300820401,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140700000300820501,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140700000300820601,
+    "value": "Piercing LV 6"
+  },
+  {
+    "id": 140700000300820701,
+    "value": "Piercing LV 7"
+  },
+  {
+    "id": 140700000300820801,
+    "value": "Piercing LV 8"
+  },
+  {
+    "id": 140700000300820901,
+    "value": "Piercing LV 9"
   },
   {
     "id": 140700000310010101,
@@ -7257,7 +7469,7 @@
   },
   {
     "id": 140700000700270101,
-    "value": ""
+    "value": "Preemptive Strike"
   },
   {
     "id": 140700000700400101,
@@ -7354,6 +7566,38 @@
   {
     "id": 140700000700402002,
     "value": "Decreased DEF [1 turn] "
+  },
+  {
+    "id": 140700000700480101,
+    "value": "HP Absorption LV 1"
+  },
+  {
+    "id": 140700000700490101,
+    "value": "MOV Down LV 1"
+  },
+  {
+    "id": 140700000700490201,
+    "value": "MOV Down LV 2"
+  },
+  {
+    "id": 140700000700490301,
+    "value": "MOV Down LV 3"
+  },
+  {
+    "id": 140700000700490401,
+    "value": "MOV Down LV 4"
+  },
+  {
+    "id": 140700000700490501,
+    "value": "MOV Down LV 5"
+  },
+  {
+    "id": 140700000700500501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700500502,
+    "value": "(Vigor conditions)Piercing LV 5"
   },
   {
     "id": 140800000300010101,
@@ -11432,6 +11676,186 @@
     "value": "Restores own EN equal to 90% of EN damage dealt\n(Recovery is capped at 50% of own Max EN)"
   },
   {
+    "id": 140800000300800101,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800102,
+    "value": "When this unit attacks, reduce enemy's DEF by 2% for this attack."
+  },
+  {
+    "id": 140800000300800201,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800202,
+    "value": "When this unit attacks, reduce enemy's DEF by 5% for this attack."
+  },
+  {
+    "id": 140800000300800301,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800302,
+    "value": "When this unit attacks, reduce enemy's DEF by 10% for this attack."
+  },
+  {
+    "id": 140800000300800401,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800402,
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
+  },
+  {
+    "id": 140800000300800501,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800502,
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
+  },
+  {
+    "id": 140800000300800601,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800602,
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
+  },
+  {
+    "id": 140800000300800701,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800702,
+    "value": "When this unit attacks, reduce enemy's DEF by 30% for this attack."
+  },
+  {
+    "id": 140800000300800801,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800802,
+    "value": "When this unit attacks, reduce enemy's DEF by 35% for this attack."
+  },
+  {
+    "id": 140800000300800901,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300800902,
+    "value": "When this unit attacks, reduce enemy's DEF by 40% for this attack."
+  },
+  {
+    "id": 140800000300810101,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810102,
+    "value": "Inflict \"Decrease beam weapon Power by 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810201,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810202,
+    "value": "Inflict \"Decrease beam weapon Power by 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810301,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810302,
+    "value": "Inflict \"Decrease beam weapon Power by 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810401,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810402,
+    "value": "Inflict \"Decrease beam weapon Power by 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810501,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810502,
+    "value": "Inflict \"Decrease beam weapon Power by 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810601,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810602,
+    "value": "Inflict \"Decrease beam weapon Power by 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810701,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810702,
+    "value": "Inflict \"Decrease beam weapon Power by 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810801,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810802,
+    "value": "Inflict \"Decrease beam weapon Power by 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300810901,
+    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+  },
+  {
+    "id": 140800000300810902,
+    "value": "Inflict \"Decrease beam weapon Power by 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300820101,
+    "value": "When this unit attacks, reduce enemy's DEF by 2% for this attack."
+  },
+  {
+    "id": 140800000300820201,
+    "value": "When this unit attacks, reduce enemy's DEF by 5% for this attack."
+  },
+  {
+    "id": 140800000300820301,
+    "value": "When this unit attacks, reduce enemy's DEF by 10% for this attack."
+  },
+  {
+    "id": 140800000300820401,
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
+  },
+  {
+    "id": 140800000300820501,
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
+  },
+  {
+    "id": 140800000300820601,
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
+  },
+  {
+    "id": 140800000300820701,
+    "value": "When this unit attacks, reduce enemy's DEF by 30% for this attack."
+  },
+  {
+    "id": 140800000300820801,
+    "value": "When this unit attacks, reduce enemy's DEF by 35% for this attack."
+  },
+  {
+    "id": 140800000300820901,
+    "value": "When this unit attacks, reduce enemy's DEF by 40% for this attack."
+  },
+  {
     "id": 140800000310010101,
     "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
   },
@@ -14710,5 +15134,33 @@
   {
     "id": 140800000700480101,
     "value": "Restores own HP equal to 90% of damage dealt\n(Recovery is capped at 45% of own Max HP)"
+  },
+  {
+    "id": 140800000700490101,
+    "value": ""
+  },
+  {
+    "id": 140800000700490201,
+    "value": ""
+  },
+  {
+    "id": 140800000700490301,
+    "value": ""
+  },
+  {
+    "id": 140800000700490401,
+    "value": ""
+  },
+  {
+    "id": 140800000700490501,
+    "value": ""
+  },
+  {
+    "id": 140800000700500501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700500502,
+    "value": "When Vigor is Supercharged or higher,\nWhen this unit attacks, reduce enemy's DEF by 50% for this attack."
   }
 ]

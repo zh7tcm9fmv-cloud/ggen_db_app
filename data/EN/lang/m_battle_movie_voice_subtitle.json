@@ -1876,6 +1876,430 @@
     "value": "To defend is to lose, so attack!"
   },
   {
+    "id": 101000101300020001,
+    "value": "You think I'm just gonna go ahead and die?!"
+  },
+  {
+    "id": 101000101300020002,
+    "value": "Well then... Let's see what they can do!"
+  },
+  {
+    "id": 101000101300020003,
+    "value": "If I don't go all-out I'm gonna be in trouble!"
+  },
+  {
+    "id": 101000101300020004,
+    "value": "Oh, I'm not dying! Just you watch!"
+  },
+  {
+    "id": 101000101300020005,
+    "value": "Can't you ever show up when it works for me?!"
+  },
+  {
+    "id": 101000101300020006,
+    "value": "See how you like this!"
+  },
+  {
+    "id": 101000101300020007,
+    "value": "Get ready for the real deal!"
+  },
+  {
+    "id": 101000101300020008,
+    "value": "Now you're mine!"
+  },
+  {
+    "id": 101000101300020009,
+    "value": "Don't get cocky!"
+  },
+  {
+    "id": 101000101300020010,
+    "value": "Dammit! I can't get a moment's peace!"
+  },
+  {
+    "id": 101000101300020011,
+    "value": "Tch!"
+  },
+  {
+    "id": 101000101300020012,
+    "value": "I can't handle any more of this!"
+  },
+  {
+    "id": 101000101300020013,
+    "value": "Who the hell do you think you are?!"
+  },
+  {
+    "id": 101000101300020014,
+    "value": "Ngh! Is this it?! I can't hang on any longer!!!"
+  },
+  {
+    "id": 101000101300020015,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 101000101300020016,
+    "value": "You're not even my enemy!"
+  },
+  {
+    "id": 101000101300020017,
+    "value": "Looks like you need some discipline!"
+  },
+  {
+    "id": 101000101300020018,
+    "value": "This is no place for me to be taking a dirt nap!"
+  },
+  {
+    "id": 101000101300030001,
+    "value": "I'm not some grim reaper!"
+  },
+  {
+    "id": 101000101300030002,
+    "value": "Let's settle this once and for all!"
+  },
+  {
+    "id": 101000101300030003,
+    "value": "I'm not losing anyone else!"
+  },
+  {
+    "id": 101000101300030004,
+    "value": "I won't let a single person die!"
+  },
+  {
+    "id": 101000101300030005,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 101000101300030006,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 101000101300030007,
+    "value": "DIE!!!"
+  },
+  {
+    "id": 101000101300030008,
+    "value": "Gotcha!"
+  },
+  {
+    "id": 101000101300030009,
+    "value": "Am I done for?"
+  },
+  {
+    "id": 101000101300030010,
+    "value": "Rgh!"
+  },
+  {
+    "id": 101000101300030011,
+    "value": "That's enough from you!"
+  },
+  {
+    "id": 101000101300030012,
+    "value": "Not yet! You think that's enough to take me down?!"
+  },
+  {
+    "id": 101000101300030013,
+    "value": "Not so fast! I still got some lift left in me!"
+  },
+  {
+    "id": 101000101300030014,
+    "value": "I'll smash every last one of you!"
+  },
+  {
+    "id": 101000101300030015,
+    "value": "You're not killing anyone! I won't let anyone die!"
+  },
+  {
+    "id": 101000101300030016,
+    "value": "YOU'RE MINE!"
+  },
+  {
+    "id": 101000101300030017,
+    "value": "I'm not losing anyone else! I'll protect everyone,\nat any cost!"
+  },
+  {
+    "id": 101000101300030018,
+    "value": "I'll take every last one of you on! You're all\ngoing down!"
+  },
+  {
+    "id": 101000101300040001,
+    "value": "Hey, come on! Stay sharp or you're getting blown\nup!"
+  },
+  {
+    "id": 101000101300040002,
+    "value": "I'm gonna be a big shot! I can't crap out now!"
+  },
+  {
+    "id": 101000101300040003,
+    "value": "You gotta be kidding! How am I supposed to fight\nan enemy like that?!"
+  },
+  {
+    "id": 101000101300040004,
+    "value": "Nothing personal, but I'm not about to miss this\nshot!"
+  },
+  {
+    "id": 101000101300040005,
+    "value": "Yes! I got you locked down!"
+  },
+  {
+    "id": 101000101300040006,
+    "value": "And I was just getting bored!"
+  },
+  {
+    "id": 101000101300040007,
+    "value": "Here I come!!!"
+  },
+  {
+    "id": 101000101300040008,
+    "value": "Like I said, you're not going anywhere!"
+  },
+  {
+    "id": 101000101300040009,
+    "value": "You damn dirty bastard!"
+  },
+  {
+    "id": 101000101300040010,
+    "value": "This doesn't even work!"
+  },
+  {
+    "id": 101000101300040011,
+    "value": "Whoa, whoa! They got their sights on me?!"
+  },
+  {
+    "id": 101000101300040012,
+    "value": "Grk! You're really out for blood!"
+  },
+  {
+    "id": 101000101300040013,
+    "value": "Things are getting pretty heavy."
+  },
+  {
+    "id": 101000101300040014,
+    "value": "Bout time to blow this shindig!"
+  },
+  {
+    "id": 101000101300090001,
+    "value": "We must put an end to this senseless fighting at\nonce!"
+  },
+  {
+    "id": 101000101300090002,
+    "value": "I don't have a choice... By any means necessary!"
+  },
+  {
+    "id": 101000101300090003,
+    "value": "Don't even try to argue with me! Fall back\nimmediately!"
+  },
+  {
+    "id": 101000101300090004,
+    "value": "I'm begging you, leave me alone!"
+  },
+  {
+    "id": 101000101300090005,
+    "value": "Stop! Do you wish to die?!"
+  },
+  {
+    "id": 101000101300090006,
+    "value": "I have no desire for bloodshed! Surrender!"
+  },
+  {
+    "id": 101000101300090007,
+    "value": "It's time to end this!"
+  },
+  {
+    "id": 101000101300090008,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 101000101300090009,
+    "value": "Move aside!"
+  },
+  {
+    "id": 101000101300090010,
+    "value": "That's insane!"
+  },
+  {
+    "id": 101000101300090011,
+    "value": "Urgh!"
+  },
+  {
+    "id": 101000101300090012,
+    "value": "Must you fight no matter what...?"
+  },
+  {
+    "id": 101000101300090013,
+    "value": "But..."
+  },
+  {
+    "id": 101000101300090014,
+    "value": "Ngh... I know it's impossible!"
+  },
+  {
+    "id": 101000101300090015,
+    "value": "To think I'd be halted here and now!"
+  },
+  {
+    "id": 101000101300090016,
+    "value": "I'll find a way!"
+  },
+  {
+    "id": 101000101300090017,
+    "value": "I still believe in something! Even amidst this\nfoolish war!"
+  },
+  {
+    "id": 101000101300090018,
+    "value": "Watch, and I will show you a true fight."
+  },
+  {
+    "id": 101000101300100001,
+    "value": "I've got to do whatever it takes!"
+  },
+  {
+    "id": 101000101300100002,
+    "value": "Face me and I'll put you out of your misery!"
+  },
+  {
+    "id": 101000101300100003,
+    "value": "I hear an irksome fly flitting about!"
+  },
+  {
+    "id": 101000101300100004,
+    "value": "Grr! You obnoxious, warmongering bastard!"
+  },
+  {
+    "id": 101000101300100005,
+    "value": "Wahahahaha!"
+  },
+  {
+    "id": 101000101300100006,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 101000101300100007,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 101000101300100008,
+    "value": "You don't know who you're up against!"
+  },
+  {
+    "id": 101000101300100009,
+    "value": "This is preposterous!"
+  },
+  {
+    "id": 101000101300100010,
+    "value": "You lousy—!"
+  },
+  {
+    "id": 101000101300100011,
+    "value": "Damn!"
+  },
+  {
+    "id": 101000101300100012,
+    "value": "Grk?! I took a direct hit?!"
+  },
+  {
+    "id": 101000101300100013,
+    "value": "I won't let the likes of you slow me down!"
+  },
+  {
+    "id": 101000101300100014,
+    "value": "Argh! You wretched pest!"
+  },
+  {
+    "id": 101000101300100015,
+    "value": "Ugh! Gha...ha... Not now...!"
+  },
+  {
+    "id": 101000101300100016,
+    "value": "Face me and I'll put you out of your misery!"
+  },
+  {
+    "id": 101000101300100017,
+    "value": "Wahahahaha! This is the power of the technology!"
+  },
+  {
+    "id": 101000101300100018,
+    "value": "I hear an irksome fly flitting about!"
+  },
+  {
+    "id": 101000101300110001,
+    "value": "Worthless! Perish and be forgotten!"
+  },
+  {
+    "id": 101000101300110002,
+    "value": "That was foolish, now you're finished!"
+  },
+  {
+    "id": 101000101300110003,
+    "value": "Let's make this quick!"
+  },
+  {
+    "id": 101000101300110004,
+    "value": "So you've gone and stepped into my sights!"
+  },
+  {
+    "id": 101000101300110005,
+    "value": "Let's get this started!"
+  },
+  {
+    "id": 101000101300110006,
+    "value": "You're done for!"
+  },
+  {
+    "id": 101000101300110007,
+    "value": "Hah! Way ahead of you!"
+  },
+  {
+    "id": 101000101300110008,
+    "value": "Die with some dignity!!!"
+  },
+  {
+    "id": 101000101300110009,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 101000101300110010,
+    "value": "I've still got time! Still got time to win this!"
+  },
+  {
+    "id": 101000101300110011,
+    "value": "Damn!"
+  },
+  {
+    "id": 101000101300110012,
+    "value": "Rgh! I failed!"
+  },
+  {
+    "id": 101000101300110013,
+    "value": "Impossible... To think it'd be like this!"
+  },
+  {
+    "id": 101000101300110014,
+    "value": "No! Does this mean I'm done for?!"
+  },
+  {
+    "id": 101000101300110015,
+    "value": "Fool! Ever seen anything like this before?!"
+  },
+  {
+    "id": 101000101300110016,
+    "value": "You're pretty good. Too bad your opponent is\nbetter!"
+  },
+  {
+    "id": 101000101300110017,
+    "value": "You're not worth the effort. I'm gonna end this\nwith one blow!"
+  },
+  {
+    "id": 101000101300110018,
+    "value": "You're gonna die without ever\nrealizing the potential of that machine!"
+  },
+  {
+    "id": 101000101300110019,
+    "value": "Hmph!\nPerish and be forgotten!"
+  },
+  {
+    "id": 101000101300110020,
+    "value": "Cower in fear!"
+  },
+  {
     "id": 101000101700020001,
     "value": "I've got to do what I can!"
   },
@@ -9105,7 +9529,7 @@
   },
   {
     "id": 101000115000040022,
-    "value": "Just the usual!"
+    "value": "See the difference that experience makes!"
   },
   {
     "id": 101000115000050101,
@@ -9430,6 +9854,62 @@
   {
     "id": 101000115000090022,
     "value": "At this point, there's no stopping!"
+  },
+  {
+    "id": 101000115000110001,
+    "value": "Seems like a reckless plan..."
+  },
+  {
+    "id": 101000115000110002,
+    "value": "We can't get the upper hand."
+  },
+  {
+    "id": 101000115000110003,
+    "value": "We never had this before."
+  },
+  {
+    "id": 101000115000110004,
+    "value": "Don't say I didn't warn you!"
+  },
+  {
+    "id": 101000115000110005,
+    "value": "It looks like Hathaway's suit."
+  },
+  {
+    "id": 101000115000110006,
+    "value": "I know!"
+  },
+  {
+    "id": 101000115000110007,
+    "value": "Just die already!"
+  },
+  {
+    "id": 101000115000110008,
+    "value": "C'mon, hit!"
+  },
+  {
+    "id": 101000115000110009,
+    "value": "I can't accept that!"
+  },
+  {
+    "id": 101000115000110010,
+    "value": "Whoa!"
+  },
+  {
+    "id": 101000115000110011,
+    "value": "This isn't good..."
+  },
+  {
+    "id": 101000115000110012,
+    "value": "Are we really not good enough?"
+  },
+  {
+    "id": 101000115000110013,
+    "value": "Just stay alive, okay?"
+  },
+  {
+    "id": 101000115000110014,
+    "value": "Hath..."
   },
   {
     "id": 101000115500010001,
@@ -18457,7 +18937,7 @@
   },
   {
     "id": 101000140000010004,
-    "value": "I can see them...! Take this!"
+    "value": "I can see them...!"
   },
   {
     "id": 101000140000010005,
@@ -28138,6 +28618,102 @@
   {
     "id": 101000185000330014,
     "value": "Go get 'em!"
+  },
+  {
+    "id": 101000185000390001,
+    "value": "Obliterate! Obliterate!"
+  },
+  {
+    "id": 101000185000390002,
+    "value": "Annihilate! Every last! Enemy!"
+  },
+  {
+    "id": 101000185000390003,
+    "value": "Haro! Going all out! All out!"
+  },
+  {
+    "id": 101000185000390004,
+    "value": "Target! Sighted! Obliterate!"
+  },
+  {
+    "id": 101000185000390005,
+    "value": "Disintegrate!"
+  },
+  {
+    "id": 101000185000390006,
+    "value": "Obliterate!"
+  },
+  {
+    "id": 101000185000390007,
+    "value": "Destroy!"
+  },
+  {
+    "id": 101000185000390008,
+    "value": "Die!"
+  },
+  {
+    "id": 101000185000390009,
+    "value": "Ow!"
+  },
+  {
+    "id": 101000185000390010,
+    "value": "Unforgivable!"
+  },
+  {
+    "id": 101000185000390011,
+    "value": "Uh-oh! Not good! Forgive Haro!"
+  },
+  {
+    "id": 101000185000390012,
+    "value": "Ahh! Harorororo...!"
+  },
+  {
+    "id": 101000185000390013,
+    "value": "Enemies sighted! Enemies sighted!"
+  },
+  {
+    "id": 101000185000390014,
+    "value": "Go! Get them!"
+  },
+  {
+    "id": 101000185000390015,
+    "value": "Go! Fangs!"
+  },
+  {
+    "id": 101000185000390016,
+    "value": "Haro...! Going all out! For real!\nAnnihilate everything! Everything!"
+  },
+  {
+    "id": 101000185000390017,
+    "value": "Haro, Haro! Haro, Haro Finger!"
+  },
+  {
+    "id": 101000185000390018,
+    "value": "All will burn! Burn!"
+  },
+  {
+    "id": 101000185000390019,
+    "value": "Enemies successfully obliterated!"
+  },
+  {
+    "id": 101000185000390020,
+    "value": "Haro! Invincible!"
+  },
+  {
+    "id": 101000185000390021,
+    "value": "Fly! Get them!"
+  },
+  {
+    "id": 101000185000390022,
+    "value": "Trans-Am! Trans-Am!"
+  },
+  {
+    "id": 101000185000390023,
+    "value": "Haro! Going all out! Destroy!"
+  },
+  {
+    "id": 101000185000390024,
+    "value": "Destroy...! Destroy...!\nHarorororo!"
   },
   {
     "id": 101500001200000103,

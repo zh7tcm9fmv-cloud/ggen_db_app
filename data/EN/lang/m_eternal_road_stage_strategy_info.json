@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 360190520001000001,
+    "value": "Hint"
+  },
+  {
+    "id": 360190520002000001,
+    "value": "Hint"
+  },
+  {
+    "id": 360190520003000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520003000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520004000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520004000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520017000001,
+    "value": "Hint"
+  },
+  {
+    "id": 360290520001000001,
+    "value": "MAP Weapons are extremely powerful and cannot be countered.\nIn this stage, the enemy will use MAP Weapons when 2 or more\nallied units are within range, so plan your route carefully."
+  },
+  {
+    "id": 360290520002000001,
+    "value": "There are enemies with extremely high ATK and the Guaranteed\nChance Step (force-activate Chance Step 1 time) ability.\nExploit the gaps in the enemy's weapon range to avoid being hit."
+  },
+  {
+    "id": 360290520003000001,
+    "value": "Multiple enemies with the Support Attack ability appear.\nUse Sway (increase own EVA by 100%) to reduce the number of\nSupport Attacks that the enemy can land."
+  },
+  {
+    "id": 360290520003000002,
+    "value": "MAP Weapons are extremely powerful and cannot be countered.\nIn this stage, the enemy will use MAP Weapons when 2 or more\nallied units are within range, so plan your route carefully."
+  },
+  {
+    "id": 360290520004000001,
+    "value": "Multiple enemies with high ATK and the Guaranteed Chance Step\n(force-activate Chance Step 1 time) ability are deployed in this\nstage. Leverage MAP Weapons to devastate the enemy on turn 1."
+  },
+  {
+    "id": 360290520004000002,
+    "value": "Enemies with red effects have powerful abilities.\nPrioritize the enemy with \"Increased DEF (All)\" to defeat\nthe rest efficiently."
+  },
+  {
+    "id": 360290520017000001,
+    "value": "A large number of enemy units are deployed in this stage,\nand as you clear mission objectives, even more will appear.\nLeverage MAP Weapons to defeat the enemy efficiently."
+  }
+]

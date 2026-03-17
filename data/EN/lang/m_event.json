@@ -52,6 +52,10 @@
     "value": "Story Events \"Mobile Suit Gundam SEED X Astray\""
   },
   {
+    "id": 250100000000200011,
+    "value": "Story Events \"Mobile Suit Gundam: The 08th MS Team\""
+  },
+  {
     "id": 250100000000210001,
     "value": "Map Event"
   },
@@ -65,6 +69,10 @@
   },
   {
     "id": 250100000000220004,
+    "value": "SPECIAL STAGE"
+  },
+  {
+    "id": 250100000000220005,
     "value": "SPECIAL STAGE"
   },
   {

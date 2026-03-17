@@ -24,6 +24,10 @@
     "value": "Movie Bonus Stage"
   },
   {
+    "id": 130100000099000107,
+    "value": "Zaku Day"
+  },
+  {
     "id": 310200000099000101,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   },
@@ -46,5 +50,9 @@
   {
     "id": 310200000099000106,
     "value": "Requires stage tickets which can be obtained from the movie’s theater-exclusive promo codes."
+  },
+  {
+    "id": 310200000099000107,
+    "value": "March 9th is Zaku Day!\nA special stage that can only be attempted during the event."
   }
 ]

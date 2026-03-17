@@ -780,6 +780,12 @@
     "DamagedEffectId": "ef_mpd_0015_006_cmnslashhit"
   },
   {
+    "Id": 250007,
+    "WeaponEffectPrefabPairSetId": 250007,
+    "WeaponEffectId": "ef_mpa_0017_007_sword",
+    "DamagedEffectId": "ef_mpd_0015_007_cmnslashhit"
+  },
+  {
     "Id": 250008,
     "WeaponEffectPrefabPairSetId": 250008,
     "WeaponEffectId": "ef_mpa_0017_008_sword",
@@ -1702,6 +1708,30 @@
     "WeaponEffectPrefabPairSetId": 290130,
     "WeaponEffectId": "ef_mpa_0023_000_missile_dorado",
     "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 290131,
+    "WeaponEffectPrefabPairSetId": 290131,
+    "WeaponEffectId": "ef_mpa_0023_000_drill",
+    "DamagedEffectId": "ef_mpd_0023_000_drill"
+  },
+  {
+    "Id": 290132,
+    "WeaponEffectPrefabPairSetId": 290132,
+    "WeaponEffectId": "ef_mpa_0023_000_haromegabeam",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 290133,
+    "WeaponEffectPrefabPairSetId": 290133,
+    "WeaponEffectId": "ef_mpa_0023_000_gatling",
+    "DamagedEffectId": "ef_mpd_0023_000_gatling"
+  },
+  {
+    "Id": 290134,
+    "WeaponEffectPrefabPairSetId": 290134,
+    "WeaponEffectId": "ef_mpa_0023_000_spark",
+    "DamagedEffectId": "ef_mpd_0023_000_spark"
   },
   {
     "Id": 310001,
@@ -2706,6 +2736,12 @@
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
+    "Id": 350032,
+    "WeaponEffectPrefabPairSetId": 350032,
+    "WeaponEffectId": "ef_mpa_0025_004_funnel_apsaras",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
     "Id": 360001,
     "WeaponEffectPrefabPairSetId": 360001,
     "WeaponEffectId": "ef_mpa_0026_002_funnel_phenix",
@@ -2745,6 +2781,12 @@
     "Id": 370005,
     "WeaponEffectPrefabPairSetId": 370005,
     "WeaponEffectId": "ef_mpa_0027_000_funnel_haro",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 370006,
+    "WeaponEffectPrefabPairSetId": 370006,
+    "WeaponEffectId": "ef_mpa_0027_000_funnel_psychoharo",
     "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
   },
   {
@@ -6604,6 +6646,96 @@
     "WeaponEffectPrefabPairSetId": 80057,
     "WeaponEffectId": "ef_mpa_1000_000_twindodsrifle_age2",
     "DamagedEffectId": "ef_mpd_1000_000_twindodsrifle_age2"
+  },
+  {
+    "Id": 8005801,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_heatrod",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8005802,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_combat",
+    "DamagedEffectId": "ef_mpd_1000_000_combat"
+  },
+  {
+    "Id": 8005803,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_bomb_goufcustom",
+    "DamagedEffectId": "ef_mpd_1000_000_bomb_goufcustom"
+  },
+  {
+    "Id": 8005804,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_spark_goucustom",
+    "DamagedEffectId": "ef_mpd_1000_000_spark_goucustom"
+  },
+  {
+    "Id": 8005805,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_008_sword_goufcustom",
+    "DamagedEffectId": "ef_mpd_1000_008_sword_goufcustom"
+  },
+  {
+    "Id": 8005806,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_gatling_goufcustom",
+    "DamagedEffectId": "ef_mpd_1000_000_gatling_goufcustom"
+  },
+  {
+    "Id": 8005807,
+    "WeaponEffectPrefabPairSetId": 80058,
+    "WeaponEffectId": "ef_mpa_1000_000_swordslash_goufcustom",
+    "DamagedEffectId": "ef_mpd_1000_000_swordslash_goufcustom"
+  },
+  {
+    "Id": 8005901,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_drill_psychoharo_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_drill_psychoharo_ex1"
+  },
+  {
+    "Id": 8005902,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_drill_psychoharo_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_drill_psychoharo_ex2"
+  },
+  {
+    "Id": 8005903,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_se_psychoharo_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8005904,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_se_psychoharo_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8005905,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_noise_psychoharo",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8005906,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_twinmegabeam_psychoharo",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8005907,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_megabeamhit_psychoharo",
+    "DamagedEffectId": "ef_mpd_1000_000_megabeamhit_psychoharo"
+  },
+  {
+    "Id": 8005908,
+    "WeaponEffectPrefabPairSetId": 80059,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
   },
   {
     "Id": 99999990,

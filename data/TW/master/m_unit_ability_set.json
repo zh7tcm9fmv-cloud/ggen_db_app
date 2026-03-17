@@ -330,14 +330,39 @@
     "AbilityId": 1000301
   },
   {
+    "UnitId": 1013000100,
+    "SortOrder": 1,
+    "AbilityId": 1000301
+  },
+  {
     "UnitId": 1013000110,
     "SortOrder": 1,
     "AbilityId": 1000201
   },
   {
+    "UnitId": 1013000200,
+    "SortOrder": 1,
+    "AbilityId": 1000401
+  },
+  {
     "UnitId": 1013000210,
     "SortOrder": 1,
     "AbilityId": 1000301
+  },
+  {
+    "UnitId": 1013000300,
+    "SortOrder": 1,
+    "AbilityId": 1000502
+  },
+  {
+    "UnitId": 1013000300,
+    "SortOrder": 2,
+    "AbilityId": 1013101
+  },
+  {
+    "UnitId": 1013000300,
+    "SortOrder": 3,
+    "AbilityId": 1002002
   },
   {
     "UnitId": 1013000350,
@@ -355,9 +380,69 @@
     "AbilityId": 1002003
   },
   {
+    "UnitId": 1013000500,
+    "SortOrder": 1,
+    "AbilityId": 1000301
+  },
+  {
     "UnitId": 1013000510,
     "SortOrder": 1,
     "AbilityId": 1000201
+  },
+  {
+    "UnitId": 1013000800,
+    "SortOrder": 1,
+    "AbilityId": 1000302
+  },
+  {
+    "UnitId": 1013000800,
+    "SortOrder": 2,
+    "AbilityId": 1000501
+  },
+  {
+    "UnitId": 1013000800,
+    "SortOrder": 3,
+    "AbilityId": 1006202
+  },
+  {
+    "UnitId": 1013000850,
+    "SortOrder": 1,
+    "AbilityId": 1000103
+  },
+  {
+    "UnitId": 1013000850,
+    "SortOrder": 2,
+    "AbilityId": 1006502
+  },
+  {
+    "UnitId": 1013000850,
+    "SortOrder": 3,
+    "AbilityId": 1013001
+  },
+  {
+    "UnitId": 1013000900,
+    "SortOrder": 1,
+    "AbilityId": 1000301
+  },
+  {
+    "UnitId": 1013001100,
+    "SortOrder": 1,
+    "AbilityId": 1000201
+  },
+  {
+    "UnitId": 1013001200,
+    "SortOrder": 1,
+    "AbilityId": 1000302
+  },
+  {
+    "UnitId": 1013001200,
+    "SortOrder": 2,
+    "AbilityId": 1000101
+  },
+  {
+    "UnitId": 1013001200,
+    "SortOrder": 3,
+    "AbilityId": 1009601
   },
   {
     "UnitId": 1017000100,
@@ -7653,6 +7738,21 @@
     "UnitId": 1850001210,
     "SortOrder": 2,
     "AbilityId": 1002102
+  },
+  {
+    "UnitId": 1850001350,
+    "SortOrder": 1,
+    "AbilityId": 1000303
+  },
+  {
+    "UnitId": 1850001350,
+    "SortOrder": 2,
+    "AbilityId": 1000402
+  },
+  {
+    "UnitId": 1850001350,
+    "SortOrder": 3,
+    "AbilityId": 1002103
   },
   {
     "UnitId": 1850001500,

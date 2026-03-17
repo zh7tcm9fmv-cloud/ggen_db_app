@@ -420,6 +420,20 @@
     "IsSimpleThumbnail": false
   },
   {
+    "Id": 10200011000001,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 5,
+    "BackgroundResourceId": "profile_title_10200011000001",
+    "TitleImageDisplayLanguageId": 0,
+    "TitleNameLanguageId": 240210200011000001,
+    "AcquisitionRouteLanguageId": 240310200011000001,
+    "SortOrder": 26032001,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "",
+    "RarityTypeIndex": 4,
+    "IsSimpleThumbnail": false
+  },
+  {
     "Id": 10210001000001,
     "ProfileTitleTypeIndex": 2,
     "ProfileTitleRarityTypeIndex": 5,
@@ -3116,6 +3130,20 @@
     "TitleNameLanguageId": 240215022509600001,
     "AcquisitionRouteLanguageId": 240315022509600001,
     "SortOrder": 151000004,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "",
+    "RarityTypeIndex": 2,
+    "IsSimpleThumbnail": false
+  },
+  {
+    "Id": 15022603200001,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 1,
+    "BackgroundResourceId": "",
+    "TitleImageDisplayLanguageId": 240115022603200001,
+    "TitleNameLanguageId": 240215022603200001,
+    "AcquisitionRouteLanguageId": 240315022603200001,
+    "SortOrder": 151000005,
     "ScheduleId": 0,
     "BaseBackgroundResourceId": "",
     "RarityTypeIndex": 2,

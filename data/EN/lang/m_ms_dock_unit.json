@@ -16,6 +16,10 @@
     "value": "Zudah Unit 1"
   },
   {
+    "id": 110100001013000300,
+    "value": "Gundam Ez8"
+  },
+  {
     "id": 110100001017000100,
     "value": "Gundam NT-1"
   },
@@ -190,6 +194,10 @@
   {
     "id": 110200001009000100,
     "value": "A prototype mobile suit created by Zimmad, in hopes that it would be formally adopted as the mainline MS of the Principality of Zeon.\nIt was originally developed as the EMS-04 Zudah, a high-performance machine with excellent mobility, which employed a Saturn engine that could run on extremely heavy propellants such as lead, zinc, and bismuth.\nTogether with the AMBAC system, this high thrust and acceleration enabled it to make extremely rapid turns, which ironically exceeded the machine's limits and caused it to break up in mid-air during an official test flight.\nThis disaster led to the EMS-04's official rejection.\nHowever, it underwent structural improvements and was resurrected as the supposedly all-new EMS-10 Zudah, a high-performance machine far surpassing the Zaku.\nTragically, the defects of the original design could not be resolved, and it is not even certain whether the planned upgrade work was actually carried out.\nFour prototype units were stationed aboard the test support ship Jotunheim for assessment by the 603rd Technical Evaluation Unit.\nThe ill-fated machine broke apart yet again, ending all chances of mass production for good.\nThis is the first unit, assigned to Lt.\nCommander Jean Luc Duvall.\nThe horn on its head indicates that it is a commander machine."
+  },
+  {
+    "id": 110200001013000300,
+    "value": "This one-off remodel was created using various parts, including some from a GM Ground Type, to repair a Gundam Ground Type that was heavily damaged during an attempt to capture the Principality of Zeon's Apsaras II.\nThe Gundam Ground Type was experimentally produced in small numbers during the early stages of the Federation Forces' MS mass production plan.\nBecause much of its armor and internal parts were recycled or reproduced from surplus Gundam parts, it lacked a stock of replacement parts, and so bases often had to make field repairs using parts from other machines and equipment.\nWhen Shiro Amada's Gundam Ground Type was incapacitated in the battle against the Apsaras II, his ideas were combined with the combat data collected up to that point to perform a complete overhaul, in the hope of improving the original machine's ground combat performance.\nEz8, or \"Extra-Zero-Eight,\" is not an official model number.\nThis refers to the \"81\" on the machine's chest armor, which represents the first unit of the 08th MS Team, or in other words the commander's machine."
   },
   {
     "id": 110200001017000100,

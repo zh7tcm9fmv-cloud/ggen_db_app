@@ -344,36 +344,100 @@
     "value": "Guntank Ground Assault Type"
   },
   {
+    "id": 110100001013000100,
+    "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
     "id": 110100001013000110,
     "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
+    "id": 110100001013000200,
+    "value": "Gundam Ground Type (GM Head)"
   },
   {
     "id": 110100001013000210,
     "value": "Gundam Ground Type (GM Head)"
   },
   {
+    "id": 110100001013000300,
+    "value": "Gundam Ez8"
+  },
+  {
     "id": 110100001013000350,
     "value": "Gundam Ez8 (EX)"
+  },
+  {
+    "id": 110100001013000500,
+    "value": "GM Sniper"
   },
   {
     "id": 110100001013000510,
     "value": "GM Sniper"
   },
   {
+    "id": 110100001013000600,
+    "value": "GM Early Type"
+  },
+  {
     "id": 110100001013000610,
     "value": "GM Early Type"
+  },
+  {
+    "id": 110100001013000700,
+    "value": "Ball Type K"
   },
   {
     "id": 110100001013000710,
     "value": "Ball Type K"
   },
   {
+    "id": 110100001013000800,
+    "value": "Gouf Custom"
+  },
+  {
+    "id": 110100001013000850,
+    "value": "Gouf Custom (EX)"
+  },
+  {
+    "id": 110100001013000900,
+    "value": "Gouf Flight Type"
+  },
+  {
+    "id": 110100001013001000,
+    "value": "Zaku II R-D4 Type"
+  },
+  {
+    "id": 110100001013001100,
+    "value": "Apsaras II"
+  },
+  {
+    "id": 110100001013001200,
+    "value": "Apsaras III"
+  },
+  {
+    "id": 110100001013001300,
+    "value": "Combat Helicopter"
+  },
+  {
+    "id": 110100001013001400,
+    "value": "GM Ground Type"
+  },
+  {
     "id": 110100001013001410,
     "value": "GM Ground Type"
   },
   {
+    "id": 110100001013001500,
+    "value": "Guntank Mass Production Type"
+  },
+  {
     "id": 110100001013001510,
     "value": "Guntank Mass Production Type"
+  },
+  {
+    "id": 110100001013001600,
+    "value": "Hover Truck"
   },
   {
     "id": 110100001013001700,
@@ -4968,6 +5032,10 @@
     "value": "Haro"
   },
   {
+    "id": 110100001850001350,
+    "value": "Psycho Haro (EX)"
+  },
+  {
     "id": 110100001850001500,
     "value": "Big Zam Mass Production Type"
   },
@@ -5856,6 +5924,10 @@
     "value": "Because much of the armor and internal parts of the Federation Forces' Gundam Ground Type were recycled or reproduced from surplus Gundam parts, it lacked a stock of replacement parts, and so bases often had to make field repairs using parts from other machines and equipment.\nFor example, when Karen Joshua's machine lost its head in battle with an Acguy, head parts from a GM Ground Type were used to repair it."
   },
   {
+    "id": 110200001013000300,
+    "value": "This one-off remodel was created using various parts, including some from a GM Ground Type, to repair a Gundam Ground Type that was heavily damaged during an attempt to capture the Principality of Zeon's Apsaras II.\nThe Gundam Ground Type was experimentally produced in small numbers during the early stages of the Federation Forces' MS mass production plan.\nBecause much of its armor and internal parts were recycled or reproduced from surplus Gundam parts, it lacked a stock of replacement parts, and so bases often had to make field repairs using parts from other machines and equipment.\nWhen Shiro Amada's Gundam Ground Type was incapacitated in the battle against the Apsaras II, his ideas were combined with the combat data collected up to that point to perform a complete overhaul, in the hope of improving the original machine's ground combat performance.\nEz8, or \"Extra-Zero-Eight,\" is not an official model number.\nThis refers to the \"81\" on the machine's chest armor, which represents the first unit of the 08th MS Team, or in other words the commander's machine."
+  },
+  {
     "id": 110200001013000350,
     "value": "This one-off remodel was created using various parts, including some from a GM Ground Type, to repair a Gundam Ground Type that was heavily damaged during an attempt to capture the Principality of Zeon's Apsaras II.\nThe Gundam Ground Type was experimentally produced in small numbers during the early stages of the Federation Forces' MS mass production plan.\nBecause much of its armor and internal parts were recycled or reproduced from surplus Gundam parts, it lacked a stock of replacement parts, and so bases often had to make field repairs using parts from other machines and equipment.\nWhen Shiro Amada's Gundam Ground Type was incapacitated in the battle against the Apsaras II, his ideas were combined with the combat data collected up to that point to perform a complete overhaul, in the hope of improving the original machine's ground combat performance.\nEz8, or \"Extra-Zero-Eight,\" is not an official model number.\nThis refers to the \"81\" on the machine's chest armor, which represents the first unit of the 08th MS Team, or in other words the commander's machine."
   },
@@ -5872,12 +5944,44 @@
     "value": "The Type K is a variation of the space combat pod Ball, which the Federation Forces developed as a simple type of mobile suit during the One Year War.\nIt had four manipulators instead of two, and was carried aboard cargo ships for both work and defense.\nIts overall performance fell short of a mobile suit, however, and soldiers in the field mocked it as a \"moving coffin.\"\nBecause the weapon on top of its body could be replaced, some types were equipped with a 180mm cannon instead of the standard fifteen-caliber."
   },
   {
+    "id": 110200001013000800,
+    "value": "One of the improved variations of the Principality of Zeon's mass-produced ground combat mobile suit Gouf produced in the middle and late stages of the One Year War.\nThis machine boasted vastly improved long-range offense, maneuverability, and maintenance.\nThe 5-barrel 75mm machine gun in its left hand was changed to a normal manipulator, while the right hand's built-in heat rod was wired to reduce overall weight.\nThe reduced firepower could be supplemented with a triple 35mm gatling cannon, a gatling shield able to mount a heat saber, and other optional equipment that made the machine a force to be reckoned with in ground combat.\nThe few units produced were primarily given to ace pilots, who used them to great success on the battlefield."
+  },
+  {
+    "id": 110200001013000850,
+    "value": "One of the improved variations of the Principality of Zeon's mass-produced ground combat mobile suit Gouf produced in the middle and late stages of the One Year War.\nThis machine boasted vastly improved long-range offense, maneuverability, and maintenance.\nThe 5-barrel 75mm machine gun in its left hand was changed to a normal manipulator, while the right hand's built-in heat rod was wired to reduce overall weight.\nThe reduced firepower could be supplemented with a triple 35mm gatling cannon, a gatling shield able to mount a heat saber, and other optional equipment that made the machine a force to be reckoned with in ground combat.\nThe few units produced were primarily given to ace pilots, who used them to great success on the battlefield."
+  },
+  {
+    "id": 110200001013000900,
+    "value": "One of the flying variations of the Principality of Zeon's mass-produced ground combat mobile suit Gouf.\nThis machine was the culmination of a long-held plan to create a mobile suit capable of flight.\nThe Gouf's legs and waist are fitted with thermonuclear jet engines, giving it stable flight performance.\nIt is also equipped with a gatling shield able to mount a heat saber and other optional weapons in a bid to improve its long-distance aerial attacks.\nBut because its cruising range and mobility left much to be desired, the MS flight plan was suspended after only a few units had been produced.\nThe problems of increased mobility and operating radius were resolved by the Dom, whose thermonuclear hovering provided greater speed of movement."
+  },
+  {
+    "id": 110200001013001000,
+    "value": "When development of the Gelgoog was delayed, the Principality of Zeon adapted the Dom for space use as a replacement next-generation mainline mobile suit, and this test machine was developed to acquire the necessary data.\nIntended to test the mobility and maintenance issues of remodeling the legs with thermonuclear rocket engines, it was thrown into battle in Federation territory near Earth to collect data on how it would fare in combat against GMs.\nThe data it collected was lost, however, after it sustained heavy damage in a fight against Shiro Amada's Ball Type K."
+  },
+  {
+    "id": 110200001013001100,
+    "value": "A prototype mobile armor for fortress attacks, developed in absolute secrecy by the Principality of Zeon.\nThis massive weapon was developed to attack the Federation headquarters at the Jaburo base.\nWhile the Apsaras I was an unarmed flying test machine, the Apsaras II was created to test the compatibility of the Minovsky craft system and the mega particle cannon.\nIt was believed that combining the high-flying capabilities of the Minovsky craft system with the tremendous destructive power of a large mega particle cannon would prove devastating to enemy defenses."
+  },
+  {
+    "id": 110200001013001200,
+    "value": "Technical Rear Admiral Ginius Sakhalin completed the final Apsaras model in spite of the order to cease production.\nThe unresolved issues with power shortages in the Minovsky craft system of the Apsaras I and II were solved so effectively with the inclusion of three Rick Dom generators that it was possible to add a second Minovsky craft system.\nThe three legs that extended from underneath the machine improved stability when firing, while the firepower of the large mega particle cannon could be adjusted in a way that would allow it to be used like a multi-barrel laser.\nThese improvements resulted in a machine that was completely different from the previous Apsaras models."
+  },
+  {
+    "id": 110200001013001300,
+    "value": "A combat helicopter used by the Principality of Zeon.\nIts armaments included autocannons and wire-guided missiles.\nThese craft were called upon to defend a pillbox base when it was attacked by the Federation's 08th MS team."
+  },
+  {
     "id": 110200001013001400,
     "value": "A ground combat mobile suit manufactured by the Federation Forces using the production lines of the Gundam Ground Type.\nThis was a precursor to the RGM-79 GM that later became the Federation's mainline machine, and was given the GM name even though its construction was completely different.\nThough most of its equipment was the same as that of a Gundam Ground Type, it lacked a chest vulcan and backpack, and was given a lower-output generator.\nBy retaining the Luna Titanium armor, however, it provided an overall performance advantage over the Federation's mainline GM.\nFurthermore, because this machine was created after the Federation had already established a production format, spare parts were readily available, making both maintenance and the supply of parts to each team easier.\nLarge numbers were deployed on the Odessa front and in the attack on the Apsaras development base."
   },
   {
     "id": 110200001013001500,
     "value": "A mass-produced version of the Federation Forces prototype mobile suit Guntank.\nIt omitted the Core Block system of the original, in favor of a rotating upper body.\nIt also had a more efficient ammunition feed for its 120mm cannons, making it better suited for its original role of providing long-range support to front-line MS teams.\nThough it was called a mass production type, this machine was not produced in great numbers, though a few were deployed to bombard tunnels hidden in the mountains during the attack on the Apsaras development base."
+  },
+  {
+    "id": 110200001013001600,
+    "value": "One of these combat support vehicles was assigned to every Federation Ground Force mobile suit team.\nIts main mission was to provide rear support, perform enemy recon and gather data.\nIts most distinctive feature is its sonar system, used to detect foes based on the sounds transmitted through the ground.\nEven in the presence of Minovsky particles, which disrupt radio waves and neutralize radar, this can determine enemy positions at long distances, enabling early warning and precise tactical planning.\nIt is also equipped with a retractable antenna, a rotating periscope, and a rear storage rack for carrying ammunition and extra weapons."
   },
   {
     "id": 110200001013001700,
@@ -9908,6 +10012,10 @@
     "value": "A gigantic weapon of destruction shrouded in complete mystery.\nWhen was it built, and where, and for what purpose? Nobody knows.\nIt has the form of a Haro, the mascot robot of the Gundam universe, but its cute form belies its extremely high performance.\nIt has a number of special weapons such as the Haro Drill, Haro Bubble, and Haro Bits, giving it overwhelming power on the field and earning it the nickname \"Round Devil.\"\nBut nobody knows what it really is..."
   },
   {
+    "id": 110200001850001350,
+    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\n Since it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"ultimate Weapon of Destruction.\"\n But still, nobody knows what it really is..."
+  },
+  {
     "id": 110200001850001500,
     "value": "A mass-produced version of the prototype heavy mobile armor Big-Zam that was developed by the Principality of Zeon for anti-fortress combat.\nThis machine was specifically designed to attack the Federation Forces headquarters at Jaburo.\nIn order to address the Big-Zam's short running time and poor production characteristics, the anti-beam I-Field generator was eliminated, and its armor surface was given an anti-beam coating instead.\nThis reduced its defenses against beam attacks, but it still retained a large mega particle cannon powerful enough to destroy a warship with a single blast.\nBy the time this machine was finally ready for mass production, the Principality of Zeon's defeat was already decided, and the war ended before production could begin."
   },
@@ -10872,36 +10980,100 @@
     "value": "Guntank Ground Assault Type"
   },
   {
+    "id": 110300001013000100,
+    "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
     "id": 110300001013000110,
     "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
+    "id": 110300001013000200,
+    "value": "Gundam Ground Type (GM Head)"
   },
   {
     "id": 110300001013000210,
     "value": "Gundam Ground Type (GM Head)"
   },
   {
+    "id": 110300001013000300,
+    "value": "Gundam Ez8"
+  },
+  {
     "id": 110300001013000350,
     "value": "Gundam Ez8 (EX)"
+  },
+  {
+    "id": 110300001013000500,
+    "value": "GM Sniper"
   },
   {
     "id": 110300001013000510,
     "value": "GM Sniper"
   },
   {
+    "id": 110300001013000600,
+    "value": "GM Early Type"
+  },
+  {
     "id": 110300001013000610,
     "value": "GM Early Type"
+  },
+  {
+    "id": 110300001013000700,
+    "value": "Ball Type K"
   },
   {
     "id": 110300001013000710,
     "value": "Ball Type K"
   },
   {
+    "id": 110300001013000800,
+    "value": "Gouf Custom"
+  },
+  {
+    "id": 110300001013000850,
+    "value": "Gouf Custom (EX)"
+  },
+  {
+    "id": 110300001013000900,
+    "value": "Gouf Flight Type"
+  },
+  {
+    "id": 110300001013001000,
+    "value": "Zaku II R-D4 Type"
+  },
+  {
+    "id": 110300001013001100,
+    "value": "Apsaras II"
+  },
+  {
+    "id": 110300001013001200,
+    "value": "Apsaras III"
+  },
+  {
+    "id": 110300001013001300,
+    "value": "Combat Helicopter"
+  },
+  {
+    "id": 110300001013001400,
+    "value": "GM Ground Type"
+  },
+  {
     "id": 110300001013001410,
     "value": "GM Ground Type"
   },
   {
+    "id": 110300001013001500,
+    "value": "Guntank Mass Production Type"
+  },
+  {
     "id": 110300001013001510,
     "value": "Guntank Mass Production Type"
+  },
+  {
+    "id": 110300001013001600,
+    "value": "Hover Truck"
   },
   {
     "id": 110300001013001700,
@@ -15496,6 +15668,10 @@
     "value": "Haro"
   },
   {
+    "id": 110300001850001350,
+    "value": "Psycho Haro (EX)"
+  },
+  {
     "id": 110300001850001500,
     "value": "Big Zam Mass Production Type"
   },
@@ -16460,36 +16636,100 @@
     "value": "Guntank Ground Assault Type"
   },
   {
+    "id": 110400001013000100,
+    "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
     "id": 110400001013000110,
     "value": "Gundam Ground Type (The 08th MS Team)"
+  },
+  {
+    "id": 110400001013000200,
+    "value": "Gundam Ground Type (GM Head)"
   },
   {
     "id": 110400001013000210,
     "value": "Gundam Ground Type (GM Head)"
   },
   {
+    "id": 110400001013000300,
+    "value": "Gundam Ez8"
+  },
+  {
     "id": 110400001013000350,
     "value": "Gundam Ez8 (EX)"
+  },
+  {
+    "id": 110400001013000500,
+    "value": "GM Sniper"
   },
   {
     "id": 110400001013000510,
     "value": "GM Sniper"
   },
   {
+    "id": 110400001013000600,
+    "value": "GM Early Type"
+  },
+  {
     "id": 110400001013000610,
     "value": "GM Early Type"
+  },
+  {
+    "id": 110400001013000700,
+    "value": "Ball Type K"
   },
   {
     "id": 110400001013000710,
     "value": "Ball Type K"
   },
   {
+    "id": 110400001013000800,
+    "value": "Gouf Custom"
+  },
+  {
+    "id": 110400001013000850,
+    "value": "Gouf Custom (EX)"
+  },
+  {
+    "id": 110400001013000900,
+    "value": "Gouf Flight Type"
+  },
+  {
+    "id": 110400001013001000,
+    "value": "Zaku II R-D4 Type"
+  },
+  {
+    "id": 110400001013001100,
+    "value": "Apsaras II"
+  },
+  {
+    "id": 110400001013001200,
+    "value": "Apsaras III"
+  },
+  {
+    "id": 110400001013001300,
+    "value": "Combat Helicopter"
+  },
+  {
+    "id": 110400001013001400,
+    "value": "GM Ground Type"
+  },
+  {
     "id": 110400001013001410,
     "value": "GM Ground Type"
   },
   {
+    "id": 110400001013001500,
+    "value": "Guntank Mass Production Type"
+  },
+  {
     "id": 110400001013001510,
     "value": "Guntank Mass Production Type"
+  },
+  {
+    "id": 110400001013001600,
+    "value": "Hover Truck"
   },
   {
     "id": 110400001013001700,
@@ -21082,6 +21322,10 @@
   {
     "id": 110400001850001210,
     "value": "Haro"
+  },
+  {
+    "id": 110400001850001350,
+    "value": "Psycho Haro (EX)"
   },
   {
     "id": 110400001850001500,

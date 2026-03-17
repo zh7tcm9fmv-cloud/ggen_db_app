@@ -88,5 +88,15 @@
     "EventBonusSeriesSetId": 20001021,
     "SeriesId": 3080,
     "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20001121,
+    "SeriesId": 130,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20001122,
+    "SeriesId": 10,
+    "SortOrder": 2
   }
 ]

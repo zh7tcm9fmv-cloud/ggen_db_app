@@ -700,6 +700,34 @@
     "ScheduleId": 0
   },
   {
+    "Id": 20130101,
+    "UnitDevelopmentDiagramId": 201301,
+    "CompleteRate": 25,
+    "RewardSetId": 26000020130101,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 20130102,
+    "UnitDevelopmentDiagramId": 201301,
+    "CompleteRate": 50,
+    "RewardSetId": 26000020130102,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 20130103,
+    "UnitDevelopmentDiagramId": 201301,
+    "CompleteRate": 75,
+    "RewardSetId": 26000020130103,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 20130104,
+    "UnitDevelopmentDiagramId": 201301,
+    "CompleteRate": 100,
+    "RewardSetId": 26000020130104,
+    "ScheduleId": 0
+  },
+  {
     "Id": 20170101,
     "UnitDevelopmentDiagramId": 201701,
     "CompleteRate": 25,

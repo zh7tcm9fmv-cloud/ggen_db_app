@@ -300,12 +300,27 @@
     "AfterAbilityId": 1000302
   },
   {
+    "Id": 101300010001,
+    "BeforeAbilityId": 1000301,
+    "AfterAbilityId": 1000302
+  },
+  {
     "Id": 101300011001,
     "BeforeAbilityId": 1000201,
     "AfterAbilityId": 1000202
   },
   {
+    "Id": 101300020001,
+    "BeforeAbilityId": 1000401,
+    "AfterAbilityId": 1000402
+  },
+  {
     "Id": 101300021001,
+    "BeforeAbilityId": 1000301,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 101300050001,
     "BeforeAbilityId": 1000301,
     "AfterAbilityId": 1000302
   },
@@ -315,9 +330,24 @@
     "AfterAbilityId": 1000202
   },
   {
+    "Id": 101300060001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000201
+  },
+  {
+    "Id": 101300060002,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000501
+  },
+  {
     "Id": 101300061001,
     "BeforeAbilityId": 0,
     "AfterAbilityId": 1000102
+  },
+  {
+    "Id": 101300070001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000502
   },
   {
     "Id": 101300071001,
@@ -325,9 +355,34 @@
     "AfterAbilityId": 1000302
   },
   {
+    "Id": 101300090001,
+    "BeforeAbilityId": 1000301,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 101300100001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 101300110001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000501
+  },
+  {
+    "Id": 101300140001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000102
+  },
+  {
     "Id": 101300141001,
     "BeforeAbilityId": 0,
     "AfterAbilityId": 1000502
+  },
+  {
+    "Id": 101300150001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000302
   },
   {
     "Id": 101300151001,

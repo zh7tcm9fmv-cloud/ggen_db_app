@@ -1842,7 +1842,7 @@
     "UpdateCycleTypeIndex": 0,
     "IsDisplayWhenNoStock": false,
     "DescriptionLanguageId": 190252510500100001,
-    "PurchaseConditionSetId": 18000525105001,
+    "PurchaseConditionSetId": 0,
     "IsDisplayWhenUnavailable": true,
     "IsSale": false,
     "IsBargain": false

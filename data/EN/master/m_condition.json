@@ -90,11 +90,6 @@
     "TargetValue": 2601500201
   },
   {
-    "Id": 1800052510500101,
-    "ConditionTypeIndex": 1,
-    "TargetValue": 100902
-  },
-  {
     "Id": 1800122504101101,
     "ConditionTypeIndex": 1,
     "TargetValue": 101402
@@ -187,7 +182,7 @@
   {
     "Id": 1800122510500101,
     "ConditionTypeIndex": 1,
-    "TargetValue": 100902
+    "TargetValue": 100202
   },
   {
     "Id": 1800122510800101,
@@ -441,6 +436,16 @@
   },
   {
     "Id": 9908260240000102,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260245000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260320000101,
     "ConditionTypeIndex": 1,
     "TargetValue": 100202
   }

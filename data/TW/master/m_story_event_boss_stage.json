@@ -1,5 +1,77 @@
 [
   {
+    "Id": 1305001,
+    "StoryEventId": 200011,
+    "StageId": 1305001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": false,
+    "BossMapNpcId": 13005000102000004,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000001305001
+  },
+  {
+    "Id": 1305002,
+    "StoryEventId": 200011,
+    "StageId": 1305002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": false,
+    "BossMapNpcId": 13005000202000004,
+    "ConsumeBossChallengePoint": 90,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000001305002
+  },
+  {
+    "Id": 1305003,
+    "StoryEventId": 200011,
+    "StageId": 1305003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": false,
+    "BossMapNpcId": 13005000302000004,
+    "ConsumeBossChallengePoint": 120,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000001305003
+  },
+  {
+    "Id": 1306001,
+    "StoryEventId": 200011,
+    "StageId": 1306001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": true,
+    "BossMapNpcId": 13006000102000004,
+    "ConsumeBossChallengePoint": 20,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000001306001
+  },
+  {
+    "Id": 1306002,
+    "StoryEventId": 200011,
+    "StageId": 1306002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": true,
+    "BossMapNpcId": 13006000202000004,
+    "ConsumeBossChallengePoint": 40,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000001306002
+  },
+  {
+    "Id": 1306003,
+    "StoryEventId": 200011,
+    "StageId": 1306003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": true,
+    "BossMapNpcId": 13006000302000004,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000001306003
+  },
+  {
     "Id": 1705001,
     "StoryEventId": 200008,
     "StageId": 1705001,

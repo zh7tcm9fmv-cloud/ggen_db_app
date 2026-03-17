@@ -403,5 +403,55 @@
     "Id": 20001022,
     "EventBonusTargetTypeIndex": 2,
     "TargetId": 20001022
+  },
+  {
+    "Id": 20001101,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001101
+  },
+  {
+    "Id": 20001102,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001102
+  },
+  {
+    "Id": 20001103,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001103
+  },
+  {
+    "Id": 20001104,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001104
+  },
+  {
+    "Id": 20001105,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001105
+  },
+  {
+    "Id": 20001106,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001106
+  },
+  {
+    "Id": 20001107,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001107
+  },
+  {
+    "Id": 20001108,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001108
+  },
+  {
+    "Id": 20001121,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001121
+  },
+  {
+    "Id": 20001122,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001122
   }
 ]

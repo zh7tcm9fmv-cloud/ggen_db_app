@@ -14,6 +14,20 @@
     "PrefabResourceId": ""
   },
   {
+    "Id": 326033501,
+    "NameLanguageId": 0,
+    "BackgroundImageResourceId": "",
+    "LogoImageResourceId": "",
+    "SortOrderInSameVisualizationType": 1,
+    "VisualizationTypeIndex": 2,
+    "NavigationCharacterId": 0,
+    "NavigationCharacterSetId": 0,
+    "IsReceiveRepeatWhenReceiveLimit": false,
+    "TargetUserTypeIndex": 3,
+    "ScheduleId": 2603352201,
+    "PrefabResourceId": "llb_326033501"
+  },
+  {
     "Id": 425041001,
     "NameLanguageId": 0,
     "BackgroundImageResourceId": "login_bg_25041001",

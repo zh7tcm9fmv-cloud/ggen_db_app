@@ -120,6 +120,142 @@
     "StageBgmId": 0
   },
   {
+    "Id": 1300103,
+    "StageId": 1300103,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10157,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300203,
+    "StageId": 1300203,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10154,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300303,
+    "StageId": 1300303,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10154,
+    "DuringHistoricMomentStageBattleBgmId": 10154,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300403,
+    "StageId": 1300403,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10158,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300502,
+    "StageId": 1300502,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10159,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300603,
+    "StageId": 1300603,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10187,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300704,
+    "StageId": 1300704,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10155,
+    "DuringHistoricMomentStageBattleBgmId": 10155,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300804,
+    "StageId": 1300804,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10156,
+    "DuringHistoricMomentStageBattleBgmId": 10156,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1300901,
+    "StageId": 1300901,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10159,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1301001,
+    "StageId": 1301001,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10154,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1301101,
+    "StageId": 1301101,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10186,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1305001,
+    "StageId": 1305001,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10155,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1305002,
+    "StageId": 1305002,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10155,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1305003,
+    "StageId": 1305003,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10155,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1306001,
+    "StageId": 1306001,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10186,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1306002,
+    "StageId": 1306002,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10186,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
+    "Id": 1306003,
+    "StageId": 1306003,
+    "ScheduleId": 2603209902,
+    "DuringVictoryConditionStageBattleBgmId": 10186,
+    "DuringHistoricMomentStageBattleBgmId": 0,
+    "StageBgmId": 0
+  },
+  {
     "Id": 1700103,
     "StageId": 1700103,
     "ScheduleId": 2512309902,

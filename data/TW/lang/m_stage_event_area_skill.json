@@ -1,26 +1,26 @@
 [
   {
     "id": 131100001030000001,
-    "value": "傷藥"
+    "value": "Healing Herb"
   },
   {
     "id": 131100001030000002,
-    "value": "藥箱"
+    "value": "Potion"
   },
   {
     "id": 131100001030000003,
-    "value": "特效藥"
+    "value": "Hyper Potion"
   },
   {
     "id": 131200001030000001,
-    "value": "HP恢復（小）"
+    "value": "HP Restoration (Low)"
   },
   {
     "id": 131200001030000002,
-    "value": "HP恢復（中）"
+    "value": "HP Restoration (Middle)"
   },
   {
     "id": 131200001030000003,
-    "value": "HP恢復（大）"
+    "value": "HP Restoration (High)"
   }
 ]

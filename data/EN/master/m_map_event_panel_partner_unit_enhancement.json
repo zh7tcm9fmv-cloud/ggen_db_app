@@ -6,7 +6,7 @@
     "GrowthLimitBreakStep": 0,
     "GrowthWeaponLevel": 0,
     "MapEventPanelMissionId": 251210110001,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010121,
@@ -15,7 +15,7 @@
     "GrowthLimitBreakStep": 0,
     "GrowthWeaponLevel": 0,
     "MapEventPanelMissionId": 251210110002,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010202,
@@ -24,7 +24,7 @@
     "GrowthLimitBreakStep": 1,
     "GrowthWeaponLevel": 0,
     "MapEventPanelMissionId": 251210110003,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010203,
@@ -33,7 +33,7 @@
     "GrowthLimitBreakStep": 0,
     "GrowthWeaponLevel": 2,
     "MapEventPanelMissionId": 251210110004,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010303,
@@ -42,7 +42,7 @@
     "GrowthLimitBreakStep": 1,
     "GrowthWeaponLevel": 0,
     "MapEventPanelMissionId": 251210110005,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010337,
@@ -51,7 +51,7 @@
     "GrowthLimitBreakStep": 1,
     "GrowthWeaponLevel": 0,
     "MapEventPanelMissionId": 251210110006,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010340,
@@ -60,6 +60,6 @@
     "GrowthLimitBreakStep": 0,
     "GrowthWeaponLevel": 2,
     "MapEventPanelMissionId": 251210110007,
-    "Unknown_Col_6": false
+    "GrowthIsSpecialize": false
   }
 ]

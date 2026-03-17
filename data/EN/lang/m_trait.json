@@ -2313,11 +2313,11 @@
   },
   {
     "id": 141200000101160201,
-    "value": "increase own ATK by 10% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 10%."
   },
   {
     "id": 141200000101160401,
-    "value": "Increase own ATK by 20% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 20%."
   },
   {
     "id": 141200000101180101,
@@ -2434,6 +2434,50 @@
   {
     "id": 141200000101280101,
     "value": "When Vigor is Supercharged or higher,\nincrease own MOV by 1."
+  },
+  {
+    "id": 141200000101300101,
+    "value": "When the piloting character has a specified tag,\nIncrease own MOV by1."
+  },
+  {
+    "id": 141200000101310101,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+  },
+  {
+    "id": 141200000101310102,
+    "value": ""
+  },
+  {
+    "id": 141200000101310201,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+  },
+  {
+    "id": 141200000101310202,
+    "value": ""
+  },
+  {
+    "id": 141200000101310301,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 25%"
+  },
+  {
+    "id": 141200000101310302,
+    "value": ""
+  },
+  {
+    "id": 141200000101310401,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 30%"
+  },
+  {
+    "id": 141200000101310402,
+    "value": ""
+  },
+  {
+    "id": 141200000101310501,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 35%"
+  },
+  {
+    "id": 141200000101310502,
+    "value": ""
   },
   {
     "id": 141200000101490201,
@@ -3125,7 +3169,7 @@
   },
   {
     "id": 141200000200280201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%,\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200280202,
@@ -7436,6 +7480,38 @@
     "value": ""
   },
   {
+    "id": 141200000202370101,
+    "value": "When piloting units from specified series,\nChance Step +1 time"
+  },
+  {
+    "id": 141200000202380101,
+    "value": "Support Defense +1 time"
+  },
+  {
+    "id": 141200000202380102,
+    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202380103,
+    "value": ""
+  },
+  {
+    "id": 141200000202390101,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%, and reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202390102,
+    "value": "Also reduce weapons EN consumption by 15%."
+  },
+  {
+    "id": 141200000202390103,
+    "value": ""
+  },
+  {
+    "id": 141200000202470101,
+    "value": "Restore own HP 5% at the start of every turn.\nwhen piloting units with specified tags."
+  },
+  {
     "id": 141200000300010101,
     "value": "ATK Down {0}%."
   },
@@ -8270,6 +8346,42 @@
   {
     "id": 141200000300270901,
     "value": "The higher your MP is, the greater Weapon Power increases (up to 25%) at the start of battle."
+  },
+  {
+    "id": 141200000300350101,
+    "value": ""
+  },
+  {
+    "id": 141200000300350201,
+    "value": ""
+  },
+  {
+    "id": 141200000300350301,
+    "value": ""
+  },
+  {
+    "id": 141200000300350401,
+    "value": ""
+  },
+  {
+    "id": 141200000300350501,
+    "value": ""
+  },
+  {
+    "id": 141200000300350601,
+    "value": ""
+  },
+  {
+    "id": 141200000300350701,
+    "value": ""
+  },
+  {
+    "id": 141200000300350801,
+    "value": ""
+  },
+  {
+    "id": 141200000300350901,
+    "value": ""
   },
   {
     "id": 141200000310010101,
@@ -12896,6 +13008,14 @@
     "value": "Increase ATK by 12%."
   },
   {
+    "id": 141200000406080101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406090101,
+    "value": "Increase ATK by 8%."
+  },
+  {
     "id": 141200000406100101,
     "value": "Increase ATK by 100."
   },
@@ -12905,7 +13025,7 @@
   },
   {
     "id": 141200000406120101,
-    "value": "Increase Max HP by 200."
+    "value": "Increase Max HP by 2000."
   },
   {
     "id": 141200000406130101,
@@ -14202,6 +14322,14 @@
   {
     "id": 141200000511030101,
     "value": "When Vigor is Supercharged or higher,\nIncrease ATK by 200%."
+  },
+  {
+    "id": 141200000511040301,
+    "value": "When Vigor is Supercharged or higher,\nIncrease ATK by 200%."
+  },
+  {
+    "id": 141200000511050301,
+    "value": "When Vigor is Supercharged or higher,\nIncrease DEF by 200%."
   },
   {
     "id": 141200000511360101,
@@ -15873,19 +16001,19 @@
   },
   {
     "id": 141200000611320101,
-    "value": "increase own ATK by 50% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 50%."
   },
   {
     "id": 141200000611330101,
-    "value": "increase own ATK by 100% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 100%."
   },
   {
     "id": 141200000611340101,
-    "value": "increase own ATK by 150% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 150%."
   },
   {
     "id": 141200000611350101,
-    "value": "increase own ATK by 200% when countering."
+    "value": "When executing a counter or Support Counter,\nincrease ATK by 200%."
   },
   {
     "id": 141200000611360101,
@@ -15938,6 +16066,18 @@
   {
     "id": 141200000611390102,
     "value": "Increase DEF by 200%."
+  },
+  {
+    "id": 141200000611400101,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK by 100%"
+  },
+  {
+    "id": 141200000611440101,
+    "value": "When Aina Sakhalin in your squad is destroyed:\nIncrease MP by 12."
+  },
+  {
+    "id": 141200000611450101,
+    "value": "When Norris Packard in your squad is destroyed:\nIncrease MP by 12."
   },
   {
     "id": 141200000699000101,
@@ -16878,5 +17018,9 @@
   {
     "id": 141200000700402002,
     "value": "DEF Down 200%"
+  },
+  {
+    "id": 141200000700500501,
+    "value": ""
   }
 ]

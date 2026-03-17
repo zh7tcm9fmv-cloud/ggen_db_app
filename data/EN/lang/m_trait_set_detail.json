@@ -1808,6 +1808,30 @@
     "value": "Plasma Reactor LV 1"
   },
   {
+    "id": 140100000101300101,
+    "value": "(Tag conditions) Increased MOV LV 1"
+  },
+  {
+    "id": 140100000101310100,
+    "value": "Advantage: Mobile Armor LV 1"
+  },
+  {
+    "id": 140100000101310200,
+    "value": "Advantage: Mobile Armor LV 2"
+  },
+  {
+    "id": 140100000101310300,
+    "value": "Advantage: Mobile Armor LV 3"
+  },
+  {
+    "id": 140100000101310400,
+    "value": "Advantage: Mobile Armor LV 4"
+  },
+  {
+    "id": 140100000101310500,
+    "value": "Advantage: Mobile Armor LV 5"
+  },
+  {
     "id": 140100000101490200,
     "value": "Increased Max HP & Advantage: X-Rounder LV 2"
   },
@@ -4333,15 +4357,15 @@
   },
   {
     "id": 140100000201930100,
-    "value": "Affinity: Mafty Lv1"
+    "value": "Affinity: Mafty LV 1"
   },
   {
     "id": 140100000201930200,
-    "value": "Affinity: Mafty Lv2"
+    "value": "Affinity: Mafty LV 2"
   },
   {
     "id": 140100000201930300,
-    "value": "Affinity: Mafty Lv3"
+    "value": "Affinity: Mafty LV 3"
   },
   {
     "id": 140100000201940101,
@@ -4602,6 +4626,22 @@
   {
     "id": 140100000202360100,
     "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202370101,
+    "value": "(Series conditions) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202380100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202390100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202470101,
+    "value": "(Tag conditions)HP Restoration (Single Unit) LV 1"
   },
   {
     "id": 140100000300010101,
@@ -5438,6 +5478,42 @@
   {
     "id": 140100000300270901,
     "value": "Scaling Weapon Power (High MP) LV 9"
+  },
+  {
+    "id": 140100000300350101,
+    "value": ""
+  },
+  {
+    "id": 140100000300350201,
+    "value": ""
+  },
+  {
+    "id": 140100000300350301,
+    "value": ""
+  },
+  {
+    "id": 140100000300350401,
+    "value": ""
+  },
+  {
+    "id": 140100000300350501,
+    "value": ""
+  },
+  {
+    "id": 140100000300350601,
+    "value": ""
+  },
+  {
+    "id": 140100000300350701,
+    "value": ""
+  },
+  {
+    "id": 140100000300350801,
+    "value": ""
+  },
+  {
+    "id": 140100000300350901,
+    "value": ""
   },
   {
     "id": 140100000310010101,
@@ -9544,6 +9620,14 @@
     "value": "Limiter OFF  SSR (Mobile Suit Gundam SEED)"
   },
   {
+    "id": 140100000406080101,
+    "value": "Add-On Armor SR (Mobile Suit Gundam: The 08th MS Team)"
+  },
+  {
+    "id": 140100000406090101,
+    "value": "Limiter OFF  SR (Mobile Suit Gundam: The 08th MS Team)"
+  },
+  {
     "id": 140100000406100101,
     "value": "Limiter OFF N (Alternative Series)"
   },
@@ -11076,6 +11160,14 @@
     "value": "(Vigor conditions) Increased ATK"
   },
   {
+    "id": 140100000511040301,
+    "value": "(Vigor conditions) Increased ATK LV3"
+  },
+  {
+    "id": 140100000511050301,
+    "value": "(Vigor conditions) Increased DEF LV3"
+  },
+  {
     "id": 140100000530010100,
     "value": "(HP conditions) Increased ATK, DEF & MOB "
   },
@@ -12514,6 +12606,18 @@
   {
     "id": 140100000611390102,
     "value": "(Destroy Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611400101,
+    "value": "Advantage: Tank LV 1"
+  },
+  {
+    "id": 140100000611440101,
+    "value": "(Destroy Conditions)  Increased MP Lv 1"
+  },
+  {
+    "id": 140100000611450101,
+    "value": "(Destroy Conditions)  Increased MP Lv 1"
   },
   {
     "id": 140100000699000101,

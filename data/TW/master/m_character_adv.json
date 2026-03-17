@@ -354,6 +354,90 @@
     "AbbreviationLanguageId": 100400001013000100
   },
   {
+    "Id": 1013000101,
+    "MapToolId": "g0130c00101",
+    "ResourceId": "g0130c00101",
+    "AbbreviationLanguageId": 100400001013000101
+  },
+  {
+    "Id": 1013000200,
+    "MapToolId": "g0130c00200",
+    "ResourceId": "g0130c00200",
+    "AbbreviationLanguageId": 100400001013000200
+  },
+  {
+    "Id": 1013000300,
+    "MapToolId": "g0130c00300",
+    "ResourceId": "g0130c00300",
+    "AbbreviationLanguageId": 100400001013000300
+  },
+  {
+    "Id": 1013000301,
+    "MapToolId": "g0130c00301",
+    "ResourceId": "g0130c00301",
+    "AbbreviationLanguageId": 100400001013000301
+  },
+  {
+    "Id": 1013000400,
+    "MapToolId": "g0130c00400",
+    "ResourceId": "g0130c00400",
+    "AbbreviationLanguageId": 100400001013000400
+  },
+  {
+    "Id": 1013000500,
+    "MapToolId": "g0130c00500",
+    "ResourceId": "g0130c00500",
+    "AbbreviationLanguageId": 100400001013000500
+  },
+  {
+    "Id": 1013000700,
+    "MapToolId": "g0130c00700",
+    "ResourceId": "g0130c00700",
+    "AbbreviationLanguageId": 100400001013000700
+  },
+  {
+    "Id": 1013000800,
+    "MapToolId": "g0130c00800",
+    "ResourceId": "g0130c00800",
+    "AbbreviationLanguageId": 100400001013000800
+  },
+  {
+    "Id": 1013000900,
+    "MapToolId": "g0130c00900",
+    "ResourceId": "g0130c00900",
+    "AbbreviationLanguageId": 100400001013000900
+  },
+  {
+    "Id": 1013001000,
+    "MapToolId": "g0130c01000",
+    "ResourceId": "g0130c01000",
+    "AbbreviationLanguageId": 100400001013001000
+  },
+  {
+    "Id": 1013001001,
+    "MapToolId": "g0130c01001",
+    "ResourceId": "g0130c01001",
+    "AbbreviationLanguageId": 100400001013001001
+  },
+  {
+    "Id": 1013001100,
+    "MapToolId": "g0130c01100",
+    "ResourceId": "g0130c01100",
+    "AbbreviationLanguageId": 100400001013001100
+  },
+  {
+    "Id": 1013001101,
+    "MapToolId": "g0130c01101",
+    "ResourceId": "g0130c01101",
+    "AbbreviationLanguageId": 100400001013001101
+  },
+  {
+    "Id": 1013001500,
+    "MapToolId": "g0130c01500",
+    "ResourceId": "g0130c01500",
+    "AbbreviationLanguageId": 100400001013001500
+  },
+  {
     "Id": 1017000100,
     "MapToolId": "g0170c00100",
     "ResourceId": "g0170c00100",
@@ -1824,10 +1908,22 @@
     "AbbreviationLanguageId": 100400001150000800
   },
   {
+    "Id": 1150000801,
+    "MapToolId": "g1500c00801",
+    "ResourceId": "g1500c00801",
+    "AbbreviationLanguageId": 100400001150000801
+  },
+  {
     "Id": 1150000900,
     "MapToolId": "g1500c00900",
     "ResourceId": "g1500c00900",
     "AbbreviationLanguageId": 100400001150000900
+  },
+  {
+    "Id": 1150001100,
+    "MapToolId": "g1500c01100",
+    "ResourceId": "g1500c01100",
+    "AbbreviationLanguageId": 100400001150001100
   },
   {
     "Id": 1155000100,
@@ -7696,6 +7792,24 @@
     "MapToolId": "g9990n00018",
     "ResourceId": "g9990n00018",
     "AbbreviationLanguageId": 100400002999000018
+  },
+  {
+    "Id": 2999000019,
+    "MapToolId": "g9990n00019",
+    "ResourceId": "g9990n00019",
+    "AbbreviationLanguageId": 100400002999000019
+  },
+  {
+    "Id": 2999000020,
+    "MapToolId": "g9990n00020",
+    "ResourceId": "g9990n00020",
+    "AbbreviationLanguageId": 100400002999000020
+  },
+  {
+    "Id": 2999000022,
+    "MapToolId": "g9990n00022",
+    "ResourceId": "g9990n00022",
+    "AbbreviationLanguageId": 100400002999000022
   },
   {
     "Id": 2999000100,

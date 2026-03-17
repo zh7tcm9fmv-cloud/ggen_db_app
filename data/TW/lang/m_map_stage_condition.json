@@ -5,110 +5,110 @@
   },
   {
     "id": 130300000600050202,
-    "value": "擊敗3架敵軍"
+    "value": "Destroy 3 enemies."
   },
   {
     "id": 130300003080030401,
-    "value": "敵軍與第三軍全滅"
+    "value": "All enemy units and third force destroyed."
   },
   {
     "id": 131000000000000101,
-    "value": "客座軍全滅"
+    "value": "Guest forces are destroyed."
   },
   {
     "id": 131000000000000102,
-    "value": "敵軍全滅"
+    "value": "Destroy all enemy units."
   },
   {
     "id": 131000000000000103,
-    "value": "第三軍全滅"
+    "value": "Destroy all third forces."
   },
   {
     "id": 131000000000000104,
-    "value": "擊破特定單位"
+    "value": "Destroy specified units."
   },
   {
     "id": 131000000000000105,
-    "value": "我軍全滅"
+    "value": "All of your units are destroyed."
   },
   {
     "id": 131000000000000201,
-    "value": "擊敗1架敵軍"
+    "value": "Destroy 1 enemy."
   },
   {
     "id": 131000000000000202,
-    "value": "擊敗2架敵軍"
+    "value": "Destroy 2 enemies."
   },
   {
     "id": 131000000000000203,
-    "value": "擊敗3架敵軍"
+    "value": "Destroy 3 enemies."
   },
   {
     "id": 131000000000000204,
-    "value": "擊敗4架敵軍"
+    "value": "Destroy 4 enemies."
   },
   {
     "id": 131000000000000205,
-    "value": "擊敗5架敵軍"
+    "value": "Destroy 5 enemies."
   },
   {
     "id": 131000000000000206,
-    "value": "擊敗6架敵軍"
+    "value": "Destroy 6 enemies."
   },
   {
     "id": 131000000000000207,
-    "value": "擊敗7架敵軍"
+    "value": "Destroy 7 enemies."
   },
   {
     "id": 131000000000000208,
-    "value": "擊敗8架敵軍"
+    "value": "Destroy 8 enemies."
   },
   {
     "id": 131000000000000209,
-    "value": "擊敗9架敵軍"
+    "value": "Destroy 9 enemies."
   },
   {
     "id": 131000000000000210,
-    "value": "擊敗10架敵軍"
+    "value": "Destroy 10 enemies."
   },
   {
     "id": 131000000000000303,
-    "value": "擊敗3架第三軍"
+    "value": "Destroy at least 3 third force."
   },
   {
     "id": 131000000000000305,
-    "value": "擊敗5架第三軍"
+    "value": "Destroy at least 5 third force."
   },
   {
     "id": 131000000000000308,
-    "value": "擊敗8架第三軍"
+    "value": "Destroy at least 8 third force."
   },
   {
     "id": 131000000000000401,
-    "value": "經過1回合"
+    "value": "Survive 1 turn."
   },
   {
     "id": 131000000000000402,
-    "value": "經過2回合"
+    "value": "Survive 2 turns."
   },
   {
     "id": 131000000000000403,
-    "value": "經過3回合"
+    "value": "Survive 3 turns."
   },
   {
     "id": 131000000000000404,
-    "value": "經過4回合"
+    "value": "Survive 4 turns."
   },
   {
     "id": 131000000000000405,
-    "value": "經過5回合"
+    "value": "Survive 5 turns."
   },
   {
     "id": 131000000000000501,
-    "value": "抵達目標區域"
+    "value": "Reach the target area."
   },
   {
     "id": 131000000000000601,
-    "value": "與特定單位交戰"
+    "value": "Engage specified units in battle."
   }
 ]

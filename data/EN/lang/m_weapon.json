@@ -1212,6 +1212,26 @@
     "value": "220mm Smoothbore Cannon SSP"
   },
   {
+    "id": 120100101300010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100101300010002,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100101300010003,
+    "value": "180mm Cannon"
+  },
+  {
+    "id": 120100101300010004,
+    "value": "Net Gun"
+  },
+  {
+    "id": 120100101300010090,
+    "value": "180mm Cannon SSP"
+  },
+  {
     "id": 120100101300011001,
     "value": "Beam Saber"
   },
@@ -1226,6 +1246,22 @@
   {
     "id": 120100101300011090,
     "value": "180mm Cannon SSP"
+  },
+  {
+    "id": 120100101300020001,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100101300020002,
+    "value": "6-Tube Missile Launcher"
+  },
+  {
+    "id": 120100101300020003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100101300020090,
+    "value": "6-Tube Missile Launcher SSP"
   },
   {
     "id": 120100101300021001,
@@ -1244,6 +1280,26 @@
     "value": "6-Tube Missile Launcher SSP"
   },
   {
+    "id": 120100101300030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100101300030002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100101300030003,
+    "value": "180mm Cannon"
+  },
+  {
+    "id": 120100101300030004,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100101300030090,
+    "value": "180mm Cannon SSP"
+  },
+  {
     "id": 120100101300035001,
     "value": "Beam Saber"
   },
@@ -1258,6 +1314,22 @@
   {
     "id": 120100101300035004,
     "value": "Barrage EX"
+  },
+  {
+    "id": 120100101300050001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100101300050002,
+    "value": "Long-Range Beam Rifle"
+  },
+  {
+    "id": 120100101300050003,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100101300050090,
+    "value": "Long-Range Beam Rifle SSP"
   },
   {
     "id": 120100101300051001,
@@ -1276,6 +1348,18 @@
     "value": "Long-Range Beam Rifle SSP"
   },
   {
+    "id": 120100101300060001,
+    "value": "Bullpup Machine Gun"
+  },
+  {
+    "id": 120100101300060002,
+    "value": "60mm Vulcan Gun"
+  },
+  {
+    "id": 120100101300060090,
+    "value": "Bullpup Machine Gun SSP"
+  },
+  {
     "id": 120100101300061001,
     "value": "Bullpup Machine Gun"
   },
@@ -1286,6 +1370,18 @@
   {
     "id": 120100101300061090,
     "value": "Bullpup Machine Gun SSP"
+  },
+  {
+    "id": 120100101300070001,
+    "value": "Melee"
+  },
+  {
+    "id": 120100101300070002,
+    "value": "Fifteen Caliber"
+  },
+  {
+    "id": 120100101300070090,
+    "value": "Fifteen Caliber SSP"
   },
   {
     "id": 120100101300071001,
@@ -1300,6 +1396,122 @@
     "value": "Fifteen Caliber SSP"
   },
   {
+    "id": 120100101300080001,
+    "value": "Heat Saber"
+  },
+  {
+    "id": 120100101300080002,
+    "value": "Heat Wire"
+  },
+  {
+    "id": 120100101300080003,
+    "value": "Gatling Shield"
+  },
+  {
+    "id": 120100101300080090,
+    "value": "Heat Saber SSP"
+  },
+  {
+    "id": 120100101300085001,
+    "value": "Heat Saber"
+  },
+  {
+    "id": 120100101300085002,
+    "value": "Heat Wire"
+  },
+  {
+    "id": 120100101300085003,
+    "value": "Gatling Shield"
+  },
+  {
+    "id": 120100101300085004,
+    "value": "Heat Saber EX"
+  },
+  {
+    "id": 120100101300090001,
+    "value": "Heat Saber"
+  },
+  {
+    "id": 120100101300090002,
+    "value": "Triple 35mm Gatling Cannon"
+  },
+  {
+    "id": 120100101300090003,
+    "value": "Gatling Shield"
+  },
+  {
+    "id": 120100101300090090,
+    "value": "Gatling Shield SSP"
+  },
+  {
+    "id": 120100101300100001,
+    "value": "Heat Hawk"
+  },
+  {
+    "id": 120100101300100002,
+    "value": "Zaku Machine Gun"
+  },
+  {
+    "id": 120100101300100090,
+    "value": "Heat Hawk SSP"
+  },
+  {
+    "id": 120100101300110001,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100101300110002,
+    "value": "Press"
+  },
+  {
+    "id": 120100101300110003,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100101300110090,
+    "value": "Large Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100101300120001,
+    "value": "Large Mega Particle Cannon (Diffuse)"
+  },
+  {
+    "id": 120100101300120002,
+    "value": "Large Mega Particle Cannon (Focused)"
+  },
+  {
+    "id": 120100101300120003,
+    "value": "Large Mega Particle Cannon (Pinpoint Beam)"
+  },
+  {
+    "id": 120100101300120004,
+    "value": "Large Mega Particle Cannon (Focused)"
+  },
+  {
+    "id": 120100101300120090,
+    "value": "Large Mega Particle Cannon (Pinpoint Beam) SSP"
+  },
+  {
+    "id": 120100101300130001,
+    "value": "Autocannon"
+  },
+  {
+    "id": 120100101300130002,
+    "value": "Wired Missile"
+  },
+  {
+    "id": 120100101300140001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100101300140002,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100101300140090,
+    "value": "Beam Saber SSP"
+  },
+  {
     "id": 120100101300141001,
     "value": "Beam Saber"
   },
@@ -1312,6 +1524,18 @@
     "value": "100mm Machine Gun SSP"
   },
   {
+    "id": 120100101300150001,
+    "value": "Quadruple Bop Missile"
+  },
+  {
+    "id": 120100101300150002,
+    "value": "120mm Shoulder Cannon"
+  },
+  {
+    "id": 120100101300150090,
+    "value": "120mm Shoulder Cannon SSP"
+  },
+  {
     "id": 120100101300151001,
     "value": "Quadruple Bop Missile"
   },
@@ -1322,6 +1546,10 @@
   {
     "id": 120100101300151090,
     "value": "120mm Shoulder Cannon SSP"
+  },
+  {
+    "id": 120100101300160001,
+    "value": "20mm Chain Gun"
   },
   {
     "id": 120100101300170001,
@@ -18042,6 +18270,22 @@
   {
     "id": 120100185000121090,
     "value": "Haro Bits SSP"
+  },
+  {
+    "id": 120100185000135001,
+    "value": "Haro Drill Punch"
+  },
+  {
+    "id": 120100185000135002,
+    "value": "Haro Mega Beam"
+  },
+  {
+    "id": 120100185000135003,
+    "value": "Haro Bits"
+  },
+  {
+    "id": 120100185000135004,
+    "value": "Haro Drill Punch EX"
   },
   {
     "id": 120100185000150001,

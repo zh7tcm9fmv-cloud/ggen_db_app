@@ -1,67 +1,67 @@
 [
   {
     "id": 170900000000000001,
-    "value": "商店"
+    "value": "Shop"
   },
   {
     "id": 170900000000000002,
-    "value": "角色要求"
+    "value": "Character Requests"
   },
   {
     "id": 170900000000000003,
-    "value": "強化培育關卡"
+    "value": "Upgrade Stages"
   },
   {
     "id": 170900000000000005,
-    "value": "永恆之路"
+    "value": "Eternal Road"
   },
   {
     "id": 170900000000000006,
-    "value": "強敵來襲"
+    "value": "Fierce Enemy Assault"
   },
   {
     "id": 170900000000000007,
-    "value": "大師聯盟"
+    "value": "Master League"
   },
   {
     "id": 170900000000000008,
-    "value": "事件"
+    "value": "Events"
   },
   {
     "id": 170900000000000009,
-    "value": "MS船塢"
+    "value": "Mobile Suit Dock"
   },
   {
     "id": 170900000000000010,
-    "value": "选择性零件"
+    "value": "Modification"
   },
   {
     "id": 170900000000000011,
-    "value": "招募"
+    "value": "Scout"
   },
   {
     "id": 170900000000000012,
-    "value": "SP化"
+    "value": "SP Conversion"
   },
   {
     "id": 170900000000000013,
-    "value": "世代之塔"
+    "value": "Generation Tower"
   },
   {
     "id": 170900000000000014,
-    "value": "强化武装"
+    "value": "Weapon Upgrade"
   },
   {
     "id": 170900000000000015,
-    "value": "故事事件"
+    "value": "Story Events"
   },
   {
     "id": 170900000000000016,
-    "value": "地圖事件"
+    "value": "Map Event."
   },
   {
     "id": 170900000000000017,
-    "value": "故事事件"
+    "value": "Story Events"
   },
   {
     "id": 170900000000000018,
@@ -81,10 +81,34 @@
   },
   {
     "id": 170900000000000022,
-    "value": "來自教官的考驗"
+    "value": "Instructor's Challenge"
   },
   {
     "id": 170900000000000023,
-    "value": "COMICS"
+    "value": "Comics"
+  },
+  {
+    "id": 170900000000000024,
+    "value": "ユニット"
+  },
+  {
+    "id": 170900000000000025,
+    "value": "メインステージ"
+  },
+  {
+    "id": 170900000000000026,
+    "value": "ホームアニメーション"
+  },
+  {
+    "id": 170900000000000027,
+    "value": "ホームアニメーション"
+  },
+  {
+    "id": 170900000000000028,
+    "value": "ホーム"
+  },
+  {
+    "id": 170900000000000029,
+    "value": "ホームアニメーション"
   }
 ]

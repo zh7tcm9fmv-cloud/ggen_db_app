@@ -77,6 +77,76 @@
     "IsBgmHighestPriority": true
   },
   {
+    "Id": 1013000100,
+    "CharacterId": 1013000100,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000101,
+    "CharacterId": 1013000101,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000200,
+    "CharacterId": 1013000200,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000300,
+    "CharacterId": 1013000300,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000301,
+    "CharacterId": 1013000301,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000400,
+    "CharacterId": 1013000400,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000500,
+    "CharacterId": 1013000500,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013000900,
+    "CharacterId": 1013000900,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013001000,
+    "CharacterId": 1013001000,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1013001100,
+    "CharacterId": 1013001100,
+    "ScheduleId": 2603209902,
+    "CharacterBgmId": 101300004,
+    "IsBgmHighestPriority": true
+  },
+  {
     "Id": 1017000200,
     "CharacterId": 1017000200,
     "ScheduleId": 2512309902,

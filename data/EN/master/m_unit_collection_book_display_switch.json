@@ -390,9 +390,19 @@
     "UnitId": 1013000110
   },
   {
+    "UnitCollectionBookId": 1300001,
+    "DisplayPriority": 1013000100,
+    "UnitId": 1013000100
+  },
+  {
     "UnitCollectionBookId": 1300002,
     "DisplayPriority": 1,
     "UnitId": 1013000210
+  },
+  {
+    "UnitCollectionBookId": 1300002,
+    "DisplayPriority": 1013000200,
+    "UnitId": 1013000200
   },
   {
     "UnitCollectionBookId": 1300003,
@@ -400,9 +410,19 @@
     "UnitId": 1013000350
   },
   {
+    "UnitCollectionBookId": 1300003,
+    "DisplayPriority": 1013000300,
+    "UnitId": 1013000300
+  },
+  {
     "UnitCollectionBookId": 1300004,
     "DisplayPriority": 1,
     "UnitId": 1013001410
+  },
+  {
+    "UnitCollectionBookId": 1300004,
+    "DisplayPriority": 1013001400,
+    "UnitId": 1013001400
   },
   {
     "UnitCollectionBookId": 1300005,
@@ -410,9 +430,19 @@
     "UnitId": 1013000510
   },
   {
+    "UnitCollectionBookId": 1300005,
+    "DisplayPriority": 1013000500,
+    "UnitId": 1013000500
+  },
+  {
     "UnitCollectionBookId": 1300006,
     "DisplayPriority": 1,
     "UnitId": 1013000610
+  },
+  {
+    "UnitCollectionBookId": 1300006,
+    "DisplayPriority": 1013000600,
+    "UnitId": 1013000600
   },
   {
     "UnitCollectionBookId": 1300007,
@@ -420,9 +450,49 @@
     "UnitId": 1013000710
   },
   {
+    "UnitCollectionBookId": 1300007,
+    "DisplayPriority": 1013000700,
+    "UnitId": 1013000700
+  },
+  {
     "UnitCollectionBookId": 1300008,
     "DisplayPriority": 1,
     "UnitId": 1013001510
+  },
+  {
+    "UnitCollectionBookId": 1300008,
+    "DisplayPriority": 1013001500,
+    "UnitId": 1013001500
+  },
+  {
+    "UnitCollectionBookId": 1300009,
+    "DisplayPriority": 1013001100,
+    "UnitId": 1013001100
+  },
+  {
+    "UnitCollectionBookId": 1300010,
+    "DisplayPriority": 1013001200,
+    "UnitId": 1013001200
+  },
+  {
+    "UnitCollectionBookId": 1300011,
+    "DisplayPriority": 1013000800,
+    "UnitId": 1013000800
+  },
+  {
+    "UnitCollectionBookId": 1300011,
+    "DisplayPriority": 1013000850,
+    "UnitId": 1013000850
+  },
+  {
+    "UnitCollectionBookId": 1300012,
+    "DisplayPriority": 1013000900,
+    "UnitId": 1013000900
+  },
+  {
+    "UnitCollectionBookId": 1300013,
+    "DisplayPriority": 1013001000,
+    "UnitId": 1013001000
   },
   {
     "UnitCollectionBookId": 1700001,
@@ -5018,5 +5088,10 @@
     "UnitCollectionBookId": 85000018,
     "DisplayPriority": 1850003302,
     "UnitId": 1850003302
+  },
+  {
+    "UnitCollectionBookId": 85000019,
+    "DisplayPriority": 1850001350,
+    "UnitId": 1850001350
   }
 ]

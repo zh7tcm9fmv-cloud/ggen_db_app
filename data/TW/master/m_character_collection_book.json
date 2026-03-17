@@ -279,6 +279,51 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 1300002,
+    "DefaultCharacterId": 1013000200,
+    "SortOrder": 1300002,
+    "SeriesId": 130,
+    "DescriptionLanguageId": 100200001013000200,
+    "ScheduleId": 2603209901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 1300003,
+    "DefaultCharacterId": 1013000300,
+    "SortOrder": 1300003,
+    "SeriesId": 130,
+    "DescriptionLanguageId": 100200001013000300,
+    "ScheduleId": 2603209901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 1300004,
+    "DefaultCharacterId": 1013000900,
+    "SortOrder": 1300004,
+    "SeriesId": 130,
+    "DescriptionLanguageId": 100200001013000900,
+    "ScheduleId": 2603209901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 1300005,
+    "DefaultCharacterId": 1013001000,
+    "SortOrder": 1300005,
+    "SeriesId": 130,
+    "DescriptionLanguageId": 100200001013001000,
+    "ScheduleId": 2603209901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 1300006,
+    "DefaultCharacterId": 1013001100,
+    "SortOrder": 1300006,
+    "SeriesId": 130,
+    "DescriptionLanguageId": 100200001013001100,
+    "ScheduleId": 2603209901,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 1700001,
     "DefaultCharacterId": 1017000201,
     "SortOrder": 1700001,
@@ -1230,6 +1275,15 @@
     "SeriesId": 1500,
     "DescriptionLanguageId": 100200001150000601,
     "ScheduleId": 2602209902,
+    "IsHideVoiceButton": true
+  },
+  {
+    "Id": 15000009,
+    "DefaultCharacterId": 1150001100,
+    "SortOrder": 15000009,
+    "SeriesId": 1500,
+    "DescriptionLanguageId": 100200001150001100,
+    "ScheduleId": 2602459901,
     "IsHideVoiceButton": true
   },
   {
@@ -3408,6 +3462,15 @@
     "SeriesId": 8500,
     "DescriptionLanguageId": 100200001850003300,
     "ScheduleId": 0,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 85000030,
+    "DefaultCharacterId": 1850003900,
+    "SortOrder": 85000030,
+    "SeriesId": 8500,
+    "DescriptionLanguageId": 100200001850003900,
+    "ScheduleId": 2603209901,
     "IsHideVoiceButton": false
   }
 ]

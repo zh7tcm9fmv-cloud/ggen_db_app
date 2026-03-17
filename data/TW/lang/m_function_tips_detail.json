@@ -1,614 +1,614 @@
 [
   {
     "id": 170800000000100101,
-    "value": "為單位和角色、支援人員進行強化的功能。"
+    "value": "A feature that upgrades units, characters, and supporters."
   },
   {
     "id": 170800000000100102,
-    "value": "可使用CAPITAL招募角色。"
+    "value": "You can scout characters by using Capital."
   },
   {
     "id": 170800000000100103,
-    "value": "對單位與支援人員執行解體，\n能夠獲得CAPITAL及稀有獎章、G點數。"
+    "value": "You can acquire Capital, rare medals, and G-Shop Pts by dismantling units\nand supporters."
   },
   {
     "id": 170800000000110101,
-    "value": "可為單位進行突破界限、強化LV、強化武裝LV、更換選擇性零件。"
+    "value": "You can perform limit breaks, level upgrades, weapon level upgrades,\nand modification swaps."
   },
   {
     "id": 170800000000110102,
-    "value": "使用單位強化數據能提升單位LV與能力值。\n可在強化培育關卡等處獲得單位強化數據。"
+    "value": "Using unit upgrade data raises the levels and stats of units. You can acquire unit\nupgrade data in Upgrade Stages, among other places."
   },
   {
     "id": 170800000000110103,
-    "value": "突破界限需要使用「相同單位」或「單位突破界限材料」進行。\n突破界限後能力值將會大幅提升。"
+    "value": "You can perform limit breaks on units by using identical units or unit limit break\nmaterials. When you perform limit breaks on units, their stats increase significantly."
   },
   {
     "id": 170800000000120101,
-    "value": "使用角色強化數據能提升角色LV與能力值。\n提升角色LV將有可能習得角色技能或能力。"
+    "value": "Using character upgrade data raises the levels and stats of characters. When you raise\ncharacters' levels, they may learn new skills and abilities."
   },
   {
     "id": 170800000000120102,
-    "value": "每個角色各自擁有能讓戰鬥進行得更順利的角色技能。\n在戰鬥中，可消耗「SP（技能點數）」發動技能。"
+    "value": "Characters have unique skills that give　them advantages in battle.\nDuring battle, these skills can be activated by using SP (Skill Points)."
   },
   {
     "id": 170800000000120103,
-    "value": "支援攻擊、支援防禦、額外行動的可執行次數\n會隨角色能力而有所改變。"
+    "value": "How many times you can perform Support Attacks, Support Defenses, and Bonus Actions\ndepends on character abilities."
   },
   {
     "id": 170800000000130101,
-    "value": "當支援人員的LV提升，加算至編制的能力值也會提升。\n突破界限之後，數值還能再提升。"
+    "value": "With a higher level, a supporter's stats will grant more benefit to the formation.\nThis benefit may be increased by performing limit breaks."
   },
   {
     "id": 170800000000130102,
-    "value": "隊長技能具有使條件符合的單位提升能力值的效果。\n突破界限之後，效果還能再提升。"
+    "value": "Leader skills have the effect of improving the stats of compatible units, which can be\nfurther improved by performing limit breaks."
   },
   {
     "id": 170800000000130103,
-    "value": "支援技能可在戰鬥中使範圍內的己方HP或EN恢復，\n或是發揮支援部隊的效果。"
+    "value": "Support skills can restore HP or EN to allies within range during battle and activate\neffects that support formations."
   },
   {
     "id": 170800000000130104,
-    "value": "每1支部隊可編制1個支援人員，編制後可使部隊的能力值提升，\n並擁有隊長技能與支援技能。"
+    "value": "One supporter can be assigned to a squad formation, and doing so improves that squad's\nstats. Moreover, supporters possess leader and support skills."
   },
   {
     "id": 170800000000140101,
-    "value": "開發是將單位改造成全新單位的功能。"
+    "value": "Development is a feature that allows you to remake units into new ones."
   },
   {
     "id": 170800000000140102,
-    "value": "解放主要關卡後，對應的開發路線圖也會隨之解放。\n推進開發進度後可根據完成率獲得報酬。"
+    "value": "When main stages are unlocked, so too are the corresponding Development Diagrams.\nBy developing units, you can earn rewards based on completion rate."
   },
   {
     "id": 170800000000140103,
-    "value": "低稀有度的單位僅需CAPITAL即可開發，\n高稀有度的單位則有可能需要複數單位及專用道具才能夠開發。"
+    "value": "You can develop common units with Capital alone, but you may need multiple units or\nspecial items to develop rare units."
   },
   {
     "id": 170800000000140104,
-    "value": "完成率達到100%時可獲得完成報酬。\n透過完成報酬有可能獲得特殊單位。"
+    "value": "By reaching a 100% completion rate, you can acquire completion rewards. You may acquire\nspecial units through completion rewards."
   },
   {
     "id": 170800000000150102,
-    "value": "可遊玩遵循原作故事的關卡。\n完成系列後將解放新的系列。"
+    "value": "Here you can relive the original stories of Mobile Suit Gundam.\nBy clearing a series, a new one may be unlocked."
   },
   {
     "id": 170800000000150103,
-    "value": "關卡由「故事」與「戰鬥」構成。\n可使用「圖鑑」內的「故事回想」功能，觀賞已完成關卡的故事。"
+    "value": "Stages are comprised of stories and battles. You can play back stories from cleared\nstages with Story Review in the Gallery."
   },
   {
     "id": 170800000000150104,
-    "value": "戰鬥內容會以<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">進行評價。\n獲得3顆<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">就能在該關卡使用略過功能。"
+    "value": "Battle performance is <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">. After earning three of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">, you can skip that stage."
   },
   {
     "id": 170800000000150105,
-    "value": "可消耗AP略過戰鬥並獲得報酬。\n每日可略過的次數設有限制，每日都會重置。"
+    "value": "You can use AP to skip battles and earn rewards. You can only perform a limited number\nof skips in a day, and that count resets daily."
   },
   {
     "id": 170800000000150106,
-    "value": "有些關卡在達成條件後會出現隱藏戰鬥。\n完成隱藏戰鬥可獲得特殊報酬。"
+    "value": "On some stages, secret battles will be unlocked upon fulfilling certain conditions.\nYou may then earn special rewards by clearing said secret battles."
   },
   {
     "id": 170800000000160101,
-    "value": "能夠獲得大量CAPITAL及各種強化材料的關卡。\n每日可遊玩的次數設有限制。"
+    "value": "A stage type where you can earn Capital and any type of upgrade materials, which can\nonly be played a limited number of times per day."
   },
   {
     "id": 170800000000170101,
-    "value": "挑戰在可編制單位與角色受限的狀態下完成關卡。\n難度偏高，但完成後可獲得特殊報酬。"
+    "value": "Content that imposes unit and character restrictions on your formation. While the\ndifficulty may be high, it is an opportunity to earn special rewards."
   },
   {
     "id": 170800000000170102,
-    "value": "本關卡會限制可編制的單位。\n請由開發路線圖及機體補給獲得對應單位後再挑戰。"
+    "value": "These stages have restrictions on the units you can have in your formation.\nTake on the challenge by obtaining the required units through Development Diagrams or Unit Assemblies."
   },
   {
     "id": 170800000000180101,
-    "value": "1支部隊可編制5架搭乘了角色的單位和1個支援人員。\n戰鬥最多可派遣2支部隊出擊。"
+    "value": "You can have five units piloted by characters and one supporter in a squad formation.\nYou can sortie into battle with up to two squads."
   },
   {
     "id": 170800000000180102,
-    "value": "有些關卡會限制可編制的單位及角色。"
+    "value": "Some stages impose unit and character restrictions on your formation."
   },
   {
     "id": 170800000000180103,
-    "value": "讓單位與角色的類型一致，可使單位的性能完全發揮。"
+    "value": "By matching units with characters of the same type, you can maximize\nsaid units' performance."
   },
   {
     "id": 170800000000190101,
-    "value": "可保存20支部隊的編制，也可在保存編制畫面中進行編輯。\n可為我的最愛部隊隨意命名。"
+    "value": "You can save up to twenty squad formations and edit them from the Formations screen.\nYou may also give your favorite squads any name you like."
   },
   {
     "id": 170800000000200101,
-    "value": "玩家的據點，備有多種功能。\n功能會隨著遊戲進度逐漸解放。"
+    "value": "The player's base, where various features are available. As you make progress in the\ngame, you will unlock new features."
   },
   {
     "id": 170800000000200102,
-    "value": "戰艦會每隔一定時間運回AP及道具。\n玩家RANK提升後，可取得的道具數量也會逐漸增加。"
+    "value": "Warships resupply you with AP and items at set intervals. As your Player Rank increases,\nyou will be able to obtain more items."
   },
   {
     "id": 170800000000200103,
-    "value": "可接受角色發出的委託。\n完成委託後會提升「要求RANK」，並可獲得開發材料或選擇性零件。"
+    "value": "You can accept requests from characters. Completing requests improves your Request Rank,\nallowing you to acquire development materials and modifications."
   },
   {
     "id": 170800000000200104,
-    "value": "可在此空間展示在主要關卡中獲得的「MS船塢單位」。\n在此配備喜歡的MS船塢單位，營造出自己的專屬MS船塢吧。"
+    "value": "A space where you can display the MS Dock Units acquired from main stages. Deploy your\nfavorite MS Dock Units and create your very own MS Dock."
   },
   {
     "id": 170800000000210101,
-    "value": "達成特定條件可獲得報酬。\n按下挑戰按鈕前往各功能，努力達成條件吧。"
+    "value": "You can earn rewards by fulfilling certain conditions. Try to fulfill these upon\nnavigating to each feature from the Attempt button."
   },
   {
     "id": 170800000000220101,
-    "value": "可使用CAPITAL及鑽石等物品購買道具的地方。\n可獲得各種強化材料及選擇性零件等道具。"
+    "value": "The place where you can purchase items using Capital, diamonds, and so on. You can\nacquire various upgrade materials and modifications there."
   },
   {
     "id": 170800000000230101,
-    "value": "可變更簡介中顯示的單位及角色。\n此外也能變更玩家名稱及稱號。"
+    "value": "You can change the units and characters displayed on the Profile screen. You can also\nchange your player name and title."
   },
   {
     "id": 170800000000240101,
-    "value": "可在各種圖鑑中查看已取得的單位及\n角色、登場系列的詳細資訊。"
+    "value": "See the various databases for detailed information on the units and characters that you\nhave obtained as well as the series in which they appear."
   },
   {
     "id": 170800000000240102,
-    "value": "可回顧已完成關卡的故事。"
+    "value": "You can rewatch the stories from the stages that you have cleared."
   },
   {
     "id": 170800000000250101,
-    "value": "武裝等級提升後會提升POWER、減少消耗EN。\n試著收集武裝強化零件來強化武裝吧。"
+    "value": "As you level up a weapon, its power increases and its EN consumption decreases.\nCollect weapon upgrade material to enhance your weapons."
   },
   {
     "id": 170800000000250102,
-    "value": "武裝圖示的顏色代表武裝具備的「武裝效果」分類。\n舉例來說，屬於火力系時可給予敵方大量損傷。"
+    "value": "Weapon icon colors indicate weapon effect type. For example, fire weapons can deal\nsignificant damage."
   },
   {
     "id": 170800000000260101,
-    "value": "單位可裝備「選擇性零件」。\n選擇性零件也稱作「OP」，大多具備讓能力值變動的效果。"
+    "value": "Units can be equipped with modifications. These are also referred to as mods and mainly\ngrant effects that alter stats."
   },
   {
     "id": 170800000000260102,
-    "value": "單位的固有能力。\n能在戰鬥中發揮出各式各樣的效果。"
+    "value": "Unique abilities that units possess. They have various effects activated\nduring battle."
   },
   {
     "id": 170800000000270101,
-    "value": "部分單位可藉由SP化使LV上限提升至100。\n經SP化的單位無法再當成開發材料，需多加留意。"
+    "value": "You can perform SP conversion on certain units to raise their Max Level to 100, but note\nthat units that have undergone SP conversion cannot be used as development materials."
   },
   {
     "id": 170800000000270102,
-    "value": "SP化後的角色，LV的上限將提升為100，能力值也會提升。\n隨著LV提升，還可能會追加可習得的角色技能或能力。"
+    "value": "Once a character is converted into SP, their stats are boosted and their level cap is raised to 100.\nCharacter skills and abilities that can be acquired by leveling up may also be added."
   },
   {
     "id": 170800000000280101,
-    "value": "達成使命，努力填滿板塊吧。\n填滿所有板塊可獲得完成報酬，進入下一個使命等級。"
+    "value": "Complete missions to open panels. After you have opened every panel, you will receive a\ncompletion reward and advance onto the next mission level."
   },
   {
     "id": 170800000000290101,
-    "value": "本功能可自由搭配任意單位，自訂主畫面外觀。\n打造屬於自己的主畫面吧！"
+    "value": "This feature allows you to freely customize your home screen by arranging your favorite units.\nCreate a home screen that's uniquely yours!"
   },
   {
     "id": 170800000000290201,
-    "value": "在本功能中，背景與版面的組合稱為「風格」。\n達成圖鑑登錄數等條件，便可解放對應的不同風格。"
+    "value": "The combination of a background and a layout is called a style.\nStyles are unlocked based on different factors, such as the number of entries in your databases."
   },
   {
     "id": 170800000000290202,
-    "value": "在UR單位中，有部分單位可解放特殊的主畫面動畫。\n經由「突破界限」或「開發」來獲得動畫，點綴主畫面吧！"
+    "value": "Some UR units have special unlockable home screen animations.\nAdd flavor to your home screen by obtaining animations through limit breaking or development!"
   },
   {
     "id": 170800000000300001,
-    "value": "本功能可藉由輸入其他玩家發行的「邀請碼」換取報酬。\n根據受邀玩家的遊戲進度，邀請者也可獲得對應的報酬。"
+    "value": "This feature allows you to receive rewards by entering an invitation code issued by another player.\nThe player who sends the invitation can also earn rewards based on the progress of the invited player."
   },
   {
     "id": 170800000000300002,
-    "value": "可輸入其他玩家送出的「邀請碼」以獲得報酬。\n「邀請碼」的輸入期限為開始遊戲7日之內。"
+    "value": "You can earn rewards by entering another player's invitation code.\nThe invitation code must be entered within 7 days of starting the game."
   },
   {
     "id": 170800000000300003,
-    "value": "輸入「邀請碼」的玩家達到RANK5之後，便會登錄於邀請好友列表中。\n隨著受邀玩家的玩家RANK提升，邀請者將可獲得報酬。"
+    "value": "The player who entered the invitation code will be added to your friend invitation list once they reach Player Rank 5.\nYou can earn rewards based on the invitee's Player Rank."
   },
   {
     "id": 170800000000310101,
-    "value": "當單位達LV100以及突破界限階段達上限時，可消耗SSP化晶片將單位SSP化。\n單位SSP化後將解放改LV與改裝核心。"
+    "value": "By using an SSP Conversion Chip on a unit that reached level 100 and maximum limit break, SSP conversion can be performed.\nSSP-converted units unlock retrofit levels and Custom Cores."
   },
   {
     "id": 170800000000310102,
-    "value": "提升改LV後，單位的能力值將隨之提升，達到一定的改LV時將解放改裝核心。"
+    "value": "Upgrading retrofit levels increases unit stats, and once a specific retrofit level is reached, the Custom Core feature is unlocked."
   },
   {
     "id": 170800000000310103,
-    "value": "可使用材料來習得解放的改裝核心。\n習得改裝核心後將可進一步強化單位，如新增武裝、部分單位可提升移動力等。"
+    "value": "Unlocked Custom Cores can be learned by using materials.\nLearning it enhances unit performance, adding new weapons and increasing mobility for some units."
   },
   {
     "id": 170800000000320101,
-    "value": "只要保有1次以上的執行次數，即可免費執行10連補給。\n執行次數會在每日12:00 (JST)時+1。"
+    "value": "If your pull count is 1 or higher, you can use the 10-Pull Unit Assembly for free.\nYour pull count will increase by 1 daily at 12:00 (JST)."
   },
   {
     "id": 170800000000320102,
-    "value": "機體補給結果將會暫時保留，無法立即獲得。\n執行第2次補給後，可以在先前保留的結果和這次的補給結果中選擇一方保留。"
+    "value": "Unit Assembly results are temporarily kept instead of immediately acquired.\nOn subsequent pulls, select between your previously kept result or the new one."
   },
   {
     "id": 170800000000320103,
-    "value": "將最多可執行次數消耗完畢後，\n就能領取最後保留的補給內容。"
+    "value": "Once all pulls have been received and used,\nyou will be able to claim the last result you kept."
   },
   {
     "id": 170800000000500101,
-    "value": "以我軍單位的EN剩餘量，若要全滅敵方單位，\n請選擇消耗EN較少的武裝。"
+    "value": "Choose weapons with low EN consumption to annihilate enemy units with your\nremaining EN."
   },
   {
     "id": 170800000000500102,
-    "value": "若選擇消耗EN較多的武裝，\n則會因EN不足而無法全滅敵方單位。"
+    "value": "If you choose weapons with high EN consumption, you will run out of EN before you can\nannihilate enemy units."
   },
   {
     "id": 170800000000500201,
-    "value": "在敵方單位的攻擊範圍當中，某些位置並不會遭到敵人反擊。\n將我軍單位移動到該位置，進行單方面攻擊吧。"
+    "value": "There are positions within the enemy units' attack range where they won't counter.\nTry moving your units to those positions to attack them unilaterally."
   },
   {
     "id": 170800000000500301,
-    "value": "使用持有的武裝來擊破敵方單位，藉此觸發額外行動。"
+    "value": "Destroy enemy units with weapons in your possession to trigger\nbonus actions."
   },
   {
     "id": 170800000000500401,
-    "value": "戰鬥中EN不足時，就使用支援技能來恢復。"
+    "value": "When you run low on EN, use support skills to fight while recovering EN."
   },
   {
     "id": 170800000000500501,
-    "value": "使用角色技能提升命中率後再進行攻擊。"
+    "value": "Use character skills to boost Accuracy before attacking."
   },
   {
     "id": 170800000000500801,
-    "value": "擊破敵方單位後，戰意就會提升。\n戰意提升會提升損傷，以此擊破高HP的單位。"
+    "value": "Destroying enemy units raises Vigor. Raising Vigor increases damage, allowing you to\ndestroy units with high HP."
   },
   {
     "id": 170800000000500901,
-    "value": "用變形提升移動力與射程來擊破敵方單位。"
+    "value": "Destroy enemy units by using Transform to extend Movement and range."
   },
   {
     "id": 170800000000501001,
-    "value": "使用MAP兵器來同時擊破敵方單位。"
+    "value": "Use MAP Weapons to destroy multiple enemy units at once."
   },
   {
     "id": 170800000000501101,
-    "value": "使用搭乘角色擅長的武裝進行攻擊。"
+    "value": "Attack with weapons that the characters piloting units are proficient with."
   },
   {
     "id": 170800000000501201,
-    "value": "敵方單位持有「減輕光束屬性損傷的能力」。\n使用非光束屬性的武裝來攻擊吧。"
+    "value": "Enemy units have an ability that reduces beam damage. Attack them with\nnon-beam weapons."
   },
   {
     "id": 170800000000501301,
-    "value": "適性為「△」的單位移動力會減半。"
+    "value": "Units with \"triangle\" suitability have their Movement halved."
   },
   {
     "id": 170800000000501401,
-    "value": "在POWER最大的距離使用武裝來造成最大損傷，\n擊破敵方單位！"
+    "value": "Use weapons from a distance where Power is maximized to destroy enemy units by\ninflicting maximum damage."
   },
   {
     "id": 170800000000501501,
-    "value": "先使用具有減少敵方單位防禦力效果的武裝來提升損傷，\n並擊破敵方單位！"
+    "value": "First, use weapons with the effect of reducing enemy units' Defense, then destroy them\nwhile the damage you deal is increased."
   },
   {
     "id": 170800000000501601,
-    "value": "先使用具有減少敵方單位攻擊力效果的武裝，\n減輕我軍單位受到的損傷，並擊破敵方單位！"
+    "value": "First, use weapons with the effect of reducing enemy units' Attack, then destroy them\nwhile the damage you receive is decreased."
   },
   {
     "id": 170800000000510001,
-    "value": "某些單位遭擊破後，會造成我方敗北。\n請注意走位，避免這些單位的HP降至過低。"
+    "value": "Certain units will result in a defeat when destroyed.\nStrategize so that their HP does not get too low."
   },
   {
     "id": 170800000000510002,
-    "value": "某些關卡設有回合限制，必須有計畫性地打倒敵方單位。\n仔細審視我軍單位的初期配置與編制陣容，做好萬全準備吧。"
+    "value": "For stages that have a set number of turns, you'll need a plan to take out enemy units.\nMake sure to review your deployment and formation before battle."
   },
   {
     "id": 170800000000510003,
-    "value": "某些關卡中，敵軍會朝防禦區域前進。\n將我方單位聚集至防禦區域周圍，迎擊敵軍吧。"
+    "value": "In stages where enemies try to raid a defense area, be sure to gather allied units\naround the defense area and intercept enemy attacks."
   },
   {
     "id": 170800000000510004,
-    "value": "在水中時，可使部分光束屬性武裝的損傷減半。"
+    "value": "Damage from certain beam weapons may be halved underwater."
   },
   {
     "id": 170800000000510005,
-    "value": "由於在事件關卡與Boss戰鬥中造成的損傷將會增加，積極地編制對象單位吧。"
+    "value": "Since they deal more damage in event stages and boss battles, be sure to include them in\nyour formation."
   },
   {
     "id": 170800000000510006,
-    "value": "仔細觀察敵方的能力值和武裝的範圍。\n當中或許藏著攻略關卡的提示。"
+    "value": "Pay close attention to the enemy units' stats and weapon ranges.\nThey may hide strategic clues."
   },
   {
     "id": 170800000000510007,
-    "value": "事件獎勵對象單位在事件關卡中造成的損傷將增加。\n盡量將其編入隊伍吧。"
+    "value": "Units eligible for event bonuses deal more damage in event stages.\nBe sure to include them in your formation."
   },
   {
     "id": 170800000000520101,
-    "value": "武裝中有會賦予敵方減益效果的武裝。\n一邊留意敵方的MAP兵器之射程，同時先從會賦予敵方減益效果的單位開始行動吧！"
+    "value": "Some weapons can inflict harmful effects on the enemy. Start by assessing \nthe enemy MAP Weapon's range, then move the Units who can inflict effects on the enemy out of its way!"
   },
   {
     "id": 170800000000520102,
-    "value": "如上圖所示，敵方的MAP兵器之射程範圍會顯示在戰場盤面上。\n在本關卡中，只要有2架或以上的己方單位在範圍內，就會被敵方的MAP兵器攻擊。"
+    "value": "As you can see from the above picture, the enemy MAP Weapon's range is displayed on the board.\nIn this stage, the enemy will fire their MAP Weapon if two or more allied Units are within that range."
   },
   {
     "id": 170800000000520103,
-    "value": "將單位配置在不會被MAP兵器攻擊的位置，並以會賦予敵方減益效果的武裝進行攻擊\n應該就能在反擊時將敵方擊破！"
+    "value": "Move the Units out of its way, then strike the enemy with weapons capable of inflicting an effect.\nThis way, you'll destroy them with a single counterattack!"
   },
   {
     "id": 170800000000520201,
-    "value": "纏繞著紅色光環的Boss單位擁有非常高的攻擊力。\n使用支援防禦來應對Boss單位的攻擊吧！"
+    "value": "Units with a red aura are Boss Units and have high Attack.\nTo deal with them, use Support Defense!"
   },
   {
     "id": 170800000000520202,
-    "value": "不想使用支援防禦的話就必須變更為「不參加」。\n點擊畫面的角色圖示後選擇「不參加」吧！"
+    "value": "If you don't want to use Support Defense, choose \"Opt Out\".\nTo do so, tap the Character's Icon and then Opt Out!"
   },
   {
     "id": 170800000000520301,
-    "value": "在本關卡中，若敵方進行支援防禦，\n客座軍將幾乎無法對敵方造成傷害"
+    "value": "Here, if the enemy uses Support Defense,\nthe Guest Forces won't be able to inflict much damage."
   },
   {
     "id": 170800000000520302,
-    "value": "集中攻擊上方的單位，\n當敵方進行支援防禦時，就把支援攻擊保留下來吧！"
+    "value": "Focus your attacks on the above Units,\nand save your Support Attacks for Support Defense!"
   },
   {
     "id": 170800000000520303,
-    "value": "打倒最上面的單位後，使用支援攻擊等手段，\n集中攻擊Boss單位吧！"
+    "value": "Use Support Attacks to destroy the first Unit on the list,\nthen focus on the Boss Unit!"
   },
   {
     "id": 170800000000520401,
-    "value": "角色技能「搖擺閃避」可以讓單位在下次戰鬥時閃避對手的攻擊。\n（MAP兵器等必中攻擊除外）"
+    "value": "During the next fight, try to use the Character Skill \"Sway\" to evade enemy attacks!\n(excluding guaranteed-hit attacks such as MAP Weapons)"
   },
   {
     "id": 170800000000520402,
-    "value": "使用「搖擺閃避」可以無損傷地消耗掉對手的支援攻擊。"
+    "value": "Using \"Sway\" will allow you to make the enemy use up their Support Attack without dealing any damage."
   },
   {
     "id": 170800000000520403,
-    "value": "本關卡中Boss的近距離攻擊非常強力。\n盡量從遠距離進行攻擊吧！"
+    "value": "This Stage's Boss has an incredibly high Melee Attack.\nUse Long Range Attacks to take it down!"
   },
   {
     "id": 170800000000520501,
-    "value": "首先，先來確認持有紅色效果的單位的能力吧！\n優先打倒持有防禦力提升（整體）的單位！"
+    "value": "First, check out the abilities of the Units highlighted in red!\nDestroy all Units with \"Increased DEF\" first!"
   },
   {
     "id": 170800000000520502,
-    "value": "使用MAP兵器進行攻擊時，可以無視支援防禦來攻擊敵方單位。\n盡可能讓更多的支援防禦單位捲入攻擊中吧！"
+    "value": "Attack with MAP Weapons to prevent Support Defense from activating!\nTry to hit as many Units capable of Support Defense as possible!"
   },
   {
     "id": 170800000000520503,
-    "value": "客座軍的夏亞·阿茲納布爾持有「攻擊爆裂」技能。\n遇上無法一擊打倒的敵人時就使用技能吧！"
+    "value": "The Char Aznable from the Guest Forces has the \"Attack Burst\" Skill.\nUse it if you don't manage to destroy the enemy in one hit!"
   },
   {
     "id": 170800000000520601,
-    "value": "在「來自教官的考驗」中，玩家將可透過攻略教官給予的考驗，\n以實戰方式學習手動操作時的思路。"
+    "value": "In \"Instructor's Challenge\", you will learn actual battle tips and strategies from the instructor."
   },
   {
     "id": 170800000000520602,
-    "value": "在「來自教官的考驗」中，將操作預先準備好的客座軍。\n或許能從中獲得編成的提示。"
+    "value": "During the Instructor's Challenge, you will be given control of a preformed Guest Force.\nThere may be tips about formations as well."
   },
   {
     "id": 170800000000520701,
-    "value": "可以隨時點擊畫面右上方的「i」按鈕來確認TIPS。"
+    "value": "Tap on the \"i\" icon on the upper right side of the screen to check the tips."
   },
   {
     "id": 170800000000900001,
-    "value": "可以體驗電視動畫、OVA、漫畫等劇情的事件。\n推進關卡來開發限定單位，攻略Boss關卡吧。"
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
   },
   {
     "id": 170800000000900002,
-    "value": "完成事件限定關卡，即可獲得Boss挑戰券。\n使用收集的Boss挑戰券，即可挑戰能獲得機體補給獎章的Boss戰鬥。"
+    "value": "Earn Boss Challenge Tickets by clearing event-exclusive stages. Use the tickets you've\nearned to attempt the boss battle and win Unit Assembly Medals."
   },
   {
     "id": 170800000000900003,
-    "value": "對Boss單位造成的損傷將會保留至下一次挑戰。\n如果僅挑戰一次就完成Boss戰鬥，即可略過該關卡。"
+    "value": "Any damage dealt to the boss unit carries over between attempts. If you manage to clear\na boss battle in a single attempt, you will be able to skip that stage."
   },
   {
     "id": 170800000000900004,
-    "value": "可消耗機體補給獎章獲得各式各樣的事件報酬。"
+    "value": "You can use Unit Assembly Medals to obtain a variety of event rewards."
   },
   {
     "id": 170800000000900005,
-    "value": "擊敗Boss後，可能會有稀有Boss登場。\n只要擊敗稀有Boss，就能獲得大量的機體補給獎章。"
+    "value": "When you defeat a boss, a rare boss may appear. If you manage to defeat the rare boss,\nyou may earn a large number of Unit Assembly Medals."
   },
   {
     "id": 170800000000900006,
-    "value": "事件獎勵對象單位在事件關卡與Boss戰鬥中造成的損傷將增加，\n完成關卡時獲得的Boss挑戰券數量也會增加。"
+    "value": "Units eligible for event bonuses deal more damage in event stages and boss battles. They\nalso earn more Boss Challenge Tickets upon clearing stages."
   },
   {
     "id": 170800000000900007,
-    "value": "可以體驗電視動畫、OVA、漫畫等劇情的事件。\n推進關卡來開發限定單位、攻略Boss關卡吧。"
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
   },
   {
     "id": 170800000000900008,
-    "value": "完成事件限定關卡，即可獲得Boss挑戰券。\n使用收集的Boss挑戰券，即可挑戰能獲得CARDDASS幣的Boss戰鬥。"
+    "value": "Earn Boss Challenge Tickets by clearing event-exclusive stages. Use the tickets you've\nearned to attempt the boss battle and win Carddass coins."
   },
   {
     "id": 170800000000900009,
-    "value": "對Boss單位造成的損傷將會保留至下一次挑戰。\n如果僅挑戰一次就完成Boss戰鬥，即可略過該關卡。"
+    "value": "Any damage dealt to the boss unit carries over between attempts. If you manage to clear\na boss battle in a single attempt, you will be able to skip that stage."
   },
   {
     "id": 170800000000900010,
-    "value": "可消耗CARDDASS幣來獲得CARDDASS。"
+    "value": "You can use Carddass coins to obtain Carddass cards."
   },
   {
     "id": 170800000000900011,
-    "value": "收集CARDDASS\n可獲得豪華道具。"
+    "value": "Collect Carddass cards\nto earn valuable items."
   },
   {
     "id": 170800000000900012,
-    "value": "擊敗Boss後，可能會有稀有Boss登場。\n擊敗稀有Boss即可獲得大量CARDDASS幣。"
+    "value": "When you defeat a boss, a rare boss may appear.\nIf you manage to defeat the rare boss, you will earn a large number of Carddass coins."
   },
   {
     "id": 170800000000900014,
-    "value": "「機動戰士鋼彈 0080 口袋中的戰爭」的Boss戰鬥中將出現誘餌氣球。\n可於Boss戰鬥中獲得的補給獎章數量將隨擊破的誘餌氣球數量變化。"
+    "value": "Dummy balloons appear during the Mobile Suit Gundam 0080: War in the Pocket boss battle.\nThe more you destroy, the more Supplier Medals you can acquire."
   },
   {
     "id": 170800000000900015,
-    "value": "可以體驗電視動畫、OVA、漫畫等劇情的事件。\n推進關卡來獲得單位，完成評測實驗吧。"
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics.\nBattle your way through the stages, acquire units, and complete the evaluations."
   },
   {
     "id": 170800000000900016,
-    "value": "推進各單位專用的評測實驗，將實驗進度達到100%吧。\n於評測實驗中還可為單位突破界限。"
+    "value": "Make your way through the evaluation for each unit and achieve 100% progress.\nDuring evaluation, you can also limit break units."
   },
   {
     "id": 170800000000900017,
-    "value": "在完成NORMAL關卡後，來挑戰ANOTHER吧。\n在ANOTHER中「機動戰士鋼彈 MS IGLOO」的單位與角色可獲得的經驗值將變成10倍。"
+    "value": "After clearing a NORMAL Stage, why don't you go for ANOTHER?\nANOTHER Stages will yield x10 EXP for Units and Characters from \"Mobile Suit Gundam MS IGLOO\"."
   },
   {
     "id": 170800000000900018,
-    "value": "事件獎勵對象單位在事件關卡中造成的損傷將增加。\n盡量將其編入隊伍吧。"
+    "value": "Units eligible for event bonuses deal more damage in event stages.\nBe sure to include them in your formation."
   },
   {
     "id": 170800000000910001,
-    "value": "完成強敵來襲的關卡，即可獲得SSR單位。\n獲得使命報酬，使用專用突破界限材料將單位突破界限吧。"
+    "value": "By clearing Fierce Enemy Assault stages, you can acquire SSR units. Obtain special limit\nbreak materials as mission rewards and aim for limit breaks."
   },
   {
     "id": 170800000000910002,
-    "value": "從事件關卡中，能夠獲得「強敵來襲中登場單位的專用武裝強化材料」。\n獲得材料後，試著強化武裝吧。"
+    "value": "You can obtain special weapon upgrade materials for units appearing in Fierce Enemy\nAssault from event stages. Try upgrading your weapons once you obtain the materials!"
   },
   {
     "id": 170800000000910003,
-    "value": "「歷史戰鬥」是可以挑戰以往登場強敵的功能。\n每次強敵來襲事件登場時，都可以挑戰過去的強敵。"
+    "value": "History Battle is a feature that allows you to face off against powerful enemies from past events.\nYou'll be able to take on previous enemies every time a Fierce Enemy Assault event is held."
   },
   {
     "id": 170800000000910004,
-    "value": "敵方的所有能力值（EN除外）會階段性增強的全新難度戰鬥。\n勝利條件將變更為敵軍全滅，完成後即解放下一個等級。"
+    "value": "These are new difficulty in battles where all enemy stats (EN excluded) are gradually increased.\nThe victory conditions are changed to \"Destroy all enemy units,\" and clearing a stage unlocks the next level."
   },
   {
     "id": 170800000000920001,
-    "value": "推進地圖，獲得事件限定角色和事件限定支援人員吧。"
+    "value": "Progress through the map to earn event-exclusive characters and supporters."
   },
   {
     "id": 170800000000920002,
-    "value": "地圖事件是消耗專用行動點數「PP」來進行的事件。\n具備各種效果的格子分布於地圖各處，請選擇自己心目中的最佳路徑前進。"
+    "value": "Map Events are special events that progress by consuming a dedicated action point called PP.\nPick the best route as you navigate through spaces with various effects!"
   },
   {
     "id": 170800000000920004,
-    "value": "地圖上分成多塊區域，各區域會有區域Boss鎮守。擊破區域Boss即可解放下一區域。"
+    "value": "The map is divided into areas, each with its own Area Boss. \nDefeating the Area Boss will unlock the next area."
   },
   {
     "id": 170800000000920006,
-    "value": "可多次於「增幅」格獲得提升能力值效果，直到抵達上限。\n戰力不足時，就來重複獲得增幅效果吧。"
+    "value": "Boost spaces that enhance your stats can be obtained repeatedly up to their limit.\nIf you're short on power, be sure to collect them as much as you can."
   },
   {
     "id": 170800000000920008,
-    "value": "從補給基地格可以獲得PP，\n從道具箱格可以獲得地圖獎章等報酬。"
+    "value": "You can obtain PP from Supply Base spaces, and rewards such as Map Medals from Item Box spaces."
   },
   {
     "id": 170800000000920009,
-    "value": "完成位於最深處的區域Boss格即可挑戰。\n活用獲得的增幅效果，挑戰更高分數吧！"
+    "value": "This will become available once you clear the Area Boss space in the final area. \nUse your collected boosts to aim for a high score!"
   },
   {
     "id": 170800000000920010,
-    "value": "戰力不足時，可重複獲得地圖上的增幅效果來增強戰力。\n如果手邊沒有可獲得增幅的單位，可嘗試推進主要關卡並進行開發。"
+    "value": "If your team is short on power, collect the boost effects on the map.\nIf you don't have the units that benefit from the effect, progress through the Main Stages to develop them."
   },
   {
     "id": 170800000000920011,
-    "value": "共有三種格子會觸發戰鬥，  三種格子可對攻略地圖產生助益。"
+    "value": "There are 3 types of spaces that trigger battles, and 3 types that offer support effects."
   },
   {
     "id": 170800000000921101,
-    "value": "在大規模攻略戰中，玩家將與「同伴」一起調查各式各樣的區域，\n挑戰擊敗藏身在地圖最深處的強敵。"
+    "value": "The Grand Offensive is an event where you are to inspect various zones with your Squadmates and\nattempt to defeat a powerful enemy waiting at the end."
   },
   {
     "id": 170800000000921102,
-    "value": "「同伴」會在大規模攻略戰中與玩家一同出擊。\n玩家可藉由推進攻略來強化同伴的稀有度、LV、突破界限階段等要素。"
+    "value": "Squadmates are units that sortie alongside you in the Grand Offensive.\nAs you press the offensive, you can upgrade them, including their rarity, level, and limit break level."
   },
   {
     "id": 170800000000921103,
-    "value": "在「強化基地」，可強化「同伴」的LV、武裝LV、突破界限階段。\n強化同伴，將有助於積分挑戰以及攻略地圖格子。"
+    "value": "At the Enhancement Base, you can upgrade your Squadmates' level, weapon level, and limit break level.\nUpgrade your Squadmates to gain an advantage, whether in Score Attack or capturing spaces."
   },
   {
     "id": 170800000000921104,
-    "value": "「同伴」在事件結束時，可維持事件中的強化狀態加入玩家陣營。\n※強化上限獎勵及事件獎勵將不再適用。"
+    "value": "At the end of the event, you can acquire your Squadmate while keeping their updated stats from the event.\n*Maximum upgrade bonuses and event bonuses are not applied."
   },
   {
     "id": 170800000000921105,
-    "value": "推進攻略可獲得事件限定支援人員。\n在「調查商店」中交換同一名支援人員還可突破界限。"
+    "value": "As you press the offensive, you can acquire event-exclusive supporters.\nYou can also exchange duplicates at the Inspection Shop to perform limit breaks."
   },
   {
     "id": 170800000000921106,
-    "value": "大規模攻略戰中，可消耗專用點數「PP」來攻略地圖上的格子。\n具備各種效果的格子分布於地圖各處，請根據戰況選擇適合路徑前進。"
+    "value": "In the Grand Offensive, you can use special points called PP to facilitate capturing spaces.\nSince spaces with different effects are scattered across the map, plan your route accordingly."
   },
   {
     "id": 170800000000921107,
-    "value": "分布於地圖上的格子共有八種。\n其中有四種格子會觸發戰鬥，四種格子可對攻略地圖產生助益。"
+    "value": "There are eight different types of spaces throughout the map.\nHalf of them trigger battles, while the other half assist the offensive."
   },
   {
     "id": 170800000000921108,
-    "value": "大規模攻略戰中有三個調查區域，各個調查區域的最深處存在著「危險區域」。\n完成危險區域，即可解放下一個調查區域。"
+    "value": "The Grand Offensive features three Inspection Zones, with a Danger Zone in the innermost part of each.\nClearing a Danger Zone unlocks the next Inspection Zone."
   },
   {
     "id": 170800000000921109,
-    "value": "地圖上存在著「重要戰鬥區域」。\n完成後，即可獲得讓積分挑戰Boss弱化的特殊增幅效果。"
+    "value": "Maps contain Key Combat Zones.\nBy clearing them, you can acquire special boosts that impair Score Attack bosses."
   },
   {
     "id": 170800000000921110,
-    "value": "從「補給基地」可以獲得PP，\n而從「貨櫃」可以獲得調查獎章等報酬。"
+    "value": "You can acquire PP from the Supply Base.\nYou can also acquire rewards from containers such as Inspection Medals."
   },
   {
     "id": 170800000000921111,
-    "value": "在「通訊基地」可獲得在事件內強化部隊能力值的「增幅」。\n每座通訊基地皆設定有消耗PP、開發指定單位等不同條件，須先達成才能獲得增幅。"
+    "value": "At the Communications Base, you can acquire boosts that increase your squad's stats during the event.\nYou will need to fulfill the conditions set at each Communications Base, such as using PP or developing specific units."
   },
   {
     "id": 170800000000921112,
-    "value": "將「同伴單位」的稀有度、LV、武裝LV、突破界限階段強化至上限後，\n可獲得強化上限獎勵，使同伴的能力值變為1.5倍。（EN及移動力除外）"
+    "value": "When you max out a Squadmate unit's rarity, level, weapon level, and limit break level,\nthey receive a maximum upgrade bonus, increasing their stats by 1.5x (excluding EN and MOV)."
   },
   {
     "id": 170800000000921113,
-    "value": "完成最深處的危險區域後，即可進行「積分挑戰」。\n活用強化過的同伴以及增幅效果，挑戰更高分數吧。"
+    "value": "You can attempt the Score Attack once you have cleared the final Danger Zone.\nAim for the highest score by leveraging upgraded Squadmates and boosts."
   },
   {
     "id": 170800000000940101,
-    "value": "在「大師聯盟」事件中，玩家將與系統配對的5位玩家對戰，挑戰獲得最高積分。\n提升與5位玩家的總計對戰積分，就能夠獲得更豐富的報酬。"
+    "value": "Master League pits you against five players chosen randomly. By reaching a higher\ntotal battle score against them, you will earn more rewards."
   },
   {
     "id": 170800000000940102,
-    "value": "當總計對戰積分超過晉級積分時將會晉級至更高級的聯盟，並更新對戰對手。\n在更高級的聯盟中將遇上更強力的對手，可獲得更多積分。"
+    "value": "Get promoted by reaching the promotion score. In higher leagues, you will be facing\nstronger opponents."
   },
   {
     "id": 170800000000940103,
-    "value": "每日都能在一定次數內與同一對手再戰，挑戰刷新最高積分。\n另外，每日也能在一定次數內更換對戰對手，敬請善加利用。"
+    "value": "There are daily limits for challenging and switching opponents. Aim for a high score\nwithin these limits!"
   },
   {
     "id": 170800000000940104,
-    "value": "大師聯盟的戰鬥全部採自動進行，行動順序與一般戰鬥不同。\n行動順序不分我軍、敵軍，以機動力+反應值高者優先行動，編制時請記得將其列入考量。"
+    "value": "Battles are automated in Master League, unlike normal battles.\nThe order of actions depends on Mobility and Reaction rather than phases."
   },
   {
     "id": 170800000000940201,
-    "value": "挑戰模式是使玩家能更容易追求更高積分的模式。\n透過提升積分，稱號會變得更加豪華。"
+    "value": "Challenge Mode is a mode that makes it easier to aim for a higher score.\nBy increasing your score, you'll earn even greater titles."
   },
   {
     "id": 170800000000940202,
-    "value": "在挑戰模式中，玩家更換已戰勝的對戰對手時，便會出現更強力的對戰對手。\n※若對戰對手的強度已達到一定程度以上，便有機會再次配對到同等強度的對手。"
+    "value": "In Challenge Mode, the opponents you defeat can be switched out for stronger opponents.\n*You will sometimes be matched against opponents who are on the same level as you if the other participants are determined to be significantly stronger."
   },
   {
     "id": 170800000000950001,
-    "value": "編制2支自由部隊，從第1層開始依序挑戰關卡。\n完成關卡即可獲得報酬。"
+    "value": "Create two free squads and aim to clear stages starting from level 1. Earn rewards upon\nstage completion!"
   },
   {
     "id": 170800000000950002,
-    "value": "關卡中可能配置了會對一定範圍施加強力修正效果或弱化效果的單位。\n靈活運用這類單位，打一場漂亮的戰鬥吧。"
+    "value": "Certain stages feature units with strong area-based modifiers and debuffs. Use them\nwisely to get the upper hand!"
   },
   {
     "id": 170800000000950003,
-    "value": "可能會出現使用廣範圍MAP兵器的敵方。\n可確認敵方攻擊範圍來迴避傷害。"
+    "value": "You may encounter enemies equipped with large-area MAP weapons. Keep an eye on their\nrange to reduce incoming damage."
   },
   {
     "id": 170800000000950004,
-    "value": "首次完成關卡可以獲得角色、稱號、鑽石。\n※每次事件登場均可獲得鑽石，角色與稱號則僅可在指定樓層獲得1次。"
+    "value": "Clear a stage for the first time to earn characters, titles, and diamonds! *Diamonds are\navailable in all events; characters and titles are one-time rewards at certain levels."
   },
   {
     "id": 170800000000950005,
-    "value": "攻略資訊將提供關卡中登場的「Boss」、「重點單位」等\n需警戒要素的相關資訊。"
+    "value": "Strategy info reveals noteworthy elements in each stage, such as bosses, key units."
   },
   {
     "id": 170800000000950006,
-    "value": "從完成資訊可查看其他玩家攻略關卡時使用的編制。\n苦攻不下關卡時，不妨參考看看。"
+    "value": "You can check the clearing info to see how other players built their teams to clear the\nstage. Useful when strategy becomes arduous."
   },
   {
     "id": 170800000000970001,
-    "value": "可以體驗電視動畫、OVA、漫畫等劇情的事件。\n推進關卡來開發限定單位、攻略Boss關卡吧。"
+    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
   },
   {
     "id": 170800000000970002,
-    "value": "完成歷史關卡後可挑戰Boss戰鬥。"
+    "value": "The Boss Battle can be attempted once the History Stage has been cleared."
   },
   {
     "id": 170800000000970003,
-    "value": "對Boss單位造成的損傷將會保留至下一次挑戰。"
+    "value": "Any damage dealt to the boss unit carries over between attempts."
   }
 ]

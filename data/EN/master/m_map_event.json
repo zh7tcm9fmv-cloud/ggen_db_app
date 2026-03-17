@@ -12,7 +12,7 @@
     "MapEventPartnerSetId": 0,
     "TutorialPartnerResourceId": "",
     "TutorialBossResourceId": "",
-    "Unknown_Col_12": ""
+    "PartnerVoiceResourceId": ""
   },
   {
     "Id": 210002,
@@ -27,7 +27,7 @@
     "MapEventPartnerSetId": 0,
     "TutorialPartnerResourceId": "",
     "TutorialBossResourceId": "",
-    "Unknown_Col_12": ""
+    "PartnerVoiceResourceId": ""
   },
   {
     "Id": 240001,
@@ -42,6 +42,6 @@
     "MapEventPartnerSetId": 24000101,
     "TutorialPartnerResourceId": "map_event_tutorial_tips_240001",
     "TutorialBossResourceId": "map_event_tutorial_tips_boss_240001",
-    "Unknown_Col_12": ""
+    "PartnerVoiceResourceId": ""
   }
 ]

@@ -4,27 +4,27 @@
     "MapEventPartnerId": 24000101,
     "GrowthLevel": 15,
     "MapEventPanelMissionId": 251210110008,
-    "Unknown_Col_4": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010119,
     "MapEventPartnerId": 24000101,
     "GrowthLevel": 15,
     "MapEventPanelMissionId": 251210110009,
-    "Unknown_Col_4": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010213,
     "MapEventPartnerId": 24000101,
     "GrowthLevel": 15,
     "MapEventPanelMissionId": 251210110010,
-    "Unknown_Col_4": false
+    "GrowthIsSpecialize": false
   },
   {
     "Id": 2400010224,
     "MapEventPartnerId": 24000101,
     "GrowthLevel": 15,
     "MapEventPanelMissionId": 251210110011,
-    "Unknown_Col_4": false
+    "GrowthIsSpecialize": false
   }
 ]

@@ -118,5 +118,35 @@
     "GameFunctionReleaseGroupId": 122,
     "ReleaseConditionTypeIndex": 1,
     "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 123,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 124,
+    "ReleaseConditionTypeIndex": 3,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 125,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 126,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 127,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
+  },
+  {
+    "GameFunctionReleaseGroupId": 128,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetValue": 1
   }
 ]

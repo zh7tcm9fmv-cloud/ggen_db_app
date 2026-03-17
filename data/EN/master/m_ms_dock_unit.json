@@ -30,6 +30,16 @@
     "ScheduleId": 2601209901
   },
   {
+    "Id": 1013000300,
+    "ResourceId": "g0130u00300",
+    "NameLanguageId": 110100001013000300,
+    "ProfileLanguageId": 110200001013000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 130,
+    "ModelNumber": "RX-79[G]Ez-8",
+    "ScheduleId": 2603209901
+  },
+  {
     "Id": 1017000100,
     "ResourceId": "g0170u00100",
     "NameLanguageId": 110100001017000100,

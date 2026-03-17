@@ -1,218 +1,242 @@
 [
   {
+    "id": 130100000001305001,
+    "value": "VS. Gouf Custom NORMAL"
+  },
+  {
+    "id": 130100000001305002,
+    "value": "VS. Gouf Custom HARD"
+  },
+  {
+    "id": 130100000001305003,
+    "value": "VS. Gouf Custom EXPERT"
+  },
+  {
+    "id": 130100000001306001,
+    "value": "VS. Apsaras III NORMAL"
+  },
+  {
+    "id": 130100000001306002,
+    "value": "VS. Apsaras III HARD"
+  },
+  {
+    "id": 130100000001306003,
+    "value": "VS. Apsaras III EXPERT"
+  },
+  {
     "id": 130100000001705001,
-    "value": "VS 薩克Ⅱ改 NORMAL"
+    "value": "VS. Zaku II FZ NORMAL"
   },
   {
     "id": 130100000001705002,
-    "value": "VS 薩克Ⅱ改 HARD"
+    "value": "VS. Zaku II FZ HARD"
   },
   {
     "id": 130100000001705003,
-    "value": "VS 薩克Ⅱ改 EXPERT"
+    "value": "VS. Zaku II FZ EXPERT"
   },
   {
     "id": 130100000001706001,
-    "value": "VS 鋼彈NT-1 (喬巴姆裝甲裝備型) NORMAL"
+    "value": "VS. Gundam NT-1 (Chobham Armor Type) NORMAL"
   },
   {
     "id": 130100000001706002,
-    "value": "VS 鋼彈NT-1 (喬巴姆裝甲裝備型) HARD"
+    "value": "VS. Gundam NT-1 (Chobham Armor Type) HARD"
   },
   {
     "id": 130100000001706003,
-    "value": "VS 鋼彈NT-1 (喬巴姆裝甲裝備型) EXPERT"
+    "value": "VS. Gundam NT-1 (Chobham Armor Type) EXPERT"
   },
   {
     "id": 130100000002205001,
-    "value": "VS 伊弗利特改 NORMAL"
+    "value": "VS. Efreet Custom NORMAL"
   },
   {
     "id": 130100000002205002,
-    "value": "VS 伊弗利特改 HARD"
+    "value": "VS. Efreet Custom HARD"
   },
   {
     "id": 130100000002205003,
-    "value": "VS 伊弗利特改 EXPERT"
+    "value": "VS. Efreet Custom EXPERT"
   },
   {
     "id": 130100000002206001,
-    "value": "VS 蒼藍命運1號機【EXAM】 NORMAL"
+    "value": "VS. Blue Destiny Unit-1 [EXAM] NORMAL"
   },
   {
     "id": 130100000002206002,
-    "value": "VS 蒼藍命運1號機【EXAM】 HARD"
+    "value": "VS. Blue Destiny Unit-1 [EXAM] HARD"
   },
   {
     "id": 130100000002206003,
-    "value": "VS 蒼藍命運1號機【EXAM】 EXPERT"
+    "value": "VS. Blue Destiny Unit-1 [EXAM] EXPERT"
   },
   {
     "id": 130100000003205001,
-    "value": "VS 腦波傳導薩克 NORMAL"
+    "value": "VS. Psycho Zaku NORMAL"
   },
   {
     "id": 130100000003205002,
-    "value": "VS 腦波傳導薩克 HARD"
+    "value": "VS. Psycho Zaku HARD"
   },
   {
     "id": 130100000003205003,
-    "value": "VS 腦波傳導薩克 EXPERT"
+    "value": "VS. Psycho Zaku EXPERT"
   },
   {
     "id": 130100000003206001,
-    "value": "VS 全裝甲型鋼彈 (雷霆宙域版) NORMAL"
+    "value": "VS. Gundam Full Armor (Thunderbolt) NORMAL"
   },
   {
     "id": 130100000003206002,
-    "value": "VS 全裝甲型鋼彈 (雷霆宙域版) HARD"
+    "value": "VS. Gundam Full Armor (Thunderbolt) HARD"
   },
   {
     "id": 130100000003206003,
-    "value": "VS 全裝甲型鋼彈 (雷霆宙域版) EXPERT"
+    "value": "VS. Gundam Full Armor (Thunderbolt) EXPERT"
   },
   {
     "id": 130100000006005001,
-    "value": "VS 鋼彈試作2號機 NORMAL"
+    "value": "Vs. Gundam GP02A (NORMAL)"
   },
   {
     "id": 130100000006005002,
-    "value": "VS 鋼彈試作2號機 HARD"
+    "value": "Vs. Gundam GP02A (HARD)"
   },
   {
     "id": 130100000006005003,
-    "value": "VS 鋼彈試作2號機 EXPERT"
+    "value": "Vs. Gundam GP02A (EXPERT)"
   },
   {
     "id": 130100000006006001,
-    "value": "VS 鋼彈試作1號機 (喬巴姆裝甲裝備) NORMAL"
+    "value": "Vs. Gundam GP01 (Chobham Armor) (NORMAL)"
   },
   {
     "id": 130100000006006002,
-    "value": "VS 鋼彈試作1號機 (喬巴姆裝甲裝備) HARD"
+    "value": "Vs. Gundam GP01 (Chobham Armor)(HARD)"
   },
   {
     "id": 130100000006006003,
-    "value": "VS 鋼彈試作1號機 (喬巴姆裝甲裝備) EXPERT"
+    "value": "Vs. Gundam GP01 (Chobham Armor)(EXPERT)"
   },
   {
     "id": 130100000006015001,
-    "value": "VS 諾耶·吉爾 NORMAL"
+    "value": "Vs. Neue Ziel (NORMAL)"
   },
   {
     "id": 130100000006015002,
-    "value": "VS 諾耶·吉爾 HARD"
+    "value": "Vs. Neue Ziel (HARD)"
   },
   {
     "id": 130100000006015003,
-    "value": "VS 諾耶·吉爾 EXPERT"
+    "value": "Vs. Neue Ziel (EXPERT)"
   },
   {
     "id": 130100000006016001,
-    "value": "VS 鋼彈試作3號機 NORMAL"
+    "value": "Vs. Gundam GP03 (NORMAL)"
   },
   {
     "id": 130100000006016002,
-    "value": "VS 鋼彈試作3號機 HARD"
+    "value": "Vs. Gundam GP03 (HARD)"
   },
   {
     "id": 130100000006016003,
-    "value": "VS 鋼彈試作3號機 EXPERT"
+    "value": "Vs. Gundam GP03 (EXPERT)"
   },
   {
     "id": 130100000030505001,
-    "value": "VS 異端鋼彈金色機 天 NORMAL\n"
+    "value": "Vs. Gundam Astray Gold Frame Amatsu (NORMAL)\n"
   },
   {
     "id": 130100000030505002,
-    "value": "VS 異端鋼彈金色機 天 HARD\n"
+    "value": "Vs. Gundam Astray Gold Frame Amatsu (HARD)\n"
   },
   {
     "id": 130100000030505003,
-    "value": "VS 異端鋼彈金色機 天 EXPERT\n"
+    "value": "Vs. Gundam Astray Gold Frame Amatsu (EXPERT)\n"
   },
   {
     "id": 130100000030506001,
-    "value": "VS 異端鋼彈藍色機 二型L NORMAL\n"
+    "value": "Vs. Gundam Astray Blue Frame Second L (NORMAL)\n"
   },
   {
     "id": 130100000030506002,
-    "value": "VS 異端鋼彈藍色機 二型L HARD\n"
+    "value": "Vs. Gundam Astray Blue Frame Second L (HARD)\n"
   },
   {
     "id": 130100000030506003,
-    "value": "VS 異端鋼彈藍色機 二型L EXPERT\n"
+    "value": "Vs. Gundam Astray Blue Frame Second L (EXPERT)\n"
   },
   {
     "id": 130100000030805001,
-    "value": "VS 亥伯龍鋼彈 NORMAL"
+    "value": "VS. Hyperion Gundam NORMAL"
   },
   {
     "id": 130100000030805002,
-    "value": "VS 亥伯龍鋼彈 HARD"
+    "value": "VS. Hyperion Gundam HARD"
   },
   {
     "id": 130100000030805003,
-    "value": "VS 亥伯龍鋼彈 EXPERT"
+    "value": "VS. Hyperion Gundam EXPERT"
   },
   {
     "id": 130100000030806001,
-    "value": "VS X異端 NORMAL"
+    "value": "VS. X Astray NORMAL"
   },
   {
     "id": 130100000030806002,
-    "value": "VS X異端 HARD"
+    "value": "VS. X Astray HARD"
   },
   {
     "id": 130100000030806003,
-    "value": "VS X異端 EXPERT"
+    "value": "VS. X Astray EXPERT"
   },
   {
     "id": 130100000043105001,
-    "value": "VS 幻魔鋼彈 (T型推進器) NORMAL"
+    "value": "Vs. Gundam Dantalion T-Booster (NORMAL)"
   },
   {
     "id": 130100000043105002,
-    "value": "VS 幻魔鋼彈 (T型推進器) HARD"
+    "value": "Vs. Gundam Dantalion T-Booster (HARD)"
   },
   {
     "id": 130100000043105003,
-    "value": "VS 幻魔鋼彈 (T型推進器) EXPERT"
+    "value": "Vs. Gundam Dantalion T-Booster (EXPERT)"
   },
   {
     "id": 130100000043106001,
-    "value": "VS 君魔鋼彈原型 NORMAL"
+    "value": "Vs. Gundam Astaroth Origin (NORMAL)"
   },
   {
     "id": 130100000043106002,
-    "value": "VS 君魔鋼彈原型 HARD"
+    "value": "Vs. Gundam Astaroth Origin(HARD)"
   },
   {
     "id": 130100000043106003,
-    "value": "VS 君魔鋼彈原型 EXPERT"
+    "value": "Vs. Gundam Astaroth Origin(EXPERT)"
   },
   {
     "id": 130100000070505001,
-    "value": "VS 魔王撒旦鋼彈 NORMAL"
+    "value": "Vs. Satan Gundam (NORMAL)"
   },
   {
     "id": 130100000070505002,
-    "value": "VS 魔王撒旦鋼彈 HARD"
+    "value": "Vs. Satan Gundam (HARD)"
   },
   {
     "id": 130100000070505003,
-    "value": "VS 魔王撒旦鋼彈 EXPERT"
+    "value": "Vs. Satan Gundam (EXPERT)"
   },
   {
     "id": 130100000070506001,
-    "value": "VS 怪物黑龍 NORMAL"
+    "value": "Vs. Monster Black Dragon (NORMAL)"
   },
   {
     "id": 130100000070506002,
-    "value": "VS 怪物黑龍 HARD"
+    "value": "Vs. Monster Black Dragon (HARD)"
   },
   {
     "id": 130100000070506003,
-    "value": "VS 怪物黑龍 EXPERT"
+    "value": "Vs. Monster Black Dragon (EXPERT)"
   }
 ]

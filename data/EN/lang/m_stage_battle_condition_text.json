@@ -344,6 +344,182 @@
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
+    "id": 130300000130010301,
+    "value": "Defeat Aina Sakhalin."
+  },
+  {
+    "id": 130300000130010304,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130020201,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130020204,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000130020301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130020304,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130030301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130030302,
+    "value": "Destroy 2 Pillbox Production Type(s)."
+  },
+  {
+    "id": 130300000130030304,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130030305,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130040301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130040304,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130050201,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130050204,
+    "value": "All of your units are destroyed.\nShiro Amada and Guest force destroyed."
+  },
+  {
+    "id": 130300000130060301,
+    "value": "Defeat Aina Sakhalin."
+  },
+  {
+    "id": 130300000130060304,
+    "value": "All of your units are destroyed.\nShiro Amada and Guest force destroyed."
+  },
+  {
+    "id": 130300000130070401,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130070402,
+    "value": "Defeat Norris Packard."
+  },
+  {
+    "id": 130300000130070404,
+    "value": "All of your units are destroyed.\nShiro Amada and Guest force destroyed."
+  },
+  {
+    "id": 130300000130070405,
+    "value": "All of your units are destroyed.\nShiro Amada and Guest force destroyed."
+  },
+  {
+    "id": 130300000130080401,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130080402,
+    "value": "Defeat Ginius Sakhalin."
+  },
+  {
+    "id": 130300000130080404,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130080405,
+    "value": "All of your units destroyed.\nGuest force Shiro Amada destroyed."
+  },
+  {
+    "id": 130300000130090101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130090102,
+    "value": "Destroy 5 Zaku II(s)."
+  },
+  {
+    "id": 130300000130090104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000130090105,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000130100101,
+    "value": "Destroy 3 Guntank Mass Production Type(s)."
+  },
+  {
+    "id": 130300000130100104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000130110101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000130110104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000130500101,
+    "value": "Defeat Norris Packard."
+  },
+  {
+    "id": 130300000130500104,
+    "value": "All of your units destroyed. / Limit: 3 turns.\nDestroy all Friendly force Guntank Mass Production Type."
+  },
+  {
+    "id": 130300000130500201,
+    "value": "Defeat Norris Packard."
+  },
+  {
+    "id": 130300000130500204,
+    "value": "All of your units destroyed. / Limit: 3 turns.\nDestroy all Friendly force Guntank Mass Production Type."
+  },
+  {
+    "id": 130300000130500301,
+    "value": "Defeat Norris Packard."
+  },
+  {
+    "id": 130300000130500304,
+    "value": "All of your units destroyed. / Limit: 3 turns.\nDestroy all Friendly force Guntank Mass Production Type."
+  },
+  {
+    "id": 130300000130600101,
+    "value": "Defeat Ginius Sakhalin."
+  },
+  {
+    "id": 130300000130600104,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000130600201,
+    "value": "Defeat Ginius Sakhalin."
+  },
+  {
+    "id": 130300000130600204,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000130600301,
+    "value": "Defeat Ginius Sakhalin."
+  },
+  {
+    "id": 130300000130600304,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
     "id": 130300000170010301,
     "value": "Destroy all enemy units.\nReach the target area."
   },
@@ -7674,6 +7850,14 @@
   {
     "id": 130300009900010602,
     "value": "All of your units destroyed.\nGuest force Hathaway Noa destroyed."
+  },
+  {
+    "id": 130300009900010701,
+    "value": "Defeat Char Aznable."
+  },
+  {
+    "id": 130300009900010704,
+    "value": "All of your units are destroyed.\nAmuro Ray and Guest force destroyed."
   },
   {
     "id": 130300009999010101,

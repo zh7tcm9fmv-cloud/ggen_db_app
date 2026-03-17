@@ -1,1075 +1,1075 @@
 [
   {
     "id": 101200000010000010,
-    "value": "歡迎來到\n《SD鋼彈 G世代 永恆》！"
+    "value": "Welcome to SD Gundam G Generation ETERNAL!"
   },
   {
     "id": 101200000010000020,
-    "value": "接下來要請即將開始闖蕩「鋼彈世界」的您\n接受戰鬥訓練。"
+    "value": "To make sure you're ready to begin exploring the various Gundam\nuniverses, it's time for some combat training."
   },
   {
     "id": 101200000010000030,
-    "value": "請操縱部隊，擊破敵方單位！"
+    "value": "Use your squad to destroy enemy units!"
   },
   {
     "id": 101200000010000040,
-    "value": "先將單位移動到敵方附近。"
+    "value": "For starters, let's move a unit closer to the enemy."
   },
   {
     "id": 101200000010000050,
-    "value": "紅色區域顯示的是能夠攻擊到的範圍。"
+    "value": "The red area shows your attack range."
   },
   {
     "id": 101200000010000060,
-    "value": "馬上攻擊看看吧！"
+    "value": "Now, give the enemy your best shot!"
   },
   {
     "id": 101200000010000070,
-    "value": "可在此確認戰鬥造成的「預測損傷」。"
+    "value": "Check the Damage Estimate here."
   },
   {
     "id": 101200000010000080,
-    "value": "確認完畢後就開始戰鬥吧！"
+    "value": "Once you're ready, let's get this battle started!"
   },
   {
     "id": 101200000010000090,
-    "value": "依照這個步調試著操縱其他單位。"
+    "value": "You're getting the hang of it! Try following up with another unit."
   },
   {
     "id": 101200000010000100,
-    "value": "每個武裝皆設有不同的射程及威力。"
+    "value": "Each weapon has its own range and power."
   },
   {
     "id": 101200000010000110,
-    "value": "戰鬥時會自動選擇要使用的武裝，\n不過只要在射程範圍內，\n也能夠切換成其他武裝。"
+    "value": "The weapons you use in battle are selected\nautomatically, but you can switch to a\ndifferent one as long as it is within range."
   },
   {
     "id": 101200000010000120,
-    "value": "這次就使用「光束步槍」攻擊吧！"
+    "value": "Let's attack with the beam rifle now!"
   },
   {
     "id": 101200000010000130,
-    "value": "由於武裝各具特色，\n戰鬥時請隨機應變，視情況區分使用吧。"
+    "value": "Each weapon has its advantages, so if you want to come out on\ntop, choose the right one for the situation."
   },
   {
     "id": 101200000010000140,
-    "value": "最後的單位請您隨意操作。"
+    "value": "All right, I'll leave the last unit to you."
   },
   {
     "id": 101200000010000150,
-    "value": "所有我軍單位的行動均已結束，\n將轉移至敵軍回合。"
+    "value": "Since all your units have finished taking action, the battle will\nnow move to the enemy phase."
   },
   {
     "id": 101200000010000160,
-    "value": "敵方發動攻擊了！"
+    "value": "Watch out! Here it comes!"
   },
   {
     "id": 101200000010000170,
-    "value": "面對攻擊，可以下達反擊、防禦、閃避\n其中一種指示。"
+    "value": "When attacked, you can choose to counter, defend, or evade."
   },
   {
     "id": 101200000010000180,
-    "value": "先確認預測損傷。"
+    "value": "Check the Damage Estimate to see how much damage you might take."
   },
   {
     "id": 101200000010000190,
-    "value": "看來即使不進行防禦或閃避，\n也能承受住攻擊呢。"
+    "value": "Okay, it looks like you can withstand the attack without\nneeding to defend or evade."
   },
   {
     "id": 101200000010000200,
-    "value": "這次就直接反擊吧！"
+    "value": "You might as well counter this one!"
   },
   {
     "id": 101200000010000210,
-    "value": "由於我軍回合已開始，\n單位的「EN」也恢復了。"
+    "value": "Since your phase has started, your EN has recovered."
   },
   {
     "id": 101200000010000220,
-    "value": "必須要有「EN」才能使用武裝，\n在我軍回合開始時會少量恢復。"
+    "value": "Your units need EN to use weapons. A small amount will\nrecover at the start of your phase."
   },
   {
     "id": 101200000010000230,
-    "value": "一旦EN不足，就會無法攻擊，\n請隨時注意剩餘量。"
+    "value": "If you run out of EN, you won't be able to attack, so\nkeep a close eye on the remaining amount."
   },
   {
     "id": 101200000010000240,
-    "value": "接下來輪到我們攻擊了！\n……不過在開始攻擊之前，\n先確認單位的HP吧。"
+    "value": "All right, it's your turn to attack! But before doing so, let's\ncheck the units' HP."
   },
   {
     "id": 101200000010000250,
-    "value": "剩餘HP不多，如果遭到敵方的反擊，\n似乎會被擊破。"
+    "value": "You have very low HP remaining and likely cannot\nwithstand another attack."
   },
   {
     "id": 101200000010000260,
-    "value": "這時就使用角色技能，\n在遭到反擊前擊破敵方吧！"
+    "value": "Use a character skill to destroy the enemy before they get a\nchance to counter!"
   },
   {
     "id": 101200000010000270,
-    "value": "可在此確認技能內容。"
+    "value": "You can check skill details here."
   },
   {
     "id": 101200000010000280,
-    "value": "藉由技能效果，\n提升了下次戰鬥造成的損傷！"
+    "value": "Your skill has increased the damage dealt for the next fight!"
   },
   {
     "id": 101200000010000290,
-    "value": "另外，這次請您使用「EX武裝」攻擊。"
+    "value": "This time, use an EX weapon to attack."
   },
   {
     "id": 101200000010000300,
-    "value": "EX武裝是僅限特定單位才能使用的\n強力武裝。"
+    "value": "These are powerful weapons that only specified units can use."
   },
   {
     "id": 101200000010000310,
-    "value": "這樣感覺就能擊破敵方了呢。\n好了，開始攻擊吧！"
+    "value": "That should be all you need to defeat the enemy.\nCommence attack!"
   },
   {
     "id": 101200000010000320,
-    "value": "確認擊破目標！\n戰鬥訓練到此結束。"
+    "value": "Target destroyed!\nCombat training complete!"
   },
   {
     "id": 101200000010000330,
-    "value": "辛苦了。\n我在簡報室等著您。"
+    "value": "Good work!\nI'll see you in the briefing room."
   },
   {
     "id": 101200000010000340,
-    "value": "等您很久了！"
+    "value": "I've been waiting for you!"
   },
   {
     "id": 101200000010000350,
-    "value": "訓練順利完成，那就來進行登錄手續吧。\n請您在這裡簽名！"
+    "value": "Let's mark that you've officially completed training.\nPlease sign here."
   },
   {
     "id": 101200000010000360,
-    "value": "言歸正傳……我負責擔任您的領航員，\n名叫瑪利亞‧歐文斯。請多多指教囉。"
+    "value": "Once again, I am Maria Owens, your Navigator, and I am glad to\nassist you however I can."
   },
   {
     "id": 101200000010000370,
-    "value": "那麼，就讓我繼續說明吧。"
+    "value": "Allow me to move forward with your preliminary instruction."
   },
   {
     "id": 101200000010000380,
-    "value": "我們的目的是……\n調查無數的「鋼彈世界」──"
+    "value": "Our objective is to investigate the numerous Gundam universes."
   },
   {
     "id": 101200000010000390,
-    "value": "並收集各個世界的歷史，\n以及登場單位的情報。"
+    "value": "We gather information on each universe's history and units."
   },
   {
     "id": 101200000010000400,
-    "value": "雖說是調查，但做起來並不容易。\n因為所有世界都在進行激烈的戰鬥。"
+    "value": "Investigating isn't as easy as it may sound.\nEach universe has its own tough battles."
   },
   {
     "id": 101200000010000410,
-    "value": "需要您編制並率領一支專屬於您的部隊，\n以應對各種戰鬥！"
+    "value": "To face off in battle, you must form and command your own squad."
   },
   {
     "id": 101200000010000420,
-    "value": "那麼，讓我們實際前往鋼彈世界吧！"
+    "value": "Now, let's venture into the Gundam universes!"
   },
   {
     "id": 101200000010000430,
-    "value": "這裡是能夠進入鋼彈世界的\n「主要關卡」。"
+    "value": "These are the Main Stages, wherefrom you can access the\nGundam universes."
   },
   {
     "id": 101200000010000440,
-    "value": "藉由推進關卡，\n將能夠進入更多的鋼彈世界！"
+    "value": "More universes will open up as you proceed through the stages!"
   },
   {
     "id": 101200000010000450,
-    "value": "目前能夠調查的是《機動戰士鋼彈》的世界。\n事不宜遲，馬上挑戰這個關卡吧。"
+    "value": "You are now ready to explore the first Mobile Suit Gundam\nuniverse. Let's not waste any time!"
   },
   {
     "id": 101200000010000460,
-    "value": "這次我也會從旁支援，\n請您放心。"
+    "value": "Don't worry, I'll be guiding you every step of the way."
   },
   {
     "id": 101200000010000470,
-    "value": "那麼就出發吧！"
+    "value": "All right, then. Let's go!"
   },
   {
     "id": 101200000010000480,
-    "value": "戰鬥可能會設有\n「作戰目標」。"
+    "value": "Battles have distinct Mission Objectives."
   },
   {
     "id": 101200000010000490,
-    "value": "達成作戰目標後能使戰鬥出現進展，\n「勝利條件」將隨之解放。"
+    "value": "Complete them to progress through battle and\nfulfill the Victory Conditions."
   },
   {
     "id": 101200000010000500,
-    "value": "先挑戰達成作戰目標吧。\n請您操縱鋼彈！"
+    "value": "First, let's work on completing the mission objectives.\nStart up your Gundam!"
   },
   {
     "id": 101200000010000510,
-    "value": "由於達成了作戰目標，\n勝利條件已解放。"
+    "value": "With the mission objectives completed,\nthe victory conditions have been fulfilled."
   },
   {
     "id": 101200000010000520,
-    "value": "打倒剩餘的薩克Ⅱ就能完成關卡！"
+    "value": "Complete the stage by defeating the remaining Zaku II!"
   },
   {
     "id": 101200000010000530,
-    "value": "因為攻擊命中，\n角色的「戰意」提升了。"
+    "value": "The character's Vigor has increased due to the successful attack."
   },
   {
     "id": 101200000010000540,
-    "value": "戰意提升後，\n攻擊能夠給予的損傷會隨之增加。"
+    "value": "When Vigor increases, so does the damage dealt."
   },
   {
     "id": 101200000010000550,
-    "value": "再加上由於擊破敵方單位，\n觸發了「額外行動（CHANCE STEP）」！"
+    "value": "Moreover, destroying the enemy unit has triggered a Bonus Action!"
   },
   {
     "id": 101200000010000560,
-    "value": "觸發額外行動後，\n單位就能夠再次行動。"
+    "value": "When a Bonus Action occurs, your unit can perform one more action."
   },
   {
     "id": 101200000010000570,
-    "value": "請您操縱鋼彈，挑戰達成勝利條件吧！"
+    "value": "Operate your Gundam and fulfill the victory conditions!"
   },
   {
     "id": 101200000010000580,
-    "value": "這樣就完成關卡了。\n辛苦了！"
+    "value": "Stage complete! Nice work!"
   },
   {
     "id": 101200000010000590,
-    "value": "在剛才的戰鬥中，好像成功實施了「奪取」。"
+    "value": "It looks like you made a capture during the earlier battle."
   },
   {
     "id": 101200000010000600,
-    "value": "在擊破部分敵方單位時，\n有一定機率能夠奪取。"
+    "value": "There's a set chance for you to capture certain enemy units upon\ndestroying them."
   },
   {
     "id": 101200000010000610,
-    "value": "完成關卡後，\n便可一併獲得這些奪取到的單位。"
+    "value": "You can collect all captured units once the stage is cleared."
   },
   {
     "id": 101200000010000620,
-    "value": "在前往下一個關卡前，\n利用獲得的單位來進行「部隊編制」吧。"
+    "value": "Before moving on to the next stage, let's perform Squad Formation\nwith the units you have obtained."
   },
   {
     "id": 101200000010000630,
-    "value": "在主要關卡中，能夠派遣\n僅可編制特定系列相關單位及角色的\n「系列部隊」──"
+    "value": "In the Main Stages, you can deploy up to two squads: a Series\nSquad composed solely of units and characters associated with\na specific series, and..."
   },
   {
     "id": 101200000010000640,
-    "value": "以及能夠自由編制的「自由部隊」，\n總計2支部隊出擊。"
+    "value": "...a Free Squad which can be organized in any manner you choose."
   },
   {
     "id": 101200000010000650,
-    "value": "雖然系列部隊\n可編制的單位及角色受限──"
+    "value": "Series Squads have limited units and characters you can\nchoose from."
   },
   {
     "id": 101200000010000660,
-    "value": "但能力值在該系列的戰鬥中將獲得提升，\n占據優勢！"
+    "value": "However, during battles in the corresponding series, your stats\nwill increase, granting you a sizable advantage!"
   },
   {
     "id": 101200000010000670,
-    "value": "先編制出「系列部隊」吧。"
+    "value": "Let's get started by creating a Series Squad."
   },
   {
     "id": 101200000010000680,
-    "value": "接下來要編制搭乘單位的角色。"
+    "value": "Next, assign the characters who will pilot the units in\nyour formation."
   },
   {
     "id": 101200000010000690,
-    "value": "這樣就完成部隊編制了。"
+    "value": "This completes Squad Formation."
   },
   {
     "id": 101200000010000750,
-    "value": "那麼，就帶領編制好的部隊前往下一個關卡吧！"
+    "value": "Now that we've created a squad, let's proceed to the next stage."
   },
   {
     "id": 101200000010000760,
-    "value": "接下來請自由操縱單位，\n挑戰達成勝利條件。"
+    "value": "Take control of your units and fulfill the victory conditions."
   },
   {
     "id": 101200000010000770,
-    "value": "善用各種武裝及技能，\n可讓戰鬥進行得更順利。\n請務必多加運用！"
+    "value": "By using various weapons and skills, you can turn the battle in\nyour favor. Be sure to keep this in mind!"
   },
   {
     "id": 101200000010000780,
-    "value": "辛苦您了！\n看來操縱部隊方面沒什麼問題呢！"
+    "value": "Nice work!\nLooks like you have no trouble maneuvering your squad."
   },
   {
     "id": 101200000010000790,
-    "value": "可是，\n能夠想見往後將與更強大的敵方部隊戰鬥。"
+    "value": "However, expect to face stronger opponents from here on."
   },
   {
     "id": 101200000010000800,
-    "value": "進行單位「開發」來強化部隊吧。"
+    "value": "Enhance the strength of your Squad by using Develop on your units!"
   },
   {
     "id": 101200000010000810,
-    "value": "這是「開發路線圖」。"
+    "value": "This is a Development Diagram."
   },
   {
     "id": 101200000010000820,
-    "value": "在開發中，可依照開發路線圖記載的資訊，\n將單位改造成其他單位。"
+    "value": "Based on the information from a Development Diagram, you can\ntransform a unit into another."
   },
   {
     "id": 101200000010000830,
-    "value": "馬上就使用「薩克Ⅱ」，\n試著開發出「陸戰高機動型薩克」吧！"
+    "value": "Try using the Zaku II to develop the High Mobility Zaku\nGround Type!"
   },
   {
     "id": 101200000010000840,
-    "value": "想要開發此單位，\n似乎需要讓薩克Ⅱ的LV\n達到一定程度以上呢。"
+    "value": "In order to develop this unit, it seems that the Zaku II needs to\nbe above a certain level..."
   },
   {
     "id": 101200000010000850,
-    "value": "這次特別配發「單位強化數據」給您，\n用它來提升LV吧。"
+    "value": "We'll provide Unit Upgrade Data this time as an exception!\nUse this to raise the level."
   },
   {
     "id": 101200000010000860,
-    "value": "持有單位強化數據時，\n將自動設置開發所需的數量。"
+    "value": "If you have Unit Upgrade Data, the required amount for\ndevelopment will be set automatically."
   },
   {
     "id": 101200000010000870,
-    "value": "將「薩克Ⅱ」改造為「陸戰高機動型薩克」的\n開發完成了！"
+    "value": "The development of High Mobility Zaku Ground Type from Zaku II\nis complete!"
   },
   {
     "id": 101200000010000880,
-    "value": "每個鋼彈世界都準備了不同的開發路線圖。"
+    "value": "Each Gundam universe has its own Development Diagram."
   },
   {
     "id": 101200000010000890,
-    "value": "解放新的鋼彈世界後，\n對應的開發路線圖也會隨之解放。"
+    "value": "When a new Gundam universe is unlocked, so is the\ncorresponding Development Diagram."
   },
   {
     "id": 101200000010000900,
-    "value": "推進主要關卡，\n增加可開發的單位吧！"
+    "value": "Progress through the Main Stages to increase the number of units\nyou can develop!"
   },
   {
     "id": 101200000010000910,
-    "value": "此外，將開發路線圖內的單位全數開發後，\n可獲得只能透過此方式取得的\n稀有單位以及道具。"
+    "value": "Moreover, by completing the units in a Development Diagram,\nyou can obtain rare units and items."
   },
   {
     "id": 101200000010000920,
-    "value": "敬請在推進主要關卡的同時，\n嘗試完成開發路線圖吧！"
+    "value": "Aim for Development Diagram completion by progressing through\nthe Main Stages."
   },
   {
     "id": 101200000010000930,
-    "value": "最後，也來講解一下我們目前所在的這個地方。"
+    "value": "Finally, allow me to explain the area we are in right now."
   },
   {
     "id": 101200000010000940,
-    "value": "這裡是作為我們活動據點的「個人基地」。"
+    "value": "This is our Base, which serves as pivot to all our operations."
   },
   {
     "id": 101200000010000950,
-    "value": "在個人基地中，為我們的調查行動\n提供支援的功能及設施一應俱全。"
+    "value": "It is equipped with various functions and facilities that\nsupport our investigation."
   },
   {
     "id": 101200000010000960,
-    "value": "看來白色基地正要靠港！"
+    "value": "It looks like the White Base has docked!"
   },
   {
     "id": 101200000010000970,
-    "value": "點擊「全部回收」來回收道具吧。"
+    "value": "Tap \"Collect All\" to gather your items in one go."
   },
   {
     "id": 101200000010000980,
-    "value": "就像這樣，透過個人基地的「戰艦巡航」，\n每隔一段時間便能回收道具。"
+    "value": "You can collect items in the Base's Warship Cruise\nat regular intervals."
   },
   {
     "id": 101200000010000990,
-    "value": "個人基地裡的功能\n會隨著調查有所進展而擴充，\n記得定期過來看看哦。"
+    "value": "The functions within the Base will expand as you progress in your\ninvestigation, so be sure to check in regularly."
   },
   {
     "id": 101200000010001000,
-    "value": "我的說明到此為止。"
+    "value": "This concludes your preliminary instruction."
   },
   {
     "id": 101200000010001010,
-    "value": "接下來就跟隨「初學者使命」，\n試著調查鋼彈世界吧！"
+    "value": "From here, you can start exploring the Gundam universes with the\nBeginner Missions!"
   },
   {
     "id": 101200000010001020,
-    "value": "此外，我準備了特殊的機體補給，\n以作為提供給您的支援。"
+    "value": "Also, a Unit Assembly has been specially set up to lend you an\nextra hand."
   },
   {
     "id": 101200000010001030,
-    "value": "您可在此不限次數重新進行補給，\n直到喜歡的單位出現為止，\n請務必善加利用。"
+    "value": "Feel free to give it a go as many times as needed to get your\nfavorite unit."
   },
   {
     "id": 101200000010001040,
-    "value": "那麼今後……\n就期待您的表現了！"
+    "value": "I'm looking forward to your achievements from here on out!"
   },
   {
     "id": 101200000010001050,
-    "value": "我也會盡全力支援您的，\n一起努力吧！"
+    "value": "We're in this together, so let's give it our all!"
   },
   {
     "id": 101200000011010001,
-    "value": "請您稍等一會。\n這個關卡似乎藏著其他關卡所沒有的祕密。"
+    "value": "Hold on a moment.\nIt seems this stage has secrets not found anywhere else..."
   },
   {
     "id": 101200000011010002,
-    "value": "請看這裡。\n在帶有這個標誌的關卡，於戰鬥中\n進行特定行動便會觸發隱藏戰鬥。"
+    "value": "Look here. A Secret Battle will occur on stages with this mark,\nbut only if you perform specific actions during battle."
   },
   {
     "id": 101200000011010003,
-    "value": "雖然隱藏戰鬥是高難度的戰鬥，\n但完成後可獲得開發所需的豪華報酬。"
+    "value": "Secret Battles are highly challenging, but allow you to earn\nspecial rewards needed for development and weapon upgrades!"
   },
   {
     "id": 101200000011010004,
-    "value": "觸發隱藏戰鬥的條件\n可從關卡詳情確認。"
+    "value": "You can check the Secret Battle requirements in the stage details."
   },
   {
     "id": 101200000011010005,
-    "value": "在此可確認隱藏戰鬥的觸發條件。\n由於AUTO時難以觸發，建議手動進行戰鬥。"
+    "value": "You can check the Secret Battle requirements here. They're tough\nto trigger automatically, so manual battles might be best."
   },
   {
     "id": 101200000011010006,
-    "value": "此外隱藏戰鬥內的敵方也相當強悍，\n請在詳細確認建議戰力之後再挑戰。"
+    "value": "Expect fierce opponents during Secret Battles. Check the\nRecommended Combat Power and plan your strategy carefully."
   },
   {
     "id": 101200000011020001,
-    "value": "您辦到了呢！\n成功觸發隱藏戰鬥了！"
+    "value": "You did it! You successfully triggered the Secret Battle!"
   },
   {
     "id": 101200000011020002,
-    "value": "可是接下來才是真正的挑戰。\n隱藏戰鬥的難度很高，\n一旦敗北就只能重新開始這個關卡。"
+    "value": "This is where the real challenge begins. Secret Battles are\nhighly difficult, and you'll have to restart them entirely if\nyou lose."
   },
   {
     "id": 101200000011020003,
-    "value": "建議戰鬥力不足時選擇「不挑戰」，\n等強化了部隊之後再挑戰吧！"
+    "value": "If you lack Combat Power, just opt out, then give it a try after\nyou have strengthened your forces!"
   },
   {
     "id": 101200000011030001,
-    "value": "向您報告！\n已可使用個人基地內的「MS船塢」。\n馬上過去看看吧。"
+    "value": "I have a report for you! The MS Dock is now available in the Base.\nLet's check it out."
   },
   {
     "id": 101200000011030002,
-    "value": "這是MS船塢。\n確認看看吧。"
+    "value": "This is the MS Dock. Try it out!"
   },
   {
     "id": 101200000011030003,
-    "value": "在此可設置獲得的「MS船塢單位」，\n營造出自己的專屬船塢。\n立刻設置看看吧！"
+    "value": "This is a space where you can display MS Dock Units you've\nacquired and create your very own dock. Let's go set it up!"
   },
   {
     "id": 101200000011040001,
-    "value": "向您報告！\n已可使用個人基地內的「角色要求」。\n馬上過去看看吧。"
+    "value": "This just in!\nCharacter Requests are available at the Base.\nLet's go have a look."
   },
   {
     "id": 101200000011040002,
-    "value": "這是角色要求。\n確認看看吧。"
+    "value": "These are Character Requests.\nGive them a try!"
   },
   {
     "id": 101200000011040003,
-    "value": "在此會收到來自各種角色的要求。\n達成要求就能夠獲得各種報酬喔！"
+    "value": "Here you'll receive requests from various characters.\nEarn a variety of rewards by completing them!"
   },
   {
     "id": 101200000011040004,
-    "value": "隨著要求RANK逐步提升，\n將出現特殊要求。\n達成之後能夠獲得稀有道具喔！"
+    "value": "Special requests will become available as you rank higher.\nComplete them to earn rare items!"
   },
   {
     "id": 101200000011040005,
-    "value": "馬上就收到要求了呢。\n確認看看吧！"
+    "value": "It looks like you already have a request!"
   },
   {
     "id": 101200000011050001,
-    "value": "這是板塊使命。\n先挑戰初學者使命吧！"
+    "value": "These are Panel Missions.\nFirst, let's try Beginner Missions!"
   },
   {
     "id": 101200000011050002,
-    "value": "逐步完成使命即可將\n「[SSR]GQuuuuuuX（Ω腦波傳導啟動時）」突破界限至上限，\n請務必挑戰看看！"
+    "value": "As you progress through the missions, you can limit-break the [SSR] GQuuuuuuX (Omega Psycommu) to its maximum. Try to aim for that!"
   },
   {
     "id": 101200000011060001,
-    "value": "向您報告！\n已可使用角色的「招募」。\n馬上過去看看吧。"
+    "value": "This just in!\nNew characters are available for scouting.\nGo ahead and have a look!"
   },
   {
     "id": 101200000011060002,
-    "value": "在這裡可使用CAPITAL招募角色。"
+    "value": "You can scout characters by using Capital."
   },
   {
     "id": 101200000011060003,
-    "value": "可招募的角色\n會隨著推進關卡逐漸增加。"
+    "value": "More characters will become available for scouting as you\nprogress through the stages."
   },
   {
     "id": 101200000011060004,
-    "value": "這次特別開放\n無須使用CAPITAL即可招募，\n馬上招募看看吧！"
+    "value": "I'll let you try out scouting Capital-free, just this once!\nGive it a shot!"
   },
   {
     "id": 101200000011070001,
-    "value": "辛苦了。\n終於要正式出擊了呢。"
+    "value": "It's finally time for a proper sortie."
   },
   {
     "id": 101200000011070002,
-    "value": "出擊前請容我\n再稍微說明一下「部隊編制」。"
+    "value": "Before we jump in, let me tell you more about squad formation."
   },
   {
     "id": 101200000011070003,
-    "value": "上次我們有編制過\n僅可編制特定系列相關單位及角色的\n「系列部隊」了呢。"
+    "value": "Last time, we formed a Series Squad, which can only be composed of\nunits and characters related to a specific series."
   },
   {
     "id": 101200000011070004,
-    "value": "這次要對「自由部隊」進行說明。"
+    "value": "Let me explain the Free Squad now."
   },
   {
     "id": 101200000011070005,
-    "value": "「自由部隊」是毫無限制、\n可編制任何單位及角色的部隊。\n趕緊來進行編制吧！"
+    "value": "A Free Squad allows you to form units and characters without\nrestrictions. Let's go ahead and try it!"
   },
   {
     "id": 101200000011070006,
-    "value": "我會給你單位及角色\n來應對接下來的戰鬥！\n編制不足時歡迎多使用喔。"
+    "value": "Here are some units and characters to help you prepare for future\nbattles! Feel free to use them if you think your current formation\nis lacking."
   },
   {
     "id": 101200000011070007,
-    "value": "自由部隊\n可隨意編制，不會受到系列限制。"
+    "value": "Free Squads can be organized without any series restrictions."
   },
   {
     "id": 101200000011070008,
-    "value": "若要編制與主要關卡的系列\n不相符的單位及角色，\n請編制於自由部隊。"
+    "value": "If you want to include units or characters that don't match the\nseries in the Main Stages, you can add them into a Free Squad."
   },
   {
     "id": 101200000011070009,
-    "value": "另外，「自動編制」\n是會依據持有的單位及角色，\n自動設定一套推薦編制的功能！"
+    "value": "Moreover, the Auto-Form feature automatically sets up a formation\nfor you based on the units and characters in your possession!"
   },
   {
     "id": 101200000011070010,
-    "value": "對遊戲還不熟悉時，請試著使用「自動編制」喔！"
+    "value": "Feel free to try Auto-Form out until you get used to the process."
   },
   {
     "id": 101200000011070011,
-    "value": "那麼就試著從系列部隊開始編制吧。"
+    "value": "Moving on, let's form a Series Squad."
   },
   {
     "id": 101200000011080001,
-    "value": "收集到強化材料了呢！\n這樣似乎可以開發新單位了！\n趕緊來開發看看吧！"
+    "value": "You've collected enhancement materials! It looks like you can\ndevelop a new unit with these! Let's get started!"
   },
   {
     "id": 101200000011080002,
-    "value": "只要使用強化材料提升吉姆的LV，\n好像就能開發「鋼彈原型機」喔！"
+    "value": "It looks like you'll be able to develop a Prototype Gundam if you\nuse the enhancement materials to level up the GM!"
   },
   {
     "id": 101200000011080003,
-    "value": "順利開發完成了呢！"
+    "value": "Development went without a hitch!"
   },
   {
     "id": 101200000011080004,
-    "value": "提升「鋼彈原型機」的LV，\n之後就能開發「鋼彈」──"
+    "value": "You'll be able to develop a Gundam if you level up the Prototype\nGundam!"
   },
   {
     "id": 101200000011080005,
-    "value": "而在「鋼彈」之後還能開發\nSSR單位「G-3鋼彈」。"
+    "value": "After that, you'll be able to develop the SSR unit G-3 Gundam!"
   },
   {
     "id": 101200000011080006,
-    "value": "靠著開發也能獲得強大的SSR單位！\n請務必挑戰看看！"
+    "value": "You can obtain powerful SSR units through development too! Try it out!"
   },
   {
     "id": 101200000011080007,
-    "value": "辛苦了！\n看你關卡推進得很順利的樣子，\n是不是開始需要培育以及開發的材料了呢？"
+    "value": "Great work so far! It looks like you're making steady progress\nthrough the stages, but you'll need development and training\nmaterials."
   },
   {
     "id": 101200000011080008,
-    "value": "透過「略過」已完成的關卡，\n可在短時間內獲得許多材料。\n材料不足時還請嘗試看看！"
+    "value": "You can obtain a lot of materials in a short time by using the\nSkip feature on cleared stages. Give it a try if you're running\nlow on materials."
   },
   {
     "id": 101200000011080009,
-    "value": "只要在該關卡的戰鬥評價獲得<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">，\n就能使用略過功能。"
+    "value": "The Skip feature becomes available for a stage once you have\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"> on it."
   },
   {
     "id": 101200000011080010,
-    "value": "若已有戰鬥評價獲得<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">的關卡，\n還請積極使用略過功能！"
+    "value": "Take advantage of the Skip feature for stages where you've\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">!"
   },
   {
     "id": 101200000011080011,
-    "value": "「強化培育關卡」已解放。"
+    "value": "Upgrade Stages unlocked."
   },
   {
     "id": 101200000011080012,
-    "value": "強化培育關卡是用來獲得CAPITAL，\n或培育單位、角色及支援人員的\n特殊關卡。"
+    "value": "Upgrade Stages are special stages for earning capital\nand training units, characters, and supporters."
   },
   {
     "id": 101200000011080013,
-    "value": "可以從關卡首頁的\n「強化培育關卡」前往挑戰。"
+    "value": "You can access Upgrade Stages from the Stages screen."
   },
   {
     "id": 101200000011080014,
-    "value": "一天可挑戰的次數有限，\n請務必每天查看。"
+    "value": "Keep in mind that you have a limited number of attempts per day,\nso be sure to keep track of them."
   },
   {
     "id": 101200000011080015,
-    "value": "好像獲得「G-3鋼彈研究技術書」了。"
+    "value": "It seems that you have acquired the G-3 Gundam Research Journal."
   },
   {
     "id": 101200000011080016,
-    "value": "可以在「機動戰士鋼彈【地球聯邦】」的開發路線圖中\n進行G-3鋼彈的開發。"
+    "value": "You will now be able to develop the G-3 Gundam by using the Mobile\nSuit Gundam EFF Develop Diagram."
   },
   {
     "id": 101200000011080017,
-    "value": "將作為材料的鋼彈培育至所需LV，\n試著開發出G-3鋼彈吧！"
+    "value": "Level up the base Gundam material to the required level and\ndevelop the G-3 Gundam!"
   },
   {
     "id": 101200000011080018,
-    "value": "辛苦了！\n看你關卡推進得很順利的樣子，\n是不是開始需要培育以及開發的材料了呢？"
+    "value": "Great work so far! It looks like you're making steady progress\nthrough the stages, but you'll need development and training\nmaterials."
   },
   {
     "id": 101200000011080019,
-    "value": "透過「略過」已完成的關卡，\n可在短時間內獲得許多材料。\n材料不足時還請嘗試看看！"
+    "value": "You can obtain a lot of materials in a short time by using the\nSkip feature on cleared stages. Give it a try if you're running\nlow on materials."
   },
   {
     "id": 101200000011080020,
-    "value": "只要在該關卡的戰鬥評價獲得<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">，\n就能使用略過功能。"
+    "value": "The Skip feature becomes available for a stage once you have\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"> on it."
   },
   {
     "id": 101200000011080021,
-    "value": "若已有戰鬥評價獲得<sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">的關卡，\n還請積極使用略過功能！"
+    "value": "Take advantage of the Skip feature for stages where you've\nachieved a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">!"
   },
   {
     "id": 101200000012010001,
-    "value": "在此對單位的「EN」進行說明。"
+    "value": "Let me tell you about the EN of the units."
   },
   {
     "id": 101200000012010002,
-    "value": "EN於每次使用武裝時消耗，\nEN不足時武裝將無法使用。"
+    "value": "Using weapons drains your EN. Once it runs out, you can no longer\nuse your weapons."
   },
   {
     "id": 101200000012010003,
-    "value": "那就請您在戰鬥時，\n試著留意「EN」的剩餘量吧！"
+    "value": "Always keep an eye on your EN while in battle."
   },
   {
     "id": 101200000012020001,
-    "value": "在此對「反擊預測」進行說明。"
+    "value": "Now, allow me to explain what Counter Prediction is!"
   },
   {
     "id": 101200000012020002,
-    "value": "戰鬥時若於敵方單位的射程範圍內發動攻擊，\n在攻擊後將會遭到反擊。"
+    "value": "If you launch an attack while within the enemy's range, you will\nlikely face a counterattack."
   },
   {
     "id": 101200000012020003,
-    "value": "查看顯示於移動範圍的「！」\n即可得知敵方單位的射程範圍。"
+    "value": "The enemy's attack range can be determined by the exclamation mark\nshown inside the movement range."
   },
   {
     "id": 101200000012020004,
-    "value": "從敵方單位的射程範圍外發動攻擊，\n將能夠單方面給予損傷。\n善用「反擊預測」，讓戰鬥進行得更順利吧！"
+    "value": "Attack from outside the enemy unit's range to deal damage while\navoiding a counterattack. Keep checking the Counter Prediction to\nturn the battle in your favor!"
   },
   {
     "id": 101200000012030001,
-    "value": "在此對「額外行動（CHANCE STEP）」\n進行說明。"
+    "value": "Let's have a look at Bonus Actions now."
   },
   {
     "id": 101200000012030002,
-    "value": "給予敵方單位最後一擊後\n即可觸發額外行動，並可再次行動。"
+    "value": "Once you deliver the final blow to an enemy unit, you are allowed\none more action, called Bonus Action."
   },
   {
     "id": 101200000012030003,
-    "value": "回合中的額外行動觸發次數設有上限，\n次數隨搭乘角色而有所不同。"
+    "value": "There is a limited number of Bonus Actions during each phase.\nIt all depends on your character."
   },
   {
     "id": 101200000012030004,
-    "value": "請在戰鬥時留意攻擊順序，\n思考要使用哪架單位給予最後一擊，嘗試在\n戰鬥中觸發「額外行動（CHANCE STEP）」吧！"
+    "value": "Consider the attack order and the unit delivering the final blow.\nKeep Bonus Actions in mind when planning your strategy."
   },
   {
     "id": 101200000012040001,
-    "value": "在此對「支援技能」進行說明。"
+    "value": "Let me tell you about support skills."
   },
   {
     "id": 101200000012040002,
-    "value": "每個支援人員各自擁有\n能讓戰鬥進行得更順利的「支援技能」。"
+    "value": "Every supporter possesses their own support skills that can\nprovide you with an advantage."
   },
   {
     "id": 101200000012040003,
-    "value": "支援技能有其效果範圍，\n效果遍及範圍內的所有我軍單位。"
+    "value": "Support skills are applied to all allied units within the\nrange of effect."
   },
   {
     "id": 101200000012040004,
-    "value": "各支援人員在戰鬥中僅可發動1次支援技能，\n只要在我軍回合內，便可隨時發動。"
+    "value": "Each supporter can activate their support skills only\nonce per battle. However, these skills can be used\nat any time during your phase."
   },
   {
     "id": 101200000012040005,
-    "value": "那就請您思考一下要在戰鬥中的什麼時機，\n對哪個範圍使用技能吧！"
+    "value": "As you progress, think about when you can best utilize\nthe support skills!"
   },
   {
     "id": 101200000012050001,
-    "value": "在此對「角色技能」進行說明。"
+    "value": "I will now cover character skills."
   },
   {
     "id": 101200000012050002,
-    "value": "每個角色各自擁有\n能讓戰鬥進行得更順利的角色技能。"
+    "value": "Each character has their own unique character skills that help\nyou gain an advantage."
   },
   {
     "id": 101200000012050003,
-    "value": "當單位處於可行動狀態，\n就能夠消耗「SP」發動技能。"
+    "value": "If the unit has a possible action, you can use SP to activate\na skill."
   },
   {
     "id": 101200000012050004,
-    "value": "SP在戰鬥中不會回復，\n請記得留意剩餘量。"
+    "value": "Keep track of the remaining amount. SP will not recover\nduring battle."
   },
   {
     "id": 101200000012050005,
-    "value": "那就請您思考一下要在戰鬥中的什麼時機，\n發動哪個角色技能吧！"
+    "value": "As you engage in battle, think carefully about when and which\ncharacter skills to use!"
   },
   {
     "id": 101200000012060001,
-    "value": "在此對「支援防禦」進行說明。"
+    "value": "I will now tell you about Support Defense."
   },
   {
     "id": 101200000012060002,
-    "value": "可利用此圖示辨認單位是否能進行支援防禦。\n回合中的發動次數設有限制，次數限制隨角色而有所不同。"
+    "value": "You can tell whether a unit can provide Support Defense by looking at this icon.There is a limited number of times it can be triggered during a phase, which varies by character."
   },
   {
     "id": 101200000012060003,
-    "value": "當此單位移動範圍內的我軍單位遭受攻擊時\n將發動支援防禦，可代為承受攻擊。"
+    "value": "If an allied unit is attacked within the movement range,\nSupport Defense will activate, allowing this unit to take\nthe hit instead."
   },
   {
     "id": 101200000012060004,
-    "value": "先讓要進行支援防禦的單位行動吧。"
+    "value": "First, let's have the unit that can provide Support Defense\n take action."
   },
   {
     "id": 101200000012060005,
-    "value": "那麼接下來再讓\n要接受支援防禦的單位行動。"
+    "value": "Next, let's have the unit that will receive Support Defense\ntake action."
   },
   {
     "id": 101200000012060006,
-    "value": "可在此確認能進行支援防禦的單位移動範圍，\n想要接受支援防禦時\n請先確認格子的圖示再移動。"
+    "value": "You can check the movement range for units capable of providing\nSupport Defense here. When you want to receive support, be sure\nto check the space's icon and move accordingly."
   },
   {
     "id": 101200000012060007,
-    "value": "巧妙配置單位，讓戰鬥進行得更順利吧！"
+    "value": "Carefully position your units to gain an advantage in battle!"
   },
   {
     "id": 101200000012060008,
-    "value": "支援防禦發動時會在此顯示，\n一定要進行確認。"
+    "value": "When Support Defense occurs, it will be displayed here, so be sure\nto keep an eye on it."
   },
   {
     "id": 101200000012060009,
-    "value": "而如果不想觸發支援防禦，\n也可以變更戰鬥參加狀態。"
+    "value": "If you don't want to trigger Support Defense, you can change the\nparticipation status of the unit in battle."
   },
   {
     "id": 101200000012060010,
-    "value": "這次的單位\n每回合只能使用一次支援防禦。\n為了保留使用次數就選擇「不參加」看看吧。"
+    "value": "This unit can only use Support Defense once per turn.\nTo preserve it, let's set the unit to \"not participating.\""
   },
   {
     "id": 101200000012060011,
-    "value": "由於下次遭受攻擊將會被擊破，\n這次就選擇「參加」，進行支援防禦吧。"
+    "value": "The unit will be destroyed if it takes another hit. Let's change\nits participation status to enable the use of Support Defense."
   },
   {
     "id": 101200000012060012,
-    "value": "多虧有支援防禦，單位並未遭到擊破。"
+    "value": "The unit survived thanks to Support Defense!"
   },
   {
     "id": 101200000012060013,
-    "value": "接下來只要殲滅敵方單位就行了！"
+    "value": "Now, all that's left is to wipe out the enemy!"
   },
   {
     "id": 101200000012060014,
-    "value": "辛苦您了。\n看來順利地擊破敵方了。"
+    "value": "Great job! It looks like you've successfully defeated them!"
   },
   {
     "id": 101200000012060015,
-    "value": "支援防禦非常方便，\n不過需要顧慮使用次數及單位的剩餘HP。"
+    "value": "Support Defense can be a useful tool, but always keep the usage limit\nand remaining HP in mind."
   },
   {
     "id": 101200000012060016,
-    "value": "判斷最佳使用時機，讓戰鬥進行得更順利吧。"
+    "value": "Timing is key—master the right moment to use them and\nturn the battle in your favor."
   },
   {
     "id": 101200000012070001,
-    "value": "在此對「支援攻擊」進行說明。"
+    "value": "I'll now go over Support Attacks with you."
   },
   {
     "id": 101200000012070002,
-    "value": "讓「支援型」的角色搭乘後，\n可進行支援攻擊。"
+    "value": "You can use Support Attacks by having a support-type\ncharacter on board the unit."
   },
   {
     "id": 101200000012070003,
-    "value": "當己方單位在此單位的射程範圍內進行攻擊時，\n將會發動支援攻擊。"
+    "value": "Support Attacks will activate when an allied unit attacks\nwithin the defined range."
   },
   {
     "id": 101200000012070004,
-    "value": "可利用此圖示辨認\n單位是否能進行支援攻擊。"
+    "value": "You can tell whether a unit can perform Support Attacks by\nlooking at this icon."
   },
   {
     "id": 101200000012070005,
-    "value": "回合中的發動次數設有限制，\n次數限制隨角色而有所不同。"
+    "value": "There is a limited number of times it can be triggered during a\nturn, which varies by character."
   },
   {
     "id": 101200000012070006,
-    "value": "已行動的單位仍可進行支援攻擊。\n先讓支援型單位行動吧。"
+    "value": "Support Attacks can be carried out even after the unit has\nperformed an action. Start by having the support-type unit\ntake action."
   },
   {
     "id": 101200000012070007,
-    "value": "那麼接下來，\n請移動另一架單位並進行攻擊。"
+    "value": "Next, let's have another unit move and attack."
   },
   {
     "id": 101200000012070008,
-    "value": "支援攻擊發動時會在此顯示，\n一定要進行確認。"
+    "value": "When a Support Attack occurs, it will be displayed here, so be\nsure to keep an eye on it."
   },
   {
     "id": 101200000012070009,
-    "value": "辛苦您了。\n看來順利擊破敵方了呢！"
+    "value": "Great job! It looks like you successfully defeated them!"
   },
   {
     "id": 101200000012070010,
-    "value": "支援攻擊極為強力，\n不過需要考慮單位的射程及剩餘EN。"
+    "value": "Support Attack is very powerful, but you need to keep the unit's\nrange and EN in mind."
   },
   {
     "id": 101200000012070011,
-    "value": "巧妙配置單位，讓戰鬥進行得更順利吧。"
+    "value": "Carefully position your units to gain an advantage in battle."
   },
   {
     "id": 101200000012080001,
-    "value": "在此對「戰意」進行說明。"
+    "value": "Let's touch upon Vigor now."
   },
   {
     "id": 101200000012080002,
-    "value": "角色持有「MP」，\n戰意會隨著MP而改變。"
+    "value": "A character's Vigor changes based on the amount of MP they have."
   },
   {
     "id": 101200000012080003,
-    "value": "戰意分為「一般」、「強勢」、「超強勢」、「超一擊」\n這幾個階段，若戰意處於高漲狀態，\n攻擊時的損傷量也會提升。"
+    "value": "Vigor has four levels: Normal, High, Max, and Supercharged.\nThe amount of damage dealt increases based on the Vigor level."
   },
   {
     "id": 101200000012080004,
-    "value": "MP會在攻擊命中敵方單位，\n以及進行支援攻擊和支援防禦時提升。"
+    "value": "MP increases by landing attacks on enemy units, as well as by\nperforming Support Attack and Support Defense."
   },
   {
     "id": 101200000012080005,
-    "value": "相反地，受到敵方單位的攻擊，\n以及攻擊被敵方單位閃避時，\nMP將會減少。"
+    "value": "On the other hand, MP decreases when your unit is attacked or\nwhen the enemy evades your attack."
   },
   {
     "id": 101200000012080006,
-    "value": "那就請您思考該如何在戰鬥中\n維持「戰意」高漲狀態吧！"
+    "value": "Think about how you can keep your Vigor high as you progress\nthrough the battle!"
   },
   {
     "id": 101200000012090001,
-    "value": "在此對「變形」進行說明。"
+    "value": "Let me explain the Transform function!"
   },
   {
     "id": 101200000012090002,
-    "value": "部分單位在戰鬥中\n能夠變形成其他型態。"
+    "value": "Some units are able to transform during battle."
   },
   {
     "id": 101200000012090003,
-    "value": "使用變形後，\n有可能使移動力以及可使用的武裝發生改變。"
+    "value": "Transforming a unit can alter its MOV and the\nweapons it can utilize."
   },
   {
     "id": 101200000012090004,
-    "value": "那就請您使用「變形」來戰鬥看看吧！"
+    "value": "Use Transform to your advantage in battle!"
   },
   {
     "id": 101200000012100001,
-    "value": "在此對「MAP兵器」進行說明。"
+    "value": "Let me explain MAP Weapons."
   },
   {
     "id": 101200000012100002,
-    "value": "MAP兵器是特定單位持有的強力武裝。\n有別於一般武裝，\n能夠同時攻擊射程範圍內的複數單位。"
+    "value": "MAP Weapons are powerful weapons wielded by specific units.\nUnlike regular weapons, they can simultaneously attack multiple\nunits within their range."
   },
   {
     "id": 101200000012100003,
-    "value": "但是MAP兵器在移動後無法使用，\n也無法觸發額外行動。"
+    "value": "However, MAP Weapons cannot be used after moving, and they\ndo not trigger a Bonus Action."
   },
   {
     "id": 101200000012100004,
-    "value": "MAP兵器設有各種條件，如使用次數限制、\n部分武裝需戰意達到一定程度以上等，\n相對的，其威力也相當強大。"
+    "value": "There are various conditions, such as limited usage and Vigor-level\nrequirements depending on the weapon, but in return, they are\nextremely powerful."
   },
   {
     "id": 101200000012100005,
-    "value": "那就請您務必親自體驗一下\n「MAP兵器」的威力吧！"
+    "value": "Give MAP Weapons a try and experience their power for yourself!"
   },
   {
     "id": 101200000012110001,
-    "value": "在此對「武裝類型」進行說明。"
+    "value": "Let me tell you about weapon types."
   },
   {
     "id": 101200000012110002,
-    "value": "武裝存在「射擊」、「格鬥」、「覺醒」\n這3種「武裝類型」。"
+    "value": "There are three kinds of weapon types: Ranged, Melee, and Awaken."
   },
   {
     "id": 101200000012110003,
-    "value": "每個角色都有擅長和不擅長使用的武裝，\n查看能力值裡的「射擊值」、「格鬥值」、「覺醒值」，\n就能得知擅長哪個類型的武裝。"
+    "value": "Each character has weapons that they excel at using,\nas well as those they struggle with. By looking at the Ranged,\nMelee, and Awaken stats, you can determine the best weapon\nfor your character."
   },
   {
     "id": 101200000012110004,
-    "value": "使用擅長類型的武裝，\n可提升對敵方單位造成的損傷。"
+    "value": "Deal more damage to enemy units by utilizing the weapon that\nyour character is best at."
   },
   {
     "id": 101200000012110005,
-    "value": "相反地，使用不擅長類型的武裝\n會使造成的損傷減少，需要多加留意。"
+    "value": "On the other hand, using a weapon your character isn't proficient\nwith will weaken your attack, so pay close attention!"
   },
   {
     "id": 101200000012110006,
-    "value": "那就請您留意「武裝類型」\n與角色擅長的武裝，\n打一場漂亮的戰鬥吧！"
+    "value": "Be conscious of weapon types and keep your characters'\nproficiency in mind!"
   },
   {
     "id": 101200000012120001,
-    "value": "在此對「武裝屬性」進行說明。"
+    "value": "Let me tell you about weapon attributes."
   },
   {
     "id": 101200000012120002,
-    "value": "武裝存在「光束」、「物理」、「特殊」這3種屬性，\n每種武裝必定至少擁有1種屬性。"
+    "value": "There are three weapon attributes: Beam, Physical, and Special.\nEach weapon has at least one attribute."
   },
   {
     "id": 101200000012120003,
-    "value": "有些能力會對特定武裝屬性發揮效果，\n建議可以在攻擊前先確認敵方單位資訊。"
+    "value": "Some abilities are effective against specific weapon attributes.\nTherefore, it's best to check enemy unit data before attacking."
   },
   {
     "id": 101200000012120004,
-    "value": "這次的敵方單位持有\n「減輕光束屬性損傷的能力」呢。"
+    "value": "In this case, the enemy unit has an ability that can reduce\nBeam-type damage."
   },
   {
     "id": 101200000012120005,
-    "value": "那就請您試著選擇不會被敵方能力減輕損傷的\n「武裝屬性」來戰鬥吧！"
+    "value": "Be sure to keep weapon attributes in mind as you proceed\nthrough battles!"
   },
   {
     "id": 101200000012130001,
-    "value": "在此對「地形適性」進行說明。"
+    "value": "Let's take a look at terrain capabilities."
   },
   {
     "id": 101200000012130002,
-    "value": "戰鬥裡的關卡有\n「宇宙」、「空中」、「地面」、「水面」、「水中」\n這些地形。"
+    "value": "The battle stages feature various terrains: Space, Atmospheric,\nLand, Sea, and Underwater."
   },
   {
     "id": 101200000012130003,
-    "value": "對於這些地形，單位具有「圓」、「三角形」、「連接號」\n這三階段的地形適性。"
+    "value": "Units have three levels of capability for each terrain type:\n\"circle\" (good), \"triangle\" (average), and \"dash\" (poor)."
   },
   {
     "id": 101200000012130004,
-    "value": "地形適性為「三角形」時移動力減半，\n地形適性為「連接號」時，\n則無法於該關卡出擊。"
+    "value": "If the terrain capability is \"triangle,\" the unit's MOV is reduced by half.\nIf it's \"dash,\" the unit cannot sortie on that stage."
   },
   {
     "id": 101200000012130005,
-    "value": "那麼這次就請您試著留意在戰鬥中\n不同「地形適性」所造成的移動力差距吧！"
+    "value": "Consider the differences in MOV due to terrain capability\nto gain an advantage in battle!"
   },
   {
     "id": 101200000012140001,
-    "value": "在此對「武裝效果」進行說明。"
+    "value": "Let me tell you about weapon effects."
   },
   {
     "id": 101200000012140002,
-    "value": "部分武裝具有特殊效果，\n特徵隨單位類型而有所不同。"
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
   },
   {
     "id": 101200000012140003,
-    "value": "「攻擊型」單位擅長給予損傷，\n有些武裝會在一定條件下\n提升造成的損傷。"
+    "value": "Attack-type units excel at dealing damage. Certain weapons\nincrease damage dealt based on certain conditions."
   },
   {
     "id": 101200000012140004,
-    "value": "這次使用的單位所持有的武裝\n將依據與敵方單位的距離提升損傷。"
+    "value": "In this case, the unit has a weapon that increases damage\ndepending on the distance between you and the enemy unit."
   },
   {
     "id": 101200000012140005,
-    "value": "那就請您立刻試著運用武裝效果，\n打一場漂亮的戰鬥吧！"
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
   },
   {
     "id": 101200000012150001,
-    "value": "在此對「武裝效果」進行說明。"
+    "value": "Let me tell you about weapon effects."
   },
   {
     "id": 101200000012150002,
-    "value": "部分武裝具有特殊效果，\n特徵隨單位類型而有所不同。"
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
   },
   {
     "id": 101200000012150003,
-    "value": "「支援型」單位持有的武裝\n會賦予使敵方單位弱化的效果。"
+    "value": "Support-type unit weapons can weaken enemy units."
   },
   {
     "id": 101200000012150004,
-    "value": "這次使用的單位所持有的武裝，\n具有攻擊後能減少敵方單位防禦力的效果。"
+    "value": "In this case, the unit has a weapon that reduces the enemy unit's\nDEF after you attack."
   },
   {
     "id": 101200000012150005,
-    "value": "那就請您立刻試著運用武裝效果，\n打一場漂亮的戰鬥吧！"
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
   },
   {
     "id": 101200000012160001,
-    "value": "在此對「武裝效果」進行說明。"
+    "value": "Let me tell you about weapon effects."
   },
   {
     "id": 101200000012160002,
-    "value": "部分武裝具有特殊效果，\n特徵隨單位類型而有所不同。"
+    "value": "Some weapons have special effects, and the characteristics of\nthese skills vary by unit type."
   },
   {
     "id": 101200000012160003,
-    "value": "「耐久型」單位持有的武裝\n會賦予妨礙敵方單位行動的效果。"
+    "value": "Weapons used by Durability-type units can hinder the actions\nof enemy units."
   },
   {
     "id": 101200000012160004,
-    "value": "這次使用的單位所持有的武裝，\n具有攻擊後能減少敵方單位攻擊力的效果。"
+    "value": "In this case, the unit's weapon can reduce the enemy unit's\nATK after attacking."
   },
   {
     "id": 101200000012160005,
-    "value": "那就請您立刻試著運用武裝效果，\n打一場漂亮的戰鬥吧！"
+    "value": "Let's make the most of weapon effects and turn the tables in\nour favor!"
   },
   {
     "id": 101200000013000010,
-    "value": "請領取今天發放的登入獎勵！"
+    "value": "Today's login bonus is waiting for you! Don't forget to claim it!"
   },
   {
     "id": 101200000013000020,
-    "value": "今天的配給品已經送達！"
+    "value": "Today's supplies have arrived!"
   },
   {
     "id": 101200000013000030,
-    "value": "請確認已送達的配給品！"
+    "value": "The supplies have arrived, so be sure to take a look!"
   },
   {
     "id": 101200000014000010,
-    "value": "達成使命可以獲得豐厚的報酬喔！"
+    "value": "Complete missions for awesome rewards!"
   },
   {
     "id": 101200000014000020,
-    "value": "感覺不錯呢！照這個步調一起加油吧！"
+    "value": "Looking good! Keep it up!"
   },
   {
     "id": 101200000014000030,
-    "value": "讓我們一步一腳印地前進吧。\n俗話說「千里之行始於足下」嘛！"
+    "value": "It's perfectly fine to take things one step at a time.\n\"A journey of a thousand miles begins with a single step!\""
   },
   {
     "id": 101200000014000040,
-    "value": "很棒的成果！\n這就是所謂的「堅持就是力量」！"
+    "value": "You did it! Persistence is key!"
   },
   {
     "id": 101200000014000050,
-    "value": "太了不起了！\n保持這個狀態不斷達成目標吧！"
+    "value": "Impressive! Keep that momentum!"
   },
   {
     "id": 101200000014000060,
-    "value": "真是厲害！\n我也很期待您往後的表現！"
+    "value": "Amazing work! I expect great things from you."
   },
   {
     "id": 101200000014000070,
-    "value": "日常的努力終於開花結果了！"
+    "value": "Your daily efforts are paying off!"
   },
   {
     "id": 101200000014000080,
-    "value": "今後也一起努力吧！"
+    "value": "Let's give our best, from here on out!"
   },
   {
     "id": 101200000015000010,
-    "value": "如果總是贏不過對手，或是積分始終不甚理想，\n可以試試看「<color=#ffc600>變更對戰對手</color>」。"
+    "value": "If you are having difficulty, consider <color=#ffc600>changing opponents</color> to help\nboost your score."
   },
   {
     "id": 101200000015000020,
-    "value": "對戰對手1天最多可變更5次。"
+    "value": "You can change opponents up to 5 times per day."
   },
   {
     "id": 101200000015000030,
-    "value": "根據編制陣容，換個適合自己的對戰對手，\n挑戰刷新最高積分吧！"
+    "value": "Challenge new opponents, rethink your strategy, and\naim for a high score!"
   },
   {
     "id": 101200000015010010,
-    "value": "大規模攻略戰已展開。"
+    "value": "The Grand Offensive has kicked off."
   },
   {
     "id": 101200000015010020,
-    "value": "擊敗潛伏於各區域的敵人，\n逐步強化部隊──"
+    "value": "Clear out the enemies lurking in each zone,\nreinforce your squad,"
   },
   {
     "id": 101200000015010030,
-    "value": "平息宙域裡發生的異常事態吧。"
+    "value": "and push toward resolving the anomaly."
   },
   {
     "id": 101200000015010040,
-    "value": "在大規模攻略戰中，\n會有同伴與我們並肩作戰。"
+    "value": "In the Grand Offensive,\nSquadmates will fight on your side."
   },
   {
     "id": 101200000015010050,
-    "value": "途中的基地可以強化同伴。\n即使在危險區域等地點，\n一定也能助我們一臂之力。"
+    "value": "Your Squadmates can be upgraded at any of the bases you encounter on the way.\nThey will surely prove an invaluable asset,\nespecially in Danger Zones."
   },
   {
     "id": 101200000015010055,
@@ -1077,11 +1077,11 @@
   },
   {
     "id": 101200000015010060,
-    "value": "可在此視窗中確認同伴的強度。"
+    "value": "Use this window to check your\nSquadmates' strength."
   },
   {
     "id": 101200000015010070,
-    "value": "根據調查結果，引發這起異常現象的元兇，\n似乎就在調查區域的最深處。"
+    "value": "Our intel suggests that the culprit behind\nthis anomaly lies at the far end of the\nInspection Zone."
   },
   {
     "id": 101200000015010071,
@@ -1089,158 +1089,158 @@
   },
   {
     "id": 101200000015010072,
-    "value": "與同伴一起攻略地圖、整頓戰力，\n擊敗位在最深處的敵人，平息這個異狀吧。"
+    "value": "Press the offensive with your Squadmates\nand build up your combat power to defeat\nthe enemy at the end, \nand bring this situation under control."
   },
   {
     "id": 101200000015010080,
-    "value": "那麼就出發吧！"
+    "value": "Well, then, let's go!"
   },
   {
     "id": 101200000015010085,
-    "value": "抵達「通訊基地」了。"
+    "value": "We've arrived at a Communications Base."
   },
   {
     "id": 101200000015010090,
-    "value": "在這裡可以提升帶有特定標籤之單位的能力值。"
+    "value": "Here, you can increase the stats of\nunits with specific tags."
   },
   {
     "id": 101200000015010100,
-    "value": "增幅效果只要取得過一次，\n在大規模攻略戰中就會持續生效，\n能夠使攻略進行得更順利。"
+    "value": "Any acquired boost effects will persist throughout\nthe Grand Offensive, giving you an advantage as\nyou move forward."
   },
   {
     "id": 101200000015010110,
-    "value": "馬上查看效果，取得增幅看看吧。"
+    "value": "Now, check these effects, then try acquiring them."
   },
   {
     "id": 101200000015010120,
-    "value": "在這個區域中，\n似乎潛伏著擁有強大力量的敵人！"
+    "value": "It would appear that an enemy of\nimmense power is lurking in this zone!"
   },
   {
     "id": 101200000015010130,
-    "value": "請先鍛鍊同伴，或是取得增幅等，\n確保部隊戰力充足後，\n再以萬全的狀態迎戰吧。"
+    "value": "Train your Squadmates and\nacquire boosts to ensure that your squad has\nsufficient combat power,\nthen commence the offensive fully prepared."
   },
   {
     "id": 101200000015010140,
-    "value": "發現攻略目標了！"
+    "value": "Target confirmed!"
   },
   {
     "id": 101200000015010150,
-    "value": "似乎有強大的敵人在等著我們，\n但只要能擊敗敵人，\n就可以前往下一個區域！"
+    "value": "A powerful enemy is lying in wait,\nbut if you defeat them,\nyou can proceed to the next zone!"
   },
   {
     "id": 101200000015010160,
-    "value": "發現這個區域的攻略目標了！"
+    "value": "Target for this zone confirmed!"
   },
   {
     "id": 101200000015010170,
-    "value": "只要擊敗目標，\n就可以前往最終區域。"
+    "value": "You can proceed to the final zone by\ndestroying the target."
   },
   {
     "id": 101200000015010180,
-    "value": "整頓好戰力後再挑戰吧！"
+    "value": "Build up your combat power and fight!"
   },
   {
     "id": 101200000015010185,
-    "value": "發現極有可能是最終目標的敵人了！"
+    "value": "Enemy in sight—we've spotted the final target!"
   },
   {
     "id": 101200000015010190,
-    "value": "只要攻略這個危險區域，\n似乎就能解決目前發生的異常現象。"
+    "value": "By capturing this Danger Zone,\nwe may be able to resolve the current anomaly."
   },
   {
     "id": 101200000015010200,
-    "value": "可預期會是一場艱難的戰鬥……\n祝您好運！"
+    "value": "It's going to be a tough fight...\nGood luck out there!"
   },
   {
     "id": 101200000015010210,
-    "value": "這裡是可以強化\n同伴單位和同伴角色的特殊格子。"
+    "value": "This is a special space that allows you to upgrade\nSquadmate units or Squadmate characters."
   },
   {
     "id": 101200000015010220,
-    "value": "趕緊確認詳情吧。"
+    "value": "Now, check the details."
   },
   {
     "id": 101200000015010230,
-    "value": "我們已入侵「重要戰鬥區域」。"
+    "value": "We have entered a Key Combat Zone."
   },
   {
     "id": 101200000015010240,
-    "value": "這裡會出現強大的特殊單位。"
+    "value": "Here, powerful and special units appear."
   },
   {
     "id": 101200000015010245,
-    "value": "擊破該單位後，\n將可獲得會在積分挑戰時發動的特殊增幅效果。"
+    "value": "By defeating them, you can acquire special boosts\nthat activate during Score Attack attempts."
   },
   {
     "id": 101200000015010250,
-    "value": "試著攻略這個關卡，\n讓積分挑戰可以進行得更順利吧。"
+    "value": "To gain an advantage in the Score Attack,\nset your sights on conquering stages!"
   },
   {
     "id": 101200000015010260,
-    "value": "確認已攻略重要戰鬥區域！\n成功獲得特殊增幅了！"
+    "value": "Key Combat Zone capture confirmed!\nYou have acquired a special boost!"
   },
   {
     "id": 101200000015010270,
-    "value": "就照這步調，\n繼續攻略剩下的重要戰鬥區域吧。"
+    "value": "Keep up the pace and capture the\nremaining Key Combat Zones."
   },
   {
     "id": 101200000015010280,
-    "value": "確認已攻略所有重要戰鬥區域！"
+    "value": "The capture of every Key Combat Zone\nhas been confirmed!"
   },
   {
     "id": 101200000015010290,
-    "value": "獲得的增幅效果會在積分挑戰時發動。"
+    "value": "Acquired boosts will activate when\nyou attempt the Score Attack."
   },
   {
     "id": 101200000015010300,
-    "value": "最後可以打出多少積分呢……\n我已經迫不及待了！"
+    "value": "I wonder how high a score you can get...\nMy, things are getting exciting!"
   },
   {
     "id": 101200000015010310,
-    "value": "確認已擊敗最終目標！"
+    "value": "Final target destruction confirmed!"
   },
   {
     "id": 101200000015010320,
-    "value": "由於已經成功排除原因，\n異常現象想必也會自然平息下來吧。"
+    "value": "With the source eliminated,\nthe anomaly should resolve."
   },
   {
     "id": 101200000015010325,
-    "value": "若是還有尚未攻略的區域，\n我會建議您繼續調查。"
+    "value": "If there are any zones which you have\nyet to capture,\nI suggest conducting an inspection."
   },
   {
     "id": 101200000015010330,
-    "value": "另外，為防範下次再發生同樣的現象，\n我為您準備了可以與最終目標再戰的場地，\n讓您小試身手。"
+    "value": "Also, to guard against similar anomalies\nin the future, we have set up a place where\nyou can practice fighting the final target enemy."
   },
   {
     "id": 101200000015010340,
-    "value": "根據您攻略時的成果，\n將會得到相對應的報酬。"
+    "value": "We have readied fitting rewards according to\nyour success in the offensive."
   },
   {
     "id": 101200000015010350,
-    "value": "試著利用強化同伴和增幅，\n創下最理想的成果吧。"
+    "value": "Set your sights on even greater success with\nSquadmate upgrades and boosts."
   },
   {
     "id": 101200000015011010,
-    "value": "在前方區域中偵測到了可疑反應。"
+    "value": "Unusual readings have been detected in the zone ahead."
   },
   {
     "id": 101200000015011020,
-    "value": "裡面可能潛伏著強大的敵人。"
+    "value": "A powerful enemy may be lurking."
   },
   {
     "id": 101200000015011030,
-    "value": "接下來要謹慎前進才行。"
+    "value": "Beyond this point, you should proceed with caution."
   },
   {
     "id": 101200000015011040,
-    "value": "再次在前方區域中偵測到了可疑反應。"
+    "value": "Another unusual reading in the zone ahead detected."
   },
   {
     "id": 101200000015011050,
-    "value": "很有可能與上次確認過的情形相同，\n有強大的敵人潛伏在其中！"
+    "value": "As before, there is a high probability of a powerful enemy lurking!"
   },
   {
     "id": 101200000015011060,
-    "value": "請做好十足準備，再開始攻略吧。"
+    "value": "Commence the offensive once your preparations are complete."
   }
 ]

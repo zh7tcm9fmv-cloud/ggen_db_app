@@ -5,10 +5,10 @@
     "StageNumber": 1,
     "DisplayUnitId": 1001000100,
     "StageNameLanguageId": 130100000090500005,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500006,
@@ -16,10 +16,10 @@
     "StageNumber": 2,
     "DisplayUnitId": 1080000100,
     "StageNameLanguageId": 130100000090500006,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500007,
@@ -27,10 +27,10 @@
     "StageNumber": 4,
     "DisplayUnitId": 1095000100,
     "StageNameLanguageId": 130100000090500007,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500008,
@@ -38,10 +38,10 @@
     "StageNumber": 5,
     "DisplayUnitId": 1210000300,
     "StageNameLanguageId": 130100000090500008,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500009,
@@ -49,10 +49,10 @@
     "StageNumber": 3,
     "DisplayUnitId": 1300004200,
     "StageNameLanguageId": 130100000090500009,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500012,
@@ -60,10 +60,10 @@
     "StageNumber": 6,
     "DisplayUnitId": 1200000100,
     "StageNameLanguageId": 130100000090500012,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500013,
@@ -71,10 +71,10 @@
     "StageNumber": 7,
     "DisplayUnitId": 1230000200,
     "StageNameLanguageId": 130100000090500013,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500014,
@@ -82,10 +82,10 @@
     "StageNumber": 8,
     "DisplayUnitId": 1370000100,
     "StageNameLanguageId": 130100000090500014,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500015,
@@ -93,10 +93,10 @@
     "StageNumber": 9,
     "DisplayUnitId": 1430000300,
     "StageNameLanguageId": 130100000090500015,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500016,
@@ -104,10 +104,10 @@
     "StageNumber": 10,
     "DisplayUnitId": 1501001600,
     "StageNameLanguageId": 130100000090500016,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500017,
@@ -115,10 +115,10 @@
     "StageNumber": 11,
     "DisplayUnitId": 1114000200,
     "StageNameLanguageId": 130100000090500017,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500018,
@@ -126,10 +126,10 @@
     "StageNumber": 12,
     "DisplayUnitId": 1330001800,
     "StageNameLanguageId": 130100000090500018,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500019,
@@ -137,10 +137,10 @@
     "StageNumber": 13,
     "DisplayUnitId": 1125001000,
     "StageNameLanguageId": 130100000090500019,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500020,
@@ -148,10 +148,10 @@
     "StageNumber": 14,
     "DisplayUnitId": 1011000110,
     "StageNameLanguageId": 130100000090500020,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500021,
@@ -159,10 +159,10 @@
     "StageNumber": 15,
     "DisplayUnitId": 1001001100,
     "StageNameLanguageId": 130100000090500021,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500022,
@@ -170,10 +170,10 @@
     "StageNumber": 16,
     "DisplayUnitId": 1001003000,
     "StageNameLanguageId": 130100000090500022,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500023,
@@ -181,10 +181,10 @@
     "StageNumber": 17,
     "DisplayUnitId": 1850001500,
     "StageNameLanguageId": 130100000090500023,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500024,
@@ -192,10 +192,10 @@
     "StageNumber": 18,
     "DisplayUnitId": 1850000200,
     "StageNameLanguageId": 130100000090500024,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90500025,
@@ -203,10 +203,10 @@
     "StageNumber": 19,
     "DisplayUnitId": 1400000100,
     "StageNameLanguageId": 130100000090500025,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510001,
@@ -214,10 +214,10 @@
     "StageNumber": 1,
     "DisplayUnitId": 1001002700,
     "StageNameLanguageId": 130100000090510001,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510002,
@@ -225,10 +225,10 @@
     "StageNumber": 2,
     "DisplayUnitId": 1370004800,
     "StageNameLanguageId": 130100000090510002,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510003,
@@ -236,10 +236,10 @@
     "StageNumber": 9,
     "DisplayUnitId": 1060000300,
     "StageNameLanguageId": 130100000090510003,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510004,
@@ -247,10 +247,10 @@
     "StageNumber": 10,
     "DisplayUnitId": 1060000200,
     "StageNameLanguageId": 130100000090510004,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510005,
@@ -258,10 +258,10 @@
     "StageNumber": 3,
     "DisplayUnitId": 1001000100,
     "StageNameLanguageId": 130100000090510005,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510006,
@@ -269,10 +269,10 @@
     "StageNumber": 4,
     "DisplayUnitId": 1080000100,
     "StageNameLanguageId": 130100000090510006,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510007,
@@ -280,10 +280,10 @@
     "StageNumber": 6,
     "DisplayUnitId": 1095000100,
     "StageNameLanguageId": 130100000090510007,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510008,
@@ -291,10 +291,10 @@
     "StageNumber": 7,
     "DisplayUnitId": 1210000300,
     "StageNameLanguageId": 130100000090510008,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510009,
@@ -302,10 +302,10 @@
     "StageNumber": 5,
     "DisplayUnitId": 1300004200,
     "StageNameLanguageId": 130100000090510009,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510012,
@@ -313,10 +313,10 @@
     "StageNumber": 14,
     "DisplayUnitId": 1200005300,
     "StageNameLanguageId": 130100000090510012,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510013,
@@ -324,10 +324,10 @@
     "StageNumber": 26,
     "DisplayUnitId": 1230003800,
     "StageNameLanguageId": 130100000090510013,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510015,
@@ -335,10 +335,10 @@
     "StageNumber": 21,
     "DisplayUnitId": 1430003400,
     "StageNameLanguageId": 130100000090510015,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510016,
@@ -346,10 +346,10 @@
     "StageNumber": 24,
     "DisplayUnitId": 1501002000,
     "StageNameLanguageId": 130100000090510016,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510017,
@@ -357,10 +357,10 @@
     "StageNumber": 8,
     "DisplayUnitId": 1305000700,
     "StageNameLanguageId": 130100000090510017,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510018,
@@ -368,10 +368,10 @@
     "StageNumber": 11,
     "DisplayUnitId": 1114000200,
     "StageNameLanguageId": 130100000090510018,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510019,
@@ -379,10 +379,10 @@
     "StageNumber": 25,
     "DisplayUnitId": 1330000100,
     "StageNameLanguageId": 130100000090510019,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510020,
@@ -390,10 +390,10 @@
     "StageNumber": 12,
     "DisplayUnitId": 1705000400,
     "StageNameLanguageId": 130100000090510020,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510021,
@@ -401,10 +401,10 @@
     "StageNumber": 13,
     "DisplayUnitId": 1330002700,
     "StageNameLanguageId": 130100000090510021,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510022,
@@ -412,10 +412,10 @@
     "StageNumber": 15,
     "DisplayUnitId": 1125001200,
     "StageNameLanguageId": 130100000090510022,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510024,
@@ -423,10 +423,10 @@
     "StageNumber": 16,
     "DisplayUnitId": 1009000710,
     "StageNameLanguageId": 130100000090510024,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510025,
@@ -434,10 +434,10 @@
     "StageNumber": 17,
     "DisplayUnitId": 1125003800,
     "StageNameLanguageId": 130100000090510025,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510026,
@@ -445,10 +445,10 @@
     "StageNumber": 18,
     "DisplayUnitId": 1370003400,
     "StageNameLanguageId": 130100000090510026,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510027,
@@ -456,10 +456,10 @@
     "StageNumber": 19,
     "DisplayUnitId": 1210000900,
     "StageNameLanguageId": 130100000090510027,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510028,
@@ -467,10 +467,10 @@
     "StageNumber": 20,
     "DisplayUnitId": 1125000800,
     "StageNameLanguageId": 130100000090510028,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510031,
@@ -478,10 +478,10 @@
     "StageNumber": 22,
     "DisplayUnitId": 1022000700,
     "StageNameLanguageId": 130100000090510031,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510032,
@@ -489,10 +489,10 @@
     "StageNumber": 23,
     "DisplayUnitId": 1150000200,
     "StageNameLanguageId": 130100000090510032,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90510033,
@@ -500,10 +500,10 @@
     "StageNumber": 27,
     "DisplayUnitId": 1400006400,
     "StageNameLanguageId": 130100000090510033,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520001,
@@ -511,10 +511,10 @@
     "StageNumber": 1,
     "DisplayUnitId": 1001002700,
     "StageNameLanguageId": 130100000090520001,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 23,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520002,
@@ -522,10 +522,10 @@
     "StageNumber": 2,
     "DisplayUnitId": 1370004800,
     "StageNameLanguageId": 130100000090520002,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 9,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520003,
@@ -533,10 +533,10 @@
     "StageNumber": 4,
     "DisplayUnitId": 1060000300,
     "StageNameLanguageId": 130100000090520003,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 16,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520004,
@@ -544,10 +544,10 @@
     "StageNumber": 5,
     "DisplayUnitId": 1060000200,
     "StageNameLanguageId": 130100000090520004,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 22,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520005,
@@ -555,10 +555,10 @@
     "StageNumber": 7,
     "DisplayUnitId": 1007000200,
     "StageNameLanguageId": 130100000090520005,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520006,
@@ -566,10 +566,10 @@
     "StageNumber": 8,
     "DisplayUnitId": 1080003200,
     "StageNameLanguageId": 130100000090520006,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520007,
@@ -577,10 +577,10 @@
     "StageNumber": 10,
     "DisplayUnitId": 1095003400,
     "StageNameLanguageId": 130100000090520007,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520009,
@@ -588,10 +588,10 @@
     "StageNumber": 20,
     "DisplayUnitId": 1300004200,
     "StageNameLanguageId": 130100000090520009,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520012,
@@ -599,10 +599,10 @@
     "StageNumber": 12,
     "DisplayUnitId": 1200005300,
     "StageNameLanguageId": 130100000090520012,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520013,
@@ -610,10 +610,10 @@
     "StageNumber": 19,
     "DisplayUnitId": 1230003800,
     "StageNameLanguageId": 130100000090520013,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520015,
@@ -621,10 +621,10 @@
     "StageNumber": 14,
     "DisplayUnitId": 1430003400,
     "StageNameLanguageId": 130100000090510015,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520016,
@@ -632,10 +632,10 @@
     "StageNumber": 17,
     "DisplayUnitId": 1501002000,
     "StageNameLanguageId": 130100000090520016,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520017,
@@ -643,10 +643,10 @@
     "StageNumber": 3,
     "DisplayUnitId": 1305000700,
     "StageNameLanguageId": 130100000090520017,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520018,
@@ -654,10 +654,10 @@
     "StageNumber": 6,
     "DisplayUnitId": 1114000200,
     "StageNameLanguageId": 130100000090520018,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520019,
@@ -665,10 +665,10 @@
     "StageNumber": 18,
     "DisplayUnitId": 1330000100,
     "StageNameLanguageId": 130100000090520019,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520020,
@@ -676,10 +676,10 @@
     "StageNumber": 9,
     "DisplayUnitId": 1705000400,
     "StageNameLanguageId": 130100000090520020,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520021,
@@ -687,10 +687,10 @@
     "StageNumber": 11,
     "DisplayUnitId": 1330002700,
     "StageNameLanguageId": 130100000090520021,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520022,
@@ -698,10 +698,10 @@
     "StageNumber": 13,
     "DisplayUnitId": 1125001500,
     "StageNameLanguageId": 130100000090520022,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520024,
@@ -709,10 +709,10 @@
     "StageNumber": 15,
     "DisplayUnitId": 1022000700,
     "StageNameLanguageId": 130100000090520024,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520025,
@@ -720,10 +720,10 @@
     "StageNumber": 16,
     "DisplayUnitId": 1150000200,
     "StageNameLanguageId": 130100000090520025,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   },
   {
     "StageId": 90520026,
@@ -731,9 +731,9 @@
     "StageNumber": 21,
     "DisplayUnitId": 1400006400,
     "StageNameLanguageId": 130100000090520026,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 0,
-    "Unknown_Col_7": 0,
-    "Unknown_Col_8": 0
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
   }
 ]

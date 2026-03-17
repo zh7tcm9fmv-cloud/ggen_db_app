@@ -592,6 +592,126 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1013000101,
+    "SortOrder": 1,
+    "CharacterSkillId": 180160301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000101,
+    "SortOrder": 2,
+    "CharacterSkillId": 130080301,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 130080301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000200,
+    "SortOrder": 1,
+    "CharacterSkillId": 120090101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 120090101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000200,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 260040301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000300,
+    "SortOrder": 1,
+    "CharacterSkillId": 270130101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 270130201,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000300,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000900,
+    "SortOrder": 1,
+    "CharacterSkillId": 170010301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 170010301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013000900,
+    "SortOrder": 2,
+    "CharacterSkillId": 120090101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 120090101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001000,
+    "SortOrder": 1,
+    "CharacterSkillId": 180160201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001000,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 220020101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001100,
+    "SortOrder": 1,
+    "CharacterSkillId": 170010401,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001100,
+    "SortOrder": 2,
+    "CharacterSkillId": 190150401,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001100,
+    "SortOrder": 3,
+    "CharacterSkillId": 100060301,
+    "RequiredLevel": 60,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001101,
+    "SortOrder": 1,
+    "CharacterSkillId": 190150201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1013001101,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 260040301,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1017000201,
     "SortOrder": 1,
     "CharacterSkillId": 210100301,
@@ -2952,6 +3072,22 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1150000801,
+    "SortOrder": 1,
+    "CharacterSkillId": 180160301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1150000801,
+    "SortOrder": 2,
+    "CharacterSkillId": 290180101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 290180101,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1150000900,
     "SortOrder": 1,
     "CharacterSkillId": 160050101,
@@ -2965,6 +3101,22 @@
     "CharacterSkillId": 0,
     "RequiredLevel": 30,
     "SpCharacterSkillId": 260040301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1150001100,
+    "SortOrder": 1,
+    "CharacterSkillId": 240110201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 240110201,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1150001100,
+    "SortOrder": 2,
+    "CharacterSkillId": 100060201,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 100060201,
     "ScheduleId": 0
   },
   {
@@ -7837,6 +7989,30 @@
     "CharacterSkillId": 0,
     "RequiredLevel": 30,
     "SpCharacterSkillId": 110070201,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1850003900,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1850003900,
+    "SortOrder": 2,
+    "CharacterSkillId": 170010401,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1850003900,
+    "SortOrder": 3,
+    "CharacterSkillId": 110070301,
+    "RequiredLevel": 60,
+    "SpCharacterSkillId": 0,
     "ScheduleId": 0
   }
 ]

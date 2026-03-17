@@ -15730,6 +15730,76 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 1432603350100101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 300,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100301,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100401,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100501,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100601,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1432603350100701,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3000,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 1442504100100101,
     "RewardTypeIndex": 10,
     "TargetId": 0,
@@ -36640,6 +36710,2206 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 1520001101000201,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000300,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101000401,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000800,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101002001,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000007,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101006101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101006201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101006301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001101012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102001101,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000300,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102001201,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001200,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102002001,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000007,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001102012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103000101,
+    "RewardTypeIndex": 2,
+    "TargetId": 1013000101,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103002001,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000007,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103008701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001103012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104001101,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000300,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104001201,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001200,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104002001,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000007,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104002101,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104007701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104008701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001104012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105001001,
+    "RewardTypeIndex": 1,
+    "TargetId": 200000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 10,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105001401,
+    "RewardTypeIndex": 8,
+    "TargetId": 300196,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105002101,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105007701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105008701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001105012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106001001,
+    "RewardTypeIndex": 1,
+    "TargetId": 200000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 10,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106001501,
+    "RewardTypeIndex": 8,
+    "TargetId": 300197,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106001601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161700000005,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106003001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106005101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106005201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106005301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106007701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106008701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001106012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107000201,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000300,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107000301,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013001200,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107000401,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000800,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107004101,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107004201,
+    "RewardTypeIndex": 1,
+    "TargetId": 120000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107004301,
+    "RewardTypeIndex": 1,
+    "TargetId": 130000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107008701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107009701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 161000000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010201,
+    "RewardTypeIndex": 1,
+    "TargetId": 161100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010301,
+    "RewardTypeIndex": 1,
+    "TargetId": 161200000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010401,
+    "RewardTypeIndex": 1,
+    "TargetId": 161300000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010501,
+    "RewardTypeIndex": 1,
+    "TargetId": 161400000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010601,
+    "RewardTypeIndex": 1,
+    "TargetId": 161500000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107010701,
+    "RewardTypeIndex": 1,
+    "TargetId": 161600000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1520001107012001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 1600000030000101,
     "RewardTypeIndex": 3,
     "TargetId": 1055000160,
@@ -54510,6 +56780,266 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 1626032003000101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 25,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003010101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 300,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020201,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020301,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020401,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020501,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003020601,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003030101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003030201,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003030301,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003040101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003040201,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003040301,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003050101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003050201,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000800,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003050301,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003050401,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060101,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060201,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060301,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060401,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060501,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060601,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003060701,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013001200,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 1626032003070101,
+    "RewardTypeIndex": 30,
+    "TargetId": 10200011000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 1700250110011101,
     "RewardTypeIndex": 3,
     "TargetId": 1055000160,
@@ -63957,6 +66487,546 @@
     "Level": 0,
     "UnitAbilitySetId": 0,
     "Count": 10,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300103000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300103000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300103000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300103000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300203000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300203000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300203000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300203000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300303000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300303000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300303000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300303000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300403000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300403000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300403000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300403000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300502000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300502000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300502000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300502000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300603000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300603000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300603000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300603000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300704000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300704000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300704000003,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000004,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000300,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000005,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013001200,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000006,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000800,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300804000007,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300901000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300901000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300901000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001300901000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301001000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301001000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301001000003,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301001000004,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000003,
+    "RewardTypeIndex": 2,
+    "TargetId": 1013000900,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000004,
+    "RewardTypeIndex": 1,
+    "TargetId": 181013000800,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000005,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001301101000006,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001305001000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001305002000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001305003000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001306001000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001306002000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2001306003000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 200,
     "WeaponEnhancementStep": 0
   },
   {
@@ -93250,6 +96320,26 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 2099000107000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2099000107000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 240000011112,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 2100101501000001,
     "RewardTypeIndex": 3,
     "TargetId": 1001002700,
@@ -95510,6 +98600,46 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 2600002013010100,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 5,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2600002013010200,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 10,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2600002013010300,
+    "RewardTypeIndex": 1,
+    "TargetId": 110000000003,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 10,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 2600002013010400,
+    "RewardTypeIndex": 27,
+    "TargetId": 1013000300,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 2600002017010100,
     "RewardTypeIndex": 1,
     "TargetId": 110000000003,
@@ -96767,6 +99897,506 @@
     "Level": 0,
     "UnitAbilitySetId": 0,
     "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300103010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300103020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300103030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000700,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300103040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300203010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300203020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300203030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001500,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300203040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300303010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300303020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300303030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000700,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300303040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300403010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300403020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300403030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001500,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300403040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300502010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300502020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300502030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000700,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300502040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300603010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300603020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300603030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001500,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300603040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300704010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300704020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300704030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000700,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300704040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300804010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 20,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300804020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300804030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001500,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300804040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300901010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300901020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300901030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001000,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001300901040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301001010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301001020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301001030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001400,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301001040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301101010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301101020001,
+    "RewardTypeIndex": 1,
+    "TargetId": 180000000130,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 2,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301101030001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000600,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001301101040001,
+    "RewardTypeIndex": 5,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001305001010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 12,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001305002010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 30,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001305003010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 50,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001306001010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 24,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001306002010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 60,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3001306003010001,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110002,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 150,
     "WeaponEnhancementStep": 0
   },
   {
@@ -143010,6 +146640,26 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 3620001100000001,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013000300,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 3620001100000002,
+    "RewardTypeIndex": 3,
+    "TargetId": 1013001200,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 3621000100000001,
     "RewardTypeIndex": 21,
     "TargetId": 1210000460,
@@ -148910,6 +152560,116 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 9908260245000101,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 300,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260245000201,
+    "RewardTypeIndex": 2,
+    "TargetId": 1150001100,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260245000301,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260312000301,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260320000101,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 300,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260320000201,
+    "RewardTypeIndex": 2,
+    "TargetId": 1150000801,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260320000301,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1000,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260320000401,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 500,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260320000501,
+    "RewardTypeIndex": 1,
+    "TargetId": 222000110001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3000,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260322000101,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3000,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260323000101,
+    "RewardTypeIndex": 1,
+    "TargetId": 240000021021,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 9909000000000101,
     "RewardTypeIndex": 3,
     "TargetId": 1850000100,
@@ -149521,6 +153281,36 @@
   },
   {
     "Id": 9910260240000101,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9910260320000101,
+    "RewardTypeIndex": 30,
+    "TargetId": 15022603200001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9910260320000102,
+    "RewardTypeIndex": 1,
+    "TargetId": 191300000004,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9910260320000103,
     "RewardTypeIndex": 1,
     "TargetId": 191100000001,
     "LimitBreakStep": 0,

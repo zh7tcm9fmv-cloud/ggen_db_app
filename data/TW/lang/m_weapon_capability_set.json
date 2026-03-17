@@ -5,14 +5,14 @@
   },
   {
     "id": 120200000000000001,
-    "value": "不能在水下使用"
+    "value": "Cannot be used underwater"
   },
   {
     "id": 120300000000000001,
-    "value": "對水下敵人的傷害減半"
+    "value": "Damage to underwater enemies is halved"
   },
   {
     "id": 120300000000000002,
-    "value": "對水下敵人沒有傷害"
+    "value": "Damage to underwater enemies has no effect"
   }
 ]

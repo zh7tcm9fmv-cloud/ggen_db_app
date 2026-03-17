@@ -544,32 +544,88 @@
     "value": "SR Guntank Ground Assault Type Limit Break Material"
   },
   {
+    "id": 150100171013000100,
+    "value": "SR Gundam Ground Type (The 08th MS Team) (Attack) Limit Break Material"
+  },
+  {
     "id": 150100171013000110,
-    "value": "SR Gundam Ground Type (The 08th MS Team) Limit Break Material"
+    "value": "SR Gundam Ground Type (The 08th MS Team) (Support) Limit Break Material"
+  },
+  {
+    "id": 150100171013000200,
+    "value": "SR Gundam Ground Type (GM Head) (Durability) Limit Break Material"
   },
   {
     "id": 150100171013000210,
-    "value": "SR Gundam Ground Type (GM Head) Limit Break Material"
+    "value": "SR Gundam Ground Type (GM Head) (Attack) Limit Break Material"
+  },
+  {
+    "id": 150100171013000300,
+    "value": "SSR Gundam Ez8 Limit Break Material"
   },
   {
     "id": 150100171013000350,
     "value": "UR Gundam Ez8 (EX) Limit Break Material"
   },
   {
+    "id": 150100171013000500,
+    "value": "SR GM Sniper (Attack) Limit Break Material"
+  },
+  {
     "id": 150100171013000510,
-    "value": "SR GM Sniper Limit Break Material"
+    "value": "SR GM Sniper (Support) Limit Break Material"
+  },
+  {
+    "id": 150100171013000600,
+    "value": "R GM Early Type (Support) Limit Break Material"
   },
   {
     "id": 150100171013000610,
-    "value": "R GM Early Type Limit Break Material"
+    "value": "R GM Early Type (Durability) Limit Break Material"
+  },
+  {
+    "id": 150100171013000700,
+    "value": "N Ball Type K Limit Break Material"
   },
   {
     "id": 150100171013000710,
     "value": "R Ball Type K Limit Break Material"
   },
   {
+    "id": 150100171013000800,
+    "value": "SSR Gouf Custom Limit Break Material"
+  },
+  {
+    "id": 150100171013000850,
+    "value": "UR Gouf Custom (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171013000900,
+    "value": "SR Gouf Flight Type Limit Break Material"
+  },
+  {
+    "id": 150100171013001000,
+    "value": "R Zaku II R-D4 Type Limit Break Material"
+  },
+  {
+    "id": 150100171013001100,
+    "value": "SR Apsaras II Limit Break Material"
+  },
+  {
+    "id": 150100171013001200,
+    "value": "SSR Apsaras III Limit Break Material"
+  },
+  {
+    "id": 150100171013001400,
+    "value": "R GM Ground Type (Durability) Limit Break Material"
+  },
+  {
     "id": 150100171013001410,
-    "value": "R GM Ground Type Limit Break Material"
+    "value": "R GM Ground Type (Support) Limit Break Material"
+  },
+  {
+    "id": 150100171013001500,
+    "value": "N Guntank Mass Production Type Limit Break Material"
   },
   {
     "id": 150100171013001510,
@@ -4164,6 +4220,10 @@
     "value": "SSR Haro Limit Break Material"
   },
   {
+    "id": 150100171850001350,
+    "value": "UR Psycho Haro (EX) Limit Break Material"
+  },
+  {
     "id": 150100171850001500,
     "value": "SR Big-Zam Mass Production Type Limit Break Material"
   },
@@ -4206,6 +4266,10 @@
   {
     "id": 150100180000000010,
     "value": "Development Material (Mobile Suit Gundam)"
+  },
+  {
+    "id": 150100180000000130,
+    "value": "Development Material (The 08th MS Team)"
   },
   {
     "id": 150100180000000170,
@@ -4302,6 +4366,18 @@
   {
     "id": 150100181007000200,
     "value": "G-3 Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181013000300,
+    "value": "Gundam Ez8's Technical Journal"
+  },
+  {
+    "id": 150100181013000800,
+    "value": "Gouf Custom's Technical Journal"
+  },
+  {
+    "id": 150100181013001200,
+    "value": "Apsaras III's Technical Journal"
   },
   {
     "id": 150100181017000200,
@@ -4772,6 +4848,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (SEED X ASTRAY)"
   },
   {
+    "id": 150100191100000007,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (The 08th MS Team)"
+  },
+  {
     "id": 150100191100000008,
     "value": "[Limited-Time] Featured Unit Assembly Ticket (AGE)"
   },
@@ -4940,6 +5020,14 @@
     "value": "Unit Assembly Medal"
   },
   {
+    "id": 150100222000110001,
+    "value": "Boss Challenge Ticket"
+  },
+  {
+    "id": 150100222000110002,
+    "value": "Unit Assembly Medal"
+  },
+  {
     "id": 150100222100010001,
     "value": "Map Medal"
   },
@@ -4972,6 +5060,10 @@
     "value": "Mobile Suit Gundam MS IGLOO Series SP Conversion Chips"
   },
   {
+    "id": 150100240000011112,
+    "value": "Zaku-Tag SP Conversion Chips"
+  },
+  {
     "id": 150100240000011125,
     "value": "Tank-Tag SP Conversion Chips"
   },
@@ -4994,6 +5086,10 @@
   {
     "id": 150100240000020090,
     "value": "Mobile Suit Gundam MS IGLOO Series SP Conversion Badge"
+  },
+  {
+    "id": 150100240000021021,
+    "value": "ZAFT-Tag SP Conversion Chips"
   },
   {
     "id": 150100260099000106,
@@ -5556,32 +5652,88 @@
     "value": "An item used to perform Limit Break on SR Guntank Ground Assault Type"
   },
   {
+    "id": 150200171013000100,
+    "value": "An item used to perform Limit Break on SR Gundam Ground Type (The 08th MS Team) (Attack)"
+  },
+  {
     "id": 150200171013000110,
-    "value": "An item used to perform Limit Break on SR Gundam Ground Type (The 08th MS Team)"
+    "value": "An item used to perform Limit Break on SR Gundam Ground Type (The 08th MS Team) (Support)"
+  },
+  {
+    "id": 150200171013000200,
+    "value": "An item used to perform Limit Break on SR Gundam Ground Type (GM Head) (Durability)"
   },
   {
     "id": 150200171013000210,
-    "value": "An item used to perform Limit Break on SR Gundam Ground Type (GM Head)"
+    "value": "An item used to perform Limit Break on SR Gundam Ground Type (GM Head) (Attack)"
+  },
+  {
+    "id": 150200171013000300,
+    "value": "An item used to perform Limit Break on SSR Gundam Ez8"
   },
   {
     "id": 150200171013000350,
     "value": "An item used to perform Limit Break on UR Gundam Ez8 (EX)"
   },
   {
+    "id": 150200171013000500,
+    "value": "An item used to perform Limit Break on SR GM Sniper (Attack)"
+  },
+  {
     "id": 150200171013000510,
-    "value": "An item used to perform Limit Break on SR GM Sniper"
+    "value": "An item used to perform Limit Break on SR GM Sniper (Support)"
+  },
+  {
+    "id": 150200171013000600,
+    "value": "An item used to perform Limit Break on R GM Early Type (Support)"
   },
   {
     "id": 150200171013000610,
-    "value": "An item used to perform Limit Break on R GM Early Type"
+    "value": "An item used to perform Limit Break on R GM Early Type (Durability)"
+  },
+  {
+    "id": 150200171013000700,
+    "value": "An item used to perform Limit Break on N Ball Type K"
   },
   {
     "id": 150200171013000710,
     "value": "An item used to perform Limit Break on R Ball Type K"
   },
   {
+    "id": 150200171013000800,
+    "value": "An item used to perform Limit Break on SSR Gouf Custom"
+  },
+  {
+    "id": 150200171013000850,
+    "value": "An item used to perform Limit Break on UR Gouf Custom (EX)"
+  },
+  {
+    "id": 150200171013000900,
+    "value": "An item used to perform Limit Break on SR Gouf Flight Type"
+  },
+  {
+    "id": 150200171013001000,
+    "value": "An item used to perform Limit Break on R Zaku II R-D4 Type"
+  },
+  {
+    "id": 150200171013001100,
+    "value": "An item used to perform Limit Break on SR Apsaras II"
+  },
+  {
+    "id": 150200171013001200,
+    "value": "An item used to perform Limit Break on SSR Apsaras III"
+  },
+  {
+    "id": 150200171013001400,
+    "value": "An item used to perform Limit Break on R GM Ground Type (Durability)"
+  },
+  {
     "id": 150200171013001410,
-    "value": "An item used to perform Limit Break on R GM Ground Type"
+    "value": "An item used to perform Limit Break on R GM Ground Type (Support)"
+  },
+  {
+    "id": 150200171013001500,
+    "value": "An item used to perform Limit Break on N Guntank Mass Production Type"
   },
   {
     "id": 150200171013001510,
@@ -9176,6 +9328,10 @@
     "value": "An item used to perform Limit Break on SSR Haro"
   },
   {
+    "id": 150200171850001350,
+    "value": "An item used to perform Limit Break on UR Psycho Haro (EX)"
+  },
+  {
     "id": 150200171850001500,
     "value": "An item used to perform Limit Break on SR Big-Zam Mass Production Type"
   },
@@ -9218,6 +9374,10 @@
   {
     "id": 150200180000000010,
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam] diagram."
+  },
+  {
+    "id": 150200180000000130,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam: The 08th MS Team] diagram."
   },
   {
     "id": 150200180000000170,
@@ -9314,6 +9474,18 @@
   {
     "id": 150200181007000200,
     "value": "Material required to develop G-3 Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181013000300,
+    "value": "Material required to develop Gundam Ez8 appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181013000800,
+    "value": "Material required to develop Gouf Custom appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181013001200,
+    "value": "Material required to develop Apsaras III appearing in the Development Diagram."
   },
   {
     "id": 150200181017000200,
@@ -9784,6 +9956,10 @@
     "value": "A ticket that lets you use the Featured Unit Assembly (SEED X ASTRAY)."
   },
   {
+    "id": 150200191100000007,
+    "value": "A ticket that lets you use the Featured Unit Assembly (The 08th MS Team)."
+  },
+  {
     "id": 150200191100000008,
     "value": "A ticket that lets you use the Featured Unit Assembly (AGE)."
   },
@@ -9952,6 +10128,14 @@
     "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam SEED X Astray\".\nCan be used in the Medal Unit Assembly."
   },
   {
+    "id": 150200222000110001,
+    "value": "A ticket needed to challenge the boss in story event \"Mobile Suit Gundam: The 08th MS Team\"."
+  },
+  {
+    "id": 150200222000110002,
+    "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam: The 08th MS Team\".\nCan be used in the Medal Unit Assembly."
+  },
+  {
     "id": 150200222100010001,
     "value": "Medal that can be acquired in map events.\nCan be used in the Exchange."
   },
@@ -9984,6 +10168,10 @@
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000011112,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000011125,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -10006,6 +10194,10 @@
   {
     "id": 150200240000020090,
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000021021,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200260099000106,

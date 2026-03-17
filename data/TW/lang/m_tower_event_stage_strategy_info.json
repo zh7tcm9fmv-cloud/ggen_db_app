@@ -5,886 +5,886 @@
   },
   {
     "id": 290200907001010201,
-    "value": "姆賽 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "Musai  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907001020201,
-    "value": "智慧女神號 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
+    "value": "Minerva  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
   },
   {
     "id": 290200907001030201,
-    "value": "維吉尼亞級 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "Virginia  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
   },
   {
     "id": 290200907001040101,
-    "value": "亞贊·蓋伯、丹尼搭乘的單位<material=MaterialName>攻擊力受中立單位的範圍效果影響而提升。</material>"
+    "value": "Yazan Gable and units piloted by Danny have their <material=MaterialName>ATK increased by neutral units' area effects</material>."
   },
   {
     "id": 290200907001040201,
-    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001050201,
-    "value": "昆曼沙 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "Quin Mantha  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
   },
   {
     "id": 290200907001050202,
-    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001060101,
-    "value": "騎兵型搜魔鋼彈、燕式格雷茲 (麥吉利斯機)為<material=MaterialName>會優先攻擊客座軍</material>的單位。"
+    "value": "Gundam Kimaris Trooper and Schwalbe Graze (McGillis) <material=MaterialName>prioritize attacking the guest force</material>."
   },
   {
     "id": 290200907001060201,
-    "value": "漁火 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "Isaribi  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907001060202,
-    "value": "雙髻鯊 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "Hammerhead  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
   },
   {
     "id": 290200907001060203,
-    "value": "格雷茲·艾因為<material=MaterialName>提升騎兵型搜魔鋼彈攻擊力 </material>的單位。"
+    "value": "Graze Ein <material=MaterialName>increases ATK  of Gundam Kimaris Trooper</material>."
   },
   {
     "id": 290200907001060204,
-    "value": "騎士式格雷茲 (指揮官機／決鬥規格)為<material=MaterialName>提升燕式格雷茲 (麥吉利斯機)攻擊力 </material>的單位。"
+    "value": "Graze Ritter (Instructor/Duel Type) <material=MaterialName>increases ATK  of Schwalbe Graze (McGillis)</material>."
   },
   {
     "id": 290200907001070101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗強尼·萊汀、德茲爾·薩比</material>。"
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Johnny Ridden and Dozle Zabi</material>."
   },
   {
     "id": 290200907001070201,
-    "value": "薩克Ⅱ（真·松永專用）、傑爾古格 (阿納貝爾·卡多專用)為<material=MaterialName>可支援攻擊／支援反擊</material>的單位。\n\n面對會支援攻擊的單位，從其射程外攻擊就不會觸發支援攻擊。"
+    "value": "Shin Matsunaga's Zaku II and Anavel Gato's Gelgoog are <material=MaterialName>Support Attack / Counter Support</material> units.\n\nSupport Attacks won't trigger if you attack from outside the supporting unit's range."
   },
   {
     "id": 290200907001070202,
-    "value": "薩克Ⅱ改為<material=MaterialName>提升高機動型薩克Ⅱ（強尼·萊汀專用）、薩克Ⅱ (德茲爾·薩比專用機)防禦力</material>的單位，每回合會作為援軍大量出現。"
+    "value": "Zaku II FZ appears every turn as reinforcements in large numbers, and <material=MaterialName>increases DEF of Johnny Ridden's Zaku II High Mobility Type and Dozle Zabi's Zaku II</material>."
   },
   {
     "id": 290200907001070203,
-    "value": "百式 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
+    "value": "Hyaku Shiki  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
   },
   {
     "id": 290200907001080201,
-    "value": "此關卡的勝利條件為<material=MaterialName>白色基地 抵達目標區域</material>。"
+    "value": "The victory condition for this stage is for <material=MaterialName>White Base  to reach the target area</material>."
   },
   {
     "id": 290200907001080202,
-    "value": "薩拉米斯 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
+    "value": "Salamis  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
   },
   {
     "id": 290200907001080203,
-    "value": "古夫烈焰型 (海涅·威斯坦弗斯專用)、古夫烈焰型、薩克Ⅰ (雷霆宙域版)、魚乾號為<material=MaterialName>會優先攻擊白色基地</material>的單位。"
+    "value": "GOUF Ignited (Heine Westenfluss), GOUF Ignited, Zaku I (Thunderbolt), and Dried Fish <material=MaterialName>prioritize attacking White Base</material>."
   },
   {
     "id": 290200907001080204,
-    "value": "里克·德姆、杜班烏爾夫、傑爾古格M為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
+    "value": "Rick Dom, Doven Wolf, and Gelgoog Marine appear in large numbers, and <material=MaterialName>prioritize attacking Salamis</material>."
   },
   {
     "id": 290200907001080205,
-    "value": "吉昂、茲達、薩姆札查、傑爾茲克會作為援軍出現，為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
+    "value": "Gyan, Zudah, Zamza-Zah and Gells-Ghe appear as reinforcements in large numbers, and <material=MaterialName>prioritize attacking Salamis</material>."
   },
   {
     "id": 290200907001090101,
-    "value": "風靈鋼彈 (修改型)、迪米教練機 雀丘專用機為<material=MaterialName>高攻擊力 </material>的單位。"
+    "value": "Gundam Aerial Rebuild and Chuchu's Demi Trainer have <material=MaterialName>high ATK </material>."
   },
   {
     "id": 290200907001090201,
-    "value": "惡魔審判者、達里巴爾迪、異端審判者會作為援軍出現，將<material=MaterialName>阻礙單位進入中立單位範圍效果的範圍內</material>。"
+    "value": "Michaelis, Darilbalde, and Beguir-Beu appear as reinforcements, and <material=MaterialName>obstruct entry into neutral units' area effects</material>."
   },
   {
     "id": 290200907001090202,
-    "value": "二式守衛砲 為<material=MaterialName>擁有弱化效果區域「攻擊力減少」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Debuff Area: Decreased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001090203,
-    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001100101,
-    "value": "此關卡的勝利條件為<material=MaterialName>3回合內，守護客座軍</material>。\n\n飛翼鋼彈 為會優先攻擊<material=MaterialName>高攻擊力 </material>客座軍的單位。"
+    "value": "The victory condition for this stage is to <material=MaterialName>protect the guest force for 3 turns</material>.\n\nWing Gundam  has <material=MaterialName>high ATK </material>, and prioritizes attacking the guest force."
   },
   {
     "id": 290200907001100201,
-    "value": "里歐、特拉哥斯是<material=MaterialName>列為防衛目標</material>、無法移動的客座軍單位。"
+    "value": "Leo and Tragos are stationary guest force units that serve as <material=MaterialName>defense targets</material>."
   },
   {
     "id": 290200907001100202,
-    "value": "米迪亞 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的友軍單位。"
+    "value": "Medea  is a Friendly Forces unit <material=MaterialName>with the HP Restoration Area area effect</material>."
   },
   {
     "id": 290200907001100203,
-    "value": "重武裝鋼彈、豹式鋼彈為<material=MaterialName>持有「戰鬥開始之後的第3回合開始後， 自身攻擊力及防禦力提升200%」能力</material>的單位。"
+    "value": "Gundam Heavyarms and Gundam Leopard <material=MaterialName>have an ability with the From turn 3 upon the start of battle, Increase own ATK and DEF by 200% effect</material>."
   },
   {
     "id": 290200907001110101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌·大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
+    "value": "The victory condition for this stage is to <material=MaterialName>Kira Yamato and enemy units destroyed</material>.\n\nFreedom Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
   },
   {
     "id": 290200907001110102,
-    "value": "正義鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
+    "value": "Justice Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
   },
   {
     "id": 290200907001110103,
-    "value": "自由鋼彈 (流星裝備)、正義鋼彈 (流星裝備)為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身攻擊力提升300%」能力</material>的單位。"
+    "value": "Freedom Gundam METEOR and Justice Gundam METEOR <material=MaterialName>have an ability with the When Vigor is Supercharged or higher, Increase ATK by 300%. effect</material>."
   },
   {
     "id": 290200907001110201,
-    "value": "天帝鋼彈 為<material=MaterialName>持有「自身進行支援攻擊、支援反擊時，自身攻擊力提升100%」能力</material>的客座軍單位。"
+    "value": "Providence Gundam is a guest force unit  <material=MaterialName>has an ability with the Increase own ATK by 100% when executing Support Attack/Counter. effect</material>."
   },
   {
     "id": 290200907001110202,
-    "value": "拉克絲·克萊因 為<material=MaterialName>會使用「MP提升（範圍） LV3」角色技能</material>的角色。"
+    "value": "Lacus Clyne  <material=MaterialName>uses the MP Up (Range) LV 3 character skill</material>."
   },
   {
     "id": 290200907001110203,
-    "value": "嫣紅攻擊鋼彈 為<material=MaterialName>高HP、高防禦力</material>的單位。"
+    "value": "Strike Rouge  has <material=MaterialName>high HP and DEF</material>."
   },
   {
     "id": 290200907001110204,
-    "value": "Ｍ1異端鋼彈為<material=MaterialName>提升嫣紅攻擊鋼彈攻擊力 </material>的單位。"
+    "value": "M1 Astray <material=MaterialName>increases ATK  of Strike Rouge</material>."
   },
   {
     "id": 290200907001110205,
-    "value": "守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001120101,
-    "value": "破滅鋼彈【MA型態】、深淵鋼彈、混沌鋼彈為<material=MaterialName>具有強力光束屬性武裝的</material>單位。"
+    "value": "Destroy Gundam [MA], Abyss Gundam, and Chaos Gundam are <material=MaterialName>equipped with powerful Beam weaponry</material>."
   },
   {
     "id": 290200907001120201,
-    "value": "亞修、薩姆札查、索克、茲卡克、佐諾為<material=MaterialName>水中適性為「圓」的</material>單位。\n\n部分光束屬性武裝在攻擊水中的敵方時，損傷將被減輕。"
+    "value": "ASH, Zamza-Zah, Zock, Z'Gok, and ZnO have <material=MaterialName>a \"circle\" terrain capability for Underwater</material>.\n\nCertain beam weapons may deal less damage to underwater enemies."
   },
   {
     "id": 290200907001120202,
-    "value": "亞格利沙、腦波傳導型鋼彈【MA型態】會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "Agrissa and Psycho Gundam [MA] are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
   },
   {
     "id": 290200907001130101,
-    "value": "夏亞專用傑爾古格、艾爾美斯會在達成作戰目標後作為援軍出現，為<material=MaterialName>能力值非常高</material>的單位。"
+    "value": "Char's Gelgoog and Elmeth appear as reinforcements after mission objectives are met, and has <material=MaterialName>very high stats</material>."
   },
   {
     "id": 290200907001130201,
-    "value": "吉姆狙擊特裝型為<material=MaterialName>會使用持有「攻擊力減少」效果武裝</material>的單位。"
+    "value": "GM Sniper Custom is a <material=MaterialName>equipped with weaponry that has the Decreased ATK effect</material>."
   },
   {
     "id": 290200907001130202,
-    "value": "吉姆狙擊型Ⅱ為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
+    "value": "GM Sniper II is a <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
   },
   {
     "id": 290200907001130203,
-    "value": "二式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001130204,
-    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001140101,
-    "value": "此關卡的敗北條件為<material=MaterialName>敵軍單位抵達目標區域</material>。\n\n宗師鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
+    "value": "The defeat condition for this stage is for <material=MaterialName>the enemy to reach the target area</material>.\n\nMaster Gundam  has <material=MaterialName>high ATK </material>."
   },
   {
     "id": 290200907001140102,
-    "value": "惡魔鋼彈 (第2型態) 為<material=MaterialName>擁有廣範圍MAP兵器的單位</material>。"
+    "value": "Dark Gundam (Second Form)  is <material=MaterialName>equipped with a wide-range MAP weapon</material>."
   },
   {
     "id": 290200907001140201,
-    "value": "閃光鋼彈 為<material=MaterialName>持有「「額外行動」+4次」能力</material>的客座軍單位。"
+    "value": "Shining Gundam is a guest force unit  <material=MaterialName>has an ability with the Chance Step +4 time(s) effect</material>."
   },
   {
     "id": 290200907001140202,
-    "value": "明鏡鋼彈 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
+    "value": "Shadow Gundam  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
   },
   {
     "id": 290200907001140203,
-    "value": "死亡軍團 為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
+    "value": "Dark Army  <material=MaterialName>focuses on reaching the target area</material>."
   },
   {
     "id": 290200907001140204,
-    "value": "死亡野獸 會在第2回合作為援軍出現，為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
+    "value": "Dark Beast  appears as reinforcements on turn 2, and <material=MaterialName>focuses on reaching the target area</material>."
   },
   {
     "id": 290200907001140205,
-    "value": "死亡伯迪 會在第3回合作為援軍出現，為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
+    "value": "Dark Birdy  appears as reinforcements on turn 3, and <material=MaterialName>focuses on reaching the target area</material>."
   },
   {
     "id": 290200907001150201,
-    "value": "飛翼鋼彈零式、ν鋼彈、命運鋼彈會作為援軍出現，為<material=MaterialName>持有強大能力</material>的單位。"
+    "value": "Wing Gundam Zero, Nu Gundam, and Destiny Gundam appear as reinforcements, and they <material=MaterialName>have powerful abilities</material>."
   },
   {
     "id": 290200907001150202,
-    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\nα·阿基爾為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
+    "value": "The victory condition for this stage is for <material=MaterialName>your forces to reach the target area</material>.\n\nAlpha Azieru is a <material=MaterialName>prevent your units from reaching the target area</material>."
   },
   {
     "id": 290200907001150203,
-    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "Big Zam  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
   },
   {
     "id": 290200907001150204,
-    "value": "守衛砲 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>HP Restoration Area area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001150205,
-    "value": "守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001160101,
-    "value": "鋼彈XDivider、次代鋼彈為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
+    "value": "Gundam X Divider and Gundam Epyon has <material=MaterialName>high ATK and DEF</material>."
   },
   {
     "id": 290200907001160201,
-    "value": "三式守衛砲為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001160202,
-    "value": "二式守衛砲為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001170101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克·吉爾達〕</material>。\n\n馬克·吉爾達為<material=MaterialName>持有「自身HP為0%以下時，\n自身HP恢復100%」能力</material>的角色。"
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Mark Guilder</material>.\n\nMark Guilder  <material=MaterialName>has an ability with the When HP is 0% or below,\nrestore Hp by 100%. effect</material>."
   },
   {
     "id": 290200907001170201,
-    "value": "哈囉會<material=MaterialName>妨礙我軍單位移動</material>。"
+    "value": "Haro <material=MaterialName>prevents your units from moving</material>."
   },
   {
     "id": 290200907001170202,
-    "value": "三式守衛砲為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907001170203,
-    "value": "NT試驗用吉姆欺敵型為<material=MaterialName>持有「無條件額外行動」能力</material>的單位。"
+    "value": "Prototype Newtype-Use GM Juggler  <material=MaterialName>has an ability with the Guaranteed Bonus Action effect</material>."
   },
   {
     "id": 290200907001180101,
-    "value": "腦波傳導型鋼彈【MA型態】、腦波傳導型鋼彈Mk-Ⅱ【MA型態】為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
+    "value": "Psycho Gundam [MA] and Psycho Gundam Mk-II [MA] has <material=MaterialName>high ATK and DEF</material>."
   },
   {
     "id": 290200907001180201,
-    "value": "此關卡的敗北條件為<material=MaterialName>〔布萊特·諾亞〕被擊敗</material>。\n拉·凱拉姆(U.C.0096)為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "The defeat condition for this stage is for <material=MaterialName>Bright Noa to be defeated</material>.\n\nRa Cailum (U.C. 0096)  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
   },
   {
     "id": 290200907001180202,
-    "value": "Re-GZ (B.W.S)為<material=MaterialName>擁有強大武裝效果</material>的客座軍單位。"
+    "value": "Re-GZ (Back Weapon System) is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
   },
   {
     "id": 290200907001180203,
-    "value": "獵犬【MA型態】為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
+    "value": "Baund Doc [MA] is a <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
   },
   {
     "id": 290200907001180204,
-    "value": "漢摩拉比【MA型態】、亞席瑪【MA型態】、蓋布蘭【MA型態】、安克夏【MA型態】、獵犬【MA型態】為<material=MaterialName>會優先攻擊布萊特·諾亞</material>的單位。"
+    "value": "Hambrabi [MA], Asshimar [MA], Gaplant [MA], Anksha [MA], and Baund Doc [MA] are units <material=MaterialName>prioritizing attacking Bright Noa</material>."
   },
   {
     "id": 290200907001190101,
-    "value": "風靈鋼彈 (修改型) 為<material=MaterialName>持有「額外行動+2次」能力</material>的高能力值單位。"
+    "value": "Gundam Aerial Rebuild is a unit with high stats that possesses <material=MaterialName> which has an ability with the Chance Step +2 time(s) effect </material>."
   },
   {
     "id": 290200907001190201,
-    "value": "米奧琳涅·連布蘭為<material=MaterialName>會使用「攻擊爆裂（範圍）」角色技能</material>的角色。"
+    "value": "Miorine Rembran  <material=MaterialName>uses the Attack Burst (Range)  character skill</material>."
   },
   {
     "id": 290200907001190202,
-    "value": "惡魔審判者為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
+    "value": "Michaelis  <material=MaterialName>has an ability with the Increases all enemies' parameters effect</material>."
   },
   {
     "id": 290200907001190203,
-    "value": "達里巴爾迪為<material=MaterialName>擁有強大武裝效果</material>的客座軍單位。"
+    "value": "Darilbalde is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
   },
   {
     "id": 290200907001200101,
-    "value": "葛拉漢專用聯合旗幟式特裝型Ⅱ (GN旗幟式)、座天使鋼彈二型為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
+    "value": "Graham's Union Flag Custom II \"GN Flag\" and Gundam Throne Zwei has <material=MaterialName>high ATK and DEF</material>."
   },
   {
     "id": 290200907001200201,
-    "value": "中性鋼彈為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
+    "value": "Gundam Nadleeh  <material=MaterialName>has an ability with the Increases all enemies' parameters effect</material>."
   },
   {
     "id": 290200907001200202,
-    "value": "阿爾瓦特雷為<material=MaterialName>擁有強力MAP兵器</material>的單位。"
+    "value": "Alvatore is <material=MaterialName> equipped with a powerful MAP weapon </material>."
   },
   {
     "id": 290200907002010201,
-    "value": "拉·凱拉姆 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "Ra Cailum  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907002020201,
-    "value": "大天使號 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
+    "value": "Archangel  is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
   },
   {
     "id": 290200907002030201,
-    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907002040201,
-    "value": "惡魔鋼彈 (第2型態) 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "Dark Gundam (Second Form)  is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
   },
   {
     "id": 290200907002040202,
-    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907002050201,
-    "value": "傑鋼(ECOAS規格)、吉姆特裝型為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果，並持有強力武裝效果</material>的客座軍單位。"
+    "value": "Jegan (ECOAS Type) and GM Custom are guest force units that have <material=MaterialName>Attack Enhancement Area: Increased ATK area effects and powerful weapon effects</material>."
   },
   {
     "id": 290200907002060201,
-    "value": "永恆號 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "Eternal  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907002060202,
-    "value": "大天使號 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "Archangel  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
   },
   {
     "id": 290200907002060203,
-    "value": "塔莉亞·庫拉提絲 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "Talia Gladys  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
   },
   {
     "id": 290200907002070201,
-    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
+    "value": "Big Zam  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
   },
   {
     "id": 290200907002070202,
-    "value": "哈曼·坎恩 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "Haman Karn  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
   },
   {
     "id": 290200907002070203,
-    "value": "克雷米·托特 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "Glemy Toto  <material=MaterialName>has an ability with the DEF of specified units is increased by 300%. effect</material>."
   },
   {
     "id": 290200907002070204,
-    "value": "薩克Ⅲ、量產型丘貝雷 (克雷米軍規格)為會在<material=MaterialName>第2回合開始時作為援軍出現</material>的單位。"
+    "value": "Zaku III and Qubeley Mass Production Type (Glemy) are units that <material=MaterialName>appear as reinforcements at the beginning of turn 2</material>."
   },
   {
     "id": 290200907002080201,
-    "value": "多洛斯、姆賽為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "Dolos and Musai are guest force units with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907002080202,
-    "value": "此關卡的敗北條件為<material=MaterialName>敵軍單位抵達目標區域</material>。\n\n含鋼彈試作3號機在內的複數單位會在第2回合作為援軍出現，<material=MaterialName>並以抵達目標區域為優先行動。</material>"
+    "value": "The defeat condition for this stage is for <material=MaterialName>the enemy to reach the target area</material>.\n\nMultiple units, including the Gundam GP03, will appear as reinforcements on turn 2 and <material=MaterialName>prioritize reaching the target area</material>."
   },
   {
     "id": 290200907002090101,
-    "value": "殘命鋼彈 為會優先攻擊<material=MaterialName>高HP </material>客座軍的單位。"
+    "value": "Gundam Vidar  has <material=MaterialName>high HP </material>, and prioritizes attacking the guest force."
   },
   {
     "id": 290200907002090201,
-    "value": "此關卡的敗北條件為<material=MaterialName>〔主魔鋼彈〕被擊敗</material>。\n\n主魔鋼彈 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "The defeat condition for this stage is for <material=MaterialName>Gundam Bael to be defeated</material>.\n\nGundam Bael  is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
   },
   {
     "id": 290200907002090202,
-    "value": "含威達 (尼歐·羅安那克專用機)在內的複數單位<material=MaterialName>會在第2回合作為援軍出現。</material>"
+    "value": "Multiple units, including the Windam (Neo Roanoke), will <material=MaterialName>appear as reinforcements on turn 2</material>."
   },
   {
     "id": 290200907002090203,
-    "value": "含夏亞專用薩克Ⅱ在內的複數單位<material=MaterialName>會在第3回合作為援軍出現。</material>"
+    "value": "Multiple units, including the Char's Zaku II, will <material=MaterialName>appear as reinforcements on turn 3</material>."
   },
   {
     "id": 290200907002090204,
-    "value": "二式守衛砲 為<material=MaterialName>擁有弱化效果區域「攻擊力減少」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Zweite Guarder  is a neutral unit with the <material=MaterialName>Debuff Area: Decreased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907002090205,
-    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
+    "value": "Dritte Guarder  is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
   },
   {
     "id": 290200907002100101,
-    "value": "獨角獸鋼彈 (毀滅模式 / 覺醒)、報喪女妖·命運女神 (毀滅模式)為<material=MaterialName>會優先攻擊新吉翁克</material>的單位。"
+    "value": "Unicorn Gundam (Destroy Mode / Awakened) and Banshee Norn (Destroy Mode) are units that <material=MaterialName>prioritize targeting Neo Zeong</material>."
   },
   {
     "id": 290200907002100201,
-    "value": "此關卡的敗北條件為<material=MaterialName>〔新吉翁克〕被擊敗</material>。\n\n新吉翁克為<material=MaterialName>擁有強力MAP兵器</material>的友軍單位。"
+    "value": "The defeat condition for this stage is for <material=MaterialName>Neo Zeong to be defeated</material>.\n\nNeo Zeong is a friendly force unit that has a <material=MaterialName>powerful MAP Weapon</material>."
   },
   {
     "id": 290200907002100202,
-    "value": "雷烏路拉 (帶袖的) 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "Rewloola (Sleeves)  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
   },
   {
     "id": 290200907002100203,
-    "value": "擬·阿卡馬 (隆德·貝爾)為<material=MaterialName>提升敵方全體攻擊力</material>的單位。"
+    "value": "Nahel Argama (Londo Bell) is a unit that <material=MaterialName>increases the ATK of all enemy units</material>."
   },
   {
     "id": 290200907002110101,
-    "value": "夏亞專用茲卡克 為<material=MaterialName>高HP、高攻擊力</material>的單位。"
+    "value": "Char's Z'Gok  has <material=MaterialName>high HP and ATK</material>."
   },
   {
     "id": 290200907002110201,
-    "value": "人魚鋼彈為<material=MaterialName>持有強力武裝效果及「無條件額外行動」能力，並具有高機動力</material>的單位。"
+    "value": "Mermaid Gundam is a unit that has <material=MaterialName>powerful weapon effects, abilities with the Guaranteed Bonus Action effect, and high MOB</material>."
   },
   {
     "id": 290200907002110202,
-    "value": "尚布羅 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
+    "value": "Shamblo  is a third-force unit that appears in large numbers, and is <material=MaterialName>equipped with wide-range MAP weapons</material>."
   },
   {
     "id": 290200907002110203,
-    "value": "卡普爾為<material=MaterialName>持有長射程武裝，並具有高移動力</material>的單位。"
+    "value": "Capule is a unit that has <material=MaterialName>long-range weaponry and high MOV</material>."
   },
   {
     "id": 290200907002120101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nXi Gundam  has <material=MaterialName>high ATK </material>."
   },
   {
     "id": 290200907002120102,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\n潘娜洛普 為<material=MaterialName>持有「反擊時支援防禦」能力</material>的單位。"
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nPenelope  <material=MaterialName>has an ability with the Support Defense (Counter) effect</material>."
   },
   {
     "id": 290200907002120201,
-    "value": "蔽魔鋼彈 (流星號)、格雷茲 (破滅魔劍隊規格/阿麗安蘿德艦隊所屬機)為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
+    "value": "Gundam Flauros \"Ryusei-Go\" and Graze (Dainsleif Team, Arianrhod Fleet) are <material=MaterialName>equipped with weaponry that has the Decreased DEF effect</material>."
   },
   {
     "id": 290200907002130101,
-    "value": "大天王鋼彈 為<material=MaterialName>持有「無條件額外行動」能力</material>的高能力值單位。"
+    "value": "Grand Master Gundam is a unit with high stats that possesses <material=MaterialName> which has an ability with the Guaranteed Bonus Action effect </material>."
   },
   {
     "id": 290200907002130201,
-    "value": "九龍鋼彈為<material=MaterialName>持有「無條件額外行動」能力及強力武裝效果</material>的客座軍單位。"
+    "value": "Haow Gundam is a guest force unit that has the ability with the <material=MaterialName>Guaranteed Bonus Action effect and powerful weapon effects</material>."
   },
   {
     "id": 290200907002130202,
-    "value": "約翰牛鋼彈 為<material=MaterialName>擁有強力MAP兵器及「自身進行支援攻擊、支援反擊時，自身攻擊力提升80%」能力</material>的單位。"
+    "value": "Royal Gundam is <material=MaterialName>equipped with a powerful MAP Weapon and has an ability with the Increase own ATK by 80% when executing Support Attack/Counter. effect</material>."
   },
   {
     "id": 290200907002140101,
-    "value": "鋼彈DX、鋼彈XDivider、爆裂空中霸王鋼彈、豹式毀滅者鋼彈為<material=MaterialName>能力值非常高</material>的單位。"
+    "value": "Gundam Double X, Gundam X Divider, Gundam Airmaster Burst, and Gundam Leopard Destroy are units that have <material=MaterialName>extremely high stats</material>."
   },
   {
     "id": 290200907002140201,
-    "value": "蒂法·安迪爾 為<material=MaterialName>會使用「威力抵禦（範圍）」角色技能</material>的角色。"
+    "value": "Tiffa Adill  <material=MaterialName>uses the Force Guard (Range) character skill</material>."
   },
   {
     "id": 290200907002140202,
-    "value": "華沙哥鋼彈破壞者 為<material=MaterialName>持有「每次造成損傷時，攻擊力提升」能力</material>的客座軍單位。"
+    "value": "Gundam Virsago Chest Break is a guest force unit  <material=MaterialName>has an ability with the ATK is increased every time damage is dealt. effect</material>."
   },
   {
     "id": 290200907002140203,
-    "value": "阿斯特龍鋼彈隱藏者 為<material=MaterialName>持有「每次受到損傷時，防禦力提升」能力</material>的客座軍單位。"
+    "value": "Gundam Ashtaron Hermit Crab is a guest force unit  <material=MaterialName>has an ability with the DEF is increased every time damage is taken. effect</material>."
   },
   {
     "id": 290200907002150101,
-    "value": "神威鋼彈會在擊破閃光鋼彈 (超級模式)之後出現，為<material=MaterialName>能力值非常高並持有「敵方從距離自身2格以上的地方攻擊時，自身受到的損傷減輕50%」能力</material>的單位。"
+    "value": "Burning Gundam is a unit that appears after Shining Gundam (Super Mode) has been destroyed, possessing <material=MaterialName>extremely high stats and When the enemy attacks from 2 spaces or more,reduce damage taken by 50%. abilities</material>."
   },
   {
     "id": 290200907002150201,
-    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\n曉 (不知火)、嫣紅攻擊鋼彈 (鳳型)為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
+    "value": "The victory condition for this stage is for <material=MaterialName>your forces to reach the target area</material>.\n\nShiranui Akatsuki and Strike Rouge (Ootori) <material=MaterialName>prevent your units from reaching the target area</material>."
   },
   {
     "id": 290200907002150202,
-    "value": "蒼藍命運3號機【EXAM】會作為援軍出現，為<material=MaterialName>持有強大能力</material>的單位。"
+    "value": "Blue Destiny Unit-3 [EXAM] is a unit that appears as a reinforcement and has <material=MaterialName>powerful abilities</material>."
   },
   {
     "id": 290200907002150203,
-    "value": "腦波傳導型鋼彈、腦波傳導型鋼彈Mk-Ⅱ會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "Psycho Gundam and Psycho Gundam Mk-II are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
   },
   {
     "id": 290300907001010201,
-    "value": "在姆賽附近發動攻擊。"
+    "value": "Launch your attack from near Musai."
   },
   {
     "id": 290300907001020201,
-    "value": "受到損傷、HP下降時，就到智慧女神號附近待機。"
+    "value": "Position yourself near Minerva if your HP drops from incoming damage."
   },
   {
     "id": 290300907001030201,
-    "value": "將承受攻擊的單位配置在維吉尼亞級附近。"
+    "value": "Units which will be attacked should be placed near Virginia."
   },
   {
     "id": 290300907001040101,
-    "value": "將敵方引誘到中立單位的效果範圍外，再行迎擊。"
+    "value": "Intercept the enemy by luring them outside of the neutral units' effect range."
   },
   {
     "id": 290300907001040201,
-    "value": "注意二式守衛砲附近的敵軍單位的攻擊。"
+    "value": "Watch out for attacks from enemy units positioned near Zweite Guarder."
   },
   {
     "id": 290300907001050201,
-    "value": "利用昆曼沙的MAP兵器，連帶對敵軍造成損傷。"
+    "value": "Utilize Quin Mantha's MAP weapon to inflict damage on the enemy."
   },
   {
     "id": 290300907001050202,
-    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
   },
   {
     "id": 290300907001060101,
-    "value": "從騎兵型搜魔鋼彈、燕式格雷茲 (麥吉利斯機)的砲火下保護客座軍。"
+    "value": "Protect the guest force from attacks by Gundam Kimaris Trooper and Schwalbe Graze (McGillis)."
   },
   {
     "id": 290300907001060201,
-    "value": "在漁火附近發動攻擊。"
+    "value": "Launch your attack from near Isaribi."
   },
   {
     "id": 290300907001060202,
-    "value": "將承受攻擊的單位配置在雙髻鯊附近。"
+    "value": "Units which will be attacked should be placed near Hammerhead."
   },
   {
     "id": 290300907001060203,
-    "value": "優先擊破格雷茲·艾因。"
+    "value": "Prioritize destroying Graze Ein."
   },
   {
     "id": 290300907001060204,
-    "value": "優先擊破騎士式格雷茲 (指揮官機／決鬥規格)。"
+    "value": "Prioritize destroying Graze Ritter (Instructor/Duel Type)."
   },
   {
     "id": 290300907001070201,
-    "value": "從此單位的射程外發動攻擊。"
+    "value": "Try attacking from outside of this unit's range."
   },
   {
     "id": 290300907001070202,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001070203,
-    "value": "利用百式的MAP兵器，連帶對敵軍造成損傷。"
+    "value": "Utilize Hyaku Shiki's MAP weapon to inflict damage on the enemy."
   },
   {
     "id": 290300907001080201,
-    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
   },
   {
     "id": 290300907001080202,
-    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
   },
   {
     "id": 290300907001080203,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001080204,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001080205,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001090101,
-    "value": "利用中立單位的弱化效果來應對。"
+    "value": "Use neutral units' debuff effects to gain the upper hand."
   },
   {
     "id": 290300907001090201,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001090202,
-    "value": "將Boss引誘到此範圍效果內，降低所遭受的損傷。"
+    "value": "Draw the boss into the effect range to weaken its attacks."
   },
   {
     "id": 290300907001090203,
-    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
+    "value": "Have your units attack the boss from within this area."
   },
   {
     "id": 290300907001100101,
-    "value": "從飛翼鋼彈的砲火下保護客座軍。"
+    "value": "Protect the guest force from attacks by Wing Gundam."
   },
   {
     "id": 290300907001100201,
-    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
   },
   {
     "id": 290300907001100202,
-    "value": "受到損傷、HP下降時，就到米迪亞附近待機。"
+    "value": "Position yourself near Medea if your HP drops from incoming damage."
   },
   {
     "id": 290300907001100203,
-    "value": "在能力發動前盡快擊敗對手。"
+    "value": "Quickly destroy it before it activates an ability."
   },
   {
     "id": 290300907001110201,
-    "value": "活用客座軍來給予痛擊。"
+    "value": "Make use of guest forces to inflict major damage."
   },
   {
     "id": 290300907001110202,
-    "value": "優先擊破拉克絲·克萊因。"
+    "value": "Prioritize destroying Lacus Clyne."
   },
   {
     "id": 290300907001110203,
-    "value": "嫣紅攻擊鋼彈的能力會提升攻擊力，需多加留意。"
+    "value": "The ability of Strike Rouge increases ATK, so plan accordingly."
   },
   {
     "id": 290300907001110204,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001110205,
-    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
+    "value": "Have your units attack the boss from within this area."
   },
   {
     "id": 290300907001120101,
-    "value": "在水中能夠減輕部分光束屬性武裝的損傷。"
+    "value": "Damage from certain beam weapons may be reduced underwater."
   },
   {
     "id": 290300907001120201,
-    "value": "使用含有物理屬性或特殊屬性的武裝進行攻擊。"
+    "value": "Use Physical or Special weapons to launch your attack."
   },
   {
     "id": 290300907001120202,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   },
   {
     "id": 290300907001130101,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907001130201,
-    "value": "優先擊破吉姆狙擊特裝型。"
+    "value": "Prioritize destroying GM Sniper Custom."
   },
   {
     "id": 290300907001130202,
-    "value": "優先擊破吉姆狙擊型Ⅱ。"
+    "value": "Prioritize destroying GM Sniper II."
   },
   {
     "id": 290300907001130203,
-    "value": "讓會遭到Boss攻擊的我軍單位於此範圍內待機。"
+    "value": "Units that will take damage from the boss should be positioned within this area."
   },
   {
     "id": 290300907001130204,
-    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
+    "value": "Have your units attack the boss from within this area."
   },
   {
     "id": 290300907001140101,
-    "value": "活用客座軍來打倒。"
+    "value": "Make use of guest forces to defeat the enemies."
   },
   {
     "id": 290300907001140102,
-    "value": "賦予「攻擊力減少」的弱化效果，將損傷壓到最低。"
+    "value": "Use the ATK-reducing debuff to minimize incoming damage."
   },
   {
     "id": 290300907001140201,
-    "value": "活用客座軍來減少敵方數量。"
+    "value": "Make use of guest forces to bring down the enemy count."
   },
   {
     "id": 290300907001140202,
-    "value": "受到損傷、HP下降時，就到明鏡鋼彈附近待機。"
+    "value": "Position yourself near Shadow Gundam if your HP drops from incoming damage."
   },
   {
     "id": 290300907001140203,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001140204,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001140205,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001150201,
-    "value": "盡可能迴避戰鬥。"
+    "value": "Avoid combat as much as possible."
   },
   {
     "id": 290300907001150202,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907001150203,
-    "value": "盡可能迴避戰鬥。"
+    "value": "Avoid combat as much as possible."
   },
   {
     "id": 290300907001150204,
-    "value": "受到損傷、HP下降時，就到守衛砲附近待機。"
+    "value": "Position yourself near Guarder if your HP drops from incoming damage."
   },
   {
     "id": 290300907001150205,
-    "value": "在守衛砲附近發動攻擊。"
+    "value": "Launch your attack from near Guarder."
   },
   {
     "id": 290300907001160101,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907001160201,
-    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
   },
   {
     "id": 290300907001170201,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907001170202,
-    "value": "活用高加成的範圍效果區域來擊破哈囉。"
+    "value": "Use high multiplying Area Effects zone to defeat Haro."
   },
   {
     "id": 290300907001170203,
-    "value": "盡量減少敵方的數量。"
+    "value": "Focus on reducing the number of enemies."
   },
   {
     "id": 290300907001180101,
-    "value": "活用客座軍來打倒。"
+    "value": "Make use of guest forces to defeat the enemies."
   },
   {
     "id": 290300907001180201,
-    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
   },
   {
     "id": 290300907001180202,
-    "value": "活用客座軍，從敵人手中保護布萊特·諾亞吧。"
+    "value": "Make use of guest forces to protect Bright Noa from enemy attacks."
   },
   {
     "id": 290300907001180203,
-    "value": "從獵犬【MA型態】的砲火下保護客座軍。"
+    "value": "Protect the guest force from attacks by Baund Doc [MA]."
   },
   {
     "id": 290300907001180204,
-    "value": "優先擊破這些單位吧。"
+    "value": "Prioritize destroying this unit."
   },
   {
     "id": 290300907001190101,
-    "value": "運用支援防禦與角色技能等來阻止它多次行動吧。"
+    "value": "Prevent enemies from going again by utilizing Support Defense and Character Skills."
   },
   {
     "id": 290300907001190201,
-    "value": "優先擊破米奧琳涅·連布蘭。"
+    "value": "Prioritize destroying Miorine Rembran."
   },
   {
     "id": 290300907001190202,
-    "value": "盡可能在第1回合將它擊破吧。"
+    "value": "Do your best to defeat them in one turn."
   },
   {
     "id": 290300907001190203,
-    "value": "強力的武裝會大量消耗EN，需多加留意。"
+    "value": "Be careful, as powerful weapons have high EN cost."
   },
   {
     "id": 290300907001200101,
-    "value": "留意擊破特定單位後將出現的增援。"
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
   },
   {
     "id": 290300907001200201,
-    "value": "留意擊破特定單位後將出現的增援。"
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
   },
   {
     "id": 290300907001200202,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   },
   {
     "id": 290300907002010201,
-    "value": "在拉·凱拉姆附近發動攻擊。"
+    "value": "Launch your attack from near Ra Cailum."
   },
   {
     "id": 290300907002020201,
-    "value": "受到損傷、HP下降時，就到大天使號附近待機。"
+    "value": "Position yourself near Archangel if your HP drops from incoming damage."
   },
   {
     "id": 290300907002030201,
-    "value": "在二式守衛砲附近發動攻擊。"
+    "value": "Launch your attack from near Zweite Guarder."
   },
   {
     "id": 290300907002040201,
-    "value": "利用惡魔鋼彈 (第2型態)的MAP兵器，連帶對敵軍造成損傷。"
+    "value": "Utilize Dark Gundam (Second Form)'s MAP weapon to inflict damage on the enemy."
   },
   {
     "id": 290300907002040202,
-    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
   },
   {
     "id": 290300907002050201,
-    "value": "活用客座軍來打倒強大的敵人。"
+    "value": "Take out challenging enemies with the help of Guest Forces."
   },
   {
     "id": 290300907002060201,
-    "value": "在範圍效果重疊的區域上，可同時接收到雙方的效果。"
+    "value": "An area under two simultaneous area effects can receive both."
   },
   {
     "id": 290300907002060202,
-    "value": "將承受攻擊的單位配置在大天使號附近。"
+    "value": "Units which will be attacked should be placed near Archangel."
   },
   {
     "id": 290300907002060203,
-    "value": "優先擊破塔莉亞·庫拉提絲。"
+    "value": "Prioritize destroying Talia Gladys."
   },
   {
     "id": 290300907002070201,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   },
   {
     "id": 290300907002070202,
-    "value": "優先擊破哈曼·坎恩。"
+    "value": "Prioritize destroying Haman Karn."
   },
   {
     "id": 290300907002070203,
-    "value": "優先擊破克雷米·托特。"
+    "value": "Prioritize destroying Glemy Toto."
   },
   {
     "id": 290300907002080202,
-    "value": "活用客座軍來減少敵方數量。"
+    "value": "Make use of guest forces to bring down the enemy count."
   },
   {
     "id": 290300907002090101,
-    "value": "利用主魔鋼彈的強化效果來擊敗對手。"
+    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
   },
   {
     "id": 290300907002090201,
-    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
+    "value": "Have your units attack the boss from within this area."
   },
   {
     "id": 290300907002090202,
-    "value": "活用中立單位的範圍效果來應對。"
+    "value": "Use neutral units' area effects to increase your chances of success."
   },
   {
     "id": 290300907002090203,
-    "value": "利用主魔鋼彈的強化效果來擊敗對手。"
+    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
   },
   {
     "id": 290300907002090205,
-    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
   },
   {
     "id": 290300907002100101,
-    "value": "利用新吉翁克的MAP兵器擊敗對手。"
+    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
   },
   {
     "id": 290300907002100203,
-    "value": "利用新吉翁克的MAP兵器擊敗對手。"
+    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
   },
   {
     "id": 290300907002110101,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907002110201,
-    "value": "利用尚布羅的MAP兵器擊敗對手。"
+    "value": "Destroy the targets by utilizing Shamblo's MAP Weapon."
   },
   {
     "id": 290300907002110202,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   },
   {
     "id": 290300907002120101,
-    "value": "利用中立單位的強化效果來擊敗對手。"
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   },
   {
     "id": 290300907002130101,
-    "value": "活用客座軍來打倒。"
+    "value": "Make use of guest forces to defeat the enemies."
   },
   {
     "id": 290300907002130201,
-    "value": "強力的武裝會大量消耗EN，需多加留意。"
+    "value": "Be careful, as powerful weapons have high EN cost."
   },
   {
     "id": 290300907002130202,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   },
   {
     "id": 290300907002140101,
-    "value": "活用客座軍來打倒。"
+    "value": "Make use of guest forces to defeat the enemies."
   },
   {
     "id": 290300907002140202,
-    "value": "活用客座軍來給予痛擊。"
+    "value": "Make use of guest forces to inflict major damage."
   },
   {
     "id": 290300907002150201,
-    "value": "活用移動型MAP兵器，抵達目標區域。"
+    "value": "Aim to reach the target area by utilizing mobility-type MAP Weapons."
   },
   {
     "id": 290300907002150202,
-    "value": "盡可能迴避戰鬥。"
+    "value": "Avoid combat as much as possible."
   },
   {
     "id": 290300907002150203,
-    "value": "留意MAP兵器的範圍。"
+    "value": "Be mindful of MAP weapons' range."
   }
 ]

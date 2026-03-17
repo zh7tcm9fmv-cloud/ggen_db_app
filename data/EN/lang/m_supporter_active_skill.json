@@ -28,6 +28,10 @@
     "value": "HP Restoration"
   },
   {
+    "id": 160400001013000150,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001022000150,
     "value": "HP Restoration"
   },
@@ -308,6 +312,10 @@
     "value": "Squad units within range\nRestore HP by 40%."
   },
   {
+    "id": 160500001013000150,
+    "value": "Squad units within range\nRestore EN by 50%."
+  },
+  {
     "id": 160500001022000150,
     "value": "Squad units within range\nRestore HP by 35%."
   },
@@ -586,6 +594,10 @@
   {
     "id": 160900001001000750,
     "value": "Stop at once! Humans are capable of much more than war!"
+  },
+  {
+    "id": 160900001013000150,
+    "value": "Hey, come on! Stay sharp or you're getting blown up!"
   },
   {
     "id": 160900001022000150,

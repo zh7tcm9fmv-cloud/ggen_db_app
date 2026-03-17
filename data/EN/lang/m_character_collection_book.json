@@ -121,7 +121,27 @@
   },
   {
     "id": 100200001013000100,
-    "value": "A Federation Forces MS pilot assigned to the 08th MS Team of the Federation Ground Force's Far Eastern Mechanized Composite Battalion, as a replacement for a predecessor who suffered a nervous breakdown.\nHe has a bitter past in which he failed to protect his family from the Zeon poison gas attack on Side 2, and thus prioritizes his friends' lives above all else, but this makes others consider him a weak and inexperienced leader.\nEven so, he continues to hold tight to his morals and shows flexibility and tactical skill by befriending guerrilla soldiers, eventually winning the trust of his comrades.\nHe met Aina Sahalin, a female officer of the Zeon forces, in a battlefield in space. After confirming their feelings for each other he starts to question the reasoning behind war, where two people in love can kill each other.\nHe then faces a great challenge, as he starts to find meaning in his battles while questioning the true nature of love."
+    "value": "A Federation Forces MS pilot assigned to the 08th MS Team of the Federation Ground Force's Far Eastern Mechanized Composite Battalion, as a replacement for a predecessor who suffered a nervous breakdown.\nHe has a bitter past in which he failed to protect his family from the Zeon poison gas attack on Side 2, and thus prioritizes his friends' lives above all else, but this makes others consider him a weak and inexperienced leader.\nEven so, he continues to hold tight to his morals and shows flexibility and tactical skill by befriending guerrilla soldiers, eventually winning the trust of his comrades.\nHe met Aina Sakhalin, a female officer of the Zeon forces, in a battlefield in space. After confirming their feelings for each other he starts to question the reasoning behind war, where two people in love can kill each other.\nHe then faces a great challenge, as he starts to find meaning in his battles while questioning the true nature of love."
+  },
+  {
+    "id": 100200001013000200,
+    "value": "A Federation Forces MS pilot assigned to the 08th MS Team of the Federation Ground Force's Far Eastern Mechanized Composite Battalion.\nShe has better piloting skills than her newly appointed team leader Shiro Amada.\nShe exhibits cool judgment on the battlefield, no matter how desperate the situation.\nHer usual attitude is that of a true soldier, but because of her extensive experience she finds Shiro Amada's idealism unsuited to the battlefield and struggles to respect him, although she does follow his orders.\nHowever, she eventually starts to recognize him as a leader for his direct personality and ever-improving abilities.\nIt is also obvious from her caring for others that she is a kind-hearted woman despite her ferocious fighting skills.\nShe used to be a medical student, and became a widow when her military doctor husband died."
+  },
+  {
+    "id": 100200001013000300,
+    "value": "A Federation Forces MS pilot assigned to the 08th MS Team of the Federation Ground Force's Far Eastern Mechanized Composite Battalion along with Shiro Amada.\nDespite his large frame and fierce expression, he has a serious and loyal personality.\nHe is valued as a veteran ace pilot of the Federation Forces, but he has a dark past because all the teams he's joined were annihilated on their third sortie, save for him.\nHe is teased by others and called \"Sanders the Reaper,\" and has become very superstitious.\nIn a space battle before he was assigned to the 08th MS Team he was saved by Shiro Amada, who boarded a Ball Type K and came to his rescue.\nHe has been one of the few who understood and trusted Shiro ever since."
+  },
+  {
+    "id": 100200001013000900,
+    "value": "Born into Zeon's noble Sakhalin family, she is the sister of Zeon's Technical Rear Admiral Ginius Sakhalin, and supports him as a test pilot for the prototype mobile armor Apsaras.\nShe is a civilian without an official rank, but her energy and kindness gave her many loyal followers within the Zeon forces.\nShe has a nobility that suits her upbringing, and fights with determination against the Federation Forces, but upon meeting the Federation officer Shiro Amada she is drawn to his sincerity.\nShe then starts to question war and the life she has lived as a puppet to her brother.\nAfter meeting Shiro again on the battlefield, she starts to face her own internal war."
+  },
+  {
+    "id": 100200001013001000,
+    "value": "Current head of Zeon's noble Sakhalin family.\nHe is working hard to resurrect his fallen family name as a Technical Rear Admiral in the Zeon forces, pursuing the development of the prototype mobile armor Apsaras.\nHe is in poor physical condition due to a debilitating childhood illness, and takes medicine regularly.\nThis has made him completely reliant on his sister Aina Sakhalin to look after him and test the Apsaras.\nThis gradually wore his psyche down, and he became obsessed with the Apsaras project.\nAs a result, he's turned into a cold man, prepared to sacrifice anything for the completion of his project, eventually locking out even his own sister."
+  },
+  {
+    "id": 100200001013001100,
+    "value": "An ace pilot of the Zeon forces who has sworn loyalty to the noble Sakhalin family.\nHe is in charge of defending the development base and other military duties while Ginius Sakhalin focuses on the development of his prototype mobile armor Apsaras.\nHe is a veteran soldier who has won the trust of others through his dedication.\nRather than a blind zealot, he is more like a samurai, taking his loyalty incredibly seriously.\nHe feels a strong dislike towards Ginius Sakhalin for his cruelty, but adores Aina Sakhalin and is like a father figure to her.\nUltimately, he grants Aina's wish by boarding his Gouf Custom and heading out on a solo mission to put up a fierce fight against the attacking Federation Forces, including the 08th MS Team."
   },
   {
     "id": 100200001017000201,
@@ -546,6 +566,10 @@
   {
     "id": 100200001150000900,
     "value": "Captain of the First Galcezon. Mafty member.\nHe is a big man with an imposing build, but has a kind and considerate side for his companions."
+  },
+  {
+    "id": 100200001150001100,
+    "value": "This young woman is a skilled mechanic who is entrusted with maintaining Hathaway Noa's personal Mobile Suit, the Xi Gundam.\nShe likes to wear revealing clothing."
   },
   {
     "id": 100200001155000100,
@@ -1514,5 +1538,9 @@
   {
     "id": 100200001850003300,
     "value": "A hardcore mechanic, his reason for being on the battlefield is so that he can tweak and modify the latest and rarest mecha to his heart's content.\nAlthough his skills are substantial, he is quite lazy at heart, and has no interest in anything other than mechanics. \nHe has a tendency to prioritize machines over people, getting excited only when he sees interesting mecha. \nHe is often looking for an opportunity to make off with rare components even in the midst of battle."
+  },
+  {
+    "id": 100200001850003900,
+    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\nSince it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"Ultimate Weapon of Destruction.\"\nBut still, nobody knows what it really is..."
   }
 ]

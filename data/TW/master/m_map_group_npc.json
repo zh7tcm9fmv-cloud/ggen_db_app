@@ -182,6 +182,314 @@
     "NpcGroupName": "<default>"
   },
   {
+    "MapGroupId": 13000300302000024,
+    "MapNpcId": 13000300302000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "to"
+  },
+  {
+    "MapGroupId": 13000300302000024,
+    "MapNpcId": 13000300302000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "to"
+  },
+  {
+    "MapGroupId": 13000900102000014,
+    "MapNpcId": 13000900102000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "1"
+  },
+  {
+    "MapGroupId": 13000900102000014,
+    "MapNpcId": 13000900102000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "1"
+  },
+  {
+    "MapGroupId": 13000900102000014,
+    "MapNpcId": 13000900102000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "1"
+  },
+  {
+    "MapGroupId": 13000900102000014,
+    "MapNpcId": 13000900102000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "1"
+  },
+  {
+    "MapGroupId": 13000900102000014,
+    "MapNpcId": 13000900102000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "1"
+  },
+  {
+    "MapGroupId": 13001000102000017,
+    "MapNpcId": 13001000102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000017,
+    "MapNpcId": 13001000102000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000017,
+    "MapNpcId": 13001000102000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13001000102000018,
+    "MapNpcId": 13001000102000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 13005000102000000,
+    "MapNpcId": 13005000102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000102000000,
+    "MapNpcId": 13005000102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000102000000,
+    "MapNpcId": 13005000102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000102000020,
+    "MapNpcId": 13005000102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000102000020,
+    "MapNpcId": 13005000102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000102000020,
+    "MapNpcId": 13005000102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000202000000,
+    "MapNpcId": 13005000202000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000202000000,
+    "MapNpcId": 13005000202000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000202000000,
+    "MapNpcId": 13005000202000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000202000020,
+    "MapNpcId": 13005000202000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000202000020,
+    "MapNpcId": 13005000202000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000202000020,
+    "MapNpcId": 13005000202000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000302000000,
+    "MapNpcId": 13005000302000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000302000000,
+    "MapNpcId": 13005000302000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000302000000,
+    "MapNpcId": 13005000302000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "tank"
+  },
+  {
+    "MapGroupId": 13005000302000020,
+    "MapNpcId": 13005000302000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000302000020,
+    "MapNpcId": 13005000302000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
+    "MapGroupId": 13005000302000020,
+    "MapNpcId": 13005000302000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "guntank"
+  },
+  {
     "MapGroupId": 17000600302000015,
     "MapNpcId": 17000600302000002,
     "GroupUnitTypeIndex": 3,
@@ -7068,6 +7376,202 @@
     "GroupUnitTypeIndex": 3,
     "SortOrder": 22,
     "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
+  },
+  {
+    "MapGroupId": 990000100702000001,
+    "MapNpcId": 990000100702000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "39"
   },
   {
     "MapGroupId": 2200070020200000001,

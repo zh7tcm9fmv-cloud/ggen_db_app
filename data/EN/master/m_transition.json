@@ -60,6 +60,12 @@
     "TargetId2": 0
   },
   {
+    "Id": 10000000200011,
+    "TransitionTypeIndex": 1,
+    "TargetId1": 200011,
+    "TargetId2": 0
+  },
+  {
     "Id": 11000000200001,
     "TransitionTypeIndex": 2,
     "TargetId1": 200001,
@@ -111,6 +117,12 @@
     "Id": 11000000200010,
     "TransitionTypeIndex": 2,
     "TargetId1": 200010,
+    "TargetId2": 0
+  },
+  {
+    "Id": 11000000200011,
+    "TransitionTypeIndex": 2,
+    "TargetId1": 200011,
     "TargetId2": 0
   },
   {
@@ -504,6 +516,12 @@
     "TargetId2": 0
   },
   {
+    "Id": 20000040000203,
+    "TransitionTypeIndex": 11,
+    "TargetId1": 40000203,
+    "TargetId2": 0
+  },
+  {
     "Id": 20000043000105,
     "TransitionTypeIndex": 11,
     "TargetId1": 43000105,
@@ -858,6 +876,12 @@
     "TargetId2": 0
   },
   {
+    "Id": 28002603200302,
+    "TransitionTypeIndex": 19,
+    "TargetId1": 2603200302,
+    "TargetId2": 0
+  },
+  {
     "Id": 29000000000001,
     "TransitionTypeIndex": 20,
     "TargetId1": 0,
@@ -921,6 +945,12 @@
     "Id": 32000000200010,
     "TransitionTypeIndex": 23,
     "TargetId1": 200010,
+    "TargetId2": 0
+  },
+  {
+    "Id": 32000000200011,
+    "TransitionTypeIndex": 23,
+    "TargetId1": 200011,
     "TargetId2": 0
   },
   {
@@ -1362,6 +1392,12 @@
     "TargetId2": 0
   },
   {
+    "Id": 48000000220005,
+    "TransitionTypeIndex": 46,
+    "TargetId1": 220005,
+    "TargetId2": 0
+  },
+  {
     "Id": 48000099000101,
     "TransitionTypeIndex": 46,
     "TargetId1": 220001,
@@ -1378,6 +1414,12 @@
     "TransitionTypeIndex": 46,
     "TargetId1": 220003,
     "TargetId2": 99000105
+  },
+  {
+    "Id": 48000099000107,
+    "TransitionTypeIndex": 46,
+    "TargetId1": 220005,
+    "TargetId2": 99000107
   },
   {
     "Id": 49000000230001,

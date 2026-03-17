@@ -360,10 +360,22 @@
     "TargetId": 101200011001
   },
   {
+    "Id": 1013000100,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300010001
+  },
+  {
     "Id": 1013000110,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,
     "TargetId": 101300011001
+  },
+  {
+    "Id": 1013000200,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300020001
   },
   {
     "Id": 1013000210,
@@ -372,10 +384,28 @@
     "TargetId": 101300021001
   },
   {
+    "Id": 1013000500,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300050001
+  },
+  {
     "Id": 1013000510,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,
     "TargetId": 101300051001
+  },
+  {
+    "Id": 1013000600,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300060001
+  },
+  {
+    "Id": 1013000600,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300060002
   },
   {
     "Id": 1013000610,
@@ -384,16 +414,52 @@
     "TargetId": 101300061001
   },
   {
+    "Id": 1013000700,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300070001
+  },
+  {
     "Id": 1013000710,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,
     "TargetId": 101300071001
   },
   {
+    "Id": 1013000900,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300090001
+  },
+  {
+    "Id": 1013001000,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300100001
+  },
+  {
+    "Id": 1013001100,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300110001
+  },
+  {
+    "Id": 1013001400,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300140001
+  },
+  {
     "Id": 1013001410,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,
     "TargetId": 101300141001
+  },
+  {
+    "Id": 1013001500,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 101300150001
   },
   {
     "Id": 1013001510,

@@ -18,6 +18,12 @@
     "IsDisplayWhenNotAcquired": false
   },
   {
+    "MsDockUnitId": 1013000300,
+    "AcquisitionMethodTypeIndex": 6,
+    "TargetId": 201301,
+    "IsDisplayWhenNotAcquired": false
+  },
+  {
     "MsDockUnitId": 1017000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201701,

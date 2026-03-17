@@ -210,12 +210,52 @@
     "EffectValue": 1
   },
   {
+    "Id": 101300010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 101300021002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 1
   },
   {
+    "Id": 101300030002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300050002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 101300071002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300080002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300100002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300120002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300140002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 101300150002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 1
   },

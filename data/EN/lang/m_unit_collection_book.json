@@ -256,6 +256,26 @@
     "value": "The Type K is a variation of the space combat pod Ball, which the Federation Forces developed as a simple type of mobile suit during the One Year War.\nIt had four manipulators instead of two, and was carried aboard cargo ships for both work and defense.\nIts overall performance fell short of a mobile suit, however, and soldiers in the field mocked it as a \"moving coffin.\"\nBecause the weapon on top of its body could be replaced, some types were equipped with a 180mm cannon instead of the standard fifteen-caliber."
   },
   {
+    "id": 110200001013000850,
+    "value": "One of the improved variations of the Principality of Zeon's mass-produced ground combat mobile suit Gouf produced in the middle and late stages of the One Year War.\nThis machine boasted vastly improved long-range offense, maneuverability, and maintenance.\nThe 5-barrel 75mm machine gun in its left hand was changed to a normal manipulator, while the right hand's built-in heat rod was wired to reduce overall weight.\nThe reduced firepower could be supplemented with a triple 35mm gatling cannon, a gatling shield able to mount a heat saber, and other optional equipment that made the machine a force to be reckoned with in ground combat.\nThe few units produced were primarily given to ace pilots, who used them to great success on the battlefield."
+  },
+  {
+    "id": 110200001013000900,
+    "value": "One of the flying variations of the Principality of Zeon's mass-produced ground combat mobile suit Gouf.\nThis machine was the culmination of a long-held plan to create a mobile suit capable of flight.\nThe Gouf's legs and waist are fitted with thermonuclear jet engines, giving it stable flight performance.\nIt is also equipped with a gatling shield able to mount a heat saber and other optional weapons in a bid to improve its long-distance aerial attacks.\nBut because its cruising range and mobility left much to be desired, the MS flight plan was suspended after only a few units had been produced.\nThe problems of increased mobility and operating radius were resolved by the Dom, whose thermonuclear hovering provided greater speed of movement."
+  },
+  {
+    "id": 110200001013001000,
+    "value": "When development of the Gelgoog was delayed, the Principality of Zeon adapted the Dom for space use as a replacement next-generation mainline mobile suit, and this test machine was developed to acquire the necessary data.\nIntended to test the mobility and maintenance issues of remodeling the legs with thermonuclear rocket engines, it was thrown into battle in Federation territory near Earth to collect data on how it would fare in combat against GMs.\nThe data it collected was lost, however, after it sustained heavy damage in a fight against Shiro Amada's Ball Type K."
+  },
+  {
+    "id": 110200001013001100,
+    "value": "A prototype mobile armor for fortress attacks, developed in absolute secrecy by the Principality of Zeon.\nThis massive weapon was developed to attack the Federation headquarters at the Jaburo base.\nWhile the Apsaras I was an unarmed flying test machine, the Apsaras II was created to test the compatibility of the Minovsky craft system and the mega particle cannon.\nIt was believed that combining the high-flying capabilities of the Minovsky craft system with the tremendous destructive power of a large mega particle cannon would prove devastating to enemy defenses."
+  },
+  {
+    "id": 110200001013001200,
+    "value": "Technical Rear Admiral Ginius Sakhalin completed the final Apsaras model in spite of the order to cease production.\nThe unresolved issues with power shortages in the Minovsky craft system of the Apsaras I and II were solved so effectively with the inclusion of three Rick Dom generators that it was possible to add a second Minovsky craft system.\nThe three legs that extended from underneath the machine improved stability when firing, while the firepower of the large mega particle cannon could be adjusted in a way that would allow it to be used like a multi-barrel laser.\nThese improvements resulted in a machine that was completely different from the previous Apsaras models."
+  },
+  {
     "id": 110200001013001400,
     "value": "A ground combat mobile suit manufactured by the Federation Forces using the production lines of the Gundam Ground Type.\nThis was a precursor to the RGM-79 GM that later became the Federation's mainline machine, and was given the GM name even though its construction was completely different.\nThough most of its equipment was the same as that of a Gundam Ground Type, it lacked a chest vulcan and backpack, and was given a lower-output generator.\nBy retaining the Luna Titanium armor, however, it provided an overall performance advantage over the Federation's mainline GM.\nFurthermore, because this machine was created after the Federation had already established a production format, spare parts were readily available, making both maintenance and the supply of parts to each team easier.\nLarge numbers were deployed on the Odessa front and in the attack on the Apsaras development base."
   },
@@ -3370,6 +3390,10 @@
   {
     "id": 110200001850001200,
     "value": "A gigantic weapon of destruction shrouded in complete mystery.\nWhen was it built, and where, and for what purpose? Nobody knows.\nIt has the form of a Haro, the mascot robot of the Gundam universe, but its cute form belies its extremely high performance.\nIt has a number of special weapons such as the Haro Drill, Haro Bubble, and Haro Bits, giving it overwhelming power on the field and earning it the nickname \"Round Devil.\"\nBut nobody knows what it really is..."
+  },
+  {
+    "id": 110200001850001350,
+    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\n Since it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"ultimate Weapon of Destruction.\"\n But still, nobody knows what it really is..."
   },
   {
     "id": 110200001850001500,

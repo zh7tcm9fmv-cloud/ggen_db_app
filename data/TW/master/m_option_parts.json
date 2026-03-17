@@ -6540,6 +6540,30 @@
     "UnitId": 0
   },
   {
+    "Id": 300196,
+    "ResourceId": "op_000000001",
+    "RarityTypeIndex": 3,
+    "TraitSetId": 406080101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000300196,
+    "SearchWordGroupId": 0,
+    "SeriesId": 130,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 300197,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 3,
+    "TraitSetId": 406090101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000300197,
+    "SearchWordGroupId": 0,
+    "SeriesId": 130,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
     "Id": 300198,
     "ResourceId": "op_000000002",
     "RarityTypeIndex": 3,
