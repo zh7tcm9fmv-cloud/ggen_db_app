@@ -222,7 +222,8 @@ ATTACK_ATTR_TYPES = {
     '6': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
 }
-MP_CONSUMPTION_WEAPON_IDS = ['120000395006']
+MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5}
+MP_CONSUMPTION_UNIT_EX = {'1330000750': 2}
 HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
 ACQUISITION_ROUTE_ICONS = {
     '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.png',
@@ -246,18 +247,20 @@ EX_ABILITY_PATTERNS = ['ex character ability','ex機體能力','ex角色能力',
 MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6': ['1', '5'], '7': ['2x2', '6'], '8': ['1', '7'], '9': ['1', '6']}
 
 def _is_conditional_stat_text(t):
-    tl = t.lower() if t else ''
-    for kw in ['when ', 'if ', 'during ', 'at the start']:
+    tl = (t or '').lower()
+    for kw in ['when ', 'if ', 'during ', 'at the start', 'each time', 'every time', 'each time you', 'every time you']:
         if kw in tl: return True
     return False
 
-def _extract_stat_percent_unit(text):
+def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
-    if _is_conditional_stat_text(text): return bonuses
+    if skip_conditional and _is_conditional_stat_text(text): return bonuses
     m = re.search(fr"Increase (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
+        up_to = re.search(r'[\(\s]up to (\d+)%', text, re.IGNORECASE)
+        if up_to: pct = max(pct, int(up_to.group(1)))
         def norm(name):
             n = name.strip().title().replace("Max ", "")
             if n == "Hp": n = "HP"
@@ -961,7 +964,7 @@ def create_weapon_correction_map(d):
         sid = normalize_id(item.get('WeaponStatusChangePatternSetId') or item.get('weaponStatusChangePatternSetId'))
         lv = int(item.get('CurrentWeaponLevel') or item.get('currentWeaponLevel') or 1)
         if sid != '0':
-            lookup.setdefault(sid, {})[lv] = {'power_rate': int(item.get('PowerCorrectionRate') or 100), 'en_rate': int(item.get('EnCorrectionRate') or 100), 'hit_rate': int(item.get('HitRateCorrectionRate') or 100), 'crit_rate': int(item.get('CriticalRateCorrectionRate') or 100), 'map_ammo': int(item.get('MapWeaponAmmoCapacity') or 0)}
+            lookup.setdefault(sid, {})[lv] = {'power_rate': int(item.get('PowerCorrectionRate') or item.get('powerCorrectionRate') or 100), 'en_rate': int(item.get('EnCorrectionRate') or item.get('enCorrectionRate') or 100), 'hit_rate': int(item.get('HitRateCorrectionRate') or item.get('hitRateCorrectionRate') or 100), 'crit_rate': int(item.get('CriticalRateCorrectionRate') or item.get('criticalRateCorrectionRate') or 100), 'map_ammo': int(item.get('MapWeaponAmmoCapacity') or item.get('mapWeaponAmmoCapacity') or 0)}
     return lookup
 
 def create_growth_pattern_map(d):
@@ -1004,6 +1007,34 @@ def create_weapon_trait_detail_map(base_data, lang_dir):
             t_val = lang_text.get(dlid, '')
             if t_val: lookup[tid] = t_val
     return lookup
+
+def create_mechanism_map(bd, ld):
+    lt = {}
+    for item in extract_data_list(ld):
+        if isinstance(item, dict):
+            lid = normalize_id(item.get('id') or item.get('Id'))
+            val = item.get('value') or item.get('Value') or item.get('text') or item.get('Text')
+            if lid != '0' and val: lt[lid] = str(val).replace("\\n", "\n")
+    lk = {}
+    for item in extract_data_list(bd):
+        if not isinstance(item, dict): continue
+        mid = normalize_id(item.get('Id') or item.get('id'))
+        sid = normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId'))
+        nid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+        did = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
+        rid = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+        e = {'id': mid, 'resource_id': rid, 'name': lt.get(nid, "Unknown"), 'description': lt.get(did, "")}
+        if mid != '0': lk.setdefault(mid, []).append(e)
+        if sid != '0' and sid != mid: lk.setdefault(sid, []).append(e)
+    return lk
+
+def find_mechanism_icon(resource_id):
+    """Find mechanism icon using IMAGE_INDEX."""
+    if not resource_id or str(resource_id) == '0': return None
+    rl = str(resource_id).lower()
+    for fn in IMAGE_INDEX.get('images/mechanism', []):
+        if rl in fn.lower(): return fn
+    return None
 
 def create_weapon_trait_map(base_dir, lang_dir):
     lookup, text_map = {}, {}
@@ -1068,17 +1099,20 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     dr = {'range_min':0,'range_max':0,'levels':[{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)],'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
-    if mwid == '0': return dr
-    ws = wsm.get(mwid)
+    tid = mwid if mwid != '0' else wid
+    if tid == '0': return dr
+    ws = wsm.get(tid)
     if not ws: return dr
     bp,be,bh,bc = ws.get('power',0),ws.get('en',0),ws.get('hit_rate',0),ws.get('critical_rate',0)
     rn,rx = ws.get('range_min',0),ws.get('range_max',0)
     csi = ws.get('override_correction_id','0'); tsi = ws.get('trait_correction_id','0'); gi = ws.get('growth_pattern_id','0')
-    gd = {}; ug = gi and gi != '0' and gi != '1'
+    gd = {}; ug = gi and gi != '0'
     if ug: gd = gpm.get(gi, {})
     def def_corr(): return {'power_rate':100,'en_rate':100,'hit_rate':100,'crit_rate':100,'map_ammo':0}
     btl = []
-    fids = [wid, wid[:-2] if wid and len(wid)>2 else None, wid[:-4] if wid and len(wid)>4 else None, mwid, mwid[:-2] if mwid and len(mwid)>2 else None] if wid else [mwid, mwid[:-2] if mwid and len(mwid)>2 else None]
+    fids = []
+    if wid and wid != '0': fids.extend([wid, wid[:-2] if len(wid) > 2 else None, wid[:-4] if len(wid) > 4 else None])
+    if tid and tid != '0' and tid != wid: fids.extend([tid, tid[:-2] if len(tid) > 2 else None])
     for k in fids:
         if k and wtm.get(k): btl = wtm[k]; break
     levels = []
@@ -1106,7 +1140,9 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     rest = []
     if wt == '3': rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
-    if wid in MP_CONSUMPTION_WEAPON_IDS: rest.append(get_ui_label(lang_code, 'restriction_mp'))
+    mpc = MP_CONSUMPTION_WEAPON_IDS.get(wid, 0)
+    if mpc <= 0 and unit_id in MP_CONSUMPTION_UNIT_EX and wt == '2': mpc = MP_CONSUMPTION_UNIT_EX[unit_id]
+    if mpc > 0: rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc))
     hp_rate = wm.get('hp_cost_rate', 0)
     if hp_rate <= 0 and unit_id in HP_CONSUMPTION_UNIT_EX and wt == '2': hp_rate = HP_CONSUMPTION_UNIT_EX[unit_id]
     if hp_rate > 0: rest.append(get_ui_label(lang_code, 'restriction_hp').format(hp_rate))
@@ -1198,6 +1234,7 @@ weapon_correction_data = load_json(os.path.join(BASE_DIR, "m_weapon_status_chang
 weapon_growth_data = load_json(os.path.join(BASE_DIR, "m_weapon_level_growth_pattern_set.json"))
 weapon_trait_change_data = load_json(os.path.join(BASE_DIR, "m_weapon_trait_change_pattern.json"))
 weapon_trait_base_data = load_json(os.path.join(BASE_DIR, "m_weapon_trait.json"))
+mech_master = load_json(os.path.join(BASE_DIR, "m_mechanism.json"))
 skill_trait_base = load_json(os.path.join(BASE_DIR, "m_character_skill_trait.json"))
 supporter_master = load_json(os.path.join(BASE_DIR, "m_supporter.json"))
 supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_skill_content.json"))
@@ -1438,6 +1475,7 @@ for lang_code, paths in LANG_PATHS.items():
     supporter_text = load_json(os.path.join(lang_dir, "m_supporter.json")); supporter_leader_text = load_json(os.path.join(lang_dir, "m_supporter_leader_skill_content.json"))
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
     stage_lang_text = load_json(os.path.join(lang_dir, "m_eternal_road_stage.json")); stage_battle_condition_text_lang = load_json(os.path.join(lang_dir, "m_stage_battle_condition_text.json"))
+    mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     
     anm, adm = create_ability_maps(extract_data_list(trait_name_data), extract_data_list(trait_desc_data))
     ll = create_lineage_list(lineage_text); llk = create_lineage_lookup(lineage_text)
@@ -1455,6 +1493,7 @@ for lang_code, paths in LANG_PATHS.items():
             if lid != '0' and val: stage_condition_text_map[lid] = str(val).replace("\\n", "\n")
     wtm2 = create_weapon_text_map(weapon_text_data); wtrm = create_weapon_trait_map(BASE_DIR, lang_dir)
     wcam = create_weapon_capability_map(BASE_DIR, lang_dir); wtdm = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
+    mech_map = create_mechanism_map(mech_master or {}, mech_lang or {})
     
     srm = {}
     for item in extract_data_list(trait_set_data):
@@ -1471,7 +1510,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('CharacterSkillId') or item.get('SkillId') or item.get('Id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri; (len(si) > 2 and si[:-2] not in srm and srm.update({si[:-2]: ri}))
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 print("Database ready!")
@@ -2118,23 +2157,36 @@ def get_unit(unit_id):
         nxs = {s: 0 for s in UNIT_STAT_ORDER}
         nxss = {s: 0 for s in UNIT_STAT_ORDER}
 
+        def _ability_has_condition_word(ad):
+            name = (ad.get('name') or '').lower()
+            cond_words = ('condition', 'when countering', 'when counter')
+            if any(w in name for w in cond_words): return True
+            for d2 in ad.get('details', []):
+                txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
+                if any(w in txt for w in cond_words): return True
+            return False
+
         def ep(ad, bd, cd, nd):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
+            ability_cond = _ability_has_condition_word(ad)
             inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
             for d2 in ad.get('details', []):
                 txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-                itc = _is_conditional_stat_text(txt)
-                for s, pct in _extract_stat_percent_unit(txt).items():
-                    if unit_id == '1400000550' and s == 'HP' and pct == 5:
-                        bd[s] = bd.get(s, 0) + pct
-                        continue
-                    if inx:
-                        nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or itc:
-                        cd[s] = cd.get(s, 0) + pct
-                    else:
-                        bd[s] = bd.get(s, 0) + pct
+                parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
+                if not parts: parts = [txt]
+                for part in parts:
+                    itc = _is_conditional_stat_text(part)
+                    for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
+                        if unit_id == '1400000550' and s == 'HP' and pct == 5:
+                            bd[s] = bd.get(s, 0) + pct
+                            continue
+                        if inx:
+                            nd[s] = max(nd.get(s, 0), pct)
+                        elif ability_cond or hc or ie or itc:
+                            cd[s] = cd.get(s, 0) + pct
+                        else:
+                            bd[s] = bd.get(s, 0) + pct
 
         for ab in ac:
             ep(ab, spb, spc, nxs)
@@ -2146,6 +2198,11 @@ def get_unit(unit_id):
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
         hcond = any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER)
+        has_cond_ability = False
+        for ab in ac:
+            if _ability_has_condition_word(ab): has_cond_ability = True; break
+            if 'ssp_replacement' in ab and _ability_has_condition_word(ab['ssp_replacement']): has_cond_ability = True; break
+        hcond = hcond or has_cond_ability
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
             cm = 1.0 if info.get('is_ultimate', False) else mult
@@ -2213,6 +2270,7 @@ def get_unit(unit_id):
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr)
+            if unit_id == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.png', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.png', 'is_supply': True}]
             levels = ws.get('levels', [{'level':i,'power':ws['power'],'en':ws['en'],'accuracy':ws['accuracy'],'critical':ws['critical'],'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)])
             pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
             am = ws['ammo'] if wt == '3' else 0
@@ -2252,7 +2310,24 @@ def get_unit(unit_id):
         if ai2: sicons.append(ai2)
         msid = str(info.get('mechanism_set_id', '0')); ml = MECH_MAP_TABLE.get(msid, [])
         il = '2x2' in ml
-        mechs = [{'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.', 'icon': '/static/images/mechanism/mechanism_0002.png'}] if il else []
+        if not il:
+            ut = unit_lin_map.get(unit_id, [])
+            for tag_id in ut:
+                if tag_id == '1067' or (isinstance(tag_id, str) and tag_id.endswith('1067')): il = True; break
+        mids = list(MECH_MAP_TABLE.get(msid, []))
+        if unit_id.startswith('17090') or unit_id.startswith('17050') or unit_id.startswith('17250'):
+            if '3' not in mids: mids.append('3')
+        mechs = []
+        if il or '2x2' in mids:
+            mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.png'})
+        mm = ld.get('mechanism_map', {})
+        for mid in mids:
+            if mid == '2x2': continue
+            for rmm in mm.get(mid, []):
+                if rmm.get('id') == mid:
+                    icf = find_mechanism_icon(rmm.get('resource_id', ''))
+                    mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
+                    break
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
