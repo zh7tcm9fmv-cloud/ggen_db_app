@@ -5,58 +5,58 @@
   },
   {
     "id": 360190520001000001,
-    "value": "Hint"
+    "value": "提示"
   },
   {
     "id": 360190520002000001,
-    "value": "Hint"
+    "value": "提示"
   },
   {
     "id": 360190520003000001,
-    "value": "Hint 1"
+    "value": "提示1"
   },
   {
     "id": 360190520003000002,
-    "value": "Hint 2"
+    "value": "提示2"
   },
   {
     "id": 360190520004000001,
-    "value": "Hint 1"
+    "value": "提示1"
   },
   {
     "id": 360190520004000002,
-    "value": "Hint 2"
+    "value": "提示2"
   },
   {
     "id": 360190520017000001,
-    "value": "Hint"
+    "value": "提示"
   },
   {
     "id": 360290520001000001,
-    "value": "MAP Weapons are extremely powerful and cannot be countered.\nIn this stage, the enemy will use MAP Weapons when 2 or more\nallied units are within range, so plan your route carefully."
+    "value": "MAP兵器極為強力，且無法反擊。\n在此關卡中，當射程範圍內存在2架以上己方單位時，敵方就會使用MAP兵器。\n請謹慎移動，避免進入敵方的射程範圍內。"
   },
   {
     "id": 360290520002000001,
-    "value": "There are enemies with extremely high ATK and the Guaranteed\nChance Step (force-activate Chance Step 1 time) ability.\nExploit the gaps in the enemy's weapon range to avoid being hit."
+    "value": "關卡內存在攻擊力極高，且持有\n「無條件額外行動（強制發動1次額外行動）」能力的敵人。\n善用敵方武裝射程的死角來避開攻擊，伺機擊敗敵人吧。"
   },
   {
     "id": 360290520003000001,
-    "value": "Multiple enemies with the Support Attack ability appear.\nUse Sway (increase own EVA by 100%) to reduce the number of\nSupport Attacks that the enemy can land."
+    "value": "關卡內將出現多名持有支援攻擊能力的敵人。\n使用「搖擺閃避（自身閃避率提升100%）」，\n降低敵方使用支援攻擊的次數吧。"
   },
   {
     "id": 360290520003000002,
-    "value": "MAP Weapons are extremely powerful and cannot be countered.\nIn this stage, the enemy will use MAP Weapons when 2 or more\nallied units are within range, so plan your route carefully."
+    "value": "MAP兵器極為強力，且無法反擊。\n在此關卡中，當射程範圍內存在2架以上己方單位時，敵方就會使用MAP兵器。\n請謹慎移動，避免進入敵方的射程範圍內。"
   },
   {
     "id": 360290520004000001,
-    "value": "Multiple enemies with high ATK and the Guaranteed Chance Step\n(force-activate Chance Step 1 time) ability are deployed in this\nstage. Leverage MAP Weapons to devastate the enemy on turn 1."
+    "value": "此關卡配置了多名攻擊力極高，且持有\n「無條件額外行動（強制發動1次額外行動）」能力的敵人。\n使用MAP兵器，盡可能在第1回合削減敵人數量吧。"
   },
   {
     "id": 360290520004000002,
-    "value": "Enemies with red effects have powerful abilities.\nPrioritize the enemy with \"Increased DEF (All)\" to defeat\nthe rest efficiently."
+    "value": "身帶紅色特效的敵人持有強大的能力。\n優先擊敗持有「防禦力提升（整體）」能力的敵人，\n即可更有效地解決其他敵人。"
   },
   {
     "id": 360290520017000001,
-    "value": "A large number of enemy units are deployed in this stage,\nand as you clear mission objectives, even more will appear.\nLeverage MAP Weapons to defeat the enemy efficiently."
+    "value": "此關卡配置了大量敵方單位，\n並且在達成作戰目標後，將出現更多敵方單位。\n善用MAP兵器，盡量一口氣擊敗眾多敵人吧。"
   }
 ]

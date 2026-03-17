@@ -118,17 +118,9 @@ def get_latest_folder(base_path, prefix):
 
 def get_lang_paths(lang_code):
     config = LANG_CONFIG.get(lang_code, LANG_CONFIG[DEFAULT_LANG])
-    app_dir = os.path.dirname(os.path.abspath(__file__))
-    bundled_lang = os.path.join(app_dir, 'data', lang_code, 'lang')
-    bundled_master = os.path.join(app_dir, 'data', lang_code, 'master')
     if IS_LOCAL:
         base_dir = get_latest_folder(config['root'], config['master_prefix'])
         lang_dir = get_latest_folder(config['root'], config['lang_prefix'])
-        if lang_dir is None and os.path.isdir(bundled_lang):
-            lang_dir = bundled_lang
-            print(f"  {lang_code}: using bundled lang fallback")
-        if base_dir is None and lang_code != DEFAULT_LANG and os.path.isdir(bundled_master):
-            base_dir = bundled_master
     else:
         base_dir = config.get('master_dir')
         lang_dir = config.get('lang_dir')
@@ -140,6 +132,28 @@ for lang_code in LANG_CONFIG:
     LANG_PATHS[lang_code] = {'base': base_dir, 'lang': lang_dir}
     print(f"{lang_code} - BASE_DIR: {base_dir}")
     print(f"{lang_code} - LANG_DIR: {lang_dir}")
+
+# Fallback: if a language's root is missing, try same project with lang-specific prefix (as in GUI.py)
+# e.g. TW: look for GGen_Database/MasterData_*/Lang_MasterData_TW_* so character/unit names can be translated
+_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_'}
+app_dir = os.path.dirname(os.path.abspath(__file__))
+bundled_lang = lambda lc: os.path.join(app_dir, 'data', lc, 'lang')
+bundled_master = lambda lc: os.path.join(app_dir, 'data', lc, 'master')
+for lang_code in LANG_CONFIG:
+    if lang_code == DEFAULT_LANG:
+        continue
+    p = LANG_PATHS[lang_code]
+    if not p['base'] or not p['lang']:
+        en_base = LANG_PATHS[DEFAULT_LANG]['base']
+        en_lang = LANG_PATHS[DEFAULT_LANG]['lang']
+        alt_prefix = _ALT_LANG_PREFIX.get(lang_code)
+        lang_dir = get_latest_folder(en_base, alt_prefix) if alt_prefix and en_base else None
+        if lang_dir:
+            print(f"  {lang_code}: using Lang_MasterData_{lang_code}_* fallback from EN base")
+        if not lang_dir and os.path.isdir(bundled_lang(lang_code)):
+            lang_dir = bundled_lang(lang_code)
+            print(f"  {lang_code}: using bundled data fallback")
+        LANG_PATHS[lang_code] = {'base': en_base, 'lang': lang_dir or en_lang}
 
 BASE_DIR = LANG_PATHS['EN']['base']
 if BASE_DIR is None:

@@ -1,170 +1,170 @@
 [
   {
     "id": 130800000090100101,
-    "value": "EN Cost"
+    "value": "消耗EN"
   },
   {
     "id": 130800000090100102,
-    "value": "Counter Prediction"
+    "value": "反擊預測"
   },
   {
     "id": 130800000090100103,
-    "value": "Chance Step"
+    "value": "額外行動"
   },
   {
     "id": 130800000090100104,
-    "value": "Support Skills"
+    "value": "支援技能"
   },
   {
     "id": 130800000090100105,
-    "value": "Character Skills"
+    "value": "角色技能"
   },
   {
     "id": 130800000090100106,
-    "value": "Support Defense"
+    "value": "支援防禦"
   },
   {
     "id": 130800000090100107,
-    "value": "Support Attack"
+    "value": "支援攻擊"
   },
   {
     "id": 130800000090100108,
-    "value": "Vigor"
+    "value": "戰意"
   },
   {
     "id": 130800000090100109,
-    "value": "Transform"
+    "value": "變形"
   },
   {
     "id": 130800000090100110,
-    "value": "MAP Weapon"
+    "value": "MAP兵器"
   },
   {
     "id": 130800000090100111,
-    "value": "Weapon Type"
+    "value": "武裝類型"
   },
   {
     "id": 130800000090100112,
-    "value": "Weapon Attributes"
+    "value": "武裝屬性"
   },
   {
     "id": 130800000090100113,
-    "value": "Terrain Capability"
+    "value": "地形適性"
   },
   {
     "id": 130800000090100114,
-    "value": "Weapon Effect (Attack)"
+    "value": "武裝效果（攻擊）"
   },
   {
     "id": 130800000090100115,
-    "value": "Weapon Effect (Support)"
+    "value": "武裝效果（支援）"
   },
   {
     "id": 130800000090100116,
-    "value": "Weapon Effect (Durability)"
+    "value": "武裝效果（耐久）"
   },
   {
     "id": 130800000090110101,
-    "value": "Challenge from South Burning1"
+    "value": "紹斯·伯寧格的考驗1"
   },
   {
     "id": 130800000090110102,
-    "value": "Challenge from Rau Le Creuset1"
+    "value": "拉烏·魯·克魯澤的考驗1"
   },
   {
     "id": 130800000090110103,
-    "value": "Challenge from South Burning2"
+    "value": "紹斯·伯寧格的考驗2"
   },
   {
     "id": 130800000090110104,
-    "value": "Challenge from South Burning3"
+    "value": "紹斯·伯寧格的考驗3"
   },
   {
     "id": 130800000090110105,
-    "value": "Challenge from Schwarz Bruder1"
+    "value": "舒瓦茲·布魯德的考驗1"
   },
   {
     "id": 130900000090100101,
-    "value": "Learn: EN (energy), which is needed to\nuse weapons."
+    "value": "使用武裝需要用到「EN（能量）」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100102,
-    "value": "Learn: Counter Prediction, which shows\nenemy attack range."
+    "value": "「反擊預測」可事先得知敵方攻擊的射程範圍。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100103,
-    "value": "Learn: bonus actions, which allow units\nto act again."
+    "value": "給予單位最後一擊後即可獲得\n「額外行動（CHANCE STEP）」，可再次行動。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100104,
-    "value": "Learn: support skills, which affect all\nunits within range."
+    "value": "「支援技能」的效果遍及範圍內的所有單位。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100105,
-    "value": "Learn: character skills, which give an\nadvantage in battle."
+    "value": "「角色技能」是讓戰鬥進行得更順利的關鍵。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100106,
-    "value": "Learn: Support Defense, where durability\ncharacters take attacks."
+    "value": "受到攻擊時，耐久型角色\n可提供「支援防禦」來代為承受攻擊。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100107,
-    "value": "Learn: Support Attacks, where support\ncharacters assist attacks."
+    "value": "攻擊時，\n支援型角色可提供「支援攻擊」來援護我方。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100108,
-    "value": "Learn: Vigor, which raises attack damage\naccording to MP."
+    "value": "「戰意」會受隨戰鬥中行動提升的「MP」影響，\n依此提升攻擊造成的損傷。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100109,
-    "value": "Learn: Transform, which alters weapons\nand MOV."
+    "value": "「變形」會使武裝與移動力改變。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100110,
-    "value": "Learn: MAP Weapons, which can attack\nmultiple units within range."
+    "value": "「MAP兵器」可以同時攻擊\n射程範圍內的複數單位。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100111,
-    "value": "Learn: the three kinds of weapon types."
+    "value": "武裝擁有3種「武裝類型」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100112,
-    "value": "Learn: the three kinds of weapon\nattributes."
+    "value": "武裝擁有3種「武裝屬性」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100113,
-    "value": "Learn: terrain capability, which limits\nunit mobility and sortie."
+    "value": "「地形適性」會使單位的移動及出擊受到限制。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100114,
-    "value": "Learn: weapon effects that raise damage\ndealt for attack units."
+    "value": "攻擊型單位擁有\n「使自己造成的損傷提升的武裝效果」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100115,
-    "value": "Learn: weapon effects that reduce enemy\nDEF for support units."
+    "value": "支援型單位擁有\n「使敵方的防禦力減少的武裝效果」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090100116,
-    "value": "Learn: weapon effects that reduce enemy\nATK for durability units."
+    "value": "耐久型單位擁有\n「使敵方的攻擊力減少的武裝效果」。\n可在此關卡學習相關知識。"
   },
   {
     "id": 130900000090110101,
-    "value": "In this lesson, I'm gonna teach you how to take down big targets.\ndeliver a decisive Support Attack."
+    "value": "在這次訓練中我會指導你如何解決大塊頭。\n想辦法利用「支援攻擊」來一口氣摧毀對手吧。"
   },
   {
     "id": 130900000090110102,
-    "value": "Allow me to teach you the proper way of using Support Defense.\nI have no doubt that you can overcome this challenge."
+    "value": "這次就請你學習「支援防禦」的有效運用方式吧。\n突破眼前狀況的……"
   },
   {
     "id": 130900000090110103,
-    "value": "It's fine when an ally uses it, but you don't want the enemy to use it.\nThink of a way to prevent Support Defense from occurring."
+    "value": "支援防禦使用在己方身上時確實很方便，但換成敵方使用可就麻煩了。\n思考如何營造出讓敵方無法使用支援防禦的狀況。"
   },
   {
     "id": 130900000090110104,
-    "value": "You gotta avoid simultaneous attacks from multiple enemies, or you're in for a world of hurt.\nNever forget the measures needed to avoid getting blasted by the enemy's Support Attack."
+    "value": "絕對要避免同時遭到多名敵方攻擊的狀況，這點應該不用我多說。\n「盡量避免遭受支援攻擊」──要將這個念頭時時放在心上啊。"
   },
   {
     "id": 130900000090110105,
-    "value": "You must have seen certain enemies carrying a red aura.This indicates a powerful ability in their possession!"
+    "value": "敵方之中應該有著身上帶有紅色氣場的傢伙在。那就是對方持有強大能力的證明！"
   }
 ]
