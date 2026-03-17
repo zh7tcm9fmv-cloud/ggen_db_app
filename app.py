@@ -118,9 +118,17 @@ def get_latest_folder(base_path, prefix):
 
 def get_lang_paths(lang_code):
     config = LANG_CONFIG.get(lang_code, LANG_CONFIG[DEFAULT_LANG])
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    bundled_lang = os.path.join(app_dir, 'data', lang_code, 'lang')
+    bundled_master = os.path.join(app_dir, 'data', lang_code, 'master')
     if IS_LOCAL:
         base_dir = get_latest_folder(config['root'], config['master_prefix'])
         lang_dir = get_latest_folder(config['root'], config['lang_prefix'])
+        if lang_dir is None and os.path.isdir(bundled_lang):
+            lang_dir = bundled_lang
+            print(f"  {lang_code}: using bundled lang fallback")
+        if base_dir is None and lang_code != DEFAULT_LANG and os.path.isdir(bundled_master):
+            base_dir = bundled_master
     else:
         base_dir = config.get('master_dir')
         lang_dir = config.get('lang_dir')
