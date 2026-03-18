@@ -1603,6 +1603,71 @@ print("=" * 60)
 def get_lang_data(lc): return LANG_DATA.get(lc, LANG_DATA.get(DEFAULT_LANG, {}))
 def get_calc_lang_data(): return LANG_DATA.get(CALC_LANG, {})
 
+def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
+    """Compute unit stats for list view: base at max LB + non-conditional passive bonuses only."""
+    ri = info.get('rarity', '1'); has_sp = int(ri) <= 4
+    cm = 1.0 if info.get('is_ultimate', False) else 1.4
+    lb_fs = {}
+    if raw:
+        ssp_id = unit_ssp_config_map.get(unit_id); ssp_bonus = unit_ssp_stat_map.get(ssp_id, {})
+        ssp_core = get_ssp_custom_core_bonuses_for_unit(unit_id) if has_sp else {'move': 0, 'terrain_upgrades': []}
+        for s in ['HP', 'EN', 'Attack', 'Defense', 'Mobility']:
+            st = raw.get(s, (0, 0, 0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
+            gs = calc_growth_unit_base(st[0], st[1], ri)
+            lb_fs[s] = math.floor(gs * cm)
+        mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+        lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
+    else:
+        lb_fs = {s: 0 for s in UNIT_STAT_ORDER}
+    ua = unit_abil_map.get(unit_id, []); rm = unit_ssp_abil_replace_map.get(unit_id, {})
+    ac = []
+    for ab in sorted(ua, key=lambda x: x['sort']):
+        bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+        if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+        ac.append(bac)
+    spb = {s: 0 for s in UNIT_STAT_ORDER}; spc = {s: 0 for s in UNIT_STAT_ORDER}; nxs = {s: 0 for s in UNIT_STAT_ORDER}
+    spb_move_flat = [0]; spc_move_flat = [0]
+    def _ability_has_condition_word(ad):
+        name = (ad.get('name') or '').lower()
+        cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
+        if any(w in name for w in cond_words): return True
+        for d2 in ad.get('details', []):
+            txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
+            if any(w in txt for w in cond_words): return True
+        return False
+    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
+        hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
+        ie = ad.get('is_ex', False); ability_cond = _ability_has_condition_word(ad)
+        inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+        for d2 in ad.get('details', []):
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
+            if not parts: parts = [txt]
+            for part in parts:
+                itc = _is_conditional_stat_text(part)
+                flat_move = _extract_stat_flat_move(part, skip_conditional=False)
+                if flat_move:
+                    if inx: pass
+                    elif ability_cond or hc or ie or itc: cd_move_flat[0] += flat_move
+                    else: bd_move_flat[0] += flat_move
+                for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
+                    if s == 'Move': continue
+                    if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
+                    if inx: nd[s] = max(nd.get(s, 0), pct)
+                    elif ability_cond or hc or ie or itc: cd[s] = cd.get(s, 0) + pct
+                    else: bd[s] = bd.get(s, 0) + pct
+    for ab in ac:
+        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
+    for s in UNIT_STAT_ORDER: spc[s] = spc.get(s, 0) + nxs.get(s, 0)
+    result = {}
+    for s in UNIT_STAT_ORDER:
+        if s == 'Move':
+            result[s] = lb_fs.get(s, 0) + spb_move_flat[0]
+        else:
+            bst = lb_fs.get(s, 0); bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
+            result[s] = bst + bb
+    return result
+
 def resolve_series(ser_set_id, lc):
     ld = get_lang_data(lc); ssm = ld.get('ser_set_map', {}); sl = ld.get('series_list', []); sd = []
     if ser_set_id and ser_set_id != '0':
@@ -1996,7 +2061,7 @@ def list_units():
     sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
-    ld = get_lang_data(lc); rows = []
+    ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for uid, info in unit_info_map.items():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
@@ -2015,13 +2080,8 @@ def list_units():
                     if rn: ab_names.append(rn)
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
-        raw = unit_stat_map.get(uid, {}); fs = {}
-        if raw:
-            for s in ['HP','EN','Attack','Defense','Mobility']:
-                st = raw.get(s, (0,0,0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1] if len(st) > 1 else st[0])
-                fs[s] = calc_growth_unit(st[0], st[1], ri)
-            mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
-            fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
+        raw = unit_stat_map.get(uid, {})
+        fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
         acq = info.get('acquisition_route','0'); ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
