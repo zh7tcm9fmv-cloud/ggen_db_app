@@ -1556,6 +1556,16 @@ for lang_code, paths in LANG_PATHS.items():
     wcam = create_weapon_capability_map(BASE_DIR, lang_dir); wtdm = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
     mech_map = create_mechanism_map(mech_master or {}, mech_lang or {})
     
+    skill_trait_name_fallback = {}
+    if skill_trait_base:
+        for item in extract_data_list(skill_trait_base):
+            if isinstance(item, dict):
+                tid = normalize_id(item.get('Id') or item.get('id'))
+                nlid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+                if tid != '0' and nlid != '0':
+                    entries = stm.get(nlid)
+                    if entries and isinstance(entries, list) and len(entries) > 0:
+                        skill_trait_name_fallback[tid] = entries[0].get('text', '')
     srm = {}
     for item in extract_data_list(trait_set_data):
         if isinstance(item, dict):
@@ -1571,7 +1581,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('CharacterSkillId') or item.get('SkillId') or item.get('Id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri; (len(si) > 2 and si[:-2] not in srm and srm.update({si[:-2]: ri}))
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 print("Database ready!")
@@ -1696,6 +1706,9 @@ def resolve_char_skill(sid, ld, sv, isp):
             if k and k in stm:
                 entries = stm[k]; name = entries[0]['text']; desc = '\n'.join([x['text'] for x in entries[1:]]) if len(entries) > 1 else ''
                 break
+    if name == 'Unknown':
+        fallback = ld.get('skill_trait_name_fallback', {}).get(sid, '')
+        if fallback: name = fallback
     ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(sid, ''); icf = find_trait_icon(ri)
     return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri}
 
@@ -1924,14 +1937,24 @@ def list_characters():
                     if aid and aid != '0' and aid != 'None':
                         n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
                         if n: ab_names.append(n)
+                        trait_set_id = abil_link_map.get(aid, aid)
+                        lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+                        for tid in trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, [])):
+                            desc_lang_id = trait_data_map.get(tid, {}).get('desc_lang_id', '')
+                            if desc_lang_id:
+                                txt = (ld.get('lang_text_map', {}).get(desc_lang_id, '') or '').strip()
+                                if txt: ab_names.append(txt)
             for sk in extract_data_list(char_skill):
                 if normalize_id(sk.get('CharacterId','')) != cid: continue
                 for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
                     if sid and sid != '0':
                         res = resolve_char_skill(sid, ld, 0, False)
                         if res:
-                            if res.get('name') and res['name'] != 'Unknown':
-                                ab_names.append(res['name'])
+                            skill_name = res.get('name', '')
+                            if not skill_name or skill_name == 'Unknown':
+                                skill_name = ld.get('skill_trait_name_fallback', {}).get(sid, '')
+                            if skill_name:
+                                ab_names.append(skill_name)
                             for d in res.get('details', []):
                                 txt = d if isinstance(d, str) else (d.get('text', '') if isinstance(d, dict) else '')
                                 if txt: ab_names.append(txt)
