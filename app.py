@@ -1959,11 +1959,7 @@ def list_characters():
                                 txt = d if isinstance(d, str) else (d.get('text', '') if isinstance(d, dict) else '')
                                 if txt: ab_names.append(txt)
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
-            ss_lower = ss.lower()
-            if re.search(r'lv\s*\d', sq):
-                if sq not in ss_lower: continue
-            else:
-                if not all(w in ss_lower for w in sq.split() if w): continue
+            if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
         rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'Ranged': grown.get('Ranged',0), 'Melee': grown.get('Melee',0), 'Awaken': grown.get('Awaken',0), 'Defense': grown.get('Defense',0), 'Reaction': grown.get('Reaction',0)})
@@ -1998,11 +1994,7 @@ def list_units():
                     rn = get_ability_name_for_search(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map)
                     if rn: ab_names.append(rn)
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(ab_names)
-            ss_lower = ss.lower()
-            if re.search(r'lv\s*\d', sq):
-                if sq not in ss_lower: continue
-            else:
-                if not all(w in ss_lower for w in sq.split() if w): continue
+            if sq not in ss.lower(): continue
         raw = unit_stat_map.get(uid, {}); fs = {}
         if raw:
             for s in ['HP','EN','Attack','Defense','Mobility']:
@@ -2050,10 +2042,7 @@ def list_supporters():
             ask_str = " ".join(ask_names)
             if sq:
                 searchable = f"{name} {sid} {sts} {cb} {ask_str}".lower()
-                if re.search(r'lv\s*\d', sq):
-                    if sq not in searchable: continue
-                else:
-                    if not all(w in searchable for w in sq.split() if w): continue
+                if sq not in searchable: continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
             aic = ''
             ask = supporter_active_map.get(sid, [])
@@ -2108,10 +2097,7 @@ def list_stages():
             sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
             if sq:
                 searchable = f"{sid} {sname} {sn}".lower()
-                if re.search(r'lv\s*\d', sq):
-                    if sq not in searchable: continue
-                else:
-                    if not all(w in searchable for w in sq.split() if w): continue
+                if sq not in searchable: continue
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
             duid = est.get('display_unit_id', '0'); portrait = ''
             if duid != '0':
