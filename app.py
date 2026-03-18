@@ -1557,15 +1557,23 @@ for lang_code, paths in LANG_PATHS.items():
     mech_map = create_mechanism_map(mech_master or {}, mech_lang or {})
     
     skill_trait_name_fallback = {}
+    skill_trait_desc_fallback = {}
     if skill_trait_base:
         for item in extract_data_list(skill_trait_base):
             if isinstance(item, dict):
                 tid = normalize_id(item.get('Id') or item.get('id'))
                 nlid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+                dlid = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
                 if tid != '0' and nlid != '0':
                     entries = stm.get(nlid)
                     if entries and isinstance(entries, list) and len(entries) > 0:
-                        skill_trait_name_fallback[tid] = entries[0].get('text', '')
+                        best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+                        skill_trait_name_fallback[tid] = best.get('text', '')
+                if tid != '0' and dlid != '0':
+                    entries = stm.get(dlid)
+                    if entries and isinstance(entries, list) and len(entries) > 0:
+                        best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
+                        skill_trait_desc_fallback[tid] = best.get('text', '')
     srm = {}
     for item in extract_data_list(trait_set_data):
         if isinstance(item, dict):
@@ -1581,7 +1589,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('CharacterSkillId') or item.get('SkillId') or item.get('Id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri; (len(si) > 2 and si[:-2] not in srm and srm.update({si[:-2]: ri}))
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 print("Database ready!")
@@ -1695,16 +1703,21 @@ def resolve_char_skill(sid, ld, sv, isp):
     nlid = normalize_id(info.get('name_lang_id', '')); dlid = normalize_id(info.get('desc_lang_id', ''))
     name, desc = 'Unknown', ''
     fallback_name = ld.get('skill_trait_name_fallback', {}).get(sid, '')
+    fallback_desc = ld.get('skill_trait_desc_fallback', {}).get(sid, '')
     if nlid and nlid != '0':
         entries = stm.get(nlid)
         if entries and isinstance(entries, list) and len(entries) > 0:
-            name = entries[0].get('text', '')
+            best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+            name = best.get('text', '')
             if fallback_name and name != fallback_name:
                 name = fallback_name
     if dlid and dlid != '0':
         entries = stm.get(dlid)
         if entries and isinstance(entries, list) and len(entries) > 0:
-            desc = entries[0].get('text', '')
+            best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
+            desc = best.get('text', '') or ''
+    if fallback_desc and not desc:
+        desc = fallback_desc
     if name == 'Unknown':
         bi = sid[:-2] if len(sid) > 2 else sid
         for k in [bi, sid, sid[-9:] if len(sid) >= 9 else None]:
