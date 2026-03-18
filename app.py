@@ -1930,35 +1930,7 @@ def list_characters():
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         if sq:
-            ab_names = []
-            for ab in extract_data_list(char_abil):
-                if normalize_id(ab.get('CharacterId','')) != cid: continue
-                for aid in [normalize_id(ab.get('AbilityId','')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
-                    if aid and aid != '0' and aid != 'None':
-                        n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
-                        if n: ab_names.append(n)
-                        trait_set_id = abil_link_map.get(aid, aid)
-                        lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
-                        for tid in trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, [])):
-                            desc_lang_id = trait_data_map.get(tid, {}).get('desc_lang_id', '')
-                            if desc_lang_id:
-                                txt = (ld.get('lang_text_map', {}).get(desc_lang_id, '') or '').strip()
-                                if txt: ab_names.append(txt)
-            for sk in extract_data_list(char_skill):
-                if normalize_id(sk.get('CharacterId','')) != cid: continue
-                for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
-                    if sid and sid != '0':
-                        res = resolve_char_skill(sid, ld, 0, False)
-                        if res:
-                            skill_name = res.get('name', '')
-                            if not skill_name or skill_name == 'Unknown':
-                                skill_name = ld.get('skill_trait_name_fallback', {}).get(sid, '')
-                            if skill_name:
-                                ab_names.append(skill_name)
-                            for d in res.get('details', []):
-                                txt = d if isinstance(d, str) else (d.get('text', '') if isinstance(d, dict) else '')
-                                if txt: ab_names.append(txt)
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)])
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
