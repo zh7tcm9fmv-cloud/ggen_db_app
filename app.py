@@ -2427,12 +2427,9 @@ def get_unit(unit_id):
         for s in UNIT_STAT_ORDER:
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
-        hcond = any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER)
-        has_cond_ability = False
-        for ab in ac:
-            if _ability_has_condition_word(ab): has_cond_ability = True; break
-            if 'ssp_replacement' in ab and _ability_has_condition_word(ab['ssp_replacement']): has_cond_ability = True; break
-        hcond = hcond or has_cond_ability
+        hcond = (any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
+                 any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
+                 spc_move_flat[0] > 0 or sspc_move_flat[0] > 0)
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
             cm = 1.0 if info.get('is_ultimate', False) else mult
