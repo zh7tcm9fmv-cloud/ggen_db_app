@@ -1955,7 +1955,23 @@ def list_characters():
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         if sq:
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)])
+            ab_names = []
+            for ab in extract_data_list(char_abil):
+                if normalize_id(ab.get('CharacterId','')) != cid: continue
+                for aid in [normalize_id(ab.get('AbilityId','')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
+                    if aid and aid != '0' and aid != 'None':
+                        n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
+                        if n: ab_names.append(n)
+            for sk in extract_data_list(char_skill):
+                if normalize_id(sk.get('CharacterId','')) != cid: continue
+                for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
+                    if sid and sid != '0':
+                        sn = ld.get('skill_trait_name_fallback', {}).get(sid, '')
+                        if not sn:
+                            res = resolve_char_skill(sid, ld, 0, False)
+                            sn = res.get('name', '') if res else ''
+                        if sn: ab_names.append(sn)
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
