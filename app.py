@@ -1648,13 +1648,13 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                 if flat_move:
                     if inx: pass
-                    elif ability_cond or hc or ie or itc: cd_move_flat[0] += flat_move
+                    elif hc or ie or itc: cd_move_flat[0] += flat_move
                     else: bd_move_flat[0] += flat_move
                 for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
                     if inx: nd[s] = max(nd.get(s, 0), pct)
-                    elif ability_cond or hc or ie or itc: cd[s] = cd.get(s, 0) + pct
+                    elif hc or ie or itc: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
@@ -2392,7 +2392,7 @@ def get_unit(unit_id):
                     if flat_move:
                         if inx:
                             pass
-                        elif ability_cond or hc or ie or itc:
+                        elif hc or ie or itc:
                             cd_move_flat[0] += flat_move
                         else:
                             bd_move_flat[0] += flat_move
@@ -2403,7 +2403,7 @@ def get_unit(unit_id):
                             continue
                         if inx:
                             nd[s] = max(nd.get(s, 0), pct)
-                        elif ability_cond or hc or ie or itc:
+                        elif hc or ie or itc:
                             cd[s] = cd.get(s, 0) + pct
                         else:
                             bd[s] = bd.get(s, 0) + pct
