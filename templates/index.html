@@ -106,11 +106,11 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .weapon-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1px;background:rgba(0,0,0,.2)}.weapon-stat-item{padding:10px 8px;text-align:center}.weapon-stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.weapon-stat-value{font-size:18px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}.weapon-stat-value.highlight{color:var(--accent-blue)}
 .weapon-card-body{padding:14px 18px}.weapon-trait-item{font-size:15px;color:var(--text-secondary);line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06)}.weapon-trait-item:last-child{border-bottom:none}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
 .map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:center;padding:20px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:750px;scroll-behavior:smooth}.map-grid-container.active{display:flex}
-.map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}
+.map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .map-cell.npc-clickable{cursor:pointer;outline:2px solid transparent;transition:var(--transition)}
 .map-cell.npc-clickable:hover{outline-color:rgba(0,212,255,.55)}
 .npc-card-highlight{box-shadow:0 0 0 2px rgba(0,212,255,.75),0 0 18px rgba(0,212,255,.35);border-radius:var(--radius-lg)}
-.map-unit-dot{position:absolute;inset:2px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;text-align:center;line-height:1.1;padding:2px;overflow:hidden;z-index:2}.map-unit-dot.enemy{background:#ff4b4b;box-shadow:0 0 8px rgba(255,75,75,0.4);outline:2px solid rgba(255,75,75,0.65)}.map-unit-dot.ally{background:#4a90d9;box-shadow:0 0 8px rgba(74,144,217,0.4);outline:2px solid rgba(74,144,217,0.7)}.map-unit-dot.large{width:calc(var(--cell) * 2 - 2px);height:calc(var(--cell) * 2 - 2px);top:2px;left:2px;inset:auto;z-index:5;border-radius:12px}.map-unit-dot.large.enemy{background:rgba(255,75,75,0.92)}.map-unit-dot.large.ally{background:rgba(74,144,217,0.92)}.map-unit-thumb{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.map-unit-dot{position:absolute;inset:2px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;text-align:center;line-height:1.1;padding:2px;overflow:hidden;z-index:2}.map-unit-dot.enemy{background:#ff4b4b;box-shadow:0 0 8px rgba(255,75,75,0.4);outline:2px solid rgba(255,75,75,0.65)}.map-unit-dot.ally{background:#4a90d9;box-shadow:0 0 8px rgba(74,144,217,0.4);outline:2px solid rgba(74,144,217,0.7)}.map-unit-dot.ally.ally-guest{background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,0.4);outline:2px solid rgba(34,197,94,0.7)}.map-unit-dot.large{width:calc(var(--cell) * 2 - 2px);height:calc(var(--cell) * 2 - 2px);top:2px;left:2px;inset:auto;z-index:5;border-radius:12px}.map-unit-dot.large.enemy{background:rgba(255,75,75,0.92)}.map-unit-dot.large.ally{background:rgba(74,144,217,0.92)}.map-unit-dot.large.ally.ally-guest{background:rgba(34,197,94,0.92)}.map-unit-thumb{width:100%;height:100%;object-fit:cover;border-radius:6px}
 .map-unit-dot.ally.ally-loc{background:transparent;box-shadow:none;outline:none;padding:0}
 .map-unit-dot.ally.ally-loc .map-unit-thumb{border-radius:0;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.9))}
 
@@ -294,19 +294,20 @@ function renderStageMapGrid(md){
   for(let y=win.maxY;y>=win.minY;y--){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
-      let cls=u?`${u.side||''} ${u.is_large?'large-fill':''}`:'';
+      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_large?'large-fill':''}`:'';
       const clickNpc=(o&&o.origin&&u&&u.side==='enemy'&&u.npc_id)?` onclick="scrollToNpc('${escJs(u.npc_id)}')"`:'';
       const clickCls=(o&&o.origin&&u&&u.side==='enemy'&&u.npc_id)?' npc-clickable':'';
       html+=`<div class="map-cell ${cls}${clickCls}" title="${u?esc(`${u.name} (${u.side}) @ ${x},${y}`):`${x},${y}`}"${clickNpc}>`;
       if(o&&o.origin){
         const sl=u.side==='ally'?t('ally'):t('enemy');
         // Keep ally group location icon (UI_GTower_Minimap_Icon_OwnArmy.png) via u.portrait (no blue hue background),
-        // and rotate it to match DirectionTypeIndex.
-        const isAllyLoc=(u.side==='ally')&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.png')||String(u.npc_id||'').startsWith('ally_g'));
+        // and rotate it to match DirectionTypeIndex. Guest allies use GuestArmy icon + green tone.
+        const isAllyLoc=(u.side==='ally')&&!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.png')||String(u.npc_id||'').startsWith('ally_g'));
+        const guestCls=u.is_guest_ally?'ally-guest':'';
         const dir=String(u.direction||'0');
         const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
         const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${u.is_large?'large':''} ${isAllyLoc?'ally-loc':''}">${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt=""${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        html+=`<div class="map-unit-dot ${u.side||''} ${u.is_large?'large':''} ${isAllyLoc?'ally-loc':''} ${guestCls}">${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt=""${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
       }
       html+=`</div>`
     }

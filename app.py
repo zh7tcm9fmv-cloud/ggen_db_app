@@ -775,7 +775,8 @@ def create_map_npc_lookup(d):
         nid = normalize_id(item.get('Id') or item.get('id') or item.get('MapNpcId'))
         msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
         if nid == '0': continue
-        entry = {'id': nid, 'map_stage_id': msid, 'x': safe_int(item.get('X'), 0), 'y': safe_int(item.get('Y'), 0)}
+        bst = normalize_id(item.get('BattleSideTypeIndex') or item.get('battleSideTypeIndex') or '2')
+        entry = {'id': nid, 'map_stage_id': msid, 'x': safe_int(item.get('X'), 0), 'y': safe_int(item.get('Y'), 0), 'battle_side_type': bst, 'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower()}
         lk[nid] = entry
         if msid != '0': bms.setdefault(msid, []).append(entry)
     return lk, bms
@@ -2122,7 +2123,7 @@ def list_stages():
             if duid != '0':
                 uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
             rows.append({'id': sid, 'stage_number': sn, 'name': sname, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait})
-        rows.sort(key=lambda x: safe_int(x['id'], 0))
+        rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
@@ -2173,7 +2174,10 @@ def get_stage(stage_id):
                         bp = calculate_npc_character_self_bonus_pct(cabs)
                         boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
                         cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
-                me = {'npc_id': nid, 'name': dn, 'portrait': dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': 'enemy'}
+                is_ally = npc.get('battle_side_type', '2') == '1'
+                side = 'ally' if is_ally else 'enemy'
+                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
                 me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
@@ -2299,7 +2303,7 @@ def get_unit(unit_id):
 
         def _ability_has_condition_word(ad):
             name = (ad.get('name') or '').lower()
-            cond_words = ('condition', 'when countering', 'when counter')
+            cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
             if any(w in name for w in cond_words): return True
             for d2 in ad.get('details', []):
                 txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
