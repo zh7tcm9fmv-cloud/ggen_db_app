@@ -420,7 +420,7 @@ def find_trait_icon(resource_id):
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
-    """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum)."""
+    """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum). For list view."""
     candidates = [str(resource_id).strip()] if resource_id and str(resource_id).strip() != '0' else []
     if supporter_id: candidates.append(str(supporter_id).strip())
     for rid in candidates:
@@ -429,6 +429,20 @@ def find_supporter_portrait(resource_id, supporter_id):
         for fn in IMAGE_INDEX.get('images/Trait/thum', []):
             if rl in fn.lower():
                 return f"/static/images/Trait/thum/{fn}"
+    return None
+
+def find_supporter_full_portrait(resource_id):
+    """Find full supporter portrait (900x504) using IMAGE_INDEX (images/Supporters). For detail view."""
+    if not resource_id or str(resource_id).strip() == '0' or not IMAGE_INDEX:
+        return None
+    rid = str(resource_id).strip().lower()
+    expected = f"sb_{rid}.png"
+    for fn in IMAGE_INDEX.get('images/Supporters', []):
+        if fn.lower() == expected:
+            return f"/static/images/Supporters/{fn}"
+    for fn in IMAGE_INDEX.get('images/Supporters', []):
+        if rid in fn.lower() and fn.lower().startswith('sb_'):
+            return f"/static/images/Supporters/{fn}"
     return None
 
 # ═══════════════════════════════════════════════════════
@@ -2002,7 +2016,7 @@ def get_supporter(supporter_id):
             an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), ''); ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')
             icf = find_trait_icon(a.get('resource_id', ''))
             asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
-        portrait = find_supporter_portrait(info.get('resource_id'), supporter_id)
+        portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
         result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
