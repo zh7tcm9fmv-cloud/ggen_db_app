@@ -1862,6 +1862,12 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     elif sort_by == 'role':
         if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], r.get('role_sort',3), r['name'].lower()))
         else: rows.sort(key=lambda r: (r['rarity_sort'], -r.get('role_sort',3), r['name'].lower()))
+    elif sort_by in ('series_tag', 'boost'):
+        def _str_key(r, rev=False):
+            s = (str(r.get(sort_by, '') or '')).lower()
+            return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, r['name'].lower())
+        if sort_dir == 'asc': rows.sort(key=lambda r: _str_key(r, False))
+        else: rows.sort(key=lambda r: _str_key(r, True))
     else:
         if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], -r.get(sort_by, 0), r['name'].lower()))
         else: rows.sort(key=lambda r: (r['rarity_sort'], r.get(sort_by, 0), r['name'].lower()))
