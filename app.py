@@ -1694,21 +1694,33 @@ def resolve_char_skill(sid, ld, sv, isp):
     stm = ld.get('skill_text_map', {}); info = char_skill_info_map.get(sid, {})
     nlid = normalize_id(info.get('name_lang_id', '')); dlid = normalize_id(info.get('desc_lang_id', ''))
     name, desc = 'Unknown', ''
+    fallback_name = ld.get('skill_trait_name_fallback', {}).get(sid, '')
     if nlid and nlid != '0':
         entries = stm.get(nlid)
-        if entries and isinstance(entries, list) and len(entries) > 0: name = entries[0].get('text', '')
+        if entries and isinstance(entries, list) and len(entries) > 0:
+            name = entries[0].get('text', '')
+            if fallback_name and name != fallback_name:
+                name = fallback_name
     if dlid and dlid != '0':
         entries = stm.get(dlid)
-        if entries and isinstance(entries, list) and len(entries) > 0: desc = entries[0].get('text', '')
+        if entries and isinstance(entries, list) and len(entries) > 0:
+            desc = entries[0].get('text', '')
     if name == 'Unknown':
         bi = sid[:-2] if len(sid) > 2 else sid
         for k in [bi, sid, sid[-9:] if len(sid) >= 9 else None]:
             if k and k in stm:
-                entries = stm[k]; name = entries[0]['text']; desc = '\n'.join([x['text'] for x in entries[1:]]) if len(entries) > 1 else ''
+                entries = stm[k]
+                if entries:
+                    best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+                    name = best.get('text', '')
+                    if fallback_name and name != fallback_name:
+                        name = fallback_name
+                    if len(entries) > 1:
+                        others = [x.get('text', '') for x in entries if x.get('full_id') == dlid]
+                        if others: desc = '\n'.join(others)
                 break
-    if name == 'Unknown':
-        fallback = ld.get('skill_trait_name_fallback', {}).get(sid, '')
-        if fallback: name = fallback
+    if name == 'Unknown' and fallback_name:
+        name = fallback_name
     ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(sid, ''); icf = find_trait_icon(ri)
     return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri}
 
