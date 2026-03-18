@@ -1195,6 +1195,12 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
     return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
 
+def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
+    if not ab_id or ab_id == '0': return ''
+    trait_set_id = abil_link_map.get(ab_id, ab_id)
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    return abil_name_map.get(trait_set_id, abil_name_map.get(lookup_id, abil_name_map.get(ab_id, '')))
+
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN'):
     trait_set_id = abil_link_map.get(ab_id, ab_id)
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
@@ -1911,7 +1917,23 @@ def list_characters():
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         if sq:
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)])
+            ab_names = []
+            for ab in extract_data_list(char_abil):
+                if normalize_id(ab.get('CharacterId','')) != cid: continue
+                for aid in [normalize_id(ab.get('AbilityId','')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
+                    if aid and aid != '0' and aid != 'None':
+                        n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
+                        if n: ab_names.append(n)
+            for sk in extract_data_list(char_skill):
+                if normalize_id(sk.get('CharacterId','')) != cid: continue
+                for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
+                    if sid and sid != '0':
+                        info = char_skill_info_map.get(sid, {})
+                        nlid = normalize_id(info.get('name_lang_id', ''))
+                        if nlid:
+                            entries = ld.get('skill_text_map', {}).get(nlid)
+                            if entries: ab_names.append(entries[0].get('text', ''))
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
@@ -1937,7 +1959,16 @@ def list_units():
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name: continue
         if sq:
-            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)])
+            ab_names = []
+            ua = unit_abil_map.get(uid, [])
+            rm = unit_ssp_abil_replace_map.get(uid, {})
+            for ab in ua:
+                n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map)
+                if n: ab_names.append(n)
+                if str(ab['id']) in rm:
+                    rn = get_ability_name_for_search(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map)
+                    if rn: ab_names.append(rn)
+            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = unit_stat_map.get(uid, {}); fs = {}
         if raw:
@@ -1979,7 +2010,12 @@ def list_supporters():
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
             sts = ", ".join([t['name'] for t in all_tags]); cb = "\n".join(descs)
-            if sq and sq not in name.lower() and sq not in sid and sq not in sts.lower() and sq not in cb.lower(): continue
+            ask_names = []
+            for a in supporter_active_map.get(sid, []):
+                an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), '')
+                if an: ask_names.append(an)
+            ask_str = " ".join(ask_names)
+            if sq and sq not in name.lower() and sq not in sid and sq not in sts.lower() and sq not in cb.lower() and sq not in ask_str.lower(): continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
             aic = ''
             ask = supporter_active_map.get(sid, [])
