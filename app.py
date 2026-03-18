@@ -2443,6 +2443,13 @@ def get_unit(unit_id):
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
+@app.route('/<path:path>')
+def serve_spa(path):
+    """Serve index.html for any non-API path (SPA-style routing)."""
+    if path.startswith('api/'):
+        return jsonify({'error': 'Not found'}), 404
+    return render_template('index.html', image_cdn=IMAGE_CDN or '')
+
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:
         os.makedirs(d, exist_ok=True)
