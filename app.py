@@ -2024,7 +2024,7 @@ def list_stages():
             if duid != '0':
                 uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
             rows.append({'id': sid, 'stage_number': sn, 'name': sname, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait})
-        rows.sort(key=lambda x: (x['stage_number'], x['id']))
+        rows.sort(key=lambda x: safe_int(x['id'], 0))
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
