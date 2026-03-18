@@ -2412,15 +2412,6 @@
     "ImageResourceId": ""
   },
   {
-    "Id": 15010055,
-    "DisplayTypeIndex": 3,
-    "MotionTypeIndex": 8,
-    "QuoteLanguageId": 101200000015010055,
-    "NavigationCharacterSetId": 15010055,
-    "VoiceResourceId": "",
-    "ImageResourceId": ""
-  },
-  {
     "Id": 15010060,
     "DisplayTypeIndex": 3,
     "MotionTypeIndex": 8,
@@ -2435,15 +2426,6 @@
     "MotionTypeIndex": 8,
     "QuoteLanguageId": 101200000015010070,
     "NavigationCharacterSetId": 15010070,
-    "VoiceResourceId": "",
-    "ImageResourceId": ""
-  },
-  {
-    "Id": 15010071,
-    "DisplayTypeIndex": 3,
-    "MotionTypeIndex": 8,
-    "QuoteLanguageId": 101200000015010071,
-    "NavigationCharacterSetId": 15010071,
     "VoiceResourceId": "",
     "ImageResourceId": ""
   },

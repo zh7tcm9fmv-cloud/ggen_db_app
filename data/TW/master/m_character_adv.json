@@ -1872,6 +1872,12 @@
     "AbbreviationLanguageId": 100400001150000401
   },
   {
+    "Id": 1150000402,
+    "MapToolId": "g1500c00402",
+    "ResourceId": "g1500c00402",
+    "AbbreviationLanguageId": 100400001150000402
+  },
+  {
     "Id": 1150000500,
     "MapToolId": "g1500c00500",
     "ResourceId": "g1500c00500",

@@ -24,30 +24,6 @@
     "AllyOneUnitKillCount": 0
   },
   {
-    "Id": 300010003,
-    "LeagueEventBattleResultGroupId": 300010,
-    "PlayTimingTypeIndex": 1,
-    "PlayPriority": 11,
-    "LeagueEventBattleResultSetId": 300010003,
-    "ReachLeagueRankIndex": 6,
-    "ReachMaxScore": 0,
-    "EnemyKilledCount": 0,
-    "AllyKilledCount": 0,
-    "AllyOneUnitKillCount": 0
-  },
-  {
-    "Id": 300010004,
-    "LeagueEventBattleResultGroupId": 300010,
-    "PlayTimingTypeIndex": 2,
-    "PlayPriority": 21,
-    "LeagueEventBattleResultSetId": 300010004,
-    "ReachLeagueRankIndex": 6,
-    "ReachMaxScore": 0,
-    "EnemyKilledCount": 0,
-    "AllyKilledCount": 0,
-    "AllyOneUnitKillCount": 0
-  },
-  {
     "Id": 300010005,
     "LeagueEventBattleResultGroupId": 300010,
     "PlayTimingTypeIndex": 1,

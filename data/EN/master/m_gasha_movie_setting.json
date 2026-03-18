@@ -6,6 +6,9 @@
     "SortieMovieResourceId": "c01_d",
     "ShouldUseSpecialAssaultButton": true,
     "ShouldPlayCutInMovie": false,
-    "FallContainerMovieResourceId": "c03_1"
+    "FallContainerMovieResourceId": "c03_1",
+    "Unknown_Col_7": "",
+    "Unknown_Col_8": "",
+    "Unknown_Col_9": 0
   }
 ]

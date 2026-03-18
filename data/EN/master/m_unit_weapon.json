@@ -31812,7 +31812,7 @@
   {
     "UnitId": 1400001710,
     "WeaponId": 140000171001,
-    "SortOrder": 0,
+    "SortOrder": 2,
     "BattleMovieId": "",
     "UnitBattleMovieId": "g4000u01700",
     "WeaponBattleMovieId": "1",
@@ -31822,7 +31822,7 @@
   {
     "UnitId": 1400001710,
     "WeaponId": 140000171002,
-    "SortOrder": 0,
+    "SortOrder": 3,
     "BattleMovieId": "",
     "UnitBattleMovieId": "g4000u01700",
     "WeaponBattleMovieId": "2",

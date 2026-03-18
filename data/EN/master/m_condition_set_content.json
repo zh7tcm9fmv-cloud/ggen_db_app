@@ -448,5 +448,10 @@
     "ConditionSetId": 99082603200001,
     "ConditionId": 9908260320000101,
     "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082603300001,
+    "ConditionId": 9908260330000101,
+    "SortOrder": 1
   }
 ]

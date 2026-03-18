@@ -9,7 +9,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410010102,
@@ -21,7 +22,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410010104,
@@ -33,7 +35,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410020101,
@@ -45,7 +48,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 1,
     "IsShown": false,
-    "BalloonTextLanguageId": 220400002504100201
+    "BalloonTextLanguageId": 220400002504100201,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410050101,
@@ -57,7 +61,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410050201,
@@ -69,7 +74,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410050301,
@@ -81,7 +87,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250410050401,
@@ -93,7 +100,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250430030101,
@@ -105,7 +113,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250430030102,
@@ -117,7 +126,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250510030101,
@@ -129,7 +139,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250510030102,
@@ -141,7 +152,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250520040101,
@@ -153,7 +165,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250520040102,
@@ -165,7 +178,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250520050101,
@@ -177,7 +191,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250520050201,
@@ -189,7 +204,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250540030101,
@@ -201,7 +217,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250540030102,
@@ -213,7 +230,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250610030201,
@@ -225,7 +243,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250610030202,
@@ -237,7 +256,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250620040101,
@@ -249,7 +269,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250620040102,
@@ -261,7 +282,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250630030101,
@@ -273,7 +295,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250630030102,
@@ -285,7 +308,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250710030201,
@@ -297,7 +321,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250710030202,
@@ -309,7 +334,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250720040101,
@@ -321,7 +347,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250720040102,
@@ -333,7 +360,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250730030101,
@@ -345,7 +373,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250730030102,
@@ -357,7 +386,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250810030201,
@@ -369,7 +399,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250810030202,
@@ -381,7 +412,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250820040101,
@@ -393,7 +425,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250820040102,
@@ -405,7 +438,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250830030101,
@@ -417,7 +451,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250830030102,
@@ -429,7 +464,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250920040101,
@@ -441,7 +477,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250920040102,
@@ -453,7 +490,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250930030101,
@@ -465,7 +503,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250930030102,
@@ -477,7 +516,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960030101,
@@ -489,7 +529,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960030102,
@@ -501,7 +542,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960050101,
@@ -513,7 +555,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960060101,
@@ -525,7 +568,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 1,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002509600601
+    "BalloonTextLanguageId": 220400002509600601,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960060102,
@@ -537,7 +581,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 1,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002509600601
+    "BalloonTextLanguageId": 220400002509600601,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 250960060103,
@@ -549,7 +594,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 1,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002509600601
+    "BalloonTextLanguageId": 220400002509600601,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251030030101,
@@ -561,7 +607,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251030030102,
@@ -573,7 +620,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251030050101,
@@ -585,7 +633,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251070040101,
@@ -597,7 +646,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251070040102,
@@ -609,7 +659,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251080030101,
@@ -621,7 +672,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251080030102,
@@ -633,7 +685,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251110030201,
@@ -645,7 +698,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251110030202,
@@ -657,7 +711,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251110050101,
@@ -669,7 +724,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251130040101,
@@ -681,7 +737,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251130040102,
@@ -693,7 +750,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251140030101,
@@ -705,7 +763,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251140030102,
@@ -717,7 +776,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251210030101,
@@ -729,7 +789,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251210030102,
@@ -741,7 +802,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251210050101,
@@ -753,7 +815,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251230040101,
@@ -765,7 +828,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251230040102,
@@ -777,7 +841,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251230060101,
@@ -789,7 +854,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 1,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251240030101,
@@ -801,7 +867,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251240030102,
@@ -813,7 +880,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251240050101,
@@ -825,7 +893,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 251240050201,
@@ -837,7 +906,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260120030201,
@@ -849,7 +919,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260120030202,
@@ -861,7 +932,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260120050101,
@@ -873,7 +945,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260140040101,
@@ -885,7 +958,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260140040102,
@@ -897,7 +971,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260150030101,
@@ -909,7 +984,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260150030102,
@@ -921,7 +997,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260220030201,
@@ -933,7 +1010,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260220030202,
@@ -945,7 +1023,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260220050101,
@@ -957,7 +1036,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260220050201,
@@ -969,7 +1049,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260220050301,
@@ -981,7 +1062,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": false,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260230040101,
@@ -993,7 +1075,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260230040102,
@@ -1005,7 +1088,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260240030101,
@@ -1017,7 +1101,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260240030102,
@@ -1029,7 +1114,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260240050101,
@@ -1041,7 +1127,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260320030201,
@@ -1053,7 +1140,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260320030202,
@@ -1065,7 +1153,8 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 220400002504100101
+    "BalloonTextLanguageId": 220400002504100101,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260320050101,
@@ -1077,6 +1166,7 @@
     "LimitRollCountResetTypeIndex": 1,
     "LimitCount": 0,
     "IsShown": true,
-    "BalloonTextLanguageId": 0
+    "BalloonTextLanguageId": 0,
+    "Unknown_Col_10": 0
   }
 ]

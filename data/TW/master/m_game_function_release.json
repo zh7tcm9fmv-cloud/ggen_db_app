@@ -156,32 +156,32 @@
   },
   {
     "GameFunctionReleaseGroupId": 123,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 35,
     "ReleaseScheduleId": 9999990001
   },
   {
     "GameFunctionReleaseGroupId": 124,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 34,
     "ReleaseScheduleId": 9999990001
   },
   {
     "GameFunctionReleaseGroupId": 125,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 39,
     "ReleaseScheduleId": 9999990001
   },
   {
     "GameFunctionReleaseGroupId": 126,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 36,
     "ReleaseScheduleId": 9999990001
   },
   {
     "GameFunctionReleaseGroupId": 127,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 37,
     "ReleaseScheduleId": 9999990001
   },
   {
     "GameFunctionReleaseGroupId": 128,
-    "GameFunctionTypeIndex": 0,
+    "GameFunctionTypeIndex": 38,
     "ReleaseScheduleId": 9999990001
   }
 ]

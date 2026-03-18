@@ -17,7 +17,7 @@
   },
   {
     "Id": 300010003,
-    "LeagueEventBattleResultSetId": 300010003,
+    "LeagueEventBattleResultSetId": 300010001,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_01",
     "VoiceResourceId": "vc_masterleague_0001_btl_0005",
     "QuoteLanguageId": 250400000300010003,
@@ -25,7 +25,7 @@
   },
   {
     "Id": 300010004,
-    "LeagueEventBattleResultSetId": 300010004,
+    "LeagueEventBattleResultSetId": 300010002,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_01",
     "VoiceResourceId": "vc_masterleague_0001_btl_0007",
     "QuoteLanguageId": 250400000300010004,

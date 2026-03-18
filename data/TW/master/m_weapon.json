@@ -7099,7 +7099,7 @@
     "WeaponLevelUpMaterialSetId": 30012,
     "WeaponEffectPrefabPairSetId": 350032,
     "ExShortWeaponEffectPrefabPairSetId": 0,
-    "IsFullAnimation": false,
+    "IsFullAnimation": true,
     "MapWeaponDescriptionLanguageId": 0,
     "MapWeaponRangeTypeIndex": 0,
     "MapWeaponTraitCategoryTypeIndex": 0,

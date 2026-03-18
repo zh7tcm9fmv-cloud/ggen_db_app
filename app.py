@@ -2321,7 +2321,7 @@ def get_unit(unit_id):
             if tn in ssp_enhanced_terrains and lv >= 2:
                 return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP[3]}"
             return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"
-        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn)} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
+        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
         for wp in unit_weapon_map.get(unit_id, []):
             wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')

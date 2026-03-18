@@ -855,6 +855,11 @@
     "CharacterId": 1150000400
   },
   {
+    "CharacterCollectionBookId": 15000003,
+    "DisplayPriority": 1150000402,
+    "CharacterId": 1150000402
+  },
+  {
     "CharacterCollectionBookId": 15000004,
     "DisplayPriority": 1150000900,
     "CharacterId": 1150000900

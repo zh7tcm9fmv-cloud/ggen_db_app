@@ -19,5 +19,26 @@
     "SkipCharacterCutInBromideResourceId": "ml_skip_character_cutin_bromide_300010",
     "SkipCharacterCutInVoiceResourceId": "vc_masterleague_0001_btl_0025",
     "BattleStartVoiceResourceId": "vc_masterleague_0001_btl_0001"
+  },
+  {
+    "Id": 300011,
+    "EventLogoResourceId": "ml_motif_logo_300011",
+    "TopBackgroundResourceId": "ml_top_background_300010",
+    "BattleBackgroundResourceId": "ml_battle_background_300010",
+    "StageTopButtonImageResourceId": "ml_stage_top_thumbnail_300010",
+    "PurchasedBattleBgmId": 120009003,
+    "PurchasedOutGameBgmId": 120009001,
+    "PurchasedChallengeModeBgmId": 120009002,
+    "LeagueEventCutInGroupId": 300010,
+    "InBattleCutInProbabilityPermil": 700,
+    "LeagueEventBattleResultGroupId": 300010,
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "OpeningPictureStoryGroupId": 30001101,
+    "NextPreviewPictureStoryGroupId": 30001002,
+    "SortieButtonVoiceResourceId": "",
+    "LeagueEventOutgameCharacterCutInGroupId": 300010,
+    "SkipCharacterCutInBromideResourceId": "ml_skip_character_cutin_bromide_300010",
+    "SkipCharacterCutInVoiceResourceId": "vc_masterleague_0001_btl_0025",
+    "BattleStartVoiceResourceId": "vc_masterleague_0001_btl_0001"
   }
 ]

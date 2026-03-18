@@ -552,6 +552,10 @@
     "Value": "100020001"
   },
   {
+    "ConfigTypeIndex": 204,
+    "Value": "100000072"
+  },
+  {
     "ConfigTypeIndex": 300,
     "Value": "1081"
   },
@@ -618,5 +622,17 @@
   {
     "ConfigTypeIndex": 418,
     "Value": "80"
+  },
+  {
+    "ConfigTypeIndex": 420,
+    "Value": "9999990001"
+  },
+  {
+    "ConfigTypeIndex": 421,
+    "Value": "9999990001"
+  },
+  {
+    "ConfigTypeIndex": 423,
+    "Value": "5"
   }
 ]

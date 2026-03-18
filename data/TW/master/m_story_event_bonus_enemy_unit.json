@@ -271,30 +271,6 @@
   },
   {
     "StoryEventId": 200008,
-    "MapNpcId": 17006000302000016,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000017,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000018,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000019,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
     "MapNpcId": 17006000302000020,
     "EventPoint": 4,
     "PointGainEffectIconCount": 4
@@ -331,37 +307,7 @@
   },
   {
     "StoryEventId": 200008,
-    "MapNpcId": 17006000302000026,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000027,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000028,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000029,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
     "MapNpcId": 17006000302000030,
-    "EventPoint": 7,
-    "PointGainEffectIconCount": 7
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000031,
     "EventPoint": 7,
     "PointGainEffectIconCount": 7
   },
@@ -373,24 +319,6 @@
   },
   {
     "StoryEventId": 200008,
-    "MapNpcId": 17006000302000033,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000034,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000035,
-    "EventPoint": 4,
-    "PointGainEffectIconCount": 4
-  },
-  {
-    "StoryEventId": 200008,
     "MapNpcId": 17006000302000036,
     "EventPoint": 2,
     "PointGainEffectIconCount": 2
@@ -398,30 +326,6 @@
   {
     "StoryEventId": 200008,
     "MapNpcId": 17006000302000037,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000038,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000039,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000040,
-    "EventPoint": 2,
-    "PointGainEffectIconCount": 2
-  },
-  {
-    "StoryEventId": 200008,
-    "MapNpcId": 17006000302000041,
     "EventPoint": 2,
     "PointGainEffectIconCount": 2
   }
