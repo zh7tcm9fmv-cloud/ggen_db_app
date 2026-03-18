@@ -1928,11 +1928,13 @@ def list_characters():
                 if normalize_id(sk.get('CharacterId','')) != cid: continue
                 for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
                     if sid and sid != '0':
-                        info = char_skill_info_map.get(sid, {})
-                        nlid = normalize_id(info.get('name_lang_id', ''))
-                        if nlid:
-                            entries = ld.get('skill_text_map', {}).get(nlid)
-                            if entries: ab_names.append(entries[0].get('text', ''))
+                        res = resolve_char_skill(sid, ld, 0, False)
+                        if res:
+                            if res.get('name') and res['name'] != 'Unknown':
+                                ab_names.append(res['name'])
+                            for d in res.get('details', []):
+                                txt = d if isinstance(d, str) else (d.get('text', '') if isinstance(d, dict) else '')
+                                if txt: ab_names.append(txt)
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
