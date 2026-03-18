@@ -2109,7 +2109,9 @@ def get_supporter(supporter_id):
 def list_stages():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower(); ck = f"stages_{lc}_{page}_{pp}_{sq}"
+        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
+        df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
+        ck = f"stages_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -2119,11 +2121,16 @@ def list_stages():
                 searchable = f"{sid} {sname} {sn}".lower()
                 if sq not in searchable: continue
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
+            if df != 'all' and df != '' and diff['code'] != df: continue
             duid = est.get('display_unit_id', '0'); portrait = ''
             if duid != '0':
                 uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
             rows.append({'id': sid, 'stage_number': sn, 'name': sname, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait})
-        rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
+        if sb == 'stage_number':
+            if sd == 'asc': rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
+            else: rows.sort(key=lambda x: (-safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
+        else:
+            rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
