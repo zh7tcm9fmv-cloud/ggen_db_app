@@ -1643,18 +1643,23 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
             if not parts: parts = [txt]
+            cond_prefix = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
+                part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
+                if itc and not part_stats and not flat_move:
+                    cond_prefix = True
+                is_cond = itc or cond_prefix
                 if flat_move:
                     if inx: pass
-                    elif hc or ie or itc: cd_move_flat[0] += flat_move
+                    elif hc or ie or is_cond: cd_move_flat[0] += flat_move
                     else: bd_move_flat[0] += flat_move
-                for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
+                for s, pct in part_stats.items():
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
                     if inx: nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or itc: cd[s] = cd.get(s, 0) + pct
+                    elif hc or ie or is_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
@@ -2386,24 +2391,29 @@ def get_unit(unit_id):
                 txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
                 parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
                 if not parts: parts = [txt]
+                cond_prefix = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
+                    part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                     flat_move = _extract_stat_flat_move(part, skip_conditional=False)
+                    if itc and not part_stats and not flat_move:
+                        cond_prefix = True
+                    is_cond = itc or cond_prefix
                     if flat_move:
                         if inx:
                             pass
-                        elif hc or ie or itc:
+                        elif hc or ie or is_cond:
                             cd_move_flat[0] += flat_move
                         else:
                             bd_move_flat[0] += flat_move
-                    for s, pct in _extract_stat_percent_unit(part, skip_conditional=False).items():
+                    for s, pct in part_stats.items():
                         if s == 'Move': continue
                         if unit_id == '1400000550' and s == 'HP' and pct == 5:
                             bd[s] = bd.get(s, 0) + pct
                             continue
                         if inx:
                             nd[s] = max(nd.get(s, 0), pct)
-                        elif hc or ie or itc:
+                        elif hc or ie or is_cond:
                             cd[s] = cd.get(s, 0) + pct
                         else:
                             bd[s] = bd.get(s, 0) + pct
