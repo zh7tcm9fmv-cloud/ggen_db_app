@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>GGen Database</title>
 <style>
-@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf') format('truetype');font-weight:normal;font-style:normal}
-@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/A-OTF-ShinGoPr6-DeBold.otf') format('opentype');font-weight:800;font-style:normal}
+@font-face{font-family:'RobotoMediumNumbers';src:url('{% if image_cdn %}{{ image_cdn }}/font/roboto_medium_numbers.ttf{% else %}https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/font/roboto_medium_numbers.ttf{% endif %}') format('truetype');font-weight:normal;font-style:normal}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/A-OTF-ShinGoPr6-DeBold.otf{% else %}https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/font/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:800;font-style:normal}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#e8eaf0;--text-secondary:#8896b3;--text-muted:#5a6a8a;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-lg:0 8px 30px rgba(0,0,0,0.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}

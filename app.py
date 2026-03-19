@@ -2281,9 +2281,10 @@ def get_character(char_id):
         fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId','')) == char_id]
         def build_ab(ab, lang=lc):
             bid = normalize_id(ab.get('AbilityId','')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
-            bab = build_ability_entry(bid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
+            d = ldc if lang == CALC_LANG else ld
+            bab = build_ability_entry(bid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
             if spid and spid != '0' and spid != 'None' and spid != bid:
-                bab['sp_replacement'] = build_ability_entry(spid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
+                bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder',0)), lang_code=lang)
             return bab
         abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
         ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
