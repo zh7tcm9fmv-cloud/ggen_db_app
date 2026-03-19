@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, make_response
 import json
 import os
 import re
@@ -1983,9 +1983,16 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
 # ROUTES
 # ═══════════════════════════════════════════════════════
 
+def _serve_index():
+    r = make_response(render_template('index.html', image_cdn=IMAGE_CDN or ''))
+    r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    r.headers['Pragma'] = 'no-cache'
+    r.headers['Expires'] = '0'
+    return r
+
 @app.route('/')
-def index(): 
-    return render_template('index.html', image_cdn=IMAGE_CDN or '')
+def index():
+    return _serve_index()
 
 @app.route('/api/languages')
 def get_languages(): 
@@ -2662,7 +2669,7 @@ def serve_spa(path):
     """Serve index.html for any non-API path (SPA-style routing)."""
     if path.startswith('api/'):
         return jsonify({'error': 'Not found'}), 404
-    return render_template('index.html', image_cdn=IMAGE_CDN or '')
+    return _serve_index()
 
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:
