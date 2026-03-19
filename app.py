@@ -845,7 +845,7 @@ def create_skill_text_map(d):
     return lookup
 
 def calc_growth_char(base, mx, ri):
-    return mx
+    gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
 def extract_stat_percent_char(text):
     bonuses = {}; tl = text.lower()
@@ -922,9 +922,9 @@ def create_unit_ability_map(d):
     return lookup
 
 def calc_growth_unit_base(base, mx, ri):
-    return mx
+    gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 def calc_growth_unit(base, mx, ri):
-    return math.floor(mx * 1.4)
+    grown = calc_growth_unit_base(base, mx, ri); return math.floor(grown * 1.4)
 
 def extract_stat_bonus_unit(text, fs):
     bonuses = {}; tl = text.lower()
@@ -2277,7 +2277,7 @@ def get_character(char_id):
         raw = char_stat_map.get(char_id, {}); has_sp = int(ri) <= 4
         def rv(s): t = raw.get(s, (0,0,0)); return (t[0], t[1], t[2] if len(t) >= 3 else t[1])
         grown = {s: calc_growth_char(rv(s)[0], rv(s)[1], ri) for s in CHAR_STAT_ORDER}
-        grown_sp = {s: calc_growth_char(rv(s)[0], rv(s)[2], ri) for s in CHAR_STAT_ORDER}
+        grown_sp = {s: rv(s)[2] for s in CHAR_STAT_ORDER}
         fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId','')) == char_id]
         def build_ab(ab, lang=lc):
             bid = normalize_id(ab.get('AbilityId','')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
