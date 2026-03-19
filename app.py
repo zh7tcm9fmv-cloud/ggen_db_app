@@ -682,16 +682,35 @@ def create_supporter_info_map(m):
                 lookup[s] = {'rarity': normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1'), 'hp_add': int(item.get('MaxHpAdditionValue') or item.get('maxHpAdditionValue') or 0), 'atk_add': int(item.get('MaxAttackAdditionValue') or item.get('maxAttackAdditionValue') or 0), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '')}
     return lookup
 
+def create_supporter_growth_map(d):
+    """(level, limit_break_step) -> ParameterCorrectionRateBasisPoint (10000=100%)"""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict): continue
+        lv = int(item.get('Level') or item.get('level') or 1)
+        lb = int(item.get('LimitBreakStep') or item.get('limitBreakStep') or 0)
+        rate = int(item.get('ParameterCorrectionRateBasisPoint') or item.get('parameterCorrectionRateBasisPoint') or 10000)
+        lookup[(lv, lb)] = rate
+    return lookup
+
 def create_supporter_leader_skill_map(d):
+    """supporter_id -> list of {tier, desc_lang_id, trait_cond_id, sort}. tier 0-3 from last 2 digits of set_id."""
     lookup = {}
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         si = str(item.get('SupporterLeaderSkillContentSetId') or item.get('supporterLeaderSkillContentSetId') or item.get('Id') or item.get('id') or '')
-        if not si: continue
-        if si.endswith('03') or si.endswith('3'):
-            sp = str(item.get('SupporterId') or item.get('supporterId') or si[:10])
-            lookup.setdefault(sp, []).append({'set_id': si, 'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'trait_cond_id': normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId')), 'sort': int(item.get('SortOrder') or item.get('sortOrder') or 0)})
-    for k in lookup: lookup[k].sort(key=lambda x: x['sort'])
+        if not si or len(si) < 2: continue
+        sp = str(item.get('SupporterId') or item.get('supporterId') or si[:-2])
+        tier = int(si[-2:]) if len(si) >= 2 else 0
+        if tier > 3: tier = 3
+        lookup.setdefault(sp, []).append({
+            'tier': tier, 'set_id': si,
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'trait_cond_id': normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId')),
+            'sort': int(item.get('SortOrder') or item.get('sortOrder') or 0)
+        })
+    for k in lookup:
+        lookup[k].sort(key=lambda x: (x['tier'], x['sort']))
     return lookup
 
 def create_supporter_active_skill_map(d):
@@ -1295,6 +1314,7 @@ weapon_trait_base_data = load_json(os.path.join(BASE_DIR, "m_weapon_trait.json")
 mech_master = load_json(os.path.join(BASE_DIR, "m_mechanism.json"))
 skill_trait_base = load_json(os.path.join(BASE_DIR, "m_character_skill_trait.json"))
 supporter_master = load_json(os.path.join(BASE_DIR, "m_supporter.json"))
+supporter_growth_data = load_json(os.path.join(BASE_DIR, "m_supporter_growth.json"))
 supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_skill_content.json"))
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
@@ -1329,6 +1349,7 @@ trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
 char_info_map = create_char_info_map(char_master); char_stat_map = create_char_status_map(char_status)
 char_lin_map = create_char_lineage_link_map(char_lineage_data)
 supporter_info_map = create_supporter_info_map(supporter_master) if supporter_master else {}
+supporter_growth_map = create_supporter_growth_map(supporter_growth_data) if supporter_growth_data else {}
 supporter_leader_map = create_supporter_leader_skill_map(supporter_leader_data) if supporter_leader_data else {}
 supporter_active_map = create_supporter_active_skill_map(supporter_active_data) if supporter_active_data else {}
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
@@ -2171,6 +2192,7 @@ def list_supporters():
             if not name: continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
+                if ls.get('tier') != 3: continue
                 desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
                 tags = resolve_condition_tags(ls.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
                 if desc: descs.append(desc)
@@ -2205,15 +2227,21 @@ def list_supporters():
 @app.route('/api/supporter/<supporter_id>')
 def get_supporter(supporter_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"s_{supporter_id}_{lc}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        level = min(100, max(1, int(request.args.get('level', 100))))
+        lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
+        ck = f"s_{supporter_id}_{lc}_{level}_{lb_tier}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
         if not info: return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         ri = info.get('rarity', '1'); lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
-        hps = math.floor(info.get('hp_add', 0) * 1.4); atks = math.floor(info.get('atk_add', 0) * 1.4)
+        base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
+        rate = supporter_growth_map.get((level, lb_tier), 10000)
+        hps = math.floor(base_hp * rate / 10000); atks = math.floor(base_atk * rate / 10000)
         ls = []
         for l in supporter_leader_map.get(supporter_id, []):
+            if l.get('tier') != lb_tier: continue
             desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
             tags = resolve_condition_tags(l.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
             sep = 'and' if '44%' in desc else ('or' if '36%' in desc else 'default')
@@ -2224,7 +2252,7 @@ def get_supporter(supporter_id):
             icf = find_trait_icon(a.get('resource_id', ''))
             asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
         portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
-        result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc}
+        result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc, 'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk, 'growth_rate_basis': rate}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
