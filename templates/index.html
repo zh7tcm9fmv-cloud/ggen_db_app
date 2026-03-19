@@ -253,10 +253,10 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .dc-wpn-info span{display:flex;align-items:center;gap:4px}
 .dc-wpn-info .val{color:var(--text-primary);font-weight:700;font-family:'RobotoMediumNumbers',monospace}
 .dc-controls{padding:0 24px 16px}
-.dc-controls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.dc-ctrl-group{display:flex;flex-direction:column;gap:4px}
+.dc-controls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.dc-ctrl-group{display:flex;flex-direction:column;gap:4px;min-width:0}
 .dc-ctrl-label{font-size:11px;color:var(--text-muted);font-weight:600}
-.dc-ctrl-toggle{display:flex;gap:6px}
+.dc-ctrl-toggle{display:flex;flex-wrap:wrap;gap:6px}
 .dc-ctrl-btn{padding:5px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .dc-ctrl-btn.active{background:rgba(0,212,255,.1);color:var(--accent-cyan);border-color:var(--accent-cyan)}
 .dc-ctrl-btn:hover{border-color:var(--accent-cyan)}
@@ -1510,9 +1510,10 @@ const type=S._dcPickerType;
 const items=S._dcPickerCache.filter(r=>!q||(r.name||'').toLowerCase().includes(q)||(r.details||'').toLowerCase().includes(q));
 const body=document.getElementById('dcPickerBody');
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
+const skipImg=!!q;
 body.innerHTML=items.slice(0,200).map(r=>{
-const badges=type==='option_parts'?(r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''):`${r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''}${r.role_icon?`<img src="${imgUrl(r.role_icon)}" alt="">`:''}`;
-const thum=r.thum?`<img src="${imgUrl(r.thum)}" alt="" onerror="this.style.display='none'">`:'';
+const badges=skipImg?'':(type==='option_parts'?(r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''):`${r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''}${r.role_icon?`<img src="${imgUrl(r.role_icon)}" alt="">`:''}`);
+const thum=skipImg?'':(r.thum?`<img src="${imgUrl(r.thum)}" alt="" onerror="this.style.display='none'">`:'');
 return`<div class="cmp-picker-item" onclick="pickDcItem('${r.id}')">
 ${thum}<div><div class="cmp-picker-item-name">${esc(r.name)}</div><div class="cmp-picker-item-badges">${badges}</div>${r.details?`<div class="cmp-picker-item-detail" style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc((r.details||'').substring(0,60))}${(r.details||'').length>60?'...':''}</div>`:''}</div></div>`
 }).join('');
