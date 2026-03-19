@@ -912,6 +912,15 @@ def create_unit_lineage_link_map(d):
         if uid != '0' and lid != '0': lookup.setdefault(uid, []); (lid not in lookup[uid] and lookup[uid].append(lid))
     return lookup
 
+def create_option_parts_lineage_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict): continue
+        opid = normalize_id(item.get('OptionPartsId') or item.get('optionPartsId'))
+        lid = normalize_id(item.get('LineageId') or item.get('lineageId'))
+        if opid != '0' and lid != '0': lookup.setdefault(opid, []); (lid not in lookup[opid] and lookup[opid].append(lid))
+    return lookup
+
 def create_unit_ability_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -1311,6 +1320,8 @@ ssp_custom_core_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core.
 ssp_release_fn_content_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_release_function_set_content.json"))
 ssp_weap_enhance_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_enhance_set.json"))
 ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_effect.json"))
+option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
+option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
@@ -1344,6 +1355,7 @@ if map_stage_group_initial_placement_data:
 char_skill_info_map = create_char_skill_info_map(char_skill_base_data) if char_skill_base_data else {}
 unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_unit_status_map(unit_status_data)
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
+option_parts_lineage_map = create_option_parts_lineage_map(option_parts_lineage_data) if option_parts_lineage_data else {}
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
@@ -1538,6 +1550,7 @@ for lang_code, paths in LANG_PATHS.items():
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
     stage_lang_text = load_json(os.path.join(lang_dir, "m_eternal_road_stage.json")); stage_battle_condition_text_lang = load_json(os.path.join(lang_dir, "m_stage_battle_condition_text.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
+    op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
     
     anm, adm = create_ability_maps(extract_data_list(trait_name_data), extract_data_list(trait_desc_data))
     ll = create_lineage_list(lineage_text); llk = create_lineage_lookup(lineage_text)
@@ -1556,6 +1569,7 @@ for lang_code, paths in LANG_PATHS.items():
     wtm2 = create_weapon_text_map(weapon_text_data); wtrm = create_weapon_trait_map(BASE_DIR, lang_dir)
     wcam = create_weapon_capability_map(BASE_DIR, lang_dir); wtdm = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
     mech_map = create_mechanism_map(mech_master or {}, mech_lang or {})
+    op_text_map = create_lang_text_map(op_lang_data) if op_lang_data else {}
     
     skill_trait_name_fallback = {}
     skill_trait_desc_fallback = {}
@@ -1590,7 +1604,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('CharacterSkillId') or item.get('SkillId') or item.get('Id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri; (len(si) > 2 and si[:-2] not in srm and srm.update({si[:-2]: ri}))
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 print("Database ready!")
@@ -1933,7 +1947,7 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     elif sort_by == 'role':
         if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], r.get('role_sort',3), r['name'].lower()))
         else: rows.sort(key=lambda r: (r['rarity_sort'], -r.get('role_sort',3), r['name'].lower()))
-    elif sort_by in ('series_tag', 'boost'):
+    elif sort_by in ('series_tag', 'boost', 'details'):
         def _str_key(r, rev=False):
             s = (str(r.get(sort_by, '') or '')).lower()
             return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, r['name'].lower())
@@ -2097,6 +2111,51 @@ def list_units():
     start = (page - 1) * pp; pr = rows[start:start + pp]
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': rf}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+
+@app.route('/api/option_parts')
+def list_option_parts():
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
+        sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
+        ck = f"op_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+        cached = get_cached_response(ck)
+        if cached: return jsonify(cached)
+        if not option_parts_data: return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1})
+        ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); llk = ld.get('lineage_lookup', {}); ltm = ld.get('lang_text_map', {})
+        rows = []
+        for item in extract_data_list(option_parts_data):
+            if not isinstance(item, dict): continue
+            opid = str(item.get('Id') or item.get('id', 0))
+            if opid == '0': continue
+            ri = str(item.get('RarityTypeIndex') or 1)
+            if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
+            name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
+            name = op_text_map.get(name_lid, '') if name_lid else ''
+            if not name: name = f'Option Part {opid}'
+            trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+            trait_ids = trait_set_traits_map.get(trait_set_id, [])
+            details_list = []
+            for tid in trait_ids:
+                tdata = trait_data_map.get(tid, {}); dlid = tdata.get('desc_lang_id', '')
+                if dlid: desc = ltm.get(dlid, ''); (desc and details_list.append(desc.strip()))
+            details = ' '.join(details_list) if details_list else ''
+            lineage_ids = option_parts_lineage_map.get(opid, [])
+            tags = [llk.get(lid, '') for lid in lineage_ids if llk.get(lid)]
+            tags_str = ' '.join(tags)
+            if sq:
+                searchable = f"{name} {details} {tags_str}".lower()
+                if sq not in searchable: continue
+            res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+            icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
+            rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags})
+        rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details'})
+        total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
+        start = (page - 1) * pp; pr = rows[start:start + pp]
+        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rf}
+        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
 @app.route('/api/supporters')
 def list_supporters():
