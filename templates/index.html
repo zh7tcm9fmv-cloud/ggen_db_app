@@ -367,7 +367,7 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 </div>
 <div class="dc-panel">
 <div class="dc-panel-title" id="dcDefLabel">NPC TARGET (Defender)</div>
-<div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div>
+<div class="dc-panel-section"><div class="dc-section-label">Target</div><div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div></div>
 <div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
 <div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
 </div>
@@ -429,7 +429,7 @@ function tStat(name){const m=STAT_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},units:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[]};
+const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},units:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[]};
 document.addEventListener('DOMContentLoaded',async()=>{document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys()});
 async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];S.lang=d.default||'EN';document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(e){S.languages=['EN']}}
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
@@ -1306,7 +1306,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 
 function openDmgCalc(){
 const d=S.currentDetailData;if(!d)return;
-S.dc.defNpc=null;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
+S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
 document.getElementById('dcOverlay').classList.add('active');
 document.getElementById('dcTitle').textContent=t('dc_title');
 document.getElementById('dcAtkLabel').textContent=t('dc_atk_label');
@@ -1393,9 +1393,9 @@ onDcParamChange();
 
 function renderDcNpcDropdown(){
 const sel=document.getElementById('dcNpcSelect');
-const d=S.currentDetailData;
-if(!d||!d.npc_details||!d.npc_details.length){sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`;return}
-sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`+d.npc_details.map((n,i)=>{
+const list=S.dc.npcList||[];
+if(!list.length){sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`;return}
+sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`+list.map((n,i)=>{
 const name=n.unit?.name||n.character?.name||`NPC ${n.npc_id}`;
 return`<option value="${i}">${esc(name)}</option>`
 }).join('');
@@ -1404,8 +1404,9 @@ return`<option value="${i}">${esc(name)}</option>`
 function selectDcNpc(){
 const sel=document.getElementById('dcNpcSelect');
 const idx=sel.value;
+const list=S.dc.npcList||[];
 if(idx===''){S.dc.defNpc=null}
-else{S.dc.defNpc=S.currentDetailData.npc_details[parseInt(idx)]}
+else{const i=parseInt(idx,10);S.dc.defNpc=(i>=0&&i<list.length)?list[i]:null}
 renderDcDefStats();onDcParamChange();
 }
 
