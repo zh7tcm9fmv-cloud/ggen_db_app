@@ -845,7 +845,7 @@ def create_skill_text_map(d):
     return lookup
 
 def calc_growth_char(base, mx, ri):
-    gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
+    return mx
 
 def extract_stat_percent_char(text):
     bonuses = {}; tl = text.lower()
