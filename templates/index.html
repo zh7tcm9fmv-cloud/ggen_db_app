@@ -230,8 +230,9 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .dc-title{font-size:20px;font-weight:800;color:var(--accent-cyan);padding:20px 24px 12px;display:flex;align-items:center;gap:8px}
 .dc-title::before{content:'⚔';font-size:18px}
 .dc-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px 16px}
-.dc-panel{background:rgba(26,34,54,.5);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:16px;display:flex;flex-direction:column;gap:12px}
+.dc-panel{background:rgba(26,34,54,.5);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;display:flex;flex-direction:column;gap:16px}
 .dc-panel-title{font-size:15px;font-weight:800;color:var(--accent-gold);margin-bottom:4px}
+.dc-panel-section{background:rgba(0,0,0,.15);border-radius:var(--radius-sm);padding:12px;margin-top:4px}
 .dc-pick-btn{padding:10px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);cursor:pointer;font-size:13px;font-weight:600;text-align:center;transition:var(--transition)}
 .dc-pick-btn:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
 .dc-picked{display:flex;align-items:center;gap:12px;padding:8px;background:rgba(0,0,0,.2);border-radius:var(--radius-sm);border:1px solid var(--border-color)}
@@ -242,8 +243,8 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .dc-picked-badges img{height:20px}
 .dc-picked-change{padding:4px 8px;font-size:11px;background:transparent;border:1px solid var(--border-color);color:var(--text-muted);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0}
 .dc-picked-change:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
-.dc-stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
-.dc-stat-mini{text-align:center;padding:4px;background:rgba(0,0,0,.15);border-radius:4px}
+.dc-stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.dc-stat-mini{text-align:center;padding:8px;background:rgba(0,0,0,.2);border-radius:6px}
 .dc-stat-mini-label{font-size:10px;color:var(--text-muted);font-weight:600}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
 .dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;cursor:pointer}
@@ -277,7 +278,20 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .dc-open-btn{padding:8px 16px;background:rgba(0,212,255,.1);border:1px solid var(--accent-cyan);color:var(--accent-cyan);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:700;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;margin-top:8px}
 .dc-open-btn:hover{background:rgba(0,212,255,.2)}
 .dc-open-btn::before{content:'⚔';font-size:14px}
-.dc-section-label{font-size:12px;font-weight:700;color:var(--text-muted);margin-top:4px}
+.dc-section-label{font-size:12px;font-weight:700;color:var(--text-muted);margin-top:8px;margin-bottom:4px}
+.dc-stat-grid-5{grid-template-columns:repeat(5,1fr)}
+.dc-stat-grid-4{grid-template-columns:repeat(4,1fr)}
+.dc-debuff-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto}
+.dc-debuff-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px;font-size:12px}
+.dc-debuff-item select{flex:1;min-width:0;padding:4px 6px;font-size:11px}
+.dc-debuff-item input{width:60px;padding:4px 6px;font-size:11px}
+.dc-debuff-add{padding:6px 12px;font-size:12px;background:var(--bg-input);border:1px dashed var(--border-color);border-radius:6px;color:var(--text-muted);cursor:pointer;transition:var(--transition)}
+.dc-debuff-add:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+.dc-supporter-list,.dc-option-list{display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto}
+.dc-supporter-item,.dc-option-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px;font-size:12px}
+.dc-supporter-item img,.dc-option-item img{width:28px;height:28px;object-fit:contain}
+.dc-supporter-item .remove,.dc-option-item .remove{padding:2px 6px;font-size:10px;cursor:pointer;color:var(--text-muted)}
+.dc-supporter-item .remove:hover,.dc-option-item .remove:hover{color:var(--accent-red)}
 .dc-lb-row{display:flex;gap:4px;align-items:center}
 .dc-lb-btn{padding:3px 6px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
 .dc-lb-btn.active{background:var(--accent-blue);color:#fff;border-color:var(--accent-blue)}
@@ -346,13 +360,16 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 <div class="dc-panel-title" id="dcAtkLabel">YOUR UNIT (Attacker)</div>
 <div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
 <div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
-<div id="dcAtkStatsArea"></div>
-<div id="dcAtkWpnArea"></div>
+<div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
+<div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
+<div class="dc-panel-section"><div class="dc-section-label">Option Parts</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" onclick="openDcPicker('option_parts')">+ Add Option Part</button></div>
+<div class="dc-panel-section"><div class="dc-section-label">Supporters</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" onclick="openDcPicker('supporter')">+ Add Supporter</button></div>
 </div>
 <div class="dc-panel">
 <div class="dc-panel-title" id="dcDefLabel">NPC TARGET (Defender)</div>
 <div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div>
-<div id="dcDefStatsArea"></div>
+<div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
+<div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
 </div>
 </div>
 <div class="dc-controls">
@@ -412,7 +429,7 @@ function tStat(name){const m=STAT_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},units:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false},_dcPickerType:null,_dcPickerCache:[]};
+const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},units:{page:1,sort:'rarity',dir:'desc',q:'',roleFilter:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[]};
 document.addEventListener('DOMContentLoaded',async()=>{document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys()});
 async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];S.lang=d.default||'EN';document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(e){S.languages=['EN']}}
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
@@ -1289,7 +1306,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 
 function openDmgCalc(){
 const d=S.currentDetailData;if(!d)return;
-S.dc.defNpc=null;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;
+S.dc.defNpc=null;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
 document.getElementById('dcOverlay').classList.add('active');
 document.getElementById('dcTitle').textContent=t('dc_title');
 document.getElementById('dcAtkLabel').textContent=t('dc_atk_label');
@@ -1308,7 +1325,7 @@ document.getElementById('dcResultPlaceholder').textContent=t('dc_select_both');
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcTerrain').value=0;
 setDcMp('medium');setDcDefend(false);setDcShield(false);
-renderDcAtkUnit();renderDcAtkChar();renderDcNpcDropdown();renderDcDefStats();renderDcResult();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcNpcDropdown();renderDcDefStats();renderDcDebuffs();renderDcResult();
 }
 function closeDmgCalc(){document.getElementById('dcOverlay').classList.remove('active')}
 
@@ -1410,6 +1427,27 @@ h+=`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</
 area.innerHTML=h;
 }
 
+function renderDcOptionParts(){
+const area=document.getElementById('dcAtkOptionArea');
+if(!S.dc.optionParts.length){area.innerHTML='';return}
+area.innerHTML=S.dc.optionParts.map((o,i)=>`<div class="dc-option-item"><img src="${imgUrl(o.thum)}" alt="" onerror="this.style.display='none'"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(o.name)}</span><button class="remove" onclick="removeDcOptionPart(${i})">✕</button></div>`).join('');
+}
+function renderDcSupporters(){
+const area=document.getElementById('dcAtkSupporterArea');
+if(!S.dc.supporters.length){area.innerHTML='';return}
+area.innerHTML=S.dc.supporters.map((s,i)=>`<div class="dc-supporter-item"><img src="${imgUrl(s.portrait||s.thum)}" alt="" onerror="this.style.display='none'"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(s.name)}</span><button class="remove" onclick="removeDcSupporter(${i})">✕</button></div>`).join('');
+}
+function renderDcDebuffs(){
+const area=document.getElementById('dcDefDebuffArea');
+const list=S.dc.debuffs||[];
+area.innerHTML=list.map((d,i)=>`<div class="dc-debuff-item"><select onchange="updateDcDebuff(${i},'stat',this.value)"><option value="DEF"${d.stat==='DEF'?' selected':''}>DEF %</option><option value="ATK"${d.stat==='ATK'?' selected':''}>ATK %</option></select><input type="number" value="${d.value}" onchange="updateDcDebuff(${i},'value',this.value)" min="0" max="100" placeholder="%"><button class="remove" onclick="removeDcDebuff(${i})">✕</button></div>`).join('');
+document.getElementById('dcDebuffAddBtn').style.display=list.length>=10?'none':'block';
+}
+function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();onDcParamChange()}
+function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();onDcParamChange()}
+function addDcDebuff(){if((S.dc.debuffs||[]).length>=10)return;S.dc.debuffs=S.dc.debuffs||[];S.dc.debuffs.push({stat:'DEF',value:10});renderDcDebuffs();onDcParamChange()}
+function updateDcDebuff(i,field,val){if(!S.dc.debuffs[i])return;if(field==='stat')S.dc.debuffs[i].stat=val;else S.dc.debuffs[i].value=parseInt(val,10)||0;onDcParamChange()}
+function removeDcDebuff(i){S.dc.debuffs.splice(i,1);renderDcDebuffs();onDcParamChange()}
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;renderDcWeaponArea()}
 function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea()}
@@ -1441,11 +1479,15 @@ S._dcPickerType=type;
 const overlay=document.getElementById('dcPickerOverlay');
 overlay.classList.add('active');
 document.getElementById('dcPickerSearch').value='';
-document.getElementById('dcPickerSearch').placeholder=type==='character'?t('cmp_search_char'):t('cmp_search_unit');
+document.getElementById('dcPickerSearch').placeholder=type==='character'?t('cmp_search_char'):type==='unit'?t('cmp_search_unit'):type==='option_parts'?t('search_mod'):type==='supporter'?t('search_supporter'):'Search...';
 document.getElementById('dcPickerBody').innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';
 try{
-const base=type==='character'?'/api/characters':'/api/units';
-let allRows=[],page=1,totalPages=1;
+let base,allRows=[],page=1,totalPages=1;
+if(type==='character')base='/api/characters';
+else if(type==='unit')base='/api/units';
+else if(type==='option_parts')base='/api/option_parts';
+else if(type==='supporter')base='/api/supporters';
+else base='/api/units';
 while(page<=totalPages){
 const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=100&sort=rarity&dir=desc`);
 const d=await r.json();
@@ -1463,14 +1505,15 @@ function closeDcPicker(){document.getElementById('dcPickerOverlay').classList.re
 function filterDcPicker(){renderDcPickerList()}
 function renderDcPickerList(){
 const q=document.getElementById('dcPickerSearch').value.trim().toLowerCase();
-const items=S._dcPickerCache.filter(r=>!q||r.name.toLowerCase().includes(q));
+const type=S._dcPickerType;
+const items=S._dcPickerCache.filter(r=>!q||(r.name||'').toLowerCase().includes(q)||(r.details||'').toLowerCase().includes(q));
 const body=document.getElementById('dcPickerBody');
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
 body.innerHTML=items.slice(0,200).map(r=>{
-const badges=`${r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''}${r.role_icon?`<img src="${imgUrl(r.role_icon)}" alt="">`:''}`
+const badges=type==='option_parts'?(r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''):`${r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''}${r.role_icon?`<img src="${imgUrl(r.role_icon)}" alt="">`:''}`;
 const thum=r.thum?`<img src="${imgUrl(r.thum)}" alt="" onerror="this.style.display='none'">`:'';
 return`<div class="cmp-picker-item" onclick="pickDcItem('${r.id}')">
-${thum}<div><div class="cmp-picker-item-name">${esc(r.name)}</div><div class="cmp-picker-item-badges">${badges}</div></div></div>`
+${thum}<div><div class="cmp-picker-item-name">${esc(r.name)}</div><div class="cmp-picker-item-badges">${badges}</div>${r.details?`<div class="cmp-picker-item-detail" style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc((r.details||'').substring(0,60))}${(r.details||'').length>60?'...':''}</div>`:''}</div></div>`
 }).join('');
 }
 
@@ -1478,6 +1521,16 @@ async function pickDcItem(id){
 const type=S._dcPickerType;
 closeDcPicker();
 try{
+if(type==='option_parts'){
+const row=S._dcPickerCache.find(x=>String(x.id)===String(id));
+if(row&&!S.dc.optionParts.some(o=>String(o.id)===String(id))){S.dc.optionParts.push({id:row.id,name:row.name,details:row.details||'',thum:row.thum||''});renderDcOptionParts();onDcParamChange()}
+return;
+}
+if(type==='supporter'){
+const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}`).then(r=>r.json());
+if(rd&&!rd.error&&!S.dc.supporters.some(s=>String(s.id)===String(id))){S.dc.supporters.push(rd);renderDcSupporters();onDcParamChange()}
+return;
+}
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
 if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0}
@@ -1492,6 +1545,21 @@ const mapping=DC_WPN_TYPE_STAT[weaponType]||['Ranged'];
 if(mapping.length===1)return _dcFindStat(charStats,mapping[0]);
 return Math.max(...mapping.map(s=>_dcFindStat(charStats,s)));
 }
+function _dcParseOptionPartBonuses(details){
+const bonuses={HP:{flat:0,pct:0},EN:{flat:0,pct:0},Attack:{flat:0,pct:0},Defense:{flat:0,pct:0},Mobility:{flat:0,pct:0},Move:{flat:0,pct:0}};
+if(!details)return bonuses;
+const statMap={ATK:'Attack',DEF:'Defense',MOB:'Mobility'};
+const add=(k,v,isPct)=>{const key=k in statMap?statMap[k]:k;if(bonuses[key]){if(isPct)bonuses[key].pct+=v;else bonuses[key].flat+=v}};
+const p=/(?:Increase|Increases?)\s+(?:squad\s+)?(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move)(?:\s*,\s*(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))*(?:\s+and\s+(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))?\s+by\s+(\d+)(%?)/gi;
+let m;while((m=p.exec(details))!==null){const val=parseInt(m[4],10)||0;const isPct=m[5]==='%';const keys=[m[1],m[2],m[3]].filter(Boolean);keys.forEach(k=>add(k,val,isPct))}
+return bonuses;
+}
+function _dcParseLeaderSkillPct(leader_skills){
+let pct=0;
+(leader_skills||[]).forEach(ls=>{const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(m)pct+=parseInt(m[1],10)||0});
+return pct;
+}
+function _dcApplyFloor(x){return Math.floor(x)}
 
 function calculateDamage(){
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
@@ -1505,12 +1573,32 @@ if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0,accuracy:0,critical:0};
 
-const unitAtk=_dcFindStat(atkUnitStats,'Attack');
+let unitAtk=_dcFindStat(atkUnitStats,'Attack');
+let unitHp=_dcFindStat(atkUnitStats,'HP')||0;
+let unitDefVal=_dcFindStat(atkUnitStats,'Defense')||0;
+let unitMob=_dcFindStat(atkUnitStats,'Mobility')||0;
+let unitMove=_dcFindStat(atkUnitStats,'Move')||0;
+const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
+const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
+(S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
+unitAtk+=opFlat.Attack;unitHp+=opFlat.HP;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
+if(opPct.Attack>0)unitAtk=_dcApplyFloor(unitAtk*(1+opPct.Attack/100));
+if(opPct.HP>0)unitHp=_dcApplyFloor(unitHp*(1+opPct.HP/100));
+if(opPct.Defense>0)unitDefVal=_dcApplyFloor(unitDefVal*(1+opPct.Defense/100));
+if(opPct.Mobility>0)unitMob=_dcApplyFloor(unitMob*(1+opPct.Mobility/100));
+if(opPct.Move>0)unitMove=_dcApplyFloor(unitMove*(1+opPct.Move/100));
+let hpSupport=0,atkSupport=0,leaderPct=0;
+(S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0;leaderPct+=_dcParseLeaderSkillPct(s.leader_skills||[])});
+unitAtk+=atkSupport;unitHp+=hpSupport;
+if(leaderPct>0){const m=1+leaderPct/100;unitAtk=_dcApplyFloor(unitAtk*m);unitHp=_dcApplyFloor(unitHp*m);unitDefVal=_dcApplyFloor(unitDefVal*m);unitMob=_dcApplyFloor(unitMob*m);unitMove=_dcApplyFloor(unitMove*m)}
 const charAtk=_dcGetCharAtkStat(atkCharStats,wpn.weapon_type);
 
 const defUnit=npc.unit;const defChar=npc.character;
-const unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
-const charDef=defChar?(defChar.stats_raw?.Defense||0):0;
+let unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
+let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
+let defDebuffPct=0;
+(S.dc.debuffs||[]).filter(d=>d.stat==='DEF').forEach(d=>{defDebuffPct+=Number(d.value)||0});
+if(defDebuffPct>0){const mult=Math.max(0,1-defDebuffPct/100);unitDef=_dcApplyFloor(unitDef*mult);charDef=_dcApplyFloor(charDef*mult)}
 
 const weaponPower=lvData.power;
 const dist=S.dc.distance;
@@ -1522,26 +1610,26 @@ const critMultiplier=mp.critMult;
 let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
 
-const charDiff=Math.max(0,charAtk-charDef);
+const charDiff=_dcApplyFloor(Math.max(0,charAtk-charDef));
 const characterStatRatio=charDiff/5000;
-const unitAtkScaled=Math.ceil(unitAtk/10);
-const unitDefScaled=Math.ceil(unitDef/10);
-const unitDiff=Math.max(0,Math.ceil(unitAtkScaled-unitDefScaled));
+const unitAtkScaled=_dcApplyFloor(unitAtk/10);
+const unitDefScaled=_dcApplyFloor(unitDef/10);
+const unitDiff=_dcApplyFloor(Math.max(0,unitAtkScaled-unitDefScaled));
 const unitStatRatio=unitDiff/5000;
 const charSigmoid=1/(Math.exp(250*(charDef-charAtk)/100000)+1);
 const unitSigmoid=1/(Math.exp(25*(unitDef-unitAtk)/100000)+1);
-const baseDamage=Math.ceil((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
+const baseDamage=_dcApplyFloor((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
 
-const atkCombined=Math.ceil((unitAtk+2*charAtk)/10);
-const defCombined=Math.ceil((unitDef+2*charDef)/10);
+const atkCombined=_dcApplyFloor((unitAtk+2*charAtk)/10);
+const defCombined=_dcApplyFloor((unitDef+2*charDef)/10);
 const offenseComponent=100/(Math.exp((5000-atkCombined)*30/100000)+1);
 const defenseComponent=-40/(Math.exp((5000-defCombined)*3/100000)+1);
-const damageCorrection=(offenseComponent+defenseComponent)/100*baseDamage;
-const battleDamage=Math.ceil((baseDamage+damageCorrection)*terrainCorrection);
-const scaledDamage=Math.ceil(battleDamage*mpDmgBonus);
+const damageCorrection=_dcApplyFloor((offenseComponent+defenseComponent)/100*baseDamage);
+const battleDamage=_dcApplyFloor((baseDamage+damageCorrection)*terrainCorrection);
+const scaledDamage=_dcApplyFloor(battleDamage*mpDmgBonus);
 
-const normalDmg=Math.max(0,Math.ceil(scaledDamage*defendMult));
-const critDmg=Math.max(0,Math.ceil(scaledDamage*(1+critMultiplier)*defendMult));
+const normalDmg=Math.max(0,_dcApplyFloor(scaledDamage*defendMult));
+const critDmg=Math.max(0,_dcApplyFloor(scaledDamage*(1+critMultiplier)*defendMult));
 
 const inRange=dist>=wpn.min_range&&dist<=wpn.max_range;
 const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
