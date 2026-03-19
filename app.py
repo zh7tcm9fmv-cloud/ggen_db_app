@@ -922,9 +922,9 @@ def create_unit_ability_map(d):
     return lookup
 
 def calc_growth_unit_base(base, mx, ri):
-    gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
+    return mx
 def calc_growth_unit(base, mx, ri):
-    grown = calc_growth_unit_base(base, mx, ri); return math.floor(grown * 1.4)
+    return math.floor(mx * 1.4)
 
 def extract_stat_bonus_unit(text, fs):
     bonuses = {}; tl = text.lower()
