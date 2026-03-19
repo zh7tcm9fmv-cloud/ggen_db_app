@@ -507,7 +507,8 @@ function renderStageMapSection(d){
       <div style="min-width:46px;text-align:right;font-size:12px;color:var(--text-secondary);font-weight:800;">${zp}%</div>
     </div>
   </div>`:'';
-  return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div><button class="dc-open-btn" onclick="openDmgCalc()">${t('dc_title')}</button></div>`
+  // Damage Calculator: offline. To re-enable, append before </div>: <button class="dc-open-btn" onclick="openDmgCalc()">${t('dc_title')}</button>
+return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
 }
 
 function _stageMapViewWindow(md){
