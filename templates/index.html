@@ -173,19 +173,16 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .cmp-add-slot-text{font-size:13px;font-weight:600}
 .cmp-section{padding:0 24px 20px}
 .cmp-section-title{font-size:16px;font-weight:800;color:var(--accent-gold);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
-.cmp-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.cmp-stat-label{width:60px;font-size:13px;font-weight:700;color:var(--text-secondary);flex-shrink:0;text-align:right}
-.cmp-stat-bars{flex:1;display:flex;flex-direction:column;gap:4px}
-.cmp-stat-bar-wrap{display:flex;align-items:center;gap:8px;height:26px}
-.cmp-stat-bar{height:22px;border-radius:4px;min-width:2px;transition:width .4s ease;position:relative}
-.cmp-stat-bar.best{box-shadow:0 0 8px rgba(255,255,255,.15)}
-.cmp-stat-val{font-size:14px;font-weight:800;min-width:60px;font-family:'RobotoMediumNumbers',monospace}
-.cmp-stat-val.best{color:var(--accent-gold)}
+.cmp-stat-grid{display:flex;flex-direction:column;gap:6px}
+.cmp-stat-row{display:flex;align-items:center;gap:12px;padding:8px 12px;background:rgba(0,0,0,.2);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.06)}
+.cmp-stat-label{width:70px;font-size:13px;font-weight:700;color:var(--text-secondary);flex-shrink:0;text-align:right}
+.cmp-stat-vals{flex:1;display:flex;gap:16px;align-items:center}
+.cmp-stat-val{font-size:15px;font-weight:800;min-width:52px;font-family:'RobotoMediumNumbers',monospace;padding:4px 10px;border-left:3px solid transparent;border-radius:4px}
+.cmp-stat-val.best{background:rgba(255,215,0,.15);color:var(--accent-gold);box-shadow:0 0 10px rgba(255,215,0,.2)}
+.cmp-stat-header .cmp-stat-val{font-weight:600;color:var(--text-secondary);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cmp-legend{display:flex;gap:16px;justify-content:center;padding:12px 24px;flex-wrap:wrap}
 .cmp-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-secondary)}
 .cmp-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-.cmp-radar-wrap{display:flex;justify-content:center;padding:10px 24px 20px}
-.cmp-radar-wrap canvas{max-width:100%}
 .cmp-terrain-table{width:100%;border-collapse:collapse}
 .cmp-terrain-table th,.cmp-terrain-table td{padding:8px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px}
 .cmp-terrain-table th{color:var(--text-muted);font-weight:600;font-size:12px}
@@ -350,7 +347,6 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 <div class="cmp-header" id="cmpHeader"></div>
 <div id="cmpBody">
 <div class="cmp-section"><div class="cmp-section-title" id="cmpStatTitle">Stats Comparison</div><div id="cmpStats"></div></div>
-<div class="cmp-section"><div class="cmp-section-title" id="cmpRadarTitle">Radar Chart</div><div class="cmp-radar-wrap"><canvas id="cmpRadarCanvas" width="420" height="380"></canvas></div></div>
 <div class="cmp-section" id="cmpTerrainSection" style="display:none"><div class="cmp-section-title" id="cmpTerrainTitle">Terrain</div><div id="cmpTerrain"></div></div>
 <div class="cmp-section" id="cmpWeaponSection" style="display:none"><div class="cmp-section-title" id="cmpWeaponTitle">Weapons</div><div id="cmpWeapons"></div></div>
 </div>
@@ -959,7 +955,6 @@ renderCompareToggles();
 const isUnit=S.compareType==='unit';
 const bodyHtml=`
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_stats')}</div><div id="cmpStats"></div></div>
-<div class="cmp-section"><div class="cmp-section-title">${t('cmp_radar')}</div><div class="cmp-radar-wrap"><canvas id="cmpRadarCanvas" width="420" height="380"></canvas></div></div>
 ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_terrain')}</div><div id="cmpTerrain"></div></div>`:''}
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_abilities')}</div><div id="cmpAbilities"></div></div>
 ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_weapons')}</div><div id="cmpWeapons"></div></div>`:''}
@@ -971,7 +966,6 @@ renderCompareDynamic()
 
 function renderCompareDynamic(){
 renderCompareStats();
-setTimeout(()=>drawRadarChart(),50);
 if(S.compareType==='unit'){renderCompareTerrain();renderCompareWeapons()}
 renderCompareAbilities();
 if(S.compareType==='character')renderCompareSkills()
@@ -1063,92 +1057,18 @@ function renderCompareStats(){
 const allStats=getCompareStats();
 if(!allStats.length||!allStats[0].length)return;
 const statNames=allStats[0].map(s=>s.name);
-let html='';
+let html='<div class="cmp-stat-grid"><div class="cmp-stat-row cmp-stat-header"><div class="cmp-stat-label"></div><div class="cmp-stat-vals">'+S.compareData.map((d,i)=>`<span class="cmp-stat-val" style="border-left-color:${CMP_COLORS[i]};font-size:12px;font-weight:600;color:var(--text-secondary)">${esc(d.name)}</span>`).join('')+'</div></div>';
 statNames.forEach((name,si)=>{
 const values=allStats.map(s=>(s[si]?s[si].value:0));
-const maxVal=Math.max(...values);
 const bestIdx=values.reduce((bi,v,i)=>v>values[bi]?i:bi,0);
 const allSame=values.every(v=>v===values[0]);
-const barMax=maxVal*1.15||1;
-html+=`<div class="cmp-stat-row">
-<div class="cmp-stat-label">${tStat(name)}</div>
-<div class="cmp-stat-bars">${values.map((v,i)=>{
-const pct=Math.max((v/barMax)*100,1);
+html+=`<div class="cmp-stat-row"><div class="cmp-stat-label">${tStat(name)}</div><div class="cmp-stat-vals">${values.map((v,i)=>{
 const isBest=!allSame&&i===bestIdx;
-return`<div class="cmp-stat-bar-wrap">
-<div class="cmp-stat-bar${isBest?' best':''}" style="width:${pct}%;background:${isBest?CMP_COLORS[i]:CMP_COLORS[i]+'99'}"></div>
-<span class="cmp-stat-val${isBest?' best':''}">${fmtN(v)}</span></div>`
+return`<span class="cmp-stat-val${isBest?' best':''}" style="border-left-color:${CMP_COLORS[i]}">${fmtN(v)}</span>`
 }).join('')}</div></div>`
 });
+html+='</div>';
 document.getElementById('cmpStats').innerHTML=html
-}
-
-function drawRadarChart(){
-const canvas=document.getElementById('cmpRadarCanvas');
-if(!canvas)return;
-const ctx=canvas.getContext('2d');
-const dpr=window.devicePixelRatio||1;
-const W=420,H=380;
-canvas.width=W*dpr;canvas.height=H*dpr;
-canvas.style.width=W+'px';canvas.style.height=H+'px';
-ctx.scale(dpr,dpr);
-ctx.clearRect(0,0,W,H);
-const allStats=getCompareStats();
-if(!allStats.length||!allStats[0].length)return;
-const labels=allStats[0].map(s=>tStat(s.name));
-const n=labels.length;
-const cx=W/2,cy=H/2-10,R=130;
-const angleOff=-Math.PI/2;
-const angles=labels.map((_,i)=>angleOff+(2*Math.PI*i)/n);
-
-for(let ring=1;ring<=5;ring++){
-const r=R*ring/5;
-ctx.beginPath();
-for(let i=0;i<n;i++){
-const x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);
-i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
-}
-ctx.closePath();
-ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.stroke()
-}
-for(let i=0;i<n;i++){
-ctx.beginPath();ctx.moveTo(cx,cy);
-ctx.lineTo(cx+R*Math.cos(angles[i]),cy+R*Math.sin(angles[i]));
-ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.stroke()
-}
-
-const maxVals=labels.map((_,si)=>Math.max(...allStats.map(s=>s[si]?s[si].value:0))||1);
-
-allStats.forEach((stats,di)=>{
-ctx.beginPath();
-stats.forEach((s,si)=>{
-const norm=Math.min(s.value/maxVals[si],1);
-const r2=R*Math.max(norm,0.03);
-const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
-si===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
-});
-ctx.closePath();
-ctx.fillStyle=CMP_COLORS_ALPHA[di];ctx.fill();
-ctx.strokeStyle=CMP_COLORS[di];ctx.lineWidth=2;ctx.stroke()
-});
-
-allStats.forEach((stats,di)=>{
-stats.forEach((s,si)=>{
-const norm=Math.min(s.value/maxVals[si],1);
-const r2=R*Math.max(norm,0.03);
-const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
-ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
-ctx.fillStyle=CMP_COLORS[di];ctx.fill()
-})
-});
-
-ctx.textAlign='center';ctx.textBaseline='middle';
-ctx.font='bold 13px ShinGoPr6DeBold,sans-serif';ctx.fillStyle='#c8cdd8';
-labels.forEach((lbl,i)=>{
-const lr=R+22;
-const x=cx+lr*Math.cos(angles[i]),y=cy+lr*Math.sin(angles[i]);
-ctx.fillText(lbl,x,y)
-})
 }
 
 function renderCompareTerrain(){
