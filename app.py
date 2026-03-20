@@ -1926,7 +1926,8 @@ def apply_bonus_to_char_stats(stats, bonus_pct):
     return final, ba
 
 def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
-    """Totals for main 5 stats with non-EX + EX ability % bonuses (same as character detail stats_with_ex)."""
+    """List view: main 5 stats with passive bonuses that apply without toggles — same rules as unit list.
+    Excludes: EX character abilities (detail: stats vs stats_with_ex), conditional sentences, trait-condition abilities."""
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
     def build_ab(ab):
         bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
@@ -1936,17 +1937,33 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn, spen = {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}
+    spbn = {s: 0 for s in CHAR_STAT_ORDER}
     for bab in ac:
+        if bab.get('is_ex', False):
+            continue
+        hc = any(cond for d2 in bab.get('details', []) for cond in d2.get('conditions', []))
         for d2 in bab.get('details', []):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            for s, p in extract_stat_percent_char(txt).items():
-                if bab.get('is_ex', False): spen[s] += p
-                else: spbn[s] += p
+            parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
+            if not parts:
+                parts = [txt]
+            cond_prefix = False
+            for part in parts:
+                itc = _is_conditional_stat_text(part)
+                part_stats = extract_stat_percent_char(part)
+                if itc and not part_stats:
+                    cond_prefix = True
+                is_cond = itc or cond_prefix
+                for s, pct in part_stats.items():
+                    if s not in CHAR_STAT_ORDER:
+                        continue
+                    if hc or is_cond:
+                        continue
+                    spbn[s] = spbn.get(s, 0) + pct
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
-        tb = math.floor(bv * (spbn[s] + spen[s]) / 100) if bv > 0 else 0
+        tb = math.floor(bv * spbn[s] / 100) if bv > 0 else 0
         totals[s] = bv + tb
     return totals
 
@@ -2207,7 +2224,7 @@ def get_ability_units():
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
-    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"cl2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
