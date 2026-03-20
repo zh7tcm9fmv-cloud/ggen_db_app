@@ -2059,6 +2059,101 @@ def get_tag_characters():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
 
+@app.route('/api/skill_characters')
+def get_skill_characters():
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        sn = request.args.get('skill_name', '').strip()
+        if not sn: return jsonify({'1': [], '2': [], '3': []})
+        ck = f"skill_chars_{sn}_{lc}"
+        cached = get_cached_response(ck)
+        if cached: return jsonify(cached)
+        ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
+        sn_lower = sn.lower()
+        for cid, info in char_info_map.items():
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ['1', '2', '3']: continue
+            lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+            if not name: name = f"Unknown ({cid})"
+            skill_names = []
+            for sk in extract_data_list(char_skill):
+                if normalize_id(sk.get('CharacterId', '')) != cid: continue
+                for sid in [normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
+                    if sid and sid != '0':
+                        res = resolve_char_skill(sid, ld, 0, False)
+                        if res and res.get('name'): skill_names.append(res['name'].lower())
+            if sn_lower in skill_names:
+                ri = info.get('rarity', '1'); thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
+                results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': info.get('acquisition_route', '0')})
+        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        set_cached_response(ck, results); return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
+
+@app.route('/api/ability_characters')
+def get_ability_characters():
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        an = request.args.get('ability_name', '').strip()
+        if not an: return jsonify({'1': [], '2': [], '3': []})
+        ck = f"abil_chars_{an}_{lc}"
+        cached = get_cached_response(ck)
+        if cached: return jsonify(cached)
+        ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
+        an_lower = an.lower()
+        for cid, info in char_info_map.items():
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ['1', '2', '3']: continue
+            lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+            if not name: name = f"Unknown ({cid})"
+            ab_names = []
+            for ab in extract_data_list(char_abil):
+                if normalize_id(ab.get('CharacterId', '')) != cid: continue
+                for aid in [normalize_id(ab.get('AbilityId', '')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
+                    if aid and aid != '0' and aid != 'None':
+                        n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
+                        if n: ab_names.append(n.lower())
+            if an_lower in ab_names:
+                ri = info.get('rarity', '1'); thum = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
+                results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': info.get('acquisition_route', '0')})
+        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        set_cached_response(ck, results); return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
+
+@app.route('/api/ability_units')
+def get_ability_units():
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        an = request.args.get('ability_name', '').strip()
+        if not an: return jsonify({'1': [], '2': [], '3': []})
+        ck = f"abil_units_{an}_{lc}"
+        cached = get_cached_response(ck)
+        if cached: return jsonify(cached)
+        ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
+        an_lower = an.lower()
+        for uid, info in unit_info_map.items():
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ['1', '2', '3']: continue
+            lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+            if not name: continue
+            ab_names = []
+            ua = unit_abil_map.get(uid, [])
+            rm = unit_ssp_abil_replace_map.get(uid, {})
+            for ab in ua:
+                n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map)
+                if n: ab_names.append(n.lower())
+                if str(ab['id']) in rm:
+                    rn = get_ability_name_for_search(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map)
+                    if rn: ab_names.append(rn.lower())
+            if an_lower in ab_names:
+                ri = info.get('rarity', '1'); thum = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits')
+                results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': info.get('acquisition_route', '0')})
+        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        set_cached_response(ck, results); return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
+
 @app.route('/api/characters')
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
