@@ -47,20 +47,21 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .sort-arrow{margin-left:4px;font-size:12px;opacity:0.4}.sort-active .sort-arrow{opacity:1}
 .data-table tbody tr{border-bottom:1px solid rgba(42,54,84,0.3);transition:var(--transition);cursor:pointer}.data-table tbody tr:hover{background:var(--bg-card-hover)}
 .data-table tbody td{padding:8px 6px;vertical-align:middle;overflow:hidden}
+.data-table tbody td.col-thum{overflow:visible;text-align:center}
 #charTable .col-thum{width:100px}#charTable .col-name{width:20%}#charTable .col-stat{width:15%;text-align:center}
 #unitTable .col-thum{width:100px}#unitTable .col-name{width:20%}#unitTable .col-stat{width:12%;text-align:center}
 #suppTable .col-thum{width:100px}#suppTable .col-name{width:22%}#suppTable .col-tag{width:32%}#suppTable .col-boost{width:38%}#suppTable .col-skill{width:8%;text-align:center}
 #stageTable{table-layout:fixed}#stageTable .col-thum{width:100px;min-width:100px;vertical-align:middle;padding:8px;overflow:visible}#stageTable .col-thum .stage-thum-wrap{display:flex;align-items:center;justify-content:center;width:100px;height:100px;min-width:100px;min-height:100px;overflow:visible;aspect-ratio:1;flex-shrink:0}#stageTable .col-thum img.row-thum{width:100px;height:100px;min-width:100px;min-height:100px;max-width:100px;max-height:100px;object-fit:contain;object-position:center;flex-shrink:0;display:block}#stageTable .col-thum .row-thum-placeholder{width:100px;height:100px;min-width:100px;min-height:100px;flex-shrink:0}#stageTable .col-diff{width:14%;text-align:center}#stageTable .col-number{width:12%;text-align:center}#stageTable .col-name{width:38%}#stageTable .col-cp{width:20%;text-align:center}#stageTable .col-terrain{width:16%;text-align:center}
 .row-thum{width:90px;height:90px;border-radius:var(--radius-sm);object-fit:contain;background:var(--bg-input);border:1px solid var(--border-color)}
 .row-thum-placeholder{width:90px;height:90px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:32px}
-.list-thumb-composite{position:relative;width:90px;height:90px;flex-shrink:0;overflow:hidden}
-.list-thumb-base{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0}
+.list-thumb-composite{position:relative;width:90px;height:90px;flex-shrink:0;margin:0 auto;overflow:hidden;border:none;outline:none;border-radius:var(--radius-sm);-webkit-tap-highlight-color:transparent}
+.list-thumb-base{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:0;display:block;border:0;outline:none;transform:scale(1.028);transform-origin:center center;-webkit-user-drag:none}
 .list-thumb-portrait-wrap{position:absolute;top:7px;left:7px;right:7px;bottom:7px;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;box-sizing:border-box}
 .list-thumb-has-frame .list-thumb-portrait-wrap{top:8px;left:8px;right:8px;bottom:10px;align-items:center;justify-content:center}
 .list-thumb-portrait-wrap .list-thumb-portrait{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:center center;flex-shrink:1;display:block}
 .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{max-width:94%;max-height:94%}
 .list-thumb-portrait-wrap .list-thumb-placeholder{width:100%;height:100%;object-fit:contain;background:var(--bg-input);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:28px}
-.list-thumb-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:2}
+.list-thumb-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;pointer-events:none;z-index:2;display:block;border:0;outline:none;transform:scale(1.028);transform-origin:center center;-webkit-user-drag:none}
 .list-thumb-icons{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:2px}
 .list-thumb-icon-wrap{display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0;overflow:hidden}
 .list-thumb-icon-wrap img{width:100%!important;height:100%!important;object-fit:contain;display:block}
