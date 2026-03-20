@@ -173,14 +173,18 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .cmp-add-slot-text{font-size:13px;font-weight:600}
 .cmp-section{padding:0 24px 20px}
 .cmp-section-title{font-size:16px;font-weight:800;color:var(--accent-gold);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
-.cmp-stat-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.cmp-stat-label{width:80px;font-size:13px;font-weight:700;color:var(--text-secondary);flex-shrink:0;text-align:right}
-.cmp-stat-bars{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
-.cmp-stat-bar-wrap{display:flex;align-items:center;gap:10px;height:28px}
-.cmp-stat-bar{height:22px;border-radius:4px;min-width:4px;transition:width .4s ease}
-.cmp-stat-bar.best{box-shadow:0 0 8px rgba(255,255,255,.2)}
-.cmp-stat-val{font-size:14px;font-weight:800;min-width:56px;font-family:'RobotoMediumNumbers',monospace;text-align:right}
-.cmp-stat-val.best{color:var(--accent-gold)}
+.cmp-radar-wrap{display:flex;justify-content:center;padding:10px 24px 20px}
+.cmp-radar-wrap canvas{max-width:100%}
+.cmp-stat-table{width:100%;border-collapse:collapse}
+.cmp-stat-table th,.cmp-stat-table td{padding:10px 16px;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
+.cmp-stat-table th:first-child,.cmp-stat-table td:first-child{text-align:right;color:var(--text-secondary);font-weight:700;width:90px}
+.cmp-stat-table th{color:var(--text-muted);font-weight:600;font-size:12px}
+.cmp-stat-table td{font-family:'RobotoMediumNumbers',monospace;font-weight:800;font-size:15px}
+.cmp-stat-cell{display:flex;align-items:center;justify-content:center;gap:8px}
+.cmp-stat-bar{width:4px;height:18px;border-radius:2px;flex-shrink:0}
+.cmp-stat-val{min-width:48px}
+.cmp-stat-cell.best .cmp-stat-val{color:var(--accent-gold);font-weight:800}
+.cmp-stat-cell.best{background:rgba(255,215,0,.15);border-radius:6px;padding:4px 8px}
 .cmp-legend{display:flex;gap:16px;justify-content:center;padding:12px 24px;flex-wrap:wrap}
 .cmp-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-secondary)}
 .cmp-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
@@ -348,6 +352,7 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 <div class="cmp-header" id="cmpHeader"></div>
 <div id="cmpBody">
 <div class="cmp-section"><div class="cmp-section-title" id="cmpStatTitle">Stats Comparison</div><div id="cmpStats"></div></div>
+<div class="cmp-section"><div class="cmp-section-title" id="cmpRadarTitle">Radar Chart</div><div class="cmp-radar-wrap"><canvas id="cmpRadarCanvas" width="420" height="380"></canvas></div></div>
 <div class="cmp-section" id="cmpTerrainSection" style="display:none"><div class="cmp-section-title" id="cmpTerrainTitle">Terrain</div><div id="cmpTerrain"></div></div>
 <div class="cmp-section" id="cmpWeaponSection" style="display:none"><div class="cmp-section-title" id="cmpWeaponTitle">Weapons</div><div id="cmpWeapons"></div></div>
 </div>
@@ -956,6 +961,7 @@ renderCompareToggles();
 const isUnit=S.compareType==='unit';
 const bodyHtml=`
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_stats')}</div><div id="cmpStats"></div></div>
+<div class="cmp-section"><div class="cmp-section-title">${t('cmp_radar')}</div><div class="cmp-radar-wrap"><canvas id="cmpRadarCanvas" width="420" height="380"></canvas></div></div>
 ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_terrain')}</div><div id="cmpTerrain"></div></div>`:''}
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_abilities')}</div><div id="cmpAbilities"></div></div>
 ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_weapons')}</div><div id="cmpWeapons"></div></div>`:''}
@@ -967,6 +973,7 @@ renderCompareDynamic()
 
 function renderCompareDynamic(){
 renderCompareStats();
+setTimeout(()=>drawRadarChart(),50);
 if(S.compareType==='unit'){renderCompareTerrain();renderCompareWeapons()}
 renderCompareAbilities();
 if(S.compareType==='character')renderCompareSkills()
@@ -1058,20 +1065,85 @@ function renderCompareStats(){
 const allStats=getCompareStats();
 if(!allStats.length||!allStats[0].length)return;
 const statNames=allStats[0].map(s=>s.name);
-let html='';
+let html='<table class="cmp-stat-table"><thead><tr><th></th>';
+S.compareData.forEach((d,i)=>html+=`<th><div class="cmp-stat-cell"><div class="cmp-stat-bar" style="background:${CMP_COLORS[i]}"></div><span style="font-size:13px;font-weight:600;color:var(--text-secondary)">${esc(d.name)}</span></div></th>`);
+html+='</tr></thead><tbody>';
 statNames.forEach((name,si)=>{
 const values=allStats.map(s=>(s[si]?s[si].value:0));
-const maxVal=Math.max(...values);
 const bestIdx=values.reduce((bi,v,i)=>v>values[bi]?i:bi,0);
 const allSame=values.every(v=>v===values[0]);
-const barMax=maxVal*1.15||1;
-html+=`<div class="cmp-stat-row"><div class="cmp-stat-label">${tStat(name)}</div><div class="cmp-stat-bars">${values.map((v,i)=>{
-const pct=Math.max((v/barMax)*100,1);
+html+=`<tr><td>${tStat(name)}</td>`;
+values.forEach((v,i)=>{
 const isBest=!allSame&&i===bestIdx;
-return`<div class="cmp-stat-bar-wrap"><div class="cmp-stat-bar${isBest?' best':''}" style="width:${pct}%;background:${isBest?CMP_COLORS[i]:CMP_COLORS[i]+'99'}"></div><span class="cmp-stat-val${isBest?' best':''}">${fmtN(v)}</span></div>`
-}).join('')}</div></div>`
+html+=`<td><div class="cmp-stat-cell${isBest?' best':''}"><div class="cmp-stat-bar" style="background:${CMP_COLORS[i]}"></div><span class="cmp-stat-val">${fmtN(v)}</span></div></td>`
 });
+html+='</tr>'
+});
+html+='</tbody></table>';
 document.getElementById('cmpStats').innerHTML=html
+}
+
+function drawRadarChart(){
+const canvas=document.getElementById('cmpRadarCanvas');
+if(!canvas)return;
+const ctx=canvas.getContext('2d');
+const dpr=window.devicePixelRatio||1;
+const W=420,H=380;
+canvas.width=W*dpr;canvas.height=H*dpr;
+canvas.style.width=W+'px';canvas.style.height=H+'px';
+ctx.scale(dpr,dpr);
+ctx.clearRect(0,0,W,H);
+const allStats=getCompareStats();
+if(!allStats.length||!allStats[0].length)return;
+const labels=allStats[0].map(s=>tStat(s.name));
+const n=labels.length;
+const cx=W/2,cy=H/2-10,R=130;
+const angleOff=-Math.PI/2;
+const angles=labels.map((_,i)=>angleOff+(2*Math.PI*i)/n);
+for(let ring=1;ring<=5;ring++){
+const r=R*ring/5;
+ctx.beginPath();
+for(let i=0;i<n;i++){
+const x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);
+i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+}
+ctx.closePath();
+ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.stroke()
+}
+for(let i=0;i<n;i++){
+ctx.beginPath();ctx.moveTo(cx,cy);
+ctx.lineTo(cx+R*Math.cos(angles[i]),cy+R*Math.sin(angles[i]));
+ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.stroke()
+}
+const maxVals=labels.map((_,si)=>Math.max(...allStats.map(s=>s[si]?s[si].value:0))||1);
+allStats.forEach((stats,di)=>{
+ctx.beginPath();
+stats.forEach((s,si)=>{
+const norm=Math.min(s.value/maxVals[si],1);
+const r2=R*Math.max(norm,0.03);
+const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
+si===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+});
+ctx.closePath();
+ctx.fillStyle=CMP_COLORS_ALPHA[di];ctx.fill();
+ctx.strokeStyle=CMP_COLORS[di];ctx.lineWidth=2;ctx.stroke()
+});
+allStats.forEach((stats,di)=>{
+stats.forEach((s,si)=>{
+const norm=Math.min(s.value/maxVals[si],1);
+const r2=R*Math.max(norm,0.03);
+const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
+ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
+ctx.fillStyle=CMP_COLORS[di];ctx.fill()
+})
+});
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.font='bold 13px ShinGoPr6DeBold,sans-serif';ctx.fillStyle='#c8cdd8';
+labels.forEach((lbl,i)=>{
+const lr=R+22;
+const x=cx+lr*Math.cos(angles[i]),y=cy+lr*Math.sin(angles[i]);
+ctx.fillText(lbl,x,y)
+})
 }
 
 function renderCompareTerrain(){
