@@ -1925,6 +1925,31 @@ def apply_bonus_to_char_stats(stats, bonus_pct):
         final[k] = base + b; ba[k] = b
     return final, ba
 
+def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
+    """Totals for main 5 stats with non-EX + EX ability % bonuses (same as character detail stats_with_ex)."""
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
+    def build_ab(ab):
+        bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        d = ldc
+        bab = build_ability_entry(bid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        if spid and spid != '0' and spid != 'None' and spid != bid:
+            bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        return bab
+    ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
+    spbn, spen = {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}
+    for bab in ac:
+        for d2 in bab.get('details', []):
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            for s, p in extract_stat_percent_char(txt).items():
+                if bab.get('is_ex', False): spen[s] += p
+                else: spbn[s] += p
+    totals = {}
+    for s in CHAR_STAT_ORDER:
+        bv = grown.get(s, 0)
+        tb = math.floor(bv * (spbn[s] + spen[s]) / 100) if bv > 0 else 0
+        totals[s] = bv + tb
+    return totals
+
 def calculate_npc_character_self_bonus_pct(abilities):
     bp = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
     if not abilities: return bp
@@ -2182,10 +2207,10 @@ def get_ability_units():
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
-    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"cl_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"cl2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
-    ld = get_lang_data(lc); rows = []
+    ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for cid, info in char_info_map.items():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
@@ -2212,9 +2237,10 @@ def list_characters():
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
+        totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': grown.get('Ranged',0), 'Melee': grown.get('Melee',0), 'Awaken': grown.get('Awaken',0), 'Defense': grown.get('Defense',0), 'Reaction': grown.get('Reaction',0)})
+        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': grown.get('Ranged', 0), 'Melee_base': grown.get('Melee', 0), 'Awaken_base': grown.get('Awaken', 0), 'Defense_base': grown.get('Defense', 0), 'Reaction_base': grown.get('Reaction', 0)})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
