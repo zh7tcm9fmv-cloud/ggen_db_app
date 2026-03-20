@@ -1,5 +1,24 @@
 # Scripts
 
+## Convert New DB Images to WebP (`convert_db_images_webp.py`)
+
+**For updates:** Run after adding new images to `ggen_db_images`. Only converts:
+- Images with no `.webp` yet (new)
+- Images where the source PNG/JPG is newer than the existing `.webp` (updated)
+
+```bash
+# From ggen_db_app (defaults to ../ggen_db_images)
+python scripts/convert_db_images_webp.py
+
+# Custom path
+python scripts/convert_db_images_webp.py --dir "C:/path/to/ggen_db_images"
+
+# Preview first
+python scripts/convert_db_images_webp.py --dry-run
+```
+
+---
+
 ## WebP Conversion (`convert_to_webp.py`)
 
 Converts PNG/JPG images to WebP for faster page loads. Requires Pillow: `pip install Pillow`.
