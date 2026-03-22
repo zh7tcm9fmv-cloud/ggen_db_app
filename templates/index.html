@@ -208,10 +208,21 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .cmp-stat-cell.best{background:rgba(255,215,0,.15);border-radius:6px}
 .cmp-stat-table .cmp-col-label{width:100px}
 .cmp-stat-table .cmp-col-val{width:calc((100% - 100px) / var(--cmp-n,3))}
-.cmp-card-lb{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:6px;width:100%;max-width:160px}
+.cmp-card-lb{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:6px;width:100%;max-width:168px}
 .cmp-card-lb-label{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.02em}
-.cmp-lb-select{width:100%;max-width:140px;padding:6px 8px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);color:var(--text-primary);font-size:12px;font-weight:700;text-align:center;cursor:pointer;appearance:auto}
-.cmp-lb-select:focus{outline:none;border-color:var(--accent-cyan)}
+.cmp-lb-details{position:relative;width:100%;max-width:156px;z-index:5}
+.cmp-lb-summary{display:flex;align-items:center;justify-content:center;gap:3px;list-style:none;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);min-height:38px;box-sizing:border-box;transition:var(--transition)}
+.cmp-lb-summary::-webkit-details-marker{display:none}
+.cmp-lb-summary::marker{content:''}
+.cmp-lb-summary:hover{border-color:var(--accent-gold);background:rgba(255,215,0,.06)}
+.cmp-lb-summary:focus{outline:2px solid rgba(0,212,255,.35);outline-offset:1px}
+.cmp-lb-summary img{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+.cmp-lb-menu{position:absolute;left:0;right:0;top:calc(100% + 4px);padding:6px;display:flex;flex-direction:column;gap:4px;background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);z-index:40}
+.cmp-lb-opt{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:8px 10px;border:none;border-radius:var(--radius-sm);background:transparent;cursor:pointer;color:var(--text-primary);transition:var(--transition)}
+.cmp-lb-opt:hover,.cmp-lb-opt:focus{background:rgba(0,212,255,.1);outline:none}
+.cmp-lb-opt.is-active{background:rgba(255,215,0,.18);box-shadow:inset 0 0 0 1px rgba(255,215,0,.35)}
+.cmp-lb-opt img{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+.cmp-lb-opt-num{font-size:11px;font-weight:800;color:var(--text-muted);min-width:14px;text-align:center}
 .cmp-legend{display:flex;gap:16px;justify-content:center;padding:12px 24px;flex-wrap:wrap}
 .cmp-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-secondary)}
 .cmp-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
@@ -491,6 +502,8 @@ const RARITY_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_UR_Base.png'
 const RARITY_FRAME_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_UR_Frame.png','SSR':'/static/images/UI/UI_Common_Tmb_Square_SSR_Frame.png','SR':'/static/images/UI/UI_Common_Tmb_Square_SR_Frame.png','R':'/static/images/UI/UI_Common_Tmb_Square_R_Frame.png','N':'/static/images/UI/UI_Common_Tmb_Square_None_Frame%20%236338.png'};
 const SUPPORTER_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_UR.png','SSR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SSR.png','SR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SR.png','R':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_R.png','N':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_N.png'};
 const LB_ICONS={'None':'/static/images/UI/UI_Common_Icon_Grade_M_None.png','Neutral':'/static/images/UI/UI_Common_Icon_Grade_M_Neutral.png','Max':'/static/images/UI/UI_Common_Icon_Grade_M_Max.png'};
+const CMP_LB_TIER_PIPS=[[LB_ICONS.None,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.Neutral,LB_ICONS.None],[LB_ICONS.Max,LB_ICONS.Max,LB_ICONS.Max]];
+function cmpLbPipsRow(a0,a1,a2){return [a0,a1,a2].map(src=>`<img src="${imgUrl(src)}" alt="" loading="lazy">`).join('')}
 function t(key){const lang=S.lang||'EN';return(T[lang]&&T[lang][key])||T.EN[key]||key}
 function tStat(name){const m=STAT_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
@@ -1108,15 +1121,17 @@ document.getElementById('cmpLegend').innerHTML=S.compareData.map((d,i)=>
 }
 
 function getCmpLbTierForUnit(uid){const v=S.cmpLbByUnit[uid];return v===undefined?3:Math.min(3,Math.max(0,parseInt(v,10)||0))}
-function updateCmpLbForUnit(uid,val){S.cmpLbByUnit[uid]=Math.min(3,Math.max(0,parseInt(val,10)||0));renderCompareDynamic()}
-function onCmpLbSelectChange(sel){const id=sel&&sel.getAttribute('data-unit-id');if(!id)return;updateCmpLbForUnit(id,sel.value)}
+function updateCmpLbForUnit(uid,val){S.cmpLbByUnit[uid]=Math.min(3,Math.max(0,parseInt(val,10)||0));renderCompareHeader();renderCompareDynamic()}
+function pickCmpLbTier(uid,tier){updateCmpLbForUnit(uid,tier)}
 function renderCompareHeader(){
 const ct=S.compareType;
 let html=S.compareData.map((d,i)=>{
 const row={thum:d.thum||d.portrait||S.compareList[i].thum||'',rarity:d.rarity||'N',role_icon:d.role_icon,acquisition_icon:d.acquisition_icon||''};
 const thumHtml=renderListThumb(row,ct==='character'?'char':'unit',72);
 const tid=getCmpLbTierForUnit(d.id);
-const lbDrop=ct==='unit'&&!d.is_ultimate?`<label class="cmp-card-lb"><span class="cmp-card-lb-label">${t('cmp_lb')}</span><select class="cmp-lb-select" data-unit-id="${esc(d.id)}" onchange="onCmpLbSelectChange(this)" aria-label="${esc(t('cmp_lb'))}">${[0,1,2,3].map(t=>`<option value="${t}"${tid===t?' selected':''}>${t}</option>`).join('')}</select></label>`:'';
+const cur=CMP_LB_TIER_PIPS[tid]||CMP_LB_TIER_PIPS[3];
+const lbMenu=[0,1,2,3].map(t=>{const p=CMP_LB_TIER_PIPS[t];return`<button type="button" class="cmp-lb-opt${tid===t?' is-active':''}" onclick="pickCmpLbTier('${escJs(d.id)}',${t})" role="option" aria-selected="${tid===t}">${cmpLbPipsRow(p[0],p[1],p[2])}<span class="cmp-lb-opt-num">${t}</span></button>`}).join('');
+const lbDrop=ct==='unit'&&!d.is_ultimate?`<div class="cmp-card-lb"><span class="cmp-card-lb-label">${t('cmp_lb')}</span><details class="cmp-lb-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`:'';
 return`<div class="cmp-card" style="border-top:3px solid ${CMP_COLORS[i]}">
 <div class="cmp-card-thum-wrap">${thumHtml}</div><div class="cmp-card-name">${esc(d.name)}</div>${lbDrop}
 <button class="cmp-card-remove" onclick="removeFromCompare('${d.id}')">${t('cmp_remove')}</button></div>`
