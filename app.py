@@ -202,6 +202,7 @@ def normalize_id(value, default='0', debug_context=None):
 RARITY_MAP = {'1': 'N', '2': 'R', '3': 'SR', '4': 'SSR', '5': 'UR'}
 RARITY_SORT = {'5': 0, '4': 1, '3': 2, '2': 3, '1': 4}
 RARITY_LETTERS = frozenset(RARITY_MAP.values())
+ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 
 def parse_list_rarity_filter(val):
@@ -230,6 +231,36 @@ def rarity_filter_cache_fragment(rf):
     if not rf:
         return 'none'
     return ','.join(sorted(rf))
+
+
+def parse_list_role_filter(val):
+    """Multi-select role (1/2/3) for list APIs. None = all; set() = none; nonempty set = filter."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    if s.upper() == '__NONE__':
+        return set()
+    parts = [p.strip() for p in s.split(',') if p.strip()]
+    if not parts:
+        return None
+    out = {p for p in parts if p in ROLE_FILTER_IDS}
+    if not out:
+        return set()
+    if out == ROLE_FILTER_IDS:
+        return None
+    return out
+
+
+def role_filter_cache_fragment(rf):
+    if rf is None:
+        return 'all'
+    if not rf:
+        return 'none'
+    return ','.join(sorted(rf))
+
+
 ROLE_MAP = {'0': 'NPC', '1': 'Attack', '2': 'Defense', '3': 'Support'}
 ROLE_SORT = {'1': 0, '2': 1, '3': 2, '0': 3}
 GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
@@ -2259,16 +2290,21 @@ def get_ability_units():
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
-    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip()
+    sq = request.args.get('q', '').strip().lower()
+    role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-    ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{rk}"
+    ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for cid, info in char_info_map.items():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
-        if rf and rf != role_id: continue
+        if role_filter is not None:
+            if not role_filter:
+                continue
+            if role_id not in role_filter:
+                continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
@@ -2304,23 +2340,28 @@ def list_characters():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': rf, 'rarity_filter': rav}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/units')
 def list_units():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
-    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip()
+    sq = request.args.get('q', '').strip().lower()
+    role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{rk}"
+    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for uid, info in unit_info_map.items():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
-        if rf and rf != role_id: continue
+        if role_filter is not None:
+            if not role_filter:
+                continue
+            if role_id not in role_filter:
+                continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
@@ -2351,7 +2392,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': rf, 'rarity_filter': rav}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/option_parts')
