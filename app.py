@@ -267,6 +267,10 @@ GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
 TERRAIN_SYMBOLS = {'0': '-', '1': '-', '2': '▲', '3': '●'}
 CHAR_STAT_ORDER = ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction']
 UNIT_STAT_ORDER = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+# List API: sort by these columns using stat value as primary key (not rarity), so SP / SSP toggles reorder correctly.
+LIST_STAT_SORT_PRIMARY = frozenset(
+    ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction', 'HP', 'EN', 'ATK', 'DEF', 'MOB', 'MOV']
+)
 
 TERRAIN_TYPE_ICON_MAP = {
     'Space': 'UI_Common_TerrainIcon_Space.png', 
@@ -2294,6 +2298,17 @@ def validate_lang_code(lc):
 
 def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     if sort_by not in valid_sorts: sort_by = default_sort
+    if sort_by in LIST_STAT_SORT_PRIMARY and sort_by in valid_sorts:
+        def _num(v):
+            try:
+                return float(v) if v is not None else 0.0
+            except (TypeError, ValueError):
+                return 0.0
+        if sort_dir == 'desc':
+            rows.sort(key=lambda r: (-_num(r.get(sort_by)), r['name'].lower()))
+        else:
+            rows.sort(key=lambda r: (_num(r.get(sort_by)), r['name'].lower()))
+        return rows
     if sort_by == 'rarity':
         if sort_dir == 'asc': rows.sort(key=lambda r: (-r['rarity_sort'], r['name'].lower()))
         else: rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower()))
