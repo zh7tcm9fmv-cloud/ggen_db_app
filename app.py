@@ -4,6 +4,11 @@ import os
 import re
 import math
 import sys
+from datetime import datetime, timezone, timedelta
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    ZoneInfo = None  # pragma: no cover
 
 app = Flask(__name__)
 
@@ -182,6 +187,19 @@ def extract_data_list(json_data):
 def safe_int(value, default=0):
     try: return int(value)
     except (TypeError, ValueError): return default
+
+def format_start_datetime_jst(ms):
+    """Format epoch milliseconds (UTC) as JST local time string."""
+    if ms is None or ms <= 0:
+        return ''
+    try:
+        if ZoneInfo is not None:
+            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
+        else:
+            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
+        return dt.strftime('%Y-%m-%d %H:%M:%S') + ' JST'
+    except Exception:
+        return ''
 
 def normalize_id(value, default='0', debug_context=None):
     if value is None or value == '' or value == 'None': return default
@@ -794,7 +812,7 @@ def create_char_info_map(m):
                 for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','BromideResourceId','bromideResourceId','IconResourceId','iconResourceId']:
                     rv = str(item.get(rk) or '').strip()
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
-                lookup[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': acq, 'resource_ids': rids}
+                lookup[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': acq, 'resource_ids': rids, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_char_status_map(d):
@@ -829,7 +847,7 @@ def create_supporter_info_map(m):
         if isinstance(item, dict):
             s = normalize_id(item.get('id') or item.get('Id'))
             if s != '0':
-                lookup[s] = {'rarity': normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1'), 'hp_add': int(item.get('MaxHpAdditionValue') or item.get('maxHpAdditionValue') or 0), 'atk_add': int(item.get('MaxAttackAdditionValue') or item.get('maxAttackAdditionValue') or 0), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '')}
+                lookup[s] = {'rarity': normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1'), 'hp_add': int(item.get('MaxHpAdditionValue') or item.get('maxHpAdditionValue') or 0), 'atk_add': int(item.get('MaxAttackAdditionValue') or item.get('maxAttackAdditionValue') or 0), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''), 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_supporter_growth_map(d):
@@ -1068,7 +1086,7 @@ def create_unit_info_map(m):
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
                 rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                 rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid}
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_unit_status_map(d):
@@ -1513,6 +1531,18 @@ ssp_weap_enhance_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core
 ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_effect.json"))
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
+schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
+schedule_start_ms_by_id = {}
+for _sit in extract_data_list(schedule_master_data):
+    if not isinstance(_sit, dict):
+        continue
+    _sid = normalize_id(_sit.get('Id') or _sit.get('id'))
+    if _sid == '0':
+        continue
+    try:
+        schedule_start_ms_by_id[_sid] = int(_sit.get('StartDatetime') or 0)
+    except (TypeError, ValueError):
+        schedule_start_ms_by_id[_sid] = 0
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
@@ -1740,7 +1770,7 @@ for lang_code, paths in LANG_PATHS.items():
                     for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId']:
                         rv = str(item.get(rk) or '').strip()
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
-                    char_info_map[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': normalize_id(item.get('CharacterAcquisitionRouteTypeIndex'),'0'), 'resource_ids': rids}
+                    char_info_map[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': normalize_id(item.get('CharacterAcquisitionRouteTypeIndex'),'0'), 'resource_ids': rids, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
                     added += 1
             if added: print(f"  +{added} chars from {lang_code}")
         if lum:
@@ -1760,7 +1790,7 @@ for lang_code, paths in LANG_PATHS.items():
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
                     rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                     rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid}
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -2841,6 +2871,106 @@ def list_supporters():
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
+
+@app.route('/api/latest_release')
+def api_latest_release():
+    """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    ck = f"lr_{lc}"
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify(convert_image_urls(cached))
+    ld = get_lang_data(lc)
+    skip_sched = {'0', '9999990001'}
+    groups = {}
+
+    def ensure_group(sched):
+        if sched not in groups:
+            sm = schedule_start_ms_by_id.get(sched, 0)
+            groups[sched] = {'schedule_id': sched, 'start_ms': sm, 'items': []}
+        return groups[sched]
+
+    for cid, info in char_info_map.items():
+        sched = info.get('schedule_id', '0')
+        if sched in skip_sched or sched not in schedule_start_ms_by_id:
+            continue
+        if info.get('role', '0') == '0':
+            continue
+        if cid not in char_list_playable_ids:
+            continue
+        lid = ld['char_id_map'].get(cid, '')
+        name = ld['char_text_map'].get(lid, '') if lid else ''
+        if not name:
+            continue
+        ri = info.get('rarity', '1')
+        acq = info.get('acquisition_route', '0')
+        acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+        role_id = info.get('role', '0')
+        thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+        ensure_group(sched)['items'].append({
+            'type': 'character', 'id': cid, 'name': name, 'thum': thum or '',
+            'rarity': RARITY_MAP.get(str(ri), 'N'), 'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'acquisition_icon': acq_icon or '',
+        })
+
+    for uid, info in unit_info_map.items():
+        sched = info.get('schedule_id', '0')
+        if sched in skip_sched or sched not in schedule_start_ms_by_id:
+            continue
+        if info.get('role', '0') == '0':
+            continue
+        if uid not in unit_list_playable_ids:
+            continue
+        lid = ld['unit_id_map'].get(uid, '')
+        name = ld['unit_text_map'].get(lid, '') if lid else ''
+        if not name:
+            continue
+        ri = info.get('rarity', '1')
+        acq = info.get('acquisition_route', '0')
+        ai = ACQUISITION_ROUTE_ICONS.get(acq, '')
+        si = []
+        if info.get('is_ultimate', False):
+            si.append(ULT_ICON)
+        if ai:
+            si.append(ai)
+        role_id = info.get('role', '0')
+        thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        ensure_group(sched)['items'].append({
+            'type': 'unit', 'id': uid, 'name': name, 'thum': thum or '',
+            'rarity': RARITY_MAP.get(str(ri), 'N'), 'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'acquisition_icon': ai or '', 'special_icons': si,
+        })
+
+    for sid, info in supporter_info_map.items():
+        sched = info.get('schedule_id', '0')
+        if sched in skip_sched or sched not in schedule_start_ms_by_id:
+            continue
+        lid = ld.get('supporter_id_map', {}).get(sid, '')
+        name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
+        if not name:
+            continue
+        ri = info.get('rarity', '1')
+        thum = find_supporter_portrait(info.get('resource_id'), sid)
+        ensure_group(sched)['items'].append({
+            'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
+            'rarity': RARITY_MAP.get(str(ri), 'N'),
+        })
+
+    type_order = {'unit': 0, 'character': 1, 'supporter': 2}
+    out_list = []
+    for sched, g in groups.items():
+        if not g['items']:
+            continue
+        g['items'].sort(key=lambda x: (type_order.get(x['type'], 9), x['name'].lower()))
+        sm = g['start_ms']
+        jst = format_start_datetime_jst(sm)
+        g['start_datetime_jst'] = jst if jst else f'Schedule {sched}'
+        del g['start_ms']
+        out_list.append(g)
+    out_list.sort(key=lambda x: schedule_start_ms_by_id.get(x['schedule_id'], 0), reverse=True)
+    result = {'groups': out_list}
+    set_cached_response(ck, result)
+    return jsonify(convert_image_urls(result))
 
 @app.route('/api/supporter/<supporter_id>')
 def get_supporter(supporter_id):
