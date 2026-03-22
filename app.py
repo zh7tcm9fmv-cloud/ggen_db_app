@@ -1482,6 +1482,31 @@ unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_u
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
 option_parts_lineage_map = create_option_parts_lineage_map(option_parts_lineage_data) if option_parts_lineage_data else {}
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
+
+def _build_char_list_playable_ids():
+    """Character ids that have at least one non-empty ability or skill (excludes story/NPC-only entries)."""
+    s = set()
+    for ab in extract_data_list(char_abil):
+        cid = normalize_id(ab.get('CharacterId', ''))
+        if cid == '0':
+            continue
+        for aid in [normalize_id(ab.get('AbilityId', '')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
+            if aid and aid != '0' and aid != 'None':
+                s.add(cid)
+                break
+    for sk in extract_data_list(char_skill):
+        cid = normalize_id(sk.get('CharacterId', ''))
+        if cid == '0':
+            continue
+        for sid in [normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
+            if sid and sid != '0':
+                s.add(cid)
+                break
+    return s
+
+
+char_list_playable_ids = _build_char_list_playable_ids()
+unit_list_playable_ids = set(unit_abil_map.keys()) | set(unit_weapon_map.keys())
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
 growth_pattern_map = create_growth_pattern_map(weapon_growth_data)
@@ -2296,6 +2321,20 @@ def validate_lang_code(lc):
     if lc not in LANG_DATA: lc = DEFAULT_LANG
     return lc
 
+def search_query_matches_entity_id(sq, eid):
+    """True when the search box is used to find an entity by id (exact or a 4+ digit fragment). Surfaces NPC-only list rows."""
+    if not sq or not str(sq).strip():
+        return False
+    eid = normalize_id(eid)
+    q_digits = ''.join(c for c in str(sq).strip().lower() if c.isdigit())
+    if not q_digits:
+        return False
+    if q_digits == eid:
+        return True
+    if len(q_digits) >= 4 and q_digits in eid:
+        return True
+    return False
+
 def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     if sort_by not in valid_sorts: sort_by = default_sort
     if sort_by in LIST_STAT_SORT_PRIMARY and sort_by in valid_sorts:
@@ -2517,7 +2556,7 @@ def list_characters():
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}"
+    ck = f"cl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2537,6 +2576,8 @@ def list_characters():
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
+        if cid not in char_list_playable_ids and not search_query_matches_entity_id(sq, cid):
+            continue
         if sq:
             ab_names = []
             for ab in extract_data_list(char_abil):
@@ -2580,7 +2621,7 @@ def list_units():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
-    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}"
+    ck = f"ul2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2600,6 +2641,8 @@ def list_units():
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name: continue
+        if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
+            continue
         if sq:
             ab_names = []
             ua = unit_abil_map.get(uid, [])
