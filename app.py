@@ -1,6 +1,15 @@
+import os
+
+# Load .env from project folder (optional). Use this on a VPS, or pair with hosting "Environment" UI.
+# PowerShell $env:... only applies to that local terminal — your online server needs vars set THERE (or .env).
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+except ImportError:
+    pass
+
 from flask import Flask, render_template, jsonify, request, make_response, session
 import json
-import os
 import re
 import math
 import sys
@@ -23,6 +32,10 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Latest Release: set LATEST_RELEASE_PASSWORD to require unlock + per-session watermark id.
 LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').strip()
+# Optional test pins: lock a specific schedule Id or exact StartDatetime (epoch ms) even if "now" is past start.
+LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID = (os.environ.get('LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID') or '').strip()
+_ts = (os.environ.get('LATEST_RELEASE_TEST_LOCK_START_MS') or '').strip()
+LATEST_RELEASE_TEST_LOCK_START_MS = int(_ts) if _ts.isdigit() else None
 
 # ═══════════════════════════════════════════════════════
 # IMAGE CDN CONFIGURATION & FILE INDEX
@@ -233,11 +246,30 @@ RARITY_MAP = {'1': 'N', '2': 'R', '3': 'SR', '4': 'SSR', '5': 'UR'}
 RARITY_SORT = {'5': 0, '4': 1, '3': 2, '2': 3, '1': 4}
 RARITY_LETTERS = frozenset(RARITY_MAP.values())
 
+def jst_three_month_window_start_ms():
+    """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
+    try:
+        if ZoneInfo is None:
+            return 0
+        tz = ZoneInfo('Asia/Tokyo')
+        now = datetime.now(tz)
+        y, m = now.year, now.month
+        m -= 2
+        while m <= 0:
+            m += 12
+            y -= 1
+        start = datetime(y, m, 1, 0, 0, 0, tzinfo=tz)
+        return int(start.timestamp() * 1000)
+    except Exception:
+        return 0
+
+
 def sort_latest_release_group_items(items):
     """
-    Order by rarity (UR first). Place recommended pilot + unit pairs together (character, then unit).
-    When several units share the same recommended character, only the first (by id) pairs; others stay unpaired.
-    Remaining entries: rarity, then type (character, unit, supporter), then name.
+    By rarity tier (UR first). Within each tier:
+    1) Units (name order), each followed immediately by its recommended character if present in this batch.
+    2) Remaining characters at that tier.
+    3) Supporters at that tier.
     """
     if not items:
         return []
@@ -246,34 +278,38 @@ def sort_latest_release_group_items(items):
         it['rarity_sort'] = RARITY_SORT.get(ri, 4)
     char_by_id = {it['id']: it for it in items if it['type'] == 'character'}
     units = [it for it in items if it['type'] == 'unit']
-    units.sort(key=lambda x: x['id'])
-    paired_char_ids = set()
-    paired_unit_ids = set()
-    pair_blocks = []
-    for uit in units:
-        rec = str(uit.get('recommend_character_id') or '0')
-        if rec == '0' or rec not in char_by_id or rec in paired_char_ids:
-            continue
-        cit = char_by_id[rec]
-        paired_char_ids.add(rec)
-        paired_unit_ids.add(uit['id'])
-        rs_pair = min(int(cit['rarity_sort']), int(uit['rarity_sort']))
-        pair_blocks.append((rs_pair, cit['name'].lower(), [cit, uit]))
-    unpaired = []
-    for it in items:
-        if it['type'] == 'character' and it['id'] in paired_char_ids:
-            continue
-        if it['type'] == 'unit' and it['id'] in paired_unit_ids:
-            continue
-        unpaired.append(it)
-    type_order = {'character': 0, 'unit': 1, 'supporter': 2}
-    unpaired.sort(key=lambda x: (x['rarity_sort'], type_order.get(x['type'], 9), x['name'].lower()))
-    single_blocks = [(it['rarity_sort'], it['name'].lower(), [it]) for it in unpaired]
-    merged = pair_blocks + single_blocks
-    merged.sort(key=lambda x: (x[0], x[1]))
+    supporters = [it for it in items if it['type'] == 'supporter']
+
+    def _ek(it):
+        return (it['type'], str(it['id']))
+
+    emitted = set()
     out = []
-    for _, _, seg in merged:
-        out.extend(seg)
+    for tier in range(5):
+        tier_units = [u for u in units if u['rarity_sort'] == tier and _ek(u) not in emitted]
+        tier_units.sort(key=lambda x: x['name'].lower())
+        for u in tier_units:
+            out.append(u)
+            emitted.add(_ek(u))
+            rec = str(u.get('recommend_character_id') or '0')
+            cit = char_by_id.get(rec)
+            if cit and _ek(cit) not in emitted:
+                out.append(cit)
+                emitted.add(_ek(cit))
+        tier_chars = [c for c in items if c['type'] == 'character' and c['rarity_sort'] == tier and _ek(c) not in emitted]
+        tier_chars.sort(key=lambda x: x['name'].lower())
+        for c in tier_chars:
+            out.append(c)
+            emitted.add(_ek(c))
+        tier_supp = [s for s in supporters if s['rarity_sort'] == tier and _ek(s) not in emitted]
+        tier_supp.sort(key=lambda x: x['name'].lower())
+        for s in tier_supp:
+            out.append(s)
+            emitted.add(_ek(s))
+    for it in items:
+        if _ek(it) not in emitted:
+            out.append(it)
+            emitted.add(_ek(it))
     return out
 ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
@@ -2532,7 +2568,6 @@ def _serve_index():
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
-        lr_password_required=bool(LATEST_RELEASE_PASSWORD),
     ))
     r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     r.headers['Pragma'] = 'no-cache'
@@ -2931,6 +2966,24 @@ def list_supporters():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
+def latest_release_schedule_content_locked(schedule_id, start_ms):
+    """Hide lineup when LATEST_RELEASE_PASSWORD is set, session not unlocked, and the gacha
+    has not started yet (StartDatetime in the future vs now), or test env pins match."""
+    if not LATEST_RELEASE_PASSWORD:
+        return False
+    if session.get('lr_unlocked') is True:
+        return False
+    sid = normalize_id(schedule_id)
+    if LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID and sid == normalize_id(LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID):
+        return True
+    if LATEST_RELEASE_TEST_LOCK_START_MS is not None and int(start_ms) == int(LATEST_RELEASE_TEST_LOCK_START_MS):
+        return True
+    now_ms = int(time.time() * 1000)
+    if int(start_ms) > now_ms:
+        return True
+    return False
+
+
 @app.route('/api/latest_release/status')
 def api_latest_release_status():
     """Whether Latest Release requires a password and if this session is unlocked."""
@@ -2963,7 +3016,10 @@ def api_latest_release():
     if LATEST_RELEASE_PASSWORD and session.get('lr_unlocked') is not True:
         return jsonify({'locked': True, 'error': 'password_required'}), 401
     wm = session.get('lr_wm', '') if LATEST_RELEASE_PASSWORD else ''
-    ck = f"lr_v2_{lc}_{wm}" if LATEST_RELEASE_PASSWORD else f"lr_v2_{lc}"
+    show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
+    scope = 'full' if show_all else 'recent'
+    wm_ck = wm or 'na'
+    ck = f"lr_v3_{lc}_{wm_ck}_{scope}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -3057,10 +3113,30 @@ def api_latest_release():
         sm = g['start_ms']
         jst = format_start_datetime_jst(sm)
         g['start_datetime_jst'] = jst if jst else f'Schedule {sched}'
+        if latest_release_schedule_content_locked(sched, sm):
+            g['items'] = []
+            g['locked'] = True
+        else:
+            g['locked'] = False
         del g['start_ms']
         out_list.append(g)
     out_list.sort(key=lambda x: schedule_start_ms_by_id.get(x['schedule_id'], 0), reverse=True)
-    result = {'groups': out_list}
+    full_list = out_list
+    has_more = False
+    if not show_all:
+        ws = jst_three_month_window_start_ms()
+        if ws > 0:
+            filtered = [g for g in full_list if schedule_start_ms_by_id.get(g['schedule_id'], 0) >= ws]
+        else:
+            filtered = list(full_list)
+        has_more = len(filtered) < len(full_list)
+        out_list = filtered
+    result = {
+        'groups': out_list,
+        'has_more': has_more,
+        'scope': scope,
+        'has_locked_groups': any(g.get('locked') for g in out_list),
+    }
     if LATEST_RELEASE_PASSWORD:
         result['watermark'] = wm
     set_cached_response(ck, result)
