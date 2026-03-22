@@ -2311,7 +2311,9 @@ def list_characters():
 def list_units():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
-    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip(); ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+    sq = request.args.get('q', '').strip().lower(); rf = request.args.get('role', '').strip()
+    rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
+    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{rk}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2319,6 +2321,12 @@ def list_units():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
         if rf and rf != role_id: continue
+        if rarity_filter is not None:
+            if not rarity_filter:
+                continue
+            letter = RARITY_MAP.get(str(ri), 'N')
+            if letter not in rarity_filter:
+                continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name: continue
         if sq:
