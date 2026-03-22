@@ -338,6 +338,31 @@ def _is_conditional_stat_text(t):
         if kw in tl: return True
     return False
 
+def _unit_hp_threshold_active_at_assumed_full_hp(part):
+    """
+    Unit detail/list assume full HP for displayed stats. HP-gated bonuses that apply at high or full HP
+    should count toward base (non-conditional) stats; only low-HP gates stay behind the conditional toggle.
+    EN e.g. 'When HP is 50% or above', 'When HP is full'; TW e.g. '以上', '全滿'.
+    Low HP: 'or below', '以下', 'when hp is below ...'
+    """
+    t = (part or '').strip()
+    if not t:
+        return False
+    tl = t.lower()
+    if 'hp' not in tl and '體力' not in t and '体力' not in t:
+        return False
+    if 'or below' in tl or '以下' in t:
+        return False
+    if re.search(r'\bwhen\s+hp\s+is\s+below\b', tl):
+        return False
+    if 'or above' in tl or '以上' in t:
+        return True
+    if re.search(r'\bwhen\s+hp\s+is\s+full\b', tl) or re.search(r'\bhp\s+is\s+full\b', tl):
+        return True
+    if '全滿' in t:
+        return True
+    return False
+
 def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
@@ -1867,6 +1892,8 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             cond_prefix = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
+                if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                    itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                 if itc and not part_stats and not flat_move:
@@ -1951,6 +1978,8 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
             cond_prefix = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
+                if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                    itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                 if itc and not part_stats and not flat_move:
@@ -3030,7 +3059,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp5"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp6"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -3104,6 +3133,8 @@ def get_unit(unit_id):
                 cond_prefix = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
+                    if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                        itc = False
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                     wpn_stats = _extract_weapon_stat_percent_unit(part, skip_conditional=False)
                     flat_move = _extract_stat_flat_move(part, skip_conditional=False)
