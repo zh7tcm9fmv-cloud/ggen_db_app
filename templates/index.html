@@ -34,7 +34,7 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .tab-panel::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0.15;border-radius:var(--radius-lg)}
 #panel-characters::before,#panel-supporters::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_022_office.png{% else %}/static/images/Background/obg_022_office.png{% endif %}')}
 #panel-units::before,#panel-stages::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_011_garage.png{% else %}/static/images/Background/obg_011_garage.png{% endif %}')}
-#panel-latest_release::before{background-image:url('https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/images/Background/obg_013_garage.webp')}
+#panel-latest_release::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
 .lr-root{max-width:100%;width:100%;margin:0;padding:4px 0 24px;position:relative;z-index:1;text-align:left;align-self:stretch}
 .lr-page-title{font-size:17px;font-weight:800;color:var(--accent-gold);margin-bottom:22px;letter-spacing:.02em;text-align:left}
 .lr-section{margin-bottom:32px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
