@@ -39,6 +39,10 @@ LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').stri
 LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID = (os.environ.get('LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID') or '').strip()
 _ts = (os.environ.get('LATEST_RELEASE_TEST_LOCK_START_MS') or '').strip()
 LATEST_RELEASE_TEST_LOCK_START_MS = int(_ts) if _ts.isdigit() else None
+# When true (default): also lock any schedule whose StartDatetime is still in the future.
+# Set to 0/false to lock ONLY test pins (LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID / _START_MS), not all future gachas.
+_prel = (os.environ.get('LATEST_RELEASE_LOCK_FUTURE_STARTS') or '1').strip().lower()
+LATEST_RELEASE_LOCK_FUTURE_STARTS = _prel not in ('0', 'false', 'no', 'off')
 
 # ═══════════════════════════════════════════════════════
 # IMAGE CDN CONFIGURATION & FILE INDEX
@@ -2981,9 +2985,10 @@ def latest_release_schedule_content_locked(schedule_id, start_ms):
         return True
     if LATEST_RELEASE_TEST_LOCK_START_MS is not None and int(start_ms) == int(LATEST_RELEASE_TEST_LOCK_START_MS):
         return True
-    now_ms = int(time.time() * 1000)
-    if int(start_ms) > now_ms:
-        return True
+    if LATEST_RELEASE_LOCK_FUTURE_STARTS:
+        now_ms = int(time.time() * 1000)
+        if int(start_ms) > now_ms:
+            return True
     return False
 
 
@@ -3022,13 +3027,13 @@ def api_latest_release_unlock():
 def api_latest_release():
     """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    if LATEST_RELEASE_PASSWORD and session.get('lr_unlocked') is not True:
-        return jsonify({'locked': True, 'error': 'password_required'}), 401
-    wm = session.get('lr_wm', '') if LATEST_RELEASE_PASSWORD else ''
+    # Do NOT return 401 for the whole tab — per-schedule lock is applied below via latest_release_schedule_content_locked().
+    unlocked = session.get('lr_unlocked') is True
+    wm = session.get('lr_wm', '') if (LATEST_RELEASE_PASSWORD and unlocked) else ''
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v3_{lc}_{wm_ck}_{scope}"
+    ck = f"lr_v4_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
