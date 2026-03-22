@@ -773,15 +773,34 @@ def create_supporter_growth_map(d):
     return lookup
 
 def create_supporter_leader_skill_map(d):
-    """supporter_id -> list of {tier, desc_lang_id, trait_cond_id, sort}. tier 0-3 from last 2 digits of set_id."""
-    lookup = {}
+    """supporter_id -> list of {tier, desc_lang_id, trait_cond_id, sort}. tier 0-3 from set_id suffix.
+
+    Two ID schemes exist in master data:
+    - 00-03: last two digits are LB tier directly (e.g. 100100015000 = LB0).
+    - 01-04: last two digits are 1-4; tier = that value minus 1 (e.g. ...120000035003 = LB2, ...004 = LB3).
+    Detect 01-04 scheme when any set id for that supporter ends in '04' (see 120000035001-004).
+    """
+    items = []
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         si = str(item.get('SupporterLeaderSkillContentSetId') or item.get('supporterLeaderSkillContentSetId') or item.get('Id') or item.get('id') or '')
         if not si or len(si) < 2: continue
         sp = str(item.get('SupporterId') or item.get('supporterId') or si[:-2])
-        tier = int(si[-2:]) if len(si) >= 2 else 0
-        if tier > 3: tier = 3
+        items.append((sp, si, item))
+    scheme2 = set()
+    for sp, si, _ in items:
+        if si.endswith('04'):
+            scheme2.add(sp)
+    lookup = {}
+    for sp, si, item in items:
+        last2 = int(si[-2:])
+        if sp in scheme2:
+            tier = last2 - 1
+        else:
+            tier = last2
+            if tier > 3:
+                tier = 3
+        tier = max(0, min(3, tier))
         lookup.setdefault(sp, []).append({
             'tier': tier, 'set_id': si,
             'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
@@ -1804,6 +1823,158 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             result[s] = bst + bb
     return result
 
+def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
+    """Max LB tier (1.4×) stat bundles — same logic as get_unit lb_data[3]. Used for list SP/SSP columns."""
+    unit_id = normalize_id(unit_id)
+    ri = info.get('rarity', '1')
+    fs = {}
+    has_sp = int(ri) <= 4
+    ssp_id = unit_ssp_config_map.get(unit_id); ssp_bonus = unit_ssp_stat_map.get(ssp_id, {})
+    ssp_core = get_ssp_custom_core_bonuses_for_unit(unit_id) if has_sp else {'move': 0, 'terrain_upgrades': []}
+    rm = unit_ssp_abil_replace_map.get(unit_id, {})
+    if raw:
+        for s in ['HP', 'EN', 'Attack', 'Defense', 'Mobility']:
+            st = raw.get(s, (0, 0, 0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
+            fs[s] = calc_growth_unit(st[0], st[1], ri)
+        mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+        fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
+    ua = unit_abil_map.get(unit_id, [])
+    ac = []
+    for ab in sorted(ua, key=lambda x: x['sort']):
+        bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+        if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+        ac.append(bac)
+    max_ab_sort = max((int(a.get('sort', 0) or 0) for a in ua), default=0)
+    if has_sp:
+        for idx, gain_aid in enumerate(unit_ssp_abil_gain_list.get(unit_id, [])):
+            so = max_ab_sort + idx + 1
+            bac = build_ability_entry(str(gain_aid), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=so, lang_code=CALC_LANG)
+            bac['ssp_only'] = True
+            ac.append(bac)
+    spb = {s: 0 for s in UNIT_STAT_ORDER}
+    spc = {s: 0 for s in UNIT_STAT_ORDER}
+    sspb = {s: 0 for s in UNIT_STAT_ORDER}
+    sspc = {s: 0 for s in UNIT_STAT_ORDER}
+    nxs = {s: 0 for s in UNIT_STAT_ORDER}
+    nxss = {s: 0 for s in UNIT_STAT_ORDER}
+    spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
+
+    def _ability_has_condition_word(ad):
+        name = (ad.get('name') or '').lower()
+        cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
+        if any(w in name for w in cond_words): return True
+        for d2 in ad.get('details', []):
+            txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
+            if any(w in txt for w in cond_words): return True
+        return False
+
+    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
+        hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
+        ie = ad.get('is_ex', False)
+        ability_cond = _ability_has_condition_word(ad)
+        inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+        for d2 in ad.get('details', []):
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
+            if not parts: parts = [txt]
+            cond_prefix = False
+            for part in parts:
+                itc = _is_conditional_stat_text(part)
+                part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
+                flat_move = _extract_stat_flat_move(part, skip_conditional=False)
+                if itc and not part_stats and not flat_move:
+                    cond_prefix = True
+                is_cond = itc or cond_prefix
+                if flat_move:
+                    if inx:
+                        pass
+                    elif hc or ie or is_cond:
+                        cd_move_flat[0] += flat_move
+                    else:
+                        bd_move_flat[0] += flat_move
+                for s, pct in part_stats.items():
+                    if s == 'Move': continue
+                    if unit_id == '1400000550' and s == 'HP' and pct == 5:
+                        bd[s] = bd.get(s, 0) + pct
+                        continue
+                    if inx:
+                        nd[s] = max(nd.get(s, 0), pct)
+                    elif hc or ie or is_cond:
+                        cd[s] = cd.get(s, 0) + pct
+                    else:
+                        bd[s] = bd.get(s, 0) + pct
+
+    for ab in ac:
+        if ab.get('ssp_only'):
+            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+            continue
+        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
+        if 'ssp_replacement' in ab:
+            ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+        else:
+            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+    for s in UNIT_STAT_ORDER:
+        spc[s] = spc.get(s, 0) + nxs.get(s, 0)
+        sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
+    lb_data = []
+    for mult in [1.0, 1.2, 1.3, 1.4]:
+        cm = 1.0 if info.get('is_ultimate', False) else mult
+        lb_fs, lb_fsp, lb_fssp = {}, {}, {}
+        if raw:
+            for s in ['HP', 'EN', 'Attack', 'Defense', 'Mobility']:
+                st = raw.get(s, (0, 0, 0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
+                gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
+                sb2v, sm2v = ssp_bonus.get(s, (0, 0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
+                scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
+                lb_fs[s] = math.floor(gs * cm); lb_fsp[s] = math.floor(gsp * cm); lb_fssp[s] = math.floor((gsp + scb) * cm)
+            mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
+            lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
+            lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
+            lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
+        else:
+            lb_fs = {s: math.floor(fs.get(s, 0) * cm / 1.4) for s in UNIT_STAT_ORDER}
+            lb_fsp = dict(lb_fs)
+            lb_fssp = dict(lb_fs)
+        snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
+        for s in UNIT_STAT_ORDER:
+            if s == 'Move':
+                mbase = int(lb_fsp.get('Move', 0) or 0)
+                mssp = int(lb_fssp.get('Move', 0) or 0)
+                mbon = max(0, mssp - mbase)
+                bf = spb_move_flat[0]; cf = spc_move_flat[0]; sbf = sspb_move_flat[0]; scf = sspc_move_flat[0]
+                snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf})
+                swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf})
+                spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf})
+                spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf})
+                sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf})
+                sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf})
+                continue
+            bst = lb_fs.get(s, 0); spst = lb_fsp.get(s, 0); sspst = lb_fssp.get(s, 0)
+            bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
+            cb = math.floor(bst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if bst else 0
+            snc.append({'name': s, 'total': bst + bb, 'bonus': bb})
+            swc.append({'name': s, 'total': bst + cb, 'bonus': cb})
+            spbb = math.floor(spst * spb.get(s, 0) / 100) if spst else 0
+            spcb = math.floor(spst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if spst else 0
+            spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb})
+            spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb})
+            sspbb = math.floor(sspst * sspb.get(s, 0) / 100) if sspst else 0
+            sspcb = math.floor(sspst * (sspb.get(s, 0) + sspc.get(s, 0)) / 100) if sspst else 0
+            sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb})
+            sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb})
+        lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
+    return lb_data[3] if len(lb_data) > 3 else (lb_data[-1] if lb_data else None)
+
+def _unit_lb_row_to_api(entry, mode):
+    if mode == 'normal':
+        dlist = entry['stats_no_cond']
+    elif mode == 'sp':
+        dlist = entry['sp_stats_no_cond']
+    else:
+        dlist = entry['ssp_stats_no_cond']
+    m = {x['name']: x['total'] for x in dlist}
+    return {'HP': m.get('HP', 0), 'EN': m.get('EN', 0), 'ATK': m.get('Attack', 0), 'DEF': m.get('Defense', 0), 'MOB': m.get('Mobility', 0), 'MOV': m.get('Move', 0)}
+
 def resolve_series(ser_set_id, lc):
     ld = get_lang_data(lc); ssm = ld.get('ser_set_map', {}); sl = ld.get('series_list', []); sd = []
     if ser_set_id and ser_set_id != '0':
@@ -2042,6 +2213,32 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
         bv = grown.get(s, 0)
         tb = math.floor(bv * spbn[s] / 100) if bv > 0 else 0
         totals[s] = bv + tb
+    return totals
+
+def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
+    """SP growth column + SP ability bonuses (same as get_character sp_stats / non-EX)."""
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
+    def build_ab(ab):
+        bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        d = ldc
+        bab = build_ability_entry(bid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        if spid and spid != '0' and spid != 'None' and spid != bid:
+            bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        return bab
+    ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
+    spbs = {s: 0 for s in CHAR_STAT_ORDER}
+    for bab in ac:
+        sab = bab.get('sp_replacement', bab)
+        for d2 in sab.get('details', []):
+            for s, p in extract_stat_percent_char(d2['text']).items():
+                if sab.get('is_ex', False):
+                    continue
+                spbs[s] = spbs.get(s, 0) + p
+    totals = {}
+    for s in CHAR_STAT_ORDER:
+        sbv = grown_sp.get(s, 0)
+        sbon = math.floor(sbv * spbs[s] / 100) if sbv > 0 else 0
+        totals[s] = sbv + sbon
     return totals
 
 def calculate_npc_character_self_bonus_pct(abilities):
@@ -2304,7 +2501,8 @@ def list_characters():
     sq = request.args.get('q', '').strip().lower()
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-    ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}"
+    sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
+    ck = f"cl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2344,10 +2542,14 @@ def list_characters():
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
-        totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
+        if sp_list:
+            rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
+            totals = compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp); base_src = grown_sp
+        else:
+            totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown); base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': grown.get('Ranged', 0), 'Melee_base': grown.get('Melee', 0), 'Awaken_base': grown.get('Awaken', 0), 'Defense_base': grown.get('Defense', 0), 'Reaction_base': grown.get('Reaction', 0)})
+        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -2361,7 +2563,9 @@ def list_units():
     sq = request.args.get('q', '').strip().lower()
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}"
+    stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
+    if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
+    ck = f"ul_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2394,12 +2598,16 @@ def list_units():
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(ab_names)
             if sq not in ss.lower(): continue
         raw = unit_stat_map.get(uid, {})
-        fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
+        if stat_mode == 'normal':
+            fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
+        else:
+            lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
+            fs = _unit_lb_row_to_api(lb, stat_mode) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
         acq = info.get('acquisition_route','0'); ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        rows.append({'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'ATK': fs.get('Attack',0), 'DEF': fs.get('Defense',0), 'MOB': fs.get('Mobility',0), 'HP': fs.get('HP',0), 'EN': fs.get('EN',0), 'MOV': fs.get('Move',0)})
+        rows.append({'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -2893,8 +3101,7 @@ def get_unit(unit_id):
                 terr_ssp_levels[tn] = to if cur == fr else max(cur, to)
         def _ssp_level_icon(tn):
             lv = terr_ssp_levels.get(tn, 0)
-            if tn in ssp_enhanced_terrains and lv >= 2:
-                return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP[3]}"
+            # Use the actual adapted level (e.g. △ after SSP dash→triangle). Do not force ● for lv>=2.
             return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"
         terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
