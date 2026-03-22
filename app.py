@@ -1720,6 +1720,13 @@ for lang_code, paths in LANG_PATHS.items():
 print("Database ready!")
 print("=" * 60)
 
+CHAR_RECOMMEND_UNIT_MAP = {}
+for _uid in sorted(unit_info_map.keys()):
+    _ui = unit_info_map[_uid]
+    _rid = normalize_id(_ui.get('recommend_character_id') or '0')
+    if _rid != '0' and _rid not in CHAR_RECOMMEND_UNIT_MAP:
+        CHAR_RECOMMEND_UNIT_MAP[_rid] = _uid
+
 # ═══════════════════════════════════════════════════════
 # HELPER FUNCTIONS
 # ═══════════════════════════════════════════════════════
@@ -2629,7 +2636,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r1"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -2693,7 +2700,21 @@ def get_character(char_id):
             if not sk.get('is_sp'):
                 if sk.get('replaced_by_sp_id'): sk['replaced_by_sp'] = True
                 elif sk['name'].strip().lower() in spn: sk['replaced_by_sp'] = True
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc}
+        rec_uid = CHAR_RECOMMEND_UNIT_MAP.get(char_id)
+        recommend_unit = None
+        if rec_uid and rec_uid in unit_info_map:
+            uinfo = unit_info_map[rec_uid]
+            uri = uinfo.get('rarity', '1')
+            urole = uinfo.get('role', '0')
+            ulid = ld.get('unit_id_map', {}).get(rec_uid, '')
+            uname = ld.get('unit_text_map', {}).get(ulid, '') if ulid else ''
+            if not uname:
+                uname = f'Unknown ({rec_uid})'
+            uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid, 'images/unit_portraits')
+            uacq = uinfo.get('acquisition_route', '0')
+            uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
+            recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
