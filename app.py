@@ -367,6 +367,48 @@ def _extract_stat_flat_move(text, skip_conditional=True):
     m = re.search(r"Increase\s+(?:own\s+)?(?:squad\s+)?(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)", text, re.IGNORECASE)
     return int(m.group(1)) if m else 0
 
+def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
+    """Parse passive % bonuses that apply to weapon display (ACC, Critical, Power)."""
+    bonuses = {}
+    if skip_conditional and _is_conditional_stat_text(text):
+        return bonuses
+    tl = (text or '').strip()
+    # "Increase own ACC and EVA by 5%" — ACC affects weapons; EVA does not
+    m = re.search(r'Increase own (ACC|Accuracy) and (EVA|EVADE|Evasion) by (\d+)%', tl, re.IGNORECASE)
+    if m:
+        bonuses['Accuracy'] = bonuses.get('Accuracy', 0) + int(m.group(3))
+        return bonuses
+    # "Increase own ACC and Critical by 5%"
+    m = re.search(r'Increase own (ACC|Accuracy) and (Critical|CRIT) by (\d+)%', tl, re.IGNORECASE)
+    if m:
+        p = int(m.group(3))
+        bonuses['Accuracy'] = bonuses.get('Accuracy', 0) + p
+        bonuses['Critical'] = bonuses.get('Critical', 0) + p
+        return bonuses
+    def _normw(x):
+        if not x:
+            return None
+        u = re.sub(r'\.', '', x.strip()).upper()
+        if u in ('ACC', 'ACCURACY'):
+            return 'Accuracy'
+        if u in ('CRITICAL', 'CRIT'):
+            return 'Critical'
+        if u == 'POWER':
+            return 'Power'
+        return None
+    sn = r"(?:ACC|Accuracy|Critical|CRIT|Crit\.?|Power)"
+    m = re.search(fr'Increase (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%', tl, re.IGNORECASE)
+    if m:
+        pct = int(m.group(3))
+        n1 = _normw(m.group(1))
+        if n1:
+            bonuses[n1] = bonuses.get(n1, 0) + pct
+        if m.group(2):
+            n2 = _normw(m.group(2))
+            if n2:
+                bonuses[n2] = bonuses.get(n2, 0) + pct
+    return bonuses
+
 def is_ex_ability(name):
     if not name: return False
     name_lower = name.strip().lower()
@@ -2988,7 +3030,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp3"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp5"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -3033,6 +3075,13 @@ def get_unit(unit_id):
         nxs = {s: 0 for s in UNIT_STAT_ORDER}
         nxss = {s: 0 for s in UNIT_STAT_ORDER}
         spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
+        _WPN_KEYS = ('Accuracy', 'Critical', 'Power')
+        wpn_spb = {k: 0 for k in _WPN_KEYS}
+        wpn_spc = {k: 0 for k in _WPN_KEYS}
+        wpn_sspb = {k: 0 for k in _WPN_KEYS}
+        wpn_sspc = {k: 0 for k in _WPN_KEYS}
+        wpn_nxs = {k: 0 for k in _WPN_KEYS}
+        wpn_nxss = {k: 0 for k in _WPN_KEYS}
 
         def _ability_has_condition_word(ad):
             name = (ad.get('name') or '').lower()
@@ -3043,7 +3092,7 @@ def get_unit(unit_id):
                 if any(w in txt for w in cond_words): return True
             return False
 
-        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
+        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
             ability_cond = _ability_has_condition_word(ad)
@@ -3056,8 +3105,9 @@ def get_unit(unit_id):
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
+                    wpn_stats = _extract_weapon_stat_percent_unit(part, skip_conditional=False)
                     flat_move = _extract_stat_flat_move(part, skip_conditional=False)
-                    if itc and not part_stats and not flat_move:
+                    if itc and not part_stats and not flat_move and not wpn_stats:
                         cond_prefix = True
                     is_cond = itc or cond_prefix
                     if flat_move:
@@ -3078,16 +3128,34 @@ def get_unit(unit_id):
                             cd[s] = cd.get(s, 0) + pct
                         else:
                             bd[s] = bd.get(s, 0) + pct
+                    for wk, pct in wpn_stats.items():
+                        if inx:
+                            wpn_nd[wk] = max(wpn_nd.get(wk, 0), pct)
+                        elif hc or ie or is_cond:
+                            wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
+                        else:
+                            wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
 
         for ab in ac:
             if ab.get('ssp_only'):
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
                 continue
-            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
+            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, wpn_spb, wpn_spc, wpn_nxs)
             if 'ssp_replacement' in ab:
-                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
             else:
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
+        wpn_spc_pure = {k: wpn_spc.get(k, 0) for k in _WPN_KEYS}
+        wpn_sspc_pure = {k: wpn_sspc.get(k, 0) for k in _WPN_KEYS}
+        for k in _WPN_KEYS:
+            wpn_spc[k] = wpn_spc.get(k, 0) + wpn_nxs.get(k, 0)
+            wpn_sspc[k] = wpn_sspc.get(k, 0) + wpn_nxss.get(k, 0)
+        weapon_passive_pct = {
+            'sp': {k: wpn_spb.get(k, 0) + wpn_nxs.get(k, 0) for k in _WPN_KEYS},
+            'ssp': {k: wpn_sspb.get(k, 0) + wpn_nxss.get(k, 0) for k in _WPN_KEYS},
+            'sp_cond': {k: wpn_spc_pure.get(k, 0) for k in _WPN_KEYS},
+            'ssp_cond': {k: wpn_sspc_pure.get(k, 0) for k in _WPN_KEYS},
+        }
         for s in UNIT_STAT_ORDER:
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
@@ -3240,7 +3308,7 @@ def get_unit(unit_id):
                     mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
                     break
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
