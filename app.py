@@ -4,7 +4,10 @@ import os
 # PowerShell $env:... only applies to that local terminal — your online server needs vars set THERE (or .env).
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+    # override=True: values in .env win over empty/stale Windows user env vars.
+    # encoding=utf-8-sig: strips UTF-8 BOM so the first line is not \ufeffLATEST_...
+    _env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    load_dotenv(_env_path, override=True, encoding='utf-8-sig')
 except ImportError:
     pass
 
@@ -2988,10 +2991,16 @@ def latest_release_schedule_content_locked(schedule_id, start_ms):
 def api_latest_release_status():
     """Whether Latest Release requires a password and if this session is unlocked."""
     if not LATEST_RELEASE_PASSWORD:
-        return jsonify({'password_required': False, 'unlocked': True})
+        return jsonify({
+            'password_required': False,
+            'unlocked': True,
+            'test_lock_schedule_id': LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID or None,
+        })
     return jsonify({
         'password_required': True,
         'unlocked': session.get('lr_unlocked') is True,
+        # Lets you confirm the server loaded LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID from .env (not secret).
+        'test_lock_schedule_id': LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID or None,
     })
 
 
