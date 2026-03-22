@@ -1,9 +1,11 @@
-from flask import Flask, render_template, jsonify, request, make_response
+from flask import Flask, render_template, jsonify, request, make_response, session
 import json
 import os
 import re
 import math
 import sys
+import secrets
+import time
 from datetime import datetime, timezone, timedelta
 try:
     from zoneinfo import ZoneInfo
@@ -11,6 +13,16 @@ except ImportError:
     ZoneInfo = None  # pragma: no cover
 
 app = Flask(__name__)
+
+# Sessions (Latest Release password gate). Set FLASK_SECRET_KEY in production.
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'ggen-dev-secret-change-in-production')
+if os.environ.get('FLASK_SESSION_SECURE', '').lower() in ('1', 'true', 'yes'):
+    app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+# Latest Release: set LATEST_RELEASE_PASSWORD to require unlock + per-session watermark id.
+LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').strip()
 
 # ═══════════════════════════════════════════════════════
 # IMAGE CDN CONFIGURATION & FILE INDEX
@@ -2517,7 +2529,11 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
 # ═══════════════════════════════════════════════════════
 
 def _serve_index():
-    r = make_response(render_template('index.html', image_cdn=IMAGE_CDN or ''))
+    r = make_response(render_template(
+        'index.html',
+        image_cdn=IMAGE_CDN or '',
+        lr_password_required=bool(LATEST_RELEASE_PASSWORD),
+    ))
     r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     r.headers['Pragma'] = 'no-cache'
     r.headers['Expires'] = '0'
@@ -2915,11 +2931,39 @@ def list_supporters():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
+@app.route('/api/latest_release/status')
+def api_latest_release_status():
+    """Whether Latest Release requires a password and if this session is unlocked."""
+    if not LATEST_RELEASE_PASSWORD:
+        return jsonify({'password_required': False, 'unlocked': True})
+    return jsonify({
+        'password_required': True,
+        'unlocked': session.get('lr_unlocked') is True,
+    })
+
+
+@app.route('/api/latest_release/unlock', methods=['POST'])
+def api_latest_release_unlock():
+    """Unlock Latest Release for this session; returns a unique watermark id for tracing."""
+    if not LATEST_RELEASE_PASSWORD:
+        return jsonify({'ok': True, 'watermark': '', 'password_required': False})
+    data = request.get_json(force=True, silent=True) or {}
+    pw = (data.get('password') or '').strip()
+    if pw != LATEST_RELEASE_PASSWORD:
+        return jsonify({'ok': False, 'error': 'invalid_password'}), 403
+    session['lr_unlocked'] = True
+    session['lr_wm'] = secrets.token_hex(8) + '-' + str(int(time.time()))
+    return jsonify({'ok': True, 'watermark': session['lr_wm'], 'password_required': True})
+
+
 @app.route('/api/latest_release')
 def api_latest_release():
     """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f"lr_v2_{lc}"
+    if LATEST_RELEASE_PASSWORD and session.get('lr_unlocked') is not True:
+        return jsonify({'locked': True, 'error': 'password_required'}), 401
+    wm = session.get('lr_wm', '') if LATEST_RELEASE_PASSWORD else ''
+    ck = f"lr_v2_{lc}_{wm}" if LATEST_RELEASE_PASSWORD else f"lr_v2_{lc}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -3017,6 +3061,8 @@ def api_latest_release():
         out_list.append(g)
     out_list.sort(key=lambda x: schedule_start_ms_by_id.get(x['schedule_id'], 0), reverse=True)
     result = {'groups': out_list}
+    if LATEST_RELEASE_PASSWORD:
+        result['watermark'] = wm
     set_cached_response(ck, result)
     return jsonify(convert_image_urls(result))
 
