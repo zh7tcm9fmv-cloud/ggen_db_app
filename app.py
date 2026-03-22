@@ -220,6 +220,49 @@ def normalize_id(value, default='0', debug_context=None):
 RARITY_MAP = {'1': 'N', '2': 'R', '3': 'SR', '4': 'SSR', '5': 'UR'}
 RARITY_SORT = {'5': 0, '4': 1, '3': 2, '2': 3, '1': 4}
 RARITY_LETTERS = frozenset(RARITY_MAP.values())
+
+def sort_latest_release_group_items(items):
+    """
+    Order by rarity (UR first). Place recommended pilot + unit pairs together (character, then unit).
+    When several units share the same recommended character, only the first (by id) pairs; others stay unpaired.
+    Remaining entries: rarity, then type (character, unit, supporter), then name.
+    """
+    if not items:
+        return []
+    for it in items:
+        ri = str(it.get('rarity_id', '1'))
+        it['rarity_sort'] = RARITY_SORT.get(ri, 4)
+    char_by_id = {it['id']: it for it in items if it['type'] == 'character'}
+    units = [it for it in items if it['type'] == 'unit']
+    units.sort(key=lambda x: x['id'])
+    paired_char_ids = set()
+    paired_unit_ids = set()
+    pair_blocks = []
+    for uit in units:
+        rec = str(uit.get('recommend_character_id') or '0')
+        if rec == '0' or rec not in char_by_id or rec in paired_char_ids:
+            continue
+        cit = char_by_id[rec]
+        paired_char_ids.add(rec)
+        paired_unit_ids.add(uit['id'])
+        rs_pair = min(int(cit['rarity_sort']), int(uit['rarity_sort']))
+        pair_blocks.append((rs_pair, cit['name'].lower(), [cit, uit]))
+    unpaired = []
+    for it in items:
+        if it['type'] == 'character' and it['id'] in paired_char_ids:
+            continue
+        if it['type'] == 'unit' and it['id'] in paired_unit_ids:
+            continue
+        unpaired.append(it)
+    type_order = {'character': 0, 'unit': 1, 'supporter': 2}
+    unpaired.sort(key=lambda x: (x['rarity_sort'], type_order.get(x['type'], 9), x['name'].lower()))
+    single_blocks = [(it['rarity_sort'], it['name'].lower(), [it]) for it in unpaired]
+    merged = pair_blocks + single_blocks
+    merged.sort(key=lambda x: (x[0], x[1]))
+    out = []
+    for _, _, seg in merged:
+        out.extend(seg)
+    return out
 ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 
@@ -2876,7 +2919,7 @@ def list_supporters():
 def api_latest_release():
     """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f"lr_{lc}"
+    ck = f"lr_v2_{lc}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -2909,7 +2952,8 @@ def api_latest_release():
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         ensure_group(sched)['items'].append({
             'type': 'character', 'id': cid, 'name': name, 'thum': thum or '',
-            'rarity': RARITY_MAP.get(str(ri), 'N'), 'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+            'role_icon': ROLE_ICON_MAP.get(role_id, ''),
             'acquisition_icon': acq_icon or '',
         })
 
@@ -2935,10 +2979,13 @@ def api_latest_release():
             si.append(ai)
         role_id = info.get('role', '0')
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        rec_cid = str(info.get('recommend_character_id') or '0')
         ensure_group(sched)['items'].append({
             'type': 'unit', 'id': uid, 'name': name, 'thum': thum or '',
-            'rarity': RARITY_MAP.get(str(ri), 'N'), 'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+            'role_icon': ROLE_ICON_MAP.get(role_id, ''),
             'acquisition_icon': ai or '', 'special_icons': si,
+            'recommend_character_id': rec_cid,
         })
 
     for sid, info in supporter_info_map.items():
@@ -2953,15 +3000,16 @@ def api_latest_release():
         thum = find_supporter_portrait(info.get('resource_id'), sid)
         ensure_group(sched)['items'].append({
             'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
-            'rarity': RARITY_MAP.get(str(ri), 'N'),
+            'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         })
 
-    type_order = {'unit': 0, 'character': 1, 'supporter': 2}
     out_list = []
     for sched, g in groups.items():
         if not g['items']:
             continue
-        g['items'].sort(key=lambda x: (type_order.get(x['type'], 9), x['name'].lower()))
+        g['items'] = sort_latest_release_group_items(g['items'])
+        for _it in g['items']:
+            _it.pop('recommend_character_id', None)
         sm = g['start_ms']
         jst = format_start_datetime_jst(sm)
         g['start_datetime_jst'] = jst if jst else f'Schedule {sched}'
