@@ -1484,6 +1484,7 @@ if ssp_weap_effect_data:
         if wid != '0' and tid != '0': unit_ssp_weapon_effect_map.setdefault(wid, []).append(tid)
 
 unit_ssp_abil_replace_map = {}
+unit_ssp_abil_gain_list = {}
 if ssp_abil_replace_data:
     for item in extract_data_list(ssp_abil_replace_data):
         if not isinstance(item, dict): continue
@@ -1492,7 +1493,12 @@ if ssp_abil_replace_data:
             uid_raw = str(normalize_id(item.get('Id') or item.get('id')) or '')
             uid = uid_raw[:-2] if len(uid_raw) > 2 else '0'
         b_id = normalize_id(item.get('BeforeAbilityId') or item.get('beforeAbilityId')); a_id = normalize_id(item.get('AfterAbilityId') or item.get('afterAbilityId'))
-        if uid != '0' and b_id != '0' and a_id != '0': unit_ssp_abil_replace_map.setdefault(uid, {})[b_id] = a_id
+        if uid != '0' and b_id != '0' and a_id != '0':
+            unit_ssp_abil_replace_map.setdefault(uid, {})[b_id] = a_id
+        elif uid != '0' and b_id == '0' and a_id != '0':
+            lst = unit_ssp_abil_gain_list.setdefault(uid, [])
+            if a_id not in lst:
+                lst.append(a_id)
 
 unit_ssp_custom_core_group_entries = {}
 if ssp_custom_core_data:
@@ -2642,7 +2648,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp2"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -2670,6 +2676,16 @@ def get_unit(unit_id):
             bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
             if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
             ac.append(bac)
+        max_ab_sort = max((int(a.get('sort', 0) or 0) for a in ua), default=0)
+        if has_sp:
+            for idx, gain_aid in enumerate(unit_ssp_abil_gain_list.get(unit_id, [])):
+                so = max_ab_sort + idx + 1
+                bab = build_ability_entry(str(gain_aid), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=so, lang_code=lc)
+                bab['ssp_only'] = True
+                abilities.append(bab)
+                bac = build_ability_entry(str(gain_aid), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=so, lang_code=CALC_LANG)
+                bac['ssp_only'] = True
+                ac.append(bac)
         spb = {s: 0 for s in UNIT_STAT_ORDER}
         spc = {s: 0 for s in UNIT_STAT_ORDER}
         sspb = {s: 0 for s in UNIT_STAT_ORDER}
@@ -2724,6 +2740,9 @@ def get_unit(unit_id):
                             bd[s] = bd.get(s, 0) + pct
 
         for ab in ac:
+            if ab.get('ssp_only'):
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+                continue
             ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
             if 'ssp_replacement' in ab:
                 ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
