@@ -208,11 +208,10 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .cmp-stat-cell.best{background:rgba(255,215,0,.15);border-radius:6px}
 .cmp-stat-table .cmp-col-label{width:100px}
 .cmp-stat-table .cmp-col-val{width:calc((100% - 100px) / var(--cmp-n,3))}
-.cmp-lb-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:6px 24px 14px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.06)}
-.cmp-lb-row .cmp-lb-label{font-size:13px;font-weight:700;color:var(--text-muted)}
-.cmp-lb-row .lb-btn-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.cmp-lb-row .lb-icon-btn{padding:4px 6px}
-.cmp-lb-row .lb-icon-btn img{width:18px;height:18px;object-fit:contain}
+.cmp-card-lb{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:6px;width:100%;max-width:160px}
+.cmp-card-lb-label{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.02em}
+.cmp-lb-select{width:100%;max-width:140px;padding:6px 8px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);color:var(--text-primary);font-size:12px;font-weight:700;text-align:center;cursor:pointer;appearance:auto}
+.cmp-lb-select:focus{outline:none;border-color:var(--accent-cyan)}
 .cmp-legend{display:flex;gap:16px;justify-content:center;padding:12px 24px;flex-wrap:wrap}
 .cmp-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-secondary)}
 .cmp-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
@@ -497,7 +496,7 @@ function tStat(name){const m=STAT_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[]};
+const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[]};
 document.addEventListener('DOMContentLoaded',async()=>{document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();applyLang();buildTableHeaders();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys()});
 async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];S.lang=d.default||'EN';document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(e){S.languages=['EN']}}
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
@@ -939,17 +938,18 @@ const CMP_COLORS_ALPHA=['rgba(230,126,34,.25)','rgba(46,204,113,.25)','rgba(231,
 function toggleCompare(type,id,name,thum,ev){
 if(ev){ev.stopPropagation();ev.preventDefault()}
 const idx=S.compareList.findIndex(c=>c.id===id);
-if(idx>=0){S.compareList.splice(idx,1)}
+if(idx>=0){S.compareList.splice(idx,1);delete S.cmpLbByUnit[id]}
 else{
-if(S.compareList.length&&S.compareList[0].type!==type){S.compareList=[];S.compareType=type}
+if(S.compareList.length&&S.compareList[0].type!==type){S.compareList=[];S.cmpLbByUnit={};S.compareType=type}
 if(S.compareList.length>=3)return;
 S.compareType=type;
-S.compareList.push({id,type,name,thum})
+S.compareList.push({id,type,name,thum});
+if(type==='unit'&&S.cmpLbByUnit[id]===undefined)S.cmpLbByUnit[id]=3
 }
 updateCompareUI()
 }
 
-function clearCompareList(){S.compareList=[];S.compareData=[];updateCompareUI()}
+function clearCompareList(){S.compareList=[];S.compareData=[];S.cmpLbByUnit={};updateCompareUI()}
 
 function updateCompareUI(){
 const bar=document.getElementById('cmpFloat');
@@ -1023,7 +1023,8 @@ tr.insertBefore(th,tr.firstChild)
 
 async function openCompareModal(){
 if(S.compareList.length<2)return;
-S.cmpSpActive=false;S.cmpSspActive=false;S.cmpLbTier=3;
+S.cmpSpActive=false;S.cmpSspActive=false;
+S.compareList.forEach(c=>{if(S.cmpLbByUnit[c.id]===undefined)S.cmpLbByUnit[c.id]=3});
 const overlay=document.getElementById('cmpOverlay');
 overlay.classList.add('active');
 document.body.style.overflow='hidden';
@@ -1053,7 +1054,6 @@ renderCompareHeader();
 renderCompareToggles();
 const isUnit=S.compareType==='unit';
 const bodyHtml=`
-<div id="cmpLbRow" class="cmp-lb-row"></div>
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_stats')}</div><div id="cmpStats"></div></div>
 <div class="cmp-section"><div class="cmp-section-title">${t('cmp_radar')}</div><div class="cmp-radar-wrap"><canvas id="cmpRadarCanvas" width="420" height="380"></canvas></div></div>
 ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_terrain')}</div><div id="cmpTerrain"></div></div>`:''}
@@ -1062,7 +1062,6 @@ ${isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_weapo
 ${!isUnit?`<div class="cmp-section"><div class="cmp-section-title">${t('cmp_skills')}</div><div id="cmpSkills"></div></div>`:''}
 `;
 document.getElementById('cmpBody').innerHTML=bodyHtml;
-renderCompareLb();
 renderCompareDynamic()
 }
 
@@ -1108,26 +1107,18 @@ document.getElementById('cmpLegend').innerHTML=S.compareData.map((d,i)=>
 ).join('')
 }
 
-function renderCompareLb(){
-const el=document.getElementById('cmpLbRow');
-if(!el)return;
-if(S.compareType!=='unit'){el.innerHTML='';el.style.display='none';return}
-const allUlt=S.compareData.length&&S.compareData.every(d=>d.is_ultimate);
-if(allUlt){el.innerHTML='';el.style.display='none';return}
-el.style.display='';
-const v=S.cmpLbTier;
-const b=(a0,a1,a2)=>`<img src="${imgUrl(a0)}" loading="lazy"><img src="${imgUrl(a1)}" loading="lazy"><img src="${imgUrl(a2)}" loading="lazy">`;
-const btns=[[0,LB_ICONS.None,LB_ICONS.None,LB_ICONS.None],[1,LB_ICONS.Neutral,LB_ICONS.None,LB_ICONS.None],[2,LB_ICONS.Neutral,LB_ICONS.Neutral,LB_ICONS.None],[3,LB_ICONS.Max,LB_ICONS.Max,LB_ICONS.Max]].map(([t,a0,a1,a2])=>`<button type="button" class="lb-icon-btn cmp-lb-btn${v===t?' active':''}" data-val="${t}" onclick="updateCmpLbTier(${t})">${b(a0,a1,a2)}</button>`).join('');
-el.innerHTML=`<span class="cmp-lb-label">${t('cmp_lb')}</span><div class="lb-btn-group">${btns}</div>`
-}
-function updateCmpLbTier(tier){S.cmpLbTier=Math.min(3,Math.max(0,parseInt(tier,10)||0));renderCompareLb();renderCompareDynamic()}
+function getCmpLbTierForUnit(uid){const v=S.cmpLbByUnit[uid];return v===undefined?3:Math.min(3,Math.max(0,parseInt(v,10)||0))}
+function updateCmpLbForUnit(uid,val){S.cmpLbByUnit[uid]=Math.min(3,Math.max(0,parseInt(val,10)||0));renderCompareDynamic()}
+function onCmpLbSelectChange(sel){const id=sel&&sel.getAttribute('data-unit-id');if(!id)return;updateCmpLbForUnit(id,sel.value)}
 function renderCompareHeader(){
 const ct=S.compareType;
 let html=S.compareData.map((d,i)=>{
 const row={thum:d.thum||d.portrait||S.compareList[i].thum||'',rarity:d.rarity||'N',role_icon:d.role_icon,acquisition_icon:d.acquisition_icon||''};
 const thumHtml=renderListThumb(row,ct==='character'?'char':'unit',72);
+const tid=getCmpLbTierForUnit(d.id);
+const lbDrop=ct==='unit'&&!d.is_ultimate?`<label class="cmp-card-lb"><span class="cmp-card-lb-label">${t('cmp_lb')}</span><select class="cmp-lb-select" data-unit-id="${esc(d.id)}" onchange="onCmpLbSelectChange(this)" aria-label="${esc(t('cmp_lb'))}">${[0,1,2,3].map(t=>`<option value="${t}"${tid===t?' selected':''}>${t}</option>`).join('')}</select></label>`:'';
 return`<div class="cmp-card" style="border-top:3px solid ${CMP_COLORS[i]}">
-<div class="cmp-card-thum-wrap">${thumHtml}</div><div class="cmp-card-name">${esc(d.name)}</div>
+<div class="cmp-card-thum-wrap">${thumHtml}</div><div class="cmp-card-name">${esc(d.name)}</div>${lbDrop}
 <button class="cmp-card-remove" onclick="removeFromCompare('${d.id}')">${t('cmp_remove')}</button></div>`
 }).join('');
 if(S.compareData.length<3){
@@ -1138,6 +1129,7 @@ document.getElementById('cmpHeader').innerHTML=html
 }
 
 function removeFromCompare(id){
+delete S.cmpLbByUnit[id];
 S.compareList=S.compareList.filter(c=>c.id!==id);
 S.compareData=S.compareData.filter(d=>d.id!==id);
 updateCompareUI();
@@ -1157,7 +1149,7 @@ return stats.map(s=>({name:s.name,value:s.total}))
 return S.compareData.map(d=>{
 const lb=d.lb_data;
 const maxIdx=lb&&lb.length?lb.length-1:0;
-const tier=Math.min(Math.max(0,S.cmpLbTier|0),maxIdx);
+const tier=Math.min(Math.max(0,getCmpLbTierForUnit(d.id)),maxIdx);
 const td=(lb&&lb[tier])||(d.stats&&{stats_no_cond:d.stats,sp_stats_no_cond:d.stats,ssp_stats_no_cond:d.stats});
 if(!td)return[];
 let stats;
@@ -1372,7 +1364,7 @@ el.innerHTML=html
 }
 
 function resetCompare(){
-S.compareList=[];S.compareData=[];
+S.compareList=[];S.compareData=[];S.cmpLbByUnit={};
 updateCompareUI();closeCompareModal()
 }
 
@@ -1414,6 +1406,7 @@ async function pickCompItem(id,name,thum){
 if(S.compareList.length>=3)return;
 if(S.compareList.some(c=>c.id===id))return;
 S.compareList.push({id,type:S.compareType,name,thum});
+if(S.compareType==='unit'&&S.cmpLbByUnit[id]===undefined)S.cmpLbByUnit[id]=3;
 updateCompareUI();
 closeCompPicker();
 const url=S.compareType==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
