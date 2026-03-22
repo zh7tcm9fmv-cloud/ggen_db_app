@@ -976,7 +976,9 @@ def create_unit_info_map(m):
                 for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','IconResourceId','iconResourceId']:
                     rv = str(item.get(rk) or '').strip()
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids}
+                rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
+                rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid}
     return lookup
 
 def create_unit_status_map(d):
@@ -1641,7 +1643,9 @@ for lang_code, paths in LANG_PATHS.items():
                     for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId']:
                         rv = str(item.get(rk) or '').strip()
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids}
+                    rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
+                    rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -2697,7 +2701,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp2"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp3"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -2929,6 +2933,18 @@ def get_unit(unit_id):
         mechs = []
         if il or '2x2' in mids:
             mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.png'})
+        rec_cid = normalize_id(info.get('recommend_character_id') or '0')
+        recommend_character = None
+        if rec_cid != '0' and rec_cid in char_info_map:
+            cinfo = char_info_map[rec_cid]
+            cri = cinfo.get('rarity', '1')
+            crrole = cinfo.get('role', '0')
+            clid = ld.get('char_id_map', {}).get(rec_cid, '')
+            cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
+            if not cname:
+                cname = f'Unknown ({rec_cid})'
+            cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
+            recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or ''}
         mm = ld.get('mechanism_map', {})
         for mid in mids:
             if mid == '2x2': continue
@@ -2938,7 +2954,7 @@ def get_unit(unit_id):
                     mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
                     break
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
