@@ -822,19 +822,52 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     return None
 
 def find_series_icon(series_id):
-    """Find series icon using IMAGE_INDEX."""
+    """Find series icon using IMAGE_INDEX.
+
+    Filenames are logo_l_series_XXXX.(png|webp) where XXXX is the 4-digit series id
+    (e.g. m_series id 10 -> 0010, id 7000 -> 7000). Long numeric resource ids use the last 4 digits.
+    """
     if not series_id or not IMAGE_INDEX:
         return ''
-    
-    sid = str(series_id).strip()
+
+    sid = normalize_id(series_id)
     if not sid or sid == '0':
         return ''
-    
-    sl = sid.lower()
-    for fn in IMAGE_INDEX.get('images/Logo-Series', []):
+
+    files = IMAGE_INDEX.get('images/Logo-Series', []) or []
+    if not files:
+        return ''
+
+    # Numeric ids only; long ids use trailing 4 digits (same as logo filename suffix)
+    if not sid.isdigit():
+        sl = sid.lower()
+        for fn in files:
+            if sl in fn.lower():
+                return f"/static/images/Logo-Series/{fn}"
+        return ''
+
+    if len(sid) > 4:
+        sid = sid[-4:]
+    try:
+        n = int(sid)
+    except ValueError:
+        return ''
+    pad = f'{n:04d}'
+    # Exact _XXXX.ext match (avoids '10' matching wrong logos)
+    pat = re.compile(r'_' + re.escape(pad) + r'\.(?:png|webp|jpg|jpeg)$', re.I)
+    matches = [fn for fn in files if pat.search(fn)]
+    if matches:
+        matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+        return f"/static/images/Logo-Series/{matches[0]}"
+
+    # Legacy: substring (non-numeric resource ids)
+    sl = str(normalize_id(series_id) if series_id is not None else '').lower()
+    if not sl or sl == '0':
+        return ''
+    for fn in files:
         if sl in fn.lower():
             return f"/static/images/Logo-Series/{fn}"
-    
+
     return ''
 
 def find_trait_icon(resource_id):
@@ -3268,7 +3301,7 @@ def browse_filters():
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units'):
             entity = 'characters'
-        ck = f"browse_filters_v2_{lc}_{entity}"
+        ck = f"browse_filters_v3_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
