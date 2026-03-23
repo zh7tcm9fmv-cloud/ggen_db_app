@@ -384,6 +384,43 @@ def role_filter_cache_fragment(rf):
     return ','.join(sorted(rf))
 
 
+def parse_list_source_filter(val):
+    """List filter by acquisition route bucket: assembly (1), development (2, non-NPC), other (rest)."""
+    if val is None:
+        return None
+    s = (val or '').strip().lower()
+    if not s or s == 'all':
+        return None
+    if s in ('assembly', 'development', 'other'):
+        return s
+    return None
+
+
+def source_filter_cache_fragment(sf):
+    if sf is None:
+        return 'all'
+    return sf
+
+
+def entity_matches_source_category(acq_route, role_id, sf):
+    """assembly = route index 1; development = index 2 and not NPC; other = everything else."""
+    if sf is None:
+        return True
+    acq = str(acq_route or '0').strip()
+    rid = str(role_id or '0').strip()
+    if sf == 'assembly':
+        return acq == '1'
+    if sf == 'development':
+        return acq == '2' and rid != '0'
+    if sf == 'other':
+        if acq == '1':
+            return False
+        if acq == '2' and rid != '0':
+            return False
+        return True
+    return True
+
+
 ROLE_MAP = {'0': 'NPC', '1': 'Attack', '2': 'Defense', '3': 'Support'}
 ROLE_SORT = {'1': 0, '2': 1, '3': 2, '0': 3}
 GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
@@ -3086,7 +3123,10 @@ def list_characters():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    source_arg = request.args.get('source', '').strip()
+    source_filter = parse_list_source_filter(source_arg)
+    source_ck = source_filter_cache_fragment(source_filter)
+    ck = f"cl13_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3110,6 +3150,10 @@ def list_characters():
                 letter = RARITY_MAP.get(str(ri), 'N')
                 if letter not in rarity_filter:
                     continue
+        acq_route = str(info.get('acquisition_route', '0'))
+        if source_filter is not None:
+            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
@@ -3144,12 +3188,12 @@ def list_characters():
             totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown) if cond_list else compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
             base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
-        acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+        acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/units')
@@ -3162,7 +3206,10 @@ def list_units():
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    source_arg = request.args.get('source', '').strip()
+    source_filter = parse_list_source_filter(source_arg)
+    source_ck = source_filter_cache_fragment(source_filter)
+    ck = f"ul11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3185,6 +3232,10 @@ def list_units():
                 letter = RARITY_MAP.get(str(ri), 'N')
                 if letter not in rarity_filter:
                     continue
+        acq_route = str(info.get('acquisition_route', '0'))
+        if source_filter is not None:
+            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
             name = f'Unknown ({uid})'
@@ -3214,7 +3265,7 @@ def list_units():
             lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
             sm = stat_mode if stat_mode != 'normal' else 'normal'
             fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
-        acq = info.get('acquisition_route','0'); ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
+        acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
@@ -3222,7 +3273,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/option_parts')
