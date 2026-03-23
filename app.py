@@ -2712,18 +2712,21 @@ def _search_term_matches_in_text(term, haystack_lower):
     except re.error:
         return t in haystack_lower
 
-def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None):
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
     series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match.
-    ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters."""
+    ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters.
+    entity_id: when set and search_query_matches_entity_id(sq, entity_id), skip positive haystack matching so ID-only / ID-targeted searches still find NPC-only rows."""
     if not sq or not str(sq).strip():
         return True
     pq = parse_search_query(sq)
     if not pq['positive'] and not pq['negative'] and not pq['series'] and not pq.get('series_ids'):
         return True
-    for p in pq['positive']:
-        if not _search_term_matches_in_text(p, haystack_lower):
-            return False
+    id_match = entity_id is not None and search_query_matches_entity_id(sq, entity_id)
+    if not id_match:
+        for p in pq['positive']:
+            if not _search_term_matches_in_text(p, haystack_lower):
+                return False
     for n in pq['negative']:
         if _search_term_matches_in_text(n, haystack_lower):
             return False
@@ -3125,7 +3128,7 @@ def list_characters():
                         if blob: search_chunks.append(blob)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list): continue
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         if sp_list:
             rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
@@ -3174,7 +3177,8 @@ def list_units():
             if letter not in rarity_filter:
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
-        if not name: continue
+        if not name:
+            name = f'Unknown ({uid})'
         ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
         ser_names_lower = series_names_lower_for_search(ser_list)
         if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
@@ -3193,7 +3197,7 @@ def list_units():
             if wtxt: search_chunks.append(wtxt)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list): continue
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid): continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
@@ -3246,7 +3250,7 @@ def list_option_parts():
             if sq:
                 searchable = f"{name} {details} {tags_str}".lower()
                 tag_blob = [tags_str.lower()] if tags_str else []
-                if not search_row_matches_query(sq, searchable, tag_blob): continue
+                if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid): continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
             icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
             rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags})
@@ -3299,7 +3303,7 @@ def list_supporters():
             if sq:
                 searchable = f"{name} {sid} {sts} {cb} {ask_str}".lower()
                 ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
-                if not search_row_matches_query(sq, searchable, ser_names_lower): continue
+                if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid): continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
             aic = ''
             ask = supporter_active_map.get(sid, [])
@@ -3563,7 +3567,7 @@ def list_stages():
             sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
             if sq:
                 searchable = f"{sid} {sname} {sn}".lower()
-                if not search_row_matches_query(sq, searchable, None): continue
+                if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
             if df != 'all' and df != '' and diff['code'] != df: continue
             duid = est.get('display_unit_id', '0'); portrait = ''
