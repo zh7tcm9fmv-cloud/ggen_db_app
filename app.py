@@ -2590,19 +2590,70 @@ def validate_lang_code(lc):
     if lc not in LANG_DATA: lc = DEFAULT_LANG
     return lc
 
+def parse_search_query(sq):
+    """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
+    Leading '-' = exclusion. 'series:foo' = match series only (handled separately)."""
+    positive, negative, series = [], [], []
+    if not sq or not str(sq).strip():
+        return {'positive': [], 'negative': [], 'series': []}
+    segments = [t.strip() for t in re.split(r'[,;]', str(sq).strip()) if t.strip()]
+    for seg in segments:
+        sl = seg.lower()
+        if sl.startswith('-') and len(sl) > 1:
+            negative.append(sl[1:].strip())
+            continue
+        m = re.match(r'(?i)^series\s*:\s*(.+)$', seg.strip())
+        if m:
+            rest = m.group(1).strip()
+            if rest:
+                series.append(rest.lower())
+            continue
+        positive.append(sl)
+    return {'positive': positive, 'negative': negative, 'series': series}
+
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list):
+    """AND: all positive substrings in haystack; none of negative; each series term substring of some series name (or combined tags string).
+    series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match."""
+    if not sq or not str(sq).strip():
+        return True
+    pq = parse_search_query(sq)
+    if not pq['positive'] and not pq['negative'] and not pq['series']:
+        return True
+    for p in pq['positive']:
+        if p not in haystack_lower:
+            return False
+    for n in pq['negative']:
+        if n in haystack_lower:
+            return False
+    for s in pq['series']:
+        if series_names_lower_list is None:
+            return False
+        if not any(s in sn for sn in series_names_lower_list):
+            return False
+    return True
+
 def search_query_matches_entity_id(sq, eid):
-    """True when the search box is used to find an entity by id (exact or a 4+ digit fragment). Surfaces NPC-only list rows."""
+    """True when the search box is used to find an entity by id (exact or a 4+ digit fragment). Surfaces NPC-only list rows.
+    Only **positive** segments contribute digit fragments; series:/negative ignored for id."""
     if not sq or not str(sq).strip():
         return False
     eid = normalize_id(eid)
-    q_digits = ''.join(c for c in str(sq).strip().lower() if c.isdigit())
-    if not q_digits:
+    pq = parse_search_query(sq)
+    terms = pq['positive']
+    if not terms:
         return False
-    if q_digits == eid:
-        return True
-    if len(q_digits) >= 4 and q_digits in eid:
-        return True
-    return False
+    had_digit_term = False
+    for tr in terms:
+        q_digits = ''.join(c for c in tr if c.isdigit())
+        if not q_digits:
+            continue
+        had_digit_term = True
+        ok = (q_digits == eid) or (len(q_digits) >= 4 and q_digits in eid)
+        if not ok:
+            return False
+    if not had_digit_term:
+        return False
+    return True
 
 def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     if sort_by not in valid_sorts: sort_by = default_sort
@@ -2838,7 +2889,7 @@ def list_characters():
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2860,6 +2911,8 @@ def list_characters():
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
+        ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
+        ser_names_lower = [x['name'].lower() for x in ser_list if x.get('name')]
         if cid not in char_list_playable_ids and not search_query_matches_entity_id(sq, cid):
             continue
         if sq:
@@ -2876,8 +2929,8 @@ def list_characters():
                     if sid and sid != '0':
                         blob = collect_skill_search_text(sid, ld)
                         if blob: search_chunks.append(blob)
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(search_chunks)
-            if sq not in ss.lower(): continue
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + " ".join(search_chunks)
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         if sp_list:
             rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
@@ -2886,7 +2939,7 @@ def list_characters():
             totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown); base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
+        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -2902,7 +2955,7 @@ def list_units():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
-    ck = f"ul3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2924,6 +2977,8 @@ def list_units():
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name: continue
+        ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
+        ser_names_lower = [x['name'].lower() for x in ser_list if x.get('name')]
         if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
             continue
         if sq:
@@ -2938,8 +2993,8 @@ def list_units():
                     if blob2: search_chunks.append(blob2)
             wtxt = collect_unit_weapons_search_text(uid, ld, lc)
             if wtxt: search_chunks.append(wtxt)
-            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(search_chunks)
-            if sq not in ss.lower(): continue
+            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + " ".join(search_chunks)
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower): continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal':
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
@@ -2950,7 +3005,7 @@ def list_units():
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        rows.append({'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))})
+        rows.append({'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))})
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -2963,7 +3018,7 @@ def list_option_parts():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
         sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
-        ck = f"op_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+        ck = f"op3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not option_parts_data: return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1})
@@ -2990,7 +3045,8 @@ def list_option_parts():
             tags_str = ' '.join(tags)
             if sq:
                 searchable = f"{name} {details} {tags_str}".lower()
-                if sq not in searchable: continue
+                tag_blob = [tags_str.lower()] if tags_str else []
+                if not search_row_matches_query(sq, searchable, tag_blob): continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
             icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
             rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags})
@@ -3009,7 +3065,7 @@ def list_supporters():
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-        ck = f"sl_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
+        ck = f"sl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -3042,7 +3098,8 @@ def list_supporters():
             ask_str = " ".join(ask_names)
             if sq:
                 searchable = f"{name} {sid} {sts} {cb} {ask_str}".lower()
-                if sq not in searchable: continue
+                ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
+                if not search_row_matches_query(sq, searchable, ser_names_lower): continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
             aic = ''
             ask = supporter_active_map.get(sid, [])
@@ -3298,7 +3355,7 @@ def list_stages():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
-        ck = f"stages_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
+        ck = f"stages3_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -3306,7 +3363,7 @@ def list_stages():
             sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
             if sq:
                 searchable = f"{sid} {sname} {sn}".lower()
-                if sq not in searchable: continue
+                if not search_row_matches_query(sq, searchable, None): continue
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
             if df != 'all' and df != '' and diff['code'] != df: continue
             duid = est.get('display_unit_id', '0'); portrait = ''
