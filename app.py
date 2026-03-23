@@ -2263,13 +2263,13 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
         lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
     return lb_data[3] if len(lb_data) > 3 else (lb_data[-1] if lb_data else None)
 
-def _unit_lb_row_to_api(entry, mode):
+def _unit_lb_row_to_api(entry, mode, include_conditional=False):
     if mode == 'normal':
-        dlist = entry['stats_no_cond']
+        dlist = entry['stats_with_cond'] if include_conditional else entry['stats_no_cond']
     elif mode == 'sp':
-        dlist = entry['sp_stats_no_cond']
+        dlist = entry['sp_stats_with_cond'] if include_conditional else entry['sp_stats_no_cond']
     else:
-        dlist = entry['ssp_stats_no_cond']
+        dlist = entry['ssp_stats_with_cond'] if include_conditional else entry['ssp_stats_no_cond']
     m = {x['name']: x['total'] for x in dlist}
     return {'HP': m.get('HP', 0), 'EN': m.get('EN', 0), 'ATK': m.get('Attack', 0), 'DEF': m.get('Defense', 0), 'MOB': m.get('Mobility', 0), 'MOV': m.get('Move', 0)}
 
@@ -2539,6 +2539,61 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
         totals[s] = sbv + sbon
     return totals
 
+def compute_char_stat_totals_detail_style(char_id, ri, ldc, grown):
+    """Non-SP growth + ability bonuses matching get_character stats_with_ex (includes EX stat lines)."""
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
+    def build_ab(ab):
+        bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        d = ldc
+        bab = build_ability_entry(bid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        if spid and spid != '0' and spid != 'None' and spid != bid:
+            bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        return bab
+    ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
+    spbn = {s: 0 for s in CHAR_STAT_ORDER}
+    spen = {s: 0 for s in CHAR_STAT_ORDER}
+    for bab in ac:
+        for d2 in bab.get('details', []):
+            for s, p in extract_stat_percent_char(d2['text']).items():
+                if bab.get('is_ex', False):
+                    spen[s] += p
+                else:
+                    spbn[s] += p
+    totals = {}
+    for s in CHAR_STAT_ORDER:
+        bv = grown.get(s, 0)
+        pct = spbn[s] + spen[s]
+        totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+    return totals
+
+def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
+    """SP growth + SP ability bonuses including EX lines (sp_stats_with_ex)."""
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
+    def build_ab(ab):
+        bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        d = ldc
+        bab = build_ability_entry(bid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        if spid and spid != '0' and spid != 'None' and spid != bid:
+            bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
+        return bab
+    ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
+    spbs = {s: 0 for s in CHAR_STAT_ORDER}
+    spes = {s: 0 for s in CHAR_STAT_ORDER}
+    for bab in ac:
+        sab = bab.get('sp_replacement', bab)
+        for d2 in sab.get('details', []):
+            for s, p in extract_stat_percent_char(d2['text']).items():
+                if sab.get('is_ex', False):
+                    spes[s] += p
+                else:
+                    spbs[s] += p
+    totals = {}
+    for s in CHAR_STAT_ORDER:
+        sbv = grown_sp.get(s, 0)
+        pct = spbs[s] + spes[s]
+        totals[s] = sbv + math.floor(sbv * pct / 100) if sbv > 0 else 0
+    return totals
+
 def calculate_npc_character_self_bonus_pct(abilities):
     bp = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
     if not abilities: return bp
@@ -2611,8 +2666,21 @@ def parse_search_query(sq):
         positive.append(sl)
     return {'positive': positive, 'negative': negative, 'series': series}
 
+def _search_term_matches_in_text(term, haystack_lower):
+    """Match a search token against haystack (already lowercased). Short Latin tokens use word boundaries so e.g. 'mp' does not match inside 'consumptions'."""
+    if not term:
+        return True
+    t = term.lower()
+    # Longer / non-ASCII / punctuation-heavy tokens: substring (keeps phrase and JP/CJK behavior)
+    if len(t) > 3 or not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
+        return t in haystack_lower
+    try:
+        return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+    except re.error:
+        return t in haystack_lower
+
 def search_row_matches_query(sq, haystack_lower, series_names_lower_list):
-    """AND: all positive substrings in haystack; none of negative; each series term substring of some series name (or combined tags string).
+    """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
     series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match."""
     if not sq or not str(sq).strip():
         return True
@@ -2620,15 +2688,15 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list):
     if not pq['positive'] and not pq['negative'] and not pq['series']:
         return True
     for p in pq['positive']:
-        if p not in haystack_lower:
+        if not _search_term_matches_in_text(p, haystack_lower):
             return False
     for n in pq['negative']:
-        if n in haystack_lower:
+        if _search_term_matches_in_text(n, haystack_lower):
             return False
     for s in pq['series']:
         if series_names_lower_list is None:
             return False
-        if not any(s in sn for sn in series_names_lower_list):
+        if not any(_search_term_matches_in_text(s, sn) for sn in series_names_lower_list):
             return False
     return True
 
@@ -2889,7 +2957,8 @@ def list_characters():
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
+    cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    ck = f"cl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2934,9 +3003,11 @@ def list_characters():
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         if sp_list:
             rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
-            totals = compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp); base_src = grown_sp
+            totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp) if cond_list else compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
+            base_src = grown_sp
         else:
-            totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown); base_src = grown
+            totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown) if cond_list else compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
+            base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
@@ -2955,7 +3026,8 @@ def list_units():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
-    ck = f"ul5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
+    cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    ck = f"ul6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2996,11 +3068,12 @@ def list_units():
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + " ".join(search_chunks)
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower): continue
         raw = unit_stat_map.get(uid, {})
-        if stat_mode == 'normal':
+        if stat_mode == 'normal' and not cond_list:
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
         else:
             lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
-            fs = _unit_lb_row_to_api(lb, stat_mode) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
+            sm = stat_mode if stat_mode != 'normal' else 'normal'
+            fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
         acq = info.get('acquisition_route','0'); ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
