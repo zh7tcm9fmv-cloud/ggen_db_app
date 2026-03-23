@@ -450,7 +450,7 @@ RARITY_ICON_MAP = {
 ROLE_ICON_MAP = {
     '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.png', 
     '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.png',
-    '3': '/static/images/UI/UI_Common_TypeIcon_Ranged_M.png',
+    '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
 }
 EX_ABILITY_PATTERNS = ['ex character ability','ex機體能力','ex角色能力','exキャラクターアビリティ']
 MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6': ['1', '5'], '7': ['2x2', '6'], '8': ['1', '7'], '9': ['1', '6']}
