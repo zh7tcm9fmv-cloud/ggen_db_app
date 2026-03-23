@@ -1517,6 +1517,76 @@ def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
     return abil_name_map.get(trait_set_id, abil_name_map.get(lookup_id, abil_name_map.get(ab_id, '')))
 
+def collect_ability_search_text(aid, ld):
+    """Ability name + trait / description text for substring search (list APIs)."""
+    if not aid or aid == '0': return ''
+    parts = []
+    n = get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map)
+    if n: parts.append(n)
+    trait_set_id = abil_link_map.get(str(aid), str(aid))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    ltm = ld.get('lang_text_map', {})
+    trait_ids = trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, []))
+    for tid in trait_ids:
+        t_data = trait_data_map.get(tid, {})
+        dlid = t_data.get('desc_lang_id', '0')
+        if dlid and dlid != '0':
+            tx = (ltm.get(dlid, '') or '').strip()
+            if tx: parts.append(tx)
+    adm = ld.get('abil_desc_map', {})
+    for key in (lookup_id, trait_set_id):
+        if not key: continue
+        for entry in adm.get(key, []) or []:
+            if isinstance(entry, dict):
+                t = (entry.get('text') or '').strip()
+            else:
+                t = str(entry).strip()
+            if t: parts.append(t)
+    return ' '.join(parts)
+
+def collect_skill_search_text(sid, ld):
+    """Skill name + description for substring search."""
+    if not sid or sid == '0': return ''
+    try:
+        r = resolve_char_skill(str(sid), ld, 0, False)
+    except Exception:
+        return ''
+    parts = [(r.get('name') or '').strip()]
+    for d in r.get('details', []) or []:
+        if isinstance(d, str) and d.strip():
+            parts.append(d.strip())
+    return ' '.join(x for x in parts if x)
+
+def collect_unit_weapons_search_text(uid, ld, lang_code):
+    """Weapon names, traits, usage restriction labels, attribute labels."""
+    parts = []
+    for wp in unit_weapon_map.get(uid, []):
+        wid = wp['id']
+        wm = weapon_info_map.get(wid, {})
+        wn = (ld.get('weapon_text_map', {}) or {}).get(wm.get('name_lang_id', '0'), '')
+        if wn: parts.append(wn)
+        ai = wm.get('attribute', '0')
+        ainfo = WEAPON_ATTR_MAP.get(ai, {})
+        lab = ainfo.get('label', '')
+        if lab: parts.append(lab)
+        ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid=wid, lang_code=lang_code, unit_id=uid)
+        for ur in ws.get('usage_restrictions', []) or []:
+            if ur: parts.append(str(ur))
+        for tr in ws.get('traits', []) or []:
+            if tr: parts.append(tr)
+        for lv in ws.get('levels', []) or []:
+            for tr in lv.get('traits', []) or []:
+                if tr: parts.append(tr)
+        mwid = wm.get('main_weapon_id', '0')
+        for cid2 in [wid, mwid]:
+            if cid2 and cid2 != '0' and cid2 in unit_ssp_weapon_effect_map:
+                for tid in unit_ssp_weapon_effect_map[cid2]:
+                    tt2 = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
+                    if tt2:
+                        parts.append(tt2)
+                break
+    return ' '.join(parts)
+
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN'):
     trait_set_id = abil_link_map.get(ab_id, ab_id)
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
@@ -2768,7 +2838,7 @@ def list_characters():
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2793,23 +2863,20 @@ def list_characters():
         if cid not in char_list_playable_ids and not search_query_matches_entity_id(sq, cid):
             continue
         if sq:
-            ab_names = []
+            search_chunks = []
             for ab in extract_data_list(char_abil):
                 if normalize_id(ab.get('CharacterId','')) != cid: continue
                 for aid in [normalize_id(ab.get('AbilityId','')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
                     if aid and aid != '0' and aid != 'None':
-                        n = get_ability_name_for_search(aid, ld['abil_name_map'], abil_link_map)
-                        if n: ab_names.append(n)
+                        blob = collect_ability_search_text(aid, ld)
+                        if blob: search_chunks.append(blob)
             for sk in extract_data_list(char_skill):
                 if normalize_id(sk.get('CharacterId','')) != cid: continue
                 for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
                     if sid and sid != '0':
-                        sn = ld.get('skill_trait_name_fallback', {}).get(sid, '')
-                        if not sn:
-                            res = resolve_char_skill(sid, ld, 0, False)
-                            sn = res.get('name', '') if res else ''
-                        if sn: ab_names.append(sn)
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(ab_names)
+                        blob = collect_skill_search_text(sid, ld)
+                        if blob: search_chunks.append(blob)
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)]) + " " + " ".join(search_chunks)
             if sq not in ss.lower(): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         if sp_list:
@@ -2835,7 +2902,7 @@ def list_units():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
-    ck = f"ul2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2860,16 +2927,18 @@ def list_units():
         if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
             continue
         if sq:
-            ab_names = []
+            search_chunks = []
             ua = unit_abil_map.get(uid, [])
             rm = unit_ssp_abil_replace_map.get(uid, {})
             for ab in ua:
-                n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map)
-                if n: ab_names.append(n)
+                blob = collect_ability_search_text(str(ab['id']), ld)
+                if blob: search_chunks.append(blob)
                 if str(ab['id']) in rm:
-                    rn = get_ability_name_for_search(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map)
-                    if rn: ab_names.append(rn)
-            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(ab_names)
+                    blob2 = collect_ability_search_text(rm[str(ab['id'])], ld)
+                    if blob2: search_chunks.append(blob2)
+            wtxt = collect_unit_weapons_search_text(uid, ld, lc)
+            if wtxt: search_chunks.append(wtxt)
+            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in resolve_series(unit_ser_map.get(uid, ''), lc)]) + " " + " ".join(search_chunks)
             if sq not in ss.lower(): continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal':
