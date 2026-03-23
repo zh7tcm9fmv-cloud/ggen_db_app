@@ -2594,12 +2594,14 @@ def get_tag_units():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ts = request.args.get('tags', '').strip(); op = request.args.get('op', 'and').lower()
         if not ts: return jsonify({'1': [], '2': [], '3': []})
-        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_{ts}_{op}_{lc}"
+        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
         rnm = UNIT_ROLE_TYPE_LANG_MAP.get(lc, UNIT_ROLE_TYPE_LANG_MAP['EN']); rnm_en = UNIT_ROLE_TYPE_LANG_MAP.get('EN', {})
         for uid, info in unit_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
@@ -2625,12 +2627,14 @@ def get_tag_characters():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ts = request.args.get('tags', '').strip(); op = request.args.get('op', 'and').lower()
         if not ts: return jsonify({'1': [], '2': [], '3': []})
-        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_chars_{ts}_{op}_{lc}"
+        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_chars_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
         rlm = ROLE_NAME_MAP_CHARS.get(lc, ROLE_NAME_MAP_CHARS['EN']); rlm_en = ROLE_NAME_MAP_CHARS.get('EN', {})
         for cid, info in char_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
@@ -2658,12 +2662,14 @@ def get_skill_characters():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         sn = request.args.get('skill_name', '').strip()
         if not sn: return jsonify({'1': [], '2': [], '3': []})
-        ck = f"skill_chars_{sn}_{lc}"
+        ck = f"skill_chars_{sn}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
         sn_lower = sn.lower()
         for cid, info in char_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
@@ -2690,12 +2696,14 @@ def get_ability_characters():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         an = request.args.get('ability_name', '').strip()
         if not an: return jsonify({'1': [], '2': [], '3': []})
-        ck = f"abil_chars_{an}_{lc}"
+        ck = f"abil_chars_{an}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
         an_lower = an.lower()
         for cid, info in char_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
@@ -2722,12 +2730,14 @@ def get_ability_units():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         an = request.args.get('ability_name', '').strip()
         if not an: return jsonify({'1': [], '2': [], '3': []})
-        ck = f"abil_units_{an}_{lc}"
+        ck = f"abil_units_{an}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
         an_lower = an.lower()
         for uid, info in unit_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
@@ -2758,11 +2768,13 @@ def list_characters():
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}"
+    ck = f"cl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for cid, info in char_info_map.items():
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
         if role_filter is not None:
@@ -2823,11 +2835,13 @@ def list_units():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
-    ck = f"ul2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}"
+    ck = f"ul2_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for uid, info in unit_info_map.items():
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         if role_id == '0': continue
         if role_filter is not None:
@@ -2926,11 +2940,13 @@ def list_supporters():
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-        ck = f"sl_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}"
+        ck = f"sl_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
         for sid, info in supporter_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
             ri = info.get('rarity','1'); lid = ld.get('supporter_id_map', {}).get(sid, ''); name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
             if rarity_filter is not None:
@@ -2990,6 +3006,22 @@ def latest_release_schedule_content_locked(schedule_id, start_ms):
         if int(start_ms) > now_ms:
             return True
     return False
+
+
+def lr_schedule_cache_key_fragment():
+    """Vary server-side caches when Latest Release password/session affects visible entities."""
+    if not LATEST_RELEASE_PASSWORD:
+        return 'lr0'
+    return 'lr1' if session.get('lr_unlocked') is True else 'lr2'
+
+
+def entity_hidden_by_lr_schedule_lock(schedule_id):
+    """True when this schedule is locked the same way as Latest Release (hide from Characters/Units/Supporters tabs)."""
+    sid = normalize_id(schedule_id or '0')
+    if sid in ('0', '9999990001'):
+        return False
+    sm = schedule_start_ms_by_id.get(sid, 0)
+    return latest_release_schedule_content_locked(sid, sm)
 
 
 @app.route('/api/latest_release/status')
@@ -3162,11 +3194,13 @@ def get_supporter(supporter_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         level = min(100, max(1, int(request.args.get('level', 100))))
         lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
-        ck = f"s_{supporter_id}_{lc}_{level}_{lb_tier}"
+        ck = f"s_{supporter_id}_{lc}_{level}_{lb_tier}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
         if not info: return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         ri = info.get('rarity', '1'); lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
         base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
         rate = supporter_growth_map.get((level, lb_tier), 10000)
@@ -3287,11 +3321,13 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r1"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r1_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            return jsonify({'error': f'Character {char_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['char_id_map'].get(char_id, ""); cn = ld['char_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = char_stat_map.get(char_id, {}); has_sp = int(ri) <= 4
         def rv(s): t = raw.get(s, (0,0,0)); return (t[0], t[1], t[2] if len(t) >= 3 else t[1])
@@ -3355,16 +3391,17 @@ def get_character(char_id):
         recommend_unit = None
         if rec_uid and rec_uid in unit_info_map:
             uinfo = unit_info_map[rec_uid]
-            uri = uinfo.get('rarity', '1')
-            urole = uinfo.get('role', '0')
-            ulid = ld.get('unit_id_map', {}).get(rec_uid, '')
-            uname = ld.get('unit_text_map', {}).get(ulid, '') if ulid else ''
-            if not uname:
-                uname = f'Unknown ({rec_uid})'
-            uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid, 'images/unit_portraits')
-            uacq = uinfo.get('acquisition_route', '0')
-            uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
-            recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
+            if not entity_hidden_by_lr_schedule_lock(uinfo.get('schedule_id', '0')):
+                uri = uinfo.get('rarity', '1')
+                urole = uinfo.get('role', '0')
+                ulid = ld.get('unit_id_map', {}).get(rec_uid, '')
+                uname = ld.get('unit_text_map', {}).get(ulid, '') if ulid else ''
+                if not uname:
+                    uname = f'Unknown ({rec_uid})'
+                uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid, 'images/unit_portraits')
+                uacq = uinfo.get('acquisition_route', '0')
+                uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
+                recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
@@ -3373,11 +3410,13 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp6"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp6_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
         has_sp = int(ri) <= 4
@@ -3636,14 +3675,15 @@ def get_unit(unit_id):
         recommend_character = None
         if rec_cid != '0' and rec_cid in char_info_map:
             cinfo = char_info_map[rec_cid]
-            cri = cinfo.get('rarity', '1')
-            crrole = cinfo.get('role', '0')
-            clid = ld.get('char_id_map', {}).get(rec_cid, '')
-            cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
-            if not cname:
-                cname = f'Unknown ({rec_cid})'
-            cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
-            recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or ''}
+            if not entity_hidden_by_lr_schedule_lock(cinfo.get('schedule_id', '0')):
+                cri = cinfo.get('rarity', '1')
+                crrole = cinfo.get('role', '0')
+                clid = ld.get('char_id_map', {}).get(rec_cid, '')
+                cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
+                if not cname:
+                    cname = f'Unknown ({rec_cid})'
+                cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
+                recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or ''}
         mm = ld.get('mechanism_map', {})
         for mid in mids:
             if mid == '2x2': continue
