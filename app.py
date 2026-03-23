@@ -256,6 +256,9 @@ RARITY_LETTERS = frozenset(RARITY_MAP.values())
 # m_series Id=10 / ResourceId series_0010 — original "Mobile Suit Gundam" (1979). Used to add search alias `msg`
 # so series:msg targets this series only, not every title containing "Gundam".
 SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
+# m_series Id=130 — "Mobile Suit Gundam: The 08th MS Team". Display text uses "08th" so plain "08 ms" never
+# substring-matches; add shorthand aliases for search (same idea as msg).
+SERIES_ID_08TH_MS_TEAM = '130'
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -2655,14 +2658,19 @@ def series_names_lower_for_search(ser_list):
     sids = {normalize_id(x.get('id')) for x in ser_list if x.get('id')}
     if SERIES_ID_MOBILE_SUIT_GUNDAM in sids:
         names.append('msg')
+    if SERIES_ID_08TH_MS_TEAM in sids:
+        names.extend(['08 ms', '08ms', '08th ms'])
     return names
 
 def series_alias_tokens_for_haystack(ser_list):
     """Tokens mirrored into the main searchable text so plain 'msg' matches MSG-series rows (positive terms, not only series:)."""
     sids = {normalize_id(x.get('id')) for x in ser_list if x.get('id')}
+    toks = []
     if SERIES_ID_MOBILE_SUIT_GUNDAM in sids:
-        return ['msg']
-    return []
+        toks.append('msg')
+    if SERIES_ID_08TH_MS_TEAM in sids:
+        toks.extend(['08 ms', '08ms', '08th ms'])
+    return toks
 
 def parse_search_query(sq):
     """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
@@ -2989,7 +2997,7 @@ def list_characters():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3059,7 +3067,7 @@ def list_units():
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
