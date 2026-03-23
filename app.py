@@ -3599,6 +3599,59 @@ def option_part_matches_effect_filter(details, effect_key):
     return want in keys
 
 
+_effect_filter_icons_cache = {}
+
+
+def _compute_option_part_effect_filter_icons(ld):
+    """
+    For each effect filter key, use the option-part sprite (thum) of the first entry in master
+    order whose trait details match that filter — same matching as list_option_parts.
+    """
+    ltm = ld.get('lang_text_map', {})
+    icons = {k: '' for k in ('HP', 'EN', 'ATK', 'DEF', 'MOB', 'OTHER')}
+    if not option_parts_data:
+        return icons
+    for item in extract_data_list(option_parts_data):
+        if not isinstance(item, dict):
+            continue
+        opid = str(item.get('Id') or item.get('id', 0))
+        if opid == '0':
+            continue
+        trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+        trait_ids = trait_set_traits_map.get(trait_set_id, [])
+        details_list = []
+        for tid in trait_ids:
+            tdata = trait_data_map.get(tid, {})
+            dlid = tdata.get('desc_lang_id', '')
+            if dlid:
+                desc = ltm.get(dlid, '')
+                if desc:
+                    details_list.append(desc.strip())
+        details = ' '.join(details_list) if details_list else ''
+        res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+        thum = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
+        if not thum:
+            continue
+        for ek in ('HP', 'EN', 'ATK', 'DEF', 'MOB', 'OTHER'):
+            if icons[ek]:
+                continue
+            if option_part_matches_effect_filter(details, ek):
+                icons[ek] = thum
+        if all(icons[k] for k in icons):
+            break
+    return icons
+
+
+def get_option_part_effect_filter_icons(lc):
+    lc = validate_lang_code(lc)
+    if lc in _effect_filter_icons_cache:
+        return _effect_filter_icons_cache[lc]
+    ld = get_lang_data(lc)
+    icons = _compute_option_part_effect_filter_icons(ld)
+    _effect_filter_icons_cache[lc] = icons
+    return icons
+
+
 @app.route('/api/option_parts')
 def list_option_parts():
     try:
@@ -3610,8 +3663,16 @@ def list_option_parts():
             ef = 'ALL'
         ck = f"op5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
-        if not option_parts_data: return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1})
+        if cached:
+            out = dict(cached)
+            out['effect_filter_icons'] = get_option_part_effect_filter_icons(lc)
+            return jsonify(convert_image_urls(out))
+        if not option_parts_data:
+            return jsonify(convert_image_urls({
+                'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1,
+                'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
+                'effect_filter_icons': get_option_part_effect_filter_icons(lc),
+            }))
         ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); llk = ld.get('lineage_lookup', {}); ltm = ld.get('lang_text_map', {})
         rows = []
         for item in extract_data_list(option_parts_data):
@@ -3645,7 +3706,11 @@ def list_option_parts():
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
-        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef}
+        result = {
+            'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp,
+            'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
+            'effect_filter_icons': get_option_part_effect_filter_icons(lc),
+        }
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
