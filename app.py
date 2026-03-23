@@ -3546,13 +3546,69 @@ def list_units():
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
+# Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
+_OP_PART_STAT_INCREASE_RE = re.compile(
+    r'(?:Increase|Increases?)\s+(?:squad\s+)?(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move)(?:\s*,\s*(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))*(?:\s+and\s+(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))?\s+by\s+(\d+)(%?)',
+    re.I,
+)
+OPTION_PART_EFFECT_FILTERS = frozenset({'ALL', 'HP', 'EN', 'ATK', 'DEF', 'MOB', 'OTHER'})
+
+
+def parse_option_part_effect_keys(details):
+    """Keys: HP, EN, Attack, Defense, Mobility, Move — used for Modifications tab effect filter."""
+    keys = set()
+    if not details:
+        return keys
+    stat_map = {'ATK': 'Attack', 'DEF': 'Defense', 'MOB': 'Mobility'}
+    for m in _OP_PART_STAT_INCREASE_RE.finditer(details):
+        for g in (m.group(1), m.group(2), m.group(3)):
+            if not g:
+                continue
+            k = stat_map.get(g, g)
+            if k in ('HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move'):
+                keys.add(k)
+    if 'mobility boost' in details.lower():
+        keys.add('Mobility')
+    if re.search(r'最大(?:HP|hp)提升', details) or '部隊最大HP提升' in details or '所屬部隊最大HP提升' in details:
+        keys.add('HP')
+    if re.search(r'最大(?:EN|en)提升', details) or '部隊最大EN提升' in details or '所屬部隊最大EN提升' in details:
+        keys.add('EN')
+    if '攻擊力提升' in details or '部隊攻擊力提升' in details:
+        keys.add('Attack')
+    if '防禦力提升' in details:
+        keys.add('Defense')
+    if '機動力提升' in details:
+        keys.add('Mobility')
+    if '移動力提升' in details:
+        keys.add('Move')
+    return keys
+
+
+def option_part_matches_effect_filter(details, effect_key):
+    if not effect_key or str(effect_key).upper() == 'ALL':
+        return True
+    ek = str(effect_key).upper()
+    keys = parse_option_part_effect_keys(details)
+    core_five = {'HP', 'EN', 'Attack', 'Defense', 'Mobility'}
+    if ek == 'OTHER':
+        return not bool(keys & core_five)
+    mapping = {'HP': 'HP', 'EN': 'EN', 'ATK': 'Attack', 'DEF': 'Defense', 'MOB': 'Mobility'}
+    want = mapping.get(ek)
+    if want is None:
+        return True
+    return want in keys
+
+
 @app.route('/api/option_parts')
 def list_option_parts():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
         sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
-        ck = f"op4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+        ef = request.args.get('effect', 'ALL').strip().upper()
+        if ef not in OPTION_PART_EFFECT_FILTERS:
+            ef = 'ALL'
+        ck = f"op5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not option_parts_data: return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1})
@@ -3581,13 +3637,15 @@ def list_option_parts():
                 searchable = f"{name} {details} {tags_str}".lower()
                 tag_blob = [tags_str.lower()] if tags_str else []
                 if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid): continue
+            if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
+                continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
             icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
             rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
-        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rf}
+        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
