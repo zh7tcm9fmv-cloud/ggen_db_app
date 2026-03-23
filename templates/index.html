@@ -234,7 +234,7 @@ body.search-spotlight-open .search-recall-fab{opacity:0;pointer-events:none;tran
 .cmp-cb-cell{width:36px;min-width:36px;max-width:36px;vertical-align:middle !important;padding:4px !important;cursor:pointer}
 .cmp-cb-cell .cmp-cb-inner{display:flex;align-items:center;justify-content:center;width:100%;min-height:18px}
 .cmp-cb{width:18px;height:18px;accent-color:var(--accent-cyan);cursor:pointer;flex-shrink:0}
-.cmp-float{position:fixed;bottom:0;left:0;right:0;z-index:350;background:rgba(10,14,26,.95);border-top:2px solid var(--accent-cyan);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:16px;transform:translateY(100%);transition:transform .25s ease;backdrop-filter:blur(6px)}
+.cmp-float{position:fixed;bottom:var(--cmp-browser-inset-bottom,0px);left:0;right:0;z-index:350;background:rgba(10,14,26,.95);border-top:2px solid var(--accent-cyan);padding:10px 20px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:center;gap:16px;transform:translateY(100%);transition:transform .25s ease,bottom .2s ease;backdrop-filter:blur(6px);box-sizing:border-box}
 .cmp-float.visible{transform:translateY(0)}
 .cmp-float-count{color:var(--accent-cyan);font-weight:700;font-size:16px}
 .cmp-float-btn{padding:8px 24px;background:var(--accent-cyan);color:#0a0e1a;font-weight:800;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:15px;transition:var(--transition)}
@@ -242,7 +242,7 @@ body.search-spotlight-open .search-recall-fab{opacity:0;pointer-events:none;tran
 .cmp-float-btn:disabled{opacity:.4;cursor:not-allowed}
 .cmp-float-clear{padding:8px 16px;background:transparent;color:var(--text-secondary);border:1px solid var(--border-color);border-radius:var(--radius-sm);cursor:pointer;font-size:14px;transition:var(--transition)}
 .cmp-float-clear:hover{color:var(--text-primary);border-color:var(--text-secondary)}
-.cmp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(4px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.cmp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(4px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;padding-top:max(20px,env(safe-area-inset-top,0px));padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px) + var(--cmp-browser-inset-bottom,0px));overflow-y:auto;box-sizing:border-box;-webkit-overflow-scrolling:touch}
 .cmp-overlay.active{display:flex}
 .cmp-modal{background:var(--bg-primary);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:1000px;width:100%;position:relative;animation:modalSlideIn .25s ease;margin:20px auto}
 .cmp-modal-close{position:absolute;top:12px;right:12px;width:36px;height:36px;background:rgba(255,255,255,.08);border:1px solid var(--border-color);border-radius:50%;color:var(--text-secondary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:var(--transition)}
@@ -610,7 +610,7 @@ function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||nam
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
 const S={lang:'EN',languages:[],currentTab:'characters',characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',rarityFilter:'ALL'},ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:'ALL',listCharSeries:'ALL',listUnitLineage:'ALL',listUnitSeries:'ALL',lrCacheKey:null,lrCacheData:null,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null};
-document.addEventListener('DOMContentLoaded',async()=>{document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();loadPersistedListStatToggles();applyLang();buildTableHeaders();initSearchHints();initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys()});
+document.addEventListener('DOMContentLoaded',async()=>{document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();loadPersistedListStatToggles();applyLang();buildTableHeaders();initSearchHints();initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys();initCmpSafeArea()});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -937,11 +937,31 @@ function fitStageMapToUnits(centerAfter){
   if(centerAfter)setTimeout(()=>{const cc=document.getElementById('stageMapGridWrap');if(cc){cc.scrollLeft=0;cc.scrollTop=0}},60)
 }
 
+// iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & overlay using visual viewport.
+function updateCmpBrowserInset(){
+const vv=window.visualViewport;
+let inset=0;
+if(vv){
+inset=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
+}
+document.documentElement.style.setProperty('--cmp-browser-inset-bottom',inset+'px')
+}
+function initCmpSafeArea(){
+updateCmpBrowserInset();
+const onVV=()=>updateCmpBrowserInset();
+if(window.visualViewport){
+window.visualViewport.addEventListener('resize',onVV);
+window.visualViewport.addEventListener('scroll',onVV)
+}
+window.addEventListener('resize',onVV);
+window.addEventListener('orientationchange',onVV)
+}
+
 // Keep stage map "full picture" without manual zooming.
 window.addEventListener('resize',()=>{
-  if(S.currentDetailType==='stage'&&S.stageMapExpanded&&S.stageMapAutoFit){
-    fitStageMapToUnits(false)
-  }
+if(S.currentDetailType==='stage'&&S.stageMapExpanded&&S.stageMapAutoFit){
+fitStageMapToUnits(false)
+}
 });
 function focusStageMap(){const c=document.getElementById('stageMapGridWrap');if(!c)return;const md=S.currentDetailData?.map_data||{};const units=md.units||[];const mh=md.height||28;if(!units.length){c.scrollLeft=0;c.scrollTop=0;return}let mnX=999,mxX=-1,mnY=999,mxY=-1;units.forEach(un=>{const cls=un.cells||[{x:un.x,y:un.y}];cls.forEach(cl=>{const cx=Number(cl.x)+1,cy=Number(cl.y)+1;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy})});if(mnX===999){c.scrollLeft=0;c.scrollTop=0;return}const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));const cell=Math.round(50*z)+2;const gridPad=15;const contPad=20;const centerX=(mnX+mxX)/2;const centerY=(mnY+mxY)/2;const xPx=contPad+gridPad+(centerX-1)*cell+cell/2;const yPx=contPad+gridPad+((mh-centerY))*cell+cell/2;let targetLeft=xPx-c.clientWidth/2;let targetTop=yPx-c.clientHeight/2;const maxLeft=Math.max(0,c.scrollWidth-c.clientWidth);const maxTop=Math.max(0,c.scrollHeight-c.clientHeight);c.scrollLeft=Math.max(0,Math.min(maxLeft,targetLeft));c.scrollTop=Math.max(0,Math.min(maxTop,targetTop))}
 function renderNpcDetails(list){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${list.map(n=>renderNpcCard(n)).join('')}</div>`}
@@ -1143,6 +1163,7 @@ updateCompareUI()
 function clearCompareList(){S.compareList=[];S.compareData=[];S.cmpLbByUnit={};updateCompareUI()}
 
 function updateCompareUI(){
+updateCmpBrowserInset();
 const bar=document.getElementById('cmpFloat');
 const cnt=S.compareList.length;
 bar.classList.toggle('visible',cnt>0);
@@ -1214,6 +1235,7 @@ tr.insertBefore(th,tr.firstChild)
 
 async function openCompareModal(){
 if(S.compareList.length<2)return;
+updateCmpBrowserInset();
 S.cmpSpActive=false;S.cmpSspActive=false;
 S.compareList.forEach(c=>{if(S.cmpLbByUnit[c.id]===undefined)S.cmpLbByUnit[c.id]=3});
 const overlay=document.getElementById('cmpOverlay');
@@ -1235,6 +1257,7 @@ document.getElementById('cmpBody').innerHTML='<div class="empty-state"><div clas
 
 function closeCompareModal(){
 document.getElementById('cmpOverlay').classList.remove('active');
+updateCmpBrowserInset();
 if(!document.getElementById('detailModal').classList.contains('active'))
 document.body.style.overflow=''
 }
