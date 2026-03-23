@@ -479,13 +479,13 @@ def _entity_matches_one_lineage(lin_map, eid, want_lid):
 
 
 def entity_matches_lineage(lin_map, eid, want_lid):
-    """want_lid: None | str | frozenset of str — OR semantics for multiple tags."""
+    """want_lid: None | str | frozenset of str — AND semantics for multiple tags (entity must match every selected tag)."""
     if want_lid is None:
         return True
     if isinstance(want_lid, (frozenset, set, list, tuple)):
         if not want_lid:
             return True
-        return any(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
+        return all(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
     return _entity_matches_one_lineage(lin_map, eid, want_lid)
 
 
@@ -3397,7 +3397,7 @@ def list_characters():
     series_filter = parse_list_series_filter(series_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
-    ck = f"cl14_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl15_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3492,7 +3492,7 @@ def list_units():
     series_filter = parse_list_series_filter(series_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
-    ck = f"ul12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul13_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
