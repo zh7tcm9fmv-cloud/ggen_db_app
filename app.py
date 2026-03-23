@@ -3134,7 +3134,9 @@ def list_characters():
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
-        if sp_list:
+        # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
+        has_sp_char = int(str(ri)) <= 4
+        if sp_list and has_sp_char:
             rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
             totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp) if cond_list else compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
             base_src = grown_sp
