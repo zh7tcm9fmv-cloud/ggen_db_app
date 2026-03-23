@@ -2884,6 +2884,92 @@ def get_tag_characters():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
 
+def _entity_has_series_id(ser_list, target_sid):
+    """True if resolved series list includes m_series id target_sid."""
+    sid = normalize_id(target_sid)
+    if not sid or sid == '0':
+        return False
+    for x in ser_list or []:
+        if x.get('id') and normalize_id(x.get('id')) == sid:
+            return True
+    return False
+
+@app.route('/api/series_characters')
+def get_series_characters():
+    """Same JSON shape as /api/tag_characters: roles '1','2','3' → lists of playable characters in this series."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        raw_sid = request.args.get('series_id', '').strip()
+        if not raw_sid:
+            return jsonify({'1': [], '2': [], '3': []})
+        ck = f"series_chars_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify(cached)
+        ld = get_lang_data(lc)
+        results = {'1': [], '2': [], '3': []}
+        rlm = ROLE_NAME_MAP_CHARS.get(lc, ROLE_NAME_MAP_CHARS['EN']); rlm_en = ROLE_NAME_MAP_CHARS.get('EN', {})
+        for cid, info in char_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ['1', '2', '3']:
+                continue
+            ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
+            if not _entity_has_series_id(ser_list, raw_sid):
+                continue
+            lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+            if not name:
+                name = f"Unknown ({cid})"
+            ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+            acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+            results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
+        for r in results:
+            results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        set_cached_response(ck, results)
+        return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'1': [], '2': [], '3': []}), 500
+
+@app.route('/api/series_units')
+def get_series_units():
+    """Same JSON shape as /api/tag_units: roles '1','2','3' → lists of playable units in this series."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        raw_sid = request.args.get('series_id', '').strip()
+        if not raw_sid:
+            return jsonify({'1': [], '2': [], '3': []})
+        ck = f"series_units_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify(cached)
+        ld = get_lang_data(lc)
+        results = {'1': [], '2': [], '3': []}
+        rnm = UNIT_ROLE_TYPE_LANG_MAP.get(lc, UNIT_ROLE_TYPE_LANG_MAP['EN']); rnm_en = UNIT_ROLE_TYPE_LANG_MAP.get('EN', {})
+        for uid, info in unit_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ['1', '2', '3']:
+                continue
+            ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
+            if not _entity_has_series_id(ser_list, raw_sid):
+                continue
+            lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+            if not name:
+                continue
+            ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+            acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+            results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
+        for r in results:
+            results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        set_cached_response(ck, results)
+        return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'1': [], '2': [], '3': []}), 500
+
 @app.route('/api/skill_characters')
 def get_skill_characters():
     try:
