@@ -3094,23 +3094,27 @@ def list_characters():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
-        if role_id == '0': continue
+        id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
+        # Role 0 = no combat role (NPC / story); hide from browse unless user searches this id explicitly.
+        if role_id == '0' and not id_seek:
+            continue
         if role_filter is not None:
             if not role_filter:
                 continue
-            if role_id not in role_filter:
+            if not id_seek and role_id not in role_filter:
                 continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
-            letter = RARITY_MAP.get(str(ri), 'N')
-            if letter not in rarity_filter:
-                continue
+            if not id_seek:
+                letter = RARITY_MAP.get(str(ri), 'N')
+                if letter not in rarity_filter:
+                    continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
         ser_names_lower = series_names_lower_for_search(ser_list)
-        if cid not in char_list_playable_ids and not search_query_matches_entity_id(sq, cid):
+        if cid not in char_list_playable_ids and not id_seek:
             continue
         if sq:
             search_chunks = []
@@ -3164,24 +3168,27 @@ def list_units():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
-        if role_id == '0': continue
+        id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
+        if role_id == '0' and not id_seek:
+            continue
         if role_filter is not None:
             if not role_filter:
                 continue
-            if role_id not in role_filter:
+            if not id_seek and role_id not in role_filter:
                 continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
-            letter = RARITY_MAP.get(str(ri), 'N')
-            if letter not in rarity_filter:
-                continue
+            if not id_seek:
+                letter = RARITY_MAP.get(str(ri), 'N')
+                if letter not in rarity_filter:
+                    continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
             name = f'Unknown ({uid})'
         ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
         ser_names_lower = series_names_lower_for_search(ser_list)
-        if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
+        if uid not in unit_list_playable_ids and not id_seek:
             continue
         if sq:
             search_chunks = []
