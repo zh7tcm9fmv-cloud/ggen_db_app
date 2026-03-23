@@ -2657,17 +2657,30 @@ def series_names_lower_for_search(ser_list):
         names.append('msg')
     return names
 
+def series_alias_tokens_for_haystack(ser_list):
+    """Tokens mirrored into the main searchable text so plain 'msg' matches MSG-series rows (positive terms, not only series:)."""
+    sids = {normalize_id(x.get('id')) for x in ser_list if x.get('id')}
+    if SERIES_ID_MOBILE_SUIT_GUNDAM in sids:
+        return ['msg']
+    return []
+
 def parse_search_query(sq):
     """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
-    Leading '-' = exclusion. 'series:foo' = match series only (handled separately)."""
-    positive, negative, series = [], [], []
+    Leading '-' = exclusion. 'series:foo' = match series only (handled separately).
+    'series_id:10' = exact m_series SeriesId (numeric) for that row's resolved series (no substring bleed with other Gundam titles)."""
+    positive, negative, series, series_ids = [], [], [], []
     if not sq or not str(sq).strip():
-        return {'positive': [], 'negative': [], 'series': []}
+        return {'positive': [], 'negative': [], 'series': [], 'series_ids': []}
     segments = [t.strip() for t in re.split(r'[,;]', str(sq).strip()) if t.strip()]
     for seg in segments:
+        seg = seg.replace('\uff1a', ':').replace('\u3000', ' ').strip()
         sl = seg.lower()
         if sl.startswith('-') and len(sl) > 1:
             negative.append(sl[1:].strip())
+            continue
+        m = re.match(r'(?i)^series_id\s*:\s*(\d+)$', seg.strip())
+        if m:
+            series_ids.append(m.group(1))
             continue
         m = re.match(r'(?i)^series\s*:\s*(.+)$', seg.strip())
         if m:
@@ -2676,7 +2689,7 @@ def parse_search_query(sq):
                 series.append(rest.lower())
             continue
         positive.append(sl)
-    return {'positive': positive, 'negative': negative, 'series': series}
+    return {'positive': positive, 'negative': negative, 'series': series, 'series_ids': series_ids}
 
 def _search_term_matches_in_text(term, haystack_lower):
     """Match a search token against haystack (already lowercased). Short Latin tokens use word boundaries so e.g. 'mp' does not match inside 'consumptions'."""
@@ -2691,13 +2704,14 @@ def _search_term_matches_in_text(term, haystack_lower):
     except re.error:
         return t in haystack_lower
 
-def search_row_matches_query(sq, haystack_lower, series_names_lower_list):
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
-    series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match."""
+    series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match.
+    ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters."""
     if not sq or not str(sq).strip():
         return True
     pq = parse_search_query(sq)
-    if not pq['positive'] and not pq['negative'] and not pq['series']:
+    if not pq['positive'] and not pq['negative'] and not pq['series'] and not pq.get('series_ids'):
         return True
     for p in pq['positive']:
         if not _search_term_matches_in_text(p, haystack_lower):
@@ -2708,7 +2722,12 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list):
     for s in pq['series']:
         if series_names_lower_list is None:
             return False
-        if not any(_search_term_matches_in_text(s, sn) for sn in series_names_lower_list):
+        if not any((s == sn) or _search_term_matches_in_text(s, sn) for sn in series_names_lower_list):
+            return False
+    for sid in pq.get('series_ids') or []:
+        if not ser_list:
+            return False
+        if not any(normalize_id(x.get('id')) == sid for x in ser_list if x.get('id')):
             return False
     return True
 
@@ -2970,7 +2989,7 @@ def list_characters():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3010,8 +3029,9 @@ def list_characters():
                     if sid and sid != '0':
                         blob = collect_skill_search_text(sid, ld)
                         if blob: search_chunks.append(blob)
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower): continue
+            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         if sp_list:
             rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
@@ -3039,7 +3059,7 @@ def list_units():
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3077,8 +3097,9 @@ def list_units():
                     if blob2: search_chunks.append(blob2)
             wtxt = collect_unit_weapons_search_text(uid, ld, lc)
             if wtxt: search_chunks.append(wtxt)
-            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower): continue
+            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list): continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
@@ -3103,7 +3124,7 @@ def list_option_parts():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
         sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
-        ck = f"op3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
+        ck = f"op4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not option_parts_data: return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1})
@@ -3150,7 +3171,7 @@ def list_supporters():
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-        ck = f"sl3_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
+        ck = f"sl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -3440,7 +3461,7 @@ def list_stages():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
-        ck = f"stages3_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
+        ck = f"stages4_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
