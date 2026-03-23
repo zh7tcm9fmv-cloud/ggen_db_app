@@ -138,8 +138,8 @@ UI_LABELS = {
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
     }
 }
-UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '防禦型', '3': '支援型'}}
-ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '防禦型', 'Support': '支援型'}}
+UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'}}
+ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}}
 STAGE_TERRAIN_MAP = {'1': {'EN': 'Space', 'TW': '宇宙'}, '2': {'EN': 'Atmospheric', 'TW': '空中'}, '3': {'EN': 'Ground', 'TW': '地上'}, '5': {'EN': 'Amphibious', 'TW': '水陸'}}
 
 def get_ui_label(lang_code, key):
