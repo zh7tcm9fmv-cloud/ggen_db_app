@@ -1,0 +1,65 @@
+[
+  {
+    "ShopItemId": 100000001,
+    "Count": 6,
+    "Unknown_Col_2": 1,
+    "Unknown_Col_3": 193100000000000006,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000006
+  },
+  {
+    "ShopItemId": 100000002,
+    "Count": 8,
+    "Unknown_Col_2": 2,
+    "Unknown_Col_3": 193100000000000008,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000008
+  },
+  {
+    "ShopItemId": 100000004,
+    "Count": 1,
+    "Unknown_Col_2": 4,
+    "Unknown_Col_3": 193100000000000001,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000001
+  },
+  {
+    "ShopItemId": 100000005,
+    "Count": 2,
+    "Unknown_Col_2": 5,
+    "Unknown_Col_3": 193100000000000002,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000002
+  },
+  {
+    "ShopItemId": 100000006,
+    "Count": 3,
+    "Unknown_Col_2": 6,
+    "Unknown_Col_3": 193100000000000003,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000003
+  },
+  {
+    "ShopItemId": 100000007,
+    "Count": 4,
+    "Unknown_Col_2": 7,
+    "Unknown_Col_3": 193100000000000004,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000004
+  },
+  {
+    "ShopItemId": 100000008,
+    "Count": 5,
+    "Unknown_Col_2": 8,
+    "Unknown_Col_3": 193100000000000005,
+    "Unknown_Col_4": 1,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 193400000000000005
+  }
+]

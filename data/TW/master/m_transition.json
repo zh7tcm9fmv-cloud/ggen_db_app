@@ -1522,5 +1522,11 @@
     "TransitionTypeIndex": 52,
     "TargetId1": 0,
     "TargetId2": 0
+  },
+  {
+    "Id": 89260335000001,
+    "TransitionTypeIndex": 57,
+    "TargetId1": 0,
+    "TargetId2": 0
   }
 ]
