@@ -163,7 +163,15 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .weapon-name-area{flex:1;min-width:0}.weapon-name-text{font-size:18px;font-weight:700;color:var(--text-primary)}.weapon-attack-types{display:flex;gap:4px;margin-top:4px;align-items:center}.weapon-attack-type-icon{width:24px;height:24px;object-fit:contain;background:transparent;border:none;display:block;vertical-align:middle;filter:brightness(1.25) saturate(1.5)}
 .weapon-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1px;background:rgba(0,0,0,.2)}.weapon-stat-item{padding:10px 8px;text-align:center}.weapon-stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.weapon-stat-value{font-size:18px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}.weapon-stat-value.highlight{color:var(--accent-blue)}.weapon-stat-value.weapon-acc-boost{color:#5d9cec!important;font-weight:800;text-shadow:0 0 10px rgba(93,156,236,.45)}
 .weapon-card-body{padding:14px 18px}.weapon-trait-item{font-size:15px;color:var(--text-secondary);line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06)}.weapon-trait-item:last-child{border-bottom:none}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
-.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:center;padding:20px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:750px;scroll-behavior:smooth}.map-grid-container.active{display:flex}
+.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:20px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:750px;scroll-behavior:smooth}.map-grid-container.active{display:flex}
+.weapon-map-grid-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;box-sizing:border-box}
+.weapon-map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;align-content:start;justify-content:center;width:max-content;max-width:100%;margin:0 auto;box-sizing:border-box;--map-cell:24px;grid-auto-rows:var(--map-cell)}
+.weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1}
+.weapon-map-grid .map-cell>img:first-child{object-fit:contain!important}
+.weapon-map-legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text-secondary);justify-content:center;max-width:100%;padding:0 8px}
+.weapon-map-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.map-sel-crosshair{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:4;pointer-events:none}
+.map-sel-crosshair svg{filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
@@ -534,8 +542,8 @@ function imgTag(path, opts) {
     return imgEl;
 }
 
-const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Eternal Road',search_char:'Search by Name/Series/Tags/Ability/Skill',search_unit:'Search by Name/Series/Tags/Ability/',search_supporter:'Search by Name/Series/Tag',search_stage:'Search stages by ID or name...',per_page:'/page',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Gasha Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',search_mod:'Search by Name/Details/Tag',count_mod:'modifications',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',char_data:'Character Data',unit_data:'Unit Data',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Calculator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_pick_unit:'Select Unit',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_hp_remaining:'HP Remaining',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula'},
-TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'永恆之路',search_char:'搜尋：名稱/系列/標籤/能力/技能',search_unit:'搜尋：名稱/系列/標籤/能力/',search_supporter:'搜尋：名稱/系列/標籤',search_stage:'用關卡ID或名稱搜尋...',per_page:'/頁',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新轉蛋資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',search_mod:'搜尋：名稱/效果/標籤',count_mod:'改造零件',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',role_attack:'攻擊型',role_defense:'防禦型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅防禦型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',char_data:'角色資料',unit_data:'機體資料',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害計算器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_pick_unit:'選擇機體',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_hp_remaining:'剩餘HP',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式'}};
+const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Eternal Road',search_char:'Search by Name/Series/Tags/Ability/Skill',search_unit:'Search by Name/Series/Tags/Ability/',search_supporter:'Search by Name/Series/Tag',search_stage:'Search stages by ID or name...',per_page:'/page',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Gasha Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',search_mod:'Search by Name/Details/Tag',count_mod:'modifications',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',char_data:'Character Data',unit_data:'Unit Data',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',map_legend_use:'Point of Use',map_legend_sel:'Point of Selection',map_legend_range:'Range',map_legend_effect:'Effect Range',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Calculator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_pick_unit:'Select Unit',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_hp_remaining:'HP Remaining',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula'},
+TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'永恆之路',search_char:'搜尋：名稱/系列/標籤/能力/技能',search_unit:'搜尋：名稱/系列/標籤/能力/',search_supporter:'搜尋：名稱/系列/標籤',search_stage:'用關卡ID或名稱搜尋...',per_page:'/頁',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新轉蛋資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',search_mod:'搜尋：名稱/效果/標籤',count_mod:'改造零件',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',role_attack:'攻擊型',role_defense:'防禦型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅防禦型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',char_data:'角色資料',unit_data:'機體資料',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害計算器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_pick_unit:'選擇機體',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_hp_remaining:'剩餘HP',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式'}};
 const STAT_NAME_MAP={EN:{},TW:{'Ranged':'射擊','Melee':'格鬥','Awaken':'覺醒','Defense':'守備','Reaction':'反應','HP':'HP','EN':'EN','Attack':'攻擊','Mobility':'機動','Move':'移動'}};
 const TERRAIN_NAME_MAP={EN:{},TW:{'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'}};
 const ROLE_NAME_MAP={EN:{'Attack':'Attack','Defense':'Defense','Support':'Support'},TW:{'Attack':'攻擊型','Defense':'防禦型','Support':'支援型'}};
@@ -869,29 +877,32 @@ function renderMapGrid(weapon,isLarge){
     else t2=true
   }
 
-  let tx=0,ty=0,ex2=0,ey=0;
+  let sx=0,sy=0,ux=0,uy=0,ex2=0,ey=0;
   if(t3){
     let ac=ec.concat(sc);
     let my=Math.max(...ac.map(c=>c.y));
     ey=isLarge?my+2:my+1
   }else if(t2){
-    let nc=sc.filter(c=>c.x===0);
-    if(nc.length>0)ty=Math.max(...nc.map(c=>c.y));
+    if(sc.some(s=>s.x===0&&s.y===0)){sx=0;sy=0}
     else{
-      ty=Math.max(...sc.map(c=>c.y));
-      let tc=sc.find(c=>c.y===ty);
-      if(tc)tx=tc.x
+      let ax=sc.reduce((a,b)=>a+b.x,0)/sc.length,ay=sc.reduce((a,b)=>a+b.y,0)/sc.length;
+      let bd=1e9,best=sc[0];
+      sc.forEach(s=>{let d=Math.abs(s.x-ax)+Math.abs(s.y-ay);if(d<bd){bd=d;best=s}});
+      sx=best.x;sy=best.y
     }
+    let minY=Math.min(...sc.map(c=>c.y));
+    let bot=sc.filter(c=>c.y===minY);
+    bot.sort((a,b)=>Math.abs(a.x)-Math.abs(b.x));
+    ux=bot[0].x;uy=bot[0].y
   }
 
   let mnx=0,mxx=0,mny=0,mxy=0;
   let uf=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
-  if(t2){uf=isLarge?[{x:tx,y:ty},{x:tx+1,y:ty},{x:tx,y:ty-1},{x:tx+1,y:ty-1}]:[{x:tx,y:ty}]}
+  if(t2){uf=isLarge?[{x:ux,y:uy},{x:ux+1,y:uy},{x:ux,y:uy-1},{x:ux+1,y:uy-1}]:[{x:ux,y:uy}]}
   uf.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
-  ec.forEach(c=>{let x=t2?c.x+tx:c.x,y=t2?c.y+ty:c.y;if(x<mnx)mnx=x;if(x>mxx)mxx=x;if(y<mny)mny=y;if(y>mxy)mxy=y});
+  ec.forEach(c=>{let x=t2?c.x+sx:c.x,y=t2?c.y+sy:c.y;if(x<mnx)mnx=x;if(x>mxx)mxx=x;if(y<mny)mny=y;if(y>mxy)mxy=y});
   if(t2||t3){
-    sc.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
-    if(t2&&ty>mxy)mxy=ty
+    sc.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y})
   }
   if(t3){
     let ef=isLarge?[{x:ex2,y:ey},{x:ex2+1,y:ey},{x:ex2,y:ey-1},{x:ex2+1,y:ey-1}]:[{x:ex2,y:ey}];
@@ -908,13 +919,16 @@ function renderMapGrid(weapon,isLarge){
   let fmny=mny-py,fmxy=mxy+py,fr=fmxy-fmny+1;
 
   let uxMin=0,uxMax=0,uyMin=0,uyMax=0;
-  if(t2){uxMin=tx;uxMax=isLarge?tx+1:tx;uyMin=isLarge?ty-1:ty;uyMax=ty}
+  if(t2){uxMin=ux;uxMax=isLarge?ux+1:ux;uyMin=isLarge?uy-1:uy;uyMax=uy}
   else{uxMin=0;uxMax=isLarge?1:0;uyMin=isLarge?-1:0;uyMax=0}
   if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;cl=Math.min(cl,Math.max(0,uxMin-fmnx));cr=Math.min(cr,Math.max(0,fmxx-uxMax));fmnx+=cl;fmxx-=cr;fc=19}
   if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
 
+  const mapCell=isLarge?48:24;
+  const mapSelXhair='<span class="map-sel-crosshair" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1v16M1 9h16" stroke="#121212" stroke-width="1.35" stroke-linecap="square"/></svg></span>';
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.png');
-  let html=`<div class="map-grid" style="grid-template-columns:repeat(${fc},24px);grid-template-rows:repeat(${fr},24px);">`;
+  let lsBase=isLarge?`position:absolute;width:${mapCell}px;height:${mapCell}px;top:0;left:0;z-index:2;object-fit:contain;`:`position:absolute;top:0;left:0;width:${mapCell}px;height:${mapCell}px;z-index:2;object-fit:contain;`;
+  let html=`<div class="weapon-map-grid-wrap"><div class="weapon-map-grid" style="--map-cell:${mapCell}px;grid-template-columns:repeat(${fc},var(--map-cell));grid-template-rows:repeat(${fr},var(--map-cell));">`;
 
   for(let r=0;r<fr;r++){
     let cy=fmxy-r;
@@ -923,16 +937,16 @@ function renderMapGrid(weapon,isLarge){
       let iu=false,im=false,its=false,ieb=false,iem=false,ie=false,isp=false;
 
       if(t2){
-        if(isLarge){iu=(cx===tx||cx===tx+1)&&(cy===ty||cy===ty-1);im=(cx===tx&&cy===ty)}
-        else{iu=(cx===tx&&cy===ty);im=iu}
+        if(isLarge){iu=(cx===ux||cx===ux+1)&&(cy===uy||cy===uy-1);im=(cx===ux&&cy===uy)}
+        else{iu=(cx===ux&&cy===uy);im=iu}
       }else{
         if(isLarge){iu=(cx===0||cx===1)&&(cy===0||cy===-1);im=(cx===0&&cy===0)}
         else{iu=(cx===0&&cy===0);im=iu}
       }
 
       if(t2){
-        its=(cx===tx&&cy===ty);
-        ie=ec.some(e=>(e.x+tx===cx)&&(e.y+ty===cy));
+        its=(cx===sx&&cy===sy);
+        ie=ec.some(e=>(e.x+sx===cx)&&(e.y+sy===cy));
         isp=sc.some(s=>s.x===cx&&s.y===cy)
       }else if(t3){
         if(isLarge){ieb=(cx===ex2||cx===ex2+1)&&(cy===ey||cy===ey-1);iem=(cx===ex2&&cy===ey)}
@@ -944,7 +958,7 @@ function renderMapGrid(weapon,isLarge){
       }
 
       let bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.png'),mh='',oh='';
-      let ls=isLarge?'position:absolute;width:48px;height:48px;top:0;left:0;z-index:2;object-fit:contain;':'position:absolute;top:0;left:0;width:24px;height:24px;z-index:2;';
+      let ls=lsBase;
 
       if(t3){
         if(iu){
@@ -963,12 +977,13 @@ function renderMapGrid(weapon,isLarge){
           oh=`<img src=\"${step}\" alt=\"\" style=\"${stepLs}\">`
         }
       }else if(t2){
-        if(iu){
+        if(its){
+          bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
+          mh=mapSelXhair;
+          if(iu&&im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.png')}\" alt=\"\" style=\"${ls}\">`+mh
+        }else if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
           if(im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.png')}\" alt=\"\" style=\"${ls}\">`
-        }else if(its){
-          bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
-          mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_SelectMarker_Nega.png')}\" alt=\"\" style=\"${ls}\">`
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }else if(isp){
@@ -983,10 +998,19 @@ function renderMapGrid(weapon,isLarge){
         }
       }
 
-      html+=`<div class=\"map-cell\" style=\"width:24px;height:24px;position:relative;\"><img src=\"${bi}\" alt=\"\" style=\"width:24px;height:24px;position:absolute;top:0;left:0;object-fit:cover;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
+      html+=`<div class=\"map-cell\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;\"><img src=\"${bi}\" alt=\"\" style=\"width:${mapCell}px;height:${mapCell}px;position:absolute;top:0;left:0;object-fit:contain;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
     }
   }
 
+  html+='</div>';
+  if(t2){
+    html+='<div class="weapon-map-legend" role="list">'+
+    '<span class="weapon-map-legend-item" role="listitem"><span aria-hidden="true" style="color:#9ecbff">▼</span> '+t('map_legend_use')+'</span>'+
+    '<span class="weapon-map-legend-item" role="listitem"><svg width="14" height="14" viewBox="0 0 18 18" style="vertical-align:middle" aria-hidden="true"><path d="M9 1v16M1 9h16" stroke="#121212" stroke-width="1.35"/></svg> '+t('map_legend_sel')+'</span>'+
+    '<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#203a6e;border:1px solid #152a52;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_range')+'</span>'+
+    '<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#59a8f0;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_effect')+'</span>'+
+    '</div>'
+  }
   html+='</div>';
   return html
 }
