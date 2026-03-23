@@ -425,13 +425,18 @@ def entity_matches_source_category(acq_route, role_id, sf):
 
 
 def parse_list_lineage_filter(val):
-    """Optional lineage/tag id; None = no filter. Keep string form — long ids must not pass through int/float."""
+    """Optional lineage/tag id(s); None = no filter. Comma-separated = OR (any tag). Keep string form for ids."""
     if val is None:
         return None
     s = (val or '').strip()
     if not s or s.upper() == 'ALL':
         return None
-    return s
+    parts = [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]
+    if not parts:
+        return None
+    if len(parts) == 1:
+        return parts[0]
+    return frozenset(parts)
 
 
 def parse_list_series_filter(val):
@@ -447,6 +452,11 @@ def parse_list_series_filter(val):
 def lineage_filter_cache_fragment(lid):
     if lid is None:
         return 'l0'
+    if isinstance(lid, (frozenset, set, list, tuple)):
+        if not lid:
+            return 'l0'
+        xs = sorted(str(x).replace('%', '')[:48] for x in lid)
+        return 'l' + '__'.join(xs)[:220]
     return 'l' + str(lid).replace('%', '')[:48]
 
 
@@ -456,10 +466,8 @@ def series_filter_cache_fragment(sid):
     return 's' + str(sid)[:32]
 
 
-def entity_matches_lineage(lin_map, eid, want_lid):
-    """want_lid is full lineage id from m_lineage; lin_map stores short ids (see resolve_tags)."""
-    if want_lid is None:
-        return True
+def _entity_matches_one_lineage(lin_map, eid, want_lid):
+    """Single lineage id match; want_lid is full lineage id from m_lineage; lin_map stores short ids."""
     want = str(want_lid).strip()
     for lid in lin_map.get(eid, []):
         ln = str(lid).strip()
@@ -468,6 +476,17 @@ def entity_matches_lineage(lin_map, eid, want_lid):
         if len(ln) >= 4 and want.endswith(ln):
             return True
     return False
+
+
+def entity_matches_lineage(lin_map, eid, want_lid):
+    """want_lid: None | str | frozenset of str — OR semantics for multiple tags."""
+    if want_lid is None:
+        return True
+    if isinstance(want_lid, (frozenset, set, list, tuple)):
+        if not want_lid:
+            return True
+        return any(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
+    return _entity_matches_one_lineage(lin_map, eid, want_lid)
 
 
 def entity_matches_series(ser_set_id, want_series_id, lc):
