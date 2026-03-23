@@ -74,6 +74,9 @@ if os.path.exists(IMAGE_INDEX_PATH):
 else:
     print("⚠ Warning: image_index.json not found")
 
+# m_series Id (SeriesId from sets) -> 4-digit logo pad from ResourceId "series_XXXX" (filled after m_series.json load)
+M_SERIES_ID_TO_LOGO_PAD = {}
+
 # ═══════════════════════════════════════════════════════
 # LANGUAGE CONFIGURATION
 # ═══════════════════════════════════════════════════════
@@ -821,24 +824,79 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
 
     return None
 
-def find_series_icon(series_id):
-    """Find series icon using IMAGE_INDEX.
+def build_m_series_logo_pad_map(master_data):
+    """Map m_series Id -> logo filename pad (ResourceId series_XXXX → XXXX).
 
-    Filenames are logo_l_series_XXXX.(png|webp) where XXXX is the 4-digit series id
-    (e.g. m_series id 10 -> 0010, id 7000 -> 7000). Long numeric resource ids use the last 4 digits.
+    SeriesId in m_series_set points at m_series.Id; logos are named from ResourceId (e.g. Id 7001 → series_7000 → logo_l_series_7000).
+    """
+    out = {}
+    for item in extract_data_list(master_data):
+        if not isinstance(item, dict):
+            continue
+        mid = normalize_id(item.get('Id') or item.get('id'))
+        rid = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+        if mid == '0' or not rid:
+            continue
+        rm = re.match(r'^series_(\d+)$', rid, re.I)
+        if rm:
+            out[mid] = f'{int(rm.group(1)):04d}'
+    return out
+
+def _series_icon_path_from_pad(pad, files):
+    """Return static path for logo_l_series_PAD.* or ''."""
+    if not pad or not files:
+        return ''
+    pat = re.compile(r'_' + re.escape(pad) + r'\.(?:png|webp|jpg|jpeg)$', re.I)
+    matches = [fn for fn in files if pat.search(fn)]
+    if not matches:
+        return ''
+    matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+    return f"/static/images/Logo-Series/{matches[0]}"
+
+def find_series_icon(series_id):
+    """Find series icon using IMAGE_INDEX + m_series ResourceId (series_XXXX).
+
+    Logos match m_series.ResourceId (e.g. series_7000), not necessarily the numeric Id (e.g. 7001).
     """
     if not series_id or not IMAGE_INDEX:
         return ''
 
-    sid = normalize_id(series_id)
-    if not sid or sid == '0':
+    raw = str(series_id).strip()
+    if not raw or raw == '0':
         return ''
 
     files = IMAGE_INDEX.get('images/Logo-Series', []) or []
     if not files:
         return ''
 
-    # Numeric ids only; long ids use trailing 4 digits (same as logo filename suffix)
+    # Direct ResourceId string from master
+    rm = re.match(r'^series_(\d+)$', raw, re.I)
+    if rm:
+        pad = f'{int(rm.group(1)):04d}'
+        p = _series_icon_path_from_pad(pad, files)
+        if p:
+            return p
+
+    sid = normalize_id(series_id)
+    if not sid or sid == '0':
+        return ''
+
+    pad = None
+    if sid in M_SERIES_ID_TO_LOGO_PAD:
+        pad = M_SERIES_ID_TO_LOGO_PAD[sid]
+    elif sid.isdigit():
+        ts = sid[-4:] if len(sid) > 4 else sid
+        try:
+            pad = f'{int(ts):04d}'
+        except ValueError:
+            pad = None
+
+    if pad:
+        p = _series_icon_path_from_pad(pad, files)
+        if p:
+            return p
+
+    # Non-numeric ids: substring fallback
     if not sid.isdigit():
         sl = sid.lower()
         for fn in files:
@@ -846,24 +904,8 @@ def find_series_icon(series_id):
                 return f"/static/images/Logo-Series/{fn}"
         return ''
 
-    if len(sid) > 4:
-        sid = sid[-4:]
-    try:
-        n = int(sid)
-    except ValueError:
-        return ''
-    pad = f'{n:04d}'
-    # Exact _XXXX.ext match (avoids '10' matching wrong logos)
-    pat = re.compile(r'_' + re.escape(pad) + r'\.(?:png|webp|jpg|jpeg)$', re.I)
-    matches = [fn for fn in files if pat.search(fn)]
-    if matches:
-        matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
-        return f"/static/images/Logo-Series/{matches[0]}"
-
-    # Legacy: substring (non-numeric resource ids)
-    sl = str(normalize_id(series_id) if series_id is not None else '').lower()
-    if not sl or sl == '0':
-        return ''
+    # Legacy substring
+    sl = sid.lower()
     for fn in files:
         if sl in fn.lower():
             return f"/static/images/Logo-Series/{fn}"
@@ -1870,6 +1912,8 @@ print("=" * 60)
 print("Loading database...")
 
 series_set_data = load_json(os.path.join(BASE_DIR, "m_series_set.json"))
+series_master_data = load_json(os.path.join(BASE_DIR, "m_series.json"))
+M_SERIES_ID_TO_LOGO_PAD = build_m_series_logo_pad_map(series_master_data)
 trait_cond_data_r = load_json(os.path.join(BASE_DIR, "m_trait_condition.json"))
 trait_logic_data = load_json(os.path.join(BASE_DIR, "m_trait.json"))
 ability_master = load_json(os.path.join(BASE_DIR, "m_ability.json"))
@@ -3301,7 +3345,7 @@ def browse_filters():
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units'):
             entity = 'characters'
-        ck = f"browse_filters_v3_{lc}_{entity}"
+        ck = f"browse_filters_v4_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
