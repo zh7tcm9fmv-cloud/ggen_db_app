@@ -421,6 +421,87 @@ def entity_matches_source_category(acq_route, role_id, sf):
     return True
 
 
+def parse_list_lineage_filter(val):
+    """Optional lineage/tag id; None = no filter. Keep string form — long ids must not pass through int/float."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    return s
+
+
+def parse_list_series_filter(val):
+    """Optional series id; None = no filter."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    return normalize_id(s)
+
+
+def lineage_filter_cache_fragment(lid):
+    if lid is None:
+        return 'l0'
+    return 'l' + str(lid).replace('%', '')[:48]
+
+
+def series_filter_cache_fragment(sid):
+    if sid is None:
+        return 's0'
+    return 's' + str(sid)[:32]
+
+
+def entity_matches_lineage(lin_map, eid, want_lid):
+    """want_lid is full lineage id from m_lineage; lin_map stores short ids (see resolve_tags)."""
+    if want_lid is None:
+        return True
+    want = str(want_lid).strip()
+    for lid in lin_map.get(eid, []):
+        ln = str(lid).strip()
+        if ln == want:
+            return True
+        if len(ln) >= 4 and want.endswith(ln):
+            return True
+    return False
+
+
+def entity_matches_series(ser_set_id, want_series_id, lc):
+    if want_series_id is None:
+        return True
+    ws = normalize_id(want_series_id)
+    for s in resolve_series(ser_set_id or '', lc):
+        if normalize_id(s.get('id', '')) == ws:
+            return True
+    return False
+
+
+def all_series_for_browse(ld):
+    """Distinct series ids from series sets with localized names and icons."""
+    ssm = ld.get('ser_set_map', {})
+    sl = ld.get('series_list', [])
+    seen = set()
+    out = []
+    for ids in ssm.values():
+        for sid in ids:
+            sid = normalize_id(sid)
+            if not sid or sid == '0' or sid in seen:
+                continue
+            seen.add(sid)
+            name = None
+            for lid, val in sl:
+                if lid.endswith(sid):
+                    name = val
+                    break
+            if not name:
+                name = sid
+            icon = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+            out.append({'id': sid, 'name': name, 'icon': icon or ''})
+    out.sort(key=lambda x: x['name'].lower())
+    return out
+
+
 ROLE_MAP = {'0': 'NPC', '1': 'Attack', '2': 'Defense', '3': 'Support'}
 ROLE_SORT = {'1': 0, '2': 1, '3': 2, '0': 3}
 GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
@@ -3114,6 +3195,29 @@ def get_ability_units():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
 
+@app.route('/api/browse_filters')
+def browse_filters():
+    """Lineage/tag names and series (with icons) for list filter dropdowns."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f"browse_filters_v1_{lc}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify(cached)
+        ld = get_lang_data(lc)
+        lineages = []
+        for rid, val in ld.get('lineage_list', []):
+            if rid and val:
+                lineages.append({'id': rid, 'name': val})
+        lineages.sort(key=lambda x: x['name'].lower())
+        series = all_series_for_browse(ld)
+        result = {'lineages': lineages, 'series': series}
+        set_cached_response(ck, result)
+        return jsonify(convert_image_urls(result))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'lineages': [], 'series': []}), 500
+
 @app.route('/api/characters')
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
@@ -3126,7 +3230,13 @@ def list_characters():
     source_arg = request.args.get('source', '').strip()
     source_filter = parse_list_source_filter(source_arg)
     source_ck = source_filter_cache_fragment(source_filter)
-    ck = f"cl13_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lr_schedule_cache_key_fragment()}"
+    lineage_arg = request.args.get('lineage_id', '').strip()
+    series_arg = request.args.get('series_id', '').strip()
+    lineage_filter = parse_list_lineage_filter(lineage_arg)
+    series_filter = parse_list_series_filter(series_arg)
+    lineage_ck = lineage_filter_cache_fragment(lineage_filter)
+    series_ck = series_filter_cache_fragment(series_filter)
+    ck = f"cl14_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3153,6 +3263,12 @@ def list_characters():
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
+        if lineage_filter is not None:
+            if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
+                continue
+        if series_filter is not None:
+            if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc):
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
@@ -3193,7 +3309,7 @@ def list_characters():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/units')
@@ -3209,7 +3325,13 @@ def list_units():
     source_arg = request.args.get('source', '').strip()
     source_filter = parse_list_source_filter(source_arg)
     source_ck = source_filter_cache_fragment(source_filter)
-    ck = f"ul11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lr_schedule_cache_key_fragment()}"
+    lineage_arg = request.args.get('lineage_id', '').strip()
+    series_arg = request.args.get('series_id', '').strip()
+    lineage_filter = parse_list_lineage_filter(lineage_arg)
+    series_filter = parse_list_series_filter(series_arg)
+    lineage_ck = lineage_filter_cache_fragment(lineage_filter)
+    series_ck = series_filter_cache_fragment(series_filter)
+    ck = f"ul12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3235,6 +3357,12 @@ def list_units():
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
+        if lineage_filter is not None:
+            if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
+                continue
+        if series_filter is not None:
+            if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
@@ -3273,7 +3401,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/option_parts')
