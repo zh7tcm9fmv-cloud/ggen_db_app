@@ -253,6 +253,10 @@ RARITY_MAP = {'1': 'N', '2': 'R', '3': 'SR', '4': 'SSR', '5': 'UR'}
 RARITY_SORT = {'5': 0, '4': 1, '3': 2, '2': 3, '1': 4}
 RARITY_LETTERS = frozenset(RARITY_MAP.values())
 
+# m_series Id=10 / ResourceId series_0010 — original "Mobile Suit Gundam" (1979). Used to add search alias `msg`
+# so series:msg targets this series only, not every title containing "Gundam".
+SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
+
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
     try:
@@ -2645,6 +2649,14 @@ def validate_lang_code(lc):
     if lc not in LANG_DATA: lc = DEFAULT_LANG
     return lc
 
+def series_names_lower_for_search(ser_list):
+    """Lowercased series display names plus stable aliases for series-only search (e.g. series:msg → original Mobile Suit Gundam)."""
+    names = [x['name'].lower() for x in ser_list if x.get('name')]
+    sids = {normalize_id(x.get('id')) for x in ser_list if x.get('id')}
+    if SERIES_ID_MOBILE_SUIT_GUNDAM in sids:
+        names.append('msg')
+    return names
+
 def parse_search_query(sq):
     """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
     Leading '-' = exclusion. 'series:foo' = match series only (handled separately)."""
@@ -2795,12 +2807,12 @@ def get_tag_units():
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
-            tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + [s.get('name', '').lower() for s in resolve_series(unit_ser_map.get(uid, ''), lc)])
+            tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), lc)))
             if rnm.get(ri2): tset.add(rnm[ri2].lower())
             if rnm_en.get(ri2): tset.add(rnm_en[ri2].lower())
             if lc != 'EN':
                 tset.update([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, 'EN', 'unit')])
-                tset.update([s.get('name', '').lower() for s in resolve_series(unit_ser_map.get(uid, ''), 'EN')])
+                tset.update(series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), 'EN')))
             match = all(t in tset for t in tl) if op == 'and' else any(t in tset for t in tl)
             if match:
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
@@ -2828,13 +2840,13 @@ def get_tag_characters():
             if ri2 not in ['1', '2', '3']: continue
             lid = ld.get('char_id_map', {}).get(cid, ''); name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
             if not name: name = f"Unknown ({cid})"
-            tset = set([t.get('name', '').lower() for t in resolve_tags(char_lin_map, cid, lc, 'character')] + [s.get('name', '').lower() for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)])
+            tset = set([t.get('name', '').lower() for t in resolve_tags(char_lin_map, cid, lc, 'character')] + series_names_lower_for_search(resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)))
             br = ROLE_MAP.get(ri2, '')
             if br and rlm.get(br): tset.add(rlm[br].lower())
             if br and rlm_en.get(br): tset.add(rlm_en[br].lower())
             if lc != 'EN':
                 tset.update([t.get('name', '').lower() for t in resolve_tags(char_lin_map, cid, 'EN', 'character')])
-                tset.update([s.get('name', '').lower() for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), 'EN')])
+                tset.update(series_names_lower_for_search(resolve_series(ld.get('char_ser_map', {}).get(cid, ''), 'EN')))
             match = all(t in tset for t in tl) if op == 'and' else any(t in tset for t in tl)
             if match:
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
@@ -2958,7 +2970,7 @@ def list_characters():
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -2981,7 +2993,7 @@ def list_characters():
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
-        ser_names_lower = [x['name'].lower() for x in ser_list if x.get('name')]
+        ser_names_lower = series_names_lower_for_search(ser_list)
         if cid not in char_list_playable_ids and not search_query_matches_entity_id(sq, cid):
             continue
         if sq:
@@ -3027,7 +3039,7 @@ def list_units():
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3050,7 +3062,7 @@ def list_units():
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name: continue
         ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
-        ser_names_lower = [x['name'].lower() for x in ser_list if x.get('name')]
+        ser_names_lower = series_names_lower_for_search(ser_list)
         if uid not in unit_list_playable_ids and not search_query_matches_entity_id(sq, uid):
             continue
         if sq:
