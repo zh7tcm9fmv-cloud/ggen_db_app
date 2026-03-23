@@ -502,6 +502,71 @@ def all_series_for_browse(ld):
     return out
 
 
+def lineages_for_entity_browse(lin_map, ld):
+    """Unique lineage tags used only by entities in lin_map (character vs unit). One row per short id."""
+    llk = ld.get('lineage_lookup', {})
+    ll = ld.get('lineage_list', [])
+    short_ids = set()
+    for lids in lin_map.values():
+        for lid in lids:
+            s = str(lid).strip()
+            if s and s != '0':
+                short_ids.add(s)
+    rows = []
+    for sid in short_ids:
+        name = llk.get(sid)
+        if not name:
+            for fid, val in ll:
+                if str(fid).endswith(sid) and len(sid) >= 4:
+                    name = val
+                    break
+        if not name:
+            name = sid
+        full_id = sid
+        for fid, val in ll:
+            if str(fid).endswith(sid) and len(sid) >= 4:
+                full_id = str(fid)
+                break
+        rows.append({'id': full_id, 'name': name})
+    by_id = {}
+    for r in rows:
+        fid = str(r['id'])
+        if fid not in by_id:
+            by_id[fid] = r
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
+def series_for_entity_browse(ld, entity):
+    """Series that appear on characters or units only (via their series sets)."""
+    ssm = ld.get('ser_set_map', {})
+    sl = ld.get('series_list', [])
+    if entity == 'characters':
+        cmap = ld.get('char_ser_map', {})
+    else:
+        cmap = unit_ser_map
+    seen = set()
+    out = []
+    for eid, set_id in cmap.items():
+        if not set_id or set_id == '0':
+            continue
+        for sid in ssm.get(set_id, []):
+            sid = normalize_id(sid)
+            if not sid or sid == '0' or sid in seen:
+                continue
+            seen.add(sid)
+            name = None
+            for lid, val in sl:
+                if lid.endswith(sid):
+                    name = val
+                    break
+            if not name:
+                name = sid
+            icon = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+            out.append({'id': sid, 'name': name, 'icon': icon or ''})
+    out.sort(key=lambda x: x['name'].lower())
+    return out
+
+
 ROLE_MAP = {'0': 'NPC', '1': 'Attack', '2': 'Defense', '3': 'Support'}
 ROLE_SORT = {'1': 0, '2': 1, '3': 2, '0': 3}
 GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
@@ -3197,20 +3262,20 @@ def get_ability_units():
 
 @app.route('/api/browse_filters')
 def browse_filters():
-    """Lineage/tag names and series (with icons) for list filter dropdowns."""
+    """Lineage tags and series for list filters — character vs unit lists do not mix."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f"browse_filters_v1_{lc}"
+        entity = (request.args.get('entity') or '').strip().lower()
+        if entity not in ('characters', 'units'):
+            entity = 'characters'
+        ck = f"browse_filters_v2_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
         ld = get_lang_data(lc)
-        lineages = []
-        for rid, val in ld.get('lineage_list', []):
-            if rid and val:
-                lineages.append({'id': rid, 'name': val})
-        lineages.sort(key=lambda x: x['name'].lower())
-        series = all_series_for_browse(ld)
+        lin_map = char_lin_map if entity == 'characters' else unit_lin_map
+        lineages = lineages_for_entity_browse(lin_map, ld)
+        series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
         result = {'lineages': lineages, 'series': series}
         set_cached_response(ck, result)
         return jsonify(convert_image_urls(result))
