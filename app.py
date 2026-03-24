@@ -3646,7 +3646,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul14_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul15_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3712,7 +3712,6 @@ def list_units():
             sm = stat_mode if stat_mode != 'normal' else 'normal'
             fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
-        if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
@@ -4027,7 +4026,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v4_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v5_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -4081,8 +4080,6 @@ def api_latest_release():
         acq = info.get('acquisition_route', '0')
         ai = ACQUISITION_ROUTE_ICONS.get(acq, '')
         si = []
-        if info.get('is_ultimate', False):
-            si.append(ULT_ICON)
         if ai:
             si.append(ai)
         role_id = info.get('role', '0')
@@ -4093,6 +4090,7 @@ def api_latest_release():
             'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
             'role_icon': ROLE_ICON_MAP.get(role_id, ''),
             'acquisition_icon': ai or '', 'special_icons': si,
+            'is_ultimate': bool(info.get('is_ultimate', False)),
             'recommend_character_id': rec_cid,
         })
 
