@@ -1,0 +1,23 @@
+{
+  "name": "GGen Database",
+  "short_name": "GGen DB",
+  "description": "SD Gundam G Generation database",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0a0e17",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}
