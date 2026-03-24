@@ -3405,33 +3405,48 @@ def entity_matches_unit_abilities_filter(uid, want_lid):
     return _unit_has_ability_id(uid, want_lid)
 
 
-def collect_character_grid_skills(cid, ld):
+def collect_character_grid_skills(cid, ld, use_sp=False):
+    """One skill per SortOrder row. When use_sp and SP skill id exists, show SP variant instead of base (never both)."""
     rows = []
     for sk in extract_data_list(char_skill):
         if normalize_id(sk.get('CharacterId', '')) != cid:
             continue
         so = int(sk.get('SortOrder', 0) or 0)
-        for sid, isp in [(normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')), False), (normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId')), True)]:
-            if not sid or sid in ('0', 'None'):
-                continue
-            try:
-                r = resolve_char_skill(sid, ld, so, isp)
-            except Exception:
-                continue
-            name = (r.get('name') or '').strip() or 'Unknown'
-            detail = '\n'.join(d for d in (r.get('details') or []) if isinstance(d, str) and d.strip())
-            icon = (r.get('icon') or '').strip()
-            rows.append((so, name.lower(), {'name': name, 'detail': detail, 'icon': icon}))
+        base_id = normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')) or ''
+        sp_id = normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId')) or ''
+        if use_sp and sp_id and sp_id not in ('0', 'None'):
+            sid = sp_id
+            isp = True
+        else:
+            sid = base_id
+            isp = False
+        if not sid or sid in ('0', 'None'):
+            continue
+        try:
+            r = resolve_char_skill(sid, ld, so, isp)
+        except Exception:
+            continue
+        name = (r.get('name') or '').strip() or 'Unknown'
+        detail = '\n'.join(d for d in (r.get('details') or []) if isinstance(d, str) and d.strip())
+        icon = (r.get('icon') or '').strip()
+        rows.append((so, name.lower(), {'name': name, 'detail': detail, 'icon': icon}))
     rows.sort(key=lambda x: (x[0], x[1]))
     return [x[2] for x in rows]
 
 
-def collect_unit_grid_abilities(uid, ld, ldc, lang_code):
+def collect_unit_grid_abilities(uid, ld, ldc, lang_code, stat_mode='normal'):
+    """List browse grid icons: base abilities, or SSP replacement when stat_mode is ssp (same slot, not duplicated)."""
     ua = unit_abil_map.get(uid, [])
+    rm = unit_ssp_abil_replace_map.get(uid, {}) or {}
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
     out = []
     for ab in sorted(ua, key=lambda x: int(x.get('sort', 0) or 0)):
+        aid = str(ab['id'])
+        use_id = rm.get(aid) if sm == 'ssp' and aid in rm else aid
         try:
-            bab = build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lang_code)
+            bab = build_ability_entry(use_id, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lang_code)
         except Exception:
             continue
         detail_parts = []
@@ -3541,7 +3556,7 @@ def list_characters():
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl16_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl17_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3615,7 +3630,8 @@ def list_characters():
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         if grid_skills:
-            row['grid_skills'] = collect_character_grid_skills(cid, ld)
+            has_sp_char = int(str(ri)) <= 4
+            row['grid_skills'] = collect_character_grid_skills(cid, ld, use_sp=bool(sp_list and has_sp_char))
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
@@ -3646,7 +3662,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul15_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul16_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3716,7 +3732,7 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         if grid_skills_u:
-            urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc)
+            urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc, stat_mode)
         rows.append(urow)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
