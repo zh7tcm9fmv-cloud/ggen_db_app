@@ -3465,17 +3465,31 @@ def skills_for_character_browse(ld):
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
-def abilities_for_unit_browse(ld):
+def abilities_for_unit_browse(ld, lang_code):
+    """Unique abilities across playable units with display name + icon for filter dropdown."""
     seen = {}
+    ldc = get_calc_lang_data()
     for uid in unit_list_playable_ids:
         for ab in unit_abil_map.get(uid, []) or []:
             aid = normalize_id(str(ab.get('id', '')))
             if not aid or aid in seen:
                 continue
-            n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map)
+            sort_o = safe_int(ab.get('sort', 0), 0)
+            try:
+                bab = build_ability_entry(
+                    str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                    ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+                    ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=sort_o,
+                    lang_code=lang_code,
+                )
+                n = (bab.get('name') or '').strip() or aid
+                icon = (bab.get('icon') or '').strip()
+            except Exception:
+                n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map) or aid
+                icon = ''
             if n:
-                seen[aid] = n
-    return sorted([{'id': k, 'name': v} for k, v in seen.items()], key=lambda x: x['name'].lower())
+                seen[aid] = {'name': n, 'icon': icon}
+    return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
 @app.route('/api/browse_filters')
@@ -3486,7 +3500,7 @@ def browse_filters():
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units'):
             entity = 'characters'
-        ck = f"browse_filters_v6_{lc}_{entity}"
+        ck = f"browse_filters_v7_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -3497,7 +3511,7 @@ def browse_filters():
         if entity == 'characters':
             extra = {'skills': skills_for_character_browse(ld)}
         else:
-            extra = {'abilities': abilities_for_unit_browse(ld)}
+            extra = {'abilities': abilities_for_unit_browse(ld, lc)}
         result = {'lineages': lineages, 'series': series, **extra}
         set_cached_response(ck, result)
         return jsonify(convert_image_urls(result))
@@ -3701,7 +3715,7 @@ def list_units():
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         if grid_skills_u:
             urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc)
         rows.append(urow)
