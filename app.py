@@ -797,7 +797,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
     if not IMAGE_INDEX:
         return None
-
+    
     def pick_best(matches):
         """Prefer filename without ' #' suffix (cleaner for URLs/CDN)."""
         if not matches:
@@ -810,9 +810,9 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
         candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
     elif resource_ids:
         r = str(resource_ids).strip()
-        if r and r != '0':
+        if r and r != '0': 
             candidates = [r]
-
+    
     files = IMAGE_INDEX.get(portrait_folder_key, [])
 
     # Try resource IDs first
@@ -822,7 +822,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
         best = pick_best(matches)
         if best:
             return f"/static/{portrait_folder_key}/{best}"
-
+    
     # Try entity ID
     if entity_id:
         eid = str(entity_id).strip()
@@ -831,7 +831,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
         best = pick_best(matches)
         if best:
             return f"/static/{portrait_folder_key}/{best}"
-
+        
         # Try suffixes
         for slen in [8, 7, 6, 5, 4]:
             if len(eid) >= slen:
@@ -840,7 +840,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
                 best = pick_best(matches)
                 if best:
                     return f"/static/{portrait_folder_key}/{best}"
-
+    
     return None
 
 def build_m_series_logo_pad_map(master_data):
@@ -879,7 +879,7 @@ def find_series_icon(series_id):
     """
     if not series_id or not IMAGE_INDEX:
         return ''
-
+    
     raw = str(series_id).strip()
     if not raw or raw == '0':
         return ''
@@ -899,7 +899,7 @@ def find_series_icon(series_id):
     sid = normalize_id(series_id)
     if not sid or sid == '0':
         return ''
-
+    
     pad = None
     if sid in M_SERIES_ID_TO_LOGO_PAD:
         pad = M_SERIES_ID_TO_LOGO_PAD[sid]
@@ -928,7 +928,7 @@ def find_series_icon(series_id):
     for fn in files:
         if sl in fn.lower():
             return f"/static/images/Logo-Series/{fn}"
-
+    
     return ''
 
 def find_trait_icon(resource_id):
@@ -3092,7 +3092,7 @@ def _serve_index():
     return r
 
 @app.route('/')
-def index():
+def index(): 
     return _serve_index()
 
 @app.route('/api/languages')
@@ -3356,15 +3356,135 @@ def get_ability_units():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
 
+def _char_has_skill_id(cid, skill_id):
+    want = normalize_id(skill_id)
+    if not want:
+        return False
+    for sk in extract_data_list(char_skill):
+        if normalize_id(sk.get('CharacterId', '')) != cid:
+            continue
+        for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
+            sid = normalize_id(sk.get(key) or '')
+            if sid and sid == want:
+                return True
+    return False
+
+
+def entity_matches_char_skills(cid, want_lid):
+    """Multi skill id filter — AND semantics (same as lineage tags)."""
+    if want_lid is None:
+        return True
+    if isinstance(want_lid, (frozenset, set, list, tuple)):
+        if not want_lid:
+            return True
+        return all(_char_has_skill_id(cid, w) for w in want_lid)
+    return _char_has_skill_id(cid, want_lid)
+
+
+def _unit_has_ability_id(uid, ab_id):
+    want = normalize_id(ab_id)
+    if not want:
+        return False
+    ua = unit_abil_map.get(uid, [])
+    rm = unit_ssp_abil_replace_map.get(uid, {})
+    for ab in ua:
+        if normalize_id(str(ab['id'])) == want:
+            return True
+        if str(ab['id']) in rm and normalize_id(rm[str(ab['id'])]) == want:
+            return True
+    return False
+
+
+def entity_matches_unit_abilities_filter(uid, want_lid):
+    if want_lid is None:
+        return True
+    if isinstance(want_lid, (frozenset, set, list, tuple)):
+        if not want_lid:
+            return True
+        return all(_unit_has_ability_id(uid, w) for w in want_lid)
+    return _unit_has_ability_id(uid, want_lid)
+
+
+def collect_character_grid_skills(cid, ld):
+    rows = []
+    for sk in extract_data_list(char_skill):
+        if normalize_id(sk.get('CharacterId', '')) != cid:
+            continue
+        so = int(sk.get('SortOrder', 0) or 0)
+        for sid, isp in [(normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')), False), (normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId')), True)]:
+            if not sid or sid in ('0', 'None'):
+                continue
+            try:
+                r = resolve_char_skill(sid, ld, so, isp)
+            except Exception:
+                continue
+            name = (r.get('name') or '').strip() or 'Unknown'
+            detail = '\n'.join(d for d in (r.get('details') or []) if isinstance(d, str) and d.strip())
+            icon = (r.get('icon') or '').strip()
+            rows.append((so, name.lower(), {'name': name, 'detail': detail, 'icon': icon}))
+    rows.sort(key=lambda x: (x[0], x[1]))
+    return [x[2] for x in rows]
+
+
+def collect_unit_grid_abilities(uid, ld, ldc, lang_code):
+    ua = unit_abil_map.get(uid, [])
+    out = []
+    for ab in sorted(ua, key=lambda x: int(x.get('sort', 0) or 0)):
+        try:
+            bab = build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lang_code)
+        except Exception:
+            continue
+        detail_parts = []
+        for d2 in bab.get('details', []):
+            t = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).strip()
+            if t:
+                detail_parts.append(t)
+        detail = '\n'.join(detail_parts)
+        out.append({'name': bab.get('name') or 'Unknown', 'detail': detail, 'icon': bab.get('icon') or ''})
+    return out
+
+
+def skills_for_character_browse(ld):
+    seen = {}
+    for sk in extract_data_list(char_skill):
+        cid = normalize_id(sk.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
+            sid = normalize_id(sk.get(key) or '')
+            if not sid or sid in ('0', 'None') or sid in seen:
+                continue
+            try:
+                r = resolve_char_skill(sid, ld, 0, 'Sp' in key or 'sp' in key.lower())
+                name = (r.get('name') or '').strip() or sid
+            except Exception:
+                name = sid
+            seen[sid] = name
+    return sorted([{'id': k, 'name': v} for k, v in seen.items()], key=lambda x: x['name'].lower())
+
+
+def abilities_for_unit_browse(ld):
+    seen = {}
+    for uid in unit_list_playable_ids:
+        for ab in unit_abil_map.get(uid, []) or []:
+            aid = normalize_id(str(ab.get('id', '')))
+            if not aid or aid in seen:
+                continue
+            n = get_ability_name_for_search(str(ab['id']), ld['abil_name_map'], abil_link_map)
+            if n:
+                seen[aid] = n
+    return sorted([{'id': k, 'name': v} for k, v in seen.items()], key=lambda x: x['name'].lower())
+
+
 @app.route('/api/browse_filters')
 def browse_filters():
-    """Lineage tags and series for list filters — character vs unit lists do not mix."""
+    """Lineage tags, series, and skill/ability pickers for list filters — character vs unit lists do not mix."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units'):
             entity = 'characters'
-        ck = f"browse_filters_v4_{lc}_{entity}"
+        ck = f"browse_filters_v5_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -3372,12 +3492,16 @@ def browse_filters():
         lin_map = char_lin_map if entity == 'characters' else unit_lin_map
         lineages = lineages_for_entity_browse(lin_map, ld)
         series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
-        result = {'lineages': lineages, 'series': series}
+        if entity == 'characters':
+            extra = {'skills': skills_for_character_browse(ld)}
+        else:
+            extra = {'abilities': abilities_for_unit_browse(ld)}
+        result = {'lineages': lineages, 'series': series, **extra}
         set_cached_response(ck, result)
         return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc()
-        return jsonify({'lineages': [], 'series': []}), 500
+        return jsonify({'lineages': [], 'series': [], 'skills': [], 'abilities': []}), 500
 
 @app.route('/api/characters')
 def list_characters():
@@ -3395,9 +3519,13 @@ def list_characters():
     series_arg = request.args.get('series_id', '').strip()
     lineage_filter = parse_list_lineage_filter(lineage_arg)
     series_filter = parse_list_series_filter(series_arg)
+    skill_arg = request.args.get('skill_id', '').strip()
+    skill_filter = parse_list_lineage_filter(skill_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
-    ck = f"cl15_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
+    skill_ck = lineage_filter_cache_fragment(skill_filter)
+    grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
+    ck = f"cl16_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3430,6 +3558,9 @@ def list_characters():
                 continue
         if series_filter is not None:
             if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc):
+                continue
+        if skill_filter is not None:
+            if not id_seek and not entity_matches_char_skills(cid, skill_filter):
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
@@ -3466,11 +3597,14 @@ def list_characters():
             base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        rows.append({'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)})
+        row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        if grid_skills:
+            row['grid_skills'] = collect_character_grid_skills(cid, ld)
+        rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 @app.route('/api/units')
@@ -3490,9 +3624,13 @@ def list_units():
     series_arg = request.args.get('series_id', '').strip()
     lineage_filter = parse_list_lineage_filter(lineage_arg)
     series_filter = parse_list_series_filter(series_arg)
+    ability_arg = request.args.get('ability_id', '').strip()
+    ability_filter = parse_list_lineage_filter(ability_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
-    ck = f"ul13_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{lr_schedule_cache_key_fragment()}"
+    ability_ck = lineage_filter_cache_fragment(ability_filter)
+    grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
+    ck = f"ul14_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3524,6 +3662,9 @@ def list_units():
                 continue
         if series_filter is not None:
             if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+                continue
+        if ability_filter is not None:
+            if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
@@ -3558,11 +3699,14 @@ def list_units():
         if info.get('is_ultimate', False): si.append(ULT_ICON)
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        rows.append({'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))})
+        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        if grid_skills_u:
+            urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc)
+        rows.append(urow)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
