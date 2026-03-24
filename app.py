@@ -3457,10 +3457,12 @@ def skills_for_character_browse(ld):
             try:
                 r = resolve_char_skill(sid, ld, 0, 'Sp' in key or 'sp' in key.lower())
                 name = (r.get('name') or '').strip() or sid
+                icon = (r.get('icon') or '').strip()
             except Exception:
                 name = sid
-            seen[sid] = name
-    return sorted([{'id': k, 'name': v} for k, v in seen.items()], key=lambda x: x['name'].lower())
+                icon = ''
+            seen[sid] = {'name': name, 'icon': icon}
+    return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
 def abilities_for_unit_browse(ld):
@@ -3484,7 +3486,7 @@ def browse_filters():
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units'):
             entity = 'characters'
-        ck = f"browse_filters_v5_{lc}_{entity}"
+        ck = f"browse_filters_v6_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
