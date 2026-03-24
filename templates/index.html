@@ -107,7 +107,19 @@ body.search-spotlight-open .search-recall-fab{opacity:0;pointer-events:none;tran
 .data-table tbody td.col-thum{overflow:visible;text-align:center}
 #charTable .col-thum{width:100px}#charTable .col-name{width:20%}#charTable .col-stat{width:15%;text-align:center}
 #unitTable .col-thum{width:100px}#unitTable .col-name{width:20%}#unitTable .col-stat{width:12%;text-align:center}
-#suppTable .col-thum{width:100px}#suppTable .col-name{width:22%}#suppTable .col-tag{width:32%}#suppTable .col-boost{width:38%}#suppTable .col-skill{width:8%;text-align:center}
+#suppTable .col-thum{width:100px;min-width:72px}#suppTable .col-name{width:21%;min-width:7rem}#suppTable .col-tag{width:28%;min-width:0}#suppTable .col-boost{width:35%;min-width:0}#suppTable .col-skill{width:16%;min-width:7.5rem;text-align:center;vertical-align:middle}
+#suppTable thead th{white-space:normal;line-height:1.25;overflow:visible;word-break:keep-all;hyphens:manual;padding:10px 5px;vertical-align:bottom}
+#suppTable thead th .sort-arrow{white-space:nowrap}
+#suppTable tbody td{overflow:visible}
+#suppTable td.col-name{vertical-align:top}
+#suppTable .col-name .name-text{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35;word-break:break-word;display:block}
+#suppTable td.col-skill{vertical-align:middle}
+@media (min-width:481px) and (max-width:1200px){
+#suppTable .col-skill{min-width:8rem}
+#suppTable thead th{font-size:clamp(11px,1.9vw,14px);letter-spacing:0.02em}
+}
+#suppTable .col-tag .detail-tags-row,#suppTable .col-boost .skill-summary{overflow:visible}
+#suppGrid .list-grid-card-name{display:block;-webkit-line-clamp:unset;overflow:visible;word-break:break-word;overflow-wrap:anywhere;max-height:none}
 #stageTable{table-layout:fixed}#stageTable .col-thum{width:100px;min-width:100px;vertical-align:middle;padding:8px;overflow:visible}#stageTable .col-thum .stage-thum-wrap{display:flex;align-items:center;justify-content:center;width:100px;height:100px;min-width:100px;min-height:100px;overflow:visible;aspect-ratio:1;flex-shrink:0}#stageTable .col-thum img.row-thum{width:100px;height:100px;min-width:100px;min-height:100px;max-width:100px;max-height:100px;object-fit:contain;object-position:center;flex-shrink:0;display:block}#stageTable .col-thum .row-thum-placeholder{width:100px;height:100px;min-width:100px;min-height:100px;flex-shrink:0}#stageTable .col-diff{width:14%;text-align:center}#stageTable .col-number{width:12%;text-align:center}#stageTable .col-name{width:38%}#stageTable .col-cp{width:20%;text-align:center}#stageTable .col-terrain{width:16%;text-align:center}
 .row-thum{width:90px;height:90px;border-radius:var(--radius-sm);object-fit:contain;background:var(--bg-input);border:1px solid var(--border-color)}
 .row-thum-placeholder{width:90px;height:90px;border-radius:var(--radius-sm);background:var(--bg-input);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:32px}
@@ -453,6 +465,7 @@ body.search-spotlight-open .search-recall-fab{opacity:0;pointer-events:none;tran
 .list-grid-card-meta{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-size:12px;color:var(--text-secondary)}
 .list-grid-card .mod-name{font-size:14px}
 .list-grid-card .mod-details-cell{font-size:12px;-webkit-line-clamp:4;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.list-grid-card--cmp{position:relative}.list-grid-cmp-wrap{position:absolute;top:6px;left:6px;z-index:15;padding:4px 6px;border-radius:var(--radius-sm);background:rgba(10,14,23,0.78);border:1px solid rgba(0,212,255,0.35);box-shadow:0 2px 8px rgba(0,0,0,.4);pointer-events:auto}.list-grid-cmp-wrap .cmp-cb-grid{margin:0;vertical-align:middle}
 @media(max-width:768px){.list-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}.list-view-toggle{order:0}.list-toolbar-right{flex-wrap:wrap;justify-content:flex-end}}
 </style>
 </head>
@@ -777,10 +790,10 @@ function openSeriesModal(seriesSid,listTab,seriesName){const sid=String(seriesSi
 function initSeriesIconNav(){document.addEventListener('click',function(e){const hit=e.target.closest('.series-icon-hitbox');if(!hit)return;const sid=(hit.getAttribute('data-series-id')||'').trim();const tab=hit.getAttribute('data-list-tab')||'';if(!sid||sid==='0')return;if(tab!=='characters'&&tab!=='units')return;e.preventDefault();e.stopPropagation();if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();const name=hit.getAttribute('data-series-name')||'';openSeriesModal(sid,tab,name)},true)}
 function applySeriesSearchFromList(seriesName,tab,seriesSid){closeModal();switchTab(tab);const sid=seriesSid!=null&&String(seriesSid).trim()!==''?String(seriesSid).trim():'';const q=(sid&&sid!=='0')?`series_id:${sid}`:`series: ${seriesName}`;const ppId=tab==='characters'?'charPerPage':'unitPerPage';const ppEl=document.getElementById(ppId);if(ppEl)ppEl.value='100';if(tab==='characters'){document.getElementById('charFilter').value=q;loadCharacters(1)}else{document.getElementById('unitFilter').value=q;loadUnits(1)}try{window.scrollTo({top:0,behavior:'smooth'})}catch(_){window.scrollTo(0,0)}}
 function renderCharTable(data){document.getElementById('charBody').innerHTML=data.rows.map(r=>`<tr onclick="openDetail('character','${r.id}')"><td class="col-thum">${renderListThumb(r,'char')}</td><td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span></div></td><td class="col-stat">${charListStatCell(r,'Ranged')}</td><td class="col-stat">${charListStatCell(r,'Melee')}</td><td class="col-stat">${charListStatCell(r,'Awaken')}</td><td class="col-stat">${charListStatCell(r,'Defense')}</td><td class="col-stat">${charListStatCell(r,'Reaction')}</td></tr>`).join('')}
-function renderCharGrid(data){const grid=document.getElementById('charGrid'),th=108,keys=['Ranged','Melee','Awaken','Defense','Reaction'];grid.innerHTML=data.rows.map(r=>{const stats=keys.map(k=>`<span class="list-grid-stat"><span class="list-grid-stat-l">${tStat(k)}</span> ${charListStatCell(r,k)}</span>`).join(' ');return`<div class="list-grid-card" onclick="openDetail('character','${r.id}')"><div class="list-grid-card-thumb">${renderListThumb(r,'char',th)}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div><div class="list-grid-card-stats list-grid-card-stats--char">${stats}</div></div></div>`}).join('')}
+function renderCharGrid(data){const grid=document.getElementById('charGrid'),th=108,keys=['Ranged','Melee','Awaken','Defense','Reaction'],cmpLbl=escAttr(t('cmp_compare'));grid.innerHTML=data.rows.map(r=>{const stats=keys.map(k=>`<span class="list-grid-stat"><span class="list-grid-stat-l">${tStat(k)}</span> ${charListStatCell(r,k)}</span>`).join(' ');return`<div class="list-grid-card list-grid-card--cmp" onclick="openDetail('character','${r.id}')"><div class="list-grid-cmp-wrap" onclick="event.stopPropagation()" title="${cmpLbl}"><input type="checkbox" class="cmp-cb cmp-cb-grid" data-cmp-id="${escAttr(String(r.id))}" aria-label="${cmpLbl}"></div><div class="list-grid-card-thumb">${renderListThumb(r,'char',th)}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div><div class="list-grid-card-stats list-grid-card-stats--char">${stats}</div></div></div>`}).join('');wireGridCompareCheckboxes('charGrid','character')}
 function renderCharT(data){const tb=document.getElementById('charBody'),em=document.getElementById('charEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';const g=document.getElementById('charGrid');if(g)g.innerHTML='';em.style.display='block';return}em.style.display='none';if(getListViewMode('characters')==='grid'){tb.innerHTML='';renderCharGrid(data)}else{const g=document.getElementById('charGrid');if(g)g.innerHTML='';renderCharTable(data)}}
 function renderUnitTable(data){document.getElementById('unitBody').innerHTML=data.rows.map(r=>`<tr onclick="openDetail('unit','${r.id}')"><td class="col-thum">${renderListThumb(r,'unit')}</td><td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span><span class="name-special-icons">${(r.special_icons||[]).filter(ic=>ic&&!String(ic).includes('Source')).map(ic=>`<img class="name-special-icon" src="${imgUrl(ic)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</span></div></td><td class="col-stat"><span class="stat-value">${fmtN(r.HP)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.EN)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.ATK)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.DEF)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.MOB)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.MOV)}</span></td></tr>`).join('')}
-function renderUnitGrid(data){const grid=document.getElementById('unitGrid'),th=108;grid.innerHTML=data.rows.map(r=>`<div class="list-grid-card" onclick="openDetail('unit','${r.id}')"><div class="list-grid-card-thumb">${renderListThumb(r,'unit',th)}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div><div class="list-grid-card-meta">${(r.special_icons||[]).filter(ic=>ic&&!String(ic).includes('Source')).map(ic=>`<img class="name-special-icon" src="${imgUrl(ic)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div><div class="list-grid-card-stats">${t('col_hp')} ${fmtN(r.HP)} · ${t('col_en')} ${fmtN(r.EN)} · ${t('col_atk')} ${fmtN(r.ATK)} · ${t('col_def')} ${fmtN(r.DEF)} · ${t('col_mob')} ${fmtN(r.MOB)} · ${t('col_mov')} ${fmtN(r.MOV)}</div></div></div>`).join('')}
+function renderUnitGrid(data){const grid=document.getElementById('unitGrid'),th=108,cmpLbl=escAttr(t('cmp_compare'));grid.innerHTML=data.rows.map(r=>`<div class="list-grid-card list-grid-card--cmp" onclick="openDetail('unit','${r.id}')"><div class="list-grid-cmp-wrap" onclick="event.stopPropagation()" title="${cmpLbl}"><input type="checkbox" class="cmp-cb cmp-cb-grid" data-cmp-id="${escAttr(String(r.id))}" aria-label="${cmpLbl}"></div><div class="list-grid-card-thumb">${renderListThumb(r,'unit',th)}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div><div class="list-grid-card-meta">${(r.special_icons||[]).filter(ic=>ic&&!String(ic).includes('Source')).map(ic=>`<img class="name-special-icon" src="${imgUrl(ic)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div><div class="list-grid-card-stats">${t('col_hp')} ${fmtN(r.HP)} · ${t('col_en')} ${fmtN(r.EN)} · ${t('col_atk')} ${fmtN(r.ATK)} · ${t('col_def')} ${fmtN(r.DEF)} · ${t('col_mob')} ${fmtN(r.MOB)} · ${t('col_mov')} ${fmtN(r.MOV)}</div></div></div>`).join('');wireGridCompareCheckboxes('unitGrid','unit')}
 function renderUnitT(data){const tb=document.getElementById('unitBody'),em=document.getElementById('unitEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';const g=document.getElementById('unitGrid');if(g)g.innerHTML='';em.style.display='block';return}em.style.display='none';if(getListViewMode('units')==='grid'){tb.innerHTML='';renderUnitGrid(data)}else{const g=document.getElementById('unitGrid');if(g)g.innerHTML='';renderUnitTable(data)}}
 function renderSuppTable(data){document.getElementById('suppBody').innerHTML=data.rows.map(r=>`<tr onclick="openDetail('supporter','${r.id}')"><td class="col-thum">${renderListThumb(r,'supp')}</td><td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span></div></td><td class="col-tag"><div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags(r.skill_tag_data)}</div></td><td class="col-boost"><div class="skill-summary" style="-webkit-line-clamp:3;white-space:pre-wrap;">${esc(r.boost)}</div></td><td class="col-skill">${r.active_icon?`<img src="${imgUrl(r.active_icon)}" style="width:44px;height:44px;border:none;background:transparent;object-fit:contain;margin:0 auto;display:block;" loading="lazy" onerror="this.style.display='none'">`:'<div style="text-align:center;color:var(--text-muted)">-</div>'}</td></tr>`).join('')}
 function renderSuppGrid(data){const grid=document.getElementById('suppGrid'),th=108;grid.innerHTML=data.rows.map(r=>`<div class="list-grid-card" onclick="openDetail('supporter','${r.id}')"><div class="list-grid-card-thumb">${renderListThumb(r,'supp',th)}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div><div class="detail-tags-row" style="margin-top:0;align-items:center;justify-content:center;">${renderSkillTags(r.skill_tag_data)}</div><div class="list-grid-card-stats" style="font-size:12px;margin-top:4px;">${esc(r.boost||'')}</div>${r.active_icon?`<div style="margin-top:6px;"><img src="${imgUrl(r.active_icon)}" style="width:44px;height:44px;object-fit:contain;margin:0 auto;display:block;" loading="lazy" onerror="this.style.display='none'"></div>`:''}</div></div>`).join('')}
@@ -1205,8 +1218,8 @@ const CMP_COLORS_ALPHA=['rgba(230,126,34,.25)','rgba(46,204,113,.25)','rgba(231,
 
 function toggleCompare(type,id,name,thum,ev){
 if(ev){ev.stopPropagation();ev.preventDefault()}
-const idx=S.compareList.findIndex(c=>c.id===id);
-if(idx>=0){S.compareList.splice(idx,1);delete S.cmpLbByUnit[id]}
+const idx=S.compareList.findIndex(c=>String(c.id)===String(id));
+if(idx>=0){S.compareList.splice(idx,1);delete S.cmpLbByUnit[id];delete S.cmpLbByUnit[String(id)]}
 else{
 if(S.compareList.length&&S.compareList[0].type!==type){S.compareList=[];S.cmpLbByUnit={};S.compareType=type}
 if(S.compareList.length>=3)return;
@@ -1228,9 +1241,9 @@ document.getElementById('cmpFloatCount').textContent=`⚔ ${t('cmp_compare')} ${
 const btn=document.getElementById('cmpFloatBtn');
 btn.disabled=cnt<2;
 btn.textContent=`${t('cmp_compare')} (${cnt})`;
-const selectedIds=new Set(S.compareList.map(c=>c.id));
+const selectedIds=new Set(S.compareList.map(c=>String(c.id)));
 document.querySelectorAll('.cmp-cb').forEach(cb=>{
-const isSelected=selectedIds.has(cb.dataset.cmpId);
+const isSelected=selectedIds.has(String(cb.dataset.cmpId));
 cb.checked=isSelected;
 cb.disabled=!isSelected&&cnt>=3
 })
@@ -1258,12 +1271,31 @@ const cb=document.createElement('input');
 cb.type='checkbox';
 cb.className='cmp-cb';
 cb.dataset.cmpId=id;
-cb.checked=S.compareList.some(c=>c.id===id);
+cb.checked=S.compareList.some(c=>String(c.id)===String(id));
 cb.addEventListener('click',e=>{e.stopPropagation();toggleCompare(type,id,name,thum)});
 cb.addEventListener('change',e=>e.stopPropagation());
 tdInner.appendChild(cb);
 td.appendChild(tdInner);
 tr.insertBefore(td,tr.firstChild)
+})
+}
+
+function wireGridCompareCheckboxes(gridId,cmpType){
+const grid=document.getElementById(gridId);
+if(!grid)return;
+grid.querySelectorAll('.cmp-cb-grid').forEach(cb=>{
+const card=cb.closest('.list-grid-card--cmp');
+if(!card)return;
+const id=cb.dataset.cmpId;
+const nameEl=card.querySelector('.list-grid-card-name');
+const name=nameEl?nameEl.textContent:'';
+const thumEl=card.querySelector('.list-thumb-portrait');
+const thum=thumEl?thumEl.getAttribute('src'):'';
+const cnt=S.compareList.length;
+const selected=S.compareList.some(c=>String(c.id)===String(id));
+cb.checked=selected;
+cb.disabled=!selected&&cnt>=3;
+cb.onclick=function(e){e.stopPropagation();toggleCompare(cmpType,id,name,thum)};
 })
 }
 
