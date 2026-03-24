@@ -1087,8 +1087,8 @@ function fitStageMapToUnits(centerAfter){
 function syncListTheadStickyTop(){
 const el=document.querySelector('.app-header');
 if(!el)return;
-const h=Math.ceil(el.getBoundingClientRect().height)+6;
-document.documentElement.style.setProperty('--list-thead-sticky-top',h+'px')
+const h=el.getBoundingClientRect().height;
+document.documentElement.style.setProperty('--list-thead-sticky-top',Math.max(0,Math.round(h))+'px')
 }
 let _listTheadStickyRaf=0;
 function scheduleSyncListTheadStickyTop(){
