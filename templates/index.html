@@ -16,7 +16,8 @@ button,a,.nav-tab,.page-btn,.role-filter-btn,.role-filter-dd-btn,.rarity-filter-
 body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;overflow-x:visible;display:flex;flex-direction:column}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
-.app-header{background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(10,14,23,0.95));border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+/* Solid background — semi-transparent + backdrop-filter let sticky table headers bleed through the nav */
+.app-header{background:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}.header-brand:hover .brand-text{color:var(--accent-cyan)}
 .brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}.brand-logo img{width:100%;height:100%;object-fit:contain}
@@ -100,7 +101,7 @@ body.search-spotlight-open .search-recall-fab{opacity:0;pointer-events:none;tran
 /* overflow:auto on this wrapper creates a scroll container and breaks position:sticky vs the viewport — wide tables scroll on the page instead */
 .data-table-wrapper{overflow:visible;border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-secondary);max-width:100%}
 .data-table{width:100%;border-collapse:separate;border-spacing:0;font-size:16px;table-layout:fixed}
-.data-table thead th{background:var(--bg-card);padding:12px 6px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border-color);white-space:nowrap;position:sticky;top:var(--list-thead-sticky-top);z-index:60;cursor:pointer;user-select:none;transition:var(--transition);font-size:15px;text-transform:uppercase;letter-spacing:0.5px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.35);background-clip:padding-box}
+.data-table thead th{background:var(--bg-card);padding:12px 6px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border-color);white-space:nowrap;position:sticky;top:var(--list-thead-sticky-top);z-index:40;cursor:pointer;user-select:none;transition:var(--transition);font-size:15px;text-transform:uppercase;letter-spacing:0.5px;overflow:hidden;box-shadow:0 3px 4px -1px rgba(0,0,0,.45);background-clip:padding-box}
 .data-table thead th:hover{color:var(--accent-cyan)}.data-table thead th.sort-active{color:var(--accent-cyan)}
 .sort-arrow{margin-left:4px;font-size:12px;opacity:0.4}.sort-active .sort-arrow{opacity:1}
 .data-table tbody tr{transition:var(--transition);cursor:pointer}.data-table tbody tr:hover{background:var(--bg-card-hover)}.data-table tbody td{border-bottom:1px solid rgba(42,54,84,0.3)}
@@ -1085,7 +1086,7 @@ function fitStageMapToUnits(centerAfter){
 function syncListTheadStickyTop(){
 const el=document.querySelector('.app-header');
 if(!el)return;
-const h=Math.ceil(el.getBoundingClientRect().height);
+const h=Math.ceil(el.getBoundingClientRect().height)+4;
 document.documentElement.style.setProperty('--list-thead-sticky-top',h+'px')
 }
 let _listTheadStickyRaf=0;
