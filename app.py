@@ -332,7 +332,8 @@ ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 
 def parse_list_rarity_filter(val):
-    """Multi-select rarity for list APIs. None = all; set() = none; nonempty set = filter."""
+    """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
+    tuple (letters, need_limited) = UR/SSR/... plus optional LT (limited-time) filter."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -343,12 +344,37 @@ def parse_list_rarity_filter(val):
     parts = [p.strip().upper() for p in s.split(',') if p.strip()]
     if not parts:
         return None
-    out = {p for p in parts if p in RARITY_LETTERS}
-    if not out:
+    has_lt = 'LT' in parts
+    letters = {p for p in parts if p in RARITY_LETTERS}
+    if any(p not in RARITY_LETTERS and p != 'LT' for p in parts):
         return set()
-    if out == RARITY_LETTERS:
+    if has_lt and letters == RARITY_LETTERS:
         return None
-    return out
+    if letters == RARITY_LETTERS and not has_lt:
+        return None
+    if not letters and not has_lt:
+        return set()
+    if not letters and has_lt:
+        return (frozenset(), True)
+    if letters and not has_lt:
+        return (frozenset(letters), False)
+    return (frozenset(letters), True)
+
+
+def row_matches_rarity_filter(rf, letter, is_limited):
+    """Apply parse_list_rarity_filter result. is_limited is False for entities without that flag."""
+    if rf is None:
+        return True
+    if rf == set():
+        return False
+    if isinstance(rf, tuple):
+        letters, need_lt = rf
+        if need_lt and not is_limited:
+            return False
+        if letters:
+            return letter in letters
+        return True
+    return letter in rf
 
 
 def rarity_filter_cache_fragment(rf):
@@ -356,6 +382,10 @@ def rarity_filter_cache_fragment(rf):
         return 'all'
     if not rf:
         return 'none'
+    if isinstance(rf, tuple):
+        letters, need_lt = rf
+        core = ','.join(sorted(letters)) if letters else '*'
+        return core + ('_lt' if need_lt else '')
     return ','.join(sorted(rf))
 
 
@@ -3576,7 +3606,7 @@ def list_characters():
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl17_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl18_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3598,7 +3628,8 @@ def list_characters():
                 continue
             if not id_seek:
                 letter = RARITY_MAP.get(str(ri), 'N')
-                if letter not in rarity_filter:
+                lim = cid in LIMITED_TIME_CHARACTER_IDS
+                if not row_matches_rarity_filter(rarity_filter, letter, lim):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
@@ -3648,7 +3679,7 @@ def list_characters():
             base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         if grid_skills:
             has_sp_char = int(str(ri)) <= 4
             row['grid_skills'] = collect_character_grid_skills(cid, ld, use_sp=bool(sp_list and has_sp_char))
@@ -3682,7 +3713,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul16_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul17_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3703,7 +3734,8 @@ def list_units():
                 continue
             if not id_seek:
                 letter = RARITY_MAP.get(str(ri), 'N')
-                if letter not in rarity_filter:
+                lim = uid in LIMITED_TIME_UNIT_IDS
+                if not row_matches_rarity_filter(rarity_filter, letter, lim):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
@@ -3750,7 +3782,7 @@ def list_units():
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         if grid_skills_u:
             urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc, stat_mode)
         rows.append(urow)
@@ -3949,7 +3981,7 @@ def list_supporters():
                 if not rarity_filter:
                     continue
                 letter = RARITY_MAP.get(str(ri), 'N')
-                if letter not in rarity_filter:
+                if not row_matches_rarity_filter(rarity_filter, letter, False):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
