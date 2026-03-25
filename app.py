@@ -466,7 +466,7 @@ def role_filter_cache_fragment(rf):
 
 
 def parse_list_source_filter(val):
-    """List filter by acquisition route bucket: assembly (1), development (2, non-NPC), other (rest).
+    """List filter by acquisition route bucket: assembly (1), development (scout/story for chars + map dev for units), other (rest).
     Comma-separated values = OR (e.g. development,other). All three selected = no filter (None)."""
     if val is None:
         return None
@@ -498,25 +498,31 @@ def source_filter_cache_fragment(sf):
     return str(sf)
 
 
-def entity_matches_source_category(acq_route, role_id, sf):
-    """assembly = route index 1; development = index 2 and not NPC; other = everything else.
+def entity_matches_source_category(acq_route, role_id, sf, *, is_character=False):
+    """assembly = route index 1.
+    development: units — index 2 and not NPC; characters — index 2 or 3 (scout / story stage) and not NPC.
+    other = everything else not covered by assembly/development.
     sf may be a single bucket string or a frozenset of buckets (OR)."""
     if sf is None:
         return True
     if isinstance(sf, (frozenset, set)):
         if not sf:
             return True
-        return any(entity_matches_source_category(acq_route, role_id, x) for x in sf)
+        return any(entity_matches_source_category(acq_route, role_id, x, is_character=is_character) for x in sf)
     acq = str(acq_route or '0').strip()
     rid = str(role_id or '0').strip()
     if sf == 'assembly':
         return acq == '1'
     if sf == 'development':
+        if is_character:
+            return acq in ('2', '3') and rid != '0'
         return acq == '2' and rid != '0'
     if sf == 'other':
         if acq == '1':
             return False
         if acq == '2' and rid != '0':
+            return False
+        if is_character and acq == '3' and rid != '0':
             return False
         return True
     return True
@@ -4321,7 +4327,7 @@ def character_passes_browse_pool_filters(
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
-        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter, is_character=True):
             return False
     if apply_lineage and lineage_filter is not None:
         if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
@@ -4928,8 +4934,8 @@ def list_characters():
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
-            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
-                continue
+        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter, is_character=True):
+            continue
         if lineage_filter is not None:
             if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
                 continue
