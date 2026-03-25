@@ -943,10 +943,19 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     if not IMAGE_INDEX:
         return None
     
-    def pick_best(matches):
-        """Prefer filename without ' #' suffix (cleaner for URLs/CDN)."""
+    def pick_best(matches, rid_for_exact=None):
+        """Prefer exact basename (rid.webp), then file without ' #' suffix."""
         if not matches:
             return None
+        rle = (rid_for_exact or '').lower()
+        if rle:
+            exact = [
+                m for m in matches
+                if m.lower().startswith(rle + '.') or m.lower() in (rle + '.webp', rle + '.png', rle + '.jpg', rle + '.jpeg')
+            ]
+            if exact:
+                exact.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return exact[0]
         clean = [m for m in matches if ' #' not in m]
         return clean[0] if clean else matches[0]
 
@@ -964,7 +973,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     for rid in candidates:
         rl = rid.lower()
         matches = [fn for fn in files if rl in fn.lower()]
-        best = pick_best(matches)
+        best = pick_best(matches, rl)
         if best:
             return f"/static/{portrait_folder_key}/{best}"
     
@@ -973,7 +982,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
         eid = str(entity_id).strip()
         el = eid.lower()
         matches = [fn for fn in files if el in fn.lower()]
-        best = pick_best(matches)
+        best = pick_best(matches, el)
         if best:
             return f"/static/{portrait_folder_key}/{best}"
         
@@ -982,7 +991,7 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
             if len(eid) >= slen:
                 suffix = eid[-slen:].lower()
                 matches = [fn for fn in files if suffix in fn.lower()]
-                best = pick_best(matches)
+                best = pick_best(matches, suffix)
                 if best:
                     return f"/static/{portrait_folder_key}/{best}"
     
@@ -1096,7 +1105,15 @@ def find_trait_icon(resource_id):
     return None
 
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
-    """Find thumb for list view: try images/Trait/thum first, then fall back to portrait folder."""
+    """Find thumb for list view: prefer portrait folder (ResourceId) over Trait/thum.
+
+    Trait/thum is for ability-style crops; character/unit list art should match
+    images/portraits or images/unit_portraits so updated assets (e.g. g2300c00202)
+    are not overridden by an older or different Trait/thum file.
+    """
+    p = find_portrait(resource_ids, entity_id, portrait_folder_key)
+    if p:
+        return p
     candidates = []
     if isinstance(resource_ids, list):
         candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
@@ -1107,12 +1124,13 @@ def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     if entity_id:
         candidates.append(str(entity_id).strip())
     for rid in candidates:
-        if not rid: continue
+        if not rid:
+            continue
         rl = rid.lower()
         for fn in IMAGE_INDEX.get('images/Trait/thum', []):
             if rl in fn.lower():
                 return f"/static/images/Trait/thum/{fn}"
-    return find_portrait(resource_ids, entity_id, portrait_folder_key)
+    return None
 
 def find_supporter_portrait(resource_id, supporter_id):
     """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum). For list view."""
@@ -2696,6 +2714,71 @@ def _wn_format_char_abilities(cid, ordered_aids, ld):
         parts.append(f"{i + 1}: {an or aid}")
     return f'{cn} ({cid}): ' + ' | '.join(parts)
 
+def _wn_strip_detail_after_name(full_text, name):
+    if not full_text:
+        return ''
+    d = full_text.strip()
+    n = (name or '').strip()
+    if n and d.startswith(n):
+        rest = d[len(n):].strip()
+        return re.sub(r'^[\s:–—\-]+', '', rest)
+    return d
+
+def _wn_ability_effect_detail(aid, ld, max_len=260):
+    if not aid or str(aid) in ('0', 'None', ''):
+        return ''
+    full = collect_ability_search_text(str(aid), ld)
+    if not full:
+        return ''
+    name = get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map) or ''
+    detail = _wn_strip_detail_after_name(full, name)
+    detail = re.sub(r'\s+', ' ', detail).strip()
+    if not detail:
+        return ''
+    if len(detail) > max_len:
+        return detail[:max_len].rstrip() + '…'
+    return detail
+
+def _build_ability_slot_rows(old_ids, new_ids, ld):
+    old_ids = [str(x) for x in (old_ids or [])]
+    new_ids = [str(x) for x in (new_ids or [])]
+    n = max(len(old_ids), len(new_ids))
+    rows = []
+    for i in range(n):
+        oa = old_ids[i] if i < len(old_ids) else None
+        na = new_ids[i] if i < len(new_ids) else None
+        if oa == na:
+            continue
+        o_name = get_ability_name_for_search(str(oa), ld['abil_name_map'], abil_link_map) if oa else ''
+        n_name = get_ability_name_for_search(str(na), ld['abil_name_map'], abil_link_map) if na else ''
+        o_name = o_name or (oa if oa else '—')
+        n_name = n_name or (na if na else '—')
+        o_det = _wn_ability_effect_detail(oa, ld) if oa else ''
+        n_det = _wn_ability_effect_detail(na, ld) if na else ''
+        rows.append({
+            'slot': i + 1,
+            'from': o_name,
+            'to': n_name,
+            'from_detail': o_det,
+            'to_detail': n_det,
+        })
+    return rows
+
+def _build_weapon_slot_rows(old_ids, new_ids, ld):
+    old_ids = [str(x) for x in (old_ids or [])]
+    new_ids = [str(x) for x in (new_ids or [])]
+    n = max(len(old_ids), len(new_ids))
+    rows = []
+    for i in range(n):
+        ow = old_ids[i] if i < len(old_ids) else None
+        nw = new_ids[i] if i < len(new_ids) else None
+        if ow == nw:
+            continue
+        o_name = _wn_weapon_name(ow, ld) if ow else '—'
+        n_name = _wn_weapon_name(nw, ld) if nw else '—'
+        rows.append({'slot': i + 1, 'from': o_name, 'to': n_name})
+    return rows
+
 def compute_whats_new_delta():
     """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline."""
     snap = load_whats_new_snapshot()
@@ -2716,7 +2799,13 @@ def compute_whats_new_delta():
         oa = old_ua.get(uid) or []
         na = new_ua.get(uid) or []
         if oa != na:
-            changes.append({'from': _wn_format_unit_abilities(uid, oa, ld), 'to': _wn_format_unit_abilities(uid, na, ld)})
+            rows = _build_ability_slot_rows(oa, na, ld)
+            if rows:
+                changes.append({
+                    'kind': 'unit_abilities',
+                    'title': f'{_wn_unit_name(uid, ld)} ({uid})',
+                    'rows': rows,
+                })
     old_uw = snap.get('unit_weapons') or {}
     new_uw = cur['unit_weapons']
     for uid in sorted(set(old_uw.keys()) | set(new_uw.keys())):
@@ -2725,7 +2814,13 @@ def compute_whats_new_delta():
         ow = old_uw.get(uid) or []
         nw = new_uw.get(uid) or []
         if ow != nw:
-            changes.append({'from': _wn_format_unit_weapons(uid, ow, ld), 'to': _wn_format_unit_weapons(uid, nw, ld)})
+            rows = _build_weapon_slot_rows(ow, nw, ld)
+            if rows:
+                changes.append({
+                    'kind': 'unit_weapons',
+                    'title': f'{_wn_unit_name(uid, ld)} ({uid})',
+                    'rows': rows,
+                })
     old_ca = snap.get('char_abilities') or {}
     new_ca = cur['char_abilities']
     for cid in sorted(set(old_ca.keys()) | set(new_ca.keys())):
@@ -2734,7 +2829,13 @@ def compute_whats_new_delta():
         oa = old_ca.get(cid) or []
         na = new_ca.get(cid) or []
         if oa != na:
-            changes.append({'from': _wn_format_char_abilities(cid, oa, ld), 'to': _wn_format_char_abilities(cid, na, ld)})
+            rows = _build_ability_slot_rows(oa, na, ld)
+            if rows:
+                changes.append({
+                    'kind': 'char_abilities',
+                    'title': f'{_wn_char_name(cid, ld)} ({cid})',
+                    'rows': rows,
+                })
     added = []
     for uid in sorted(set(cur['units']) - old_units):
         added.append(f"New unit: {_wn_unit_name(uid, ld)} ({uid})")
