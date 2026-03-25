@@ -608,6 +608,87 @@ def lineages_for_entity_browse(lin_map, ld):
     return sorted(by_id.values(), key=lambda x: x['name'].lower())
 
 
+def _tag_id_list_matches_lineage_want(tag_ids, want_lid):
+    """Match a wanted lineage id against tag ids from conditions (same rules as _entity_matches_one_lineage)."""
+    want = str(want_lid).strip()
+    for lid in tag_ids:
+        ln = str(lid).strip()
+        if ln == want:
+            return True
+        if len(ln) >= 4 and want.endswith(ln):
+            return True
+    return False
+
+
+def supporter_leader_tag_ids(sid, ld, lang_code):
+    """Lineage tag ids from tier-3 leader skill conditions for one supporter."""
+    out = []
+    lsr = supporter_leader_map.get(sid, [])
+    llk = ld.get('lineage_lookup', {})
+    snm = ld.get('series_name_map', {})
+    for ls in lsr:
+        if ls.get('tier') != 3:
+            continue
+        tags = resolve_condition_tags(
+            ls.get('trait_cond_id', '0'), trait_condition_raw_map, llk, snm, lang_code
+        )
+        for t in tags:
+            tid = str(t.get('id', '')).strip()
+            if tid and tid != '0':
+                out.append(tid)
+    return out
+
+
+def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
+    """AND semantics for multiple selected tags (same as entity_matches_lineage)."""
+    if want_lid is None:
+        return True
+    if isinstance(want_lid, (frozenset, set, list, tuple)):
+        if not want_lid:
+            return True
+        wants = want_lid
+    else:
+        wants = (want_lid,)
+    tag_ids = supporter_leader_tag_ids(sid, ld, lang_code)
+    return all(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
+
+
+def lineages_for_supporter_browse(ld, lang_code):
+    """Distinct lineage tags that appear on supporter leader skills (tier 3)."""
+    llk = ld.get('lineage_lookup', {})
+    ll = ld.get('lineage_list', [])
+    short_ids = set()
+    for sid, info in supporter_info_map.items():
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
+        for tid in supporter_leader_tag_ids(sid, ld, lang_code):
+            s = str(tid).strip()
+            if s and s != '0':
+                short_ids.add(s)
+    rows = []
+    for sid in short_ids:
+        name = llk.get(sid)
+        if not name:
+            for fid, val in ll:
+                if str(fid).endswith(sid) and len(sid) >= 4:
+                    name = val
+                    break
+        if not name:
+            name = sid
+        full_id = sid
+        for fid, val in ll:
+            if str(fid).endswith(sid) and len(sid) >= 4:
+                full_id = str(fid)
+                break
+        rows.append({'id': full_id, 'name': name})
+    by_id = {}
+    for r in rows:
+        fid = str(r['id'])
+        if fid not in by_id:
+            by_id[fid] = r
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
 def series_for_entity_browse(ld, entity):
     """Series that appear on characters or units only (via their series sets)."""
     ssm = ld.get('ser_set_map', {})
@@ -3585,13 +3666,18 @@ def browse_filters():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         entity = (request.args.get('entity') or '').strip().lower()
-        if entity not in ('characters', 'units'):
+        if entity not in ('characters', 'units', 'supporters'):
             entity = 'characters'
-        ck = f"browse_filters_v7_{lc}_{entity}"
+        ck = f"browse_filters_v8_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
         ld = get_lang_data(lc)
+        if entity == 'supporters':
+            lineages = lineages_for_supporter_browse(ld, lc)
+            result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
+            set_cached_response(ck, result)
+            return jsonify(convert_image_urls(result))
         lin_map = char_lin_map if entity == 'characters' else unit_lin_map
         lineages = lineages_for_entity_browse(lin_map, ld)
         series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
@@ -3990,7 +4076,10 @@ def list_supporters():
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
-        ck = f"sl4_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lr_schedule_cache_key_fragment()}"
+        lineage_arg = request.args.get('lineage_id', '').strip()
+        lineage_filter = parse_list_lineage_filter(lineage_arg)
+        lineage_ck = lineage_filter_cache_fragment(lineage_filter)
+        ck = f"sl5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -3999,6 +4088,10 @@ def list_supporters():
                 continue
             ri = info.get('rarity','1'); lid = ld.get('supporter_id_map', {}).get(sid, ''); name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
+            id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
+            if lineage_filter is not None:
+                if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
+                    continue
             if rarity_filter is not None:
                 if not rarity_filter:
                     continue
