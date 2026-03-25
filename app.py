@@ -418,27 +418,47 @@ def role_filter_cache_fragment(rf):
 
 
 def parse_list_source_filter(val):
-    """List filter by acquisition route bucket: assembly (1), development (2, non-NPC), other (rest)."""
+    """List filter by acquisition route bucket: assembly (1), development (2, non-NPC), other (rest).
+    Comma-separated values = OR (e.g. development,other). All three selected = no filter (None)."""
     if val is None:
         return None
     s = (val or '').strip().lower()
     if not s or s == 'all':
         return None
-    if s in ('assembly', 'development', 'other'):
-        return s
-    return None
+    parts = [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]
+    if not parts:
+        return None
+    ok = []
+    for p in parts:
+        if p in ('assembly', 'development', 'other'):
+            ok.append(p)
+    if not ok:
+        return None
+    uniq = frozenset(ok)
+    if len(uniq) == 3:
+        return None
+    if len(uniq) == 1:
+        return next(iter(uniq))
+    return uniq
 
 
 def source_filter_cache_fragment(sf):
     if sf is None:
         return 'all'
-    return sf
+    if isinstance(sf, (frozenset, set)):
+        return 'src_' + '_'.join(sorted(str(x) for x in sf))[:80]
+    return str(sf)
 
 
 def entity_matches_source_category(acq_route, role_id, sf):
-    """assembly = route index 1; development = index 2 and not NPC; other = everything else."""
+    """assembly = route index 1; development = index 2 and not NPC; other = everything else.
+    sf may be a single bucket string or a frozenset of buckets (OR)."""
     if sf is None:
         return True
+    if isinstance(sf, (frozenset, set)):
+        if not sf:
+            return True
+        return any(entity_matches_source_category(acq_route, role_id, x) for x in sf)
     acq = str(acq_route or '0').strip()
     rid = str(role_id or '0').strip()
     if sf == 'assembly':
@@ -3033,8 +3053,10 @@ def _search_term_matches_in_text(term, haystack_lower):
     if not term:
         return True
     t = term.lower()
-    # Longer / non-ASCII / punctuation-heavy tokens: substring (keeps phrase and JP/CJK behavior)
-    if len(t) > 3 or not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
+    # Longer / non-ASCII / punctuation-heavy tokens: substring (keeps phrase and JP/CJK behavior).
+    # 3+ char ASCII alphanumerics use substring so prefixes like "qub" match "Qubeley" (2-char tokens
+    # stay word-boundary so "mp" does not match inside "consumptions").
+    if len(t) > 2 or not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
         return t in haystack_lower
     try:
         return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
