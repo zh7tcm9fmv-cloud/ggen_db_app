@@ -3667,6 +3667,14 @@ def search_query_matches_entity_id(sq, eid):
         return False
     return True
 
+def _list_row_id_tiebreak(r):
+    """Secondary list sort key after rarity / stats: numeric id when possible."""
+    raw = r.get('id', '')
+    s = str(raw).strip()
+    if s.isdigit():
+        return (0, int(s))
+    return (1, s.lower())
+
 def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     if sort_by not in valid_sorts: sort_by = default_sort
     if sort_by in LIST_STAT_SORT_PRIMARY and sort_by in valid_sorts:
@@ -3676,28 +3684,28 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
             except (TypeError, ValueError):
                 return 0.0
         if sort_dir == 'desc':
-            rows.sort(key=lambda r: (-_num(r.get(sort_by)), r['name'].lower()))
+            rows.sort(key=lambda r: (-_num(r.get(sort_by)), _list_row_id_tiebreak(r)))
         else:
-            rows.sort(key=lambda r: (_num(r.get(sort_by)), r['name'].lower()))
+            rows.sort(key=lambda r: (_num(r.get(sort_by)), _list_row_id_tiebreak(r)))
         return rows
     if sort_by == 'rarity':
-        if sort_dir == 'asc': rows.sort(key=lambda r: (-r['rarity_sort'], r['name'].lower()))
-        else: rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower()))
+        if sort_dir == 'asc': rows.sort(key=lambda r: (-r['rarity_sort'], _list_row_id_tiebreak(r)))
+        else: rows.sort(key=lambda r: (r['rarity_sort'], _list_row_id_tiebreak(r)))
     elif sort_by == 'name':
         if sort_dir == 'asc': rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower()))
         else: rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower())); rows.sort(key=lambda r: r['name'].lower(), reverse=True); rows.sort(key=lambda r: r['rarity_sort'])
     elif sort_by == 'role':
-        if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], r.get('role_sort',3), r['name'].lower()))
-        else: rows.sort(key=lambda r: (r['rarity_sort'], -r.get('role_sort',3), r['name'].lower()))
+        if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], r.get('role_sort',3), _list_row_id_tiebreak(r)))
+        else: rows.sort(key=lambda r: (r['rarity_sort'], -r.get('role_sort',3), _list_row_id_tiebreak(r)))
     elif sort_by in ('series_tag', 'boost', 'details'):
         def _str_key(r, rev=False):
             s = (str(r.get(sort_by, '') or '')).lower()
-            return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, r['name'].lower())
+            return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, _list_row_id_tiebreak(r))
         if sort_dir == 'asc': rows.sort(key=lambda r: _str_key(r, False))
         else: rows.sort(key=lambda r: _str_key(r, True))
     else:
-        if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], -r.get(sort_by, 0), r['name'].lower()))
-        else: rows.sort(key=lambda r: (r['rarity_sort'], r.get(sort_by, 0), r['name'].lower()))
+        if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], -r.get(sort_by, 0), _list_row_id_tiebreak(r)))
+        else: rows.sort(key=lambda r: (r['rarity_sort'], r.get(sort_by, 0), _list_row_id_tiebreak(r)))
     return rows
 
 # ═══════════════════════════════════════════════════════
@@ -4046,6 +4054,9 @@ def _unit_has_ability_id(uid, ab_id):
             return True
         if str(ab['id']) in rm and normalize_id(rm[str(ab['id'])]) == want:
             return True
+    for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+        if normalize_id(str(gain_aid)) == want:
+            return True
     return False
 
 
@@ -4235,7 +4246,7 @@ def list_characters():
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl18_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl19_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -4342,7 +4353,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul18_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -4543,7 +4554,7 @@ def list_option_parts():
         ef = request.args.get('effect', 'ALL').strip().upper()
         if ef not in OPTION_PART_EFFECT_FILTERS:
             ef = 'ALL'
-        ck = f"op5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}"
+        ck = f"op6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}"
         cached = get_cached_response(ck)
         if cached:
             out = dict(cached)
@@ -4607,7 +4618,7 @@ def list_supporters():
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
-        ck = f"sl6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
+        ck = f"sl7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
