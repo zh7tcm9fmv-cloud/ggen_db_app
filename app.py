@@ -2411,6 +2411,9 @@ for item in extract_data_list(ability_master):
         ai = normalize_id(item.get('Id') or item.get('id')); ti = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
         if ai != '0' and ti != '0': abil_link_map[ai] = ti
 
+SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
+SDC_EXPLICIT_IDS = {'1501000103'}
+
 unit_ser_map = {}
 for item in extract_data_list(unit_master_data):
     if isinstance(item, dict):
@@ -2650,6 +2653,50 @@ for lang_code, paths in LANG_PATHS.items():
     
     LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
+
+def _precompute_sdc_data():
+    """Find all character ability IDs whose detail text contains the SDC marker.
+    Also includes any explicitly listed IDs (e.g. EX abilities with same content).
+    Returns (set_of_ids, representative_non_ex_id)."""
+    sdc_ids = set(SDC_EXPLICIT_IDS)
+    representative_id = ''
+    ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
+    ldc = ld
+    seen_aids = set()
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        info = char_info_map.get(cid)
+        if not info:
+            continue
+        ri = info.get('rarity', '1')
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None') or aid in seen_aids:
+                continue
+            seen_aids.add(aid)
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                    trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                    trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                    ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                )
+            except Exception:
+                continue
+            detail_blob = ' '.join(
+                d.get('text', '') if isinstance(d, dict) else str(d)
+                for d in bab.get('details', [])
+            )
+            if SDC_DETAIL_MARKER in detail_blob:
+                sdc_ids.add(aid)
+                if not bab.get('is_ex') and ri == '4' and not representative_id:
+                    representative_id = aid
+    return sdc_ids, representative_id
+
+SDC_ABILITY_IDS, SDC_REPRESENTATIVE_ID = _precompute_sdc_data()
+print(f"SDC abilities found: {len(SDC_ABILITY_IDS)}, representative: {SDC_REPRESENTATIVE_ID}")
 
 print("Database ready!")
 print("=" * 60)
@@ -4121,6 +4168,36 @@ def entity_matches_char_skills(cid, want_lid):
     return _char_has_skill_id(cid, want_lid)
 
 
+def _char_has_ability_id(cid, ability_id):
+    want = normalize_id(ability_id)
+    if not want:
+        return False
+    is_sdc = want in SDC_ABILITY_IDS
+    for ab_row in extract_data_list(char_abil):
+        if normalize_id(ab_row.get('CharacterId', '')) != cid:
+            continue
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid:
+                continue
+            if is_sdc and aid in SDC_ABILITY_IDS:
+                return True
+            if aid == want:
+                return True
+    return False
+
+
+def entity_matches_char_abilities(cid, want_lid):
+    """Multi ability id filter — AND semantics."""
+    if want_lid is None:
+        return True
+    if isinstance(want_lid, (frozenset, set, list, tuple)):
+        if not want_lid:
+            return True
+        return all(_char_has_ability_id(cid, w) for w in want_lid)
+    return _char_has_ability_id(cid, want_lid)
+
+
 def _unit_has_ability_id(uid, ab_id):
     want = normalize_id(ab_id)
     if not want:
@@ -4296,10 +4373,10 @@ def lineage_rows_from_short_ids(short_ids, ld):
 
 def character_passes_browse_pool_filters(
     cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-    lineage_filter, series_filter, skill_filter,
-    *, apply_lineage=True, apply_series=True, apply_skill=True,
+    lineage_filter, series_filter, skill_filter, ability_filter=None,
+    *, apply_lineage=True, apply_series=True, apply_skill=True, apply_ability=True,
 ):
-    """list_characters inclusion with optional lineage/series/skill filter steps (for scoped browse dropdowns)."""
+    """list_characters inclusion with optional lineage/series/skill/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
         return False
     ri = info.get('rarity', '1')
@@ -4332,6 +4409,9 @@ def character_passes_browse_pool_filters(
             return False
     if apply_skill and skill_filter is not None:
         if not id_seek and not entity_matches_char_skills(cid, skill_filter):
+            return False
+    if apply_ability and ability_filter is not None:
+        if not id_seek and not entity_matches_char_abilities(cid, ability_filter):
             return False
     lid = ld['char_id_map'].get(cid, '')
     name = ld['char_text_map'].get(lid, '') if lid else ''
@@ -4472,11 +4552,12 @@ def lineages_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
     short_ids = set()
     for cid, info in char_info_map.items():
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, skill_filter, apply_lineage=False, apply_series=True, apply_skill=True,
+            lineage_filter, series_filter, skill_filter, ability_filter, apply_lineage=False, apply_series=True, apply_skill=True,
         ):
             continue
         for lid in char_lin_map.get(cid, []) or []:
@@ -4495,6 +4576,7 @@ def series_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     cmap = ld.get('char_ser_map', {})
@@ -4503,7 +4585,7 @@ def series_for_character_browse_filtered(ld, lc, args):
     for cid, info in char_info_map.items():
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, skill_filter, apply_lineage=True, apply_series=False, apply_skill=True,
+            lineage_filter, series_filter, skill_filter, ability_filter, apply_lineage=True, apply_series=False, apply_skill=True,
         ):
             continue
         set_id = cmap.get(cid, '')
@@ -4700,6 +4782,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
     seen = {}
     for sk in extract_data_list(char_skill):
         cid = normalize_id(sk.get('CharacterId', ''))
@@ -4710,7 +4793,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
             continue
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, skill_filter, apply_skill=False,
+            lineage_filter, series_filter, skill_filter, ability_filter, apply_skill=False,
         ):
             continue
         for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
@@ -4725,6 +4808,134 @@ def skills_for_character_browse_filtered(ld, lc, args):
                 name = sid
                 icon = ''
             seen[sid] = {'name': name, 'icon': icon}
+    return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
+
+
+def abilities_for_character_browse(ld, lc):
+    """Unique non-EX abilities across playable characters.
+    SDC abilities are collapsed into one representative entry."""
+    seen = {}
+    sdc_placed = False
+    ldc = get_calc_lang_data()
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None') or aid in seen:
+                continue
+            if aid in SDC_ABILITY_IDS:
+                if sdc_placed:
+                    continue
+                if SDC_REPRESENTATIVE_ID:
+                    rep = SDC_REPRESENTATIVE_ID
+                else:
+                    rep = aid
+                try:
+                    bab = build_ability_entry(
+                        rep, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                        ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+                        ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
+                    )
+                    n = (bab.get('name') or '').strip() or rep
+                    icon = (bab.get('icon') or '').strip()
+                except Exception:
+                    n = rep
+                    icon = ''
+                seen[rep] = {'name': n, 'icon': icon}
+                sdc_placed = True
+                continue
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                    ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+                    ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
+                )
+                n = (bab.get('name') or '').strip() or aid
+                icon = (bab.get('icon') or '').strip()
+                if bab.get('is_ex'):
+                    continue
+            except Exception:
+                n = aid
+                icon = ''
+            if n:
+                seen[aid] = {'name': n, 'icon': icon}
+    return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
+
+
+def abilities_for_character_browse_filtered(ld, lc, args):
+    """Abilities on characters matching current list filters (ability_id excluded).
+    SDC abilities are collapsed into one representative entry."""
+    sq = args.get('q', '').strip().lower()
+    role_filter = parse_list_role_filter(args.get('role', '').strip())
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    source_filter = parse_list_source_filter(args.get('source', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ldc = get_calc_lang_data()
+    seen = {}
+    passed_cids = set()
+    failed_cids = set()
+    sdc_placed = False
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        if cid in failed_cids:
+            continue
+        if cid not in passed_cids:
+            info = char_info_map.get(cid)
+            if not info:
+                failed_cids.add(cid)
+                continue
+            if not character_passes_browse_pool_filters(
+                cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+                lineage_filter, series_filter, skill_filter,
+                apply_ability=False,
+            ):
+                failed_cids.add(cid)
+                continue
+            passed_cids.add(cid)
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None') or aid in seen:
+                continue
+            if aid in SDC_ABILITY_IDS:
+                if sdc_placed:
+                    continue
+                rep = SDC_REPRESENTATIVE_ID or aid
+                try:
+                    bab = build_ability_entry(
+                        rep, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                        ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+                        ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
+                    )
+                    n = (bab.get('name') or '').strip() or rep
+                    icon = (bab.get('icon') or '').strip()
+                except Exception:
+                    n = rep
+                    icon = ''
+                seen[rep] = {'name': n, 'icon': icon}
+                sdc_placed = True
+                continue
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                    ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+                    ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
+                )
+                n = (bab.get('name') or '').strip() or aid
+                icon = (bab.get('icon') or '').strip()
+                if bab.get('is_ex'):
+                    continue
+            except Exception:
+                n = aid
+                icon = ''
+            if n:
+                seen[aid] = {'name': n, 'icon': icon}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
@@ -4860,7 +5071,10 @@ def browse_filters():
             if entity == 'characters':
                 lineages = lineages_for_character_browse_filtered(ld, lc, request.args)
                 series = series_for_character_browse_filtered(ld, lc, request.args)
-                extra = {'skills': skills_for_character_browse_filtered(ld, lc, request.args)}
+                extra = {
+                    'skills': skills_for_character_browse_filtered(ld, lc, request.args),
+                    'abilities': abilities_for_character_browse_filtered(ld, lc, request.args),
+                }
             else:
                 lineages = lineages_for_unit_browse_filtered(ld, lc, request.args)
                 series = series_for_unit_browse_filtered(ld, lc, request.args)
@@ -4870,7 +5084,10 @@ def browse_filters():
             lineages = lineages_for_entity_browse(lin_map, ld)
             series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
             if entity == 'characters':
-                extra = {'skills': skills_for_character_browse(ld)}
+                extra = {
+                    'skills': skills_for_character_browse(ld),
+                    'abilities': abilities_for_character_browse(ld, lc),
+                }
             else:
                 extra = {'abilities': abilities_for_unit_browse(ld, lc)}
         result = {'lineages': lineages, 'series': series, **extra}
@@ -4898,11 +5115,14 @@ def list_characters():
     series_filter = parse_list_series_filter(series_arg)
     skill_arg = request.args.get('skill_id', '').strip()
     skill_filter = parse_list_lineage_filter(skill_arg)
+    ability_arg = request.args.get('ability_id', '').strip()
+    ability_filter = parse_list_lineage_filter(ability_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
+    ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -4939,6 +5159,9 @@ def list_characters():
                 continue
         if skill_filter is not None:
             if not id_seek and not entity_matches_char_skills(cid, skill_filter):
+                continue
+        if ability_filter is not None:
+            if not id_seek and not entity_matches_char_abilities(cid, ability_filter):
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
