@@ -2541,6 +2541,179 @@ for _uid in sorted(unit_info_map.keys()):
 def get_lang_data(lc): return LANG_DATA.get(lc, LANG_DATA.get(DEFAULT_LANG, {}))
 def get_calc_lang_data(): return LANG_DATA.get(CALC_LANG, {})
 
+WHATS_NEW_SNAPSHOT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new_snapshot.json')
+
+def _whats_new_master_data_date():
+    try:
+        p = os.path.join(BASE_DIR, 'm_unit.json')
+        if os.path.isfile(p):
+            ts = os.path.getmtime(p)
+            return datetime.fromtimestamp(ts, tz=timezone.utc).date().isoformat()
+    except Exception:
+        pass
+    return datetime.now(timezone.utc).date().isoformat()
+
+def _build_char_ability_effect_map():
+    lookup = {}
+    for item in extract_data_list(char_abil):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('CharacterId') or item.get('characterId'))
+        aid = normalize_id(item.get('AbilityId') or item.get('abilityId'))
+        sp = normalize_id(item.get('SpAbilityId') or item.get('spAbilityId') or '0')
+        sort = int(item.get('SortOrder') or 0)
+        if cid == '0':
+            continue
+        eff = sp if sp and sp != '0' else aid
+        lookup.setdefault(cid, []).append({'sort': sort, 'id': eff})
+    out = {}
+    for cid, rows in lookup.items():
+        rows.sort(key=lambda x: x['sort'])
+        out[cid] = [r['id'] for r in rows]
+    return out
+
+def _collect_option_part_ids():
+    s = set()
+    for item in extract_data_list(option_parts_data or []):
+        if not isinstance(item, dict):
+            continue
+        opid = normalize_id(item.get('Id') or item.get('id'))
+        if opid != '0':
+            s.add(opid)
+    return s
+
+def serialize_whats_new_snapshot():
+    return {
+        'version': 1,
+        'unit_abilities': {uid: [str(x['id']) for x in lst] for uid, lst in unit_abil_map.items()},
+        'unit_weapons': {uid: [str(x['id']) for x in lst] for uid, lst in unit_weapon_map.items()},
+        'char_abilities': _build_char_ability_effect_map(),
+        'option_parts': sorted(_collect_option_part_ids()),
+        'units': sorted(unit_info_map.keys()),
+        'characters': sorted(char_info_map.keys()),
+    }
+
+def load_whats_new_snapshot():
+    try:
+        if not os.path.isfile(WHATS_NEW_SNAPSHOT_PATH):
+            return None
+        with open(WHATS_NEW_SNAPSHOT_PATH, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or int(data.get('version') or 0) != 1:
+            return None
+        return data
+    except Exception:
+        return None
+
+def _wn_unit_name(uid, ld):
+    lid = ld.get('unit_id_map', {}).get(uid, '')
+    n = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+    return n or f'Unit {uid}'
+
+def _wn_char_name(cid, ld):
+    lid = ld.get('char_id_map', {}).get(cid, '')
+    n = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+    return n or f'Character {cid}'
+
+def _wn_weapon_name(wid, ld):
+    wm = weapon_info_map.get(wid, {})
+    return (ld.get('weapon_text_map', {}) or {}).get(wm.get('name_lang_id', '0'), '') or wid
+
+def _wn_option_part_name(opid, ld):
+    for item in extract_data_list(option_parts_data or []):
+        if not isinstance(item, dict):
+            continue
+        if normalize_id(item.get('Id') or item.get('id')) != opid:
+            continue
+        nlid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
+        if nlid:
+            n = (ld.get('op_text_map', {}) or {}).get(nlid, '')
+            if n:
+                return n
+        return f'Option part {opid}'
+    return opid
+
+def _wn_format_unit_abilities(uid, ordered_aids, ld):
+    un = _wn_unit_name(uid, ld)
+    if not ordered_aids:
+        return f'{un} ({uid}): (no abilities)'
+    parts = []
+    for i, aid in enumerate(ordered_aids):
+        an = get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map)
+        parts.append(f"{i + 1}: {an or aid}")
+    return f'{un} ({uid}): ' + ' | '.join(parts)
+
+def _wn_format_unit_weapons(uid, ordered_wids, ld):
+    un = _wn_unit_name(uid, ld)
+    if not ordered_wids:
+        return f'{un} ({uid}): (no weapons)'
+    parts = []
+    for i, wid in enumerate(ordered_wids):
+        wn = _wn_weapon_name(wid, ld)
+        parts.append(f"{i + 1}: {wn}")
+    return f'{un} ({uid}): ' + ' | '.join(parts)
+
+def _wn_format_char_abilities(cid, ordered_aids, ld):
+    cn = _wn_char_name(cid, ld)
+    if not ordered_aids:
+        return f'{cn} ({cid}): (no abilities)'
+    parts = []
+    for i, aid in enumerate(ordered_aids):
+        an = get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map)
+        parts.append(f"{i + 1}: {an or aid}")
+    return f'{cn} ({cid}): ' + ' | '.join(parts)
+
+def compute_whats_new_delta():
+    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline."""
+    snap = load_whats_new_snapshot()
+    if not snap:
+        return None
+    ld = get_lang_data('EN') or get_lang_data(DEFAULT_LANG)
+    if not ld:
+        return None
+    cur = serialize_whats_new_snapshot()
+    old_units = set(snap.get('units') or [])
+    old_chars = set(snap.get('characters') or [])
+    changes = []
+    old_ua = snap.get('unit_abilities') or {}
+    new_ua = cur['unit_abilities']
+    for uid in sorted(set(old_ua.keys()) | set(new_ua.keys())):
+        if uid not in old_units:
+            continue
+        oa = old_ua.get(uid) or []
+        na = new_ua.get(uid) or []
+        if oa != na:
+            changes.append({'from': _wn_format_unit_abilities(uid, oa, ld), 'to': _wn_format_unit_abilities(uid, na, ld)})
+    old_uw = snap.get('unit_weapons') or {}
+    new_uw = cur['unit_weapons']
+    for uid in sorted(set(old_uw.keys()) | set(new_uw.keys())):
+        if uid not in old_units:
+            continue
+        ow = old_uw.get(uid) or []
+        nw = new_uw.get(uid) or []
+        if ow != nw:
+            changes.append({'from': _wn_format_unit_weapons(uid, ow, ld), 'to': _wn_format_unit_weapons(uid, nw, ld)})
+    old_ca = snap.get('char_abilities') or {}
+    new_ca = cur['char_abilities']
+    for cid in sorted(set(old_ca.keys()) | set(new_ca.keys())):
+        if cid not in old_chars:
+            continue
+        oa = old_ca.get(cid) or []
+        na = new_ca.get(cid) or []
+        if oa != na:
+            changes.append({'from': _wn_format_char_abilities(cid, oa, ld), 'to': _wn_format_char_abilities(cid, na, ld)})
+    added = []
+    for uid in sorted(set(cur['units']) - old_units):
+        added.append(f"New unit: {_wn_unit_name(uid, ld)} ({uid})")
+    for cid in sorted(set(cur['characters']) - old_chars):
+        added.append(f"New character: {_wn_char_name(cid, ld)} ({cid})")
+    old_op = set(snap.get('option_parts') or [])
+    for opid in sorted(set(cur['option_parts']) - old_op):
+        added.append(f"New option part: {_wn_option_part_name(opid, ld)} ({opid})")
+    if not changes and not added:
+        return None
+    return {'date': _whats_new_master_data_date(), 'changes': changes, 'added': added}
+
 def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
     """Compute unit stats for list view: base at max LB + non-conditional passive bonuses only."""
     ri = info.get('rarity', '1'); has_sp = int(ri) <= 4
@@ -3313,19 +3486,32 @@ WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 
 @app.route('/api/whats_new')
 def api_whats_new():
-    """Changelog after data updates; edit data/whats_new.json to publish notes."""
+    """Changelog: auto diff vs data/whats_new_snapshot.json plus optional manual entries in data/whats_new.json."""
+    entries = []
+    try:
+        auto = compute_whats_new_delta()
+        if auto:
+            entries.append({'date': auto.get('date'), 'changes': auto.get('changes') or [], 'added': auto.get('added') or []})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
     try:
         if os.path.isfile(WHATS_NEW_JSON_PATH):
             with open(WHATS_NEW_JSON_PATH, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+            manual = []
             if isinstance(data, dict) and 'entries' in data:
-                return jsonify(data)
-            if isinstance(data, list):
-                return jsonify({'entries': data})
+                manual = data['entries']
+            elif isinstance(data, list):
+                manual = data
+            if isinstance(manual, list):
+                for e in manual:
+                    if isinstance(e, dict):
+                        entries.append(e)
     except Exception as e:
         import traceback
         traceback.print_exc()
-    return jsonify({'entries': []})
+    return jsonify({'entries': entries})
 
 @app.route('/api/tag_units')
 def get_tag_units():
