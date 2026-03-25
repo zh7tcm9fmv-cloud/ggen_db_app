@@ -4934,8 +4934,8 @@ def list_characters():
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
-        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter, is_character=True):
-            continue
+            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter, is_character=True):
+                continue
         if lineage_filter is not None:
             if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
                 continue
