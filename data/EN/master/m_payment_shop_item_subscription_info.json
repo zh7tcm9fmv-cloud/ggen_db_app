@@ -1,12 +1,12 @@
 [
   {
-    "ShopItemId": 52510500101,
-    "Count": 525105001,
-    "Unknown_Col_2": "525105001",
-    "Unknown_Col_3": 193200000525105001,
-    "Unknown_Col_4": 193300000525105001,
-    "Unknown_Col_5": 89260335000001,
-    "Unknown_Col_6": 1,
-    "Unknown_Col_7": 0
+    "Id": 52510500101,
+    "PaymentShopItemId": 525105001,
+    "FirstViewResourceId": "525105001",
+    "AppealDescriptionLanguageId": 193200000525105001,
+    "NoticeDescriptionLanguageId": 193300000525105001,
+    "TransitionId": 89260335000001,
+    "Priority": 1,
+    "ScheduleId": 0
   }
 ]

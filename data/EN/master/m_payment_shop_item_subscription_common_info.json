@@ -1,65 +1,65 @@
 [
   {
-    "ShopItemId": 100000001,
-    "Count": 6,
-    "Unknown_Col_2": 1,
-    "Unknown_Col_3": 193100000000000006,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000006
+    "Id": 100000001,
+    "SubscriptionCommonDescriptionTypeIndex": 6,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 193100000000000006,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000006
   },
   {
-    "ShopItemId": 100000002,
-    "Count": 8,
-    "Unknown_Col_2": 2,
-    "Unknown_Col_3": 193100000000000008,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000008
+    "Id": 100000002,
+    "SubscriptionCommonDescriptionTypeIndex": 8,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 193100000000000008,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000008
   },
   {
-    "ShopItemId": 100000004,
-    "Count": 1,
-    "Unknown_Col_2": 4,
-    "Unknown_Col_3": 193100000000000001,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000001
+    "Id": 100000004,
+    "SubscriptionCommonDescriptionTypeIndex": 1,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 193100000000000001,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000001
   },
   {
-    "ShopItemId": 100000005,
-    "Count": 2,
-    "Unknown_Col_2": 5,
-    "Unknown_Col_3": 193100000000000002,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000002
+    "Id": 100000005,
+    "SubscriptionCommonDescriptionTypeIndex": 2,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 193100000000000002,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000002
   },
   {
-    "ShopItemId": 100000006,
-    "Count": 3,
-    "Unknown_Col_2": 6,
-    "Unknown_Col_3": 193100000000000003,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000003
+    "Id": 100000006,
+    "SubscriptionCommonDescriptionTypeIndex": 3,
+    "SortOrder": 6,
+    "DescriptionLanguageId": 193100000000000003,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000003
   },
   {
-    "ShopItemId": 100000007,
-    "Count": 4,
-    "Unknown_Col_2": 7,
-    "Unknown_Col_3": 193100000000000004,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000004
+    "Id": 100000007,
+    "SubscriptionCommonDescriptionTypeIndex": 4,
+    "SortOrder": 7,
+    "DescriptionLanguageId": 193100000000000004,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000004
   },
   {
-    "ShopItemId": 100000008,
-    "Count": 5,
-    "Unknown_Col_2": 8,
-    "Unknown_Col_3": 193100000000000005,
-    "Unknown_Col_4": 1,
-    "Unknown_Col_5": 0,
-    "Unknown_Col_6": 193400000000000005
+    "Id": 100000008,
+    "SubscriptionCommonDescriptionTypeIndex": 5,
+    "SortOrder": 8,
+    "DescriptionLanguageId": 193100000000000005,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000005
   }
 ]

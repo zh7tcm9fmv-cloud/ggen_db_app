@@ -6,5 +6,13 @@
     "CharacterOfferGroupLotterySetId": 3,
     "ScheduleId": 2509509903,
     "LotteryIntervalMinute": 1200
+  },
+  {
+    "Id": 2603509903,
+    "SlotTypeIndex": 1,
+    "LotteryRatePercent": 100,
+    "CharacterOfferGroupLotterySetId": 4,
+    "ScheduleId": 2603509903,
+    "LotteryIntervalMinute": 1200
   }
 ]

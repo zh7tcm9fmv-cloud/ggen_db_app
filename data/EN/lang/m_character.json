@@ -1100,6 +1100,10 @@
     "value": "Domon Kasshu"
   },
   {
+    "id": 100100001200000106,
+    "value": "Domon Kasshu"
+  },
+  {
     "id": 100100001200000200,
     "value": "Chibodee Crocket"
   },
@@ -1165,6 +1169,10 @@
   },
   {
     "id": 100100001200000703,
+    "value": "Rain Mikamura"
+  },
+  {
+    "id": 100100001200000704,
     "value": "Rain Mikamura"
   },
   {
@@ -1252,6 +1260,10 @@
     "value": "Heero Yuy"
   },
   {
+    "id": 100100001210000104,
+    "value": "Heero Yuy"
+  },
+  {
     "id": 100100001210000200,
     "value": "Duo Maxwell"
   },
@@ -1328,6 +1340,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100100001210002303,
+    "value": "Relena Darlian"
+  },
+  {
     "id": 100100001210002600,
     "value": "Trant Clark"
   },
@@ -1352,11 +1368,19 @@
     "value": "Garrod Ran"
   },
   {
+    "id": 100100001230000102,
+    "value": "Garrod Ran"
+  },
+  {
     "id": 100100001230000200,
     "value": "Tiffa Adill"
   },
   {
     "id": 100100001230000201,
+    "value": "Tiffa Adill"
+  },
+  {
+    "id": 100100001230000202,
     "value": "Tiffa Adill"
   },
   {
@@ -3480,6 +3504,14 @@
     "value": "Green Haro"
   },
   {
+    "id": 100100002850000800,
+    "value": "Silver Haro"
+  },
+  {
+    "id": 100100002850000900,
+    "value": "Gold Haro"
+  },
+  {
     "id": 100100002999000100,
     "value": "BATTLE AI"
   },
@@ -4584,6 +4616,10 @@
     "value": "A Gundam Fighter representing Neo Japan in the 13th Gundam Fight.\nHe participated in the tournament in search of his brother, Kyoji Kasshu, who stole the Ultimate Gundam and escaped to Earth.\nIt was also the reason their father is sentenced to indefinite frozen imprisonment.\nHe is also a colonial martial arts champion and a disciple who inherited The School of Master Asia and King of Hearts, one of the Shuffle's emblems, from Master Asia, Undefeated of the East.\nTo achieve his goals, he took selfish actions without considering his surroundings and let his emotions get the better of him.\nHowever, during his time in the Gundam Fight, he gained new friendships, overcame obstacles and learned from the tragedies that came one after another. He matured as both a Gundam Fighter and a human being."
   },
   {
+    "id": 100200001200000106,
+    "value": "-"
+  },
+  {
     "id": 100200001200000200,
     "value": "A Gundam Fighter representing Neo America.\nHe is a colony boxing champion with a hundred consecutive wins.\nRising up from the underground to become a national symbol, he is the embodiment of the American Dream.\nJovial and optimistic, he has confidence to spare and possesses a strong sense of justice."
   },
@@ -4650,6 +4686,10 @@
   {
     "id": 100200001200000703,
     "value": "A member of the support crew working with Neo Japan's representative Domon Kasshu during the 13th Gundam Fight.\nShe is a talented woman who handles everything from machine maintenance to intelligence operations.\nBright and devoted with a strong sense of responsibility, she is well-liked by everyone.\nShe is a childhood friend of Domon and always worries about him, as he often acts on his own.\nGradually, both of them learn to overcome the battles together and fall in love.\nDespite not being an official Gundam Fighter, she pilots the Shining Gundam to fight in the event of an emergency."
+  },
+  {
+    "id": 100200001200000704,
+    "value": "-"
   },
   {
     "id": 100200001200000901,
@@ -4736,6 +4776,10 @@
     "value": "A young agent working for the Colony Liberation Organization.\nHe was raised in the L1 Colony Cluster, where Doctor J gave him special training from a young age. \nHe is extremely skilled as a special agent, a formidable Mobile Suit pilot and also possessing superhuman physical attributes.\nTaciturn and blunt, he prioritizes the mission above all else, and would die for the mission without a second thought.\nOnce Operation Meteor was underway in the year AC 195, he made planetfall in the Wing Gundam and began acting against OZ as an undermining force.\nThe name \"\"Heero Yuy\"\" is a code name borrowed from a hero of the independence movement. His real name is unknown."
   },
   {
+    "id": 100200001210000104,
+    "value": "-"
+  },
+  {
     "id": 100200001210000200,
     "value": "A young agent working for the Colony Liberation Organization.\nHe is a highly skilled fighter and agent trained by the Sweeper Group, a group of space nomads in the L2 Colony Cluster. \nHe is a solid Mobile Suit pilot who calls himself the \"Grim Reaper,\" and is right at home in his Gundam Deathscythe.\nPersonality-wise, he is upbeat and sociable, and the most down-to-earth of the five Gundam pilots.\nOnce Operation Meteor was underway in the year AC 195, he made planetfall in Gundam Deathscythe. \nHe carries out his missions with support from Mike Howard, the captain of a salvage vessel."
   },
@@ -4812,6 +4856,10 @@
     "value": "Relena Darlian, after taking on her original name.\nWhen her father died in a terrorist attack orchestrated by OZ, Relena learned that she was Princess of the Sanc Kingdom.\nShe took on the royal family surname of Peacecraft and became Head of State for the newly-restored Sanc Kingdom.\nShe worked toward the ideal of total pacifism advocated by her late father and gained increasing numbers of supporters.\nHowever, the Romefeller Foundation perceived this as a threat and launched a military intervention that led to the second downfall of the Sanc Kingdom."
   },
   {
+    "id": 100200001210002303,
+    "value": "-"
+  },
+  {
     "id": 100200001210002600,
     "value": "A technical officer for OZ.\nA technician under Tubarov, he was a man of ambition.\nWhen OZ obtained the Wing Gundam Zero, he became intrigued by the Zero System it was equipped with and conducted research into it against Tubarov's orders.\n"
   },
@@ -4836,12 +4884,20 @@
     "value": "The pilot of the Gundam X. \nHe joins the Vulture as one of the Freeden crew to protect Tiffa Adill, the girl he fell in love with.\nOnce a war orphan, he lived a vulture-like life, scavenging for war scraps to make a living. \nDuring one of his odd jobs, he met a Newtype, Tiffa Adill, and the Gundam X, which lead him to the journey with Freeden.\nHaving grown up alone, living in a group is unfamiliar to Garrod. At first, he rebelled and was unable to trust anyone around him, but after going through many battles, Garrod learned to trust and grow as both a human being and a pilot."
   },
   {
+    "id": 100200001230000102,
+    "value": "-"
+  },
+  {
     "id": 100200001230000200,
     "value": "A Newtype girl with a mysterious ability to predict the future.\nBorn with the ability to see the future and the activation of the Flash System, her special power causes her to be deprived of her freedom and treated like a research subject since childhood.\nThis made her to be introverted and expressing little of herself. \nHowever, after meeting Garrod Ran and the crew, Tiffa slowly opens up the door to her heart and regains the real personality in her."
   },
   {
     "id": 100200001230000201,
     "value": "A Newtype girl with a mysterious ability to predict the future.\nBorn with the ability to see the future and the activation of the Flash System, her special power causes her to be deprived of her freedom and treated like a research subject since childhood.\nThis made her to be introverted and expressing little of herself. \nHowever, after meeting Garrod Ran and the crew, Tiffa slowly opens up the door to her heart and regains the real personality in her."
+  },
+  {
+    "id": 100200001230000202,
+    "value": "-"
   },
   {
     "id": 100200001230000300,
@@ -6964,6 +7020,14 @@
     "value": "-"
   },
   {
+    "id": 100200002850000800,
+    "value": "-"
+  },
+  {
+    "id": 100200002850000900,
+    "value": "-"
+  },
+  {
     "id": 100200002999000100,
     "value": "-"
   },
@@ -8068,6 +8132,10 @@
     "value": "Domon Kasshu"
   },
   {
+    "id": 100300001200000106,
+    "value": "Domon Kasshu"
+  },
+  {
     "id": 100300001200000200,
     "value": "Chibodee Crocket"
   },
@@ -8133,6 +8201,10 @@
   },
   {
     "id": 100300001200000703,
+    "value": "Rain Mikamura"
+  },
+  {
+    "id": 100300001200000704,
     "value": "Rain Mikamura"
   },
   {
@@ -8220,6 +8292,10 @@
     "value": "Heero Yuy"
   },
   {
+    "id": 100300001210000104,
+    "value": "Heero Yuy"
+  },
+  {
     "id": 100300001210000200,
     "value": "Duo Maxwell"
   },
@@ -8296,6 +8372,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100300001210002303,
+    "value": "Relena Darlian"
+  },
+  {
     "id": 100300001210002600,
     "value": "Trant Clark"
   },
@@ -8320,11 +8400,19 @@
     "value": "Garrod Ran"
   },
   {
+    "id": 100300001230000102,
+    "value": "Garrod Ran"
+  },
+  {
     "id": 100300001230000200,
     "value": "Tiffa Adill"
   },
   {
     "id": 100300001230000201,
+    "value": "Tiffa Adill"
+  },
+  {
+    "id": 100300001230000202,
     "value": "Tiffa Adill"
   },
   {
@@ -10448,6 +10536,14 @@
     "value": "Green Haro"
   },
   {
+    "id": 100300002850000800,
+    "value": "Silver Haro"
+  },
+  {
+    "id": 100300002850000900,
+    "value": "Gold Haro"
+  },
+  {
     "id": 100300002999000100,
     "value": "BATTLE AI"
   },
@@ -11552,6 +11648,10 @@
     "value": "Domon Kasshu"
   },
   {
+    "id": 100400001200000106,
+    "value": "Domon Kasshu"
+  },
+  {
     "id": 100400001200000200,
     "value": "Chibodee Crocket"
   },
@@ -11617,6 +11717,10 @@
   },
   {
     "id": 100400001200000703,
+    "value": "Rain Mikamura"
+  },
+  {
+    "id": 100400001200000704,
     "value": "Rain Mikamura"
   },
   {
@@ -11704,6 +11808,10 @@
     "value": "Heero Yuy"
   },
   {
+    "id": 100400001210000104,
+    "value": "Heero Yuy"
+  },
+  {
     "id": 100400001210000200,
     "value": "Duo Maxwell"
   },
@@ -11780,6 +11888,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100400001210002303,
+    "value": "Relena Darlian"
+  },
+  {
     "id": 100400001210002600,
     "value": "Trant Clark"
   },
@@ -11804,11 +11916,19 @@
     "value": "Garrod Ran"
   },
   {
+    "id": 100400001230000102,
+    "value": "Garrod Ran"
+  },
+  {
     "id": 100400001230000200,
     "value": "Tiffa Adill"
   },
   {
     "id": 100400001230000201,
+    "value": "Tiffa Adill"
+  },
+  {
+    "id": 100400001230000202,
     "value": "Tiffa Adill"
   },
   {
@@ -13932,6 +14052,14 @@
     "value": "Green Haro"
   },
   {
+    "id": 100400002850000800,
+    "value": "Silver Haro"
+  },
+  {
+    "id": 100400002850000900,
+    "value": "Gold Haro"
+  },
+  {
     "id": 100400002999000100,
     "value": "BATTLE AI"
   },
@@ -15152,18 +15280,6 @@
     "value": "Sorry... This is as far as I can go..."
   },
   {
-    "id": 101100001330000202,
-    "value": ""
-  },
-  {
-    "id": 101100001330000203,
-    "value": ""
-  },
-  {
-    "id": 101100001330000204,
-    "value": ""
-  },
-  {
     "id": 101100001330000400,
     "value": "They got me...?! No way...!"
   },
@@ -15186,10 +15302,6 @@
   {
     "id": 101100001330001000,
     "value": "Can't believe I let them get me like this...\nI don't believe it!"
-  },
-  {
-    "id": 101100001330001100,
-    "value": ""
   },
   {
     "id": 101100001330001101,
@@ -15220,32 +15332,12 @@
     "value": "What?! I was NOT expecting this...!"
   },
   {
-    "id": 101100001330001800,
-    "value": ""
-  },
-  {
-    "id": 101100001330001801,
-    "value": ""
-  },
-  {
-    "id": 101100001330001802,
-    "value": ""
-  },
-  {
     "id": 101100001330001803,
     "value": "I'm going down... Urgh!"
   },
   {
     "id": 101100001330001806,
     "value": "This is the result of my weakness...!"
-  },
-  {
-    "id": 101100001330001807,
-    "value": ""
-  },
-  {
-    "id": 101100001330002001,
-    "value": ""
   },
   {
     "id": 101100001330002200,
@@ -15452,20 +15544,8 @@
     "value": "No... I can still...!"
   },
   {
-    "id": 101100001430000106,
-    "value": ""
-  },
-  {
-    "id": 101100001430000107,
-    "value": ""
-  },
-  {
     "id": 101100001430000109,
     "value": "No... I can still...!"
-  },
-  {
-    "id": 101100001430000206,
-    "value": ""
   },
   {
     "id": 101100001430000300,
@@ -15484,28 +15564,12 @@
     "value": "I guess this is the end, both for me and for this unit..."
   },
   {
-    "id": 101100001430000603,
-    "value": ""
-  },
-  {
     "id": 101100001430000701,
     "value": "Sorry boss..."
   },
   {
-    "id": 101100001430000702,
-    "value": ""
-  },
-  {
-    "id": 101100001430000800,
-    "value": ""
-  },
-  {
     "id": 101100001430000801,
     "value": "They got me?!\nD-Damn you...!"
-  },
-  {
-    "id": 101100001430000901,
-    "value": ""
   },
   {
     "id": 101100001430000902,
@@ -15520,16 +15584,8 @@
     "value": "Damn it! I don't want to pull back!"
   },
   {
-    "id": 101100001430001201,
-    "value": ""
-  },
-  {
     "id": 101100001430001300,
     "value": "My machine... Won't move! Urgh... I'm pulling back!"
-  },
-  {
-    "id": 101100001430001901,
-    "value": ""
   },
   {
     "id": 101100001430002000,
@@ -15546,10 +15602,6 @@
   {
     "id": 101100001430002501,
     "value": "I seem to have underestimated you...\nSorry, but I must withdraw."
-  },
-  {
-    "id": 101100001430002504,
-    "value": ""
   },
   {
     "id": 101100001430002601,
@@ -15584,20 +15636,12 @@
     "value": "I must climb my way even further up...!"
   },
   {
-    "id": 101100001430004900,
-    "value": ""
-  },
-  {
     "id": 101100001430005000,
     "value": "How could I, Iok Kujan, lose like this?!\nThis... This can't be real!"
   },
   {
     "id": 101100001430005001,
     "value": "How could I, Iok Kujan, lose like this?!\nThis... This can't be real!"
-  },
-  {
-    "id": 101100001430005100,
-    "value": ""
   },
   {
     "id": 101100001430005200,
@@ -17088,6 +17132,10 @@
     "value": "Tomokazu Seki"
   },
   {
+    "id": 101400001200000106,
+    "value": "-"
+  },
+  {
     "id": 101400001200000200,
     "value": "Hochu Otsuka"
   },
@@ -17154,6 +17202,10 @@
   {
     "id": 101400001200000703,
     "value": "Yuri Amano"
+  },
+  {
+    "id": 101400001200000704,
+    "value": "-"
   },
   {
     "id": 101400001200000901,
@@ -17240,6 +17292,10 @@
     "value": "Hikaru Midorikawa"
   },
   {
+    "id": 101400001210000104,
+    "value": "-"
+  },
+  {
     "id": 101400001210000200,
     "value": "Toshihiko Seki"
   },
@@ -17316,6 +17372,10 @@
     "value": ""
   },
   {
+    "id": 101400001210002303,
+    "value": "-"
+  },
+  {
     "id": 101400001210002600,
     "value": ""
   },
@@ -17340,12 +17400,20 @@
     "value": "Wataru Takagi"
   },
   {
+    "id": 101400001230000102,
+    "value": "-"
+  },
+  {
     "id": 101400001230000200,
     "value": "Mika Kanai"
   },
   {
     "id": 101400001230000201,
     "value": "Mika Kanai"
+  },
+  {
+    "id": 101400001230000202,
+    "value": "-"
   },
   {
     "id": 101400001230000300,
@@ -19474,6 +19542,14 @@
   {
     "id": 101400002850000700,
     "value": ""
+  },
+  {
+    "id": 101400002850000800,
+    "value": "-"
+  },
+  {
+    "id": 101400002850000900,
+    "value": "-"
   },
   {
     "id": 101400002999000100,

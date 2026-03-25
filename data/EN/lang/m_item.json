@@ -4904,6 +4904,10 @@
     "value": "[8 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket"
   },
   {
+    "id": 150100191400000009,
+    "value": "1st Anniversary Unit Assembly Ticket (Up to 47 Free Pulls)"
+  },
+  {
     "id": 150100200000000001,
     "value": "SP Conversion Chips"
   },
@@ -5088,8 +5092,16 @@
     "value": "Mobile Suit Gundam MS IGLOO Series SP Conversion Badge"
   },
   {
+    "id": 150100240000021002,
+    "value": "Alternative Series-Tag SP Conversion Chips"
+  },
+  {
     "id": 150100240000021021,
     "value": "ZAFT-Tag SP Conversion Chips"
+  },
+  {
+    "id": 150100250000021002,
+    "value": "Alternative Series-Tag SP Conversion Badge"
   },
   {
     "id": 150100260099000106,
@@ -10012,6 +10024,10 @@
     "value": "A ticket that lets you use the [8 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly."
   },
   {
+    "id": 150200191400000009,
+    "value": "A ticket that lets you use the 1st Anniversary Unit Assembly (Up to 47 Free Pulls)."
+  },
+  {
     "id": 150200200000000001,
     "value": "Usable on non-UR units.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -10196,8 +10212,16 @@
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000021002,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000021021,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200250000021002,
+    "value": "Usable on non-UR characters bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200260099000106,

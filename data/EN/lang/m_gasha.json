@@ -136,6 +136,18 @@
     "value": "Featured Unit Assembly (The 08th MS Team)"
   },
   {
+    "id": 220100002603500201,
+    "value": "1st Anniversary Re-Pullable 1 UR Unit Guaranteed Unit Assembly"
+  },
+  {
+    "id": 220100002603500401,
+    "value": "Pre-1st Anniversary Special Featured Unit Assembly"
+  },
+  {
+    "id": 220100002603600601,
+    "value": "1st Anniversary Unit Assembly (Up to 47 Free Pulls) (2 UR or Higher Units Guaranteed)"
+  },
+  {
     "id": 220400002504100101,
     "value": "Guaranteed SSR or Higher on Last Pull"
   },
@@ -146,6 +158,14 @@
   {
     "id": 220400002509600601,
     "value": "Pull on any Unit Assembly once"
+  },
+  {
+    "id": 220400002603500201,
+    "value": "UR on Last Pull"
+  },
+  {
+    "id": 220400002603600601,
+    "value": "Once Only"
   },
   {
     "id": 220500000000000001,
@@ -188,7 +208,19 @@
     "value": "*Units pulled cannot be developed. *Cannot get duplicate characters. (Excluding Linked Characters)"
   },
   {
+    "id": 220900000000000002,
+    "value": "*Units pulled cannot be developed. *Cannot get duplicate characters. (Excluding Linked Characters)"
+  },
+  {
+    "id": 220900000000000003,
+    "value": "*Available from April 1 at 12:00 PM JST.\n*After the availability period for the Unit Assembly ends, any unused Unit Assembly Tickets will be converted into Rare Medals."
+  },
+  {
     "id": 221200250960060101,
     "value": "[Obtainable in the \"Half Anniversary Unit Assembly (Up to 46 Free Pulls)\"!]\n\nCollect special tickets during the event to participate in this Premium Unit Assembly!\n\nhttps://ggetww.go.link/fpojU\n#GGeneration\n#GGen"
+  },
+  {
+    "id": 221200260360060101,
+    "value": "[Obtainable in the \"1st Anniv. Unit Assembly (up to 47 free pulls)\"!]\n\nCollect special tickets during the event to participate in this Unit Assembly!\nAt least 2 UR Units guaranteed! A chance to instantly get units with the 47-pull!\n\nhttps://ggetww.go.link/fpojU\n#GGenerationETERNAL \n#GGen"
   }
 ]

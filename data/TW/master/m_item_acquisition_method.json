@@ -13010,6 +13010,21 @@
     "TargetId": 250950031
   },
   {
+    "ItemId": 191400000009,
+    "AcquisitionMethodTypeIndex": 23,
+    "TargetId": 260350011
+  },
+  {
+    "ItemId": 191400000009,
+    "AcquisitionMethodTypeIndex": 23,
+    "TargetId": 260350021
+  },
+  {
+    "ItemId": 191400000009,
+    "AcquisitionMethodTypeIndex": 23,
+    "TargetId": 260350031
+  },
+  {
     "ItemId": 200000000001,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100101

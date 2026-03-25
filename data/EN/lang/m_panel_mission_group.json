@@ -84,6 +84,14 @@
     "value": "Additional\nCelebration\nPanel Missions"
   },
   {
+    "id": 180500026035001101,
+    "value": "1st Anniversary Panel Missions"
+  },
+  {
+    "id": 180500026035001102,
+    "value": "1st\nAnniversary"
+  },
+  {
     "id": 180600000000000001,
     "value": "Clear the Panel Missions and limit break the unit to its maximum!"
   },
@@ -122,5 +130,9 @@
   {
     "id": 180600000260240011,
     "value": "Clear missions and limit break to the maximum!"
+  },
+  {
+    "id": 180600026035001101,
+    "value": "Collect 47 tickets and use them in the 1st Anniversary Unit Assembly!"
   }
 ]

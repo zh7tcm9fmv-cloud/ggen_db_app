@@ -7462,5 +7462,29 @@
     "SeriesId": 4000,
     "SortOrder": 0,
     "UnitId": 0
+  },
+  {
+    "Id": 400073,
+    "ResourceId": "op_000000053",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 406350100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400073,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 400074,
+    "ResourceId": "op_000000054",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 406360100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400074,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
   }
 ]

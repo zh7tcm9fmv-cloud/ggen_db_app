@@ -1974,6 +1974,12 @@
     "AbbreviationLanguageId": 100400001200000103
   },
   {
+    "Id": 1200000106,
+    "MapToolId": "g2000c00106",
+    "ResourceId": "g2000c00106",
+    "AbbreviationLanguageId": 100400001200000106
+  },
+  {
     "Id": 1200000200,
     "MapToolId": "g2000c00200",
     "ResourceId": "g2000c00200",
@@ -2092,6 +2098,12 @@
     "MapToolId": "g2000c00703",
     "ResourceId": "g2000c00703",
     "AbbreviationLanguageId": 100400001200000703
+  },
+  {
+    "Id": 1200000704,
+    "MapToolId": "g2000c00704",
+    "ResourceId": "g2000c00704",
+    "AbbreviationLanguageId": 100400001200000704
   },
   {
     "Id": 1200000900,
@@ -2262,6 +2274,12 @@
     "AbbreviationLanguageId": 100400001210000103
   },
   {
+    "Id": 1210000104,
+    "MapToolId": "g2100c00104",
+    "ResourceId": "g2100c00104",
+    "AbbreviationLanguageId": 100400001210000104
+  },
+  {
     "Id": 1210000200,
     "MapToolId": "g2100c00200",
     "ResourceId": "g2100c00200",
@@ -2418,6 +2436,12 @@
     "AbbreviationLanguageId": 100400001210002302
   },
   {
+    "Id": 1210002303,
+    "MapToolId": "g2100c02303",
+    "ResourceId": "g2100c02303",
+    "AbbreviationLanguageId": 100400001210002303
+  },
+  {
     "Id": 1210002400,
     "MapToolId": "g2100c02400",
     "ResourceId": "g2100c02400",
@@ -2478,6 +2502,12 @@
     "AbbreviationLanguageId": 100400001230000101
   },
   {
+    "Id": 1230000102,
+    "MapToolId": "g2300c00102",
+    "ResourceId": "g2300c00102",
+    "AbbreviationLanguageId": 100400001230000102
+  },
+  {
     "Id": 1230000200,
     "MapToolId": "g2300c00200",
     "ResourceId": "g2300c00200",
@@ -2488,6 +2518,12 @@
     "MapToolId": "g2300c00201",
     "ResourceId": "g2300c00201",
     "AbbreviationLanguageId": 100400001230000201
+  },
+  {
+    "Id": 1230000202,
+    "MapToolId": "g2300c00202",
+    "ResourceId": "g2300c00202",
+    "AbbreviationLanguageId": 100400001230000202
   },
   {
     "Id": 1230000300,
@@ -7690,6 +7726,18 @@
     "MapToolId": "g8500n00700",
     "ResourceId": "g8500n00700",
     "AbbreviationLanguageId": 100400002850000700
+  },
+  {
+    "Id": 2850000800,
+    "MapToolId": "g8500n00800",
+    "ResourceId": "g8500n00800",
+    "AbbreviationLanguageId": 100400002850000800
+  },
+  {
+    "Id": 2850000900,
+    "MapToolId": "g8500n00900",
+    "ResourceId": "g8500n00900",
+    "AbbreviationLanguageId": 100400002850000900
   },
   {
     "Id": 2999000001,

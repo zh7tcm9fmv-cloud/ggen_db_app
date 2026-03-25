@@ -1,52 +1,52 @@
 [
   {
-    "Tags": 10000001,
-    "Unknown_Col_1": 0,
-    "Unknown_Col_2": 2
+    "ShopId": 10000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 2
   },
   {
-    "Tags": 11000001,
-    "Unknown_Col_1": 0,
-    "Unknown_Col_2": 3
+    "ShopId": 11000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 3
   },
   {
-    "Tags": 12000001,
-    "Unknown_Col_1": 0,
-    "Unknown_Col_2": 4
+    "ShopId": 12000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 4
   },
   {
-    "Tags": 13000001,
-    "Unknown_Col_1": 220000000001,
-    "Unknown_Col_2": 1
+    "ShopId": 13000001,
+    "ItemId": 220000000001,
+    "CurrencyTypeIndex": 1
   },
   {
-    "Tags": 13000001,
-    "Unknown_Col_1": 220000000002,
-    "Unknown_Col_2": 1
+    "ShopId": 13000001,
+    "ItemId": 220000000002,
+    "CurrencyTypeIndex": 1
   },
   {
-    "Tags": 14210001,
-    "Unknown_Col_1": 222100010001,
-    "Unknown_Col_2": 1
+    "ShopId": 14210001,
+    "ItemId": 222100010001,
+    "CurrencyTypeIndex": 1
   },
   {
-    "Tags": 14210002,
-    "Unknown_Col_1": 230000210021,
-    "Unknown_Col_2": 1
+    "ShopId": 14210002,
+    "ItemId": 230000210021,
+    "CurrencyTypeIndex": 1
   },
   {
-    "Tags": 14240001,
-    "Unknown_Col_1": 230000240011,
-    "Unknown_Col_2": 1
+    "ShopId": 14240001,
+    "ItemId": 230000240011,
+    "CurrencyTypeIndex": 1
   },
   {
-    "Tags": 15000001,
-    "Unknown_Col_1": 0,
-    "Unknown_Col_2": 7
+    "ShopId": 15000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 7
   },
   {
-    "Tags": 90000001,
-    "Unknown_Col_1": 0,
-    "Unknown_Col_2": 4
+    "ShopId": 90000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 4
   }
 ]

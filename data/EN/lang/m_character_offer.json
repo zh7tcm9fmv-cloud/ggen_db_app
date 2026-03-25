@@ -3140,6 +3140,38 @@
     "value": "Special Request from Green Haro"
   },
   {
+    "id": 100902285000080001,
+    "value": "Special Request from Heero"
+  },
+  {
+    "id": 100902285000090001,
+    "value": "Special Request from Domon"
+  },
+  {
+    "id": 100902285000100001,
+    "value": "Special Request from Garrod"
+  },
+  {
+    "id": 100902285000110001,
+    "value": "Special Request from Relena"
+  },
+  {
+    "id": 100902285000120001,
+    "value": "Special Request from Rain"
+  },
+  {
+    "id": 100902285000130001,
+    "value": "Special Request from Tiffa"
+  },
+  {
+    "id": 100902285000140001,
+    "value": "Special Request from Silver Haro"
+  },
+  {
+    "id": 100902285000150001,
+    "value": "Special Request from Gold Haro"
+  },
+  {
     "id": 101301100100010101,
     "value": "Upgrade a unit from the \"Mobile Suit Gundam\" series 1 time."
   },
@@ -6277,6 +6309,38 @@
   },
   {
     "id": 101302285000070001,
+    "value": "Use 86 AP."
+  },
+  {
+    "id": 101302285000080001,
+    "value": "Clear Main Stages on Hard 3 times."
+  },
+  {
+    "id": 101302285000090001,
+    "value": "Acquire 3 units."
+  },
+  {
+    "id": 101302285000100001,
+    "value": "Clear Event Stages 3 times. Tactical Training will not count."
+  },
+  {
+    "id": 101302285000110001,
+    "value": "Clear Main Stages on Hard 3 times."
+  },
+  {
+    "id": 101302285000120001,
+    "value": "Acquire 3 units."
+  },
+  {
+    "id": 101302285000130001,
+    "value": "Clear Event Stages 3 times. Tactical Training will not count."
+  },
+  {
+    "id": 101302285000140001,
+    "value": "Transfer 8600 Capital."
+  },
+  {
+    "id": 101302285000150001,
     "value": "Use 86 AP."
   }
 ]

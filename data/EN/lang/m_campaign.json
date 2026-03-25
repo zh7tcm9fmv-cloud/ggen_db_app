@@ -304,6 +304,42 @@
     "value": "Get <color=#4C81F8>Unit</color> EXP x1.5 (from the \"Mobile Suit Gundam HATHAWAY\" series)"
   },
   {
+    "id": 250200000126035001,
+    "value": "Upgrade Stages (Capital) Challenge Limit 2Up"
+  },
+  {
+    "id": 250200000126035002,
+    "value": "Upgrade Stages (Units) Challenge Limit 2Up"
+  },
+  {
+    "id": 250200000126035003,
+    "value": "Upgrade Stages (Characters) Challenge Limit 2Up"
+  },
+  {
+    "id": 250200000126035004,
+    "value": "Upgrade Stages (Supporters) Challenge Limit 2Up"
+  },
+  {
+    "id": 250200000126035005,
+    "value": "<color=#4C81F8>Development Material (Mobile Suit Gundam)</color> x1 obtainable on \"Mobile Suit Gundam\" stages"
+  },
+  {
+    "id": 250200000126035006,
+    "value": "<color=#4C81F8>Development Material (Z)</color> x1 obtainable on \"Mobile Suit Z Gundam: A New Translation\" stages"
+  },
+  {
+    "id": 250200000126035007,
+    "value": "<color=#4C81F8>Development Material (ZZ)</color> x1 obtainable on \"Mobile Suit Gundam ZZ\" stages"
+  },
+  {
+    "id": 250200000126035016,
+    "value": "<color=#4C81F8>Development Material (W)</color> x1 obtainable on \"Mobile Suit Gundam Wing\" stages"
+  },
+  {
+    "id": 250200000126035019,
+    "value": "<color=#4C81F8>Development Material (00)</color> x1 obtainable on \"Mobile Suit Gundam 00\" stages"
+  },
+  {
     "id": 250200000425105001,
     "value": "Upgrade Stages (Capital) Challenge Limit 1Up"
   },

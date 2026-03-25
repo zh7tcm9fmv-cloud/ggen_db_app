@@ -17164,6 +17164,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 191400000009,
+    "ResourceId": "gtik_000024",
+    "ItemTypeIndex": 15,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100191400000009,
+    "DescriptionLanguageId": 150200191400000009,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2603601703,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 135260350,
+    "IsPrecious": false
+  },
+  {
     "Id": 200000000001,
     "ResourceId": "spm_0001",
     "ItemTypeIndex": 23,
@@ -17822,6 +17836,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 240000021002,
+    "ResourceId": "spm_0004",
+    "ItemTypeIndex": 23,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100240000021002,
+    "DescriptionLanguageId": 150200240000021002,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2603509902,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120021002,
+    "IsPrecious": false
+  },
+  {
     "Id": 240000021021,
     "ResourceId": "spm_0004",
     "ItemTypeIndex": 23,
@@ -17833,6 +17861,20 @@
     "EffectValue": 0,
     "IsHiddenIfEmpty": false,
     "SortOrder": 120021021,
+    "IsPrecious": false
+  },
+  {
+    "Id": 250000021002,
+    "ResourceId": "spm_0021",
+    "ItemTypeIndex": 31,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100250000021002,
+    "DescriptionLanguageId": 150200250000021002,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2603509902,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120041002,
     "IsPrecious": false
   },
   {

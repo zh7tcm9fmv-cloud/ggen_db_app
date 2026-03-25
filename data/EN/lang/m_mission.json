@@ -1472,6 +1472,18 @@
     "value": "Register 700 different types of units to the database."
   },
   {
+    "id": 180100110011900123,
+    "value": "Register 750 different types of units to the database."
+  },
+  {
+    "id": 180100110011900124,
+    "value": "Register 800 different types of units to the database."
+  },
+  {
+    "id": 180100110011900125,
+    "value": "Register 850 different types of units to the database."
+  },
+  {
     "id": 180100110012000101,
     "value": "Register 10 different types of characters to the database."
   },
@@ -1744,6 +1756,26 @@
     "value": "Level up 500 unit type(s) to maximum"
   },
   {
+    "id": 180100110012500131,
+    "value": "Level up 520 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500132,
+    "value": "Level up 540 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500133,
+    "value": "Level up 560 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500134,
+    "value": "Level up 580 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500135,
+    "value": "Level up 600 unit type(s) to maximum"
+  },
+  {
     "id": 180100110012600101,
     "value": "Raise Limit Break to 3 or higher for 10 unit type(s)"
   },
@@ -1862,6 +1894,26 @@
   {
     "id": 180100110012600130,
     "value": "Raise Limit Break to 3 or higher for 500 unit type(s)"
+  },
+  {
+    "id": 180100110012600131,
+    "value": "Raise Limit Break to 3 or higher for 520 unit type(s)"
+  },
+  {
+    "id": 180100110012600132,
+    "value": "Raise Limit Break to 3 or higher for 540 unit type(s)"
+  },
+  {
+    "id": 180100110012600133,
+    "value": "Raise Limit Break to 3 or higher for 560 unit type(s)"
+  },
+  {
+    "id": 180100110012600134,
+    "value": "Raise Limit Break to 3 or higher for 580 unit type(s)"
+  },
+  {
+    "id": 180100110012600135,
+    "value": "Raise Limit Break to 3 or higher for 600 unit type(s)"
   },
   {
     "id": 180100200010000101,
@@ -7774,6 +7826,114 @@
   {
     "id": 180100260320030701,
     "value": "Clear \"VS. Gouf Custom EXPERT\" from the story event \"Mobile Suit Gundam: The 08th MS Team\"."
+  },
+  {
+    "id": 180100260350011101,
+    "value": "Develop 10 units."
+  },
+  {
+    "id": 180100260350011102,
+    "value": "Develop 30 units."
+  },
+  {
+    "id": 180100260350011103,
+    "value": "Develop 50 units."
+  },
+  {
+    "id": 180100260350011104,
+    "value": "Clear any Main Stage 10 times."
+  },
+  {
+    "id": 180100260350011105,
+    "value": "Clear any Main Stage 30 times."
+  },
+  {
+    "id": 180100260350011106,
+    "value": "Clear any Main Stage 50 times."
+  },
+  {
+    "id": 180100260350011107,
+    "value": "Clear any event stage 10 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260350011108,
+    "value": "Clear any event stage 20 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260350011109,
+    "value": "Clear any event stage 30 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260350012101,
+    "value": "Use 500 AP."
+  },
+  {
+    "id": 180100260350012102,
+    "value": "Use 1,000 AP."
+  },
+  {
+    "id": 180100260350012103,
+    "value": "Use 2,000 AP."
+  },
+  {
+    "id": 180100260350012104,
+    "value": "Complete a character request 5 times."
+  },
+  {
+    "id": 180100260350012105,
+    "value": "Complete a character request 10 times."
+  },
+  {
+    "id": 180100260350012106,
+    "value": "Complete a character request 15 times."
+  },
+  {
+    "id": 180100260350012107,
+    "value": "Dismantle 10 unit(s)."
+  },
+  {
+    "id": 180100260350012108,
+    "value": "Dismantle 20 unit(s)."
+  },
+  {
+    "id": 180100260350012109,
+    "value": "Clear an Upgrade Stages 10 times."
+  },
+  {
+    "id": 180100260350013101,
+    "value": "Raise unit levels by a total of 50."
+  },
+  {
+    "id": 180100260350013102,
+    "value": "Raise unit levels by a total of 100."
+  },
+  {
+    "id": 180100260350013103,
+    "value": "Raise unit levels by a total of 150."
+  },
+  {
+    "id": 180100260350013104,
+    "value": "Upgrade 10 weapons."
+  },
+  {
+    "id": 180100260350013105,
+    "value": "Upgrade 20 weapons."
+  },
+  {
+    "id": 180100260350013106,
+    "value": "Raise any unit's Limit Break to 3 or higher."
+  },
+  {
+    "id": 180100260350013107,
+    "value": "Clear Eternal Road on NORMAL difficulty or higher 1 time. (Incl. clearing stage again)"
+  },
+  {
+    "id": 180100260350013108,
+    "value": "Clear Eternal Road stages on HARD difficulty or higher 1 time (Incl. clearing stage again)"
+  },
+  {
+    "id": 180100260350013109,
+    "value": "Clear 3 Instructor’s Challenges."
   },
   {
     "id": 180101251050011101,

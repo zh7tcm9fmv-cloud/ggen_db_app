@@ -388,5 +388,35 @@
     "ResourceId": "ml_homeimg_info_300011",
     "ScheduleId": 2603301502,
     "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2603500101,
+    "TransitionId": 28002603500401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603500401,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2603500401",
+    "ScheduleId": 2603501701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603500201,
+    "TransitionId": 28002603500201,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603500201,
+    "SortOrder": 1,
+    "ResourceId": "gasha_2603500201",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603600601,
+    "TransitionId": 28002603600601,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603600601,
+    "SortOrder": 1001,
+    "ResourceId": "gasha_2603600501",
+    "ScheduleId": 2603601703,
+    "BannerResourceTypeIndex": 0
   }
 ]

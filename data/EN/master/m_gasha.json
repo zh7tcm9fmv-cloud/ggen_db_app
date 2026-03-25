@@ -18,8 +18,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504100201,
@@ -40,8 +40,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504100501,
@@ -62,8 +62,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504100502,
@@ -84,8 +84,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504100503,
@@ -106,8 +106,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504100504,
@@ -128,8 +128,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2504300301,
@@ -150,8 +150,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2505100301,
@@ -172,8 +172,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2505200401,
@@ -194,8 +194,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2505200501,
@@ -216,8 +216,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2505200502,
@@ -238,8 +238,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2505400301,
@@ -260,8 +260,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2506100302,
@@ -282,8 +282,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2506200401,
@@ -304,8 +304,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2506300301,
@@ -326,8 +326,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2507100302,
@@ -348,8 +348,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2507200401,
@@ -370,8 +370,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2507300301,
@@ -392,8 +392,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2508100302,
@@ -414,8 +414,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2508200401,
@@ -436,8 +436,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2508300301,
@@ -458,8 +458,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2509200401,
@@ -480,8 +480,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2509300301,
@@ -502,8 +502,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2509600301,
@@ -524,8 +524,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2509600501,
@@ -546,8 +546,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2509600601,
@@ -568,8 +568,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 1000000001,
     "SnsShareMessageLanguageId": 221200250960060101,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2510300301,
@@ -590,8 +590,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2510300501,
@@ -612,8 +612,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2510700401,
@@ -634,8 +634,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2510800301,
@@ -656,8 +656,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2511100302,
@@ -678,8 +678,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2511100501,
@@ -700,8 +700,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2511300401,
@@ -722,8 +722,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2511400301,
@@ -744,8 +744,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512100301,
@@ -766,8 +766,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512100501,
@@ -788,8 +788,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512300401,
@@ -810,8 +810,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512300601,
@@ -832,8 +832,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512400301,
@@ -854,8 +854,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512400501,
@@ -876,8 +876,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2512400502,
@@ -898,8 +898,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2601200302,
@@ -920,8 +920,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2601200501,
@@ -942,8 +942,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2601400401,
@@ -964,8 +964,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2601500301,
@@ -986,8 +986,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602200302,
@@ -1008,8 +1008,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602200501,
@@ -1030,8 +1030,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602200502,
@@ -1052,8 +1052,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602200503,
@@ -1074,8 +1074,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602300401,
@@ -1096,8 +1096,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602400301,
@@ -1118,8 +1118,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2602400501,
@@ -1140,8 +1140,8 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2603200302,
@@ -1162,8 +1162,8 @@
     "CautionTextLanguageId": 220900000000000001,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   },
   {
     "Id": 2603200501,
@@ -1184,7 +1184,73 @@
     "CautionTextLanguageId": 0,
     "GashaMovieSettingId": 0,
     "SnsShareMessageLanguageId": 0,
-    "Unknown_Col_18": 0,
-    "Unknown_Col_19": 0
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
+  },
+  {
+    "Id": 2603500201,
+    "NameLanguageId": 220100002603500201,
+    "LogoResourceId": "gasha_logo_2603500201",
+    "GashaTypeIndex": 3,
+    "AppealBannerId": 2603500201,
+    "AppealTextLanguageId": 220400002603500201,
+    "ScheduleId": 2603501702,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitRollCount": 1,
+    "IsShown": false,
+    "GashaPointExchangeId": 0,
+    "SortOrder": 999,
+    "RollConditionSetId": 0,
+    "GashaAppealMovieResourceId": "",
+    "GashaAppealMoviePriority": 0,
+    "CautionTextLanguageId": 220900000000000001,
+    "GashaMovieSettingId": 0,
+    "SnsShareMessageLanguageId": 0,
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
+  },
+  {
+    "Id": 2603500401,
+    "NameLanguageId": 220100002603500401,
+    "LogoResourceId": "gasha_logo_2603500401",
+    "GashaTypeIndex": 1,
+    "AppealBannerId": 2603500101,
+    "AppealTextLanguageId": 220400002504100101,
+    "ScheduleId": 2603501701,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitRollCount": 0,
+    "IsShown": true,
+    "GashaPointExchangeId": 2603500401,
+    "SortOrder": 875,
+    "RollConditionSetId": 0,
+    "GashaAppealMovieResourceId": "",
+    "GashaAppealMoviePriority": 0,
+    "CautionTextLanguageId": 220900000000000001,
+    "GashaMovieSettingId": 0,
+    "SnsShareMessageLanguageId": 0,
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
+  },
+  {
+    "Id": 2603600601,
+    "NameLanguageId": 220100002603600601,
+    "LogoResourceId": "gasha_logo_2603600501",
+    "GashaTypeIndex": 5,
+    "AppealBannerId": 2603600601,
+    "AppealTextLanguageId": 220400002603600601,
+    "ScheduleId": 2603601703,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitRollCount": 1,
+    "IsShown": true,
+    "GashaPointExchangeId": 0,
+    "SortOrder": 998,
+    "RollConditionSetId": 0,
+    "GashaAppealMovieResourceId": "",
+    "GashaAppealMoviePriority": 0,
+    "CautionTextLanguageId": 220900000000000002,
+    "GashaMovieSettingId": 1000000002,
+    "SnsShareMessageLanguageId": 221200260360060101,
+    "TopCautionTextLanguageId": 220900000000000003,
+    "GashaTicketToRareMedalConvertRate": 100
   }
 ]

@@ -840,6 +840,38 @@
     "CharacterOfferMessageSetId": 1285000070001
   },
   {
+    "CharacterOfferMessageSetListId": 12850000800,
+    "CharacterOfferMessageSetId": 1285000080001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850000900,
+    "CharacterOfferMessageSetId": 1285000090001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001000,
+    "CharacterOfferMessageSetId": 1285000100001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001100,
+    "CharacterOfferMessageSetId": 1285000110001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001200,
+    "CharacterOfferMessageSetId": 1285000120001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001300,
+    "CharacterOfferMessageSetId": 1285000130001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001400,
+    "CharacterOfferMessageSetId": 1285000140001
+  },
+  {
+    "CharacterOfferMessageSetListId": 12850001500,
+    "CharacterOfferMessageSetId": 1285000150001
+  },
+  {
     "CharacterOfferMessageSetListId": 21001000101,
     "CharacterOfferMessageSetId": 2100100010101
   },
@@ -1682,5 +1714,37 @@
   {
     "CharacterOfferMessageSetListId": 22850000700,
     "CharacterOfferMessageSetId": 2285000070001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850000800,
+    "CharacterOfferMessageSetId": 2285000080001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850000900,
+    "CharacterOfferMessageSetId": 2285000090001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001000,
+    "CharacterOfferMessageSetId": 2285000100001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001100,
+    "CharacterOfferMessageSetId": 2285000110001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001200,
+    "CharacterOfferMessageSetId": 2285000120001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001300,
+    "CharacterOfferMessageSetId": 2285000130001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001400,
+    "CharacterOfferMessageSetId": 2285000140001
+  },
+  {
+    "CharacterOfferMessageSetListId": 22850001500,
+    "CharacterOfferMessageSetId": 2285000150001
   }
 ]

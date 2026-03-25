@@ -2100,6 +2100,86 @@
     "MessageLanguageId": 100812850000700012
   },
   {
+    "CharacterOfferMessageSetId": 1285000080001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000800011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000080001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000800012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000090001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850000900011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000090001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850000900012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000100001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001000011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000100001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001000012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000110001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001100011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000110001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001100012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000120001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001200011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000120001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001200012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000130001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001300011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000130001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001300012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000140001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001400011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000140001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001400012
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000150001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100812850001500011
+  },
+  {
+    "CharacterOfferMessageSetId": 1285000150001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100812850001500012
+  },
+  {
     "CharacterOfferMessageSetId": 2100100010101,
     "SortOrder": 1,
     "MessageLanguageId": 100821001000101011
@@ -4208,5 +4288,85 @@
     "CharacterOfferMessageSetId": 2285000070001,
     "SortOrder": 2,
     "MessageLanguageId": 100822850000700012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000080001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000800011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000080001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000800012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000090001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850000900011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000090001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850000900012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000100001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001000011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000100001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001000012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000110001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001100011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000110001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001100012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000120001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001200011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000120001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001200012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000130001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001300011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000130001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001300012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000140001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001400011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000140001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001400012
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000150001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100822850001500011
+  },
+  {
+    "CharacterOfferMessageSetId": 2285000150001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100822850001500012
   }
 ]

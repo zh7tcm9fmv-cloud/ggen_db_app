@@ -1832,6 +1832,58 @@
     "value": "Advantage: Mobile Armor LV 5"
   },
   {
+    "id": 140100000101320200,
+    "value": "GN Field LV 2"
+  },
+  {
+    "id": 140100000101320300,
+    "value": "GN Field LV 3"
+  },
+  {
+    "id": 140100000101320400,
+    "value": "GN Field LV 4"
+  },
+  {
+    "id": 140100000101430100,
+    "value": "Positron Reflector LV 1"
+  },
+  {
+    "id": 140100000101440100,
+    "value": "Positron Reflector LV 2"
+  },
+  {
+    "id": 140100000101450100,
+    "value": "Positron Reflector LV 3"
+  },
+  {
+    "id": 140100000101460100,
+    "value": "Positron Reflector LV 4"
+  },
+  {
+    "id": 140100000101470100,
+    "value": "Positron Reflector LV 5"
+  },
+  {
+    "id": 140100000101480100,
+    "value": "(When countering or choosing to Evade) Increased EVA LV 1"
+  },
+  {
+    "id": 140100000101480200,
+    "value": "(When countering or choosing to Evade) Increased EVA LV 2"
+  },
+  {
+    "id": 140100000101480300,
+    "value": "(When countering or choosing to Evade) Increased EVA LV 3"
+  },
+  {
+    "id": 140100000101480400,
+    "value": "(When countering or choosing to Evade) Increased EVA LV 4"
+  },
+  {
+    "id": 140100000101480500,
+    "value": "(When countering or choosing to Evade) Increased EVA LV 5"
+  },
+  {
     "id": 140100000101490200,
     "value": "Increased Max HP & Advantage: X-Rounder LV 2"
   },
@@ -4253,19 +4305,19 @@
   },
   {
     "id": 140100000201710101,
-    "value": "Support Defense LV 1"
+    "value": "(Series conditions) Support Defense LV 1"
   },
   {
     "id": 140100000201730101,
-    "value": "Support Attack / Counter Support LV 1"
+    "value": "(Series conditions) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000201740101,
-    "value": "Support Defense LV 1"
+    "value": "(Series conditions) Support Defense LV 1"
   },
   {
     "id": 140100000201750101,
-    "value": "Chance Step Increase LV 1"
+    "value": "(Series conditions) Chance Step Increase LV 1"
   },
   {
     "id": 140100000201760100,
@@ -9678,6 +9730,14 @@
   {
     "id": 140100000406220101,
     "value": "Limiter OFF SSR (Mobile Suit Gundam AGE)"
+  },
+  {
+    "id": 140100000406350100,
+    "value": "Gold Haro [1st Anniv.]"
+  },
+  {
+    "id": 140100000406360100,
+    "value": "Silver Haro [1st Anniv.]"
   },
   {
     "id": 140100000510010101,

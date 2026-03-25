@@ -1168,5 +1168,83 @@
     "ActiveControlTypeIndex": 0,
     "DisplayScheduleId": 0,
     "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260350020101,
+    "GashaId": 2603500201,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260350020101,
+    "IsUrGuaranteed": true,
+    "IsResultSaved": false,
+    "ScheduleId": 2603501702,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 6
+  },
+  {
+    "Id": 260350040101,
+    "GashaId": 2603500401,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260350040101,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260350040102,
+    "GashaId": 2603500401,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260350040102,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260360060101,
+    "GashaId": 2603600601,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260360060101,
+    "IsUrGuaranteed": true,
+    "IsResultSaved": true,
+    "ScheduleId": 2603601704,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 2603601703,
+    "GashaFooterLabelId": 4
+  },
+  {
+    "Id": 260360060102,
+    "GashaId": 2603600601,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 2,
+    "GashaEntryDetailId": 260360060102,
+    "IsUrGuaranteed": true,
+    "IsResultSaved": true,
+    "ScheduleId": 2603601705,
+    "ActiveControlTypeIndex": 1,
+    "DisplayScheduleId": 2603601705,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260360060103,
+    "GashaId": 2603600601,
+    "SlotNumber": 3,
+    "SortOrderInSlot": 3,
+    "GashaEntryDetailId": 260360060103,
+    "IsUrGuaranteed": true,
+    "IsResultSaved": true,
+    "ScheduleId": 2603601705,
+    "ActiveControlTypeIndex": 1,
+    "DisplayScheduleId": 2603601705,
+    "GashaFooterLabelId": 0
   }
 ]

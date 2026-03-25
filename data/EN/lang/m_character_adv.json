@@ -1316,6 +1316,10 @@
     "value": "Domon Kasshu"
   },
   {
+    "id": 100400001200000106,
+    "value": "Domon Kasshu"
+  },
+  {
     "id": 100400001200000200,
     "value": "Chibodee Crocket"
   },
@@ -1393,6 +1397,10 @@
   },
   {
     "id": 100400001200000703,
+    "value": "Rain Mikamura"
+  },
+  {
+    "id": 100400001200000704,
     "value": "Rain Mikamura"
   },
   {
@@ -1508,6 +1516,10 @@
     "value": "Heero Yuy"
   },
   {
+    "id": 100400001210000104,
+    "value": "Heero Yuy"
+  },
+  {
     "id": 100400001210000200,
     "value": "Duo Maxwell"
   },
@@ -1612,6 +1624,10 @@
     "value": "Relena Peacecraft"
   },
   {
+    "id": 100400001210002303,
+    "value": "Relena Darlian"
+  },
+  {
     "id": 100400001210002400,
     "value": "Dorothy Catalonia"
   },
@@ -1652,11 +1668,19 @@
     "value": "Garrod Ran"
   },
   {
+    "id": 100400001230000102,
+    "value": "Garrod Ran"
+  },
+  {
     "id": 100400001230000200,
     "value": "Tiffa Adill"
   },
   {
     "id": 100400001230000201,
+    "value": "Tiffa Adill"
+  },
+  {
+    "id": 100400001230000202,
     "value": "Tiffa Adill"
   },
   {
@@ -5122,6 +5146,14 @@
   {
     "id": 100400002850000700,
     "value": "Green Haro"
+  },
+  {
+    "id": 100400002850000800,
+    "value": "Silver Haro"
+  },
+  {
+    "id": 100400002850000900,
+    "value": "Gold Haro"
   },
   {
     "id": 100400002999000001,
