@@ -938,17 +938,50 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
     Find portrait using IMAGE_INDEX.
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
+    Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
     """
     if not IMAGE_INDEX:
         return None
-    
+
+    files = IMAGE_INDEX.get(portrait_folder_key, []) or []
+    files_set = set(files)
+    files_by_lower = {f.lower(): f for f in files}
+
+    def _static(fn):
+        return f"/static/{portrait_folder_key}/{fn}"
+
+    def _resolve_exact_filename(base):
+        """Return canonical filename from index if base matches case-insensitively."""
+        if base in files_set:
+            return base
+        lo = base.lower()
+        return files_by_lower.get(lo)
+
+    def _try_exact_resource_filename(rid):
+        """Match disk names: cb_<rid>.ext, ub_<rid>.ext, ms_<rid>.ext, or <rid>.ext."""
+        if not rid:
+            return None
+        rid = str(rid).strip()
+        for ext in ('.webp', '.png', '.jpg', '.jpeg'):
+            for prefix in ('cb_', 'ub_', 'ms_', ''):
+                fn = f'{prefix}{rid}{ext}'
+                hit = _resolve_exact_filename(fn)
+                if hit:
+                    return hit
+        return None
+
     def pick_best(matches, rid_for_exact=None):
-        """Prefer exact basename (rid.webp), then file without ' #' suffix."""
+        """Prefer cb_<rid>.ext, then rid.ext, then other substring matches without ' #'."""
         if not matches:
             return None
         rle = (rid_for_exact or '').lower()
         if rle:
+            cb_pref = f'cb_{rle}.'
+            cb_ok = [m for m in matches if m.lower().startswith(cb_pref)]
+            if cb_ok:
+                cb_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return cb_ok[0]
             exact = [
                 m for m in matches
                 if m.lower().startswith(rle + '.') or m.lower() in (rle + '.webp', rle + '.png', rle + '.jpg', rle + '.jpeg')
@@ -964,37 +997,43 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
         candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
     elif resource_ids:
         r = str(resource_ids).strip()
-        if r and r != '0': 
+        if r and r != '0':
             candidates = [r]
-    
-    files = IMAGE_INDEX.get(portrait_folder_key, [])
 
-    # Try resource IDs first
+    # 1) Exact filename from ResourceId (e.g. cb_g2300c00202.webp)
+    for rid in candidates:
+        hit = _try_exact_resource_filename(rid)
+        if hit:
+            return _static(hit)
+
+    # 2) Substring on resource id (prefer cb_<rid> via pick_best)
     for rid in candidates:
         rl = rid.lower()
         matches = [fn for fn in files if rl in fn.lower()]
         best = pick_best(matches, rl)
         if best:
-            return f"/static/{portrait_folder_key}/{best}"
-    
-    # Try entity ID
+            return _static(best)
+
+    # 3) Full entity id in filename (rare)
     if entity_id:
         eid = str(entity_id).strip()
         el = eid.lower()
         matches = [fn for fn in files if el in fn.lower()]
         best = pick_best(matches, el)
         if best:
-            return f"/static/{portrait_folder_key}/{best}"
-        
-        # Try suffixes
-        for slen in [8, 7, 6, 5, 4]:
-            if len(eid) >= slen:
-                suffix = eid[-slen:].lower()
-                matches = [fn for fn in files if suffix in fn.lower()]
-                best = pick_best(matches, suffix)
-                if best:
-                    return f"/static/{portrait_folder_key}/{best}"
-    
+            return _static(best)
+
+        # 4) Long suffixes only — short suffixes (e.g. 4 chars "0202") match unrelated portraits
+        # (e.g. cb_g0800c00202 when looking up character 1230000202).
+        for slen in (10, 9, 8):
+            if len(eid) < slen:
+                continue
+            suffix = eid[-slen:].lower()
+            matches = [fn for fn in files if suffix in fn.lower()]
+            best = pick_best(matches, suffix)
+            if best:
+                return _static(best)
+
     return None
 
 def build_m_series_logo_pad_map(master_data):
