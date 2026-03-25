@@ -2842,7 +2842,9 @@ def compute_whats_new_delta():
             if rows:
                 changes.append({
                     'kind': 'unit_abilities',
-                    'title': f'{_wn_unit_name(uid, ld)} ({uid})',
+                    'title': _wn_unit_name(uid, ld),
+                    'link_type': 'unit',
+                    'link_id': uid,
                     'rows': rows,
                 })
     old_uw = snap.get('unit_weapons') or {}
@@ -2857,7 +2859,9 @@ def compute_whats_new_delta():
             if rows:
                 changes.append({
                     'kind': 'unit_weapons',
-                    'title': f'{_wn_unit_name(uid, ld)} ({uid})',
+                    'title': _wn_unit_name(uid, ld),
+                    'link_type': 'unit',
+                    'link_id': uid,
                     'rows': rows,
                 })
     old_ca = snap.get('char_abilities') or {}
@@ -2872,17 +2876,34 @@ def compute_whats_new_delta():
             if rows:
                 changes.append({
                     'kind': 'char_abilities',
-                    'title': f'{_wn_char_name(cid, ld)} ({cid})',
+                    'title': _wn_char_name(cid, ld),
+                    'link_type': 'character',
+                    'link_id': cid,
                     'rows': rows,
                 })
     added = []
     for uid in sorted(set(cur['units']) - old_units):
-        added.append(f"New unit: {_wn_unit_name(uid, ld)} ({uid})")
+        added.append({
+            'kind': 'new_unit',
+            'name': _wn_unit_name(uid, ld),
+            'link_type': 'unit',
+            'link_id': uid,
+        })
     for cid in sorted(set(cur['characters']) - old_chars):
-        added.append(f"New character: {_wn_char_name(cid, ld)} ({cid})")
+        added.append({
+            'kind': 'new_character',
+            'name': _wn_char_name(cid, ld),
+            'link_type': 'character',
+            'link_id': cid,
+        })
     old_op = set(snap.get('option_parts') or [])
     for opid in sorted(set(cur['option_parts']) - old_op):
-        added.append(f"New option part: {_wn_option_part_name(opid, ld)} ({opid})")
+        added.append({
+            'kind': 'new_option_part',
+            'name': _wn_option_part_name(opid, ld),
+            'link_type': 'modification',
+            'link_id': opid,
+        })
     if not changes and not added:
         return None
     return {'date': _whats_new_master_data_date(), 'changes': changes, 'added': added}
