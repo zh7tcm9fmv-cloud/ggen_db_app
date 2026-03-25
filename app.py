@@ -4242,21 +4242,63 @@ def skills_for_character_browse(ld):
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
-def browse_filters_pool_signature(args):
-    """Stable key for current-list skill/ability pools (same filters as list, excluding skill/ability)."""
-    raw = '|'.join([
-        args.get('q', '').strip().lower(),
-        args.get('role', '').strip(),
-        args.get('rarity', '').strip(),
-        args.get('source', '').strip(),
-        args.get('lineage_id', '').strip(),
-        args.get('series_id', '').strip(),
-    ])
+def browse_filters_pool_signature(args, entity=None):
+    """Stable key for current-list browse pools. Supporters only use q, rarity, lineage_id."""
+    ent = (entity or '').strip().lower()
+    if ent == 'supporters':
+        raw = '|'.join([
+            args.get('q', '').strip().lower(),
+            args.get('rarity', '').strip(),
+            args.get('lineage_id', '').strip(),
+        ])
+    else:
+        raw = '|'.join([
+            args.get('q', '').strip().lower(),
+            args.get('role', '').strip(),
+            args.get('rarity', '').strip(),
+            args.get('source', '').strip(),
+            args.get('lineage_id', '').strip(),
+            args.get('series_id', '').strip(),
+            args.get('skill_id', '').strip(),
+            args.get('ability_id', '').strip(),
+        ])
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
 
-def character_passes_browse_skill_pool_filters(cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter, lineage_filter, series_filter):
-    """list_characters row inclusion except skill_id filter (for scoped skill dropdown)."""
+def lineage_rows_from_short_ids(short_ids, ld):
+    """Build lineage browse rows from a set of short tag ids (same shape as lineages_for_entity_browse)."""
+    llk = ld.get('lineage_lookup', {})
+    ll = ld.get('lineage_list', [])
+    rows = []
+    for sid in short_ids:
+        name = llk.get(sid)
+        if not name:
+            for fid, val in ll:
+                if str(fid).endswith(sid) and len(sid) >= 4:
+                    name = val
+                    break
+        if not name:
+            name = sid
+        full_id = sid
+        for fid, val in ll:
+            if str(fid).endswith(sid) and len(sid) >= 4:
+                full_id = str(fid)
+                break
+        rows.append({'id': full_id, 'name': name})
+    by_id = {}
+    for r in rows:
+        fid = str(r['id'])
+        if fid not in by_id:
+            by_id[fid] = r
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
+def character_passes_browse_pool_filters(
+    cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+    lineage_filter, series_filter, skill_filter,
+    *, apply_lineage=True, apply_series=True, apply_skill=True,
+):
+    """list_characters inclusion with optional lineage/series/skill filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
         return False
     ri = info.get('rarity', '1')
@@ -4281,11 +4323,14 @@ def character_passes_browse_skill_pool_filters(cid, info, ld, lc, sq, role_filte
     if source_filter is not None:
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
-    if lineage_filter is not None:
+    if apply_lineage and lineage_filter is not None:
         if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
             return False
-    if series_filter is not None:
+    if apply_series and series_filter is not None:
         if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc):
+            return False
+    if apply_skill and skill_filter is not None:
+        if not id_seek and not entity_matches_char_skills(cid, skill_filter):
             return False
     lid = ld['char_id_map'].get(cid, '')
     name = ld['char_text_map'].get(lid, '') if lid else ''
@@ -4329,8 +4374,12 @@ def character_passes_browse_skill_pool_filters(cid, info, ld, lc, sq, role_filte
     return True
 
 
-def unit_passes_browse_ability_pool_filters(uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter, lineage_filter, series_filter):
-    """list_units row inclusion except ability_id filter (for scoped ability dropdown)."""
+def unit_passes_browse_pool_filters(
+    uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+    lineage_filter, series_filter, ability_filter,
+    *, apply_lineage=True, apply_series=True, apply_ability=True,
+):
+    """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
         return False
     ri = info.get('rarity', '1')
@@ -4355,11 +4404,14 @@ def unit_passes_browse_ability_pool_filters(uid, info, ld, lc, sq, role_filter, 
     if source_filter is not None:
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
-    if lineage_filter is not None:
+    if apply_lineage and lineage_filter is not None:
         if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
             return False
-    if series_filter is not None:
+    if apply_series and series_filter is not None:
         if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+            return False
+    if apply_ability and ability_filter is not None:
+        if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -4410,6 +4462,234 @@ def unit_passes_browse_ability_pool_filters(uid, info, ld, lc, sq, role_filter, 
     return True
 
 
+def lineages_for_character_browse_filtered(ld, lc, args):
+    """Lineage tags that appear on at least one character matching filters except lineage_id."""
+    sq = args.get('q', '').strip().lower()
+    role_filter = parse_list_role_filter(args.get('role', '').strip())
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    source_filter = parse_list_source_filter(args.get('source', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    short_ids = set()
+    for cid, info in char_info_map.items():
+        if not character_passes_browse_pool_filters(
+            cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, skill_filter, apply_lineage=False, apply_series=True, apply_skill=True,
+        ):
+            continue
+        for lid in char_lin_map.get(cid, []) or []:
+            s = str(lid).strip()
+            if s and s != '0':
+                short_ids.add(s)
+    return lineage_rows_from_short_ids(short_ids, ld)
+
+
+def series_for_character_browse_filtered(ld, lc, args):
+    """Series that appear on at least one character matching filters except series_id."""
+    sq = args.get('q', '').strip().lower()
+    role_filter = parse_list_role_filter(args.get('role', '').strip())
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    source_filter = parse_list_source_filter(args.get('source', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
+    ssm = ld.get('ser_set_map', {})
+    sl = ld.get('series_list', [])
+    cmap = ld.get('char_ser_map', {})
+    seen = set()
+    out = []
+    for cid, info in char_info_map.items():
+        if not character_passes_browse_pool_filters(
+            cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, skill_filter, apply_lineage=True, apply_series=False, apply_skill=True,
+        ):
+            continue
+        set_id = cmap.get(cid, '')
+        if not set_id or set_id == '0':
+            continue
+        for sid in ssm.get(set_id, []):
+            sid = normalize_id(sid)
+            if not sid or sid == '0' or sid in seen:
+                continue
+            seen.add(sid)
+            name = None
+            for lid, val in sl:
+                if lid.endswith(sid):
+                    name = val
+                    break
+            if not name:
+                name = sid
+            icon = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+            out.append({'id': sid, 'name': name, 'icon': icon or ''})
+    out.sort(key=lambda x: x['name'].lower())
+    return out
+
+
+def lineages_for_unit_browse_filtered(ld, lc, args):
+    """Lineage tags that appear on at least one unit matching filters except lineage_id."""
+    sq = args.get('q', '').strip().lower()
+    role_filter = parse_list_role_filter(args.get('role', '').strip())
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    source_filter = parse_list_source_filter(args.get('source', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    short_ids = set()
+    for uid, info in unit_info_map.items():
+        if not unit_passes_browse_pool_filters(
+            uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, ability_filter, apply_lineage=False, apply_series=True, apply_ability=True,
+        ):
+            continue
+        for lid in unit_lin_map.get(uid, []) or []:
+            s = str(lid).strip()
+            if s and s != '0':
+                short_ids.add(s)
+    return lineage_rows_from_short_ids(short_ids, ld)
+
+
+def series_for_unit_browse_filtered(ld, lc, args):
+    """Series that appear on at least one unit matching filters except series_id."""
+    sq = args.get('q', '').strip().lower()
+    role_filter = parse_list_role_filter(args.get('role', '').strip())
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    source_filter = parse_list_source_filter(args.get('source', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ssm = ld.get('ser_set_map', {})
+    sl = ld.get('series_list', [])
+    seen = set()
+    out = []
+    for uid, info in unit_info_map.items():
+        if not unit_passes_browse_pool_filters(
+            uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, ability_filter, apply_lineage=True, apply_series=False, apply_ability=True,
+        ):
+            continue
+        set_id = unit_ser_map.get(uid, '')
+        if not set_id or set_id == '0':
+            continue
+        for sid in ssm.get(set_id, []):
+            sid = normalize_id(sid)
+            if not sid or sid == '0' or sid in seen:
+                continue
+            seen.add(sid)
+            name = None
+            for lid, val in sl:
+                if lid.endswith(sid):
+                    name = val
+                    break
+            if not name:
+                name = sid
+            icon = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+            out.append({'id': sid, 'name': name, 'icon': icon or ''})
+    out.sort(key=lambda x: x['name'].lower())
+    return out
+
+
+def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, lineage_filter, *, apply_lineage=True):
+    """Same inclusion as list_supporters with optional lineage filter step."""
+    if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+        return False
+    nsid = normalize_id(sid)
+    ri = info.get('rarity', '1')
+    lid = ld.get('supporter_id_map', {}).get(sid, '')
+    name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
+    if not name:
+        return False
+    lim = nsid in LIMITED_TIME_SUPPORTER_IDS
+    id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
+    if apply_lineage and lineage_filter is not None:
+        if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
+            return False
+    if rarity_filter is not None:
+        if not rarity_filter:
+            return False
+        letter = RARITY_MAP.get(str(ri), 'N')
+        if not row_matches_rarity_filter(rarity_filter, letter, lim):
+            return False
+    lsr = supporter_leader_map.get(sid, [])
+    all_tags = []
+    descs = []
+    for ls in lsr:
+        if ls.get('tier') != 3:
+            continue
+        desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
+        tags = resolve_condition_tags(
+            ls.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc,
+        )
+        if desc:
+            descs.append(desc)
+        for t in tags:
+            if not any(x['name'] == t['name'] for x in all_tags):
+                all_tags.append(t)
+    sts = ', '.join([t['name'] for t in all_tags])
+    cb = '\n'.join(descs)
+    ask_names = []
+    for a in supporter_active_map.get(sid, []):
+        an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), '')
+        if an:
+            ask_names.append(an)
+    ask_str = ' '.join(ask_names)
+    if sq:
+        searchable = f'{name} {sid} {sts} {cb} {ask_str}'.lower()
+        ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
+        if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid):
+            return False
+    return True
+
+
+def lineages_for_supporter_browse_filtered(ld, lc, args):
+    """Lineage tags from tier-3 leader skills for supporters matching filters except lineage_id."""
+    sq = args.get('q', '').strip().lower()
+    rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
+    lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    llk = ld.get('lineage_lookup', {})
+    ll = ld.get('lineage_list', [])
+    snm = ld.get('series_name_map', {})
+    by_id = {}
+    for supp_id, info in supporter_info_map.items():
+        if not supporter_passes_browse_pool_filters(supp_id, info, ld, lc, sq, rarity_filter, lineage_filter, apply_lineage=False):
+            continue
+        lsr = supporter_leader_map.get(supp_id, [])
+        for ls in lsr:
+            if ls.get('tier') != 3:
+                continue
+            tags = resolve_condition_tags(
+                ls.get('trait_cond_id', '0'), trait_condition_raw_map, llk, snm, lc,
+            )
+            for t in tags:
+                tid = str(t.get('id', '')).strip()
+                if not tid or tid == '0':
+                    continue
+                nm = (t.get('name') or '').strip()
+                full_id = tid
+                for fid, val in ll:
+                    fu = str(fid)
+                    if len(tid) >= 4 and fu.endswith(tid):
+                        full_id = fu
+                        break
+                    if len(tid) < 4 and fu.endswith(tid.zfill(4)):
+                        full_id = fu
+                        break
+                if not nm:
+                    nm = llk.get(tid) or llk.get(full_id)
+                    if not nm:
+                        for fid, val in ll:
+                            fu = str(fid)
+                            if fu.endswith(tid) or (len(tid) < 4 and fu.endswith(tid.zfill(4))):
+                                nm = val
+                                break
+                if not nm:
+                    nm = tid
+                key = str(full_id)
+                if key not in by_id:
+                    by_id[key] = {'id': full_id, 'name': nm}
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
 def skills_for_character_browse_filtered(ld, lc, args):
     """Skills that appear on at least one character matching list filters (skill_id excluded)."""
     sq = args.get('q', '').strip().lower()
@@ -4418,6 +4698,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
     source_filter = parse_list_source_filter(args.get('source', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
     seen = {}
     for sk in extract_data_list(char_skill):
         cid = normalize_id(sk.get('CharacterId', ''))
@@ -4426,7 +4707,10 @@ def skills_for_character_browse_filtered(ld, lc, args):
         info = char_info_map.get(cid)
         if not info:
             continue
-        if not character_passes_browse_skill_pool_filters(cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter, lineage_filter, series_filter):
+        if not character_passes_browse_pool_filters(
+            cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, skill_filter, apply_skill=False,
+        ):
             continue
         for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
             sid = normalize_id(sk.get(key) or '')
@@ -4478,13 +4762,17 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     source_filter = parse_list_source_filter(args.get('source', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
+    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
     ldc = get_calc_lang_data()
     seen = {}
     for uid in unit_list_playable_ids:
         info = unit_info_map.get(uid)
         if not info:
             continue
-        if not unit_passes_browse_ability_pool_filters(uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter, lineage_filter, series_filter):
+        if not unit_passes_browse_pool_filters(
+            uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
+            lineage_filter, series_filter, ability_filter, apply_ability=False,
+        ):
             continue
         ua = unit_abil_map.get(uid, []) or []
         gain_list = list(unit_ssp_abil_gain_list.get(uid, []) or [])
@@ -4542,17 +4830,24 @@ def browse_filters():
             entity = 'characters'
         filter_mode = (request.args.get('filter_mode') or '').strip().lower()
         if entity == 'supporters':
-            ck = f"browse_filters_v10_{lc}_{entity}"
+            if filter_mode == 'current':
+                sig = browse_filters_pool_signature(request.args, 'supporters')
+                ck = f"browse_filters_v10_{lc}_{entity}_cur_{sig}"
+            else:
+                ck = f"browse_filters_v10_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify(cached)
             ld = get_lang_data(lc)
-            lineages = lineages_for_supporter_browse(ld, lc)
+            if filter_mode == 'current':
+                lineages = lineages_for_supporter_browse_filtered(ld, lc, request.args)
+            else:
+                lineages = lineages_for_supporter_browse(ld, lc)
             result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
             set_cached_response(ck, result)
             return jsonify(convert_image_urls(result))
         if filter_mode == 'current':
-            sig = browse_filters_pool_signature(request.args)
+            sig = browse_filters_pool_signature(request.args, entity)
             ck = f"browse_filters_v10_{lc}_{entity}_cur_{sig}"
         else:
             ck = f"browse_filters_v10_{lc}_{entity}"
@@ -4560,15 +4855,19 @@ def browse_filters():
         if cached:
             return jsonify(cached)
         ld = get_lang_data(lc)
-        lin_map = char_lin_map if entity == 'characters' else unit_lin_map
-        lineages = lineages_for_entity_browse(lin_map, ld)
-        series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
         if filter_mode == 'current':
             if entity == 'characters':
+                lineages = lineages_for_character_browse_filtered(ld, lc, request.args)
+                series = series_for_character_browse_filtered(ld, lc, request.args)
                 extra = {'skills': skills_for_character_browse_filtered(ld, lc, request.args)}
             else:
+                lineages = lineages_for_unit_browse_filtered(ld, lc, request.args)
+                series = series_for_unit_browse_filtered(ld, lc, request.args)
                 extra = {'abilities': abilities_for_unit_browse_filtered(ld, lc, request.args)}
         else:
+            lin_map = char_lin_map if entity == 'characters' else unit_lin_map
+            lineages = lineages_for_entity_browse(lin_map, ld)
+            series = series_for_entity_browse(ld, 'characters' if entity == 'characters' else 'units')
             if entity == 'characters':
                 extra = {'skills': skills_for_character_browse(ld)}
             else:
