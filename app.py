@@ -3309,6 +3309,24 @@ def index():
 def get_languages(): 
     return jsonify(convert_image_urls({'languages': list(LANG_DATA.keys()), 'default': DEFAULT_LANG}))
 
+WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new.json')
+
+@app.route('/api/whats_new')
+def api_whats_new():
+    """Changelog after data updates; edit data/whats_new.json to publish notes."""
+    try:
+        if os.path.isfile(WHATS_NEW_JSON_PATH):
+            with open(WHATS_NEW_JSON_PATH, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            if isinstance(data, dict) and 'entries' in data:
+                return jsonify(data)
+            if isinstance(data, list):
+                return jsonify({'entries': data})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+    return jsonify({'entries': []})
+
 @app.route('/api/tag_units')
 def get_tag_units():
     try:
