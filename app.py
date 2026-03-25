@@ -1192,7 +1192,7 @@ def find_trait_icon(resource_id):
 
 
 def _find_trait_thum_list_asset(resource_ids, entity_id):
-    """images/Trait/thum/thum_<ResourceId>.* — used for unit list/grid (not ub_ unit_portraits)."""
+    """images/Trait/thum/thum_<ResourceId>.* — list/grid prefers this over full cb_/ub_ portraits when present."""
     if not IMAGE_INDEX:
         return None
     files = IMAGE_INDEX.get('images/Trait/thum', []) or []
@@ -1226,35 +1226,17 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
 
 
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
-    """List/grid thumbnails.
-
-    Units: prefer Trait/thum (thum_<ResourceId>) matching master ResourceId, then unit_portraits (ub_/ms_).
-    Characters: prefer portrait folder, then Trait/thum fallback (unchanged).
-    """
+    """List/grid thumbnails: Trait/thum (thum_<ResourceId>) first, then full portrait folder (cb_/ub_/ms_)."""
     if portrait_folder_key == 'images/unit_portraits':
         t = _find_trait_thum_list_asset(resource_ids, entity_id)
         if t:
             return t
         return find_portrait(resource_ids, entity_id, portrait_folder_key)
-    p = find_portrait(resource_ids, entity_id, portrait_folder_key)
-    if p:
-        return p
-    candidates = []
-    if isinstance(resource_ids, list):
-        candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
-    elif resource_ids:
-        r = str(resource_ids).strip()
-        if r and r != '0':
-            candidates = [r]
-    if entity_id:
-        candidates.append(str(entity_id).strip())
-    for rid in candidates:
-        if not rid:
-            continue
-        rl = rid.lower()
-        for fn in IMAGE_INDEX.get('images/Trait/thum', []):
-            if rl in fn.lower():
-                return f"/static/images/Trait/thum/{fn}"
+    if portrait_folder_key == 'images/portraits':
+        t = _find_trait_thum_list_asset(resource_ids, entity_id)
+        if t:
+            return t
+        return find_portrait(resource_ids, entity_id, portrait_folder_key)
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
@@ -4286,7 +4268,7 @@ def list_characters():
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl19_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5045,7 +5027,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r2_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r3_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
