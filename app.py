@@ -74,6 +74,53 @@ if os.path.exists(IMAGE_INDEX_PATH):
 else:
     print("⚠ Warning: image_index.json not found")
 
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+# (mtime, merged filenames) per folder — invalidated when static/<folder> changes
+_PORTRAIT_FS_CACHE = {}
+
+
+def _list_disk_image_files(rel_path):
+    """List image filenames under static/<rel_path> (e.g. images/portraits)."""
+    d = os.path.join(STATIC_ROOT, *rel_path.split('/'))
+    if not os.path.isdir(d):
+        return []
+    out = []
+    try:
+        for fn in os.listdir(d):
+            if fn.startswith('.') or fn.startswith('_'):
+                continue
+            low = fn.lower()
+            if low.endswith(('.webp', '.png', '.jpg', '.jpeg')):
+                out.append(fn)
+    except OSError:
+        return []
+    return out
+
+
+def _merged_portrait_files(portrait_folder_key):
+    """Merge image_index.json with files on disk so new cb_/ub_/ms_ assets work without regenerating the index."""
+    indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
+    if portrait_folder_key not in ('images/portraits', 'images/unit_portraits'):
+        return indexed
+    d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
+    try:
+        mtime = os.path.getmtime(d)
+    except OSError:
+        mtime = 0
+    cached = _PORTRAIT_FS_CACHE.get(portrait_folder_key)
+    if cached and cached[0] == mtime:
+        return cached[1]
+    disk = _list_disk_image_files(portrait_folder_key)
+    seen = set()
+    merged = []
+    for fn in indexed + disk:
+        if fn not in seen:
+            seen.add(fn)
+            merged.append(fn)
+    _PORTRAIT_FS_CACHE[portrait_folder_key] = (mtime, merged)
+    return merged
+
+
 # m_series Id (SeriesId from sets) -> 4-digit logo pad from ResourceId "series_XXXX" (filled after m_series.json load)
 M_SERIES_ID_TO_LOGO_PAD = {}
 
@@ -936,15 +983,14 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX.
+    Find portrait using IMAGE_INDEX merged with files on disk under static/<portrait_folder_key>.
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
     """
-    if not IMAGE_INDEX:
+    files = _merged_portrait_files(portrait_folder_key)
+    if not files:
         return None
-
-    files = IMAGE_INDEX.get(portrait_folder_key, []) or []
     files_set = set(files)
     files_by_lower = {f.lower(): f for f in files}
 
@@ -1393,7 +1439,7 @@ def create_char_info_map(m):
             if cid != '0':
                 acq = normalize_id(item.get('CharacterAcquisitionRouteTypeIndex') or item.get('characterAcquisitionRouteTypeIndex'), '0')
                 rids = []
-                for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','BromideResourceId','bromideResourceId','IconResourceId','iconResourceId']:
+                for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','BromideResourceId','bromideResourceId','IconResourceId','iconResourceId','VoiceResourceId','voiceResourceId','BattleMovieId','battleMovieId']:
                     rv = str(item.get(rk) or '').strip()
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
                 lookup[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': acq, 'resource_ids': rids, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
@@ -2486,7 +2532,7 @@ for lang_code, paths in LANG_PATHS.items():
                 cid = normalize_id(item.get('id') or item.get('Id'))
                 if cid != '0' and cid not in char_info_map:
                     rids = []
-                    for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId']:
+                    for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','BromideResourceId','bromideResourceId','IconResourceId','iconResourceId','VoiceResourceId','voiceResourceId','BattleMovieId','battleMovieId']:
                         rv = str(item.get(rk) or '').strip()
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
                     char_info_map[cid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'acquisition_route': normalize_id(item.get('CharacterAcquisitionRouteTypeIndex'),'0'), 'resource_ids': rids, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
