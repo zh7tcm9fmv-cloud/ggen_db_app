@@ -4090,7 +4090,13 @@ def collect_character_grid_skills(cid, ld, use_sp=False):
 
 def collect_unit_grid_abilities(uid, ld, ldc, lang_code, stat_mode='normal'):
     """List browse grid icons: base abilities, or SSP replacement when stat_mode is ssp (same slot, not duplicated)."""
-    ua = unit_abil_map.get(uid, [])
+    ua = unit_abil_map.get(uid, []) or []
+    gain_list = list(unit_ssp_abil_gain_list.get(uid, []) or [])
+    # Some units have no m_unit_ability_set rows (DefaultUnitAbilitySetId 0) but only SSP custom-core
+    # gains (BeforeAbilityId 0 in m_unit_ssp_custom_core_ability_change). Use those as the visible list.
+    if not ua and gain_list:
+        ua = [{'id': normalize_id(g), 'sort': i + 1} for i, g in enumerate(gain_list)]
+        gain_list = []
     rm = unit_ssp_abil_replace_map.get(uid, {}) or {}
     sm = (stat_mode or 'normal').strip().lower()
     if sm not in ('normal', 'sp', 'ssp'):
@@ -4110,9 +4116,9 @@ def collect_unit_grid_abilities(uid, ld, ldc, lang_code, stat_mode='normal'):
                 detail_parts.append(t)
         detail = '\n'.join(detail_parts)
         out.append({'name': bab.get('name') or 'Unknown', 'detail': detail, 'icon': bab.get('icon') or ''})
-    if sm == 'ssp':
+    if sm == 'ssp' and gain_list:
         max_so = max((int(x.get('sort', 0) or 0) for x in ua), default=0)
-        for idx, gain_aid in enumerate(unit_ssp_abil_gain_list.get(uid, []) or []):
+        for idx, gain_aid in enumerate(gain_list):
             try:
                 bab = build_ability_entry(str(gain_aid), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=max_so + idx + 1, lang_code=lang_code)
             except Exception:
