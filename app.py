@@ -2886,12 +2886,16 @@ def _build_weapon_slot_rows(old_ids, new_ids, ld):
         rows.append({'slot': i + 1, 'from': o_name, 'to': n_name})
     return rows
 
-def compute_whats_new_delta():
-    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline."""
+def compute_whats_new_delta(lang_code=None):
+    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline.
+
+    Names and ability text use *lang_code* (e.g. TW) so the What's New panel matches the UI language.
+    """
     snap = load_whats_new_snapshot()
     if not snap:
         return None
-    ld = get_lang_data('EN') or get_lang_data(DEFAULT_LANG)
+    lc = validate_lang_code(lang_code)
+    ld = get_lang_data(lc) or get_lang_data(DEFAULT_LANG)
     if not ld:
         return None
     cur = serialize_whats_new_snapshot()
@@ -3757,9 +3761,10 @@ WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 @app.route('/api/whats_new')
 def api_whats_new():
     """Changelog: auto diff vs data/whats_new_snapshot.json plus optional manual entries in data/whats_new.json."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     entries = []
     try:
-        auto = compute_whats_new_delta()
+        auto = compute_whats_new_delta(lc)
         if auto:
             entries.append({'date': auto.get('date'), 'changes': auto.get('changes') or [], 'added': auto.get('added') or []})
     except Exception as e:
