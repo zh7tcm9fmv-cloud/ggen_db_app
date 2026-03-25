@@ -2553,9 +2553,9 @@ def _whats_new_master_data_date():
         pass
     return datetime.now(timezone.utc).date().isoformat()
 
-def _build_char_ability_effect_map():
+def _build_char_ability_effect_map_from_data(char_abil_data):
     lookup = {}
-    for item in extract_data_list(char_abil):
+    for item in extract_data_list(char_abil_data or []):
         if not isinstance(item, dict):
             continue
         cid = normalize_id(item.get('CharacterId') or item.get('characterId'))
@@ -2572,15 +2572,48 @@ def _build_char_ability_effect_map():
         out[cid] = [r['id'] for r in rows]
     return out
 
-def _collect_option_part_ids():
+def _build_char_ability_effect_map():
+    return _build_char_ability_effect_map_from_data(char_abil)
+
+def _collect_option_part_ids_from_data(option_parts_data_local):
     s = set()
-    for item in extract_data_list(option_parts_data or []):
+    for item in extract_data_list(option_parts_data_local or []):
         if not isinstance(item, dict):
             continue
         opid = normalize_id(item.get('Id') or item.get('id'))
         if opid != '0':
             s.add(opid)
     return s
+
+def _collect_option_part_ids():
+    return _collect_option_part_ids_from_data(option_parts_data)
+
+def build_whats_new_snapshot_dict_from_master_dir(master_dir):
+    """Build snapshot version-1 dict from a folder of master JSON (e.g. previous day's MasterData_*)."""
+    master_dir = os.path.abspath(master_dir)
+    if not os.path.isdir(master_dir):
+        raise FileNotFoundError(f'Not a directory: {master_dir}')
+    unit_abil_data = load_json(os.path.join(master_dir, 'm_unit_ability_set.json'))
+    unit_weapon_data = load_json(os.path.join(master_dir, 'm_unit_weapon.json'))
+    char_abil_data = load_json(os.path.join(master_dir, 'm_character_ability_set.json'))
+    unit_master_data_local = load_json(os.path.join(master_dir, 'm_unit.json'))
+    char_master_data_local = load_json(os.path.join(master_dir, 'm_character.json'))
+    op_data = load_json(os.path.join(master_dir, 'm_option_parts.json'))
+    uam = create_unit_ability_map(unit_abil_data)
+    uwm = create_unit_weapon_map(unit_weapon_data)
+    cam = _build_char_ability_effect_map_from_data(char_abil_data)
+    uim = create_unit_info_map(unit_master_data_local)
+    cim = create_char_info_map(char_master_data_local)
+    op_ids = sorted(_collect_option_part_ids_from_data(op_data))
+    return {
+        'version': 1,
+        'unit_abilities': {uid: [str(x['id']) for x in lst] for uid, lst in uam.items()},
+        'unit_weapons': {uid: [str(x['id']) for x in lst] for uid, lst in uwm.items()},
+        'char_abilities': cam,
+        'option_parts': op_ids,
+        'units': sorted(uim.keys()),
+        'characters': sorted(cim.keys()),
+    }
 
 def serialize_whats_new_snapshot():
     return {
