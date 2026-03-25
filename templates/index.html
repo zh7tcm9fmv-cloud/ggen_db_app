@@ -649,6 +649,125 @@ html{overflow-x:hidden}
 .list-grid-cmp-wrap{flex-shrink:0;align-self:stretch;width:100%;display:flex;justify-content:center;align-items:center;margin-top:auto;padding:6px 4px 2px;box-sizing:border-box;pointer-events:auto}
 .list-grid-cmp-inner{display:inline-flex;align-items:center;justify-content:center;padding:0;margin:0;background:transparent;border:none;box-shadow:none}.list-grid-cmp-wrap .cmp-cb-grid{margin:0}
 @media(max-width:768px){.list-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}.list-view-toggle{order:0}.list-toolbar-right{flex-wrap:wrap;justify-content:flex-end}}
+
+/* ========== Mobile / iPhone Safari Enhancements ========== */
+
+@media(max-width:768px){
+  /* --- Toolbar layout --- */
+  .list-toolbar-left--browse{gap:6px 8px}
+  .list-toolbar-right{gap:8px}
+
+  /* --- Compact filter buttons --- */
+  .rarity-filter-btn,.role-filter-dd-btn{padding:6px 10px;font-size:13px;max-width:min(180px,44vw)}
+  .filter-btn-label-inner{gap:2px}
+  .filter-inline-icon.rarity-filter-chip,.filter-inline-icon.role-filter-chip{height:18px}
+  .source-filter-opt-icon{height:18px}
+  .source-filter-btn-all-icons{max-width:min(160px,40vw);gap:3px}
+  .browse-filters-clear-btn{padding:6px 8px;font-size:12px}
+
+  /* --- Stat toggles --- */
+  .list-stat-toggle-wrap{margin-left:0;gap:4px}
+  .sp-toggle-btn{height:30px;width:40px}
+  .sp-toggle-btn img{height:20px}
+  .list-cond-btn{height:30px;min-width:36px;font-size:10px;padding:3px 6px}
+
+  /* --- Filter panels: prevent overflow --- */
+  .rarity-filter-panel,.role-filter-panel,.source-filter-panel{max-width:min(280px,calc(100vw - 24px))}
+  .lineage-filter-panel,.series-filter-panel{left:0;right:0;width:auto;max-width:calc(100vw - 24px);transform:none}
+  .skill-filter-panel{max-width:calc(100vw - 24px)}
+
+  /* --- Grid wrap --- */
+  .list-grid-wrap{padding:10px 8px 14px}
+
+  /* --- Source wrap: keep clear btn aligned --- */
+  .source-filter-wrap{flex-wrap:nowrap;align-items:stretch}
+}
+
+@media(max-width:480px){
+  /* --- Filter buttons: phone compact --- */
+  .rarity-filter-btn,.role-filter-dd-btn{padding:5px 8px;font-size:12px;min-height:36px;max-width:min(160px,42vw);gap:4px}
+  .rarity-filter-caret{font-size:8px}
+  .filter-btn-label-inner{min-height:18px}
+  .browse-filters-clear-btn{padding:5px 7px;font-size:11px;min-height:36px}
+
+  /* --- Toolbar tighter --- */
+  .list-toolbar-left--browse{gap:4px 6px}
+
+  /* --- Stat toggles smaller --- */
+  .sp-toggle-btn{height:26px;width:34px}
+  .sp-toggle-btn img{height:16px}
+  .list-cond-btn{height:26px;min-width:30px;font-size:9px;padding:2px 5px}
+  .list-stat-toggle-wrap{gap:3px}
+
+  /* --- Result count --- */
+  .result-count{font-size:13px}
+  .list-toolbar-left--browse>.result-count{flex-basis:100%;text-align:left;order:50}
+
+  /* --- Per-page select --- */
+  .filter-select{min-height:38px;font-size:13px}
+
+  /* --- View toggle --- */
+  .list-view-toggle{gap:1px;padding:2px}
+  .view-toggle-btn{width:34px;height:30px}
+
+  /* --- Grid cards --- */
+  .list-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+  .list-grid-card{padding:10px 8px;gap:8px}
+  .list-grid-card-name{font-size:13px}
+  .list-grid-card-stats{font-size:11px}
+
+  /* --- Pagination --- */
+  .pagination{gap:3px}
+  .page-btn{min-width:38px;min-height:38px;padding:8px 10px;font-size:14px}
+
+  /* --- Filter panels: constrain to viewport --- */
+  .rarity-filter-panel,.role-filter-panel,.source-filter-panel{max-width:calc(100vw - 16px);min-width:min(240px,calc(100vw - 16px))}
+  .lineage-filter-panel,.series-filter-panel,.skill-filter-panel{position:fixed;left:8px;right:8px;top:50%;transform:translateY(-50%);max-width:none;width:auto;max-height:min(75vh,500px);overflow-y:auto;z-index:250;box-shadow:0 12px 40px rgba(0,0,0,.6);border-radius:var(--radius-md)}
+
+  /* --- Filter panel rows: bigger touch targets --- */
+  .rarity-filter-row,.role-filter-row{padding:8px 10px;min-height:40px}
+  .rarity-filter-row input,.role-filter-row input{width:18px;height:18px}
+}
+
+@media(max-width:390px){
+  /* --- iPhone SE / 13 mini / narrow phones --- */
+  .main-content{padding:8px}
+  .list-toolbar{gap:8px}
+
+  .rarity-filter-btn,.role-filter-dd-btn{padding:4px 6px;font-size:11px;min-height:34px;max-width:min(140px,40vw)}
+  .browse-filters-clear-btn{padding:4px 6px;font-size:10px;min-height:34px}
+
+  .list-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
+  .list-grid-wrap{padding:8px 6px 12px}
+  .list-grid-card{padding:8px 6px;gap:6px}
+  .list-grid-card-name{font-size:12px}
+
+  .data-table{font-size:12px}
+  .data-table thead th{font-size:11px;padding:8px 4px}
+  .data-table tbody td{padding:8px 4px}
+  .row-thum,.row-thum-placeholder{width:44px;height:44px;font-size:18px}
+  .list-thumb-composite{width:50px;height:50px}
+  .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap{top:4px;left:4px;right:4px;bottom:6px}
+  .list-thumb-composite:not(.list-thumb-has-frame) .list-thumb-portrait-wrap{top:3px;left:3px;right:3px;bottom:3px}
+  .list-thumb-composite .list-thumb-icon-wrap{width:12px;height:12px}
+  #charTable .col-thum,#unitTable .col-thum,#suppTable .col-thum,#stageTable .col-thum{width:50px;min-width:50px;max-width:50px}
+  #stageTable .col-thum .stage-thum-wrap,#stageTable .col-thum img.row-thum,#stageTable .col-thum .row-thum-placeholder{width:44px;height:44px;min-width:44px;min-height:44px;max-width:44px;max-height:44px}
+
+  .nav-tab{padding:10px 12px;font-size:13px}
+  .brand-text{font-size:16px}
+  .brand-logo{width:34px;height:34px}
+  .header-inner{padding:7px 8px;gap:6px}
+}
+
+/* --- iOS Safari specific fixes --- */
+@supports(-webkit-touch-callout:none){
+  .filter-input{font-size:16px}
+  .filter-select{font-size:16px}
+  .data-table-wrapper{-webkit-overflow-scrolling:touch}
+  .nav-tabs{-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .nav-tab{scroll-snap-align:start}
+  .modal-content{-webkit-overflow-scrolling:touch}
+}
 </style>
 </head>
 <body>
