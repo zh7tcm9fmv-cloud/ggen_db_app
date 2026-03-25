@@ -1613,7 +1613,7 @@ def create_unit_info_map(m):
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
                 rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                 rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_unit_status_map(d):
@@ -2013,6 +2013,41 @@ def collect_unit_weapons_search_text(uid, ld, lang_code):
                     tt2 = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
                     if tt2:
                         parts.append(tt2)
+                break
+    return ' '.join(parts)
+
+def collect_unit_profile_search_text(info, ld):
+    """Unit profile / flavor text + model number (same strings as collection book / detail)."""
+    utm = ld.get('unit_text_map', {})
+    parts = []
+    plid = normalize_id(info.get('profile_lang_id') or '0')
+    if plid and plid != '0':
+        t = (utm.get(plid) or '').strip()
+        if t:
+            parts.append(t)
+    m = info.get('model') or ''
+    if m:
+        parts.append(str(m))
+    return ' '.join(parts)
+
+def collect_unit_mechanism_search_text(info, ld):
+    """Mechanism names and descriptions for list search."""
+    msid = str(info.get('mechanism_set_id', '0'))
+    mids = list(MECH_MAP_TABLE.get(msid, []))
+    mm = ld.get('mechanism_map', {})
+    parts = []
+    for mid in mids:
+        if mid == '2x2':
+            parts.append('2x2')
+            continue
+        for rmm in mm.get(mid, []):
+            if str(rmm.get('id')) == str(mid):
+                n = (rmm.get('name') or '').strip()
+                d = (rmm.get('description') or '').strip()
+                if n:
+                    parts.append(n)
+                if d:
+                    parts.append(d)
                 break
     return ' '.join(parts)
 
@@ -2417,7 +2452,7 @@ for lang_code, paths in LANG_PATHS.items():
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
                     rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                     rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -3631,6 +3666,20 @@ def collect_unit_grid_abilities(uid, ld, ldc, lang_code, stat_mode='normal'):
                 detail_parts.append(t)
         detail = '\n'.join(detail_parts)
         out.append({'name': bab.get('name') or 'Unknown', 'detail': detail, 'icon': bab.get('icon') or ''})
+    if sm == 'ssp':
+        max_so = max((int(x.get('sort', 0) or 0) for x in ua), default=0)
+        for idx, gain_aid in enumerate(unit_ssp_abil_gain_list.get(uid, []) or []):
+            try:
+                bab = build_ability_entry(str(gain_aid), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=max_so + idx + 1, lang_code=lang_code)
+            except Exception:
+                continue
+            detail_parts = []
+            for d2 in bab.get('details', []):
+                t = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).strip()
+                if t:
+                    detail_parts.append(t)
+            detail = '\n'.join(detail_parts)
+            out.append({'name': bab.get('name') or 'Unknown', 'detail': detail, 'icon': bab.get('icon') or ''})
     return out
 
 
@@ -3843,7 +3892,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul17_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul18_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -3897,6 +3946,13 @@ def list_units():
                 if str(ab['id']) in rm:
                     blob2 = collect_ability_search_text(rm[str(ab['id'])], ld)
                     if blob2: search_chunks.append(blob2)
+            for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+                gb = collect_ability_search_text(str(gain_aid), ld)
+                if gb: search_chunks.append(gb)
+            prof = collect_unit_profile_search_text(info, ld)
+            if prof: search_chunks.append(prof)
+            mech = collect_unit_mechanism_search_text(info, ld)
+            if mech: search_chunks.append(mech)
             wtxt = collect_unit_weapons_search_text(uid, ld, lc)
             if wtxt: search_chunks.append(wtxt)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
