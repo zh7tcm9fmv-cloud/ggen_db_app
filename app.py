@@ -2195,6 +2195,14 @@ def _compute_limited_time_character_ids():
 
 
 LIMITED_TIME_CHARACTER_IDS = _compute_limited_time_character_ids()
+LIMITED_TIME_SUPPORTER_IDS = frozenset(
+    normalize_id(x) for x in (
+        '1110000150',
+        '1300000450',
+        '1125000250',
+        '1330000250',
+    )
+)
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
 option_parts_lineage_map = create_option_parts_lineage_map(option_parts_lineage_data) if option_parts_lineage_data else {}
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
@@ -4093,15 +4101,17 @@ def list_supporters():
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
-        ck = f"sl5_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
+        ck = f"sl6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
         for sid, info in supporter_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                 continue
+            nsid = normalize_id(sid)
             ri = info.get('rarity','1'); lid = ld.get('supporter_id_map', {}).get(sid, ''); name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
+            lim = nsid in LIMITED_TIME_SUPPORTER_IDS
             id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
             if lineage_filter is not None:
                 if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
@@ -4110,7 +4120,7 @@ def list_supporters():
                 if not rarity_filter:
                     continue
                 letter = RARITY_MAP.get(str(ri), 'N')
-                if not row_matches_rarity_filter(rarity_filter, letter, False):
+                if not row_matches_rarity_filter(rarity_filter, letter, lim):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
@@ -4138,7 +4148,7 @@ def list_supporters():
             if ask:
                 icf = find_trait_icon(ask[0].get('resource_id', ''))
                 if icf: aic = f"/static/images/Trait/{icf}"
-            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic})
+            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'series_tag', 'boost'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -4351,7 +4361,7 @@ def get_supporter(supporter_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         level = min(100, max(1, int(request.args.get('level', 100))))
         lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
-        ck = f"s_{supporter_id}_{lc}_{level}_{lb_tier}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s2_{supporter_id}_{lc}_{level}_{lb_tier}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
@@ -4375,7 +4385,7 @@ def get_supporter(supporter_id):
             icf = find_trait_icon(a.get('resource_id', ''))
             asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
         portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
-        result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc, 'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk, 'growth_rate_basis': rate}
+        result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc, 'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk, 'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
