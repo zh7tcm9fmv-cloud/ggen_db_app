@@ -654,38 +654,52 @@ def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
 
 
 def lineages_for_supporter_browse(ld, lang_code):
-    """Distinct lineage tags that appear on supporter leader skills (tier 3)."""
+    """Distinct lineage tags that appear on supporter leader skills (tier 3).
+
+    Names come from resolve_condition_tags (same as in-game), not a second lookup by raw id
+    (short ids like 600/10 fail len>=4 lineage_list matching and were shown as numbers).
+    """
     llk = ld.get('lineage_lookup', {})
     ll = ld.get('lineage_list', [])
-    short_ids = set()
-    for sid, info in supporter_info_map.items():
+    snm = ld.get('series_name_map', {})
+    by_id = {}
+    for supp_id, info in supporter_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
-        for tid in supporter_leader_tag_ids(sid, ld, lang_code):
-            s = str(tid).strip()
-            if s and s != '0':
-                short_ids.add(s)
-    rows = []
-    for sid in short_ids:
-        name = llk.get(sid)
-        if not name:
-            for fid, val in ll:
-                if str(fid).endswith(sid) and len(sid) >= 4:
-                    name = val
-                    break
-        if not name:
-            name = sid
-        full_id = sid
-        for fid, val in ll:
-            if str(fid).endswith(sid) and len(sid) >= 4:
-                full_id = str(fid)
-                break
-        rows.append({'id': full_id, 'name': name})
-    by_id = {}
-    for r in rows:
-        fid = str(r['id'])
-        if fid not in by_id:
-            by_id[fid] = r
+        lsr = supporter_leader_map.get(supp_id, [])
+        for ls in lsr:
+            if ls.get('tier') != 3:
+                continue
+            tags = resolve_condition_tags(
+                ls.get('trait_cond_id', '0'), trait_condition_raw_map, llk, snm, lang_code
+            )
+            for t in tags:
+                tid = str(t.get('id', '')).strip()
+                if not tid or tid == '0':
+                    continue
+                nm = (t.get('name') or '').strip()
+                full_id = tid
+                for fid, val in ll:
+                    fu = str(fid)
+                    if len(tid) >= 4 and fu.endswith(tid):
+                        full_id = fu
+                        break
+                    if len(tid) < 4 and fu.endswith(tid.zfill(4)):
+                        full_id = fu
+                        break
+                if not nm:
+                    nm = llk.get(tid) or llk.get(full_id)
+                    if not nm:
+                        for fid, val in ll:
+                            fu = str(fid)
+                            if fu.endswith(tid) or (len(tid) < 4 and fu.endswith(tid.zfill(4))):
+                                nm = val
+                                break
+                if not nm:
+                    nm = tid
+                key = str(full_id)
+                if key not in by_id:
+                    by_id[key] = {'id': full_id, 'name': nm}
     return sorted(by_id.values(), key=lambda x: x['name'].lower())
 
 
@@ -3668,7 +3682,7 @@ def browse_filters():
         entity = (request.args.get('entity') or '').strip().lower()
         if entity not in ('characters', 'units', 'supporters'):
             entity = 'characters'
-        ck = f"browse_filters_v8_{lc}_{entity}"
+        ck = f"browse_filters_v9_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
