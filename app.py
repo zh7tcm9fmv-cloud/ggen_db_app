@@ -1190,13 +1190,52 @@ def find_trait_icon(resource_id):
     
     return None
 
-def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
-    """Find thumb for list view: prefer portrait folder (ResourceId) over Trait/thum.
 
-    Trait/thum is for ability-style crops; character/unit list art should match
-    images/portraits or images/unit_portraits so updated assets (e.g. g2300c00202)
-    are not overridden by an older or different Trait/thum file.
+def _find_trait_thum_list_asset(resource_ids, entity_id):
+    """images/Trait/thum/thum_<ResourceId>.* — used for unit list/grid (not ub_ unit_portraits)."""
+    if not IMAGE_INDEX:
+        return None
+    files = IMAGE_INDEX.get('images/Trait/thum', []) or []
+    if not files:
+        return None
+    files_by_lower = {f.lower(): f for f in files}
+    candidates = []
+    if isinstance(resource_ids, list):
+        candidates = [str(r).strip() for r in resource_ids if r and str(r).strip() and str(r).strip() != '0']
+    elif resource_ids:
+        r = str(resource_ids).strip()
+        if r and r != '0':
+            candidates = [r]
+    if entity_id:
+        candidates.append(str(entity_id).strip())
+    seen = set()
+    for rid in candidates:
+        if not rid or rid in seen:
+            continue
+        seen.add(rid)
+        rl = rid.lower()
+        for ext in ('.webp', '.png', '.jpg', '.jpeg'):
+            hit = files_by_lower.get(f'thum_{rid}{ext}'.lower())
+            if hit:
+                return f"/static/images/Trait/thum/{hit}"
+        matches = [fn for fn in files if fn.lower().startswith('thum_') and rl in fn.lower()]
+        if matches:
+            matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+            return f"/static/images/Trait/thum/{matches[0]}"
+    return None
+
+
+def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
+    """List/grid thumbnails.
+
+    Units: prefer Trait/thum (thum_<ResourceId>) matching master ResourceId, then unit_portraits (ub_/ms_).
+    Characters: prefer portrait folder, then Trait/thum fallback (unchanged).
     """
+    if portrait_folder_key == 'images/unit_portraits':
+        t = _find_trait_thum_list_asset(resource_ids, entity_id)
+        if t:
+            return t
+        return find_portrait(resource_ids, entity_id, portrait_folder_key)
     p = find_portrait(resource_ids, entity_id, portrait_folder_key)
     if p:
         return p
@@ -4354,7 +4393,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5095,7 +5134,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp7_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp8_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
