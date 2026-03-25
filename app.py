@@ -98,9 +98,9 @@ def _list_disk_image_files(rel_path):
 
 
 def _merged_portrait_files(portrait_folder_key):
-    """Merge image_index.json with files on disk so new cb_/ub_/ms_ assets work without regenerating the index."""
+    """Merge image_index.json with files on disk for character portraits only. Unit portraits use the index only."""
     indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
-    if portrait_folder_key not in ('images/portraits', 'images/unit_portraits'):
+    if portrait_folder_key != 'images/portraits':
         return indexed
     d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
     try:
@@ -983,7 +983,8 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX merged with files on disk under static/<portrait_folder_key>.
+    Find portrait using IMAGE_INDEX. Character portraits also merge files on disk under static/images/portraits;
+    unit portraits use image_index.json only (same as before the disk merge).
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
