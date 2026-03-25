@@ -34,7 +34,7 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .whats-new-ic{width:20px;height:20px;object-fit:contain;flex-shrink:0}
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
 .whats-new-overlay.active{display:flex}
-.whats-new-card{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:min(960px,96vw);width:100%;max-height:min(92vh,1200px);min-height:320px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.whats-new-card{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:min(1400px,98vw);width:100%;max-height:min(92vh,1200px);min-height:320px;overflow:hidden;display:flex;flex-direction:column;position:relative}
 .whats-new-card .modal-close{position:absolute;top:10px;right:12px;z-index:2}
 .whats-new-head{padding:18px 44px 14px 20px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.25)}
 .whats-new-head h2{margin:0;font-size:22px;font-weight:700;color:var(--accent-cyan);display:flex;align-items:center;gap:10px}
@@ -66,6 +66,19 @@ body{font-family:'ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacS
 .wn-slot-table td.wn-s-num{width:48px;text-align:center;font-weight:800;color:var(--text-secondary)}
 .wn-slot-table .wn-name{font-weight:600;color:var(--text-primary)}
 .wn-slot-table .wn-detail{margin-top:6px;font-size:12px;line-height:1.45;color:var(--text-muted);white-space:normal;word-break:break-word}
+.wn-diff-grid{display:flex;flex-direction:column;width:100%;min-width:0;border:1px solid var(--border-color);border-radius:var(--radius-md);overflow:hidden;background:rgba(0,0,0,.15)}
+.wn-diff-header-row,.wn-diff-body-row{display:grid;grid-template-columns:52px minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch}
+.wn-diff-header-row{background:rgba(0,212,255,.1);color:var(--accent-cyan);font-weight:800;font-size:13px;border-bottom:1px solid var(--border-color)}
+.wn-diff-h-slot,.wn-diff-h-before,.wn-diff-h-after{padding:10px 12px;border-right:1px solid var(--border-color);text-align:left}
+.wn-diff-h-slot{text-align:center}
+.wn-diff-h-after{border-right:none}
+.wn-diff-body-row{border-bottom:1px solid rgba(255,255,255,.08)}
+.wn-diff-body-row:last-child{border-bottom:none}
+.wn-diff-body-row:nth-child(even){background:rgba(0,0,0,.1)}
+.wn-diff-slot{padding:12px 8px;text-align:center;font-weight:800;color:var(--text-secondary);font-size:13px;border-right:1px solid rgba(255,255,255,.1);align-self:stretch}
+.wn-diff-pre-col{padding:12px 14px 14px;border-right:1px solid rgba(255,255,255,.1);min-width:0;background:rgba(0,0,0,.12)}
+.wn-diff-pre-col.wn-diff-pre--after{border-right:none;background:rgba(0,50,90,.14)}
+.wn-diff-pre{white-space:pre-line;font-size:13px;line-height:1.55;color:var(--text-primary);word-break:break-word;overflow-wrap:anywhere}
 .wn-fromto-block{font-size:13px;line-height:1.5;color:var(--text-primary)}
 .whats-new-fromto{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
 .whats-new-fromto .w-from{color:var(--text-muted);text-decoration:line-through;opacity:.9}
@@ -965,17 +978,25 @@ function setupKeys(){document.addEventListener('keydown',e=>{if(e.key==='Escape'
 function openWhatsNew(){const ov=document.getElementById('whatsNewOverlay'),body=document.getElementById('whatsNewBody'),title=document.getElementById('whatsNewTitleEl');if(!ov||!body)return;document.getElementById('langDropdown').classList.remove('active');if(title)title.innerHTML='<img class="whats-new-ic" src="'+imgUrl('/static/images/UI/UI_Common_BtnIcon_News.webp')+'" alt=""> <span>'+esc(t('whats_new_title'))+'</span>';body.innerHTML='<div class="loading-overlay" style="min-height:200px"><div class="spinner"></div></div>';ov.classList.add('active');ov.setAttribute('aria-hidden','false');applyBackgroundScrollLock();fetch('/api/whats_new?lang='+encodeURIComponent(S.lang||'EN')).then(r=>r.json()).then(d=>{const entries=(d&&d.entries)||[];if(!entries.length){body.innerHTML='<p style="color:var(--text-muted);margin:0">'+esc(t('whats_new_empty'))+'</p>';return}body.innerHTML=entries.map(renderWhatsNewBlock).join('')}).catch(err=>{body.innerHTML='<p style="color:var(--text-muted);margin:0">'+esc(String(err))+'</p>'})}
 function renderWhatsNewSlotRows(rows,isAbility){
   if(!rows||!rows.length)return '';
-  let h='<div class="wn-table-wrap"><table class="wn-slot-table"><thead><tr><th>'+esc(t('whats_new_slot'))+'</th><th>'+esc(t('whats_new_before'))+'</th><th>'+esc(t('whats_new_after'))+'</th></tr></thead><tbody>';
+  function cellText(r,which){
+    const ft=r.from_text,tt=r.to_text;
+    if(which==='from'){
+      if(ft!=null&&ft!=='')return String(ft);
+      const a=r.from!=null?String(r.from):'';const d=isAbility&&r.from_detail?String(r.from_detail):'';
+      return d?a+'\n\n'+d:a;
+    }
+    if(tt!=null&&tt!=='')return String(tt);
+    const b=r.to!=null?String(r.to):'';const d=isAbility&&r.to_detail?String(r.to_detail):'';
+    return d?b+'\n\n'+d:b;
+  }
+  let h='<div class="wn-diff-grid">';
+  h+='<div class="wn-diff-header-row"><div class="wn-diff-h-slot">'+esc(t('whats_new_slot'))+'</div><div class="wn-diff-h-before">'+esc(t('whats_new_before'))+'</div><div class="wn-diff-h-after">'+esc(t('whats_new_after'))+'</div></div>';
   rows.forEach(function(r){
-    h+='<tr><td class="wn-s-num">'+esc(String(r.slot))+'</td><td>';
-    h+='<div class="wn-name">'+esc(String(r.from!=null?r.from:''))+'</div>';
-    if(isAbility&&r.from_detail){h+='<div class="wn-detail">'+esc(String(r.from_detail))+'</div>'}
-    h+='</td><td>';
-    h+='<div class="wn-name">'+esc(String(r.to!=null?r.to:''))+'</div>';
-    if(isAbility&&r.to_detail){h+='<div class="wn-detail">'+esc(String(r.to_detail))+'</div>'}
-    h+='</td></tr>';
+    h+='<div class="wn-diff-body-row"><div class="wn-diff-slot">'+esc(String(r.slot))+'</div>';
+    h+='<div class="wn-diff-pre-col wn-diff-pre--before"><div class="wn-diff-pre">'+esc(cellText(r,'from'))+'</div></div>';
+    h+='<div class="wn-diff-pre-col wn-diff-pre--after"><div class="wn-diff-pre">'+esc(cellText(r,'to'))+'</div></div></div>';
   });
-  h+='</tbody></table></div>';
+  h+='</div>';
   return h;
 }
 function whatsNewShortcut(linkType,linkId){

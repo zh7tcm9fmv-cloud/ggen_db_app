@@ -2821,30 +2821,73 @@ def _wn_format_char_abilities(cid, ordered_aids, ld):
         parts.append(f"{i + 1}: {an or aid}")
     return f'{cn} ({cid}): ' + ' | '.join(parts)
 
-def _wn_strip_detail_after_name(full_text, name):
-    if not full_text:
-        return ''
-    d = full_text.strip()
-    n = (name or '').strip()
-    if n and d.startswith(n):
-        rest = d[len(n):].strip()
-        return re.sub(r'^[\s:–—\-]+', '', rest)
-    return d
-
-def _wn_ability_effect_detail(aid, ld, max_len=260):
+def _wn_collect_ability_body_chunks_raw(aid, ld):
+    """Trait + ability-description strings in master order (may duplicate search blob)."""
     if not aid or str(aid) in ('0', 'None', ''):
+        return []
+    trait_set_id = abil_link_map.get(str(aid), str(aid))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    ltm = ld.get('lang_text_map', {})
+    trait_ids = trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, []))
+    out = []
+    for tid in trait_ids:
+        t_data = trait_data_map.get(tid, {})
+        dlid = t_data.get('desc_lang_id', '0')
+        if dlid and dlid != '0':
+            tx = (ltm.get(dlid, '') or '').strip()
+            if tx:
+                out.append(tx)
+    adm = ld.get('abil_desc_map', {})
+    for key in (lookup_id, trait_set_id):
+        if not key:
+            continue
+        for entry in adm.get(key, []) or []:
+            if isinstance(entry, dict):
+                t = (entry.get('text') or '').strip()
+            else:
+                t = str(entry).strip()
+            if t:
+                out.append(t)
+    return out
+
+
+def _wn_strip_chunk_after_ability_name(chunk, name):
+    """Drop redundant ability title when a chunk repeats it (e.g. 'GN Field LV 2 / When…')."""
+    if not chunk:
         return ''
-    full = collect_ability_search_text(str(aid), ld)
-    if not full:
+    c = chunk.strip()
+    n = (name or '').strip()
+    if not n:
+        return c
+    nn = re.sub(r'\s+', ' ', n)
+    cn = re.sub(r'\s+', ' ', c)
+    if cn == nn:
         return ''
-    name = get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map) or ''
-    detail = _wn_strip_detail_after_name(full, name)
-    detail = re.sub(r'\s+', ' ', detail).strip()
-    if not detail:
-        return ''
-    if len(detail) > max_len:
-        return detail[:max_len].rstrip() + '…'
-    return detail
+    for sep in (' / ', '/', '／'):
+        if c.startswith(n + sep):
+            return c[len(n) + len(sep):].strip()
+    return c
+
+
+def _wn_ability_whatsnew_block(aid, ld):
+    """Multiline Before/After text: title line, then description lines; dedupes identical sentences."""
+    if not aid or str(aid) in ('0', 'None', ''):
+        return '—'
+    name = (get_ability_name_for_search(str(aid), ld['abil_name_map'], abil_link_map) or str(aid)).strip()
+    raw = _wn_collect_ability_body_chunks_raw(aid, ld)
+    seen_norm = set()
+    lines = [name]
+    for chunk in raw:
+        s = _wn_strip_chunk_after_ability_name(chunk, name)
+        if not s:
+            continue
+        norm = re.sub(r'\s+', ' ', s)
+        if norm in seen_norm:
+            continue
+        seen_norm.add(norm)
+        lines.append(s)
+    return '\n'.join(lines)
+
 
 def _build_ability_slot_rows(old_ids, new_ids, ld):
     old_ids = [str(x) for x in (old_ids or [])]
@@ -2860,14 +2903,14 @@ def _build_ability_slot_rows(old_ids, new_ids, ld):
         n_name = get_ability_name_for_search(str(na), ld['abil_name_map'], abil_link_map) if na else ''
         o_name = o_name or (oa if oa else '—')
         n_name = n_name or (na if na else '—')
-        o_det = _wn_ability_effect_detail(oa, ld) if oa else ''
-        n_det = _wn_ability_effect_detail(na, ld) if na else ''
+        o_text = _wn_ability_whatsnew_block(oa, ld) if oa else '—'
+        n_text = _wn_ability_whatsnew_block(na, ld) if na else '—'
         rows.append({
             'slot': i + 1,
             'from': o_name,
             'to': n_name,
-            'from_detail': o_det,
-            'to_detail': n_det,
+            'from_text': o_text,
+            'to_text': n_text,
         })
     return rows
 
@@ -2883,7 +2926,13 @@ def _build_weapon_slot_rows(old_ids, new_ids, ld):
             continue
         o_name = _wn_weapon_name(ow, ld) if ow else '—'
         n_name = _wn_weapon_name(nw, ld) if nw else '—'
-        rows.append({'slot': i + 1, 'from': o_name, 'to': n_name})
+        rows.append({
+            'slot': i + 1,
+            'from': o_name,
+            'to': n_name,
+            'from_text': o_name,
+            'to_text': n_name,
+        })
     return rows
 
 def compute_whats_new_delta(lang_code=None):
