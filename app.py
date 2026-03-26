@@ -44,6 +44,8 @@ LATEST_RELEASE_TEST_LOCK_START_MS = int(_ts) if _ts.isdigit() else None
 # Set to 0/false to lock ONLY test pins (LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID / _START_MS), not all future gachas.
 _prel = (os.environ.get('LATEST_RELEASE_LOCK_FUTURE_STARTS') or '1').strip().lower()
 LATEST_RELEASE_LOCK_FUTURE_STARTS = _prel not in ('0', 'false', 'no', 'off')
+# NPC visibility lock (separate from Latest Release): set NPC_VIEW_PASSWORD to require unlock before NPC rows/details are shown.
+NPC_VIEW_PASSWORD = (os.environ.get('NPC_VIEW_PASSWORD') or '').strip()
 
 # ═══════════════════════════════════════════════════════
 # IMAGE CDN CONFIGURATION & FILE INDEX
@@ -5149,7 +5151,7 @@ def list_characters():
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5259,7 +5261,7 @@ def list_units():
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = lineage_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}"
+    ck = f"ul21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5616,10 +5618,36 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
 
 
 def npc_password_unlocked():
-    """NPC visibility gate. Reuse Latest Release session password unlock state."""
-    if not LATEST_RELEASE_PASSWORD:
+    """NPC visibility gate (separate password/session)."""
+    if not NPC_VIEW_PASSWORD:
         return True
-    return session.get('lr_unlocked') is True
+    return session.get('npc_view_unlocked') is True
+
+
+def npc_view_cache_key_fragment():
+    """Vary server-side caches when NPC lock/session affects visible entities."""
+    if not NPC_VIEW_PASSWORD:
+        return 'npc0'
+    return 'npc1' if session.get('npc_view_unlocked') is True else 'npc2'
+
+
+@app.route('/api/npc_view/status')
+def api_npc_view_status():
+    if not NPC_VIEW_PASSWORD:
+        return jsonify({'password_required': False, 'unlocked': True})
+    return jsonify({'password_required': True, 'unlocked': session.get('npc_view_unlocked') is True})
+
+
+@app.route('/api/npc_view/unlock', methods=['POST'])
+def api_npc_view_unlock():
+    if not NPC_VIEW_PASSWORD:
+        return jsonify({'ok': True, 'password_required': False})
+    data = request.get_json(force=True, silent=True) or {}
+    pw = (data.get('password') or '').strip()
+    if pw != NPC_VIEW_PASSWORD:
+        return jsonify({'ok': False, 'error': 'invalid_password'}), 403
+    session['npc_view_unlocked'] = True
+    return jsonify({'ok': True, 'password_required': True})
 
 
 @app.route('/api/latest_release/status')
@@ -5856,7 +5884,7 @@ def list_stages():
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id); ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id); ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); est = eternal_stage_map.get(stage_id)
@@ -5920,7 +5948,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r3_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -6011,7 +6039,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp8_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp8_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
