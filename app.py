@@ -4409,7 +4409,7 @@ def character_passes_browse_pool_filters(
     ri = info.get('rarity', '1')
     role_id = info.get('role', '0')
     id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
-    if role_id == '0' and not id_seek:
+    if role_id == '0' and not (id_seek and npc_password_unlocked()):
         return False
     if role_filter is not None:
         if not role_filter:
@@ -4493,7 +4493,7 @@ def unit_passes_browse_pool_filters(
     ri = info.get('rarity', '1')
     role_id = info.get('role', '0')
     id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
-    if role_id == '0' and not id_seek:
+    if role_id == '0' and not (id_seek and npc_password_unlocked()):
         return False
     if role_filter is not None:
         if not role_filter:
@@ -5158,8 +5158,8 @@ def list_characters():
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
-        # Role 0 = no combat role (NPC / story); hide from browse unless user searches this id explicitly.
-        if role_id == '0' and not id_seek:
+        # Role 0 = no combat role (NPC / story); reveal only with id search + unlocked password session.
+        if role_id == '0' and not (id_seek and npc_password_unlocked()):
             continue
         if role_filter is not None:
             if not role_filter:
@@ -5268,7 +5268,7 @@ def list_units():
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
-        if role_id == '0' and not id_seek:
+        if role_id == '0' and not (id_seek and npc_password_unlocked()):
             continue
         if role_filter is not None:
             if not role_filter:
@@ -5615,6 +5615,13 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
     return latest_release_schedule_content_locked(sid, sm)
 
 
+def npc_password_unlocked():
+    """NPC visibility gate. Reuse Latest Release session password unlock state."""
+    if not LATEST_RELEASE_PASSWORD:
+        return True
+    return session.get('lr_unlocked') is True
+
+
 @app.route('/api/latest_release/status')
 def api_latest_release_status():
     """Whether Latest Release requires a password and if this session is unlocked."""
@@ -5849,7 +5856,7 @@ def list_stages():
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id); ck = f"stage_{stage_id}_{lc}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id); ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); est = eternal_stage_map.get(stage_id)
@@ -5865,36 +5872,38 @@ def get_stage(stage_id):
             if gid != '0': sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_id, lc)
         md = {'width': 0, 'height': 0, 'units': []}; nd = []
+        npc_unlocked = npc_password_unlocked()
         mse = map_stage_lookup.get(stage_id)
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
             uom = []; nt = map_npc_by_map_stage.get(msid, []); tb = calculate_npc_team_bonuses(nt, lc)
-            for npc in nt:
-                nid = npc['id']; nu = map_npc_unit_lookup.get(nid, []); nc = map_npc_character_lookup.get(nid, [])
-                ue = nu[0] if nu else None; ce = nc[0] if nc else None
-                dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
-                if ue:
-                    uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc)
-                    fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb)
-                    upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
-                    upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
-                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc); up['bonus_amounts'] = tba
-                    dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
-                if ce:
-                    cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
-                    cabs = resolve_npc_character_abilities(ce.get('ability_set_id', '0'), lc); csks = resolve_npc_character_skills(ce.get('skill_set_id', '0'), lc)
-                    cp['abilities'] = cabs if cabs else [get_ui_label(lc, 'none')]; cp['skills'] = csks if csks else [get_ui_label(lc, 'none')]
-                    if cabs:
-                        bp = calculate_npc_character_self_bonus_pct(cabs)
-                        boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
-                        cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
-                is_ally = npc.get('battle_side_type', '2') == '1'
-                side = 'ally' if is_ally else 'enemy'
-                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
-                me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
-                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'unit': up, 'character': cp})
+            if npc_unlocked:
+                for npc in nt:
+                    nid = npc['id']; nu = map_npc_unit_lookup.get(nid, []); nc = map_npc_character_lookup.get(nid, [])
+                    ue = nu[0] if nu else None; ce = nc[0] if nc else None
+                    dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
+                    if ue:
+                        uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc)
+                        fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb)
+                        upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
+                        upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
+                        up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc); up['bonus_amounts'] = tba
+                        dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
+                    if ce:
+                        cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
+                        cabs = resolve_npc_character_abilities(ce.get('ability_set_id', '0'), lc); csks = resolve_npc_character_skills(ce.get('skill_set_id', '0'), lc)
+                        cp['abilities'] = cabs if cabs else [get_ui_label(lc, 'none')]; cp['skills'] = csks if csks else [get_ui_label(lc, 'none')]
+                        if cabs:
+                            bp = calculate_npc_character_self_bonus_pct(cabs)
+                            boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
+                            cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
+                    is_ally = npc.get('battle_side_type', '2') == '1'
+                    side = 'ally' if is_ally else 'enemy'
+                    guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
+                    me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
+                    me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
+                    uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.png', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             max_x = max_y = 0
@@ -5917,6 +5926,8 @@ def get_character(char_id):
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            return jsonify({'error': f'Character {char_id} not found'}), 404
+        if str(info.get('role', '0')) == '0' and not npc_password_unlocked():
             return jsonify({'error': f'Character {char_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['char_id_map'].get(char_id, ""); cn = ld['char_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = char_stat_map.get(char_id, {}); has_sp = int(ri) <= 4
@@ -6006,6 +6017,8 @@ def get_unit(unit_id):
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            return jsonify({'error': f'Unit {unit_id} not found'}), 404
+        if str(info.get('role', '0')) == '0' and not npc_password_unlocked():
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
