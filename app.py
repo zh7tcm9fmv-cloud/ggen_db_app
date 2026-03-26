@@ -2352,9 +2352,11 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         target_conds = resolve_condition_tags(target_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         boost_conds = resolve_condition_tags(boost_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         trait_conds = []
-        for cid in [active_cid, target_cid]:
-            for c in resolve_condition_tags(cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code):
-                if c not in trait_conds: trait_conds.append(c)
+        # Display tags are sourced from active/boost conditions only.
+        # TargetConditionSetId is often structural and can cause noisy tags.
+        for c in active_conds:
+            if c not in trait_conds:
+                trait_conds.append(c)
         for c in boost_conds:
             if c not in trait_conds:
                 trait_conds.append(c)
