@@ -3024,6 +3024,36 @@ for _uid in sorted(unit_info_map.keys()):
     if _rid != '0' and _rid not in CHAR_RECOMMEND_UNIT_MAP:
         CHAR_RECOMMEND_UNIT_MAP[_rid] = _uid
 
+# Manual shortcut fallbacks for missing character <-> unit links.
+MANUAL_SHORTCUT_PAIRS = [
+    ('1725000100', '1725000150'),
+    ('1700000100', '1700000100'),
+    ('1705001700', '1705000400'),
+    ('1705000200', '1705000550'),
+    ('1705001300', '1705001200'),
+    ('1705001900', '1705000100'),
+    ('1705001600', '1705001510'),
+    ('1705000300', '1705000600'),
+    ('1705000400', '1705000700'),
+    ('1705000500', '1705000800'),
+    ('1705001000', '1705000900'),
+    ('1705001100', '1705001000'),
+    ('1705001200', '1705001100'),
+    ('1705001400', '1705001300'),
+    ('1705001500', '1705001400'),
+    ('1709000100', '1709000100'),
+]
+MANUAL_CHAR_RECOMMEND_UNIT_MAP = {}
+MANUAL_UNIT_RECOMMEND_CHARACTER_MAP = {}
+for _cid_raw, _uid_raw in MANUAL_SHORTCUT_PAIRS:
+    _cid = normalize_id(_cid_raw)
+    _uid = normalize_id(_uid_raw)
+    if _cid != '0' and _uid != '0':
+        MANUAL_CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
+        MANUAL_UNIT_RECOMMEND_CHARACTER_MAP[_uid] = _cid
+        if _cid not in CHAR_RECOMMEND_UNIT_MAP:
+            CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
+
 # ═══════════════════════════════════════════════════════
 # HELPER FUNCTIONS
 # ═══════════════════════════════════════════════════════
@@ -6713,6 +6743,8 @@ def get_unit(unit_id):
         if il or '2x2' in mids:
             mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.png'})
         rec_cid = normalize_id(info.get('recommend_character_id') or '0')
+        if rec_cid == '0':
+            rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
         recommend_character = None
         if rec_cid != '0' and rec_cid in char_info_map:
             cinfo = char_info_map[rec_cid]
