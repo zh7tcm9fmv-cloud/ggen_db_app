@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 10000001,
+    "NameLanguageId": 190300000010000001,
+    "ResourceId": "shop_01",
+    "ShopTypeIndex": 2,
+    "SortOrder": 1,
+    "ScheduleId": 0,
+    "LineupManualUpdateCurrencyTypeIndex": 2,
+    "TargetCurrencyItemId": 0
+  },
+  {
+    "Id": 11000001,
+    "NameLanguageId": 190300000011000001,
+    "ResourceId": "shop_02",
+    "ShopTypeIndex": 3,
+    "SortOrder": 2,
+    "ScheduleId": 0,
+    "LineupManualUpdateCurrencyTypeIndex": 3,
+    "TargetCurrencyItemId": 0
+  },
+  {
+    "Id": 12000001,
+    "NameLanguageId": 190300000012000001,
+    "ResourceId": "shop_03",
+    "ShopTypeIndex": 4,
+    "SortOrder": 3,
+    "ScheduleId": 0,
+    "LineupManualUpdateCurrencyTypeIndex": 4,
+    "TargetCurrencyItemId": 0
+  },
+  {
+    "Id": 13000001,
+    "NameLanguageId": 190300000013000001,
+    "ResourceId": "shop_04",
+    "ShopTypeIndex": 8,
+    "SortOrder": 4,
+    "ScheduleId": 2505201901,
+    "LineupManualUpdateCurrencyTypeIndex": 1,
+    "TargetCurrencyItemId": 220000000002
+  },
+  {
+    "Id": 14210001,
+    "NameLanguageId": 190300000014000001,
+    "ResourceId": "shop_05",
+    "ShopTypeIndex": 9,
+    "SortOrder": 5,
+    "ScheduleId": 2506101402,
+    "LineupManualUpdateCurrencyTypeIndex": 1,
+    "TargetCurrencyItemId": 222100010001
+  },
+  {
+    "Id": 14210002,
+    "NameLanguageId": 190300000014000001,
+    "ResourceId": "shop_05",
+    "ShopTypeIndex": 9,
+    "SortOrder": 5,
+    "ScheduleId": 2508301402,
+    "LineupManualUpdateCurrencyTypeIndex": 1,
+    "TargetCurrencyItemId": 230000210021
+  },
+  {
+    "Id": 14240001,
+    "NameLanguageId": 190300000014240001,
+    "ResourceId": "",
+    "ShopTypeIndex": 9,
+    "SortOrder": 5,
+    "ScheduleId": 2512103002,
+    "LineupManualUpdateCurrencyTypeIndex": 1,
+    "TargetCurrencyItemId": 230000240011
+  },
+  {
+    "Id": 15000001,
+    "NameLanguageId": 190300000015000001,
+    "ResourceId": "shop_06",
+    "ShopTypeIndex": 6,
+    "SortOrder": 6,
+    "ScheduleId": 0,
+    "LineupManualUpdateCurrencyTypeIndex": 7,
+    "TargetCurrencyItemId": 0
+  },
+  {
+    "Id": 90000001,
+    "NameLanguageId": 0,
+    "ResourceId": "shop_01",
+    "ShopTypeIndex": 7,
+    "SortOrder": 9999,
+    "ScheduleId": 0,
+    "LineupManualUpdateCurrencyTypeIndex": 4,
+    "TargetCurrencyItemId": 0
+  }
+]

@@ -1,0 +1,2802 @@
+[
+  {
+    "Id": 11001000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001000710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001000810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001000910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001000910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001001110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001001110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001001610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001001610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001003050,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001003050,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001003410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001003410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11001003710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1001003710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11003000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1003000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11003000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1003000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11003000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1003000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11005000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1005000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11005000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1005000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11007000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1007000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11007000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1007000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11007000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1007000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11007000710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1007000710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11008000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1008000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11008000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1008000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11009000810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1009000810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11011000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1011000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11012000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1012000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013000850,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013000850,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11013001510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1013001510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017000950,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017000950,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11017001210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1017001210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11021000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1021000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11021000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1021000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11022000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1022000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11022000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1022000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11023000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1023000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11026000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1026000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11029000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1029000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11029002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1029002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11031000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1031000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11031000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1031000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11044000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1044000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11055000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1055000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060001850,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060001850,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060002010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060002010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11060002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1060002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11063000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1063000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11067000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1067000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11068000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1068000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11069000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1069000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11069000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1069000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11070000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1070000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11070000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1070000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11070000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1070000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11070000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1070000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080001910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080001910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080002010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080002010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080003250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080003250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11080003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1080003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11081000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1081000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11082000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1082000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11083000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1083000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11083000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1083000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11083000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1083000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11084000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1084000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11085000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1085000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11085000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1085000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095000910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095000910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095001010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095001010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095001510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095001510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095002550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095002550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095002910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095002910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095003510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095003510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095003810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095003810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095003910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095003910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095004010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095004010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095004110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095004110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11095004410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1095004410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11098000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1098000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11098000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1098000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11098000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1098000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11098000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1098000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11098000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1098000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11099000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1099000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11099000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1099000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11101000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1101000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11110000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1110000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11110000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1110000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11110000810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1110000810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11114000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1114000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125001150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125001150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125001250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125001250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125001450,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125001450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11125005110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1125005110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11133001310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1133001310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11133001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1133001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11144000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1144000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11150000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1150000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11150000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1150000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11150000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1150000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11155000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1155000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11162000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1162000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11166000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1166000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11166000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1166000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11175000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1175000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11175000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1175000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11175000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1175000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11175000910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1175000910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200000810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200000810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200001010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200001010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200001350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200001350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200002210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200002210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200003410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200003410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200003510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200003510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11200003950,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1200003950,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210002010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210002010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11210003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1210003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11217000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1217000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11217000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1217000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11217000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1217000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11219000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1219000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230001910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230001910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230002310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230002310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230002610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230002610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230002910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230002910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230003510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230003510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230003850,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230003850,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230003950,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230003950,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230004510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230004510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230004910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230004910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230005510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230005510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11230005610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1230005610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11240000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1240000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11240001010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1240001010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11240001110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1240001110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300002210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300002210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300002310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300002310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300002410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300002410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300002810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300002810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300003210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300003210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300003910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300003910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300004250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300004250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300004450,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300004450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11300004650,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1300004650,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11304000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1304000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11304001210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1304001210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11305000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1305000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11305000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1305000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11305000810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1305000810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11306000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1306000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11307000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1307000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11307000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1307000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11307000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1307000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11308000710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1308000710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330000750,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330000750,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330003210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330003210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330003610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330003610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330003710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330003710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330004910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330004910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330005310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330005310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330005710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330005710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330006010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330006010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330006110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330006110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11330006510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1330006510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11339000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1339000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11350000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1350000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370002310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370002310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370002410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370002410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370002510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370002510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370002710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370002710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370002810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370002810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370003610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370003610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370003710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370003710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370003810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370003810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370003910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370003910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370004010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370004010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370004110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370004110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370004910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370004910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370005010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370005010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370005210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370005210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11370005410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370005410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11375000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1375000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11375000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1375000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11375000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1375000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11378000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1378000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11379000510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1379000510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11379000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1379000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400002810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400002810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400002910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400002910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400003010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400003010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400003810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400003810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400004210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400004210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400007310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400007310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11400008110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1400008110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11401000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1401000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11408000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1408000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11408000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1408000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420001910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420001910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420004710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420004710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420004910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420004910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420005310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420005310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420005710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420005710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420005810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420005810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11420005910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1420005910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430001110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430001110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430001410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430001410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430001610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430001610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430002210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430002210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430002310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430002310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430002910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430002910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430003110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430003110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430003450,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430003450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430004110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430004110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430004850,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430004850,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430004910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430004910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430005910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430005910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430006010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430006010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430006210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430006210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11430007610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1430007610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431000410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431000410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431001310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431001310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431001810,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431001810,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11431001910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1431001910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501001010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501001010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501001650,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501001650,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501001710,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501001710,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501002250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501002250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501003010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501003010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501003310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501003310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11501003910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1501003910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11600000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1600000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11600000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1600000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11604000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1604000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11650000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1650000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11705000550,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1705000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11705001500,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1705001500,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11705001510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1705001510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11725000150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1725000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11750000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1750000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11760000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1760000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11763000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1763000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11764000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1764000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11764000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1764000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11771000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1771000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11771000210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1771000210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11779000110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1779000110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850000250,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850000310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850000310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850000610,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850000610,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850001210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850001210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850001350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850001350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850002110,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850002110,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850002410,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850002410,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850002510,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850002510,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850002910,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850002910,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850003010,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850003010,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11850005310,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1850005310,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000550,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000650,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000650,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21001000750,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1001000750,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21013000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1013000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21022000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1022000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21031000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1031000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21060000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1060000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21060000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1060000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21080000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1080000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21080000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1080000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21080000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1080000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21080000550,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1080000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21095000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1095000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21095000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1095000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21095000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1095000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21095000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1095000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21110000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1110000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21110000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1110000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21125000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1125000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21125000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1125000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21125000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1125000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21125000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1125000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21150000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1150000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21200000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1200000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21200000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1200000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21200000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1200000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21210000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1210000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21210000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1210000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21210000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1210000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21230000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1230000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21230000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1230000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21230000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1230000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000550,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21300000650,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1300000650,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21305000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1305000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21305000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1305000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21305000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1305000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21330000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1330000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21330000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1330000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21370000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1370000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21370000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1370000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21370000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1370000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21400000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1400000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21400000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1400000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21430000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1430000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21430000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1430000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21430000350,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1430000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21430000450,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1430000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21430000550,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1430000550,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21431000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1431000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21501000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1501000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21501000250,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1501000250,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21705000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1705000150,
+    "LimitBreakStep": 0,
+    "Level": 1
+  }
+]

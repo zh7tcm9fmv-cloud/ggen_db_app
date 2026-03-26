@@ -1,0 +1,173 @@
+[
+  {
+    "Id": 1850003700,
+    "ReleaseConditionScenarioStageId": 0,
+    "SeriesId": 10,
+    "NameLanguageId": 110100001850003700,
+    "ProfileLanguageId": 110200001850003700,
+    "ResourceId": "g8500u03700",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2001000100,
+    "ReleaseConditionScenarioStageId": 0,
+    "SeriesId": 10,
+    "NameLanguageId": 110100002001000100,
+    "ProfileLanguageId": 110200002001000100,
+    "ResourceId": "g0010w00100",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2001000200,
+    "ReleaseConditionScenarioStageId": 101402,
+    "SeriesId": 10,
+    "NameLanguageId": 110100002001000200,
+    "ProfileLanguageId": 110200002001000200,
+    "ResourceId": "g0010w00200",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2080000100,
+    "ReleaseConditionScenarioStageId": 8101202,
+    "SeriesId": 800,
+    "NameLanguageId": 110100002080000100,
+    "ProfileLanguageId": 110200002080000100,
+    "ResourceId": "g0800w00100",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2080000200,
+    "ReleaseConditionScenarioStageId": 8101502,
+    "SeriesId": 800,
+    "NameLanguageId": 110100002080000200,
+    "ProfileLanguageId": 110200002080000200,
+    "ResourceId": "g0800w00200",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2095000200,
+    "ReleaseConditionScenarioStageId": 9501203,
+    "SeriesId": 950,
+    "NameLanguageId": 110100002095000200,
+    "ProfileLanguageId": 110200002095000200,
+    "ResourceId": "g0950w00200",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2095000300,
+    "ReleaseConditionScenarioStageId": 9501803,
+    "SeriesId": 950,
+    "NameLanguageId": 110100002095000300,
+    "ProfileLanguageId": 110200002095000300,
+    "ResourceId": "g0950w00300",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2110000100,
+    "ReleaseConditionScenarioStageId": 11000402,
+    "SeriesId": 1100,
+    "NameLanguageId": 110100002110000100,
+    "ProfileLanguageId": 110200002110000100,
+    "ResourceId": "g1100w00100",
+    "ScheduleId": 2506301801
+  },
+  {
+    "Id": 2110000200,
+    "ReleaseConditionScenarioStageId": 11000502,
+    "SeriesId": 1100,
+    "NameLanguageId": 110100002110000200,
+    "ProfileLanguageId": 110200002110000200,
+    "ResourceId": "g1100w00200",
+    "ScheduleId": 2506301801
+  },
+  {
+    "Id": 2125000400,
+    "ReleaseConditionScenarioStageId": 12501004,
+    "SeriesId": 1250,
+    "NameLanguageId": 110100002125000400,
+    "ProfileLanguageId": 110200002125000400,
+    "ResourceId": "g1250w00400",
+    "ScheduleId": 2509601801
+  },
+  {
+    "Id": 2230000400,
+    "ReleaseConditionScenarioStageId": 23001903,
+    "SeriesId": 2300,
+    "NameLanguageId": 110100002230000400,
+    "ProfileLanguageId": 110200002230000400,
+    "ResourceId": "g2300w00400",
+    "ScheduleId": 2601509901
+  },
+  {
+    "Id": 2300000100,
+    "ReleaseConditionScenarioStageId": 30001203,
+    "SeriesId": 3000,
+    "NameLanguageId": 110100002300000100,
+    "ProfileLanguageId": 110200002300000100,
+    "ResourceId": "g3000w00100",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2300000200,
+    "ReleaseConditionScenarioStageId": 33002303,
+    "SeriesId": 3300,
+    "NameLanguageId": 110100002300000200,
+    "ProfileLanguageId": 110200002300000200,
+    "ResourceId": "g3000w00200",
+    "ScheduleId": 2512409903
+  },
+  {
+    "Id": 2300001300,
+    "ReleaseConditionScenarioStageId": 30001704,
+    "SeriesId": 3000,
+    "NameLanguageId": 110100002300001300,
+    "ProfileLanguageId": 110200002300001300,
+    "ResourceId": "g3000w01300",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2330000100,
+    "ReleaseConditionScenarioStageId": 33001404,
+    "SeriesId": 3300,
+    "NameLanguageId": 110100002330000100,
+    "ProfileLanguageId": 110200002330000100,
+    "ResourceId": "g3300w00100",
+    "ScheduleId": 2506301801
+  },
+  {
+    "Id": 2400000100,
+    "ReleaseConditionScenarioStageId": 40001502,
+    "SeriesId": 4000,
+    "NameLanguageId": 110100002400000100,
+    "ProfileLanguageId": 110200002400000100,
+    "ResourceId": "g4000w00100",
+    "ScheduleId": 2602409901
+  },
+  {
+    "Id": 2430000100,
+    "ReleaseConditionScenarioStageId": 43001302,
+    "SeriesId": 4300,
+    "NameLanguageId": 110100002430000100,
+    "ProfileLanguageId": 110200002430000100,
+    "ResourceId": "g4300w00100",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 2430000200,
+    "ReleaseConditionScenarioStageId": 43002402,
+    "SeriesId": 4300,
+    "NameLanguageId": 110100002430000200,
+    "ProfileLanguageId": 110200002430000200,
+    "ResourceId": "g4300w00200",
+    "ScheduleId": 2510809901
+  },
+  {
+    "Id": 2850000200,
+    "ReleaseConditionScenarioStageId": 0,
+    "SeriesId": 8500,
+    "NameLanguageId": 110100002850000200,
+    "ProfileLanguageId": 110200002850000200,
+    "ResourceId": "g8500w00200",
+    "ScheduleId": 0
+  }
+]

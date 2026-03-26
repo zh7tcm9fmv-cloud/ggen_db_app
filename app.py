@@ -143,6 +143,11 @@ if IS_LOCAL:
             'root': r"C:\Users\Mikew0911\Desktop\GGen_TW",
             'master_prefix': "MasterData_",
             'lang_prefix': "Lang_MasterData_"
+        },
+        'JA': {
+            'root': r"C:\Users\Mikew0911\Desktop\GGen_JA",
+            'master_prefix': "MasterData_",
+            'lang_prefix': "Lang_MasterData_"
         }
     }
 else:
@@ -155,6 +160,10 @@ else:
         'TW': {
             'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'TW', 'master'),
             'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'TW', 'lang'),
+        },
+        'JA': {
+            'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'JA', 'master'),
+            'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'JA', 'lang'),
         }
     }
 
@@ -175,7 +184,7 @@ UI_LABELS = {
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
         'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Ground', 'terrain_amphibious': 'Amphibious', 'terrain_unknown': 'Unknown',
         'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions', 'none': 'None',
-        'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
+        'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -187,11 +196,22 @@ UI_LABELS = {
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
+    },
+    'JA': {
+        'restriction_before_moving': '移動前のみ使用可能。',
+        'restriction_tension_max': 'テンションMax以上で使用可能。',
+        'restriction_mp': '{}MP消費時に使用可能。',
+        'restriction_hp': '{}%HP消費時に使用可能。',
+        'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出撃グループ {}',
+        'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
+        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '不明',
+        'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件', 'none': 'なし',
+        'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
     }
 }
-UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'}}
-ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}}
-STAGE_TERRAIN_MAP = {'1': {'EN': 'Space', 'TW': '宇宙'}, '2': {'EN': 'Atmospheric', 'TW': '空中'}, '3': {'EN': 'Ground', 'TW': '地上'}, '5': {'EN': 'Amphibious', 'TW': '水陸'}}
+UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'}, 'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'}}
+ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
+STAGE_TERRAIN_MAP = {'1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'}, '2': {'EN': 'Atmospheric', 'TW': '空中', 'JA': '空中'}, '3': {'EN': 'Ground', 'TW': '地上', 'JA': '地上'}, '5': {'EN': 'Amphibious', 'TW': '水陸', 'JA': '水陸'}}
 
 def get_ui_label(lang_code, key):
     labels = UI_LABELS.get(lang_code, UI_LABELS[DEFAULT_LANG])
@@ -223,7 +243,7 @@ for lang_code in LANG_CONFIG:
 
 # Fallback: if a language's root is missing, try same project with lang-specific prefix (as in GUI.py)
 # e.g. TW: look for GGen_Database/MasterData_*/Lang_MasterData_TW_* so character/unit names can be translated
-_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_'}
+_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_', 'JA': 'Lang_MasterData_JA_'}
 app_dir = os.path.dirname(os.path.abspath(__file__))
 bundled_lang = lambda lc: os.path.join(app_dir, 'data', lc, 'lang')
 bundled_master = lambda lc: os.path.join(app_dir, 'data', lc, 'master')
@@ -3673,6 +3693,8 @@ def get_npc_character_display(cid, csr, lc):
 
 def validate_lang_code(lc):
     lc = (lc or DEFAULT_LANG).upper()
+    if lc == 'JP':
+        lc = 'JA'
     if lc not in LANG_DATA: lc = DEFAULT_LANG
     return lc
 
@@ -3852,7 +3874,8 @@ def index():
 
 @app.route('/api/languages')
 def get_languages(): 
-    return jsonify(convert_image_urls({'languages': list(LANG_DATA.keys()), 'default': DEFAULT_LANG}))
+    display_languages = [('JP' if lc == 'JA' else lc) for lc in LANG_DATA.keys()]
+    return jsonify(convert_image_urls({'languages': display_languages, 'default': DEFAULT_LANG}))
 
 WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new.json')
 

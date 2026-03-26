@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "SlotNumber": 1,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 100
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 2,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 200
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 3,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 300
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 4,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 200
+  },
+  {
+    "Id": 1,
+    "SlotNumber": 5,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 100
+  },
+  {
+    "Id": 2,
+    "SlotNumber": 1,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 400
+  },
+  {
+    "Id": 2,
+    "SlotNumber": 2,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 500
+  },
+  {
+    "Id": 2,
+    "SlotNumber": 3,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 600
+  },
+  {
+    "Id": 2,
+    "SlotNumber": 4,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 500
+  },
+  {
+    "Id": 2,
+    "SlotNumber": 5,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 400
+  }
+]

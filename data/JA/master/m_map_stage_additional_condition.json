@@ -1,0 +1,749 @@
+[
+  {
+    "Id": 1001500102000009,
+    "MapStageConditionId": 1001500102000008,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 1001600102000004,
+    "MapStageConditionId": 1001600102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 1001700102000004,
+    "MapStageConditionId": 1001700102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 81001600102000004,
+    "MapStageConditionId": 81001600102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 81001700102000009,
+    "MapStageConditionId": 81001700102000008,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "3",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 81001800102000004,
+    "MapStageConditionId": 81001800102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 95001900102000004,
+    "MapStageConditionId": 95001900102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 95002000102000004,
+    "MapStageConditionId": 95002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 95002100102000004,
+    "MapStageConditionId": 95002100102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 110000600102000005,
+    "MapStageConditionId": 110000600102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 110000700102000005,
+    "MapStageConditionId": 110000700102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 110000800102000005,
+    "MapStageConditionId": 110000800102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 110000800102000007,
+    "MapStageConditionId": 110000800102000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 125001100102000005,
+    "MapStageConditionId": 125001100102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 125001200102000005,
+    "MapStageConditionId": 125001200102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 125001300102000005,
+    "MapStageConditionId": 125001300102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 125001400102000005,
+    "MapStageConditionId": 125001400102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 150000400102000005,
+    "MapStageConditionId": 150000400102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 200001100102000004,
+    "MapStageConditionId": 200001100102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 200001900102000004,
+    "MapStageConditionId": 200001900102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 200002000102000004,
+    "MapStageConditionId": 200002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210000900302000004,
+    "MapStageConditionId": 210000900302000003,
+    "IngameEventAdditionalConditionTypeIndex": 0,
+    "IngameEventAdditionalConditionParameterTypeIndex": 0,
+    "AdditionalParameterValue": "",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210001800102000004,
+    "MapStageConditionId": 210001800102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210001900102000004,
+    "MapStageConditionId": 210001900102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210002000102000004,
+    "MapStageConditionId": 210002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210002000102000005,
+    "MapStageConditionId": 210002000102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 210002000102000006,
+    "MapStageConditionId": 210002000102000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230000900102000004,
+    "MapStageConditionId": 230000900102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002000102000004,
+    "MapStageConditionId": 230002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002000102000005,
+    "MapStageConditionId": 230002000102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002000102000006,
+    "MapStageConditionId": 230002000102000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002100102000005,
+    "MapStageConditionId": 230002100102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002100102000007,
+    "MapStageConditionId": 230002100102000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002100102000009,
+    "MapStageConditionId": 230002100102000008,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002100102000011,
+    "MapStageConditionId": 230002100102000010,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002200102000005,
+    "MapStageConditionId": 230002200102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 230002200102000007,
+    "MapStageConditionId": 230002200102000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 300001800102000009,
+    "MapStageConditionId": 300001800102000009,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 300001900102000004,
+    "MapStageConditionId": 300001900102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 300002000102000004,
+    "MapStageConditionId": 300002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 310002000102000004,
+    "MapStageConditionId": 310002000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 330001500102000004,
+    "MapStageConditionId": 330001500102000003,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 330002400102000005,
+    "MapStageConditionId": 330002400102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 330002500102000005,
+    "MapStageConditionId": 330002500102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 330002500102000006,
+    "MapStageConditionId": 330002500102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 370001200102000004,
+    "MapStageConditionId": 370001200102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005000102000004,
+    "MapStageConditionId": 400005000102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005000102000006,
+    "MapStageConditionId": 400005000102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005100102000004,
+    "MapStageConditionId": 400005100102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005200102000004,
+    "MapStageConditionId": 400005200102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005200102000006,
+    "MapStageConditionId": 400005200102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005300102000004,
+    "MapStageConditionId": 400005300102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 400005300102000006,
+    "MapStageConditionId": 400005300102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430001400102000004,
+    "MapStageConditionId": 430001400102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430002500102000003,
+    "MapStageConditionId": 430002500102000003,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430002500102000004,
+    "MapStageConditionId": 430002500102000003,
+    "IngameEventAdditionalConditionTypeIndex": 0,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430002600102000003,
+    "MapStageConditionId": 430002600102000003,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430002600102000004,
+    "MapStageConditionId": 430002600102000003,
+    "IngameEventAdditionalConditionTypeIndex": 0,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430003300102000004,
+    "MapStageConditionId": 430003300102000003,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 430003400102000004,
+    "MapStageConditionId": 430003400102000003,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 501000800102000004,
+    "MapStageConditionId": 501000800102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 501001500102000005,
+    "MapStageConditionId": 501001500102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 501001600102000005,
+    "MapStageConditionId": 501001600102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000100902000005,
+    "MapStageConditionId": 903000100902000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000101902000005,
+    "MapStageConditionId": 903000101902000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000102902000005,
+    "MapStageConditionId": 903000102902000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000103102000005,
+    "MapStageConditionId": 903000103102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000200602000006,
+    "MapStageConditionId": 903000200602000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000200702000006,
+    "MapStageConditionId": 903000200702000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000200802000006,
+    "MapStageConditionId": 903000200802000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000200902000006,
+    "MapStageConditionId": 903000200902000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000201802000006,
+    "MapStageConditionId": 903000201802000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000201902000005,
+    "MapStageConditionId": 903000201902000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000202002000006,
+    "MapStageConditionId": 903000202002000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 903000202102000006,
+    "MapStageConditionId": 903000202102000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100100602000005,
+    "MapStageConditionId": 910100100602000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100100702000006,
+    "MapStageConditionId": 910100100702000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100100902000005,
+    "MapStageConditionId": 910100100902000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100101002000006,
+    "MapStageConditionId": 910100101002000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100200702000005,
+    "MapStageConditionId": 910100200702000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100200802000005,
+    "MapStageConditionId": 910100200802000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100201002000005,
+    "MapStageConditionId": 910100201002000005,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 910100201102000005,
+    "MapStageConditionId": 910100201102000004,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  }
+]

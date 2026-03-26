@@ -1,0 +1,82 @@
+[
+  {
+    "Id": 200001,
+    "ConsumeItemId": 222000010002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2507101302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 3200702
+  },
+  {
+    "Id": 200002,
+    "ConsumeItemId": 222000020002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2504301302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 30500704
+  },
+  {
+    "Id": 200003,
+    "ConsumeItemId": 222000030002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2505401302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 6000703
+  },
+  {
+    "Id": 200004,
+    "ConsumeItemId": 222000040002,
+    "ConsumeItemCount": 20,
+    "ScheduleId": 2508101302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 70500203
+  },
+  {
+    "Id": 200005,
+    "ConsumeItemId": 222000050002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2509301302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 43100705
+  },
+  {
+    "Id": 200006,
+    "ConsumeItemId": 222000060002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2510301302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 6011103
+  },
+  {
+    "Id": 200007,
+    "ConsumeItemId": 222000070002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2511101302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 2200702
+  },
+  {
+    "Id": 200008,
+    "ConsumeItemId": 222000080002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2512301302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 1700603
+  },
+  {
+    "Id": 200010,
+    "ConsumeItemId": 222000100002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2602201302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 30800704
+  },
+  {
+    "Id": 200011,
+    "ConsumeItemId": 222000110002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2603201302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 1300804
+  }
+]

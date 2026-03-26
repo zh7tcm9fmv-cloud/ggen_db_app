@@ -1,0 +1,212 @@
+[
+  {
+    "StoryEventId": 200001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2507101301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200001,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2507101301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200001,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2507101301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200002,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2504301301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2504301301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200002,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2504301301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200003,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2505401301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200003,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2505401301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2505401301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200004,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2508101301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200004,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2508101301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200004,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2508101301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200005,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200005,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200005,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200006,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200006,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200006,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 0,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200007,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2511101301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200007,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2511101301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200007,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2511101301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200008,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2512301301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200008,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2512301301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200008,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2512301301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200010,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2602201301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200010,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2602201301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200010,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2602201301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200011,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2603201301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200011,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2603201301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200011,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2603201301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
+  }
+]

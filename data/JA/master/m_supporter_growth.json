@@ -1,0 +1,2002 @@
+[
+  {
+    "Level": 1,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2000
+  },
+  {
+    "Level": 1,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2400
+  },
+  {
+    "Level": 1,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 2600
+  },
+  {
+    "Level": 1,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 2800
+  },
+  {
+    "Level": 2,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2067
+  },
+  {
+    "Level": 2,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2480
+  },
+  {
+    "Level": 2,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 2687
+  },
+  {
+    "Level": 2,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 2893
+  },
+  {
+    "Level": 3,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2134
+  },
+  {
+    "Level": 3,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2560
+  },
+  {
+    "Level": 3,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 2774
+  },
+  {
+    "Level": 3,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 2987
+  },
+  {
+    "Level": 4,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2201
+  },
+  {
+    "Level": 4,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2641
+  },
+  {
+    "Level": 4,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 2861
+  },
+  {
+    "Level": 4,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3081
+  },
+  {
+    "Level": 5,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2268
+  },
+  {
+    "Level": 5,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2721
+  },
+  {
+    "Level": 5,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 2948
+  },
+  {
+    "Level": 5,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3175
+  },
+  {
+    "Level": 6,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2335
+  },
+  {
+    "Level": 6,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2802
+  },
+  {
+    "Level": 6,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3035
+  },
+  {
+    "Level": 6,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3269
+  },
+  {
+    "Level": 7,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2402
+  },
+  {
+    "Level": 7,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2882
+  },
+  {
+    "Level": 7,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3122
+  },
+  {
+    "Level": 7,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3362
+  },
+  {
+    "Level": 8,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2469
+  },
+  {
+    "Level": 8,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 2962
+  },
+  {
+    "Level": 8,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3209
+  },
+  {
+    "Level": 8,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3456
+  },
+  {
+    "Level": 9,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2536
+  },
+  {
+    "Level": 9,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3043
+  },
+  {
+    "Level": 9,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3296
+  },
+  {
+    "Level": 9,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3550
+  },
+  {
+    "Level": 10,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2603
+  },
+  {
+    "Level": 10,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3123
+  },
+  {
+    "Level": 10,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3383
+  },
+  {
+    "Level": 10,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3644
+  },
+  {
+    "Level": 11,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2670
+  },
+  {
+    "Level": 11,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3204
+  },
+  {
+    "Level": 11,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3471
+  },
+  {
+    "Level": 11,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3738
+  },
+  {
+    "Level": 12,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2737
+  },
+  {
+    "Level": 12,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3284
+  },
+  {
+    "Level": 12,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3558
+  },
+  {
+    "Level": 12,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3831
+  },
+  {
+    "Level": 13,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2804
+  },
+  {
+    "Level": 13,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3364
+  },
+  {
+    "Level": 13,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3645
+  },
+  {
+    "Level": 13,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 3925
+  },
+  {
+    "Level": 14,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2872
+  },
+  {
+    "Level": 14,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3446
+  },
+  {
+    "Level": 14,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3733
+  },
+  {
+    "Level": 14,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4020
+  },
+  {
+    "Level": 15,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 2940
+  },
+  {
+    "Level": 15,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3528
+  },
+  {
+    "Level": 15,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3822
+  },
+  {
+    "Level": 15,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4116
+  },
+  {
+    "Level": 16,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3008
+  },
+  {
+    "Level": 16,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3609
+  },
+  {
+    "Level": 16,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3910
+  },
+  {
+    "Level": 16,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4211
+  },
+  {
+    "Level": 17,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3076
+  },
+  {
+    "Level": 17,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3691
+  },
+  {
+    "Level": 17,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 3998
+  },
+  {
+    "Level": 17,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4306
+  },
+  {
+    "Level": 18,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3144
+  },
+  {
+    "Level": 18,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3772
+  },
+  {
+    "Level": 18,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4087
+  },
+  {
+    "Level": 18,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4401
+  },
+  {
+    "Level": 19,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3212
+  },
+  {
+    "Level": 19,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3854
+  },
+  {
+    "Level": 19,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4175
+  },
+  {
+    "Level": 19,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4496
+  },
+  {
+    "Level": 20,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3280
+  },
+  {
+    "Level": 20,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 3936
+  },
+  {
+    "Level": 20,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4264
+  },
+  {
+    "Level": 20,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4592
+  },
+  {
+    "Level": 21,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3348
+  },
+  {
+    "Level": 21,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4017
+  },
+  {
+    "Level": 21,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4352
+  },
+  {
+    "Level": 21,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4687
+  },
+  {
+    "Level": 22,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3416
+  },
+  {
+    "Level": 22,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4099
+  },
+  {
+    "Level": 22,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4440
+  },
+  {
+    "Level": 22,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4782
+  },
+  {
+    "Level": 23,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3484
+  },
+  {
+    "Level": 23,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4180
+  },
+  {
+    "Level": 23,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4529
+  },
+  {
+    "Level": 23,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4877
+  },
+  {
+    "Level": 24,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3552
+  },
+  {
+    "Level": 24,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4262
+  },
+  {
+    "Level": 24,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4617
+  },
+  {
+    "Level": 24,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 4972
+  },
+  {
+    "Level": 25,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3620
+  },
+  {
+    "Level": 25,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4344
+  },
+  {
+    "Level": 25,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4706
+  },
+  {
+    "Level": 25,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5068
+  },
+  {
+    "Level": 26,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3688
+  },
+  {
+    "Level": 26,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4425
+  },
+  {
+    "Level": 26,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4794
+  },
+  {
+    "Level": 26,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5163
+  },
+  {
+    "Level": 27,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3756
+  },
+  {
+    "Level": 27,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4507
+  },
+  {
+    "Level": 27,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4882
+  },
+  {
+    "Level": 27,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5258
+  },
+  {
+    "Level": 28,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3824
+  },
+  {
+    "Level": 28,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4588
+  },
+  {
+    "Level": 28,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 4971
+  },
+  {
+    "Level": 28,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5353
+  },
+  {
+    "Level": 29,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3892
+  },
+  {
+    "Level": 29,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4670
+  },
+  {
+    "Level": 29,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5059
+  },
+  {
+    "Level": 29,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5448
+  },
+  {
+    "Level": 30,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 3960
+  },
+  {
+    "Level": 30,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4752
+  },
+  {
+    "Level": 30,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5148
+  },
+  {
+    "Level": 30,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5544
+  },
+  {
+    "Level": 31,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4028
+  },
+  {
+    "Level": 31,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4833
+  },
+  {
+    "Level": 31,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5236
+  },
+  {
+    "Level": 31,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5639
+  },
+  {
+    "Level": 32,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4096
+  },
+  {
+    "Level": 32,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4915
+  },
+  {
+    "Level": 32,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5324
+  },
+  {
+    "Level": 32,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5734
+  },
+  {
+    "Level": 33,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4164
+  },
+  {
+    "Level": 33,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 4996
+  },
+  {
+    "Level": 33,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5413
+  },
+  {
+    "Level": 33,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5829
+  },
+  {
+    "Level": 34,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4232
+  },
+  {
+    "Level": 34,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5078
+  },
+  {
+    "Level": 34,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5501
+  },
+  {
+    "Level": 34,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 5924
+  },
+  {
+    "Level": 35,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4300
+  },
+  {
+    "Level": 35,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5160
+  },
+  {
+    "Level": 35,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5590
+  },
+  {
+    "Level": 35,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6020
+  },
+  {
+    "Level": 36,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4368
+  },
+  {
+    "Level": 36,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5241
+  },
+  {
+    "Level": 36,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5678
+  },
+  {
+    "Level": 36,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6115
+  },
+  {
+    "Level": 37,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4436
+  },
+  {
+    "Level": 37,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5323
+  },
+  {
+    "Level": 37,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5766
+  },
+  {
+    "Level": 37,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6210
+  },
+  {
+    "Level": 38,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4504
+  },
+  {
+    "Level": 38,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5404
+  },
+  {
+    "Level": 38,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5855
+  },
+  {
+    "Level": 38,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6305
+  },
+  {
+    "Level": 39,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4572
+  },
+  {
+    "Level": 39,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5486
+  },
+  {
+    "Level": 39,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 5943
+  },
+  {
+    "Level": 39,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6400
+  },
+  {
+    "Level": 40,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4640
+  },
+  {
+    "Level": 40,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5568
+  },
+  {
+    "Level": 40,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6032
+  },
+  {
+    "Level": 40,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6496
+  },
+  {
+    "Level": 41,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4708
+  },
+  {
+    "Level": 41,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5649
+  },
+  {
+    "Level": 41,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6120
+  },
+  {
+    "Level": 41,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6591
+  },
+  {
+    "Level": 42,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4776
+  },
+  {
+    "Level": 42,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5731
+  },
+  {
+    "Level": 42,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6208
+  },
+  {
+    "Level": 42,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6686
+  },
+  {
+    "Level": 43,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4844
+  },
+  {
+    "Level": 43,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5812
+  },
+  {
+    "Level": 43,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6297
+  },
+  {
+    "Level": 43,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6781
+  },
+  {
+    "Level": 44,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4912
+  },
+  {
+    "Level": 44,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5894
+  },
+  {
+    "Level": 44,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6385
+  },
+  {
+    "Level": 44,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6876
+  },
+  {
+    "Level": 45,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 4980
+  },
+  {
+    "Level": 45,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 5976
+  },
+  {
+    "Level": 45,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6474
+  },
+  {
+    "Level": 45,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 6972
+  },
+  {
+    "Level": 46,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5048
+  },
+  {
+    "Level": 46,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6057
+  },
+  {
+    "Level": 46,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6562
+  },
+  {
+    "Level": 46,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7067
+  },
+  {
+    "Level": 47,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5116
+  },
+  {
+    "Level": 47,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6139
+  },
+  {
+    "Level": 47,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6650
+  },
+  {
+    "Level": 47,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7162
+  },
+  {
+    "Level": 48,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5184
+  },
+  {
+    "Level": 48,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6220
+  },
+  {
+    "Level": 48,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6739
+  },
+  {
+    "Level": 48,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7257
+  },
+  {
+    "Level": 49,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5252
+  },
+  {
+    "Level": 49,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6302
+  },
+  {
+    "Level": 49,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6827
+  },
+  {
+    "Level": 49,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7352
+  },
+  {
+    "Level": 50,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5320
+  },
+  {
+    "Level": 50,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6384
+  },
+  {
+    "Level": 50,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 6916
+  },
+  {
+    "Level": 50,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7448
+  },
+  {
+    "Level": 51,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5388
+  },
+  {
+    "Level": 51,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6465
+  },
+  {
+    "Level": 51,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7004
+  },
+  {
+    "Level": 51,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7543
+  },
+  {
+    "Level": 52,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5456
+  },
+  {
+    "Level": 52,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6547
+  },
+  {
+    "Level": 52,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7092
+  },
+  {
+    "Level": 52,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7638
+  },
+  {
+    "Level": 53,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5524
+  },
+  {
+    "Level": 53,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6628
+  },
+  {
+    "Level": 53,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7181
+  },
+  {
+    "Level": 53,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7733
+  },
+  {
+    "Level": 54,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5592
+  },
+  {
+    "Level": 54,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6710
+  },
+  {
+    "Level": 54,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7269
+  },
+  {
+    "Level": 54,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7828
+  },
+  {
+    "Level": 55,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5660
+  },
+  {
+    "Level": 55,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6792
+  },
+  {
+    "Level": 55,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7358
+  },
+  {
+    "Level": 55,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 7924
+  },
+  {
+    "Level": 56,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5728
+  },
+  {
+    "Level": 56,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6873
+  },
+  {
+    "Level": 56,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7446
+  },
+  {
+    "Level": 56,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8019
+  },
+  {
+    "Level": 57,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5796
+  },
+  {
+    "Level": 57,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 6955
+  },
+  {
+    "Level": 57,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7534
+  },
+  {
+    "Level": 57,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8114
+  },
+  {
+    "Level": 58,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5864
+  },
+  {
+    "Level": 58,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7036
+  },
+  {
+    "Level": 58,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7623
+  },
+  {
+    "Level": 58,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8209
+  },
+  {
+    "Level": 59,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 5932
+  },
+  {
+    "Level": 59,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7118
+  },
+  {
+    "Level": 59,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7711
+  },
+  {
+    "Level": 59,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8304
+  },
+  {
+    "Level": 60,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6000
+  },
+  {
+    "Level": 60,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7200
+  },
+  {
+    "Level": 60,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7800
+  },
+  {
+    "Level": 60,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8400
+  },
+  {
+    "Level": 61,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6100
+  },
+  {
+    "Level": 61,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7320
+  },
+  {
+    "Level": 61,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 7930
+  },
+  {
+    "Level": 61,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8540
+  },
+  {
+    "Level": 62,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6200
+  },
+  {
+    "Level": 62,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7440
+  },
+  {
+    "Level": 62,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8060
+  },
+  {
+    "Level": 62,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8680
+  },
+  {
+    "Level": 63,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6300
+  },
+  {
+    "Level": 63,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7560
+  },
+  {
+    "Level": 63,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8190
+  },
+  {
+    "Level": 63,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8820
+  },
+  {
+    "Level": 64,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6400
+  },
+  {
+    "Level": 64,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7680
+  },
+  {
+    "Level": 64,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8320
+  },
+  {
+    "Level": 64,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 8960
+  },
+  {
+    "Level": 65,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6500
+  },
+  {
+    "Level": 65,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7800
+  },
+  {
+    "Level": 65,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8450
+  },
+  {
+    "Level": 65,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9100
+  },
+  {
+    "Level": 66,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6600
+  },
+  {
+    "Level": 66,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 7920
+  },
+  {
+    "Level": 66,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8580
+  },
+  {
+    "Level": 66,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9240
+  },
+  {
+    "Level": 67,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6700
+  },
+  {
+    "Level": 67,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8040
+  },
+  {
+    "Level": 67,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8710
+  },
+  {
+    "Level": 67,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9380
+  },
+  {
+    "Level": 68,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6800
+  },
+  {
+    "Level": 68,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8160
+  },
+  {
+    "Level": 68,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8840
+  },
+  {
+    "Level": 68,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9520
+  },
+  {
+    "Level": 69,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 6900
+  },
+  {
+    "Level": 69,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8280
+  },
+  {
+    "Level": 69,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 8970
+  },
+  {
+    "Level": 69,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9660
+  },
+  {
+    "Level": 70,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7000
+  },
+  {
+    "Level": 70,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8400
+  },
+  {
+    "Level": 70,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9100
+  },
+  {
+    "Level": 70,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9800
+  },
+  {
+    "Level": 71,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7100
+  },
+  {
+    "Level": 71,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8520
+  },
+  {
+    "Level": 71,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9230
+  },
+  {
+    "Level": 71,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 9940
+  },
+  {
+    "Level": 72,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7200
+  },
+  {
+    "Level": 72,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8640
+  },
+  {
+    "Level": 72,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9360
+  },
+  {
+    "Level": 72,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10080
+  },
+  {
+    "Level": 73,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7300
+  },
+  {
+    "Level": 73,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8760
+  },
+  {
+    "Level": 73,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9490
+  },
+  {
+    "Level": 73,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10220
+  },
+  {
+    "Level": 74,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7400
+  },
+  {
+    "Level": 74,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 8880
+  },
+  {
+    "Level": 74,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9620
+  },
+  {
+    "Level": 74,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10360
+  },
+  {
+    "Level": 75,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7500
+  },
+  {
+    "Level": 75,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9000
+  },
+  {
+    "Level": 75,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9750
+  },
+  {
+    "Level": 75,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10500
+  },
+  {
+    "Level": 76,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7600
+  },
+  {
+    "Level": 76,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9120
+  },
+  {
+    "Level": 76,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 9880
+  },
+  {
+    "Level": 76,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10640
+  },
+  {
+    "Level": 77,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7700
+  },
+  {
+    "Level": 77,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9240
+  },
+  {
+    "Level": 77,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10010
+  },
+  {
+    "Level": 77,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10780
+  },
+  {
+    "Level": 78,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7800
+  },
+  {
+    "Level": 78,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9360
+  },
+  {
+    "Level": 78,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10140
+  },
+  {
+    "Level": 78,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 10920
+  },
+  {
+    "Level": 79,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 7900
+  },
+  {
+    "Level": 79,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9480
+  },
+  {
+    "Level": 79,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10270
+  },
+  {
+    "Level": 79,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11060
+  },
+  {
+    "Level": 80,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8000
+  },
+  {
+    "Level": 80,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9600
+  },
+  {
+    "Level": 80,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10400
+  },
+  {
+    "Level": 80,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11200
+  },
+  {
+    "Level": 81,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8100
+  },
+  {
+    "Level": 81,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9720
+  },
+  {
+    "Level": 81,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10530
+  },
+  {
+    "Level": 81,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11340
+  },
+  {
+    "Level": 82,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8200
+  },
+  {
+    "Level": 82,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9840
+  },
+  {
+    "Level": 82,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10660
+  },
+  {
+    "Level": 82,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11480
+  },
+  {
+    "Level": 83,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8300
+  },
+  {
+    "Level": 83,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 9960
+  },
+  {
+    "Level": 83,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10790
+  },
+  {
+    "Level": 83,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11620
+  },
+  {
+    "Level": 84,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8400
+  },
+  {
+    "Level": 84,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10080
+  },
+  {
+    "Level": 84,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 10920
+  },
+  {
+    "Level": 84,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11760
+  },
+  {
+    "Level": 85,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8500
+  },
+  {
+    "Level": 85,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10200
+  },
+  {
+    "Level": 85,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11050
+  },
+  {
+    "Level": 85,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 11900
+  },
+  {
+    "Level": 86,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8600
+  },
+  {
+    "Level": 86,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10320
+  },
+  {
+    "Level": 86,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11180
+  },
+  {
+    "Level": 86,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12040
+  },
+  {
+    "Level": 87,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8700
+  },
+  {
+    "Level": 87,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10440
+  },
+  {
+    "Level": 87,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11310
+  },
+  {
+    "Level": 87,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12180
+  },
+  {
+    "Level": 88,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8800
+  },
+  {
+    "Level": 88,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10560
+  },
+  {
+    "Level": 88,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11440
+  },
+  {
+    "Level": 88,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12320
+  },
+  {
+    "Level": 89,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 8900
+  },
+  {
+    "Level": 89,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10680
+  },
+  {
+    "Level": 89,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11570
+  },
+  {
+    "Level": 89,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12460
+  },
+  {
+    "Level": 90,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9000
+  },
+  {
+    "Level": 90,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10800
+  },
+  {
+    "Level": 90,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11700
+  },
+  {
+    "Level": 90,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12600
+  },
+  {
+    "Level": 91,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9100
+  },
+  {
+    "Level": 91,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 10920
+  },
+  {
+    "Level": 91,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11830
+  },
+  {
+    "Level": 91,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12740
+  },
+  {
+    "Level": 92,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9200
+  },
+  {
+    "Level": 92,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11040
+  },
+  {
+    "Level": 92,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 11960
+  },
+  {
+    "Level": 92,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 12880
+  },
+  {
+    "Level": 93,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9300
+  },
+  {
+    "Level": 93,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11160
+  },
+  {
+    "Level": 93,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12090
+  },
+  {
+    "Level": 93,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13020
+  },
+  {
+    "Level": 94,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9400
+  },
+  {
+    "Level": 94,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11280
+  },
+  {
+    "Level": 94,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12220
+  },
+  {
+    "Level": 94,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13160
+  },
+  {
+    "Level": 95,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9500
+  },
+  {
+    "Level": 95,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11400
+  },
+  {
+    "Level": 95,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12350
+  },
+  {
+    "Level": 95,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13300
+  },
+  {
+    "Level": 96,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9600
+  },
+  {
+    "Level": 96,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11520
+  },
+  {
+    "Level": 96,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12480
+  },
+  {
+    "Level": 96,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13440
+  },
+  {
+    "Level": 97,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9700
+  },
+  {
+    "Level": 97,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11640
+  },
+  {
+    "Level": 97,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12610
+  },
+  {
+    "Level": 97,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13580
+  },
+  {
+    "Level": 98,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9800
+  },
+  {
+    "Level": 98,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11760
+  },
+  {
+    "Level": 98,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12740
+  },
+  {
+    "Level": 98,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13720
+  },
+  {
+    "Level": 99,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 9900
+  },
+  {
+    "Level": 99,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 11880
+  },
+  {
+    "Level": 99,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 12870
+  },
+  {
+    "Level": 99,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 13860
+  },
+  {
+    "Level": 100,
+    "LimitBreakStep": 0,
+    "ParameterCorrectionRateBasisPoint": 10000
+  },
+  {
+    "Level": 100,
+    "LimitBreakStep": 1,
+    "ParameterCorrectionRateBasisPoint": 12000
+  },
+  {
+    "Level": 100,
+    "LimitBreakStep": 2,
+    "ParameterCorrectionRateBasisPoint": 13000
+  },
+  {
+    "Level": 100,
+    "LimitBreakStep": 3,
+    "ParameterCorrectionRateBasisPoint": 14000
+  }
+]

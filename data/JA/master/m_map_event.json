@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 210001,
+    "EventId": 210001,
+    "DailyStageSkipLimit": 5,
+    "ThumbnailCharacterId": 1095001801,
+    "EventLogoResourceId": "map_event_logo_num_00001",
+    "DescriptionResourceId": "map_catch_copy_210001",
+    "BackgroundResourceId": "map_event_top_210001",
+    "BromideResourceId": "map_event_g0800c03900",
+    "MapEventPpConfigId": 1,
+    "MapEventPartnerSetId": 0,
+    "TutorialPartnerResourceId": "",
+    "TutorialBossResourceId": "",
+    "Unknown_Col_12": ""
+  },
+  {
+    "Id": 210002,
+    "EventId": 210002,
+    "DailyStageSkipLimit": 0,
+    "ThumbnailCharacterId": 0,
+    "EventLogoResourceId": "map_event_logo_num_00002",
+    "DescriptionResourceId": "map_catch_copy_210001",
+    "BackgroundResourceId": "map_event_top_210002",
+    "BromideResourceId": "",
+    "MapEventPpConfigId": 1,
+    "MapEventPartnerSetId": 0,
+    "TutorialPartnerResourceId": "",
+    "TutorialBossResourceId": "",
+    "Unknown_Col_12": ""
+  },
+  {
+    "Id": 240001,
+    "EventId": 240001,
+    "DailyStageSkipLimit": 0,
+    "ThumbnailCharacterId": 0,
+    "EventLogoResourceId": "map_event_logo_240001",
+    "DescriptionResourceId": "0",
+    "BackgroundResourceId": "0",
+    "BromideResourceId": "0",
+    "MapEventPpConfigId": 1,
+    "MapEventPartnerSetId": 24000101,
+    "TutorialPartnerResourceId": "map_event_tutorial_tips_240001",
+    "TutorialBossResourceId": "map_event_tutorial_tips_boss_240001",
+    "Unknown_Col_12": ""
+  }
+]

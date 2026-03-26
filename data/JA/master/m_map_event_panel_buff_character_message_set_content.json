@@ -1,0 +1,102 @@
+[
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1100100020101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000201011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1100100030101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811001000301011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1108000070101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080000701011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1108000070101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080000701012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1108000270001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811080002700011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1108000270001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811080002700012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1109500010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095000101011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1109500010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095000101012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1109500180001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811095001800012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1109500180001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811095001800011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1121000010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210000100011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1121000010001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210000100012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1121000230001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811210002300011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1121000230001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811210002300012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1130000200101,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811300002001011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1130400010001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811304000100011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1185000040001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811850000400011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1185000040001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811850000400012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1185000090001,
+    "SortOrder": 1,
+    "MessageLanguageId": 100811850000900011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1185000090001,
+    "SortOrder": 2,
+    "MessageLanguageId": 100811850000900012
+  }
+]

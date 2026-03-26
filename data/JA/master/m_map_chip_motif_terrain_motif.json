@@ -1,0 +1,30 @@
+[
+  {
+    "MapChipMotifId": 3,
+    "TerrainMotifId": 20000
+  },
+  {
+    "MapChipMotifId": 4,
+    "TerrainMotifId": 30000
+  },
+  {
+    "MapChipMotifId": 5,
+    "TerrainMotifId": 30000
+  },
+  {
+    "MapChipMotifId": 5,
+    "TerrainMotifId": 40000
+  },
+  {
+    "MapChipMotifId": 6,
+    "TerrainMotifId": 30000
+  },
+  {
+    "MapChipMotifId": 6,
+    "TerrainMotifId": 50000
+  },
+  {
+    "MapChipMotifId": 6,
+    "TerrainMotifId": 60000
+  }
+]

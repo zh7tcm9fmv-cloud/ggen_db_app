@@ -1,0 +1,4316 @@
+[
+  {
+    "TraitId": 100080101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 100080201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 100080301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 100080401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 100080501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 100140101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100140201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100140301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100140401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100140501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100150101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100150201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100150301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100150401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100150501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100160101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100160201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100160301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100160401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100160501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100180101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100180201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100180301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100180401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100180501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100190101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100190201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100190301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100190401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100190501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100200101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100200201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100200301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100200401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100200501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100210101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100210201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100210301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100210401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100210501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100220101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100220201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100220301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100220401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100220501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100230101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100230201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100230301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100230401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100230501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100250101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100250201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100250301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100250401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100250501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100260101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100260201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100260301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100260401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100260501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100300101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100300201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100300301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100300401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100300501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100310101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100310201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100310301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100310401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100310501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100420101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100420201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100420301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100420401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100420501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100430101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100430201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100430301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100430401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100430501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100490101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100490201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100490301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100490401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100490501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100500101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100500201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100500301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100500401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100500501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100510101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100510201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100510301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100510401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100510501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100570101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100580101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100590101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100600101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 100610101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 101040101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 101040201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 101040301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200100101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200100201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200100301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200100401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200100501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200110101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200110201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200110301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200110401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200110501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200120101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200120201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200120301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200120401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200120501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200130101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200130201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200130301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200130401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200130501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200140101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200140201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200140301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200140401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200140501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200150101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200150201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200150301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200150401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200150501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200160101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200160201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200160301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200160401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200160501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200170101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200170201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200170301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200170401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200170501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200210101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200210201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200210301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200210401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200210501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200280101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200280102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200280201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200280202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200280301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200280302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200280401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200280402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200280501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200280502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200350101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200350102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200360101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200360102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200370101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200370102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200380101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200380102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200390102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200390103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200400102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200400103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200410102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200410103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200420102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200420103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200430102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200430103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200440102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200440103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200450102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200450103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200460102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200480102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200480202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200480302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200480402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200480502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200490102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200490202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200490302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200490402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200490502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200540102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200540103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200550101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200550102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200550201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200550202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200550301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200550302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200550401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200550402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200550501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200550502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200560101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200560102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200560201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200560202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200560301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200560302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200560401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200560402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200560501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200560502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200570101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200570102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200570201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200570202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200570301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200570302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200570401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200570402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200570501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200570502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200580101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200580102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200580201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200580202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200580301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200580302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200580401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200580402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200580501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200580502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200590101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200590102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200590201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200590202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200590301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200590302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200590401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200590402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200590501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200590502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200600101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200600102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200600201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200600202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200600301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200600302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200600401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200600402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200600501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200600502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200610101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200610102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200610201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200610202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200610301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200610302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200610401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200610402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200610501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200610502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200620101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200620102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200620201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200620202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200620301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200620302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200620401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200620402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200620501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200620502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200630101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200630102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200630201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200630202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200630301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200630302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200630401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200630402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200630501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200630502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200640101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200640102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200640201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200640202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200640301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200640302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200640401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200640402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200640501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200640502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200650101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200650102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200650201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200650202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200650301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200650302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200650401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200650402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200650501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200650502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200660101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200660102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200660201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200660202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200660301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200660302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200660401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200660402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200660501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200660502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200670101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200670102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200670201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200670202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200670301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200670302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200670401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200670402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200670501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200670502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200680101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200680102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200680201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200680202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200680301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200680302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200680401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200680402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200680501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200680502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200690101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200690102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200690201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200690202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200690301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200690302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200690401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200690402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200690501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200690502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200700101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200700102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200700201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200700202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200700301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200700302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200700401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200700402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200700501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200700502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200710101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200710102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200710201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200710202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200710301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200710302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200710401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200710402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200710501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200710502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200720101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200720102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200720201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200720202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200720301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200720302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200720401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200720402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200720501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200720502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200730101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200730102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200730201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200730202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200730301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200730302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200730401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200730402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200730501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200730502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200740101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200740102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200740201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200740202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200740301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200740302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200740401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200740402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200740501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200740502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200750101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200750102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200750201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200750202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200750301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200750302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200750401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200750402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200750501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200750502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200760101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200760102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200760201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200760202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200760301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200760302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200760401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200760402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200760501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200760502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200770101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200770102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200770201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200770202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200770301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200770302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200770401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200770402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200770501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200770502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200780101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200780102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200780201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200780202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200780301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200780302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200780401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200780402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200780501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200780502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200790101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200790102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200790201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200790202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200790301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200790302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200790401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200790402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200790501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200790502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200800101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200800102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200800201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200800202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200800301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200800302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200800401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200800402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200800501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200800502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200810101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200810102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200810201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200810202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200810301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200810302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200810401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200810402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200810501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200810502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200820101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200820102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200820201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200820202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200820301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200820302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200820401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200820402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200820501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200820502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200830101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200830102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200830201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200830202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200830301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200830302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200830401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200830402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200830501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200830502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200840101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200840102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200840201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200840202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200840301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200840302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200840401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200840402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200840501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200840502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200850101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200850102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200850201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200850202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200850301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200850302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200850401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200850402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200850501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200850502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200860101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200860102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200860201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200860202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200860301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200860302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200860401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200860402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200860501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200860502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200870101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200870102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200870201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200870202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200870301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200870302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200870401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200870402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200870501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200870502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200880101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200880102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200880201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200880202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200880301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200880302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200880401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200880402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200880501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200880502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200890101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200890102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200890201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200890202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200890301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200890302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200890401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200890402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200890501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200890502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200900101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200900102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200900201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200900202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200900301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200900302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200900401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200900402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200900501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200900502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200910101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200910102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200910201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200910202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200910301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200910302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200910401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200910402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200910501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200910502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200920101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200920102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200920201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200920202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200920301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200920302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200920401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200920402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200920501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200920502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200930101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200930102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200930201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200930202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200930301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200930302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200930401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200930402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200930501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200930502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200940101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200940102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200940201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200940202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200940301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200940302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200940401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200940402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200940501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200940502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200950101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200950102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200950201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200950202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200950301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200950302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200950401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200950402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200950501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200950502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200960101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200960102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200960201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200960202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200960301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200960302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200960401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200960402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200960501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200960502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200970102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200980101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200980102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200980201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200980202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200980301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200980302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200980401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200980402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 200980501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 200980502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201020101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201020102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201180101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201180102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201180201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201180202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201180301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201180302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201180401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201180402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201180501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201180502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201190101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201190102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201190201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201190202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201190301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201190302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201190401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201190402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201190501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201190502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201200101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201200102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201200201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201200202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201200301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201200302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201200401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201200402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201200501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201200502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201210101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201210102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201210201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201210202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201210301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201210302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201210401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201210402,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201210501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201210502,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201250102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 201250103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201260102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 201390101,
+    "IsHitOnly": false,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202340101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 202340102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202340201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 202340202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300110101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110601,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110701,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110801,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300110901,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300150101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150601,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150701,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150801,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300150901,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160601,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160701,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160801,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300160901,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170601,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170701,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170801,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300170901,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350401,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350501,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350601,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350701,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350801,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300350901,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  }
+]

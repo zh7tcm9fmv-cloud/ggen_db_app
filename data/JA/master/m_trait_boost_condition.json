@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 1000001,
+    "TraitBoostConditionSetId": 1000001,
+    "GroupId": "",
+    "UnitTags": "1019",
+    "UnitSeries": ""
+  },
+  {
+    "Id": 1000002,
+    "TraitBoostConditionSetId": 1000002,
+    "GroupId": "",
+    "UnitTags": "1015",
+    "UnitSeries": ""
+  },
+  {
+    "Id": 1000003,
+    "TraitBoostConditionSetId": 1000003,
+    "GroupId": "",
+    "UnitTags": "1014",
+    "UnitSeries": ""
+  },
+  {
+    "Id": 1000004,
+    "TraitBoostConditionSetId": 1000004,
+    "GroupId": "",
+    "UnitTags": "1047",
+    "UnitSeries": ""
+  }
+]

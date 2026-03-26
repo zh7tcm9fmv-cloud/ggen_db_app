@@ -1,0 +1,32 @@
+[
+  {
+    "RarityIndex": 1,
+    "CapitalReturnRatePermil": 1000,
+    "RareMedalReturnBaseValue": 0,
+    "GpReturnBaseValue": 100
+  },
+  {
+    "RarityIndex": 2,
+    "CapitalReturnRatePermil": 2000,
+    "RareMedalReturnBaseValue": 1,
+    "GpReturnBaseValue": 200
+  },
+  {
+    "RarityIndex": 3,
+    "CapitalReturnRatePermil": 6000,
+    "RareMedalReturnBaseValue": 2,
+    "GpReturnBaseValue": 50
+  },
+  {
+    "RarityIndex": 4,
+    "CapitalReturnRatePermil": 10000,
+    "RareMedalReturnBaseValue": 10,
+    "GpReturnBaseValue": 100
+  },
+  {
+    "RarityIndex": 5,
+    "CapitalReturnRatePermil": 50000,
+    "RareMedalReturnBaseValue": 50,
+    "GpReturnBaseValue": 1000
+  }
+]

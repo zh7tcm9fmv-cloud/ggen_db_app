@@ -1,0 +1,79 @@
+[
+  {
+    "Id": 251210110001,
+    "GameEventConditionId": 251210110001,
+    "TargetProgressCount": 5000,
+    "DescriptionLanguageId": 180100251210110001,
+    "TransitionId": 0
+  },
+  {
+    "Id": 251210110002,
+    "GameEventConditionId": 251210110002,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110002,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110003,
+    "GameEventConditionId": 251210110003,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110003,
+    "TransitionId": 0
+  },
+  {
+    "Id": 251210110004,
+    "GameEventConditionId": 251210110004,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110004,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110005,
+    "GameEventConditionId": 251210110005,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110005,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110006,
+    "GameEventConditionId": 251210110006,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110006,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110007,
+    "GameEventConditionId": 251210110007,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110007,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110008,
+    "GameEventConditionId": 251210110008,
+    "TargetProgressCount": 3000,
+    "DescriptionLanguageId": 180100251210110008,
+    "TransitionId": 0
+  },
+  {
+    "Id": 251210110009,
+    "GameEventConditionId": 251210110009,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110009,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110010,
+    "GameEventConditionId": 251210110010,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110010,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 251210110011,
+    "GameEventConditionId": 251210110011,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100251210110011,
+    "TransitionId": 39000000003000
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 1,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 193100000000000001
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 2,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 193100000000000002
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 3,
+    "SortOrder": 6,
+    "DescriptionLanguageId": 193100000000000003
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 4,
+    "SortOrder": 7,
+    "DescriptionLanguageId": 193100000000000004
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 5,
+    "SortOrder": 8,
+    "DescriptionLanguageId": 193100000000000005
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 6,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 193100000000000006
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 7,
+    "SortOrder": 3,
+    "DescriptionLanguageId": 193100000000000007
+  },
+  {
+    "SubscriptionCommonDescriptionTypeIndex": 8,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 193100000000000008
+  }
+]

@@ -1,0 +1,452 @@
+[
+  {
+    "Id": 1001000100,
+    "ResourceId": "g0010u00100",
+    "NameLanguageId": 110100001001000100,
+    "ProfileLanguageId": 110200001001000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 10,
+    "ModelNumber": "RX-78-2",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1001001100,
+    "ResourceId": "g0010u01100",
+    "NameLanguageId": 110100001001001100,
+    "ProfileLanguageId": 110200001001001100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 10,
+    "ModelNumber": "MS-06S",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1009000100,
+    "ResourceId": "g0090u00100",
+    "NameLanguageId": 110100001009000100,
+    "ProfileLanguageId": 110200001009000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 90,
+    "ModelNumber": "EMS-10",
+    "ScheduleId": 2601209901
+  },
+  {
+    "Id": 1013000300,
+    "ResourceId": "g0130u00300",
+    "NameLanguageId": 110100001013000300,
+    "ProfileLanguageId": 110200001013000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 130,
+    "ModelNumber": "RX-79[G]Ez-8",
+    "ScheduleId": 2603209901
+  },
+  {
+    "Id": 1017000100,
+    "ResourceId": "g0170u00100",
+    "NameLanguageId": 110100001017000100,
+    "ProfileLanguageId": 110200001017000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 170,
+    "ModelNumber": "RX-78NT-1",
+    "ScheduleId": 2512309901
+  },
+  {
+    "Id": 1022000100,
+    "ResourceId": "g0220u00100",
+    "NameLanguageId": 110100001022000100,
+    "ProfileLanguageId": 110200001022000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 220,
+    "ModelNumber": "RX-79BD-1",
+    "ScheduleId": 2511109901
+  },
+  {
+    "Id": 1031000100,
+    "ResourceId": "g0310u00100",
+    "NameLanguageId": 110100001031000100,
+    "ProfileLanguageId": 110200001031000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 310,
+    "ModelNumber": "FA-78",
+    "ScheduleId": 2507109901
+  },
+  {
+    "Id": 1060000100,
+    "ResourceId": "g0600u00100",
+    "NameLanguageId": 110100001060000100,
+    "ProfileLanguageId": 110200001060000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 600,
+    "ModelNumber": "RX-78GP01",
+    "ScheduleId": 2505401303
+  },
+  {
+    "Id": 1060000300,
+    "ResourceId": "g0600u00300",
+    "NameLanguageId": 110100001060000300,
+    "ProfileLanguageId": 110200001060000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 600,
+    "ModelNumber": "RX-78GP02A",
+    "ScheduleId": 2510309901
+  },
+  {
+    "Id": 1080000100,
+    "ResourceId": "g0800u00100",
+    "NameLanguageId": 110100001080000100,
+    "ProfileLanguageId": 110200001080000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 810,
+    "ModelNumber": "MSZ-006",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1080003200,
+    "ResourceId": "g0800u03200",
+    "NameLanguageId": 110100001080003200,
+    "ProfileLanguageId": 110200001080003200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 810,
+    "ModelNumber": "PMX-003",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1095000100,
+    "ResourceId": "g0950u00100",
+    "NameLanguageId": 110100001095000100,
+    "ProfileLanguageId": 110200001095000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 950,
+    "ModelNumber": "MSZ-010",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1095002500,
+    "ResourceId": "g0950u02500",
+    "NameLanguageId": 110100001095002500,
+    "ProfileLanguageId": 110200001095002500,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 950,
+    "ModelNumber": "AMX-004",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1110000100,
+    "ResourceId": "g1100u00100",
+    "NameLanguageId": 110100001110000100,
+    "ProfileLanguageId": 110200001110000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1100,
+    "ModelNumber": "RX-93",
+    "ScheduleId": 2506309901
+  },
+  {
+    "Id": 1110000500,
+    "ResourceId": "g1100u00500",
+    "NameLanguageId": 110100001110000500,
+    "ProfileLanguageId": 110200001110000500,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1100,
+    "ModelNumber": "MSN-04",
+    "ScheduleId": 2506309901
+  },
+  {
+    "Id": 1125000200,
+    "ResourceId": "g1250u00200",
+    "NameLanguageId": 110100001125000200,
+    "ProfileLanguageId": 110200001125000200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1250,
+    "ModelNumber": "RX-0",
+    "ScheduleId": 2509609901
+  },
+  {
+    "Id": 1125001100,
+    "ResourceId": "g1250u01100",
+    "NameLanguageId": 110100001125001100,
+    "ProfileLanguageId": 110200001125001100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1250,
+    "ModelNumber": "RX-0",
+    "ScheduleId": 2509609901
+  },
+  {
+    "Id": 1150000100,
+    "ResourceId": "g1500u00100",
+    "NameLanguageId": 110100001150000100,
+    "ProfileLanguageId": 110200001150000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1500,
+    "ModelNumber": "RX-105",
+    "ScheduleId": 2511409901
+  },
+  {
+    "Id": 1200000100,
+    "ResourceId": "g2000u00100",
+    "NameLanguageId": 110100001200000100,
+    "ProfileLanguageId": 110200001200000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2000,
+    "ModelNumber": "GF13-017NJ",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1200001300,
+    "ResourceId": "g2000u01300",
+    "NameLanguageId": 110100001200001300,
+    "ProfileLanguageId": 110200001200001300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2000,
+    "ModelNumber": "GF13-001NHII",
+    "ScheduleId": 2509609901
+  },
+  {
+    "Id": 1200003900,
+    "ResourceId": "g2000u03900",
+    "NameLanguageId": 110100001200003900,
+    "ProfileLanguageId": 110200001200003900,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2000,
+    "ModelNumber": "GF13-017NJII",
+    "ScheduleId": 2509609901
+  },
+  {
+    "Id": 1210000300,
+    "ResourceId": "g2100u00300",
+    "NameLanguageId": 110100001210000300,
+    "ProfileLanguageId": 110200001210000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2100,
+    "ModelNumber": "XXXG-00W0",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1210000900,
+    "ResourceId": "g2100u00900",
+    "NameLanguageId": 110100001210000900,
+    "ProfileLanguageId": 110200001210000900,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2100,
+    "ModelNumber": "OZ-13MS",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1230000100,
+    "ResourceId": "g2300u00100",
+    "NameLanguageId": 110100001230000100,
+    "ProfileLanguageId": 110200001230000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2300,
+    "ModelNumber": "GX-9900",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1230003800,
+    "ResourceId": "g2300u03800",
+    "NameLanguageId": 110100001230003800,
+    "ProfileLanguageId": 110200001230003800,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2300,
+    "ModelNumber": "GX-9901-DX",
+    "ScheduleId": 2601509901
+  },
+  {
+    "Id": 1230003900,
+    "ResourceId": "g2300u03900",
+    "NameLanguageId": 110100001230003900,
+    "ProfileLanguageId": 110200001230003900,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2300,
+    "ModelNumber": "NRX-0013-CB",
+    "ScheduleId": 2601509901
+  },
+  {
+    "Id": 1300004200,
+    "ResourceId": "g3000u04200",
+    "NameLanguageId": 110100001300004200,
+    "ProfileLanguageId": 110200001300004200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3000,
+    "ModelNumber": "ZGMF-X10A",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1300004400,
+    "ResourceId": "g3000u04400",
+    "NameLanguageId": 110100001300004400,
+    "ProfileLanguageId": 110200001300004400,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3000,
+    "ModelNumber": "ZGMF-X09A",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1305000100,
+    "ResourceId": "g3050u00100",
+    "NameLanguageId": 110100001305000100,
+    "ProfileLanguageId": 110200001305000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3050,
+    "ModelNumber": "MBF-P02",
+    "ScheduleId": 2504301801
+  },
+  {
+    "Id": 1308000400,
+    "ResourceId": "g3080u00400",
+    "NameLanguageId": 110100001308000400,
+    "ProfileLanguageId": 110200001308000400,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3080,
+    "ModelNumber": "YMF-X000A",
+    "ScheduleId": 2602209901
+  },
+  {
+    "Id": 1310000300,
+    "ResourceId": "g3100u00300",
+    "NameLanguageId": 110100001310000300,
+    "ProfileLanguageId": 110200001310000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3100,
+    "ModelNumber": "MBF-03+P208QX",
+    "ScheduleId": 2504301801
+  },
+  {
+    "Id": 1310000400,
+    "ResourceId": "g3100u00400",
+    "NameLanguageId": 110100001310000400,
+    "ProfileLanguageId": 110200001310000400,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3100,
+    "ModelNumber": "MVF-P11-1428T",
+    "ScheduleId": 2504301801
+  },
+  {
+    "Id": 1330000300,
+    "ResourceId": "g3300u00300",
+    "NameLanguageId": 110100001330000300,
+    "ProfileLanguageId": 110200001330000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3300,
+    "ModelNumber": "ZGMF-X56S/α",
+    "ScheduleId": 2506309901
+  },
+  {
+    "Id": 1330000700,
+    "ResourceId": "g3300u00700",
+    "NameLanguageId": 110100001330000700,
+    "ProfileLanguageId": 110200001330000700,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3300,
+    "ModelNumber": "ZGMF-X42S",
+    "ScheduleId": 2512409901
+  },
+  {
+    "Id": 1330005200,
+    "ResourceId": "g3300u05200",
+    "NameLanguageId": 110100001330005200,
+    "ProfileLanguageId": 110200001330005200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3300,
+    "ModelNumber": "ZGMF-X666S",
+    "ScheduleId": 2512409901
+  },
+  {
+    "Id": 1370000100,
+    "ResourceId": "g3700u00100",
+    "NameLanguageId": 110100001370000100,
+    "ProfileLanguageId": 110200001370000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3700,
+    "ModelNumber": "GN-001",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1400000100,
+    "ResourceId": "g4000u00100",
+    "NameLanguageId": 110100001400000100,
+    "ProfileLanguageId": 110200001400000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4000,
+    "ModelNumber": "AGE-1",
+    "ScheduleId": 2602409901
+  },
+  {
+    "Id": 1400000500,
+    "ResourceId": "g4000u00500",
+    "NameLanguageId": 110100001400000500,
+    "ProfileLanguageId": 110200001400000500,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4000,
+    "ModelNumber": "AGE-2",
+    "ScheduleId": 2602409901
+  },
+  {
+    "Id": 1430000200,
+    "ResourceId": "g4300u00200",
+    "NameLanguageId": 110100001430000200,
+    "ProfileLanguageId": 110200001430000200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4300,
+    "ModelNumber": "ASW-G-08",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1430003400,
+    "ResourceId": "g4300u03400",
+    "NameLanguageId": 110100001430003400,
+    "ProfileLanguageId": 110200001430003400,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4300,
+    "ModelNumber": "ASW-G-08",
+    "ScheduleId": 2510809901
+  },
+  {
+    "Id": 1430003600,
+    "ResourceId": "g4300u03600",
+    "NameLanguageId": 110100001430003600,
+    "ProfileLanguageId": 110200001430003600,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4300,
+    "ModelNumber": "ASW-G-08",
+    "ScheduleId": 2510809901
+  },
+  {
+    "Id": 1431000100,
+    "ResourceId": "g4310u00100",
+    "NameLanguageId": 110100001431000110,
+    "ProfileLanguageId": 110200001431000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 4310,
+    "ModelNumber": "ASW-G-29",
+    "ScheduleId": 2509309901
+  },
+  {
+    "Id": 1501000100,
+    "ResourceId": "g5010u00100",
+    "NameLanguageId": 110100001501000100,
+    "ProfileLanguageId": 110200001501000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 5010,
+    "ModelNumber": "XVX-016",
+    "ScheduleId": 0
+  },
+  {
+    "Id": 1501001600,
+    "ResourceId": "g5010u01600",
+    "NameLanguageId": 110100001501001600,
+    "ProfileLanguageId": 110200001501001600,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 5010,
+    "ModelNumber": "XVX-016RN",
+    "ScheduleId": 2512409901
+  },
+  {
+    "Id": 1501002000,
+    "ResourceId": "g5010u02000",
+    "NameLanguageId": 110100001501002000,
+    "ProfileLanguageId": 110200001501002000,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 5010,
+    "ModelNumber": "X-EX01",
+    "ScheduleId": 2512409901
+  }
+]

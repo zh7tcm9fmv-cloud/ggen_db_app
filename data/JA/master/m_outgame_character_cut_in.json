@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 30001001,
+    "CutInResourceId": "outgame_character_cutin_01",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0015",
+    "QuoteLanguageId": 250600000030001001
+  },
+  {
+    "Id": 30001002,
+    "CutInResourceId": "outgame_character_cutin_01",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0015",
+    "QuoteLanguageId": 250600000030001002
+  },
+  {
+    "Id": 30001003,
+    "CutInResourceId": "outgame_character_cutin_01",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0015",
+    "QuoteLanguageId": 250600000030001003
+  },
+  {
+    "Id": 30001004,
+    "CutInResourceId": "outgame_character_cutin_01",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0015",
+    "QuoteLanguageId": 250600000030001004
+  },
+  {
+    "Id": 30001005,
+    "CutInResourceId": "outgame_character_cutin_01",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0015",
+    "QuoteLanguageId": 250600000030001005
+  },
+  {
+    "Id": 30001006,
+    "CutInResourceId": "outgame_character_cutin_03",
+    "VoiceCueSheetName": "vc_masterleague_0001",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0501",
+    "QuoteLanguageId": 250600000030001006
+  }
+]

@@ -1,0 +1,650 @@
+[
+  {
+    "ConfigTypeIndex": 1,
+    "Value": "300"
+  },
+  {
+    "ConfigTypeIndex": 3,
+    "Value": "999"
+  },
+  {
+    "ConfigTypeIndex": 6,
+    "Value": "10"
+  },
+  {
+    "ConfigTypeIndex": 9,
+    "Value": "10"
+  },
+  {
+    "ConfigTypeIndex": 10,
+    "Value": "https://apps.apple.com/app/id6692611665"
+  },
+  {
+    "ConfigTypeIndex": 11,
+    "Value": "https://play.google.com/store/apps/details?id=com.bandainamcoent.gget_JP"
+  },
+  {
+    "ConfigTypeIndex": 12,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 13,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 14,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 15,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 16,
+    "Value": "30"
+  },
+  {
+    "ConfigTypeIndex": 19,
+    "Value": "20000"
+  },
+  {
+    "ConfigTypeIndex": 20,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 21,
+    "Value": "6"
+  },
+  {
+    "ConfigTypeIndex": 22,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 24,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 25,
+    "Value": "1400"
+  },
+  {
+    "ConfigTypeIndex": 26,
+    "Value": "2400"
+  },
+  {
+    "ConfigTypeIndex": 27,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 28,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 29,
+    "Value": "200"
+  },
+  {
+    "ConfigTypeIndex": 30,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 31,
+    "Value": "161700000005"
+  },
+  {
+    "ConfigTypeIndex": 32,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 33,
+    "Value": "5000000"
+  },
+  {
+    "ConfigTypeIndex": 40,
+    "Value": "99900000"
+  },
+  {
+    "ConfigTypeIndex": 41,
+    "Value": "20"
+  },
+  {
+    "ConfigTypeIndex": 42,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 43,
+    "Value": "25"
+  },
+  {
+    "ConfigTypeIndex": 44,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 45,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 46,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 47,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 53,
+    "Value": "stm_001.usm"
+  },
+  {
+    "ConfigTypeIndex": 54,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 55,
+    "Value": "1000"
+  },
+  {
+    "ConfigTypeIndex": 61,
+    "Value": "2023-01-01 0:00:00"
+  },
+  {
+    "ConfigTypeIndex": 62,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 63,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 64,
+    "Value": "https://7e1d4f92-api.eternal.channel.or.jp"
+  },
+  {
+    "ConfigTypeIndex": 65,
+    "Value": "https://7e1d4f92-data.resources.eternal.channel.or.jp/"
+  },
+  {
+    "ConfigTypeIndex": 66,
+    "Value": "199999"
+  },
+  {
+    "ConfigTypeIndex": 67,
+    "Value": "999"
+  },
+  {
+    "ConfigTypeIndex": 68,
+    "Value": "10"
+  },
+  {
+    "ConfigTypeIndex": 69,
+    "Value": "19999"
+  },
+  {
+    "ConfigTypeIndex": 70,
+    "Value": "19999"
+  },
+  {
+    "ConfigTypeIndex": 71,
+    "Value": "19999"
+  },
+  {
+    "ConfigTypeIndex": 72,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 73,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 74,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 75,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 76,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 77,
+    "Value": "15"
+  },
+  {
+    "ConfigTypeIndex": 78,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 79,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 80,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 81,
+    "Value": "20"
+  },
+  {
+    "ConfigTypeIndex": 82,
+    "Value": "9999"
+  },
+  {
+    "ConfigTypeIndex": 99,
+    "Value": "99050000000001"
+  },
+  {
+    "ConfigTypeIndex": 100,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 103,
+    "Value": "5000"
+  },
+  {
+    "ConfigTypeIndex": 104,
+    "Value": "20000"
+  },
+  {
+    "ConfigTypeIndex": 106,
+    "Value": "500"
+  },
+  {
+    "ConfigTypeIndex": 107,
+    "Value": "3"
+  },
+  {
+    "ConfigTypeIndex": 108,
+    "Value": "3"
+  },
+  {
+    "ConfigTypeIndex": 109,
+    "Value": "3"
+  },
+  {
+    "ConfigTypeIndex": 110,
+    "Value": "3"
+  },
+  {
+    "ConfigTypeIndex": 111,
+    "Value": "60"
+  },
+  {
+    "ConfigTypeIndex": 112,
+    "Value": "6"
+  },
+  {
+    "ConfigTypeIndex": 113,
+    "Value": "1000"
+  },
+  {
+    "ConfigTypeIndex": 114,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 115,
+    "Value": "240"
+  },
+  {
+    "ConfigTypeIndex": 116,
+    "Value": "4320"
+  },
+  {
+    "ConfigTypeIndex": 117,
+    "Value": "1850003700"
+  },
+  {
+    "ConfigTypeIndex": 118,
+    "Value": "2001000100"
+  },
+  {
+    "ConfigTypeIndex": 119,
+    "Value": "3"
+  },
+  {
+    "ConfigTypeIndex": 120,
+    "Value": "241"
+  },
+  {
+    "ConfigTypeIndex": 121,
+    "Value": "100000"
+  },
+  {
+    "ConfigTypeIndex": 122,
+    "Value": "99990101"
+  },
+  {
+    "ConfigTypeIndex": 123,
+    "Value": "100103"
+  },
+  {
+    "ConfigTypeIndex": 124,
+    "Value": "100202"
+  },
+  {
+    "ConfigTypeIndex": 125,
+    "Value": "100101"
+  },
+  {
+    "ConfigTypeIndex": 126,
+    "Value": "100102"
+  },
+  {
+    "ConfigTypeIndex": 127,
+    "Value": "100201"
+  },
+  {
+    "ConfigTypeIndex": 128,
+    "Value": "1000100302101410"
+  },
+  {
+    "ConfigTypeIndex": 129,
+    "Value": "1000200202116387"
+  },
+  {
+    "ConfigTypeIndex": 130,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 131,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 132,
+    "Value": "10000"
+  },
+  {
+    "ConfigTypeIndex": 133,
+    "Value": "10000"
+  },
+  {
+    "ConfigTypeIndex": 134,
+    "Value": "1001000900"
+  },
+  {
+    "ConfigTypeIndex": 136,
+    "Value": "1001000900"
+  },
+  {
+    "ConfigTypeIndex": 137,
+    "Value": "110000000001"
+  },
+  {
+    "ConfigTypeIndex": 138,
+    "Value": "2"
+  },
+  {
+    "ConfigTypeIndex": 139,
+    "Value": "1001000900"
+  },
+  {
+    "ConfigTypeIndex": 140,
+    "Value": "1001000600"
+  },
+  {
+    "ConfigTypeIndex": 142,
+    "Value": "1001000500"
+  },
+  {
+    "ConfigTypeIndex": 143,
+    "Value": "1001000200"
+  },
+  {
+    "ConfigTypeIndex": 144,
+    "Value": "1001000300"
+  },
+  {
+    "ConfigTypeIndex": 145,
+    "Value": "900000010001"
+  },
+  {
+    "ConfigTypeIndex": 146,
+    "Value": "900000010002"
+  },
+  {
+    "ConfigTypeIndex": 147,
+    "Value": "99060000000001"
+  },
+  {
+    "ConfigTypeIndex": 148,
+    "Value": "500000"
+  },
+  {
+    "ConfigTypeIndex": 149,
+    "Value": "999999999"
+  },
+  {
+    "ConfigTypeIndex": 150,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 151,
+    "Value": "1098000400"
+  },
+  {
+    "ConfigTypeIndex": 153,
+    "Value": "300"
+  },
+  {
+    "ConfigTypeIndex": 154,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 155,
+    "Value": "tt_banner"
+  },
+  {
+    "ConfigTypeIndex": 156,
+    "Value": "tts_event_logo"
+  },
+  {
+    "ConfigTypeIndex": 157,
+    "Value": "50"
+  },
+  {
+    "ConfigTypeIndex": 158,
+    "Value": "99010000000002"
+  },
+  {
+    "ConfigTypeIndex": 159,
+    "Value": "7"
+  },
+  {
+    "ConfigTypeIndex": 163,
+    "Value": "15"
+  },
+  {
+    "ConfigTypeIndex": 164,
+    "Value": "1850000100"
+  },
+  {
+    "ConfigTypeIndex": 165,
+    "Value": "1760000100"
+  },
+  {
+    "ConfigTypeIndex": 166,
+    "Value": "1850000300"
+  },
+  {
+    "ConfigTypeIndex": 167,
+    "Value": "1850000200"
+  },
+  {
+    "ConfigTypeIndex": 168,
+    "Value": "1850000700"
+  },
+  {
+    "ConfigTypeIndex": 170,
+    "Value": "10"
+  },
+  {
+    "ConfigTypeIndex": 171,
+    "Value": "510001"
+  },
+  {
+    "ConfigTypeIndex": 172,
+    "Value": "510002"
+  },
+  {
+    "ConfigTypeIndex": 173,
+    "Value": "510003"
+  },
+  {
+    "ConfigTypeIndex": 174,
+    "Value": "100303"
+  },
+  {
+    "ConfigTypeIndex": 175,
+    "Value": "14"
+  },
+  {
+    "ConfigTypeIndex": 176,
+    "Value": "90100107"
+  },
+  {
+    "ConfigTypeIndex": 177,
+    "Value": "90100106"
+  },
+  {
+    "ConfigTypeIndex": 179,
+    "Value": "100303"
+  },
+  {
+    "ConfigTypeIndex": 180,
+    "Value": "100402"
+  },
+  {
+    "ConfigTypeIndex": 181,
+    "Value": "100802"
+  },
+  {
+    "ConfigTypeIndex": 182,
+    "Value": "100902"
+  },
+  {
+    "ConfigTypeIndex": 183,
+    "Value": "101203"
+  },
+  {
+    "ConfigTypeIndex": 184,
+    "Value": "99090000000001"
+  },
+  {
+    "ConfigTypeIndex": 185,
+    "Value": "1007000100"
+  },
+  {
+    "ConfigTypeIndex": 188,
+    "Value": "2025041612"
+  },
+  {
+    "ConfigTypeIndex": 192,
+    "Value": "1"
+  },
+  {
+    "ConfigTypeIndex": 193,
+    "Value": "260125041099000001"
+  },
+  {
+    "ConfigTypeIndex": 194,
+    "Value": "2504109901"
+  },
+  {
+    "ConfigTypeIndex": 195,
+    "Value": "100020002"
+  },
+  {
+    "ConfigTypeIndex": 196,
+    "Value": "100020001"
+  },
+  {
+    "ConfigTypeIndex": 204,
+    "Value": "100000072"
+  },
+  {
+    "ConfigTypeIndex": 300,
+    "Value": "1081"
+  },
+  {
+    "ConfigTypeIndex": 401,
+    "Value": "20"
+  },
+  {
+    "ConfigTypeIndex": 402,
+    "Value": "0"
+  },
+  {
+    "ConfigTypeIndex": 405,
+    "Value": "220000000001"
+  },
+  {
+    "ConfigTypeIndex": 406,
+    "Value": "220000000002"
+  },
+  {
+    "ConfigTypeIndex": 407,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 408,
+    "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 409,
+    "Value": "120000"
+  },
+  {
+    "ConfigTypeIndex": 410,
+    "Value": "150"
+  },
+  {
+    "ConfigTypeIndex": 411,
+    "Value": "150"
+  },
+  {
+    "ConfigTypeIndex": 412,
+    "Value": "32"
+  },
+  {
+    "ConfigTypeIndex": 413,
+    "Value": "16"
+  },
+  {
+    "ConfigTypeIndex": 414,
+    "Value": "4"
+  },
+  {
+    "ConfigTypeIndex": 415,
+    "Value": "4"
+  },
+  {
+    "ConfigTypeIndex": 416,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 417,
+    "Value": "100"
+  },
+  {
+    "ConfigTypeIndex": 418,
+    "Value": "80"
+  },
+  {
+    "ConfigTypeIndex": 419,
+    "Value": "525105001"
+  },
+  {
+    "ConfigTypeIndex": 420,
+    "Value": "9999990001"
+  },
+  {
+    "ConfigTypeIndex": 421,
+    "Value": "9999990001"
+  },
+  {
+    "ConfigTypeIndex": 423,
+    "Value": "5"
+  }
+]

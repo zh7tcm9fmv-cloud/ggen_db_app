@@ -1,0 +1,870 @@
+[
+  {
+    "ProductGroupId": 100000001,
+    "StoreTypeIndex": 1,
+    "ProductId": "aa",
+    "JpyPrice": 160,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000001,
+    "StoreTypeIndex": 2,
+    "ProductId": "aa",
+    "JpyPrice": 160,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000002,
+    "StoreTypeIndex": 1,
+    "ProductId": "ab",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000002,
+    "StoreTypeIndex": 2,
+    "ProductId": "ab",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000003,
+    "StoreTypeIndex": 1,
+    "ProductId": "ac",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000003,
+    "StoreTypeIndex": 2,
+    "ProductId": "ac",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000004,
+    "StoreTypeIndex": 1,
+    "ProductId": "ad",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000004,
+    "StoreTypeIndex": 2,
+    "ProductId": "ad",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000005,
+    "StoreTypeIndex": 1,
+    "ProductId": "ae",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000005,
+    "StoreTypeIndex": 2,
+    "ProductId": "ae",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000006,
+    "StoreTypeIndex": 1,
+    "ProductId": "af",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000006,
+    "StoreTypeIndex": 2,
+    "ProductId": "af",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000007,
+    "StoreTypeIndex": 1,
+    "ProductId": "ag",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000007,
+    "StoreTypeIndex": 2,
+    "ProductId": "ag",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000021,
+    "StoreTypeIndex": 4,
+    "ProductId": "ch",
+    "JpyPrice": 160,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000022,
+    "StoreTypeIndex": 4,
+    "ProductId": "ci",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000023,
+    "StoreTypeIndex": 4,
+    "ProductId": "cj",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000024,
+    "StoreTypeIndex": 4,
+    "ProductId": "ck",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000025,
+    "StoreTypeIndex": 4,
+    "ProductId": "cl",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000026,
+    "StoreTypeIndex": 4,
+    "ProductId": "cm",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000027,
+    "StoreTypeIndex": 4,
+    "ProductId": "cn",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000028,
+    "StoreTypeIndex": 4,
+    "ProductId": "co",
+    "JpyPrice": 29800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 100000029,
+    "StoreTypeIndex": 4,
+    "ProductId": "cp",
+    "JpyPrice": 48800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041001,
+    "StoreTypeIndex": 1,
+    "ProductId": "bb",
+    "JpyPrice": 160,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041001,
+    "StoreTypeIndex": 2,
+    "ProductId": "bb",
+    "JpyPrice": 160,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041002,
+    "StoreTypeIndex": 1,
+    "ProductId": "bc",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041002,
+    "StoreTypeIndex": 2,
+    "ProductId": "bc",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041003,
+    "StoreTypeIndex": 1,
+    "ProductId": "bd",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041003,
+    "StoreTypeIndex": 2,
+    "ProductId": "bd",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041004,
+    "StoreTypeIndex": 1,
+    "ProductId": "be",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041004,
+    "StoreTypeIndex": 2,
+    "ProductId": "be",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041007,
+    "StoreTypeIndex": 1,
+    "ProductId": "bf",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041007,
+    "StoreTypeIndex": 2,
+    "ProductId": "bf",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041008,
+    "StoreTypeIndex": 1,
+    "ProductId": "bg",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041008,
+    "StoreTypeIndex": 2,
+    "ProductId": "bg",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041009,
+    "StoreTypeIndex": 1,
+    "ProductId": "bh",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041009,
+    "StoreTypeIndex": 2,
+    "ProductId": "bh",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041010,
+    "StoreTypeIndex": 1,
+    "ProductId": "bi",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041010,
+    "StoreTypeIndex": 2,
+    "ProductId": "bi",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041011,
+    "StoreTypeIndex": 1,
+    "ProductId": "bj",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041011,
+    "StoreTypeIndex": 2,
+    "ProductId": "bj",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041012,
+    "StoreTypeIndex": 1,
+    "ProductId": "bk",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041012,
+    "StoreTypeIndex": 2,
+    "ProductId": "bk",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041013,
+    "StoreTypeIndex": 1,
+    "ProductId": "bl",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041013,
+    "StoreTypeIndex": 2,
+    "ProductId": "bl",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041014,
+    "StoreTypeIndex": 1,
+    "ProductId": "bn",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041014,
+    "StoreTypeIndex": 2,
+    "ProductId": "bn",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041015,
+    "StoreTypeIndex": 1,
+    "ProductId": "bm",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225041015,
+    "StoreTypeIndex": 2,
+    "ProductId": "bm",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225043011,
+    "StoreTypeIndex": 1,
+    "ProductId": "bo",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225043011,
+    "StoreTypeIndex": 2,
+    "ProductId": "bo",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063001,
+    "StoreTypeIndex": 1,
+    "ProductId": "bq",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063001,
+    "StoreTypeIndex": 2,
+    "ProductId": "bq",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063002,
+    "StoreTypeIndex": 1,
+    "ProductId": "bt",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063002,
+    "StoreTypeIndex": 2,
+    "ProductId": "bt",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063003,
+    "StoreTypeIndex": 1,
+    "ProductId": "bu",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063003,
+    "StoreTypeIndex": 2,
+    "ProductId": "bu",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063004,
+    "StoreTypeIndex": 1,
+    "ProductId": "bv",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225063004,
+    "StoreTypeIndex": 2,
+    "ProductId": "bv",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225082001,
+    "StoreTypeIndex": 1,
+    "ProductId": "bz",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225082001,
+    "StoreTypeIndex": 2,
+    "ProductId": "bz",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096001,
+    "StoreTypeIndex": 1,
+    "ProductId": "bx",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096001,
+    "StoreTypeIndex": 2,
+    "ProductId": "bx",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096002,
+    "StoreTypeIndex": 1,
+    "ProductId": "bw",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096002,
+    "StoreTypeIndex": 2,
+    "ProductId": "bw",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096003,
+    "StoreTypeIndex": 1,
+    "ProductId": "ca",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096003,
+    "StoreTypeIndex": 2,
+    "ProductId": "ca",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096004,
+    "StoreTypeIndex": 1,
+    "ProductId": "cb",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096004,
+    "StoreTypeIndex": 2,
+    "ProductId": "cb",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096005,
+    "StoreTypeIndex": 1,
+    "ProductId": "cc",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096005,
+    "StoreTypeIndex": 2,
+    "ProductId": "cc",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096006,
+    "StoreTypeIndex": 1,
+    "ProductId": "cd",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096006,
+    "StoreTypeIndex": 2,
+    "ProductId": "cd",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096007,
+    "StoreTypeIndex": 1,
+    "ProductId": "ce",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225096008,
+    "StoreTypeIndex": 2,
+    "ProductId": "ce",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225105001,
+    "StoreTypeIndex": 1,
+    "ProductId": "cf",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225105001,
+    "StoreTypeIndex": 2,
+    "ProductId": "cf",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225108001,
+    "StoreTypeIndex": 1,
+    "ProductId": "by",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225108001,
+    "StoreTypeIndex": 2,
+    "ProductId": "by",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225108002,
+    "StoreTypeIndex": 1,
+    "ProductId": "cg",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225108003,
+    "StoreTypeIndex": 2,
+    "ProductId": "cg",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225111001,
+    "StoreTypeIndex": 1,
+    "ProductId": "cr",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225111001,
+    "StoreTypeIndex": 2,
+    "ProductId": "cr",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225114001,
+    "StoreTypeIndex": 1,
+    "ProductId": "ct",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225114001,
+    "StoreTypeIndex": 2,
+    "ProductId": "ct",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225114002,
+    "StoreTypeIndex": 1,
+    "ProductId": "cu",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225114003,
+    "StoreTypeIndex": 2,
+    "ProductId": "cu",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225123001,
+    "StoreTypeIndex": 4,
+    "ProductId": "cs",
+    "JpyPrice": 0,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225123002,
+    "StoreTypeIndex": 4,
+    "ProductId": "cq",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124001,
+    "StoreTypeIndex": 1,
+    "ProductId": "cv",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124001,
+    "StoreTypeIndex": 2,
+    "ProductId": "cv",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124002,
+    "StoreTypeIndex": 1,
+    "ProductId": "cw",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124002,
+    "StoreTypeIndex": 2,
+    "ProductId": "cw",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124003,
+    "StoreTypeIndex": 1,
+    "ProductId": "db",
+    "JpyPrice": 1600,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124003,
+    "StoreTypeIndex": 2,
+    "ProductId": "db",
+    "JpyPrice": 1600,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124004,
+    "StoreTypeIndex": 1,
+    "ProductId": "da",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124004,
+    "StoreTypeIndex": 2,
+    "ProductId": "da",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124005,
+    "StoreTypeIndex": 1,
+    "ProductId": "cx",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124005,
+    "StoreTypeIndex": 2,
+    "ProductId": "cx",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124006,
+    "StoreTypeIndex": 1,
+    "ProductId": "cy",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124006,
+    "StoreTypeIndex": 2,
+    "ProductId": "cy",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124007,
+    "StoreTypeIndex": 1,
+    "ProductId": "cz",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 225124007,
+    "StoreTypeIndex": 2,
+    "ProductId": "cz",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226015001,
+    "StoreTypeIndex": 1,
+    "ProductId": "dl",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226015001,
+    "StoreTypeIndex": 2,
+    "ProductId": "dl",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022001,
+    "StoreTypeIndex": 1,
+    "ProductId": "dm",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022001,
+    "StoreTypeIndex": 2,
+    "ProductId": "dm",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022001,
+    "StoreTypeIndex": 3,
+    "ProductId": "dm",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022001,
+    "StoreTypeIndex": 4,
+    "ProductId": "dm",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022002,
+    "StoreTypeIndex": 1,
+    "ProductId": "dn",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022002,
+    "StoreTypeIndex": 2,
+    "ProductId": "dn",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022002,
+    "StoreTypeIndex": 3,
+    "ProductId": "dn",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022002,
+    "StoreTypeIndex": 4,
+    "ProductId": "dn",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022003,
+    "StoreTypeIndex": 3,
+    "ProductId": "do",
+    "JpyPrice": 0,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022003,
+    "StoreTypeIndex": 4,
+    "ProductId": "do",
+    "JpyPrice": 0,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022004,
+    "StoreTypeIndex": 3,
+    "ProductId": "dp",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226022004,
+    "StoreTypeIndex": 4,
+    "ProductId": "dp",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 325041001,
+    "StoreTypeIndex": 2,
+    "ProductId": "gpp_a",
+    "JpyPrice": 320,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 325041002,
+    "StoreTypeIndex": 2,
+    "ProductId": "gpp_b",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 325041003,
+    "StoreTypeIndex": 2,
+    "ProductId": "gpp_c",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 325041004,
+    "StoreTypeIndex": 2,
+    "ProductId": "gpp_d",
+    "JpyPrice": 320,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 326036001,
+    "StoreTypeIndex": 1,
+    "ProductId": "agc_a",
+    "JpyPrice": 320,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 525105001,
+    "StoreTypeIndex": 1,
+    "ProductId": "sub_ab",
+    "JpyPrice": 480,
+    "IsSubscription": true
+  },
+  {
+    "ProductGroupId": 525105001,
+    "StoreTypeIndex": 2,
+    "ProductId": "sub_ab",
+    "JpyPrice": 480,
+    "IsSubscription": true
+  }
+]

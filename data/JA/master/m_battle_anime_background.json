@@ -1,0 +1,362 @@
+[
+  {
+    "Id": 200,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 201,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_018"
+  },
+  {
+    "Id": 202,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SS_001"
+  },
+  {
+    "Id": 203,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SS_003"
+  },
+  {
+    "Id": 204,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_015"
+  },
+  {
+    "Id": 205,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_078"
+  },
+  {
+    "Id": 206,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_005"
+  },
+  {
+    "Id": 207,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_092"
+  },
+  {
+    "Id": 208,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "WT_017"
+  },
+  {
+    "Id": 300,
+    "Ground": "YE_001",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 301,
+    "Ground": "YE_001",
+    "Atmospheric": "WT_005",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 302,
+    "Ground": "YE_001",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 400,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 401,
+    "Ground": "GH_001",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 402,
+    "Ground": "YE_001",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 403,
+    "Ground": "GH_014",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 404,
+    "Ground": "GH_015",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 405,
+    "Ground": "GH_003",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 406,
+    "Ground": "GH_004",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 407,
+    "Ground": "GH_040",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 408,
+    "Ground": "GH_017",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 409,
+    "Ground": "GH_006",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 410,
+    "Ground": "GH_029",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 411,
+    "Ground": "CR_001",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 412,
+    "Ground": "GH_008",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 413,
+    "Ground": "GH_062",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 414,
+    "Ground": "CR_005",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 415,
+    "Ground": "GH_035",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 416,
+    "Ground": "WT_002",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 417,
+    "Ground": "GH_013",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 418,
+    "Ground": "CR_005",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 419,
+    "Ground": "WT_009",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 420,
+    "Ground": "WT_010",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 421,
+    "Ground": "WT_013",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 422,
+    "Ground": "WT_011",
+    "Atmospheric": "WT_005",
+    "Surface": "WT_012",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 423,
+    "Ground": "WT_015",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 424,
+    "Ground": "WT_014",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 425,
+    "Ground": "WT_016",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 426,
+    "Ground": "WT_003",
+    "Atmospheric": "WT_005",
+    "Surface": "WT_012",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 427,
+    "Ground": "WT_004",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 428,
+    "Ground": "WT_018",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 500,
+    "Ground": "GH_001",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 501,
+    "Ground": "GH_040",
+    "Atmospheric": "JK_002",
+    "Surface": "GW_006",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 502,
+    "Ground": "GH_040",
+    "Atmospheric": "WT_001",
+    "Surface": "WT_001",
+    "Underwater": "MA_002",
+    "Space": "SP_001"
+  },
+  {
+    "Id": 700,
+    "Ground": "CR_002",
+    "Atmospheric": "JK_001",
+    "Surface": "GW_001",
+    "Underwater": "MA_001",
+    "Space": "XX_003"
+  }
+]

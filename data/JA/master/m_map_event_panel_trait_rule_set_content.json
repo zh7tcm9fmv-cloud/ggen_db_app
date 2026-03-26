@@ -1,0 +1,92 @@
+[
+  {
+    "MapEventPanelTraitRuleSetId": 21000101001,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitLimit": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000101001,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitLimit": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000101001,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitLimit": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000101001,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitLimit": 25,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000101001,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000201001,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000201001,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000201001,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000201001,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 21000201001,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 25
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 24000101001,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 24000101001,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 24000101001,
+    "MapEventBuffTraitTypeIndex": 7,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 24000101001,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 50
+  },
+  {
+    "MapEventPanelTraitRuleSetId": 24000101001,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitLimit": 50,
+    "BattlePowerValueRatePercent": 25
+  }
+]

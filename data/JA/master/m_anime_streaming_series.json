@@ -1,0 +1,222 @@
+[
+  {
+    "Id": 11,
+    "AnimeStreamingSeriesGroupId": 11,
+    "NameLanguageId": 320100000000000011,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0011_01",
+    "SortOrder": 9600011,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0011_01"
+  },
+  {
+    "Id": 12,
+    "AnimeStreamingSeriesGroupId": 12,
+    "NameLanguageId": 320100000000000012,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0012_01",
+    "SortOrder": 9600012,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0012_01"
+  },
+  {
+    "Id": 20,
+    "AnimeStreamingSeriesGroupId": 20,
+    "NameLanguageId": 320100000000000020,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0020_01",
+    "SortOrder": 9500020,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0020_01"
+  },
+  {
+    "Id": 90,
+    "AnimeStreamingSeriesGroupId": 90,
+    "NameLanguageId": 320100000000900001,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0090_01",
+    "SortOrder": 9400090,
+    "ScheduleId": 2601102801,
+    "ThumbnailResourceId": "thum_anime_top_0090_01"
+  },
+  {
+    "Id": 130,
+    "AnimeStreamingSeriesGroupId": 130,
+    "NameLanguageId": 320100000000000130,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0130_01",
+    "SortOrder": 9300130,
+    "ScheduleId": 2602402801,
+    "ThumbnailResourceId": "thum_anime_top_0130_01"
+  },
+  {
+    "Id": 170,
+    "AnimeStreamingSeriesGroupId": 170,
+    "NameLanguageId": 320100000000000170,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0170_01",
+    "SortOrder": 9800170,
+    "ScheduleId": 2512302801,
+    "ThumbnailResourceId": "thum_anime_top_0170_01"
+  },
+  {
+    "Id": 600,
+    "AnimeStreamingSeriesGroupId": 600,
+    "NameLanguageId": 320100000000000600,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0600_01",
+    "SortOrder": 10000600,
+    "ScheduleId": 2510502801,
+    "ThumbnailResourceId": "thum_anime_top_0600_01"
+  },
+  {
+    "Id": 801,
+    "AnimeStreamingSeriesGroupId": 801,
+    "NameLanguageId": 320100000000000801,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0801_01",
+    "SortOrder": 9600811,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0801_01"
+  },
+  {
+    "Id": 802,
+    "AnimeStreamingSeriesGroupId": 802,
+    "NameLanguageId": 320100000000000802,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0802_01",
+    "SortOrder": 9600812,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0802_01"
+  },
+  {
+    "Id": 803,
+    "AnimeStreamingSeriesGroupId": 803,
+    "NameLanguageId": 320100000000000803,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0803_01",
+    "SortOrder": 9600813,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_0803_01"
+  },
+  {
+    "Id": 1100,
+    "AnimeStreamingSeriesGroupId": 1100,
+    "NameLanguageId": 320100000000001100,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_1100_01",
+    "SortOrder": 9701100,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_1100_01"
+  },
+  {
+    "Id": 1260,
+    "AnimeStreamingSeriesGroupId": 1260,
+    "NameLanguageId": 320100000000001260,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_1250_01",
+    "SortOrder": 10001260,
+    "ScheduleId": 2510502801,
+    "ThumbnailResourceId": "thum_anime_top_1250_01"
+  },
+  {
+    "Id": 1500,
+    "AnimeStreamingSeriesGroupId": 1500,
+    "NameLanguageId": 320100000000001500,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_1500_01",
+    "SortOrder": 9801500,
+    "ScheduleId": 2511402801,
+    "ThumbnailResourceId": "thum_anime_top_1500_01"
+  },
+  {
+    "Id": 2000,
+    "AnimeStreamingSeriesGroupId": 2000,
+    "NameLanguageId": 320100000000002000,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_2000_01",
+    "SortOrder": 10002000,
+    "ScheduleId": 2510502801,
+    "ThumbnailResourceId": "thum_anime_top_2000_01"
+  },
+  {
+    "Id": 2190,
+    "AnimeStreamingSeriesGroupId": 2190,
+    "NameLanguageId": 320100000000002190,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_2190_01",
+    "SortOrder": 9202190,
+    "ScheduleId": 2603502801,
+    "ThumbnailResourceId": "thum_anime_top_2190_01"
+  },
+  {
+    "Id": 2300,
+    "AnimeStreamingSeriesGroupId": 2300,
+    "NameLanguageId": 320100000000002300,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_2300_01",
+    "SortOrder": 9400050,
+    "ScheduleId": 2601409901,
+    "ThumbnailResourceId": "thum_anime_top_2300_01"
+  },
+  {
+    "Id": 3321,
+    "AnimeStreamingSeriesGroupId": 3321,
+    "NameLanguageId": 320100000000003321,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_3321_01",
+    "SortOrder": 9703321,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_3321_01"
+  },
+  {
+    "Id": 3700,
+    "AnimeStreamingSeriesGroupId": 3700,
+    "NameLanguageId": 320100000000003700,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_3700_01",
+    "SortOrder": 9203700,
+    "ScheduleId": 2603502801,
+    "ThumbnailResourceId": "thum_anime_top_3700_01"
+  },
+  {
+    "Id": 3701,
+    "AnimeStreamingSeriesGroupId": 3701,
+    "NameLanguageId": 320100000000003701,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_3701_01",
+    "SortOrder": 9203701,
+    "ScheduleId": 2603502801,
+    "ThumbnailResourceId": "thum_anime_top_3701_01"
+  },
+  {
+    "Id": 4300,
+    "AnimeStreamingSeriesGroupId": 4300,
+    "NameLanguageId": 320100000000004300,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_4300_01",
+    "SortOrder": 9904300,
+    "ScheduleId": 2510802801,
+    "ThumbnailResourceId": "thum_anime_top_4300_01"
+  },
+  {
+    "Id": 4301,
+    "AnimeStreamingSeriesGroupId": 4301,
+    "NameLanguageId": 320100000000004301,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_4301_01",
+    "SortOrder": 9904301,
+    "ScheduleId": 2510802801,
+    "ThumbnailResourceId": "thum_anime_top_4301_01"
+  },
+  {
+    "Id": 5010,
+    "AnimeStreamingSeriesGroupId": 5010,
+    "NameLanguageId": 320100000000005010,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_5010_01",
+    "SortOrder": 9705010,
+    "ScheduleId": 2512302802,
+    "ThumbnailResourceId": "thum_anime_top_5010_01"
+  }
+]

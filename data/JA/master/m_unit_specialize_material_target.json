@@ -1,0 +1,62 @@
+[
+  {
+    "ItemId": 200000000001,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 4,
+    "TargetId": 0
+  },
+  {
+    "ItemId": 240000010090,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 90
+  },
+  {
+    "ItemId": 240000011112,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1112
+  },
+  {
+    "ItemId": 240000011125,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1125
+  },
+  {
+    "ItemId": 240000011500,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 1500
+  },
+  {
+    "ItemId": 240000013300,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 3300
+  },
+  {
+    "ItemId": 240000014000,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 4000
+  },
+  {
+    "ItemId": 240000015010,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 5010
+  },
+  {
+    "ItemId": 240000021002,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1002
+  },
+  {
+    "ItemId": 240000021021,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1021
+  }
+]

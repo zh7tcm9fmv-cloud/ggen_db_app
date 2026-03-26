@@ -1,0 +1,266 @@
+[
+  {
+    "ScenarioStageId": 3200103,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 0
+  },
+  {
+    "ScenarioStageId": 3200201,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200103
+  },
+  {
+    "ScenarioStageId": 3200303,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200201
+  },
+  {
+    "ScenarioStageId": 3200402,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200303
+  },
+  {
+    "ScenarioStageId": 3200501,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200402
+  },
+  {
+    "ScenarioStageId": 3200603,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200501
+  },
+  {
+    "ScenarioStageId": 3200702,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200603
+  },
+  {
+    "ScenarioStageId": 3200801,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200702
+  },
+  {
+    "ScenarioStageId": 3200901,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200801
+  },
+  {
+    "ScenarioStageId": 3201001,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 3200901
+  },
+  {
+    "ScenarioStageId": 6010103,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 0
+  },
+  {
+    "ScenarioStageId": 6010203,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010103
+  },
+  {
+    "ScenarioStageId": 6010303,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010203
+  },
+  {
+    "ScenarioStageId": 6010402,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010303
+  },
+  {
+    "ScenarioStageId": 6010503,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010402
+  },
+  {
+    "ScenarioStageId": 6010602,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010503
+  },
+  {
+    "ScenarioStageId": 6010702,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010602
+  },
+  {
+    "ScenarioStageId": 6010802,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010702
+  },
+  {
+    "ScenarioStageId": 6010904,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010802
+  },
+  {
+    "ScenarioStageId": 6011003,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6010904
+  },
+  {
+    "ScenarioStageId": 6011103,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6011003
+  },
+  {
+    "ScenarioStageId": 6011201,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6011103
+  },
+  {
+    "ScenarioStageId": 6011301,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6011201
+  },
+  {
+    "ScenarioStageId": 6011401,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 6011301
+  },
+  {
+    "ScenarioStageId": 30500103,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 0
+  },
+  {
+    "ScenarioStageId": 30500202,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500103
+  },
+  {
+    "ScenarioStageId": 30500303,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500202
+  },
+  {
+    "ScenarioStageId": 30500404,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500303
+  },
+  {
+    "ScenarioStageId": 30500502,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500404
+  },
+  {
+    "ScenarioStageId": 30500604,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500502
+  },
+  {
+    "ScenarioStageId": 30500704,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500604
+  },
+  {
+    "ScenarioStageId": 30500801,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500704
+  },
+  {
+    "ScenarioStageId": 30500901,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500801
+  },
+  {
+    "ScenarioStageId": 30501001,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 30500901
+  },
+  {
+    "ScenarioStageId": 43100105,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 0
+  },
+  {
+    "ScenarioStageId": 43100205,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100105
+  },
+  {
+    "ScenarioStageId": 43100304,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100205
+  },
+  {
+    "ScenarioStageId": 43100403,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100304
+  },
+  {
+    "ScenarioStageId": 43100504,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100403
+  },
+  {
+    "ScenarioStageId": 43100604,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100504
+  },
+  {
+    "ScenarioStageId": 43100705,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100604
+  },
+  {
+    "ScenarioStageId": 43100801,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100705
+  },
+  {
+    "ScenarioStageId": 43100901,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100801
+  },
+  {
+    "ScenarioStageId": 43101001,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 43100901
+  }
+]

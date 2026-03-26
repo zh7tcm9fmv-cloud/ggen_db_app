@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 110001,
+    "TowerNameLanguageId": 250600000000110001,
+    "LastFloorTowerEventStageId": 11000115,
+    "ResourceId": "tower_event_100"
+  },
+  {
+    "Id": 110002,
+    "TowerNameLanguageId": 250600000000110001,
+    "LastFloorTowerEventStageId": 11000220,
+    "ResourceId": "tower_event_100"
+  },
+  {
+    "Id": 110003,
+    "TowerNameLanguageId": 250600000000110003,
+    "LastFloorTowerEventStageId": 11000315,
+    "ResourceId": "tower_event_200"
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "Id": 1,
+    "PositionNumber": 1,
+    "X": 13,
+    "Y": 11,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 1,
+    "PositionNumber": 2,
+    "X": 14,
+    "Y": 9,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 1,
+    "PositionNumber": 3,
+    "X": 14,
+    "Y": 13,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 1,
+    "PositionNumber": 4,
+    "X": 15,
+    "Y": 10,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 1,
+    "PositionNumber": 5,
+    "X": 15,
+    "Y": 12,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 2,
+    "PositionNumber": 1,
+    "X": 7,
+    "Y": 11,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 2,
+    "PositionNumber": 2,
+    "X": 6,
+    "Y": 9,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 2,
+    "PositionNumber": 3,
+    "X": 6,
+    "Y": 13,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 2,
+    "PositionNumber": 4,
+    "X": 5,
+    "Y": 10,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 2,
+    "PositionNumber": 5,
+    "X": 5,
+    "Y": 12,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 11,
+    "PositionNumber": 1,
+    "X": 10,
+    "Y": 6,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 11,
+    "PositionNumber": 2,
+    "X": 11,
+    "Y": 4,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 11,
+    "PositionNumber": 3,
+    "X": 11,
+    "Y": 8,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 11,
+    "PositionNumber": 4,
+    "X": 12,
+    "Y": 5,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 11,
+    "PositionNumber": 5,
+    "X": 12,
+    "Y": 7,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 12,
+    "PositionNumber": 1,
+    "X": 4,
+    "Y": 6,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 12,
+    "PositionNumber": 2,
+    "X": 3,
+    "Y": 4,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 12,
+    "PositionNumber": 3,
+    "X": 3,
+    "Y": 8,
+    "InitialPositionTypeIndex": 1
+  },
+  {
+    "Id": 12,
+    "PositionNumber": 4,
+    "X": 2,
+    "Y": 5,
+    "InitialPositionTypeIndex": 2
+  },
+  {
+    "Id": 12,
+    "PositionNumber": 5,
+    "X": 2,
+    "Y": 7,
+    "InitialPositionTypeIndex": 2
+  }
+]
