@@ -2350,7 +2350,39 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             condition_groups.append({'label': 'Condition 2', 'conditions': list(target_conds)})
         if boost_conds:
             condition_groups.append({'label': 'Boost Target', 'conditions': list(boost_conds)})
-        trait_info.append({'display_text': display_text, 'en_text': en_text, 'conditions': trait_conds, 'condition_groups': condition_groups})
+        cond_nums = []
+        for mv in re.findall(r'\[condition\s*(\d+)\]', (en_text or '').lower()):
+            try:
+                iv = int(mv)
+            except (TypeError, ValueError):
+                continue
+            if iv not in cond_nums:
+                cond_nums.append(iv)
+        trait_info.append({
+            'display_text': display_text,
+            'en_text': en_text,
+            'conditions': trait_conds,
+            'condition_groups': condition_groups,
+            'condition_nums': cond_nums,
+        })
+    # Align Condition N labels across split trait lines.
+    # Some abilities reference [Condition 1]/[Condition 2] in one line while
+    # the actual tag chips are emitted from subsequent trait rows.
+    carry_cond_num = None
+    for info in trait_info:
+        groups = info.get('condition_groups') or []
+        if not groups:
+            continue
+        nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
+        cond_groups = [g for g in groups if str(g.get('label', '')).startswith('Condition ')]
+        if nums and cond_groups:
+            for gi, g in enumerate(cond_groups):
+                if gi < len(nums):
+                    g['label'] = f"Condition {nums[gi]}"
+            carry_cond_num = nums[len(cond_groups)] if len(nums) > len(cond_groups) else None
+        elif carry_cond_num is not None and len(cond_groups) == 1:
+            cond_groups[0]['label'] = f"Condition {carry_cond_num}"
+            carry_cond_num = None
     details = []
     for i, info in enumerate(trait_info):
         display_text = info['display_text']; en_text = info['en_text']; conds = list(info['conditions']); cond_groups = list(info.get('condition_groups', []))
