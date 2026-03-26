@@ -676,6 +676,138 @@ def unit_terrain_filter_cache_fragment(expr):
     return ('t' + '__'.join(xs))[:220]
 
 
+
+UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
+    'atk_dn', 'def_dn', 'mob_dn', 'acc_dn', 'eva_dn',
+    'dmg_phys', 'dmg_beam', 'dmg_spec',
+    'wp_phys', 'wp_beam', 'wp_spec',
+    'range_beam', 'range_phys', 'range_all',
+    'mp_1', 'mp_2', 'mp_3',
+})
+
+def parse_unit_weapon_debuff_filter(val):
+    """Comma-separated weapon-trait debuff keys; AND semantics (unit must match every selected key)."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    out = []
+    seen = set()
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if token not in UNIT_WEAPON_DEBUFF_FILTER_KEYS:
+            continue
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+    if not out:
+        return None
+    return tuple(out)
+
+def unit_weapon_debuff_filter_cache_fragment(expr):
+    if expr is None:
+        return 'w0'
+    return ('w' + '__'.join(expr))[:220]
+
+def iter_unit_weapon_trait_texts(uid, ld, lang_code):
+    """Resolved weapon trait / SSP weapon effect lines (same coverage as collect_unit_weapons_search_text)."""
+    for wp in unit_weapon_map.get(uid, []):
+        wid = wp['id']
+        wm = weapon_info_map.get(wid, {})
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'],
+            growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'],
+            wid=wid, lang_code=lang_code, unit_id=uid,
+        )
+        for tr in ws.get('traits', []) or []:
+            if tr:
+                yield str(tr)
+        for lv in ws.get('levels', []) or []:
+            for tr in lv.get('traits', []) or []:
+                if tr:
+                    yield str(tr)
+        mwid = wm.get('main_weapon_id', '0')
+        for cid2 in [wid, mwid]:
+            if cid2 and cid2 != '0' and cid2 in unit_ssp_weapon_effect_map:
+                for tid in unit_ssp_weapon_effect_map[cid2]:
+                    tt2 = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
+                    if tt2:
+                        yield str(tt2)
+                break
+
+def classify_unit_weapon_trait_debuff_keys(line):
+    """Map one trait text line to debuff filter keys (language-mixed patterns)."""
+    s = (line or '').strip()
+    if not s:
+        return frozenset()
+    keys = set()
+    sl = s.lower()
+
+    if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in s or re.search(r'mp減少1(?!\d)', s) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
+        keys.add('mp_1')
+    if re.search(r'decrease\s+mp\s+by\s+2\.?', sl) or 'mpが2減少' in s or re.search(r'mp減少2(?!\d)', s) or re.search(r'decreased\s+mp\s+lv\s*2\b', sl) or re.search(r'mp減少\s*lv\s*2\b', sl):
+        keys.add('mp_2')
+    if re.search(r'decrease\s+mp\s+by\s+3\.?', sl) or 'mpが3減少' in s or re.search(r'mp減少3(?!\d)', s) or re.search(r'decreased\s+mp\s+lv\s*3\b', sl) or re.search(r'mp減少\s*lv\s*3\b', sl):
+        keys.add('mp_3')
+
+    if re.search(r'decreased\s+atk\b', sl) or '攻撃力減少' in s or '攻擊力減少' in s:
+        keys.add('atk_dn')
+    if re.search(r'decreased\s+def\b', sl) or '防御力減少' in s or '防禦力減少' in s:
+        keys.add('def_dn')
+    if re.search(r'decreased\s+mob\b', sl) or '機動力減少' in s:
+        keys.add('mob_dn')
+    if re.search(r'decreased\s+acc\b', sl) or '命中率減少' in s:
+        keys.add('acc_dn')
+    if re.search(r'decreased\s+eva\b', sl) or '回避率減少' in s:
+        keys.add('eva_dn')
+
+    if 'damage taken from physical' in sl or '物理被ダメージアップ' in s or '遭物理武裝攻擊時' in s:
+        keys.add('dmg_phys')
+    if 'damage taken from beam' in sl or 'ビーム被ダメージアップ' in s or '遭光束武裝攻擊時' in s:
+        keys.add('dmg_beam')
+    if 'damage taken from special' in sl or '特殊被ダメージアップ' in s or '遭特殊武裝攻擊時' in s:
+        keys.add('dmg_spec')
+
+    if 'physical weapon power down' in sl or '物理武装パワーダウン' in s or '物理武裝power下降' in sl or '物理武裝POWER下降' in s:
+        keys.add('wp_phys')
+    if 'beam weapon power down' in sl or 'ビーム武装パワーダウン' in s or '光束武裝power下降' in sl or '光束武裝POWER下降' in s:
+        keys.add('wp_beam')
+    if 'special weapon power down' in sl or '特殊武装パワーダウン' in s or '特殊武裝power下降' in sl or '特殊武裝POWER下降' in s:
+        keys.add('wp_spec')
+
+    if '光束武裝最大射程' in s or 'ビーム武装最大射程' in s or 'beam weapons max range down' in sl or ('max range of beam' in sl and 'decrease' in sl) or 'ビーム武装の最大射程' in s:
+        keys.add('range_beam')
+    elif '物理武裝最大射程' in s or '物理武装最大射程' in s or 'physical weapons max range down' in sl or ('max range of physical' in sl and 'decrease' in sl) or '物理武装の最大射程' in s:
+        keys.add('range_phys')
+    elif (
+        ('weapons max range down' in sl and 'beam weapons max range' not in sl and 'physical weapons max range' not in sl)
+        or (('武装最大射程ダウン' in s or '武裝最大射程降低' in s) and 'ビーム武装' not in s and '物理武装' not in s and '光束' not in s and '物理武裝' not in s)
+        or ('the max range of weapon is decrease' in sl or '武装の最大射程が' in s or '武裝的最大射程減少' in s)
+    ):
+        keys.add('range_all')
+
+    return frozenset(keys)
+
+def collect_unit_weapon_debuff_keys(uid, ld, lc):
+    acc = set()
+    for line in iter_unit_weapon_trait_texts(uid, ld, lc):
+        acc |= set(classify_unit_weapon_trait_debuff_keys(line))
+    return frozenset(acc)
+
+def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None):
+    if want_filter is None:
+        return True
+    if _memo is None:
+        _memo = {}
+    if uid not in _memo:
+        _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
+    have = _memo[uid]
+    for k in want_filter:
+        if k not in have:
+            return False
+    return True
+
+
 def series_filter_cache_fragment(sid):
     if sid is None:
         return 's0'
@@ -4705,6 +4837,7 @@ def browse_filters_pool_signature(args, entity=None):
         if ent == 'units':
             parts.append(args.get('terrain', '').strip())
             parts.append(args.get('stat_mode', '').strip().lower())
+            parts.append(args.get('weapon_debuff', '').strip())
         raw = '|'.join(parts)
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
@@ -4870,7 +5003,8 @@ def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal'):
 def unit_passes_browse_pool_filters(
     uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
-    *, apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True,
+    weapon_debuff_filter=None,
+    *, apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -4908,6 +5042,9 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_ability and ability_filter is not None:
         if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
+            return False
+    if apply_weapon_debuff and weapon_debuff_filter:
+        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -5037,11 +5174,13 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
+    weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     short_ids = set()
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            weapon_debuff_filter,
             apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
         ):
             continue
@@ -5065,6 +5204,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
+    weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     seen = set()
@@ -5073,6 +5213,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            weapon_debuff_filter,
             apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
         ):
             continue
@@ -5413,6 +5554,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
+    weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     ldc = get_calc_lang_data()
     seen = {}
     for uid in unit_list_playable_ids:
@@ -5422,6 +5564,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            weapon_debuff_filter,
             apply_ability=False, apply_terrain=True,
         ):
             continue
@@ -5669,15 +5812,19 @@ def list_units():
     ability_filter = parse_list_ability_filter(ability_arg)
     terrain_arg = request.args.get('terrain', '').strip()
     terrain_filter = parse_unit_terrain_filter(terrain_arg)
+    weapon_debuff_arg = request.args.get('weapon_debuff', '').strip()
+    weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
+    weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul22_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul22_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
+    _debuff_memo = {}
     for uid, info in unit_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
@@ -5713,6 +5860,9 @@ def list_units():
                 continue
         if ability_filter is not None:
             if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
+                continue
+        if weapon_debuff_filter:
+            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
@@ -5760,7 +5910,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
