@@ -1749,7 +1749,7 @@ function renderMapGrid(weapon,isLarge){
 }
 function esc(s){if(s===null||s===undefined)return'';const d=document.createElement('div');d.textContent=String(s);return d.innerHTML}
 function escAttr(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
-function escJs(s){return String(s??'').replace(/\\\\/g,'\\\\\\\\').replace(/'/g,"\\\\'").replace(/\\r/g,'\\\\r').replace(/\\n/g,'\\\\n')}
+function escJs(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n')}
 function scrollToNpc(id){try{const el=document.getElementById('npc-'+String(id));if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('npc-card-highlight');setTimeout(()=>el.classList.remove('npc-card-highlight'),1200)}catch(e){}}
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
 
