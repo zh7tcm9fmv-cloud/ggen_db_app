@@ -588,14 +588,16 @@ html{overflow-x:hidden}
 .list-toolbar-left--browse{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-width:0}
 .filter-input-wrap--compact{flex:0 1 200px;min-width:140px;max-width:220px}
 .filter-input-wrap--compact .filter-input{width:100%;min-width:0}
+#panel-characters .filter-input-wrap--compact{flex:0 1 150px;min-width:120px;max-width:165px}
 #panel-units .filter-input-wrap--compact{flex:0 1 140px;min-width:120px;max-width:150px}
 .filter-panel-clear-wrap{display:flex;justify-content:flex-end;padding:8px 10px 10px;border-top:1px solid rgba(255,255,255,.08);background:rgba(8,14,30,.85)}
 .filter-panel-clear-btn{padding:6px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .filter-panel-clear-btn:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
 .unit-terrain-grid{display:flex;flex-direction:column;gap:6px}
-.unit-terrain-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.unit-terrain-grid-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
 .unit-terrain-item{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer}
 .unit-terrain-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
+#unitTerrainFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}
