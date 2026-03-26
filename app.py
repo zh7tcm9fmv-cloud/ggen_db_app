@@ -2346,8 +2346,6 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         condition_groups = []
         if active_conds:
             condition_groups.append({'label': 'Condition 1', 'conditions': list(active_conds)})
-        if target_conds:
-            condition_groups.append({'label': 'Condition 2', 'conditions': list(target_conds)})
         if boost_conds:
             condition_groups.append({'label': 'Boost Target', 'conditions': list(boost_conds)})
         cond_nums = []
@@ -2364,38 +2362,62 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             'conditions': trait_conds,
             'condition_groups': condition_groups,
             'condition_nums': cond_nums,
+            'active_conditions': list(active_conds),
+            'boost_conditions': list(boost_conds),
         })
-    # Align Condition N labels across split trait lines.
-    # Some abilities reference [Condition 1]/[Condition 2] in one line while
-    # the actual tag chips are emitted from subsequent trait rows.
-    carry_cond_num = None
-    for info in trait_info:
-        groups = info.get('condition_groups') or []
-        if not groups:
-            continue
+    # Map [Condition N] placeholders to active-condition rows in order.
+    # This keeps lines like "...[Condition 1]...[Condition 2]..." grouped on
+    # the same sentence while allowing later sentences to start at Condition 1 again.
+    active_pool = []
+    for idx, info in enumerate(trait_info):
+        ac = list(info.get('active_conditions') or [])
+        if ac:
+            active_pool.append({'idx': idx, 'conditions': ac})
+    used_active_pool = set()
+    def take_active_for_line(start_idx):
+        for pi, p in enumerate(active_pool):
+            if pi in used_active_pool:
+                continue
+            if p['idx'] >= start_idx:
+                used_active_pool.add(pi)
+                return list(p.get('conditions') or [])
+        for pi, p in enumerate(active_pool):
+            if pi in used_active_pool:
+                continue
+            used_active_pool.add(pi)
+            return list(p.get('conditions') or [])
+        return []
+    for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
-        cond_groups = [g for g in groups if str(g.get('label', '')).startswith('Condition ')]
-        if nums and cond_groups:
-            for gi, g in enumerate(cond_groups):
-                if gi < len(nums):
-                    g['label'] = f"Condition {nums[gi]}"
-            carry_cond_num = nums[len(cond_groups)] if len(nums) > len(cond_groups) else None
-        elif carry_cond_num is not None and len(cond_groups) == 1:
-            cond_groups[0]['label'] = f"Condition {carry_cond_num}"
-            carry_cond_num = None
+        groups = []
+        if nums:
+            for n in nums:
+                conds_for_n = take_active_for_line(idx)
+                if conds_for_n:
+                    groups.append({'label': f"Condition {n}", 'conditions': conds_for_n})
+        else:
+            default_conds = list(info.get('active_conditions') or [])
+            if default_conds:
+                consumed = False
+                for pi, p in enumerate(active_pool):
+                    if pi in used_active_pool:
+                        continue
+                    if p['idx'] == idx:
+                        used_active_pool.add(pi)
+                        consumed = True
+                        break
+                if not consumed:
+                    _ = take_active_for_line(idx)
+                groups.append({'label': 'Condition 1', 'conditions': default_conds})
+        boost_conds = list(info.get('boost_conditions') or [])
+        if boost_conds:
+            groups.append({'label': 'Boost Target', 'conditions': boost_conds})
+        if groups:
+            info['condition_groups'] = groups
     details = []
     for i, info in enumerate(trait_info):
         display_text = info['display_text']; en_text = info['en_text']; conds = list(info['conditions']); cond_groups = list(info.get('condition_groups', []))
         if display_text:
-            en_text_lower = en_text.lower() if en_text else ''
-            cond_matches = re.findall(r'\[condition\s*(\d+)\]', en_text_lower)
-            if cond_matches:
-                max_cond_num = max(int(mv) for mv in cond_matches); needed = max_cond_num - len(conds); lai = i + 1
-                while needed > 0 and lai < len(trait_info):
-                    for c in trait_info[lai]['conditions']:
-                        if c not in conds: conds.append(c); needed -= 1
-                        if needed <= 0: break
-                    lai += 1
             existing = None
             for d2 in details:
                 if d2['text'] == display_text: existing = d2; break
