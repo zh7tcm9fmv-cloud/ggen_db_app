@@ -1570,8 +1570,10 @@ def merge_trait_condition_raw_maps(*maps):
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0': return []
     raw = trait_condition_raw_map.get(cond_id, {}); res = []; seen = set()
-    def at(tid, tn, tt):
-        if tn and tn not in seen: res.append({'id': tid, 'name': tn, 'type': tt}); seen.add(tn)
+    def at(tid, tn, tt, src=''):
+        if tn and tn not in seen:
+            res.append({'id': tid, 'name': tn, 'type': tt, 'source': src})
+            seen.add(tn)
     def fn(tid, pm, sm=None):
         n = pm.get(tid)
         if not n and sm: n = sm.get(tid)
@@ -1583,12 +1585,12 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
                 for k, v in sm.items():
                     if k.endswith(p) or k == tid: return v
         return n
-    for t in raw.get('unit_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'unit'))
-    for t in raw.get('char_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'character'))
-    for t in raw.get('group_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'group'))
-    for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series'))
+    for t in raw.get('unit_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'unit', 'unit_tags'))
+    for t in raw.get('char_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'character', 'char_tags'))
+    for t in raw.get('group_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'group', 'group_tags'))
+    for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series', 'series'))
     rtm = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
-    for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'unit_role'))
+    for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'unit_role', 'types'))
     return res
 
 def create_char_info_map(m):
