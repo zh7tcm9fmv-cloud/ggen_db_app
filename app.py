@@ -566,6 +566,36 @@ def parse_list_lineage_filter(val):
     return frozenset(parts)
 
 
+def parse_list_ability_filter(val):
+    """Ability filter expression.
+
+    - comma between selected entries = AND across selections
+    - pipe within one selection = OR across grouped lv-tier ids
+    """
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    groups = []
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if '|' in token:
+            opts = [x.strip() for x in token.split('|') if x.strip()]
+            if not opts:
+                continue
+            if len(opts) == 1:
+                groups.append(opts[0])
+            else:
+                groups.append(frozenset(opts))
+        else:
+            groups.append(token)
+    if not groups:
+        return None
+    if len(groups) == 1:
+        return groups[0]
+    return tuple(groups)
+
+
 def parse_list_series_filter(val):
     """Optional series id; None = no filter."""
     if val is None:
@@ -585,6 +615,22 @@ def lineage_filter_cache_fragment(lid):
         xs = sorted(str(x).replace('%', '')[:48] for x in lid)
         return 'l' + '__'.join(xs)[:220]
     return 'l' + str(lid).replace('%', '')[:48]
+
+
+def ability_filter_cache_fragment(expr):
+    if expr is None:
+        return 'a0'
+
+    def _ser(node):
+        if isinstance(node, (frozenset, set)):
+            xs = sorted(_ser(x) for x in node if str(x).strip())
+            return '(' + '|'.join(xs) + ')'
+        if isinstance(node, (list, tuple)):
+            xs = [_ser(x) for x in node if str(x).strip()]
+            return ','.join(xs)
+        return str(node).replace('%', '')[:48]
+
+    return ('a' + _ser(expr))[:220]
 
 
 def series_filter_cache_fragment(sid):
@@ -4221,13 +4267,17 @@ def _char_has_ability_id(cid, ability_id):
 
 
 def entity_matches_char_abilities(cid, want_lid):
-    """Multi ability id filter — AND semantics."""
+    """Ability filter with AND across selections, OR within grouped selections."""
     if want_lid is None:
         return True
-    if isinstance(want_lid, (frozenset, set, list, tuple)):
+    if isinstance(want_lid, (set, frozenset)):
         if not want_lid:
             return True
-        return all(_char_has_ability_id(cid, w) for w in want_lid)
+        return any(_char_has_ability_id(cid, w) for w in want_lid)
+    if isinstance(want_lid, (list, tuple)):
+        if not want_lid:
+            return True
+        return all(entity_matches_char_abilities(cid, w) for w in want_lid)
     return _char_has_ability_id(cid, want_lid)
 
 
@@ -4251,10 +4301,14 @@ def _unit_has_ability_id(uid, ab_id):
 def entity_matches_unit_abilities_filter(uid, want_lid):
     if want_lid is None:
         return True
-    if isinstance(want_lid, (frozenset, set, list, tuple)):
+    if isinstance(want_lid, (set, frozenset)):
         if not want_lid:
             return True
-        return all(_unit_has_ability_id(uid, w) for w in want_lid)
+        return any(_unit_has_ability_id(uid, w) for w in want_lid)
+    if isinstance(want_lid, (list, tuple)):
+        if not want_lid:
+            return True
+        return all(entity_matches_unit_abilities_filter(uid, w) for w in want_lid)
     return _unit_has_ability_id(uid, want_lid)
 
 
@@ -4585,7 +4639,7 @@ def lineages_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     short_ids = set()
     for cid, info in char_info_map.items():
         if not character_passes_browse_pool_filters(
@@ -4609,7 +4663,7 @@ def series_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     cmap = ld.get('char_ser_map', {})
@@ -4650,7 +4704,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     source_filter = parse_list_source_filter(args.get('source', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     short_ids = set()
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
@@ -4673,7 +4727,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     source_filter = parse_list_source_filter(args.get('source', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     seen = set()
@@ -4815,7 +4869,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     seen = {}
     for sk in extract_data_list(char_skill):
         cid = normalize_id(sk.get('CharacterId', ''))
@@ -4907,7 +4961,7 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_lineage_filter(args.get('skill_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     ldc = get_calc_lang_data()
     seen = {}
     passed_cids = set()
@@ -5007,7 +5061,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     source_filter = parse_list_source_filter(args.get('source', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
-    ability_filter = parse_list_lineage_filter(args.get('ability_id', '').strip())
+    ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
     ldc = get_calc_lang_data()
     seen = {}
     for uid in unit_list_playable_ids:
@@ -5149,11 +5203,11 @@ def list_characters():
     skill_arg = request.args.get('skill_id', '').strip()
     skill_filter = parse_list_lineage_filter(skill_arg)
     ability_arg = request.args.get('ability_id', '').strip()
-    ability_filter = parse_list_lineage_filter(ability_arg)
+    ability_filter = parse_list_ability_filter(ability_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = lineage_filter_cache_fragment(skill_filter)
-    ability_ck = lineage_filter_cache_fragment(ability_filter)
+    ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
     ck = f"cl20_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
@@ -5260,10 +5314,10 @@ def list_units():
     lineage_filter = parse_list_lineage_filter(lineage_arg)
     series_filter = parse_list_series_filter(series_arg)
     ability_arg = request.args.get('ability_id', '').strip()
-    ability_filter = parse_list_lineage_filter(ability_arg)
+    ability_filter = parse_list_ability_filter(ability_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
-    ability_ck = lineage_filter_cache_fragment(ability_filter)
+    ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
     ck = f"ul21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
