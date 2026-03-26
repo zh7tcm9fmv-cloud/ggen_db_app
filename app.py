@@ -1496,7 +1496,12 @@ def create_trait_data_map(d):
         if not isinstance(item, dict): continue
         tid = normalize_id(item.get('Id') or item.get('id'))
         if tid == '0': continue
-        lookup[tid] = {'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'active_cond_id': normalize_id(item.get('ActiveConditionSetId') or item.get('activeConditionSetId') or item.get('ActiveConditionId')), 'target_cond_id': normalize_id(item.get('TargetConditionSetId') or item.get('targetConditionSetId') or item.get('TargetConditionId'))}
+        lookup[tid] = {
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'active_cond_id': normalize_id(item.get('ActiveConditionSetId') or item.get('activeConditionSetId') or item.get('ActiveConditionId')),
+            'target_cond_id': normalize_id(item.get('TargetConditionSetId') or item.get('targetConditionSetId') or item.get('TargetConditionId')),
+            'boost_cond_id': normalize_id(item.get('TraitBoostConditionSetId') or item.get('traitBoostConditionSetId')),
+        }
     return lookup
 
 def create_lang_text_map(d):
@@ -1568,7 +1573,7 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
     for t in raw.get('group_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'group'))
     for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series'))
     rtm = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
-    for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'character'))
+    for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'unit_role'))
     return res
 
 def create_char_info_map(m):
@@ -2325,14 +2330,30 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if not display_text and en_text: display_text = en_text
         if display_text == ab_name.strip(): display_text = ""
         if en_text == ab_name.strip(): en_text = ""
-        active_cid = t_data.get('active_cond_id', '0'); target_cid = t_data.get('target_cond_id', '0'); trait_conds = []
+        active_cid = t_data.get('active_cond_id', '0')
+        target_cid = t_data.get('target_cond_id', '0')
+        boost_cid = t_data.get('boost_cond_id', '0')
+        active_conds = resolve_condition_tags(active_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        target_conds = resolve_condition_tags(target_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        boost_conds = resolve_condition_tags(boost_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        trait_conds = []
         for cid in [active_cid, target_cid]:
             for c in resolve_condition_tags(cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code):
                 if c not in trait_conds: trait_conds.append(c)
-        trait_info.append({'display_text': display_text, 'en_text': en_text, 'conditions': trait_conds})
+        for c in boost_conds:
+            if c not in trait_conds:
+                trait_conds.append(c)
+        condition_groups = []
+        if active_conds:
+            condition_groups.append({'label': 'Condition 1', 'conditions': list(active_conds)})
+        if target_conds:
+            condition_groups.append({'label': 'Condition 2', 'conditions': list(target_conds)})
+        if boost_conds:
+            condition_groups.append({'label': 'Boost Target', 'conditions': list(boost_conds)})
+        trait_info.append({'display_text': display_text, 'en_text': en_text, 'conditions': trait_conds, 'condition_groups': condition_groups})
     details = []
     for i, info in enumerate(trait_info):
-        display_text = info['display_text']; en_text = info['en_text']; conds = list(info['conditions'])
+        display_text = info['display_text']; en_text = info['en_text']; conds = list(info['conditions']); cond_groups = list(info.get('condition_groups', []))
         if display_text:
             en_text_lower = en_text.lower() if en_text else ''
             cond_matches = re.findall(r'\[condition\s*(\d+)\]', en_text_lower)
@@ -2349,11 +2370,48 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if existing:
                 for c in conds:
                     if c not in existing['conditions']: existing['conditions'].append(c)
-            else: details.append({'text': display_text, 'conditions': conds})
+                if cond_groups:
+                    ex_groups = existing.setdefault('condition_groups', [])
+                    for ng in cond_groups:
+                        gl = str(ng.get('label') or '').strip()
+                        if not gl:
+                            continue
+                        ex = None
+                        for eg in ex_groups:
+                            if str(eg.get('label') or '') == gl:
+                                ex = eg
+                                break
+                        if ex is None:
+                            ex_groups.append({'label': gl, 'conditions': list(ng.get('conditions') or [])})
+                        else:
+                            for cc in (ng.get('conditions') or []):
+                                if cc not in ex['conditions']:
+                                    ex['conditions'].append(cc)
+            else:
+                details.append({'text': display_text, 'conditions': conds})
+                if cond_groups:
+                    details[-1]['condition_groups'] = cond_groups
         else:
             if details:
                 for c in conds:
                     if c not in details[-1]['conditions']: details[-1]['conditions'].append(c)
+                if cond_groups:
+                    ex_groups = details[-1].setdefault('condition_groups', [])
+                    for ng in cond_groups:
+                        gl = str(ng.get('label') or '').strip()
+                        if not gl:
+                            continue
+                        ex = None
+                        for eg in ex_groups:
+                            if str(eg.get('label') or '') == gl:
+                                ex = eg
+                                break
+                        if ex is None:
+                            ex_groups.append({'label': gl, 'conditions': list(ng.get('conditions') or [])})
+                        else:
+                            for cc in (ng.get('conditions') or []):
+                                if cc not in ex['conditions']:
+                                    ex['conditions'].append(cc)
     if not details:
         old_descs = abil_desc_map.get(lookup_id, abil_desc_map.get(trait_set_id, []))
         for entry in old_descs:
