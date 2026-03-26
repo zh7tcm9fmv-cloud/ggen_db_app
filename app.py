@@ -2403,11 +2403,18 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             return list(p.get('conditions') or [])
         return []
     carry_boost_for_next = []
+    def _looks_conditional_text(info_row):
+        txt = (str(info_row.get('en_text') or '') + ' ' + str(info_row.get('display_text') or '')).lower()
+        if '[condition' in txt:
+            return True
+        # Heuristic: only attach implicit condition tags on clearly conditional lines.
+        return (' when ' in (' ' + txt)) or (' if ' in (' ' + txt)) or ('specified' in txt)
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
         groups = []
         boost_conds = list(info.get('boost_conditions') or [])
         boost_used = False
+        is_conditional_line = _looks_conditional_text(info)
         if nums:
             for n in nums:
                 conds_for_n = take_active_for_line(idx)
@@ -2419,12 +2426,12 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if boost_conds and (not boost_used):
                 carry_boost_for_next = list(boost_conds)
         else:
-            if carry_boost_for_next:
+            if carry_boost_for_next and is_conditional_line:
                 groups.append({'label': 'Condition 1', 'conditions': list(carry_boost_for_next)})
                 carry_boost_for_next = []
             else:
                 default_conds = list(info.get('active_conditions') or [])
-                if default_conds:
+                if default_conds and is_conditional_line:
                     consumed = False
                     for pi, p in enumerate(active_pool):
                         if pi in used_active_pool:
@@ -2437,7 +2444,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                         _ = take_active_for_line(idx)
                     groups.append({'label': 'Condition 1', 'conditions': default_conds})
         # Keep any unconsumed boost as generic Condition 1 on this same line.
-        if boost_conds and (not boost_used) and (not carry_boost_for_next):
+        if boost_conds and (not boost_used) and (not carry_boost_for_next) and is_conditional_line:
             groups.append({'label': 'Condition 1', 'conditions': boost_conds})
         if groups:
             info['condition_groups'] = groups
