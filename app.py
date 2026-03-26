@@ -596,6 +596,39 @@ def parse_list_ability_filter(val):
     return tuple(groups)
 
 
+def parse_unit_terrain_filter(val):
+    """Unit terrain filter expression from query string.
+
+    Accepts comma-separated "TerrainName:Level" pairs (AND semantics), e.g.
+    "Space:3,Underwater:2". Only levels 2 and 3 are accepted.
+    """
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    allowed_names = {'Space', 'Atmospheric', 'Ground', 'Sea', 'Underwater'}
+    out = []
+    seen = set()
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if ':' not in token:
+            continue
+        name_raw, lv_raw = token.split(':', 1)
+        name = str(name_raw or '').strip().title()
+        lv = str(normalize_id(lv_raw, '0')).strip()
+        if name not in allowed_names:
+            continue
+        if lv not in ('2', '3'):
+            continue
+        k = (name, int(lv))
+        if k not in seen:
+            seen.add(k)
+            out.append(k)
+    if not out:
+        return None
+    return tuple(out)
+
+
 def parse_list_series_filter(val):
     """Optional series id; None = no filter."""
     if val is None:
@@ -631,6 +664,16 @@ def ability_filter_cache_fragment(expr):
         return str(node).replace('%', '')[:48]
 
     return ('a' + _ser(expr))[:220]
+
+
+def unit_terrain_filter_cache_fragment(expr):
+    if expr is None:
+        return 't0'
+    xs = []
+    for name, lv in expr:
+        xs.append(f'{name}:{int(lv)}')
+    xs.sort()
+    return ('t' + '__'.join(xs))[:220]
 
 
 def series_filter_cache_fragment(sid):
@@ -860,7 +903,7 @@ def series_for_entity_browse(ld, entity):
 ROLE_MAP = {'0': 'NPC', '1': 'Attack', '2': 'Defense', '3': 'Support'}
 ROLE_SORT = {'1': 0, '2': 1, '3': 2, '0': 3}
 GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
-TERRAIN_SYMBOLS = {'0': '-', '1': '-', '2': '▲', '3': '●'}
+TERRAIN_SYMBOLS = {'1': '-', '2': '▲', '3': '●'}
 CHAR_STAT_ORDER = ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction']
 UNIT_STAT_ORDER = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
 # List API: sort by these columns using stat value as primary key (not rarity), so SP / SSP toggles reorder correctly.
@@ -878,8 +921,7 @@ TERRAIN_TYPE_ICON_MAP = {
 TERRAIN_LEVEL_ICON_MAP = {
     3: 'UI_Common_TerrainIcon_Circle.png', 
     2: 'UI_Common_TerrainIcon_Triangle.png',
-    1: 'UI_Common_TerrainIcon_Hyphen.png', 
-    0: 'UI_Common_TerrainIcon_Hyphen.png',
+    1: 'UI_Common_TerrainIcon_Hyphen.png',
 }
 WEAPON_ATTR_MAP = {
     '1': {'label': 'Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_02.png'},
@@ -1834,10 +1876,28 @@ def create_unit_status_map(d):
 
 def create_terrain_map(d):
     lookup = {}
+    def _norm_tier(v):
+        try:
+            n = int(v or 0)
+        except Exception:
+            n = 0
+        # Master terrain tiers are 1..3. Coerce missing/invalid/0 to 1 (hyphen).
+        if n < 1:
+            return 1
+        if n > 3:
+            return 3
+        return n
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('TerrainCapabilitySetId') or item.get('id') or item.get('Id'))
-        if sid != '0': lookup[sid] = {'Space': int(item.get('SpaceIndex') or 0), 'Atmospheric': int(item.get('AtmosphericIndex') or 0), 'Ground': int(item.get('GroundIndex') or 0), 'Sea': int(item.get('SurfaceIndex') or 0), 'Underwater': int(item.get('UnderwaterIndex') or 0)}
+        if sid != '0':
+            lookup[sid] = {
+                'Space': _norm_tier(item.get('SpaceIndex')),
+                'Atmospheric': _norm_tier(item.get('AtmosphericIndex')),
+                'Ground': _norm_tier(item.get('GroundIndex')),
+                'Sea': _norm_tier(item.get('SurfaceIndex')),
+                'Underwater': _norm_tier(item.get('UnderwaterIndex')),
+            }
     return lookup
 
 def create_unit_lineage_link_map(d):
@@ -4465,7 +4525,7 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('lineage_id', '').strip(),
         ])
     else:
-        raw = '|'.join([
+        parts = [
             args.get('q', '').strip().lower(),
             args.get('role', '').strip(),
             args.get('rarity', '').strip(),
@@ -4474,7 +4534,11 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('series_id', '').strip(),
             args.get('skill_id', '').strip(),
             args.get('ability_id', '').strip(),
-        ])
+        ]
+        if ent == 'units':
+            parts.append(args.get('terrain', '').strip())
+            parts.append(args.get('stat_mode', '').strip().lower())
+        raw = '|'.join(parts)
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
 
@@ -4590,10 +4654,56 @@ def character_passes_browse_pool_filters(
     return True
 
 
+UNIT_TERRAIN_NAMES = ('Space', 'Atmospheric', 'Ground', 'Sea', 'Underwater')
+
+
+def _terrain_tier_norm(v):
+    try:
+        n = int(v or 0)
+    except Exception:
+        n = 0
+    if n < 1:
+        return 1
+    if n > 3:
+        return 3
+    return n
+
+
+def _unit_base_terrain_levels(info):
+    td = unit_ter_map.get(info.get('terrain_set', ''), {})
+    return {tn: _terrain_tier_norm(td.get(tn, 1)) for tn in UNIT_TERRAIN_NAMES}
+
+
+def _unit_terrain_levels_for_mode(uid, info, stat_mode='normal'):
+    levels = _unit_base_terrain_levels(info)
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm != 'ssp':
+        return levels
+    core = get_ssp_custom_core_bonuses_for_unit(uid)
+    for tn, fr, to in core.get('terrain_upgrades', []) or []:
+        if tn not in levels:
+            continue
+        cur = _terrain_tier_norm(levels.get(tn, 1))
+        frn = _terrain_tier_norm(fr)
+        ton = _terrain_tier_norm(to)
+        levels[tn] = ton if cur == frn else max(cur, ton)
+    return levels
+
+
+def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal'):
+    if want_filter is None:
+        return True
+    levels = _unit_terrain_levels_for_mode(uid, info, stat_mode)
+    for name, lv in want_filter:
+        if _terrain_tier_norm(levels.get(name, 1)) != _terrain_tier_norm(lv):
+            return False
+    return True
+
+
 def unit_passes_browse_pool_filters(
     uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-    lineage_filter, series_filter, ability_filter,
-    *, apply_lineage=True, apply_series=True, apply_ability=True,
+    lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
+    *, apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -4619,6 +4729,9 @@ def unit_passes_browse_pool_filters(
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+            return False
+    if apply_terrain and terrain_filter is not None:
+        if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode):
             return False
     if apply_lineage and lineage_filter is not None:
         if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
@@ -4753,11 +4866,16 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    terrain_filter = parse_unit_terrain_filter(args.get('terrain', '').strip())
+    stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
+    if stat_mode not in ('normal', 'sp', 'ssp'):
+        stat_mode = 'normal'
     short_ids = set()
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, ability_filter, apply_lineage=False, apply_series=True, apply_ability=True,
+            lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
         ):
             continue
         for lid in unit_lin_map.get(uid, []) or []:
@@ -4776,6 +4894,10 @@ def series_for_unit_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    terrain_filter = parse_unit_terrain_filter(args.get('terrain', '').strip())
+    stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
+    if stat_mode not in ('normal', 'sp', 'ssp'):
+        stat_mode = 'normal'
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     seen = set()
@@ -4783,7 +4905,8 @@ def series_for_unit_browse_filtered(ld, lc, args):
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, ability_filter, apply_lineage=True, apply_series=False, apply_ability=True,
+            lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
         ):
             continue
         set_id = unit_ser_map.get(uid, '')
@@ -5119,6 +5242,10 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    terrain_filter = parse_unit_terrain_filter(args.get('terrain', '').strip())
+    stat_mode = (args.get('stat_mode', 'normal') or 'normal').strip().lower()
+    if stat_mode not in ('normal', 'sp', 'ssp'):
+        stat_mode = 'normal'
     ldc = get_calc_lang_data()
     seen = {}
     for uid in unit_list_playable_ids:
@@ -5127,7 +5254,8 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
             continue
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-            lineage_filter, series_filter, ability_filter, apply_ability=False,
+            lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
+            apply_ability=False, apply_terrain=True,
         ):
             continue
         ua = unit_abil_map.get(uid, []) or []
@@ -5372,11 +5500,14 @@ def list_units():
     series_filter = parse_list_series_filter(series_arg)
     ability_arg = request.args.get('ability_id', '').strip()
     ability_filter = parse_list_ability_filter(ability_arg)
+    terrain_arg = request.args.get('terrain', '').strip()
+    terrain_filter = parse_unit_terrain_filter(terrain_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
+    terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul22_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5403,6 +5534,9 @@ def list_units():
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
+        if terrain_filter is not None:
+            if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode):
                 continue
         if lineage_filter is not None:
             if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
@@ -5459,7 +5593,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
@@ -6368,10 +6502,10 @@ def get_unit(unit_id):
         thum = find_list_thumb(info.get('resource_ids', []), unit_id, 'images/unit_portraits')
         ubr = info.get('bromide_resource_id', '') or (info.get('resource_ids', [''])[0] if info.get('resource_ids') else '')
         td = unit_ter_map.get(info.get('terrain_set',''), {}); terrain = []
-        terrain_levels = {tn: int(td.get(tn, 0) or 0) for tn in ['Space','Atmospheric','Ground','Sea','Underwater']}
+        terrain_levels = {tn: _terrain_tier_norm(td.get(tn, 1)) for tn in ['Space','Atmospheric','Ground','Sea','Underwater']}
         for tn in ['Space','Atmospheric','Ground','Sea','Underwater']:
-            lv = terrain_levels.get(tn, 0)
-            terrain.append({'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(lv),'-'), 'level': lv, 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"})
+            lv = terrain_levels.get(tn, 1)
+            terrain.append({'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(lv), TERRAIN_SYMBOLS['1']), 'level': lv, 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[1])}"})
         terr_ssp_levels = dict(terrain_levels)
         ssp_enhanced_terrains = set()
         if has_sp and ssp_core.get('terrain_upgrades'):
@@ -6380,10 +6514,10 @@ def get_unit(unit_id):
                 cur = int(terr_ssp_levels.get(tn, 0) or 0)
                 terr_ssp_levels[tn] = to if cur == fr else max(cur, to)
         def _ssp_level_icon(tn):
-            lv = terr_ssp_levels.get(tn, 0)
+            lv = terr_ssp_levels.get(tn, 1)
             # Use the actual adapted level (e.g. △ after SSP dash→triangle). Do not force ● for lv>=2.
-            return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[0])}"
-        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,0)),'-'), 'level': terr_ssp_levels.get(tn,0), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
+            return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[1])}"
+        terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,1)), TERRAIN_SYMBOLS['1']), 'level': terr_ssp_levels.get(tn,1), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
         for wp in unit_weapon_map.get(unit_id, []):
             wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
