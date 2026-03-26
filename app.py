@@ -2402,6 +2402,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             used_active_pool.add(pi)
             return list(p.get('conditions') or [])
         return []
+    carry_boost_for_next = []
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
         groups = []
@@ -2415,22 +2416,29 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                     boost_used = True
                 if conds_for_n:
                     groups.append({'label': f"Condition {n}", 'conditions': conds_for_n})
+            if boost_conds and (not boost_used):
+                carry_boost_for_next = list(boost_conds)
         else:
-            default_conds = list(info.get('active_conditions') or [])
-            if default_conds:
-                consumed = False
-                for pi, p in enumerate(active_pool):
-                    if pi in used_active_pool:
-                        continue
-                    if p['idx'] == idx:
-                        used_active_pool.add(pi)
-                        consumed = True
-                        break
-                if not consumed:
-                    _ = take_active_for_line(idx)
-                groups.append({'label': 'Condition 1', 'conditions': default_conds})
-        if boost_conds and (not boost_used):
-            groups.append({'label': 'Boost Target', 'conditions': boost_conds})
+            if carry_boost_for_next:
+                groups.append({'label': 'Condition 1', 'conditions': list(carry_boost_for_next)})
+                carry_boost_for_next = []
+            else:
+                default_conds = list(info.get('active_conditions') or [])
+                if default_conds:
+                    consumed = False
+                    for pi, p in enumerate(active_pool):
+                        if pi in used_active_pool:
+                            continue
+                        if p['idx'] == idx:
+                            used_active_pool.add(pi)
+                            consumed = True
+                            break
+                    if not consumed:
+                        _ = take_active_for_line(idx)
+                    groups.append({'label': 'Condition 1', 'conditions': default_conds})
+        # Keep any unconsumed boost as generic Condition 1 on this same line.
+        if boost_conds and (not boost_used) and (not carry_boost_for_next):
+            groups.append({'label': 'Condition 1', 'conditions': boost_conds})
         if groups:
             info['condition_groups'] = groups
     details = []
@@ -2468,23 +2476,6 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if details:
                 for c in conds:
                     if c not in details[-1]['conditions']: details[-1]['conditions'].append(c)
-                if cond_groups:
-                    ex_groups = details[-1].setdefault('condition_groups', [])
-                    for ng in cond_groups:
-                        gl = str(ng.get('label') or '').strip()
-                        if not gl:
-                            continue
-                        ex = None
-                        for eg in ex_groups:
-                            if str(eg.get('label') or '') == gl:
-                                ex = eg
-                                break
-                        if ex is None:
-                            ex_groups.append({'label': gl, 'conditions': list(ng.get('conditions') or [])})
-                        else:
-                            for cc in (ng.get('conditions') or []):
-                                if cc not in ex['conditions']:
-                                    ex['conditions'].append(cc)
     if not details:
         old_descs = abil_desc_map.get(lookup_id, abil_desc_map.get(trait_set_id, []))
         for entry in old_descs:
