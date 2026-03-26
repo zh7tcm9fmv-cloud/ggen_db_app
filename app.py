@@ -401,7 +401,7 @@ ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 def parse_list_rarity_filter(val):
     """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
-    tuple (letters, need_limited) = UR/SSR/... plus optional LT (limited-time) filter."""
+    tuple (letters, need_limited, need_ultimate) = UR/SSR/... plus optional LT (limited-time) and ULT filters."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -413,31 +413,30 @@ def parse_list_rarity_filter(val):
     if not parts:
         return None
     has_lt = 'LT' in parts
+    has_ult = 'ULT' in parts
     letters = {p for p in parts if p in RARITY_LETTERS}
-    if any(p not in RARITY_LETTERS and p != 'LT' for p in parts):
+    if any(p not in RARITY_LETTERS and p not in ('LT', 'ULT') for p in parts):
         return set()
-    if has_lt and letters == RARITY_LETTERS:
+    if has_lt and has_ult and letters == RARITY_LETTERS:
         return None
-    if letters == RARITY_LETTERS and not has_lt:
+    if letters == RARITY_LETTERS and not has_lt and not has_ult:
         return None
-    if not letters and not has_lt:
+    if not letters and not has_lt and not has_ult:
         return set()
-    if not letters and has_lt:
-        return (frozenset(), True)
-    if letters and not has_lt:
-        return (frozenset(letters), False)
-    return (frozenset(letters), True)
+    return (frozenset(letters), has_lt, has_ult)
 
 
-def row_matches_rarity_filter(rf, letter, is_limited):
-    """Apply parse_list_rarity_filter result. is_limited is False for entities without that flag."""
+def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
+    """Apply parse_list_rarity_filter result."""
     if rf is None:
         return True
     if rf == set():
         return False
     if isinstance(rf, tuple):
-        letters, need_lt = rf
+        letters, need_lt, need_ult = rf
         if need_lt and not is_limited:
+            return False
+        if need_ult and not is_ultimate:
             return False
         if letters:
             return letter in letters
@@ -451,9 +450,14 @@ def rarity_filter_cache_fragment(rf):
     if not rf:
         return 'none'
     if isinstance(rf, tuple):
-        letters, need_lt = rf
+        letters, need_lt, need_ult = rf
         core = ','.join(sorted(letters)) if letters else '*'
-        return core + ('_lt' if need_lt else '')
+        frag = core
+        if need_lt:
+            frag += '_lt'
+        if need_ult:
+            frag += '_ult'
+        return frag
     return ','.join(sorted(rf))
 
 
@@ -4502,7 +4506,7 @@ def unit_passes_browse_pool_filters(
         if not id_seek:
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = uid in LIMITED_TIME_UNIT_IDS
-            if not row_matches_rarity_filter(rarity_filter, letter, lim):
+            if not row_matches_rarity_filter(rarity_filter, letter, lim, bool(info.get('is_ultimate', False))):
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
@@ -5277,7 +5281,7 @@ def list_units():
             if not id_seek:
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = uid in LIMITED_TIME_UNIT_IDS
-                if not row_matches_rarity_filter(rarity_filter, letter, lim):
+                if not row_matches_rarity_filter(rarity_filter, letter, lim, bool(info.get('is_ultimate', False))):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
