@@ -46,6 +46,8 @@ _prel = (os.environ.get('LATEST_RELEASE_LOCK_FUTURE_STARTS') or '1').strip().low
 LATEST_RELEASE_LOCK_FUTURE_STARTS = _prel not in ('0', 'false', 'no', 'off')
 # NPC visibility lock (separate from Latest Release): set NPC_VIEW_PASSWORD to require unlock before NPC rows/details are shown.
 NPC_VIEW_PASSWORD = (os.environ.get('NPC_VIEW_PASSWORD') or '').strip()
+# JP mode lock (separate): set JP_MODE_PASSWORD to require unlock before using JP/JA language mode.
+JP_MODE_PASSWORD = (os.environ.get('JP_MODE_PASSWORD') or '').strip()
 
 # ═══════════════════════════════════════════════════════
 # IMAGE CDN CONFIGURATION & FILE INDEX
@@ -3701,6 +3703,8 @@ def validate_lang_code(lc):
     lc = (lc or DEFAULT_LANG).upper()
     if lc == 'JP':
         lc = 'JA'
+    if lc == 'JA' and not jp_mode_unlocked():
+        return DEFAULT_LANG
     if lc not in LANG_DATA: lc = DEFAULT_LANG
     return lc
 
@@ -5624,6 +5628,12 @@ def npc_password_unlocked():
     return session.get('npc_view_unlocked') is True
 
 
+def jp_mode_unlocked():
+    if not JP_MODE_PASSWORD:
+        return True
+    return session.get('jp_mode_unlocked') is True
+
+
 def npc_view_cache_key_fragment():
     """Vary server-side caches when NPC lock/session affects visible entities."""
     if not NPC_VIEW_PASSWORD:
@@ -5647,6 +5657,26 @@ def api_npc_view_unlock():
     if pw != NPC_VIEW_PASSWORD:
         return jsonify({'ok': False, 'error': 'invalid_password'}), 403
     session['npc_view_unlocked'] = True
+    return jsonify({'ok': True, 'password_required': True})
+
+
+@app.route('/api/jp_mode/status')
+def api_jp_mode_status():
+    msg = "We apologize for the inconvenience.\nDue to unforeseen conflicts, the Japan version is currently locked.\nThank you for your understanding."
+    if not JP_MODE_PASSWORD:
+        return jsonify({'password_required': False, 'unlocked': True, 'message': msg})
+    return jsonify({'password_required': True, 'unlocked': session.get('jp_mode_unlocked') is True, 'message': msg})
+
+
+@app.route('/api/jp_mode/unlock', methods=['POST'])
+def api_jp_mode_unlock():
+    if not JP_MODE_PASSWORD:
+        return jsonify({'ok': True, 'password_required': False})
+    data = request.get_json(force=True, silent=True) or {}
+    pw = (data.get('password') or '').strip()
+    if pw != JP_MODE_PASSWORD:
+        return jsonify({'ok': False, 'error': 'invalid_password'}), 403
+    session['jp_mode_unlocked'] = True
     return jsonify({'ok': True, 'password_required': True})
 
 
