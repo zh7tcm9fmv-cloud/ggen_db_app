@@ -743,11 +743,11 @@ def classify_unit_weapon_trait_debuff_keys(line):
     keys = set()
     sl = s.lower()
 
-    if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in s or re.search(r'mp減少1(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
+    if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in sl or re.search(r'mp減少1(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
         keys.add('mp_1')
-    if re.search(r'decrease\s+mp\s+by\s+2\.?', sl) or 'mpが2減少' in s or re.search(r'mp減少2(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*2\b', sl) or re.search(r'mp減少\s*lv\s*2\b', sl):
+    if re.search(r'decrease\s+mp\s+by\s+2\.?', sl) or 'mpが2減少' in sl or re.search(r'mp減少2(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*2\b', sl) or re.search(r'mp減少\s*lv\s*2\b', sl):
         keys.add('mp_2')
-    if re.search(r'decrease\s+mp\s+by\s+3\.?', sl) or 'mpが3減少' in s or re.search(r'mp減少3(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*3\b', sl) or re.search(r'mp減少\s*lv\s*3\b', sl):
+    if re.search(r'decrease\s+mp\s+by\s+3\.?', sl) or 'mpが3減少' in sl or re.search(r'mp減少3(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*3\b', sl) or re.search(r'mp減少\s*lv\s*3\b', sl):
         keys.add('mp_3')
 
     if (
@@ -755,6 +755,8 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or re.search(r'\batk\s+down\b', sl)
         or '攻撃力減少' in s
         or '攻擊力減少' in s
+        or re.search(r'攻撃力.*減少', s)
+        or re.search(r'攻擊力.*減少', s)
     ):
         keys.add('atk_dn')
     if (
@@ -762,13 +764,32 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or re.search(r'\bdef\s+down\b', sl)
         or '防御力減少' in s
         or '防禦力減少' in s
+        or re.search(r'防御力.*減少', s)
+        or re.search(r'防禦力.*減少', s)
     ):
         keys.add('def_dn')
-    if re.search(r'decreased\s+mob\b', sl) or re.search(r'\bmob\s+down\b', sl) or '機動力減少' in s:
+    if (
+        re.search(r'decreased\s+mob\b', sl)
+        or re.search(r'\bmob\s+down\b', sl)
+        or '機動力減少' in s
+        or re.search(r'機動力.*減少', s)
+    ):
         keys.add('mob_dn')
-    if re.search(r'decreased\s+acc\b', sl) or re.search(r'\bacc\s+down\b', sl) or '命中率減少' in s:
+    if (
+        re.search(r'decreased\s+acc\b', sl)
+        or re.search(r'\bacc\s+down\b', sl)
+        or '命中率減少' in s
+        or re.search(r'命中率.*減少', s)
+    ):
         keys.add('acc_dn')
-    if re.search(r'decreased\s+eva\b', sl) or re.search(r'\beva\s+down\b', sl) or '回避率減少' in s or '閃避率減少' in s:
+    if (
+        re.search(r'decreased\s+eva\b', sl)
+        or re.search(r'\beva\s+down\b', sl)
+        or '回避率減少' in s
+        or '閃避率減少' in s
+        or re.search(r'回避率.*減少', s)
+        or re.search(r'閃避率.*減少', s)
+    ):
         keys.add('eva_dn')
 
     if (
@@ -796,6 +817,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         'physical weapon power down' in sl
         or '物理武装パワーダウン' in s
+        or re.search(r'物理武装POWER\d*%減少', s)
         or '物理武裝power下降' in sl
         or '物理武裝POWER下降' in s
         or '物理武裝power減少' in sl
@@ -805,6 +827,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         'beam weapon power down' in sl
         or 'ビーム武装パワーダウン' in s
+        or re.search(r'ビーム武装POWER\d*%減少', s)
         or '光束武裝power下降' in sl
         or '光束武裝POWER下降' in s
         or '光束武裝power減少' in sl
@@ -814,6 +837,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         'special weapon power down' in sl
         or '特殊武装パワーダウン' in s
+        or re.search(r'特殊武装POWER\d*%減少', s)
         or '特殊武裝power下降' in sl
         or '特殊武裝POWER下降' in s
         or '特殊武裝power減少' in sl
@@ -3225,6 +3249,11 @@ def _precompute_weapon_debuff_keys_present_by_lang():
 
 
 WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG = _precompute_weapon_debuff_keys_present_by_lang()
+# Union across locales so the debuff dropdown lists the same categories in EN / TW / JP (trait
+# wording differs by language; per-lang sets alone would hide most options in JA).
+WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
+    k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
+)
 
 print("Database ready!")
 print("=" * 60)
@@ -5900,7 +5929,7 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul24_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul26_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -5990,7 +6019,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.get(lc, frozenset()))
+    _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
