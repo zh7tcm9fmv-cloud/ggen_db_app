@@ -2487,6 +2487,9 @@ for item in extract_data_list(ability_master):
 
 SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
 SDC_EXPLICIT_IDS = {'1501000103'}
+CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
+CHANCE_STEP_EX_FILTER_NAME = 'Chance Step EX'
+CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
 
 unit_ser_map = {}
 for item in extract_data_list(unit_master_data):
@@ -2771,6 +2774,48 @@ def _precompute_sdc_data():
 
 SDC_ABILITY_IDS, SDC_REPRESENTATIVE_ID = _precompute_sdc_data()
 print(f"SDC abilities found: {len(SDC_ABILITY_IDS)}, representative: {SDC_REPRESENTATIVE_ID}")
+
+
+def _precompute_chance_step_ex_data():
+    """Find EX character abilities whose detail text contains Chance Step +1 wording."""
+    ids = set()
+    icon = ''
+    ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
+    ldc = ld
+    seen_aids = set()
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None') or aid in seen_aids:
+                continue
+            seen_aids.add(aid)
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                    trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                    trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                    ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                )
+            except Exception:
+                continue
+            if not bab.get('is_ex'):
+                continue
+            detail_blob = ' '.join(
+                d.get('text', '') if isinstance(d, dict) else str(d)
+                for d in bab.get('details', [])
+            )
+            if CHANCE_STEP_PLUS_ONE_RE.search(detail_blob or ''):
+                ids.add(aid)
+                if not icon:
+                    icon = (bab.get('icon') or '').strip()
+    return ids, icon
+
+
+CHANCE_STEP_EX_ABILITY_IDS, CHANCE_STEP_EX_ICON = _precompute_chance_step_ex_data()
+print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
 
 print("Database ready!")
 print("=" * 60)
@@ -4252,6 +4297,7 @@ def _char_has_ability_id(cid, ability_id):
     if not want:
         return False
     is_sdc = want in SDC_ABILITY_IDS
+    is_chance_step_ex = want == CHANCE_STEP_EX_FILTER_ID
     for ab_row in extract_data_list(char_abil):
         if normalize_id(ab_row.get('CharacterId', '')) != cid:
             continue
@@ -4260,6 +4306,8 @@ def _char_has_ability_id(cid, ability_id):
             if not aid:
                 continue
             if is_sdc and aid in SDC_ABILITY_IDS:
+                return True
+            if is_chance_step_ex and aid in CHANCE_STEP_EX_ABILITY_IDS:
                 return True
             if aid == want:
                 return True
@@ -4948,6 +4996,8 @@ def abilities_for_character_browse(ld, lc):
                 icon = ''
             if n:
                 seen[aid] = {'name': n, 'icon': icon}
+    if CHANCE_STEP_EX_ABILITY_IDS:
+        seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
@@ -4967,6 +5017,7 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     passed_cids = set()
     failed_cids = set()
     sdc_placed = False
+    chance_step_ex_present = False
     for ab_row in extract_data_list(char_abil):
         cid = normalize_id(ab_row.get('CharacterId', ''))
         if not cid or cid not in char_list_playable_ids:
@@ -4989,7 +5040,11 @@ def abilities_for_character_browse_filtered(ld, lc, args):
         for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
             aid = normalize_id(ab_row.get(key) or '')
             if not aid or aid in ('0', 'None') or aid in seen:
+                if aid in CHANCE_STEP_EX_ABILITY_IDS:
+                    chance_step_ex_present = True
                 continue
+            if aid in CHANCE_STEP_EX_ABILITY_IDS:
+                chance_step_ex_present = True
             if aid in SDC_ABILITY_IDS:
                 if sdc_placed:
                     continue
@@ -5023,6 +5078,8 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                 icon = ''
             if n:
                 seen[aid] = {'name': n, 'icon': icon}
+    if chance_step_ex_present:
+        seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
