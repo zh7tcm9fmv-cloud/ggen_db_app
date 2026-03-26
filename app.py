@@ -4233,7 +4233,7 @@ def get_tag_units():
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
                 acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
                 results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
-        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        for r in results: results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results); return jsonify(convert_image_urls(results))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
@@ -4267,7 +4267,7 @@ def get_tag_characters():
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
                 acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
                 results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
-        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        for r in results: results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results); return jsonify(convert_image_urls(results))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
@@ -4313,7 +4313,7 @@ def get_series_characters():
             acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
             results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
         for r in results:
-            results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+            results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results)
         return jsonify(convert_image_urls(results))
     except Exception as e:
@@ -4351,7 +4351,7 @@ def get_series_units():
             acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
             results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
         for r in results:
-            results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+            results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results)
         return jsonify(convert_image_urls(results))
     except Exception as e:
@@ -4387,7 +4387,7 @@ def get_skill_characters():
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
                 acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
                 results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
-        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        for r in results: results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results); return jsonify(convert_image_urls(results))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
@@ -4421,7 +4421,7 @@ def get_ability_characters():
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
                 acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
                 results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
-        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        for r in results: results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results); return jsonify(convert_image_urls(results))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
@@ -4457,7 +4457,7 @@ def get_ability_units():
                 ri = info.get('rarity', '1'); thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
                 acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
                 results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
-        for r in results: results[r].sort(key=lambda x: (x['rarity_sort'], x['name']))
+        for r in results: results[r].sort(key=lambda x: safe_int(x.get('id'), 0))
         set_cached_response(ck, results); return jsonify(convert_image_urls(results))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
