@@ -1552,6 +1552,21 @@ def create_trait_condition_raw_map(d):
                     if v and v != '0' and v not in raw[sid]['types']: raw[sid]['types'].append(v)
     return raw
 
+def merge_trait_condition_raw_maps(*maps):
+    out = {}
+    for mp in maps:
+        if not isinstance(mp, dict):
+            continue
+        for sid, row in mp.items():
+            if sid not in out:
+                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': []}
+            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'types']:
+                vals = row.get(k, []) if isinstance(row, dict) else []
+                for v in vals:
+                    if v and v not in out[sid][k]:
+                        out[sid][k].append(v)
+    return out
+
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0': return []
     raw = trait_condition_raw_map.get(cond_id, {}); res = []; seen = set()
@@ -2390,9 +2405,14 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
         groups = []
+        boost_conds = list(info.get('boost_conditions') or [])
+        boost_used = False
         if nums:
             for n in nums:
                 conds_for_n = take_active_for_line(idx)
+                if (not conds_for_n) and boost_conds and (not boost_used):
+                    conds_for_n = list(boost_conds)
+                    boost_used = True
                 if conds_for_n:
                     groups.append({'label': f"Condition {n}", 'conditions': conds_for_n})
         else:
@@ -2409,8 +2429,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                 if not consumed:
                     _ = take_active_for_line(idx)
                 groups.append({'label': 'Condition 1', 'conditions': default_conds})
-        boost_conds = list(info.get('boost_conditions') or [])
-        if boost_conds:
+        if boost_conds and (not boost_used):
             groups.append({'label': 'Boost Target', 'conditions': boost_conds})
         if groups:
             info['condition_groups'] = groups
@@ -2487,6 +2506,7 @@ series_set_data = load_json(os.path.join(BASE_DIR, "m_series_set.json"))
 series_master_data = load_json(os.path.join(BASE_DIR, "m_series.json"))
 M_SERIES_ID_TO_LOGO_PAD = build_m_series_logo_pad_map(series_master_data)
 trait_cond_data_r = load_json(os.path.join(BASE_DIR, "m_trait_condition.json"))
+trait_boost_cond_data = load_json(os.path.join(BASE_DIR, "m_trait_boost_condition.json"))
 trait_logic_data = load_json(os.path.join(BASE_DIR, "m_trait.json"))
 ability_master = load_json(os.path.join(BASE_DIR, "m_ability.json"))
 trait_set_data = load_json(os.path.join(BASE_DIR, "m_trait_set.json"))
@@ -2553,7 +2573,10 @@ for _sit in extract_data_list(schedule_master_data):
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
-trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
+trait_condition_raw_map = merge_trait_condition_raw_maps(
+    create_trait_condition_raw_map(trait_cond_data_r),
+    create_trait_condition_raw_map(trait_boost_cond_data),
+)
 char_info_map = create_char_info_map(char_master); char_stat_map = create_char_status_map(char_status)
 char_lin_map = create_char_lineage_link_map(char_lineage_data)
 supporter_info_map = create_supporter_info_map(supporter_master) if supporter_master else {}
