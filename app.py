@@ -792,25 +792,24 @@ def classify_unit_weapon_trait_debuff_keys(line):
     ):
         keys.add('eva_dn')
 
+    # "Damage taken from X up" *inflicted on the enemy* — not weapon stat lines like TW 物理損傷提升LV1 / JA 物理被ダメージアップLV1
+    # (those raise *your* damage output; the same words are reused and must not match this filter).
     if (
         'damage taken from physical' in sl
-        or '物理被ダメージアップ' in s
         or '遭物理武裝攻擊時' in s
-        or '物理損傷提升' in s
+        or '物理武装による被ダメージ' in s
     ):
         keys.add('dmg_phys')
     if (
         'damage taken from beam' in sl
-        or 'ビーム被ダメージアップ' in s
         or '遭光束武裝攻擊時' in s
-        or '光束損傷提升' in s
+        or 'ビーム武装による被ダメージ' in s
     ):
         keys.add('dmg_beam')
     if (
         'damage taken from special' in sl
-        or '特殊被ダメージアップ' in s
         or '遭特殊武裝攻擊時' in s
-        or '特殊損傷提升' in s
+        or '特殊武装による被ダメージ' in s
     ):
         keys.add('dmg_spec')
 
@@ -5929,7 +5928,7 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul26_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul27_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
