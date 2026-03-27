@@ -4517,7 +4517,11 @@ WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 
 @app.route('/api/whats_new')
 def api_whats_new():
-    """Changelog: pending diff vs snapshot, historical archive pairs, plus optional manual entries in data/whats_new.json."""
+    """Changelog: pending diff vs snapshot, historical archive pairs, plus optional manual entries in data/whats_new.json.
+
+    Tab *label* / *date* for auto entries is always the period end (newer baseline / today's data): e.g. diff 23→25 is labeled 25;
+    pending diff since last snapshot on disk is labeled with today's master-data date (e.g. 27).
+    """
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     tabs = []
     entries = []
@@ -4525,10 +4529,12 @@ def api_whats_new():
         snap_cur = load_whats_new_snapshot()
         if snap_cur:
             pending = compute_whats_new_delta(lc)
+            # Tab label = end of period (today's live data vs last baseline on disk), e.g. 27th vs 25th snapshot.
             date = _whats_new_master_data_date()
             tabs.append({
                 'kind': 'pending',
                 'id': 'pending',
+                'label': date,
                 'date': date,
                 'changes': (pending or {}).get('changes') or [],
                 'added': (pending or {}).get('added') or [],
@@ -4543,10 +4549,14 @@ def api_whats_new():
             delta = compute_whats_new_delta_between(chain[i - 1], chain[i], lc)
             if not delta:
                 continue
-            label_date = (delta.get('date') or '').strip() or _whats_new_master_data_date()
+            snap_newer = chain[i]
+            label_date = (snap_newer.get('captured_at') or '').strip()
+            if not label_date:
+                label_date = (delta.get('date') or '').strip() or _whats_new_master_data_date()
             tabs.append({
                 'kind': 'history',
                 'id': 'history_%d' % i,
+                'label': label_date,
                 'date': label_date,
                 'changes': delta.get('changes') or [],
                 'added': delta.get('added') or [],
