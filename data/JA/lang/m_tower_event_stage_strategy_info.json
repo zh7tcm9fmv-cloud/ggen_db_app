@@ -5,886 +5,886 @@
   },
   {
     "id": 290200907001010201,
-    "value": "ムサイは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "姆賽 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001020201,
-    "value": "ミネルバは、<material=MaterialName>HP回復エリアの範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "智慧女神號 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001030201,
-    "value": "ヴァージニアは、<material=MaterialName>「防御力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "維吉尼亞級 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001040101,
-    "value": "ヤザン・ゲーブル、ダニーが乗ったユニットは、<material=MaterialName>中立ユニットの範囲効果によって攻撃力が上昇している。</material>"
+    "value": "亞贊·蓋伯、丹尼搭乘的單位<material=MaterialName>攻擊力受中立單位的範圍效果影響而提升。</material>"
   },
   {
     "id": 290200907001040201,
-    "value": "ツヴァイト・ガーダーは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001050201,
-    "value": "クィン・マンサは第3軍ユニットとして登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "昆曼沙 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290200907001050202,
-    "value": "ドリット・ガーダーは、<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001060101,
-    "value": "ガンダム・キマリストルーパー、シュヴァルベ・グレイズ(マクギリス機)は<material=MaterialName>ゲスト軍を優先して狙う</material>ユニットだ。"
+    "value": "騎兵型搜魔鋼彈、燕式格雷茲 (麥吉利斯機)為<material=MaterialName>會優先攻擊客座軍</material>的單位。"
   },
   {
     "id": 290200907001060201,
-    "value": "イサリビは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "漁火 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001060202,
-    "value": "ハンマーヘッドは、<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "雙髻鯊 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001060203,
-    "value": "グレイズ・アインは<material=MaterialName>ガンダム・キマリストルーパーの攻撃力を上げる</material>ユニットだ。"
+    "value": "格雷茲·艾因為<material=MaterialName>提升騎兵型搜魔鋼彈攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001060204,
-    "value": "グレイズリッター(指揮官機/決闘仕様)は<material=MaterialName>シュヴァルベ・グレイズ(マクギリス機)の攻撃力を上げる</material>ユニットだ。"
+    "value": "騎士式格雷茲 (指揮官機／決鬥規格)為<material=MaterialName>提升燕式格雷茲 (麥吉利斯機)攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001070101,
-    "value": "このステージでは<material=MaterialName>ジョニー・ライデン、ドズル・ザビの撃破</material>が勝利条件となる。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗強尼·萊汀、德茲爾·薩比</material>。"
   },
   {
     "id": 290200907001070201,
-    "value": "ザクⅡ(シン・マツナガ専用)、ゲルググ(アナベル・ガトー専用機)は<material=MaterialName>支援攻撃/支援反撃が可能な</material>ユニットだ。\n\n支援攻撃をするユニットの射程外から攻撃すると、支援攻撃は発生しない。"
+    "value": "薩克Ⅱ（真·松永專用）、傑爾古格 (阿納貝爾·卡多專用)為<material=MaterialName>可支援攻擊／支援反擊</material>的單位。\n\n面對會支援攻擊的單位，從其射程外攻擊就不會觸發支援攻擊。"
   },
   {
     "id": 290200907001070202,
-    "value": "ザクⅡ改は<material=MaterialName>高機動型ザクⅡ(ジョニー・ライデン専用)、ザクⅡ(ドズル・ザビ専用機)の防御力を上げる</material>毎ターン増援として多数出現するユニットだ。"
+    "value": "薩克Ⅱ改為<material=MaterialName>提升高機動型薩克Ⅱ（強尼·萊汀專用）、薩克Ⅱ (德茲爾·薩比專用機)防禦力</material>的單位，每回合會作為援軍大量出現。"
   },
   {
     "id": 290200907001070203,
-    "value": "百式は第3軍ユニットとしてステージに多数登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "百式 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907001080201,
-    "value": "このステージでは<material=MaterialName>ホワイトベースが目標エリアへ到達すること</material>が勝利条件となる。"
+    "value": "此關卡的勝利條件為<material=MaterialName>白色基地 抵達目標區域</material>。"
   },
   {
     "id": 290200907001080202,
-    "value": "サラミスは、<material=MaterialName>HP回復エリアの範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "薩拉米斯 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001080203,
-    "value": "グフイグナイテッド(ハイネ・ヴェステンフルス専用機)、グフイグナイテッド、ザクⅠ(サンダーボルト版)、ドライドフィッシュは<material=MaterialName>ホワイトベースを優先して狙う</material>ユニットだ。"
+    "value": "古夫烈焰型 (海涅·威斯坦弗斯專用)、古夫烈焰型、薩克Ⅰ (雷霆宙域版)、魚乾號為<material=MaterialName>會優先攻擊白色基地</material>的單位。"
   },
   {
     "id": 290200907001080204,
-    "value": "リック・ドム、ドーベン・ウルフ、ゲルググMは<material=MaterialName>サラミスを優先して狙う</material>ステージに多数登場するユニットだ。"
+    "value": "里克·德姆、杜班烏爾夫、傑爾古格M為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907001080205,
-    "value": "ギャン、ヅダ、ザムザザー、ゲルズゲーは増援として出現し<material=MaterialName>サラミスを優先して狙う</material>ステージに多数登場するユニットだ。"
+    "value": "吉昂、茲達、薩姆札查、傑爾茲克會作為援軍出現，為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907001090101,
-    "value": "ガンダム・エアリアル改修型、デミトレーナー チュチュ専用機は<material=MaterialName>攻撃力が高い</material>ユニットだ。"
+    "value": "風靈鋼彈 (修改型)、迪米教練機 雀丘專用機為<material=MaterialName>高攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001090201,
-    "value": "ミカエリス、ダリルバルデ、ベギルベウは増援として出現し、<material=MaterialName>中立ユニットの範囲効果への侵入を阻む</material>ユニットだ。"
+    "value": "惡魔審判者、達里巴爾迪、異端審判者會作為援軍出現，將<material=MaterialName>阻礙單位進入中立單位範圍效果的範圍內</material>。"
   },
   {
     "id": 290200907001090202,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>弱体効果エリア「攻撃力減少」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有弱化效果區域「攻擊力減少」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001090203,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001100101,
-    "value": "このステージでは<material=MaterialName>3ターンの間、ゲスト軍を守り抜くこと</material>が勝利条件となる。\n\nウイングガンダムは<material=MaterialName>攻撃力が高く、ゲスト軍を優先して狙う</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>3回合內，守護客座軍</material>。\n\n飛翼鋼彈 為會優先攻擊<material=MaterialName>高攻擊力 </material>客座軍的單位。"
   },
   {
     "id": 290200907001100201,
-    "value": "リーオー、トラゴスは<material=MaterialName>防衛対象となる</material>移動できないゲスト軍ユニットだ。"
+    "value": "里歐、特拉哥斯是<material=MaterialName>列為防衛目標</material>、無法移動的客座軍單位。"
   },
   {
     "id": 290200907001100202,
-    "value": "ミデアは、<material=MaterialName>HP回復エリアの範囲効果を持った</material>友軍ユニットだ。"
+    "value": "米迪亞 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的友軍單位。"
   },
   {
     "id": 290200907001100203,
-    "value": "ガンダムヘビーアームズ、ガンダムレオパルドは<material=MaterialName>「バトル開始から3ターン目以降自身の攻撃力と防御力が200%上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "重武裝鋼彈、豹式鋼彈為<material=MaterialName>持有「戰鬥開始之後的第3回合開始後， 自身攻擊力及防禦力提升200%」能力</material>的單位。"
   },
   {
     "id": 290200907001110101,
-    "value": "このステージでは<material=MaterialName>[キラ・ヤマト]等、敵軍の撃破</material>が勝利条件となる。\n\nフリーダムガンダムは<material=MaterialName>「自身のテンションが「超一撃」以上の時自身の防御力が300%上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌·大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
   },
   {
     "id": 290200907001110102,
-    "value": "ジャスティスガンダムは<material=MaterialName>「自身のテンションが「超一撃」以上の時自身の防御力が300%上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "正義鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
   },
   {
     "id": 290200907001110103,
-    "value": "フリーダムガンダム(ミーティア)、ジャスティスガンダム(ミーティア)は作戦目標達成後に増援として出現する、<material=MaterialName>「自身のテンションが「超一撃」以上の時自身の攻撃力が300%上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "自由鋼彈 (流星裝備)、正義鋼彈 (流星裝備)為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身攻擊力提升300%」能力</material>的單位。"
   },
   {
     "id": 290200907001110201,
-    "value": "プロヴィデンスガンダムは<material=MaterialName>「自身が支援攻撃/支援反撃時自身の攻撃力が100%上昇」のアビリティを所持している</material>ゲスト軍ユニットだ。"
+    "value": "天帝鋼彈 為<material=MaterialName>持有「自身進行支援攻擊、支援反擊時，自身攻擊力提升100%」能力</material>的客座軍單位。"
   },
   {
     "id": 290200907001110202,
-    "value": "ラクス・クラインは<material=MaterialName>「MPアップ（範囲）LV3」のキャラクタースキルを使用してくる</material>キャラクターだ。"
+    "value": "拉克絲·克萊因 為<material=MaterialName>會使用「MP提升（範圍） LV3」角色技能</material>的角色。"
   },
   {
     "id": 290200907001110203,
-    "value": "ストライクルージュは<material=MaterialName>HPと防御力が高い</material>ユニットだ。"
+    "value": "嫣紅攻擊鋼彈 為<material=MaterialName>高HP、高防禦力</material>的單位。"
   },
   {
     "id": 290200907001110204,
-    "value": "M1アストレイは<material=MaterialName>ストライクルージュの攻撃力を上げる</material>ユニットだ。"
+    "value": "Ｍ1異端鋼彈為<material=MaterialName>提升嫣紅攻擊鋼彈攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001110205,
-    "value": "ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001120101,
-    "value": "デストロイガンダム【MA形態】、アビスガンダム、カオスガンダムは<material=MaterialName>ビーム属性の武装が強力な</material>ユニットだ。"
+    "value": "破滅鋼彈【MA型態】、深淵鋼彈、混沌鋼彈為<material=MaterialName>具有強力光束屬性武裝的</material>單位。"
   },
   {
     "id": 290200907001120201,
-    "value": "アッシュ、ザムザザー、ゾック、ズゴック、ゾノは<material=MaterialName>水中適性が「◯」の</material>ユニットだ。\n\n一部のビーム属性の武装は、水中にいる敵に対してダメージが軽減されてしまう。"
+    "value": "亞修、薩姆札查、索克、茲卡克、佐諾為<material=MaterialName>水中適性為「圓」的</material>單位。\n\n部分光束屬性武裝在攻擊水中的敵方時，損傷將被減輕。"
   },
   {
     "id": 290200907001120202,
-    "value": "アグリッサ、サイコ・ガンダム【モビルフォートレス】は第3軍ユニットとして登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "亞格利沙、腦波傳導型鋼彈【MA型態】會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290200907001130101,
-    "value": "シャア専用ゲルググ、エルメスは作戦目標達成後に増援として出現する、<material=MaterialName>ステータスが非常に高い</material>ユニットだ。"
+    "value": "夏亞專用傑爾古格、艾爾美斯會在達成作戰目標後作為援軍出現，為<material=MaterialName>能力值非常高</material>的單位。"
   },
   {
     "id": 290200907001130201,
-    "value": "ジム・スナイパーカスタムは<material=MaterialName>「攻撃力減少」の効果を持った武装を使用する</material>ユニットだ。"
+    "value": "吉姆狙擊特裝型為<material=MaterialName>會使用持有「攻擊力減少」效果武裝</material>的單位。"
   },
   {
     "id": 290200907001130202,
-    "value": "ジム・スナイパーⅡは<material=MaterialName>「防御力減少」の効果を持った武装を使用する</material>ユニットだ。"
+    "value": "吉姆狙擊型Ⅱ為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
   },
   {
     "id": 290200907001130203,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001130204,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001140101,
-    "value": "このステージでは<material=MaterialName>敵軍ユニットが目標エリアへ到達すること</material>が敗北条件となる。\n\nマスターガンダムは<material=MaterialName>攻撃力が高い</material>ユニットだ。"
+    "value": "此關卡的敗北條件為<material=MaterialName>敵軍單位抵達目標區域</material>。\n\n宗師鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001140102,
-    "value": "デビルガンダム(第2形態)は<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "惡魔鋼彈 (第2型態) 為<material=MaterialName>擁有廣範圍MAP兵器的單位</material>。"
   },
   {
     "id": 290200907001140201,
-    "value": "シャイニングガンダムは<material=MaterialName>「チャンスステップ」+4回のアビリティを所持している</material>ゲスト軍ユニットだ。"
+    "value": "閃光鋼彈 為<material=MaterialName>持有「「額外行動」+4次」能力</material>的客座軍單位。"
   },
   {
     "id": 290200907001140202,
-    "value": "ガンダムシュピーゲルは、<material=MaterialName>HP回復エリアの範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "明鏡鋼彈 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001140203,
-    "value": "デスアーミーは<material=MaterialName>目標エリアに到達することを優先して行動する</material>ユニットだ。"
+    "value": "死亡軍團 為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
   },
   {
     "id": 290200907001140204,
-    "value": "デスビーストは2ターン目に増援として出現し、<material=MaterialName>目標エリアに到達することを優先して行動する</material>ユニットだ。"
+    "value": "死亡野獸 會在第2回合作為援軍出現，為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
   },
   {
     "id": 290200907001140205,
-    "value": "デスバーディは3ターン目に増援として出現し、<material=MaterialName>目標エリアに到達することを優先して行動する</material>ユニットだ。"
+    "value": "死亡伯迪 會在第3回合作為援軍出現，為<material=MaterialName>以抵達目標區域為優先行動</material>的單位。"
   },
   {
     "id": 290200907001150201,
-    "value": "ウイングガンダムゼロ、νガンダム、デスティニーガンダムは増援として出現し、<material=MaterialName>強力なアビリティを所持している</material>ユニットだ。"
+    "value": "飛翼鋼彈零式、ν鋼彈、命運鋼彈會作為援軍出現，為<material=MaterialName>持有強大能力</material>的單位。"
   },
   {
     "id": 290200907001150202,
-    "value": "このステージでは<material=MaterialName>自軍ユニットが目標エリアへ到達すること</material>が勝利条件となる。\n\nα・アジールは<material=MaterialName>自軍ユニットの目標エリアへの到達を阻む</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\nα·阿基爾為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
   },
   {
     "id": 290200907001150203,
-    "value": "ビグ・ザムは第3軍ユニットとして登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290200907001150204,
-    "value": "ガーダーは<material=MaterialName>HP回復エリアの範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "守衛砲 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001150205,
-    "value": "ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001160101,
-    "value": "ガンダムXディバイダー、ガンダムエピオンは<material=MaterialName>攻撃力と防御力が高い</material>ユニットだ。"
+    "value": "鋼彈XDivider、次代鋼彈為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
   },
   {
     "id": 290200907001160201,
-    "value": "ドリット・ガーダーは<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "三式守衛砲為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001160202,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001170101,
-    "value": "このステージでは<material=MaterialName>[マーク・ギルダー]の撃破</material>が勝利条件となる。\n\nマーク・ギルダーは<material=MaterialName>「自身のHPが0%以下の時、自身のHPが100%回復」のアビリティを所持している</material>キャラクターだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克·吉爾達〕</material>。\n\n馬克·吉爾達為<material=MaterialName>持有「自身HP為0%以下時，\n自身HP恢復100%」能力</material>的角色。"
   },
   {
     "id": 290200907001170201,
-    "value": "ハロは<material=MaterialName>自軍ユニットの移動を妨害する</material>ユニットだ。"
+    "value": "哈囉會<material=MaterialName>妨礙我軍單位移動</material>。"
   },
   {
     "id": 290200907001170202,
-    "value": "ドリット・ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "三式守衛砲為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907001170203,
-    "value": "NT試験用ジム・ジャグラーは<material=MaterialName>「無条件チャンスステップ」のアビリティを所持している</material>ユニットだ。"
+    "value": "NT試驗用吉姆欺敵型為<material=MaterialName>持有「無條件額外行動」能力</material>的單位。"
   },
   {
     "id": 290200907001180101,
-    "value": "サイコ・ガンダム【モビルフォートレス】、サイコ・ガンダムMk-Ⅱ【モビルフォートレス】は<material=MaterialName>攻撃力と防御力が高い</material>ユニットだ。"
+    "value": "腦波傳導型鋼彈【MA型態】、腦波傳導型鋼彈Mk-Ⅱ【MA型態】為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
   },
   {
     "id": 290200907001180201,
-    "value": "このステージでは<material=MaterialName>[ブライト・ノア]の撃破</material>が敗北条件となる。\n\nラー・カイラム(U.C.0096)は、<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "此關卡的敗北條件為<material=MaterialName>〔布萊特·諾亞〕被擊敗</material>。\n拉·凱拉姆(U.C.0096)為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001180202,
-    "value": "リ・ガズィ(バック・ウエポン・システム装備型)は<material=MaterialName>強力な武装効果を所持している</material>ゲスト軍ユニットだ。"
+    "value": "Re-GZ (B.W.S)為<material=MaterialName>擁有強大武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001180203,
-    "value": "バウンド・ドック【MA形態】は<material=MaterialName>「防御力減少」の効果を持った武装を使用する</material>ユニットだ。"
+    "value": "獵犬【MA型態】為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
   },
   {
     "id": 290200907001180204,
-    "value": "ハンブラビ【MA形態】、アッシマー【MA形態】、ギャプラン【MA形態】、アンクシャ【MA形態】、バウンド・ドック【MA形態】は<material=MaterialName>ブライト・ノアを優先して狙う</material>ユニットだ。"
+    "value": "漢摩拉比【MA型態】、亞席瑪【MA型態】、蓋布蘭【MA型態】、安克夏【MA型態】、獵犬【MA型態】為<material=MaterialName>會優先攻擊布萊特·諾亞</material>的單位。"
   },
   {
     "id": 290200907001190101,
-    "value": "ガンダム・エアリアル改修型は<material=MaterialName>「チャンスステップ+2回」のアビリティを所持している</material>高ステータスのユニットだ。"
+    "value": "風靈鋼彈 (修改型) 為<material=MaterialName>持有「額外行動+2次」能力</material>的高能力值單位。"
   },
   {
     "id": 290200907001190201,
-    "value": "ミオリネ・レンブランは<material=MaterialName>「アタックバースト（範囲）」のキャラクタースキルを使用してくる</material>キャラクターだ。"
+    "value": "米奧琳涅·連布蘭為<material=MaterialName>會使用「攻擊爆裂（範圍）」角色技能</material>的角色。"
   },
   {
     "id": 290200907001190202,
-    "value": "ミカエリスは<material=MaterialName>「敵全体のパラメータ上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "惡魔審判者為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
   },
   {
     "id": 290200907001190203,
-    "value": "ダリルバルデは<material=MaterialName>強力な武装効果を所持している</material>ゲスト軍ユニットだ。"
+    "value": "達里巴爾迪為<material=MaterialName>擁有強大武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001200101,
-    "value": "グラハム専用ユニオンフラッグカスタムⅡ(GNフラッグ)、ガンダムスローネツヴァイは<material=MaterialName>攻撃力と防御力が高い</material>ユニットだ。"
+    "value": "葛拉漢專用聯合旗幟式特裝型Ⅱ (GN旗幟式)、座天使鋼彈二型為<material=MaterialName>高攻擊力與高防禦力</material>的單位。"
   },
   {
     "id": 290200907001200201,
-    "value": "ガンダムナドレは<material=MaterialName>「敵全体のパラメータ上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "中性鋼彈為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
   },
   {
     "id": 290200907001200202,
-    "value": "アルヴァトーレは<material=MaterialName>強力なMAP兵器を持つ</material>ユニットだ。"
+    "value": "阿爾瓦特雷為<material=MaterialName>擁有強力MAP兵器</material>的單位。"
   },
   {
     "id": 290200907002010201,
-    "value": "ラー・カイラムは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "拉·凱拉姆 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002020201,
-    "value": "アークエンジェルは、<material=MaterialName>HP回復エリアの範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "大天使號 為<material=MaterialName>擁有HP恢復區域範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002030201,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907002040201,
-    "value": "デビルガンダム(第2形態)は第3軍ユニットとして登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "惡魔鋼彈 (第2型態) 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290200907002040202,
-    "value": "ドリット・ガーダーは<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907002050201,
-    "value": "ジェガン(エコーズ仕様)、ジム・カスタムは<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持ち、強力な武装効果を所持している</material>ゲスト軍ユニットだ。"
+    "value": "傑鋼(ECOAS規格)、吉姆特裝型為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果，並持有強力武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002060201,
-    "value": "エターナルは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "永恆號 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002060202,
-    "value": "アークエンジェルは、<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "大天使號 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002060203,
-    "value": "タリア・グラディスは<material=MaterialName>「特定ユニットの防御力が300％上昇」のアビリティを所持している</material>キャラクターだ。"
+    "value": "塔莉亞·庫拉提絲 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
   },
   {
     "id": 290200907002070201,
-    "value": "ビグ・ザムは第3軍ユニットとしてステージに多数登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907002070202,
-    "value": "ハマーン・カーンは<material=MaterialName>「特定ユニットの防御力が300％上昇」のアビリティを所持している</material>キャラクターだ。"
+    "value": "哈曼·坎恩 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
   },
   {
     "id": 290200907002070203,
-    "value": "グレミー・トトは<material=MaterialName>「特定ユニットの防御力が300％上昇」のアビリティを所持している</material>キャラクターだ。"
+    "value": "克雷米·托特 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
   },
   {
     "id": 290200907002070204,
-    "value": "ザクⅢ、量産型キュベレイ(グレミー軍仕様)は<material=MaterialName>2ターン目開始時に増援として出現する</material>ユニットだ。"
+    "value": "薩克Ⅲ、量產型丘貝雷 (克雷米軍規格)為會在<material=MaterialName>第2回合開始時作為援軍出現</material>的單位。"
   },
   {
     "id": 290200907002080201,
-    "value": "ドロス、ムサイは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "多洛斯、姆賽為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002080202,
-    "value": "このステージでは<material=MaterialName>敵軍ユニットが目標エリアへ到達すること</material>が敗北条件となる。\n\nガンダム試作3号機をはじめとする複数のユニットが2ターン目に増援として出現し、<material=MaterialName>目標エリアに到達することを優先して行動する。</material>"
+    "value": "此關卡的敗北條件為<material=MaterialName>敵軍單位抵達目標區域</material>。\n\n含鋼彈試作3號機在內的複數單位會在第2回合作為援軍出現，<material=MaterialName>並以抵達目標區域為優先行動。</material>"
   },
   {
     "id": 290200907002090101,
-    "value": "ガンダム・ヴィダールは<material=MaterialName>HPが高く、ゲスト軍を優先して狙う</material>ユニットだ。"
+    "value": "殘命鋼彈 為會優先攻擊<material=MaterialName>高HP </material>客座軍的單位。"
   },
   {
     "id": 290200907002090201,
-    "value": "このステージでは<material=MaterialName>[ガンダム・バエル]の撃破</material>が敗北条件となる。\n\nガンダム・バエルは、<material=MaterialName>攻撃強化エリア「攻撃力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "此關卡的敗北條件為<material=MaterialName>〔主魔鋼彈〕被擊敗</material>。\n\n主魔鋼彈 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002090202,
-    "value": "ウィンダム(ネオ・ロアノーク専用機)をはじめとする複数のユニットが<material=MaterialName>2ターン目に増援として出現する。</material>"
+    "value": "含威達 (尼歐·羅安那克專用機)在內的複數單位<material=MaterialName>會在第2回合作為援軍出現。</material>"
   },
   {
     "id": 290200907002090203,
-    "value": "シャア専用ザクⅡをはじめとする複数のユニットが<material=MaterialName>3ターン目に増援として出現する。</material>"
+    "value": "含夏亞專用薩克Ⅱ在內的複數單位<material=MaterialName>會在第3回合作為援軍出現。</material>"
   },
   {
     "id": 290200907002090204,
-    "value": "ツヴァイト・ガーダーは<material=MaterialName>弱体効果エリア「攻撃力減少」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "二式守衛砲 為<material=MaterialName>擁有弱化效果區域「攻擊力減少」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907002090205,
-    "value": "ドリット・ガーダーは<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>中立ユニットだ。\n中立ユニットは敵軍からも自軍からも攻撃を受けない。"
+    "value": "三式守衛砲 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的中立單位。\n中立單位不會受到敵軍及我軍攻擊。"
   },
   {
     "id": 290200907002100101,
-    "value": "ユニコーンガンダム(デストロイモード/覚醒)、バンシィ・ノルン(デストロイモード)は<material=MaterialName>ネオ・ジオングを優先して狙う</material>ユニットだ。"
+    "value": "獨角獸鋼彈 (毀滅模式 / 覺醒)、報喪女妖·命運女神 (毀滅模式)為<material=MaterialName>會優先攻擊新吉翁克</material>的單位。"
   },
   {
     "id": 290200907002100201,
-    "value": "このステージでは<material=MaterialName>[ネオ・ジオング]の撃破</material>が敗北条件となる。\n\nネオ・ジオングは<material=MaterialName>強力なMAP兵器を持つ</material>友軍ユニットだ。"
+    "value": "此關卡的敗北條件為<material=MaterialName>〔新吉翁克〕被擊敗</material>。\n\n新吉翁克為<material=MaterialName>擁有強力MAP兵器</material>的友軍單位。"
   },
   {
     "id": 290200907002100202,
-    "value": "レウルーラ(袖付き)は、<material=MaterialName>強化エリア「防御力上昇」の範囲効果を持った</material>ゲスト軍ユニットだ。"
+    "value": "雷烏路拉 (帶袖的) 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002100203,
-    "value": "ネェル・アーガマ(ロンド・ベル隊仕様)は<material=MaterialName>敵全体の攻撃力を上げる</material>ユニットだ。"
+    "value": "擬·阿卡馬 (隆德·貝爾)為<material=MaterialName>提升敵方全體攻擊力</material>的單位。"
   },
   {
     "id": 290200907002110101,
-    "value": "シャア専用ズゴックは<material=MaterialName>HPと攻撃力が高い</material>ユニットだ。"
+    "value": "夏亞專用茲卡克 為<material=MaterialName>高HP、高攻擊力</material>的單位。"
   },
   {
     "id": 290200907002110201,
-    "value": "マーメイドガンダムは<material=MaterialName>強力な効果の武装や「無条件チャンスステップ」のアビリティを所持し、機動力が高い</material>ユニットだ。"
+    "value": "人魚鋼彈為<material=MaterialName>持有強力武裝效果及「無條件額外行動」能力，並具有高機動力</material>的單位。"
   },
   {
     "id": 290200907002110202,
-    "value": "シャンブロは第3軍ユニットとしてステージに多数登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "尚布羅 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907002110203,
-    "value": "カプールは<material=MaterialName>長射程の武装を所持し、移動力が高い</material>ユニットだ。"
+    "value": "卡普爾為<material=MaterialName>持有長射程武裝，並具有高移動力</material>的單位。"
   },
   {
     "id": 290200907002120101,
-    "value": "このステージでは<material=MaterialName>ハサウェイ・ノア、レーン・エイムの撃破</material>が勝利条件となる。\n\nΞガンダムは<material=MaterialName>攻撃力が高い</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
   },
   {
     "id": 290200907002120102,
-    "value": "このステージでは<material=MaterialName>ハサウェイ・ノア、レーン・エイムの撃破</material>が勝利条件となる。\n\nペーネロペーは<material=MaterialName>「反撃時支援防御」のアビリティを所持している</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\n潘娜洛普 為<material=MaterialName>持有「反擊時支援防禦」能力</material>的單位。"
   },
   {
     "id": 290200907002120201,
-    "value": "ガンダム・フラウロス(流星号)、グレイズ(ダインスレイヴ隊仕様/アリアンロッド艦隊所属機)は<material=MaterialName>「防御力減少」の効果を持った武装を使用する</material>ユニットだ。"
+    "value": "蔽魔鋼彈 (流星號)、格雷茲 (破滅魔劍隊規格/阿麗安蘿德艦隊所屬機)為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的單位。"
   },
   {
     "id": 290200907002130101,
-    "value": "グランドマスターガンダムは<material=MaterialName>「無条件チャンスステップ」のアビリティを所持している</material>高ステータスのユニットだ。"
+    "value": "大天王鋼彈 為<material=MaterialName>持有「無條件額外行動」能力</material>的高能力值單位。"
   },
   {
     "id": 290200907002130201,
-    "value": "クーロンガンダムは<material=MaterialName>「無条件チャンスステップ」のアビリティと、強力な武装効果を所持している</material>ゲスト軍ユニットだ。"
+    "value": "九龍鋼彈為<material=MaterialName>持有「無條件額外行動」能力及強力武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002130202,
-    "value": "ジョンブルガンダムは<material=MaterialName>強力なMAP兵器と、「自身が支援攻撃/支援反撃時自身の攻撃力が80%上昇」のアビリティを所持している</material>ユニットだ。"
+    "value": "約翰牛鋼彈 為<material=MaterialName>擁有強力MAP兵器及「自身進行支援攻擊、支援反擊時，自身攻擊力提升80%」能力</material>的單位。"
   },
   {
     "id": 290200907002140101,
-    "value": "ガンダムDX、ガンダムXディバイダー、ガンダムエアマスターバースト、ガンダムレオパルドデストロイは<material=MaterialName>ステータスが非常に高い</material>ユニットだ。"
+    "value": "鋼彈DX、鋼彈XDivider、爆裂空中霸王鋼彈、豹式毀滅者鋼彈為<material=MaterialName>能力值非常高</material>的單位。"
   },
   {
     "id": 290200907002140201,
-    "value": "ティファ・アディールは<material=MaterialName>「フォースガード（範囲）」のキャラクタースキルを使用してくる</material>キャラクターだ。"
+    "value": "蒂法·安迪爾 為<material=MaterialName>會使用「威力抵禦（範圍）」角色技能</material>的角色。"
   },
   {
     "id": 290200907002140202,
-    "value": "ガンダムヴァサーゴチェストブレイクは<material=MaterialName>「ダメージを与えるたび攻撃力が上昇」のアビリティを所持している</material>ゲスト軍ユニットだ。"
+    "value": "華沙哥鋼彈破壞者 為<material=MaterialName>持有「每次造成損傷時，攻擊力提升」能力</material>的客座軍單位。"
   },
   {
     "id": 290200907002140203,
-    "value": "ガンダムアシュタロンハーミットクラブは<material=MaterialName>「ダメージを受けるたび防御力が上昇」のアビリティを所持している</material>ゲスト軍ユニットだ。"
+    "value": "阿斯特龍鋼彈隱藏者 為<material=MaterialName>持有「每次受到損傷時，防禦力提升」能力</material>的客座軍單位。"
   },
   {
     "id": 290200907002150101,
-    "value": "ゴッドガンダムはシャイニングガンダム(スーパーモード)撃破後に出現する、<material=MaterialName>ステータスが非常に高く、「敵が自身から2マス以上離れた場所から攻撃する時、自身の被ダメージが50%軽減」のアビリティを所持している</material>ユニットだ。"
+    "value": "神威鋼彈會在擊破閃光鋼彈 (超級模式)之後出現，為<material=MaterialName>能力值非常高並持有「敵方從距離自身2格以上的地方攻擊時，自身受到的損傷減輕50%」能力</material>的單位。"
   },
   {
     "id": 290200907002150201,
-    "value": "このステージでは<material=MaterialName>自軍ユニットが目標エリアへ到達すること</material>が勝利条件となる。\n\nアカツキ(シラヌイ)、ストライクルージュ(オオトリ)は<material=MaterialName>自軍ユニットの目標エリアへの到達を阻む</material>ユニットだ。"
+    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\n曉 (不知火)、嫣紅攻擊鋼彈 (鳳型)為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
   },
   {
     "id": 290200907002150202,
-    "value": "ブルーディスティニー3号機【EXAM】は増援として出現し、<material=MaterialName>強力なアビリティを所持している</material>ユニットだ。"
+    "value": "蒼藍命運3號機【EXAM】會作為援軍出現，為<material=MaterialName>持有強大能力</material>的單位。"
   },
   {
     "id": 290200907002150203,
-    "value": "サイコ・ガンダム、サイコ・ガンダムMk-Ⅱは第3軍ユニットとして登場し、<material=MaterialName>広範囲のMAP兵器を持つ</material>ユニットだ。"
+    "value": "腦波傳導型鋼彈、腦波傳導型鋼彈Mk-Ⅱ會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290300907001010201,
-    "value": "ムサイの近くから攻撃を仕掛けよう。"
+    "value": "在姆賽附近發動攻擊。"
   },
   {
     "id": 290300907001020201,
-    "value": "ダメージを受けてHPが減ったら、ミネルバの近くで待機しよう。"
+    "value": "受到損傷、HP下降時，就到智慧女神號附近待機。"
   },
   {
     "id": 290300907001030201,
-    "value": "攻撃を受けるユニットは、ヴァージニアの近くに配置しよう。"
+    "value": "將承受攻擊的單位配置在維吉尼亞級附近。"
   },
   {
     "id": 290300907001040101,
-    "value": "中立ユニットの効果範囲の外に敵をおびき出して、迎撃しよう。"
+    "value": "將敵方引誘到中立單位的效果範圍外，再行迎擊。"
   },
   {
     "id": 290300907001040201,
-    "value": "ツヴァイト・ガーダーの近くにいる敵軍ユニットの攻撃には注意しよう。"
+    "value": "注意二式守衛砲附近的敵軍單位的攻擊。"
   },
   {
     "id": 290300907001050201,
-    "value": "クィン・マンサのMAP兵器を利用して、敵軍にもダメージを与えよう。"
+    "value": "利用昆曼沙的MAP兵器，連帶對敵軍造成損傷。"
   },
   {
     "id": 290300907001050202,
-    "value": "ドリット・ガーダーの近くに自軍ユニットを配置して、敵の攻撃を耐えよう。"
+    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
   },
   {
     "id": 290300907001060101,
-    "value": "ガンダム・キマリストルーパー、シュヴァルベ・グレイズ(マクギリス機)の攻撃からゲスト軍を守ろう。"
+    "value": "從騎兵型搜魔鋼彈、燕式格雷茲 (麥吉利斯機)的砲火下保護客座軍。"
   },
   {
     "id": 290300907001060201,
-    "value": "イサリビの近くから攻撃を仕掛けよう。"
+    "value": "在漁火附近發動攻擊。"
   },
   {
     "id": 290300907001060202,
-    "value": "攻撃を受けるユニットは、ハンマーヘッドの近くに配置しよう。"
+    "value": "將承受攻擊的單位配置在雙髻鯊附近。"
   },
   {
     "id": 290300907001060203,
-    "value": "グレイズ・アインを優先的に撃破しよう。"
+    "value": "優先擊破格雷茲·艾因。"
   },
   {
     "id": 290300907001060204,
-    "value": "グレイズリッター(指揮官機/決闘仕様)を優先的に撃破しよう。"
+    "value": "優先擊破騎士式格雷茲 (指揮官機／決鬥規格)。"
   },
   {
     "id": 290300907001070201,
-    "value": "このユニットの射程外から攻撃を仕掛けよう。"
+    "value": "從此單位的射程外發動攻擊。"
   },
   {
     "id": 290300907001070202,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001070203,
-    "value": "百式のMAP兵器を利用して、敵軍にもダメージを与えよう。"
+    "value": "利用百式的MAP兵器，連帶對敵軍造成損傷。"
   },
   {
     "id": 290300907001080201,
-    "value": "ホワイトベースへの攻撃を防ぐため、支援防御が出来るキャラクターを多めに編成しよう。"
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
   },
   {
     "id": 290300907001080202,
-    "value": "サラミスへの攻撃を防ぐため、支援防御が出来るキャラクターを多めに編成しよう。"
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
   },
   {
     "id": 290300907001080203,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001080204,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001080205,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001090101,
-    "value": "中立ユニットの弱体効果を利用して対処しよう。"
+    "value": "利用中立單位的弱化效果來應對。"
   },
   {
     "id": 290300907001090201,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001090202,
-    "value": "ボスをこの範囲効果内におびき寄せ、ダメージを下げて対処しよう。"
+    "value": "將Boss引誘到此範圍效果內，降低所遭受的損傷。"
   },
   {
     "id": 290300907001090203,
-    "value": "ボスにダメージを与える自軍ユニットはこの範囲から攻撃しよう。"
+    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
   },
   {
     "id": 290300907001100101,
-    "value": "ウイングガンダムの攻撃からゲスト軍を守ろう。"
+    "value": "從飛翼鋼彈的砲火下保護客座軍。"
   },
   {
     "id": 290300907001100201,
-    "value": "ゲスト軍への攻撃を防ぐため、支援防御が出来るキャラクターを多めに編成しよう。"
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
   },
   {
     "id": 290300907001100202,
-    "value": "ダメージを受けてHPが減ったら、ミデアの近くで待機しよう。"
+    "value": "受到損傷、HP下降時，就到米迪亞附近待機。"
   },
   {
     "id": 290300907001100203,
-    "value": "アビリティ発動前に素早く撃破しよう。"
+    "value": "在能力發動前盡快擊敗對手。"
   },
   {
     "id": 290300907001110201,
-    "value": "ゲスト軍を活用して、大ダメージを狙おう。"
+    "value": "活用客座軍來給予痛擊。"
   },
   {
     "id": 290300907001110202,
-    "value": "ラクス・クラインを優先的に撃破しよう。"
+    "value": "優先擊破拉克絲·克萊因。"
   },
   {
     "id": 290300907001110203,
-    "value": "M1アストレイのアビリティによって攻撃力が上昇するため、注意しよう。"
+    "value": "嫣紅攻擊鋼彈的能力會提升攻擊力，需多加留意。"
   },
   {
     "id": 290300907001110204,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001110205,
-    "value": "ボスにダメージを与える自軍ユニットはこの範囲から攻撃しよう。"
+    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
   },
   {
     "id": 290300907001120101,
-    "value": "水中では一部のビーム属性の武装のダメージを軽減することが出来る。"
+    "value": "在水中能夠減輕部分光束屬性武裝的損傷。"
   },
   {
     "id": 290300907001120201,
-    "value": "物理属性や特殊属性を含む武装で攻撃しよう。"
+    "value": "使用含有物理屬性或特殊屬性的武裝進行攻擊。"
   },
   {
     "id": 290300907001120202,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   },
   {
     "id": 290300907001130101,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907001130201,
-    "value": "ジム・スナイパーカスタムを優先的に撃破しよう。"
+    "value": "優先擊破吉姆狙擊特裝型。"
   },
   {
     "id": 290300907001130202,
-    "value": "ジム・スナイパーⅡを優先的に撃破しよう。"
+    "value": "優先擊破吉姆狙擊型Ⅱ。"
   },
   {
     "id": 290300907001130203,
-    "value": "ボスからダメージを受ける自軍ユニットはこの範囲で待機しよう。"
+    "value": "讓會遭到Boss攻擊的我軍單位於此範圍內待機。"
   },
   {
     "id": 290300907001130204,
-    "value": "ボスにダメージを与える自軍ユニットはこの範囲から攻撃しよう。"
+    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
   },
   {
     "id": 290300907001140101,
-    "value": "ゲスト軍を活用して倒そう。"
+    "value": "活用客座軍來打倒。"
   },
   {
     "id": 290300907001140102,
-    "value": "「攻撃力減少」の弱体効果を付与して、被害を最小限に抑えよう。"
+    "value": "賦予「攻擊力減少」的弱化效果，將損傷壓到最低。"
   },
   {
     "id": 290300907001140201,
-    "value": "ゲスト軍を活用して、敵の数を減らしていこう。"
+    "value": "活用客座軍來減少敵方數量。"
   },
   {
     "id": 290300907001140202,
-    "value": "ダメージを受けてHPが減ったら、ガンダムシュピーゲルの近くで待機しよう。"
+    "value": "受到損傷、HP下降時，就到明鏡鋼彈附近待機。"
   },
   {
     "id": 290300907001140203,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001140204,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001140205,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001150201,
-    "value": "出来るだけ戦闘は避けよう。"
+    "value": "盡可能迴避戰鬥。"
   },
   {
     "id": 290300907001150202,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907001150203,
-    "value": "出来るだけ戦闘は避けよう。"
+    "value": "盡可能迴避戰鬥。"
   },
   {
     "id": 290300907001150204,
-    "value": "ダメージを受けてHPが減ったら、ガーダーの近くで待機しよう。"
+    "value": "受到損傷、HP下降時，就到守衛砲附近待機。"
   },
   {
     "id": 290300907001150205,
-    "value": "ガーダーの近くから攻撃を仕掛けよう。"
+    "value": "在守衛砲附近發動攻擊。"
   },
   {
     "id": 290300907001160101,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907001160201,
-    "value": "ドリット・ガーダーの近くに自軍ユニットを配置して、敵の攻撃を耐えよう。"
+    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
   },
   {
     "id": 290300907001170201,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907001170202,
-    "value": "ハロを撃破するために倍率の高い範囲効果エリアを利用しよう。"
+    "value": "活用高加成的範圍效果區域來擊破哈囉。"
   },
   {
     "id": 290300907001170203,
-    "value": "敵の数を減らしていくことを意識しよう。"
+    "value": "盡量減少敵方的數量。"
   },
   {
     "id": 290300907001180101,
-    "value": "ゲスト軍を活用して倒そう。"
+    "value": "活用客座軍來打倒。"
   },
   {
     "id": 290300907001180201,
-    "value": "ゲスト軍への攻撃を防ぐため、支援防御が出来るキャラクターを多めに編成しよう。"
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
   },
   {
     "id": 290300907001180202,
-    "value": "ゲスト軍を活用して、敵の攻撃からブライト・ノアを守ろう。"
+    "value": "活用客座軍，從敵人手中保護布萊特·諾亞吧。"
   },
   {
     "id": 290300907001180203,
-    "value": "バウンド・ドック【MA形態】の攻撃からゲスト軍を守ろう。"
+    "value": "從獵犬【MA型態】的砲火下保護客座軍。"
   },
   {
     "id": 290300907001180204,
-    "value": "これらのユニットを優先的に撃破しよう。"
+    "value": "優先擊破這些單位吧。"
   },
   {
     "id": 290300907001190101,
-    "value": "何度も行動されないように、支援防御やキャラクタースキルなどで対処しよう。"
+    "value": "運用支援防禦與角色技能等來阻止它多次行動吧。"
   },
   {
     "id": 290300907001190201,
-    "value": "ミオリネ・レンブランを優先的に撃破しよう。"
+    "value": "優先擊破米奧琳涅·連布蘭。"
   },
   {
     "id": 290300907001190202,
-    "value": "可能な限り1ターン目に撃破しよう。"
+    "value": "盡可能在第1回合將它擊破吧。"
   },
   {
     "id": 290300907001190203,
-    "value": "強力な武装は消費ENが大きいので注意しよう。"
+    "value": "強力的武裝會大量消耗EN，需多加留意。"
   },
   {
     "id": 290300907001200101,
-    "value": "特定のユニット撃破で出現する増援に注意しよう。"
+    "value": "留意擊破特定單位後將出現的增援。"
   },
   {
     "id": 290300907001200201,
-    "value": "特定のユニット撃破で出現する増援に注意しよう。"
+    "value": "留意擊破特定單位後將出現的增援。"
   },
   {
     "id": 290300907001200202,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   },
   {
     "id": 290300907002010201,
-    "value": "ラー・カイラムの近くから攻撃を仕掛けよう。"
+    "value": "在拉·凱拉姆附近發動攻擊。"
   },
   {
     "id": 290300907002020201,
-    "value": "ダメージを受けてHPが減ったら、アークエンジェルの近くで待機しよう。"
+    "value": "受到損傷、HP下降時，就到大天使號附近待機。"
   },
   {
     "id": 290300907002030201,
-    "value": "ツヴァイト・ガーダーの近くから攻撃を仕掛けよう。"
+    "value": "在二式守衛砲附近發動攻擊。"
   },
   {
     "id": 290300907002040201,
-    "value": "デビルガンダム(第2形態)のMAP兵器を利用して、敵軍にもダメージを与えよう。"
+    "value": "利用惡魔鋼彈 (第2型態)的MAP兵器，連帶對敵軍造成損傷。"
   },
   {
     "id": 290300907002040202,
-    "value": "ドリット・ガーダーの近くに自軍ユニットを配置して、敵の攻撃を耐えよう。"
+    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
   },
   {
     "id": 290300907002050201,
-    "value": "ゲスト軍を活用して強力な敵を倒そう。"
+    "value": "活用客座軍來打倒強大的敵人。"
   },
   {
     "id": 290300907002060201,
-    "value": "範囲効果が重なっているエリアは、両方の効果を得ることができる。"
+    "value": "在範圍效果重疊的區域上，可同時接收到雙方的效果。"
   },
   {
     "id": 290300907002060202,
-    "value": "攻撃を受けるユニットは、アークエンジェルの近くに配置しよう。"
+    "value": "將承受攻擊的單位配置在大天使號附近。"
   },
   {
     "id": 290300907002060203,
-    "value": "タリア・グラディスを優先的に撃破しよう。"
+    "value": "優先擊破塔莉亞·庫拉提絲。"
   },
   {
     "id": 290300907002070201,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   },
   {
     "id": 290300907002070202,
-    "value": "ハマーン・カーンを優先的に撃破しよう。"
+    "value": "優先擊破哈曼·坎恩。"
   },
   {
     "id": 290300907002070203,
-    "value": "グレミー・トトを優先的に撃破しよう。"
+    "value": "優先擊破克雷米·托特。"
   },
   {
     "id": 290300907002080202,
-    "value": "ゲスト軍を活用して、敵の数を減らしていこう。"
+    "value": "活用客座軍來減少敵方數量。"
   },
   {
     "id": 290300907002090101,
-    "value": "ガンダム・バエルの強化効果を利用して撃破を目指そう。"
+    "value": "利用主魔鋼彈的強化效果來擊敗對手。"
   },
   {
     "id": 290300907002090201,
-    "value": "ボスにダメージを与える自軍ユニットはこの範囲から攻撃しよう。"
+    "value": "讓攻擊Boss的我軍單位由此範圍發動攻擊。"
   },
   {
     "id": 290300907002090202,
-    "value": "中立ユニットの範囲効果を活用して対処しよう。"
+    "value": "活用中立單位的範圍效果來應對。"
   },
   {
     "id": 290300907002090203,
-    "value": "ガンダム・バエルの強化効果を利用して撃破を目指そう。"
+    "value": "利用主魔鋼彈的強化效果來擊敗對手。"
   },
   {
     "id": 290300907002090205,
-    "value": "ドリット・ガーダーの近くに自軍ユニットを配置して、敵の攻撃を耐えよう。"
+    "value": "將我軍單位配置在三式守衛砲附近，撐過敵方攻擊。"
   },
   {
     "id": 290300907002100101,
-    "value": "ネオ・ジオングのMAP兵器を利用して撃破しよう。"
+    "value": "利用新吉翁克的MAP兵器擊敗對手。"
   },
   {
     "id": 290300907002100203,
-    "value": "ネオ・ジオングのMAP兵器を利用して撃破しよう。"
+    "value": "利用新吉翁克的MAP兵器擊敗對手。"
   },
   {
     "id": 290300907002110101,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907002110201,
-    "value": "シャンブロのMAP兵器を利用して撃破しよう。"
+    "value": "利用尚布羅的MAP兵器擊敗對手。"
   },
   {
     "id": 290300907002110202,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   },
   {
     "id": 290300907002120101,
-    "value": "中立ユニットの強化効果を利用して撃破を目指そう。"
+    "value": "利用中立單位的強化效果來擊敗對手。"
   },
   {
     "id": 290300907002130101,
-    "value": "ゲスト軍を活用して倒そう。"
+    "value": "活用客座軍來打倒。"
   },
   {
     "id": 290300907002130201,
-    "value": "強力な武装は消費ENが大きいので注意しよう。"
+    "value": "強力的武裝會大量消耗EN，需多加留意。"
   },
   {
     "id": 290300907002130202,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   },
   {
     "id": 290300907002140101,
-    "value": "ゲスト軍を活用して倒そう。"
+    "value": "活用客座軍來打倒。"
   },
   {
     "id": 290300907002140202,
-    "value": "ゲスト軍を活用して、大ダメージを狙おう。"
+    "value": "活用客座軍來給予痛擊。"
   },
   {
     "id": 290300907002150201,
-    "value": "移動型MAP兵器を活用して目標エリアへの到達を目指そう。"
+    "value": "活用移動型MAP兵器，抵達目標區域。"
   },
   {
     "id": 290300907002150202,
-    "value": "出来るだけ戦闘は避けよう。"
+    "value": "盡可能迴避戰鬥。"
   },
   {
     "id": 290300907002150203,
-    "value": "MAP兵器の範囲に気をつけよう。"
+    "value": "留意MAP兵器的範圍。"
   }
 ]

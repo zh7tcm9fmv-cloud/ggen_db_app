@@ -17,11 +17,11 @@
   },
   {
     "ConfigTypeIndex": 10,
-    "Value": "https://apps.apple.com/app/id6692611665"
+    "Value": "https://apps.apple.com/app/id6692615881"
   },
   {
     "ConfigTypeIndex": 11,
-    "Value": "https://play.google.com/store/apps/details?id=com.bandainamcoent.gget_JP"
+    "Value": "https://play.google.com/store/apps/details?id=com.bandainamcoent.gget_WW"
   },
   {
     "ConfigTypeIndex": 12,
@@ -409,7 +409,7 @@
   },
   {
     "ConfigTypeIndex": 148,
-    "Value": "500000"
+    "Value": "999999999"
   },
   {
     "ConfigTypeIndex": 149,
@@ -544,14 +544,6 @@
     "Value": "1"
   },
   {
-    "ConfigTypeIndex": 193,
-    "Value": "260125041099000001"
-  },
-  {
-    "ConfigTypeIndex": 194,
-    "Value": "2504109901"
-  },
-  {
     "ConfigTypeIndex": 195,
     "Value": "100020002"
   },
@@ -630,10 +622,6 @@
   {
     "ConfigTypeIndex": 418,
     "Value": "80"
-  },
-  {
-    "ConfigTypeIndex": 419,
-    "Value": "525105001"
   },
   {
     "ConfigTypeIndex": 420,

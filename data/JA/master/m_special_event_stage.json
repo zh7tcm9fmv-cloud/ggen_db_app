@@ -80,7 +80,7 @@
     "HomeBannerResourceId": "sp_stage_event_home_banner_99000106",
     "ConsumeSpecialEventStageTicketId": 260099000106,
     "ConsumeSpecialEventStageTicketAmount": 1,
-    "DisplayScheduleId": 2602202602,
+    "DisplayScheduleId": 0,
     "DisplayIfHasTicket": true
   },
   {

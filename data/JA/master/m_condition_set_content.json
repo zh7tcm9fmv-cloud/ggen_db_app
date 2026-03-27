@@ -315,16 +315,6 @@
     "SortOrder": 0
   },
   {
-    "ConditionSetId": 35250410060101,
-    "ConditionId": 3525041006010101,
-    "SortOrder": 0
-  },
-  {
-    "ConditionSetId": 35250410060102,
-    "ConditionId": 3525041006010201,
-    "SortOrder": 0
-  },
-  {
     "ConditionSetId": 35250520040101,
     "ConditionId": 3525052004010101,
     "SortOrder": 0
@@ -477,6 +467,11 @@
   {
     "ConditionSetId": 99082603300001,
     "ConditionId": 9908260330000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082603550001,
+    "ConditionId": 9908260355000101,
     "SortOrder": 1
   }
 ]

@@ -114,12 +114,6 @@
     "HideEndDatetime": true
   },
   {
-    "Id": 2504109901,
-    "StartDatetime": 1577808000000,
-    "EndDatetime": 1751252399000,
-    "HideEndDatetime": false
-  },
-  {
     "Id": 2504119101,
     "StartDatetime": 1744790400000,
     "EndDatetime": 1747321199000,
@@ -555,6 +549,12 @@
     "Id": 2506159101,
     "StartDatetime": 1750302000000,
     "EndDatetime": 1752937199000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2506159102,
+    "StartDatetime": 1750327200000,
+    "EndDatetime": 1752850799000,
     "HideEndDatetime": false
   },
   {
@@ -1122,9 +1122,21 @@
     "HideEndDatetime": false
   },
   {
+    "Id": 2509109102,
+    "StartDatetime": 1757041200000,
+    "EndDatetime": 1759589999000,
+    "HideEndDatetime": false
+  },
+  {
     "Id": 2509109901,
     "StartDatetime": 1757041200000,
     "EndDatetime": 4070880000000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2509109902,
+    "StartDatetime": 1756368000000,
+    "EndDatetime": 1756386599000,
     "HideEndDatetime": false
   },
   {
@@ -1500,12 +1512,6 @@
     "HideEndDatetime": false
   },
   {
-    "Id": 2510502801,
-    "StartDatetime": 1760583600000,
-    "EndDatetime": 1768532399000,
-    "HideEndDatetime": false
-  },
-  {
     "Id": 2510509101,
     "StartDatetime": 1760583600000,
     "EndDatetime": 1763132399000,
@@ -1648,12 +1654,6 @@
     "StartDatetime": 1761879600000,
     "EndDatetime": 4070880000000,
     "HideEndDatetime": true
-  },
-  {
-    "Id": 2510802801,
-    "StartDatetime": 1761879600000,
-    "EndDatetime": 1769828399000,
-    "HideEndDatetime": false
   },
   {
     "Id": 2510809101,
@@ -1884,12 +1884,6 @@
     "HideEndDatetime": false
   },
   {
-    "Id": 2511402801,
-    "StartDatetime": 1764039600000,
-    "EndDatetime": 1771988399000,
-    "HideEndDatetime": false
-  },
-  {
     "Id": 2511402901,
     "StartDatetime": 1764471600000,
     "EndDatetime": 1780196399000,
@@ -2049,18 +2043,6 @@
     "Id": 2512302702,
     "StartDatetime": 1766545200000,
     "EndDatetime": 1770433199000,
-    "HideEndDatetime": false
-  },
-  {
-    "Id": 2512302801,
-    "StartDatetime": 1766545200000,
-    "EndDatetime": 1774321199000,
-    "HideEndDatetime": false
-  },
-  {
-    "Id": 2512302802,
-    "StartDatetime": 1766631600000,
-    "EndDatetime": 1774407599000,
     "HideEndDatetime": false
   },
   {
@@ -2235,12 +2217,6 @@
     "Id": 2512429101,
     "StartDatetime": 1767322800000,
     "EndDatetime": 1769957999000,
-    "HideEndDatetime": false
-  },
-  {
-    "Id": 2601102801,
-    "StartDatetime": 1768273200000,
-    "EndDatetime": 1775444399000,
     "HideEndDatetime": false
   },
   {
@@ -2587,15 +2563,9 @@
   },
   {
     "Id": 2602202601,
-    "StartDatetime": 1770865200000,
+    "StartDatetime": 1771988400000,
     "EndDatetime": 1803092399000,
     "HideEndDatetime": false
-  },
-  {
-    "Id": 2602202602,
-    "StartDatetime": 1771556400000,
-    "EndDatetime": 1772679599000,
-    "HideEndDatetime": true
   },
   {
     "Id": 2602209101,
@@ -2763,12 +2733,6 @@
     "Id": 2602402702,
     "StartDatetime": 1772247600000,
     "EndDatetime": 1775530799000,
-    "HideEndDatetime": false
-  },
-  {
-    "Id": 2602402801,
-    "StartDatetime": 1772766000000,
-    "EndDatetime": 1780714799000,
     "HideEndDatetime": false
   },
   {
@@ -3048,12 +3012,6 @@
     "HideEndDatetime": false
   },
   {
-    "Id": 2603502801,
-    "StartDatetime": 1774407600000,
-    "EndDatetime": 1782269999000,
-    "HideEndDatetime": false
-  },
-  {
     "Id": 2603509101,
     "StartDatetime": 1774321200000,
     "EndDatetime": 1776956399000,
@@ -3082,6 +3040,30 @@
     "StartDatetime": 1774407600000,
     "EndDatetime": 1777517999000,
     "HideEndDatetime": false
+  },
+  {
+    "Id": 2603551901,
+    "StartDatetime": 1774580400000,
+    "EndDatetime": 1780239599000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2603559101,
+    "StartDatetime": 1774580400000,
+    "EndDatetime": 1780239599000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2603559102,
+    "StartDatetime": 1774580400000,
+    "EndDatetime": 1775228399000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2603559901,
+    "StartDatetime": 1774580400000,
+    "EndDatetime": 4070880000000,
+    "HideEndDatetime": true
   },
   {
     "Id": 2603601703,

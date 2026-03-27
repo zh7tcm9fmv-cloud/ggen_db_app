@@ -20,26 +20,6 @@
     "BannerResourceTypeIndex": 0
   },
   {
-    "Id": 2504100103,
-    "TransitionId": 28002504100601,
-    "DestinationTypeIndex": 1,
-    "DestinationId": 2504100601,
-    "SortOrder": 3,
-    "ResourceId": "gasha_2504100601",
-    "ScheduleId": 9999990001,
-    "BannerResourceTypeIndex": 0
-  },
-  {
-    "Id": 2504100104,
-    "TransitionId": 28002504100602,
-    "DestinationTypeIndex": 1,
-    "DestinationId": 2504100602,
-    "SortOrder": 2,
-    "ResourceId": "gasha_2504100602",
-    "ScheduleId": 9999990001,
-    "BannerResourceTypeIndex": 0
-  },
-  {
     "Id": 2504300101,
     "TransitionId": 28002504300301,
     "DestinationTypeIndex": 1,

@@ -5,454 +5,486 @@
   },
   {
     "id": 190110000000100001,
-    "value": "ダイヤA（140個）"
+    "value": "鑽石A（140個）"
   },
   {
     "id": 190110000000200001,
-    "value": "ダイヤB（430個）"
+    "value": "鑽石B（430個）"
   },
   {
     "id": 190110000000300001,
-    "value": "ダイヤC（930個）"
+    "value": "鑽石C（930個）"
   },
   {
     "id": 190110000000400001,
-    "value": "ダイヤD（1430個）"
+    "value": "鑽石D（1430個）"
   },
   {
     "id": 190110000000500001,
-    "value": "ダイヤE（3000個）"
+    "value": "鑽石E（3000個）"
   },
   {
     "id": 190110000000600001,
-    "value": "ダイヤF（5000個）"
+    "value": "鑽石F（5000個）"
   },
   {
     "id": 190110000000700001,
-    "value": "ダイヤG（10000個）"
+    "value": "鑽石G（10000個）"
+  },
+  {
+    "id": 190110000000800001,
+    "value": "鑽石Z（10500個）"
+  },
+  {
+    "id": 190110000000900001,
+    "value": "鑽石H（32200個）"
+  },
+  {
+    "id": 190110000001000001,
+    "value": "鑽石I（52800個）"
   },
   {
     "id": 190110000002100001,
-    "value": "ダイヤ×150"
+    "value": "鑽石×150"
   },
   {
     "id": 190110000002200001,
-    "value": "ダイヤ×460"
+    "value": "鑽石×460"
   },
   {
     "id": 190110000002300001,
-    "value": "ダイヤ×1,000"
+    "value": "鑽石×1,000"
   },
   {
     "id": 190110000002400001,
-    "value": "ダイヤ×1,540"
+    "value": "鑽石×1,540"
   },
   {
     "id": 190110000002500001,
-    "value": "ダイヤ×3,240"
+    "value": "鑽石×3,240"
   },
   {
     "id": 190110000002600001,
-    "value": "ダイヤ×5,400"
+    "value": "鑽石×5,400"
   },
   {
     "id": 190110000002700001,
-    "value": "ダイヤ×10,800"
+    "value": "鑽石×10,800"
   },
   {
-    "id": 190110000002800001,
-    "value": "ダイヤ×32,200"
-  },
-  {
-    "id": 190110000002900001,
-    "value": "ダイヤ×52,800"
+    "id": 190110000003000001,
+    "value": "鑽石×25,800"
   },
   {
     "id": 190122504100100001,
-    "value": "スタートダッシュ\n超得ダイヤA"
+    "value": "新手衝刺超級優惠鑽石A"
   },
   {
     "id": 190122504100200001,
-    "value": "スタートダッシュ\n超得ダイヤB"
+    "value": "新手衝刺超級優惠鑽石B"
   },
   {
     "id": 190122504100300001,
-    "value": "スタートダッシュ\n超得ダイヤパックC"
+    "value": "新手衝刺超級優惠鑽石包C"
   },
   {
     "id": 190122504100400001,
-    "value": "スタートダッシュ\n超得ダイヤパックD"
+    "value": "新手衝刺超級優惠鑽石包D"
   },
   {
     "id": 190122504100700001,
-    "value": "URユニット限界突破\nダイヤパック"
+    "value": "UR單位突破界限鑽石包"
   },
   {
     "id": 190122504100800001,
-    "value": "SSRユニット限界突破\nダイヤパック"
+    "value": "SSR單位突破界限鑽石包"
   },
   {
     "id": 190122504100900001,
-    "value": "URサポーター限界突破\nダイヤパック"
+    "value": "UR支援人員突破界限鑽石包"
   },
   {
     "id": 190122504101000001,
-    "value": "SSRサポーター限界突破\nダイヤパック"
+    "value": "SSR支援人員突破界限鑽石包"
   },
   {
     "id": 190122504101100001,
-    "value": "シリーズクリアボーナスパック(機動戦士ガンダム)"
+    "value": "系列完成獎勵包（機動戰士鋼彈）"
   },
   {
     "id": 190122504101200001,
-    "value": "シリーズクリアボーナスパック(Z)"
+    "value": "系列完成獎勵包（Z）"
   },
   {
     "id": 190122504101300001,
-    "value": "シリーズクリアボーナスパック(ZZ)"
+    "value": "系列完成獎勵包（ZZ）"
   },
   {
     "id": 190122504101400001,
-    "value": "シリーズクリアボーナスパック(W)"
+    "value": "系列完成獎勵包（W）"
   },
   {
     "id": 190122504101500001,
-    "value": "シリーズクリアボーナスパック(SEED)"
+    "value": "系列完成獎勵包（SEED）"
+  },
+  {
+    "id": 190122504101600001,
+    "value": ""
   },
   {
     "id": 190122504301100001,
-    "value": "シリーズクリアボーナスパック(SEED Recollection)"
+    "value": "系列完成獎勵包（SEED Recollection）"
   },
   {
     "id": 190122506300100001,
-    "value": "シリーズクリアボーナスパック(CCA)"
+    "value": "系列完成獎勵包（CCA）"
   },
   {
     "id": 190122506300200001,
-    "value": "500万DL記念\nお得ダイヤパックA"
+    "value": "500萬次DL紀念優惠鑽石包A"
   },
   {
     "id": 190122506300300001,
-    "value": "500万DL記念\nお得ダイヤパックB"
+    "value": "500萬次DL紀念優惠鑽石包B"
   },
   {
     "id": 190122506300400001,
-    "value": "500万DL記念\nお得ダイヤパックC"
+    "value": "500萬次DL紀念優惠鑽石包C"
   },
   {
     "id": 190122508200100001,
-    "value": "デイリーダイヤパス"
+    "value": "每日鑽石通行證"
   },
   {
     "id": 190122509600100001,
-    "value": "シリーズクリアボーナスパック(G)"
+    "value": "系列完成獎勵包（G）"
   },
   {
     "id": 190122509600200001,
-    "value": "シリーズクリアボーナスパック(UC)"
+    "value": "系列完成獎勵包（UC）"
   },
   {
     "id": 190122509600300001,
-    "value": "ハーフアニバーサリーお得ダイヤパックA"
+    "value": "Half Anniversary優惠鑽石包A"
   },
   {
     "id": 190122509600400001,
-    "value": "ハーフアニバーサリーお得ダイヤパックB"
+    "value": "Half Anniversary優惠鑽石包B"
   },
   {
     "id": 190122509600500001,
-    "value": "ハーフアニバーサリーお得ダイヤパックC"
+    "value": "Half Anniversary優惠鑽石包C"
   },
   {
     "id": 190122509600600001,
-    "value": "ハーフアニバーサリーURユニット確定チケット付きパック"
+    "value": "Half Anniversary保證獲得UR單位券組合包"
   },
   {
     "id": 190122509600700001,
-    "value": "サウンドパック vol.1"
+    "value": "樂曲包 vol.1"
   },
   {
     "id": 190122510500100001,
-    "value": "ハーフアニバーサリーお得ダイヤパックD"
+    "value": "Half Anniversary優惠鑽石包D"
   },
   {
     "id": 190122510800100001,
-    "value": "シリーズクリアボーナスパック(鉄血のオルフェンズ)"
+    "value": "系列完成獎勵包（鐵血孤兒）"
   },
   {
     "id": 190122510800200001,
-    "value": "サウンドパック vol.2"
+    "value": "樂曲包 vol.2"
   },
   {
     "id": 190122511100100001,
-    "value": "700万DL記念\nお得ダイヤパック"
+    "value": "700萬次DL紀念優惠鑽石包"
   },
   {
     "id": 190122511400100001,
-    "value": "シリーズクリアボーナスパック(閃光のハサウェイ)"
+    "value": "系列完成獎勵包（機動戰士鋼彈 閃光的哈薩威）"
   },
   {
     "id": 190122511400200001,
-    "value": "サウンドパック vol.3"
+    "value": "樂曲包 vol.3"
   },
   {
     "id": 190122512300100001,
-    "value": "ダイヤ×3,000プレゼント！"
+    "value": "贈送3,000個鑽石！"
   },
   {
     "id": 190122512300200001,
-    "value": "お得ダイヤ"
+    "value": "優惠鑽石"
+  },
+  {
+    "id": 190122512300300001,
+    "value": "-"
   },
   {
     "id": 190122512400100001,
-    "value": "シリーズクリアボーナスパック(SEED DESTINY)"
+    "value": "系列完成獎勵包（SEED DESTINY）"
   },
   {
     "id": 190122512400200001,
-    "value": "シリーズクリアボーナスパック(水星の魔女)"
+    "value": "系列完成獎勵包（水星的魔女）"
   },
   {
     "id": 190122512400300001,
-    "value": "エターナル福袋2026[赤]"
+    "value": "永恆福袋2026〔紅色〕"
   },
   {
     "id": 190122512400400001,
-    "value": "エターナル福袋2026[金]"
+    "value": "永恆福袋2026〔金色〕"
   },
   {
     "id": 190122512400500001,
-    "value": "2026ニューイヤーお得ダイヤパックA"
+    "value": "2026新年優惠鑽石包A"
   },
   {
     "id": 190122512400600001,
-    "value": "2026ニューイヤーお得ダイヤパックB"
+    "value": "2026新年優惠鑽石包B"
   },
   {
     "id": 190122512400700001,
-    "value": "2026ニューイヤーお得ダイヤパックC"
+    "value": "2026新年優惠鑽石包C"
   },
   {
     "id": 190122601500100001,
-    "value": "シリーズクリアボーナスパック(X)"
+    "value": "系列完成獎勵包（X）"
   },
   {
     "id": 190122602200100001,
-    "value": "800万DL記念\nお得ダイヤパックA"
+    "value": "800萬次下載紀念優惠鑽石包A"
   },
   {
     "id": 190122602200200001,
-    "value": "800万DL記念\nお得ダイヤパックB"
+    "value": "800萬次下載紀念優惠鑽石包B"
   },
   {
     "id": 190122602200300001,
-    "value": "WebStore限定800万DL記念ダイヤプレゼント"
+    "value": "WebStore限定800萬次下載紀念鑽石禮物"
   },
   {
     "id": 190122602200400001,
-    "value": "WebStore限定800万DL記念お得ダイヤパック"
+    "value": "WebStore限定800萬次下載紀念優惠鑽石包"
   },
   {
     "id": 190152510500100001,
-    "value": "エターナルパス"
+    "value": "永恆通行證"
   },
   {
     "id": 190210000000100001,
-    "value": "ダイヤx140"
+    "value": "鑽石x140"
   },
   {
     "id": 190210000000200001,
-    "value": "ダイヤx430"
+    "value": "鑽石x430"
   },
   {
     "id": 190210000000300001,
-    "value": "ダイヤx930"
+    "value": "鑽石x930"
   },
   {
     "id": 190210000000400001,
-    "value": "ダイヤx1,430"
+    "value": "鑽石x1430"
   },
   {
     "id": 190210000000500001,
-    "value": "ダイヤx3,000"
+    "value": "鑽石x3000"
   },
   {
     "id": 190210000000600001,
-    "value": "ダイヤx5,000"
+    "value": "鑽石x5000"
   },
   {
     "id": 190210000000700001,
-    "value": "ダイヤx10,000"
+    "value": "鑽石x10000"
+  },
+  {
+    "id": 190210000000800001,
+    "value": "鑽石x10500"
+  },
+  {
+    "id": 190210000000900001,
+    "value": "鑽石x32200"
+  },
+  {
+    "id": 190210000001000001,
+    "value": "鑽石x52800"
   },
   {
     "id": 190222504100100001,
-    "value": "【1回限定】ダイヤx320のお得なパック"
+    "value": "【限購1次】鑽石×320的優惠包"
   },
   {
     "id": 190222504100200001,
-    "value": "【1回限定】ダイヤx1,000のお得なパック"
+    "value": "【限購1次】鑽石×1000的優惠包"
   },
   {
     "id": 190222504100300001,
-    "value": "【1回限定】ダイヤx4,500、APパックx5、SSR以上ユニット確定ガシャチケットx1が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×4500、保證獲得SSR以上單位機體補給券×1、AP包×5的優惠組合包"
   },
   {
     "id": 190222504100400001,
-    "value": "【1回限定】ダイヤx15,000、APパックx10、URユニット確定ガシャチケx1が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×15000、保證獲得UR單位機體補給券×1、AP包×10的優惠組合包"
   },
   {
     "id": 190222504100700001,
-    "value": "【1回限定】ダイヤx5,000、URユニット限界突破素材x1が一緒になった、お得なパック"
+    "value": "【限購1次】鑽石×5000、UR單位突破界限材料×1的優惠組合包"
   },
   {
     "id": 190222504100800001,
-    "value": "【1回限定】ダイヤx1,430、SSRユニット限界突破素材x1が一緒になった、お得なパック"
+    "value": "【限購1次】鑽石×1430、SSR單位突破界限材料×1的優惠組合包"
   },
   {
     "id": 190222504100900001,
-    "value": "【1回限定】ダイヤx5,000、URサポーター限界突破素材x1が一緒になった、お得なパック"
+    "value": "【限購1次】鑽石×5000、UR支援人員突破界限材料×1的優惠組合包"
   },
   {
     "id": 190222504101000001,
-    "value": "【1回限定】ダイヤx1,430、SSRサポーター限界突破素材x1が一緒になった、お得なパック"
+    "value": "【限購1次】鑽石×1430、SSR支援人員突破界限材料×1的優惠組合包"
   },
   {
     "id": 190222504101100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222504101200001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222504101300001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222504101400001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222504101500001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
+  },
+  {
+    "id": 190222504101600001,
+    "value": ""
   },
   {
     "id": 190222504301100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222506300100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx2、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×2、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222506300200001,
-    "value": "【1回限定】ダイヤx600、APパックx1が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×600、AP包×1的優惠組合包"
   },
   {
     "id": 190222506300300001,
-    "value": "【1回限定】ダイヤx4,000、APパックx5が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×4,000、AP包×5的優惠組合包"
   },
   {
     "id": 190222506300400001,
-    "value": "【1回限定】ダイヤx13,400、APパックx10が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×13,400、AP包×10的優惠組合包"
   },
   {
     "id": 190222508200100001,
-    "value": "無償ダイヤ×3,100のお得なパス　※有効期間は20日間"
+    "value": "鑽石×3,100的優惠通行證 ※有效期間為20天"
   },
   {
     "id": 190222509600100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(G)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (G)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222509600200001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(UC)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (UC)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222509600300001,
-    "value": "【1回限定】ダイヤx600、APパックx1が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×600、AP包×1的優惠組合包"
   },
   {
     "id": 190222509600400001,
-    "value": "【1回限定】ダイヤx4,000、APパックx5が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×4,000、AP包×5的優惠組合包"
   },
   {
     "id": 190222509600500001,
-    "value": "【1回限定】ダイヤx13,400、APパックx10が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×13,400、AP包×10的優惠組合包"
   },
   {
     "id": 190222509600600001,
-    "value": "【1回限定】ダイヤx10,000、Half Anniversary URユニット確定ガシャチケットx1、APパックx10が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×10,000、Half Anniversary保證獲得UR單位機體補給券×1、AP包×10的優惠組合包"
   },
   {
     "id": 190222509600700001,
-    "value": "【注意事項】\n※解放されたBGMは、サウンドパックの購入を行ったプラットフォーム上でのプレイ時のみ、お楽しみいただけます。\n※BGMの解放状況は、プラットフォームを跨いで引き継ぐことはできません。\n※サウンドパックの購入時、BGMのダウンロードが行われます。Wi-Fi環境での購入をおすすめします。\n\n【商品内容】\n設定可能なBGM×51曲\nプレミアムガシャチケット×6\nユニット強化データSSRx10\nキャラクター強化データSSRx10\nサポーター強化データSSRx10\n\n【設定可能なBGM一覧】\n赤い彗星\n戦いへの恐怖\nガンダム大地に立つ\n窮地に立つガンダム\n颯爽たるシャア\nオデッサの激戦 M-5\nジャブロー総力戦 M-15\nテキサスの遭遇 M-24\nア・バオア・クー侵攻 M-65\n翔べ！ガンダム\n砂の十字架\n哀・戦士\nめぐりあい\nI CAN'T DO ANYTHING -宇宙よ-\n嵐の中で輝いて\nサンダーボルト・メインテーマ用\n戦闘配置用\nあなたのお相手〜I'm your baby〜\n目覚めたい魂たち（I_004）\nクランバトル（I_011）\n秘密（I_017）\nコロニーの彼女（I_006A）\nPlazma （アニメ・オープニングver.）\nASSAULT WAVES (強襲揚陸波)\nFULL BURNER (全力噴射)\nDENDROBIUM (ガンダム試作3号機)\nU.N.T. (地球連邦軍)\nFEINT OPERATION (陽動作戦)\nDER SOLOMONER BOSER TRAUM (ソロモンの悪夢)\nTHE WINNER\n艦隊戦\nモビルスーツ戦\n大気圏突入～重力の井戸へ\n宇宙を駆ける～激突!\n宇宙を駆ける～ゼータの発動\n水の星へ愛をこめて\n閃光の中のMS\n飛ぶもの\n宇宙の門\na point of Contact\nMetamorphoze 〜メタモルフォーゼ〜\nシャングリラの少年\n宇宙のジュドー\n始動!ダブル・ゼータ\n熱血のマシュマー\n二人だけの決着\nアニメじゃない～夢を忘れた古い地球人よ\nサイレント・ヴォイス\nBEYOND THE TIME〜メビウスの宇宙を越えて〜\nRE:I AM\nVigilante"
+    "value": "【注意事項】\n※僅限在購買樂曲包的平台上遊玩時，才可播放已解放的BGM。\n※BGM的解放狀況無法跨平台繼承。\n※購買樂曲包時將會下載BGM，建議在Wi-Fi環境下進行購買。\n\n【商品內容】\n可設定的BGM×51\n高級機體補給券×6\n單位強化數據SSR×10\n角色強化數據SSR×10\n支援人員強化數據SSR×10\n\n【可設定的BGM一覽】\nAkai Suisei\nTatakai eno Kyofu\nGundam Daichi ni Tatsu\nKyuchi ni Tatsu Gundam\nSassotaru Char\nOdessa no Gekisen M-5\nJaburo Soryokusen M-15\nTexas no Sogu M-24\nA Baoa Qu Shinko M-65\nTobe! GUNDAM\nCROSS OF THE SAND\nAi Senshi\nMeguriai\nI Can't Do Anything - Sorayo -\nArashi no Naka de Kagayaite\nThunderbolt Main Theme Yo\nSentohaichi Yo\nAnatano Oaite -I'm your baby-\nAwakening Hearts (I_004)\nClan Battle (I_011)\nSecrets (I_017)\nThe Girl on a Space colony (I_006A)\nPlazma (Anime Opening ver.)\nASSAULT WAVES\nFULL BURNER\nDENDROBIUM\nU.N.T.\nFEINT OPERATION\nDER SOLOMONER BOSER TRAUM\nTHE WINNER\nKantaisen\nMOBILE SUIT Sen\nTaikiken-Totsunyu -Jyuryoku no Ido e-\nUcyu wo Kakeru -Gekitotsu!-\nUcyu wo Kakeru -Zeta no Hatsudo-\nMizu no Hoshi e Ai wo Komete\nSenko no Naka no MS\nTobu Mono\nSora no Mon\na point of contact\nMetamorphoze\nShangri-La no Shonen\nUchu no Judau\nShido! Double Ζeta\nNekketsu no Mashymre\nFutaridake no Kecchaku\nAnime Janai ～ Yume wo Wasureta Furui Chikyujin-yo\nSilent Voice\nBEYOND THE TIME ～Over the Moebius skies～\nRE:I AM\nVigilante"
   },
   {
     "id": 190222510500100001,
-    "value": "【1回限定】ダイヤx4,000、SP化バッジx100が一緒になったお得なパック"
+    "value": "【限購1次】鑽石×4,000、SP化徽章×100的優惠組合包"
   },
   {
     "id": 190222510800100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(鉄血のオルフェンズ)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (鐵血孤兒)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222510800200001,
-    "value": "【注意事項】\n※解放されたBGMは、サウンドパックの購入を行ったプラットフォーム上でのプレイ時のみ、お楽しみいただけます。\n※BGMの解放状況は、プラットフォームを跨いで引き継ぐことはできません。\n※サウンドパックの購入時、BGMのダウンロードが行われます。Wi-Fi環境での購入をおすすめします。\n\n【商品内容】\n設定可能なBGM×51曲\nプレミアムガシャチケット×6\nユニット強化データSSRx10\nキャラクター強化データSSRx10\nサポーター強化データSSRx10\n\n【設定可能なBGM一覧】\n最強の証～キング・オブ・ハート\n燃えあがれ闘志 忌まわしき宿命を越えて\n我が心 明鏡止水～されどこの掌は烈火の如く\n激闘の中 それぞれの約束\n血戦の時きたり\n甦る悪魔 その究極の姿を現す\n偉大なる英雄\n牙を光らせ龍が舞う\n勇気という名の勲章を胸に\n交錯する機体\nFLYING IN THE SKY\nTrust You Forever\n思春期を殺した少年の翼\n黒い風が死へ誘う\n返り血と火薬の匂いの中\n屍に埋もれた平和を探して\n龍が泳ぐ時 すべては終わる\n強行突破\nガンダム襲撃\nゼロの伝説 -XXXG-OOWO\nゼクスが来る\nOZモビルスーツ接近\n任務遂行\n未来への飛翔\nJUST COMMUNICATION\nRHYTHM EMOTION\nWHITE REFLECTION\nサテライト・キャノン\n追撃\n死線\n「僕がニュータイプだ」\n復活のガロード\n迫り来る巨大な力\n駆け抜けるGX\nニューウエポン・ディバイダー\nDREAMS\nResolution\nMobile Suit Gundam:Iron-Blooded Orphans\nDefenders of the Wild\nSigns of Victory\nAll Out\nStrengths Focus\nIn a Fury\nEin System\nLast Extremity\nRaise your flag\nSurvivor\nRAGE OF DUST - New Version -\nFighter\nニブンノイチ\n大決戦～テーマ/エンディング1/エンディング2"
+    "value": "【注意事項】\n※僅限在購買樂曲包的平台上遊玩時，才可播放已解放的BGM。\n※BGM的解放狀況無法跨平台繼承。\n※購買樂曲包時將會下載BGM，建議在Wi-Fi環境下進行購買。\n\n【商品內容】\n可設定的BGM×51\n高級機體補給券×6\n單位強化數據SSR×10\n角色強化數據SSR×10\n支援人員強化數據SSR×10\n\n【可設定的BGM一覽】\nSaikyo no Akashi-King of heart\nMoeagare Toshi Imawashiki Syukumei wo koete\nWaga Kokoro Meikyo Shisui - Saredo Kono Te wa Rekka no Gotoku\nGekito no Naka Sorezore no Yakusoku\nKessen no toki Kitari\nYomigaeru Akuma sono Kyukyoku no Sugata wo Arawasu\nIdainaru Eiyu\nKiba wo Hikarase Ryu ga Mau\nYuki toiu Na no Kunsyo wo Mune ni\nKosakusuru Kitai\nFLYING IN THE SKY\nTrust You Forever\nShisyunki wo Koroshita Syonen no Tsubasa\nKuroi Kaze ga Shi e Izanau\nKaerichi to Kayaku no Nioi no naka\nShikabane ni Umoreta Heiwa wo Sagashite\nRyu ga Oyogu Toki Subete wa Owaru\nKyouko-Toppa\nGundam Syugeki\nZero no Densetsu -XXXG-OOWO\nZechs ga Kuru\nOZ Mobile Suit Sekkin\nNinmu-Suiko\nMirai eno Hisyo\nJUST COMMUNICATION\nRHYTHM EMOTION\nWHITE REFLECTION\nSatellite Cannon\nTsuigeki\nShisen\nBoku ga New Type da\nFukkatsu no Garrod\nSemarikuru Kyodaina Chikara\nKakenukeru GX\nNew Weapon Divider\nDREAMS\nResolution\nMobile Suit Gundam : Iron-Blooded Orphans\nDefenders of the Wild\nSigns of Victory\nAll Out\nStrengths Focus\nIn a Fury\nEin System\nLast Extremity\nRaise your flag\nSurvivor\nRAGE OF DUST - New Version -\nFighter\nNibunnoichi\nDaikessen -Theme/Ending1/Ending2"
   },
   {
     "id": 190222511100100001,
-    "value": "【1回限定】ダイヤx13,400のお得なパック"
+    "value": "【限購1次】鑽石×13,400的優惠包"
   },
   {
     "id": 190222511400100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(閃光のハサウェイ)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (閃光的哈薩威)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222511400200001,
-    "value": "【注意事項】\n※解放されたBGMは、サウンドパックの購入を行ったプラットフォーム上でのプレイ時のみ、お楽しみいただけます。\n※BGMの解放状況は、プラットフォームを跨いで引き継ぐことはできません。\n※サウンドパックの購入時、BGMのダウンロードが行われます。Wi-Fi環境での購入をおすすめします。\n\n【商品内容】\n設定可能なBGM×51曲\nプレミアムガシャチケット×6\nユニット強化データSSRx10\nキャラクター強化データSSRx10\nサポーター強化データSSRx10\n\n【設定可能なBGM一覧】\nGUNDAM出撃\n戦場の決意\n翔べ！フリーダム\nSTRIKE出撃\n戦闘態勢\n悪の3兵器\n焦り\n戦闘部隊\nINVOKE -インヴォーク-\nmoment\nBelieve\nRealize\nミッション開始\n覚醒シン・アスカ\n妖気と微笑み\nCOLONY~絶体絶命\n始まりが故\n出撃! インパルス\nキラ、その心のままに\n狂気の果て\n破壊と絶望\nignited -イグナイテッド-\nPRIDE\n僕たちの行方\nPOWER\nCOUNTERATTACK\nAPPROACH\nUNION\nUPROAR\nSEIZURE\nFIGHT\nRECOVER\nINTERVENTION\nOO GUNDAM\nStrike\nRestart\nMASURAO\nTRANS-AM RAISER\nSCRAMBLE\nDECISIVE BATTLE\nDAYBREAK'S BELL\nAsh Like Snow\nHappy Birthday to You\nThe Witch From Mercury\nGUNDAM PHARACT\nChaos\nEnemy Onslaught\nThe Witches from Earth\nAERIAL REBUILD\nLiberation from the Curse\n祝福"
+    "value": "【注意事項】\n※僅限在購買樂曲包的平台上遊玩時，才可播放已解放的BGM。\n※BGM的解放狀況無法跨平台繼承。\n※購買樂曲包時將會下載BGM，建議在Wi-Fi環境下進行購買。\n\n【商品內容】\n可設定的BGM×51\n高級機體補給券×6\n單位強化數據SSR×10\n角色強化數據SSR×10\n支援人員強化數據SSR×10\n\n【可設定的BGM一覽】\nGUNDAM Syutsugeki\nSenjo no Ketsui\nTobe! FREEDOM\nSTRIKE Syutsugeki\nSento Taisei\nAku no 3 Heiki\nAseri\nSento-Butai\nInvoke\nmoment\nBelieve\nRealize\nMission Kaishi\nKakusei Shinn Asuka\nYoki to Hohoemi\nCOLONY - Zettai-Zetsumei\nHajimari ga Yue\nSyutsugeki! IMPULSE\nKira, Sono Kokoro no Mama Ni\nKyoki no Hate\nHakai to Zetsubo\nIgnited\nPRIDE\nBokutachinoyukue\nPOWER\nCOUNTERATTACK\nAPPROACH\nUNION\nUPROAR\nSEIZURE\nFIGHT\nRECOVER\nINTERVENTION\nOO GUNDAM\nStrike\nRestart\nMASURAO\nTRANS-AM RAISER\nSCRAMBLE\nDECISIVE BATTLE\nDaybreak's Bell\nAsh Like Snow\nHappy Birthday to You\nThe Witch From Mercury\nGUNDAM PHARACT\nChaos\nEnemy Onslaught\nThe Witches from Earth\nAERIAL REBUILD\nLiberation from the Curse\nThe Blessing"
   },
   {
     "id": 190222512400100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(SEED DESTINY)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (SEED DESTINY)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222512400200001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(水星の魔女)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、\nAP包×1、開發材料 (水星的魔女)×100、\n單位強化數據SSR×10、角色強化數據SSR×10、\n支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222512400300001,
-    "value": "【1回限定】\nお得なエターナル福袋！\n\n【商品内容】\n・ダイヤ×1,600\n・[福袋2026]SSR以上ユニット1体確定ガシャチケット×1\n・ユニット強化データSSR×30\n・キャラクター強化データSSR×30\n・サポーター強化データSSR×30"
+    "value": "【限購1次】\n永恆福袋！\n\n【商品內容】\n·鑽石×1,600\n·〔福袋2026〕保證獲得1架SSR以上單位機體補給券×1\n·單位強化數據SSR×30\n·角色強化數據SSR×30\n·支援人員強化數據SSR×30"
   },
   {
     "id": 190222512400400001,
-    "value": "【1回限定】\nお得なエターナル福袋！\n\n【商品内容】\n・ダイヤ×10,000\n・[福袋2026]URユニット1体確定5連ガシャチケット×1\n・ユニット強化データSSR×200\n・キャラクター強化データSSR×200\n・サポーター強化データSSR×200"
+    "value": "【限購1次】\n永恆福袋！\n\n【商品內容】\n·鑽石×10,000\n·〔福袋2026〕保證獲得1架UR單位5連機體補給券×1\n·單位強化數據SSR×200\n·角色強化數據SSR×200\n·支援人員強化數據SSR×200"
   },
   {
     "id": 190222512400500001,
-    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×600\n・APパック×1"
+    "value": "【限購1次】\n優惠包！\n\n【商品內容】\n·鑽石×600\n·AP包×1"
   },
   {
     "id": 190222512400600001,
-    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×4,000\n・APパック×5"
+    "value": "【限購1次】\n優惠包！\n\n【商品內容】\n·鑽石×4,000\n·AP包×5"
   },
   {
     "id": 190222512400700001,
-    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×13,400\n・APパック×10"
+    "value": "【限購1次】\n優惠包！\n\n【商品內容】\n·鑽石×13,400\n·AP包×10"
   },
   {
     "id": 190222601500100001,
-    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(X)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+    "value": "【限購1次】鑽石×430、SSR單位突破界限材料×1、AP包×1、開發材料 (X)×100、單位強化數據SSR×10、角色強化數據SSR×10、支援人員強化數據SSR×10的組合包"
   },
   {
     "id": 190222602200100001,
-    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×1,500\n・[800万DL記念]SSR以上ユニット1体確定ガシャチケット×1"
+    "value": "【限購1次】\n優惠包！\n\n【商品內容】\n·鑽石×1,500\n·〔800萬次下載紀念〕保證獲得1架SSR以上單位機體補給券×1"
   },
   {
     "id": 190222602200200001,
-    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×10,000\n・[800万DL記念]URユニット1体確定5連ガシャチケット×1"
+    "value": "【限購1次】\n優惠包！\n\n【商品內容】\n·鑽石×10,000\n·〔800萬次下載紀念〕保證獲得1架UR單位5連機體補給券×1"
   },
   {
     "id": 190252510500100001,
-    "value": "「エターナルパス」は、購入することでステージ挑戦回数アップの効果やアイテムの付与を受けられる月額サービスです。"
+    "value": "「永恆通行證」為月費服務，購買後將增加關卡可挑戰次數以及獲得道具。"
   }
 ]

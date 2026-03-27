@@ -22,16 +22,6 @@
   {
     "CharacterId": 1001000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1001000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1001000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -528,16 +518,6 @@
     "CharacterId": 1001004800,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1001004800,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1001004800,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1001004800,
@@ -1042,16 +1022,6 @@
   {
     "CharacterId": 1007000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1007000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1007000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -1313,16 +1283,6 @@
     "CharacterId": 1007000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1007000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1007000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1007000200,
@@ -1652,16 +1612,6 @@
   {
     "CharacterId": 1009000800,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1009000800,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1009000800,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -1923,16 +1873,6 @@
     "CharacterId": 1009000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1009000900,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1009000900,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1009000900,
@@ -2208,16 +2148,6 @@
     "CharacterId": 1013000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1013000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1013000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1013000100,
@@ -2637,16 +2567,6 @@
   {
     "CharacterId": 1021000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1021000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1021000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -2908,16 +2828,6 @@
     "CharacterId": 1021000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1021000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1021000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1021000200,
@@ -3982,16 +3892,6 @@
   {
     "CharacterId": 1068000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1068000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1068000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -4263,16 +4163,6 @@
     "CharacterId": 1069000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1069000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1069000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1069000100,
@@ -5117,16 +5007,6 @@
   {
     "CharacterId": 1095003500,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1095003500,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1095003500,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -5397,16 +5277,6 @@
   {
     "CharacterId": 1099000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1099000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1099000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -5673,16 +5543,6 @@
     "CharacterId": 1110000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1110000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1110000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1110000100,
@@ -5973,16 +5833,6 @@
     "CharacterId": 1110000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1110000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1110000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1110000200,
@@ -6493,16 +6343,6 @@
     "CharacterId": 1125000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1125000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1125000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1125000100,
@@ -7292,16 +7132,6 @@
   {
     "CharacterId": 1144000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1144000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1144000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -7678,16 +7508,6 @@
     "CharacterId": 1155000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1155000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1155000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1155000100,
@@ -8118,16 +7938,6 @@
     "CharacterId": 1166000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1166000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1166000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1166000100,
@@ -9347,16 +9157,6 @@
   {
     "CharacterId": 1217000200,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1217000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1217000200,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -10172,16 +9972,6 @@
   {
     "CharacterId": 1230001100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1230001100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1230001100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -10562,16 +10352,6 @@
   {
     "CharacterId": 1240001900,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1240001900,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1240001900,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -10843,16 +10623,6 @@
     "CharacterId": 1300000101,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1300000101,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1300000101,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1300000101,
@@ -11773,16 +11543,6 @@
     "CharacterId": 1304000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1304000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1304000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1304000200,
@@ -13077,16 +12837,6 @@
   {
     "CharacterId": 1370000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1370000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1370000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -13412,16 +13162,6 @@
   {
     "CharacterId": 1375000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1375000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1375000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -13683,16 +13423,6 @@
     "CharacterId": 1375000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1375000300,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1375000300,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1375000300,
@@ -13962,16 +13692,6 @@
   {
     "CharacterId": 1378000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1378000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1378000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -14233,16 +13953,6 @@
     "CharacterId": 1379000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1379000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1379000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1379000200,
@@ -14707,16 +14417,6 @@
   {
     "CharacterId": 1430000105,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1430000105,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1430000105,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -15023,16 +14723,6 @@
     "CharacterId": 1430002000,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1430002000,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1430002000,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1430002000,
@@ -15393,16 +15083,6 @@
     "CharacterId": 1430003101,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1430003101,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1430003101,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1430003101,
@@ -16517,16 +16197,6 @@
   {
     "CharacterId": 1501000101,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1501000101,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1501000101,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -17202,16 +16872,6 @@
   {
     "CharacterId": 1600000100,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1600000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
-  },
-  {
-    "CharacterId": 1600000100,
-    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504300301
   },
   {
@@ -17473,16 +17133,6 @@
     "CharacterId": 1600000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100501
-  },
-  {
-    "CharacterId": 1600000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1600000200,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1600000200,
@@ -18613,16 +18263,6 @@
     "CharacterId": 1850000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100502
-  },
-  {
-    "CharacterId": 1850000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100601
-  },
-  {
-    "CharacterId": 1850000100,
-    "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2504100602
   },
   {
     "CharacterId": 1850000100,

@@ -678,18 +678,6 @@
     "TargetId2": 0
   },
   {
-    "Id": 28002504100601,
-    "TransitionTypeIndex": 19,
-    "TargetId1": 2504100601,
-    "TargetId2": 0
-  },
-  {
-    "Id": 28002504100602,
-    "TransitionTypeIndex": 19,
-    "TargetId1": 2504100602,
-    "TargetId2": 0
-  },
-  {
     "Id": 28002504300301,
     "TransitionTypeIndex": 19,
     "TargetId1": 2504300301,

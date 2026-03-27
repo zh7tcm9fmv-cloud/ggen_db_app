@@ -120,6 +120,10 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001150000360,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001200000150,
     "value": "EN Restoration"
   },
@@ -410,6 +414,10 @@
   {
     "id": 160500001150000260,
     "value": "Squad Units\nRestore EN by 40%."
+  },
+  {
+    "id": 160500001150000360,
+    "value": "Squad Units\nRestore EN by 35%."
   },
   {
     "id": 160500001200000150,
