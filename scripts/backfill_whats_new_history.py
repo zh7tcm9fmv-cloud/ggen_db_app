@@ -34,6 +34,22 @@ def _parse_date_from_basename(name):
     return m.group(1) if m else ''
 
 
+def _snapshot_game_data_equal(a, b):
+    """True if version/units/abilities/etc. match (ignores captured_at). Used to detect useless backfills."""
+    if not isinstance(a, dict) or not isinstance(b, dict):
+        return False
+    keys = (
+        'version',
+        'units',
+        'characters',
+        'option_parts',
+        'unit_abilities',
+        'unit_weapons',
+        'char_abilities',
+    )
+    return all(a.get(k) == b.get(k) for k in keys)
+
+
 def _pick_prior_master_dir():
     try:
         import tkinter as tk
@@ -78,6 +94,11 @@ def main():
         action='store_true',
         help='Allow appending when data/whats_new_history_index.json already has archives.',
     )
+    parser.add_argument(
+        '--force',
+        action='store_true',
+        help='Write the archive even if it matches data/whats_new_snapshot.json game data (not recommended).',
+    )
     args = parser.parse_args()
 
     import app as app_module
@@ -99,6 +120,19 @@ def main():
 
     sn = app_module.build_whats_new_snapshot_dict_from_master_dir(prior)
     sn['captured_at'] = ca
+
+    cur = app_module.load_whats_new_snapshot()
+    if cur and _snapshot_game_data_equal(sn, cur) and not args.force:
+        raise SystemExit(
+            'The prior MasterData folder produces the same game-data snapshot as data/whats_new_snapshot.json '
+            '(only dates/metadata differ). The What\'s New history tab would be empty and is skipped by the app.\n\n'
+            'Fix: rebuild the *current* baseline from a NEWER master than the prior folder, then run this script again. '
+            'Example:\n'
+            '  python scripts/refresh_whats_new_snapshot.py --from-master-dir "C:/path/MasterData_2026-03-25" '
+            '--captured-at 2026-03-25\n'
+            '(Use the folder that matches the end of the period you want labeled, e.g. 25 after a 23 baseline.)\n\n'
+            'If you really want to add this archive anyway, pass --force.'
+        )
 
     hist_dir = app_module.WHATS_NEW_HISTORY_DIR
     os.makedirs(hist_dir, exist_ok=True)
@@ -126,7 +160,6 @@ def main():
     with open(idx_path, 'w', encoding='utf-8') as f:
         json.dump(idx, f, indent=2, ensure_ascii=False)
 
-    cur = app_module.load_whats_new_snapshot()
     cur_ca = (cur.get('captured_at') or '').strip() if cur else ''
     print('Wrote archive: %s' % dest)
     print('  captured_at on archive: %s' % ca)
