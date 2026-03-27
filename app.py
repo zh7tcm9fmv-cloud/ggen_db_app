@@ -6052,11 +6052,12 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul27_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul28_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     _debuff_memo = {}
+    _debuff_keys_union = set()
     for uid, info in unit_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
@@ -6093,9 +6094,6 @@ def list_units():
         if ability_filter is not None:
             if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
                 continue
-        if weapon_debuff_filter:
-            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
-                continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
             name = f'Unknown ({uid})'
@@ -6125,6 +6123,12 @@ def list_units():
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid): continue
+        if uid not in _debuff_memo:
+            _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
+        _debuff_keys_union |= set(_debuff_memo[uid])
+        if weapon_debuff_filter:
+            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
+                continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
@@ -6142,7 +6146,7 @@ def list_units():
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
-    _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
+    _wbp = sorted(k for k in _debuff_keys_union if k in UNIT_WEAPON_DEBUFF_FILTER_KEYS)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
