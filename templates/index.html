@@ -42,10 +42,23 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .whats-new-head .whats-new-ic{width:28px;height:28px}
 .whats-new-body{padding:18px clamp(16px,3vw,32px) 28px;overflow-y:auto;overflow-x:auto;font-size:14px;line-height:1.55;color:var(--text-primary);flex:1;min-height:0}
 .whats-new-date-wrap{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
-.whats-new-date-label{font-size:13px;font-weight:700;color:var(--text-muted);white-space:nowrap}
-.whats-new-date-select{min-width:min(100%,280px);max-width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:rgba(0,0,0,.35);color:var(--text-primary);font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition)}
-.whats-new-date-select:hover{border-color:rgba(0,212,255,.45)}
-.whats-new-date-select:focus{outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 1px rgba(0,212,255,.25)}
+.whats-new-date-label{font-size:13px;font-weight:800;color:var(--accent-orange);letter-spacing:.02em;white-space:nowrap}
+.whats-new-date-select{
+  min-width:min(100%,280px);max-width:100%;
+  padding:10px 36px 10px 14px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-color);
+  background-color:var(--bg-input);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23ff9500' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px;
+  color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);
+  font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  accent-color:var(--accent-orange);color-scheme:dark;
+  font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased;
+}
+.whats-new-date-select:hover{border-color:rgba(255,149,0,.45);background-color:var(--bg-card)}
+.whats-new-date-select:focus{outline:none;border-color:var(--accent-orange);box-shadow:0 0 0 1px rgba(255,149,0,.28)}
+.whats-new-date-select option,.whats-new-date-select optgroup{background:var(--bg-secondary);color:var(--text-primary)}
 .whats-new-tab-panel{display:none}
 .whats-new-tab-panel.active{display:block}
 .whats-new-tab-empty{color:var(--text-muted);margin:0;font-size:14px;line-height:1.55}
