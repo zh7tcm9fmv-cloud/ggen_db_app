@@ -9,6 +9,10 @@ ran refresh_whats_new_snapshot.py when moving from the first baseline, so the hi
 Example (first baseline was Mar 23, current snapshot on disk reflects Mar 25):
   python scripts/backfill_whats_new_history.py --prior-master-dir "C:/path/MasterData_2026-03-23" --captured-at 2026-03-23
 
+Or run with no path arguments to open a folder dialog (requires tkinter):
+  python scripts/backfill_whats_new_history.py
+  python scripts/backfill_whats_new_history.py --captured-at 2026-03-23
+
 Then restart the app. You should see two auto tabs: label of the *end* of the first period (25 if your
 snapshot file has captured_at 2026-03-25), and the pending tab with today's data date (e.g. 27).
 
@@ -30,13 +34,39 @@ def _parse_date_from_basename(name):
     return m.group(1) if m else ''
 
 
+def _pick_prior_master_dir():
+    try:
+        import tkinter as tk
+        from tkinter import filedialog
+    except ImportError as e:
+        raise SystemExit(
+            'Folder picker needs tkinter. Install it for your Python, or pass --prior-master-dir instead.\n'
+            'Original error: %s' % e
+        )
+    root = tk.Tk()
+    root.withdraw()
+    root.attributes('-topmost', True)
+    root.update_idletasks()
+    path = filedialog.askdirectory(
+        title='Select prior MasterData folder (older baseline)',
+        mustexist=True,
+    )
+    root.destroy()
+    return os.path.abspath(path) if path else ''
+
+
 def main():
     parser = argparse.ArgumentParser(description='Backfill one archived whats_new baseline (older MasterData folder).')
-    parser.add_argument(
+    src = parser.add_mutually_exclusive_group(required=False)
+    src.add_argument(
         '--prior-master-dir',
         metavar='DIR',
-        required=True,
-        help='Folder of master JSON for the older baseline (e.g. MasterData_2026-03-23).',
+        help='Folder of master JSON for the older baseline (e.g. MasterData_2026-03-23). If omitted, a folder dialog opens.',
+    )
+    src.add_argument(
+        '--pick',
+        action='store_true',
+        help='Open a folder dialog (same as omitting --prior-master-dir).',
     )
     parser.add_argument(
         '--captured-at',
@@ -52,7 +82,12 @@ def main():
 
     import app as app_module
 
-    prior = os.path.abspath(args.prior_master_dir)
+    if args.prior_master_dir:
+        prior = os.path.abspath(args.prior_master_dir)
+    else:
+        prior = _pick_prior_master_dir()
+        if not prior:
+            raise SystemExit('No folder selected.')
     if not os.path.isdir(prior):
         raise SystemExit('Not a directory: %s' % prior)
 
