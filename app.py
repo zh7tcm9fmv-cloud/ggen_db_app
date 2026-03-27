@@ -3302,16 +3302,81 @@ def get_lang_data(lc): return LANG_DATA.get(lc, LANG_DATA.get(DEFAULT_LANG, {}))
 def get_calc_lang_data(): return LANG_DATA.get(CALC_LANG, {})
 
 WHATS_NEW_SNAPSHOT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new_snapshot.json')
+WHATS_NEW_HISTORY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new_history_snapshots')
+WHATS_NEW_HISTORY_INDEX_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new_history_index.json')
 
 def _whats_new_master_data_date():
+    """Use latest mtime among key master JSON files so the date matches the most recent import."""
+    names = (
+        'm_unit.json', 'm_character.json', 'm_unit_ability_set.json', 'm_unit_weapon.json',
+        'm_character_ability_set.json', 'm_option_parts.json',
+    )
+    best_ts = None
     try:
-        p = os.path.join(BASE_DIR, 'm_unit.json')
-        if os.path.isfile(p):
-            ts = os.path.getmtime(p)
-            return datetime.fromtimestamp(ts, tz=timezone.utc).date().isoformat()
+        for name in names:
+            p = os.path.join(BASE_DIR, name)
+            if os.path.isfile(p):
+                ts = os.path.getmtime(p)
+                if best_ts is None or ts > best_ts:
+                    best_ts = ts
+        if best_ts is not None:
+            return datetime.fromtimestamp(best_ts, tz=timezone.utc).date().isoformat()
     except Exception:
         pass
     return datetime.now(timezone.utc).date().isoformat()
+
+def _load_whats_new_snapshot_from_path(path):
+    try:
+        if not os.path.isfile(path):
+            return None
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or int(data.get('version') or 0) != 1:
+            return None
+        return data
+    except Exception:
+        return None
+
+def load_whats_new_snapshot():
+    return _load_whats_new_snapshot_from_path(WHATS_NEW_SNAPSHOT_PATH)
+
+def _load_whats_new_history_index():
+    try:
+        if not os.path.isfile(WHATS_NEW_HISTORY_INDEX_PATH):
+            return {'version': 1, 'archives': []}
+        with open(WHATS_NEW_HISTORY_INDEX_PATH, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or int(data.get('version') or 0) != 1:
+            return {'version': 1, 'archives': []}
+        if not isinstance(data.get('archives'), list):
+            data['archives'] = []
+        return data
+    except Exception:
+        return {'version': 1, 'archives': []}
+
+def _load_whats_new_snapshot_chain():
+    """Return [oldest ... newest] snapshot dicts; newest is always whats_new_snapshot.json on disk."""
+    idx = _load_whats_new_history_index()
+    archives = idx.get('archives') or []
+    loaded = []
+    for a in archives:
+        if not isinstance(a, dict):
+            continue
+        fn = (a.get('filename') or '').strip()
+        if not fn:
+            continue
+        path = os.path.join(WHATS_NEW_HISTORY_DIR, fn)
+        snap = _load_whats_new_snapshot_from_path(path)
+        if snap:
+            aid = (a.get('id') or fn).strip() or fn
+            loaded.append((aid, snap))
+    loaded.sort(key=lambda x: ((x[1].get('captured_at') or '').strip(), x[0]))
+    chain = [x[1] for x in loaded]
+    cur = load_whats_new_snapshot()
+    if not cur:
+        return []
+    chain.append(cur)
+    return chain
 
 def _build_char_ability_effect_map_from_data(char_abil_data):
     lookup = {}
@@ -3385,18 +3450,6 @@ def serialize_whats_new_snapshot():
         'units': sorted(unit_info_map.keys()),
         'characters': sorted(char_info_map.keys()),
     }
-
-def load_whats_new_snapshot():
-    try:
-        if not os.path.isfile(WHATS_NEW_SNAPSHOT_PATH):
-            return None
-        with open(WHATS_NEW_SNAPSHOT_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        if not isinstance(data, dict) or int(data.get('version') or 0) != 1:
-            return None
-        return data
-    except Exception:
-        return None
 
 def _wn_unit_name(uid, ld):
     lid = ld.get('unit_id_map', {}).get(uid, '')
@@ -3570,24 +3623,19 @@ def _build_weapon_slot_rows(old_ids, new_ids, ld):
         })
     return rows
 
-def compute_whats_new_delta(lang_code=None):
-    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline.
-
-    Names and ability text use *lang_code* (e.g. TW) so the What's New panel matches the UI language.
-    """
-    snap = load_whats_new_snapshot()
-    if not snap:
+def compute_whats_new_delta_between(snap_old, snap_new, lang_code=None):
+    """Diff two snapshot dicts (version 1). Used for pending (baseline vs live) and historical archive pairs."""
+    if not snap_old or not snap_new:
         return None
     lc = validate_lang_code(lang_code)
     ld = get_lang_data(lc) or get_lang_data(DEFAULT_LANG)
     if not ld:
         return None
-    cur = serialize_whats_new_snapshot()
-    old_units = set(snap.get('units') or [])
-    old_chars = set(snap.get('characters') or [])
+    old_units = set(snap_old.get('units') or [])
+    old_chars = set(snap_old.get('characters') or [])
     changes = []
-    old_ua = snap.get('unit_abilities') or {}
-    new_ua = cur['unit_abilities']
+    old_ua = snap_old.get('unit_abilities') or {}
+    new_ua = snap_new.get('unit_abilities') or {}
     for uid in sorted(set(old_ua.keys()) | set(new_ua.keys())):
         if uid not in old_units:
             continue
@@ -3603,8 +3651,8 @@ def compute_whats_new_delta(lang_code=None):
                     'link_id': uid,
                     'rows': rows,
                 })
-    old_uw = snap.get('unit_weapons') or {}
-    new_uw = cur['unit_weapons']
+    old_uw = snap_old.get('unit_weapons') or {}
+    new_uw = snap_new.get('unit_weapons') or {}
     for uid in sorted(set(old_uw.keys()) | set(new_uw.keys())):
         if uid not in old_units:
             continue
@@ -3620,8 +3668,8 @@ def compute_whats_new_delta(lang_code=None):
                     'link_id': uid,
                     'rows': rows,
                 })
-    old_ca = snap.get('char_abilities') or {}
-    new_ca = cur['char_abilities']
+    old_ca = snap_old.get('char_abilities') or {}
+    new_ca = snap_new.get('char_abilities') or {}
     for cid in sorted(set(old_ca.keys()) | set(new_ca.keys())):
         if cid not in old_chars:
             continue
@@ -3638,22 +3686,25 @@ def compute_whats_new_delta(lang_code=None):
                     'rows': rows,
                 })
     added = []
-    for uid in sorted(set(cur['units']) - old_units):
+    nu = snap_new.get('units') or []
+    nc = snap_new.get('characters') or []
+    nop = snap_new.get('option_parts') or []
+    for uid in sorted(set(nu) - old_units):
         added.append({
             'kind': 'new_unit',
             'name': _wn_unit_name(uid, ld),
             'link_type': 'unit',
             'link_id': uid,
         })
-    for cid in sorted(set(cur['characters']) - old_chars):
+    for cid in sorted(set(nc) - old_chars):
         added.append({
             'kind': 'new_character',
             'name': _wn_char_name(cid, ld),
             'link_type': 'character',
             'link_id': cid,
         })
-    old_op = set(snap.get('option_parts') or [])
-    for opid in sorted(set(cur['option_parts']) - old_op):
+    old_op = set(snap_old.get('option_parts') or [])
+    for opid in sorted(set(nop) - old_op):
         added.append({
             'kind': 'new_option_part',
             'name': _wn_option_part_name(opid, ld),
@@ -3662,7 +3713,24 @@ def compute_whats_new_delta(lang_code=None):
         })
     if not changes and not added:
         return None
-    return {'date': _whats_new_master_data_date(), 'changes': changes, 'added': added}
+    date_str = (snap_new.get('captured_at') or '').strip() or _whats_new_master_data_date()
+    return {'date': date_str, 'changes': changes, 'added': added}
+
+def compute_whats_new_delta(lang_code=None):
+    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline.
+
+    Names and ability text use *lang_code* (e.g. TW) so the What's New panel matches the UI language.
+    """
+    snap = load_whats_new_snapshot()
+    if not snap:
+        return None
+    lc = validate_lang_code(lang_code)
+    cur = serialize_whats_new_snapshot()
+    out = compute_whats_new_delta_between(snap, cur, lc)
+    if not out:
+        return None
+    out['date'] = _whats_new_master_data_date()
+    return out
 
 def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
     """Compute unit stats for list view: base at max LB + non-conditional passive bonuses only."""
@@ -4449,14 +4517,46 @@ WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 
 @app.route('/api/whats_new')
 def api_whats_new():
-    """Changelog: auto diff vs data/whats_new_snapshot.json plus optional manual entries in data/whats_new.json."""
+    """Changelog: pending diff vs snapshot, historical archive pairs, plus optional manual entries in data/whats_new.json."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    tabs = []
     entries = []
     try:
-        auto = compute_whats_new_delta(lc)
-        if auto:
-            entries.append({'date': auto.get('date'), 'changes': auto.get('changes') or [], 'added': auto.get('added') or []})
-    except Exception as e:
+        snap_cur = load_whats_new_snapshot()
+        if snap_cur:
+            pending = compute_whats_new_delta(lc)
+            date = _whats_new_master_data_date()
+            tabs.append({
+                'kind': 'pending',
+                'id': 'pending',
+                'date': date,
+                'changes': (pending or {}).get('changes') or [],
+                'added': (pending or {}).get('added') or [],
+            })
+            entries.append({
+                'date': date,
+                'changes': (pending or {}).get('changes') or [],
+                'added': (pending or {}).get('added') or [],
+            })
+        chain = _load_whats_new_snapshot_chain()
+        for i in range(len(chain) - 1, 0, -1):
+            delta = compute_whats_new_delta_between(chain[i - 1], chain[i], lc)
+            if not delta:
+                continue
+            label_date = (delta.get('date') or '').strip() or _whats_new_master_data_date()
+            tabs.append({
+                'kind': 'history',
+                'id': 'history_%d' % i,
+                'date': label_date,
+                'changes': delta.get('changes') or [],
+                'added': delta.get('added') or [],
+            })
+            entries.append({
+                'date': label_date,
+                'changes': delta.get('changes') or [],
+                'added': delta.get('added') or [],
+            })
+    except Exception:
         import traceback
         traceback.print_exc()
     try:
@@ -4469,13 +4569,27 @@ def api_whats_new():
             elif isinstance(data, list):
                 manual = data
             if isinstance(manual, list):
-                for e in manual:
+                for mi, e in enumerate(manual):
                     if isinstance(e, dict):
+                        tabs.append({
+                            'kind': 'manual',
+                            'id': 'manual_%d' % mi,
+                            'date': e.get('date'),
+                            'changes': e.get('changes') or [],
+                            'added': e.get('added') or [],
+                        })
                         entries.append(e)
-    except Exception as e:
+    except Exception:
         import traceback
         traceback.print_exc()
-    return jsonify({'entries': entries})
+    payload = {
+        'tabs': tabs,
+        'entries': entries,
+        'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+    }
+    resp = make_response(jsonify(payload))
+    resp.headers['Cache-Control'] = 'no-store'
+    return resp
 
 @app.route('/api/tag_units')
 def get_tag_units():
@@ -6228,7 +6342,7 @@ def list_supporters():
                 desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
                 tags = resolve_condition_tags(ls.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
                 if desc: descs.append(desc)
-                sep = 'and' if '44%' in desc else ('or' if '36%' in desc else 'default')
+                sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
                 if tags: std.append({'tags': tags, 'separator': sep})
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
@@ -6536,7 +6650,7 @@ def get_supporter(supporter_id):
             if l.get('tier') != lb_tier: continue
             desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
             tags = resolve_condition_tags(l.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
-            sep = 'and' if '44%' in desc else ('or' if '36%' in desc else 'default')
+            sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
             ls.append({'desc': desc, 'tags': tags, 'separator': sep})
         asks = []
         for a in supporter_active_map.get(supporter_id, []):

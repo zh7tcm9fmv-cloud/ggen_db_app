@@ -2,6 +2,10 @@
 """
 Write data/whats_new_snapshot.json from master JSON.
 
+If whats_new_snapshot.json already exists, it is copied to data/whats_new_history_snapshots/
+and recorded in data/whats_new_history_index.json so the What's New UI can show separate
+tabs for each baseline update (diffs between archived snapshots).
+
 Default: snapshot matches the same masters the running app loads (newest MasterData_*).
 
 Use --second-latest to set the baseline to the previous MasterData_* folder (e.g. "yesterday"
@@ -15,6 +19,7 @@ Usage (from ggen_db_app):
 import argparse
 import json
 import os
+import shutil
 import sys
 
 _APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -85,6 +90,27 @@ def main():
         sn['captured_at'] = app_module.datetime.now(app_module.timezone.utc).date().isoformat()
 
     path = app_module.WHATS_NEW_SNAPSHOT_PATH
+    # Archive previous baseline so What's New can show per-update tabs (diff between baselines).
+    prev = app_module._load_whats_new_snapshot_from_path(path)
+    if prev:
+        hist_dir = app_module.WHATS_NEW_HISTORY_DIR
+        os.makedirs(hist_dir, exist_ok=True)
+        aid = app_module.datetime.now(app_module.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+        dest = os.path.join(hist_dir, '%s.json' % aid)
+        shutil.copy2(path, dest)
+        idx_path = app_module.WHATS_NEW_HISTORY_INDEX_PATH
+        os.makedirs(os.path.dirname(idx_path), exist_ok=True)
+        idx = app_module._load_whats_new_history_index()
+        archives = idx.setdefault('archives', [])
+        archives.append({
+            'id': aid,
+            'captured_at': (prev.get('captured_at') or '').strip(),
+            'filename': '%s.json' % aid,
+        })
+        with open(idx_path, 'w', encoding='utf-8') as f:
+            json.dump(idx, f, indent=2, ensure_ascii=False)
+        print('Archived previous baseline to %s' % dest)
+
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(sn, f, indent=2, ensure_ascii=False)
