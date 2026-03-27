@@ -4521,29 +4521,34 @@ def api_whats_new():
 
     Tab *label* / *date* for auto entries is always the period end (newer baseline / today's data): e.g. diff 23→25 is labeled 25;
     pending diff since last snapshot on disk is labeled with today's master-data date (e.g. 27).
+
+    History tabs require files under data/whats_new_history_snapshots/ (see refresh_whats_new_snapshot.py or
+    scripts/backfill_whats_new_history.py). Order: oldest history first, then pending (latest period).
     """
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     tabs = []
     entries = []
     try:
+        pending_tab = None
+        entry_pending = None
         snap_cur = load_whats_new_snapshot()
         if snap_cur:
             pending = compute_whats_new_delta(lc)
-            # Tab label = end of period (today's live data vs last baseline on disk), e.g. 27th vs 25th snapshot.
             date = _whats_new_master_data_date()
-            tabs.append({
+            pending_tab = {
                 'kind': 'pending',
                 'id': 'pending',
                 'label': date,
                 'date': date,
                 'changes': (pending or {}).get('changes') or [],
                 'added': (pending or {}).get('added') or [],
-            })
-            entries.append({
+            }
+            entry_pending = {
                 'date': date,
                 'changes': (pending or {}).get('changes') or [],
                 'added': (pending or {}).get('added') or [],
-            })
+            }
+        history_items = []
         chain = _load_whats_new_snapshot_chain()
         for i in range(len(chain) - 1, 0, -1):
             delta = compute_whats_new_delta_between(chain[i - 1], chain[i], lc)
@@ -4553,19 +4558,28 @@ def api_whats_new():
             label_date = (snap_newer.get('captured_at') or '').strip()
             if not label_date:
                 label_date = (delta.get('date') or '').strip() or _whats_new_master_data_date()
-            tabs.append({
+            tab = {
                 'kind': 'history',
                 'id': 'history_%d' % i,
                 'label': label_date,
                 'date': label_date,
                 'changes': delta.get('changes') or [],
                 'added': delta.get('added') or [],
-            })
-            entries.append({
+            }
+            entry = {
                 'date': label_date,
                 'changes': delta.get('changes') or [],
                 'added': delta.get('added') or [],
-            })
+            }
+            history_items.append((tab, entry))
+        history_items.sort(key=lambda it: (it[0].get('label') or it[0].get('date') or ''))
+        for tab, entry in history_items:
+            tabs.append(tab)
+            entries.append(entry)
+        if pending_tab:
+            tabs.append(pending_tab)
+        if entry_pending:
+            entries.append(entry_pending)
     except Exception:
         import traceback
         traceback.print_exc()

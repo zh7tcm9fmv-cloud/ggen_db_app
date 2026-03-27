@@ -15,6 +15,10 @@ Usage (from ggen_db_app):
   python scripts/refresh_whats_new_snapshot.py
   python scripts/refresh_whats_new_snapshot.py --second-latest
   python scripts/refresh_whats_new_snapshot.py --from-master-dir "C:/path/to/MasterData_2026-03-24"
+
+If you already have whats_new_snapshot.json but no files under data/whats_new_history_snapshots/, use
+  python scripts/backfill_whats_new_history.py --prior-master-dir "C:/path/to/older/MasterData_*"
+to add the first baseline so What's New can show older period tabs.
 """
 import argparse
 import json
