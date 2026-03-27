@@ -1,0 +1,22 @@
+[
+  {
+    "RarityTypeIndex": 1,
+    "UnitDismantleGpReturnBaseValue": 1
+  },
+  {
+    "RarityTypeIndex": 2,
+    "UnitDismantleGpReturnBaseValue": 2
+  },
+  {
+    "RarityTypeIndex": 3,
+    "UnitDismantleGpReturnBaseValue": 3
+  },
+  {
+    "RarityTypeIndex": 4,
+    "UnitDismantleGpReturnBaseValue": 10
+  },
+  {
+    "RarityTypeIndex": 5,
+    "UnitDismantleGpReturnBaseValue": 50
+  }
+]

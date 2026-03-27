@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "EventBannerOtherTypeIndex": 1,
+    "RewardId": 1700250110012301,
+    "ResourceId": "pm_banner_250110011",
+    "DescriptionLanguageId": 221000000000000001
+  },
+  {
+    "Id": 2,
+    "EventBannerOtherTypeIndex": 2,
+    "RewardId": 0,
+    "ResourceId": "el_banner_250110011",
+    "DescriptionLanguageId": 221000000000000002
+  }
+]

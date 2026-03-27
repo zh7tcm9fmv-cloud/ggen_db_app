@@ -1,0 +1,27 @@
+[
+  {
+    "MapNpcCharacterSkillSetId": 9000001,
+    "SortOrder": 1,
+    "CharacterSkillId": 900000001
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9000002,
+    "SortOrder": 1,
+    "CharacterSkillId": 900000002
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9000003,
+    "SortOrder": 1,
+    "CharacterSkillId": 230030101
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9000004,
+    "SortOrder": 1,
+    "CharacterSkillId": 170010401
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9000005,
+    "SortOrder": 1,
+    "CharacterSkillId": 900000005
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "ScenarioStageSeriesId": 1100,
+    "LogoOffsetX": -12,
+    "BromideScalePercent": 100
+  },
+  {
+    "ScenarioStageSeriesId": 1250,
+    "LogoOffsetX": 0,
+    "BromideScalePercent": 105
+  },
+  {
+    "ScenarioStageSeriesId": 2100,
+    "LogoOffsetX": -10,
+    "BromideScalePercent": 100
+  },
+  {
+    "ScenarioStageSeriesId": 4300,
+    "LogoOffsetX": 0,
+    "BromideScalePercent": 109
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "EventId": 110001,
+    "UpdateInfoLanguageId": 0,
+    "TowerEventStageGroupId": 110001,
+    "SortOrder": 1,
+    "ResourceId": "tower_event_100"
+  },
+  {
+    "EventId": 110002,
+    "UpdateInfoLanguageId": 290100000100110002,
+    "TowerEventStageGroupId": 110002,
+    "SortOrder": 1,
+    "ResourceId": "tower_event_100"
+  },
+  {
+    "EventId": 110003,
+    "UpdateInfoLanguageId": 290100000100110003,
+    "TowerEventStageGroupId": 110003,
+    "SortOrder": 1,
+    "ResourceId": "tower_event_200"
+  }
+]

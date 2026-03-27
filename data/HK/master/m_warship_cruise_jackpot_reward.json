@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 1,
+    "RewardSetId": 99040000000001,
+    "Weight": 1
+  },
+  {
+    "Id": 2,
+    "RewardSetId": 99040000000002,
+    "Weight": 1
+  },
+  {
+    "Id": 3,
+    "RewardSetId": 99040000000003,
+    "Weight": 1
+  }
+]

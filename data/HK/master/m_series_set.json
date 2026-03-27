@@ -1,0 +1,1157 @@
+[
+  {
+    "SeriesSetId": 10000000000000010,
+    "SeriesId": 10,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000000600,
+    "SeriesId": 600,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000000950,
+    "SeriesId": 950,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000000990,
+    "SeriesId": 990,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001010,
+    "SeriesId": 1010,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001100,
+    "SeriesId": 1100,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001250,
+    "SeriesId": 1250,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001440,
+    "SeriesId": 1440,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001500,
+    "SeriesId": 1500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001550,
+    "SeriesId": 1550,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001620,
+    "SeriesId": 1620,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001660,
+    "SeriesId": 1660,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000001750,
+    "SeriesId": 1750,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000002000,
+    "SeriesId": 2000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000002100,
+    "SeriesId": 2100,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000002300,
+    "SeriesId": 2300,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000002400,
+    "SeriesId": 2400,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000003000,
+    "SeriesId": 3000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000003300,
+    "SeriesId": 3300,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000003500,
+    "SeriesId": 3500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000003700,
+    "SeriesId": 3700,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004000,
+    "SeriesId": 4000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004010,
+    "SeriesId": 4010,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004080,
+    "SeriesId": 4080,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004200,
+    "SeriesId": 4200,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004300,
+    "SeriesId": 4300,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000004330,
+    "SeriesId": 4330,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000005010,
+    "SeriesId": 5010,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000006000,
+    "SeriesId": 6000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007001,
+    "SeriesId": 7001,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007050,
+    "SeriesId": 7050,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007090,
+    "SeriesId": 7090,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007250,
+    "SeriesId": 7250,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007600,
+    "SeriesId": 7600,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000007790,
+    "SeriesId": 7790,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000008500,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000300010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000000300010,
+    "SeriesId": 30,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000500010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000000500010,
+    "SeriesId": 50,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000700010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000000700010,
+    "SeriesId": 70,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000800010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000000800010,
+    "SeriesId": 80,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000000900010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000000900010,
+    "SeriesId": 90,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000001100010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000001100010,
+    "SeriesId": 110,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000001200010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000001200010,
+    "SeriesId": 120,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000001300010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000001300010,
+    "SeriesId": 130,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000001700010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000001700010,
+    "SeriesId": 170,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000002100010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000002100010,
+    "SeriesId": 210,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000002200010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000002200010,
+    "SeriesId": 220,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000002300010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000002300010,
+    "SeriesId": 230,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000002600010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000002600010,
+    "SeriesId": 260,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000002900010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000002900010,
+    "SeriesId": 290,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000003100010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000003100010,
+    "SeriesId": 310,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000004400010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000004400010,
+    "SeriesId": 440,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000005500010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000005500010,
+    "SeriesId": 550,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000006000010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000006000010,
+    "SeriesId": 600,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000006700010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000006700010,
+    "SeriesId": 670,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000006800010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000006800010,
+    "SeriesId": 680,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000008000810,
+    "SeriesId": 800,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000008000810,
+    "SeriesId": 810,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000008100800,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000008100800,
+    "SeriesId": 810,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000008500950,
+    "SeriesId": 850,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000008500950,
+    "SeriesId": 950,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000009800010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000009800010,
+    "SeriesId": 980,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000009901100,
+    "SeriesId": 990,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000009901100,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000010000950,
+    "SeriesId": 950,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000010000950,
+    "SeriesId": 1000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000010101100,
+    "SeriesId": 1010,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000010101100,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000011401100,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000011401100,
+    "SeriesId": 1140,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000011501100,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000011501100,
+    "SeriesId": 1150,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000013301250,
+    "SeriesId": 1250,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000013301250,
+    "SeriesId": 1330,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000015001100,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000015001100,
+    "SeriesId": 1500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000021102100,
+    "SeriesId": 2100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000021102100,
+    "SeriesId": 2110,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000021702100,
+    "SeriesId": 2100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000021702100,
+    "SeriesId": 2170,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000021902100,
+    "SeriesId": 2100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000021902100,
+    "SeriesId": 2190,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030003300,
+    "SeriesId": 3000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030003300,
+    "SeriesId": 3300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030403000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030403000,
+    "SeriesId": 3040,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030503000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030503000,
+    "SeriesId": 3050,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030603000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030603000,
+    "SeriesId": 3060,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030703000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030703000,
+    "SeriesId": 3070,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030703050,
+    "SeriesId": 3050,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030703050,
+    "SeriesId": 3070,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000030803000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000030803000,
+    "SeriesId": 3080,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000031003000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000031003000,
+    "SeriesId": 3100,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000033303300,
+    "SeriesId": 3300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000033303300,
+    "SeriesId": 3330,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000033903300,
+    "SeriesId": 3300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000033903300,
+    "SeriesId": 3390,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000034203300,
+    "SeriesId": 3300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000034203300,
+    "SeriesId": 3420,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000037503700,
+    "SeriesId": 3700,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000037503700,
+    "SeriesId": 3750,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000037803700,
+    "SeriesId": 3700,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000037803700,
+    "SeriesId": 3780,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000037903700,
+    "SeriesId": 3700,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000037903700,
+    "SeriesId": 3790,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000040104000,
+    "SeriesId": 4000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000040104000,
+    "SeriesId": 4010,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000040804000,
+    "SeriesId": 4000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000040804000,
+    "SeriesId": 4080,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000040904000,
+    "SeriesId": 4000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000040904000,
+    "SeriesId": 4090,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000043104300,
+    "SeriesId": 4300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000043104300,
+    "SeriesId": 4310,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000043304300,
+    "SeriesId": 4300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000043304300,
+    "SeriesId": 4330,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000043404300,
+    "SeriesId": 4300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000043404300,
+    "SeriesId": 4340,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000050005010,
+    "SeriesId": 5000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000050005010,
+    "SeriesId": 5010,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000060000010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000060000010,
+    "SeriesId": 6000,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000060403000,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000060403000,
+    "SeriesId": 6040,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000065000010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000065000010,
+    "SeriesId": 6500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000076100950,
+    "SeriesId": 950,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000076100950,
+    "SeriesId": 7610,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000076300010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000076300010,
+    "SeriesId": 7630,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000076400010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000076400010,
+    "SeriesId": 7640,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000077100010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000077100010,
+    "SeriesId": 7710,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000085000010,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000085000010,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000085000950,
+    "SeriesId": 950,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000085000950,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000085002100,
+    "SeriesId": 2100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000085002100,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000085002300,
+    "SeriesId": 2300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000085002300,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000011000100090,
+    "SeriesId": 10,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000011000100090,
+    "SeriesId": 90,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000023002200010,
+    "SeriesId": 10,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000023002200010,
+    "SeriesId": 220,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000023002200010,
+    "SeriesId": 230,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000063006000010,
+    "SeriesId": 10,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000063006000010,
+    "SeriesId": 600,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000063006000010,
+    "SeriesId": 630,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000069008000810,
+    "SeriesId": 690,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000069008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000069008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000070008000810,
+    "SeriesId": 700,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000070008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000070008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000080008100950,
+    "SeriesId": 800,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000080008100950,
+    "SeriesId": 810,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000080008100950,
+    "SeriesId": 950,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000082008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000082008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000082008000810,
+    "SeriesId": 820,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000084008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000084008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000084008000810,
+    "SeriesId": 840,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000095008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000095008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000095008000810,
+    "SeriesId": 950,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000115008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000115008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000115008000810,
+    "SeriesId": 1150,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000305030003300,
+    "SeriesId": 3000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000305030003300,
+    "SeriesId": 3050,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000305030003300,
+    "SeriesId": 3300,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000306030503000,
+    "SeriesId": 3000,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000306030503000,
+    "SeriesId": 3050,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000306030503000,
+    "SeriesId": 3060,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000307030503000,
+    "SeriesId": 3000,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000307030503000,
+    "SeriesId": 3050,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000307030503000,
+    "SeriesId": 3070,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000308030503000,
+    "SeriesId": 3000,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000308030503000,
+    "SeriesId": 3050,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000308030503000,
+    "SeriesId": 3080,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000339030503300,
+    "SeriesId": 3050,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000339030503300,
+    "SeriesId": 3300,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000339030503300,
+    "SeriesId": 3390,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000342033003050,
+    "SeriesId": 3050,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000342033003050,
+    "SeriesId": 3300,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000342033003050,
+    "SeriesId": 3420,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000728008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000728008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000728008000810,
+    "SeriesId": 7280,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000750008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000750008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000750008000810,
+    "SeriesId": 7500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000764008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000764008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000764008000810,
+    "SeriesId": 7640,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000850008000810,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000850008000810,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10000850008000810,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10830080008100950,
+    "SeriesId": 800,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10830080008100950,
+    "SeriesId": 810,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 10830080008100950,
+    "SeriesId": 830,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10830080008100950,
+    "SeriesId": 950,
+    "SortOrder": 4
+  }
+]

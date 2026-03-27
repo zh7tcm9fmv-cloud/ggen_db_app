@@ -1,0 +1,18 @@
+[
+  {
+    "LimitBreakStep": 0,
+    "GrowthRate": 0
+  },
+  {
+    "LimitBreakStep": 1,
+    "GrowthRate": 20
+  },
+  {
+    "LimitBreakStep": 2,
+    "GrowthRate": 30
+  },
+  {
+    "LimitBreakStep": 3,
+    "GrowthRate": 40
+  }
+]

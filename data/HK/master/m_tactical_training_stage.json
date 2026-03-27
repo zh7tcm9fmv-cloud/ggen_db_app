@@ -1,0 +1,212 @@
+[
+  {
+    "StageId": 90100101,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 130900000090100101,
+    "FunctionTipsId": 5001,
+    "StageNameLanguageId": 130800000090100101,
+    "ThumbnailResourceId": "tts_90100101",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100102,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 130900000090100102,
+    "FunctionTipsId": 5002,
+    "StageNameLanguageId": 130800000090100102,
+    "ThumbnailResourceId": "tts_90100102",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100103,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 130900000090100103,
+    "FunctionTipsId": 5003,
+    "StageNameLanguageId": 130800000090100103,
+    "ThumbnailResourceId": "tts_90100103",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100104,
+    "SortOrder": 9,
+    "DescriptionLanguageId": 130900000090100104,
+    "FunctionTipsId": 5004,
+    "StageNameLanguageId": 130800000090100104,
+    "ThumbnailResourceId": "tts_90100104",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100105,
+    "SortOrder": 6,
+    "DescriptionLanguageId": 130900000090100105,
+    "FunctionTipsId": 5005,
+    "StageNameLanguageId": 130800000090100105,
+    "ThumbnailResourceId": "tts_90100105",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100106,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 130900000090100106,
+    "FunctionTipsId": 0,
+    "StageNameLanguageId": 130800000090100106,
+    "ThumbnailResourceId": "tts_90100106",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100107,
+    "SortOrder": 3,
+    "DescriptionLanguageId": 130900000090100107,
+    "FunctionTipsId": 0,
+    "StageNameLanguageId": 130800000090100107,
+    "ThumbnailResourceId": "tts_90100107",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100108,
+    "SortOrder": 7,
+    "DescriptionLanguageId": 130900000090100108,
+    "FunctionTipsId": 5008,
+    "StageNameLanguageId": 130800000090100108,
+    "ThumbnailResourceId": "tts_90100108",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100109,
+    "SortOrder": 16,
+    "DescriptionLanguageId": 130900000090100109,
+    "FunctionTipsId": 5009,
+    "StageNameLanguageId": 130800000090100109,
+    "ThumbnailResourceId": "tts_90100109",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100110,
+    "SortOrder": 8,
+    "DescriptionLanguageId": 130900000090100110,
+    "FunctionTipsId": 5010,
+    "StageNameLanguageId": 130800000090100110,
+    "ThumbnailResourceId": "tts_90100110",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100111,
+    "SortOrder": 14,
+    "DescriptionLanguageId": 130900000090100111,
+    "FunctionTipsId": 5011,
+    "StageNameLanguageId": 130800000090100111,
+    "ThumbnailResourceId": "tts_90100111",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100112,
+    "SortOrder": 13,
+    "DescriptionLanguageId": 130900000090100112,
+    "FunctionTipsId": 5012,
+    "StageNameLanguageId": 130800000090100112,
+    "ThumbnailResourceId": "tts_90100112",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100113,
+    "SortOrder": 15,
+    "DescriptionLanguageId": 130900000090100113,
+    "FunctionTipsId": 5013,
+    "StageNameLanguageId": 130800000090100113,
+    "ThumbnailResourceId": "tts_90100113",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100114,
+    "SortOrder": 10,
+    "DescriptionLanguageId": 130900000090100114,
+    "FunctionTipsId": 5014,
+    "StageNameLanguageId": 130800000090100114,
+    "ThumbnailResourceId": "tts_90100114",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100115,
+    "SortOrder": 11,
+    "DescriptionLanguageId": 130900000090100115,
+    "FunctionTipsId": 5015,
+    "StageNameLanguageId": 130800000090100115,
+    "ThumbnailResourceId": "tts_90100115",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90100116,
+    "SortOrder": 12,
+    "DescriptionLanguageId": 130900000090100116,
+    "FunctionTipsId": 5016,
+    "StageNameLanguageId": 130800000090100116,
+    "ThumbnailResourceId": "tts_90100116",
+    "TacticalTrainingTypeIndex": 0,
+    "ScheduleId": 0
+  },
+  {
+    "StageId": 90110101,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 130900000090110101,
+    "FunctionTipsId": 5201,
+    "StageNameLanguageId": 130800000090110101,
+    "ThumbnailResourceId": "tts_90110103",
+    "TacticalTrainingTypeIndex": 2,
+    "ScheduleId": 2512309903
+  },
+  {
+    "StageId": 90110102,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 130900000090110102,
+    "FunctionTipsId": 5202,
+    "StageNameLanguageId": 130800000090110102,
+    "ThumbnailResourceId": "tts_90110101",
+    "TacticalTrainingTypeIndex": 2,
+    "ScheduleId": 2512309903
+  },
+  {
+    "StageId": 90110103,
+    "SortOrder": 3,
+    "DescriptionLanguageId": 130900000090110103,
+    "FunctionTipsId": 5203,
+    "StageNameLanguageId": 130800000090110103,
+    "ThumbnailResourceId": "tts_90110102",
+    "TacticalTrainingTypeIndex": 2,
+    "ScheduleId": 2512309903
+  },
+  {
+    "StageId": 90110104,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 130900000090110104,
+    "FunctionTipsId": 5204,
+    "StageNameLanguageId": 130800000090110104,
+    "ThumbnailResourceId": "tts_90110104",
+    "TacticalTrainingTypeIndex": 2,
+    "ScheduleId": 2512309903
+  },
+  {
+    "StageId": 90110105,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 130900000090110105,
+    "FunctionTipsId": 5205,
+    "StageNameLanguageId": 130800000090110105,
+    "ThumbnailResourceId": "tts_90110105",
+    "TacticalTrainingTypeIndex": 2,
+    "ScheduleId": 2512309903
+  }
+]

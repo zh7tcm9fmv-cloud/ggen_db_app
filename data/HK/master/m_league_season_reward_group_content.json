@@ -1,0 +1,2991 @@
+[
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000000101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000000102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000000103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000000104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000000105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000010611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000010501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000010502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000010503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000010504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000010505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000010401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000010402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000010403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000010404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000010405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000010301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000010302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000010303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000010304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000010305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000010201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000010202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000010203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000010204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000010205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000010101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000010102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000010103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000010104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000010105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000020611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000020501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000020502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000020503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000020504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000020505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000020401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000020402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000020403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000020404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000020405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000020301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000020302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000020303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000020304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000020305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000020201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000020202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000020203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000020204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000020205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000020101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000020102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000020103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000020104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 3,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000020105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 25500,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 51000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 76500,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 102000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 127500,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 136000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 144500,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 153000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 161500,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000030611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000030501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 20400,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000030502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 40800,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000030503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 61200,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000030504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 81600,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000030505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000030401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 15300,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000030402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 30600,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000030403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 45900,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000030404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 61200,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000030405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000030301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 11050,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000030302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 22100,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000030303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 33150,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000030304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 44200,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000030305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000030201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 6800,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000030202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 13600,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000030203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 20400,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000030204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 27200,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000030205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000030101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 3400,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000030102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 6800,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000030103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 10200,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000030104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 4,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 13600,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000030105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000040611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000040501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000040502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000040503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000040504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000040505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000040401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000040402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000040403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000040404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000040405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000040301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000040302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000040303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000040304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000040305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000040201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000040202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000040203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000040204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000040205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000040101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000040102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000040103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000040104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 5,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000040105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000050611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000050501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000050502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000050503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000050504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000050505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000050401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000050402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000050403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000050404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000050405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000050301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000050302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000050303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000050304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000050305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000050201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000050202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000050203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000050204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000050205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000050101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000050102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000050103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000050104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 6,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000050105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000060611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000060501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000060502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000060503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000060504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000060505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000060401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000060402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000060403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000060404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000060405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000060301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000060302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000060303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000060304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000060305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000060201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000060202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000060203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000060204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000060205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000060101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000060102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000060103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000060104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 7,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000060105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000070611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000070501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000070502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000070503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000070504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000070505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000070401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000070402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000070403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000070404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000070405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000070301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000070302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000070303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000070304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000070305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000070201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000070202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000070203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000070204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000070205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000070101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000070102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000070103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000070104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 8,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000070105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000080611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000080501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000080502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000080503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000080504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000080505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000080401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000080402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000080403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000080404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000080405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000080301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000080302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000080303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000080304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000080305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000080201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000080202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000080203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000080204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000080205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000080101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000080102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000080103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000080104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 9,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000080105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000090611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000090501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000090502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000090503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000090504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000090505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000090401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000090402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000090403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000090404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000090405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000090301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000090302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000090303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000090304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000090305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000090201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000090202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000090203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000090204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000090205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000090101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000090102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000090103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000090104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 10,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000090105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000100611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000100501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000100502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000100503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000100504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000100505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000100401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000100402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000100403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000100404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000100405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000100301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000100302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000100303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000100304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000100305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000100201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000100202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000100203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000100204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000100205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000100101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000100102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000100103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000100104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 11,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000100105
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110601
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 30000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110602
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 60000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110603
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110604
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110605
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 150000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110606
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 160000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110607
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 170000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110608
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 180000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110609
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 190000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110610
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 200000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000110611
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000110501
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000110502
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 48000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000110503
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000110504
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 96000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000110505
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000110401
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 18000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000110402
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 36000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000110403
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 54000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000110404
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 72000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000110405
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000110301
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 13000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000110302
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 26000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000110303
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 39000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000110304
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 52000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000110305
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000110201
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000110202
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000110203
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 24000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000110204
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 32000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000110205
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 1,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000110101
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 4000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000110102
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 8000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000110103
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 12000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000110104
+  },
+  {
+    "LeagueSeasonRewardGroupId": 12,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 16000,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 34000000110105
+  }
+]

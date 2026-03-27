@@ -1,0 +1,477 @@
+[
+  {
+    "Id": 1611001240010101,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 4
+  },
+  {
+    "Id": 1800022504101101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504100201
+  },
+  {
+    "Id": 1800022504101201,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504100202
+  },
+  {
+    "Id": 1800022504101301,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504100203
+  },
+  {
+    "Id": 1800022504101401,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504100204
+  },
+  {
+    "Id": 1800022504101501,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504100205
+  },
+  {
+    "Id": 1800022504301101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2504300201
+  },
+  {
+    "Id": 1800022506301101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2506300201
+  },
+  {
+    "Id": 1800022509600101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2509600201
+  },
+  {
+    "Id": 1800022509600201,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2509600202
+  },
+  {
+    "Id": 1800022509600701,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800022510800101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2510800101
+  },
+  {
+    "Id": 1800022510800201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800022511400101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2511400201
+  },
+  {
+    "Id": 1800022511400201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800022512400101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2512400201
+  },
+  {
+    "Id": 1800022512400201,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2512400202
+  },
+  {
+    "Id": 1800022601500101,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 2601500201
+  },
+  {
+    "Id": 1800122504101101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 101402
+  },
+  {
+    "Id": 1800122504101201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 8101502
+  },
+  {
+    "Id": 1800122504101301,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 9501803
+  },
+  {
+    "Id": 1800122504101401,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 21001702
+  },
+  {
+    "Id": 1800122504101501,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 30001704
+  },
+  {
+    "Id": 1800122504301101,
+    "ConditionTypeIndex": 9,
+    "TargetValue": 31001901
+  },
+  {
+    "Id": 1800122506300201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1800122506301101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 11000502
+  },
+  {
+    "Id": 1800122508200101,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 3
+  },
+  {
+    "Id": 1800122509600101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 20001802
+  },
+  {
+    "Id": 1800122509600201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 12501004
+  },
+  {
+    "Id": 1800122509600301,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1800122509600701,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225096007
+  },
+  {
+    "Id": 1800122509600702,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2509600204
+  },
+  {
+    "Id": 1800122509600703,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122509600801,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225096008
+  },
+  {
+    "Id": 1800122509600802,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2509600203
+  },
+  {
+    "Id": 1800122509600803,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122510500101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1800122510800101,
+    "ConditionTypeIndex": 9,
+    "TargetValue": 43003203
+  },
+  {
+    "Id": 1800122510800201,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225108002
+  },
+  {
+    "Id": 1800122510800202,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2510800203
+  },
+  {
+    "Id": 1800122510800203,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122510800301,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225108003
+  },
+  {
+    "Id": 1800122510800302,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2510800202
+  },
+  {
+    "Id": 1800122510800303,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122511100101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1800122511400101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 15000304
+  },
+  {
+    "Id": 1800122511400201,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225114002
+  },
+  {
+    "Id": 1800122511400202,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2511400203
+  },
+  {
+    "Id": 1800122511400203,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122511400301,
+    "ConditionTypeIndex": 10,
+    "TargetValue": 225114003
+  },
+  {
+    "Id": 1800122511400302,
+    "ConditionTypeIndex": 11,
+    "TargetValue": 2511400202
+  },
+  {
+    "Id": 1800122511400303,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100303
+  },
+  {
+    "Id": 1800122512400101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 33002303
+  },
+  {
+    "Id": 1800122512400201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 50101402
+  },
+  {
+    "Id": 1800122512400301,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1800122601500101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 23001903
+  },
+  {
+    "Id": 1800122602200101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 1910000001002201,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 20
+  },
+  {
+    "Id": 1914210001000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 90300110
+  },
+  {
+    "Id": 1914210002000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 90300210
+  },
+  {
+    "Id": 1914240001000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 91010108
+  },
+  {
+    "Id": 2090800103000001,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 2099000101000001,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525052004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525062004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525072004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525082004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525092004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525096006010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525107004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525113004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525123004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3525123006010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3526014004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3526023004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3526035002010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3526035004010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3526035005010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 3743100105000001,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 3
+  },
+  {
+    "Id": 9908250410000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908251050000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908251085000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908251240000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260145000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260210000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260210000201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260220000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260220000201,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260230000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260240000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260240000102,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260245000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260320000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260330000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
+    "Id": 9908260355000101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  }
+]

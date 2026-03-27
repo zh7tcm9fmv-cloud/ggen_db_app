@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 25095001110701,
+    "GameEventMultiTargetValueGroupId": 250950011107,
+    "TargetValue": 200005
+  },
+  {
+    "Id": 25095001110702,
+    "GameEventMultiTargetValueGroupId": 250950011107,
+    "TargetValue": 200006
+  },
+  {
+    "Id": 25123001210701,
+    "GameEventMultiTargetValueGroupId": 251230012107,
+    "TargetValue": 300008
+  },
+  {
+    "Id": 25123001210702,
+    "GameEventMultiTargetValueGroupId": 251230012107,
+    "TargetValue": 300009
+  }
+]

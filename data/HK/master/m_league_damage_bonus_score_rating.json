@@ -1,0 +1,27 @@
+[
+  {
+    "Id": 1,
+    "RequiredScoreRate": 0,
+    "ScoreRatingTypeIndex": 1
+  },
+  {
+    "Id": 2,
+    "RequiredScoreRate": 21,
+    "ScoreRatingTypeIndex": 2
+  },
+  {
+    "Id": 3,
+    "RequiredScoreRate": 41,
+    "ScoreRatingTypeIndex": 3
+  },
+  {
+    "Id": 4,
+    "RequiredScoreRate": 61,
+    "ScoreRatingTypeIndex": 4
+  },
+  {
+    "Id": 5,
+    "RequiredScoreRate": 81,
+    "ScoreRatingTypeIndex": 5
+  }
+]

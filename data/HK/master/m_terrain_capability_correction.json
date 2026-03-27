@@ -1,0 +1,17 @@
+[
+  {
+    "TerrainCapabilityTypeIndex": 1,
+    "MoveCostCorrectionPercentage": 1000,
+    "FrictionCorrectionPercentage": 1000
+  },
+  {
+    "TerrainCapabilityTypeIndex": 2,
+    "MoveCostCorrectionPercentage": 200,
+    "FrictionCorrectionPercentage": 100
+  },
+  {
+    "TerrainCapabilityTypeIndex": 3,
+    "MoveCostCorrectionPercentage": 100,
+    "FrictionCorrectionPercentage": 100
+  }
+]

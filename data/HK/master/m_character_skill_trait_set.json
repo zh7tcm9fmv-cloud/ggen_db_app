@@ -1,0 +1,502 @@
+[
+  {
+    "Id": 1000601,
+    "CharacterSkillTraitId": 100060101
+  },
+  {
+    "Id": 1000602,
+    "CharacterSkillTraitId": 100060201
+  },
+  {
+    "Id": 1000603,
+    "CharacterSkillTraitId": 100060301
+  },
+  {
+    "Id": 1000604,
+    "CharacterSkillTraitId": 100060401
+  },
+  {
+    "Id": 1000605,
+    "CharacterSkillTraitId": 100060501
+  },
+  {
+    "Id": 1100701,
+    "CharacterSkillTraitId": 110070101
+  },
+  {
+    "Id": 1100702,
+    "CharacterSkillTraitId": 110070201
+  },
+  {
+    "Id": 1100703,
+    "CharacterSkillTraitId": 110070301
+  },
+  {
+    "Id": 1100704,
+    "CharacterSkillTraitId": 110070401
+  },
+  {
+    "Id": 1100705,
+    "CharacterSkillTraitId": 110070501
+  },
+  {
+    "Id": 1200901,
+    "CharacterSkillTraitId": 120090101
+  },
+  {
+    "Id": 1200902,
+    "CharacterSkillTraitId": 120090201
+  },
+  {
+    "Id": 1200903,
+    "CharacterSkillTraitId": 120090301
+  },
+  {
+    "Id": 1200904,
+    "CharacterSkillTraitId": 120090401
+  },
+  {
+    "Id": 1200905,
+    "CharacterSkillTraitId": 120090501
+  },
+  {
+    "Id": 1300801,
+    "CharacterSkillTraitId": 130080101
+  },
+  {
+    "Id": 1300802,
+    "CharacterSkillTraitId": 130080201
+  },
+  {
+    "Id": 1300803,
+    "CharacterSkillTraitId": 130080301
+  },
+  {
+    "Id": 1300804,
+    "CharacterSkillTraitId": 130080401
+  },
+  {
+    "Id": 1300805,
+    "CharacterSkillTraitId": 130080501
+  },
+  {
+    "Id": 1301401,
+    "CharacterSkillTraitId": 130140101
+  },
+  {
+    "Id": 1301402,
+    "CharacterSkillTraitId": 130140201
+  },
+  {
+    "Id": 1301403,
+    "CharacterSkillTraitId": 130140301
+  },
+  {
+    "Id": 1301404,
+    "CharacterSkillTraitId": 130140401
+  },
+  {
+    "Id": 1301405,
+    "CharacterSkillTraitId": 130140501
+  },
+  {
+    "Id": 1600501,
+    "CharacterSkillTraitId": 160050101
+  },
+  {
+    "Id": 1600502,
+    "CharacterSkillTraitId": 160050201
+  },
+  {
+    "Id": 1600503,
+    "CharacterSkillTraitId": 160050301
+  },
+  {
+    "Id": 1600504,
+    "CharacterSkillTraitId": 160050401
+  },
+  {
+    "Id": 1600505,
+    "CharacterSkillTraitId": 160050501
+  },
+  {
+    "Id": 1700101,
+    "CharacterSkillTraitId": 170010101
+  },
+  {
+    "Id": 1700102,
+    "CharacterSkillTraitId": 170010201
+  },
+  {
+    "Id": 1700103,
+    "CharacterSkillTraitId": 170010301
+  },
+  {
+    "Id": 1700104,
+    "CharacterSkillTraitId": 170010401
+  },
+  {
+    "Id": 1700105,
+    "CharacterSkillTraitId": 170010501
+  },
+  {
+    "Id": 1801601,
+    "CharacterSkillTraitId": 180160101
+  },
+  {
+    "Id": 1801602,
+    "CharacterSkillTraitId": 180160201
+  },
+  {
+    "Id": 1801603,
+    "CharacterSkillTraitId": 180160301
+  },
+  {
+    "Id": 1801604,
+    "CharacterSkillTraitId": 180160401
+  },
+  {
+    "Id": 1801605,
+    "CharacterSkillTraitId": 180160501
+  },
+  {
+    "Id": 1901501,
+    "CharacterSkillTraitId": 190150101
+  },
+  {
+    "Id": 1901502,
+    "CharacterSkillTraitId": 190150201
+  },
+  {
+    "Id": 1901503,
+    "CharacterSkillTraitId": 190150301
+  },
+  {
+    "Id": 1901504,
+    "CharacterSkillTraitId": 190150401
+  },
+  {
+    "Id": 1901505,
+    "CharacterSkillTraitId": 190150501
+  },
+  {
+    "Id": 2001701,
+    "CharacterSkillTraitId": 200170101
+  },
+  {
+    "Id": 2001702,
+    "CharacterSkillTraitId": 200170201
+  },
+  {
+    "Id": 2001703,
+    "CharacterSkillTraitId": 200170301
+  },
+  {
+    "Id": 2001704,
+    "CharacterSkillTraitId": 200170401
+  },
+  {
+    "Id": 2001705,
+    "CharacterSkillTraitId": 200170501
+  },
+  {
+    "Id": 2101001,
+    "CharacterSkillTraitId": 210100101
+  },
+  {
+    "Id": 2101002,
+    "CharacterSkillTraitId": 210100201
+  },
+  {
+    "Id": 2101003,
+    "CharacterSkillTraitId": 210100301
+  },
+  {
+    "Id": 2101004,
+    "CharacterSkillTraitId": 210100401
+  },
+  {
+    "Id": 2101005,
+    "CharacterSkillTraitId": 210100501
+  },
+  {
+    "Id": 2200201,
+    "CharacterSkillTraitId": 220020101
+  },
+  {
+    "Id": 2200202,
+    "CharacterSkillTraitId": 220020201
+  },
+  {
+    "Id": 2200203,
+    "CharacterSkillTraitId": 220020301
+  },
+  {
+    "Id": 2200204,
+    "CharacterSkillTraitId": 220020401
+  },
+  {
+    "Id": 2200205,
+    "CharacterSkillTraitId": 220020501
+  },
+  {
+    "Id": 2300301,
+    "CharacterSkillTraitId": 230030101
+  },
+  {
+    "Id": 2300302,
+    "CharacterSkillTraitId": 230030201
+  },
+  {
+    "Id": 2300303,
+    "CharacterSkillTraitId": 230030301
+  },
+  {
+    "Id": 2300304,
+    "CharacterSkillTraitId": 230030401
+  },
+  {
+    "Id": 2300305,
+    "CharacterSkillTraitId": 230030501
+  },
+  {
+    "Id": 2401101,
+    "CharacterSkillTraitId": 240110101
+  },
+  {
+    "Id": 2401102,
+    "CharacterSkillTraitId": 240110201
+  },
+  {
+    "Id": 2401103,
+    "CharacterSkillTraitId": 240110301
+  },
+  {
+    "Id": 2401104,
+    "CharacterSkillTraitId": 240110401
+  },
+  {
+    "Id": 2401105,
+    "CharacterSkillTraitId": 240110501
+  },
+  {
+    "Id": 2600401,
+    "CharacterSkillTraitId": 260040101
+  },
+  {
+    "Id": 2600402,
+    "CharacterSkillTraitId": 260040201
+  },
+  {
+    "Id": 2600403,
+    "CharacterSkillTraitId": 260040301
+  },
+  {
+    "Id": 2600404,
+    "CharacterSkillTraitId": 260040401
+  },
+  {
+    "Id": 2600405,
+    "CharacterSkillTraitId": 260040501
+  },
+  {
+    "Id": 2701301,
+    "CharacterSkillTraitId": 270130101
+  },
+  {
+    "Id": 2701301,
+    "CharacterSkillTraitId": 270130102
+  },
+  {
+    "Id": 2701302,
+    "CharacterSkillTraitId": 270130201
+  },
+  {
+    "Id": 2701302,
+    "CharacterSkillTraitId": 270130202
+  },
+  {
+    "Id": 2701303,
+    "CharacterSkillTraitId": 270130301
+  },
+  {
+    "Id": 2701303,
+    "CharacterSkillTraitId": 270130302
+  },
+  {
+    "Id": 2701304,
+    "CharacterSkillTraitId": 270130401
+  },
+  {
+    "Id": 2701304,
+    "CharacterSkillTraitId": 270130402
+  },
+  {
+    "Id": 2701305,
+    "CharacterSkillTraitId": 270130501
+  },
+  {
+    "Id": 2701305,
+    "CharacterSkillTraitId": 270130502
+  },
+  {
+    "Id": 2801401,
+    "CharacterSkillTraitId": 280140101
+  },
+  {
+    "Id": 2801401,
+    "CharacterSkillTraitId": 280140102
+  },
+  {
+    "Id": 2801402,
+    "CharacterSkillTraitId": 280140201
+  },
+  {
+    "Id": 2801402,
+    "CharacterSkillTraitId": 280140202
+  },
+  {
+    "Id": 2801403,
+    "CharacterSkillTraitId": 280140301
+  },
+  {
+    "Id": 2801403,
+    "CharacterSkillTraitId": 280140302
+  },
+  {
+    "Id": 2801404,
+    "CharacterSkillTraitId": 280140401
+  },
+  {
+    "Id": 2801404,
+    "CharacterSkillTraitId": 280140402
+  },
+  {
+    "Id": 2801405,
+    "CharacterSkillTraitId": 280140501
+  },
+  {
+    "Id": 2801405,
+    "CharacterSkillTraitId": 280140502
+  },
+  {
+    "Id": 2901801,
+    "CharacterSkillTraitId": 290180101
+  },
+  {
+    "Id": 2901802,
+    "CharacterSkillTraitId": 290180201
+  },
+  {
+    "Id": 2901803,
+    "CharacterSkillTraitId": 290180301
+  },
+  {
+    "Id": 2901804,
+    "CharacterSkillTraitId": 290180401
+  },
+  {
+    "Id": 2901805,
+    "CharacterSkillTraitId": 290180501
+  },
+  {
+    "Id": 3001901,
+    "CharacterSkillTraitId": 300190101
+  },
+  {
+    "Id": 3001902,
+    "CharacterSkillTraitId": 300190201
+  },
+  {
+    "Id": 3001903,
+    "CharacterSkillTraitId": 300190301
+  },
+  {
+    "Id": 3001904,
+    "CharacterSkillTraitId": 300190401
+  },
+  {
+    "Id": 3001905,
+    "CharacterSkillTraitId": 300190501
+  },
+  {
+    "Id": 3102001,
+    "CharacterSkillTraitId": 310200101
+  },
+  {
+    "Id": 3102002,
+    "CharacterSkillTraitId": 310200201
+  },
+  {
+    "Id": 3102003,
+    "CharacterSkillTraitId": 310200301
+  },
+  {
+    "Id": 3102004,
+    "CharacterSkillTraitId": 310200401
+  },
+  {
+    "Id": 3102005,
+    "CharacterSkillTraitId": 310200501
+  },
+  {
+    "Id": 3202101,
+    "CharacterSkillTraitId": 320210101
+  },
+  {
+    "Id": 3202102,
+    "CharacterSkillTraitId": 320210201
+  },
+  {
+    "Id": 3202103,
+    "CharacterSkillTraitId": 320210301
+  },
+  {
+    "Id": 3202104,
+    "CharacterSkillTraitId": 320210401
+  },
+  {
+    "Id": 3202105,
+    "CharacterSkillTraitId": 320210501
+  },
+  {
+    "Id": 3302201,
+    "CharacterSkillTraitId": 330220101
+  },
+  {
+    "Id": 3302201,
+    "CharacterSkillTraitId": 330220102
+  },
+  {
+    "Id": 3302202,
+    "CharacterSkillTraitId": 330220201
+  },
+  {
+    "Id": 3302202,
+    "CharacterSkillTraitId": 330220202
+  },
+  {
+    "Id": 3302203,
+    "CharacterSkillTraitId": 330220301
+  },
+  {
+    "Id": 3302203,
+    "CharacterSkillTraitId": 330220302
+  },
+  {
+    "Id": 3402302,
+    "CharacterSkillTraitId": 340230201
+  },
+  {
+    "Id": 9000001,
+    "CharacterSkillTraitId": 900000001
+  },
+  {
+    "Id": 9000002,
+    "CharacterSkillTraitId": 900000002
+  },
+  {
+    "Id": 9000005,
+    "CharacterSkillTraitId": 900000005
+  }
+]

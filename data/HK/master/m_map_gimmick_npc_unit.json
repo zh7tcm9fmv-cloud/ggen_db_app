@@ -1,0 +1,494 @@
+[
+  {
+    "MapGimmickNpcId": 9070001004001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700104001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001005001,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700105001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001005002,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700105001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001005003,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700105001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001005004,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700105001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109004,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009006,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700109003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001009007,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700109005,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001011001,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700111001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001011002,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700111001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001013001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700113001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001013002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700113002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001014006,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700114002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015001,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700115001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015002,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700115001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015005,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700115003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015006,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700115003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015007,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700115004,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001015008,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700115004,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001016001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700116001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001016002,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700116002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001016003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700116001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001016004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700116001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001016005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700116001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017001,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700117001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017002,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700117001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017003,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700117002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017004,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700117002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017005,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700117003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001017006,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700117003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001019001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700119001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001019002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700119002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001019003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700119001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001019004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700119002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001019005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700119001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001020001,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700120001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001020002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700120002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001020003,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700120001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070001020004,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700120003,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002003001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700203001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002004001,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700204001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002004002,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700204001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700209001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700209001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009003,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009004,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009005,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009006,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009007,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002009008,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700209002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002011001,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700211001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002011002,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700211001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002011003,
+    "UnitId": 1850005000,
+    "MapNpcBuffId": 90700211001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002012001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700212001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002012002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700212002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013006,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002013007,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700213002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002014001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700214001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002014002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700214001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002014003,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700214002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002014004,
+    "UnitId": 1850005200,
+    "MapNpcBuffId": 90700214002,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015001,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015002,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015003,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015004,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015005,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015006,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  },
+  {
+    "MapGimmickNpcId": 9070002015007,
+    "UnitId": 1850005100,
+    "MapNpcBuffId": 90700215001,
+    "MapNpcUnitAbilitySetId": 0
+  }
+]

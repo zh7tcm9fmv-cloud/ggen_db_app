@@ -1,0 +1,20 @@
+[
+  {
+    "ItemId": 200000000002,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 4,
+    "TargetId": 0
+  },
+  {
+    "ItemId": 240000020090,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 90
+  },
+  {
+    "ItemId": 250000021002,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1002
+  }
+]

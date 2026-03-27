@@ -1,0 +1,32 @@
+[
+  {
+    "PaymentShopItemId": 225096007,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225096007"
+  },
+  {
+    "PaymentShopItemId": 225096008,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225096007"
+  },
+  {
+    "PaymentShopItemId": 225108002,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225108002"
+  },
+  {
+    "PaymentShopItemId": 225108003,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225108002"
+  },
+  {
+    "PaymentShopItemId": 225114002,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225114002"
+  },
+  {
+    "PaymentShopItemId": 225114003,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_225114002"
+  }
+]

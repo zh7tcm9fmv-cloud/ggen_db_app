@@ -1,0 +1,422 @@
+[
+  {
+    "Id": 2504100101,
+    "TransitionId": 28002504100101,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504100101,
+    "SortOrder": 1001,
+    "ResourceId": "gasha_2504100101",
+    "ScheduleId": 0,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2504100102,
+    "TransitionId": 28002504100201,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504100201,
+    "SortOrder": 1,
+    "ResourceId": "gasha_2504100201",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2504300101,
+    "TransitionId": 28002504300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504300101,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2504300301",
+    "ScheduleId": 2504301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2505100301,
+    "TransitionId": 28002505100301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504300101,
+    "SortOrder": 1201,
+    "ResourceId": "gasha_2505100301",
+    "ScheduleId": 2505101702,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2505200101,
+    "TransitionId": 28002505200401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2505200401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2505200101",
+    "ScheduleId": 2505201702,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2505400101,
+    "TransitionId": 28002505400301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2505400101,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2505400301",
+    "ScheduleId": 2505401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2506100302,
+    "TransitionId": 28002506100302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2506100201,
+    "SortOrder": 1201,
+    "ResourceId": "gasha_2506100302",
+    "ScheduleId": 2506101701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2506100901,
+    "TransitionId": 47000000000000,
+    "DestinationTypeIndex": 0,
+    "DestinationId": 0,
+    "SortOrder": 4,
+    "ResourceId": "invite_homeimg_info",
+    "ScheduleId": 2506109902,
+    "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2506200101,
+    "TransitionId": 28002506200401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2506200401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2506200401",
+    "ScheduleId": 2506201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2506300101,
+    "TransitionId": 28002506300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2506300101,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2506300301",
+    "ScheduleId": 2506301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2507100302,
+    "TransitionId": 28002507100302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2507100201,
+    "SortOrder": 1201,
+    "ResourceId": "gasha_2507100302",
+    "ScheduleId": 2507101701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2507200101,
+    "TransitionId": 28002507200401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2507200401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2507200401",
+    "ScheduleId": 2507201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2507300101,
+    "TransitionId": 28002507300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2507300101,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2507300301",
+    "ScheduleId": 2507301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2508100302,
+    "TransitionId": 28002508100302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2508100201,
+    "SortOrder": 1201,
+    "ResourceId": "gasha_2508100302",
+    "ScheduleId": 2508101701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2508200101,
+    "TransitionId": 28002508200401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2508200401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2508200401",
+    "ScheduleId": 2508201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2508300301,
+    "TransitionId": 28002508300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2508300301,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2508300301",
+    "ScheduleId": 2508301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2509300301,
+    "TransitionId": 28002509300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2509300301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2509300301",
+    "ScheduleId": 2509301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2509400101,
+    "TransitionId": 28002509200401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2509200401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2509200401",
+    "ScheduleId": 2509401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2509600301,
+    "TransitionId": 28002509600301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2509600301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2509600301",
+    "ScheduleId": 2509601701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2509600601,
+    "TransitionId": 28002509600601,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2509600601,
+    "SortOrder": 1001,
+    "ResourceId": "gasha_2509600601",
+    "ScheduleId": 2509601702,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2510300301,
+    "TransitionId": 28002510300301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2510300301,
+    "SortOrder": 1007,
+    "ResourceId": "gasha_2510300301",
+    "ScheduleId": 2510301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2510700101,
+    "TransitionId": 28002510700401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2510700401,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2510700401",
+    "ScheduleId": 2510701701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2510800101,
+    "TransitionId": 28002510800301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2510800301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2510800301",
+    "ScheduleId": 2510801701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2511100302,
+    "TransitionId": 28002511100302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2511100302,
+    "SortOrder": 1010,
+    "ResourceId": "gasha_2511100302",
+    "ScheduleId": 2511101701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2511300101,
+    "TransitionId": 28002511300401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2511300401,
+    "SortOrder": 1101,
+    "ResourceId": "gasha_2511300401",
+    "ScheduleId": 2511301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2511400301,
+    "TransitionId": 28002511400301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2511400301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2511400301",
+    "ScheduleId": 2511401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2512100301,
+    "TransitionId": 28002512100301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2512100301,
+    "SortOrder": 1010,
+    "ResourceId": "gasha_2512100302",
+    "ScheduleId": 2512101701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2512300101,
+    "TransitionId": 28002512300401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2512300401,
+    "SortOrder": 1011,
+    "ResourceId": "gasha_2512300401",
+    "ScheduleId": 2512301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2512300601,
+    "TransitionId": 28002512300601,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2512300601,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2512300601",
+    "ScheduleId": 2512301702,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2512400301,
+    "TransitionId": 28002512400301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2512400301,
+    "SortOrder": 1015,
+    "ResourceId": "gasha_2512400301",
+    "ScheduleId": 2512401703,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2601200302,
+    "TransitionId": 28002601200302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2601200302,
+    "SortOrder": 1020,
+    "ResourceId": "gasha_2601100302",
+    "ScheduleId": 2601201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2601400101,
+    "TransitionId": 28002601400401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2601400401,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2601400401",
+    "ScheduleId": 2601401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2601500301,
+    "TransitionId": 28002601500301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2601500301,
+    "SortOrder": 1010,
+    "ResourceId": "gasha_2601500301",
+    "ScheduleId": 2601501701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2602200302,
+    "TransitionId": 28002602200302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2602200302,
+    "SortOrder": 1020,
+    "ResourceId": "gasha_2602200302",
+    "ScheduleId": 2602201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2602300101,
+    "TransitionId": 28002602300401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2602300401,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2602300401",
+    "ScheduleId": 2602301701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2602300201,
+    "TransitionId": 37000000000000,
+    "DestinationTypeIndex": 0,
+    "DestinationId": 0,
+    "SortOrder": 1021,
+    "ResourceId": "ml_homeimg_info_300010",
+    "ScheduleId": 2602201502,
+    "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2602400301,
+    "TransitionId": 28002602400301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2602400301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2602400301",
+    "ScheduleId": 2602401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603200302,
+    "TransitionId": 28002603200302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603200302,
+    "SortOrder": 1020,
+    "ResourceId": "gasha_2603200302",
+    "ScheduleId": 2603201701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603300201,
+    "TransitionId": 37000000000000,
+    "DestinationTypeIndex": 0,
+    "DestinationId": 0,
+    "SortOrder": 1021,
+    "ResourceId": "ml_homeimg_info_300011",
+    "ScheduleId": 2603301502,
+    "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2603500101,
+    "TransitionId": 28002603500401,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603500401,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2603500401",
+    "ScheduleId": 2603501701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603500201,
+    "TransitionId": 28002603500201,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603500201,
+    "SortOrder": 1,
+    "ResourceId": "gasha_2603500201",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603600601,
+    "TransitionId": 28002603600601,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603600601,
+    "SortOrder": 1001,
+    "ResourceId": "gasha_2603600501",
+    "ScheduleId": 2603601703,
+    "BannerResourceTypeIndex": 0
+  }
+]

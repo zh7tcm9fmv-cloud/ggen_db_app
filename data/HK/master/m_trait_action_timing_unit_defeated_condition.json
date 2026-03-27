@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 100000001,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1400000201"
+  },
+  {
+    "Id": 100000002,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1400002500"
+  },
+  {
+    "Id": 100000003,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1013001100"
+  },
+  {
+    "Id": 100000004,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1013000900"
+  }
+]

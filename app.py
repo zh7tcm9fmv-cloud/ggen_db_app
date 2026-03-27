@@ -148,6 +148,11 @@ if IS_LOCAL:
             'master_prefix': "MasterData_",
             'lang_prefix': "Lang_MasterData_"
         },
+        'HK': {
+            'root': r"C:\Users\Mikew0911\Desktop\GGen_HK",
+            'master_prefix': "MasterData_",
+            'lang_prefix': "Lang_MasterData_HK_"
+        },
         'JA': {
             'root': r"C:\Users\Mikew0911\Desktop\GGen_JA",
             'master_prefix': "MasterData_",
@@ -164,6 +169,10 @@ else:
         'TW': {
             'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'TW', 'master'),
             'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'TW', 'lang'),
+        },
+        'HK': {
+            'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'HK', 'master'),
+            'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'HK', 'lang'),
         },
         'JA': {
             'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'JA', 'master'),
@@ -213,9 +222,14 @@ UI_LABELS = {
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
     }
 }
+UI_LABELS['HK'] = dict(UI_LABELS['TW'])
 UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'}, 'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'}}
+UNIT_ROLE_TYPE_LANG_MAP['HK'] = dict(UNIT_ROLE_TYPE_LANG_MAP['TW'])
 ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
+ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
 STAGE_TERRAIN_MAP = {'1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'}, '2': {'EN': 'Atmospheric', 'TW': '空中', 'JA': '空中'}, '3': {'EN': 'Ground', 'TW': '地上', 'JA': '地上'}, '5': {'EN': 'Amphibious', 'TW': '水陸', 'JA': '水陸'}}
+for _tid in STAGE_TERRAIN_MAP:
+    STAGE_TERRAIN_MAP[_tid]['HK'] = STAGE_TERRAIN_MAP[_tid]['TW']
 
 def get_ui_label(lang_code, key):
     labels = UI_LABELS.get(lang_code, UI_LABELS[DEFAULT_LANG])
@@ -247,7 +261,7 @@ for lang_code in LANG_CONFIG:
 
 # Fallback: if a language's root is missing, try same project with lang-specific prefix (as in GUI.py)
 # e.g. TW: look for GGen_Database/MasterData_*/Lang_MasterData_TW_* so character/unit names can be translated
-_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_', 'JA': 'Lang_MasterData_JA_'}
+_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_', 'HK': 'Lang_MasterData_HK_', 'JA': 'Lang_MasterData_JA_'}
 app_dir = os.path.dirname(os.path.abspath(__file__))
 bundled_lang = lambda lc: os.path.join(app_dir, 'data', lc, 'lang')
 bundled_master = lambda lc: os.path.join(app_dir, 'data', lc, 'master')
@@ -266,6 +280,26 @@ for lang_code in LANG_CONFIG:
             lang_dir = bundled_lang(lang_code)
             print(f"  {lang_code}: using bundled data fallback")
         LANG_PATHS[lang_code] = {'base': en_base, 'lang': lang_dir or en_lang}
+
+# HK: prefer data/HK/lang when present; otherwise deployment uses TW strings until HK client export is added.
+if 'HK' in LANG_PATHS and 'TW' in LANG_PATHS:
+    twp = LANG_PATHS['TW']
+    hk_data_lang = os.path.join(app_dir, 'data', 'HK', 'lang')
+    if os.path.isdir(hk_data_lang):
+        hm = os.path.join(app_dir, 'data', 'HK', 'master')
+        LANG_PATHS['HK'] = {'base': hm if os.path.isdir(hm) else twp.get('base'), 'lang': hk_data_lang}
+    elif not IS_LOCAL:
+        LANG_PATHS['HK'] = {'base': twp.get('base'), 'lang': twp.get('lang')}
+        print("  HK: data/HK/lang not found; using TW master/lang until HK bundle is added.")
+    else:
+        ph = LANG_PATHS['HK']
+        hk_lang = ph.get('lang')
+        hk_base = ph.get('base')
+        lang_ok = hk_lang and os.path.isdir(hk_lang)
+        base_ok = hk_base and os.path.isdir(hk_base)
+        if not lang_ok or not base_ok:
+            LANG_PATHS['HK'] = {'base': twp.get('base'), 'lang': twp.get('lang')}
+            print("  HK: GGen_HK or Lang_MasterData_HK_* missing; using TW client data.")
 
 BASE_DIR = LANG_PATHS['EN']['base']
 if BASE_DIR is None:
@@ -3236,7 +3270,7 @@ print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
 def _precompute_weapon_debuff_keys_present_by_lang():
     """Which debuff filter keys appear on at least one unit (weapon traits), per UI language."""
     out = {}
-    for lc in ('EN', 'TW', 'JA'):
+    for lc in ('EN', 'TW', 'HK', 'JA'):
         ld = LANG_DATA.get(lc)
         if not ld:
             continue
@@ -4546,9 +4580,12 @@ def _serve_index():
 def index(): 
     return _serve_index()
 
+_LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
+
 @app.route('/api/languages')
-def get_languages(): 
-    display_languages = [('JP' if lc == 'JA' else lc) for lc in LANG_DATA.keys()]
+def get_languages():
+    ordered = [lc for lc in _LANG_ORDER if lc in LANG_DATA]
+    display_languages = [('JP' if lc == 'JA' else lc) for lc in ordered]
     return jsonify(convert_image_urls({'languages': display_languages, 'default': DEFAULT_LANG}))
 
 WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new.json')

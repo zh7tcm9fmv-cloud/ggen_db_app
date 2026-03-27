@@ -1,0 +1,1706 @@
+[
+  {
+    "SupporterId": 1001000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100015000,
+    "SupporterActiveSkillId": 1001000150
+  },
+  {
+    "SupporterId": 1001000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100015001,
+    "SupporterActiveSkillId": 1001000150
+  },
+  {
+    "SupporterId": 1001000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100015002,
+    "SupporterActiveSkillId": 1001000150
+  },
+  {
+    "SupporterId": 1001000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100015003,
+    "SupporterActiveSkillId": 1001000150
+  },
+  {
+    "SupporterId": 1001000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100025000,
+    "SupporterActiveSkillId": 1001000250
+  },
+  {
+    "SupporterId": 1001000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100025001,
+    "SupporterActiveSkillId": 1001000250
+  },
+  {
+    "SupporterId": 1001000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100025002,
+    "SupporterActiveSkillId": 1001000250
+  },
+  {
+    "SupporterId": 1001000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100025003,
+    "SupporterActiveSkillId": 1001000250
+  },
+  {
+    "SupporterId": 1001000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100045000,
+    "SupporterActiveSkillId": 1001000450
+  },
+  {
+    "SupporterId": 1001000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100045001,
+    "SupporterActiveSkillId": 1001000450
+  },
+  {
+    "SupporterId": 1001000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100045002,
+    "SupporterActiveSkillId": 1001000450
+  },
+  {
+    "SupporterId": 1001000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100045003,
+    "SupporterActiveSkillId": 1001000450
+  },
+  {
+    "SupporterId": 1001000550,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100055000,
+    "SupporterActiveSkillId": 1001000550
+  },
+  {
+    "SupporterId": 1001000550,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100055001,
+    "SupporterActiveSkillId": 1001000550
+  },
+  {
+    "SupporterId": 1001000550,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100055002,
+    "SupporterActiveSkillId": 1001000550
+  },
+  {
+    "SupporterId": 1001000550,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100055003,
+    "SupporterActiveSkillId": 1001000550
+  },
+  {
+    "SupporterId": 1001000650,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100065000,
+    "SupporterActiveSkillId": 1001000650
+  },
+  {
+    "SupporterId": 1001000650,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100065001,
+    "SupporterActiveSkillId": 1001000650
+  },
+  {
+    "SupporterId": 1001000650,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100065002,
+    "SupporterActiveSkillId": 1001000650
+  },
+  {
+    "SupporterId": 1001000650,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100065003,
+    "SupporterActiveSkillId": 1001000650
+  },
+  {
+    "SupporterId": 1001000750,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 100100075000,
+    "SupporterActiveSkillId": 1001000750
+  },
+  {
+    "SupporterId": 1001000750,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 100100075001,
+    "SupporterActiveSkillId": 1001000750
+  },
+  {
+    "SupporterId": 1001000750,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 100100075002,
+    "SupporterActiveSkillId": 1001000750
+  },
+  {
+    "SupporterId": 1001000750,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 100100075003,
+    "SupporterActiveSkillId": 1001000750
+  },
+  {
+    "SupporterId": 1013000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 101300015000,
+    "SupporterActiveSkillId": 1013000150
+  },
+  {
+    "SupporterId": 1013000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 101300015001,
+    "SupporterActiveSkillId": 1013000150
+  },
+  {
+    "SupporterId": 1013000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 101300015002,
+    "SupporterActiveSkillId": 1013000150
+  },
+  {
+    "SupporterId": 1013000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 101300015003,
+    "SupporterActiveSkillId": 1013000150
+  },
+  {
+    "SupporterId": 1022000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 102200015000,
+    "SupporterActiveSkillId": 1022000150
+  },
+  {
+    "SupporterId": 1022000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 102200015001,
+    "SupporterActiveSkillId": 1022000150
+  },
+  {
+    "SupporterId": 1022000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 102200015002,
+    "SupporterActiveSkillId": 1022000150
+  },
+  {
+    "SupporterId": 1022000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 102200015003,
+    "SupporterActiveSkillId": 1022000150
+  },
+  {
+    "SupporterId": 1031000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 103100015000,
+    "SupporterActiveSkillId": 1031000150
+  },
+  {
+    "SupporterId": 1031000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 103100015001,
+    "SupporterActiveSkillId": 1031000150
+  },
+  {
+    "SupporterId": 1031000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 103100015002,
+    "SupporterActiveSkillId": 1031000150
+  },
+  {
+    "SupporterId": 1031000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 103100015003,
+    "SupporterActiveSkillId": 1031000150
+  },
+  {
+    "SupporterId": 1055000360,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 105500036000,
+    "SupporterActiveSkillId": 1055000360
+  },
+  {
+    "SupporterId": 1055000360,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 105500036001,
+    "SupporterActiveSkillId": 1055000360
+  },
+  {
+    "SupporterId": 1055000360,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 105500036002,
+    "SupporterActiveSkillId": 1055000360
+  },
+  {
+    "SupporterId": 1055000360,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 105500036003,
+    "SupporterActiveSkillId": 1055000360
+  },
+  {
+    "SupporterId": 1060000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 106000015000,
+    "SupporterActiveSkillId": 1060000150
+  },
+  {
+    "SupporterId": 1060000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 106000015001,
+    "SupporterActiveSkillId": 1060000150
+  },
+  {
+    "SupporterId": 1060000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 106000015002,
+    "SupporterActiveSkillId": 1060000150
+  },
+  {
+    "SupporterId": 1060000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 106000015003,
+    "SupporterActiveSkillId": 1060000150
+  },
+  {
+    "SupporterId": 1060000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 106000025000,
+    "SupporterActiveSkillId": 1060000250
+  },
+  {
+    "SupporterId": 1060000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 106000025001,
+    "SupporterActiveSkillId": 1060000250
+  },
+  {
+    "SupporterId": 1060000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 106000025002,
+    "SupporterActiveSkillId": 1060000250
+  },
+  {
+    "SupporterId": 1060000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 106000025003,
+    "SupporterActiveSkillId": 1060000250
+  },
+  {
+    "SupporterId": 1080000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 108000015000,
+    "SupporterActiveSkillId": 1080000150
+  },
+  {
+    "SupporterId": 1080000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 108000015001,
+    "SupporterActiveSkillId": 1080000150
+  },
+  {
+    "SupporterId": 1080000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 108000015002,
+    "SupporterActiveSkillId": 1080000150
+  },
+  {
+    "SupporterId": 1080000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 108000015003,
+    "SupporterActiveSkillId": 1080000150
+  },
+  {
+    "SupporterId": 1080000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 108000025000,
+    "SupporterActiveSkillId": 1080000250
+  },
+  {
+    "SupporterId": 1080000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 108000025001,
+    "SupporterActiveSkillId": 1080000250
+  },
+  {
+    "SupporterId": 1080000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 108000025002,
+    "SupporterActiveSkillId": 1080000250
+  },
+  {
+    "SupporterId": 1080000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 108000025003,
+    "SupporterActiveSkillId": 1080000250
+  },
+  {
+    "SupporterId": 1080000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 108000045000,
+    "SupporterActiveSkillId": 1080000450
+  },
+  {
+    "SupporterId": 1080000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 108000045001,
+    "SupporterActiveSkillId": 1080000450
+  },
+  {
+    "SupporterId": 1080000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 108000045002,
+    "SupporterActiveSkillId": 1080000450
+  },
+  {
+    "SupporterId": 1080000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 108000045003,
+    "SupporterActiveSkillId": 1080000450
+  },
+  {
+    "SupporterId": 1080000550,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 108000055000,
+    "SupporterActiveSkillId": 1080000550
+  },
+  {
+    "SupporterId": 1080000550,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 108000055001,
+    "SupporterActiveSkillId": 1080000550
+  },
+  {
+    "SupporterId": 1080000550,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 108000055002,
+    "SupporterActiveSkillId": 1080000550
+  },
+  {
+    "SupporterId": 1080000550,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 108000055003,
+    "SupporterActiveSkillId": 1080000550
+  },
+  {
+    "SupporterId": 1095000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 109500015000,
+    "SupporterActiveSkillId": 1095000150
+  },
+  {
+    "SupporterId": 1095000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 109500015001,
+    "SupporterActiveSkillId": 1095000150
+  },
+  {
+    "SupporterId": 1095000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 109500015002,
+    "SupporterActiveSkillId": 1095000150
+  },
+  {
+    "SupporterId": 1095000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 109500015003,
+    "SupporterActiveSkillId": 1095000150
+  },
+  {
+    "SupporterId": 1095000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 109500025000,
+    "SupporterActiveSkillId": 1095000250
+  },
+  {
+    "SupporterId": 1095000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 109500025001,
+    "SupporterActiveSkillId": 1095000250
+  },
+  {
+    "SupporterId": 1095000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 109500025002,
+    "SupporterActiveSkillId": 1095000250
+  },
+  {
+    "SupporterId": 1095000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 109500025003,
+    "SupporterActiveSkillId": 1095000250
+  },
+  {
+    "SupporterId": 1095000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 109500035000,
+    "SupporterActiveSkillId": 1095000350
+  },
+  {
+    "SupporterId": 1095000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 109500035001,
+    "SupporterActiveSkillId": 1095000350
+  },
+  {
+    "SupporterId": 1095000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 109500035002,
+    "SupporterActiveSkillId": 1095000350
+  },
+  {
+    "SupporterId": 1095000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 109500035003,
+    "SupporterActiveSkillId": 1095000350
+  },
+  {
+    "SupporterId": 1095000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 109500045000,
+    "SupporterActiveSkillId": 1095000450
+  },
+  {
+    "SupporterId": 1095000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 109500045001,
+    "SupporterActiveSkillId": 1095000450
+  },
+  {
+    "SupporterId": 1095000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 109500045002,
+    "SupporterActiveSkillId": 1095000450
+  },
+  {
+    "SupporterId": 1095000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 109500045003,
+    "SupporterActiveSkillId": 1095000450
+  },
+  {
+    "SupporterId": 1095000560,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 109500056000,
+    "SupporterActiveSkillId": 1095000560
+  },
+  {
+    "SupporterId": 1095000560,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 109500056001,
+    "SupporterActiveSkillId": 1095000560
+  },
+  {
+    "SupporterId": 1095000560,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 109500056002,
+    "SupporterActiveSkillId": 1095000560
+  },
+  {
+    "SupporterId": 1095000560,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 109500056003,
+    "SupporterActiveSkillId": 1095000560
+  },
+  {
+    "SupporterId": 1110000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 111000015000,
+    "SupporterActiveSkillId": 1110000150
+  },
+  {
+    "SupporterId": 1110000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 111000015001,
+    "SupporterActiveSkillId": 1110000150
+  },
+  {
+    "SupporterId": 1110000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 111000015002,
+    "SupporterActiveSkillId": 1110000150
+  },
+  {
+    "SupporterId": 1110000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 111000015003,
+    "SupporterActiveSkillId": 1110000150
+  },
+  {
+    "SupporterId": 1110000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 111000025000,
+    "SupporterActiveSkillId": 1110000250
+  },
+  {
+    "SupporterId": 1110000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 111000025001,
+    "SupporterActiveSkillId": 1110000250
+  },
+  {
+    "SupporterId": 1110000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 111000025002,
+    "SupporterActiveSkillId": 1110000250
+  },
+  {
+    "SupporterId": 1110000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 111000025003,
+    "SupporterActiveSkillId": 1110000250
+  },
+  {
+    "SupporterId": 1125000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 112500015001,
+    "SupporterActiveSkillId": 1125000150
+  },
+  {
+    "SupporterId": 1125000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 112500015002,
+    "SupporterActiveSkillId": 1125000150
+  },
+  {
+    "SupporterId": 1125000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 112500015003,
+    "SupporterActiveSkillId": 1125000150
+  },
+  {
+    "SupporterId": 1125000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 112500015004,
+    "SupporterActiveSkillId": 1125000150
+  },
+  {
+    "SupporterId": 1125000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 112500025000,
+    "SupporterActiveSkillId": 1125000250
+  },
+  {
+    "SupporterId": 1125000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 112500025001,
+    "SupporterActiveSkillId": 1125000250
+  },
+  {
+    "SupporterId": 1125000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 112500025002,
+    "SupporterActiveSkillId": 1125000250
+  },
+  {
+    "SupporterId": 1125000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 112500025003,
+    "SupporterActiveSkillId": 1125000250
+  },
+  {
+    "SupporterId": 1125000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 112500035000,
+    "SupporterActiveSkillId": 1125000350
+  },
+  {
+    "SupporterId": 1125000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 112500035001,
+    "SupporterActiveSkillId": 1125000350
+  },
+  {
+    "SupporterId": 1125000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 112500035002,
+    "SupporterActiveSkillId": 1125000350
+  },
+  {
+    "SupporterId": 1125000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 112500035003,
+    "SupporterActiveSkillId": 1125000350
+  },
+  {
+    "SupporterId": 1125000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 112500045000,
+    "SupporterActiveSkillId": 1125000450
+  },
+  {
+    "SupporterId": 1125000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 112500045001,
+    "SupporterActiveSkillId": 1125000450
+  },
+  {
+    "SupporterId": 1125000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 112500045002,
+    "SupporterActiveSkillId": 1125000450
+  },
+  {
+    "SupporterId": 1125000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 112500045003,
+    "SupporterActiveSkillId": 1125000450
+  },
+  {
+    "SupporterId": 1150000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 115000015000,
+    "SupporterActiveSkillId": 1150000150
+  },
+  {
+    "SupporterId": 1150000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 115000015001,
+    "SupporterActiveSkillId": 1150000150
+  },
+  {
+    "SupporterId": 1150000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 115000015002,
+    "SupporterActiveSkillId": 1150000150
+  },
+  {
+    "SupporterId": 1150000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 115000015003,
+    "SupporterActiveSkillId": 1150000150
+  },
+  {
+    "SupporterId": 1150000260,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 115000026000,
+    "SupporterActiveSkillId": 1150000260
+  },
+  {
+    "SupporterId": 1150000260,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 115000026001,
+    "SupporterActiveSkillId": 1150000260
+  },
+  {
+    "SupporterId": 1150000260,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 115000026002,
+    "SupporterActiveSkillId": 1150000260
+  },
+  {
+    "SupporterId": 1150000260,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 115000026003,
+    "SupporterActiveSkillId": 1150000260
+  },
+  {
+    "SupporterId": 1150000360,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 115000036000,
+    "SupporterActiveSkillId": 1150000360
+  },
+  {
+    "SupporterId": 1150000360,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 115000036001,
+    "SupporterActiveSkillId": 1150000360
+  },
+  {
+    "SupporterId": 1150000360,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 115000036002,
+    "SupporterActiveSkillId": 1150000360
+  },
+  {
+    "SupporterId": 1150000360,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 115000036003,
+    "SupporterActiveSkillId": 1150000360
+  },
+  {
+    "SupporterId": 1200000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 120000015000,
+    "SupporterActiveSkillId": 1200000150
+  },
+  {
+    "SupporterId": 1200000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 120000015001,
+    "SupporterActiveSkillId": 1200000150
+  },
+  {
+    "SupporterId": 1200000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 120000015002,
+    "SupporterActiveSkillId": 1200000150
+  },
+  {
+    "SupporterId": 1200000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 120000015003,
+    "SupporterActiveSkillId": 1200000150
+  },
+  {
+    "SupporterId": 1200000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 120000025000,
+    "SupporterActiveSkillId": 1200000250
+  },
+  {
+    "SupporterId": 1200000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 120000025001,
+    "SupporterActiveSkillId": 1200000250
+  },
+  {
+    "SupporterId": 1200000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 120000025002,
+    "SupporterActiveSkillId": 1200000250
+  },
+  {
+    "SupporterId": 1200000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 120000025003,
+    "SupporterActiveSkillId": 1200000250
+  },
+  {
+    "SupporterId": 1200000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 120000035001,
+    "SupporterActiveSkillId": 1200000350
+  },
+  {
+    "SupporterId": 1200000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 120000035002,
+    "SupporterActiveSkillId": 1200000350
+  },
+  {
+    "SupporterId": 1200000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 120000035003,
+    "SupporterActiveSkillId": 1200000350
+  },
+  {
+    "SupporterId": 1200000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 120000035004,
+    "SupporterActiveSkillId": 1200000350
+  },
+  {
+    "SupporterId": 1210000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 121000015000,
+    "SupporterActiveSkillId": 1210000150
+  },
+  {
+    "SupporterId": 1210000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 121000015001,
+    "SupporterActiveSkillId": 1210000150
+  },
+  {
+    "SupporterId": 1210000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 121000015002,
+    "SupporterActiveSkillId": 1210000150
+  },
+  {
+    "SupporterId": 1210000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 121000015003,
+    "SupporterActiveSkillId": 1210000150
+  },
+  {
+    "SupporterId": 1210000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 121000025000,
+    "SupporterActiveSkillId": 1210000250
+  },
+  {
+    "SupporterId": 1210000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 121000025001,
+    "SupporterActiveSkillId": 1210000250
+  },
+  {
+    "SupporterId": 1210000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 121000025002,
+    "SupporterActiveSkillId": 1210000250
+  },
+  {
+    "SupporterId": 1210000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 121000025003,
+    "SupporterActiveSkillId": 1210000250
+  },
+  {
+    "SupporterId": 1210000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 121000035000,
+    "SupporterActiveSkillId": 1210000350
+  },
+  {
+    "SupporterId": 1210000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 121000035001,
+    "SupporterActiveSkillId": 1210000350
+  },
+  {
+    "SupporterId": 1210000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 121000035002,
+    "SupporterActiveSkillId": 1210000350
+  },
+  {
+    "SupporterId": 1210000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 121000035003,
+    "SupporterActiveSkillId": 1210000350
+  },
+  {
+    "SupporterId": 1210000460,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 121000046000,
+    "SupporterActiveSkillId": 1210000460
+  },
+  {
+    "SupporterId": 1210000460,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 121000046001,
+    "SupporterActiveSkillId": 1210000460
+  },
+  {
+    "SupporterId": 1210000460,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 121000046002,
+    "SupporterActiveSkillId": 1210000460
+  },
+  {
+    "SupporterId": 1210000460,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 121000046003,
+    "SupporterActiveSkillId": 1210000460
+  },
+  {
+    "SupporterId": 1230000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 123000015000,
+    "SupporterActiveSkillId": 1230000150
+  },
+  {
+    "SupporterId": 1230000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 123000015001,
+    "SupporterActiveSkillId": 1230000150
+  },
+  {
+    "SupporterId": 1230000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 123000015002,
+    "SupporterActiveSkillId": 1230000150
+  },
+  {
+    "SupporterId": 1230000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 123000015003,
+    "SupporterActiveSkillId": 1230000150
+  },
+  {
+    "SupporterId": 1230000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 123000025000,
+    "SupporterActiveSkillId": 1230000250
+  },
+  {
+    "SupporterId": 1230000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 123000025001,
+    "SupporterActiveSkillId": 1230000250
+  },
+  {
+    "SupporterId": 1230000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 123000025002,
+    "SupporterActiveSkillId": 1230000250
+  },
+  {
+    "SupporterId": 1230000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 123000025003,
+    "SupporterActiveSkillId": 1230000250
+  },
+  {
+    "SupporterId": 1230000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 123000035000,
+    "SupporterActiveSkillId": 1230000350
+  },
+  {
+    "SupporterId": 1230000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 123000035001,
+    "SupporterActiveSkillId": 1230000350
+  },
+  {
+    "SupporterId": 1230000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 123000035002,
+    "SupporterActiveSkillId": 1230000350
+  },
+  {
+    "SupporterId": 1230000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 123000035003,
+    "SupporterActiveSkillId": 1230000350
+  },
+  {
+    "SupporterId": 1300000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000015000,
+    "SupporterActiveSkillId": 1300000150
+  },
+  {
+    "SupporterId": 1300000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000015001,
+    "SupporterActiveSkillId": 1300000150
+  },
+  {
+    "SupporterId": 1300000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000015002,
+    "SupporterActiveSkillId": 1300000150
+  },
+  {
+    "SupporterId": 1300000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000015003,
+    "SupporterActiveSkillId": 1300000150
+  },
+  {
+    "SupporterId": 1300000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000025000,
+    "SupporterActiveSkillId": 1300000250
+  },
+  {
+    "SupporterId": 1300000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000025001,
+    "SupporterActiveSkillId": 1300000250
+  },
+  {
+    "SupporterId": 1300000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000025002,
+    "SupporterActiveSkillId": 1300000250
+  },
+  {
+    "SupporterId": 1300000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000025003,
+    "SupporterActiveSkillId": 1300000250
+  },
+  {
+    "SupporterId": 1300000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000035000,
+    "SupporterActiveSkillId": 1300000350
+  },
+  {
+    "SupporterId": 1300000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000035001,
+    "SupporterActiveSkillId": 1300000350
+  },
+  {
+    "SupporterId": 1300000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000035002,
+    "SupporterActiveSkillId": 1300000350
+  },
+  {
+    "SupporterId": 1300000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000035003,
+    "SupporterActiveSkillId": 1300000350
+  },
+  {
+    "SupporterId": 1300000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000045000,
+    "SupporterActiveSkillId": 1300000450
+  },
+  {
+    "SupporterId": 1300000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000045001,
+    "SupporterActiveSkillId": 1300000450
+  },
+  {
+    "SupporterId": 1300000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000045002,
+    "SupporterActiveSkillId": 1300000450
+  },
+  {
+    "SupporterId": 1300000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000045003,
+    "SupporterActiveSkillId": 1300000450
+  },
+  {
+    "SupporterId": 1300000550,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000055000,
+    "SupporterActiveSkillId": 1300000550
+  },
+  {
+    "SupporterId": 1300000550,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000055001,
+    "SupporterActiveSkillId": 1300000550
+  },
+  {
+    "SupporterId": 1300000550,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000055002,
+    "SupporterActiveSkillId": 1300000550
+  },
+  {
+    "SupporterId": 1300000550,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000055003,
+    "SupporterActiveSkillId": 1300000550
+  },
+  {
+    "SupporterId": 1300000650,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000065000,
+    "SupporterActiveSkillId": 1300000650
+  },
+  {
+    "SupporterId": 1300000650,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000065001,
+    "SupporterActiveSkillId": 1300000650
+  },
+  {
+    "SupporterId": 1300000650,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000065002,
+    "SupporterActiveSkillId": 1300000650
+  },
+  {
+    "SupporterId": 1300000650,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000065003,
+    "SupporterActiveSkillId": 1300000650
+  },
+  {
+    "SupporterId": 1300000760,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130000076000,
+    "SupporterActiveSkillId": 1300000760
+  },
+  {
+    "SupporterId": 1300000760,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130000076001,
+    "SupporterActiveSkillId": 1300000760
+  },
+  {
+    "SupporterId": 1300000760,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130000076002,
+    "SupporterActiveSkillId": 1300000760
+  },
+  {
+    "SupporterId": 1300000760,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130000076003,
+    "SupporterActiveSkillId": 1300000760
+  },
+  {
+    "SupporterId": 1305000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130500015000,
+    "SupporterActiveSkillId": 1305000150
+  },
+  {
+    "SupporterId": 1305000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130500015001,
+    "SupporterActiveSkillId": 1305000150
+  },
+  {
+    "SupporterId": 1305000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130500015002,
+    "SupporterActiveSkillId": 1305000150
+  },
+  {
+    "SupporterId": 1305000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130500015003,
+    "SupporterActiveSkillId": 1305000150
+  },
+  {
+    "SupporterId": 1305000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130500025000,
+    "SupporterActiveSkillId": 1305000250
+  },
+  {
+    "SupporterId": 1305000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130500025001,
+    "SupporterActiveSkillId": 1305000250
+  },
+  {
+    "SupporterId": 1305000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130500025002,
+    "SupporterActiveSkillId": 1305000250
+  },
+  {
+    "SupporterId": 1305000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130500025003,
+    "SupporterActiveSkillId": 1305000250
+  },
+  {
+    "SupporterId": 1305000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 130500035000,
+    "SupporterActiveSkillId": 1305000350
+  },
+  {
+    "SupporterId": 1305000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 130500035001,
+    "SupporterActiveSkillId": 1305000350
+  },
+  {
+    "SupporterId": 1305000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 130500035002,
+    "SupporterActiveSkillId": 1305000350
+  },
+  {
+    "SupporterId": 1305000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 130500035003,
+    "SupporterActiveSkillId": 1305000350
+  },
+  {
+    "SupporterId": 1330000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 133000015000,
+    "SupporterActiveSkillId": 1330000150
+  },
+  {
+    "SupporterId": 1330000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 133000015001,
+    "SupporterActiveSkillId": 1330000150
+  },
+  {
+    "SupporterId": 1330000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 133000015002,
+    "SupporterActiveSkillId": 1330000150
+  },
+  {
+    "SupporterId": 1330000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 133000015003,
+    "SupporterActiveSkillId": 1330000150
+  },
+  {
+    "SupporterId": 1330000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 133000025000,
+    "SupporterActiveSkillId": 1330000250
+  },
+  {
+    "SupporterId": 1330000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 133000025001,
+    "SupporterActiveSkillId": 1330000250
+  },
+  {
+    "SupporterId": 1330000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 133000025002,
+    "SupporterActiveSkillId": 1330000250
+  },
+  {
+    "SupporterId": 1330000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 133000025003,
+    "SupporterActiveSkillId": 1330000250
+  },
+  {
+    "SupporterId": 1370000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 137000015000,
+    "SupporterActiveSkillId": 1370000150
+  },
+  {
+    "SupporterId": 1370000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 137000015001,
+    "SupporterActiveSkillId": 1370000150
+  },
+  {
+    "SupporterId": 1370000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 137000015002,
+    "SupporterActiveSkillId": 1370000150
+  },
+  {
+    "SupporterId": 1370000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 137000015003,
+    "SupporterActiveSkillId": 1370000150
+  },
+  {
+    "SupporterId": 1370000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 137000025000,
+    "SupporterActiveSkillId": 1370000250
+  },
+  {
+    "SupporterId": 1370000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 137000025001,
+    "SupporterActiveSkillId": 1370000250
+  },
+  {
+    "SupporterId": 1370000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 137000025002,
+    "SupporterActiveSkillId": 1370000250
+  },
+  {
+    "SupporterId": 1370000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 137000025003,
+    "SupporterActiveSkillId": 1370000250
+  },
+  {
+    "SupporterId": 1370000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 137000045000,
+    "SupporterActiveSkillId": 1370000450
+  },
+  {
+    "SupporterId": 1370000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 137000045001,
+    "SupporterActiveSkillId": 1370000450
+  },
+  {
+    "SupporterId": 1370000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 137000045002,
+    "SupporterActiveSkillId": 1370000450
+  },
+  {
+    "SupporterId": 1370000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 137000045003,
+    "SupporterActiveSkillId": 1370000450
+  },
+  {
+    "SupporterId": 1400000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 140000015000,
+    "SupporterActiveSkillId": 1400000150
+  },
+  {
+    "SupporterId": 1400000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 140000015001,
+    "SupporterActiveSkillId": 1400000150
+  },
+  {
+    "SupporterId": 1400000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 140000015002,
+    "SupporterActiveSkillId": 1400000150
+  },
+  {
+    "SupporterId": 1400000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 140000015003,
+    "SupporterActiveSkillId": 1400000150
+  },
+  {
+    "SupporterId": 1400000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 140000025000,
+    "SupporterActiveSkillId": 1400000250
+  },
+  {
+    "SupporterId": 1400000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 140000025001,
+    "SupporterActiveSkillId": 1400000250
+  },
+  {
+    "SupporterId": 1400000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 140000025002,
+    "SupporterActiveSkillId": 1400000250
+  },
+  {
+    "SupporterId": 1400000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 140000025003,
+    "SupporterActiveSkillId": 1400000250
+  },
+  {
+    "SupporterId": 1430000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143000015000,
+    "SupporterActiveSkillId": 1430000150
+  },
+  {
+    "SupporterId": 1430000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143000015001,
+    "SupporterActiveSkillId": 1430000150
+  },
+  {
+    "SupporterId": 1430000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143000015002,
+    "SupporterActiveSkillId": 1430000150
+  },
+  {
+    "SupporterId": 1430000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143000015003,
+    "SupporterActiveSkillId": 1430000150
+  },
+  {
+    "SupporterId": 1430000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143000025000,
+    "SupporterActiveSkillId": 1430000250
+  },
+  {
+    "SupporterId": 1430000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143000025001,
+    "SupporterActiveSkillId": 1430000250
+  },
+  {
+    "SupporterId": 1430000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143000025002,
+    "SupporterActiveSkillId": 1430000250
+  },
+  {
+    "SupporterId": 1430000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143000025003,
+    "SupporterActiveSkillId": 1430000250
+  },
+  {
+    "SupporterId": 1430000350,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143000035000,
+    "SupporterActiveSkillId": 1430000350
+  },
+  {
+    "SupporterId": 1430000350,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143000035001,
+    "SupporterActiveSkillId": 1430000350
+  },
+  {
+    "SupporterId": 1430000350,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143000035002,
+    "SupporterActiveSkillId": 1430000350
+  },
+  {
+    "SupporterId": 1430000350,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143000035003,
+    "SupporterActiveSkillId": 1430000350
+  },
+  {
+    "SupporterId": 1430000450,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143000045000,
+    "SupporterActiveSkillId": 1430000450
+  },
+  {
+    "SupporterId": 1430000450,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143000045001,
+    "SupporterActiveSkillId": 1430000450
+  },
+  {
+    "SupporterId": 1430000450,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143000045002,
+    "SupporterActiveSkillId": 1430000450
+  },
+  {
+    "SupporterId": 1430000450,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143000045003,
+    "SupporterActiveSkillId": 1430000450
+  },
+  {
+    "SupporterId": 1430000550,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143000055000,
+    "SupporterActiveSkillId": 1430000550
+  },
+  {
+    "SupporterId": 1430000550,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143000055001,
+    "SupporterActiveSkillId": 1430000550
+  },
+  {
+    "SupporterId": 1430000550,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143000055002,
+    "SupporterActiveSkillId": 1430000550
+  },
+  {
+    "SupporterId": 1430000550,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143000055003,
+    "SupporterActiveSkillId": 1430000550
+  },
+  {
+    "SupporterId": 1431000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 143100015000,
+    "SupporterActiveSkillId": 1431000150
+  },
+  {
+    "SupporterId": 1431000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 143100015001,
+    "SupporterActiveSkillId": 1431000150
+  },
+  {
+    "SupporterId": 1431000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 143100015002,
+    "SupporterActiveSkillId": 1431000150
+  },
+  {
+    "SupporterId": 1431000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 143100015003,
+    "SupporterActiveSkillId": 1431000150
+  },
+  {
+    "SupporterId": 1501000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 150100015000,
+    "SupporterActiveSkillId": 1501000150
+  },
+  {
+    "SupporterId": 1501000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 150100015001,
+    "SupporterActiveSkillId": 1501000150
+  },
+  {
+    "SupporterId": 1501000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 150100015002,
+    "SupporterActiveSkillId": 1501000150
+  },
+  {
+    "SupporterId": 1501000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 150100015003,
+    "SupporterActiveSkillId": 1501000150
+  },
+  {
+    "SupporterId": 1501000250,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 150100025000,
+    "SupporterActiveSkillId": 1501000250
+  },
+  {
+    "SupporterId": 1501000250,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 150100025001,
+    "SupporterActiveSkillId": 1501000250
+  },
+  {
+    "SupporterId": 1501000250,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 150100025002,
+    "SupporterActiveSkillId": 1501000250
+  },
+  {
+    "SupporterId": 1501000250,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 150100025003,
+    "SupporterActiveSkillId": 1501000250
+  },
+  {
+    "SupporterId": 1705000150,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 170500015000,
+    "SupporterActiveSkillId": 1705000150
+  },
+  {
+    "SupporterId": 1705000150,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 170500015001,
+    "SupporterActiveSkillId": 1705000150
+  },
+  {
+    "SupporterId": 1705000150,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 170500015002,
+    "SupporterActiveSkillId": 1705000150
+  },
+  {
+    "SupporterId": 1705000150,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 170500015003,
+    "SupporterActiveSkillId": 1705000150
+  },
+  {
+    "SupporterId": 1705000260,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 170500026000,
+    "SupporterActiveSkillId": 1705000260
+  },
+  {
+    "SupporterId": 1705000260,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 170500026001,
+    "SupporterActiveSkillId": 1705000260
+  },
+  {
+    "SupporterId": 1705000260,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 170500026002,
+    "SupporterActiveSkillId": 1705000260
+  },
+  {
+    "SupporterId": 1705000260,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 170500026003,
+    "SupporterActiveSkillId": 1705000260
+  },
+  {
+    "SupporterId": 1850000160,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 185000016000,
+    "SupporterActiveSkillId": 1850000160
+  },
+  {
+    "SupporterId": 1850000160,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 185000016001,
+    "SupporterActiveSkillId": 1850000160
+  },
+  {
+    "SupporterId": 1850000160,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 185000016002,
+    "SupporterActiveSkillId": 1850000160
+  },
+  {
+    "SupporterId": 1850000160,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 185000016003,
+    "SupporterActiveSkillId": 1850000160
+  },
+  {
+    "SupporterId": 1850000260,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 185000026000,
+    "SupporterActiveSkillId": 1850000260
+  },
+  {
+    "SupporterId": 1850000260,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 185000026001,
+    "SupporterActiveSkillId": 1850000260
+  },
+  {
+    "SupporterId": 1850000260,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 185000026002,
+    "SupporterActiveSkillId": 1850000260
+  },
+  {
+    "SupporterId": 1850000260,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 185000026003,
+    "SupporterActiveSkillId": 1850000260
+  },
+  {
+    "SupporterId": 1850000360,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 185000036000,
+    "SupporterActiveSkillId": 1850000360
+  },
+  {
+    "SupporterId": 1850000360,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 185000036001,
+    "SupporterActiveSkillId": 1850000360
+  },
+  {
+    "SupporterId": 1850000360,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 185000036002,
+    "SupporterActiveSkillId": 1850000360
+  },
+  {
+    "SupporterId": 1850000360,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 185000036003,
+    "SupporterActiveSkillId": 1850000360
+  },
+  {
+    "SupporterId": 1850000460,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 185000046000,
+    "SupporterActiveSkillId": 1850000460
+  },
+  {
+    "SupporterId": 1850000460,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 185000046001,
+    "SupporterActiveSkillId": 1850000460
+  },
+  {
+    "SupporterId": 1850000460,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 185000046002,
+    "SupporterActiveSkillId": 1850000460
+  },
+  {
+    "SupporterId": 1850000460,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 185000046003,
+    "SupporterActiveSkillId": 1850000460
+  }
+]

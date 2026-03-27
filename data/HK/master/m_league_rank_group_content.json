@@ -1,0 +1,86 @@
+[
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 120000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000006
+  },
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 90000,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000005
+  },
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 65000,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000004
+  },
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 40000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000003
+  },
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 20000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000002
+  },
+  {
+    "LeagueRankGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 0
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 1,
+    "TargetScore": 102000,
+    "TreasureChestRarityTypeIndex": 6,
+    "RewardSetId": 34000000000006
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 2,
+    "TargetScore": 76500,
+    "TreasureChestRarityTypeIndex": 5,
+    "RewardSetId": 34000000000005
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 3,
+    "TargetScore": 55250,
+    "TreasureChestRarityTypeIndex": 4,
+    "RewardSetId": 34000000000004
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 4,
+    "TargetScore": 34000,
+    "TreasureChestRarityTypeIndex": 3,
+    "RewardSetId": 34000000000003
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 5,
+    "TargetScore": 17000,
+    "TreasureChestRarityTypeIndex": 2,
+    "RewardSetId": 34000000000002
+  },
+  {
+    "LeagueRankGroupId": 2,
+    "LeagueRankTypeIndex": 6,
+    "TargetScore": 0,
+    "TreasureChestRarityTypeIndex": 1,
+    "RewardSetId": 0
+  }
+]

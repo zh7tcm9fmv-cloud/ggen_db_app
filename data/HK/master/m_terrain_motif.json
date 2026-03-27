@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 20000,
+    "TerrainTypeIndex": 2,
+    "NameLanguageId": 0,
+    "DefaultTerrainFrictionPercentage": 0,
+    "DefaultEvasionRatePercentage": 0
+  },
+  {
+    "Id": 30000,
+    "TerrainTypeIndex": 3,
+    "NameLanguageId": 0,
+    "DefaultTerrainFrictionPercentage": 0,
+    "DefaultEvasionRatePercentage": 0
+  },
+  {
+    "Id": 40000,
+    "TerrainTypeIndex": 4,
+    "NameLanguageId": 0,
+    "DefaultTerrainFrictionPercentage": 0,
+    "DefaultEvasionRatePercentage": 0
+  },
+  {
+    "Id": 50000,
+    "TerrainTypeIndex": 5,
+    "NameLanguageId": 0,
+    "DefaultTerrainFrictionPercentage": 0,
+    "DefaultEvasionRatePercentage": 0
+  },
+  {
+    "Id": 60000,
+    "TerrainTypeIndex": 6,
+    "NameLanguageId": 0,
+    "DefaultTerrainFrictionPercentage": 0,
+    "DefaultEvasionRatePercentage": 0
+  }
+]

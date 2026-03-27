@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1030000001,
+    "TraitTypeIndex": 1,
+    "TraitValue": 30,
+    "ResourceId": "trait_10860400",
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 0,
+    "BuffLabelColorTypeIndex": 0,
+    "IsDisplayUpDown": false
+  },
+  {
+    "Id": 1030000002,
+    "TraitTypeIndex": 1,
+    "TraitValue": 50,
+    "ResourceId": "trait_10860400",
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 0,
+    "BuffLabelColorTypeIndex": 0,
+    "IsDisplayUpDown": false
+  },
+  {
+    "Id": 1030000003,
+    "TraitTypeIndex": 1,
+    "TraitValue": 80,
+    "ResourceId": "trait_10860400",
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 0,
+    "BuffLabelColorTypeIndex": 0,
+    "IsDisplayUpDown": false
+  }
+]

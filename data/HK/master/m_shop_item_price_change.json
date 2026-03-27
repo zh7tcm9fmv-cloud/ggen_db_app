@@ -1,0 +1,47 @@
+[
+  {
+    "ShopItemId": 142100010001,
+    "PurchaseStep": 1,
+    "RequiredCurrencyCount": 1500
+  },
+  {
+    "ShopItemId": 142100010001,
+    "PurchaseStep": 2,
+    "RequiredCurrencyCount": 2000
+  },
+  {
+    "ShopItemId": 142100010001,
+    "PurchaseStep": 3,
+    "RequiredCurrencyCount": 3000
+  },
+  {
+    "ShopItemId": 142100020001,
+    "PurchaseStep": 1,
+    "RequiredCurrencyCount": 1500
+  },
+  {
+    "ShopItemId": 142100020001,
+    "PurchaseStep": 2,
+    "RequiredCurrencyCount": 2000
+  },
+  {
+    "ShopItemId": 142100020001,
+    "PurchaseStep": 3,
+    "RequiredCurrencyCount": 3000
+  },
+  {
+    "ShopItemId": 142400010001,
+    "PurchaseStep": 1,
+    "RequiredCurrencyCount": 1500
+  },
+  {
+    "ShopItemId": 142400010001,
+    "PurchaseStep": 2,
+    "RequiredCurrencyCount": 2000
+  },
+  {
+    "ShopItemId": 142400010001,
+    "PurchaseStep": 3,
+    "RequiredCurrencyCount": 3000
+  }
+]

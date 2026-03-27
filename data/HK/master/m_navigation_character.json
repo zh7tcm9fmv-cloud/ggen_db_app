@@ -1,0 +1,2783 @@
+[
+  {
+    "Id": 10000010,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000010,
+    "NavigationCharacterSetId": 10000010,
+    "VoiceResourceId": "vc_tutorial_0150",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000020,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000020,
+    "NavigationCharacterSetId": 10000020,
+    "VoiceResourceId": "vc_tutorial_0160",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000030,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000030,
+    "NavigationCharacterSetId": 10000030,
+    "VoiceResourceId": "vc_tutorial_0180",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000040,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000040,
+    "NavigationCharacterSetId": 10000040,
+    "VoiceResourceId": "vc_tutorial_0210",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000050,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000050,
+    "NavigationCharacterSetId": 10000050,
+    "VoiceResourceId": "vc_tutorial_0230",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000060,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000060,
+    "NavigationCharacterSetId": 10000060,
+    "VoiceResourceId": "vc_tutorial_0240",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000070,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000070,
+    "NavigationCharacterSetId": 10000070,
+    "VoiceResourceId": "vc_tutorial_0270",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000080,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000080,
+    "NavigationCharacterSetId": 10000080,
+    "VoiceResourceId": "vc_tutorial_0280",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000090,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000090,
+    "NavigationCharacterSetId": 10000090,
+    "VoiceResourceId": "vc_tutorial_0300",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000100,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000100,
+    "NavigationCharacterSetId": 10000100,
+    "VoiceResourceId": "vc_tutorial_0320",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000110,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000110,
+    "NavigationCharacterSetId": 10000110,
+    "VoiceResourceId": "vc_tutorial_0330",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000120,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000120,
+    "NavigationCharacterSetId": 10000120,
+    "VoiceResourceId": "vc_tutorial_0340",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000130,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000130,
+    "NavigationCharacterSetId": 10000130,
+    "VoiceResourceId": "vc_tutorial_0390",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000140,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000140,
+    "NavigationCharacterSetId": 10000140,
+    "VoiceResourceId": "vc_tutorial_0400",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000150,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000150,
+    "NavigationCharacterSetId": 10000150,
+    "VoiceResourceId": "vc_tutorial_0430",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000160,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000160,
+    "NavigationCharacterSetId": 10000160,
+    "VoiceResourceId": "vc_tutorial_0450",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000170,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000170,
+    "NavigationCharacterSetId": 10000170,
+    "VoiceResourceId": "vc_tutorial_0470",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000180,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000180,
+    "NavigationCharacterSetId": 10000180,
+    "VoiceResourceId": "vc_tutorial_0490",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000190,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000190,
+    "NavigationCharacterSetId": 10000190,
+    "VoiceResourceId": "vc_tutorial_0510",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000200,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000200,
+    "NavigationCharacterSetId": 10000200,
+    "VoiceResourceId": "vc_tutorial_0520",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000210,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000210,
+    "NavigationCharacterSetId": 10000210,
+    "VoiceResourceId": "vc_tutorial_0540",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000220,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000220,
+    "NavigationCharacterSetId": 10000220,
+    "VoiceResourceId": "vc_tutorial_0550",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000230,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000230,
+    "NavigationCharacterSetId": 10000230,
+    "VoiceResourceId": "vc_tutorial_0560",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000240,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000240,
+    "NavigationCharacterSetId": 10000240,
+    "VoiceResourceId": "vc_tutorial_0570",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000250,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000250,
+    "NavigationCharacterSetId": 10000250,
+    "VoiceResourceId": "vc_tutorial_0590",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000260,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000260,
+    "NavigationCharacterSetId": 10000260,
+    "VoiceResourceId": "vc_tutorial_0600",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000270,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000270,
+    "NavigationCharacterSetId": 10000270,
+    "VoiceResourceId": "vc_tutorial_0620",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000280,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000280,
+    "NavigationCharacterSetId": 10000280,
+    "VoiceResourceId": "vc_tutorial_0640",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000290,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000290,
+    "NavigationCharacterSetId": 10000290,
+    "VoiceResourceId": "vc_tutorial_0660",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000300,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000300,
+    "NavigationCharacterSetId": 10000300,
+    "VoiceResourceId": "vc_tutorial_0670",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000310,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000310,
+    "NavigationCharacterSetId": 10000310,
+    "VoiceResourceId": "vc_tutorial_0690",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000320,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000320,
+    "NavigationCharacterSetId": 10000320,
+    "VoiceResourceId": "vc_tutorial_0720",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000330,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000330,
+    "NavigationCharacterSetId": 10000330,
+    "VoiceResourceId": "vc_tutorial_0730",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000340,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000340,
+    "NavigationCharacterSetId": 10000340,
+    "VoiceResourceId": "vc_tutorial_0770",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000350,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000350,
+    "NavigationCharacterSetId": 10000350,
+    "VoiceResourceId": "vc_tutorial_0780",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000360,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000360,
+    "NavigationCharacterSetId": 10000360,
+    "VoiceResourceId": "vc_tutorial_0820",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000370,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000370,
+    "NavigationCharacterSetId": 10000370,
+    "VoiceResourceId": "vc_tutorial_0830",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000380,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000380,
+    "NavigationCharacterSetId": 10000380,
+    "VoiceResourceId": "vc_tutorial_0840",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000390,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000390,
+    "NavigationCharacterSetId": 10000390,
+    "VoiceResourceId": "vc_tutorial_0850",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000400,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000400,
+    "NavigationCharacterSetId": 10000400,
+    "VoiceResourceId": "vc_tutorial_0860",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000410,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000410,
+    "NavigationCharacterSetId": 10000410,
+    "VoiceResourceId": "vc_tutorial_0870",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000420,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000420,
+    "NavigationCharacterSetId": 10000420,
+    "VoiceResourceId": "vc_tutorial_0880",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000430,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000430,
+    "NavigationCharacterSetId": 10000430,
+    "VoiceResourceId": "vc_tutorial_0910",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000440,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000440,
+    "NavigationCharacterSetId": 10000440,
+    "VoiceResourceId": "vc_tutorial_0920",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000450,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000450,
+    "NavigationCharacterSetId": 10000450,
+    "VoiceResourceId": "vc_tutorial_0940",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000460,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000460,
+    "NavigationCharacterSetId": 10000460,
+    "VoiceResourceId": "vc_tutorial_0950",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000470,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000470,
+    "NavigationCharacterSetId": 10000470,
+    "VoiceResourceId": "vc_tutorial_0960",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000480,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000480,
+    "NavigationCharacterSetId": 10000480,
+    "VoiceResourceId": "vc_tutorial_1050",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000490,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000490,
+    "NavigationCharacterSetId": 10000490,
+    "VoiceResourceId": "vc_tutorial_1060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000500,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000500,
+    "NavigationCharacterSetId": 10000500,
+    "VoiceResourceId": "vc_tutorial_1070",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000510,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000510,
+    "NavigationCharacterSetId": 10000510,
+    "VoiceResourceId": "vc_tutorial_1220",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000520,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000520,
+    "NavigationCharacterSetId": 10000520,
+    "VoiceResourceId": "vc_tutorial_1230",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000530,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000530,
+    "NavigationCharacterSetId": 10000530,
+    "VoiceResourceId": "vc_tutorial_1260",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000540,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000540,
+    "NavigationCharacterSetId": 10000540,
+    "VoiceResourceId": "vc_tutorial_1270",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000550,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000550,
+    "NavigationCharacterSetId": 10000550,
+    "VoiceResourceId": "vc_tutorial_1290",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000560,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000560,
+    "NavigationCharacterSetId": 10000560,
+    "VoiceResourceId": "vc_tutorial_1300",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000570,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000570,
+    "NavigationCharacterSetId": 10000570,
+    "VoiceResourceId": "vc_tutorial_1310",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000580,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000580,
+    "NavigationCharacterSetId": 10000580,
+    "VoiceResourceId": "vc_tutorial_1410",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000590,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000590,
+    "NavigationCharacterSetId": 10000590,
+    "VoiceResourceId": "vc_tutorial_1420",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000600,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000600,
+    "NavigationCharacterSetId": 10000600,
+    "VoiceResourceId": "vc_tutorial_1430",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000610,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000610,
+    "NavigationCharacterSetId": 10000610,
+    "VoiceResourceId": "vc_tutorial_1440",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000620,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000620,
+    "NavigationCharacterSetId": 10000620,
+    "VoiceResourceId": "vc_tutorial_1450",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000630,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000630,
+    "NavigationCharacterSetId": 10000630,
+    "VoiceResourceId": "vc_tutorial_1470",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000640,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000640,
+    "NavigationCharacterSetId": 10000640,
+    "VoiceResourceId": "vc_tutorial_1480",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000650,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000650,
+    "NavigationCharacterSetId": 10000650,
+    "VoiceResourceId": "vc_tutorial_1490",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000660,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000660,
+    "NavigationCharacterSetId": 10000660,
+    "VoiceResourceId": "vc_tutorial_1500",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000670,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000670,
+    "NavigationCharacterSetId": 10000670,
+    "VoiceResourceId": "vc_tutorial_1510",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000680,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000680,
+    "NavigationCharacterSetId": 10000680,
+    "VoiceResourceId": "vc_tutorial_1540",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000690,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000690,
+    "NavigationCharacterSetId": 10000690,
+    "VoiceResourceId": "vc_tutorial_1580",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000750,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000750,
+    "NavigationCharacterSetId": 10000750,
+    "VoiceResourceId": "vc_tutorial_1670",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000760,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000760,
+    "NavigationCharacterSetId": 10000760,
+    "VoiceResourceId": "vc_tutorial_1750",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000770,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000770,
+    "NavigationCharacterSetId": 10000770,
+    "VoiceResourceId": "vc_tutorial_1760",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000780,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000780,
+    "NavigationCharacterSetId": 10000780,
+    "VoiceResourceId": "vc_tutorial_1860",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000790,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000790,
+    "NavigationCharacterSetId": 10000790,
+    "VoiceResourceId": "vc_tutorial_1870",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000800,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000800,
+    "NavigationCharacterSetId": 10000800,
+    "VoiceResourceId": "vc_tutorial_1880",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000810,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000810,
+    "NavigationCharacterSetId": 10000810,
+    "VoiceResourceId": "vc_tutorial_1910",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000820,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000820,
+    "NavigationCharacterSetId": 10000820,
+    "VoiceResourceId": "vc_tutorial_1920",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000830,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000830,
+    "NavigationCharacterSetId": 10000830,
+    "VoiceResourceId": "vc_tutorial_1930",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000840,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000840,
+    "NavigationCharacterSetId": 10000840,
+    "VoiceResourceId": "vc_tutorial_2020",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000850,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000850,
+    "NavigationCharacterSetId": 10000850,
+    "VoiceResourceId": "vc_tutorial_2040",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000860,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000860,
+    "NavigationCharacterSetId": 10000860,
+    "VoiceResourceId": "vc_tutorial_2070",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000870,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000870,
+    "NavigationCharacterSetId": 10000870,
+    "VoiceResourceId": "vc_tutorial_2100",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000880,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000880,
+    "NavigationCharacterSetId": 10000880,
+    "VoiceResourceId": "vc_tutorial_2160",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000890,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000890,
+    "NavigationCharacterSetId": 10000890,
+    "VoiceResourceId": "vc_tutorial_2170",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000900,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000900,
+    "NavigationCharacterSetId": 10000900,
+    "VoiceResourceId": "vc_tutorial_2180",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000910,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000910,
+    "NavigationCharacterSetId": 10000910,
+    "VoiceResourceId": "vc_tutorial_2190",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000920,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000920,
+    "NavigationCharacterSetId": 10000920,
+    "VoiceResourceId": "vc_tutorial_2200",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000930,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000930,
+    "NavigationCharacterSetId": 10000930,
+    "VoiceResourceId": "vc_tutorial_2210",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000940,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000940,
+    "NavigationCharacterSetId": 10000940,
+    "VoiceResourceId": "vc_tutorial_2240",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000950,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000950,
+    "NavigationCharacterSetId": 10000950,
+    "VoiceResourceId": "vc_tutorial_2250",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000960,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000960,
+    "NavigationCharacterSetId": 10000960,
+    "VoiceResourceId": "vc_tutorial_2260",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000970,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000970,
+    "NavigationCharacterSetId": 10000970,
+    "VoiceResourceId": "vc_tutorial_2270",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000980,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000980,
+    "NavigationCharacterSetId": 10000980,
+    "VoiceResourceId": "vc_tutorial_2290",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10000990,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010000990,
+    "NavigationCharacterSetId": 10000990,
+    "VoiceResourceId": "vc_tutorial_2300",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001000,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001000,
+    "NavigationCharacterSetId": 10001000,
+    "VoiceResourceId": "vc_tutorial_2320",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001010,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001010,
+    "NavigationCharacterSetId": 10001010,
+    "VoiceResourceId": "vc_tutorial_2330",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001020,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001020,
+    "NavigationCharacterSetId": 10001020,
+    "VoiceResourceId": "vc_tutorial_2400",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001030,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001030,
+    "NavigationCharacterSetId": 10001030,
+    "VoiceResourceId": "vc_tutorial_2410",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001040,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001040,
+    "NavigationCharacterSetId": 10001040,
+    "VoiceResourceId": "vc_tutorial_2420",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 10001050,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000010001050,
+    "NavigationCharacterSetId": 10001050,
+    "VoiceResourceId": "vc_tutorial_2430",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010001,
+    "NavigationCharacterSetId": 11010001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010002,
+    "NavigationCharacterSetId": 11010002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010003,
+    "NavigationCharacterSetId": 11010003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010004,
+    "NavigationCharacterSetId": 11010004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010005,
+    "NavigationCharacterSetId": 11010005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11010006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011010006,
+    "NavigationCharacterSetId": 11010006,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11020001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011020001,
+    "NavigationCharacterSetId": 11020001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11020002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011020002,
+    "NavigationCharacterSetId": 11020002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11020003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011020003,
+    "NavigationCharacterSetId": 11020003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11030001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011030001,
+    "NavigationCharacterSetId": 11030001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11030002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011030002,
+    "NavigationCharacterSetId": 11030002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11030003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011030003,
+    "NavigationCharacterSetId": 11030003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11040001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011040001,
+    "NavigationCharacterSetId": 11040001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11040002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011040002,
+    "NavigationCharacterSetId": 11040002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11040003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011040003,
+    "NavigationCharacterSetId": 11040003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11040004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011040004,
+    "NavigationCharacterSetId": 11040004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11040005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011040005,
+    "NavigationCharacterSetId": 11040005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11050001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011050001,
+    "NavigationCharacterSetId": 11050001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11050002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011050002,
+    "NavigationCharacterSetId": 11050002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11060001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011060001,
+    "NavigationCharacterSetId": 11060001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11060002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011060002,
+    "NavigationCharacterSetId": 11060002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11060003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011060003,
+    "NavigationCharacterSetId": 11060003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11060004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011060004,
+    "NavigationCharacterSetId": 11060004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070001,
+    "NavigationCharacterSetId": 11070001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070002,
+    "NavigationCharacterSetId": 11070002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070003,
+    "NavigationCharacterSetId": 11070003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070004,
+    "NavigationCharacterSetId": 11070004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070005,
+    "NavigationCharacterSetId": 11070005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070006,
+    "NavigationCharacterSetId": 11070006,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070007,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070007,
+    "NavigationCharacterSetId": 11070007,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070008,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070008,
+    "NavigationCharacterSetId": 11070008,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070009,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070009,
+    "NavigationCharacterSetId": 11070009,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070010,
+    "NavigationCharacterSetId": 11070010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11070011,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011070011,
+    "NavigationCharacterSetId": 0,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080001,
+    "NavigationCharacterSetId": 11080001,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080002,
+    "NavigationCharacterSetId": 11080002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080003,
+    "NavigationCharacterSetId": 11080003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080004,
+    "NavigationCharacterSetId": 11080004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080005,
+    "NavigationCharacterSetId": 11080005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080006,
+    "NavigationCharacterSetId": 11080006,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080007,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080007,
+    "NavigationCharacterSetId": 11080007,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080008,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080008,
+    "NavigationCharacterSetId": 11080008,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080009,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080009,
+    "NavigationCharacterSetId": 11080009,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080010,
+    "NavigationCharacterSetId": 11080010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080011,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080011,
+    "NavigationCharacterSetId": 11080011,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080012,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080012,
+    "NavigationCharacterSetId": 11080012,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080013,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080013,
+    "NavigationCharacterSetId": 11080013,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080014,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080014,
+    "NavigationCharacterSetId": 11080014,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080015,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080015,
+    "NavigationCharacterSetId": 11080015,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080016,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080016,
+    "NavigationCharacterSetId": 11080016,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080017,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080017,
+    "NavigationCharacterSetId": 11080017,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080018,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080018,
+    "NavigationCharacterSetId": 11080018,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080019,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080019,
+    "NavigationCharacterSetId": 11080019,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080020,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080020,
+    "NavigationCharacterSetId": 11080020,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 11080021,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000011080021,
+    "NavigationCharacterSetId": 11080021,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12010001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012010001,
+    "NavigationCharacterSetId": 12010001,
+    "VoiceResourceId": "vc_partvoice_01_0075",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12010002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012010002,
+    "NavigationCharacterSetId": 12010002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12010003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012010003,
+    "NavigationCharacterSetId": 12010003,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12020001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012020001,
+    "NavigationCharacterSetId": 12020001,
+    "VoiceResourceId": "vc_partvoice_01_0071",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12020002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012020002,
+    "NavigationCharacterSetId": 12020002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12020003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012020003,
+    "NavigationCharacterSetId": 12020003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12020004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012020004,
+    "NavigationCharacterSetId": 12020004,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12030001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 5,
+    "QuoteLanguageId": 101200000012030001,
+    "NavigationCharacterSetId": 12030001,
+    "VoiceResourceId": "vc_partvoice_01_0076",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12030002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012030002,
+    "NavigationCharacterSetId": 12030002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12030003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012030003,
+    "NavigationCharacterSetId": 12030003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12030004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012030004,
+    "NavigationCharacterSetId": 12030004,
+    "VoiceResourceId": "vc_partvoice_01_0060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12040001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 5,
+    "QuoteLanguageId": 101200000012040001,
+    "NavigationCharacterSetId": 12040001,
+    "VoiceResourceId": "vc_partvoice_01_0076",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12040002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012040002,
+    "NavigationCharacterSetId": 12040002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12040003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012040003,
+    "NavigationCharacterSetId": 12040003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12040004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012040004,
+    "NavigationCharacterSetId": 12040004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12040005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012040005,
+    "NavigationCharacterSetId": 12040005,
+    "VoiceResourceId": "vc_partvoice_01_0060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12050001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012050001,
+    "NavigationCharacterSetId": 12050001,
+    "VoiceResourceId": "vc_partvoice_01_0080",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12050002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012050002,
+    "NavigationCharacterSetId": 12050002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12050003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012050003,
+    "NavigationCharacterSetId": 12050003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12050004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012050004,
+    "NavigationCharacterSetId": 12050004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12050005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012050005,
+    "NavigationCharacterSetId": 12050005,
+    "VoiceResourceId": "vc_partvoice_01_0060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060001,
+    "NavigationCharacterSetId": 12060001,
+    "VoiceResourceId": "vc_partvoice_01_0032",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060002,
+    "NavigationCharacterSetId": 12060002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060003,
+    "NavigationCharacterSetId": 12060003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060004,
+    "NavigationCharacterSetId": 12060004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060005,
+    "NavigationCharacterSetId": 12060005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060006,
+    "NavigationCharacterSetId": 12060006,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060007,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060007,
+    "NavigationCharacterSetId": 12060007,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060008,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060008,
+    "NavigationCharacterSetId": 12060008,
+    "VoiceResourceId": "vc_partvoice_01_0069",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060009,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060009,
+    "NavigationCharacterSetId": 12060009,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060010,
+    "NavigationCharacterSetId": 12060010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060011,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060011,
+    "NavigationCharacterSetId": 12060011,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060012,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060012,
+    "NavigationCharacterSetId": 12060012,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060013,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060013,
+    "NavigationCharacterSetId": 12060013,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060014,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060014,
+    "NavigationCharacterSetId": 12060014,
+    "VoiceResourceId": "vc_partvoice_01_0034",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060015,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060015,
+    "NavigationCharacterSetId": 12060015,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12060016,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012060016,
+    "NavigationCharacterSetId": 12060016,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070001,
+    "NavigationCharacterSetId": 12070001,
+    "VoiceResourceId": "vc_partvoice_01_0032",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070002,
+    "NavigationCharacterSetId": 12070002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070003,
+    "NavigationCharacterSetId": 12070003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070004,
+    "NavigationCharacterSetId": 12070004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070005,
+    "NavigationCharacterSetId": 12070005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070006,
+    "NavigationCharacterSetId": 12070006,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070007,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070007,
+    "NavigationCharacterSetId": 12070007,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070008,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070008,
+    "NavigationCharacterSetId": 12070008,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070009,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070009,
+    "NavigationCharacterSetId": 12070009,
+    "VoiceResourceId": "vc_partvoice_01_0034",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070010,
+    "NavigationCharacterSetId": 12070010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12070011,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 0,
+    "QuoteLanguageId": 101200000012070011,
+    "NavigationCharacterSetId": 12070011,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012080001,
+    "NavigationCharacterSetId": 12080001,
+    "VoiceResourceId": "vc_partvoice_01_0064",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012080002,
+    "NavigationCharacterSetId": 12080002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 5,
+    "QuoteLanguageId": 101200000012080003,
+    "NavigationCharacterSetId": 12080003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012080004,
+    "NavigationCharacterSetId": 12080004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012080005,
+    "NavigationCharacterSetId": 12080005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12080006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012080006,
+    "NavigationCharacterSetId": 12080006,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12090001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 5,
+    "QuoteLanguageId": 101200000012090001,
+    "NavigationCharacterSetId": 12090001,
+    "VoiceResourceId": "vc_partvoice_01_0076",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12090002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012090002,
+    "NavigationCharacterSetId": 12090002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12090003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012090003,
+    "NavigationCharacterSetId": 12090003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12090004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012090004,
+    "NavigationCharacterSetId": 12090004,
+    "VoiceResourceId": "vc_partvoice_01_0060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12100001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012100001,
+    "NavigationCharacterSetId": 12100001,
+    "VoiceResourceId": "vc_partvoice_01_0075",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12100002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012100002,
+    "NavigationCharacterSetId": 12100002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12100003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012100003,
+    "NavigationCharacterSetId": 12100003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12100004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012100004,
+    "NavigationCharacterSetId": 12100004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12100005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012100005,
+    "NavigationCharacterSetId": 12100005,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012110001,
+    "NavigationCharacterSetId": 12110001,
+    "VoiceResourceId": "vc_partvoice_01_0064",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012110002,
+    "NavigationCharacterSetId": 12110002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012110003,
+    "NavigationCharacterSetId": 12110003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012110004,
+    "NavigationCharacterSetId": 12110004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012110005,
+    "NavigationCharacterSetId": 12110005,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12110006,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012110006,
+    "NavigationCharacterSetId": 12110006,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12120001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012120001,
+    "NavigationCharacterSetId": 12120001,
+    "VoiceResourceId": "vc_partvoice_01_0080",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12120002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012120002,
+    "NavigationCharacterSetId": 12120002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12120003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012120003,
+    "NavigationCharacterSetId": 12120003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12120004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012120004,
+    "NavigationCharacterSetId": 12120004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12120005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012120005,
+    "NavigationCharacterSetId": 12120005,
+    "VoiceResourceId": "vc_partvoice_01_0060",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12130001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012130001,
+    "NavigationCharacterSetId": 12130001,
+    "VoiceResourceId": "vc_partvoice_01_0075",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12130002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012130002,
+    "NavigationCharacterSetId": 12130002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12130003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012130003,
+    "NavigationCharacterSetId": 12130003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12130004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012130004,
+    "NavigationCharacterSetId": 12130004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12130005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012130005,
+    "NavigationCharacterSetId": 12130005,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12140001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012140001,
+    "NavigationCharacterSetId": 12140001,
+    "VoiceResourceId": "vc_partvoice_01_0032",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12140002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012140002,
+    "NavigationCharacterSetId": 12140002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12140003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 5,
+    "QuoteLanguageId": 101200000012140003,
+    "NavigationCharacterSetId": 12140003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12140004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012140004,
+    "NavigationCharacterSetId": 12140004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12140005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012140005,
+    "NavigationCharacterSetId": 12140005,
+    "VoiceResourceId": "vc_partvoice_01_0077",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12150001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012150001,
+    "NavigationCharacterSetId": 12150001,
+    "VoiceResourceId": "vc_partvoice_01_0078",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12150002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012150002,
+    "NavigationCharacterSetId": 12150002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12150003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012150003,
+    "NavigationCharacterSetId": 12150003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12150004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012150004,
+    "NavigationCharacterSetId": 12150004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12150005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012150005,
+    "NavigationCharacterSetId": 12150005,
+    "VoiceResourceId": "vc_partvoice_01_0079",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12160001,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 4,
+    "QuoteLanguageId": 101200000012160001,
+    "NavigationCharacterSetId": 12160001,
+    "VoiceResourceId": "vc_partvoice_01_0071",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12160002,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012160002,
+    "NavigationCharacterSetId": 12160002,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12160003,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012160003,
+    "NavigationCharacterSetId": 12160003,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12160004,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000012160004,
+    "NavigationCharacterSetId": 12160004,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 12160005,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 3,
+    "QuoteLanguageId": 101200000012160005,
+    "NavigationCharacterSetId": 12160005,
+    "VoiceResourceId": "vc_partvoice_01_0072",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 13000010,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000013000010,
+    "NavigationCharacterSetId": 13,
+    "VoiceResourceId": "vc_loginbonus_01_0002",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 13000020,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000013000020,
+    "NavigationCharacterSetId": 13,
+    "VoiceResourceId": "vc_loginbonus_01_0005",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 13000030,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000013000030,
+    "NavigationCharacterSetId": 13,
+    "VoiceResourceId": "vc_loginbonus_01_0008",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000010,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000010,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0001",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000020,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000020,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0002",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000030,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000030,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0003",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000040,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000040,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0004",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000050,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000050,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0005",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000060,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000060,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0006",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000070,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000070,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0007",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 14000080,
+    "DisplayTypeIndex": 0,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000014000080,
+    "NavigationCharacterSetId": 14,
+    "VoiceResourceId": "vc_mission_01_0008",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15000010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015000010,
+    "NavigationCharacterSetId": 15000010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15000020,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015000020,
+    "NavigationCharacterSetId": 15000020,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15000030,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015000030,
+    "NavigationCharacterSetId": 15000030,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010010,
+    "NavigationCharacterSetId": 15010010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010020,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010020,
+    "NavigationCharacterSetId": 15010020,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010030,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010030,
+    "NavigationCharacterSetId": 15010030,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010040,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010040,
+    "NavigationCharacterSetId": 15010040,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010050,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010050,
+    "NavigationCharacterSetId": 15010050,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010060,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010060,
+    "NavigationCharacterSetId": 15010060,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010070,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010070,
+    "NavigationCharacterSetId": 15010070,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010072,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010072,
+    "NavigationCharacterSetId": 15010072,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010080,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010080,
+    "NavigationCharacterSetId": 15010080,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010085,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010085,
+    "NavigationCharacterSetId": 15010085,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010090,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010090,
+    "NavigationCharacterSetId": 15010090,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010100,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010100,
+    "NavigationCharacterSetId": 15010100,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010110,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010110,
+    "NavigationCharacterSetId": 15010110,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010120,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010120,
+    "NavigationCharacterSetId": 15010120,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010130,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010130,
+    "NavigationCharacterSetId": 15010130,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010140,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010140,
+    "NavigationCharacterSetId": 15010140,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010150,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010150,
+    "NavigationCharacterSetId": 15010150,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010160,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010160,
+    "NavigationCharacterSetId": 15010160,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010170,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010170,
+    "NavigationCharacterSetId": 15010170,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010180,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010180,
+    "NavigationCharacterSetId": 15010180,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010185,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010185,
+    "NavigationCharacterSetId": 15010185,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010190,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010190,
+    "NavigationCharacterSetId": 15010190,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010200,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010200,
+    "NavigationCharacterSetId": 15010200,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010210,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010210,
+    "NavigationCharacterSetId": 15010210,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010220,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010220,
+    "NavigationCharacterSetId": 15010220,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010230,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010230,
+    "NavigationCharacterSetId": 15010230,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010240,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010240,
+    "NavigationCharacterSetId": 15010240,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010245,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010245,
+    "NavigationCharacterSetId": 15010245,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010250,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010250,
+    "NavigationCharacterSetId": 15010250,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010260,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010260,
+    "NavigationCharacterSetId": 15010260,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010270,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010270,
+    "NavigationCharacterSetId": 15010270,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010280,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010280,
+    "NavigationCharacterSetId": 15010280,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010290,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010290,
+    "NavigationCharacterSetId": 15010290,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010300,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010300,
+    "NavigationCharacterSetId": 15010300,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010310,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010310,
+    "NavigationCharacterSetId": 15010310,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010320,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010320,
+    "NavigationCharacterSetId": 15010320,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010325,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010325,
+    "NavigationCharacterSetId": 15010325,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010330,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010330,
+    "NavigationCharacterSetId": 15010330,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010340,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010340,
+    "NavigationCharacterSetId": 15010340,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15010350,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015010350,
+    "NavigationCharacterSetId": 15010350,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011010,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011010,
+    "NavigationCharacterSetId": 15011010,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011020,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011020,
+    "NavigationCharacterSetId": 15011020,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011030,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011030,
+    "NavigationCharacterSetId": 15011030,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011040,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011040,
+    "NavigationCharacterSetId": 15011040,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011050,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011050,
+    "NavigationCharacterSetId": 15011050,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  },
+  {
+    "Id": 15011060,
+    "DisplayTypeIndex": 3,
+    "MotionTypeIndex": 8,
+    "QuoteLanguageId": 101200000015011060,
+    "NavigationCharacterSetId": 15011060,
+    "VoiceResourceId": "",
+    "ImageResourceId": ""
+  }
+]

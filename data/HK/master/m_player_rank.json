@@ -1,0 +1,1502 @@
+[
+  {
+    "Rank": 1,
+    "Exp": 0,
+    "MaxActionPoint": 30
+  },
+  {
+    "Rank": 2,
+    "Exp": 150,
+    "MaxActionPoint": 35
+  },
+  {
+    "Rank": 3,
+    "Exp": 350,
+    "MaxActionPoint": 40
+  },
+  {
+    "Rank": 4,
+    "Exp": 600,
+    "MaxActionPoint": 45
+  },
+  {
+    "Rank": 5,
+    "Exp": 900,
+    "MaxActionPoint": 50
+  },
+  {
+    "Rank": 6,
+    "Exp": 1250,
+    "MaxActionPoint": 55
+  },
+  {
+    "Rank": 7,
+    "Exp": 1650,
+    "MaxActionPoint": 60
+  },
+  {
+    "Rank": 8,
+    "Exp": 2100,
+    "MaxActionPoint": 65
+  },
+  {
+    "Rank": 9,
+    "Exp": 2600,
+    "MaxActionPoint": 70
+  },
+  {
+    "Rank": 10,
+    "Exp": 3200,
+    "MaxActionPoint": 75
+  },
+  {
+    "Rank": 11,
+    "Exp": 4000,
+    "MaxActionPoint": 80
+  },
+  {
+    "Rank": 12,
+    "Exp": 5000,
+    "MaxActionPoint": 85
+  },
+  {
+    "Rank": 13,
+    "Exp": 6200,
+    "MaxActionPoint": 90
+  },
+  {
+    "Rank": 14,
+    "Exp": 7600,
+    "MaxActionPoint": 95
+  },
+  {
+    "Rank": 15,
+    "Exp": 9200,
+    "MaxActionPoint": 100
+  },
+  {
+    "Rank": 16,
+    "Exp": 11000,
+    "MaxActionPoint": 101
+  },
+  {
+    "Rank": 17,
+    "Exp": 13000,
+    "MaxActionPoint": 102
+  },
+  {
+    "Rank": 18,
+    "Exp": 15500,
+    "MaxActionPoint": 103
+  },
+  {
+    "Rank": 19,
+    "Exp": 18500,
+    "MaxActionPoint": 104
+  },
+  {
+    "Rank": 20,
+    "Exp": 22000,
+    "MaxActionPoint": 105
+  },
+  {
+    "Rank": 21,
+    "Exp": 26000,
+    "MaxActionPoint": 106
+  },
+  {
+    "Rank": 22,
+    "Exp": 30500,
+    "MaxActionPoint": 107
+  },
+  {
+    "Rank": 23,
+    "Exp": 35500,
+    "MaxActionPoint": 108
+  },
+  {
+    "Rank": 24,
+    "Exp": 41000,
+    "MaxActionPoint": 109
+  },
+  {
+    "Rank": 25,
+    "Exp": 47000,
+    "MaxActionPoint": 110
+  },
+  {
+    "Rank": 26,
+    "Exp": 53500,
+    "MaxActionPoint": 111
+  },
+  {
+    "Rank": 27,
+    "Exp": 60500,
+    "MaxActionPoint": 112
+  },
+  {
+    "Rank": 28,
+    "Exp": 68000,
+    "MaxActionPoint": 113
+  },
+  {
+    "Rank": 29,
+    "Exp": 76000,
+    "MaxActionPoint": 114
+  },
+  {
+    "Rank": 30,
+    "Exp": 84500,
+    "MaxActionPoint": 115
+  },
+  {
+    "Rank": 31,
+    "Exp": 93500,
+    "MaxActionPoint": 116
+  },
+  {
+    "Rank": 32,
+    "Exp": 103000,
+    "MaxActionPoint": 117
+  },
+  {
+    "Rank": 33,
+    "Exp": 113000,
+    "MaxActionPoint": 118
+  },
+  {
+    "Rank": 34,
+    "Exp": 123200,
+    "MaxActionPoint": 119
+  },
+  {
+    "Rank": 35,
+    "Exp": 133600,
+    "MaxActionPoint": 120
+  },
+  {
+    "Rank": 36,
+    "Exp": 144200,
+    "MaxActionPoint": 121
+  },
+  {
+    "Rank": 37,
+    "Exp": 155000,
+    "MaxActionPoint": 122
+  },
+  {
+    "Rank": 38,
+    "Exp": 166000,
+    "MaxActionPoint": 123
+  },
+  {
+    "Rank": 39,
+    "Exp": 177200,
+    "MaxActionPoint": 124
+  },
+  {
+    "Rank": 40,
+    "Exp": 188600,
+    "MaxActionPoint": 125
+  },
+  {
+    "Rank": 41,
+    "Exp": 200200,
+    "MaxActionPoint": 126
+  },
+  {
+    "Rank": 42,
+    "Exp": 212000,
+    "MaxActionPoint": 127
+  },
+  {
+    "Rank": 43,
+    "Exp": 224000,
+    "MaxActionPoint": 128
+  },
+  {
+    "Rank": 44,
+    "Exp": 236200,
+    "MaxActionPoint": 129
+  },
+  {
+    "Rank": 45,
+    "Exp": 248600,
+    "MaxActionPoint": 130
+  },
+  {
+    "Rank": 46,
+    "Exp": 261200,
+    "MaxActionPoint": 131
+  },
+  {
+    "Rank": 47,
+    "Exp": 274000,
+    "MaxActionPoint": 132
+  },
+  {
+    "Rank": 48,
+    "Exp": 287000,
+    "MaxActionPoint": 133
+  },
+  {
+    "Rank": 49,
+    "Exp": 300200,
+    "MaxActionPoint": 134
+  },
+  {
+    "Rank": 50,
+    "Exp": 313600,
+    "MaxActionPoint": 135
+  },
+  {
+    "Rank": 51,
+    "Exp": 327200,
+    "MaxActionPoint": 136
+  },
+  {
+    "Rank": 52,
+    "Exp": 341000,
+    "MaxActionPoint": 137
+  },
+  {
+    "Rank": 53,
+    "Exp": 355000,
+    "MaxActionPoint": 138
+  },
+  {
+    "Rank": 54,
+    "Exp": 369200,
+    "MaxActionPoint": 139
+  },
+  {
+    "Rank": 55,
+    "Exp": 383600,
+    "MaxActionPoint": 140
+  },
+  {
+    "Rank": 56,
+    "Exp": 398200,
+    "MaxActionPoint": 141
+  },
+  {
+    "Rank": 57,
+    "Exp": 413000,
+    "MaxActionPoint": 142
+  },
+  {
+    "Rank": 58,
+    "Exp": 428000,
+    "MaxActionPoint": 143
+  },
+  {
+    "Rank": 59,
+    "Exp": 443500,
+    "MaxActionPoint": 144
+  },
+  {
+    "Rank": 60,
+    "Exp": 459500,
+    "MaxActionPoint": 145
+  },
+  {
+    "Rank": 61,
+    "Exp": 476000,
+    "MaxActionPoint": 146
+  },
+  {
+    "Rank": 62,
+    "Exp": 493000,
+    "MaxActionPoint": 147
+  },
+  {
+    "Rank": 63,
+    "Exp": 510500,
+    "MaxActionPoint": 148
+  },
+  {
+    "Rank": 64,
+    "Exp": 528500,
+    "MaxActionPoint": 149
+  },
+  {
+    "Rank": 65,
+    "Exp": 547000,
+    "MaxActionPoint": 150
+  },
+  {
+    "Rank": 66,
+    "Exp": 566000,
+    "MaxActionPoint": 150
+  },
+  {
+    "Rank": 67,
+    "Exp": 585500,
+    "MaxActionPoint": 151
+  },
+  {
+    "Rank": 68,
+    "Exp": 605500,
+    "MaxActionPoint": 151
+  },
+  {
+    "Rank": 69,
+    "Exp": 626000,
+    "MaxActionPoint": 152
+  },
+  {
+    "Rank": 70,
+    "Exp": 647000,
+    "MaxActionPoint": 152
+  },
+  {
+    "Rank": 71,
+    "Exp": 668500,
+    "MaxActionPoint": 153
+  },
+  {
+    "Rank": 72,
+    "Exp": 690500,
+    "MaxActionPoint": 153
+  },
+  {
+    "Rank": 73,
+    "Exp": 713000,
+    "MaxActionPoint": 154
+  },
+  {
+    "Rank": 74,
+    "Exp": 736000,
+    "MaxActionPoint": 154
+  },
+  {
+    "Rank": 75,
+    "Exp": 759500,
+    "MaxActionPoint": 155
+  },
+  {
+    "Rank": 76,
+    "Exp": 783500,
+    "MaxActionPoint": 155
+  },
+  {
+    "Rank": 77,
+    "Exp": 808000,
+    "MaxActionPoint": 156
+  },
+  {
+    "Rank": 78,
+    "Exp": 833000,
+    "MaxActionPoint": 156
+  },
+  {
+    "Rank": 79,
+    "Exp": 858500,
+    "MaxActionPoint": 157
+  },
+  {
+    "Rank": 80,
+    "Exp": 884500,
+    "MaxActionPoint": 157
+  },
+  {
+    "Rank": 81,
+    "Exp": 911000,
+    "MaxActionPoint": 158
+  },
+  {
+    "Rank": 82,
+    "Exp": 938000,
+    "MaxActionPoint": 158
+  },
+  {
+    "Rank": 83,
+    "Exp": 965500,
+    "MaxActionPoint": 159
+  },
+  {
+    "Rank": 84,
+    "Exp": 993500,
+    "MaxActionPoint": 159
+  },
+  {
+    "Rank": 85,
+    "Exp": 1022000,
+    "MaxActionPoint": 160
+  },
+  {
+    "Rank": 86,
+    "Exp": 1051000,
+    "MaxActionPoint": 160
+  },
+  {
+    "Rank": 87,
+    "Exp": 1080500,
+    "MaxActionPoint": 161
+  },
+  {
+    "Rank": 88,
+    "Exp": 1110500,
+    "MaxActionPoint": 161
+  },
+  {
+    "Rank": 89,
+    "Exp": 1141000,
+    "MaxActionPoint": 162
+  },
+  {
+    "Rank": 90,
+    "Exp": 1172000,
+    "MaxActionPoint": 162
+  },
+  {
+    "Rank": 91,
+    "Exp": 1203500,
+    "MaxActionPoint": 163
+  },
+  {
+    "Rank": 92,
+    "Exp": 1235500,
+    "MaxActionPoint": 163
+  },
+  {
+    "Rank": 93,
+    "Exp": 1268000,
+    "MaxActionPoint": 164
+  },
+  {
+    "Rank": 94,
+    "Exp": 1301000,
+    "MaxActionPoint": 164
+  },
+  {
+    "Rank": 95,
+    "Exp": 1334500,
+    "MaxActionPoint": 165
+  },
+  {
+    "Rank": 96,
+    "Exp": 1368500,
+    "MaxActionPoint": 165
+  },
+  {
+    "Rank": 97,
+    "Exp": 1403000,
+    "MaxActionPoint": 165
+  },
+  {
+    "Rank": 98,
+    "Exp": 1438000,
+    "MaxActionPoint": 166
+  },
+  {
+    "Rank": 99,
+    "Exp": 1473500,
+    "MaxActionPoint": 166
+  },
+  {
+    "Rank": 100,
+    "Exp": 1509500,
+    "MaxActionPoint": 166
+  },
+  {
+    "Rank": 101,
+    "Exp": 1546000,
+    "MaxActionPoint": 167
+  },
+  {
+    "Rank": 102,
+    "Exp": 1583000,
+    "MaxActionPoint": 167
+  },
+  {
+    "Rank": 103,
+    "Exp": 1620500,
+    "MaxActionPoint": 167
+  },
+  {
+    "Rank": 104,
+    "Exp": 1658500,
+    "MaxActionPoint": 168
+  },
+  {
+    "Rank": 105,
+    "Exp": 1697000,
+    "MaxActionPoint": 168
+  },
+  {
+    "Rank": 106,
+    "Exp": 1736000,
+    "MaxActionPoint": 168
+  },
+  {
+    "Rank": 107,
+    "Exp": 1775500,
+    "MaxActionPoint": 169
+  },
+  {
+    "Rank": 108,
+    "Exp": 1815500,
+    "MaxActionPoint": 169
+  },
+  {
+    "Rank": 109,
+    "Exp": 1856000,
+    "MaxActionPoint": 169
+  },
+  {
+    "Rank": 110,
+    "Exp": 1897000,
+    "MaxActionPoint": 170
+  },
+  {
+    "Rank": 111,
+    "Exp": 1938500,
+    "MaxActionPoint": 170
+  },
+  {
+    "Rank": 112,
+    "Exp": 1980500,
+    "MaxActionPoint": 170
+  },
+  {
+    "Rank": 113,
+    "Exp": 2023000,
+    "MaxActionPoint": 171
+  },
+  {
+    "Rank": 114,
+    "Exp": 2066000,
+    "MaxActionPoint": 171
+  },
+  {
+    "Rank": 115,
+    "Exp": 2109500,
+    "MaxActionPoint": 171
+  },
+  {
+    "Rank": 116,
+    "Exp": 2153500,
+    "MaxActionPoint": 172
+  },
+  {
+    "Rank": 117,
+    "Exp": 2198000,
+    "MaxActionPoint": 172
+  },
+  {
+    "Rank": 118,
+    "Exp": 2243000,
+    "MaxActionPoint": 172
+  },
+  {
+    "Rank": 119,
+    "Exp": 2288500,
+    "MaxActionPoint": 173
+  },
+  {
+    "Rank": 120,
+    "Exp": 2334500,
+    "MaxActionPoint": 173
+  },
+  {
+    "Rank": 121,
+    "Exp": 2381000,
+    "MaxActionPoint": 173
+  },
+  {
+    "Rank": 122,
+    "Exp": 2428000,
+    "MaxActionPoint": 174
+  },
+  {
+    "Rank": 123,
+    "Exp": 2475500,
+    "MaxActionPoint": 174
+  },
+  {
+    "Rank": 124,
+    "Exp": 2523500,
+    "MaxActionPoint": 174
+  },
+  {
+    "Rank": 125,
+    "Exp": 2572000,
+    "MaxActionPoint": 175
+  },
+  {
+    "Rank": 126,
+    "Exp": 2621000,
+    "MaxActionPoint": 175
+  },
+  {
+    "Rank": 127,
+    "Exp": 2670500,
+    "MaxActionPoint": 175
+  },
+  {
+    "Rank": 128,
+    "Exp": 2720500,
+    "MaxActionPoint": 176
+  },
+  {
+    "Rank": 129,
+    "Exp": 2771000,
+    "MaxActionPoint": 176
+  },
+  {
+    "Rank": 130,
+    "Exp": 2822000,
+    "MaxActionPoint": 176
+  },
+  {
+    "Rank": 131,
+    "Exp": 2873500,
+    "MaxActionPoint": 177
+  },
+  {
+    "Rank": 132,
+    "Exp": 2925500,
+    "MaxActionPoint": 177
+  },
+  {
+    "Rank": 133,
+    "Exp": 2978000,
+    "MaxActionPoint": 177
+  },
+  {
+    "Rank": 134,
+    "Exp": 3031000,
+    "MaxActionPoint": 178
+  },
+  {
+    "Rank": 135,
+    "Exp": 3084500,
+    "MaxActionPoint": 178
+  },
+  {
+    "Rank": 136,
+    "Exp": 3138500,
+    "MaxActionPoint": 178
+  },
+  {
+    "Rank": 137,
+    "Exp": 3193000,
+    "MaxActionPoint": 179
+  },
+  {
+    "Rank": 138,
+    "Exp": 3248000,
+    "MaxActionPoint": 179
+  },
+  {
+    "Rank": 139,
+    "Exp": 3303500,
+    "MaxActionPoint": 179
+  },
+  {
+    "Rank": 140,
+    "Exp": 3359500,
+    "MaxActionPoint": 180
+  },
+  {
+    "Rank": 141,
+    "Exp": 3416000,
+    "MaxActionPoint": 180
+  },
+  {
+    "Rank": 142,
+    "Exp": 3473000,
+    "MaxActionPoint": 180
+  },
+  {
+    "Rank": 143,
+    "Exp": 3530500,
+    "MaxActionPoint": 181
+  },
+  {
+    "Rank": 144,
+    "Exp": 3588500,
+    "MaxActionPoint": 181
+  },
+  {
+    "Rank": 145,
+    "Exp": 3647000,
+    "MaxActionPoint": 181
+  },
+  {
+    "Rank": 146,
+    "Exp": 3706000,
+    "MaxActionPoint": 182
+  },
+  {
+    "Rank": 147,
+    "Exp": 3765500,
+    "MaxActionPoint": 182
+  },
+  {
+    "Rank": 148,
+    "Exp": 3825500,
+    "MaxActionPoint": 182
+  },
+  {
+    "Rank": 149,
+    "Exp": 3886000,
+    "MaxActionPoint": 183
+  },
+  {
+    "Rank": 150,
+    "Exp": 3947000,
+    "MaxActionPoint": 183
+  },
+  {
+    "Rank": 151,
+    "Exp": 4008500,
+    "MaxActionPoint": 183
+  },
+  {
+    "Rank": 152,
+    "Exp": 4070500,
+    "MaxActionPoint": 184
+  },
+  {
+    "Rank": 153,
+    "Exp": 4133000,
+    "MaxActionPoint": 184
+  },
+  {
+    "Rank": 154,
+    "Exp": 4196000,
+    "MaxActionPoint": 184
+  },
+  {
+    "Rank": 155,
+    "Exp": 4259500,
+    "MaxActionPoint": 185
+  },
+  {
+    "Rank": 156,
+    "Exp": 4323500,
+    "MaxActionPoint": 185
+  },
+  {
+    "Rank": 157,
+    "Exp": 4388000,
+    "MaxActionPoint": 185
+  },
+  {
+    "Rank": 158,
+    "Exp": 4453000,
+    "MaxActionPoint": 186
+  },
+  {
+    "Rank": 159,
+    "Exp": 4518500,
+    "MaxActionPoint": 186
+  },
+  {
+    "Rank": 160,
+    "Exp": 4584500,
+    "MaxActionPoint": 186
+  },
+  {
+    "Rank": 161,
+    "Exp": 4651000,
+    "MaxActionPoint": 187
+  },
+  {
+    "Rank": 162,
+    "Exp": 4718000,
+    "MaxActionPoint": 187
+  },
+  {
+    "Rank": 163,
+    "Exp": 4785500,
+    "MaxActionPoint": 187
+  },
+  {
+    "Rank": 164,
+    "Exp": 4853500,
+    "MaxActionPoint": 188
+  },
+  {
+    "Rank": 165,
+    "Exp": 4922000,
+    "MaxActionPoint": 188
+  },
+  {
+    "Rank": 166,
+    "Exp": 4991000,
+    "MaxActionPoint": 188
+  },
+  {
+    "Rank": 167,
+    "Exp": 5060500,
+    "MaxActionPoint": 189
+  },
+  {
+    "Rank": 168,
+    "Exp": 5130500,
+    "MaxActionPoint": 189
+  },
+  {
+    "Rank": 169,
+    "Exp": 5201000,
+    "MaxActionPoint": 189
+  },
+  {
+    "Rank": 170,
+    "Exp": 5272000,
+    "MaxActionPoint": 190
+  },
+  {
+    "Rank": 171,
+    "Exp": 5343500,
+    "MaxActionPoint": 190
+  },
+  {
+    "Rank": 172,
+    "Exp": 5415500,
+    "MaxActionPoint": 190
+  },
+  {
+    "Rank": 173,
+    "Exp": 5488000,
+    "MaxActionPoint": 191
+  },
+  {
+    "Rank": 174,
+    "Exp": 5561000,
+    "MaxActionPoint": 191
+  },
+  {
+    "Rank": 175,
+    "Exp": 5634500,
+    "MaxActionPoint": 191
+  },
+  {
+    "Rank": 176,
+    "Exp": 5708500,
+    "MaxActionPoint": 192
+  },
+  {
+    "Rank": 177,
+    "Exp": 5783000,
+    "MaxActionPoint": 192
+  },
+  {
+    "Rank": 178,
+    "Exp": 5858000,
+    "MaxActionPoint": 192
+  },
+  {
+    "Rank": 179,
+    "Exp": 5933500,
+    "MaxActionPoint": 193
+  },
+  {
+    "Rank": 180,
+    "Exp": 6009500,
+    "MaxActionPoint": 193
+  },
+  {
+    "Rank": 181,
+    "Exp": 6086000,
+    "MaxActionPoint": 193
+  },
+  {
+    "Rank": 182,
+    "Exp": 6163000,
+    "MaxActionPoint": 194
+  },
+  {
+    "Rank": 183,
+    "Exp": 6240500,
+    "MaxActionPoint": 194
+  },
+  {
+    "Rank": 184,
+    "Exp": 6318500,
+    "MaxActionPoint": 194
+  },
+  {
+    "Rank": 185,
+    "Exp": 6397000,
+    "MaxActionPoint": 195
+  },
+  {
+    "Rank": 186,
+    "Exp": 6476000,
+    "MaxActionPoint": 195
+  },
+  {
+    "Rank": 187,
+    "Exp": 6555500,
+    "MaxActionPoint": 195
+  },
+  {
+    "Rank": 188,
+    "Exp": 6635500,
+    "MaxActionPoint": 196
+  },
+  {
+    "Rank": 189,
+    "Exp": 6716000,
+    "MaxActionPoint": 196
+  },
+  {
+    "Rank": 190,
+    "Exp": 6797000,
+    "MaxActionPoint": 196
+  },
+  {
+    "Rank": 191,
+    "Exp": 6878500,
+    "MaxActionPoint": 197
+  },
+  {
+    "Rank": 192,
+    "Exp": 6960500,
+    "MaxActionPoint": 197
+  },
+  {
+    "Rank": 193,
+    "Exp": 7043000,
+    "MaxActionPoint": 197
+  },
+  {
+    "Rank": 194,
+    "Exp": 7126000,
+    "MaxActionPoint": 198
+  },
+  {
+    "Rank": 195,
+    "Exp": 7209500,
+    "MaxActionPoint": 198
+  },
+  {
+    "Rank": 196,
+    "Exp": 7293500,
+    "MaxActionPoint": 198
+  },
+  {
+    "Rank": 197,
+    "Exp": 7378000,
+    "MaxActionPoint": 199
+  },
+  {
+    "Rank": 198,
+    "Exp": 7463000,
+    "MaxActionPoint": 199
+  },
+  {
+    "Rank": 199,
+    "Exp": 7548500,
+    "MaxActionPoint": 199
+  },
+  {
+    "Rank": 200,
+    "Exp": 7634500,
+    "MaxActionPoint": 200
+  },
+  {
+    "Rank": 201,
+    "Exp": 7721000,
+    "MaxActionPoint": 200
+  },
+  {
+    "Rank": 202,
+    "Exp": 7808000,
+    "MaxActionPoint": 200
+  },
+  {
+    "Rank": 203,
+    "Exp": 7895500,
+    "MaxActionPoint": 200
+  },
+  {
+    "Rank": 204,
+    "Exp": 7983500,
+    "MaxActionPoint": 201
+  },
+  {
+    "Rank": 205,
+    "Exp": 8072000,
+    "MaxActionPoint": 201
+  },
+  {
+    "Rank": 206,
+    "Exp": 8161000,
+    "MaxActionPoint": 201
+  },
+  {
+    "Rank": 207,
+    "Exp": 8250500,
+    "MaxActionPoint": 201
+  },
+  {
+    "Rank": 208,
+    "Exp": 8340500,
+    "MaxActionPoint": 202
+  },
+  {
+    "Rank": 209,
+    "Exp": 8431000,
+    "MaxActionPoint": 202
+  },
+  {
+    "Rank": 210,
+    "Exp": 8522000,
+    "MaxActionPoint": 202
+  },
+  {
+    "Rank": 211,
+    "Exp": 8613500,
+    "MaxActionPoint": 202
+  },
+  {
+    "Rank": 212,
+    "Exp": 8705500,
+    "MaxActionPoint": 203
+  },
+  {
+    "Rank": 213,
+    "Exp": 8798000,
+    "MaxActionPoint": 203
+  },
+  {
+    "Rank": 214,
+    "Exp": 8891000,
+    "MaxActionPoint": 203
+  },
+  {
+    "Rank": 215,
+    "Exp": 8984500,
+    "MaxActionPoint": 203
+  },
+  {
+    "Rank": 216,
+    "Exp": 9078500,
+    "MaxActionPoint": 204
+  },
+  {
+    "Rank": 217,
+    "Exp": 9173000,
+    "MaxActionPoint": 204
+  },
+  {
+    "Rank": 218,
+    "Exp": 9268000,
+    "MaxActionPoint": 204
+  },
+  {
+    "Rank": 219,
+    "Exp": 9363500,
+    "MaxActionPoint": 204
+  },
+  {
+    "Rank": 220,
+    "Exp": 9459500,
+    "MaxActionPoint": 205
+  },
+  {
+    "Rank": 221,
+    "Exp": 9556000,
+    "MaxActionPoint": 205
+  },
+  {
+    "Rank": 222,
+    "Exp": 9653000,
+    "MaxActionPoint": 205
+  },
+  {
+    "Rank": 223,
+    "Exp": 9750500,
+    "MaxActionPoint": 205
+  },
+  {
+    "Rank": 224,
+    "Exp": 9848500,
+    "MaxActionPoint": 206
+  },
+  {
+    "Rank": 225,
+    "Exp": 9947000,
+    "MaxActionPoint": 206
+  },
+  {
+    "Rank": 226,
+    "Exp": 10046000,
+    "MaxActionPoint": 206
+  },
+  {
+    "Rank": 227,
+    "Exp": 10145500,
+    "MaxActionPoint": 206
+  },
+  {
+    "Rank": 228,
+    "Exp": 10245500,
+    "MaxActionPoint": 207
+  },
+  {
+    "Rank": 229,
+    "Exp": 10346000,
+    "MaxActionPoint": 207
+  },
+  {
+    "Rank": 230,
+    "Exp": 10447000,
+    "MaxActionPoint": 207
+  },
+  {
+    "Rank": 231,
+    "Exp": 10548500,
+    "MaxActionPoint": 207
+  },
+  {
+    "Rank": 232,
+    "Exp": 10650500,
+    "MaxActionPoint": 208
+  },
+  {
+    "Rank": 233,
+    "Exp": 10753000,
+    "MaxActionPoint": 208
+  },
+  {
+    "Rank": 234,
+    "Exp": 10856000,
+    "MaxActionPoint": 208
+  },
+  {
+    "Rank": 235,
+    "Exp": 10959500,
+    "MaxActionPoint": 208
+  },
+  {
+    "Rank": 236,
+    "Exp": 11063500,
+    "MaxActionPoint": 209
+  },
+  {
+    "Rank": 237,
+    "Exp": 11168000,
+    "MaxActionPoint": 209
+  },
+  {
+    "Rank": 238,
+    "Exp": 11273000,
+    "MaxActionPoint": 209
+  },
+  {
+    "Rank": 239,
+    "Exp": 11378500,
+    "MaxActionPoint": 209
+  },
+  {
+    "Rank": 240,
+    "Exp": 11484500,
+    "MaxActionPoint": 210
+  },
+  {
+    "Rank": 241,
+    "Exp": 11591000,
+    "MaxActionPoint": 210
+  },
+  {
+    "Rank": 242,
+    "Exp": 11698000,
+    "MaxActionPoint": 210
+  },
+  {
+    "Rank": 243,
+    "Exp": 11805500,
+    "MaxActionPoint": 210
+  },
+  {
+    "Rank": 244,
+    "Exp": 11913500,
+    "MaxActionPoint": 211
+  },
+  {
+    "Rank": 245,
+    "Exp": 12022000,
+    "MaxActionPoint": 211
+  },
+  {
+    "Rank": 246,
+    "Exp": 12131000,
+    "MaxActionPoint": 211
+  },
+  {
+    "Rank": 247,
+    "Exp": 12240500,
+    "MaxActionPoint": 211
+  },
+  {
+    "Rank": 248,
+    "Exp": 12350500,
+    "MaxActionPoint": 212
+  },
+  {
+    "Rank": 249,
+    "Exp": 12461000,
+    "MaxActionPoint": 212
+  },
+  {
+    "Rank": 250,
+    "Exp": 12572000,
+    "MaxActionPoint": 212
+  },
+  {
+    "Rank": 251,
+    "Exp": 12683500,
+    "MaxActionPoint": 212
+  },
+  {
+    "Rank": 252,
+    "Exp": 12795500,
+    "MaxActionPoint": 213
+  },
+  {
+    "Rank": 253,
+    "Exp": 12908000,
+    "MaxActionPoint": 213
+  },
+  {
+    "Rank": 254,
+    "Exp": 13021000,
+    "MaxActionPoint": 213
+  },
+  {
+    "Rank": 255,
+    "Exp": 13134500,
+    "MaxActionPoint": 213
+  },
+  {
+    "Rank": 256,
+    "Exp": 13248500,
+    "MaxActionPoint": 214
+  },
+  {
+    "Rank": 257,
+    "Exp": 13363000,
+    "MaxActionPoint": 214
+  },
+  {
+    "Rank": 258,
+    "Exp": 13478000,
+    "MaxActionPoint": 214
+  },
+  {
+    "Rank": 259,
+    "Exp": 13593500,
+    "MaxActionPoint": 214
+  },
+  {
+    "Rank": 260,
+    "Exp": 13709500,
+    "MaxActionPoint": 215
+  },
+  {
+    "Rank": 261,
+    "Exp": 13826000,
+    "MaxActionPoint": 215
+  },
+  {
+    "Rank": 262,
+    "Exp": 13943000,
+    "MaxActionPoint": 215
+  },
+  {
+    "Rank": 263,
+    "Exp": 14060500,
+    "MaxActionPoint": 215
+  },
+  {
+    "Rank": 264,
+    "Exp": 14178500,
+    "MaxActionPoint": 216
+  },
+  {
+    "Rank": 265,
+    "Exp": 14297000,
+    "MaxActionPoint": 216
+  },
+  {
+    "Rank": 266,
+    "Exp": 14416000,
+    "MaxActionPoint": 216
+  },
+  {
+    "Rank": 267,
+    "Exp": 14535500,
+    "MaxActionPoint": 216
+  },
+  {
+    "Rank": 268,
+    "Exp": 14655500,
+    "MaxActionPoint": 217
+  },
+  {
+    "Rank": 269,
+    "Exp": 14776000,
+    "MaxActionPoint": 217
+  },
+  {
+    "Rank": 270,
+    "Exp": 14897000,
+    "MaxActionPoint": 217
+  },
+  {
+    "Rank": 271,
+    "Exp": 15018500,
+    "MaxActionPoint": 217
+  },
+  {
+    "Rank": 272,
+    "Exp": 15140500,
+    "MaxActionPoint": 218
+  },
+  {
+    "Rank": 273,
+    "Exp": 15263000,
+    "MaxActionPoint": 218
+  },
+  {
+    "Rank": 274,
+    "Exp": 15386000,
+    "MaxActionPoint": 218
+  },
+  {
+    "Rank": 275,
+    "Exp": 15509500,
+    "MaxActionPoint": 218
+  },
+  {
+    "Rank": 276,
+    "Exp": 15633500,
+    "MaxActionPoint": 219
+  },
+  {
+    "Rank": 277,
+    "Exp": 15758000,
+    "MaxActionPoint": 219
+  },
+  {
+    "Rank": 278,
+    "Exp": 15883000,
+    "MaxActionPoint": 219
+  },
+  {
+    "Rank": 279,
+    "Exp": 16008500,
+    "MaxActionPoint": 219
+  },
+  {
+    "Rank": 280,
+    "Exp": 16134500,
+    "MaxActionPoint": 220
+  },
+  {
+    "Rank": 281,
+    "Exp": 16261000,
+    "MaxActionPoint": 220
+  },
+  {
+    "Rank": 282,
+    "Exp": 16388000,
+    "MaxActionPoint": 220
+  },
+  {
+    "Rank": 283,
+    "Exp": 16515500,
+    "MaxActionPoint": 220
+  },
+  {
+    "Rank": 284,
+    "Exp": 16643500,
+    "MaxActionPoint": 221
+  },
+  {
+    "Rank": 285,
+    "Exp": 16772000,
+    "MaxActionPoint": 221
+  },
+  {
+    "Rank": 286,
+    "Exp": 16901000,
+    "MaxActionPoint": 221
+  },
+  {
+    "Rank": 287,
+    "Exp": 17030500,
+    "MaxActionPoint": 221
+  },
+  {
+    "Rank": 288,
+    "Exp": 17160500,
+    "MaxActionPoint": 222
+  },
+  {
+    "Rank": 289,
+    "Exp": 17291000,
+    "MaxActionPoint": 222
+  },
+  {
+    "Rank": 290,
+    "Exp": 17422000,
+    "MaxActionPoint": 222
+  },
+  {
+    "Rank": 291,
+    "Exp": 17553500,
+    "MaxActionPoint": 222
+  },
+  {
+    "Rank": 292,
+    "Exp": 17685500,
+    "MaxActionPoint": 223
+  },
+  {
+    "Rank": 293,
+    "Exp": 17818000,
+    "MaxActionPoint": 223
+  },
+  {
+    "Rank": 294,
+    "Exp": 17951000,
+    "MaxActionPoint": 223
+  },
+  {
+    "Rank": 295,
+    "Exp": 18084500,
+    "MaxActionPoint": 223
+  },
+  {
+    "Rank": 296,
+    "Exp": 18218500,
+    "MaxActionPoint": 224
+  },
+  {
+    "Rank": 297,
+    "Exp": 18353000,
+    "MaxActionPoint": 224
+  },
+  {
+    "Rank": 298,
+    "Exp": 18488000,
+    "MaxActionPoint": 224
+  },
+  {
+    "Rank": 299,
+    "Exp": 18623500,
+    "MaxActionPoint": 224
+  },
+  {
+    "Rank": 300,
+    "Exp": 18759500,
+    "MaxActionPoint": 225
+  }
+]

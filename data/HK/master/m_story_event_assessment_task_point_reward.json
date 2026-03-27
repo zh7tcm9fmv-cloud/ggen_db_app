@@ -1,0 +1,146 @@
+[
+  {
+    "Id": 2000090101,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000101
+  },
+  {
+    "Id": 2000090102,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000102
+  },
+  {
+    "Id": 2000090103,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000103
+  },
+  {
+    "Id": 2000090104,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000104
+  },
+  {
+    "Id": 2000090201,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000201
+  },
+  {
+    "Id": 2000090202,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000202
+  },
+  {
+    "Id": 2000090203,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000203
+  },
+  {
+    "Id": 2000090204,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000204
+  },
+  {
+    "Id": 2000090301,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000301
+  },
+  {
+    "Id": 2000090302,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000302
+  },
+  {
+    "Id": 2000090303,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000303
+  },
+  {
+    "Id": 2000090304,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000304
+  },
+  {
+    "Id": 2000090401,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000401
+  },
+  {
+    "Id": 2000090402,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000402
+  },
+  {
+    "Id": 2000090403,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000403
+  },
+  {
+    "Id": 2000090404,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000404
+  },
+  {
+    "Id": 2000090501,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000501
+  },
+  {
+    "Id": 2000090502,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000502
+  },
+  {
+    "Id": 2000090503,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000503
+  },
+  {
+    "Id": 2000090504,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000504
+  },
+  {
+    "Id": 2000090601,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "CompleteRate": 25,
+    "RewardSetId": 22200009000601
+  },
+  {
+    "Id": 2000090602,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "CompleteRate": 50,
+    "RewardSetId": 22200009000602
+  },
+  {
+    "Id": 2000090603,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "CompleteRate": 75,
+    "RewardSetId": 22200009000603
+  },
+  {
+    "Id": 2000090604,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "CompleteRate": 100,
+    "RewardSetId": 22200009000604
+  }
+]

@@ -1,0 +1,192 @@
+[
+  {
+    "Id": 11,
+    "CombatPowerLowerLimit": 20000,
+    "CombatPowerUpperLimit": 30000
+  },
+  {
+    "Id": 12,
+    "CombatPowerLowerLimit": 30000,
+    "CombatPowerUpperLimit": 45000
+  },
+  {
+    "Id": 13,
+    "CombatPowerLowerLimit": 45000,
+    "CombatPowerUpperLimit": 65000
+  },
+  {
+    "Id": 21,
+    "CombatPowerLowerLimit": 50000,
+    "CombatPowerUpperLimit": 70000
+  },
+  {
+    "Id": 22,
+    "CombatPowerLowerLimit": 70000,
+    "CombatPowerUpperLimit": 85000
+  },
+  {
+    "Id": 23,
+    "CombatPowerLowerLimit": 85000,
+    "CombatPowerUpperLimit": 100000
+  },
+  {
+    "Id": 31,
+    "CombatPowerLowerLimit": 90000,
+    "CombatPowerUpperLimit": 105000
+  },
+  {
+    "Id": 32,
+    "CombatPowerLowerLimit": 105000,
+    "CombatPowerUpperLimit": 120000
+  },
+  {
+    "Id": 33,
+    "CombatPowerLowerLimit": 120000,
+    "CombatPowerUpperLimit": 135000
+  },
+  {
+    "Id": 41,
+    "CombatPowerLowerLimit": 125000,
+    "CombatPowerUpperLimit": 140000
+  },
+  {
+    "Id": 42,
+    "CombatPowerLowerLimit": 140000,
+    "CombatPowerUpperLimit": 155000
+  },
+  {
+    "Id": 43,
+    "CombatPowerLowerLimit": 155000,
+    "CombatPowerUpperLimit": 170000
+  },
+  {
+    "Id": 51,
+    "CombatPowerLowerLimit": 155000,
+    "CombatPowerUpperLimit": 170000
+  },
+  {
+    "Id": 52,
+    "CombatPowerLowerLimit": 170000,
+    "CombatPowerUpperLimit": 185000
+  },
+  {
+    "Id": 53,
+    "CombatPowerLowerLimit": 185000,
+    "CombatPowerUpperLimit": 200000
+  },
+  {
+    "Id": 61,
+    "CombatPowerLowerLimit": 180000,
+    "CombatPowerUpperLimit": 195000
+  },
+  {
+    "Id": 62,
+    "CombatPowerLowerLimit": 195000,
+    "CombatPowerUpperLimit": 210000
+  },
+  {
+    "Id": 63,
+    "CombatPowerLowerLimit": 210000,
+    "CombatPowerUpperLimit": 225000
+  },
+  {
+    "Id": 1000,
+    "CombatPowerLowerLimit": 195000,
+    "CombatPowerUpperLimit": 210000
+  },
+  {
+    "Id": 1001,
+    "CombatPowerLowerLimit": 210000,
+    "CombatPowerUpperLimit": 225000
+  },
+  {
+    "Id": 1002,
+    "CombatPowerLowerLimit": 225000,
+    "CombatPowerUpperLimit": 235000
+  },
+  {
+    "Id": 1003,
+    "CombatPowerLowerLimit": 235000,
+    "CombatPowerUpperLimit": 240000
+  },
+  {
+    "Id": 1004,
+    "CombatPowerLowerLimit": 240000,
+    "CombatPowerUpperLimit": 245000
+  },
+  {
+    "Id": 1005,
+    "CombatPowerLowerLimit": 245000,
+    "CombatPowerUpperLimit": 250000
+  },
+  {
+    "Id": 1006,
+    "CombatPowerLowerLimit": 250000,
+    "CombatPowerUpperLimit": 260000
+  },
+  {
+    "Id": 1007,
+    "CombatPowerLowerLimit": 260000,
+    "CombatPowerUpperLimit": 270000
+  },
+  {
+    "Id": 1008,
+    "CombatPowerLowerLimit": 270000,
+    "CombatPowerUpperLimit": 300000
+  },
+  {
+    "Id": 2000,
+    "CombatPowerLowerLimit": 195000,
+    "CombatPowerUpperLimit": 210000
+  },
+  {
+    "Id": 2001,
+    "CombatPowerLowerLimit": 210000,
+    "CombatPowerUpperLimit": 220000
+  },
+  {
+    "Id": 2002,
+    "CombatPowerLowerLimit": 220000,
+    "CombatPowerUpperLimit": 230000
+  },
+  {
+    "Id": 2003,
+    "CombatPowerLowerLimit": 230000,
+    "CombatPowerUpperLimit": 240000
+  },
+  {
+    "Id": 2004,
+    "CombatPowerLowerLimit": 240000,
+    "CombatPowerUpperLimit": 250000
+  },
+  {
+    "Id": 2005,
+    "CombatPowerLowerLimit": 250000,
+    "CombatPowerUpperLimit": 260000
+  },
+  {
+    "Id": 2006,
+    "CombatPowerLowerLimit": 260000,
+    "CombatPowerUpperLimit": 270000
+  },
+  {
+    "Id": 2007,
+    "CombatPowerLowerLimit": 270000,
+    "CombatPowerUpperLimit": 280000
+  },
+  {
+    "Id": 2008,
+    "CombatPowerLowerLimit": 280000,
+    "CombatPowerUpperLimit": 290000
+  },
+  {
+    "Id": 2009,
+    "CombatPowerLowerLimit": 290000,
+    "CombatPowerUpperLimit": 300000
+  },
+  {
+    "Id": 2010,
+    "CombatPowerLowerLimit": 300000,
+    "CombatPowerUpperLimit": 320000
+  }
+]

@@ -1,0 +1,477 @@
+[
+  {
+    "ConditionSetId": 16110012400101,
+    "ConditionId": 1611001240010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225041011,
+    "ConditionId": 1800022504101101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225041012,
+    "ConditionId": 1800022504101201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225041013,
+    "ConditionId": 1800022504101301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225041014,
+    "ConditionId": 1800022504101401,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225041015,
+    "ConditionId": 1800022504101501,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225043011,
+    "ConditionId": 1800022504301101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225063011,
+    "ConditionId": 1800022506301101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225096001,
+    "ConditionId": 1800022509600101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225096002,
+    "ConditionId": 1800022509600201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225096007,
+    "ConditionId": 1800022509600701,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225108001,
+    "ConditionId": 1800022510800101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225108002,
+    "ConditionId": 1800022510800201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225114001,
+    "ConditionId": 1800022511400101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225114002,
+    "ConditionId": 1800022511400201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225124001,
+    "ConditionId": 1800022512400101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000225124002,
+    "ConditionId": 1800022512400201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18000226015001,
+    "ConditionId": 1800022601500101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225041011,
+    "ConditionId": 1800122504101101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225041012,
+    "ConditionId": 1800122504101201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225041013,
+    "ConditionId": 1800122504101301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225041014,
+    "ConditionId": 1800122504101401,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225041015,
+    "ConditionId": 1800122504101501,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225043011,
+    "ConditionId": 1800122504301101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225063002,
+    "ConditionId": 1800122506300201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225063011,
+    "ConditionId": 1800122506301101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225082001,
+    "ConditionId": 1800122508200101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096001,
+    "ConditionId": 1800122509600101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096002,
+    "ConditionId": 1800122509600201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096003,
+    "ConditionId": 1800122509600301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096007,
+    "ConditionId": 1800122509600701,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096007,
+    "ConditionId": 1800122509600702,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225096007,
+    "ConditionId": 1800122509600703,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225096008,
+    "ConditionId": 1800122509600801,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225096008,
+    "ConditionId": 1800122509600802,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225096008,
+    "ConditionId": 1800122509600803,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225105001,
+    "ConditionId": 1800122510500101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225108001,
+    "ConditionId": 1800122510800101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225108002,
+    "ConditionId": 1800122510800201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225108002,
+    "ConditionId": 1800122510800202,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225108002,
+    "ConditionId": 1800122510800203,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225108003,
+    "ConditionId": 1800122510800301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225108003,
+    "ConditionId": 1800122510800302,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225108003,
+    "ConditionId": 1800122510800303,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225111001,
+    "ConditionId": 1800122511100101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225114001,
+    "ConditionId": 1800122511400101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225114002,
+    "ConditionId": 1800122511400201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225114002,
+    "ConditionId": 1800122511400202,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225114002,
+    "ConditionId": 1800122511400203,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225114003,
+    "ConditionId": 1800122511400301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225114003,
+    "ConditionId": 1800122511400302,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 18001225114003,
+    "ConditionId": 1800122511400303,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 18001225124001,
+    "ConditionId": 1800122512400101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225124002,
+    "ConditionId": 1800122512400201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001225124003,
+    "ConditionId": 1800122512400301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001226015001,
+    "ConditionId": 1800122601500101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001226022001,
+    "ConditionId": 1800122602200101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 19100000010022,
+    "ConditionId": 1910000001002201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 19142100010001,
+    "ConditionId": 1914210001000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 19142100020001,
+    "ConditionId": 1914210002000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 19142400010001,
+    "ConditionId": 1914240001000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 20908001030000,
+    "ConditionId": 2090800103000001,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 20990001010000,
+    "ConditionId": 2099000101000001,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250520040101,
+    "ConditionId": 3525052004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250620040101,
+    "ConditionId": 3525062004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250720040101,
+    "ConditionId": 3525072004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250820040101,
+    "ConditionId": 3525082004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250920040101,
+    "ConditionId": 3525092004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35250960060101,
+    "ConditionId": 3525096006010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35251070040101,
+    "ConditionId": 3525107004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35251130040101,
+    "ConditionId": 3525113004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35251230040101,
+    "ConditionId": 3525123004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35251230060101,
+    "ConditionId": 3525123006010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35260140040101,
+    "ConditionId": 3526014004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35260230040101,
+    "ConditionId": 3526023004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35260350020101,
+    "ConditionId": 3526035002010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35260350040101,
+    "ConditionId": 3526035004010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 35260350050101,
+    "ConditionId": 3526035005010101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 37431001050000,
+    "ConditionId": 3743100105000001,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082504100001,
+    "ConditionId": 9908250410000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082510500001,
+    "ConditionId": 9908251050000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082510850001,
+    "ConditionId": 9908251085000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082512400001,
+    "ConditionId": 9908251240000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082601450001,
+    "ConditionId": 9908260145000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082602100001,
+    "ConditionId": 9908260210000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082602100002,
+    "ConditionId": 9908260210000201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082602200001,
+    "ConditionId": 9908260220000101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99082602200002,
+    "ConditionId": 9908260220000201,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082602300001,
+    "ConditionId": 9908260230000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082602400001,
+    "ConditionId": 9908260240000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082602400002,
+    "ConditionId": 9908260240000102,
+    "SortOrder": 2
+  },
+  {
+    "ConditionSetId": 99082602450001,
+    "ConditionId": 9908260245000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082603200001,
+    "ConditionId": 9908260320000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082603300001,
+    "ConditionId": 9908260330000101,
+    "SortOrder": 1
+  },
+  {
+    "ConditionSetId": 99082603550001,
+    "ConditionId": 9908260355000101,
+    "SortOrder": 1
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "Id": 24000101,
+    "UnitUpgradeGroupId": 24000101,
+    "CharacterUpgradeGroupId": 24000102,
+    "UnitInitialLevel": 30,
+    "CharacterInitialLevel": 30,
+    "MapEventPartnerUpgradeSetId": 24000101,
+    "AuraEffectResourceId": "ef_mpc_0084_01_warningability_guest"
+  }
+]

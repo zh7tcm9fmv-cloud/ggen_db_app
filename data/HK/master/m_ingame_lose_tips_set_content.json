@@ -1,0 +1,272 @@
+[
+  {
+    "IngameLoseTipsSetId": 1001,
+    "IngameLoseTipsId": 100102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1001,
+    "IngameLoseTipsId": 110102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1001,
+    "IngameLoseTipsId": 140101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1001,
+    "IngameLoseTipsId": 150105,
+    "IsForceDisplayDaily": true
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 110102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 130102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 130103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 140101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 180103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1101,
+    "IngameLoseTipsId": 500501,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1201,
+    "IngameLoseTipsId": 110103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1201,
+    "IngameLoseTipsId": 130103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1201,
+    "IngameLoseTipsId": 250101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1201,
+    "IngameLoseTipsId": 260101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1201,
+    "IngameLoseTipsId": 500501,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1301,
+    "IngameLoseTipsId": 510001,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1401,
+    "IngameLoseTipsId": 510002,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1501,
+    "IngameLoseTipsId": 510003,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 100102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 110102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 110103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 130102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 130103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 140101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 180103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 250101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 260101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1601,
+    "IngameLoseTipsId": 500501,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1701,
+    "IngameLoseTipsId": 510005,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1702,
+    "IngameLoseTipsId": 510007,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1801,
+    "IngameLoseTipsId": 920110,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1901,
+    "IngameLoseTipsId": 170102,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 1901,
+    "IngameLoseTipsId": 200103,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2001,
+    "IngameLoseTipsId": 950005,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2001,
+    "IngameLoseTipsId": 950006,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2002,
+    "IngameLoseTipsId": 950002,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2003,
+    "IngameLoseTipsId": 950003,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2101,
+    "IngameLoseTipsId": 500101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2102,
+    "IngameLoseTipsId": 500201,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2103,
+    "IngameLoseTipsId": 500301,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2104,
+    "IngameLoseTipsId": 500401,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2105,
+    "IngameLoseTipsId": 500501,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2108,
+    "IngameLoseTipsId": 500801,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2109,
+    "IngameLoseTipsId": 500901,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2110,
+    "IngameLoseTipsId": 501001,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2111,
+    "IngameLoseTipsId": 501101,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2112,
+    "IngameLoseTipsId": 501201,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2113,
+    "IngameLoseTipsId": 501301,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2114,
+    "IngameLoseTipsId": 501401,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2115,
+    "IngameLoseTipsId": 501501,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2116,
+    "IngameLoseTipsId": 501601,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 2201,
+    "IngameLoseTipsId": 520701,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 3001,
+    "IngameLoseTipsId": 510006,
+    "IsForceDisplayDaily": false
+  },
+  {
+    "IngameLoseTipsSetId": 3002,
+    "IngameLoseTipsId": 510004,
+    "IsForceDisplayDaily": false
+  }
+]
