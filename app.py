@@ -4561,7 +4561,7 @@ def api_whats_new():
     pending diff since last snapshot on disk is labeled with today's master-data date (e.g. 27).
 
     History tabs require files under data/whats_new_history_snapshots/ (see refresh_whats_new_snapshot.py or
-    scripts/backfill_whats_new_history.py). Order: oldest history first, then pending (latest period).
+    scripts/backfill_whats_new_history.py). *tabs* / *entries* are sorted latest date first.
     """
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     tabs = []
@@ -4644,6 +4644,15 @@ def api_whats_new():
     except Exception:
         import traceback
         traceback.print_exc()
+    if len(tabs) == len(entries) and tabs:
+
+        def _wn_tab_date_key(tab):
+            return ((tab.get('date') or tab.get('label') or '') if isinstance(tab, dict) else '').strip()
+
+        pairs = list(zip(tabs, entries))
+        pairs.sort(key=lambda it: _wn_tab_date_key(it[0]), reverse=True)
+        tabs = [p[0] for p in pairs]
+        entries = [p[1] for p in pairs]
     payload = {
         'tabs': tabs,
         'entries': entries,
