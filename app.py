@@ -3331,7 +3331,7 @@ def _load_whats_new_snapshot_from_path(path):
             return None
         with open(path, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        if not isinstance(data, dict) or int(data.get('version') or 0) != 1:
+        if not isinstance(data, dict) or int(data.get('version') or 0) not in (1, 2):
             return None
         return data
     except Exception:
@@ -3413,6 +3413,19 @@ def _collect_option_part_ids_from_data(option_parts_data_local):
 def _collect_option_part_ids():
     return _collect_option_part_ids_from_data(option_parts_data)
 
+def _collect_supporter_ids_from_data(supporter_data_local):
+    s = set()
+    for item in extract_data_list(supporter_data_local or []):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('id') or item.get('Id'))
+        if sid != '0':
+            s.add(sid)
+    return s
+
+def _collect_supporter_ids():
+    return _collect_supporter_ids_from_data(supporter_master)
+
 def build_whats_new_snapshot_dict_from_master_dir(master_dir):
     """Build snapshot version-1 dict from a folder of master JSON (e.g. previous day's MasterData_*)."""
     master_dir = os.path.abspath(master_dir)
@@ -3424,29 +3437,33 @@ def build_whats_new_snapshot_dict_from_master_dir(master_dir):
     unit_master_data_local = load_json(os.path.join(master_dir, 'm_unit.json'))
     char_master_data_local = load_json(os.path.join(master_dir, 'm_character.json'))
     op_data = load_json(os.path.join(master_dir, 'm_option_parts.json'))
+    sup_data = load_json(os.path.join(master_dir, 'm_supporter.json'))
     uam = create_unit_ability_map(unit_abil_data)
     uwm = create_unit_weapon_map(unit_weapon_data)
     cam = _build_char_ability_effect_map_from_data(char_abil_data)
     uim = create_unit_info_map(unit_master_data_local)
     cim = create_char_info_map(char_master_data_local)
     op_ids = sorted(_collect_option_part_ids_from_data(op_data))
+    sup_ids = sorted(_collect_supporter_ids_from_data(sup_data))
     return {
-        'version': 1,
+        'version': 2,
         'unit_abilities': {uid: [str(x['id']) for x in lst] for uid, lst in uam.items()},
         'unit_weapons': {uid: [str(x['id']) for x in lst] for uid, lst in uwm.items()},
         'char_abilities': cam,
         'option_parts': op_ids,
+        'supporters': sup_ids,
         'units': sorted(uim.keys()),
         'characters': sorted(cim.keys()),
     }
 
 def serialize_whats_new_snapshot():
     return {
-        'version': 1,
+        'version': 2,
         'unit_abilities': {uid: [str(x['id']) for x in lst] for uid, lst in unit_abil_map.items()},
         'unit_weapons': {uid: [str(x['id']) for x in lst] for uid, lst in unit_weapon_map.items()},
         'char_abilities': _build_char_ability_effect_map(),
         'option_parts': sorted(_collect_option_part_ids()),
+        'supporters': sorted(_collect_supporter_ids()),
         'units': sorted(unit_info_map.keys()),
         'characters': sorted(char_info_map.keys()),
     }
@@ -3464,6 +3481,11 @@ def _wn_char_name(cid, ld):
 def _wn_weapon_name(wid, ld):
     wm = weapon_info_map.get(wid, {})
     return (ld.get('weapon_text_map', {}) or {}).get(wm.get('name_lang_id', '0'), '') or wid
+
+def _wn_supporter_name(sid, ld):
+    lid = ld.get('supporter_id_map', {}).get(sid, '')
+    n = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
+    return n or f'Supporter {sid}'
 
 def _wn_option_part_name(opid, ld):
     for item in extract_data_list(option_parts_data or []):
@@ -3711,13 +3733,26 @@ def compute_whats_new_delta_between(snap_old, snap_new, lang_code=None):
             'link_type': 'modification',
             'link_id': opid,
         })
+    if isinstance(snap_old.get('supporters'), list) and isinstance(snap_new.get('supporters'), list):
+        old_sup = set(snap_old['supporters'])
+        new_sup = set(snap_new['supporters'])
+        for sid in sorted(new_sup - old_sup):
+            added.append({
+                'kind': 'new_supporter',
+                'name': _wn_supporter_name(sid, ld),
+                'link_type': 'supporter',
+                'link_id': sid,
+            })
     if not changes and not added:
         return None
     date_str = (snap_new.get('captured_at') or '').strip() or _whats_new_master_data_date()
     return {'date': date_str, 'changes': changes, 'added': added}
 
 def compute_whats_new_delta(lang_code=None):
-    """Diff current masters vs data/whats_new_snapshot.json. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline.
+    """Diff data/whats_new_snapshot.json vs EN MasterData on disk (BASE_DIR), i.e. the same tree the app loads.
+
+    Uses build_whats_new_snapshot_dict_from_master_dir(BASE_DIR) so the pending tab always reflects the current
+    master files, not only in-memory state. Run scripts/refresh_whats_new_snapshot.py after a release to reset the baseline.
 
     Names and ability text use *lang_code* (e.g. TW) so the What's New panel matches the UI language.
     """
@@ -3725,7 +3760,10 @@ def compute_whats_new_delta(lang_code=None):
     if not snap:
         return None
     lc = validate_lang_code(lang_code)
-    cur = serialize_whats_new_snapshot()
+    try:
+        cur = build_whats_new_snapshot_dict_from_master_dir(BASE_DIR)
+    except Exception:
+        cur = serialize_whats_new_snapshot()
     out = compute_whats_new_delta_between(snap, cur, lc)
     if not out:
         return None

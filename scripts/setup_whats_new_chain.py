@@ -47,7 +47,7 @@ def main():
     sn_base['captured_at'] = args.baseline_captured_at.strip()
 
     def _data_equal(a, b):
-        keys = ('version', 'units', 'characters', 'option_parts', 'unit_abilities', 'unit_weapons', 'char_abilities')
+        keys = ('version', 'units', 'characters', 'option_parts', 'supporters', 'unit_abilities', 'unit_weapons', 'char_abilities')
         return all(a.get(k) == b.get(k) for k in keys)
 
     if _data_equal(sn_old, sn_base):

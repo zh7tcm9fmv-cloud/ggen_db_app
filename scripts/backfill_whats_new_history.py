@@ -43,6 +43,7 @@ def _snapshot_game_data_equal(a, b):
         'units',
         'characters',
         'option_parts',
+        'supporters',
         'unit_abilities',
         'unit_weapons',
         'char_abilities',
