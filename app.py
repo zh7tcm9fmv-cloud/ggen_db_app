@@ -1244,6 +1244,51 @@ def _is_conditional_stat_text(t):
         if kw in tl: return True
     return False
 
+def _char_detail_is_conditional(d2, txt):
+    """True if this trait line uses structured tags or conditional wording (CP must be on to apply)."""
+    if isinstance(d2, dict):
+        if d2.get('conditions'):
+            return True
+        for cg in d2.get('condition_groups') or []:
+            if isinstance(cg, dict) and (cg.get('conditions') or []):
+                return True
+    return _is_conditional_stat_text(txt or '')
+
+def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map):
+    if not isinstance(d2, dict):
+        return
+    txt = (d2.get('text') or '').strip()
+    if not txt:
+        return
+    bonuses = extract_stat_percent_char(txt)
+    if not bonuses:
+        return
+    if bab.get('is_ex', False):
+        for s, p in bonuses.items():
+            ex_map[s] += p
+    elif _char_detail_is_conditional(d2, txt):
+        for s, p in bonuses.items():
+            c_map[s] += p
+    else:
+        for s, p in bonuses.items():
+            u_map[s] += p
+
+def _accumulate_character_trait_percent_buckets(ac):
+    """Same rules as get_character: split unconditional / conditional non-EX / EX trait %."""
+    spbn_u = {s: 0 for s in CHAR_STAT_ORDER}
+    spbn_c = {s: 0 for s in CHAR_STAT_ORDER}
+    spen = {s: 0 for s in CHAR_STAT_ORDER}
+    spbs_u = {s: 0 for s in CHAR_STAT_ORDER}
+    spbs_c = {s: 0 for s in CHAR_STAT_ORDER}
+    spes = {s: 0 for s in CHAR_STAT_ORDER}
+    for bab in ac:
+        for d2 in bab.get('details', []):
+            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen)
+        sab = bab.get('sp_replacement', bab)
+        for d2 in sab.get('details', []):
+            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes)
+    return spbn_u, spbn_c, spen, spbs_u, spbs_c, spes
+
 def _unit_hp_threshold_active_at_assumed_full_hp(part):
     """
     Unit detail/list assume full HP for displayed stats. HP-gated bonuses that apply at high or full HP
@@ -2127,43 +2172,6 @@ def extract_stat_percent_char(text):
                 if u == "RANGE": n = "Ranged"
                 bonuses[n] = bonuses.get(n, 0) + int(m.group(3))
     return bonuses
-
-def character_has_conditional_passive_sources(ac):
-    """True if any character ability (including SP replacement) has structured conditions or conditional wording.
-    Used so the detail modal shows the conditional passive toggle even when stat lines use 'when piloting' etc.
-    (those are skipped by extract_stat_percent_char and do not contribute to spen/spes)."""
-    if not ac:
-        return False
-    name_words = (
-        'condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked',
-        'during battle', 'at the start of', 'each time', 'every time', 'when piloting', 'when supporting',
-        'when executing', 'if vigor',
-    )
-    for bab in ac:
-        for node in (bab, bab.get('sp_replacement') or None):
-            if not node or not isinstance(node, dict):
-                continue
-            nm = (node.get('name') or '').lower()
-            if any(w in nm for w in name_words):
-                return True
-            for d2 in node.get('details', []) or []:
-                if not isinstance(d2, dict):
-                    continue
-                if d2.get('conditions'):
-                    return True
-                for cg in d2.get('condition_groups') or []:
-                    if isinstance(cg, dict) and (cg.get('conditions') or []):
-                        return True
-                txt = (d2.get('text') or '').strip()
-                if txt and _is_conditional_stat_text(txt):
-                    return True
-                parts = [p.strip() for p in re.split(r'[\r\n.]+', txt) if p and p.strip()]
-                if not parts:
-                    parts = [txt] if txt else []
-                for part in parts:
-                    if part and _is_conditional_stat_text(part):
-                        return True
-    return False
 
 def create_unit_info_map(m):
     lookup = {}
@@ -4344,7 +4352,7 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
     return totals
 
 def compute_char_stat_totals_detail_style(char_id, ri, ldc, grown):
-    """Non-SP growth + ability bonuses matching get_character stats_with_ex (includes EX stat lines)."""
+    """Non-SP growth + ability bonuses matching get_character stats_with_ex (CP on: unconditional + conditional + EX trait %)."""
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
     def build_ab(ab):
         bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
@@ -4354,24 +4362,16 @@ def compute_char_stat_totals_detail_style(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn = {s: 0 for s in CHAR_STAT_ORDER}
-    spen = {s: 0 for s in CHAR_STAT_ORDER}
-    for bab in ac:
-        for d2 in bab.get('details', []):
-            for s, p in extract_stat_percent_char(d2['text']).items():
-                if bab.get('is_ex', False):
-                    spen[s] += p
-                else:
-                    spbn[s] += p
+    spbn_u, spbn_c, spen, _, _, _ = _accumulate_character_trait_percent_buckets(ac)
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
-        pct = spbn[s] + spen[s]
+        pct = spbn_u[s] + spbn_c[s] + spen[s]
         totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     return totals
 
 def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
-    """SP growth + SP ability bonuses including EX lines (sp_stats_with_ex)."""
+    """SP growth + SP ability bonuses matching get_character sp_stats_with_ex."""
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
     def build_ab(ab):
         bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
@@ -4381,20 +4381,11 @@ def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbs = {s: 0 for s in CHAR_STAT_ORDER}
-    spes = {s: 0 for s in CHAR_STAT_ORDER}
-    for bab in ac:
-        sab = bab.get('sp_replacement', bab)
-        for d2 in sab.get('details', []):
-            for s, p in extract_stat_percent_char(d2['text']).items():
-                if sab.get('is_ex', False):
-                    spes[s] += p
-                else:
-                    spbs[s] += p
+    _, _, _, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac)
     totals = {}
     for s in CHAR_STAT_ORDER:
         sbv = grown_sp.get(s, 0)
-        pct = spbs[s] + spes[s]
+        pct = spbs_u[s] + spbs_c[s] + spes[s]
         totals[s] = sbv + math.floor(sbv * pct / 100) if sbv > 0 else 0
     return totals
 
@@ -7105,30 +7096,20 @@ def get_character(char_id):
             return bab
         abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
         ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        spbn, spen, spbs, spes = {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}, {s: 0 for s in CHAR_STAT_ORDER}
-        for bab in ac:
-            for d2 in bab.get('details', []):
-                for s, p in extract_stat_percent_char(d2['text']).items():
-                    if bab.get('is_ex', False): spen[s] += p
-                    else: spbn[s] += p
-            sab = bab.get('sp_replacement', bab)
-            for d2 in sab.get('details', []):
-                for s, p in extract_stat_percent_char(d2['text']).items():
-                    if sab.get('is_ex', False): spes[s] += p
-                    else: spbs[s] += p
+        spbn_u, spbn_c, spen, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac)
         sne = []; swe = []; ssne = []; sswe = []
         for s in CHAR_STAT_ORDER:
-            bv = grown.get(s, 0); bon = math.floor(bv * spbn[s] / 100) if bv > 0 else 0
+            bv = grown.get(s, 0); bon = math.floor(bv * spbn_u[s] / 100) if bv > 0 else 0
             sne.append({'name': s, 'base': bv, 'total': bv + bon, 'bonus': bon})
-            tb = math.floor(bv * (spbn[s] + spen[s]) / 100) if bv > 0 else 0
+            tb = math.floor(bv * (spbn_u[s] + spbn_c[s] + spen[s]) / 100) if bv > 0 else 0
             swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb})
-            sbv = grown_sp.get(s, 0); sbon = math.floor(sbv * spbs[s] / 100) if sbv > 0 else 0
+            sbv = grown_sp.get(s, 0); sbon = math.floor(sbv * spbs_u[s] / 100) if sbv > 0 else 0
             ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon})
-            stb = math.floor(sbv * (spbs[s] + spes[s]) / 100) if sbv > 0 else 0
+            stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s]) / 100) if sbv > 0 else 0
             sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb})
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
-        has_ex_stats = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
-        has_ex_stats = has_ex_stats or character_has_conditional_passive_sources(ac)
+        # CP toggle when "on" state adds anything: conditional passives (e.g. Vigor) and/or EX-trait % (UR EX slot).
+        has_ex_stats = any(spbn_c[s] + spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spbs_c[s] + spes[s] > 0 for s in CHAR_STAT_ORDER)
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
         thum = find_list_thumb(info.get('resource_ids', []), char_id, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
@@ -7165,7 +7146,7 @@ def get_character(char_id):
                 uacq = uinfo.get('acquisition_route', '0')
                 uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
                 recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
