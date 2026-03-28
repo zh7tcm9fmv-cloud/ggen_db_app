@@ -4779,6 +4779,116 @@ def get_tag_characters():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'1': [], '2': [], '3': []}), 500
 
+def _resolved_ability_name_for_tag_scan(abil_id, abnm):
+    trait_set_id = abil_link_map.get(abil_id, abil_id)
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    return abnm.get(trait_set_id, abnm.get(lookup_id, abnm.get(abil_id, '')))
+
+def _name_indicates_affinity_ability(ab_name):
+    if not ab_name:
+        return False
+    n = ab_name.lower()
+    if 'affinity' in n:
+        return True
+    if '親和' in ab_name or 'アフィニティ' in ab_name:
+        return True
+    return False
+
+def _affinity_ability_name_matches_tags(ab_name, tag_tokens_lc, op):
+    if not ab_name or not _name_indicates_affinity_ability(ab_name):
+        return False
+    nl = ab_name.lower()
+    if op == 'and':
+        return all(t in nl for t in tag_tokens_lc)
+    return any(t in nl for t in tag_tokens_lc)
+
+def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld):
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == cid]
+    for ab in fa:
+        bid = normalize_id(ab.get('AbilityId', ''))
+        spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        for aid in (bid, spid):
+            if not aid or aid in ('0', 'None'):
+                continue
+            an = _resolved_ability_name_for_tag_scan(aid, ld['abil_name_map'])
+            if _affinity_ability_name_matches_tags(an, tag_tokens_lc, op):
+                return True
+    return False
+
+@app.route('/api/tag_affinity')
+def get_tag_affinity():
+    """Tag modal Affinity tab: from character context list units with tag; from unit context list characters with Affinity ability names matching tag(s)."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ts = request.args.get('tags', '').strip()
+        op = request.args.get('op', 'and').lower()
+        source = (request.args.get('source', 'character') or 'character').lower()
+        if not ts:
+            return jsonify({'1': [], '2': [], '3': []})
+        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
+        ck = f"tag_affinity_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify(cached)
+        ld = get_lang_data(lc)
+        results = {'1': [], '2': [], '3': []}
+        if source == 'unit':
+            for cid, info in char_info_map.items():
+                if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                    continue
+                ri2 = str(info.get('role', '0'))
+                if ri2 not in ['1', '2', '3']:
+                    continue
+                if not _character_has_affinity_tag_match(cid, tl, op, ld):
+                    continue
+                lid = ld.get('char_id_map', {}).get(cid, '')
+                name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+                if not name:
+                    name = f'Unknown ({cid})'
+                ri = info.get('rarity', '1')
+                thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+                acq = info.get('acquisition_route', '0')
+                acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+                results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
+            for r in results:
+                results[r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
+        else:
+            rnm = UNIT_ROLE_TYPE_LANG_MAP.get(lc, UNIT_ROLE_TYPE_LANG_MAP['EN'])
+            rnm_en = UNIT_ROLE_TYPE_LANG_MAP.get('EN', {})
+            for uid, info in unit_info_map.items():
+                if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                    continue
+                ri2 = str(info.get('role', '0'))
+                if ri2 not in ['1', '2', '3']:
+                    continue
+                lid = ld.get('unit_id_map', {}).get(uid, '')
+                name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+                if not name:
+                    continue
+                tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), lc)))
+                if rnm.get(ri2):
+                    tset.add(rnm[ri2].lower())
+                if rnm_en.get(ri2):
+                    tset.add(rnm_en[ri2].lower())
+                if lc != 'EN':
+                    tset.update([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, 'EN', 'unit')])
+                    tset.update(series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), 'EN')))
+                match = all(t in tset for t in tl) if op == 'and' else any(t in tset for t in tl)
+                if match:
+                    ri = info.get('rarity', '1')
+                    thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+                    acq = info.get('acquisition_route', '0')
+                    acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+                    results[ri2].append({'id': uid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
+            for r in results:
+                results[r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
+        set_cached_response(ck, results)
+        return jsonify(convert_image_urls(results))
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'1': [], '2': [], '3': []}), 500
+
 def _entity_has_series_id(ser_list, target_sid):
     """True if resolved series list includes m_series id target_sid."""
     sid = normalize_id(target_sid)
