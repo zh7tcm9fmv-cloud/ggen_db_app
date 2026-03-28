@@ -1220,7 +1220,22 @@ ROLE_ICON_MAP = {
     '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.png',
     '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
 }
-EX_ABILITY_PATTERNS = ['ex character ability','ex機體能力','ex角色能力','exキャラクターアビリティ']
+EX_ABILITY_PATTERNS = ['ex character ability', 'ex機體能力', 'ex角色能力', 'exキャラクターアビリティ']
+
+def ex_character_ability_display_label(lang_code):
+    lc = (lang_code or 'EN').upper()
+    if lc in ('TW', 'HK'):
+        return 'EX角色能力'
+    if lc in ('JA', 'JP'):
+        return 'EXキャラクターアビリティ'
+    return 'EX Character Ability'
+
+def is_ex_character_ability_ui(ab_name):
+    """EX frame + standardized title; includes names like '(Tag conditions)…' from game data."""
+    if is_ex_ability(ab_name):
+        return True
+    return '(tag conditions)' in (ab_name or '').lower()
+
 MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6': ['1', '5'], '7': ['2x2', '6'], '8': ['1', '7'], '9': ['1', '6']}
 
 def _is_conditional_stat_text(t):
@@ -2778,8 +2793,9 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if t_val == ab_name.strip(): continue
             details.append({'text': t_val, 'conditions': []})
     res_id = ability_resource_map.get(ab_id, ''); icon_file = find_trait_icon(res_id)
-    has_icon = bool(icon_file); ex_flag = is_ex_ability(ab_name)
-    return {'id': ab_id, 'name': ab_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_flag, 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_flag) else '', 'resource_id': res_id}
+    has_icon = bool(icon_file); ex_flag = is_ex_character_ability_ui(ab_name)
+    disp_name = ex_character_ability_display_label(lang_code) if ex_flag else ab_name
+    return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_flag, 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_flag) else '', 'resource_id': res_id}
 
 # ═══════════════════════════════════════════════════════
 # LOAD ALL DATA
