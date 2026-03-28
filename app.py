@@ -4453,6 +4453,15 @@ def parse_search_query(sq):
         positive.append(sl)
     return {'positive': positive, 'negative': negative, 'series': series, 'series_ids': series_ids}
 
+def _positive_segment_subterms(term):
+    """Split one positive segment on whitespace into AND subterms (e.g. 'wing zero' -> ['wing','zero']).
+    Comma/semicolon still separate AND segments; spaces inside a segment no longer require an adjacent phrase."""
+    if not term:
+        return []
+    parts = [p for p in str(term).split() if p]
+    return parts if parts else [term]
+
+
 def _search_term_matches_in_text(term, haystack_lower):
     """Match a search token against haystack (already lowercased). Short Latin tokens use word boundaries so e.g. 'mp' does not match inside 'consumptions'."""
     if not term:
@@ -4481,8 +4490,9 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
     id_match = entity_id is not None and search_query_matches_entity_id(sq, entity_id)
     if not id_match:
         for p in pq['positive']:
-            if not _search_term_matches_in_text(p, haystack_lower):
-                return False
+            for sub in _positive_segment_subterms(p):
+                if not _search_term_matches_in_text(sub, haystack_lower):
+                    return False
     for n in pq['negative']:
         if _search_term_matches_in_text(n, haystack_lower):
             return False

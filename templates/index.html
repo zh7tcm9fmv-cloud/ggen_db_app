@@ -161,7 +161,7 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .lr-lock-err{color:#ff6b6b;font-size:14px;margin-top:8px;min-height:1.2em}
 .list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
 .list-toolbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.list-toolbar-right{display:flex;align-items:center;gap:12px}
-.filter-input-wrap{position:relative;display:inline-flex;vertical-align:middle;max-width:100%}.filter-input{padding:9px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;width:260px;max-width:100%;transition:var(--transition)}.filter-input::placeholder{color:var(--text-muted)}.filter-input:focus{border-color:var(--accent-blue);box-shadow:0 0 0 2px rgba(74,144,217,0.1)}
+.filter-input-wrap{position:relative;display:inline-flex;vertical-align:middle;max-width:100%}.filter-input{padding:9px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;width:260px;max-width:100%;transition:width .22s ease,max-width .22s ease,border-color .2s ease,box-shadow .2s ease}.filter-input::placeholder{color:var(--text-muted)}.filter-input:focus{border-color:var(--accent-blue);box-shadow:0 0 0 2px rgba(74,144,217,0.1)}
 .search-hint-popover{position:absolute;left:0;top:calc(100% + 10px);z-index:130;width:min(380px,calc(100vw - 48px));padding:12px 14px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);box-shadow:0 10px 32px rgba(0,0,0,.5);font-size:13px;line-height:1.55;color:var(--text-secondary);pointer-events:none;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease;text-align:left}.search-hint-inner strong{color:var(--accent-cyan);font-weight:800}.search-hint-inner code{font-size:12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);padding:1px 6px;border-radius:4px;color:var(--text-primary);font-weight:600}.filter-input-wrap.show-hint:not(.hint-suppressed) .search-hint-popover{opacity:1;visibility:visible}
 .search-recall-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(84px + env(safe-area-inset-bottom));z-index:355;width:52px;height:52px;border-radius:50%;border:1px solid var(--border-color);background:linear-gradient(145deg,var(--bg-card),var(--bg-secondary));box-shadow:0 6px 24px rgba(0,0,0,.45);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:22px;line-height:1;padding:0;transition:var(--transition)}.search-recall-fab.visible{display:flex}.search-recall-fab:hover,.search-recall-fab:focus-visible{border-color:var(--accent-cyan);background:var(--bg-card-hover);outline:none;box-shadow:0 0 0 2px rgba(0,212,255,.25)}body.detail-modal-open .search-recall-fab{display:none!important}
 html.page-scroll-lock{overflow:hidden!important;height:100%;overscroll-behavior:none}
@@ -609,10 +609,18 @@ html{overflow-x:hidden}
 .view-grid-variant-badge{position:absolute;bottom:1px;right:1px;min-width:14px;height:14px;padding:0 3px;border-radius:4px;border:1px solid rgba(0,212,255,.5);background:rgba(10,14,23,.92);color:var(--accent-cyan);font-size:9px;font-weight:900;line-height:12px;pointer-events:none;z-index:2}
 .view-toggle-with-badge .view-toggle-btn:hover .view-grid-variant-badge{background:rgba(0,212,255,.15)}
 .list-toolbar-left--browse{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-width:0}
-.filter-input-wrap--compact{flex:0 1 200px;min-width:140px;max-width:220px}
+.filter-input-wrap--compact{flex:0 1 200px;min-width:140px;max-width:220px;transition:flex .22s ease,max-width .22s ease}
 .filter-input-wrap--compact .filter-input{width:100%;min-width:0}
-#panel-characters .filter-input-wrap--compact{flex:0 1 150px;min-width:120px;max-width:165px}
-#panel-units .filter-input-wrap--compact{flex:0 1 140px;min-width:120px;max-width:150px}
+#panel-characters .filter-input-wrap--compact{flex:0 1 150px;min-width:120px;max-width:165px;transition:flex .22s ease,max-width .22s ease}
+#panel-units .filter-input-wrap--compact{flex:0 1 140px;min-width:120px;max-width:150px;transition:flex .22s ease,max-width .22s ease}
+/* Search: on focus, use full toolbar row with input centered so long queries have symmetrical space */
+#panel-characters .list-toolbar-left--browse>.filter-input-wrap--compact:focus-within,
+#panel-units .list-toolbar-left--browse>.filter-input-wrap--compact:focus-within{flex:1 1 100%;width:100%;max-width:100%;display:flex;justify-content:center;z-index:25}
+#panel-characters .list-toolbar-left--browse>.filter-input-wrap--compact:focus-within .filter-input,
+#panel-units .list-toolbar-left--browse>.filter-input-wrap--compact:focus-within .filter-input{width:min(640px,100%);max-width:min(640px,100%)}
+.list-toolbar-left:not(.list-toolbar-left--browse)>.filter-input-wrap:focus-within{display:flex;justify-content:center;z-index:25;max-width:100%;width:100%;transition:max-width .22s ease}
+.list-toolbar-left:not(.list-toolbar-left--browse)>.filter-input-wrap:focus-within .filter-input{width:min(640px,100%);max-width:min(640px,100%)}
+@media (prefers-reduced-motion:reduce){#panel-characters .list-toolbar-left--browse>.filter-input-wrap--compact,#panel-units .list-toolbar-left--browse>.filter-input-wrap--compact,.list-toolbar-left:not(.list-toolbar-left--browse)>.filter-input-wrap{transition:none}}
 .filter-panel-clear-wrap{display:flex;justify-content:flex-end;padding:8px 10px 10px;border-top:1px solid rgba(255,255,255,.08);background:rgba(8,14,30,.85)}
 .filter-panel-clear-btn{padding:6px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);-webkit-text-fill-color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);font-synthesis:none;text-shadow:none}
 .filter-panel-clear-btn:hover{border-color:var(--accent-cyan);color:var(--accent-cyan);-webkit-text-fill-color:var(--accent-cyan)}
