@@ -4431,7 +4431,7 @@ def series_alias_tokens_for_haystack(ser_list):
 
 def parse_q_scope(val):
     """Browse list text search breadth: 'full' includes abilities/skills/weapons/etc.; 'primary' is name, id, tags, series, aliases only.
-    Primary also uses stricter ASCII token matching (word-start / whole short tokens) so substrings like 'wing' do not match inside unrelated words (e.g. 'swing')."""
+    ASCII token matching uses word-start (or whole-word for short tokens); pure-digit terms still match as substrings for id fragments."""
     return 'primary' if (val or '').strip().lower() == 'primary' else 'full'
 
 
@@ -4473,7 +4473,8 @@ def _positive_segment_subterms(term):
 
 def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     """Match a search token against haystack (already lowercased).
-    Full: short ASCII tokens use full word boundaries; 3+ char ASCII uses substring (prefix-friendly for names).
+    Full: len<=2 ASCII uses whole-word boundaries; len>2 pure-digit tokens use substring (id fragments);
+    len>2 otherwise uses word-start (prefix-friendly) so e.g. 'wing' does not match inside 'throwing'.
     Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'."""
     if not term:
         return True
@@ -4490,10 +4491,15 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             return bool(re.search(r'(?<![\w])' + re.escape(t), haystack_lower, re.I))
         except re.error:
             return t in haystack_lower
-    if len(t) > 2:
+    if len(t) <= 2:
+        try:
+            return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+        except re.error:
+            return t in haystack_lower
+    if t.isdigit():
         return t in haystack_lower
     try:
-        return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+        return bool(re.search(r'(?<![\w])' + re.escape(t), haystack_lower, re.I))
     except re.error:
         return t in haystack_lower
 
