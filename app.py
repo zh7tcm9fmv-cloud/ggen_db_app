@@ -2555,19 +2555,10 @@ def collect_unit_weapons_search_text(uid, ld, lang_code):
                 break
     return ' '.join(parts)
 
-def collect_unit_profile_search_text(info, ld):
-    """Unit profile / flavor text + model number (same strings as collection book / detail)."""
-    utm = ld.get('unit_text_map', {})
-    parts = []
-    plid = normalize_id(info.get('profile_lang_id') or '0')
-    if plid and plid != '0':
-        t = (utm.get(plid) or '').strip()
-        if t:
-            parts.append(t)
+def collect_unit_model_search_text(info):
+    """Model number only for list search (profile / collection-book flavor text is not searchable)."""
     m = info.get('model') or ''
-    if m:
-        parts.append(str(m))
-    return ' '.join(parts)
+    return str(m).strip() if m else ''
 
 def collect_unit_mechanism_search_text(info, ld):
     """Mechanism names and descriptions for list search."""
@@ -4475,6 +4466,7 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     """Match a search token against haystack (already lowercased).
     Full: len<=2 ASCII uses whole-word boundaries; len>2 pure-digit tokens use substring (id fragments);
     len>2 otherwise uses word-start (prefix-friendly) so e.g. 'wing' does not match inside 'throwing'.
+    Hyphenated compounds (e.g. 'zero-g') do not match the prefix token alone ('zero').
     Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'."""
     if not term:
         return True
@@ -4488,7 +4480,7 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             except re.error:
                 return t in haystack_lower
         try:
-            return bool(re.search(r'(?<![\w])' + re.escape(t), haystack_lower, re.I))
+            return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
         except re.error:
             return t in haystack_lower
     if len(t) <= 2:
@@ -4499,7 +4491,7 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     if t.isdigit():
         return t in haystack_lower
     try:
-        return bool(re.search(r'(?<![\w])' + re.escape(t), haystack_lower, re.I))
+        return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
     except re.error:
         return t in haystack_lower
 
@@ -5550,9 +5542,9 @@ def unit_passes_browse_pool_filters(
                 gb = collect_ability_search_text(str(gain_aid), ld)
                 if gb:
                     search_chunks.append(gb)
-            prof = collect_unit_profile_search_text(info, ld)
-            if prof:
-                search_chunks.append(prof)
+            mod = collect_unit_model_search_text(info)
+            if mod:
+                search_chunks.append(mod)
             mech = collect_unit_mechanism_search_text(info, ld)
             if mech:
                 search_chunks.append(mech)
@@ -6375,8 +6367,8 @@ def list_units():
                 for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
                     gb = collect_ability_search_text(str(gain_aid), ld)
                     if gb: search_chunks.append(gb)
-                prof = collect_unit_profile_search_text(info, ld)
-                if prof: search_chunks.append(prof)
+                mod = collect_unit_model_search_text(info)
+                if mod: search_chunks.append(mod)
                 mech = collect_unit_mechanism_search_text(info, ld)
                 if mech: search_chunks.append(mech)
                 wtxt = collect_unit_weapons_search_text(uid, ld, lc)
