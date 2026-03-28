@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
-Convert NEW images in db_images (ggen_db_images) to WebP.
+Convert NEW images under ggen_db_images/images to WebP (all folders and subfolders).
+
+Scans recursively from the `images` root so every category is included
+(Option-Part (Modification), portraits, UI, etc.).
 
 Only converts when:
   - No .webp exists yet, OR
@@ -9,10 +12,10 @@ Only converts when:
 Run after adding new images in updates. Safe to run repeatedly.
 
 Usage:
-  # From ggen_db_app folder (default: ../ggen_db_images)
+  # From ggen_db_app folder (default: ../ggen_db_images/images)
   python scripts/convert_db_images_webp.py
 
-  # Specify db_images path
+  # Whole ggen_db_images repo root (also OK — still scans all nested dirs)
   python scripts/convert_db_images_webp.py --dir "C:/path/to/ggen_db_images"
 
   # Dry run (show what would be converted)
@@ -26,8 +29,8 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 
-# Default: db_images as sibling of ggen_db_app (e.g. Desktop/ggen_db_images)
-DEFAULT_DB_IMAGES = PROJECT_ROOT.parent / "ggen_db_images"
+# Default: …/ggen_db_images/images (all asset subfolders, recursive)
+DEFAULT_DB_IMAGES = PROJECT_ROOT.parent / "ggen_db_images" / "images"
 
 try:
     from PIL import Image
@@ -100,7 +103,10 @@ def main():
         "--dir",
         type=Path,
         default=DEFAULT_DB_IMAGES,
-        help=f"Path to db_images folder (default: {DEFAULT_DB_IMAGES})",
+        help=(
+            f"Root folder to scan recursively (default: {DEFAULT_DB_IMAGES}). "
+            "Use …/ggen_db_images or …/ggen_db_images/images; both recurse into subfolders."
+        ),
     )
     parser.add_argument(
         "--quality",

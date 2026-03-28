@@ -45,6 +45,21 @@ def load_image_index(project_root: Path) -> dict:
         return json.load(f)
 
 
+def resolve_index_folder(base_dir: Path, folder_key: str) -> Path:
+    """
+    Join image_index folder keys to base_dir without duplicating 'images/'.
+
+    Keys are like 'images/Background' or 'images/Option-Part (Modification)/Sprite'.
+    If base_dir already ends with .../images, strip the leading 'images/' from the key
+    so we don't get .../images/images/...
+    """
+    base_dir = base_dir.resolve()
+    fk = folder_key.replace("\\", "/").strip("/")
+    if base_dir.name.lower() == "images" and fk.startswith("images/"):
+        fk = fk[len("images/") :]
+    return base_dir / fk
+
+
 def convert_directory_recursive(
     base_dir: Path,
     quality: int = 85,
@@ -109,8 +124,8 @@ def convert_to_webp(
     errors = 0
 
     for folder, files in image_index.items():
-        # folder is e.g. "images/Background", "images/Logo-Series"
-        src_dir = base_dir / folder
+        # folder is e.g. "images/Background", "images/Option-Part (Modification)/Sprite"
+        src_dir = resolve_index_folder(base_dir, folder)
         if not src_dir.exists():
             if not dry_run:
                 print(f"  [skip] Folder not found: {src_dir}")
@@ -164,7 +179,10 @@ def main():
         "--base-dir",
         type=Path,
         default=None,
-        help="Base directory containing the 'images' folder (default: ./static or current dir)",
+        help=(
+            "Root for image files. With image_index mode: repo root (…/ggen_db_images) OR "
+            "…/ggen_db_images/images — both work. With --recursive: scanned recursively."
+        ),
     )
     parser.add_argument(
         "--quality",
@@ -233,6 +251,8 @@ def main():
         )
         print(f"Found {total_files} images in index across {len(image_index)} folders")
         print(f"Base directory: {base_dir}")
+        if base_dir.name.lower() == "images":
+            print("(Index paths join without duplicating 'images/' — OK for …/ggen_db_images/images)")
         if args.dry_run:
             print("(Dry run - no files will be written)")
         print()
