@@ -2460,6 +2460,9 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
                 if d2 and d2 not in tl: tl.append(d2)
         if not tl: tl = list(btl)
         levels.append({'level':lv,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl})
+    if wt != '3':
+        for lev in levels:
+            lev['ammo'] = 0
     rest = []
     if wt == '3': rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
@@ -7201,6 +7204,8 @@ def get_unit(unit_id):
                         elif enh['type'] == '3': ssp_ammo += enh['value']
                         elif enh['type'] == '4': ssp_range += enh['value']
                     break
+            if wt != '3':
+                ssp_ammo = 0
             sat = []
             ccl = "[Custom Core Effect] " if lc == 'EN' else "[Custom Core效果] "
             for cid in [wid, mwid]:
