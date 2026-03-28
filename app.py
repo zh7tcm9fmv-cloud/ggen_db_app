@@ -4430,7 +4430,8 @@ def series_alias_tokens_for_haystack(ser_list):
     return toks
 
 def parse_q_scope(val):
-    """Browse list text search breadth: 'full' includes abilities/skills/weapons/etc.; 'primary' is name, id, tags, series, aliases only."""
+    """Browse list text search breadth: 'full' includes abilities/skills/weapons/etc.; 'primary' is name, id, tags, series, aliases only.
+    Primary also uses stricter ASCII token matching (word-start / whole short tokens) so substrings like 'wing' do not match inside unrelated words (e.g. 'swing')."""
     return 'primary' if (val or '').strip().lower() == 'primary' else 'full'
 
 
@@ -4470,26 +4471,38 @@ def _positive_segment_subterms(term):
     return parts if parts else [term]
 
 
-def _search_term_matches_in_text(term, haystack_lower):
-    """Match a search token against haystack (already lowercased). Short Latin tokens use word boundaries so e.g. 'mp' does not match inside 'consumptions'."""
+def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
+    """Match a search token against haystack (already lowercased).
+    Full: short ASCII tokens use full word boundaries; 3+ char ASCII uses substring (prefix-friendly for names).
+    Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'."""
     if not term:
         return True
     t = term.lower()
-    # Longer / non-ASCII / punctuation-heavy tokens: substring (keeps phrase and JP/CJK behavior).
-    # 3+ char ASCII alphanumerics use substring so prefixes like "qub" match "Qubeley" (2-char tokens
-    # stay word-boundary so "mp" does not match inside "consumptions").
-    if len(t) > 2 or not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
+    if not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
+        return t in haystack_lower
+    if primary:
+        if len(t) <= 2:
+            try:
+                return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+            except re.error:
+                return t in haystack_lower
+        try:
+            return bool(re.search(r'(?<![\w])' + re.escape(t), haystack_lower, re.I))
+        except re.error:
+            return t in haystack_lower
+    if len(t) > 2:
         return t in haystack_lower
     try:
         return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
     except re.error:
         return t in haystack_lower
 
-def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None):
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
     series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match.
     ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters.
-    entity_id: when set and search_query_matches_entity_id(sq, entity_id), skip positive haystack matching so ID-only / ID-targeted searches still find NPC-only rows."""
+    entity_id: when set and search_query_matches_entity_id(sq, entity_id), skip positive haystack matching so ID-only / ID-targeted searches still find NPC-only rows.
+    primary: browse Core scope — stricter ASCII token matching (word-start) on name/tag/series haystack."""
     if not sq or not str(sq).strip():
         return True
     pq = parse_search_query(sq)
@@ -4499,15 +4512,15 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
     if not id_match:
         for p in pq['positive']:
             for sub in _positive_segment_subterms(p):
-                if not _search_term_matches_in_text(sub, haystack_lower):
+                if not _search_term_matches_in_text(sub, haystack_lower, primary=primary):
                     return False
     for n in pq['negative']:
-        if _search_term_matches_in_text(n, haystack_lower):
+        if _search_term_matches_in_text(n, haystack_lower, primary=primary):
             return False
     for s in pq['series']:
         if series_names_lower_list is None:
             return False
-        if not any((s == sn) or _search_term_matches_in_text(s, sn) for sn in series_names_lower_list):
+        if not any((s == sn) or _search_term_matches_in_text(s, sn, primary=primary) for sn in series_names_lower_list):
             return False
     for sid in pq.get('series_ids') or []:
         if not ser_list:
@@ -5409,7 +5422,7 @@ def character_passes_browse_pool_filters(
             + ' '
             + ' '.join(search_chunks)
         )
-        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid):
+        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid, primary=(q_scope == 'primary')):
             return False
     return True
 
@@ -5551,7 +5564,7 @@ def unit_passes_browse_pool_filters(
             + ' '
             + ' '.join(search_chunks)
         )
-        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid):
+        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')):
             return False
     return True
 
@@ -6174,7 +6187,7 @@ def list_characters():
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl21_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl22_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6238,7 +6251,7 @@ def list_characters():
                             if blob: search_chunks.append(blob)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid): continue
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid, primary=(q_scope == 'primary')): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
         has_sp_char = int(str(ri)) <= 4
@@ -6293,7 +6306,7 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul29_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul30_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6364,7 +6377,7 @@ def list_units():
                 if wtxt: search_chunks.append(wtxt)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid): continue
+            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')): continue
         if uid not in _debuff_memo:
             _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
         _debuff_keys_union |= set(_debuff_memo[uid])
