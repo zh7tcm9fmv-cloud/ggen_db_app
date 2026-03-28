@@ -39,6 +39,16 @@ except ImportError:
     sys.exit(1)
 
 
+def save_image_as_webp(img: Image.Image, dest: Path, quality: int) -> None:
+    """Lossless WebP for RGBA (transparency); lossy RGB for opaque images."""
+    if img.mode in ("RGBA", "LA", "P"):
+        img = img.convert("RGBA")
+        img.save(dest, "WEBP", lossless=True, method=6)
+    else:
+        img = img.convert("RGB")
+        img.save(dest, "WEBP", quality=quality, method=6)
+
+
 def needs_conversion(src_path: Path, webp_path: Path) -> bool:
     """True if we should convert: no webp yet, or source is newer than webp."""
     if not webp_path.exists():
@@ -80,12 +90,7 @@ def convert_new_images(
 
         try:
             with Image.open(src_path) as img:
-                if img.mode in ("RGBA", "LA", "P"):
-                    img = img.convert("RGBA")
-                    img.save(webp_path, "WEBP", quality=quality, method=6)
-                else:
-                    img = img.convert("RGB")
-                    img.save(webp_path, "WEBP", quality=quality, method=6)
+                save_image_as_webp(img, webp_path, quality)
             converted += 1
             print(f"  [ok] {rel} ({reason})")
         except Exception as e:

@@ -36,6 +36,19 @@ except ImportError:
     sys.exit(1)
 
 
+def save_image_as_webp(img: Image.Image, dest: Path, quality: int) -> None:
+    """
+    Write WebP. Use lossless encoding for RGBA (portraits/UI with transparency).
+    Lossy RGB WebP can damage alpha and cause black boxes or edge artifacts.
+    """
+    if img.mode in ("RGBA", "LA", "P"):
+        img = img.convert("RGBA")
+        img.save(dest, "WEBP", lossless=True, method=6)
+    else:
+        img = img.convert("RGB")
+        img.save(dest, "WEBP", quality=quality, method=6)
+
+
 def load_image_index(project_root: Path) -> dict:
     """Load image_index.json from project root."""
     index_path = project_root / "image_index.json"
@@ -92,12 +105,7 @@ def convert_directory_recursive(
 
         try:
             with Image.open(src_path) as img:
-                if img.mode in ("RGBA", "LA", "P"):
-                    img = img.convert("RGBA")
-                    img.save(webp_path, "WEBP", quality=quality, method=6)
-                else:
-                    img = img.convert("RGB")
-                    img.save(webp_path, "WEBP", quality=quality, method=6)
+                save_image_as_webp(img, webp_path, quality)
             converted += 1
             if converted % 100 == 0:
                 print(f"  ... {converted} converted", flush=True)
@@ -155,13 +163,7 @@ def convert_to_webp(
 
             try:
                 with Image.open(src_path) as img:
-                    # Handle transparency for PNG
-                    if img.mode in ("RGBA", "LA", "P"):
-                        img = img.convert("RGBA")
-                        img.save(webp_path, "WEBP", quality=quality, method=6)
-                    else:
-                        img = img.convert("RGB")
-                        img.save(webp_path, "WEBP", quality=quality, method=6)
+                    save_image_as_webp(img, webp_path, quality)
                 converted += 1
                 print(f"  [ok] {folder}/{filename} -> {webp_name}")
             except Exception as e:
