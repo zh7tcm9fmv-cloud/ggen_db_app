@@ -7266,4 +7266,8 @@ def serve_spa(path):
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:
         os.makedirs(d, exist_ok=True)
-    app.run(debug=True, port=5000)
+    # Use another port when :5000 is already serving a different app/database preview.
+    # PowerShell: $env:FLASK_PORT=5001; python app.py
+    _run_port = int(os.environ.get('FLASK_PORT', os.environ.get('PORT', '5000')))
+    print(f'Open in browser: http://127.0.0.1:{_run_port}')
+    app.run(debug=True, port=_run_port)
