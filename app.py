@@ -1254,24 +1254,38 @@ def _char_detail_is_conditional(d2, txt):
                 return True
     return _is_conditional_stat_text(txt or '')
 
-def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map):
+def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
+    """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
         return
     txt = (d2.get('text') or '').strip()
     if not txt:
         return
-    bonuses = extract_stat_percent_char(txt)
-    if not bonuses:
-        return
     if bab.get('is_ex', False):
+        lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
+        if not lines:
+            lines = [txt]
+        for line in lines:
+            bonuses = extract_stat_percent_char(line)
+            if not bonuses:
+                continue
+            for s, p in bonuses.items():
+                ex_map[s] += p
+        return
+    lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
+    if not lines:
+        return
+    for line in lines:
+        bonuses = extract_stat_percent_char(line)
+        if not bonuses:
+            if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
+                carry_ref[0] = True
+            continue
+        is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
+        tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
-            ex_map[s] += p
-    elif _char_detail_is_conditional(d2, txt):
-        for s, p in bonuses.items():
-            c_map[s] += p
-    else:
-        for s, p in bonuses.items():
-            u_map[s] += p
+            tgt[s] += p
+        carry_ref[0] = False
 
 def _accumulate_character_trait_percent_buckets(ac):
     """Same rules as get_character: split unconditional / conditional non-EX / EX trait %."""
@@ -1282,11 +1296,13 @@ def _accumulate_character_trait_percent_buckets(ac):
     spbs_c = {s: 0 for s in CHAR_STAT_ORDER}
     spes = {s: 0 for s in CHAR_STAT_ORDER}
     for bab in ac:
+        carry = [False]
         for d2 in bab.get('details', []):
-            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen)
+            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen, carry)
+        carry[0] = False
         sab = bab.get('sp_replacement', bab)
         for d2 in sab.get('details', []):
-            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes)
+            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes, carry)
     return spbn_u, spbn_c, spen, spbs_u, spbs_c, spes
 
 def _unit_hp_threshold_active_at_assumed_full_hp(part):
@@ -1318,7 +1334,7 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
     if skip_conditional and _is_conditional_stat_text(text): return bonuses
-    m = re.search(fr"Increase (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
+    m = re.search(fr"Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
         up_to = re.search(r'[\(\s]up to (\d+)%', text, re.IGNORECASE)
@@ -1340,7 +1356,7 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
 def _extract_stat_flat_move(text, skip_conditional=True):
     """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1' or 'by1')."""
     if skip_conditional and _is_conditional_stat_text(text): return 0
-    m = re.search(r"Increase\s+(?:own\s+)?(?:squad\s+)?(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)", text, re.IGNORECASE)
+    m = re.search(r"Increases?\s+(?:own\s+)?(?:squad\s+)?(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)", text, re.IGNORECASE)
     return int(m.group(1)) if m else 0
 
 def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
@@ -1350,12 +1366,12 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
         return bonuses
     tl = (text or '').strip()
     # "Increase own ACC and EVA by 5%" — ACC affects weapons; EVA does not
-    m = re.search(r'Increase own (ACC|Accuracy) and (EVA|EVADE|Evasion) by (\d+)%', tl, re.IGNORECASE)
+    m = re.search(r'Increases? own (ACC|Accuracy) and (EVA|EVADE|Evasion) by (\d+)%', tl, re.IGNORECASE)
     if m:
         bonuses['Accuracy'] = bonuses.get('Accuracy', 0) + int(m.group(3))
         return bonuses
     # "Increase own ACC and Critical by 5%"
-    m = re.search(r'Increase own (ACC|Accuracy) and (Critical|CRIT) by (\d+)%', tl, re.IGNORECASE)
+    m = re.search(r'Increases? own (ACC|Accuracy) and (Critical|CRIT) by (\d+)%', tl, re.IGNORECASE)
     if m:
         p = int(m.group(3))
         bonuses['Accuracy'] = bonuses.get('Accuracy', 0) + p
@@ -1373,7 +1389,7 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
             return 'Power'
         return None
     sn = r"(?:ACC|Accuracy|Critical|CRIT|Crit\.?|Power)"
-    m = re.search(fr'Increase (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%', tl, re.IGNORECASE)
+    m = re.search(fr'Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%', tl, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
         n1 = _normw(m.group(1))
@@ -2162,7 +2178,8 @@ def extract_stat_percent_char(text):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
         if kw in tl: return bonuses
-    m = re.search(r"Increase (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by (\d+)%", text, re.IGNORECASE)
+    # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
+    m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by (\d+)%", text, re.IGNORECASE)
     if m:
         for s in [m.group(1), m.group(2)]:
             if s:
@@ -2271,7 +2288,7 @@ def extract_stat_bonus_unit(text, fs):
     for kw in ['when ','if ','during ','at the start']:
         if kw in tl: return bonuses
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
-    m = re.search(fr"Increase (?:own )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
+    m = re.search(fr"Increases? (?:own )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
         def norm(name):
