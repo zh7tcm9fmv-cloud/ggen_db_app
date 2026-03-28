@@ -2113,6 +2113,43 @@ def extract_stat_percent_char(text):
                 bonuses[n] = bonuses.get(n, 0) + int(m.group(3))
     return bonuses
 
+def character_has_conditional_passive_sources(ac):
+    """True if any character ability (including SP replacement) has structured conditions or conditional wording.
+    Used so the detail modal shows the conditional passive toggle even when stat lines use 'when piloting' etc.
+    (those are skipped by extract_stat_percent_char and do not contribute to spen/spes)."""
+    if not ac:
+        return False
+    name_words = (
+        'condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked',
+        'during battle', 'at the start of', 'each time', 'every time', 'when piloting', 'when supporting',
+        'when executing', 'if vigor',
+    )
+    for bab in ac:
+        for node in (bab, bab.get('sp_replacement') or None):
+            if not node or not isinstance(node, dict):
+                continue
+            nm = (node.get('name') or '').lower()
+            if any(w in nm for w in name_words):
+                return True
+            for d2 in node.get('details', []) or []:
+                if not isinstance(d2, dict):
+                    continue
+                if d2.get('conditions'):
+                    return True
+                for cg in d2.get('condition_groups') or []:
+                    if isinstance(cg, dict) and (cg.get('conditions') or []):
+                        return True
+                txt = (d2.get('text') or '').strip()
+                if txt and _is_conditional_stat_text(txt):
+                    return True
+                parts = [p.strip() for p in re.split(r'[\r\n.]+', txt) if p and p.strip()]
+                if not parts:
+                    parts = [txt] if txt else []
+                for part in parts:
+                    if part and _is_conditional_stat_text(part):
+                        return True
+    return False
+
 def create_unit_info_map(m):
     lookup = {}
     for item in extract_data_list(m):
@@ -7011,7 +7048,7 @@ def get_stage(stage_id):
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
                 me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
-                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'unit': up, 'character': cp})
+                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.png', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             max_x = max_y = 0
@@ -7075,6 +7112,7 @@ def get_character(char_id):
             sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb})
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         has_ex_stats = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
+        has_ex_stats = has_ex_stats or character_has_conditional_passive_sources(ac)
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
         thum = find_list_thumb(info.get('resource_ids', []), char_id, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
