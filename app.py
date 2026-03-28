@@ -1255,7 +1255,7 @@ def _char_detail_is_conditional(d2, txt):
     return _is_conditional_stat_text(txt or '')
 
 def _char_trait_text_is_support_defense_action(txt):
-    """True when text is about executing Support Defense (in-combat action), not a passive CP line."""
+    """True when text is about executing Support Defense (in-combat action). Not a passive — exclude from trait % stat totals."""
     if not txt or not isinstance(txt, str):
         return False
     t = txt.lower()
@@ -1270,9 +1270,9 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
     txt = (d2.get('text') or '').strip()
     if not txt:
         return
-    sd_action = _char_trait_text_is_support_defense_action(txt)
-    if sd_action:
+    if _char_trait_text_is_support_defense_action(txt):
         carry_ref[0] = False
+        return
     if bab.get('is_ex', False):
         lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
         if not lines:
@@ -1290,13 +1290,10 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
     for line in lines:
         bonuses = extract_stat_percent_char(line)
         if not bonuses:
-            if not sd_action and (_is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line)):
+            if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        if sd_action:
-            is_cond = False
-        else:
-            is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
+        is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
@@ -4338,15 +4335,14 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
             if not parts:
                 parts = [txt]
             cond_prefix = False
-            sd_skip_cp = _char_trait_text_is_support_defense_action(txt)
+            if _char_trait_text_is_support_defense_action(txt):
+                continue
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 part_stats = extract_stat_percent_char(part)
                 if itc and not part_stats:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
-                if sd_skip_cp:
-                    is_cond = False
                 for s, pct in part_stats.items():
                     if s not in CHAR_STAT_ORDER:
                         continue
@@ -4430,7 +4426,7 @@ def calculate_npc_character_self_bonus_pct(abilities):
     for ab in abilities:
         for d in (ab.get('details', []) if isinstance(ab, dict) else []):
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
-            if not txt or (_is_conditional_stat_text(txt) and not _char_trait_text_is_support_defense_action(txt)):
+            if not txt or _char_trait_text_is_support_defense_action(txt) or _is_conditional_stat_text(txt):
                 continue
             for s, p in extract_stat_percent_char(txt).items():
                 if s in bp: bp[s] = bp.get(s, 0) + p
