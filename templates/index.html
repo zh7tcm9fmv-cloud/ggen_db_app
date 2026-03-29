@@ -1007,12 +1007,14 @@ html{overflow-x:hidden}
 <div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
 <div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Option Parts</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" onclick="openDcPicker('option_parts')">+ Add Option Part</button></div>
+<div class="dc-panel-section"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddOptionBtn" onclick="openDcPicker('option_parts')">Select Option Part</button></div>
 <div class="dc-panel-section"><div class="dc-section-label">Supporters</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" onclick="openDcPicker('supporter')">+ Add Supporter</button></div>
 </div>
 <div class="dc-panel">
 <div class="dc-panel-title" id="dcDefLabel">NPC TARGET (Defender)</div>
-<div class="dc-panel-section"><div class="dc-section-label">Target</div><div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div></div>
+<div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div>
+<div id="dcDefUnitArea"></div>
+<div id="dcDefCharArea"></div>
 <div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
 <div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
 </div>
@@ -1022,11 +1024,11 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDistLabel">Distance</span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcRangeLabel">Range Check</span><span id="dcRangeCheck">--</span></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain %</span><span id="dcTerrainType" style="font-size:11px;color:var(--text-muted);margin-left:4px"></span><input type="number" class="dc-input-sm" id="dcTerrain" min="-100" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcMpLabel">MP Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
-<button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Med</button>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcMpLabel">Vigor Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
+<button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Normal</button>
 <button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
-<button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Super</button>
+<button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
 </div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
@@ -2478,7 +2480,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 
 function openDmgCalc(){
 const d=S.currentDetailData;if(!d)return;
-S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
+S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
 document.getElementById('dcOverlay').classList.add('active');
 document.getElementById('dcTitle').textContent=t('dc_title');
 document.getElementById('dcAtkLabel').textContent=t('dc_atk_label');
@@ -2487,7 +2489,7 @@ document.getElementById('dcDistLabel').textContent=t('dc_distance');
 document.getElementById('dcRangeLabel').textContent=t('dc_range_check');
 document.getElementById('dcTerrainLabel').textContent=t('dc_terrain');
 document.getElementById('dcTerrainType').textContent=d.terrain?`(${d.terrain})`:'';
-document.getElementById('dcMpLabel').textContent=t('dc_mp_level');
+document.getElementById('dcMpLabel').textContent='Vigor Level';
 document.getElementById('dcDefActLabel').textContent=t('dc_defend');
 document.getElementById('dcShieldLabel').textContent=t('dc_shield');
 document.getElementById('dcDefOff').textContent=t('dc_off');
@@ -2509,13 +2511,29 @@ renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();r
 }
 function closeDmgCalc(){document.getElementById('dcOverlay').classList.remove('active')}
 
+function _dcGetUnitStatKey(){
+const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
+const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
+const mode=S.dc.unitStatMode||'normal';
+if(mode==='ssp'&&hasSp)return 'ssp_stats_no_cond';
+if(mode==='sp'&&hasSp)return 'sp_stats_no_cond';
+return 'stats_no_cond';
+}
+function _dcGetCharStats(){
+const cd=S.dc.atkCharData;if(!cd)return cd?.stats||[];
+const hasSp=cd.has_sp!==undefined?cd.has_sp:(parseInt(cd.rarity_id||'5')<=4);
+const mode=S.dc.charStatMode||'normal';
+if(mode==='sp'&&hasSp&&cd.sp_stats)return cd.sp_stats;
+return cd.stats||[];
+}
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
 if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';return}
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
+const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const stats=td?td.stats_no_cond:[];
+const stats=td?td[statKey]||td.stats_no_cond:[];
 const thum=ud.thum||ud.portrait||'';
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div><button class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 if(lb&&lb.length>1){
@@ -2523,19 +2541,31 @@ let lbHtml=`<div class="dc-section-label">${t('dc_lb_tier')}</div><div class="dc
 for(let i=0;i<=maxTier;i++)lbHtml+=`<button class="dc-lb-btn${i===tier?' active':''}" onclick="setDcLbTier(${i})">LB${i}</button>`;
 lbHtml+=`</div>`;area.innerHTML+=lbHtml;
 }
+const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
+if(hasSp){
+const mode=S.dc.unitStatMode||'normal';
+area.innerHTML+=`<div class="dc-section-label" style="margin-top:6px">Stat Mode</div><div class="dc-lb-row"><button class="dc-lb-btn${mode==='normal'?' active':''}" onclick="setDcUnitStatMode('normal')">Normal</button><button class="dc-lb-btn${mode==='sp'?' active':''}" onclick="setDcUnitStatMode('sp')">SP</button><button class="dc-lb-btn${mode==='ssp'?' active':''}" onclick="setDcUnitStatMode('ssp')">SSP</button></div>`;
+}
 const sa=document.getElementById('dcAtkStatsArea');
 const atkS=_dcFindStat(stats,'Attack');const defS=_dcFindStat(stats,'Defense');const mobS=_dcFindStat(stats,'Mobility');
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(atkS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(mobS)}</div></div></div>`;
 renderDcWeaponArea();
 }
+function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 
 function renderDcAtkChar(){
 const area=document.getElementById('dcAtkCharArea');
 const cd=S.dc.atkCharData;
 if(!cd){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;return}
-const stats=cd.stats||[];
+const stats=_dcGetCharStats();
 const thum=cd.thum||cd.portrait||'';
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div><button class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button></div>`;
+const hasSp=cd.has_sp!==undefined?cd.has_sp:(parseInt(cd.rarity_id||'5')<=4);
+if(hasSp){
+const mode=S.dc.charStatMode||'normal';
+area.innerHTML+=`<div class="dc-section-label" style="margin-top:6px">Stat Mode</div><div class="dc-lb-row"><button class="dc-lb-btn${mode==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button class="dc-lb-btn${mode==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
+}
 const r=_dcFindStat(stats,'Ranged'),m=_dcFindStat(stats,'Melee'),a=_dcFindStat(stats,'Awaken'),d=_dcFindStat(stats,'Defense'),re=_dcFindStat(stats,'Reaction');
 const sa=document.getElementById('dcAtkStatsArea');
 sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(r)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(m)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(a)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(d)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(re)}</div></div></div>`;
@@ -2545,6 +2575,48 @@ function _dcFindStat(stats,name){
 if(!stats)return 0;
 if(Array.isArray(stats)){const s=stats.find(s=>s.name===name);return s?s.total:0}
 return stats[name]||0;
+}
+
+const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
+function _dcParseRangeModifiers(){
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+if(!cd||!ud)return[];
+const unitName=(ud.name||'').toLowerCase();
+const mods=[];
+const sources=[];
+(cd.skills||[]).forEach(sk=>{if(sk.desc)sources.push(sk.desc);if(sk.replaced_by_sp&&sk.sp_desc)sources.push(sk.sp_desc)});
+(cd.abilities||[]).forEach(ab=>{(ab.details||[]).forEach(d=>{if(typeof d==='object'&&d.text)sources.push(d.text);else if(typeof d==='string')sources.push(d)})});
+const re=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapon\s+)?is\s+increased\s+by\s+(\d+)/gi;
+sources.forEach(txt=>{
+let m;const re2=new RegExp(re.source,'gi');
+while((m=re2.exec(txt))!==null){
+const reqUnit=m[1].trim().toLowerCase();
+const reqVigor=m[2].trim().toLowerCase();
+const wpnTypes=m[3].trim().toLowerCase();
+const rangeInc=parseInt(m[4],10)||0;
+if(unitName.includes(reqUnit)||reqUnit.includes(unitName.replace(/\s*\(ex\)\s*/gi,'').trim())){
+mods.push({reqVigor,wpnTypes,rangeInc});
+}
+}
+});
+return mods;
+}
+function _dcGetEffectiveRange(wpn){
+const mods=_dcParseRangeModifiers();
+let maxR=wpn.max_range||0;
+const curVigor=VIGOR_LEVEL_ORDER[S.dc.mpLevel]||0;
+const WPN_ATTR_TYPES={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
+mods.forEach(mod=>{
+const reqLv=VIGOR_LEVEL_ORDER[mod.reqVigor]!==undefined?VIGOR_LEVEL_ORDER[mod.reqVigor]:99;
+if(curVigor>=reqLv){
+const types=mod.wpnTypes.split(/\s+or\s+|,\s*/);
+const wpnAttrLabel=(wpn.attribute||'').toLowerCase();
+const wpnTypeLabel=WPN_ATTR_TYPES[wpn.weapon_type]||'';
+const matches=types.some(t=>{const tl=t.trim().toLowerCase();return wpnAttrLabel.includes(tl)||wpnTypeLabel.includes(tl)});
+if(matches)maxR+=mod.rangeInc;
+}
+});
+return{min_range:wpn.min_range,max_range:maxR};
 }
 
 function renderDcWeaponArea(){
@@ -2565,7 +2637,10 @@ h+=`<div class="dc-section-label" style="margin-top:6px">${t('dc_wpn_level')}</d
 cw.levels.forEach((lv,i)=>h+=`<button class="dc-wlv-btn${i===S.dc.wpnLv?' active':''}" onclick="setDcWpnLv(${i})">Lv${lv.level}</button>`);
 h+=`</div>`;
 const ld=cw.levels[S.dc.wpnLv];
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${cw.min_range}-${cw.max_range}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span></div>`;
+const effR=_dcGetEffectiveRange(cw);
+const rangeChanged=effR.max_range!==cw.max_range;
+const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${effR.max_range}</span>`:`${effR.min_range}-${effR.max_range}`;
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span></div>`;
 }
 wa.innerHTML=h;
 onDcParamChange();
@@ -2591,32 +2666,67 @@ renderDcDefStats();onDcParamChange();
 }
 
 function renderDcDefStats(){
-const area=document.getElementById('dcDefStatsArea');
+const uArea=document.getElementById('dcDefUnitArea');
+const cArea=document.getElementById('dcDefCharArea');
+const sArea=document.getElementById('dcDefStatsArea');
 const n=S.dc.defNpc;
-if(!n){area.innerHTML='';return}
+if(!n){uArea.innerHTML='';cArea.innerHTML='';sArea.innerHTML='';return}
 const u=n.unit,ch=n.character;
+if(u){
+const us=u.stats_raw||{};
+uArea.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(u.portrait||u.thum||'')}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(u.name||'NPC')}</div><div class="dc-picked-badges">${u.rarity_icon?`<img src="${imgUrl(u.rarity_icon)}">`:''}${u.role_icon?`<img src="${imgUrl(u.role_icon)}">`:''}</div></div></div>`;
+}else{uArea.innerHTML=''}
+if(ch){
+const cs=ch.stats_raw||{};
+const cThum=ch.portrait||ch.thum||'';
+cArea.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(cThum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ch.name||'NPC Pilot')}</div></div></div>`;
+}else{cArea.innerHTML=''}
 let h='';
 if(u){
 const us=u.stats_raw||{};
-h+=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(u.portrait||u.thum||'')}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(u.name||'NPC')}</div><div class="dc-picked-badges">${u.rarity_icon?`<img src="${imgUrl(u.rarity_icon)}">`:''}${u.role_icon?`<img src="${imgUrl(u.role_icon)}">`:''}</div></div></div>`;
 h+=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val">${fmtN(us.HP||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(us.Attack||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(us.Defense||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(us.Mobility||0)}</div></div></div>`;
 }
 if(ch){
 const cs=ch.stats_raw||{};
 h+=`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(cs.Ranged||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(cs.Melee||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(cs.Awaken||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(cs.Defense||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(cs.Reaction||0)}</div></div></div>`;
 }
-area.innerHTML=h;
+sArea.innerHTML=h;
 }
 
 function renderDcOptionParts(){
 const area=document.getElementById('dcAtkOptionArea');
-if(!S.dc.optionParts.length){area.innerHTML='';return}
-area.innerHTML=S.dc.optionParts.map((o,i)=>`<div class="dc-option-item"><img src="${imgUrl(o.thum)}" alt="" onerror="this.style.display='none'"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(o.name)}</span><button class="remove" onclick="removeDcOptionPart(${i})">✕</button></div>`).join('');
+const btn=document.getElementById('dcAddOptionBtn');
+if(!S.dc.optionParts.length){area.innerHTML='';if(btn)btn.style.display='';return}
+const o=S.dc.optionParts[0];
+area.innerHTML=`<div class="dc-option-item"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(o.name)}</strong>${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</span><button class="remove" onclick="removeDcOptionPart(0)">✕</button></div>`;
+if(btn)btn.style.display='none';
 }
 function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
 if(!S.dc.supporters.length){area.innerHTML='';return}
-area.innerHTML=S.dc.supporters.map((s,i)=>`<div class="dc-supporter-item"><img src="${imgUrl(s.portrait||s.thum)}" alt="" onerror="this.style.display='none'"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(s.name)}</span><button class="remove" onclick="removeDcSupporter(${i})">✕</button></div>`).join('');
+area.innerHTML=S.dc.supporters.map((s,i)=>{
+const lsDesc=(s.leader_skills||[]).map(l=>l.desc||'').filter(Boolean).join('; ');
+const lvl=s._dcLevel||100;const lbt=s._dcLbTier!==undefined?s._dcLbTier:3;
+return`<div class="dc-supporter-item" style="flex-direction:column;align-items:stretch">
+<div style="display:flex;align-items:center;gap:6px"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></span><button class="remove" onclick="removeDcSupporter(${i})">✕</button></div>
+${lsDesc?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(lsDesc)}</div>`:''}
+<div style="display:flex;gap:8px;margin-top:4px;align-items:center">
+<span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm" style="width:55px" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(${i},this.value)">
+<span style="font-size:11px;color:var(--text-muted)">LB</span>${[0,1,2,3].map(t=>`<button class="dc-lb-btn${t===lbt?' active':''}" style="padding:2px 8px;font-size:11px" onclick="updateDcSupporterLb(${i},${t})">${t}</button>`).join('')}
+</div>
+<div style="font-size:11px;color:var(--accent-cyan);margin-top:2px">HP+${fmtN(s.hp_support||0)} ATK+${fmtN(s.atk_support||0)}</div>
+</div>`}).join('');
+}
+async function updateDcSupporterLv(idx,val){
+const s=S.dc.supporters[idx];if(!s)return;
+const lv=Math.min(100,Math.max(1,parseInt(val)||100));
+const lb=s._dcLbTier!==undefined?s._dcLbTier:3;
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();onDcParamChange()}}catch(e){}
+}
+async function updateDcSupporterLb(idx,tier){
+const s=S.dc.supporters[idx];if(!s)return;
+const lv=s._dcLevel||100;
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();onDcParamChange()}}catch(e){}
 }
 function renderDcDebuffs(){
 const area=document.getElementById('dcDefDebuffArea');
@@ -2635,7 +2745,8 @@ function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea()}
 function setDcMp(lv){
 S.dc.mpLevel=lv;
 document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===lv));
-onDcParamChange();
+if(S.dc.atkUnitData)renderDcWeaponArea();
+else onDcParamChange();
 }
 function setDcDefend(v){
 S.dc.defending=v;
@@ -2668,47 +2779,56 @@ S.dc.dmgTakenDownUnit=parseInt(document.getElementById('dcDmgTakenDownUnit').val
 renderDcResult();
 }
 
-async function openDcPicker(type){
-S._dcPickerType=type;
+let _dcPickerDebounce=null;
+function openDcPicker(type){
+S._dcPickerType=type;S._dcPickerCache=[];
 const overlay=document.getElementById('dcPickerOverlay');
 overlay.classList.add('active');
-document.getElementById('dcPickerSearch').value='';
-document.getElementById('dcPickerSearch').placeholder=type==='character'?t('cmp_search_char'):type==='unit'?t('cmp_search_unit'):type==='option_parts'?t('search_mod'):type==='supporter'?t('search_supporter'):'Search...';
-document.getElementById('dcPickerBody').innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';
-try{
-let base,allRows=[],page=1,totalPages=1;
+const inp=document.getElementById('dcPickerSearch');
+inp.value='';
+inp.placeholder=type==='character'?'Type to search characters...':type==='unit'?'Type to search units...':type==='option_parts'?'Type to search option parts...':type==='supporter'?'Type to search supporters...':'Type to search...';
+document.getElementById('dcPickerBody').innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
+setTimeout(()=>inp.focus(),50);
+}
+function closeDcPicker(){document.getElementById('dcPickerOverlay').classList.remove('active')}
+function filterDcPicker(){
+clearTimeout(_dcPickerDebounce);
+_dcPickerDebounce=setTimeout(()=>_dcDoPickerSearch(),200);
+}
+async function _dcDoPickerSearch(){
+const q=document.getElementById('dcPickerSearch').value.trim();
+const body=document.getElementById('dcPickerBody');
+if(q.length<2){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';return}
+const type=S._dcPickerType;
+let base;
 if(type==='character')base='/api/characters';
 else if(type==='unit')base='/api/units';
 else if(type==='option_parts')base='/api/option_parts';
 else if(type==='supporter')base='/api/supporters';
 else base='/api/units';
-while(page<=totalPages){
-const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=100&sort=rarity&dir=desc`);
+body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
+try{
+const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`);
 const d=await r.json();
-allRows=allRows.concat(d.rows||[]);
-totalPages=d.total_pages||1;
-page++;
-}
-S._dcPickerCache=allRows;
+S._dcPickerCache=d.rows||[];
 renderDcPickerList();
-}catch(e){
-document.getElementById('dcPickerBody').innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Failed to load</div>';
+}catch(e){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>'}
 }
-}
-function closeDcPicker(){document.getElementById('dcPickerOverlay').classList.remove('active')}
-function filterDcPicker(){renderDcPickerList()}
 function renderDcPickerList(){
-const q=document.getElementById('dcPickerSearch').value.trim().toLowerCase();
 const type=S._dcPickerType;
-const items=S._dcPickerCache.filter(r=>!q||(r.name||'').toLowerCase().includes(q)||(r.details||'').toLowerCase().includes(q));
+const items=S._dcPickerCache;
 const body=document.getElementById('dcPickerBody');
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
-const skipImg=!!q;
-body.innerHTML=items.slice(0,200).map(r=>{
-const badges=skipImg?'':(type==='option_parts'?(r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''):`${r.rarity_icon?`<img src="${imgUrl(r.rarity_icon)}" alt="">`:''}${r.role_icon?`<img src="${imgUrl(r.role_icon)}" alt="">`:''}`);
-const thum=skipImg?'':(r.thum?`<img src="${imgUrl(r.thum)}" alt="" onerror="this.style.display='none'">`:'');
-return`<div class="cmp-picker-item" onclick="pickDcItem('${r.id}')">
-${thum}<div><div class="cmp-picker-item-name">${esc(r.name)}</div><div class="cmp-picker-item-badges">${badges}</div>${r.details?`<div class="cmp-picker-item-detail" style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc((r.details||'').substring(0,60))}${(r.details||'').length>60?'...':''}</div>`:''}</div></div>`
+const RARITY_COLORS={'UR':'#fbbf24','SSR':'#f97316','SR':'#a78bfa','R':'#60a5fa','N':'#94a3b8'};
+body.innerHTML=items.map(r=>{
+const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
+const rarBadge=`<span style="color:${rc};font-weight:600;font-size:11px;margin-right:4px">${esc(r.rarity||'')}</span>`;
+const roleBadge=r.role?`<span style="color:var(--text-muted);font-size:11px">${esc(r.role)}</span>`:'';
+let detail='';
+if(type==='option_parts'&&r.details)detail=`<div style="font-size:11px;color:var(--text-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:350px">${esc(r.details)}</div>`;
+if(type==='supporter'&&r.boost)detail=`<div style="font-size:11px;color:var(--text-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:350px">${esc(r.boost.split('\n')[0])}</div>`;
+return`<div class="cmp-picker-item" onclick="pickDcItem('${r.id}')" style="padding:8px 12px;cursor:pointer">
+<div><div style="display:flex;align-items:center;gap:6px">${rarBadge}<span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span>${roleBadge}</div>${detail}</div></div>`
 }).join('');
 }
 
@@ -2718,18 +2838,18 @@ closeDcPicker();
 try{
 if(type==='option_parts'){
 const row=S._dcPickerCache.find(x=>String(x.id)===String(id));
-if(row&&!S.dc.optionParts.some(o=>String(o.id)===String(id))){S.dc.optionParts.push({id:row.id,name:row.name,details:row.details||'',thum:row.thum||''});renderDcOptionParts();onDcParamChange()}
+if(row){S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||''}];renderDcOptionParts();onDcParamChange()}
 return;
 }
 if(type==='supporter'){
-const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}`).then(r=>r.json());
-if(rd&&!rd.error&&!S.dc.supporters.some(s=>String(s.id)===String(id))){S.dc.supporters.push(rd);renderDcSupporters();onDcParamChange()}
+const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());
+if(rd&&!rd.error&&!S.dc.supporters.some(s=>String(s.id)===String(id))){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters.push(rd);renderDcSupporters();onDcParamChange()}
 return;
 }
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
-if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0}
-else{S.dc.atkChar=id;S.dc.atkCharData=d}
+if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.unitStatMode='normal'}
+else{S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal'}
 renderDcAtkUnit();renderDcAtkChar();
 onDcParamChange();
 }catch(e){}
@@ -2759,9 +2879,10 @@ const F=Math.floor,MX=Math.max,EXP=Math.exp;
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
 if(!ud||!cd||!npc)return null;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
+const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const atkUnitStats=td?td.stats_no_cond:[];
-const atkCharStats=cd.stats||[];
+const atkUnitStats=td?(td[statKey]||td.stats_no_cond):[];
+const atkCharStats=_dcGetCharStats();
 const wpns=ud.weapons?ud.weapons.filter(w=>w.weapon_type!=='3'):[];
 if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
@@ -2843,7 +2964,8 @@ const combinedDamageCrit=(battleDamage+scaledDamageCrit)*defendMult;
 const critCorrectionPct=vigorCritPct;
 const critDmg=MX(0,F(combinedDamageCrit*((critCorrectionPct+100)/100)));
 
-const inRange=dist>=wpn.min_range&&dist<=wpn.max_range;
+const effRange=_dcGetEffectiveRange(wpn);
+const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
 const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
