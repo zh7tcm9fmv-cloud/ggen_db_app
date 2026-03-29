@@ -1028,6 +1028,14 @@ html{overflow-x:hidden}
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Super</button>
 </div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Dealt Up %</span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Crit Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">EX Weapon</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDefActLabel">Defend Action</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcShieldLabel">Shield</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
 </div>
@@ -2470,7 +2478,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 
 function openDmgCalc(){
 const d=S.currentDetailData;if(!d)return;
-S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
+S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
 document.getElementById('dcOverlay').classList.add('active');
 document.getElementById('dcTitle').textContent=t('dc_title');
 document.getElementById('dcAtkLabel').textContent=t('dc_atk_label');
@@ -2489,7 +2497,14 @@ document.getElementById('dcShieldOn').textContent=t('dc_on');
 document.getElementById('dcResultPlaceholder').textContent=t('dc_select_both');
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcTerrain').value=0;
-setDcMp('medium');setDcDefend(false);setDcShield(false);
+document.getElementById('dcWpnPowUp').value=0;
+document.getElementById('dcWpnPowDown').value=0;
+document.getElementById('dcDmgIncrease').value=0;
+document.getElementById('dcCritDmgUp').value=0;
+document.getElementById('dcDmgTakenUp').value=0;
+document.getElementById('dcDmgTakenDownPilot').value=0;
+document.getElementById('dcDmgTakenDownUnit').value=0;
+setDcMp('medium');setDcDefend(false);setDcShield(false);setDcEx(false);
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcNpcDropdown();renderDcDefStats();renderDcDebuffs();renderDcResult();
 }
 function closeDmgCalc(){document.getElementById('dcOverlay').classList.remove('active')}
@@ -2634,9 +2649,22 @@ document.getElementById('dcShieldOff').classList.toggle('active',!v);
 document.getElementById('dcShieldOn').classList.toggle('active',v);
 onDcParamChange();
 }
+function setDcEx(v){
+S.dc.exWeapon=v;
+document.getElementById('dcExOff').classList.toggle('active',!v);
+document.getElementById('dcExOn').classList.toggle('active',v);
+onDcParamChange();
+}
 function onDcParamChange(){
 S.dc.distance=parseInt(document.getElementById('dcDistance').value)||1;
 S.dc.terrain=parseInt(document.getElementById('dcTerrain').value)||0;
+S.dc.wpnPowUp=parseInt(document.getElementById('dcWpnPowUp').value)||0;
+S.dc.wpnPowDown=parseInt(document.getElementById('dcWpnPowDown').value)||0;
+S.dc.dmgIncrease=parseInt(document.getElementById('dcDmgIncrease').value)||0;
+S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp').value)||0;
+S.dc.dmgTakenUp=parseInt(document.getElementById('dcDmgTakenUp').value)||0;
+S.dc.dmgTakenDownPilot=parseInt(document.getElementById('dcDmgTakenDownPilot').value)||0;
+S.dc.dmgTakenDownUnit=parseInt(document.getElementById('dcDmgTakenDownUnit').value)||0;
 renderDcResult();
 }
 
@@ -2766,13 +2794,17 @@ let defDebuffPct=0;
 (S.dc.debuffs||[]).filter(d=>d.stat==='DEF').forEach(d=>{defDebuffPct+=Number(d.value)||0});
 if(defDebuffPct>0){const mult=MX(0,1-defDebuffPct/100);unitDef=F(unitDef*mult);charDef=F(charDef*mult)}
 
-const weaponPower=lvData.power;
+const rawWpnPower=lvData.power;
+const wpnPowUpPct=S.dc.wpnPowUp||0;
+const wpnPowDownPct=S.dc.wpnPowDown||0;
+const weaponPower=F(rawWpnPower*(1+wpnPowUpPct/100)*(1-wpnPowDownPct/100));
+
 const dist=S.dc.distance;
 const terrainPct=S.dc.terrain;
 const terrainCorrection=1-(terrainPct/100);
 const mp=DC_MP[S.dc.mpLevel];
 const vigorDmgBonusPct=mp.dmgBonus*100;
-const critCorrectionPct=mp.critMult*100;
+const vigorCritPct=mp.critMult*100;
 let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
 
@@ -2792,20 +2824,32 @@ const defenseComponent=(-4000/100)/(EXP(defExp)+1);
 const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
 const battleDamage=F((baseDamage+damageCorrection)*terrainCorrection);
 
-const dmgIncreasePct=vigorDmgBonusPct;
-const totalMultPct=dmgIncreasePct;
-const scaledDamage=F(totalMultPct*battleDamage/100);
-const combinedDamage=(battleDamage+scaledDamage)*defendMult;
+const userDmgIncreasePct=S.dc.dmgIncrease||0;
+const userCritDmgUpPct=S.dc.critDmgUp||0;
+const dmgTakenUpPct=S.dc.dmgTakenUp||0;
+const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
+const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
+const isExWeapon=S.dc.exWeapon||false;
+const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
-const normalDmg=MX(0,F(combinedDamage));
-const critDmg=MX(0,F(combinedDamage*((critCorrectionPct+100)/100)));
+const totalNormalMultPct=vigorDmgBonusPct+userDmgIncreasePct+dmgTakenUpPct-takenDown;
+const scaledDamageNormal=F(totalNormalMultPct*battleDamage/100);
+const combinedDamageNormal=(battleDamage+scaledDamageNormal)*defendMult;
+const normalDmg=MX(0,F(combinedDamageNormal));
+
+const totalCritMultPct=vigorDmgBonusPct+userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
+const scaledDamageCrit=F(totalCritMultPct*battleDamage/100);
+const combinedDamageCrit=(battleDamage+scaledDamageCrit)*defendMult;
+const critCorrectionPct=vigorCritPct;
+const critDmg=MX(0,F(combinedDamageCrit*((critCorrectionPct+100)/100)));
 
 const inRange=dist>=wpn.min_range&&dist<=wpn.max_range;
 const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
-return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,charAtk,charDef,unitAtk,unitDef,unitMob};
+return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
+damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon};
 }
 
 function renderDcResult(){
@@ -2819,7 +2863,44 @@ const hpRemainCrit=Math.max(0,result.npcHp-result.critDmg);
 const hpPct=result.npcHp>0?Math.max(0,(hpRemain/result.npcHp)*100):0;
 const dmgPct=result.npcHp>0?Math.min(100,(result.normalDmg/result.npcHp)*100):0;
 const hpColor=hpPct>50?'#4ade80':hpPct>25?'#f59e0b':'#ef4444';
-area.innerHTML=`<div class="dc-result-box"><div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(result.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(result.critDmg)}</div></div></div><div class="dc-hp-bar-wrap"><div class="dc-hp-bar-label"><span>${t('dc_hp_remaining')} (Normal)</span><span>${fmtN(hpRemain)} / ${fmtN(result.npcHp)}</span></div><div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${hpPct}%;background:${hpColor}"></div><div class="dc-hp-bar-dmg" style="left:${hpPct}%;width:${dmgPct}%;background:rgba(255,75,75,.3)"></div></div><div class="dc-hp-bar-label" style="margin-top:8px"><span>${t('dc_hp_remaining')} (Crit)</span><span>${fmtN(hpRemainCrit)} / ${fmtN(result.npcHp)}</span></div><div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${result.npcHp>0?Math.max(0,(hpRemainCrit/result.npcHp)*100):0}%;background:${result.npcHp>0&&hpRemainCrit/result.npcHp>0.5?'#4ade80':result.npcHp>0&&hpRemainCrit/result.npcHp>0.25?'#f59e0b':'#ef4444'}"></div><div class="dc-hp-bar-dmg" style="left:${result.npcHp>0?Math.max(0,(hpRemainCrit/result.npcHp)*100):0}%;width:${result.npcHp>0?Math.min(100,(result.critDmg/result.npcHp)*100):0}%;background:rgba(245,158,11,.3)"></div></div></div></div>`;
+const critHpPct=result.npcHp>0?Math.max(0,(hpRemainCrit/result.npcHp)*100):0;
+const critDmgPct=result.npcHp>0?Math.min(100,(result.critDmg/result.npcHp)*100):0;
+const critHpColor=critHpPct>50?'#4ade80':critHpPct>25?'#f59e0b':'#ef4444';
+const r=result;
+const brkRow=(lbl,val)=>`<div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--text-muted)">${lbl}</span><span>${val}</span></div>`;
+const breakdownHtml=`
+<details style="margin-top:12px">
+<summary style="cursor:pointer;color:var(--accent-cyan);font-size:12px;user-select:none">Formula Breakdown</summary>
+<div style="font-size:12px;margin-top:6px;line-height:1.6">
+${brkRow('Pilot ATK',fmtN(r.charAtk))}
+${brkRow('Unit ATK',fmtN(r.unitAtk))}
+${brkRow('Pilot DEF (target)',fmtN(r.charDef))}
+${brkRow('Unit DEF (target)',fmtN(r.unitDef))}
+${brkRow('Raw Weapon Power',fmtN(r.rawWpnPower))}
+${brkRow('Effective Weapon Power',fmtN(r.weaponPower))}
+<div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
+${brkRow('Base Damage',fmtN(r.baseDamage))}
+${brkRow('Damage Correction',fmtN(r.damageCorrection))}
+${brkRow('Terrain Correction','×'+r.terrainCorrection.toFixed(2))}
+${brkRow('Battle Damage',fmtN(r.battleDamage))}
+<div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
+${brkRow('Total Mult % (Normal)',r.totalNormalMultPct+'%')}
+${brkRow('Total Mult % (Crit base)',r.totalCritMultPct+'%')}
+${brkRow('Crit Correction (Vigor)','×'+((r.critCorrectionPct+100)/100).toFixed(2))}
+${brkRow('Defend Mult','×'+r.defendMult.toFixed(1))}
+${r.isExWeapon?brkRow('EX Weapon','ON — Unit Dmg Taken Down ignored'):''}
+</div>
+</details>`;
+area.innerHTML=`<div class="dc-result-box">
+<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div></div>
+<div class="dc-hp-bar-wrap">
+<div class="dc-hp-bar-label"><span>${t('dc_hp_remaining')} (Normal)</span><span>${fmtN(hpRemain)} / ${fmtN(r.npcHp)}</span></div>
+<div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${hpPct}%;background:${hpColor}"></div><div class="dc-hp-bar-dmg" style="left:${hpPct}%;width:${dmgPct}%;background:rgba(255,75,75,.3)"></div></div>
+<div class="dc-hp-bar-label" style="margin-top:8px"><span>${t('dc_hp_remaining')} (Crit)</span><span>${fmtN(hpRemainCrit)} / ${fmtN(r.npcHp)}</span></div>
+<div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${critHpPct}%;background:${critHpColor}"></div><div class="dc-hp-bar-dmg" style="left:${critHpPct}%;width:${critDmgPct}%;background:rgba(245,158,11,.3)"></div></div>
+</div>
+${breakdownHtml}
+</div>`;
 }
 
 const _origSetupKeys=setupKeys;
