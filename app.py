@@ -369,6 +369,12 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 # substring-matches; add shorthand aliases for search (same idea as msg).
 SERIES_ID_08TH_MS_TEAM = '130'
 
+# Appended to unit list search text so plain "god" finds Burning Gundam (G Gundam; name has no "God" substring).
+UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
+    '1200003900': ' god',
+    '1200003950': ' god',
+}
+
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
     try:
@@ -4564,38 +4570,73 @@ def _positive_segment_subterms(term):
     return parts if parts else [term]
 
 
+def _search_fold(s):
+    """Lowercase string with spaces, hyphens, and underscores removed so e.g. 'iron blooded' matches 'iron-blooded' and 'Alaya-Vijnana' matches 'alaya vijnana'."""
+    if not s:
+        return ''
+    t = re.sub(r'[\s\-_]+', '', str(s).lower())
+    if 'vjnana' in t:
+        t = t.replace('vjnana', 'vijnana')
+    return t
+
+
 def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     """Match a search token against haystack (already lowercased).
     Full: len<=2 ASCII uses whole-word boundaries; len>2 pure-digit tokens use substring (id fragments);
     len>2 otherwise uses word-start (prefix-friendly) so e.g. 'wing' does not match inside 'throwing'.
     Hyphenated compounds (e.g. 'zero-g') do not match the prefix token alone ('zero').
-    Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'."""
+    Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'.
+    Fallback: if strict match fails, substring match on _search_fold (hyphen/space insensitive)."""
     if not term:
         return True
     t = term.lower()
     if not t.isascii() or not re.match(r'^[a-z0-9._+]+$', t):
-        return t in haystack_lower
+        if t in haystack_lower:
+            return True
+        tf = _search_fold(t)
+        hf = _search_fold(haystack_lower)
+        return len(tf) >= 2 and tf in hf
     if primary:
         if len(t) <= 2:
             try:
-                return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+                ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
             except re.error:
-                return t in haystack_lower
-        try:
-            return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
-        except re.error:
-            return t in haystack_lower
+                ok = t in haystack_lower
+        else:
+            try:
+                ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
+            except re.error:
+                ok = t in haystack_lower
+        if ok:
+            return True
+        tf = _search_fold(t)
+        hf = _search_fold(haystack_lower)
+        return len(tf) >= 3 and tf in hf
     if len(t) <= 2:
         try:
-            return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+            ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
         except re.error:
-            return t in haystack_lower
+            ok = t in haystack_lower
+        if ok:
+            return True
+        tf = _search_fold(t)
+        hf = _search_fold(haystack_lower)
+        return len(tf) >= 2 and tf in hf
     if t.isdigit():
-        return t in haystack_lower
+        if t in haystack_lower:
+            return True
+        tf = _search_fold(t)
+        hf = _search_fold(haystack_lower)
+        return len(tf) >= 3 and tf in hf
     try:
-        return bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
+        ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
     except re.error:
-        return t in haystack_lower
+        ok = t in haystack_lower
+    if ok:
+        return True
+    tf = _search_fold(t)
+    hf = _search_fold(haystack_lower)
+    return len(tf) >= 3 and tf in hf
 
 def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
@@ -5665,6 +5706,7 @@ def unit_passes_browse_pool_filters(
             + ' '
             + ' '.join(search_chunks)
         )
+        ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip()
         if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')):
             return False
     return True
@@ -6446,7 +6488,7 @@ def list_units():
         if sq:
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = f"{name} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h
-            ss = ss.strip()
+            ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip()
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')): continue
         if uid not in _debuff_memo:
             _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
