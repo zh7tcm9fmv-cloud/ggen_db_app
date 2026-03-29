@@ -3109,7 +3109,7 @@ let pct=0;
 return pct;
 }
 function calculateDamage(){
-const F=Math.floor,MX=Math.max,EXP=Math.exp;
+const F=Math.floor,C=Math.ceil,MX=Math.max,EXP=Math.exp;
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
 if(!ud||!cd||!npc)return null;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
@@ -3155,7 +3155,7 @@ const wpnPowDownPct=S.dc.wpnPowDown||0;
 const traitDistPow=S.dc._wpnTraitDistPow||0;
 const traitHpPow=S.dc._wpnTraitHpPow||0;
 const traitPowTotal=traitDistPow+traitHpPow;
-const weaponPower=F(rawWpnPower*(1+(wpnPowUpPct+traitPowTotal)/100)*(1-wpnPowDownPct/100));
+const weaponPower=C(rawWpnPower*(1+(wpnPowUpPct+traitPowTotal)/100)*(1-wpnPowDownPct/100));
 
 const dist=S.dc.distance;
 const terrainPct=S.dc.terrain;
@@ -3171,16 +3171,16 @@ const unitDiffRaw=F(unitAtk/10)-F(unitDef/10);
 const unitStatRatio=MX(0,F(unitDiffRaw))/5000;
 const charSigmoid=1/(EXP(250*(charDef-charAtk)/100000)+1);
 const unitSigmoid=1/(EXP(25*(unitDef-unitAtk)/100000)+1);
-const baseDamage=F((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
+const baseDamage=C((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
 
-const atkCombined=F((unitAtk+2*charAtk)/10);
-const defCombined=F((unitDef+2*charDef)/10);
+const atkCombined=C((unitAtk+2*charAtk)/10);
+const defCombined=C((unitDef+2*charDef)/10);
 const offExp=((5000-atkCombined)*30)/100000;
 const defExp=((5000-defCombined)*3)/100000;
 const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
 const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
-const battleDamage=F((baseDamage+damageCorrection)*terrainCorrection);
+const battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
 
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
 const userCritDmgUpPct=S.dc.critDmgUp||0;
@@ -3191,15 +3191,11 @@ const isExWeapon=S.dc.exWeapon||false;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
 const totalNormalMultPct=vigorDmgBonusPct+userDmgIncreasePct+dmgTakenUpPct-takenDown;
-const scaledDamageNormal=F(totalNormalMultPct*battleDamage/100);
-const combinedDamageNormal=(battleDamage+scaledDamageNormal)*defendMult;
-const normalDmg=MX(0,F(combinedDamageNormal));
+const normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 
 const totalCritMultPct=vigorDmgBonusPct+userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
-const scaledDamageCrit=F(totalCritMultPct*battleDamage/100);
-const combinedDamageCrit=(battleDamage+scaledDamageCrit)*defendMult;
 const critCorrectionPct=vigorCritPct;
-const critDmg=MX(0,F(combinedDamageCrit*((critCorrectionPct+100)/100)));
+const critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
@@ -3213,7 +3209,7 @@ const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const wpnTraits=S.dc._wpnTraits||{};
 const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
-damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
+damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
 traitDistPow,traitHpPow,
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
