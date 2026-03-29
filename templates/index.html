@@ -2496,7 +2496,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 
 function initDmgCalc(){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};
+S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcWpnPowUp').value=0;
 document.getElementById('dcWpnPowDown').value=0;
@@ -2553,7 +2553,7 @@ initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
 const stgId=p.get('s');
 if(stgId){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=stgId;if(sel.value===stgId)await onDcStageChange()}}
-if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc._unitIsSD=String(d.body_type||'')==='3';const hasWi=p.get('wi')!==null&&p.get('wi')!=='';const hasWl=p.get('wl')!==null&&p.get('wl')!=='';if(!hasWi)S.dc.wpnIdx=0;if(!hasWl)S.dc.wpnLv=0}catch(_){}}
+if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc._unitIsSD=String(d.body_type||'')==='3';_dcDetectVigorCondAbilities(d);const hasWi=p.get('wi')!==null&&p.get('wi')!=='';const hasWl=p.get('wl')!==null&&p.get('wl')!=='';if(!hasWi)S.dc.wpnIdx=0;if(!hasWl)S.dc.wpnLv=0}catch(_){}}
 if(p.get('c')){try{const r=await fetch(`/api/character/${p.get('c')}?lang=${S.lang}`);const d=await r.json();S.dc.atkChar=p.get('c');S.dc.atkCharData=d}catch(_){}}
 else if(S.dc.atkUnitData&&S.dc.atkUnitData.recommend_character&&S.dc.atkUnitData.recommend_character.id){const rec=S.dc.atkUnitData.recommend_character;try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal'}catch(_){}}
 const um=p.get('um');if(um==='normal'||um==='sp'||um==='ssp')S.dc.unitStatMode=um;
@@ -2583,13 +2583,34 @@ if(p.get('sh')==='1')setDcShield(true);
 onDcParamChange();
 }
 
+const DC_VIGOR_ORDER=['medium','high','max','super'];
+function _dcVigorAtLeast(cur,thr){return DC_VIGOR_ORDER.indexOf(cur)>=DC_VIGOR_ORDER.indexOf(thr)}
+function _dcDetectVigorCondAbilities(ud){
+S.dc._vigorCondThreshold=null;
+if(!ud||!ud.abilities)return;
+(ud.abilities||[]).forEach(ab=>{
+const nm=(ab.name||'').toLowerCase();
+if(nm.includes('vigor condition')){
+const txt=(ab.details||[]).map(d=>d.text||'').join(' ').toLowerCase();
+if(txt.includes('supercharged'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'super';
+else if(txt.includes('max'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'max';
+else if(txt.includes('high'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'high';
+else S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'max';
+}
+});
+}
+function _dcIsVigorCondActive(){
+return S.dc._vigorCondThreshold&&_dcVigorAtLeast(S.dc.mpLevel,S.dc._vigorCondThreshold);
+}
 function _dcGetUnitStatKey(){
 const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 const mode=S.dc.unitStatMode||'normal';
-if(mode==='ssp'&&hasSp)return 'ssp_stats_no_cond';
-if(mode==='sp'&&hasSp)return 'sp_stats_no_cond';
-return 'stats_no_cond';
+const cond=_dcIsVigorCondActive();
+const sfx=cond?'_with_cond':'_no_cond';
+if(mode==='ssp'&&hasSp)return 'ssp_stats'+sfx;
+if(mode==='sp'&&hasSp)return 'sp_stats'+sfx;
+return 'stats'+sfx;
 }
 function _dcGetCharStats(){
 const cd=S.dc.atkCharData;if(!cd)return cd?.stats||[];
@@ -2624,7 +2645,8 @@ area.innerHTML+=`<div class="dc-section-label" style="margin-top:6px">Stat Mode<
 }
 const sa=document.getElementById('dcAtkStatsArea');
 const atkS=_dcFindStat(stats,'Attack');const defS=_dcFindStat(stats,'Defense');const mobS=_dcFindStat(stats,'Mobility');
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(atkS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(mobS)}</div></div></div>`;
+const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3);border-radius:4px;font-size:11px;color:#facc15">Vigor ATK bonus active (stats include conditional)</div>':'';
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(atkS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(mobS)}</div></div></div>${vigorCondNote}`;
 renderDcWeaponArea();
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -2705,6 +2727,8 @@ if(it.key==='critDmg')critDmg+=it.val;
 });
 const skB=_dcGetActiveSkillBonuses();
 dmgDealt+=skB.dmgDealt;
+const mp=DC_MP[S.dc.mpLevel]||DC_MP.medium;
+dmgDealt+=mp.dmgBonus*100;
 const di=document.getElementById('dcDmgIncrease');
 const ci=document.getElementById('dcCritDmgUp');
 if(di)di.value=dmgDealt;
@@ -3034,9 +3058,13 @@ function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();
 function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea()}
 function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea()}
 function setDcMp(lv){
+const prevKey=_dcGetUnitStatKey();
 S.dc.mpLevel=lv;
 document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===lv));
-if(S.dc.atkUnitData)renderDcWeaponArea();
+const newKey=_dcGetUnitStatKey();
+if(newKey!==prevKey&&S.dc.atkUnitData)renderDcAtkUnit();
+if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+else if(S.dc.atkUnitData)renderDcWeaponArea();
 else onDcParamChange();
 }
 function setDcDefend(v){
@@ -3139,6 +3167,7 @@ return;
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
 if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.unitStatMode='normal';
+_dcDetectVigorCondAbilities(d);
 const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
 if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
@@ -3255,10 +3284,10 @@ const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
 const isExWeapon=S.dc.exWeapon||false;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
-const totalNormalMultPct=vigorDmgBonusPct+userDmgIncreasePct+dmgTakenUpPct-takenDown;
+const totalNormalMultPct=userDmgIncreasePct+dmgTakenUpPct-takenDown;
 const normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 
-const totalCritMultPct=vigorDmgBonusPct+userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
+const totalCritMultPct=userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 const critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
 
@@ -3348,8 +3377,7 @@ ${brkRow('Damage Correction',fmtN(r.damageCorrection))}
 ${brkRow('Terrain Correction','×'+r.terrainCorrection.toFixed(2))}
 ${brkRow('Battle Damage',fmtN(r.battleDamage))}
 <div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
-${r.vigorDmgBonusPct?brkRow('Vigor Damage Bonus','+'+r.vigorDmgBonusPct+'%'):''}
-${r.userDmgIncreasePct?brkRow('Damage Dealt Up (Pilot)','+'+r.userDmgIncreasePct+'%'):''}
+${r.userDmgIncreasePct?brkRow('Damage Dealt Up (Total)','+'+r.userDmgIncreasePct+'%'):''}
 ${r.userCritDmgUpPct?brkRow('Critical Damage Up','+'+r.userCritDmgUpPct+'%'):''}
 ${r.dmgTakenUpPct?brkRow('Damage Taken Up (Target)','+'+r.dmgTakenUpPct+'%'):''}
 ${r.takenDown?brkRow('Damage Taken Down (Target)','-'+r.takenDown+'%'):''}
