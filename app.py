@@ -4139,17 +4139,30 @@ def resolve_series(ser_set_id, lc):
                 sd.append({'id': sid, 'name': name, 'icon': icon})
     return sd
 
-def resolve_tags(lin_map, eid, lc, tt='group'):
-    ld = get_lang_data(lc); llk = ld.get('lineage_lookup', {}); ll = ld.get('lineage_list', []); tags = []; sn = set()
-    for lid in lin_map.get(eid, []):
+def resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='group'):
+    """Map LineageId values (e.g. from m_option_parts_lineage) to display names via lang m_lineage (lineage_lookup)."""
+    if not lineage_ids:
+        return []
+    llk = ld.get('lineage_lookup', {}); ll = ld.get('lineage_list', []); tags = []; sn = set()
+    for lid_raw in lineage_ids:
+        lid = normalize_id(lid_raw)
+        if lid == '0':
+            continue
         name = llk.get(lid)
         if name:
-            if name not in sn: tags.append({'id': lid, 'name': name, 'type': tt}); sn.add(name)
+            if name not in sn:
+                tags.append({'id': lid, 'name': name, 'type': tt}); sn.add(name)
         else:
             for fid, val in ll:
                 if fid.endswith(lid) and len(lid) >= 4:
-                    if val not in sn: tags.append({'id': fid, 'name': val, 'type': tt}); sn.add(val); break
+                    if val not in sn:
+                        tags.append({'id': fid, 'name': val, 'type': tt}); sn.add(val)
+                    break
     return sorted(tags, key=lambda x: x['name'])
+
+def resolve_tags(lin_map, eid, lc, tt='group'):
+    ld = get_lang_data(lc)
+    return resolve_lineage_ids_to_tag_dicts(lin_map.get(eid, []), ld, tt)
 
 def resolve_stage_terrain_name(ti, lc='EN'):
     data = STAGE_TERRAIN_MAP.get(str(ti or '0'))
@@ -4669,9 +4682,10 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     elif sort_by == 'role':
         if sort_dir == 'desc': rows.sort(key=lambda r: (r['rarity_sort'], r.get('role_sort',3), _list_row_id_tiebreak(r)))
         else: rows.sort(key=lambda r: (r['rarity_sort'], -r.get('role_sort',3), _list_row_id_tiebreak(r)))
-    elif sort_by in ('series_tag', 'boost', 'details'):
+    elif sort_by in ('series_tag', 'boost', 'details', 'tags'):
         def _str_key(r, rev=False):
-            s = (str(r.get(sort_by, '') or '')).lower()
+            field = 'tags_join' if sort_by == 'tags' else sort_by
+            s = (str(r.get(field, '') or '')).lower()
             return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, _list_row_id_tiebreak(r))
         if sort_dir == 'asc': rows.sort(key=lambda r: _str_key(r, False))
         else: rows.sort(key=lambda r: _str_key(r, True))
@@ -6588,7 +6602,7 @@ def list_option_parts():
                 'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
                 'effect_filter_icons': get_option_part_effect_filter_icons(lc),
             }))
-        ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); llk = ld.get('lineage_lookup', {}); ltm = ld.get('lang_text_map', {})
+        ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
         rows = []
         for item in extract_data_list(option_parts_data):
             if not isinstance(item, dict): continue
@@ -6607,8 +6621,9 @@ def list_option_parts():
                 if dlid: desc = ltm.get(dlid, ''); (desc and details_list.append(desc.strip()))
             details = ' '.join(details_list) if details_list else ''
             lineage_ids = option_parts_lineage_map.get(opid, [])
-            tags = [llk.get(lid, '') for lid in lineage_ids if llk.get(lid)]
-            tags_str = ' '.join(tags)
+            tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+            tags_join = ', '.join(t['name'] for t in tags)
+            tags_str = ' '.join(t['name'] for t in tags)
             if sq:
                 searchable = f"{name} {details} {tags_str}".lower()
                 tag_blob = [tags_str.lower()] if tags_str else []
@@ -6617,8 +6632,8 @@ def list_option_parts():
                 continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
             icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
-            rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags})
-        rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details'})
+            rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join})
+        rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {
