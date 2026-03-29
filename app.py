@@ -2691,16 +2691,26 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_conds = resolve_condition_tags(boost_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         trait_conds = []
         # Display tags are sourced from active/boost conditions only.
-        # TargetConditionSetId is often structural and can cause noisy tags.
+        # TargetConditionSetId is often structural and can cause noisy tags,
+        # UNLESS the text references "above tags" / "specified tags" — then
+        # target conditions are exactly the tags the player needs to see.
+        _en_lower = (en_text or '').lower()
+        _include_target = target_conds and ('above tag' in _en_lower or 'specified tag' in _en_lower)
         for c in active_conds:
             if c not in trait_conds:
                 trait_conds.append(c)
         for c in boost_conds:
             if c not in trait_conds:
                 trait_conds.append(c)
+        if _include_target:
+            for c in target_conds:
+                if c not in trait_conds:
+                    trait_conds.append(c)
         condition_groups = []
         if active_conds:
             condition_groups.append({'label': 'Condition 1', 'conditions': list(active_conds)})
+        if _include_target:
+            condition_groups.append({'label': 'Target Tags', 'conditions': list(target_conds)})
         if boost_conds:
             condition_groups.append({'label': 'Boost Target', 'conditions': list(boost_conds)})
         cond_nums = []
@@ -2748,7 +2758,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if '[condition' in txt:
             return True
         # Heuristic: only attach implicit condition tags on clearly conditional lines.
-        return (' when ' in (' ' + txt)) or (' if ' in (' ' + txt)) or ('specified' in txt)
+        return (' when ' in (' ' + txt)) or (' if ' in (' ' + txt)) or ('specified' in txt) or ('above tag' in txt)
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
         groups = []

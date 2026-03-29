@@ -1008,7 +1008,7 @@ html{overflow-x:hidden}
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
 <div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
 <div class="dc-panel-section"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddOptionBtn" onclick="openDcPicker('option_parts')">Select Option Part</button></div>
-<div class="dc-panel-section"><div class="dc-section-label">Supporters</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" onclick="openDcPicker('supporter')">+ Add Supporter</button></div>
+<div class="dc-panel-section"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddSupporterBtn" onclick="openDcPicker('supporter')">Select Supporter</button></div>
 </div>
 <div class="dc-panel">
 <div class="dc-panel-title" id="dcDefLabel">NPC TARGET (Defender)</div>
@@ -1789,8 +1789,8 @@ function conditionJoiner(prevTag,curTag,allTags){const a=String(prevTag&&prevTag
 function renderConditionTagsWithJoiners(tags){const arr=Array.isArray(tags)?tags:[];let h='';for(let i=0;i<arr.length;i++){if(i>0)h+=conditionJoiner(arr[i-1],arr[i],arr);h+=createTagHtml(arr[i],{defaultTarget:'unit'})}return h}
 function renderAbilityConditionGroups(detail){const groups=Array.isArray(detail&&detail.condition_groups)?detail.condition_groups.slice():[];if(groups.length){groups.sort((a,b)=>_conditionLabelSortKey(a&&a.label)-_conditionLabelSortKey(b&&b.label));const valid=groups.filter(g=>Array.isArray(g&&g.conditions)&&g.conditions.length);const showLabels=valid.length>=2;const seqLabels=valid.map((_,i)=>`Condition ${i+1}`);return`<div class="ability-conditions">${valid.map((g,gi)=>{const tags=Array.isArray(g&&g.conditions)?g.conditions:[];const tagsHtml=renderConditionTagsWithJoiners(tags);return`<div class="ability-condition-group">${showLabels?`<div class="ability-condition-label">${esc(abilityConditionLabel(seqLabels[gi]))}</div>`:''}<div class="ability-condition-tags">${tagsHtml}</div></div>`}).join('')}</div>`}const conds=Array.isArray(detail&&detail.conditions)?detail.conditions:[];if(!conds.length)return'';const tagsHtml=renderConditionTagsWithJoiners(conds);return`<div class="ability-conditions ability-conditions--after-text"><div class="ability-condition-group"><div class="ability-condition-tags">${tagsHtml}</div></div></div>`}
 function splitAbilityTextIntoBlocks(raw){const lines=String(raw||'').split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length);if(lines.length<=1)return lines.length?[lines[0]]:[];const out=[];let cur=[];function startsNewBlock(ln){if(!ln.length)return false;if(/^when\s/.test(ln))return false;if(/^When\s+effect\s+ends?:/i.test(ln))return false;return /^When\s/.test(ln)}for(let i=0;i<lines.length;i++){const ln=lines[i];if(cur.length&&startsNewBlock(ln)){out.push(cur.join('\n'));cur=[ln]}else{cur.push(ln)}}if(cur.length)out.push(cur.join('\n'));return out}
-function blockIndexForConditions(groups,hasCond){if(!hasCond)return -1;if(!groups||!groups.length)return -1;if(groups.length===1)return 0;const i=groups.findIndex(g=>/specified\s+tags/i.test(g));if(i>=0)return i;if(groups.length>=2)return 1;return groups.length-1}
-function renderAbilityDetailChunks(d){let obj;if(typeof d==='string')obj={text:d};else if(d&&typeof d==='object')obj=d;else return'';const raw=String(obj.text||'').trim();const cond=renderAbilityConditionGroups(obj);const hasCond=!!cond;function wrapBlock(inner){return`<div class="ability-detail-chunk"><div class="ability-detail-block"><div class="ability-detail-block-inner">${inner}</div></div></div>`}if(!raw)return hasCond?wrapBlock(cond):'';const groups=splitAbilityTextIntoBlocks(raw);const condIdx=blockIndexForConditions(groups,hasCond);return groups.map((g,i)=>{const body=`${g?`<div class="ability-detail-text">${esc(g)}</div>`:''}${i===condIdx?cond:''}`;return wrapBlock(body)}).join('')}
+function blockIndexForConditions(groups,hasCond){if(!hasCond)return -1;if(!groups||!groups.length)return -1;if(groups.length===1)return 0;const i=groups.findIndex(g=>/specified\s+tags|above\s+tags/i.test(g));if(i>=0)return i;if(groups.length>=2)return 1;return groups.length-1}
+function renderAbilityDetailChunks(d){let obj;if(typeof d==='string')obj={text:d};else if(d&&typeof d==='object')obj=d;else return'';const raw=String(obj.text||'').trim();const cond=renderAbilityConditionGroups(obj);const hasCond=!!cond;const aboveTag=/above\s+tags?/i.test(raw);function wrapBlock(inner){return`<div class="ability-detail-chunk"><div class="ability-detail-block"><div class="ability-detail-block-inner">${inner}</div></div></div>`}if(!raw)return hasCond?wrapBlock(cond):'';const groups=splitAbilityTextIntoBlocks(raw);const condIdx=blockIndexForConditions(groups,hasCond);return groups.map((g,i)=>{const textHtml=g?`<div class="ability-detail-text">${esc(g)}</div>`:'';const condHtml=i===condIdx?cond:'';const body=aboveTag&&condHtml?condHtml+textHtml:textHtml+condHtml;return wrapBlock(body)}).join('')}
 function renderAbilsDynamic(a,title,isSsp,isSp,entityType){if(!a||!a.length)return'';const et=entityType||S.currentDetailType;const canClick=(et==='character'||et==='unit');let rows=(a||[]).filter(ba=>!(ba.ssp_only&&!isSsp));if(et==='character'&&!isSp)rows=rows.filter(ba=>!(ba.sp_replacement&&isUnknownAbilityName(ba.name)));if(et==='unit'&&!isSsp)rows=rows.filter(ba=>!(ba.ssp_replacement&&isUnknownAbilityName(ba.name)));if(!rows.length)return'';return`<div class="detail-section"><div class="section-title">${title||t('sec_abilities')}</div><div class="ability-list">${rows.map(ba=>{let ab=ba,ssp=false,sp=false;if(isSsp&&ba.ssp_only){ab=ba;ssp=true}else if(isSsp&&ba.ssp_replacement){ab=ba.ssp_replacement;ssp=true}else if(isSp&&ba.sp_replacement){ab=ba.sp_replacement;sp=true}const dn=ab.display_name||ab.name;const clickAttr=canClick?` onclick="event.stopPropagation();if(event.target&&event.target.closest&&event.target.closest('.ability-conditions'))return;openAbilityModal('${escJs(ab.name)}','${et}','${escJs(dn)}')" title="${t('view_owners')||'View who has this'}"`:'';const clickCls=canClick?' ability-item-clickable':'';const ds=Array.isArray(ab.details)?ab.details:[];return`<div class="ability-item${clickCls}"${clickAttr}><div class="ability-icon-wrap">${renderAbilIcon(ab)}</div><div class="ability-info"><div class="ability-name" style="display:flex;align-items:center;gap:6px;">${sp?'<img src="'+imgUrl('/static/images/UI/UI_Common_Icon_Sp.png')+'" style="height:20px;object-fit:contain;" alt="SP">':''}${ssp?'<img src="'+imgUrl('/static/images/UI/UI_Common_Icon_Ssp.png')+'" style="height:20px;object-fit:contain;" alt="SSP">':''}${esc(dn)}</div>${ds.map(d=>renderAbilityDetailChunks(d)).join('')}</div></div>`}).join('')}</div></div>`}
 function renderSkills(s,isSp){if(!s||!s.length)return'';let vs=s.filter(sk=>isSp?sk.is_sp||!sk.replaced_by_sp:!sk.is_sp);if(!vs.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_skills')}</div><div class="ability-list">${vs.map(sk=>`<div class="ability-item ability-item-clickable" onclick="event.stopPropagation();openSkillModal('${escJs(sk.name)}')" title="${t('view_owners')||'View who has this'}"><div class="ability-icon-wrap">${renderAbilIcon(sk)}</div><div class="ability-info"><div class="ability-name" style="display:flex;align-items:center;gap:6px;">${sk.is_sp?'<img src="'+imgUrl('/static/images/UI/UI_Common_Icon_Sp.png')+'" style="height:20px;object-fit:contain;" alt="SP">':''}${esc(sk.name)}</div>${(sk.details||[]).map(d=>renderAbilityDetailChunks(d)).join('')}</div></div>`).join('')}</div></div>`}
 function renderMechanisms(m){if(!m||!m.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_mechanism')}</div><div class="ability-list">${m.map(x=>`<div class="ability-item"><div class="ability-icon-wrap">${x.icon?`<img class="mech-icon" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'ability-icon-placeholder\\'>⚙️</div>'">`:'<div class="ability-icon-placeholder">⚙️</div>'}</div><div class="ability-info"><div class="ability-name">${esc(x.name)}</div><div class="ability-detail">${esc(x.description)}</div></div></div>`).join('')}</div></div>`}
@@ -2698,14 +2698,18 @@ const area=document.getElementById('dcAtkOptionArea');
 const btn=document.getElementById('dcAddOptionBtn');
 if(!S.dc.optionParts.length){area.innerHTML='';if(btn)btn.style.display='';return}
 const o=S.dc.optionParts[0];
-area.innerHTML=`<div class="dc-option-item"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(o.name)}</strong>${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</span><button class="remove" onclick="removeDcOptionPart(0)">✕</button></div>`;
+const thumHtml=o.thum?`<img class="dc-thum" src="${imgUrl(o.thum)}" alt="" onerror="this.style.display='none'" style="width:40px;height:40px;border-radius:4px;object-fit:cover;flex-shrink:0">`:'';
+area.innerHTML=`<div class="dc-option-item" style="display:flex;align-items:flex-start;gap:8px">${thumHtml}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(o.name)}</strong>${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</span><button class="remove" onclick="removeDcOptionPart(0)">✕</button></div>`;
 if(btn)btn.style.display='none';
 }
 function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
-if(!S.dc.supporters.length){area.innerHTML='';return}
-area.innerHTML=S.dc.supporters.map((s,i)=>{
+const btn=document.getElementById('dcAddSupporterBtn');
+if(!S.dc.supporters.length){area.innerHTML='';if(btn)btn.style.display='';return}
+if(btn)btn.style.display='none';
+const s=S.dc.supporters[0];const i=0;
 const lvl=s._dcLevel||100;const lbt=s._dcLbTier!==undefined?s._dcLbTier:3;
+const thumHtml=(s.portrait||s.thum)?`<img class="dc-thum" src="${imgUrl(s.portrait||s.thum)}" alt="" onerror="this.style.display='none'" style="width:40px;height:40px;border-radius:4px;object-fit:cover;flex-shrink:0">`:'';
 const lsHtml=(s.leader_skills||[]).map(ls=>{
 const desc=ls.desc||'';
 const tags=(ls.tags||[]).map(tg=>tg.name||'').filter(Boolean);
@@ -2715,15 +2719,15 @@ return`<div style="font-size:11px;margin-top:2px">
 ${tagStr?`<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,.15);color:#fbbf24;font-size:10px;margin-bottom:2px">${esc(tagStr)}</span><br>`:''}
 <span style="color:var(--text-muted)">${esc(desc)}</span></div>`;
 }).join('');
-return`<div class="dc-supporter-item" style="flex-direction:column;align-items:stretch">
-<div style="display:flex;align-items:center;gap:6px"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></span><button class="remove" onclick="removeDcSupporter(${i})">✕</button></div>
+area.innerHTML=`<div class="dc-supporter-item" style="flex-direction:column;align-items:stretch">
+<div style="display:flex;align-items:center;gap:8px">${thumHtml}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></span><button class="remove" onclick="removeDcSupporter(0)">✕</button></div>
 ${lsHtml}
-<div style="display:flex;gap:8px;margin-top:4px;align-items:center">
-<span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm" style="width:55px" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(${i},this.value)">
-<span style="font-size:11px;color:var(--text-muted)">LB</span>${[0,1,2,3].map(t=>`<button class="dc-lb-btn${t===lbt?' active':''}" style="padding:2px 8px;font-size:11px" onclick="updateDcSupporterLb(${i},${t})">${t}</button>`).join('')}
+<div style="display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap">
+<span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm" style="width:70px" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(0,this.value)">
+<span style="font-size:11px;color:var(--text-muted)">LB</span>${[0,1,2,3].map(t=>`<button class="dc-lb-btn${t===lbt?' active':''}" style="padding:2px 8px;font-size:11px" onclick="updateDcSupporterLb(0,${t})">${t}</button>`).join('')}
 </div>
 <div style="font-size:11px;color:var(--accent-cyan);margin-top:2px">HP+${fmtN(s.hp_support||0)} ATK+${fmtN(s.atk_support||0)}</div>
-</div>`}).join('');
+</div>`;
 }
 async function updateDcSupporterLv(idx,val){
 const s=S.dc.supporters[idx];if(!s)return;
@@ -2846,12 +2850,12 @@ closeDcPicker();
 try{
 if(type==='option_parts'){
 const row=S._dcPickerCache.find(x=>String(x.id)===String(id));
-if(row){S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||''}];renderDcOptionParts();onDcParamChange()}
+if(row){S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||'',thum:row.thum||''}];renderDcOptionParts();onDcParamChange()}
 return;
 }
 if(type==='supporter'){
 const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());
-if(rd&&!rd.error&&!S.dc.supporters.some(s=>String(s.id)===String(id))){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters.push(rd);renderDcSupporters();onDcParamChange()}
+if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters=[rd];renderDcSupporters();onDcParamChange()}
 return;
 }
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
