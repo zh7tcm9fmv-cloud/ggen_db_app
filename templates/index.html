@@ -2540,7 +2540,7 @@ const sel=document.getElementById('dcStageSelect');
 const stageId=sel.value;
 if(!stageId){S.dc.npcList=[];S.dc.defNpc=null;renderDcNpcDropdown();renderDcDefStats();onDcParamChange();return}
 try{
-const r=await fetch(`/api/stages/${stageId}?lang=${S.lang}`);const d=await r.json();
+const r=await fetch(`/api/stage/${stageId}?lang=${S.lang}`);const d=await r.json();
 S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details.filter(n=>n.side==='enemy'):[];
 S.dc.defNpc=null;S.dc._stageData=d;
 renderDcNpcDropdown();renderDcDefStats();onDcParamChange();
