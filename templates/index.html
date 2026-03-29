@@ -1030,13 +1030,13 @@ html{overflow-x:hidden}
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
 </div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Wpn Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Dealt Up %</span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Crit Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Dmg Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Critical Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">EX Weapon</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDefActLabel">Defend Action</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcShieldLabel">Shield</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
@@ -2643,6 +2643,7 @@ const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${eff
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span></div>`;
 }
 wa.innerHTML=h;
+setDcEx(!!cw.is_ex);
 onDcParamChange();
 }
 
@@ -3026,11 +3027,11 @@ ${brkRow('Damage Correction',fmtN(r.damageCorrection))}
 ${brkRow('Terrain Correction','×'+r.terrainCorrection.toFixed(2))}
 ${brkRow('Battle Damage',fmtN(r.battleDamage))}
 <div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
-${brkRow('Total Mult % (Normal)',r.totalNormalMultPct+'%')}
-${brkRow('Total Mult % (Crit base)',r.totalCritMultPct+'%')}
-${brkRow('Crit Correction (Vigor)','×'+((r.critCorrectionPct+100)/100).toFixed(2))}
-${brkRow('Defend Mult','×'+r.defendMult.toFixed(1))}
-${r.isExWeapon?brkRow('EX Weapon','ON — Unit Dmg Taken Down ignored'):''}
+${brkRow('Total Multiplier % (Normal)',r.totalNormalMultPct+'%')}
+${brkRow('Total Multiplier % (Critical)',r.totalCritMultPct+'%')}
+${brkRow('Critical Correction (Vigor)','×'+((r.critCorrectionPct+100)/100).toFixed(2))}
+${brkRow('Defend Multiplier','×'+r.defendMult.toFixed(1))}
+${r.isExWeapon?brkRow('EX Weapon','ON — Unit Damage Taken Down ignored'):''}
 </div>
 </details>`;
 area.innerHTML=`<div class="dc-result-box">
