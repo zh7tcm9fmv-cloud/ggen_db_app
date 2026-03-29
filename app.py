@@ -6274,7 +6274,7 @@ def list_characters():
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl22_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl23_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6322,22 +6322,9 @@ def list_characters():
         if cid not in char_list_playable_ids and not id_seek:
             continue
         if sq:
-            search_chunks = []
-            if q_scope != 'primary':
-                for ab in extract_data_list(char_abil):
-                    if normalize_id(ab.get('CharacterId','')) != cid: continue
-                    for aid in [normalize_id(ab.get('AbilityId','')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
-                        if aid and aid != '0' and aid != 'None':
-                            blob = collect_ability_search_text(aid, ld)
-                            if blob: search_chunks.append(blob)
-                for sk in extract_data_list(char_skill):
-                    if normalize_id(sk.get('CharacterId','')) != cid: continue
-                    for sid in [normalize_id(sk.get('CharacterSkillId','') or sk.get('SkillId','')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
-                        if sid and sid != '0':
-                            blob = collect_skill_search_text(sid, ld)
-                            if blob: search_chunks.append(blob)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-            ss = f"{name} {cid} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
+            ss = f"{name} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h
+            ss = ss.strip()
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid, primary=(q_scope == 'primary')): continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
@@ -6393,7 +6380,7 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul30_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6443,27 +6430,9 @@ def list_units():
         if uid not in unit_list_playable_ids and not id_seek:
             continue
         if sq:
-            search_chunks = []
-            if q_scope != 'primary':
-                ua = unit_abil_map.get(uid, [])
-                rm = unit_ssp_abil_replace_map.get(uid, {})
-                for ab in ua:
-                    blob = collect_ability_search_text(str(ab['id']), ld)
-                    if blob: search_chunks.append(blob)
-                    if str(ab['id']) in rm:
-                        blob2 = collect_ability_search_text(rm[str(ab['id'])], ld)
-                        if blob2: search_chunks.append(blob2)
-                for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
-                    gb = collect_ability_search_text(str(gain_aid), ld)
-                    if gb: search_chunks.append(gb)
-                mod = collect_unit_model_search_text(info)
-                if mod: search_chunks.append(mod)
-                mech = collect_unit_mechanism_search_text(info, ld)
-                if mech: search_chunks.append(mech)
-                wtxt = collect_unit_weapons_search_text(uid, ld, lc)
-                if wtxt: search_chunks.append(wtxt)
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-            ss = f"{name} {uid} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h + " " + " ".join(search_chunks)
+            ss = f"{name} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h
+            ss = ss.strip()
             if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')): continue
         if uid not in _debuff_memo:
             _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
@@ -6671,7 +6640,7 @@ def list_supporters():
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
-        ck = f"sl7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
+        ck = f"sl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -6703,13 +6672,8 @@ def list_supporters():
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
             sts = ", ".join([t['name'] for t in all_tags]); cb = "\n".join(descs)
-            ask_names = []
-            for a in supporter_active_map.get(sid, []):
-                an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), '')
-                if an: ask_names.append(an)
-            ask_str = " ".join(ask_names)
             if sq:
-                searchable = f"{name} {sid} {sts} {cb} {ask_str}".lower()
+                searchable = f"{name} {sts}".lower().strip()
                 ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
                 if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid): continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
