@@ -967,7 +967,7 @@ html{overflow-x:hidden}
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:var(--accent-cyan)">Attacker Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Vigor Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Vigor Level <span id="dcVigorAutoHint" style="font-size:10px;color:#4ade80;font-weight:400"></span></span><div class="dc-ctrl-toggle" id="dcMpBtns">
 <button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Normal</button>
 <button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
@@ -2495,6 +2495,7 @@ const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken'
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 
 function initDmgCalc(){
+S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
 S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcWpnPowUp').value=0;
@@ -2549,23 +2550,37 @@ async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
 if(p.get('tab')!=='calculator')return;
 initDmgCalc();switchTab('calculator');
-await new Promise(r=>setTimeout(r,500));
-if(p.get('s')){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=p.get('s');await onDcStageChange()}}
-if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc.wpnIdx=0}catch(_){}}
+await renderDcStageDropdown();
+const stgId=p.get('s');
+if(stgId){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=stgId;if(sel.value===stgId)await onDcStageChange()}}
+if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc._unitIsSD=String(d.body_type||'')==='3';const hasWi=p.get('wi')!==null&&p.get('wi')!=='';const hasWl=p.get('wl')!==null&&p.get('wl')!=='';if(!hasWi)S.dc.wpnIdx=0;if(!hasWl)S.dc.wpnLv=0}catch(_){}}
 if(p.get('c')){try{const r=await fetch(`/api/character/${p.get('c')}?lang=${S.lang}`);const d=await r.json();S.dc.atkChar=p.get('c');S.dc.atkCharData=d}catch(_){}}
-if(p.get('n')){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=p.get('n');selectDcNpc()}}
-if(p.get('d'))document.getElementById('dcDistance').value=p.get('d');
+else if(S.dc.atkUnitData&&S.dc.atkUnitData.recommend_character&&S.dc.atkUnitData.recommend_character.id){const rec=S.dc.atkUnitData.recommend_character;try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal'}catch(_){}}
+const um=p.get('um');if(um==='normal'||um==='sp'||um==='ssp')S.dc.unitStatMode=um;
+const cm=p.get('cm');if(cm==='normal'||cm==='sp')S.dc.charStatMode=cm;
+const wi=parseInt(p.get('wi')||'',10);if(!Number.isNaN(wi)&&wi>=0)S.dc.wpnIdx=wi;
+const wl=parseInt(p.get('wl')||'',10);if(!Number.isNaN(wl)&&wl>=0)S.dc.wpnLv=wl;
+const lbP=parseInt(p.get('lb')||'',10);if(!Number.isNaN(lbP)&&lbP>=0)S.dc.lbTier=lbP;
 if(p.get('v'))setDcMp(p.get('v'));
 else _dcAutoSetVigor();
 if(p.get('t'))setDcTerrain(p.get('t'));
-if(p.get('wpu'))document.getElementById('dcWpnPowUp').value=p.get('wpu');
-if(p.get('wpd'))document.getElementById('dcWpnPowDown').value=p.get('wpd');
-if(p.get('di'))document.getElementById('dcDmgIncrease').value=p.get('di');
-if(p.get('cu'))document.getElementById('dcCritDmgUp').value=p.get('cu');
+if(p.get('n')){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=p.get('n');selectDcNpc()}}
+renderDcAtkUnit();renderDcAtkChar();
+const dEl=document.getElementById('dcDistance');
+if(dEl&&p.get('d')!==null&&p.get('d')!=='')dEl.value=p.get('d');
+if(p.get('wpu')!==null&&p.get('wpu')!==''){const el=document.getElementById('dcWpnPowUp');if(el)el.value=p.get('wpu')}
+if(p.get('wpd')!==null&&p.get('wpd')!==''){const el=document.getElementById('dcWpnPowDown');if(el)el.value=p.get('wpd')}
+if(p.get('di')!==null&&p.get('di')!==''){const el=document.getElementById('dcDmgIncrease');if(el)el.value=p.get('di')}
+if(p.get('cu')!==null&&p.get('cu')!==''){const el=document.getElementById('dcCritDmgUp');if(el)el.value=p.get('cu')}
+if(p.get('dtu')!==null&&p.get('dtu')!==''){const el=document.getElementById('dcDmgTakenUp');if(el)el.value=p.get('dtu')}
+if(p.get('dtp')!==null&&p.get('dtp')!==''){const el=document.getElementById('dcDmgTakenDownPilot');if(el)el.value=p.get('dtp')}
+if(p.get('dttu')!==null&&p.get('dttu')!==''){const el=document.getElementById('dcDmgTakenDownUnit');if(el)el.value=p.get('dttu')}
+const tdp=parseInt(p.get('td')||'',10);if(!Number.isNaN(tdp)&&tdp>=0){S.dc._wpnTraitDistPow=tdp;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp)}
+const thp=parseInt(p.get('th')||'',10);if(!Number.isNaN(thp)&&thp>=0){S.dc._wpnTraitHpPow=thp;const tel=document.getElementById('dcWpnTraitHpPow');if(tel)tel.value=String(thp)}
 if(p.get('ex')==='1')setDcEx(true);
 if(p.get('def')==='1')setDcDefend(true);
 if(p.get('sh')==='1')setDcShield(true);
-renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+onDcParamChange();
 }
 
 function _dcGetUnitStatKey(){
@@ -2786,6 +2801,12 @@ function _dcAutoSetVigor(){
 const lv=_dcCalcStartingVigor();
 S.dc._autoVigor=lv;
 setDcMp(lv);
+const hint=document.getElementById('dcVigorAutoHint');
+if(hint){
+const MP_LABEL={medium:'Normal',high:'High',max:'Max',super:'Supercharged'};
+if(lv!=='medium')hint.textContent=`(Auto: ${MP_LABEL[lv]||lv} from pilot MP bonus)`;
+else hint.textContent='';
+}
 }
 function _dcParseRangeModifiers(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
@@ -2901,16 +2922,25 @@ const list=S.dc.npcList||[];
 if(!list.length){sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`;return}
 sel.innerHTML=`<option value="">${t('dc_select_npc')}</option>`+list.map((n,i)=>{
 const name=n.unit?.name||n.character?.name||`NPC ${n.npc_id}`;
-return`<option value="${i}">${esc(name)}</option>`
+const vid=n.npc_id!=null&&String(n.npc_id)!==''?String(n.npc_id):String(i);
+return`<option value="${esc(vid)}">${esc(name)}</option>`
 }).join('');
 }
 
 function selectDcNpc(){
 const sel=document.getElementById('dcNpcSelect');
-const idx=sel.value;
+const raw=String(sel.value||'');
 const list=S.dc.npcList||[];
-if(idx===''){S.dc.defNpc=null}
-else{const i=parseInt(idx,10);S.dc.defNpc=(i>=0&&i<list.length)?list[i]:null}
+if(raw===''){S.dc.defNpc=null}
+else{
+let def=list.find(n=>String(n.npc_id)===raw);
+if(!def){const i=parseInt(raw,10);if(!Number.isNaN(i)&&i>=0&&i<list.length)def=list[i]}
+S.dc.defNpc=def||null;
+if(S.dc.defNpc&&S.dc.defNpc.npc_id!=null&&String(S.dc.defNpc.npc_id)!==''){
+const want=String(S.dc.defNpc.npc_id);
+for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.selectedIndex=j;break}}
+}
+}
 renderDcDefStats();onDcParamChange();
 }
 
@@ -3245,7 +3275,7 @@ const wpnTraits=S.dc._wpnTraits||{};
 const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,
+traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,userCritDmgUpPct,dmgTakenUpPct,takenDown,
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
 function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc){
@@ -3318,6 +3348,11 @@ ${brkRow('Damage Correction',fmtN(r.damageCorrection))}
 ${brkRow('Terrain Correction','×'+r.terrainCorrection.toFixed(2))}
 ${brkRow('Battle Damage',fmtN(r.battleDamage))}
 <div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
+${r.vigorDmgBonusPct?brkRow('Vigor Damage Bonus','+'+r.vigorDmgBonusPct+'%'):''}
+${r.userDmgIncreasePct?brkRow('Damage Dealt Up (Pilot)','+'+r.userDmgIncreasePct+'%'):''}
+${r.userCritDmgUpPct?brkRow('Critical Damage Up','+'+r.userCritDmgUpPct+'%'):''}
+${r.dmgTakenUpPct?brkRow('Damage Taken Up (Target)','+'+r.dmgTakenUpPct+'%'):''}
+${r.takenDown?brkRow('Damage Taken Down (Target)','-'+r.takenDown+'%'):''}
 ${brkRow('Total Multiplier % (Normal)',r.totalNormalMultPct+'%')}
 ${brkRow('Total Multiplier % (Critical)',r.totalCritMultPct+'%')}
 ${brkRow('Critical Correction (Vigor)','×'+((r.critCorrectionPct+100)/100).toFixed(2))}
@@ -3371,18 +3406,32 @@ const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to cli
 });
 }
 function shareDcLink(){
+onDcParamChange();
 const p=new URLSearchParams();
 if(S.dc.atkUnit)p.set('u',S.dc.atkUnit);
 if(S.dc.atkChar)p.set('c',S.dc.atkChar);
 const stgSel=document.getElementById('dcStageSelect');
-if(stgSel&&stgSel.value)p.set('s',stgSel.value);
 const npcSel=document.getElementById('dcNpcSelect');
-if(npcSel&&npcSel.value)p.set('n',npcSel.value);
+const defNpc=S.dc.defNpc;
+if(defNpc&&defNpc.npc_id!=null&&String(defNpc.npc_id)!==''){
+p.set('n',String(defNpc.npc_id));
+if(stgSel&&stgSel.value)p.set('s',stgSel.value);
+}else if(npcSel&&npcSel.value){
+p.set('n',npcSel.value);
+if(stgSel&&stgSel.value)p.set('s',stgSel.value);
+}else if(stgSel&&stgSel.value)p.set('s',stgSel.value);
 p.set('d',S.dc.distance);p.set('v',S.dc.mpLevel);p.set('t',S.dc.terrainMode||'normal');
+p.set('wi',S.dc.wpnIdx);p.set('wl',S.dc.wpnLv);p.set('lb',S.dc.lbTier);
+p.set('um',S.dc.unitStatMode||'normal');p.set('cm',S.dc.charStatMode||'normal');
 if(S.dc.wpnPowUp)p.set('wpu',S.dc.wpnPowUp);
 if(S.dc.wpnPowDown)p.set('wpd',S.dc.wpnPowDown);
 if(S.dc.dmgIncrease)p.set('di',S.dc.dmgIncrease);
 if(S.dc.critDmgUp)p.set('cu',S.dc.critDmgUp);
+if(S.dc.dmgTakenUp)p.set('dtu',S.dc.dmgTakenUp);
+if(S.dc.dmgTakenDownPilot)p.set('dtp',S.dc.dmgTakenDownPilot);
+if(S.dc.dmgTakenDownUnit)p.set('dttu',S.dc.dmgTakenDownUnit);
+if(S.dc._wpnTraitDistPow)p.set('td',S.dc._wpnTraitDistPow);
+if(S.dc._wpnTraitHpPow)p.set('th',S.dc._wpnTraitHpPow);
 if(S.dc.exWeapon)p.set('ex','1');
 if(S.dc.defending)p.set('def','1');
 if(S.dc.shield)p.set('sh','1');
