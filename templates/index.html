@@ -937,8 +937,9 @@ html{overflow-x:hidden}
 <button class="nav-tab active" data-tab="characters" id="navCharTab" onclick="switchTab('characters')">Characters</button>
 <button class="nav-tab" data-tab="units" id="navUnitTab" onclick="switchTab('units')">Units</button>
 <button class="nav-tab" data-tab="supporters" id="navSuppTab" onclick="switchTab('supporters')">Supporters</button>
-<button class="nav-tab" data-tab="stages" id="navStageTab" onclick="switchTab('stages')">Eternal Road</button>
 <button class="nav-tab" data-tab="modifications" id="navModTab" onclick="switchTab('modifications')">Modifications</button>
+<button class="nav-tab" data-tab="stages" id="navStageTab" onclick="switchTab('stages')">Eternal Road</button>
+<button class="nav-tab" data-tab="calculator" id="navCalcTab" onclick="switchTab('calculator')">Damage Calculator</button>
 <button class="nav-tab" data-tab="latest_release" id="navLatestTab" onclick="switchTab('latest_release')">Latest Release</button>
 </div>
 </header>
@@ -948,6 +949,71 @@ html{overflow-x:hidden}
 <div class="tab-panel" id="panel-supporters"><div class="list-toolbar"><div class="list-toolbar-left"><div class="browse-toolbar-leading"><span class="filter-input-wrap"><input type="text" class="filter-input" id="suppFilter" placeholder="Search by Name/Series/Tag" oninput="debounceLoad('supporters');updateSearchHintVisibility('suppFilter')"><div class="search-hint-popover" id="suppSearchHint" role="tooltip"></div></span><div class="list-toolbar-result-count" id="suppToolbarCount" aria-live="polite"></div></div><div class="rarity-filter-wrap lineage-filter-wrap" id="suppLineageWrap"><button type="button" class="rarity-filter-btn role-filter-dd-btn" id="suppLineageFilterBtn" onclick="toggleLineagePanel(&quot;supp&quot;,event)" aria-expanded="false" aria-haspopup="true"><span id="suppLineageFilterLabel" class="filter-btn-label-inner"></span><span class="rarity-filter-caret">▾</span></button><div class="rarity-filter-panel lineage-filter-panel" id="suppLineageFilterPanel" role="menu" hidden onclick="event.stopPropagation()"><div class="filter-panel-scroll" id="suppLineageFilterBody"></div></div></div><div class="rarity-filter-wrap" id="suppRarityWrap"><button type="button" class="rarity-filter-btn" id="suppRarityFilterBtn" onclick="toggleRarityPanel('supp',event)" aria-expanded="false" aria-haspopup="true" title="Rarity"><span id="suppRarityFilterLabel" class="filter-btn-label-inner"></span><span class="rarity-filter-caret">▾</span></button><div class="rarity-filter-panel" id="suppRarityFilterPanel" role="menu" hidden onclick="event.stopPropagation()"><label class="rarity-filter-row"><input type="checkbox" id="suppRarityAll" checked onchange="onRarityAllChange('supp')"><span id="suppRarityAllLbl" class="rarity-filter-all-label"></span></label><div class="rarity-filter-row"><input type="checkbox" id="suppRarityUR" checked onchange="onRarityStarCheckboxChange('supp','UR',event)"><span class="rarity-row-hit" role="button" tabindex="0" onclick="onRarityRowClick('supp','UR',event)" onkeydown="onRarityRowKey(event,'supp','UR')"><span class="rarity-row-one-icon" id="suppRarityRowUR"></span></span></div><div class="rarity-filter-row"><input type="checkbox" id="suppRaritySSR" checked onchange="onRarityStarCheckboxChange('supp','SSR',event)"><span class="rarity-row-hit" role="button" tabindex="0" onclick="onRarityRowClick('supp','SSR',event)" onkeydown="onRarityRowKey(event,'supp','SSR')"><span class="rarity-row-one-icon" id="suppRarityRowSSR"></span></span></div><div class="rarity-filter-row"><input type="checkbox" id="suppRaritySR" checked onchange="onRarityStarCheckboxChange('supp','SR',event)"><span class="rarity-row-hit" role="button" tabindex="0" onclick="onRarityRowClick('supp','SR',event)" onkeydown="onRarityRowKey(event,'supp','SR')"><span class="rarity-row-one-icon" id="suppRarityRowSR"></span></span></div><div class="rarity-filter-row"><input type="checkbox" id="suppRarityR" checked onchange="onRarityStarCheckboxChange('supp','R',event)"><span class="rarity-row-hit" role="button" tabindex="0" onclick="onRarityRowClick('supp','R',event)" onkeydown="onRarityRowKey(event,'supp','R')"><span class="rarity-row-one-icon" id="suppRarityRowR"></span></span></div><div class="rarity-filter-row"><input type="checkbox" id="suppRarityN" checked onchange="onRarityStarCheckboxChange('supp','N',event)"><span class="rarity-row-hit" role="button" tabindex="0" onclick="onRarityRowClick('supp','N',event)" onkeydown="onRarityRowKey(event,'supp','N')"><span class="rarity-row-one-icon" id="suppRarityRowN"></span></span></div><div class="rarity-filter-row rarity-filter-row-lt"><input type="checkbox" id="suppRarityLT" checked onchange="onRarityLtCheckboxChange('supp',event)"><span class="rarity-row-hit rarity-row-hit--lt" role="button" tabindex="0" onclick="onRarityLtRowClick('supp',event)" onkeydown="onRarityLtRowKey(event,'supp')"><span class="rarity-row-limited-cell" id="suppRarityRowLT"></span></span></div></div></div></div><div class="list-toolbar-right"><div class="list-view-toggle" role="group" aria-label="View"><button type="button" class="view-toggle-btn active" id="suppViewGrid" onclick="setListViewMode('supporters','grid')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="11" y="1" width="6" height="6" rx="1"/><rect x="1" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg></button><button type="button" class="view-toggle-btn" id="suppViewTable" onclick="setListViewMode('supporters','table')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg></button></div></div></div><div class="list-view-area" id="suppListViewArea"><div class="data-table-wrapper list-view-table" id="suppTableWrap" hidden><table class="data-table" id="suppTable"><thead id="suppThead"></thead><tbody id="suppBody"></tbody></table></div><div class="list-grid-wrap" id="suppGridWrap"><div class="list-grid" id="suppGrid"></div></div></div><div id="suppLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="suppEmpty" class="empty-state" style="display:none"><div class="empty-state-icon">📭</div><div class="empty-state-text" id="suppEmptyText">No supporters found</div></div><div class="pagination-bar-wrap"><div class="pagination" id="suppPagination"></div><div class="pagination-bar-per-page"><select class="filter-select pagination-per-page" id="suppPerPage" onchange="loadSupporters(1)"><option value="25">25/page</option><option value="50" selected>50/page</option><option value="100">100/page</option></select></div></div></div>
 <div class="tab-panel" id="panel-stages"><div class="list-toolbar"><div class="list-toolbar-left"><div class="browse-toolbar-leading"><span class="filter-input-wrap"><input type="text" class="filter-input" id="stageFilter" placeholder="Search stages by ID or name..." oninput="debounceLoad('stages');updateSearchHintVisibility('stageFilter')"><div class="search-hint-popover" id="stageSearchHint" role="tooltip"></div></span><div class="list-toolbar-result-count" id="stageToolbarCount" aria-live="polite"></div></div><div class="rarity-filter-wrap" id="stageDiffWrap"><button type="button" class="rarity-filter-btn" id="stageDiffFilterBtn" onclick="toggleStageDiffPanel(event)" aria-expanded="false" aria-haspopup="true" title="Difficulty"><span id="stageDiffFilterLabel" class="filter-btn-label-inner"></span><span class="rarity-filter-caret">▾</span></button><div class="rarity-filter-panel stage-diff-filter-panel" id="stageDiffFilterPanel" role="menu" hidden onclick="event.stopPropagation()"><label class="rarity-filter-row stage-diff-filter-row"><input type="radio" name="stageDiffSel" value="ALL" checked onchange="onStageDiffChange()"><span id="stageDiffAllLbl" class="rarity-filter-all-label"></span></label><label class="rarity-filter-row stage-diff-filter-row"><input type="radio" name="stageDiffSel" value="normal" onchange="onStageDiffChange()"><span class="diff-pill diff-pill-normal" id="stageDiffLblNormal"></span></label><label class="rarity-filter-row stage-diff-filter-row"><input type="radio" name="stageDiffSel" value="hard" onchange="onStageDiffChange()"><span class="diff-pill diff-pill-hard" id="stageDiffLblHard"></span></label><label class="rarity-filter-row stage-diff-filter-row"><input type="radio" name="stageDiffSel" value="expert" onchange="onStageDiffChange()"><span class="diff-pill diff-pill-expert" id="stageDiffLblExpert"></span></label></div></div></div><div class="list-toolbar-right"><div class="list-view-toggle" role="group" aria-label="View"><button type="button" class="view-toggle-btn active" id="stageViewGrid" onclick="setListViewMode('stages','grid')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="11" y="1" width="6" height="6" rx="1"/><rect x="1" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg></button><button type="button" class="view-toggle-btn" id="stageViewTable" onclick="setListViewMode('stages','table')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg></button></div></div></div><div class="list-view-area" id="stageListViewArea"><div class="data-table-wrapper list-view-table" id="stageTableWrap" hidden><table class="data-table" id="stageTable"><thead id="stageThead"></thead><tbody id="stageBody"></tbody></table></div><div class="list-grid-wrap" id="stageGridWrap"><div class="list-grid" id="stageGrid"></div></div></div><div id="stageLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="stageEmpty" class="empty-state" style="display:none"><div class="empty-state-icon">📭</div><div class="empty-state-text" id="stageEmptyText">No stages found</div></div><div class="pagination-bar-wrap"><div class="pagination" id="stagePagination"></div><div class="pagination-bar-per-page"><select class="filter-select pagination-per-page" id="stagePerPage" onchange="loadStages(1)"><option value="25">25/page</option><option value="50" selected>50/page</option><option value="100">100/page</option></select></div></div></div>
 <div class="tab-panel" id="panel-modifications"><div class="list-toolbar"><div class="list-toolbar-left"><div class="browse-toolbar-leading"><span class="filter-input-wrap"><input type="text" class="filter-input" id="modFilter" placeholder="Search by Name/Details/Tag" oninput="debounceLoad('modifications');updateSearchHintVisibility('modFilter')"><div class="search-hint-popover" id="modSearchHint" role="tooltip"></div></span><div class="list-toolbar-result-count" id="modToolbarCount" aria-live="polite"></div></div><div class="rarity-filter-wrap mod-effect-wrap" id="modEffectWrap"><button type="button" class="rarity-filter-btn mod-effect-filter-btn" id="modEffectFilterBtn" onclick="toggleModEffectPanel(event)" aria-expanded="false" aria-haspopup="true"><span id="modEffectFilterLabel" class="filter-btn-label-inner mod-effect-filter-label"></span><span class="rarity-filter-caret">▾</span></button><div class="rarity-filter-panel mod-effect-filter-panel" id="modEffectFilterPanel" role="menu" hidden onclick="event.stopPropagation()"><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="ALL" checked onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><span id="modEffectDdIconAllWrap" class="mod-effect-all-icons" aria-hidden="true"><img class="mod-effect-all-chip" data-mod-effect-key="HP" src="" alt="" role="presentation" loading="lazy"><img class="mod-effect-all-chip" data-mod-effect-key="EN" src="" alt="" role="presentation" loading="lazy"><img class="mod-effect-all-chip" data-mod-effect-key="ATK" src="" alt="" role="presentation" loading="lazy"><img class="mod-effect-all-chip" data-mod-effect-key="DEF" src="" alt="" role="presentation" loading="lazy"><img class="mod-effect-all-chip" data-mod-effect-key="MOB" src="" alt="" role="presentation" loading="lazy"><img class="mod-effect-all-chip" data-mod-effect-key="OTHER" src="" alt="" role="presentation" loading="lazy"></span><span id="modEffectLblAll"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="HP" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_Icon_MapWeapon_Hp.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblHP"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="EN" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_Icon_MapWeapon_En.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblEN"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="ATK" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_TypeIcon_Attack_M.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblATK"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="DEF" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_TypeIcon_Defense_M.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblDEF"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="MOB" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_Icon_Arrow_S.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblMOB"></span></span></label><label class="rarity-filter-row mod-effect-filter-row"><input type="radio" name="modEffectSel" value="OTHER" onchange="onModEffectRadioChange()"><span class="mod-effect-opt-inner"><img src="/static/images/UI/UI_Common_Icon_Diamond_M.png" alt="" role="presentation" loading="lazy"><span id="modEffectLblOTHER"></span></span></label></div></div></div><div class="list-toolbar-right"><div class="list-view-toggle" role="group" aria-label="View"><button type="button" class="view-toggle-btn active" id="modViewGrid" onclick="setListViewMode('modifications','grid')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="11" y="1" width="6" height="6" rx="1"/><rect x="1" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg></button><button type="button" class="view-toggle-btn" id="modViewTable" onclick="setListViewMode('modifications','table')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg></button></div></div></div><div class="list-view-area" id="modListViewArea"><div class="data-table-wrapper list-view-table" id="modTableWrap" hidden><table class="data-table" id="modTable"><thead id="modThead"></thead><tbody id="modBody"></tbody></table></div><div class="list-grid-wrap" id="modGridWrap"><div class="list-grid" id="modGrid"></div></div></div><div id="modLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="modEmpty" class="empty-state" style="display:none"><div class="empty-state-icon">📭</div><div class="empty-state-text" id="modEmptyText">No modifications found</div></div><div class="pagination-bar-wrap"><div class="pagination" id="modPagination"></div><div class="pagination-bar-per-page"><select class="filter-select pagination-per-page" id="modPerPage" onchange="loadModifications(1)"><option value="25">25/page</option><option value="50" selected>50/page</option><option value="100">100/page</option></select></div></div></div>
+<div class="tab-panel" id="panel-calculator">
+<div class="dc-tab-wrap" style="max-width:1400px;margin:0 auto;padding:24px">
+<h2 style="color:var(--accent-cyan);margin:0 0 16px;font-size:22px">Damage &amp; Accuracy Calculator</h2>
+<div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<!-- ATTACKER PANEL -->
+<div class="dc-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
+<div class="dc-panel-title" style="color:var(--accent-cyan);font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px">ATTACKER</div>
+<div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
+<div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
+<div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
+<div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
+<div class="dc-panel-section"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddOptionBtn" onclick="openDcPicker('option_parts')">Select Option Part</button></div>
+<div class="dc-panel-section"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddSupporterBtn" onclick="openDcPicker('supporter')">Select Supporter</button></div>
+<div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
+<div class="dc-section-label" style="margin-bottom:8px;color:var(--accent-cyan)">Attacker Parameters</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Vigor Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
+<button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Normal</button>
+<button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
+<button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
+<button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
+</div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDistLabel">Distance</span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain Penalty</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Critical Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Dealt Up %</span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">EX Weapon</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
+</div>
+</div>
+</div>
+<!-- DEFENDER PANEL -->
+<div class="dc-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
+<div class="dc-panel-title" style="color:#ef4444;font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px">DEFENDER (Target)</div>
+<div style="margin-bottom:12px">
+<span class="dc-ctrl-label" style="display:block;margin-bottom:4px">Preset Target (ER Stage)</span>
+<select class="dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" style="width:100%;margin-bottom:8px"><option value="">-- Select Stage --</option></select>
+<select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()" style="width:100%"><option value="">-- Select NPC --</option></select>
+</div>
+<div id="dcDefUnitArea"></div>
+<div id="dcDefCharArea"></div>
+<div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
+<div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
+<div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
+<div class="dc-section-label" style="margin-bottom:8px;color:#ef4444">Defender Parameters</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Defend Action</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Shield</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- RESULTS -->
+<div style="grid-column:1/-1">
+<div class="dc-result" id="dcResultArea" style="margin-top:0">
+<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select attacker unit, character, and a defender target to calculate damage</div></div>
+</div>
+<div id="dcRangeCheckArea" style="margin-top:8px;text-align:center"><span class="dc-ctrl-label">Range Check</span> <span id="dcRangeCheck">--</span></div>
+</div>
+</div>
+</div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
 </main>
 <button type="button" id="searchRecallFab" class="search-recall-fab" onclick="recallSearchBar()" title="" aria-label="Search">🔍</button>
@@ -996,55 +1062,7 @@ html{overflow-x:hidden}
 <div class="cmp-picker-body" id="cmpPickerBody"></div>
 </div>
 </div>
-<div class="dc-overlay" id="dcOverlay" onclick="if(event.target===event.currentTarget)closeDmgCalc()">
-<div class="dc-modal">
-<button class="dc-modal-close" onclick="closeDmgCalc()">✕</button>
-<div class="dc-title" id="dcTitle">Damage Calculator</div>
-<div class="dc-panels">
-<div class="dc-panel">
-<div class="dc-panel-title" id="dcAtkLabel">YOUR UNIT (Attacker)</div>
-<div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
-<div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
-<div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
-<div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddOptionBtn" onclick="openDcPicker('option_parts')">Select Option Part</button></div>
-<div class="dc-panel-section"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div><button class="dc-pick-btn" style="margin-top:8px" id="dcAddSupporterBtn" onclick="openDcPicker('supporter')">Select Supporter</button></div>
-</div>
-<div class="dc-panel">
-<div class="dc-panel-title" id="dcDefLabel">NPC TARGET (Defender)</div>
-<div id="dcDefNpcArea"><select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()"><option value="">-- Select NPC --</option></select></div>
-<div id="dcDefUnitArea"></div>
-<div id="dcDefCharArea"></div>
-<div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
-</div>
-</div>
-<div class="dc-controls">
-<div class="dc-controls-grid">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDistLabel">Distance</span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcRangeLabel">Range Check</span><span id="dcRangeCheck">--</span></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain %</span><span id="dcTerrainType" style="font-size:11px;color:var(--text-muted);margin-left:4px"></span><input type="number" class="dc-input-sm" id="dcTerrain" min="-100" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcMpLabel">Vigor Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
-<button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Normal</button>
-<button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
-<button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
-<button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
-</div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Dealt Up %</span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Critical Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">EX Weapon</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDefActLabel">Defend Action</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcShieldLabel">Shield</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
-</div>
-</div>
-<div class="dc-result" id="dcResultArea"><div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px" id="dcResultPlaceholder">Select attacker and defender to calculate damage</div></div></div>
-</div>
-</div>
+<!-- Old overlay removed - calculator is now in its own tab -->
 <div class="dc-overlay" id="dcPickerOverlay" onclick="if(event.target===event.currentTarget)closeDcPicker()" style="z-index:510">
 <div class="cmp-picker">
 <div class="cmp-picker-header"><input type="text" id="dcPickerSearch" placeholder="Search..." oninput="filterDcPicker()"><button class="cmp-picker-close" onclick="closeDcPicker()">✕</button></div>
@@ -1169,7 +1187,7 @@ function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||nam
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
 const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:'ALL',listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:'ALL',listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,lrCacheKey:null,lrCacheData:null,dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[]},_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
-document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys();initCmpSafeArea()});
+document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();document.getElementById('brandLogoImg').src=imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.png');await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);setupKeys();initCmpSafeArea();_dcCheckUrlParams()});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -1180,7 +1198,7 @@ async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();i
 async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);if(S.currentTab==='latest_release')tryLoadLatestRelease();if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
 document.addEventListener('click',e=>{if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
-function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navLatestTab').textContent=t('tab_latest');const wnl=document.getElementById('whatsNewBtnLabel');if(wnl)wnl.textContent=t('whats_new_btn');const wnb=document.getElementById('whatsNewBtn');if(wnb)wnb.title=t('whats_new_btn');const sfbl=document.getElementById('supportFeedbackBtnLabel');if(sfbl)sfbl.textContent=t('support_feedback_btn');const sfb=document.getElementById('supportFeedbackBtn');if(sfb)sfb.title=t('support_feedback_btn');const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
+function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent='Damage Calculator';document.getElementById('navLatestTab').textContent=t('tab_latest');const wnl=document.getElementById('whatsNewBtnLabel');if(wnl)wnl.textContent=t('whats_new_btn');const wnb=document.getElementById('whatsNewBtn');if(wnb)wnb.title=t('whats_new_btn');const sfbl=document.getElementById('supportFeedbackBtnLabel');if(sfbl)sfbl.textContent=t('support_feedback_btn');const sfb=document.getElementById('supportFeedbackBtn');if(sfb)sfb.title=t('support_feedback_btn');const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
 const RARITY_LIST_KEYS=['UR','SSR','SR','R','N'];
 const RARITY_FILTER_ICONS={ULT:'/static/images/UI/UI_Common_Icon_ULT.png',UR:'/static/images/Rarity/UI_Common_RarityIcon_UR.png',SSR:'/static/images/Rarity/UI_Common_RarityIcon_SSR.png',SR:'/static/images/Rarity/UI_Common_RarityIcon_SR.png',R:'/static/images/Rarity/UI_Common_RarityIcon_R.png',N:'/static/images/Rarity/UI_Common_RarityIcon_N.png'};
@@ -1360,7 +1378,7 @@ function onRarityLtCheckboxChange(which,ev){const p=rarityPrefix(which);const ke
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');const allEl=document.getElementById(p+'RarityAll');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;if(allEl)allEl.checked=false;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else applyListViewVisibility(tab)}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else if(tab==='calculator'){renderDcStageDropdown();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();renderDcDebuffs();renderDcResult()}else applyListViewVisibility(tab)}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -1373,9 +1391,9 @@ async function refreshSpotlightResults(){const ov=document.getElementById('searc
 function closeSearchSpotlight(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;clearSpotlightResults();const real=getActiveSearchInput();const inp=document.getElementById('searchSpotlightInput');if(real&&inp){real.value=inp.value;updateSearchHintVisibility(real.id);if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}ov.classList.remove('active');ov.setAttribute('aria-hidden','true');document.body.classList.remove('search-spotlight-open');releaseBackgroundScrollLock()}
 function scrollActiveListToolbarIntoView(){try{const pan=document.getElementById('panel-'+S.currentTab);const el=pan&&pan.querySelector('.list-toolbar');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}}
 function afterListLoadIfSpotlightOpen(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;requestAnimationFrame(()=>scrollActiveListToolbarIntoView())}
-function openSearchSpotlight(){if(S.currentTab==='latest_release')return;const real=getActiveSearchInput();if(!real)return;const ov=document.getElementById('searchSpotlightOverlay');const inp=document.getElementById('searchSpotlightInput');const hint=document.getElementById('searchSpotlightHint');const tabLine=document.getElementById('searchSpotlightTabLine');const title=document.getElementById('searchSpotlightTitle');const foot=document.getElementById('searchSpotlightFoot');if(!ov||!inp)return;const spotWasActive=ov.classList.contains('active');inp.value=real.value;inp.placeholder=t(getTabSearchPlaceholderKey());if(title)title.textContent=t('search_spotlight_title');if(tabLine)tabLine.textContent=getTabNameForSpotlight();if(hint)hint.innerHTML=t('search_hint_html');if(foot)foot.textContent=t('search_spotlight_foot');const sc=document.getElementById('searchSpotlightClose');if(sc)sc.setAttribute('aria-label',t('search_spotlight_close'));ov.classList.add('active');ov.setAttribute('aria-hidden','false');document.body.classList.add('search-spotlight-open');if(!spotWasActive)applyBackgroundScrollLock();requestAnimationFrame(()=>{try{inp.focus({preventScroll:true});inp.select()}catch(_){inp.focus()}});debounceSpotlightResults()}
+function openSearchSpotlight(){if(S.currentTab==='latest_release'||S.currentTab==='calculator')return;const real=getActiveSearchInput();if(!real)return;const ov=document.getElementById('searchSpotlightOverlay');const inp=document.getElementById('searchSpotlightInput');const hint=document.getElementById('searchSpotlightHint');const tabLine=document.getElementById('searchSpotlightTabLine');const title=document.getElementById('searchSpotlightTitle');const foot=document.getElementById('searchSpotlightFoot');if(!ov||!inp)return;const spotWasActive=ov.classList.contains('active');inp.value=real.value;inp.placeholder=t(getTabSearchPlaceholderKey());if(title)title.textContent=t('search_spotlight_title');if(tabLine)tabLine.textContent=getTabNameForSpotlight();if(hint)hint.innerHTML=t('search_hint_html');if(foot)foot.textContent=t('search_spotlight_foot');const sc=document.getElementById('searchSpotlightClose');if(sc)sc.setAttribute('aria-label',t('search_spotlight_close'));ov.classList.add('active');ov.setAttribute('aria-hidden','false');document.body.classList.add('search-spotlight-open');if(!spotWasActive)applyBackgroundScrollLock();requestAnimationFrame(()=>{try{inp.focus({preventScroll:true});inp.select()}catch(_){inp.focus()}});debounceSpotlightResults()}
 function recallSearchBar(){openSearchSpotlight()}
-function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab)return;if(S.currentTab==='latest_release'){fab.classList.remove('visible');return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel)return;const tb=panel.querySelector('.list-toolbar');if(!tb)return;S._searchRecallObs=new IntersectionObserver(entries=>{const e=entries[0];fab.classList.toggle('visible',!!e&&!e.isIntersecting)},{root:null,threshold:0,rootMargin:'-64px 0px 0px 0px'});S._searchRecallObs.observe(tb)}
+function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab)return;if(S.currentTab==='latest_release'||S.currentTab==='calculator'){fab.classList.remove('visible');return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel)return;const tb=panel.querySelector('.list-toolbar');if(!tb)return;S._searchRecallObs=new IntersectionObserver(entries=>{const e=entries[0];fab.classList.toggle('visible',!!e&&!e.isIntersecting)},{root:null,threshold:0,rootMargin:'-64px 0px 0px 0px'});S._searchRecallObs.observe(tb)}
 function tryLoadLatestRelease(){loadLatestRelease()}
 function showLrLockModal(){const o=document.getElementById('lrLockOverlay');if(!o)return;o.style.display='flex';const err=document.getElementById('lrLockErr');if(err)err.textContent='';const inp=document.getElementById('lrLockInput');if(inp)inp.value='';fillLrLockTexts();setTimeout(()=>{if(inp)inp.focus()},80)}
 function hideLrLockModal(){const o=document.getElementById('lrLockOverlay');if(o)o.style.display='none'}
@@ -2478,27 +2496,9 @@ const DC_WPN_TYPE_STAT={
 };
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 
-function openDmgCalc(){
-const d=S.currentDetailData;if(!d)return;
-S.dc.defNpc=null;S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details:[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
-document.getElementById('dcOverlay').classList.add('active');
-document.getElementById('dcTitle').textContent=t('dc_title');
-document.getElementById('dcAtkLabel').textContent=t('dc_atk_label');
-document.getElementById('dcDefLabel').textContent=t('dc_def_label');
-document.getElementById('dcDistLabel').textContent=t('dc_distance');
-document.getElementById('dcRangeLabel').textContent=t('dc_range_check');
-document.getElementById('dcTerrainLabel').textContent=t('dc_terrain');
-document.getElementById('dcTerrainType').textContent=d.terrain?`(${d.terrain})`:'';
-document.getElementById('dcMpLabel').textContent='Vigor Level';
-document.getElementById('dcDefActLabel').textContent=t('dc_defend');
-document.getElementById('dcShieldLabel').textContent=t('dc_shield');
-document.getElementById('dcDefOff').textContent=t('dc_off');
-document.getElementById('dcDefOn').textContent=t('dc_on');
-document.getElementById('dcShieldOff').textContent=t('dc_off');
-document.getElementById('dcShieldOn').textContent=t('dc_on');
-document.getElementById('dcResultPlaceholder').textContent=t('dc_select_both');
+function initDmgCalc(){
+S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
 document.getElementById('dcDistance').value=1;
-document.getElementById('dcTerrain').value=0;
 document.getElementById('dcWpnPowUp').value=0;
 document.getElementById('dcWpnPowDown').value=0;
 document.getElementById('dcDmgIncrease').value=0;
@@ -2506,10 +2506,68 @@ document.getElementById('dcCritDmgUp').value=0;
 document.getElementById('dcDmgTakenUp').value=0;
 document.getElementById('dcDmgTakenDownPilot').value=0;
 document.getElementById('dcDmgTakenDownUnit').value=0;
-setDcMp('medium');setDcDefend(false);setDcShield(false);setDcEx(false);
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcNpcDropdown();renderDcDefStats();renderDcDebuffs();renderDcResult();
+setDcMp('medium');setDcDefend(false);setDcShield(false);setDcEx(false);setDcTerrain('normal');
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();renderDcDebuffs();renderDcResult();
 }
-function closeDmgCalc(){document.getElementById('dcOverlay').classList.remove('active')}
+function openDmgCalc(){
+const d=S.currentDetailData;
+switchTab('calculator');
+if(d&&d.npc_details){
+const stgSel=document.getElementById('dcStageSelect');
+if(stgSel&&d.id){stgSel.value=d.id;onDcStageChange()}
+}
+}
+function setDcTerrain(mode){
+S.dc.terrainMode=mode;
+S.dc.terrain=mode==='halved'?50:0;
+const nb=document.getElementById('dcTerrainNormal'),hb=document.getElementById('dcTerrainHalved');
+if(nb)nb.classList.toggle('active',mode==='normal');
+if(hb)hb.classList.toggle('active',mode==='halved');
+onDcParamChange();
+}
+let _dcStagesCache=null;
+async function loadDcStages(){
+if(_dcStagesCache)return _dcStagesCache;
+try{const r=await fetch(`/api/dc_targets?lang=${S.lang}`);const d=await r.json();_dcStagesCache=d;return d}catch(e){return[]}
+}
+async function renderDcStageDropdown(){
+const sel=document.getElementById('dcStageSelect');
+const stages=await loadDcStages();
+sel.innerHTML=`<option value="">-- Select Stage --</option>`+stages.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.difficulty||'')})</option>`).join('');
+}
+async function onDcStageChange(){
+const sel=document.getElementById('dcStageSelect');
+const stageId=sel.value;
+if(!stageId){S.dc.npcList=[];S.dc.defNpc=null;renderDcNpcDropdown();renderDcDefStats();onDcParamChange();return}
+try{
+const r=await fetch(`/api/stages/${stageId}?lang=${S.lang}`);const d=await r.json();
+S.dc.npcList=(d.npc_details&&Array.isArray(d.npc_details))?d.npc_details.filter(n=>n.side==='enemy'):[];
+S.dc.defNpc=null;S.dc._stageData=d;
+renderDcNpcDropdown();renderDcDefStats();onDcParamChange();
+}catch(e){S.dc.npcList=[];renderDcNpcDropdown()}
+}
+function closeDmgCalc(){}
+async function _dcCheckUrlParams(){
+const p=new URLSearchParams(location.search);
+if(p.get('tab')!=='calculator')return;
+initDmgCalc();switchTab('calculator');
+await new Promise(r=>setTimeout(r,500));
+if(p.get('s')){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=p.get('s');await onDcStageChange()}}
+if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc.wpnIdx=0}catch(_){}}
+if(p.get('c')){try{const r=await fetch(`/api/character/${p.get('c')}?lang=${S.lang}`);const d=await r.json();S.dc.atkChar=p.get('c');S.dc.atkCharData=d}catch(_){}}
+if(p.get('n')){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=p.get('n');selectDcNpc()}}
+if(p.get('d'))document.getElementById('dcDistance').value=p.get('d');
+if(p.get('v'))setDcMp(p.get('v'));
+if(p.get('t'))setDcTerrain(p.get('t'));
+if(p.get('wpu'))document.getElementById('dcWpnPowUp').value=p.get('wpu');
+if(p.get('wpd'))document.getElementById('dcWpnPowDown').value=p.get('wpd');
+if(p.get('di'))document.getElementById('dcDmgIncrease').value=p.get('di');
+if(p.get('cu'))document.getElementById('dcCritDmgUp').value=p.get('cu');
+if(p.get('ex')==='1')setDcEx(true);
+if(p.get('def')==='1')setDcDefend(true);
+if(p.get('sh')==='1')setDcShield(true);
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}
 
 function _dcGetUnitStatKey(){
 const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
@@ -2557,10 +2615,12 @@ function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();render
 function renderDcAtkChar(){
 const area=document.getElementById('dcAtkCharArea');
 const cd=S.dc.atkCharData;
-if(!cd){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;return}
+const isSD=!!S.dc._unitIsSD;
+if(!cd){area.innerHTML=isSD?`<div style="color:var(--text-muted);font-size:12px">SD unit — pilot locked</div>`:`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;return}
 const stats=_dcGetCharStats();
 const thum=cd.thum||cd.portrait||'';
-area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div><button class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button></div>`;
+const changeBtn=isSD?`<span style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
+area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${changeBtn}</div>`;
 const hasSp=cd.has_sp!==undefined?cd.has_sp:(parseInt(cd.rarity_id||'5')<=4);
 if(hasSp){
 const mode=S.dc.charStatMode||'normal';
@@ -2569,6 +2629,119 @@ area.innerHTML+=`<div class="dc-section-label" style="margin-top:6px">Stat Mode<
 const r=_dcFindStat(stats,'Ranged'),m=_dcFindStat(stats,'Melee'),a=_dcFindStat(stats,'Awaken'),d=_dcFindStat(stats,'Defense'),re=_dcFindStat(stats,'Reaction');
 const sa=document.getElementById('dcAtkStatsArea');
 sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(r)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(m)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(a)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(d)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(re)}</div></div></div>`;
+_dcRenderPilotBonuses(area,cd);
+_dcRenderPilotSkills(area,cd);
+_dcRenderFactionCheck(area);
+}
+
+function _dcParsePilotAbilBonuses(cd){
+const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
+if(!cd||!cd.abilities)return b;
+cd.abilities.forEach(ab=>{
+const lines=(ab.details||[]);
+lines.forEach(ln=>{
+const txt=(ln.text||'').replace(/\n/g,' ');
+const hasCond=ln.condition_groups&&ln.condition_groups.length>0;
+let m;
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+if(m){const v=parseInt(m[1],10);b.dmgDealt+=hasCond?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:hasCond,name:ab.name})}
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(m){const v=parseInt(m[1],10);b.critDmg+=hasCond?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:hasCond,name:ab.name})}
+m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
+if(m){const v=parseInt(m[1],10);b.dmgTaken+=hasCond?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:hasCond,name:ab.name})}
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
+if(m){const v=parseInt(m[1],10);b.atkPct+=hasCond?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:hasCond,name:ab.name})}
+});
+});
+return b;
+}
+function _dcRenderPilotBonuses(area,cd){
+const b=_dcParsePilotAbilBonuses(cd);
+S.dc._pilotBonuses=b;
+if(!b.items.length)return;
+let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Pilot Passive Bonuses</div><div style="font-size:12px;line-height:1.6">`;
+b.items.forEach((it,i)=>{
+const condTag=it.cond?` <span style="color:#f59e0b;font-size:10px">(Conditional)</span>`:'';
+const togId=`dcPilotBonusChk_${i}`;
+h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${it.cond?'':'checked'} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
+});
+h+=`</div>`;
+area.innerHTML+=h;
+_dcRecalcPilotBonuses();
+}
+function _dcRecalcPilotBonuses(){
+const b=S.dc._pilotBonuses||{items:[]};
+let dmgDealt=0,critDmg=0;
+b.items.forEach((it,i)=>{
+const chk=document.getElementById(`dcPilotBonusChk_${i}`);
+if(chk&&chk.checked){
+if(it.key==='dmgDealt')dmgDealt+=it.val;
+if(it.key==='critDmg')critDmg+=it.val;
+}
+});
+const skB=_dcGetActiveSkillBonuses();
+dmgDealt+=skB.dmgDealt;
+const di=document.getElementById('dcDmgIncrease');
+const ci=document.getElementById('dcCritDmgUp');
+if(di)di.value=dmgDealt;
+if(ci)ci.value=critDmg;
+onDcParamChange();
+}
+function _dcRenderFactionCheck(area){
+const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
+if(!ud||!cd)return;
+const utags=(ud.tags||[]).map(t=>t.name);
+const ctags=(cd.tags||[]).map(t=>t.name);
+const shared=utags.filter(t=>ctags.includes(t));
+if(shared.length){
+area.innerHTML+=`<div style="margin-top:8px;padding:6px 10px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:6px;font-size:12px"><span style="color:#22c55e;font-weight:600">✓ Faction Match</span><span style="color:var(--text-muted);margin-left:6px">${shared.map(t=>esc(t)).join(', ')}</span></div>`;
+}else{
+area.innerHTML+=`<div style="margin-top:8px;padding:6px 10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:6px;font-size:12px"><span style="color:#ef4444;font-weight:600">✗ No Faction Match</span></div>`;
+}
+}
+
+function _dcRenderPilotSkills(area,cd){
+if(!cd||!cd.skills||!cd.skills.length)return;
+S.dc._pilotSkills=cd.skills;S.dc._activeSkills=S.dc._activeSkills||{};
+let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Pilot Skills</div><div style="font-size:12px;line-height:1.6">`;
+cd.skills.forEach((sk,i)=>{
+if(sk.is_sp)return;
+const desc=(sk.details||[]).join('\n').replace(/\n/g,' ');
+const togId=`dcSkillChk_${i}`;
+const isOn=!!S.dc._activeSkills[sk.id];
+h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px">`;
+h+=`<input type="checkbox" id="${togId}" ${isOn?'checked':''} onchange="_dcToggleSkill('${sk.id}',${i})">`;
+if(sk.icon)h+=`<img src="${imgUrl(sk.icon)}" style="width:20px;height:20px;border-radius:3px" onerror="this.style.display='none'">`;
+h+=`<span style="font-weight:600">${esc(sk.name)}</span>`;
+if(desc)h+=`<span style="color:var(--text-muted);font-size:10px;margin-left:4px">${esc(desc.substring(0,60))}${desc.length>60?'...':''}</span>`;
+h+=`</label>`;
+});
+h+=`</div>`;
+area.innerHTML+=h;
+}
+function _dcToggleSkill(skillId,idx){
+const chk=document.getElementById(`dcSkillChk_${idx}`);
+if(!S.dc._activeSkills)S.dc._activeSkills={};
+if(chk&&chk.checked){S.dc._activeSkills[skillId]=true}else{delete S.dc._activeSkills[skillId]}
+_dcRecalcPilotBonuses();
+}
+function _dcGetActiveSkillBonuses(){
+const b={atkPct:0,defPct:0,mobPct:0,dmgDealt:0};
+if(!S.dc._pilotSkills||!S.dc._activeSkills)return b;
+S.dc._pilotSkills.forEach(sk=>{
+if(!S.dc._activeSkills[sk.id])return;
+const desc=(sk.details||[]).join(' ');
+let m;
+m=desc.match(/[Ii]ncrease\s+(?:own\s+)?(?:ATK|Attack)\s+by\s+(\d+)%/i);
+if(m)b.atkPct+=parseInt(m[1],10);
+m=desc.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
+if(m)b.atkPct+=parseInt(m[1],10);
+m=desc.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+if(m)b.dmgDealt+=parseInt(m[1],10);
+m=desc.match(/[Ii]ncrease\s+(?:own\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
+if(m)b.defPct+=parseInt(m[1],10);
+});
+return b;
 }
 
 function _dcFindStat(stats,name){
@@ -2780,7 +2953,6 @@ onDcParamChange();
 }
 function onDcParamChange(){
 S.dc.distance=parseInt(document.getElementById('dcDistance').value)||1;
-S.dc.terrain=parseInt(document.getElementById('dcTerrain').value)||0;
 S.dc.wpnPowUp=parseInt(document.getElementById('dcWpnPowUp').value)||0;
 S.dc.wpnPowDown=parseInt(document.getElementById('dcWpnPowDown').value)||0;
 S.dc.dmgIncrease=parseInt(document.getElementById('dcDmgIncrease').value)||0;
@@ -2860,7 +3032,13 @@ return;
 }
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
-if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.unitStatMode='normal'}
+if(type==='unit'){S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.unitStatMode='normal';
+const rec=d.recommend_character;const isSD=d.body_type==='3';
+S.dc._unitIsSD=isSD;
+if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
+try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();
+S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal'}catch(_){}
+}}
 else{S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal'}
 renderDcAtkUnit();renderDcAtkChar();
 onDcParamChange();
@@ -2982,8 +3160,33 @@ const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
+const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
+const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
+const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
+const accResult=calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
-damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon};
+damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
+hitRate:accResult.finalHitRate,hitRateDetails:accResult};
+}
+function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc){
+const F=Math.floor,RU=Math.ceil,EXP=Math.exp,MX=Math.max,MN=Math.min;
+const mobDiff=RU((atkUnitMob/10)-(defUnitMob/10));
+const reaDiff=atkCharAtk-defCharReaction;
+const expMob=(1*(120-atkUnitMob))/10000;
+const denMob=EXP(expMob)+1;
+const expRea=(1*(10-atkCharReaction))/10000;
+const denRea=EXP(expRea)+1;
+const mobTerm=(denMob*mobDiff)/2500;
+const reaTerm=(denRea*reaDiff)/5000;
+const mobCorrection=F((mobTerm+reaTerm)*100);
+const evaPct=0;
+const accUpDown=0;
+const sum=mobCorrection+(-evaPct*100)+(accUpDown*100);
+const baseHit=baseWeaponAcc*100;
+const counterMult=S.dc.defending?0.8:1;
+const rawHit=F(counterMult*(baseHit+sum));
+const finalHitRate=MN(100,MX(10,rawHit));
+return{finalHitRate,mobDiff,reaDiff,mobCorrection,baseHit,rawHit};
 }
 
 function renderDcResult(){
@@ -3015,7 +3218,7 @@ const hpColor=hpPct>50?'#4ade80':hpPct>25?'#f59e0b':'#ef4444';
 const critHpPct=result.npcHp>0?Math.max(0,(hpRemainCrit/result.npcHp)*100):0;
 const critDmgPct=result.npcHp>0?Math.min(100,(result.critDmg/result.npcHp)*100):0;
 const critHpColor=critHpPct>50?'#4ade80':critHpPct>25?'#f59e0b':'#ef4444';
-const r=result;
+const r=result;S.dc._lastResult=r;
 const brkRow=(lbl,val)=>`<div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--text-muted)">${lbl}</span><span>${val}</span></div>`;
 const breakdownHtml=`
 <details style="margin-top:12px">
@@ -3038,10 +3241,18 @@ ${brkRow('Total Multiplier % (Critical)',r.totalCritMultPct+'%')}
 ${brkRow('Critical Correction (Vigor)','×'+((r.critCorrectionPct+100)/100).toFixed(2))}
 ${brkRow('Defend Multiplier','×'+r.defendMult.toFixed(1))}
 ${r.isExWeapon?brkRow('EX Weapon','ON — Unit Damage Taken Down ignored'):''}
+<div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
+<div style="font-weight:600;color:var(--accent-cyan);margin:4px 0">Accuracy Breakdown</div>
+${brkRow('Base Weapon Accuracy',r.accuracy)}
+${brkRow('Attacker Mobility',fmtN(r.unitMob))}
+${r.hitRateDetails?brkRow('Mobility Correction',r.hitRateDetails.mobCorrection):''}
+${r.hitRateDetails?brkRow('Raw Hit Rate',r.hitRateDetails.rawHit+'%'):''}
+${brkRow('Final Hit Rate',r.hitRate+'%')}
 </div>
 </details>`;
+const hitColor=r.hitRate>=80?'#4ade80':r.hitRate>=50?'#f59e0b':'#ef4444';
 area.innerHTML=`<div class="dc-result-box">
-<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div></div>
+<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">Hit Rate</div><div class="dc-result-val" style="color:${hitColor};font-size:20px">${r.hitRate}%</div></div></div>
 <div class="dc-hp-bar-wrap">
 <div class="dc-hp-bar-label"><span>${t('dc_hp_remaining')} (Normal)</span><span>${fmtN(hpRemain)} / ${fmtN(r.npcHp)}</span></div>
 <div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${hpPct}%;background:${hpColor}"></div><div class="dc-hp-bar-dmg" style="left:${hpPct}%;width:${dmgPct}%;background:rgba(255,75,75,.3)"></div></div>
@@ -3049,7 +3260,53 @@ area.innerHTML=`<div class="dc-result-box">
 <div class="dc-hp-bar"><div class="dc-hp-bar-fill" style="width:${critHpPct}%;background:${critHpColor}"></div><div class="dc-hp-bar-dmg" style="left:${critHpPct}%;width:${critDmgPct}%;background:rgba(245,158,11,.3)"></div></div>
 </div>
 ${breakdownHtml}
+<div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+<button class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
+<button class="dc-ctrl-btn" onclick="shareDcLink()" style="font-size:12px;padding:6px 14px">🔗 Share Link</button>
+</div>
+<div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
 </div>`;
+}
+function copyDcResultText(){
+const r=S.dc._lastResult;if(!r)return;
+const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
+const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
+const nName=npc?(npc.unit?.name||'NPC'):'?';
+const lines=[
+`⚔ GGen Damage Calculator Result`,
+`Attacker: ${uName} + ${cName}`,
+`Target: ${nName}`,
+`Normal Damage: ${fmtN(r.normalDmg)}`,
+`Critical Damage: ${fmtN(r.critDmg)}`,
+`Hit Rate: ${r.hitRate}%`,
+`HP Remaining: ${fmtN(Math.max(0,r.npcHp-r.normalDmg))} / ${fmtN(r.npcHp)} (Normal)`,
+`HP Remaining: ${fmtN(Math.max(0,r.npcHp-r.critDmg))} / ${fmtN(r.npcHp)} (Crit)`,
+`Vigor: ${S.dc.mpLevel}, Distance: ${S.dc.distance}, Terrain: ${S.dc.terrainMode||'normal'}`
+];
+navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
+});
+}
+function shareDcLink(){
+const p=new URLSearchParams();
+if(S.dc.atkUnit)p.set('u',S.dc.atkUnit);
+if(S.dc.atkChar)p.set('c',S.dc.atkChar);
+const stgSel=document.getElementById('dcStageSelect');
+if(stgSel&&stgSel.value)p.set('s',stgSel.value);
+const npcSel=document.getElementById('dcNpcSelect');
+if(npcSel&&npcSel.value)p.set('n',npcSel.value);
+p.set('d',S.dc.distance);p.set('v',S.dc.mpLevel);p.set('t',S.dc.terrainMode||'normal');
+if(S.dc.wpnPowUp)p.set('wpu',S.dc.wpnPowUp);
+if(S.dc.wpnPowDown)p.set('wpd',S.dc.wpnPowDown);
+if(S.dc.dmgIncrease)p.set('di',S.dc.dmgIncrease);
+if(S.dc.critDmgUp)p.set('cu',S.dc.critDmgUp);
+if(S.dc.exWeapon)p.set('ex','1');
+if(S.dc.defending)p.set('def','1');
+if(S.dc.shield)p.set('sh','1');
+const url=`${location.origin}${location.pathname}?tab=calculator&${p.toString()}`;
+navigator.clipboard.writeText(url).then(()=>{
+const m=document.getElementById('dcShareMsg');if(m){m.textContent='Link copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
+});
 }
 
 const _origSetupKeys=setupKeys;
@@ -3057,7 +3314,6 @@ setupKeys=function(){_origSetupKeys();
 document.addEventListener('keydown',e=>{
 if(e.key==='Escape'){
 if(document.getElementById('dcPickerOverlay').classList.contains('active')){closeDcPicker();e.stopPropagation();return}
-if(document.getElementById('dcOverlay').classList.contains('active')){closeDmgCalc();e.stopPropagation();return}
 if(document.getElementById('cmpPickerOverlay').classList.contains('active')){closeCompPicker();e.stopPropagation()}
 else if(document.getElementById('cmpOverlay').classList.contains('active')){closeCompareModal();e.stopPropagation()}
 }

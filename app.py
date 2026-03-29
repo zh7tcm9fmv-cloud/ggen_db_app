@@ -1854,11 +1854,14 @@ def create_lang_text_map(d):
         if lid != '0' and val: lookup[lid] = str(val).replace("\\n", "\n")
     return lookup
 
-def create_trait_condition_raw_map(d):
+def create_trait_condition_raw_map(d, key_field=None):
     raw = {}
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
-        sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
+        if key_field:
+            sid = normalize_id(item.get(key_field) or item.get('Id') or item.get('id'))
+        else:
+            sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
         if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': []}
         for key in ['UnitTags', 'unitTags']:
@@ -2220,7 +2223,8 @@ def create_unit_info_map(m):
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
                 rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                 rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                body_type = normalize_id(item.get('UnitBodyTypeIndex') or item.get('unitBodyTypeIndex'), '1')
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_unit_status_map(d):
@@ -2688,7 +2692,8 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_cid = t_data.get('boost_cond_id', '0')
         active_conds = resolve_condition_tags(active_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         target_conds = resolve_condition_tags(target_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
-        boost_conds = resolve_condition_tags(boost_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        _boost_map = trait_boost_condition_raw_map if 'trait_boost_condition_raw_map' in globals() else trait_condition_raw_map
+        boost_conds = resolve_condition_tags(boost_cid, _boost_map, lineage_lookup, series_name_map, lang_code)
         trait_conds = []
         # Display tags are sourced from active/boost conditions only.
         # TargetConditionSetId is often structural and can cause noisy tags,
@@ -2922,10 +2927,8 @@ for _sit in extract_data_list(schedule_master_data):
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
-trait_condition_raw_map = merge_trait_condition_raw_maps(
-    create_trait_condition_raw_map(trait_cond_data_r),
-    create_trait_condition_raw_map(trait_boost_cond_data),
-)
+trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
+trait_boost_condition_raw_map = create_trait_condition_raw_map(trait_boost_cond_data, key_field='TraitBoostConditionSetId')
 char_info_map = create_char_info_map(char_master); char_stat_map = create_char_status_map(char_status)
 char_lin_map = create_char_lineage_link_map(char_lineage_data)
 supporter_info_map = create_supporter_info_map(supporter_master) if supporter_master else {}
@@ -7016,6 +7019,21 @@ def get_supporter(supporter_id):
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
+@app.route('/api/dc_targets')
+def list_dc_targets():
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ld = get_lang_data(lc); rows = []
+        for sid, est in eternal_stage_map.items():
+            sn = est.get('stage_number', 0)
+            sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Stage {sid}"
+            sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
+            rows.append({'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name']})
+        rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
+        return jsonify(rows)
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify([])
+
 @app.route('/api/stages')
 def list_stages():
     try:
@@ -7485,7 +7503,7 @@ def get_unit(unit_id):
                     mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
                     break
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
