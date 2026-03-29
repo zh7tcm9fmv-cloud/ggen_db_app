@@ -2489,15 +2489,11 @@ renderCompareContent()
 }catch(e){}
 }
 
-const DC_WPN_TYPE_STAT={
-'1':['Ranged'],'2':['Melee'],'3':['Awaken'],
-'4':['Ranged','Melee'],'5':['Ranged','Awaken'],
-'6':['Melee','Awaken'],'7':['Ranged','Melee','Awaken']
-};
+const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 
 function initDmgCalc(){
-S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];
+S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcWpnPowUp').value=0;
 document.getElementById('dcWpnPowDown').value=0;
@@ -2637,20 +2633,25 @@ _dcRenderFactionCheck(area);
 function _dcParsePilotAbilBonuses(cd){
 const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
 if(!cd||!cd.abilities)return b;
+const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
 cd.abilities.forEach(ab=>{
 const lines=(ab.details||[]);
 lines.forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
-const hasCond=ln.condition_groups&&ln.condition_groups.length>0;
+const condGroups=ln.condition_groups||[];
+const hasCond=condGroups.length>0;
+let condMet=false;
+if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
+const isUnmet=hasCond&&!condMet;
 let m;
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgDealt+=hasCond?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:hasCond,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.critDmg+=hasCond?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:hasCond,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgTaken+=hasCond?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:hasCond,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.atkPct+=hasCond?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:hasCond,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 });
 });
 return b;
@@ -2661,9 +2662,10 @@ S.dc._pilotBonuses=b;
 if(!b.items.length)return;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Pilot Passive Bonuses</div><div style="font-size:12px;line-height:1.6">`;
 b.items.forEach((it,i)=>{
-const condTag=it.cond?` <span style="color:#f59e0b;font-size:10px">(Conditional)</span>`:'';
+const condTag=it.cond?` <span style="color:#f59e0b;font-size:10px">(Conditional)</span>`:it.autoMet?` <span style="color:#4ade80;font-size:10px">(Tag Matched)</span>`:'';
 const togId=`dcPilotBonusChk_${i}`;
-h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${it.cond?'':'checked'} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
+const checked=!it.cond;
+h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
 });
 h+=`</div>`;
 area.innerHTML+=h;
@@ -2792,6 +2794,22 @@ if(matches)maxR+=mod.rangeInc;
 return{min_range:wpn.min_range,max_range:maxR};
 }
 
+function _dcParseWeaponTraits(wpn){
+const traits={distPowerMax:0,hpPowerMax:0,absoluteHit:false,dmgReductionNull:false};
+if(!wpn||!wpn.levels)return traits;
+const allTraits=[];
+wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
+allTraits.forEach(t=>{
+const txt=t.replace(/\n/g,' ');
+if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;
+if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt))traits.dmgReductionNull=true;
+let m=txt.match(/closer\s+you\s+are.*?weapon\s+power\s+increases?\s*\(up\s+to\s+(\d+)%\)/i);
+if(m)traits.distPowerMax=parseInt(m[1],10);
+m=txt.match(/lower\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(up\s+to\s+(\d+)%\)/i);
+if(m)traits.hpPowerMax=parseInt(m[1],10);
+});
+return traits;
+}
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
 const ud=S.dc.atkUnitData;
@@ -2813,10 +2831,34 @@ const ld=cw.levels[S.dc.wpnLv];
 const effR=_dcGetEffectiveRange(cw);
 const rangeChanged=effR.max_range!==cw.max_range;
 const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${effR.max_range}</span>`:`${effR.min_range}-${effR.max_range}`;
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span></div>`;
+const atkLabels=(cw.attack_types||[]).map(at=>at.label).join('/');
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span>${atkLabels?`<span>Type: <span class="val">${atkLabels}</span></span>`:''}</div>`;
+const wt=_dcParseWeaponTraits(cw);
+S.dc._wpnTraits=wt;
+if(wt.distPowerMax||wt.hpPowerMax||wt.absoluteHit){
+h+=`<div style="margin-top:6px;font-size:11px;line-height:1.6">`;
+if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
+if(wt.dmgReductionNull)h+=`<div style="color:#4ade80">✓ Attribute Damage Reduction Null</div>`;
+if(wt.distPowerMax){
+const cur=S.dc._wpnTraitDistPow||0;
+h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">Distance Power Bonus (0-${wt.distPowerMax}%)</span><input type="number" class="dc-input-sm" id="dcWpnTraitDistPow" min="0" max="${wt.distPowerMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
+}
+if(wt.hpPowerMax){
+const cur=S.dc._wpnTraitHpPow||0;
+h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">HP-based Power Bonus (0-${wt.hpPowerMax}%)</span><input type="number" class="dc-input-sm" id="dcWpnTraitHpPow" min="0" max="${wt.hpPowerMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
+}
+h+=`</div>`;
+}
 }
 wa.innerHTML=h;
 setDcEx(!!cw.is_ex);
+}
+function _dcApplyWpnTraitPow(){
+const dEl=document.getElementById('dcWpnTraitDistPow');
+const hEl=document.getElementById('dcWpnTraitHpPow');
+S.dc._wpnTraitDistPow=dEl?parseInt(dEl.value)||0:0;
+S.dc._wpnTraitHpPow=hEl?parseInt(hEl.value)||0:0;
+onDcParamChange();
 }
 
 function renderDcNpcDropdown(){
@@ -2925,7 +2967,7 @@ function addDcDebuff(){if((S.dc.debuffs||[]).length>=10)return;S.dc.debuffs=S.dc
 function updateDcDebuff(i,field,val){if(!S.dc.debuffs[i])return;if(field==='stat')S.dc.debuffs[i].stat=val;else S.dc.debuffs[i].value=parseInt(val,10)||0;onDcParamChange()}
 function removeDcDebuff(i){S.dc.debuffs.splice(i,1);renderDcDebuffs();onDcParamChange()}
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;renderDcWeaponArea()}
+function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea()}
 function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea()}
 function setDcMp(lv){
 S.dc.mpLevel=lv;
@@ -3045,10 +3087,12 @@ onDcParamChange();
 }catch(e){}
 }
 
-function _dcGetCharAtkStat(charStats,weaponType){
-const mapping=DC_WPN_TYPE_STAT[weaponType]||['Ranged'];
-if(mapping.length===1)return _dcFindStat(charStats,mapping[0]);
-return Math.max(...mapping.map(s=>_dcFindStat(charStats,s)));
+function _dcGetCharAtkStat(charStats,wpn){
+const atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
+if(!atkTypes.length)atkTypes.push('Ranged');
+const unique=[...new Set(atkTypes)];
+if(unique.length===1)return _dcFindStat(charStats,unique[0]);
+return Math.max(...unique.map(s=>_dcFindStat(charStats,s)));
 }
 function _dcParseOptionPartBonuses(details){
 const bonuses={HP:{flat:0,pct:0},EN:{flat:0,pct:0},Attack:{flat:0,pct:0},Defense:{flat:0,pct:0},Mobility:{flat:0,pct:0},Move:{flat:0,pct:0}};
@@ -3096,7 +3140,7 @@ let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0;leaderPct+=_dcParseLeaderSkillPct(s.leader_skills||[])});
 if(leaderPct>0){const m=1+leaderPct/100;unitAtk=F(unitAtk*m);unitHp=F(unitHp*m);unitDefVal=F(unitDefVal*m);unitMob=F(unitMob*m);unitMove=F(unitMove*m)}
 unitAtk+=atkSupport;unitHp+=hpSupport;
-const charAtk=_dcGetCharAtkStat(atkCharStats,wpn.weapon_type);
+const charAtk=_dcGetCharAtkStat(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
 let unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
@@ -3108,7 +3152,10 @@ if(defDebuffPct>0){const mult=MX(0,1-defDebuffPct/100);unitDef=F(unitDef*mult);c
 const rawWpnPower=lvData.power;
 const wpnPowUpPct=S.dc.wpnPowUp||0;
 const wpnPowDownPct=S.dc.wpnPowDown||0;
-const weaponPower=F(rawWpnPower*(1+wpnPowUpPct/100)*(1-wpnPowDownPct/100));
+const traitDistPow=S.dc._wpnTraitDistPow||0;
+const traitHpPow=S.dc._wpnTraitHpPow||0;
+const traitPowTotal=traitDistPow+traitHpPow;
+const weaponPower=F(rawWpnPower*(1+(wpnPowUpPct+traitPowTotal)/100)*(1-wpnPowDownPct/100));
 
 const dist=S.dc.distance;
 const terrainPct=S.dc.terrain;
@@ -3163,9 +3210,11 @@ const critical=lvData.critical;
 const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
 const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
-const accResult=calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
+const wpnTraits=S.dc._wpnTraits||{};
+const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
+traitDistPow,traitHpPow,
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
 function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc){
@@ -3229,6 +3278,8 @@ ${brkRow('Unit ATK',fmtN(r.unitAtk))}
 ${brkRow('Pilot DEF (target)',fmtN(r.charDef))}
 ${brkRow('Unit DEF (target)',fmtN(r.unitDef))}
 ${brkRow('Raw Weapon Power',fmtN(r.rawWpnPower))}
+${r.traitDistPow?brkRow('Weapon Trait: Distance Power','+'+r.traitDistPow+'%'):''}
+${r.traitHpPow?brkRow('Weapon Trait: HP Power','+'+r.traitHpPow+'%'):''}
 ${brkRow('Effective Weapon Power',fmtN(r.weaponPower))}
 <div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
 ${brkRow('Base Damage',fmtN(r.baseDamage))}
@@ -3243,6 +3294,7 @@ ${brkRow('Defend Multiplier','×'+r.defendMult.toFixed(1))}
 ${r.isExWeapon?brkRow('EX Weapon','ON — Unit Damage Taken Down ignored'):''}
 <div style="border-top:1px solid var(--border-color);margin:4px 0"></div>
 <div style="font-weight:600;color:var(--accent-cyan);margin:4px 0">Accuracy Breakdown</div>
+${r.hitRateDetails?.absoluteHit?brkRow('Absolute Hit','<span style="color:#4ade80">✓ Guaranteed</span>'):''}
 ${brkRow('Base Weapon Accuracy',r.accuracy)}
 ${brkRow('Attacker Mobility',fmtN(r.unitMob))}
 ${r.hitRateDetails?brkRow('Mobility Correction',r.hitRateDetails.mobCorrection):''}
