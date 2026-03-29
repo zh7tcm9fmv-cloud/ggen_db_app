@@ -2705,11 +2705,19 @@ function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
 if(!S.dc.supporters.length){area.innerHTML='';return}
 area.innerHTML=S.dc.supporters.map((s,i)=>{
-const lsDesc=(s.leader_skills||[]).map(l=>l.desc||'').filter(Boolean).join('; ');
 const lvl=s._dcLevel||100;const lbt=s._dcLbTier!==undefined?s._dcLbTier:3;
+const lsHtml=(s.leader_skills||[]).map(ls=>{
+const desc=ls.desc||'';
+const tags=(ls.tags||[]).map(tg=>tg.name||'').filter(Boolean);
+const sep=ls.separator==='and'?' & ':' / ';
+const tagStr=tags.length?tags.join(sep):'';
+return`<div style="font-size:11px;margin-top:2px">
+${tagStr?`<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,.15);color:#fbbf24;font-size:10px;margin-bottom:2px">${esc(tagStr)}</span><br>`:''}
+<span style="color:var(--text-muted)">${esc(desc)}</span></div>`;
+}).join('');
 return`<div class="dc-supporter-item" style="flex-direction:column;align-items:stretch">
 <div style="display:flex;align-items:center;gap:6px"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></span><button class="remove" onclick="removeDcSupporter(${i})">✕</button></div>
-${lsDesc?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(lsDesc)}</div>`:''}
+${lsHtml}
 <div style="display:flex;gap:8px;margin-top:4px;align-items:center">
 <span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm" style="width:55px" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(${i},this.value)">
 <span style="font-size:11px;color:var(--text-muted)">LB</span>${[0,1,2,3].map(t=>`<button class="dc-lb-btn${t===lbt?' active':''}" style="padding:2px 8px;font-size:11px" onclick="updateDcSupporterLb(${i},${t})">${t}</button>`).join('')}
@@ -2904,8 +2912,8 @@ if(opPct.Mobility>0)unitMob=F(unitMob*(1+opPct.Mobility/100));
 if(opPct.Move>0)unitMove=F(unitMove*(1+opPct.Move/100));
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0;leaderPct+=_dcParseLeaderSkillPct(s.leader_skills||[])});
-unitAtk+=atkSupport;unitHp+=hpSupport;
 if(leaderPct>0){const m=1+leaderPct/100;unitAtk=F(unitAtk*m);unitHp=F(unitHp*m);unitDefVal=F(unitDefVal*m);unitMob=F(unitMob*m);unitMove=F(unitMove*m)}
+unitAtk+=atkSupport;unitHp+=hpSupport;
 const charAtk=_dcGetCharAtkStat(atkCharStats,wpn.weapon_type);
 
 const defUnit=npc.unit;const defChar=npc.character;
