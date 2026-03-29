@@ -2989,7 +2989,15 @@ damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalC
 function renderDcResult(){
 const area=document.getElementById('dcResultArea');
 const result=calculateDamage();
-if(!result){area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${t('dc_select_both')}</div></div>`;return}
+if(!result){
+const missing=[];
+if(!S.dc.atkUnitData)missing.push('Attacker Unit');
+if(!S.dc.atkCharData)missing.push('Attacker Character');
+if(!S.dc.defNpc)missing.push('NPC Target');
+const ud=S.dc.atkUnitData;
+if(ud&&ud.weapons&&!ud.weapons.filter(w=>w.weapon_type!=='3').length)missing.push('Unit has no non-map weapons');
+const msg=missing.length?'Select: '+missing.join(', '):t('dc_select_both');
+area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${msg}</div></div>`;return}
 const rangeHtml=result.inRange?`<span class="dc-range-ok">✓ ${t('dc_in_range')}</span>`:`<span class="dc-range-bad">✗ ${t('dc_out_range')}</span>`;
 document.getElementById('dcRangeCheck').innerHTML=rangeHtml;
 const hpRemain=Math.max(0,result.npcHp-result.normalDmg);
