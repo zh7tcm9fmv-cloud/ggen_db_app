@@ -1021,7 +1021,7 @@ html{overflow-x:hidden}
 <div class="dc-controls-grid">
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDistLabel">Distance</span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcRangeLabel">Range Check</span><span id="dcRangeCheck">--</span></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain %</span><input type="number" class="dc-input-sm" id="dcTerrain" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain %</span><span id="dcTerrainType" style="font-size:11px;color:var(--text-muted);margin-left:4px"></span><input type="number" class="dc-input-sm" id="dcTerrain" min="-100" max="100" value="0" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcMpLabel">MP Level</span><div class="dc-ctrl-toggle" id="dcMpBtns">
 <button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Med</button>
 <button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
@@ -1580,8 +1580,7 @@ function renderStageMapSection(d){
       <div style="min-width:46px;text-align:right;font-size:12px;color:var(--text-secondary);font-weight:800;">${zp}%</div>
     </div>
   </div>`:'';
-  // Damage Calculator: offline. To re-enable, append before </div>: <button class="dc-open-btn" onclick="openDmgCalc()">${t('dc_title')}</button>
-return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
+return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div><button class="dc-open-btn" onclick="openDmgCalc()">${t('dc_title')}</button></div>`
 }
 
 function _stageMapViewWindow(md){
@@ -2479,6 +2478,7 @@ document.getElementById('dcDefLabel').textContent=t('dc_def_label');
 document.getElementById('dcDistLabel').textContent=t('dc_distance');
 document.getElementById('dcRangeLabel').textContent=t('dc_range_check');
 document.getElementById('dcTerrainLabel').textContent=t('dc_terrain');
+document.getElementById('dcTerrainType').textContent=d.terrain?`(${d.terrain})`:'';
 document.getElementById('dcMpLabel').textContent=t('dc_mp_level');
 document.getElementById('dcDefActLabel').textContent=t('dc_defend');
 document.getElementById('dcShieldLabel').textContent=t('dc_shield');
@@ -2726,9 +2726,8 @@ let pct=0;
 (leader_skills||[]).forEach(ls=>{const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(m)pct+=parseInt(m[1],10)||0});
 return pct;
 }
-function _dcApplyFloor(x){return Math.floor(x)}
-
 function calculateDamage(){
+const F=Math.floor,MX=Math.max,EXP=Math.exp;
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
 if(!ud||!cd||!npc)return null;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
@@ -2749,15 +2748,15 @@ const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 (S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
 unitAtk+=opFlat.Attack;unitHp+=opFlat.HP;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
-if(opPct.Attack>0)unitAtk=_dcApplyFloor(unitAtk*(1+opPct.Attack/100));
-if(opPct.HP>0)unitHp=_dcApplyFloor(unitHp*(1+opPct.HP/100));
-if(opPct.Defense>0)unitDefVal=_dcApplyFloor(unitDefVal*(1+opPct.Defense/100));
-if(opPct.Mobility>0)unitMob=_dcApplyFloor(unitMob*(1+opPct.Mobility/100));
-if(opPct.Move>0)unitMove=_dcApplyFloor(unitMove*(1+opPct.Move/100));
+if(opPct.Attack>0)unitAtk=F(unitAtk*(1+opPct.Attack/100));
+if(opPct.HP>0)unitHp=F(unitHp*(1+opPct.HP/100));
+if(opPct.Defense>0)unitDefVal=F(unitDefVal*(1+opPct.Defense/100));
+if(opPct.Mobility>0)unitMob=F(unitMob*(1+opPct.Mobility/100));
+if(opPct.Move>0)unitMove=F(unitMove*(1+opPct.Move/100));
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0;leaderPct+=_dcParseLeaderSkillPct(s.leader_skills||[])});
 unitAtk+=atkSupport;unitHp+=hpSupport;
-if(leaderPct>0){const m=1+leaderPct/100;unitAtk=_dcApplyFloor(unitAtk*m);unitHp=_dcApplyFloor(unitHp*m);unitDefVal=_dcApplyFloor(unitDefVal*m);unitMob=_dcApplyFloor(unitMob*m);unitMove=_dcApplyFloor(unitMove*m)}
+if(leaderPct>0){const m=1+leaderPct/100;unitAtk=F(unitAtk*m);unitHp=F(unitHp*m);unitDefVal=F(unitDefVal*m);unitMob=F(unitMob*m);unitMove=F(unitMove*m)}
 const charAtk=_dcGetCharAtkStat(atkCharStats,wpn.weapon_type);
 
 const defUnit=npc.unit;const defChar=npc.character;
@@ -2765,45 +2764,48 @@ let unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
 let defDebuffPct=0;
 (S.dc.debuffs||[]).filter(d=>d.stat==='DEF').forEach(d=>{defDebuffPct+=Number(d.value)||0});
-if(defDebuffPct>0){const mult=Math.max(0,1-defDebuffPct/100);unitDef=_dcApplyFloor(unitDef*mult);charDef=_dcApplyFloor(charDef*mult)}
+if(defDebuffPct>0){const mult=MX(0,1-defDebuffPct/100);unitDef=F(unitDef*mult);charDef=F(charDef*mult)}
 
 const weaponPower=lvData.power;
 const dist=S.dc.distance;
 const terrainPct=S.dc.terrain;
-const terrainCorrection=1+(terrainPct/100);
+const terrainCorrection=1-(terrainPct/100);
 const mp=DC_MP[S.dc.mpLevel];
-const mpDmgBonus=1+mp.dmgBonus;
-const critMultiplier=mp.critMult;
+const vigorDmgBonusPct=mp.dmgBonus*100;
+const critCorrectionPct=mp.critMult*100;
 let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
 
-const charDiff=_dcApplyFloor(Math.max(0,charAtk-charDef));
-const characterStatRatio=charDiff/5000;
-const unitAtkScaled=_dcApplyFloor(unitAtk/10);
-const unitDefScaled=_dcApplyFloor(unitDef/10);
-const unitDiff=_dcApplyFloor(Math.max(0,unitAtkScaled-unitDefScaled));
-const unitStatRatio=unitDiff/5000;
-const charSigmoid=1/(Math.exp(250*(charDef-charAtk)/100000)+1);
-const unitSigmoid=1/(Math.exp(25*(unitDef-unitAtk)/100000)+1);
-const baseDamage=_dcApplyFloor((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
+const characterStatRatio=MX(0,charAtk-charDef)/5000;
+const unitDiffRaw=F(unitAtk/10)-F(unitDef/10);
+const unitStatRatio=MX(0,F(unitDiffRaw))/5000;
+const charSigmoid=1/(EXP(250*(charDef-charAtk)/100000)+1);
+const unitSigmoid=1/(EXP(25*(unitDef-unitAtk)/100000)+1);
+const baseDamage=F((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
 
-const atkCombined=_dcApplyFloor((unitAtk+2*charAtk)/10);
-const defCombined=_dcApplyFloor((unitDef+2*charDef)/10);
-const offenseComponent=100/(Math.exp((5000-atkCombined)*30/100000)+1);
-const defenseComponent=-40/(Math.exp((5000-defCombined)*3/100000)+1);
-const damageCorrection=_dcApplyFloor((offenseComponent+defenseComponent)/100*baseDamage);
-const battleDamage=_dcApplyFloor((baseDamage+damageCorrection)*terrainCorrection);
-const scaledDamage=_dcApplyFloor(battleDamage*mpDmgBonus);
+const atkCombined=F((unitAtk+2*charAtk)/10);
+const defCombined=F((unitDef+2*charDef)/10);
+const offExp=((5000-atkCombined)*30)/100000;
+const defExp=((5000-defCombined)*3)/100000;
+const offenseComponent=(10000/100)/(EXP(offExp)+1);
+const defenseComponent=(-4000/100)/(EXP(defExp)+1);
+const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
+const battleDamage=F((baseDamage+damageCorrection)*terrainCorrection);
 
-const normalDmg=Math.max(0,_dcApplyFloor(scaledDamage*defendMult));
-const critDmg=Math.max(0,_dcApplyFloor(scaledDamage*(1+critMultiplier)*defendMult));
+const dmgIncreasePct=vigorDmgBonusPct;
+const totalMultPct=dmgIncreasePct;
+const scaledDamage=F(totalMultPct*battleDamage/100);
+const combinedDamage=(battleDamage+scaledDamage)*defendMult;
+
+const normalDmg=MX(0,F(combinedDamage));
+const critDmg=MX(0,F(combinedDamage*((critCorrectionPct+100)/100)));
 
 const inRange=dist>=wpn.min_range&&dist<=wpn.max_range;
 const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
-return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,scaledDamage};
+return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,charAtk,charDef,unitAtk,unitDef,unitMob};
 }
 
 function renderDcResult(){
