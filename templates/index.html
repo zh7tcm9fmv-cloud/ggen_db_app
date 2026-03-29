@@ -2556,6 +2556,7 @@ if(p.get('c')){try{const r=await fetch(`/api/character/${p.get('c')}?lang=${S.la
 if(p.get('n')){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=p.get('n');selectDcNpc()}}
 if(p.get('d'))document.getElementById('dcDistance').value=p.get('d');
 if(p.get('v'))setDcMp(p.get('v'));
+else _dcAutoSetVigor();
 if(p.get('t'))setDcTerrain(p.get('t'));
 if(p.get('wpu'))document.getElementById('dcWpnPowUp').value=p.get('wpu');
 if(p.get('wpd'))document.getElementById('dcWpnPowDown').value=p.get('wpd');
@@ -2759,6 +2760,33 @@ return stats[name]||0;
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
+const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:6,level:'high'},{min:12,level:'max'},{min:18,level:'super'}];
+function _dcCalcStartingVigor(){
+const cd=S.dc.atkCharData;if(!cd||!cd.abilities)return 'medium';
+const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
+let totalMp=0;
+cd.abilities.forEach(ab=>{
+(ab.details||[]).forEach(ln=>{
+const txt=(ln.text||'').replace(/\n/g,' ');
+const m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+if(!m)return;
+const v=parseInt(m[1],10);
+const condGroups=ln.condition_groups||[];
+const hasCond=condGroups.length>0;
+let condMet=false;
+if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
+if(!hasCond||condMet)totalMp+=v;
+});
+});
+let level='medium';
+for(const t of DC_MP_THRESHOLDS){if(totalMp>=t.min)level=t.level}
+return level;
+}
+function _dcAutoSetVigor(){
+const lv=_dcCalcStartingVigor();
+S.dc._autoVigor=lv;
+setDcMp(lv);
+}
 function _dcParseRangeModifiers(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||!ud)return[];
@@ -3088,6 +3116,7 @@ try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=awa
 S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal'}catch(_){}
 }}
 else{S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal'}
+_dcAutoSetVigor();
 renderDcAtkUnit();renderDcAtkChar();
 onDcParamChange();
 }catch(e){}
