@@ -2644,7 +2644,6 @@ h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld
 }
 wa.innerHTML=h;
 setDcEx(!!cw.is_ex);
-onDcParamChange();
 }
 
 function renderDcNpcDropdown(){
@@ -2989,7 +2988,16 @@ damageCorrection:F(damageCorrection),terrainCorrection,totalNormalMultPct,totalC
 
 function renderDcResult(){
 const area=document.getElementById('dcResultArea');
-const result=calculateDamage();
+const rcSpan=document.getElementById('dcRangeCheck');
+const _ud=S.dc.atkUnitData;
+if(_ud&&_ud.weapons){
+const _wpns=_ud.weapons.filter(w=>w.weapon_type!=='3');
+const _w=_wpns[S.dc.wpnIdx];
+if(_w){const _er=_dcGetEffectiveRange(_w);const _d=S.dc.distance;const _ir=_d>=_er.min_range&&_d<=_er.max_range;
+rcSpan.innerHTML=_ir?`<span class="dc-range-ok">✓ ${t('dc_in_range')}</span>`:`<span class="dc-range-bad">✗ ${t('dc_out_range')}</span>`}
+}
+let result;try{result=calculateDamage()}catch(e){console.error('calculateDamage error:',e);
+area.innerHTML=`<div class="dc-result-box"><div style="color:#ef4444;font-size:13px">Calculation error: ${e.message}</div></div>`;return}
 if(!result){
 const missing=[];
 if(!S.dc.atkUnitData)missing.push('Attacker Unit');
@@ -2999,8 +3007,6 @@ const ud=S.dc.atkUnitData;
 if(ud&&ud.weapons&&!ud.weapons.filter(w=>w.weapon_type!=='3').length)missing.push('Unit has no non-map weapons');
 const msg=missing.length?'Select: '+missing.join(', '):t('dc_select_both');
 area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${msg}</div></div>`;return}
-const rangeHtml=result.inRange?`<span class="dc-range-ok">✓ ${t('dc_in_range')}</span>`:`<span class="dc-range-bad">✗ ${t('dc_out_range')}</span>`;
-document.getElementById('dcRangeCheck').innerHTML=rangeHtml;
 const hpRemain=Math.max(0,result.npcHp-result.normalDmg);
 const hpRemainCrit=Math.max(0,result.npcHp-result.critDmg);
 const hpPct=result.npcHp>0?Math.max(0,(hpRemain/result.npcHp)*100):0;
