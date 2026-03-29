@@ -628,6 +628,12 @@ html{overflow-x:hidden}
 .dc-tip{cursor:help;text-decoration:underline dotted;text-underline-offset:2px;color:var(--text-muted)}
 .dc-mp-bonus-hint{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4}
 .dc-def-dtu-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dc-dtu-row{border-radius:8px;padding:6px 8px;margin:-4px -4px 4px;transition:background .15s,border-color .15s,box-shadow .15s}
+.dc-dtu-row--on.dc-dtu--beam{background:rgba(56,189,248,.1);box-shadow:0 0 0 1px rgba(56,189,248,.45)}
+.dc-dtu-row--on.dc-dtu--physical{background:rgba(251,146,60,.12);box-shadow:0 0 0 1px rgba(251,146,60,.45)}
+.dc-dtu-row--on.dc-dtu--special{background:rgba(192,132,252,.12);box-shadow:0 0 0 1px rgba(192,132,252,.45)}
+.dc-stat-val--buffed{color:#4ade80!important;font-weight:700}
+.dc-input-sm.dc-input--def-debuff{border-color:#f87171!important;box-shadow:0 0 0 1px rgba(248,113,113,.35)}
 @media(max-width:900px){.dc-def-dtu-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.dc-panels{grid-template-columns:1fr}.dc-modal{margin:10px}.dc-title{font-size:17px;padding:16px 16px 8px}.dc-controls{padding:0 14px 12px}.dc-result{padding:0 14px 16px}.dc-result-val{font-size:26px}.dc-result-row{gap:20px}}
 .mod-effect-filter-row .mod-effect-opt-inner{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -998,7 +1004,7 @@ html{overflow-x:hidden}
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
 </div><div id="dcMpBonusHint" class="dc-mp-bonus-hint"></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Halved: final damage is multiplied by (1 − penalty). Used for e.g. underwater vs land weapons.">Terrain Penalty</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
 </div>
@@ -1025,11 +1031,11 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Target chose Defend: multiplies final damage by 0.8 (0.6 with shield).">Defend Action</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Shield defend uses the stronger 0.6 final multiplier instead of 0.8.">Shield</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
 </div>
-<div class="dc-section-label" style="margin:12px 0 6px;font-size:11px;color:var(--text-muted)">Target: damage taken up by weapon attribute <span class="dc-tip" title="Only the row matching the attacker’s weapon attribute (Beam / Physical / Special) counts toward ⑨.">(?)</span></div>
+<div class="dc-section-label" style="margin:12px 0 6px;font-size:11px;color:var(--text-muted)">Inflicted Type of Debuffs <span class="dc-tip" title="Rows that match the attacker’s weapon attribute (Beam / Physical / Special) are highlighted; their values sum into Total Debuffs % for ⑨.">(?)</span></div>
 <div class="dc-def-dtu-grid">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Beam</span><input type="number" class="dc-input-sm" id="dcDtuBeam" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Physical</span><input type="number" class="dc-input-sm" id="dcDtuPhysical" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Special</span><input type="number" class="dc-input-sm" id="dcDtuSpecial" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowBeam" data-dtu="beam"><span class="dc-ctrl-label">Beam</span><input type="number" class="dc-input-sm" id="dcDtuBeam" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowPhysical" data-dtu="physical"><span class="dc-ctrl-label">Physical</span><input type="number" class="dc-input-sm" id="dcDtuPhysical" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowSpecial" data-dtu="special"><span class="dc-ctrl-label">Special</span><input type="number" class="dc-input-sm" id="dcDtuSpecial" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -2553,6 +2559,36 @@ return sum;
 }
 function _dcWeaponElement(wpn){return _dcWeaponAttributeKeys(wpn)[0]||'special'}
 function _dcDefaultWeaponDistance(wpn){const eff=_dcGetEffectiveRange(wpn);const mn=eff.min_range||1,mx=eff.max_range||mn;let d=Math.max(1,mn);if(d>mx)d=mx;return d}
+function _dcStatValClass(mod,base){const a=Math.round(Number(mod)||0),b=Math.round(Number(base)||0);return a!==b?'dc-stat-val--buffed':''}
+function _dcGetAutoWeaponPowerDisplay(){
+const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
+const wpns=ud.weapons.filter(w=>w.weapon_type!=='3');const wpn=wpns[S.dc.wpnIdx];if(!wpn||!wpn.levels||!wpn.levels.length)return null;
+const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0};
+const raw=lvData.power||0;const traitDistPow=S.dc._wpnTraitDistPow||0;const traitHpPow=S.dc._wpnTraitHpPow||0;
+return Math.ceil(raw*(1+(traitDistPow+traitHpPow)/100));
+}
+function _dcRefreshFinalWpnPowPlaceholder(){
+const el=document.getElementById('dcFinalWpnPow');if(!el)return;
+const v=_dcGetAutoWeaponPowerDisplay();
+el.placeholder=v!=null?`Auto (${fmtN(v)})`:'Auto (—)';
+}
+function _dcRefreshDtuInputHighlights(){
+['dcDtuRowBeam','dcDtuRowPhysical','dcDtuRowSpecial'].forEach(id=>{const row=document.getElementById(id);if(row)row.classList.remove('dc-dtu-row--on','dc-dtu--beam','dc-dtu--physical','dc-dtu--special')});
+const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return;
+const wpns=ud.weapons.filter(w=>w.weapon_type!=='3');const w=wpns[S.dc.wpnIdx];if(!w)return;
+const keys=_dcWeaponAttributeKeys(w);
+const map={beam:['dcDtuRowBeam','dc-dtu--beam'],physical:['dcDtuRowPhysical','dc-dtu--physical'],special:['dcDtuRowSpecial','dc-dtu--special']};
+keys.forEach(k=>{const m=map[k];if(!m)return;const row=document.getElementById(m[0]);if(row){row.classList.add('dc-dtu-row--on',m[1])}});
+}
+function _dcRefreshDefDebuffInputStyle(){
+const el=document.getElementById('dcDefDebuffPct');if(!el)return;
+el.classList.toggle('dc-input--def-debuff',(parseInt(el.value)||0)>0);
+}
+function _dcRefreshCalcDependentUi(){
+_dcRefreshFinalWpnPowPlaceholder();
+_dcRefreshDtuInputHighlights();
+_dcRefreshDefDebuffInputStyle();
+}
 function _dcRefreshTotalDebuffsDisplay(){
 const el=document.getElementById('dcTotalDebuffsDisplay');if(!el)return;
 const ud=S.dc.atkUnitData;if(!ud||!ud.weapons){el.textContent='—';return}
@@ -2714,10 +2750,13 @@ area.innerHTML+=`<div class="dc-section-label" style="margin-top:6px">Stat Mode<
 const sa=document.getElementById('dcAtkStatsArea');
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
+const bHp=_dcFindStat(stats,'HP')||0,bAtk=_dcFindStat(stats,'Attack'),bDef=_dcFindStat(stats,'Defense'),bMob=_dcFindStat(stats,'Mobility');
+const hHp=_dcStatValClass(hpS,bHp),hAtk=_dcStatValClass(atkS,bAtk),hDef=_dcStatValClass(defS,bDef),hMob=_dcStatValClass(mobS,bMob);
+const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
 const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
 const unitModNote=hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support (ATK support applies in damage only).</div>':'';
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3);border-radius:4px;font-size:11px;color:#facc15">Vigor ATK bonus active (stats include conditional)</div>':'';
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val">${fmtN(hpS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(atkS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defS)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(mobS)}</div></div></div>${unitModNote}${vigorCondNote}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val"><span${spAtk}>${fmtN(atkS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
 renderDcWeaponArea();
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -2964,9 +3003,9 @@ return traits;
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
 const ud=S.dc.atkUnitData;
-if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';return}
+if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
 const wpns=ud.weapons.filter(w=>w.weapon_type!=='3');
-if(!wpns.length){wa.innerHTML='';return}
+if(!wpns.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
 if(S.dc.wpnIdx>=wpns.length)S.dc.wpnIdx=0;
 let h=`<div class="dc-section-label">${t('dc_weapon')}</div><select class="dc-wpn-select" onchange="setDcWeapon(this.selectedIndex)">`;
 wpns.forEach((w,i)=>h+=`<option value="${i}"${i===S.dc.wpnIdx?' selected':''}>${esc(w.name)}</option>`);
@@ -3004,6 +3043,7 @@ h+=`</div>`;
 }
 wa.innerHTML=h;
 _dcRefreshTotalDebuffsDisplay();
+_dcRefreshFinalWpnPowPlaceholder();
 }
 function _dcApplyWpnTraitPow(){
 const dEl=document.getElementById('dcWpnTraitDistPow');
@@ -3067,8 +3107,8 @@ if(defDeb>0){
 const defRed=F(defShow*defDeb/100);
 defShow=MX(0,defShow-defRed);
 }
-const defLine=defDeb>0?`<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defShow)} <span style="font-size:10px;color:var(--accent-cyan)">(${defDeb}% debuff)</span></div></div>`:`<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defShow)}</div></div>`;
-h+=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="dc-stats-mini" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val">${fmtN(us.HP||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(us.Attack||0)}</div></div>${defLine}<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(us.Mobility||0)}</div></div></div>`;
+const defLine=defDeb>0?`<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span style="color:#f87171;font-weight:700">${fmtN(defShow)}</span> <span style="font-size:10px;color:#f87171;font-weight:600">(${defDeb}% DEF debuff)</span></div></div>`:`<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">${fmtN(defShow)}</div></div>`;
+h+=`<div class="dc-section-label" style="color:#f87171;font-size:12px;font-weight:600">Defender Status</div><div class="dc-stats-mini" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val">${fmtN(us.HP||0)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${fmtN(us.Attack||0)}</div></div>${defLine}<div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val">${fmtN(us.Mobility||0)}</div></div></div>`;
 }
 if(ch){
 const cs=ch.stats_raw||{};
@@ -3169,6 +3209,7 @@ S.dc.dtuSpecial=parseInt(document.getElementById('dcDtuSpecial')?.value)||0;
 _dcRefreshTotalDebuffsDisplay();
 _dcRefreshMpBonusHint();
 if(S.dc.defNpc)renderDcDefStats();
+_dcRefreshCalcDependentUi();
 renderDcResult();
 }
 function _dcRefreshAtkPanelsAfterMods(){
