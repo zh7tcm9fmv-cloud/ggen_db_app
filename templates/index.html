@@ -620,6 +620,10 @@ html{overflow-x:hidden}
 .dc-tab-header h2{margin:0}
 .dc-credit-link{font-size:13px;font-weight:600;color:var(--accent-gold);text-decoration:none;white-space:nowrap;transition:var(--transition)}
 .dc-credit-link:hover{color:var(--accent-cyan);text-decoration:underline}
+.dc-tip{cursor:help;text-decoration:underline dotted;text-underline-offset:2px;color:var(--text-muted)}
+.dc-mp-bonus-hint{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4}
+.dc-def-dtu-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:900px){.dc-def-dtu-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.dc-panels{grid-template-columns:1fr}.dc-modal{margin:10px}.dc-title{font-size:17px;padding:16px 16px 8px}.dc-controls{padding:0 14px 12px}.dc-result{padding:0 14px 16px}.dc-result-val{font-size:26px}.dc-result-row{gap:20px}}
 .mod-effect-filter-row .mod-effect-opt-inner{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
 .mod-effect-filter-row .mod-effect-opt-inner>.mod-effect-all-icons{display:inline-flex;align-items:center;gap:3px;flex-wrap:wrap;flex-shrink:0}
@@ -962,7 +966,7 @@ html{overflow-x:hidden}
 <div class="tab-panel" id="panel-calculator">
 <div class="dc-tab-wrap" style="max-width:1400px;margin:0 auto;padding:24px">
 <div class="dc-tab-header">
-<h2 style="color:var(--accent-cyan);font-size:22px">Damage &amp; Accuracy Calculator</h2>
+<h2 style="color:var(--accent-cyan);font-size:22px">Damage Calculator</h2>
 <a href="https://discordapp.com/users/390839232672956420" target="_blank" rel="noopener noreferrer" class="dc-credit-link">Credit:🔥Firered🔥</a>
 </div>
 <div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -978,20 +982,24 @@ html{overflow-x:hidden}
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:var(--accent-cyan)">Attacker Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Vigor Level <span id="dcVigorAutoHint" style="font-size:10px;color:#4ade80;font-weight:400"></span></span><div class="dc-ctrl-toggle" id="dcMpBtns">
+<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Morale / tension. Adds to the damage increase pool (⑨) and changes critical multiplier. Normal=+0% dmg, High=+10%, Max=+20%, Supercharged=+30% to damage; crit ×1.10 / ×1.20 / ×1.20 / ×1.30.">Vigor Level</span> <span id="dcVigorAutoHint" style="font-size:10px;color:#4ade80;font-weight:400"></span></span><div class="dc-ctrl-toggle" id="dcMpBtns">
 <button class="dc-ctrl-btn active" data-mp="medium" onclick="setDcMp('medium')">Normal</button>
 <button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
-</div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcDistLabel">Distance</span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label" id="dcTerrainLabel">Terrain Penalty</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Up %</span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Weapon Power Down %</span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Critical Damage Up %</span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Dealt Up %</span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Up %</span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">EX Weapon</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
+</div><div id="dcMpBonusHint" class="dc-mp-bonus-hint"></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Grid distance to target. Must be within the weapon min–max range or the preview flags out of range (damage still computed).">Distance</span></span><input type="number" class="dc-input-sm" id="dcDistance" min="1" max="20" value="1" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Halved: final damage is multiplied by (1 − penalty). Used for e.g. underwater vs land weapons.">Terrain Penalty</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Extra % on weapon power before the rest of the formula (traits, buffs).">Weapon Power Up %</span></span><input type="number" class="dc-input-sm" id="dcWpnPowUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Reduces effective weapon power.">Weapon Power Down %</span></span><input type="number" class="dc-input-sm" id="dcWpnPowDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual boost to the pilot attack stat used by the selected weapon (Ranged / Melee / Awaken), e.g. +25% Awaken from buffs. Use when not reflected in stat mode.">Pilot ATK stat boost %</span></span><input type="number" class="dc-input-sm" id="dcPilotAtkBoost" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Debuff on your pilot: reduces the attack value (PlAtk) used in the formula.">Pilot ATK down %</span></span><input type="number" class="dc-input-sm" id="dcPilotAtkDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Debuff on your unit: reduces unit attack (UnAtk).">Unit ATK down %</span></span><input type="number" class="dc-input-sm" id="dcUnitAtkDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Reduces hit rate (accuracy %) before the 10–100 clamp.">Accuracy down %</span></span><input type="number" class="dc-input-sm" id="dcAccDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Reduces your unit mobility; lowers hit rate via the mobility term.">Mobility down %</span></span><input type="number" class="dc-input-sm" id="dcMobDown" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="EX attacks ignore the defender unit’s Damage Taken Down % (still use pilot down).">EX Weapon</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcExOff" onclick="setDcEx(false)">Off</button><button class="dc-ctrl-btn" id="dcExOn" onclick="setDcEx(true)">On</button></div></div>
 </div>
 </div>
 </div>
@@ -1006,14 +1014,24 @@ html{overflow-x:hidden}
 <div id="dcDefUnitArea"></div>
 <div id="dcDefCharArea"></div>
 <div class="dc-panel-section"><div id="dcDefStatsArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Debuffs (max 10)</div><div id="dcDefDebuffArea"></div><button class="dc-debuff-add" id="dcDebuffAddBtn" onclick="addDcDebuff()">+ Add Debuff</button></div>
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:#ef4444">Defender Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Pilot) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Damage Taken Down (Unit) %</span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Defend Action</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label">Shield</span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Flat % reduction to target unit defense (UnDef). Does not reduce pilot defense.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Enemy takes more damage (⑨): adds to damage increase pool. Generic value; use attribute fields below for typed debuffs.">Damage Taken Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy pilot (⑨ pool).">Damage Taken Down (Pilot) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy unit (non-EX attacks). EX weapons ignore this.">Damage Taken Down (Unit) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Target chose Defend: multiplies final damage by 0.8 (0.6 with shield).">Defend Action</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Shield defend uses the stronger 0.6 final multiplier instead of 0.8.">Shield</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
+</div>
+<div class="dc-section-label" style="margin:12px 0 6px;font-size:11px;color:var(--text-muted)">Target: damage taken up by weapon type <span class="dc-tip" title="Only rows that match the selected weapon count toward ⑨. Beam/Physical/Special use weapon attribute; Ranged/Melee/Awaken use attack type labels.">(?)</span></div>
+<div class="dc-def-dtu-grid">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Beam</span><input type="number" class="dc-input-sm" id="dcDtuBeam" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Physical</span><input type="number" class="dc-input-sm" id="dcDtuPhysical" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Special</span><input type="number" class="dc-input-sm" id="dcDtuSpecial" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Ranged</span><input type="number" class="dc-input-sm" id="dcDtuRanged" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Melee</span><input type="number" class="dc-input-sm" id="dcDtuMelee" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Awaken</span><input type="number" class="dc-input-sm" id="dcDtuAwaken" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -1391,7 +1409,7 @@ function onRarityLtCheckboxChange(which,ev){const p=rarityPrefix(which);const ke
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');const allEl=document.getElementById(p+'RarityAll');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;if(allEl)allEl.checked=false;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else if(tab==='calculator'){renderDcStageDropdown();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();renderDcDebuffs();renderDcResult()}else applyListViewVisibility(tab)}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else if(tab==='calculator'){renderDcStageDropdown();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else applyListViewVisibility(tab)}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -2505,10 +2523,41 @@ renderCompareContent()
 
 const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
+const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
+function _dcCharHasSpStats(cd){return cd&&Array.isArray(cd.sp_stats)&&cd.sp_stats.length>0}
+function _dcWeaponElement(wpn){const t=String(wpn.weapon_type||'');return DC_WPN_ELEM[t]||'special'}
+function _dcWeaponAttackFlags(wpn){
+const o={ranged:false,melee:false,awaken:false};
+(wpn.attack_types||[]).forEach(at=>{
+const l=String(at.label||'');
+if(/ranged|shooting|射/i.test(l))o.ranged=true;
+if(/melee|格|fight/i.test(l))o.melee=true;
+if(/awaken|覚|newtyp/i.test(l))o.awaken=true;
+});
+return o;
+}
+function _dcDtuApplies(wpn,kind){
+const el=_dcWeaponElement(wpn);const F=_dcWeaponAttackFlags(wpn);
+if(kind==='beam'||kind==='physical'||kind==='special')return el===kind;
+if(kind==='ranged'){
+if(F.ranged)return true;
+if(!F.melee&&!F.awaken&&(el==='beam'||el==='physical'))return true;
+return false;
+}
+if(kind==='melee')return F.melee;
+if(kind==='awaken')return F.awaken;
+return false;
+}
+function _dcRefreshMpBonusHint(){
+const el=document.getElementById('dcMpBonusHint');if(!el)return;
+const mp=DC_MP[S.dc.mpLevel||'medium'];
+const dp=Math.round(mp.dmgBonus*100),cm=Math.round(mp.critMult*100);
+el.textContent=`MP: +${dp}% to damage dealt (⑨) · Crit +${cm}% (×${((100+cm)/100).toFixed(2)})`;
+}
 
 function initDmgCalc(){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc.debuffs=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;
+S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.distance=1;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.exWeapon=false;S.dc.wpnPowUp=0;S.dc.wpnPowDown=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;
 document.getElementById('dcDistance').value=1;
 document.getElementById('dcWpnPowUp').value=0;
 document.getElementById('dcWpnPowDown').value=0;
@@ -2517,8 +2566,9 @@ document.getElementById('dcCritDmgUp').value=0;
 document.getElementById('dcDmgTakenUp').value=0;
 document.getElementById('dcDmgTakenDownPilot').value=0;
 document.getElementById('dcDmgTakenDownUnit').value=0;
+['dcPilotAtkBoost','dcPilotAtkDown','dcUnitAtkDown','dcAccDown','dcMobDown','dcDefDebuffPct','dcDtuBeam','dcDtuPhysical','dcDtuSpecial','dcDtuRanged','dcDtuMelee','dcDtuAwaken'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0});
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcEx(false);setDcTerrain('normal');
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();renderDcDebuffs();renderDcResult();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
 }
 function openDmgCalc(){
 const d=S.currentDetailData;
@@ -2587,6 +2637,14 @@ if(p.get('cu')!==null&&p.get('cu')!==''){const el=document.getElementById('dcCri
 if(p.get('dtu')!==null&&p.get('dtu')!==''){const el=document.getElementById('dcDmgTakenUp');if(el)el.value=p.get('dtu')}
 if(p.get('dtp')!==null&&p.get('dtp')!==''){const el=document.getElementById('dcDmgTakenDownPilot');if(el)el.value=p.get('dtp')}
 if(p.get('dttu')!==null&&p.get('dttu')!==''){const el=document.getElementById('dcDmgTakenDownUnit');if(el)el.value=p.get('dttu')}
+if(p.get('pab')!==null&&p.get('pab')!==''){const el=document.getElementById('dcPilotAtkBoost');if(el)el.value=p.get('pab')}
+if(p.get('pad')!==null&&p.get('pad')!==''){const el=document.getElementById('dcPilotAtkDown');if(el)el.value=p.get('pad')}
+if(p.get('uad')!==null&&p.get('uad')!==''){const el=document.getElementById('dcUnitAtkDown');if(el)el.value=p.get('uad')}
+if(p.get('acd')!==null&&p.get('acd')!==''){const el=document.getElementById('dcAccDown');if(el)el.value=p.get('acd')}
+if(p.get('mobd')!==null&&p.get('mobd')!==''){const el=document.getElementById('dcMobDown');if(el)el.value=p.get('mobd')}
+if(p.get('defp')!==null&&p.get('defp')!==''){const el=document.getElementById('dcDefDebuffPct');if(el)el.value=p.get('defp')}
+const _dtu=(k,id)=>{if(p.get(k)!==null&&p.get(k)!==''){const el=document.getElementById(id);if(el)el.value=p.get(k)}};
+_dtu('dtb','dcDtuBeam');_dtu('dtph','dcDtuPhysical');_dtu('dts','dcDtuSpecial');_dtu('dtr','dcDtuRanged');_dtu('dtm','dcDtuMelee');_dtu('dta','dcDtuAwaken');
 const tdp=parseInt(p.get('td')||'',10);if(!Number.isNaN(tdp)&&tdp>=0){S.dc._wpnTraitDistPow=tdp;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp)}
 const thp=parseInt(p.get('th')||'',10);if(!Number.isNaN(thp)&&thp>=0){S.dc._wpnTraitHpPow=thp;const tel=document.getElementById('dcWpnTraitHpPow');if(tel)tel.value=String(thp)}
 if(p.get('ex')==='1')setDcEx(true);
@@ -2625,10 +2683,9 @@ if(mode==='sp'&&hasSp)return 'sp_stats'+sfx;
 return 'stats'+sfx;
 }
 function _dcGetCharStats(){
-const cd=S.dc.atkCharData;if(!cd)return cd?.stats||[];
-const hasSp=cd.has_sp!==undefined?cd.has_sp:(parseInt(cd.rarity_id||'5')<=4);
+const cd=S.dc.atkCharData;if(!cd)return[];
 const mode=S.dc.charStatMode||'normal';
-if(mode==='sp'&&hasSp&&cd.sp_stats)return cd.sp_stats;
+if(mode==='sp'&&_dcCharHasSpStats(cd))return cd.sp_stats;
 return cd.stats||[];
 }
 function renderDcAtkUnit(){
@@ -3056,17 +3113,8 @@ const s=S.dc.supporters[idx];if(!s)return;
 const lv=s._dcLevel||100;
 try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();onDcParamChange()}}catch(e){}
 }
-function renderDcDebuffs(){
-const area=document.getElementById('dcDefDebuffArea');
-const list=S.dc.debuffs||[];
-area.innerHTML=list.map((d,i)=>`<div class="dc-debuff-item"><select onchange="updateDcDebuff(${i},'stat',this.value)"><option value="DEF"${d.stat==='DEF'?' selected':''}>DEF %</option><option value="ATK"${d.stat==='ATK'?' selected':''}>ATK %</option></select><input type="number" value="${d.value}" onchange="updateDcDebuff(${i},'value',this.value)" min="0" max="100" placeholder="%"><button class="remove" onclick="removeDcDebuff(${i})">✕</button></div>`).join('');
-document.getElementById('dcDebuffAddBtn').style.display=list.length>=10?'none':'block';
-}
 function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();onDcParamChange()}
 function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();onDcParamChange()}
-function addDcDebuff(){if((S.dc.debuffs||[]).length>=10)return;S.dc.debuffs=S.dc.debuffs||[];S.dc.debuffs.push({stat:'DEF',value:10});renderDcDebuffs();onDcParamChange()}
-function updateDcDebuff(i,field,val){if(!S.dc.debuffs[i])return;if(field==='stat')S.dc.debuffs[i].stat=val;else S.dc.debuffs[i].value=parseInt(val,10)||0;onDcParamChange()}
-function removeDcDebuff(i){S.dc.debuffs.splice(i,1);renderDcDebuffs();onDcParamChange()}
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea()}
 function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea()}
@@ -3079,6 +3127,7 @@ if(newKey!==prevKey&&S.dc.atkUnitData)renderDcAtkUnit();
 if(S.dc.atkCharData)_dcRecalcPilotBonuses();
 else if(S.dc.atkUnitData)renderDcWeaponArea();
 else onDcParamChange();
+_dcRefreshMpBonusHint();
 }
 function setDcDefend(v){
 S.dc.defending=v;
@@ -3107,6 +3156,19 @@ S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp').value)||0;
 S.dc.dmgTakenUp=parseInt(document.getElementById('dcDmgTakenUp').value)||0;
 S.dc.dmgTakenDownPilot=parseInt(document.getElementById('dcDmgTakenDownPilot').value)||0;
 S.dc.dmgTakenDownUnit=parseInt(document.getElementById('dcDmgTakenDownUnit').value)||0;
+S.dc.pilotAtkBoost=parseInt(document.getElementById('dcPilotAtkBoost')?.value)||0;
+S.dc.pilotAtkDown=parseInt(document.getElementById('dcPilotAtkDown')?.value)||0;
+S.dc.unitAtkDown=parseInt(document.getElementById('dcUnitAtkDown')?.value)||0;
+S.dc.accDown=parseInt(document.getElementById('dcAccDown')?.value)||0;
+S.dc.mobDown=parseInt(document.getElementById('dcMobDown')?.value)||0;
+S.dc.defDebuffPct=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
+S.dc.dtuBeam=parseInt(document.getElementById('dcDtuBeam')?.value)||0;
+S.dc.dtuPhysical=parseInt(document.getElementById('dcDtuPhysical')?.value)||0;
+S.dc.dtuSpecial=parseInt(document.getElementById('dcDtuSpecial')?.value)||0;
+S.dc.dtuRanged=parseInt(document.getElementById('dcDtuRanged')?.value)||0;
+S.dc.dtuMelee=parseInt(document.getElementById('dcDtuMelee')?.value)||0;
+S.dc.dtuAwaken=parseInt(document.getElementById('dcDtuAwaken')?.value)||0;
+_dcRefreshMpBonusHint();
 renderDcResult();
 }
 
@@ -3243,13 +3305,18 @@ let hpSupport=0,atkSupport=0,leaderPct=0;
 const _tpA=(opPct.Attack||0)+leaderPct,_tpH=(opPct.HP||0)+leaderPct,_tpD=(opPct.Defense||0)+leaderPct,_tpM=(opPct.Mobility||0)+leaderPct,_tpV=(opPct.Move||0)+leaderPct;
 if(_tpA)unitAtk=F(unitAtk*(1+_tpA/100));if(_tpH)unitHp=F(unitHp*(1+_tpH/100));if(_tpD)unitDefVal=F(unitDefVal*(1+_tpD/100));if(_tpM)unitMob=F(unitMob*(1+_tpM/100));if(_tpV)unitMove=F(unitMove*(1+_tpV/100));
 unitAtk+=opFlat.Attack+atkSupport;unitHp+=opFlat.HP+hpSupport;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
-const charAtk=_dcGetCharAtkStat(atkCharStats,wpn);
+const uatkDown=parseInt(document.getElementById('dcUnitAtkDown')?.value)||0;
+if(uatkDown)unitAtk=F(unitAtk*MX(0,1-uatkDown/100));
+let charAtk=_dcGetCharAtkStat(atkCharStats,wpn);
+const pilotBoost=parseInt(document.getElementById('dcPilotAtkBoost')?.value)||0;
+if(pilotBoost)charAtk=F(charAtk*(1+pilotBoost/100));
+const pilotAtkDown=parseInt(document.getElementById('dcPilotAtkDown')?.value)||0;
+if(pilotAtkDown)charAtk=F(charAtk*MX(0,1-pilotAtkDown/100));
 
 const defUnit=npc.unit;const defChar=npc.character;
 let unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
-let defDebuffPct=0;
-(S.dc.debuffs||[]).filter(d=>d.stat==='DEF').forEach(d=>{defDebuffPct+=Number(d.value)||0});
+let defDebuffPct=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
 if(defDebuffPct>0){unitDef=F(unitDef*MX(0,1-defDebuffPct/100))}
 
 const rawWpnPower=lvData.power;
@@ -3287,7 +3354,13 @@ const battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
 
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
 const userCritDmgUpPct=S.dc.critDmgUp||0;
-const dmgTakenUpPct=S.dc.dmgTakenUp||0;
+let dmgTakenUpPct=parseInt(document.getElementById('dcDmgTakenUp')?.value)||0;
+const dmgTakenUpGeneric=dmgTakenUpPct;
+let dmgTakenUpTyped=0;
+[['dcDtuBeam','beam'],['dcDtuPhysical','physical'],['dcDtuSpecial','special'],['dcDtuRanged','ranged'],['dcDtuMelee','melee'],['dcDtuAwaken','awaken']].forEach(([id,kind])=>{
+const v=parseInt(document.getElementById(id)?.value)||0;
+if(v&&_dcDtuApplies(wpn,kind)){dmgTakenUpPct+=v;dmgTakenUpTyped+=v}
+});
 const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
 const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
 const isExWeapon=S.dc.exWeapon||false;
@@ -3310,17 +3383,24 @@ const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
 const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const wpnTraits=S.dc._wpnTraits||{};
-const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy);
+const accDownPct=parseInt(document.getElementById('dcAccDown')?.value)||0;
+const mobDownPct=parseInt(document.getElementById('dcMobDown')?.value)||0;
+const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,userCritDmgUpPct,dmgTakenUpPct,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+pilotBoostPct:pilotBoost,pilotAtkDownPct:pilotAtkDown,unitAtkDownPct:uatkDown,accDownPct,mobDownPct,wpnElem:_dcWeaponElement(wpn),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
-function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc){
+function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc,pen){
+pen=pen||{};
 const F=Math.floor,RU=Math.ceil,EXP=Math.exp,MX=Math.max,MN=Math.min;
-const mobDiff=RU((atkUnitMob/10)-(defUnitMob/10));
+let uMob=atkUnitMob;
+const mdp=Math.min(100,pen.mobDownPct||0);
+if(mdp>0)uMob=F(uMob*(1-mdp/100));
+const mobDiff=RU((uMob/10)-(defUnitMob/10));
 const reaDiff=atkCharAtk-defCharReaction;
 const expMob=(1*(120-atkUnitMob))/10000;
 const denMob=EXP(expMob)+1;
@@ -3332,7 +3412,8 @@ const mobCorrection=F((mobTerm+reaTerm)*100);
 const evaPct=0;
 const accUpDown=0;
 const sum=mobCorrection+(-evaPct*100)+(accUpDown*100);
-const baseHit=baseWeaponAcc*100;
+const adp=Math.min(100,pen.accDownPct||0);
+const baseHit=baseWeaponAcc*100*(1-adp/100);
 const counterMult=S.dc.defending?0.8:1;
 const rawHit=F(counterMult*(baseHit+sum));
 const finalHitRate=MN(100,MX(10,rawHit));
@@ -3379,9 +3460,13 @@ const breakdownHtml=`
 <summary style="cursor:pointer;color:var(--accent-cyan);font-size:13px;font-weight:600;user-select:none">Formula Breakdown (ダメージ計算式)</summary>
 <div style="font-size:12px;margin-top:8px;line-height:1.7">
 ${_brkHd('Attacker Stats')}
+${r.pilotBoostPct?brkRow('Pilot ATK boost (manual)','+'+r.pilotBoostPct+'%'):''}
+${r.pilotAtkDownPct?brkRow('Pilot ATK down','−'+r.pilotAtkDownPct+'%'):''}
+${r.unitAtkDownPct?brkRow('Unit ATK down','−'+r.unitAtkDownPct+'%'):''}
 ${brkRow('Pilot ATK (攻撃値)',fmtN(r.charAtk))}
 ${brkRow('Unit ATK (攻撃力)',fmtN(r.unitAtk))}
 ${brkRow('Unit Mobility (機動)',fmtN(r.unitMob))}
+${r.accDownPct||r.mobDownPct?brkRow('Hit penalties','Acc −'+r.accDownPct+'% · Mob −'+r.mobDownPct+'%'):''}
 ${_brkHd('Defender Stats','#f59e0b')}
 ${brkRow('Pilot DEF (守備値)',fmtN(r.charDef))}
 ${brkRow('Unit DEF (防御力)',fmtN(r.unitDef)+(r.defDebuffPct?' <span style="color:#ef4444">(−'+r.defDebuffPct+'% debuff)</span>':''))}
@@ -3417,7 +3502,9 @@ ${r.terrainCorrection<1?brkRow('Terrain Penalty (地形補正)','×'+r.terrainCo
 ${_brkSep}
 ${_brkHd('⑨ Damage Modifier (与ダメージ補正)')}
 ${r.userDmgIncreasePct?brkRow('Damage Dealt Up (与ダメ上昇)','+'+r.userDmgIncreasePct+'%'+(r.vigorDmgBonusPct?' <span style="color:var(--text-muted)">(incl. Vigor +'+r.vigorDmgBonusPct+'%)</span>':'')):''}
-${r.dmgTakenUpPct?brkRow('Target Dmg Taken Up (被ダメ上昇)','+'+r.dmgTakenUpPct+'%'):''}
+${r.dmgTakenUpGeneric?brkRow('Dmg Taken Up (generic)','+'+r.dmgTakenUpGeneric+'%'):''}
+${r.dmgTakenUpTyped?brkRow('Dmg Taken Up (weapon match)','+'+r.dmgTakenUpTyped+'% · attr '+r.wpnElem):''}
+${r.dmgTakenUpPct?brkRow('Dmg Taken Up (total ⑨)','+'+r.dmgTakenUpPct+'%'):''}
 ${r.takenDown?brkRow('Target Dmg Taken Down (被ダメ軽減)','−'+r.takenDown+'%'):''}
 ${r.userCritDmgUpPct?brkRow('Critical Dmg Up (クリダメ上昇)','+'+r.userCritDmgUpPct+'% <span style="color:var(--text-muted)">(crit only)</span>'):''}
 ${brkRow('Normal ⑨','×'+(1+r.totalNormalMultPct/100).toFixed(2))}
@@ -3502,6 +3589,18 @@ if(S.dc.critDmgUp)p.set('cu',S.dc.critDmgUp);
 if(S.dc.dmgTakenUp)p.set('dtu',S.dc.dmgTakenUp);
 if(S.dc.dmgTakenDownPilot)p.set('dtp',S.dc.dmgTakenDownPilot);
 if(S.dc.dmgTakenDownUnit)p.set('dttu',S.dc.dmgTakenDownUnit);
+if(S.dc.pilotAtkBoost)p.set('pab',S.dc.pilotAtkBoost);
+if(S.dc.pilotAtkDown)p.set('pad',S.dc.pilotAtkDown);
+if(S.dc.unitAtkDown)p.set('uad',S.dc.unitAtkDown);
+if(S.dc.accDown)p.set('acd',S.dc.accDown);
+if(S.dc.mobDown)p.set('mobd',S.dc.mobDown);
+if(S.dc.defDebuffPct)p.set('defp',S.dc.defDebuffPct);
+if(S.dc.dtuBeam)p.set('dtb',S.dc.dtuBeam);
+if(S.dc.dtuPhysical)p.set('dtph',S.dc.dtuPhysical);
+if(S.dc.dtuSpecial)p.set('dts',S.dc.dtuSpecial);
+if(S.dc.dtuRanged)p.set('dtr',S.dc.dtuRanged);
+if(S.dc.dtuMelee)p.set('dtm',S.dc.dtuMelee);
+if(S.dc.dtuAwaken)p.set('dta',S.dc.dtuAwaken);
 if(S.dc._wpnTraitDistPow)p.set('td',S.dc._wpnTraitDistPow);
 if(S.dc._wpnTraitHpPow)p.set('th',S.dc._wpnTraitHpPow);
 if(S.dc.exWeapon)p.set('ex','1');
