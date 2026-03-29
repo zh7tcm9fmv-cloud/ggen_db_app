@@ -607,6 +607,8 @@ html{overflow-x:hidden}
 .dc-lb-row{display:flex;gap:4px;align-items:center}
 .dc-lb-btn{padding:3px 6px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
 .dc-lb-btn.active{background:var(--accent-blue);color:#fff;border-color:var(--accent-blue)}
+.dc-lb-dd-row{display:flex;align-items:center;justify-content:flex-start;margin-top:2px}
+.dc-lb-tier-details{max-width:min(200px,100%)}
 .dc-wlv-row{display:flex;gap:4px;align-items:center}
 .dc-wlv-btn{padding:3px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
 .dc-wlv-btn.active{background:var(--accent-gold);color:#0a0e1a;border-color:var(--accent-gold)}
@@ -2590,10 +2592,14 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
 const thum=ud.thum||ud.portrait||'';
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div><button class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
-if(lb&&lb.length>1){
-let lbHtml=`<div class="dc-section-label">${t('dc_lb_tier')}</div><div class="dc-lb-row">`;
-for(let i=0;i<=maxTier;i++)lbHtml+=`<button class="dc-lb-btn${i===tier?' active':''}" onclick="setDcLbTier(${i})">LB${i}</button>`;
-lbHtml+=`</div>`;area.innerHTML+=lbHtml;
+if(lb&&lb.length>1&&!ud.is_ultimate){
+const cur=CMP_LB_TIER_PIPS[tier]||CMP_LB_TIER_PIPS[0];
+let lbMenu='';
+for(let tt=0;tt<=maxTier;tt++){
+const p=CMP_LB_TIER_PIPS[tt];
+lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" onclick="setDcLbTier(${tt});var _dlb=document.getElementById('dcLbTierDetails');if(_dlb)_dlb.open=false" role="option" aria-selected="${tt===tier}">${cmpLbPipsRow(p[0],p[1],p[2])}<span class="cmp-lb-opt-num">${tt}</span></button>`;
+}
+area.innerHTML+=`<div class="dc-section-label">${t('dc_lb_tier')}</div><div class="dc-lb-dd-row"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('dc_lb_tier'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('dc_lb_tier'))}">${lbMenu}</div></details></div>`;
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 if(hasSp){
