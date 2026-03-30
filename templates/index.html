@@ -1115,7 +1115,7 @@ html{overflow-x:hidden}
 <li><span class="dc-tip" title="Computed from weapon base power × (1 + distance/HP trait %). Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
-<li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: applies to the MS base Attack value only (before option-part % and supporter leader %); those bonuses are added after, matching the in-game unit ATK stat (up to 20%). Shown under Unit Attack with a green line.">EX squad ATK %</span></li>
+<li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: applies to the MS Attack growth line only (not MS ability Attack bonuses, option-part %, or supporter leader %); those stack after, matching the in-game unit ATK stat (up to 20%). Shown under Unit Attack with a green line.">EX squad ATK %</span></li>
 <li><span class="dc-tip" title="Damage uses the pilot offensive stat that matches the weapon's attack type (Ranged / Melee / Awaken — see icons before Attribute in the weapon row). A passive that raises Melee only affects weapons whose attack type uses Melee; EX weapons follow the same rule from their listed attack type(s).">Pilot stat vs weapon attack type</span></li>
 <li><span class="dc-tip" title="Sum of Beam / Physical / Special DTU rows matching the weapon attribute — adds to ⑨ pool (same bucket as damage dealt up).">Damage Taken Up (debuffs)</span> (<span class="dc-tip" title="Highlighted row(s) match your weapon attribute.">attribute rows</span>)</li>
 <li><span class="dc-tip" title="Reduces final damage: pilot DTU % always; unit DTU % for non-EX weapons.">Damage Taken Down</span> (pilot · unit)</li>
@@ -1197,7 +1197,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX Character Ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). In-game this applies only to the MS base Attack; option parts and supporter leader % are added after (same order as the unit ATK stat under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX Character Ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). In-game this applies only to the MS Attack growth line (not MS ability ATK bonuses); option parts and supporter leader % are added after (same order as the unit ATK stat under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -3530,7 +3530,7 @@ const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense
 const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
 const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const atkDisp=_dcApplyExSquadToUnitAtk(atkS,uEff.unitAtkExSquadBase,exSq);
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="EX squad ATK bonus on base MS Attack only (option parts & leader % apply after; included in value above)">+${fmtN(atkDisp-atkS)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="EX squad ATK bonus on MS growth Attack only (not MS ability ATK bonus; option parts & leader % apply after; included in value above)">+${fmtN(atkDisp-atkS)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk)?'dc-stat-val--buffed':'';
 const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${exSq>0?' title="Includes EX squad ATK %"':''}>${fmtN(exSq>0?atkDisp:atkS)}</span>`;
 const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
@@ -3566,7 +3566,7 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='dc-stat-mini-bonus';
-sub.title='EX squad ATK bonus on base MS Attack only (option parts & leader % apply after)';
+sub.title='EX squad ATK bonus on MS growth Attack only (not MS ability ATK bonus; option parts & leader % apply after)';
 sub.textContent=`+${fmtN(atkDisp-atkS)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
 main.title='Includes EX squad ATK %';
@@ -4333,7 +4333,7 @@ let pct=0;
 (leader_skills||[]).forEach(ls=>{const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(m)pct+=parseInt(m[1],10)||0});
 return pct;
 }
-/** EX squad ATK % applies in-game to the MS base Attack only; option parts & supporter leader % stack on top after (not multiplied by EX %). */
+/** EX squad ATK % applies in-game to the MS Attack base (LB/growth line) only — not MS ability Attack bonuses (API bonus field), option parts, or supporter leader %. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
 const F=Math.floor;
 const p=Math.min(20,Math.max(0,exPct|0));
@@ -4345,7 +4345,8 @@ return F(b*(100+p)/100)+(full-b);
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){
 const F=Math.floor;
 let unitAtk=_dcFindStat(atkUnitStats,'Attack');
-const unitAtkExSquadBase=F(unitAtk||0);
+const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
+const unitAtkExSquadBase=F((atkEnt&&Number.isFinite(atkEnt.base))?atkEnt.base:unitAtk||0);
 let unitHp=_dcFindStat(atkUnitStats,'HP')||0;
 let unitDefVal=_dcFindStat(atkUnitStats,'Defense')||0;
 let unitMob=_dcFindStat(atkUnitStats,'Mobility')||0;
@@ -4588,7 +4589,7 @@ lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
-if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on base MS Attack; option parts & leader % after)`);
+if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on MS growth Attack; not MS ability ATK bonus; option parts & leader % after)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`Vigor: ${m.slot.mpLevel||'medium'}, Terrain: ${m.slot.terrainMode||'normal'}`);
@@ -4605,7 +4606,7 @@ lines.push(`Attacker: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
-if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on base MS Attack; option parts & leader % after)`);
+if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on MS growth Attack; not MS ability ATK bonus; option parts & leader % after)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
