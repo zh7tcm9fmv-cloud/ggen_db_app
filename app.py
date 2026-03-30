@@ -1444,7 +1444,7 @@ def _char_trait_line_is_squad_unit_effect(line, bab):
         return True
     return False
 
-def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
+def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, char_id=None):
     """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
         return
@@ -1461,7 +1461,7 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
         for line in lines:
             if _char_trait_line_is_squad_unit_effect(line, bab):
                 continue
-            bonuses = extract_stat_percent_char(line, txt)
+            bonuses = extract_stat_percent_char(line, txt, char_id=char_id)
             if not bonuses:
                 continue
             for s, p in bonuses.items():
@@ -1475,20 +1475,20 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        bonuses = extract_stat_percent_char(line, txt)
+        bonuses = extract_stat_percent_char(line, txt, char_id=char_id)
         if not bonuses:
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
         is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
-        if _char_support_counter_atk_line_counts_as_unconditional_cp(txt, line):
+        if _char_support_counter_atk_line_counts_as_unconditional_cp(txt, line, char_id=char_id):
             is_cond = False
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
         carry_ref[0] = False
 
-def _accumulate_character_trait_percent_buckets(ac):
+def _accumulate_character_trait_percent_buckets(ac, char_id=None):
     """Same rules as get_character: split unconditional / conditional non-EX / EX trait %."""
     spbn_u = {s: 0 for s in CHAR_STAT_ORDER}
     spbn_c = {s: 0 for s in CHAR_STAT_ORDER}
@@ -1499,11 +1499,11 @@ def _accumulate_character_trait_percent_buckets(ac):
     for bab in ac:
         carry = [False]
         for d2 in bab.get('details', []):
-            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen, carry)
+            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen, carry, char_id)
         carry[0] = False
         sab = bab.get('sp_replacement', bab)
         for d2 in sab.get('details', []):
-            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes, carry)
+            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes, carry, char_id)
     return spbn_u, spbn_c, spen, spbs_u, spbs_c, spes
 
 def _unit_hp_threshold_active_at_assumed_full_hp(part):
@@ -2378,6 +2378,12 @@ def create_skill_text_map(d):
 def calc_growth_char(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
+# Pilot "Increase ATK by N%" from Support Attack/Counter-style traits is Ranged only in-game.
+# If detection fails (e.g. unusual wording), pin per-character so Melee is not inflated.
+CHAR_ATK_INCREASE_RANGED_ONLY_IDS = frozenset({
+    '1031000601',  # Daryl Lorenz — Support Attack/Counter ATK% applies to Ranged only
+})
+
 def _char_support_counter_increase_atk_is_ranged_only(full_text):
     """EN lines like trait 201290402: Support Attack/Counter conditional 'Increase ATK by N%' buffs Ranged only (not Melee)."""
     if not full_text or not isinstance(full_text, str):
@@ -2387,15 +2393,18 @@ def _char_support_counter_increase_atk_is_ranged_only(full_text):
         return False
     return bool(re.search(r'increases?\s+atk\b', tl))
 
-def _char_support_counter_atk_line_counts_as_unconditional_cp(full_text, line):
+def _char_support_counter_atk_line_counts_as_unconditional_cp(full_text, line, char_id=None):
     """Support Attack/Counter ATK% is not part of the pair 'Conditional Passive' toggle — only tag/pair buffs (e.g. +30% Ranged) are."""
     if not line or not full_text:
         return False
     if not re.search(r'increases?\s+atk\b', line, re.IGNORECASE):
         return False
+    cid = normalize_id(char_id) if char_id else '0'
+    if cid != '0' and cid in CHAR_ATK_INCREASE_RANGED_ONLY_IDS:
+        return True
     return _char_support_counter_increase_atk_is_ranged_only(full_text)
 
-def extract_stat_percent_char(text, full_detail_text=None):
+def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
         if kw in tl: return bonuses
@@ -2415,7 +2424,11 @@ def extract_stat_percent_char(text, full_detail_text=None):
             # In-game "ATK" is both pilot attack stats (Ranged + Melee), not Melee-only.
             if u in ("ATK", "ATTACK"):
                 ctx = full_detail_text if full_detail_text is not None else text
-                if _char_support_counter_increase_atk_is_ranged_only(ctx):
+                cid = normalize_id(char_id) if char_id else '0'
+                atk_ranged_only = _char_support_counter_increase_atk_is_ranged_only(ctx) or (
+                    cid != '0' and cid in CHAR_ATK_INCREASE_RANGED_ONLY_IDS
+                )
+                if atk_ranged_only:
                     bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
                 else:
                     bonuses["Melee"] = bonuses.get("Melee", 0) + p
@@ -4688,7 +4701,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
                 if _char_trait_line_is_squad_unit_effect(part, bab):
                     continue
                 itc = _is_conditional_stat_text(part)
-                part_stats = extract_stat_percent_char(part, txt)
+                part_stats = extract_stat_percent_char(part, txt, char_id=char_id)
                 if itc and not part_stats:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
@@ -4727,7 +4740,7 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
             for line in spl:
                 if _char_trait_line_is_squad_unit_effect(line, sab):
                     continue
-                for s, p in extract_stat_percent_char(line, rawt).items():
+                for s, p in extract_stat_percent_char(line, rawt, char_id=char_id).items():
                     if sab.get('is_ex', False):
                         continue
                     spbs[s] = spbs.get(s, 0) + p
@@ -4749,7 +4762,7 @@ def compute_char_stat_totals_detail_style(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn_u, spbn_c, spen, _, _, _ = _accumulate_character_trait_percent_buckets(ac)
+    spbn_u, spbn_c, spen, _, _, _ = _accumulate_character_trait_percent_buckets(ac, char_id)
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
@@ -4768,7 +4781,7 @@ def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    _, _, _, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac)
+    _, _, _, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac, char_id)
     totals = {}
     for s in CHAR_STAT_ORDER:
         sbv = grown_sp.get(s, 0)
@@ -4787,7 +4800,7 @@ def calculate_npc_character_self_bonus_pct(abilities):
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
                 if _char_trait_line_is_squad_unit_effect(line, ab):
                     continue
-                for s, p in extract_stat_percent_char(line, txt).items():
+                for s, p in extract_stat_percent_char(line, txt, char_id=None).items():
                     if s in bp: bp[s] = bp.get(s, 0) + p
     return bp
 
@@ -7516,7 +7529,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r8_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r9_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -7540,7 +7553,7 @@ def get_character(char_id):
             return bab
         abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
         ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        spbn_u, spbn_c, spen, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac)
+        spbn_u, spbn_c, spen, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac, char_id)
         sne = []; swe = []; ssne = []; sswe = []
         for s in CHAR_STAT_ORDER:
             bv = grown.get(s, 0); bon = math.floor(bv * spbn_u[s] / 100) if bv > 0 else 0
