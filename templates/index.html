@@ -595,6 +595,14 @@ html{overflow-x:hidden}
 .dc-result-item{text-align:center}
 .dc-result-label{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
 .dc-result-val{font-size:32px;font-weight:900;font-family:'RobotoMediumNumbers',monospace}
+.dc-attacker-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px}
+.dc-attacker-panel-title-inner{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
+.dc-attacker-panel-title{color:var(--accent-cyan);font-size:16px;font-weight:700;margin:0}
+.dc-atk-slot-badge{font-size:11px;font-weight:800;color:var(--accent-cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.35);border-radius:6px;padding:2px 8px;line-height:1.2;flex-shrink:0}
+.dc-atk-slot-toggle{display:flex;align-items:center;justify-content:center;padding:6px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0;transition:var(--transition)}
+.dc-atk-slot-toggle:hover{border-color:var(--accent-cyan);background:rgba(0,212,255,.08)}
+.dc-atk-slot-toggle img{display:block;width:22px;height:22px;object-fit:contain}
+.dc-atk-slot-toggle--alt{border-color:rgba(168,85,247,.45);background:rgba(168,85,247,.06)}
 .dc-result-val.normal{color:#4ade80}
 .dc-result-val.crit{color:#f59e0b}
 .dc-result-val.hit{color:#4ade80;font-size:28px}
@@ -1035,7 +1043,15 @@ html{overflow-x:hidden}
 <div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
 <!-- ATTACKER PANEL -->
 <div class="dc-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
-<div class="dc-panel-title" style="color:var(--accent-cyan);font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px">ATTACKER</div>
+<div class="dc-attacker-panel-head">
+<div class="dc-attacker-panel-title-inner">
+<div class="dc-panel-title dc-attacker-panel-title">ATTACKER</div>
+<span class="dc-atk-slot-badge" id="dcAtkSlotBadge">1</span>
+</div>
+<button type="button" class="dc-atk-slot-toggle" id="dcAtkSlotToggle" onclick="toggleDcAttackerSlot()" title="Switch attacker (compare loadouts)" aria-label="Switch attacker">
+<img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Data.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Data.webp{% endif %}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.style.display='none'">
+</button>
+</div>
 <div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
 <div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
@@ -1454,7 +1470,7 @@ function onRarityLtCheckboxChange(which,ev){const p=rarityPrefix(which);const ke
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');const allEl=document.getElementById(p+'RarityAll');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;if(allEl)allEl.checked=false;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else if(tab==='calculator'){renderDcStageDropdown();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else applyListViewVisibility(tab)}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release')tryLoadLatestRelease();else if(tab==='calculator'){renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else applyListViewVisibility(tab)}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -2655,9 +2671,97 @@ const dp=Math.round(mp.dmgBonus*100),cm=Math.round(mp.critMult*100);
 el.textContent=`MP: +${dp}% to damage dealt (⑨) · Crit +${cm}% (×${((100+cm)/100).toFixed(2)})`;
 }
 
+function _dcCreateEmptyAttackerSlot(){
+return JSON.parse(JSON.stringify({
+atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
+lbTier:3,wpnIdx:0,wpnLv:0,
+unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,
+optionParts:[],supporters:[],
+_unitIsSD:false,
+_wpnTraitDistPow:0,_wpnTraitHpPow:0,_wpnTraits:{},
+_vigorCondThreshold:null,
+_activeSkills:{},
+mpLevel:'medium',
+terrainMode:'normal',terrain:0,
+finalWpnPow:0,dmgIncrease:0,critDmgUp:0
+}));
+}
+function _dcReadAttackerFromDc(){
+return JSON.parse(JSON.stringify({
+atkUnit:S.dc.atkUnit,atkChar:S.dc.atkChar,
+atkUnitData:S.dc.atkUnitData,atkCharData:S.dc.atkCharData,
+lbTier:S.dc.lbTier,wpnIdx:S.dc.wpnIdx,wpnLv:S.dc.wpnLv,
+unitStatMode:S.dc.unitStatMode||'normal',charStatMode:S.dc.charStatMode||'normal',
+unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,
+optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
+_unitIsSD:!!S.dc._unitIsSD,
+_wpnTraitDistPow:S.dc._wpnTraitDistPow||0,_wpnTraitHpPow:S.dc._wpnTraitHpPow||0,
+_wpnTraits:S.dc._wpnTraits||{},
+_vigorCondThreshold:S.dc._vigorCondThreshold||null,
+_activeSkills:S.dc._activeSkills||{},
+mpLevel:S.dc.mpLevel||'medium',
+terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
+finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0
+}));
+}
+function _dcWriteAttackerToDc(slot){
+if(!slot)return;
+S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
+S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
+S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
+S.dc.unitStatMode=slot.unitStatMode||'normal';S.dc.charStatMode=slot.charStatMode||'normal';
+S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;
+S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.supporters=Array.isArray(slot.supporters)?slot.supporters:[];
+S.dc._unitIsSD=!!slot._unitIsSD;
+S.dc._wpnTraitDistPow=slot._wpnTraitDistPow||0;S.dc._wpnTraitHpPow=slot._wpnTraitHpPow||0;
+S.dc._wpnTraits=slot._wpnTraits&&typeof slot._wpnTraits==='object'?{...slot._wpnTraits}:{};
+S.dc._vigorCondThreshold=slot._vigorCondThreshold;
+S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
+S.dc.mpLevel=slot.mpLevel||'medium';
+S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
+S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;
+if(S.dc.atkCharData)S.dc._pilotSkills=S.dc.atkCharData.skills||[];
+}
+function _dcSnapActiveAttackerToSlot(){
+if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))S.dc.atkSlots=[_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+onDcParamChange();
+S.dc.atkSlots[S.dc.atkSlotIndex||0]=_dcReadAttackerFromDc();
+}
+function _dcSyncAttackerDomFromDc(){
+const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value=S.dc.finalWpnPow?String(S.dc.finalWpnPow):'';
+const di=document.getElementById('dcDmgIncrease');if(di)di.value=String(S.dc.dmgIncrease||0);
+const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=String(S.dc.critDmgUp||0);
+document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===S.dc.mpLevel));
+const nb=document.getElementById('dcTerrainNormal'),hb=document.getElementById('dcTerrainHalved');
+if(nb)nb.classList.toggle('active',S.dc.terrainMode==='normal');
+if(hb)hb.classList.toggle('active',S.dc.terrainMode==='halved');
+}
+function _dcRefreshAtkSlotBadge(){
+const b=document.getElementById('dcAtkSlotBadge');if(b)b.textContent=(S.dc.atkSlotIndex===1)?'2':'1';
+const btn=document.getElementById('dcAtkSlotToggle');if(btn)btn.classList.toggle('dc-atk-slot-toggle--alt',S.dc.atkSlotIndex===1);
+}
+function _dcEnsureAttackerSlots(){
+if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots)||S.dc.atkSlots.length<2){
+S.dc.atkSlotIndex=0;
+S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
+}
+_dcRefreshAtkSlotBadge();
+}
+function toggleDcAttackerSlot(){
+_dcSnapActiveAttackerToSlot();
+S.dc.atkSlotIndex=((S.dc.atkSlotIndex|0)^1);
+_dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
+_dcSyncAttackerDomFromDc();
+_dcRefreshAtkSlotBadge();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
+_dcRefreshMpBonusHint();
+if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+onDcParamChange();
+}
+
 function initDmgCalc(){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;
+S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;S.dc._activeSkills={};
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value='';
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=0;
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=0;
@@ -2666,6 +2770,9 @@ const dtu=document.getElementById('dcDmgTakenDownUnit');if(dtu)dtu.value=0;
 ['dcDefDebuffPct','dcDtuBeam','dcDtuPhysical','dcDtuSpecial'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0});
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcTerrain('normal');
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
+S.dc.atkSlotIndex=0;
+S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
+_dcRefreshAtkSlotBadge();
 }
 function openDmgCalc(){
 const d=S.currentDetailData;
@@ -2738,6 +2845,9 @@ const thp=parseInt(p.get('th')||'',10);if(!Number.isNaN(thp)&&thp>=0){S.dc._wpnT
 if(p.get('def')==='1')setDcDefend(true);
 if(p.get('sh')==='1')setDcShield(true);
 onDcParamChange();
+S.dc.atkSlotIndex=0;
+S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
+_dcRefreshAtkSlotBadge();
 }
 
 const DC_VIGOR_ORDER=['medium','high','max','super'];
