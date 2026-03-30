@@ -723,6 +723,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'wp_phys', 'wp_beam', 'wp_spec',
     'range_beam', 'range_phys', 'range_all',
     'mp_1', 'mp_2', 'mp_3',
+    'preemptive',
 })
 
 def parse_unit_weapon_debuff_filter(val):
@@ -912,6 +913,15 @@ def classify_unit_weapon_trait_debuff_keys(line):
         )
     ):
         keys.add('range_all')
+
+    # Preemptive Strike (often on SSP weapon lines; EN / JA+TW data use mixed phrasing)
+    if (
+        'preemptive strike' in sl
+        or '先發攻擊' in s
+        or '先发攻击' in s
+        or '先制' in s
+    ):
+        keys.add('preemptive')
 
     return frozenset(keys)
 
