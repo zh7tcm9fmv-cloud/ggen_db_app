@@ -1339,6 +1339,48 @@ def is_ex_character_ability_ui(ab_name):
     return '(tag conditions)' in (ab_name or '').lower()
 
 MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6': ['1', '5'], '7': ['2x2', '6'], '8': ['1', '7'], '9': ['1', '6']}
+ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids)
+
+
+def collect_unit_mechanism_mids(info):
+    if not info:
+        return frozenset()
+    msid = str(info.get('mechanism_set_id', '0'))
+    return frozenset(MECH_MAP_TABLE.get(msid, []))
+
+
+def parse_unit_mechanism_filter(val):
+    """Comma-separated mechanism ids (MECH_MAP_TABLE); OR match vs unit's mechanisms."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    out = []
+    seen = set()
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if token not in ALL_MECHANISM_FILTER_IDS:
+            continue
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+    if not out:
+        return None
+    return frozenset(out)
+
+
+def unit_mechanism_filter_cache_fragment(expr):
+    if expr is None:
+        return 'm0'
+    return ('m' + '__'.join(sorted(expr)))[:220]
+
+
+def unit_matches_mechanism_or_filter(info, want_filter):
+    if not want_filter:
+        return True
+    have = collect_unit_mechanism_mids(info)
+    return bool(have & want_filter)
+
 
 def _is_conditional_stat_text(t):
     tl = (t or '').lower()
@@ -1365,6 +1407,43 @@ def _char_trait_text_is_support_defense_action(txt):
         return False
     return 'execut' in t
 
+_SHORT_PILOT_STAT_LINE_ONLY = re.compile(
+    r'^\s*Increase\s+(?:own\s+)?(?:Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF|Attack)\s+by\s+\d+%\s*\.?\s*$',
+    re.IGNORECASE,
+)
+
+def _ability_has_squad_unit_stat_context(bab):
+    """True when ability text describes buffing allied/squad units' MS stats (not the pilot's Ranged/Melee)."""
+    if not bab or not isinstance(bab, dict):
+        return False
+    parts = []
+    for d2 in bab.get('details', []) or []:
+        if isinstance(d2, dict):
+            parts.append(d2.get('text') or '')
+        else:
+            parts.append(str(d2))
+    blob = ' '.join(parts).lower()
+    if 'same squad' in blob or 'units bearing' in blob:
+        return True
+    if ' for units' in blob and ('squad' in blob or 'tag' in blob):
+        return True
+    return False
+
+def _char_trait_line_is_squad_unit_effect(line, bab):
+    """Stat lines that buff squad/allied units (or MS other than pilot stats) must not count toward pilot Ranged/Melee totals."""
+    if not line or not isinstance(line, str):
+        return False
+    tl = line.lower()
+    if 'same squad' in tl or 'units bearing' in tl:
+        return True
+    if ' for units' in tl or ' allied units' in tl:
+        return True
+    if ' for unit ' in tl and 'pilot' not in tl:
+        return True
+    if bab is not None and _SHORT_PILOT_STAT_LINE_ONLY.match(line) and _ability_has_squad_unit_stat_context(bab):
+        return True
+    return False
+
 def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
     """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
@@ -1380,6 +1459,8 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
         if not lines:
             lines = [txt]
         for line in lines:
+            if _char_trait_line_is_squad_unit_effect(line, bab):
+                continue
             bonuses = extract_stat_percent_char(line)
             if not bonuses:
                 continue
@@ -1390,6 +1471,10 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
     if not lines:
         return
     for line in lines:
+        if _char_trait_line_is_squad_unit_effect(line, bab):
+            if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
+                carry_ref[0] = True
+            continue
         bonuses = extract_stat_percent_char(line)
         if not bonuses:
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
@@ -2295,16 +2380,30 @@ def extract_stat_percent_char(text):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
         if kw in tl: return bonuses
+    # "Own ATK/DEF" in ability text is the mobile suit's Attack/Defense stat in battle, not pilot Ranged/Melee/Defense.
+    if 'own atk' in tl or 'own attack' in tl:
+        return bonuses
+    if 'own def' in tl or 'own defense' in tl:
+        return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
     m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by (\d+)%", text, re.IGNORECASE)
     if m:
+        p = int(m.group(3))
         for s in [m.group(1), m.group(2)]:
-            if s:
-                n = s.title(); u = n.upper()
-                if u in ["ATK","ATTACK"]: n = "Melee"
-                if u == "DEF": n = "Defense"
-                if u == "RANGE": n = "Ranged"
-                bonuses[n] = bonuses.get(n, 0) + int(m.group(3))
+            if not s:
+                continue
+            u = s.title().upper()
+            # In-game "ATK" is both pilot attack stats (Ranged + Melee), not Melee-only.
+            if u in ("ATK", "ATTACK"):
+                bonuses["Melee"] = bonuses.get("Melee", 0) + p
+                bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+            elif u == "DEF":
+                bonuses["Defense"] = bonuses.get("Defense", 0) + p
+            elif u == "RANGE":
+                bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+            else:
+                n = s.title()
+                bonuses[n] = bonuses.get(n, 0) + p
     return bonuses
 
 def create_unit_info_map(m):
@@ -2553,6 +2652,31 @@ def find_mechanism_icon(resource_id):
     for fn in IMAGE_INDEX.get('images/mechanism', []):
         if rl in fn.lower(): return fn
     return None
+
+
+def mechanism_list_filter_rows_from_ids(mids_union, ld):
+    """Labels/icons for unit browse mechanism filter — same ids as MECH_MAP_TABLE."""
+    rows = []
+    for mid in mids_union:
+        mid = str(mid)
+        if mid == '2x2':
+            rows.append({'id': '2x2', 'name': '2x2', 'icon': '/static/images/mechanism/mechanism_0002.png'})
+            continue
+        mm = ld.get('mechanism_map', {})
+        hit = None
+        for rmm in mm.get(mid, []):
+            if str(rmm.get('id')) == str(mid):
+                hit = rmm
+                break
+        if hit:
+            icf = find_mechanism_icon(hit.get('resource_id', ''))
+            icon = f"/static/images/mechanism/{icf}" if icf else ''
+            rows.append({'id': mid, 'name': (hit.get('name') or '').strip() or mid, 'icon': icon})
+        else:
+            rows.append({'id': mid, 'name': mid, 'icon': ''})
+    rows.sort(key=lambda x: (x.get('name') or '').lower())
+    return rows
+
 
 def create_weapon_trait_map(base_dir, lang_dir):
     lookup, text_map = {}, {}
@@ -3506,6 +3630,17 @@ for _uid in sorted(unit_info_map.keys()):
     _rid = normalize_id(_ui.get('recommend_character_id') or '0')
     if _rid != '0' and _rid not in CHAR_RECOMMEND_UNIT_MAP:
         CHAR_RECOMMEND_UNIT_MAP[_rid] = _uid
+
+# EX abilities that buff the pilot's MS (or squad) — applied to unit ATK/DEF in the damage calculator when paired.
+# Keys: character_id -> unit_id -> pct (not pilot Ranged/Melee; excluded via _char_trait_line_is_squad_unit_effect).
+CHAR_PAIR_UNIT_STAT_MOD_PCT = {
+    '1300001801': {'1300004650': {'atk_pct': 5, 'def_pct': 5}},
+}
+
+# "Increase own ATK by X% when countering" — MS Attack in combat; DC applies when user enables counter-attack mode.
+CHAR_PAIR_UNIT_COUNTER_ATK_PCT = {
+    '1219000201': {'1219000250': 20},
+}
 
 # Manual shortcut fallbacks for missing character <-> unit links.
 MANUAL_SHORTCUT_PAIRS = [
@@ -4513,6 +4648,8 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
             if _char_trait_text_is_support_defense_action(txt):
                 continue
             for part in parts:
+                if _char_trait_line_is_squad_unit_effect(part, bab):
+                    continue
                 itc = _is_conditional_stat_text(part)
                 part_stats = extract_stat_percent_char(part)
                 if itc and not part_stats:
@@ -4546,10 +4683,17 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
     for bab in ac:
         sab = bab.get('sp_replacement', bab)
         for d2 in sab.get('details', []):
-            for s, p in extract_stat_percent_char(d2['text']).items():
-                if sab.get('is_ex', False):
+            rawt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            spl = [ln.strip() for ln in re.split(r'\r?\n+', rawt) if ln.strip()]
+            if not spl:
+                spl = [rawt]
+            for line in spl:
+                if _char_trait_line_is_squad_unit_effect(line, sab):
                     continue
-                spbs[s] = spbs.get(s, 0) + p
+                for s, p in extract_stat_percent_char(line).items():
+                    if sab.get('is_ex', False):
+                        continue
+                    spbs[s] = spbs.get(s, 0) + p
     totals = {}
     for s in CHAR_STAT_ORDER:
         sbv = grown_sp.get(s, 0)
@@ -4603,8 +4747,11 @@ def calculate_npc_character_self_bonus_pct(abilities):
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt) or _is_conditional_stat_text(txt):
                 continue
-            for s, p in extract_stat_percent_char(txt).items():
-                if s in bp: bp[s] = bp.get(s, 0) + p
+            for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
+                if _char_trait_line_is_squad_unit_effect(line, ab):
+                    continue
+                for s, p in extract_stat_percent_char(line).items():
+                    if s in bp: bp[s] = bp.get(s, 0) + p
     return bp
 
 def get_large_unit_cells(x, y):
@@ -5595,6 +5742,7 @@ def browse_filters_pool_signature(args, entity=None):
             parts.append(args.get('terrain', '').strip())
             parts.append(args.get('stat_mode', '').strip().lower())
             parts.append(args.get('weapon_debuff', '').strip())
+            parts.append(args.get('mechanism', '').strip())
         raw = '|'.join(parts)
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
@@ -6473,7 +6621,7 @@ def list_characters():
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl23_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl26_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6573,18 +6721,22 @@ def list_units():
     terrain_filter = parse_unit_terrain_filter(terrain_arg)
     weapon_debuff_arg = request.args.get('weapon_debuff', '').strip()
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
+    mechanism_arg = request.args.get('mechanism', '').strip()
+    mechanism_filter = parse_unit_mechanism_filter(mechanism_arg)
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
+    mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     _debuff_memo = {}
     _debuff_keys_union = set()
+    mechanism_union = set()
     for uid, info in unit_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
@@ -6639,6 +6791,10 @@ def list_units():
         if weapon_debuff_filter:
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
                 continue
+        mechanism_union |= set(collect_unit_mechanism_mids(info))
+        if mechanism_filter:
+            if not id_seek and not unit_matches_mechanism_or_filter(info, mechanism_filter):
+                continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
             fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
@@ -6657,7 +6813,8 @@ def list_units():
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
     _wbp = sorted(k for k in _debuff_keys_union if k in UNIT_WEAPON_DEBUFF_FILTER_KEYS)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp}
+    _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
@@ -7322,7 +7479,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r6_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -7396,7 +7553,9 @@ def get_character(char_id):
                 uacq = uinfo.get('acquisition_route', '0')
                 uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
                 recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        pair_mod = CHAR_PAIR_UNIT_STAT_MOD_PCT.get(char_id)
+        counter_atk_mod = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(char_id)
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
