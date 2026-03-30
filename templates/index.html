@@ -2999,14 +2999,187 @@ if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
 }
 return slot;
 }
+function _dcB64UrlEncode(str){
+const bytes=new TextEncoder().encode(str);
+let bin='';
+for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
+return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function _dcB64UrlDecode(s){
+if(!s)return'';
+let pad=String(s).replace(/-/g,'+').replace(/_/g,'/');
+while(pad.length%4)pad+='=';
+const bin=atob(pad);
+const bytes=new Uint8Array(bin.length);
+for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+return new TextDecoder().decode(bytes);
+}
+function _dcPackShareState(){
+onDcParamChange();
+_dcSnapActiveAttackerToSlot();
+const slots=S.dc.atkSlots||[];
+const slotArr=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=slots[i];
+if(!sl||!sl.atkUnit||!sl.atkChar){slotArr.push(null);continue}
+const o={u:sl.atkUnit,c:sl.atkChar};
+if(sl.wpnIdx!==0)o.wi=sl.wpnIdx;
+if(sl.wpnLv!==0)o.wl=sl.wpnLv;
+if(sl.lbTier!==3)o.lb=sl.lbTier;
+if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;
+if((sl.charStatMode||'normal')!=='normal')o.cm=sl.charStatMode;
+if((sl.mpLevel||'medium')!=='medium')o.v=sl.mpLevel;
+if((sl.terrainMode||'normal')!=='normal')o.t=sl.terrainMode;
+if(sl.finalWpnPow)o.fwp=sl.finalWpnPow;
+if(sl.dmgIncrease)o.di=sl.dmgIncrease;
+if(sl.critDmgUp)o.cu=sl.critDmgUp;
+if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
+if(sl._wpnTraitHpPow)o.th=sl._wpnTraitHpPow;
+if(sl.unitCondPassive)o.ucp=1;
+if(sl.charCondPassive)o.ccp=1;
+const op=sl.optionParts&&sl.optionParts[0];
+if(op&&op.id!=null)o.op=op.id;
+const sp=sl.supporters&&sl.supporters[0];
+if(sp&&sp.id!=null){
+o.sp=sp.id;
+if((sp._dcLevel||100)!==100)o.spl=sp._dcLevel;
+if((sp._dcLbTier!==undefined?sp._dcLbTier:3)!==3)o.spb=sp._dcLbTier;
+}
+slotArr.push(o);
+}
+const stgSel=document.getElementById('dcStageSelect');
+const npcSel=document.getElementById('dcNpcSelect');
+const defNpc=S.dc.defNpc;
+const D={};
+if(defNpc&&defNpc.npc_id!=null&&String(defNpc.npc_id)!==''){
+D.n=String(defNpc.npc_id);
+if(stgSel&&stgSel.value)D.s=stgSel.value;
+}else if(npcSel&&npcSel.value){
+D.n=npcSel.value;
+if(stgSel&&stgSel.value)D.s=stgSel.value;
+}else if(stgSel&&stgSel.value)D.s=stgSel.value;
+if(S.dc.dmgTakenDownPilot)D.dtp=S.dc.dmgTakenDownPilot;
+if(S.dc.dmgTakenDownUnit)D.dttu=S.dc.dmgTakenDownUnit;
+if(S.dc.defDebuffPct)D.defp=S.dc.defDebuffPct;
+if(S.dc.dtuBeam)D.dtb=S.dc.dtuBeam;
+if(S.dc.dtuPhysical)D.dtph=S.dc.dtuPhysical;
+if(S.dc.dtuSpecial)D.dts=S.dc.dtuSpecial;
+if(S.dc.defending)D.def=1;
+if(S.dc.shield)D.sh=1;
+const out={v:1,a:S.dc.atkSlotIndex|0,S:slotArr};
+if(Object.keys(D).length)out.D=D;
+return out;
+}
+async function _dcLoadSlotFromPackedObj(o){
+if(!o||!o.u||!o.c)return null;
+const uid=String(o.u),cid=String(o.c);
+let ur,cr;
+try{
+[ur,cr]=await Promise.all([
+fetch(`/api/unit/${uid}?lang=${S.lang}`).then(r=>r.json()),
+fetch(`/api/character/${cid}?lang=${S.lang}`).then(r=>r.json())
+]);
+}catch(_){return null}
+const slot=_dcCreateEmptyAttackerSlot();
+slot.atkUnit=uid;slot.atkChar=cid;
+slot.atkUnitData=ur;slot.atkCharData=cr;
+slot._unitIsSD=String(ur.body_type||'')==='3';
+slot._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
+if(o.wi!==undefined){const n=parseInt(o.wi,10);if(!Number.isNaN(n)&&n>=0)slot.wpnIdx=n}else slot.wpnIdx=0;
+if(o.wl!==undefined){const n=parseInt(o.wl,10);if(!Number.isNaN(n)&&n>=0)slot.wpnLv=n}else slot.wpnLv=0;
+if(o.lb!==undefined){const n=parseInt(o.lb,10);if(!Number.isNaN(n)&&n>=0)slot.lbTier=n}
+const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
+const cm=o.cm;if(cm==='normal'||cm==='sp')slot.charStatMode=cm;
+if(o.v)slot.mpLevel=o.v;
+else slot._dcNeedAutoMp=true;
+if(o.t==='halved'){slot.terrainMode='halved';slot.terrain=50}
+else if(o.t){slot.terrainMode=o.t;slot.terrain=0}
+else{slot.terrainMode='normal';slot.terrain=0}
+if(o.fwp!==undefined){const n=parseInt(o.fwp,10);if(Number.isFinite(n))slot.finalWpnPow=n}
+if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n))slot.dmgIncrease=n}
+if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n))slot.critDmgUp=n}
+if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitDistPow=n}
+if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitHpPow=n}
+if(o.ucp)slot.unitCondPassive=true;
+if(o.ccp)slot.charCondPassive=true;
+const opId=o.op;
+if(opId){
+try{
+const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(opId))}&unit_id=${encodeURIComponent(uid)}`);
+const d=await r.json();
+const hit=(d.rows||[]).find(x=>String(x.id)===String(opId));
+if(hit)slot.optionParts=[{id:hit.id,name:hit.name,details:hit.details||'',thum:hit.thum||'',tags:hit.tags||[]}];
+}catch(_){}
+}
+const spId=o.sp;
+if(spId){
+const lv=Math.min(100,Math.max(1,parseInt(o.spl!==undefined?o.spl:100,10)));
+const lb=Math.min(3,Math.max(0,parseInt(o.spb!==undefined?o.spb:3,10)));
+try{
+const rd=await fetch(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
+}catch(_){}
+}
+return slot;
+}
+async function _dcApplyPackedShareState(obj){
+const D=obj.D||{};
+if(D.s){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}}
+const arr=Array.isArray(obj.S)?obj.S:[null,null,null];
+const loaded=await Promise.all([0,1,2].map(i=>{
+const o=arr[i];
+return o?_dcLoadSlotFromPackedObj(o):Promise.resolve(null);
+}));
+const slots=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(loaded[i]||_dcCreateEmptyAttackerSlot());
+S.dc.atkSlots=slots;
+for(let si=0;si<DC_ATK_SLOT_COUNT;si++){
+const sl=S.dc.atkSlots[si];
+if(!sl||!sl.atkUnitData||!sl._dcNeedAutoMp)continue;
+_dcWriteAttackerToDc(sl);
+_dcAutoSetVigor();
+sl.mpLevel=S.dc.mpLevel;
+delete sl._dcNeedAutoMp;
+}
+const asRaw=parseInt(obj.a||'0',10);
+const ai=Number.isNaN(asRaw)?0:Math.min(Math.max(asRaw,0),DC_ATK_SLOT_COUNT-1);
+S.dc.atkSlotIndex=ai;
+_dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
+_dcDetectVigorCondAbilities(S.dc.atkUnitData);
+_dcSyncAttackerDomFromDc();
+S.dc.atkSlots[S.dc.atkSlotIndex]=_dcReadAttackerFromDc();
+if(D.n){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=D.n;selectDcNpc()}}
+if(D.dtp!==undefined){const el=document.getElementById('dcDmgTakenDownPilot');if(el)el.value=String(D.dtp)}
+if(D.dttu!==undefined){const el=document.getElementById('dcDmgTakenDownUnit');if(el)el.value=String(D.dttu)}
+if(D.defp!==undefined){const el=document.getElementById('dcDefDebuffPct');if(el)el.value=String(D.defp)}
+if(D.dtb!==undefined){const el=document.getElementById('dcDtuBeam');if(el)el.value=String(D.dtb)}
+if(D.dtph!==undefined){const el=document.getElementById('dcDtuPhysical');if(el)el.value=String(D.dtph)}
+if(D.dts!==undefined){const el=document.getElementById('dcDtuSpecial');if(el)el.value=String(D.dts)}
+if(D.def===1)setDcDefend(true);
+if(D.sh===1)setDcShield(true);
+}
 async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
 if(p.get('tab')!=='calculator')return;
 initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
+let loadedFromPacked=false;
+let isMultiSlotUrl=false;
+const dcRaw=p.get('dc');
+if(dcRaw){
+try{
+const obj=JSON.parse(_dcB64UrlDecode(dcRaw));
+if(obj&&obj.v===1){
+await _dcApplyPackedShareState(obj);
+loadedFromPacked=true;
+isMultiSlotUrl=true;
+}
+}catch(e){console.warn('dc share payload',e)}
+}
+if(!loadedFromPacked){
 const stgId=p.get('s');
 if(stgId){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=stgId;if(sel.value===stgId)await onDcStageChange()}}
-const isMultiSlotUrl=['0','1','2'].some(d=>{const v=p.get('u'+d);return v!==null&&v!==''});
+isMultiSlotUrl=['0','1','2'].some(d=>{const v=p.get('u'+d);return v!==null&&v!==''});
 if(isMultiSlotUrl){
 const loaded=await Promise.all([0,1,2].map(i=>_dcLoadAttackerSlotFromUrl(p,i,false)));
 const slots=[];
@@ -3039,6 +3212,7 @@ const lbP=parseInt(p.get('lb')||'',10);if(!Number.isNaN(lbP)&&lbP>=0)S.dc.lbTier
 if(p.get('v'))setDcMp(p.get('v'));
 else _dcAutoSetVigor();
 if(p.get('t'))setDcTerrain(p.get('t'));
+}
 }
 if(!isMultiSlotUrl&&p.get('op')&&S.dc.atkUnit){
 try{
@@ -4079,9 +4253,7 @@ area.innerHTML=`<div class="dc-result-box">${inner}
 <div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
 </div>`;
 }
-function _dcBuildShareUrl(){
-onDcParamChange();
-_dcSnapActiveAttackerToSlot();
+function _dcBuildShareQueryStringLong(){
 const p=new URLSearchParams();
 const slots=S.dc.atkSlots||[];
 const filled=[];
@@ -4165,7 +4337,25 @@ if(S.dc.dtuPhysical)p.set('dtph',S.dc.dtuPhysical);
 if(S.dc.dtuSpecial)p.set('dts',S.dc.dtuSpecial);
 if(S.dc.defending)p.set('def','1');
 if(S.dc.shield)p.set('sh','1');
-return`${location.origin}${location.pathname}?tab=calculator&${p.toString()}`;
+return p.toString();
+}
+function _dcBuildShareUrl(){
+onDcParamChange();
+_dcSnapActiveAttackerToSlot();
+const base=`${location.origin}${location.pathname}?tab=calculator&`;
+const longQs=_dcBuildShareQueryStringLong();
+const uLong=base+longQs;
+try{
+const packed=_dcPackShareState();
+const json=JSON.stringify(packed);
+const b64=_dcB64UrlEncode(json);
+if(b64.length>12000)return uLong;
+const uShort=base+'dc='+encodeURIComponent(b64);
+if(uShort.length<=uLong.length)return uShort;
+return uLong;
+}catch(e){
+return uLong;
+}
 }
 function copyDcResultText(){
 const r=S.dc._lastResult;if(!r)return;
@@ -4206,10 +4396,6 @@ lines.push(`Hit Rate: ${r.hitRate}%`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
-}
-if(multi&&multi.length>1){
-lines.push('');
-lines.push(_dcBuildShareUrl());
 }
 navigator.clipboard.writeText(lines.join('\n')).then(()=>{
 const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
