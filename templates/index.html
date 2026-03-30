@@ -703,7 +703,6 @@ html{overflow-x:hidden}
 .dc-credit-link{font-size:13px;font-weight:600;color:var(--accent-gold);text-decoration:none;white-space:nowrap;transition:var(--transition)}
 .dc-credit-link:hover{color:var(--accent-cyan);text-decoration:underline}
 .dc-tip{cursor:help;text-decoration:underline dotted;text-underline-offset:2px;color:var(--text-muted)}
-.dc-mp-bonus-hint{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4}
 .dc-def-dtu-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .dc-dtu-row{border-radius:8px;padding:6px 8px;margin:-4px -4px 4px;transition:background .15s,border-color .15s,box-shadow .15s}
 .dc-dtu-row--on.dc-dtu--beam{background:rgba(56,189,248,.16);box-shadow:0 0 0 2px rgba(56,189,248,.75),0 0 16px rgba(56,189,248,.28),inset 0 0 24px rgba(56,189,248,.08)}
@@ -1115,11 +1114,11 @@ html{overflow-x:hidden}
 <button class="dc-ctrl-btn" data-mp="high" onclick="setDcMp('high')">High</button>
 <button class="dc-ctrl-btn" data-mp="max" onclick="setDcMp('max')">Max</button>
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
-</div><div id="dcMpBonusHint" class="dc-mp-bonus-hint"></div></div>
+</div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Halved: final damage is multiplied by (1 − penalty). Used for e.g. underwater vs land weapons.">Terrain Penalty</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -1162,18 +1161,18 @@ html{overflow-x:hidden}
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:#ef4444">Defender Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Flat % reduction to target unit defense (UnDef). Does not reduce character defense.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Flat % reduction to target unit defense (UnDef). Does not reduce character defense.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Sum of the matching attribute row below (Beam, Physical, or Special) for the attacker’s current weapon.">Total Debuffs %</span></span><span id="dcTotalDebuffsDisplay" class="dc-input-sm" style="display:inline-flex;align-items:center;min-height:36px;padding:0 8px;color:var(--accent-cyan);font-weight:600">0</span></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy character (⑨ pool).">Damage Taken Down (character) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy unit (non-EX attacks). EX weapons ignore this.">Damage Taken Down (Unit) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy character (⑨ pool).">Damage Taken Down (character) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy unit (non-EX attacks). EX weapons ignore this.">Damage Taken Down (Unit) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Target chose Defend: multiplies final damage by 0.8 (0.6 with shield).">Defend Action</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcDefOff" onclick="setDcDefend(false)">Off</button><button class="dc-ctrl-btn" id="dcDefOn" onclick="setDcDefend(true)">On</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Shield defend uses the stronger 0.6 final multiplier instead of 0.8.">Shield</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcShieldOff" onclick="setDcShield(false)">Off</button><button class="dc-ctrl-btn" id="dcShieldOn" onclick="setDcShield(true)">On</button></div></div>
 </div>
 <div class="dc-section-label" style="margin:12px 0 6px;font-size:11px;color:var(--text-muted)">Inflicted Type of Debuffs <span class="dc-tip" title="Rows that match the attacker’s weapon attribute (Beam / Physical / Special) are highlighted; their values sum into Total Debuffs % for ⑨.">(?)</span></div>
 <div class="dc-def-dtu-grid">
-<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowBeam" data-dtu="beam"><span class="dc-ctrl-label">Beam</span><input type="number" class="dc-input-sm" id="dcDtuBeam" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowPhysical" data-dtu="physical"><span class="dc-ctrl-label">Physical</span><input type="number" class="dc-input-sm" id="dcDtuPhysical" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowSpecial" data-dtu="special"><span class="dc-ctrl-label">Special</span><input type="number" class="dc-input-sm" id="dcDtuSpecial" min="0" max="500" value="0" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowBeam" data-dtu="beam"><span class="dc-ctrl-label">Beam</span><input type="number" class="dc-input-sm" id="dcDtuBeam" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowPhysical" data-dtu="physical"><span class="dc-ctrl-label">Physical</span><input type="number" class="dc-input-sm" id="dcDtuPhysical" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group dc-dtu-row" id="dcDtuRowSpecial" data-dtu="special"><span class="dc-ctrl-label">Special</span><input type="number" class="dc-input-sm" id="dcDtuSpecial" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -2756,13 +2755,6 @@ const ud=S.dc.atkUnitData;if(!ud||!ud.weapons){el.textContent='—';return}
 const wpns=_dcNonMapWeapons(ud);const w=wpns[S.dc.wpnIdx];if(!w){el.textContent='—';return}
 el.textContent=String(_dcWeaponDtuSumPct(w)||0);
 }
-function _dcRefreshMpBonusHint(){
-const el=document.getElementById('dcMpBonusHint');if(!el)return;
-const mp=DC_MP[S.dc.mpLevel||'medium'];
-const dp=Math.round(mp.dmgBonus*100),cm=Math.round(mp.critMult*100);
-el.textContent=`MP: +${dp}% to damage dealt (⑨) · Crit +${cm}% (×${((100+cm)/100).toFixed(2)})`;
-}
-
 function _dcCreateEmptyAttackerSlot(){
 return JSON.parse(JSON.stringify({
 atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
@@ -2877,7 +2869,6 @@ _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
-_dcRefreshMpBonusHint();
 if(S.dc.atkCharData)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
@@ -2889,7 +2880,6 @@ _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
-_dcRefreshMpBonusHint();
 if(S.dc.atkCharData)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
@@ -3556,6 +3546,12 @@ if(m)traits.hpPowerMax=parseInt(m[1],10);
 });
 return traits;
 }
+function _dcDefaultWpnLvIndex(wpn){
+if(!wpn||!wpn.levels||!wpn.levels.length)return 0;
+const idx=wpn.levels.findIndex(lv=>Number(lv.level)===5);
+if(idx>=0)return idx;
+return wpn.levels.length-1;
+}
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
 const ud=S.dc.atkUnitData;
@@ -3785,7 +3781,10 @@ try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_ti
 function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcRefreshAtkPanelsAfterMods()}
 function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcWeapon(idx){S.dc.wpnIdx=idx;S.dc.wpnLv=0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea();onDcParamChange()}
+function setDcWeapon(idx){
+const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];
+const w=wpns[idx];
+S.dc.wpnIdx=idx;S.dc.wpnLv=w?_dcDefaultWpnLvIndex(w):0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea();onDcParamChange()}
 function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea();onDcParamChange()}
 function setDcMp(lv){
 const prevKey=_dcGetUnitStatKey();
@@ -3797,7 +3796,6 @@ if(S.dc.atkCharData)_dcRecalcPilotBonuses();
 else if(S.dc.atkUnitData){renderDcWeaponArea();onDcParamChange()}
 else onDcParamChange();
 if(S.dc.atkCharData&&S.dc.atkUnitData)renderDcWeaponArea();
-_dcRefreshMpBonusHint();
 }
 function setDcDefend(v){
 S.dc.defending=v;
@@ -3824,9 +3822,12 @@ S.dc.dtuBeam=parseInt(document.getElementById('dcDtuBeam')?.value)||0;
 S.dc.dtuPhysical=parseInt(document.getElementById('dcDtuPhysical')?.value)||0;
 S.dc.dtuSpecial=parseInt(document.getElementById('dcDtuSpecial')?.value)||0;
 _dcRefreshTotalDebuffsDisplay();
-_dcRefreshMpBonusHint();
 if(S.dc.defNpc)renderDcDefStats();
 _dcRefreshCalcDependentUi();
+if(S.dc.atkSlots&&Array.isArray(S.dc.atkSlots)&&S.dc.atkSlots.length){
+const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+if(si<S.dc.atkSlots.length)S.dc.atkSlots[si]=_dcReadAttackerFromDc();
+}
 renderDcResult();
 }
 function _dcRefreshAtkPanelsAfterMods(){
@@ -3932,7 +3933,9 @@ if(type==='supporter'){await selectDcSupporter(id);return}
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
 if(type==='unit'){
-S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.unitStatMode='normal';S.dc.unitCondPassive=false;
+const wpns=_dcNonMapWeapons(d);
+const first=wpns[0];
+S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=first?_dcDefaultWpnLvIndex(first):0;S.dc.unitStatMode='normal';S.dc.unitCondPassive=false;
 S.dc.optionParts=[];S.dc.supporters=[];
 _dcDetectVigorCondAbilities(d);
 const rec=d.recommend_character;const isSD=d.body_type==='3';
