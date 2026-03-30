@@ -618,6 +618,7 @@ html{overflow-x:hidden}
 .dc-hp-mini--crit .dc-hp-mini-tag{color:#fcd34d}
 .dc-hp-mini-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text-primary);line-height:1.25;word-break:break-all}
 .dc-hp-mini-sep{opacity:.45;font-weight:600;margin:0 2px}
+.dc-hp-mini-pct{font-weight:700;font-size:12px;opacity:.88;margin-left:2px}
 .dc-hp-mini-track{height:7px;border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;border:1px solid rgba(255,255,255,.07)}
 .dc-result-hp-row{margin-bottom:12px}
 .dc-result-hp-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px;font-size:12px;color:var(--text-muted);font-weight:600}
@@ -2987,7 +2988,7 @@ renderDcWeaponArea();
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();if(on&&S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData))setDcMp('super');else onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -3040,7 +3041,6 @@ if(!cd||!cd.abilities)return b;
 const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
 cd.abilities.forEach(ab=>{
 const lines=(ab.details||[]);
-const exAb=/EX\s*Character/i.test(ab.name||'');
 lines.forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
@@ -3048,16 +3048,15 @@ const hasCond=condGroups.length>0;
 let condMet=false;
 if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
 const isUnmet=hasCond&&!condMet;
-const requiresCharCp=exAb;
 let m;
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
+if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
+if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
+if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
+if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
 });
 });
 return b;
@@ -3066,17 +3065,13 @@ function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
 if(!b.items.length)return;
-const charCpOn=!!S.dc.charCondPassive;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div style="font-size:12px;line-height:1.6">`;
 b.items.forEach((it,i)=>{
-const needChar=!!it.requiresCharCp;
-const cpGate=needChar&&!charCpOn;
 const condTag=it.cond?` <span style="color:#f59e0b;font-size:10px">(Conditional)</span>`:it.autoMet?` <span style="color:#4ade80;font-size:10px">(Tag Matched)</span>`:'';
-const cpHint=cpGate&&!it.cond?` <span style="color:#a78bfa;font-size:10px">(Character CP)</span>`:'';
 const togId=`dcPilotBonusChk_${i}`;
-const checked=!it.cond&&!cpGate;
-const rowOff=!!it.cond||cpGate;
-h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}" style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}${cpHint}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
+const checked=!it.cond;
+const rowOff=!!it.cond;
+h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}" style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
 });
 h+=`</div>`;
 area.innerHTML+=h;
@@ -3863,11 +3858,11 @@ area.innerHTML=`<div class="dc-result-box">
 <div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
 <div class="dc-result-hp dc-result-hp--compact">
 <div class="dc-hp-mini dc-hp-mini--normal">
-<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span></div>
+<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}${npcHp>0?`<span class="dc-hp-mini-pct"> (${pctN.toFixed(1)}%)</span>`:''}</span></div>
 <div class="dc-hp-bar-track dc-hp-mini-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--normal" style="width:${pctN}%"></div></div>
 </div>
 <div class="dc-hp-mini dc-hp-mini--crit">
-<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_crit')}</span><span class="dc-hp-mini-val">${fmtN(hpRemC)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span></div>
+<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_crit')}</span><span class="dc-hp-mini-val">${fmtN(hpRemC)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}${npcHp>0?`<span class="dc-hp-mini-pct"> (${pctC.toFixed(1)}%)</span>`:''}</span></div>
 <div class="dc-hp-bar-track dc-hp-mini-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--crit" style="width:${pctC}%"></div></div>
 </div>
 </div>
@@ -3886,6 +3881,8 @@ const nName=npc?(npc.unit?.name||'NPC'):'?';
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
+const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
+const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 const lines=[
 `⚔ GGen Damage Calculator Result`,
 `Attacker: ${uName} + ${cName}`,
@@ -3893,8 +3890,8 @@ const lines=[
 `Normal Damage: ${fmtN(r.normalDmg)}`,
 `Critical Damage: ${fmtN(r.critDmg)}`,
 `Hit Rate: ${r.hitRate}%`,
-`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}`,
-`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}`,
+`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`,
+`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`,
 `Vigor: ${S.dc.mpLevel}, Terrain: ${S.dc.terrainMode||'normal'}`
 ];
 navigator.clipboard.writeText(lines.join('\n')).then(()=>{
