@@ -1115,7 +1115,7 @@ html{overflow-x:hidden}
 <li><span class="dc-tip" title="Computed from weapon base power × (1 + distance/HP trait %). Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
-<li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="Optional manual bonus for EX Character Ability squad synergy (e.g. tag-based ATK per allied unit in squad, up to 20% in-game). Stacks in the same ⑨ pool as Damage Dealt Up.">EX squad ATK %</span></li>
+<li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: increases the unit Attack stat used in this calculator (same as in-game ATK %, up to 20%). Shown under Unit Attack with a green line.">EX squad ATK %</span></li>
 <li><span class="dc-tip" title="Damage uses the pilot offensive stat that matches the weapon's attack type (Ranged / Melee / Awaken — see icons before Attribute in the weapon row). A passive that raises Melee only affects weapons whose attack type uses Melee; EX weapons follow the same rule from their listed attack type(s).">Pilot stat vs weapon attack type</span></li>
 <li><span class="dc-tip" title="Sum of Beam / Physical / Special DTU rows matching the weapon attribute — adds to ⑨ pool (same bucket as damage dealt up).">Damage Taken Up (debuffs)</span> (<span class="dc-tip" title="Highlighted row(s) match your weapon attribute.">attribute rows</span>)</li>
 <li><span class="dc-tip" title="Reduces final damage: pilot DTU % always; unit DTU % for non-EX weapons.">Damage Taken Down</span> (pilot · unit)</li>
@@ -1197,7 +1197,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX Character Ability squad synergy (e.g. pairing 1095001801 with 1095002550: +4% ATK per qualifying allied unit bearing the tag, up to 20%). Stacks in the same ⑨ pool as Damage Dealt Up %.">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX Character Ability squad synergy (e.g. pairing 1095001801 with 1095002550: +4% ATK per qualifying allied unit bearing the tag, up to 20%). Increases unit Attack used in damage (shown under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 </div>
 </div>
 </div>
@@ -3527,12 +3527,57 @@ function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,
 function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?'dc-stat-val--buffed':''}
 const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense'),hMob=_uCpValBuff('Mobility');
 const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
+const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const Fex=Math.floor;
+const atkDisp=exSq>0?Fex(atkS*(1+exSq/100)):atkS;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="EX squad ATK bonus (included in value above)">+${fmtN(atkDisp-atkS)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkSpanClass=(exSq>0||hAtk)?'dc-stat-val--buffed':'';
+const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${exSq>0?' title="Includes EX squad ATK %"':''}>${fmtN(exSq>0?atkDisp:atkS)}</span>`;
 const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
 const unitModNote=hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support (ATK support applies in damage only).</div>':'';
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val"><span${spAtk}>${fmtN(atkS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
 renderDcWeaponArea();
+}
+function _dcRefreshDcUnitAtkExOnly(){
+const main=document.getElementById('dcAtkUnitAtkMain');
+const sub=document.getElementById('dcAtkUnitAtkExSub');
+if(!main||!sub)return;
+const ud=S.dc.atkUnitData;if(!ud||ud._manual)return;
+const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
+const statKey=_dcGetUnitStatKey();
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const stats=td?td[statKey]||td.stats_no_cond:[];
+const uEff=_dcGetModifiedAttackerUnitStats(stats);
+const atkS=uEff.unitAtk;
+const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const F=Math.floor;
+const atkDisp=exSq>0?F(atkS*(1+exSq/100)):atkS;
+const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
+let statsNoCp=stats;
+if(ud.has_cond_stats&&td){
+const kn=_dcGetUnitStatKeyForCp(false);
+statsNoCp=td[kn]||stats;
+}
+const a=Math.round(_dcFindStat(statsNoCp,'Attack')||0),b=Math.round(_dcFindStat(stats,'Attack')||0);
+const cpAtkBuff=uCp&&a!==b;
+main.textContent=fmtN(exSq>0?atkDisp:atkS);
+if(exSq>0){
+sub.style.display='';
+sub.removeAttribute('aria-hidden');
+sub.className='dc-stat-mini-bonus';
+sub.title='EX squad ATK bonus (included in value above)';
+sub.textContent=`+${fmtN(atkDisp-atkS)} · EX squad +${exSq}%`;
+main.classList.add('dc-stat-val--buffed');
+main.title='Includes EX squad ATK %';
+}else{
+sub.style.display='none';
+sub.setAttribute('aria-hidden','true');
+sub.textContent='';
+main.removeAttribute('title');
+if(cpAtkBuff)main.classList.add('dc-stat-val--buffed');else main.classList.remove('dc-stat-val--buffed');
+}
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -4109,6 +4154,7 @@ if(S.dc.atkSlots&&Array.isArray(S.dc.atkSlots)&&S.dc.atkSlots.length){
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 if(si<S.dc.atkSlots.length)S.dc.atkSlots[si]=_dcReadAttackerFromDc();
 }
+_dcRefreshDcUnitAtkExOnly();
 renderDcResult();
 }
 function _dcRefreshAtkPanelsAfterMods(){
@@ -4332,6 +4378,8 @@ const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0,accuracy:0,critical:
 
 const uMod=_dcGetModifiedAttackerUnitStats(atkUnitStats);
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
+const exSquadAtkPct=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+if(exSquadAtkPct>0)unitAtk=F(unitAtk*(1+exSquadAtkPct/100));
 const atkSupport=uMod.atkSupport;
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
@@ -4378,7 +4426,6 @@ const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
 const battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
 
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
-const exSquadAtkPct=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const userCritDmgUpPct=S.dc.critDmgUp||0;
 const dmgTakenUpPct=_dcWeaponDtuSumPct(wpn);
 const dmgTakenUpTyped=dmgTakenUpPct||0;
@@ -4388,11 +4435,11 @@ const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
 const isExWeapon=!!wpn.is_ex;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
-const totalNormalMultPct=userDmgIncreasePct+exSquadAtkPct+dmgTakenUpPct-takenDown;
+const totalNormalMultPct=userDmgIncreasePct+dmgTakenUpPct-takenDown;
 let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 normalDmg=MX(0,normalDmg+atkSupport);
 
-const totalCritMultPct=userDmgIncreasePct+userCritDmgUpPct+exSquadAtkPct+dmgTakenUpPct-takenDown;
+const totalCritMultPct=userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 let critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
 critDmg=MX(0,critDmg+atkSupport);
@@ -4532,7 +4579,7 @@ lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
-if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK %: +${rr.exSquadAtkPct}%`);
+if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (applied to unit Attack)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`Vigor: ${m.slot.mpLevel||'medium'}, Terrain: ${m.slot.terrainMode||'normal'}`);
@@ -4549,7 +4596,7 @@ lines.push(`Attacker: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
-if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK %: +${r.exSquadAtkPct}%`);
+if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (applied to unit Attack)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
