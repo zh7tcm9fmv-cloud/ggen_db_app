@@ -1078,6 +1078,73 @@ def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
     return all(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
 
 
+def trait_condition_matches_unit(cond_id, uid, ld, lc, char_id=None):
+    """Whether a supporter leader trait condition applies to the given unit (and optional pilot).
+
+    Uses the same raw fields as resolve_condition_tags. Character tags are only enforced when
+    char_id is provided; otherwise they are ignored so the list stays usable before a pilot is chosen.
+    """
+    if not cond_id or cond_id == '0':
+        return True
+    raw = trait_condition_raw_map.get(str(cond_id), {})
+    ut = raw.get('unit_tags') or []
+    gt = raw.get('group_tags') or []
+    tp = raw.get('types') or []
+    ser = raw.get('series') or []
+    ct = raw.get('char_tags') or []
+    if not any([ut, gt, tp, ser, ct]):
+        return True
+    ok = True
+    if ut:
+        uls = unit_lin_map.get(uid, [])
+        ok = ok and bool(uls) and any(_tag_id_list_matches_lineage_want(ut, ul) for ul in uls)
+    if gt:
+        uls = unit_lin_map.get(uid, [])
+        ok = ok and bool(uls) and any(_tag_id_list_matches_lineage_want(gt, ul) for ul in uls)
+    if tp:
+        urole = str(unit_info_map.get(uid, {}).get('role', '0'))
+        ok = ok and (urole in [str(x) for x in tp])
+    if ser:
+        sset = unit_ser_map.get(uid, '')
+        unit_sids = set()
+        if sset and sset != '0':
+            for sid in ld.get('ser_set_map', {}).get(sset, []):
+                unit_sids.add(normalize_id(sid))
+        ok = ok and any(normalize_id(s) in unit_sids for s in ser)
+    if ct and char_id and str(char_id).strip() not in ('', '0'):
+        cid = normalize_id(char_id)
+        cls = char_lin_map.get(cid, [])
+        ok = ok and bool(cls) and any(_tag_id_list_matches_lineage_want(ct, cl) for cl in cls)
+    return ok
+
+
+def supporter_leader_applies_to_unit(sid, uid, ld, lc, char_id=None):
+    """True if at least one tier-3 leader skill applies to the unit (OR across tier-3 rows)."""
+    uid = normalize_id(uid)
+    if uid == '0' or uid not in unit_info_map:
+        return True
+    lsr = supporter_leader_map.get(sid, [])
+    tier3 = [ls for ls in lsr if ls.get('tier') == 3]
+    if not tier3:
+        return True
+    for ls in tier3:
+        if trait_condition_matches_unit(ls.get('trait_cond_id', '0'), uid, ld, lc, char_id):
+            return True
+    return False
+
+
+def option_part_matches_unit(opid, uid):
+    """Option parts without lineage rows apply to any unit; otherwise unit must match a listed lineage (OR)."""
+    opid = normalize_id(opid)
+    uid = normalize_id(uid)
+    if uid == '0' or uid not in unit_info_map:
+        return True
+    lids = option_parts_lineage_map.get(opid, [])
+    if not lids:
+        return True
+    return any(_entity_matches_one_lineage(unit_lin_map, uid, pl) for pl in lids)
+
+
 def lineages_for_supporter_browse(ld, lang_code):
     """Distinct lineage tags that appear on supporter leader skills (tier 3).
 
@@ -6632,7 +6699,14 @@ def list_option_parts():
         ef = request.args.get('effect', 'ALL').strip().upper()
         if ef not in OPTION_PART_EFFECT_FILTERS:
             ef = 'ALL'
-        ck = f"op6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}"
+        for_unit = None
+        u_arg = request.args.get('unit_id', '').strip()
+        if u_arg:
+            u = normalize_id(u_arg)
+            if u in unit_info_map:
+                for_unit = u
+        uf = f"u{for_unit}" if for_unit else 'u0'
+        ck = f"op6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
         cached = get_cached_response(ck)
         if cached:
             out = dict(cached)
@@ -6650,6 +6724,8 @@ def list_option_parts():
             if not isinstance(item, dict): continue
             opid = str(item.get('Id') or item.get('id', 0))
             if opid == '0': continue
+            if for_unit and not option_part_matches_unit(opid, for_unit):
+                continue
             ri = str(item.get('RarityTypeIndex') or 1)
             if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
             name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
@@ -6697,7 +6773,21 @@ def list_supporters():
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
-        ck = f"sl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}"
+        for_unit = None
+        u_arg = request.args.get('unit_id', '').strip()
+        if u_arg:
+            u = normalize_id(u_arg)
+            if u in unit_info_map:
+                for_unit = u
+        for_char = None
+        c_arg = request.args.get('character_id', '').strip()
+        if c_arg:
+            c = normalize_id(c_arg)
+            if c in char_info_map:
+                for_char = c
+        uf = f"u{for_unit}" if for_unit else 'u0'
+        cf = f"c{for_char}" if for_char else 'c0'
+        ck = f"sl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -6712,6 +6802,8 @@ def list_supporters():
             if lineage_filter is not None:
                 if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
                     continue
+            if for_unit and not id_seek and not supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char):
+                continue
             if rarity_filter is not None:
                 if not rarity_filter:
                     continue
