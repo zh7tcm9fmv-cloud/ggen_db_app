@@ -595,14 +595,29 @@ html{overflow-x:hidden}
 .dc-result-item{text-align:center}
 .dc-result-label{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
 .dc-result-val{font-size:32px;font-weight:900;font-family:'RobotoMediumNumbers',monospace}
-.dc-attacker-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px}
-.dc-attacker-panel-title-inner{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
-.dc-attacker-panel-title{color:var(--accent-cyan);font-size:16px;font-weight:700;margin:0}
-.dc-atk-slot-badge{font-size:11px;font-weight:800;color:var(--accent-cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.35);border-radius:6px;padding:2px 8px;line-height:1.2;flex-shrink:0}
-.dc-atk-slot-toggle{display:flex;align-items:center;justify-content:center;padding:6px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0;transition:var(--transition)}
+.dc-result-multi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;text-align:left}
+.dc-result-multi-col{background:rgba(0,0,0,.12);border:1px solid rgba(148,163,184,.2);border-radius:12px;padding:14px 12px 16px;min-width:0}
+.dc-result-multi-head{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-cyan);margin-bottom:10px;line-height:1.3}
+.dc-result-multi-col .dc-result-row{margin-bottom:12px;gap:16px}
+.dc-result-multi-col .dc-result-val{font-size:26px}
+.dc-result-multi-col .dc-result-val.hit{font-size:22px}
+.dc-result-multi-col .dc-result-hp--compact{max-width:none;margin-top:12px}
+.dc-attacker-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px}
+.dc-attacker-panel-title{color:var(--accent-cyan);font-size:16px;font-weight:700;margin:0;flex-shrink:0}
+.dc-atk-slot-tools{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.dc-atk-slot-pills{display:inline-flex;gap:6px;align-items:center}
+.dc-atk-slot-pill{min-width:38px;height:38px;padding:0 10px;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;border-radius:10px;border:1px solid rgba(0,212,255,.38);background:rgba(0,212,255,.07);color:var(--accent-cyan);cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s,transform .1s;line-height:1}
+.dc-atk-slot-pill:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.14)}
+.dc-atk-slot-pill.is-active{background:rgba(0,212,255,.22);border-color:var(--accent-cyan);box-shadow:0 0 0 1px rgba(0,212,255,.35)}
+.dc-atk-slot-toggle{display:flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:10px;cursor:pointer;flex-shrink:0;transition:var(--transition)}
 .dc-atk-slot-toggle:hover{border-color:var(--accent-cyan);background:rgba(0,212,255,.08)}
-.dc-atk-slot-toggle img{display:block;width:22px;height:22px;object-fit:contain}
-.dc-atk-slot-toggle--alt{border-color:rgba(168,85,247,.45);background:rgba(168,85,247,.06)}
+.dc-atk-slot-toggle img{display:block;width:28px;height:28px;object-fit:contain}
+.dc-atk-panel-shuffle-root{transform-origin:50% 20%;will-change:transform}
+@keyframes dc-atk-shuffle{0%{transform:translateY(0) rotate(0)}30%{transform:translateY(-8px) rotate(-2deg)}60%{transform:translateY(5px) rotate(1.5deg)}100%{transform:translateY(0) rotate(0)}}
+.dc-atk-panel-shuffle-root.dc-atk-panel-shuffle{animation:dc-atk-shuffle .48s cubic-bezier(.45,.02,.2,1) both}
+@media (prefers-reduced-motion:reduce){.dc-atk-panel-shuffle-root.dc-atk-panel-shuffle{animation:none}}
+.dc-defender-panel-head{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px}
+.dc-tab-panel.dc-attacker-tab-panel,.dc-tab-panel.dc-defender-tab-panel{align-self:start}
 .dc-result-val.normal{color:#4ade80}
 .dc-result-val.crit{color:#f59e0b}
 .dc-result-val.hit{color:#4ade80;font-size:28px}
@@ -1063,18 +1078,23 @@ html{overflow-x:hidden}
 <div class="dc-result dc-result--top" id="dcResultArea" style="margin:0 0 16px">
 <div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select attacker unit, character, and a defender target to calculate damage</div></div>
 </div>
-<div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 <!-- ATTACKER PANEL -->
-<div class="dc-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
+<div class="dc-tab-panel dc-attacker-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
 <div class="dc-attacker-panel-head">
-<div class="dc-attacker-panel-title-inner">
 <div class="dc-panel-title dc-attacker-panel-title">ATTACKER</div>
-<span class="dc-atk-slot-badge" id="dcAtkSlotBadge">1</span>
+<div class="dc-atk-slot-tools">
+<div class="dc-atk-slot-pills" role="tablist" aria-label="Attacker loadouts">
+<button type="button" class="dc-atk-slot-pill is-active" id="dcAtkSlotPill0" data-slot="0" onclick="setDcAttackerSlot(0)" role="tab" aria-selected="true" title="Attacker 1">1</button>
+<button type="button" class="dc-atk-slot-pill" id="dcAtkSlotPill1" data-slot="1" onclick="setDcAttackerSlot(1)" role="tab" aria-selected="false" title="Attacker 2">2</button>
+<button type="button" class="dc-atk-slot-pill" id="dcAtkSlotPill2" data-slot="2" onclick="setDcAttackerSlot(2)" role="tab" aria-selected="false" title="Attacker 3">3</button>
 </div>
-<button type="button" class="dc-atk-slot-toggle" id="dcAtkSlotToggle" onclick="toggleDcAttackerSlot()" title="Switch attacker (compare loadouts)" aria-label="Switch attacker">
-<img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Data.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Data.webp{% endif %}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.style.display='none'">
+<button type="button" class="dc-atk-slot-toggle" id="dcAtkSlotToggle" onclick="toggleDcAttackerSlot()" title="Next attacker loadout (cycle)" aria-label="Next attacker loadout">
+<img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Data.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Data.webp{% endif %}" alt="" width="28" height="28" loading="lazy" decoding="async" onerror="this.style.display='none'">
 </button>
 </div>
+</div>
+<div id="dcAtkPanelShuffle" class="dc-atk-panel-shuffle-root">
 <div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
 <div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
@@ -1097,9 +1117,12 @@ html{overflow-x:hidden}
 </div>
 </div>
 </div>
+</div>
 <!-- DEFENDER PANEL -->
-<div class="dc-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
-<div class="dc-panel-title" style="color:#ef4444;font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px">DEFENDER (Target)</div>
+<div class="dc-tab-panel dc-defender-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
+<div class="dc-defender-panel-head">
+<div class="dc-panel-title" style="color:#ef4444;font-size:16px;font-weight:700;margin:0">DEFENDER (Target)</div>
+</div>
 <div style="margin-bottom:12px">
 <span class="dc-ctrl-label" style="display:block;margin-bottom:4px">Preset Target (ER Stage)</span>
 <select class="dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" style="width:100%;margin-bottom:8px"><option value="">-- Select Stage --</option></select>
@@ -2607,6 +2630,7 @@ renderCompareContent()
 
 const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
+const DC_ATK_SLOT_COUNT=3;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
 function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();if(DC_SHINN_ASUKA_CHAR_IDS.has(id))return true;const mid=cd.main_character_id!=null?String(cd.main_character_id).trim():'';if(mid&&DC_SHINN_ASUKA_CHAR_IDS.has(mid))return true;const n=(cd.name||'').toLowerCase();return n.includes('shinn')&&n.includes('asuka')}
 function _dcCharAbilitiesTextBlob(cd){
@@ -2762,9 +2786,10 @@ S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.c
 if(S.dc.atkCharData)S.dc._pilotSkills=S.dc.atkCharData.skills||[];
 }
 function _dcSnapActiveAttackerToSlot(){
-if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))S.dc.atkSlots=[_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))S.dc.atkSlots=Array.from({length:DC_ATK_SLOT_COUNT},()=>_dcCreateEmptyAttackerSlot());
+while(S.dc.atkSlots.length<DC_ATK_SLOT_COUNT)S.dc.atkSlots.push(_dcCreateEmptyAttackerSlot());
 onDcParamChange();
-S.dc.atkSlots[S.dc.atkSlotIndex||0]=_dcReadAttackerFromDc();
+S.dc.atkSlots[Math.min(S.dc.atkSlotIndex|0,DC_ATK_SLOT_COUNT-1)]=_dcReadAttackerFromDc();
 }
 function _dcSyncAttackerDomFromDc(){
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value=S.dc.finalWpnPow?String(S.dc.finalWpnPow):'';
@@ -2775,23 +2800,65 @@ const nb=document.getElementById('dcTerrainNormal'),hb=document.getElementById('
 if(nb)nb.classList.toggle('active',S.dc.terrainMode==='normal');
 if(hb)hb.classList.toggle('active',S.dc.terrainMode==='halved');
 }
-function _dcRefreshAtkSlotBadge(){
-const b=document.getElementById('dcAtkSlotBadge');if(b)b.textContent=(S.dc.atkSlotIndex===1)?'2':'1';
-const btn=document.getElementById('dcAtkSlotToggle');if(btn)btn.classList.toggle('dc-atk-slot-toggle--alt',S.dc.atkSlotIndex===1);
+function _dcAnimateAttackerPanelShuffle(){
+const el=document.getElementById('dcAtkPanelShuffle');if(!el)return;
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+el.classList.remove('dc-atk-panel-shuffle');
+void el.offsetWidth;
+el.classList.add('dc-atk-panel-shuffle');
+const fin=()=>{el.classList.remove('dc-atk-panel-shuffle');el.removeEventListener('animationend',fin)};
+el.addEventListener('animationend',fin,{once:true});
+}
+function _dcRefreshAtkSlotUi(){
+const idx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+S.dc.atkSlotIndex=idx;
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const p=document.getElementById('dcAtkSlotPill'+i);if(!p)continue;
+p.classList.toggle('is-active',i===idx);
+p.setAttribute('aria-selected',i===idx?'true':'false');
+}
 }
 function _dcEnsureAttackerSlots(){
-if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots)||S.dc.atkSlots.length<2){
-S.dc.atkSlotIndex=0;
-S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
+if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots)||S.dc.atkSlots.length<DC_ATK_SLOT_COUNT){
+S.dc.atkSlotIndex=Math.min(S.dc.atkSlotIndex|0,DC_ATK_SLOT_COUNT-1);
+const cur=_dcReadAttackerFromDc();
+const slots=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(i===S.dc.atkSlotIndex?cur:_dcCreateEmptyAttackerSlot());
+S.dc.atkSlots=slots;
 }
-_dcRefreshAtkSlotBadge();
+_dcRefreshAtkSlotUi();
+}
+function _dcCalculateDamageWithSlot(slotIdx){
+const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
+const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
+const backup=_dcReadAttackerFromDc();
+_dcWriteAttackerToDc(slot);
+let r=null;
+try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
+_dcWriteAttackerToDc(backup);
+return r;
+}
+function setDcAttackerSlot(idx){
+const t=parseInt(idx,10);if(Number.isNaN(t)||t<0||t>=DC_ATK_SLOT_COUNT)return;
+if(t===(S.dc.atkSlotIndex|0))return;
+_dcSnapActiveAttackerToSlot();
+S.dc.atkSlotIndex=t;
+_dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
+_dcSyncAttackerDomFromDc();
+_dcRefreshAtkSlotUi();
+_dcAnimateAttackerPanelShuffle();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
+_dcRefreshMpBonusHint();
+if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+onDcParamChange();
 }
 function toggleDcAttackerSlot(){
 _dcSnapActiveAttackerToSlot();
-S.dc.atkSlotIndex=((S.dc.atkSlotIndex|0)^1);
+S.dc.atkSlotIndex=((S.dc.atkSlotIndex|0)+1)%DC_ATK_SLOT_COUNT;
 _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcSyncAttackerDomFromDc();
-_dcRefreshAtkSlotBadge();
+_dcRefreshAtkSlotUi();
+_dcAnimateAttackerPanelShuffle();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
 _dcRefreshMpBonusHint();
 if(S.dc.atkCharData)_dcRecalcPilotBonuses();
@@ -2810,8 +2877,8 @@ const dtu=document.getElementById('dcDmgTakenDownUnit');if(dtu)dtu.value=0;
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcTerrain('normal');
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
 S.dc.atkSlotIndex=0;
-S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
-_dcRefreshAtkSlotBadge();
+S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+_dcRefreshAtkSlotUi();
 }
 function openDmgCalc(){
 const d=S.currentDetailData;
@@ -2851,6 +2918,80 @@ renderDcNpcDropdown();renderDcDefStats();onDcParamChange();
 }catch(e){S.dc.npcList=[];renderDcNpcDropdown()}
 }
 function closeDmgCalc(){}
+function _dcVigorThresholdFromUnit(ud){
+let thr=null;
+if(!ud||!ud.abilities)return null;
+(ud.abilities||[]).forEach(ab=>{
+const nm=(ab.name||'').toLowerCase();
+if(nm.includes('vigor condition')){
+const txt=(ab.details||[]).map(d=>d.text||'').join(' ').toLowerCase();
+if(txt.includes('supercharged'))thr=thr||'super';
+else if(txt.includes('max'))thr=thr||'max';
+else if(txt.includes('high'))thr=thr||'high';
+else thr=thr||'max';
+}
+});
+return thr;
+}
+async function _dcLoadAttackerSlotFromUrl(p,i,legacySlot0){
+const suf=String(i);
+const uid=(p.get('u'+suf)||(legacySlot0&&i===0?p.get('u'):null))||'';
+const cid=(p.get('c'+suf)||(legacySlot0&&i===0?p.get('c'):null))||'';
+if(!uid||!cid)return null;
+let ur,cr;
+try{
+[ur,cr]=await Promise.all([
+fetch(`/api/unit/${uid}?lang=${S.lang}`).then(r=>r.json()),
+fetch(`/api/character/${cid}?lang=${S.lang}`).then(r=>r.json())
+]);
+}catch(_){return null}
+const slot=_dcCreateEmptyAttackerSlot();
+slot.atkUnit=uid;slot.atkChar=cid;
+slot.atkUnitData=ur;slot.atkCharData=cr;
+slot._unitIsSD=String(ur.body_type||'')==='3';
+slot._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
+const pick=(k)=>{const v=p.get(k+suf);if(v!==null&&v!=='')return v;if(legacySlot0&&i===0){const v2=p.get(k);if(v2!==null&&v2!=='')return v2}return null};
+const hasWi=pick('wi')!==null;
+const hasWl=pick('wl')!==null;
+const wi=parseInt(pick('wi')||'',10);if(!Number.isNaN(wi)&&wi>=0)slot.wpnIdx=wi;else if(!hasWi)slot.wpnIdx=0;
+const wl=parseInt(pick('wl')||'',10);if(!Number.isNaN(wl)&&wl>=0)slot.wpnLv=wl;else if(!hasWl)slot.wpnLv=0;
+const lbP=parseInt(pick('lb')||'',10);if(!Number.isNaN(lbP)&&lbP>=0)slot.lbTier=lbP;
+const um=pick('um');if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
+const cm=pick('cm');if(cm==='normal'||cm==='sp')slot.charStatMode=cm;
+const vPick=pick('v');
+if(vPick)slot.mpLevel=vPick;
+else slot._dcNeedAutoMp=true;
+const tPick=pick('t');
+if(tPick==='halved'){slot.terrainMode='halved';slot.terrain=50}
+else if(tPick){slot.terrainMode=tPick;slot.terrain=0}
+else{slot.terrainMode='normal';slot.terrain=0}
+const fwp=pick('fwp');if(fwp!==null&&fwp!==''){const n=parseInt(fwp,10);if(Number.isFinite(n))slot.finalWpnPow=n}
+const di=pick('di');if(di!==null&&di!==''){const n=parseInt(di,10);if(Number.isFinite(n))slot.dmgIncrease=n}
+const cu=pick('cu');if(cu!==null&&cu!==''){const n=parseInt(cu,10);if(Number.isFinite(n))slot.critDmgUp=n}
+const tdp=parseInt(pick('td')||'',10);if(!Number.isNaN(tdp)&&tdp>=0)slot._wpnTraitDistPow=tdp;
+const thp=parseInt(pick('th')||'',10);if(!Number.isNaN(thp)&&thp>=0)slot._wpnTraitHpPow=thp;
+if(p.get('ucp'+suf)==='1'||(legacySlot0&&i===0&&p.get('ucp')==='1'))slot.unitCondPassive=true;
+if(p.get('ccp'+suf)==='1'||(legacySlot0&&i===0&&p.get('ccp')==='1'))slot.charCondPassive=true;
+const opId=p.get('op'+suf)||(legacySlot0&&i===0?p.get('op'):null);
+if(opId){
+try{
+const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(opId)}&unit_id=${encodeURIComponent(uid)}`);
+const d=await r.json();
+const hit=(d.rows||[]).find(x=>String(x.id)===String(opId));
+if(hit)slot.optionParts=[{id:hit.id,name:hit.name,details:hit.details||'',thum:hit.thum||'',tags:hit.tags||[]}];
+}catch(_){}
+}
+const spId=p.get('sp'+suf)||(legacySlot0&&i===0?p.get('sp'):null);
+if(spId){
+const lv=Math.min(100,Math.max(1,parseInt(p.get('spl'+suf)||(legacySlot0&&i===0?p.get('spl'):'')||'100',10)));
+const lb=Math.min(3,Math.max(0,parseInt(p.get('spb'+suf)||(legacySlot0&&i===0?p.get('spb'):'')||'3',10)));
+try{
+const rd=await fetch(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
+}catch(_){}
+}
+return slot;
+}
 async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
 if(p.get('tab')!=='calculator')return;
@@ -2858,6 +2999,28 @@ initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
 const stgId=p.get('s');
 if(stgId){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=stgId;if(sel.value===stgId)await onDcStageChange()}}
+const isMultiSlotUrl=['0','1','2'].some(d=>{const v=p.get('u'+d);return v!==null&&v!==''});
+if(isMultiSlotUrl){
+const loaded=await Promise.all([0,1,2].map(i=>_dcLoadAttackerSlotFromUrl(p,i,false)));
+const slots=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(loaded[i]||_dcCreateEmptyAttackerSlot());
+S.dc.atkSlots=slots;
+for(let si=0;si<DC_ATK_SLOT_COUNT;si++){
+const sl=S.dc.atkSlots[si];
+if(!sl||!sl.atkUnitData||!sl._dcNeedAutoMp)continue;
+_dcWriteAttackerToDc(sl);
+_dcAutoSetVigor();
+sl.mpLevel=S.dc.mpLevel;
+delete sl._dcNeedAutoMp;
+}
+const asRaw=parseInt(p.get('as')||'0',10);
+const ai=Number.isNaN(asRaw)?0:Math.min(Math.max(asRaw,0),DC_ATK_SLOT_COUNT-1);
+S.dc.atkSlotIndex=ai;
+_dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
+_dcDetectVigorCondAbilities(S.dc.atkUnitData);
+_dcSyncAttackerDomFromDc();
+S.dc.atkSlots[S.dc.atkSlotIndex]=_dcReadAttackerFromDc();
+}else{
 if(p.get('u')){try{const r=await fetch(`/api/unit/${p.get('u')}?lang=${S.lang}`);const d=await r.json();S.dc.atkUnit=p.get('u');S.dc.atkUnitData=d;S.dc._unitIsSD=String(d.body_type||'')==='3';_dcDetectVigorCondAbilities(d);const hasWi=p.get('wi')!==null&&p.get('wi')!=='';const hasWl=p.get('wl')!==null&&p.get('wl')!=='';if(!hasWi)S.dc.wpnIdx=0;if(!hasWl)S.dc.wpnLv=0}catch(_){}}
 if(p.get('c')){try{const r=await fetch(`/api/character/${p.get('c')}?lang=${S.lang}`);const d=await r.json();S.dc.atkChar=p.get('c');S.dc.atkCharData=d}catch(_){}}
 else if(S.dc.atkUnitData&&S.dc.atkUnitData.recommend_character&&S.dc.atkUnitData.recommend_character.id){const rec=S.dc.atkUnitData.recommend_character;try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal'}catch(_){}}
@@ -2869,41 +3032,54 @@ const lbP=parseInt(p.get('lb')||'',10);if(!Number.isNaN(lbP)&&lbP>=0)S.dc.lbTier
 if(p.get('v'))setDcMp(p.get('v'));
 else _dcAutoSetVigor();
 if(p.get('t'))setDcTerrain(p.get('t'));
+}
+if(!isMultiSlotUrl&&p.get('op')&&S.dc.atkUnit){
+try{
+const opId=p.get('op');
+const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(opId)}&unit_id=${encodeURIComponent(S.dc.atkUnit)}`);
+const d=await r.json();
+const hit=(d.rows||[]).find(x=>String(x.id)===String(opId));
+if(hit)S.dc.optionParts=[{id:hit.id,name:hit.name,details:hit.details||'',thum:hit.thum||'',tags:hit.tags||[]}];
+}catch(_){}
+}
+if(!isMultiSlotUrl&&p.get('sp')){
+const lv=Math.min(100,Math.max(1,parseInt(p.get('spl')||'100',10)));
+const lb=Math.min(3,Math.max(0,parseInt(p.get('spb')||'3',10)));
+try{
+const rd=await fetch(`/api/supporter/${p.get('sp')}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;S.dc.supporters=[rd]}
+}catch(_){}
+}
 if(p.get('n')){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=p.get('n');selectDcNpc()}}
-renderDcAtkUnit();renderDcAtkChar();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
+if(!isMultiSlotUrl){
 if(p.get('fwp')!==null&&p.get('fwp')!==''){const el=document.getElementById('dcFinalWpnPow');if(el)el.value=p.get('fwp')}
 if(p.get('di')!==null&&p.get('di')!==''){const el=document.getElementById('dcDmgIncrease');if(el)el.value=p.get('di')}
 if(p.get('cu')!==null&&p.get('cu')!==''){const el=document.getElementById('dcCritDmgUp');if(el)el.value=p.get('cu')}
+const tdp=parseInt(p.get('td')||'',10);if(!Number.isNaN(tdp)&&tdp>=0){S.dc._wpnTraitDistPow=tdp;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp)}
+const thp=parseInt(p.get('th')||'',10);if(!Number.isNaN(thp)&&thp>=0){S.dc._wpnTraitHpPow=thp;const tel=document.getElementById('dcWpnTraitHpPow');if(tel)tel.value=String(thp)}
+}else{_dcSyncAttackerDomFromDc();
+const tdp=S.dc._wpnTraitDistPow|0;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp);
+const thp=S.dc._wpnTraitHpPow|0;const tel2=document.getElementById('dcWpnTraitHpPow');if(tel2)tel2.value=String(thp)}
 if(p.get('dtp')!==null&&p.get('dtp')!==''){const el=document.getElementById('dcDmgTakenDownPilot');if(el)el.value=p.get('dtp')}
 if(p.get('dttu')!==null&&p.get('dttu')!==''){const el=document.getElementById('dcDmgTakenDownUnit');if(el)el.value=p.get('dttu')}
 if(p.get('defp')!==null&&p.get('defp')!==''){const el=document.getElementById('dcDefDebuffPct');if(el)el.value=p.get('defp')}
 const _dtu=(k,id)=>{if(p.get(k)!==null&&p.get(k)!==''){const el=document.getElementById(id);if(el)el.value=p.get(k)}};
 _dtu('dtb','dcDtuBeam');_dtu('dtph','dcDtuPhysical');_dtu('dts','dcDtuSpecial');
-const tdp=parseInt(p.get('td')||'',10);if(!Number.isNaN(tdp)&&tdp>=0){S.dc._wpnTraitDistPow=tdp;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp)}
-const thp=parseInt(p.get('th')||'',10);if(!Number.isNaN(thp)&&thp>=0){S.dc._wpnTraitHpPow=thp;const tel=document.getElementById('dcWpnTraitHpPow');if(tel)tel.value=String(thp)}
 if(p.get('def')==='1')setDcDefend(true);
 if(p.get('sh')==='1')setDcShield(true);
 onDcParamChange();
+if(!isMultiSlotUrl){
 S.dc.atkSlotIndex=0;
-S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot()];
-_dcRefreshAtkSlotBadge();
+S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+}
+_dcRefreshAtkSlotUi();
 }
 
 const DC_VIGOR_ORDER=['medium','high','max','super'];
 function _dcVigorAtLeast(cur,thr){return DC_VIGOR_ORDER.indexOf(cur)>=DC_VIGOR_ORDER.indexOf(thr)}
 function _dcDetectVigorCondAbilities(ud){
-S.dc._vigorCondThreshold=null;
-if(!ud||!ud.abilities)return;
-(ud.abilities||[]).forEach(ab=>{
-const nm=(ab.name||'').toLowerCase();
-if(nm.includes('vigor condition')){
-const txt=(ab.details||[]).map(d=>d.text||'').join(' ').toLowerCase();
-if(txt.includes('supercharged'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'super';
-else if(txt.includes('max'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'max';
-else if(txt.includes('high'))S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'high';
-else S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'max';
-}
-});
+S.dc._vigorCondThreshold=_dcVigorThresholdFromUnit(ud);
 }
 function _dcIsVigorCondActive(){
 return S.dc._vigorCondThreshold&&_dcVigorAtLeast(S.dc.mpLevel,S.dc._vigorCondThreshold);
@@ -3835,27 +4011,13 @@ const finalHitRate=MN(100,MX(10,rawHit));
 return{finalHitRate,mobDiff,reaDiff,mobCorrection,baseHit,rawHit};
 }
 
-function renderDcResult(){
-const area=document.getElementById('dcResultArea');
-let result;try{result=calculateDamage()}catch(e){console.error('calculateDamage error:',e);
-area.innerHTML=`<div class="dc-result-box"><div style="color:#ef4444;font-size:13px">Calculation error: ${e.message}</div></div>`;return}
-if(!result){
-const missing=[];
-if(!S.dc.atkUnitData)missing.push('Attacker Unit');
-if(!S.dc.atkCharData)missing.push('Attacker Character');
-if(!S.dc.defNpc)missing.push('NPC Target');
-const ud=S.dc.atkUnitData;
-if(ud&&ud.weapons&&!_dcNonMapWeapons(ud).length)missing.push('Unit has no non-map weapons');
-const msg=missing.length?'Select: '+missing.join(', '):t('dc_select_both');
-area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${msg}</div></div>`;return}
-const r=result;S.dc._lastResult=r;
+function _dcHtmlDcResultDamageBlock(r){
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
 const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
 const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
-area.innerHTML=`<div class="dc-result-box">
-<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
+return`<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
 <div class="dc-result-hp dc-result-hp--compact">
 <div class="dc-hp-mini dc-hp-mini--normal">
 <div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}${npcHp>0?`<span class="dc-hp-mini-pct"> (${pctN.toFixed(1)}%)</span>`:''}</span></div>
@@ -3865,7 +4027,44 @@ area.innerHTML=`<div class="dc-result-box">
 <div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_crit')}</span><span class="dc-hp-mini-val">${fmtN(hpRemC)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}${npcHp>0?`<span class="dc-hp-mini-pct"> (${pctC.toFixed(1)}%)</span>`:''}</span></div>
 <div class="dc-hp-bar-track dc-hp-mini-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--crit" style="width:${pctC}%"></div></div>
 </div>
-</div>
+</div>`;
+}
+
+function renderDcResult(){
+const area=document.getElementById('dcResultArea');
+if(!S.dc.defNpc){
+area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select: NPC Target</div></div>`;return}
+const multi=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=(S.dc.atkSlots||[])[i];
+if(!sl||!sl.atkUnitData||!sl.atkCharData)continue;
+let rr=null;
+try{rr=_dcCalculateDamageWithSlot(i)}catch(e){console.error('calculateDamage error slot',i,e)}
+if(rr)multi.push({idx:i,slot:sl,result:rr});
+}
+if(!multi.length){
+const missing=[];
+if(!S.dc.atkUnitData)missing.push('Attacker Unit');
+if(!S.dc.atkCharData)missing.push('Attacker Character');
+const ud=S.dc.atkUnitData;
+if(ud&&ud.weapons&&!_dcNonMapWeapons(ud).length)missing.push('Unit has no non-map weapons');
+const msg=missing.length?'Select: '+missing.join(', '):'Set up at least one attacker loadout (unit + character)';
+area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${msg}</div></div>`;return}
+const activeI=S.dc.atkSlotIndex|0;
+const primary=multi.find(m=>m.idx===activeI)||multi[0];
+S.dc._lastResult=primary.result;
+S.dc._lastMultiResults=multi;
+let inner='';
+if(multi.length===1){
+inner=_dcHtmlDcResultDamageBlock(multi[0].result);
+}else{
+inner=`<div class="dc-result-multi-grid">`+multi.map(m=>{
+const ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
+const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}`;
+return`<div class="dc-result-multi-col"><div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result)}</div>`;
+}).join('')+`</div>`;
+}
+area.innerHTML=`<div class="dc-result-box">${inner}
 <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
 <button class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
 <button class="dc-ctrl-btn" onclick="shareDcLink()" style="font-size:12px;padding:6px 14px">🔗 Share Link</button>
@@ -3873,36 +4072,74 @@ area.innerHTML=`<div class="dc-result-box">
 <div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
 </div>`;
 }
-function copyDcResultText(){
-const r=S.dc._lastResult;if(!r)return;
-const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
-const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
-const nName=npc?(npc.unit?.name||'NPC'):'?';
-const npcHp=Math.max(0,r.npcHp|0);
-const hpRemN=Math.max(0,npcHp-r.normalDmg);
-const hpRemC=Math.max(0,npcHp-r.critDmg);
-const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
-const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
-const lines=[
-`⚔ GGen Damage Calculator Result`,
-`Attacker: ${uName} + ${cName}`,
-`Target: ${nName}`,
-`Normal Damage: ${fmtN(r.normalDmg)}`,
-`Critical Damage: ${fmtN(r.critDmg)}`,
-`Hit Rate: ${r.hitRate}%`,
-`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`,
-`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`,
-`Vigor: ${S.dc.mpLevel}, Terrain: ${S.dc.terrainMode||'normal'}`
-];
-navigator.clipboard.writeText(lines.join('\n')).then(()=>{
-const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
-});
-}
-function shareDcLink(){
+function _dcBuildShareUrl(){
 onDcParamChange();
+_dcSnapActiveAttackerToSlot();
 const p=new URLSearchParams();
-if(S.dc.atkUnit)p.set('u',S.dc.atkUnit);
-if(S.dc.atkChar)p.set('c',S.dc.atkChar);
+const slots=S.dc.atkSlots||[];
+const filled=[];
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=slots[i];
+if(sl&&sl.atkUnit&&sl.atkChar)filled.push(i);
+}
+const useLegacySingle=filled.length===1&&filled[0]===0;
+function appendSuffixedSlot(i,sl){
+const suf=String(i);
+p.set('u'+suf,sl.atkUnit);
+p.set('c'+suf,sl.atkChar);
+p.set('wi'+suf,String(sl.wpnIdx));
+p.set('wl'+suf,String(sl.wpnLv));
+p.set('lb'+suf,String(sl.lbTier));
+p.set('um'+suf,sl.unitStatMode||'normal');
+p.set('cm'+suf,sl.charStatMode||'normal');
+p.set('v'+suf,sl.mpLevel||'medium');
+p.set('t'+suf,sl.terrainMode||'normal');
+if(sl.finalWpnPow)p.set('fwp'+suf,String(sl.finalWpnPow));
+if(sl.dmgIncrease)p.set('di'+suf,String(sl.dmgIncrease));
+if(sl.critDmgUp)p.set('cu'+suf,String(sl.critDmgUp));
+if(sl._wpnTraitDistPow)p.set('td'+suf,String(sl._wpnTraitDistPow));
+if(sl._wpnTraitHpPow)p.set('th'+suf,String(sl._wpnTraitHpPow));
+if(sl.unitCondPassive)p.set('ucp'+suf,'1');
+if(sl.charCondPassive)p.set('ccp'+suf,'1');
+const op=sl.optionParts&&sl.optionParts[0];
+if(op&&op.id!=null)p.set('op'+suf,String(op.id));
+const sp=sl.supporters&&sl.supporters[0];
+if(sp&&sp.id!=null){
+p.set('sp'+suf,String(sp.id));
+p.set('spl'+suf,String(sp._dcLevel||100));
+p.set('spb'+suf,String(sp._dcLbTier!==undefined?sp._dcLbTier:3));
+}
+}
+if(useLegacySingle){
+const sl=slots[0];
+p.set('u',sl.atkUnit);
+p.set('c',sl.atkChar);
+p.set('v',sl.mpLevel||'medium');
+p.set('t',sl.terrainMode||'normal');
+p.set('wi',String(sl.wpnIdx));
+p.set('wl',String(sl.wpnLv));
+p.set('lb',String(sl.lbTier));
+p.set('um',sl.unitStatMode||'normal');
+p.set('cm',sl.charStatMode||'normal');
+if(sl.finalWpnPow)p.set('fwp',String(sl.finalWpnPow));
+if(sl.dmgIncrease)p.set('di',String(sl.dmgIncrease));
+if(sl.critDmgUp)p.set('cu',String(sl.critDmgUp));
+if(sl._wpnTraitDistPow)p.set('td',String(sl._wpnTraitDistPow));
+if(sl._wpnTraitHpPow)p.set('th',String(sl._wpnTraitHpPow));
+if(sl.unitCondPassive)p.set('ucp','1');
+if(sl.charCondPassive)p.set('ccp','1');
+const op=sl.optionParts&&sl.optionParts[0];
+if(op&&op.id!=null)p.set('op',String(op.id));
+const sp=sl.supporters&&sl.supporters[0];
+if(sp&&sp.id!=null){
+p.set('sp',String(sp.id));
+p.set('spl',String(sp._dcLevel||100));
+p.set('spb',String(sp._dcLbTier!==undefined?sp._dcLbTier:3));
+}
+}else{
+filled.forEach(i=>appendSuffixedSlot(i,slots[i]));
+if(filled.length)p.set('as',String(S.dc.atkSlotIndex|0));
+}
 const stgSel=document.getElementById('dcStageSelect');
 const npcSel=document.getElementById('dcNpcSelect');
 const defNpc=S.dc.defNpc;
@@ -3913,23 +4150,66 @@ if(stgSel&&stgSel.value)p.set('s',stgSel.value);
 p.set('n',npcSel.value);
 if(stgSel&&stgSel.value)p.set('s',stgSel.value);
 }else if(stgSel&&stgSel.value)p.set('s',stgSel.value);
-p.set('v',S.dc.mpLevel);p.set('t',S.dc.terrainMode||'normal');
-p.set('wi',S.dc.wpnIdx);p.set('wl',S.dc.wpnLv);p.set('lb',S.dc.lbTier);
-p.set('um',S.dc.unitStatMode||'normal');p.set('cm',S.dc.charStatMode||'normal');
-if(S.dc.finalWpnPow)p.set('fwp',S.dc.finalWpnPow);
-if(S.dc.dmgIncrease)p.set('di',S.dc.dmgIncrease);
-if(S.dc.critDmgUp)p.set('cu',S.dc.critDmgUp);
 if(S.dc.dmgTakenDownPilot)p.set('dtp',S.dc.dmgTakenDownPilot);
 if(S.dc.dmgTakenDownUnit)p.set('dttu',S.dc.dmgTakenDownUnit);
 if(S.dc.defDebuffPct)p.set('defp',S.dc.defDebuffPct);
 if(S.dc.dtuBeam)p.set('dtb',S.dc.dtuBeam);
 if(S.dc.dtuPhysical)p.set('dtph',S.dc.dtuPhysical);
 if(S.dc.dtuSpecial)p.set('dts',S.dc.dtuSpecial);
-if(S.dc._wpnTraitDistPow)p.set('td',S.dc._wpnTraitDistPow);
-if(S.dc._wpnTraitHpPow)p.set('th',S.dc._wpnTraitHpPow);
 if(S.dc.defending)p.set('def','1');
 if(S.dc.shield)p.set('sh','1');
-const url=`${location.origin}${location.pathname}?tab=calculator&${p.toString()}`;
+return`${location.origin}${location.pathname}?tab=calculator&${p.toString()}`;
+}
+function copyDcResultText(){
+const r=S.dc._lastResult;if(!r)return;
+const npc=S.dc.defNpc;
+const nName=npc?(npc.unit?.name||'NPC'):'?';
+const vigor=`Vigor: ${S.dc.mpLevel}, Terrain: ${S.dc.terrainMode||'normal'}`;
+const multi=S.dc._lastMultiResults;
+const lines=[`⚔ GGen Damage Calculator Result`,`Target: ${nName}`];
+if(multi&&multi.length>1){
+multi.forEach(m=>{
+const rr=m.result,ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
+const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
+const npcHp=Math.max(0,rr.npcHp|0);
+const hpRemN=Math.max(0,npcHp-rr.normalDmg);
+const hpRemC=Math.max(0,npcHp-rr.critDmg);
+const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
+const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
+lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
+lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
+lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
+lines.push(`Hit Rate: ${rr.hitRate}%`);
+lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
+lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
+lines.push(`Vigor: ${m.slot.mpLevel||'medium'}, Terrain: ${m.slot.terrainMode||'normal'}`);
+});
+}else{
+const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
+const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
+const npcHp=Math.max(0,r.npcHp|0);
+const hpRemN=Math.max(0,npcHp-r.normalDmg);
+const hpRemC=Math.max(0,npcHp-r.critDmg);
+const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
+const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
+lines.push(`Attacker: ${uName} + ${cName}`);
+lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
+lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
+lines.push(`Hit Rate: ${r.hitRate}%`);
+lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
+lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
+lines.push(vigor);
+}
+if(multi&&multi.length>1){
+lines.push('');
+lines.push(_dcBuildShareUrl());
+}
+navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
+});
+}
+function shareDcLink(){
+const url=_dcBuildShareUrl();
 navigator.clipboard.writeText(url).then(()=>{
 const m=document.getElementById('dcShareMsg');if(m){m.textContent='Link copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
 });
