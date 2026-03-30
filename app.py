@@ -1350,7 +1350,7 @@ def collect_unit_mechanism_mids(info):
 
 
 def parse_unit_mechanism_filter(val):
-    """Comma-separated mechanism ids (MECH_MAP_TABLE); OR match vs unit's mechanisms."""
+    """Comma-separated mechanism ids (MECH_MAP_TABLE); unit must have every selected mechanism (AND)."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -1375,11 +1375,11 @@ def unit_mechanism_filter_cache_fragment(expr):
     return ('m' + '__'.join(sorted(expr)))[:220]
 
 
-def unit_matches_mechanism_or_filter(info, want_filter):
+def unit_matches_mechanism_filter(info, want_filter):
     if not want_filter:
         return True
     have = collect_unit_mechanism_mids(info)
-    return bool(have & want_filter)
+    return want_filter.issubset(have)
 
 
 def _is_conditional_stat_text(t):
@@ -1461,7 +1461,7 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
         for line in lines:
             if _char_trait_line_is_squad_unit_effect(line, bab):
                 continue
-            bonuses = extract_stat_percent_char(line)
+            bonuses = extract_stat_percent_char(line, txt)
             if not bonuses:
                 continue
             for s, p in bonuses.items():
@@ -1475,12 +1475,14 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref):
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        bonuses = extract_stat_percent_char(line)
+        bonuses = extract_stat_percent_char(line, txt)
         if not bonuses:
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
         is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
+        if _char_support_counter_atk_line_counts_as_unconditional_cp(txt, line):
+            is_cond = False
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
@@ -2376,7 +2378,24 @@ def create_skill_text_map(d):
 def calc_growth_char(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
-def extract_stat_percent_char(text):
+def _char_support_counter_increase_atk_is_ranged_only(full_text):
+    """EN lines like trait 201290402: Support Attack/Counter conditional 'Increase ATK by N%' buffs Ranged only (not Melee)."""
+    if not full_text or not isinstance(full_text, str):
+        return False
+    tl = full_text.lower()
+    if 'support attack/counter' not in tl:
+        return False
+    return bool(re.search(r'increases?\s+atk\b', tl))
+
+def _char_support_counter_atk_line_counts_as_unconditional_cp(full_text, line):
+    """Support Attack/Counter ATK% is not part of the pair 'Conditional Passive' toggle — only tag/pair buffs (e.g. +30% Ranged) are."""
+    if not line or not full_text:
+        return False
+    if not re.search(r'increases?\s+atk\b', line, re.IGNORECASE):
+        return False
+    return _char_support_counter_increase_atk_is_ranged_only(full_text)
+
+def extract_stat_percent_char(text, full_detail_text=None):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
         if kw in tl: return bonuses
@@ -2395,8 +2414,12 @@ def extract_stat_percent_char(text):
             u = s.title().upper()
             # In-game "ATK" is both pilot attack stats (Ranged + Melee), not Melee-only.
             if u in ("ATK", "ATTACK"):
-                bonuses["Melee"] = bonuses.get("Melee", 0) + p
-                bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+                ctx = full_detail_text if full_detail_text is not None else text
+                if _char_support_counter_increase_atk_is_ranged_only(ctx):
+                    bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+                else:
+                    bonuses["Melee"] = bonuses.get("Melee", 0) + p
+                    bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
             elif u == "DEF":
                 bonuses["Defense"] = bonuses.get("Defense", 0) + p
             elif u == "RANGE":
@@ -3642,6 +3665,20 @@ CHAR_PAIR_UNIT_COUNTER_ATK_PCT = {
     '1219000201': {'1219000250': 20},
 }
 
+
+def _char_pair_conditional_unit_ids(char_id):
+    """Unit ids that appear in CHAR_PAIR_UNIT_* maps — conditional squad/MS bonuses only apply when paired with one of these."""
+    cid = normalize_id(char_id)
+    out = set()
+    m = CHAR_PAIR_UNIT_STAT_MOD_PCT.get(cid)
+    if m:
+        out.update(normalize_id(u) for u in m.keys())
+    m2 = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(cid)
+    if m2:
+        out.update(normalize_id(u) for u in m2.keys())
+    return out
+
+
 # Manual shortcut fallbacks for missing character <-> unit links.
 MANUAL_SHORTCUT_PAIRS = [
     ('1725000100', '1725000150'),
@@ -4651,7 +4688,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
                 if _char_trait_line_is_squad_unit_effect(part, bab):
                     continue
                 itc = _is_conditional_stat_text(part)
-                part_stats = extract_stat_percent_char(part)
+                part_stats = extract_stat_percent_char(part, txt)
                 if itc and not part_stats:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
@@ -4690,7 +4727,7 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
             for line in spl:
                 if _char_trait_line_is_squad_unit_effect(line, sab):
                     continue
-                for s, p in extract_stat_percent_char(line).items():
+                for s, p in extract_stat_percent_char(line, rawt).items():
                     if sab.get('is_ex', False):
                         continue
                     spbs[s] = spbs.get(s, 0) + p
@@ -4750,7 +4787,7 @@ def calculate_npc_character_self_bonus_pct(abilities):
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
                 if _char_trait_line_is_squad_unit_effect(line, ab):
                     continue
-                for s, p in extract_stat_percent_char(line).items():
+                for s, p in extract_stat_percent_char(line, txt).items():
                     if s in bp: bp[s] = bp.get(s, 0) + p
     return bp
 
@@ -6730,7 +6767,7 @@ def list_units():
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul33_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6793,7 +6830,7 @@ def list_units():
                 continue
         mechanism_union |= set(collect_unit_mechanism_mids(info))
         if mechanism_filter:
-            if not id_seek and not unit_matches_mechanism_or_filter(info, mechanism_filter):
+            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter):
                 continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
@@ -7479,7 +7516,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r6_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r8_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -7555,7 +7592,17 @@ def get_character(char_id):
                 recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
         pair_mod = CHAR_PAIR_UNIT_STAT_MOD_PCT.get(char_id)
         counter_atk_mod = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(char_id)
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_ex_stats, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        # CP toggle: pair-gated squad/MS buffs (see CHAR_PAIR_*) only count when recommend unit matches.
+        # Still show toggle for UR EX-slot % (spen/spes) when recommend does not match.
+        pair_units = _char_pair_conditional_unit_ids(char_id)
+        rec_id = normalize_id(recommend_unit['id']) if recommend_unit else '0'
+        pair_ok = bool(pair_units) and rec_id in pair_units
+        has_ex_slot_only = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
+        if pair_units and not pair_ok:
+            has_conditional_passive = has_ex_slot_only
+        else:
+            has_conditional_passive = has_ex_stats
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
