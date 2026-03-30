@@ -573,6 +573,11 @@ html{overflow-x:hidden}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
 .dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;cursor:pointer}
 .dc-wpn-select:focus,.dc-npc-select:focus,.dc-input-sm:focus{outline:none;border-color:var(--accent-cyan)}
+.dc-supporter-ctrl-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+.dc-supporter-lv-input{width:52px!important;max-width:80px!important;padding:3px 8px!important;font-size:12px!important;min-height:28px!important;height:28px!important;line-height:1.2!important;box-sizing:border-box;cursor:text}
+.dc-supporter-ctrl-row .lb-btn-group{flex-shrink:0}
+.dc-supporter-ctrl-row .lb-icon-btn{padding:3px 6px}
+.dc-supporter-ctrl-row .lb-icon-btn img{width:14px;height:14px}
 .dc-wpn-info{display:flex;gap:12px;flex-wrap:wrap;padding:8px;background:rgba(0,0,0,.15);border-radius:4px;font-size:12px;color:var(--text-secondary)}
 .dc-wpn-info span{display:flex;align-items:center;gap:4px}
 .dc-wpn-info .val{color:var(--text-primary);font-weight:700;font-family:'RobotoMediumNumbers',monospace}
@@ -3240,9 +3245,9 @@ ${tagStr?`<span style="display:inline-block;padding:1px 5px;border-radius:3px;ba
 area.innerHTML=`<div class="dc-supporter-item" style="flex-direction:column;align-items:stretch">
 <div style="display:flex;align-items:center;gap:8px">${thumHtml}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></span><button type="button" class="dc-picked-change" onclick="openDcPicker('supporter')">Change</button><button type="button" class="remove" onclick="removeDcSupporter(0)">✕</button></div>
 ${lsHtml}
-<div style="display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap">
-<span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm" style="width:70px" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(0,this.value)">
-<span style="font-size:11px;color:var(--text-muted)">LB</span>${[0,1,2,3].map(t=>`<button class="dc-lb-btn${t===lbt?' active':''}" style="padding:2px 8px;font-size:11px" onclick="updateDcSupporterLb(0,${t})">${t}</button>`).join('')}
+<div class="dc-supporter-ctrl-row">
+<span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm dc-supporter-lv-input" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(0,this.value)">
+<div class="lb-btn-group dc-supporter-lb-group">${[0,1,2,3].map(t=>{const p=CMP_LB_TIER_PIPS[t];return`<button type="button" class="lb-icon-btn${t===lbt?' active':''}" onclick="updateDcSupporterLb(0,${t})" title="${t}">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;}).join('')}</div>
 </div>
 <div style="font-size:11px;color:var(--accent-cyan);margin-top:2px">HP+${fmtN(s.hp_support||0)} ATK+${fmtN(s.atk_support||0)}</div>
 </div>`;
