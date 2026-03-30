@@ -571,7 +571,7 @@ html{overflow-x:hidden}
 .dc-stat-mini{text-align:center;padding:8px;background:rgba(0,0,0,.2);border-radius:6px}
 .dc-stat-mini-label{font-size:10px;color:var(--text-muted);font-weight:600}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
-.dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;cursor:pointer}
+.dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;font-family:inherit;cursor:pointer}
 .dc-wpn-select:focus,.dc-npc-select:focus,.dc-input-sm:focus{outline:none;border-color:var(--accent-cyan)}
 .dc-supporter-ctrl-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
 .dc-supporter-lv-input{min-width:4.75rem!important;width:auto!important;max-width:120px!important;padding:4px 10px!important;font-size:13px!important;min-height:30px!important;height:auto!important;line-height:1.2!important;box-sizing:border-box;cursor:text;font-variant-numeric:tabular-nums}
@@ -587,7 +587,8 @@ html{overflow-x:hidden}
 .dc-controls{padding:0 24px 16px}
 .dc-controls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
 .dc-ctrl-group{display:flex;flex-direction:column;gap:4px;min-width:0}
-.dc-ctrl-label{font-size:11px;color:var(--text-muted);font-weight:600}
+.dc-ctrl-label{font-size:11px;color:var(--text-muted);font-weight:600;font-family:inherit}
+.dc-ctrl-label .dc-tip{font-size:inherit;font-weight:inherit;letter-spacing:inherit}
 .dc-ctrl-toggle{display:flex;flex-wrap:wrap;gap:6px}
 .dc-ctrl-btn{padding:5px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .dc-ctrl-btn.active{background:rgba(0,212,255,.1);color:var(--accent-cyan);border-color:var(--accent-cyan)}
@@ -699,6 +700,14 @@ html{overflow-x:hidden}
 .dc-wlv-row{display:flex;gap:4px;align-items:center}
 .dc-wlv-btn{padding:3px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
 .dc-wlv-btn.active{background:var(--accent-gold);color:#0a0e1a;border-color:var(--accent-gold)}
+.dc-wpn-info .val,.dc-wpn-info .dc-wpn-attr-pill{font-family:inherit;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:normal}
+.dc-wpn-attr-pill{display:inline}
+.dc-manual-atk-hint{font-size:11px;color:var(--text-muted);padding:4px 0 8px;line-height:1.35}
+.dc-damage-factors-summary{cursor:pointer;font-size:13px;color:var(--accent-cyan);font-weight:600;list-style:none}
+.dc-damage-factors summary::-webkit-details-marker{display:none}
+.dc-damage-factors-body{padding:10px 0 4px}
+.dc-damage-factors-list{margin:0;padding-left:1.15rem;font-size:12px;line-height:1.65;color:var(--text-secondary)}
+.dc-damage-factors-list li{margin-bottom:4px}
 @media(max-width:768px){.dc-tab-panels{grid-template-columns:1fr!important}}
 .dc-result--top{padding-left:0;padding-right:0}
 .dc-tab-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:0 0 16px}
@@ -1083,6 +1092,22 @@ html{overflow-x:hidden}
 <h2 style="color:var(--accent-cyan);font-size:22px">Damage Calculator</h2>
 <a href="https://discordapp.com/users/390839232672956420" target="_blank" rel="noopener noreferrer" class="dc-credit-link">Credit:🔥Firered🔥</a>
 </div>
+<details class="dc-damage-factors" style="max-width:1400px;margin:0 auto 12px;padding:0 24px">
+<summary class="dc-damage-factors-summary">What affects final damage? <span style="color:var(--text-muted);font-weight:400;font-size:12px">(hover labels for detail)</span></summary>
+<div class="dc-damage-factors-body">
+<ul class="dc-damage-factors-list">
+<li><span class="dc-tip" title="Attacker unit ATK vs defender unit DEF (after DEF debuff), pilot offensive stat vs pilot DEF, and sigmoid terms — scaled by weapon power.">Attacker &amp; defender stats</span></li>
+<li><span class="dc-tip" title="Computed from weapon base power × (1 + distance/HP trait %). Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
+<li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
+<li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
+<li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span></li>
+<li><span class="dc-tip" title="Sum of Beam / Physical / Special DTU rows matching the weapon attribute — adds to ⑨ pool (same bucket as damage dealt up).">Damage Taken Up (debuffs)</span> (<span class="dc-tip" title="Highlighted row(s) match your weapon attribute.">attribute rows</span>)</li>
+<li><span class="dc-tip" title="Reduces final damage: pilot DTU % always; unit DTU % for non-EX weapons.">Damage Taken Down</span> (pilot · unit)</li>
+<li><span class="dc-tip" title="0.8× when defender uses Defend; 0.6× when Defend + Shield.">Defend</span> · <span class="dc-tip" title="Uses the stronger multiplier when combined with Defend.">Shield</span></li>
+<li><span class="dc-tip" title="Accuracy uses attacker mobility &amp; pilot reaction vs defender mobility &amp; reaction; weapon accuracy %; defend lowers hit rate.">Hit rate</span> (not damage, shown alongside)</li>
+</ul>
+</div>
+</details>
 <div class="dc-result dc-result--top" id="dcResultArea" style="margin:0 0 16px">
 <div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select attacker unit, character, and a defender target to calculate damage</div></div>
 </div>
@@ -1103,12 +1128,46 @@ html{overflow-x:hidden}
 </div>
 </div>
 <div id="dcAtkPanelShuffle" class="dc-atk-panel-shuffle-root">
+<div class="dc-atk-mode-row" style="margin-bottom:10px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcAtkTargetMode" id="dcAtkModePreset" value="preset" checked onchange="setDcAtkTargetMode('preset')"> Preset (browse)</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcAtkTargetMode" id="dcAtkModeCustom" value="custom" onchange="setDcAtkTargetMode('custom')"> Custom stats</label>
+</div>
+<div id="dcAtkPresetWrap">
 <div id="dcAtkUnitArea"><button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">Select Unit</button></div>
 <div id="dcAtkCharArea"><button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">Select Character</button></div>
+</div>
+<div id="dcAtkCustomWrap" style="display:none" class="dc-panel-section">
+<div class="dc-section-label" style="color:var(--accent-cyan);margin-bottom:4px">Custom attacker</div>
+<div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.35">Enter unit and pilot stats and weapon values directly. Option parts are unavailable in this mode.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit label</span><input type="text" class="dc-input-sm" id="dcAtkManual_uName" value="Custom unit" autocomplete="off" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Pilot label</span><input type="text" class="dc-input-sm" id="dcAtkManual_cName" value="Custom pilot" autocomplete="off" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">HP</span><input type="number" class="dc-input-sm" id="dcAtkManual_uHP" min="0" value="30000" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit ATK</span><input type="number" class="dc-input-sm" id="dcAtkManual_uATK" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit DEF</span><input type="number" class="dc-input-sm" id="dcAtkManual_uDEF" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Mobility</span><input type="number" class="dc-input-sm" id="dcAtkManual_uMOB" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Ranged</span><input type="number" class="dc-input-sm" id="dcAtkManual_cRNG" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Melee</span><input type="number" class="dc-input-sm" id="dcAtkManual_cMEL" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Awaken</span><input type="number" class="dc-input-sm" id="dcAtkManual_cAWK" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Pilot DEF</span><input type="number" class="dc-input-sm" id="dcAtkManual_cDEF" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label">Reaction</span><input type="number" class="dc-input-sm" id="dcAtkManual_cREA" min="0" value="0" oninput="syncDcManualAtkFromInputs()"></div>
+</div>
+<div class="dc-section-label" style="margin-top:10px">Weapon</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Base weapon power before traits. Used as raw power unless Final weapon power overrides it.">Weapon power</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wPow" min="0" value="3000" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Weapon accuracy % (base hit rate input).">Accuracy %</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wAcc" min="0" max="999" value="100" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Weapon critical rate % (display only in formula; crit damage uses vigor and Crit DMG Up).">Critical %</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wCrit" min="0" max="999" value="100" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Used for in-range check and default distance for accuracy.">Min range</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wMin" min="1" value="1" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Used for in-range check and default distance for accuracy.">Max range</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wMax" min="1" value="10" oninput="syncDcManualAtkFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Beam / Physical / Special — determines which Damage Taken Up row applies.">Attribute</span></span><select class="dc-input-sm" id="dcAtkManual_wAttr" onchange="syncDcManualAtkFromInputs()"><option value="2">Beam</option><option value="1">Physical</option><option value="3">Special</option></select></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Which pilot offensive stat (Ranged / Melee / Awaken) drives attack for this weapon.">Pilot attack stat</span></span><select class="dc-input-sm" id="dcAtkManual_wAtkType" onchange="syncDcManualAtkFromInputs()"><option value="Ranged">Ranged</option><option value="Melee">Melee</option><option value="Awaken">Awaken</option></select></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-secondary);cursor:pointer"><input type="checkbox" id="dcAtkManual_wEx" onchange="syncDcManualAtkFromInputs()"> <span class="dc-tip" title="EX weapons ignore Damage Taken Down (unit) on the defender.">EX weapon</span></label></div>
+</div>
+</div>
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
-<div class="dc-panel-section"><div id="dcAtkWpnArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div></div>
-<div class="dc-panel-section"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div></div>
+<div class="dc-panel-section dc-atk-preset-only" id="dcAtkWpnSection"><div id="dcAtkWpnArea"></div></div>
+<div class="dc-panel-section dc-atk-preset-only"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div></div>
+<div class="dc-panel-section dc-atk-preset-only"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div></div>
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:var(--accent-cyan)">Attacker Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -2699,12 +2758,12 @@ return [_dcWeaponElementFromWeaponType(wpn)];
 }
 function _dcWeaponAttributeDisplayHtml(wpn){
 const raw=(wpn.attribute||'').trim();
-if(raw)return esc('<'+raw+'>');
+if(raw)return `<span class="dc-wpn-attr-pill">${esc('<'+raw+'>')}</span>`;
 const aid=String(wpn.attribute_id!=null&&wpn.attribute_id!==undefined?wpn.attribute_id:'').trim();
 const L={'1':'Physical','2':'Beam','3':'Special','4':'Beam/Physical','5':'Physical/Special','6':'Beam/Special','7':'Beam/Physical/Special','8':'Beam/Physical'};
-if(aid&&L[aid])return esc('<'+L[aid]+'>');
+if(aid&&L[aid])return `<span class="dc-wpn-attr-pill">${esc('<'+L[aid]+'>')}</span>`;
 const k=_dcWeaponAttributeKeys(wpn)[0]||'special';
-return esc('<'+(DC_WPN_ELEM_LABEL[k]||'Special')+'>');
+return `<span class="dc-wpn-attr-pill">${esc('<'+(DC_WPN_ELEM_LABEL[k]||'Special')+'>')}</span>`;
 }
 function _dcWeaponDtuSumPct(wpn){
 const keys=_dcWeaponAttributeKeys(wpn);
@@ -2872,7 +2931,9 @@ _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
-if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
+_dcSyncAtkModeUiFromState();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
 function toggleDcAttackerSlot(){
@@ -2883,7 +2944,9 @@ _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
-if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
+_dcSyncAtkModeUiFromState();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
 
@@ -2903,6 +2966,7 @@ renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();r
 S.dc.atkSlotIndex=0;
 S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
 _dcRefreshAtkSlotUi();
+_dcSyncAtkModeUiFromState();
 }
 function openDmgCalc(){
 const d=S.currentDetailData;
@@ -3014,6 +3078,107 @@ S.dc.defNpc=_dcBuildManualDefNpcFromDom();
 renderDcDefStats();
 onDcParamChange();
 }
+function _dcSyncAtkModeUiFromState(){
+const custom=!!(S.dc.atkUnitData&&S.dc.atkUnitData._manual);
+const pw=document.getElementById('dcAtkPresetWrap'),cw=document.getElementById('dcAtkCustomWrap');
+const rp=document.getElementById('dcAtkModePreset'),rc=document.getElementById('dcAtkModeCustom');
+if(rp)rp.checked=!custom;if(rc)rc.checked=custom;
+if(pw)pw.style.display=custom?'none':'';
+if(cw)cw.style.display=custom?'':'none';
+document.querySelectorAll('.dc-atk-preset-only').forEach(el=>{el.style.display=custom?'none':''});
+}
+function _dcStatArrUnit(hp,atk,def,mob){
+return[{name:'HP',total:hp},{name:'Attack',total:atk},{name:'Defense',total:def},{name:'Mobility',total:mob},{name:'Move',total:0}];
+}
+function _dcBuildManualAtkUnitFromDom(){
+const g=(id)=>parseInt(document.getElementById(id)?.value,10)||0;
+const gs=(id)=>String(document.getElementById(id)?.value||'').trim();
+const stats=_dcStatArrUnit(g('dcAtkManual_uHP'),g('dcAtkManual_uATK'),g('dcAtkManual_uDEF'),g('dcAtkManual_uMOB'));
+const lb0={stats_no_cond:stats,stats:stats,sp_stats:stats,ssp_stats:stats};
+const aid=String(document.getElementById('dcAtkManual_wAttr')?.value||'2');
+const atkLbl=String(document.getElementById('dcAtkManual_wAtkType')?.value||'Ranged');
+const wPow=g('dcAtkManual_wPow'),wAcc=g('dcAtkManual_wAcc'),wCrit=g('dcAtkManual_wCrit');
+const wMin=Math.max(1,g('dcAtkManual_wMin')),wMax=Math.max(wMin,g('dcAtkManual_wMax'));
+const isEx=!!document.getElementById('dcAtkManual_wEx')?.checked;
+const w={weapon_type:'1',attribute_id:aid,attribute:'',min_range:wMin,max_range:wMax,is_ex:isEx,levels:[{level:1,power:wPow,accuracy:wAcc,critical:wCrit,en:0,traits:[]}],attack_types:[{label:atkLbl}]};
+return{_manual:true,name:gs('dcAtkManual_uName')||'Custom unit',id:'__manual__',lb_data:[lb0],stats:{stats_no_cond:stats},has_sp:false,is_ultimate:true,has_cond_stats:false,tags:[],weapons:[w],body_type:'0',rarity_id:'5'};
+}
+function _dcBuildManualAtkCharFromDom(){
+const g=(id)=>parseInt(document.getElementById(id)?.value,10)||0;
+const gs=(id)=>String(document.getElementById(id)?.value||'').trim();
+const stats=[{name:'Ranged',total:g('dcAtkManual_cRNG')},{name:'Melee',total:g('dcAtkManual_cMEL')},{name:'Awaken',total:g('dcAtkManual_cAWK')},{name:'Defense',total:g('dcAtkManual_cDEF')},{name:'Reaction',total:g('dcAtkManual_cREA')}];
+return{_manual:true,name:gs('dcAtkManual_cName')||'Custom pilot',id:'__manual__',stats:stats,has_sp:false,sp_stats:[],has_conditional_passive:false,has_ex_stats:false,abilities:[],skills:[],rarity_id:'5'};
+}
+function _dcAtkManualStatsToPack(){
+const g=(id)=>parseInt(document.getElementById(id)?.value,10)||0;
+const gs=(id)=>String(document.getElementById(id)?.value||'').trim();
+return{un:gs('dcAtkManual_uName'),cn:gs('dcAtkManual_cName'),uHP:g('dcAtkManual_uHP'),uATK:g('dcAtkManual_uATK'),uDEF:g('dcAtkManual_uDEF'),uMOB:g('dcAtkManual_uMOB'),cRNG:g('dcAtkManual_cRNG'),cMEL:g('dcAtkManual_cMEL'),cAWK:g('dcAtkManual_cAWK'),cDEF:g('dcAtkManual_cDEF'),cREA:g('dcAtkManual_cREA'),wPow:g('dcAtkManual_wPow'),wAcc:g('dcAtkManual_wAcc'),wCrit:g('dcAtkManual_wCrit'),wMin:g('dcAtkManual_wMin'),wMax:g('dcAtkManual_wMax'),wAttr:String(document.getElementById('dcAtkManual_wAttr')?.value||'2'),wAtk:gs('dcAtkManual_wAtkType')||'Ranged',wEx:!!document.getElementById('dcAtkManual_wEx')?.checked};
+}
+function _dcFillManualAtkDomFromPack(p){
+const setv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v!=null&&v!==''?String(v):''};
+const setc=(id,v)=>{const el=document.getElementById(id);if(el)el.checked=!!v};
+setv('dcAtkManual_uName',p.un);setv('dcAtkManual_cName',p.cn);setv('dcAtkManual_uHP',p.uHP);setv('dcAtkManual_uATK',p.uATK);setv('dcAtkManual_uDEF',p.uDEF);setv('dcAtkManual_uMOB',p.uMOB);setv('dcAtkManual_cRNG',p.cRNG);setv('dcAtkManual_cMEL',p.cMEL);setv('dcAtkManual_cAWK',p.cAWK);setv('dcAtkManual_cDEF',p.cDEF);setv('dcAtkManual_cREA',p.cREA);setv('dcAtkManual_wPow',p.wPow);setv('dcAtkManual_wAcc',p.wAcc);setv('dcAtkManual_wCrit',p.wCrit);setv('dcAtkManual_wMin',p.wMin);setv('dcAtkManual_wMax',p.wMax);setv('dcAtkManual_wAttr',p.wAttr);setv('dcAtkManual_wAtkType',p.wAtk);setc('dcAtkManual_wEx',p.wEx);
+}
+function _dcManualAtkUnitFromPack(p){
+const setv=(k,def)=>{const x=parseInt(p[k],10);return Number.isFinite(x)?x:def};
+const stats=_dcStatArrUnit(setv('uHP',0),setv('uATK',0),setv('uDEF',0),setv('uMOB',0));
+const lb0={stats_no_cond:stats,stats:stats,sp_stats:stats,ssp_stats:stats};
+const aid=String(p.wAttr||'2');
+const atkLbl=String(p.wAtk||'Ranged');
+const wPow=setv('wPow',0),wAcc=setv('wAcc',0),wCrit=setv('wCrit',0);
+const wMin=Math.max(1,setv('wMin',1)),wMax=Math.max(wMin,setv('wMax',10));
+const isEx=!!p.wEx;
+const w={weapon_type:'1',attribute_id:aid,attribute:'',min_range:wMin,max_range:wMax,is_ex:isEx,levels:[{level:1,power:wPow,accuracy:wAcc,critical:wCrit,en:0,traits:[]}],attack_types:[{label:atkLbl}]};
+return{_manual:true,name:String(p.un||'Custom unit'),id:'__manual__',lb_data:[lb0],stats:{stats_no_cond:stats},has_sp:false,is_ultimate:true,has_cond_stats:false,tags:[],weapons:[w],body_type:'0',rarity_id:'5'};
+}
+function _dcManualAtkCharFromPack(p){
+const setv=(k,def)=>{const x=parseInt(p[k],10);return Number.isFinite(x)?x:def};
+const stats=[{name:'Ranged',total:setv('cRNG',0)},{name:'Melee',total:setv('cMEL',0)},{name:'Awaken',total:setv('cAWK',0)},{name:'Defense',total:setv('cDEF',0)},{name:'Reaction',total:setv('cREA',0)}];
+return{_manual:true,name:String(p.cn||'Custom pilot'),id:'__manual__',stats:stats,has_sp:false,sp_stats:[],has_conditional_passive:false,has_ex_stats:false,abilities:[],skills:[],rarity_id:'5'};
+}
+function setDcAtkTargetMode(mode){
+if(mode==='custom'){
+S.dc.atkUnit='__manual__';S.dc.atkChar='__manual__';
+S.dc.atkUnitData=_dcBuildManualAtkUnitFromDom();
+S.dc.atkCharData=_dcBuildManualAtkCharFromDom();
+S.dc.atkUnitData._manual=true;
+S.dc._unitIsSD=false;
+S.dc.optionParts=[];
+S.dc.lbTier=0;
+S.dc.wpnIdx=0;S.dc.wpnLv=0;
+S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};
+S.dc._vigorCondThreshold=null;
+_dcSyncAtkModeUiFromState();
+renderDcAtkUnit();renderDcAtkChar();renderDcWeaponArea();renderDcOptionParts();renderDcSupporters();
+onDcParamChange();
+}else{
+S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;
+S.dc._unitIsSD=false;
+S.dc.optionParts=[];S.dc.supporters=[];
+document.getElementById('dcAtkUnitArea').innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">${t('dc_pick_unit')}</button>`;
+document.getElementById('dcAtkCharArea').innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">${t('dc_pick_char')}</button>`;
+document.getElementById('dcAtkStatsArea').innerHTML='';
+_dcSyncAtkModeUiFromState();
+renderDcWeaponArea();renderDcOptionParts();renderDcSupporters();
+onDcParamChange();
+}
+}
+function syncDcManualAtkFromInputs(){
+if(!S.dc.atkUnitData||!S.dc.atkUnitData._manual)return;
+S.dc.atkUnitData=_dcBuildManualAtkUnitFromDom();
+S.dc.atkCharData=_dcBuildManualAtkCharFromDom();
+renderDcAtkUnit();renderDcAtkChar();
+onDcParamChange();
+}
+function _dcAtkManualPackFromSlot(sl){
+const u=sl.atkUnitData,c=sl.atkCharData,w=u&&u.weapons&&u.weapons[0];
+const st=u&&u.lb_data&&u.lb_data[0]?u.lb_data[0].stats_no_cond:null;
+const fg=(name)=>{if(!st)return 0;const x=st.find(s=>s.name===name);return x?Math.round(x.total||0):0};
+const fc=(name)=>{if(!c||!c.stats)return 0;const x=c.stats.find(s=>s.name===name);return x?Math.round(x.total||0):0};
+const lv=w&&w.levels&&w.levels[0]?w.levels[0]:{};
+const atkLbl=(w&&w.attack_types&&w.attack_types[0]&&w.attack_types[0].label)||'Ranged';
+return{un:u?u.name:'',cn:c?c.name:'',uHP:fg('HP'),uATK:fg('Attack'),uDEF:fg('Defense'),uMOB:fg('Mobility'),cRNG:fc('Ranged'),cMEL:fc('Melee'),cAWK:fc('Awaken'),cDEF:fc('Defense'),cREA:fc('Reaction'),wPow:lv.power||0,wAcc:lv.accuracy||0,wCrit:lv.critical||0,wMin:w?w.min_range||1:1,wMax:w?w.max_range||10:10,wAttr:String(w&&w.attribute_id||'2'),wAtk:atkLbl,wEx:!!(w&&w.is_ex)};
+}
 function _dcPackShareState(){
 onDcParamChange();
 _dcSnapActiveAttackerToSlot();
@@ -3022,9 +3187,16 @@ const slotArr=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
 const sl=slots[i];
 if(!sl||!sl.atkUnit||!sl.atkChar){slotArr.push(null);continue}
-const o={u:sl.atkUnit,c:sl.atkChar};
+const o={};
+if(sl.atkUnitData&&sl.atkUnitData._manual){
+o.atkM=1;
+o.atkP=_dcAtkManualPackFromSlot(sl);
+}else{
+o.u=sl.atkUnit;
+o.c=sl.atkChar;
 if(sl.wpnIdx!==0)o.wi=sl.wpnIdx;
 if(sl.wpnLv!==0)o.wl=sl.wpnLv;
+}
 if(sl.lbTier!==3)o.lb=sl.lbTier;
 if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;
 if((sl.charStatMode||'normal')!=='normal')o.cm=sl.charStatMode;
@@ -3074,7 +3246,19 @@ if((S.dc.defTargetMode||'preset')==='custom'){out.defM=1;out.defC=_dcDefManualSt
 return out;
 }
 async function _dcLoadSlotFromPackedObj(o){
-if(!o||!o.u||!o.c)return null;
+if(!o)return null;
+const slot=_dcCreateEmptyAttackerSlot();
+if(o.atkM&&o.atkP){
+slot.atkUnit='__manual__';
+slot.atkChar='__manual__';
+slot.atkUnitData=_dcManualAtkUnitFromPack(o.atkP);
+slot.atkCharData=_dcManualAtkCharFromPack(o.atkP);
+slot.atkUnitData._manual=true;
+slot._unitIsSD=false;
+slot._vigorCondThreshold=null;
+slot.wpnIdx=0;slot.wpnLv=0;slot.lbTier=0;
+}else{
+if(!o.u||!o.c)return null;
 const uid=String(o.u),cid=String(o.c);
 let ur,cr;
 try{
@@ -3083,7 +3267,6 @@ fetch(`/api/unit/${uid}?lang=${S.lang}`).then(r=>r.json()),
 fetch(`/api/character/${cid}?lang=${S.lang}`).then(r=>r.json())
 ]);
 }catch(_){return null}
-const slot=_dcCreateEmptyAttackerSlot();
 slot.atkUnit=uid;slot.atkChar=cid;
 slot.atkUnitData=ur;slot.atkCharData=cr;
 slot._unitIsSD=String(ur.body_type||'')==='3';
@@ -3091,6 +3274,7 @@ slot._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
 if(o.wi!==undefined){const n=parseInt(o.wi,10);if(!Number.isNaN(n)&&n>=0)slot.wpnIdx=n}else slot.wpnIdx=0;
 if(o.wl!==undefined){const n=parseInt(o.wl,10);if(!Number.isNaN(n)&&n>=0)slot.wpnLv=n}else slot.wpnLv=0;
 if(o.lb!==undefined){const n=parseInt(o.lb,10);if(!Number.isNaN(n)&&n>=0)slot.lbTier=n}
+}
 const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
 const cm=o.cm;if(cm==='normal'||cm==='sp')slot.charStatMode=cm;
 if(o.v)slot.mpLevel=o.v;
@@ -3106,9 +3290,10 @@ if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._w
 if(o.ucp)slot.unitCondPassive=true;
 if(o.ccp)slot.charCondPassive=true;
 const opId=o.op;
-if(opId){
+if(opId&&!o.atkM){
+const uidForOp=String(slot.atkUnit||'');
 try{
-const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(opId))}&unit_id=${encodeURIComponent(uid)}`);
+const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(opId))}&unit_id=${encodeURIComponent(uidForOp)}`);
 const d=await r.json();
 const hit=(d.rows||[]).find(x=>String(x.id)===String(opId));
 if(hit)slot.optionParts=[{id:hit.id,name:hit.name,details:hit.details||'',thum:hit.thum||'',tags:hit.tags||[]}];
@@ -3183,6 +3368,9 @@ if(D.dtph!==undefined){const el=document.getElementById('dcDtuPhysical');if(el)e
 if(D.dts!==undefined){const el=document.getElementById('dcDtuSpecial');if(el)el.value=String(D.dts)}
 if(D.def===1)setDcDefend(true);
 if(D.sh===1)setDcShield(true);
+const _asl=S.dc.atkSlots[S.dc.atkSlotIndex|0];
+if(_asl&&_asl.atkUnitData&&_asl.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_asl));
+_dcSyncAtkModeUiFromState();
 }
 async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
@@ -3251,6 +3439,12 @@ function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
 if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';return}
+if(ud._manual){
+area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom unit</div></div></div>`;
+document.getElementById('dcAtkStatsArea').innerHTML='';
+renderDcWeaponArea();
+return;
+}
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
 const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
@@ -3311,6 +3505,11 @@ const area=document.getElementById('dcAtkCharArea');
 const cd=S.dc.atkCharData;
 const isSD=!!S.dc._unitIsSD;
 if(!cd){area.innerHTML=isSD?`<div style="color:var(--text-muted);font-size:12px">SD unit — character locked</div>`:`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;return}
+if(cd._manual){
+S.dc._pilotSkills=[];
+area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom pilot</div></div></div>`;
+return;
+}
 S.dc._pilotSkills=cd.skills||[];
 const stats=_dcGetCharStats();
 const thum=cd.thum||cd.portrait||'';
@@ -3558,6 +3757,7 @@ return wpn.levels.length-1;
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
 const ud=S.dc.atkUnitData;
+if(ud&&ud._manual){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
 if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
@@ -3954,6 +4154,7 @@ S.dc.supporters=[];
 _dcAutoSetVigor();
 renderDcAtkUnit();renderDcAtkChar();
 renderDcOptionParts();renderDcSupporters();
+_dcSyncAtkModeUiFromState();
 onDcParamChange();
 }catch(e){}
 }
