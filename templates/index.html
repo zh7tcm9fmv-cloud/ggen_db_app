@@ -607,6 +607,18 @@ html{overflow-x:hidden}
 .dc-result-val.crit{color:#f59e0b}
 .dc-result-val.hit{color:#4ade80;font-size:28px}
 .dc-result-hp{margin-top:18px;text-align:left}
+.dc-result-hp--compact{margin-top:16px;max-width:480px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.dc-result-hp--compact{grid-template-columns:1fr;max-width:100%}}
+.dc-hp-mini{background:linear-gradient(165deg,rgba(15,23,42,.92),rgba(26,34,54,.75));border:1px solid rgba(148,163,184,.22);border-radius:12px;padding:10px 12px 12px;box-shadow:0 4px 14px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+.dc-hp-mini--normal{border-color:rgba(74,222,128,.28)}
+.dc-hp-mini--crit{border-color:rgba(245,158,11,.32)}
+.dc-hp-mini-top{display:flex;flex-direction:column;gap:2px;margin-bottom:8px}
+.dc-hp-mini-tag{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);line-height:1.2}
+.dc-hp-mini--normal .dc-hp-mini-tag{color:#86efac}
+.dc-hp-mini--crit .dc-hp-mini-tag{color:#fcd34d}
+.dc-hp-mini-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text-primary);line-height:1.25;word-break:break-all}
+.dc-hp-mini-sep{opacity:.45;font-weight:600;margin:0 2px}
+.dc-hp-mini-track{height:7px;border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;border:1px solid rgba(255,255,255,.07)}
 .dc-result-hp-row{margin-bottom:12px}
 .dc-result-hp-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px;font-size:12px;color:var(--text-muted);font-weight:600}
 .dc-result-hp-val{font-weight:600;font-variant-numeric:tabular-nums}
@@ -688,9 +700,16 @@ html{overflow-x:hidden}
 .dc-stats-mini.dc-stat-visual--ssp{background:rgba(168,85,247,.09);border-radius:8px;padding:6px 4px;box-shadow:0 0 0 1px rgba(192,132,252,.55),0 0 16px rgba(168,85,247,.22)}
 .dc-stats-mini.dc-stat-visual--sp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 0 0 12px rgba(251,191,36,.12)}
 .dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 0 0 12px rgba(168,85,247,.12)}
-.dc-stats-mini.dc-stat-visual--cp .dc-stat-mini{background:rgba(45,212,191,.06);box-shadow:inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 0 1px rgba(45,212,191,.35)}
-.dc-stats-mini.dc-stat-visual--sp.dc-stat-visual--cp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(251,191,36,.1)}
-.dc-stats-mini.dc-stat-visual--ssp.dc-stat-visual--cp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(168,85,247,.1)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp{background:rgba(45,212,191,.06);box-shadow:inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 0 1px rgba(45,212,191,.35)}
+.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(251,191,36,.1)}
+.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(168,85,247,.1)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--skill{background:rgba(251,191,36,.1);box-shadow:inset 4px 0 0 0 rgba(251,191,36,.8),inset 0 0 0 1px rgba(251,191,36,.38)}
+.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(251,191,36,.45),inset 4px 0 0 0 rgba(251,191,36,.85),inset 0 0 10px rgba(251,191,36,.15)}
+.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(192,132,252,.45),inset 4px 0 0 0 rgba(251,191,36,.82),inset 0 0 12px rgba(168,85,247,.12)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp.dc-stat-mini--skill{background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(251,191,36,.12));box-shadow:inset 4px 0 0 0 rgba(45,212,191,.88),inset 0 0 0 1px rgba(251,191,36,.45),0 0 14px rgba(251,191,36,.1)}
+.dc-pilot-bonus-row{opacity:1}
+.dc-pilot-bonus-row.dc-pilot-bonus--off{opacity:.45}
+.dc-pilot-bonus-row.dc-pilot-bonus--off span:first-of-type{color:var(--text-muted)!important}
 .dc-def-mini--map-bonus{border:1px solid rgba(168,85,247,.35);border-radius:6px;padding:4px 2px;background:rgba(168,85,247,.06)}
 .dc-def-stat-num{font-variant-numeric:tabular-nums}
 .dc-input-sm.dc-input--def-debuff{border-color:#f87171!important;box-shadow:0 0 0 1px rgba(248,113,113,.35)}
@@ -2587,6 +2606,8 @@ renderCompareContent()
 
 const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
+const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
+function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();return DC_SHINN_ASUKA_CHAR_IDS.has(id)}
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
 const DC_WPN_ATTR_ID_KEYS={'1':['physical'],'2':['beam'],'3':['special'],'4':['beam','physical'],'5':['physical','special'],'6':['beam','special'],'7':['beam','physical','special'],'8':['beam','physical']};
@@ -2872,24 +2893,30 @@ else S.dc._vigorCondThreshold=S.dc._vigorCondThreshold||'max';
 function _dcIsVigorCondActive(){
 return S.dc._vigorCondThreshold&&_dcVigorAtLeast(S.dc.mpLevel,S.dc._vigorCondThreshold);
 }
-function _dcGetUnitStatKey(){
+function _dcGetUnitStatKeyForCp(useCondPassive){
 const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 const mode=S.dc.unitStatMode||'normal';
 const hasCond=!!ud.has_cond_stats;
-const passiveOn=!!(hasCond&&S.dc.unitCondPassive);
+const passiveOn=!!(hasCond&&useCondPassive);
 const sfx=passiveOn?'_with_cond':'_no_cond';
 if(mode==='ssp'&&hasSp)return 'ssp_stats'+sfx;
 if(mode==='sp'&&hasSp)return 'sp_stats'+sfx;
 return 'stats'+sfx;
 }
+function _dcGetUnitStatKey(){
+return _dcGetUnitStatKeyForCp(!!S.dc.unitCondPassive);
+}
 function _dcCharHasConditional(cd){if(!cd)return false;return cd.has_conditional_passive!=null?cd.has_conditional_passive:!!cd.has_ex_stats}
-function _dcGetCharStats(){
+function _dcGetCharStatsForCp(charCpOn){
 const cd=S.dc.atkCharData;if(!cd)return[];
 const mode=S.dc.charStatMode||'normal';
-const cp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
+const cp=!!(_dcCharHasConditional(cd)&&charCpOn);
 if(mode==='sp'&&_dcCharHasSpStats(cd))return cp?cd.sp_stats_with_ex:cd.sp_stats;
 return cp?cd.stats_with_ex:cd.stats;
+}
+function _dcGetCharStats(){
+return _dcGetCharStatsForCp(!!S.dc.charCondPassive);
 }
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
@@ -2933,14 +2960,20 @@ const unitModNote=hasUnitMods?'<div style="font-size:10px;color:var(--accent-cya
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uMode=S.dc.unitStatMode||'normal';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
-const uVis=`dc-stats-mini dc-stat-visual--${uMode}${uCp?' dc-stat-visual--cp':''}`;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val"><span${spAtk}>${fmtN(atkS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
+let statsNoCp=stats;
+if(ud.has_cond_stats&&td){
+const kn=_dcGetUnitStatKeyForCp(false);
+statsNoCp=td[kn]||stats;
+}
+function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
+const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val"><span${spAtk}>${fmtN(atkS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
 renderDcWeaponArea();
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(on&&S.dc.atkCharData&&_dcIsShinnAsukaCharacter(S.dc.atkCharData)){S.dc.mpLevel='super';document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp==='super'));_dcRefreshMpBonusHint()}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -2964,14 +2997,20 @@ const cModeRow=S.dc.charStatMode||'normal';
 charStatModeHtml=`<div class="dc-lb-row dc-char-stat-mode-row"><button type="button" class="dc-lb-btn${cModeRow==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${cModeRow==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
 }
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charCpToggle}${charStatModeHtml}${changeBtn}</div>`;
+const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
+const skB=_dcGetActiveSkillBonuses();
 const F=Math.floor;
-const r=F(_dcFindStat(stats,'Ranged')*(1+(skPct.Ranged||0)/100)),m=F(_dcFindStat(stats,'Melee')*(1+(skPct.Melee||0)/100)),a=F(_dcFindStat(stats,'Awaken')*(1+(skPct.Awaken||0)/100)),d=_dcFindStat(stats,'Defense'),re=_dcFindStat(stats,'Reaction');
+const r=F(_dcFindStat(stats,'Ranged')*(1+(skPct.Ranged||0)/100)),m=F(_dcFindStat(stats,'Melee')*(1+(skPct.Melee||0)/100)),a=F(_dcFindStat(stats,'Awaken')*(1+(skPct.Awaken||0)/100));
+const defBase=_dcFindStat(stats,'Defense'),defPctSk=skB.defPct||0;
+const d=defPctSk?F(defBase*(1+defPctSk/100)):defBase,re=_dcFindStat(stats,'Reaction');
 const sa=document.getElementById('dcAtkStatsArea');
 const cMode=S.dc.charStatMode||'normal';
 const cCp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
-const cVis=`dc-stats-mini dc-stat-visual--${cMode}${cCp?' dc-stat-visual--cp':''}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(r)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(m)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(a)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(d)}</div></div><div class="dc-stat-mini"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(re)}</div></div></div>`;
+function _cCpCell(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
+function _skillCell(nm){if(nm==='Defense'&&defPctSk>0)return' dc-stat-mini--skill';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return' dc-stat-mini--skill';return''}
+const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(re)}</div></div></div>`;
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
@@ -2983,6 +3022,7 @@ if(!cd||!cd.abilities)return b;
 const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
 cd.abilities.forEach(ab=>{
 const lines=(ab.details||[]);
+const exAb=/EX\s*Character/i.test(ab.name||'');
 lines.forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
@@ -2990,15 +3030,16 @@ const hasCond=condGroups.length>0;
 let condMet=false;
 if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
 const isUnmet=hasCond&&!condMet;
+const requiresCharCp=exAb;
 let m;
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name})}
+if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,requiresCharCp})}
 });
 });
 return b;
@@ -3007,12 +3048,17 @@ function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
 if(!b.items.length)return;
+const charCpOn=!!S.dc.charCondPassive;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div style="font-size:12px;line-height:1.6">`;
 b.items.forEach((it,i)=>{
+const needChar=!!it.requiresCharCp;
+const cpGate=needChar&&!charCpOn;
 const condTag=it.cond?` <span style="color:#f59e0b;font-size:10px">(Conditional)</span>`:it.autoMet?` <span style="color:#4ade80;font-size:10px">(Tag Matched)</span>`:'';
+const cpHint=cpGate&&!it.cond?` <span style="color:#a78bfa;font-size:10px">(Character CP)</span>`:'';
 const togId=`dcPilotBonusChk_${i}`;
-const checked=!it.cond;
-h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
+const checked=!it.cond&&!cpGate;
+const rowOff=!!it.cond||cpGate;
+h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}" style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span>${esc(it.label)}${condTag}${cpHint}</span><span style="color:var(--text-muted);font-size:10px">${esc(it.name)}</span></label>`;
 });
 h+=`</div>`;
 area.innerHTML+=h;
@@ -3797,9 +3843,15 @@ const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
 const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 area.innerHTML=`<div class="dc-result-box">
 <div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_crit_dmg')}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
-<div class="dc-result-hp">
-<div class="dc-result-hp-row"><div class="dc-result-hp-head"><span>${t('dc_hp_remaining_normal')}</span><span class="dc-result-hp-val">${fmtN(hpRemN)} / ${fmtN(npcHp)}</span></div><div class="dc-hp-bar-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--normal" style="width:${pctN}%"></div></div></div>
-<div class="dc-result-hp-row"><div class="dc-result-hp-head"><span>${t('dc_hp_remaining_crit')}</span><span class="dc-result-hp-val">${fmtN(hpRemC)} / ${fmtN(npcHp)}</span></div><div class="dc-hp-bar-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--crit" style="width:${pctC}%"></div></div></div>
+<div class="dc-result-hp dc-result-hp--compact">
+<div class="dc-hp-mini dc-hp-mini--normal">
+<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span></div>
+<div class="dc-hp-bar-track dc-hp-mini-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--normal" style="width:${pctN}%"></div></div>
+</div>
+<div class="dc-hp-mini dc-hp-mini--crit">
+<div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_crit')}</span><span class="dc-hp-mini-val">${fmtN(hpRemC)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span></div>
+<div class="dc-hp-bar-track dc-hp-mini-track"><div class="dc-hp-bar-fill dc-hp-bar-fill--crit" style="width:${pctC}%"></div></div>
+</div>
 </div>
 <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
 <button class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
