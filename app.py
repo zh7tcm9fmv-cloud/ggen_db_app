@@ -1133,16 +1133,35 @@ def supporter_leader_applies_to_unit(sid, uid, ld, lc, char_id=None):
     return False
 
 
-def option_part_matches_unit(opid, uid):
-    """Option parts without lineage rows apply to any unit; otherwise unit must match a listed lineage (OR)."""
+def option_part_matches_unit(opid, uid, lc=None):
+    """Whether an option part applies to this unit when browsing with unit_id filter.
+
+    Uses master data only (not display names): m_option_parts_lineage and SeriesId.
+    If neither lineage nor SeriesId is set, the part applies to any unit.
+    If only lineage: unit must match at least one lineage id (OR).
+    If only SeriesId: unit's SeriesSet must include that series id.
+    If both: unit matches if lineage OR series matches.
+    """
     opid = normalize_id(opid)
     uid = normalize_id(uid)
     if uid == '0' or uid not in unit_info_map:
         return True
     lids = option_parts_lineage_map.get(opid, [])
-    if not lids:
+    part_series = option_part_series_map.get(opid, '0')
+    if not part_series or part_series == '0':
+        part_series = '0'
+    has_lineage = bool(lids)
+    has_series = part_series != '0'
+    if not has_lineage and not has_series:
         return True
-    return any(_entity_matches_one_lineage(unit_lin_map, uid, pl) for pl in lids)
+    lang = lc if lc else DEFAULT_LANG
+    lineage_ok = bool(has_lineage and any(_entity_matches_one_lineage(unit_lin_map, uid, pl) for pl in lids))
+    series_ok = bool(has_series and entity_matches_series(unit_ser_map.get(uid, ''), part_series, lang))
+    if has_lineage and has_series:
+        return lineage_ok or series_ok
+    if has_lineage:
+        return lineage_ok
+    return series_ok
 
 
 def lineages_for_supporter_browse(ld, lang_code):
@@ -3061,6 +3080,16 @@ LIMITED_TIME_SUPPORTER_IDS = frozenset(
 )
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
 option_parts_lineage_map = create_option_parts_lineage_map(option_parts_lineage_data) if option_parts_lineage_data else {}
+option_part_series_map = {}
+if option_parts_data:
+    for _op in extract_data_list(option_parts_data):
+        if not isinstance(_op, dict):
+            continue
+        _opid = normalize_id(_op.get('Id') or _op.get('id'))
+        if _opid == '0':
+            continue
+        _sid = normalize_id(_op.get('SeriesId') or _op.get('seriesId'))
+        option_part_series_map[_opid] = _sid if _sid != '0' else '0'
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
 
 def _build_char_list_playable_ids():
@@ -4231,6 +4260,43 @@ def resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='group'):
                     if val not in sn:
                         tags.append({'id': fid, 'name': val, 'type': tt}); sn.add(val)
                     break
+    return sorted(tags, key=lambda x: x['name'])
+
+def resolve_series_id_to_tag(series_id_raw, ld):
+    """Resolve direct SeriesId (e.g. m_option_parts.SeriesId) to a tag dict for browse/search UI."""
+    sid = normalize_id(series_id_raw)
+    if sid == '0':
+        return None
+    snm = ld.get('series_name_map', {})
+    name = snm.get(sid)
+    if not name:
+        for k, v in snm.items():
+            if k.endswith(sid):
+                name = v
+                break
+    if not name:
+        for lid, val in ld.get('series_list', []):
+            if lid.endswith(sid):
+                name = val
+                break
+    if not name:
+        return None
+    icon = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+    return {'id': sid, 'name': name, 'type': 'series', 'icon': icon}
+
+
+def merge_option_part_tags_with_series(lineage_tags, series_id_raw, ld):
+    """Combine lineage tags with m_option_parts.SeriesId when non-zero; avoid duplicate series or same label."""
+    tags = list(lineage_tags)
+    ser = resolve_series_id_to_tag(series_id_raw, ld)
+    if not ser:
+        return sorted(tags, key=lambda x: x['name'])
+    sid = ser['id']
+    if any(t.get('type') == 'series' and normalize_id(t.get('id')) == sid for t in tags):
+        return sorted(tags, key=lambda x: x['name'])
+    if any(t.get('name') == ser['name'] for t in tags):
+        return sorted(tags, key=lambda x: x['name'])
+    tags.append(ser)
     return sorted(tags, key=lambda x: x['name'])
 
 def resolve_tags(lin_map, eid, lc, tt='group'):
@@ -6724,7 +6790,7 @@ def list_option_parts():
             if not isinstance(item, dict): continue
             opid = str(item.get('Id') or item.get('id', 0))
             if opid == '0': continue
-            if for_unit and not option_part_matches_unit(opid, for_unit):
+            if for_unit and not option_part_matches_unit(opid, for_unit, lc):
                 continue
             ri = str(item.get('RarityTypeIndex') or 1)
             if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
@@ -6740,6 +6806,7 @@ def list_option_parts():
             details = ' '.join(details_list) if details_list else ''
             lineage_ids = option_parts_lineage_map.get(opid, [])
             tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+            tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
             tags_join = ', '.join(t['name'] for t in tags)
             tags_str = ' '.join(t['name'] for t in tags)
             if sq:
