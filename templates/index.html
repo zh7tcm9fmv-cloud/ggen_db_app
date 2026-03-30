@@ -3424,7 +3424,7 @@ if(type==='option_parts'||type==='supporter'){
 body.innerHTML=items.map(r=>{
 const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
 const meta=type==='option_parts'?((r.details||'').trim()+(r.tags&&r.tags.length?(' · '+r.tags.map(tg=>tg.name).filter(Boolean).join(' · ')):'')):((r.boost||'').split('\n')[0]||'');
-return`<div class="cmp-picker-item" onclick="pickDcItem(${JSON.stringify(String(r.id))})" style="padding:8px 12px;cursor:pointer">
+return`<div class="cmp-picker-item" onclick='pickDcItem(${JSON.stringify(String(r.id))})' style="padding:8px 12px;cursor:pointer">
 <div><div style="display:flex;align-items:center;gap:6px"><span style="color:${rc};font-weight:700;font-size:11px">${esc(r.rarity||'')}</span><span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span></div>${meta?`<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.35">${esc(meta)}</div>`:''}</div></div>`;
 }).join('');
 return;
@@ -3433,7 +3433,7 @@ body.innerHTML=items.map(r=>{
 const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
 const rarBadge=`<span style="color:${rc};font-weight:600;font-size:11px;margin-right:4px">${esc(r.rarity||'')}</span>`;
 const roleBadge=r.role?`<span style="color:var(--text-muted);font-size:11px">${esc(r.role)}</span>`:'';
-return`<div class="cmp-picker-item" onclick="pickDcItem(${JSON.stringify(String(r.id))})" style="padding:8px 12px;cursor:pointer">
+return`<div class="cmp-picker-item" onclick='pickDcItem(${JSON.stringify(String(r.id))})' style="padding:8px 12px;cursor:pointer">
 <div><div style="display:flex;align-items:center;gap:6px">${rarBadge}<span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span>${roleBadge}</div></div></div>`
 }).join('');
 }
