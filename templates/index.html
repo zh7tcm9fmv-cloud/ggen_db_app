@@ -1159,7 +1159,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Weapon critical rate % (display only in formula; crit damage uses vigor and Crit DMG Up).">Critical %</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wCrit" min="0" max="999" value="100" oninput="syncDcManualAtkFromInputs()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Used for in-range check and default distance for accuracy.">Min range</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wMin" min="1" value="1" oninput="syncDcManualAtkFromInputs()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Used for in-range check and default distance for accuracy.">Max range</span></span><input type="number" class="dc-input-sm" id="dcAtkManual_wMax" min="1" value="10" oninput="syncDcManualAtkFromInputs()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Weapon attribute tag (e.g. &lt;Beam/Special&gt;). Multi-attribute weapons sum every matching Damage Taken Up row (Beam + Physical + Special as applicable).">Attribute</span></span><select class="dc-input-sm" id="dcAtkManual_wAttr" onchange="syncDcManualAtkFromInputs()"><option value="1">&lt;Physical&gt;</option><option value="2" selected>&lt;Beam&gt;</option><option value="3">&lt;Special&gt;</option><option value="4">&lt;Beam/Physical&gt;</option><option value="5">&lt;Physical/Special&gt;</option><option value="6">&lt;Beam/Special&gt;</option><option value="7">&lt;Beam/Physical/Special&gt;</option><option value="8">&lt;Beam/Physical&gt; (ID 8)</option></select></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Weapon attribute tag (e.g. &lt;Beam/Special&gt;). Multi-attribute weapons sum every matching Damage Taken Up row (Beam + Physical + Special as applicable).">Attribute</span></span><select class="dc-input-sm" id="dcAtkManual_wAttr" onchange="syncDcManualAtkFromInputs()"><option value="1">&lt;Physical&gt;</option><option value="2" selected>&lt;Beam&gt;</option><option value="3">&lt;Special&gt;</option><option value="4">&lt;Beam/Physical&gt;</option><option value="5">&lt;Physical/Special&gt;</option><option value="6">&lt;Beam/Special&gt;</option></select></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Which pilot offensive stat (Ranged / Melee / Awaken) drives attack for this weapon.">Pilot attack stat</span></span><select class="dc-input-sm" id="dcAtkManual_wAtkType" onchange="syncDcManualAtkFromInputs()"><option value="Ranged">Ranged</option><option value="Melee">Melee</option><option value="Awaken">Awaken</option></select></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-secondary);cursor:pointer"><input type="checkbox" id="dcAtkManual_wEx" onchange="syncDcManualAtkFromInputs()"> <span class="dc-tip" title="EX weapons ignore Damage Taken Down (unit) on the defender.">EX weapon</span></label></div>
 </div>
@@ -2741,6 +2741,12 @@ return blob.includes('supercharged')&&blob.includes('shinn');
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
 const DC_WPN_ATTR_ID_KEYS={'1':['physical'],'2':['beam'],'3':['special'],'4':['beam','physical'],'5':['physical','special'],'6':['beam','special'],'7':['beam','physical','special'],'8':['beam','physical']};
+function _dcNormalizeManualWeaponAttrId(aid){
+const s=String(aid!=null&&aid!==undefined?aid:'').trim();
+if(s==='7')return'2';
+if(s==='8')return'4';
+return s||'2';
+}
 function _dcCharHasSpStats(cd){return cd&&Array.isArray(cd.sp_stats)&&cd.sp_stats.length>0}
 function _dcWeaponElementFromWeaponType(wpn){const t=String(wpn.weapon_type||'');return DC_WPN_ELEM[t]||'special'}
 function _dcWeaponAttributeKeys(wpn){
@@ -3095,7 +3101,7 @@ const g=(id)=>parseInt(document.getElementById(id)?.value,10)||0;
 const gs=(id)=>String(document.getElementById(id)?.value||'').trim();
 const stats=_dcStatArrUnit(g('dcAtkManual_uHP'),g('dcAtkManual_uATK'),g('dcAtkManual_uDEF'),g('dcAtkManual_uMOB'));
 const lb0={stats_no_cond:stats,stats:stats,sp_stats:stats,ssp_stats:stats};
-const aid=String(document.getElementById('dcAtkManual_wAttr')?.value||'2');
+const aid=_dcNormalizeManualWeaponAttrId(document.getElementById('dcAtkManual_wAttr')?.value);
 const atkLbl=String(document.getElementById('dcAtkManual_wAtkType')?.value||'Ranged');
 const wPow=g('dcAtkManual_wPow'),wAcc=g('dcAtkManual_wAcc'),wCrit=g('dcAtkManual_wCrit');
 const wMin=Math.max(1,g('dcAtkManual_wMin')),wMax=Math.max(wMin,g('dcAtkManual_wMax'));
@@ -3112,18 +3118,18 @@ return{_manual:true,name:gs('dcAtkManual_cName')||'Custom pilot',id:'__manual__'
 function _dcAtkManualStatsToPack(){
 const g=(id)=>parseInt(document.getElementById(id)?.value,10)||0;
 const gs=(id)=>String(document.getElementById(id)?.value||'').trim();
-return{un:gs('dcAtkManual_uName'),cn:gs('dcAtkManual_cName'),uHP:g('dcAtkManual_uHP'),uATK:g('dcAtkManual_uATK'),uDEF:g('dcAtkManual_uDEF'),uMOB:g('dcAtkManual_uMOB'),cRNG:g('dcAtkManual_cRNG'),cMEL:g('dcAtkManual_cMEL'),cAWK:g('dcAtkManual_cAWK'),cDEF:g('dcAtkManual_cDEF'),cREA:g('dcAtkManual_cREA'),wPow:g('dcAtkManual_wPow'),wAcc:g('dcAtkManual_wAcc'),wCrit:g('dcAtkManual_wCrit'),wMin:g('dcAtkManual_wMin'),wMax:g('dcAtkManual_wMax'),wAttr:String(document.getElementById('dcAtkManual_wAttr')?.value||'2'),wAtk:gs('dcAtkManual_wAtkType')||'Ranged',wEx:!!document.getElementById('dcAtkManual_wEx')?.checked};
+return{un:gs('dcAtkManual_uName'),cn:gs('dcAtkManual_cName'),uHP:g('dcAtkManual_uHP'),uATK:g('dcAtkManual_uATK'),uDEF:g('dcAtkManual_uDEF'),uMOB:g('dcAtkManual_uMOB'),cRNG:g('dcAtkManual_cRNG'),cMEL:g('dcAtkManual_cMEL'),cAWK:g('dcAtkManual_cAWK'),cDEF:g('dcAtkManual_cDEF'),cREA:g('dcAtkManual_cREA'),wPow:g('dcAtkManual_wPow'),wAcc:g('dcAtkManual_wAcc'),wCrit:g('dcAtkManual_wCrit'),wMin:g('dcAtkManual_wMin'),wMax:g('dcAtkManual_wMax'),wAttr:_dcNormalizeManualWeaponAttrId(document.getElementById('dcAtkManual_wAttr')?.value),wAtk:gs('dcAtkManual_wAtkType')||'Ranged',wEx:!!document.getElementById('dcAtkManual_wEx')?.checked};
 }
 function _dcFillManualAtkDomFromPack(p){
 const setv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v!=null&&v!==''?String(v):''};
 const setc=(id,v)=>{const el=document.getElementById(id);if(el)el.checked=!!v};
-setv('dcAtkManual_uName',p.un);setv('dcAtkManual_cName',p.cn);setv('dcAtkManual_uHP',p.uHP);setv('dcAtkManual_uATK',p.uATK);setv('dcAtkManual_uDEF',p.uDEF);setv('dcAtkManual_uMOB',p.uMOB);setv('dcAtkManual_cRNG',p.cRNG);setv('dcAtkManual_cMEL',p.cMEL);setv('dcAtkManual_cAWK',p.cAWK);setv('dcAtkManual_cDEF',p.cDEF);setv('dcAtkManual_cREA',p.cREA);setv('dcAtkManual_wPow',p.wPow);setv('dcAtkManual_wAcc',p.wAcc);setv('dcAtkManual_wCrit',p.wCrit);setv('dcAtkManual_wMin',p.wMin);setv('dcAtkManual_wMax',p.wMax);setv('dcAtkManual_wAttr',p.wAttr);setv('dcAtkManual_wAtkType',p.wAtk);setc('dcAtkManual_wEx',p.wEx);
+setv('dcAtkManual_uName',p.un);setv('dcAtkManual_cName',p.cn);setv('dcAtkManual_uHP',p.uHP);setv('dcAtkManual_uATK',p.uATK);setv('dcAtkManual_uDEF',p.uDEF);setv('dcAtkManual_uMOB',p.uMOB);setv('dcAtkManual_cRNG',p.cRNG);setv('dcAtkManual_cMEL',p.cMEL);setv('dcAtkManual_cAWK',p.cAWK);setv('dcAtkManual_cDEF',p.cDEF);setv('dcAtkManual_cREA',p.cREA);setv('dcAtkManual_wPow',p.wPow);setv('dcAtkManual_wAcc',p.wAcc);setv('dcAtkManual_wCrit',p.wCrit);setv('dcAtkManual_wMin',p.wMin);setv('dcAtkManual_wMax',p.wMax);setv('dcAtkManual_wAttr',_dcNormalizeManualWeaponAttrId(p.wAttr));setv('dcAtkManual_wAtkType',p.wAtk);setc('dcAtkManual_wEx',p.wEx);
 }
 function _dcManualAtkUnitFromPack(p){
 const setv=(k,def)=>{const x=parseInt(p[k],10);return Number.isFinite(x)?x:def};
 const stats=_dcStatArrUnit(setv('uHP',0),setv('uATK',0),setv('uDEF',0),setv('uMOB',0));
 const lb0={stats_no_cond:stats,stats:stats,sp_stats:stats,ssp_stats:stats};
-const aid=String(p.wAttr||'2');
+const aid=_dcNormalizeManualWeaponAttrId(p.wAttr);
 const atkLbl=String(p.wAtk||'Ranged');
 const wPow=setv('wPow',0),wAcc=setv('wAcc',0),wCrit=setv('wCrit',0);
 const wMin=Math.max(1,setv('wMin',1)),wMax=Math.max(wMin,setv('wMax',10));
@@ -3177,7 +3183,7 @@ const fg=(name)=>{if(!st)return 0;const x=st.find(s=>s.name===name);return x?Mat
 const fc=(name)=>{if(!c||!c.stats)return 0;const x=c.stats.find(s=>s.name===name);return x?Math.round(x.total||0):0};
 const lv=w&&w.levels&&w.levels[0]?w.levels[0]:{};
 const atkLbl=(w&&w.attack_types&&w.attack_types[0]&&w.attack_types[0].label)||'Ranged';
-return{un:u?u.name:'',cn:c?c.name:'',uHP:fg('HP'),uATK:fg('Attack'),uDEF:fg('Defense'),uMOB:fg('Mobility'),cRNG:fc('Ranged'),cMEL:fc('Melee'),cAWK:fc('Awaken'),cDEF:fc('Defense'),cREA:fc('Reaction'),wPow:lv.power||0,wAcc:lv.accuracy||0,wCrit:lv.critical||0,wMin:w?w.min_range||1:1,wMax:w?w.max_range||10:10,wAttr:String(w&&w.attribute_id||'2'),wAtk:atkLbl,wEx:!!(w&&w.is_ex)};
+return{un:u?u.name:'',cn:c?c.name:'',uHP:fg('HP'),uATK:fg('Attack'),uDEF:fg('Defense'),uMOB:fg('Mobility'),cRNG:fc('Ranged'),cMEL:fc('Melee'),cAWK:fc('Awaken'),cDEF:fc('Defense'),cREA:fc('Reaction'),wPow:lv.power||0,wAcc:lv.accuracy||0,wCrit:lv.critical||0,wMin:w?w.min_range||1:1,wMax:w?w.max_range||10:10,wAttr:_dcNormalizeManualWeaponAttrId(w&&w.attribute_id),wAtk:atkLbl,wEx:!!(w&&w.is_ex)};
 }
 function _dcPackShareState(){
 onDcParamChange();
