@@ -2607,7 +2607,22 @@ renderCompareContent()
 const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
-function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();return DC_SHINN_ASUKA_CHAR_IDS.has(id)}
+function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();if(DC_SHINN_ASUKA_CHAR_IDS.has(id))return true;const mid=cd.main_character_id!=null?String(cd.main_character_id).trim():'';if(mid&&DC_SHINN_ASUKA_CHAR_IDS.has(mid))return true;const n=(cd.name||'').toLowerCase();return n.includes('shinn')&&n.includes('asuka')}
+function _dcCharAbilitiesTextBlob(cd){
+if(!cd||!cd.abilities)return'';
+const parts=[];
+cd.abilities.forEach(ab=>{
+parts.push(ab.name||'',ab.display_name||'');
+(ab.details||[]).forEach(d=>{parts.push(typeof d==='string'?d:(d&&d.text)||'')});
+});
+return parts.join('\n').toLowerCase();
+}
+function _dcShouldAutoSuperchargedVigorOnCharCp(cd){
+if(!cd)return false;
+if(_dcIsShinnAsukaCharacter(cd))return true;
+const blob=_dcCharAbilitiesTextBlob(cd);
+return blob.includes('supercharged')&&blob.includes('shinn');
+}
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
 const DC_WPN_ATTR_ID_KEYS={'1':['physical'],'2':['beam'],'3':['special'],'4':['beam','physical'],'5':['physical','special'],'6':['beam','special'],'7':['beam','physical','special'],'8':['beam','physical']};
@@ -2647,7 +2662,6 @@ return sum;
 }
 function _dcWeaponElement(wpn){return _dcWeaponAttributeKeys(wpn)[0]||'special'}
 function _dcDefaultWeaponDistance(wpn){const eff=_dcGetEffectiveRange(wpn);const mn=eff.min_range||1,mx=eff.max_range||mn;let d=Math.max(1,mn);if(d>mx)d=mx;return d}
-function _dcStatValClass(mod,base){const a=Math.round(Number(mod)||0),b=Math.round(Number(base)||0);return a!==b?'dc-stat-val--buffed':''}
 function _dcNonMapWeapons(ud){
 if(!ud||!ud.weapons)return[];
 const um=S.dc.unitStatMode||'normal';
@@ -2952,12 +2966,6 @@ area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}
 const sa=document.getElementById('dcAtkStatsArea');
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
-const bHp=_dcFindStat(stats,'HP')||0,bAtk=_dcFindStat(stats,'Attack'),bDef=_dcFindStat(stats,'Defense'),bMob=_dcFindStat(stats,'Mobility');
-const hHp=_dcStatValClass(hpS,bHp),hAtk=_dcStatValClass(atkS,bAtk),hDef=_dcStatValClass(defS,bDef),hMob=_dcStatValClass(mobS,bMob);
-const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
-const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
-const unitModNote=hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support (ATK support applies in damage only).</div>':'';
-const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uMode=S.dc.unitStatMode||'normal';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=stats;
@@ -2966,6 +2974,12 @@ const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
 function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
+function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?'dc-stat-val--buffed':''}
+const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense'),hMob=_uCpValBuff('Mobility');
+const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
+const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
+const unitModNote=hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support (ATK support applies in damage only).</div>':'';
+const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val"><span${spAtk}>${fmtN(atkS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDef}>${fmtN(defS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
 renderDcWeaponArea();
@@ -2973,7 +2987,7 @@ renderDcWeaponArea();
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(on&&S.dc.atkCharData&&_dcIsShinnAsukaCharacter(S.dc.atkCharData)){S.dc.mpLevel='super';document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp==='super'));_dcRefreshMpBonusHint()}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();if(on&&S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData))setDcMp('super');else onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -3009,8 +3023,12 @@ const cMode=S.dc.charStatMode||'normal';
 const cCp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
 function _cCpCell(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
 function _skillCell(nm){if(nm==='Defense'&&defPctSk>0)return' dc-stat-mini--skill';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return' dc-stat-mini--skill';return''}
+function _cCpValBuff(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?'dc-stat-val--buffed':''}
+function _skillValBuff(nm){if(nm==='Defense'&&defPctSk>0)return'dc-stat-val--buffed';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return'dc-stat-val--buffed';return''}
+function _charStatValCls(nm){const a=_cCpValBuff(nm),b=_skillValBuff(nm);return a&&b?a+' '+b:(a||b||'')}
+function _charStatValSpan(nm,val){const cls=_charStatValCls(nm);return`<span${cls?` class="${cls}"`:''}>${fmtN(val)}</span>`}
 const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${fmtN(r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${fmtN(m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${fmtN(a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${fmtN(d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${fmtN(re)}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}</div></div></div>`;
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
