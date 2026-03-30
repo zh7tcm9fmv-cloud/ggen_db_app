@@ -1342,11 +1342,25 @@ MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6
 ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids)
 
 
-def collect_unit_mechanism_mids(info):
+def _unit_lineage_has_large_2x2_tag(uid):
+    """Matches get_unit: lineage tag 1067 marks a large (2×2) unit on the detail screen."""
+    if not uid:
+        return False
+    for tag_id in unit_lin_map.get(uid, []) or []:
+        if tag_id == '1067' or (isinstance(tag_id, str) and tag_id.endswith('1067')):
+            return True
+    return False
+
+
+def collect_unit_mechanism_mids(info, uid=None):
+    """Mechanism fragment ids for filtering (MECH_MAP_TABLE). 2×2 also applies when tag 1067 matches, same as unit detail."""
     if not info:
         return frozenset()
     msid = str(info.get('mechanism_set_id', '0'))
-    return frozenset(MECH_MAP_TABLE.get(msid, []))
+    mids = list(MECH_MAP_TABLE.get(msid, []))
+    if uid and '2x2' not in mids and _unit_lineage_has_large_2x2_tag(uid):
+        mids.append('2x2')
+    return frozenset(mids)
 
 
 def parse_unit_mechanism_filter(val):
@@ -1375,10 +1389,10 @@ def unit_mechanism_filter_cache_fragment(expr):
     return ('m' + '__'.join(sorted(expr)))[:220]
 
 
-def unit_matches_mechanism_filter(info, want_filter):
+def unit_matches_mechanism_filter(info, want_filter, uid=None):
     if not want_filter:
         return True
-    have = collect_unit_mechanism_mids(info)
+    have = collect_unit_mechanism_mids(info, uid)
     return want_filter.issubset(have)
 
 
@@ -2915,10 +2929,12 @@ def collect_unit_model_search_text(info):
     m = info.get('model') or ''
     return str(m).strip() if m else ''
 
-def collect_unit_mechanism_search_text(info, ld):
+def collect_unit_mechanism_search_text(info, ld, uid=None):
     """Mechanism names and descriptions for list search."""
     msid = str(info.get('mechanism_set_id', '0'))
     mids = list(MECH_MAP_TABLE.get(msid, []))
+    if uid and '2x2' not in mids and _unit_lineage_has_large_2x2_tag(uid):
+        mids.append('2x2')
     mm = ld.get('mechanism_map', {})
     parts = []
     for mid in mids:
@@ -6030,7 +6046,7 @@ def unit_passes_browse_pool_filters(
             mod = collect_unit_model_search_text(info)
             if mod:
                 search_chunks.append(mod)
-            mech = collect_unit_mechanism_search_text(info, ld)
+            mech = collect_unit_mechanism_search_text(info, ld, uid)
             if mech:
                 search_chunks.append(mech)
             wtxt = collect_unit_weapons_search_text(uid, ld, lc)
@@ -6780,7 +6796,7 @@ def list_units():
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul33_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul34_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -6841,9 +6857,9 @@ def list_units():
         if weapon_debuff_filter:
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
                 continue
-        mechanism_union |= set(collect_unit_mechanism_mids(info))
+        mechanism_union |= set(collect_unit_mechanism_mids(info, uid))
         if mechanism_filter:
-            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter):
+            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid):
                 continue
         raw = unit_stat_map.get(uid, {})
         if stat_mode == 'normal' and not cond_list:
