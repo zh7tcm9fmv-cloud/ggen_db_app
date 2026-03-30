@@ -1130,10 +1130,31 @@ html{overflow-x:hidden}
 <div class="dc-panel-title dc-defender-panel-title">DEFENDER (Target)</div>
 <div class="dc-defender-head-spacer" aria-hidden="true"></div>
 </div>
-<div style="margin-bottom:12px">
+<div class="dc-def-mode-row" style="margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModePreset" value="preset" checked onchange="setDcDefTargetMode('preset')"> Preset (ER stage)</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModeCustom" value="custom" onchange="setDcDefTargetMode('custom')"> Custom stats</label>
+</div>
+<div id="dcDefPresetWrap" class="dc-def-preset-wrap" style="margin-bottom:12px">
 <span class="dc-ctrl-label" style="display:block;margin-bottom:4px">Preset Target (ER Stage)</span>
 <select class="dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" style="width:100%;margin-bottom:8px"><option value="">-- Select Stage --</option></select>
 <select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()" style="width:100%"><option value="">-- Select NPC --</option></select>
+</div>
+<div id="dcDefCustomWrap" style="display:none;margin-bottom:12px" class="dc-panel-section">
+<div class="dc-section-label" style="color:#f87171;margin-bottom:4px">Manual defender</div>
+<div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.35">Set unit and pilot map stats directly instead of a stage preset.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit label</span><input type="text" class="dc-input-sm" id="dcDefManual_uName" value="Custom unit" autocomplete="off" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Pilot label</span><input type="text" class="dc-input-sm" id="dcDefManual_cName" value="Custom pilot" autocomplete="off" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">HP</span><input type="number" class="dc-input-sm" id="dcDefManual_uHP" min="0" max="99999999" value="300000" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit ATK</span><input type="number" class="dc-input-sm" id="dcDefManual_uATK" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit DEF</span><input type="number" class="dc-input-sm" id="dcDefManual_uDEF" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Mobility</span><input type="number" class="dc-input-sm" id="dcDefManual_uMOB" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Ranged</span><input type="number" class="dc-input-sm" id="dcDefManual_cRNG" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Melee</span><input type="number" class="dc-input-sm" id="dcDefManual_cMEL" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Awaken</span><input type="number" class="dc-input-sm" id="dcDefManual_cAWK" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label">Pilot DEF</span><input type="number" class="dc-input-sm" id="dcDefManual_cDEF" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label">Reaction</span><input type="number" class="dc-input-sm" id="dcDefManual_cREA" min="0" max="999999" value="0" oninput="syncDcManualDefFromInputs()"></div>
+</div>
 </div>
 <div id="dcDefUnitArea"></div>
 <div id="dcDefCharArea"></div>
@@ -1447,7 +1468,8 @@ function clearUnitWeaponDebuffOnly(){S.listUnitWeaponDebuff=[];const body=docume
 function getLineageQuerySuffix(which){const p=which==='char'?'char':(which==='supp'?'supp':'unit');const key=p==='char'?'listCharLineage':(p==='supp'?'listSuppLineage':'listUnitLineage');let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&lineage_id='+encodeURIComponent(sel.join(','))}
 function getSeriesQuerySuffix(which){const p=which==='char'?'char':'unit';const cur=S[p==='char'?'listCharSeries':'listUnitSeries']||'ALL';if(!cur||cur==='ALL')return '';return '&series_id='+encodeURIComponent(cur)}
 function getSkillOrAbilityQuerySuffix(which){const p=which==='char'?'char':'unit';const key=p==='char'?'listCharSkills':'listUnitAbilities';let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';const param=p==='char'?'skill_id':'ability_id';return '&'+param+'='+encodeURIComponent(sel.join(','))}
-function buildBrowsePoolQuery(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');return `q=${encodeURIComponent(q)}${rq}${linQ}`}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const q=(qEl&&qEl.value.trim())||'';const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const linQ=getLineageQuerySuffix(which);const serQ=getSeriesQuerySuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const abQ=which==='char'?getAbilityQuerySuffix(which):'';return `q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${debQ}${linQ}${serQ}${skAb}${abQ}`}
+function expandUnitSearchQuery(q){let s=String(q||'').trim();if(!s)return'';s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');return s.trim()}
+function buildBrowsePoolQuery(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');return `q=${encodeURIComponent(q)}${rq}${linQ}`}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const qRaw=(qEl&&qEl.value.trim())||'';const q=which==='unit'?expandUnitSearchQuery(qRaw):qRaw;const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const linQ=getLineageQuerySuffix(which);const serQ=getSeriesQuerySuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const abQ=which==='char'?getAbilityQuerySuffix(which):'';return `q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${debQ}${linQ}${serQ}${skAb}${abQ}`}
 function buildBrowsePoolSig(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');return [q,rq,linQ].join('|')}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const linQ=getLineageQuerySuffix(which);const serQ=getSeriesQuerySuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const abQ=which==='char'?getAbilityQuerySuffix(which):'';return [q,roleQ,rq,stQ,srcQ,terrQ,debQ,linQ,serQ,skAb,abQ].join('|')}
 function buildSkillBrowseHtml(p){const pack=getBrowsePack(p)||{};const rows=groupBrowseRowsNoLevel(p==='char'?(pack.skills||[]):(pack.abilities||[]));const allId=p+'SkillAll';const nameAttr=p==='char'?'charSkillSel':'unitSkillSel';const allTxt=p==='char'?t('list_filter_all_skills'):t('list_filter_all_abilities');let h=`<label class="list-filter-tag-item skill-browse-all-row" data-filter-text=""><input type="checkbox" id="${allId}" class="list-filter-sr skill-filter-all" onchange="onSkillBrowseAllChange('${p}')"><span class="skill-browse-all-label">${esc(allTxt)}</span></label>`;rows.forEach((row,idx)=>{const ft=String(row.name||'').toLowerCase();if((p==='char'||p==='unit')&&row.icon){h+=`<label class="list-filter-tag-item skill-browse-row" data-skill-order="${idx}" data-filter-text="${escAttr(ft)}"><input type="checkbox" name="${nameAttr}" class="list-filter-sr skill-browse-item" value="${escAttr(String(row.id))}" onchange="onSkillBrowseItemChange('${p}')"><span class="tag-composite list-filter-tag-composite skill-browse-row-inner"><span class="tag-part-icon"><img class="skill-browse-ic" src="${imgUrl(row.icon)}" alt="" loading="lazy"></span><span class="tag-part-value">${esc(row.name)}</span></span></label>`}else{h+=`<label class="list-filter-tag-item skill-browse-row" data-skill-order="${idx}" data-filter-text="${escAttr(ft)}"><input type="checkbox" name="${nameAttr}" class="list-filter-sr skill-browse-item" value="${escAttr(String(row.id))}" onchange="onSkillBrowseItemChange('${p}')"><span class="tag-part-value">${esc(row.name)}</span></label>`}});return h}
 function skillBrowseStemAndLv(name){const s=String(name||'').trim();const re=/\s*(?:Lv\.?|LV\.?|lv\.?)\s*(\d+)\s*$/i;const m=s.match(re);const lv=m?parseInt(m[1],10):0;const display=(lv&&m?s.slice(0,m.index):s).trim();const stem=display.toLowerCase();return{stem,lv,display}}
@@ -1532,7 +1554,7 @@ function getTabNameForSpotlight(){const m={characters:'tab_char',units:'tab_unit
 function onSearchSpotlightInput(){const real=getActiveSearchInput();const inp=document.getElementById('searchSpotlightInput');if(!real||!inp)return;real.value=inp.value;updateSearchHintVisibility(real.id);if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id);const tabById={charFilter:'characters',unitFilter:'units',suppFilter:'supporters',stageFilter:'stages',modFilter:'modifications'};const tab=tabById[real.id];if(tab)debounceLoad(tab);debounceSpotlightResults()}
 function clearSpotlightResults(){const box=document.getElementById('searchSpotlightResults');if(box){box.innerHTML='';box.hidden=true}}
 function debounceSpotlightResults(){clearTimeout(S._spotlightFt);S._spotlightFt=setTimeout(refreshSpotlightResults,220)}
-async function refreshSpotlightResults(){const ov=document.getElementById('searchSpotlightOverlay');const box=document.getElementById('searchSpotlightResults');if(!ov||!ov.classList.contains('active')||!box)return;const qEl=getActiveSearchInput();const q=qEl?qEl.value.trim():'';if(!q){clearSpotlightResults();return}box.hidden=false;box.innerHTML='<div class="search-spotlight-results-loading">…</div>';const tab=S.currentTab;const pp=8;try{let url='';if(tab==='characters'){const s=S.characters;const roleQ=getRoleQuerySuffix('char');const rq=getRarityQuerySuffix('char');const stQ=getListStatQuery('char');const srcQ=getSourceQuerySuffix('char');const linQ=getLineageQuerySuffix('char');const serQ=getSeriesQuerySuffix('char');const skillQ=getSkillOrAbilityQuerySuffix('char');const gsQ=getListViewMode('characters')==='grid'&&getListGridVariant('characters')===2?'&grid_skills=1':'';url=`/api/characters?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${serQ}${skillQ}${gsQ}`}else if(tab==='units'){const s=S.units;const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=getListStatQuery('unit');const srcQ=getSourceQuerySuffix('unit');const linQ=getLineageQuerySuffix('unit');const serQ=getSeriesQuerySuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const gsU=getListViewMode('units')==='grid'?'&grid_skills=1':'';url=`/api/units?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${serQ}${abQ}${gsU}`}else if(tab==='supporters'){const s=S.supporters;const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');url=`/api/supporters?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${rq}${linQ}`}else if(tab==='stages'){const s=S.stages;const df=s.difficultyFilter==='ALL'?'':s.difficultyFilter;url=`/api/stages?lang=${S.lang}&page=1&per_page=${pp}&q=${encodeURIComponent(q)}&difficulty=${encodeURIComponent(df)}&sort=${s.sort}&dir=${s.dir}`}else if(tab==='modifications'){const s=S.modifications;const ef=encodeURIComponent(s.effectFilter||'ALL');url=`/api/option_parts?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}&rarity=ALL&effect=${ef}`}else{clearSpotlightResults();return}const r=await fetch(url);const d=await r.json();const rows=d.rows||[];if(!rows.length){box.innerHTML=`<div class="search-spotlight-results-empty">${esc(t('search_spotlight_empty'))}</div>`;return}let h='';if(tab==='characters'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('character','${escJs(row.id)}')">${renderListThumb(row,'char',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='units'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('unit','${escJs(row.id)}')">${renderListThumb(row,'unit',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='supporters'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('supporter','${escJs(row.id)}')">${renderListThumb(row,'supp',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='stages'){rows.forEach(row=>{const ph=row.portrait?imgTag(row.portrait,{cls:'search-spotlight-stage-img',webp:true,onerror:"this.parentElement.innerHTML='🗺️'"}) :'🗺️';h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('stage','${escJs(row.id)}')"><div class="search-spotlight-stage-thumb">${ph}</div><div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.difficulty_name||'')} · #${fmtN(row.stage_number)}</div></div></button>`})}else if(tab==='modifications'){rows.forEach(row=>{const ic=row.thum?imgTag(row.thum,{cls:'row-thum mod-icon',webp:true,onerror:"this.style.display='none'"}) :'<span class="search-spotlight-stage-thumb">⚙</span>';h+=`<button type="button" class="search-spotlight-row" onclick="closeSearchSpotlight()">${ic}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(t('tab_mod'))}</div></div></button>`})}box.innerHTML=h}catch(e){box.innerHTML=`<div class="search-spotlight-results-empty">${esc(String(e))}</div>`}}
+async function refreshSpotlightResults(){const ov=document.getElementById('searchSpotlightOverlay');const box=document.getElementById('searchSpotlightResults');if(!ov||!ov.classList.contains('active')||!box)return;const qEl=getActiveSearchInput();const q=qEl?qEl.value.trim():'';if(!q){clearSpotlightResults();return}box.hidden=false;box.innerHTML='<div class="search-spotlight-results-loading">…</div>';const tab=S.currentTab;const pp=8;try{let url='';if(tab==='characters'){const s=S.characters;const roleQ=getRoleQuerySuffix('char');const rq=getRarityQuerySuffix('char');const stQ=getListStatQuery('char');const srcQ=getSourceQuerySuffix('char');const linQ=getLineageQuerySuffix('char');const serQ=getSeriesQuerySuffix('char');const skillQ=getSkillOrAbilityQuerySuffix('char');const gsQ=getListViewMode('characters')==='grid'&&getListGridVariant('characters')===2?'&grid_skills=1':'';url=`/api/characters?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${serQ}${skillQ}${gsQ}`}else if(tab==='units'){const s=S.units;const qU=expandUnitSearchQuery(q);const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=getListStatQuery('unit');const srcQ=getSourceQuerySuffix('unit');const linQ=getLineageQuerySuffix('unit');const serQ=getSeriesQuerySuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const gsU=getListViewMode('units')==='grid'?'&grid_skills=1':'';url=`/api/units?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(qU)}${roleQ}${rq}${stQ}${srcQ}${linQ}${serQ}${abQ}${gsU}`}else if(tab==='supporters'){const s=S.supporters;const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');url=`/api/supporters?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${rq}${linQ}`}else if(tab==='stages'){const s=S.stages;const df=s.difficultyFilter==='ALL'?'':s.difficultyFilter;url=`/api/stages?lang=${S.lang}&page=1&per_page=${pp}&q=${encodeURIComponent(q)}&difficulty=${encodeURIComponent(df)}&sort=${s.sort}&dir=${s.dir}`}else if(tab==='modifications'){const s=S.modifications;const ef=encodeURIComponent(s.effectFilter||'ALL');url=`/api/option_parts?lang=${S.lang}&page=1&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}&rarity=ALL&effect=${ef}`}else{clearSpotlightResults();return}const r=await fetch(url);const d=await r.json();const rows=d.rows||[];if(!rows.length){box.innerHTML=`<div class="search-spotlight-results-empty">${esc(t('search_spotlight_empty'))}</div>`;return}let h='';if(tab==='characters'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('character','${escJs(row.id)}')">${renderListThumb(row,'char',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='units'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('unit','${escJs(row.id)}')">${renderListThumb(row,'unit',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='supporters'){rows.forEach(row=>{h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('supporter','${escJs(row.id)}')">${renderListThumb(row,'supp',44)}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.rarity||'')}</div></div></button>`})}else if(tab==='stages'){rows.forEach(row=>{const ph=row.portrait?imgTag(row.portrait,{cls:'search-spotlight-stage-img',webp:true,onerror:"this.parentElement.innerHTML='🗺️'"}) :'🗺️';h+=`<button type="button" class="search-spotlight-row" onclick="openDetail('stage','${escJs(row.id)}')"><div class="search-spotlight-stage-thumb">${ph}</div><div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(row.difficulty_name||'')} · #${fmtN(row.stage_number)}</div></div></button>`})}else if(tab==='modifications'){rows.forEach(row=>{const ic=row.thum?imgTag(row.thum,{cls:'row-thum mod-icon',webp:true,onerror:"this.style.display='none'"}) :'<span class="search-spotlight-stage-thumb">⚙</span>';h+=`<button type="button" class="search-spotlight-row" onclick="closeSearchSpotlight()">${ic}<div class="search-spotlight-row-text"><div class="search-spotlight-row-name">${esc(row.name)}</div><div class="search-spotlight-row-meta">${esc(t('tab_mod'))}</div></div></button>`})}box.innerHTML=h}catch(e){box.innerHTML=`<div class="search-spotlight-results-empty">${esc(String(e))}</div>`}}
 function closeSearchSpotlight(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;clearSpotlightResults();const real=getActiveSearchInput();const inp=document.getElementById('searchSpotlightInput');if(real&&inp){real.value=inp.value;updateSearchHintVisibility(real.id);if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}ov.classList.remove('active');ov.setAttribute('aria-hidden','true');document.body.classList.remove('search-spotlight-open');releaseBackgroundScrollLock()}
 function scrollActiveListToolbarIntoView(){try{const pan=document.getElementById('panel-'+S.currentTab);const el=pan&&pan.querySelector('.list-toolbar');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}}
 function afterListLoadIfSpotlightOpen(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;requestAnimationFrame(()=>scrollActiveListToolbarIntoView())}
@@ -1661,7 +1683,7 @@ function setBrowseToolbarCount(which,html){const ids={char:'charToolbarCount',un
 function syncBrowseSearchWidth(id){const inp=document.getElementById(id);if(!inp||!inp.classList.contains('filter-input--organic'))return;if(inp.closest('.browse-toolbar-leading')){inp.style.width='';return}if(typeof CSS!=='undefined'&&CSS.supports&&CSS.supports('field-sizing','content')){inp.style.width='';return}const wrap=inp.closest('.filter-input-wrap--organic');if(!wrap)return;const sizer=wrap.querySelector('.filter-input-sizer');if(!sizer)return;const ph=inp.getAttribute('placeholder')||'';const val=inp.value.length?inp.value:ph;sizer.textContent=val.length?val:'\u00a0';const w=Math.max(sizer.scrollWidth||0,Math.ceil(sizer.getBoundingClientRect().width));const cs=getComputedStyle(inp);const maxStr=cs.maxWidth;const maxPx=maxStr&&maxStr!=='none'?parseFloat(maxStr):Math.min(window.innerWidth*0.96,96*16);const minPx=parseFloat(cs.minWidth)||0;const next=Math.min(Math.max(Math.ceil(w+2),minPx),maxPx);inp.style.width=next+'px'}
 function syncBrowseSearchWidths(){syncBrowseSearchWidth('charFilter');syncBrowseSearchWidth('unitFilter')}
 async function loadCharacters(p=1,opts={}){const s=S.characters;s.page=p;s.q=document.getElementById('charFilter').value.trim();const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('char');const roleQ=getRoleQuerySuffix('char');const rq=getRarityQuerySuffix('char');const stQ=getListStatQuery('char');const srcQ=getSourceQuerySuffix('char');const linQ=getLineageQuerySuffix('char');const serQ=getSeriesQuerySuffix('char');const skillQ=getSkillOrAbilityQuerySuffix('char');const abilQ=getAbilityQuerySuffix('char');const gsQ=getListViewMode('characters')==='grid'&&getListGridVariant('characters')===2?'&grid_skills=1':'';showLoad('char',true);setBrowseToolbarCount('char','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/characters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${serQ}${skillQ}${abilQ}${gsQ}`);const d=await r.json();if(await maybeUnlockNpcView(s.q,d)){loadCharacters(p);return}renderCharT(d);renderPag('char',d);setBrowseToolbarCount('char',`<span class="result-count-num">${d.total}</span> ${t('count_char')}`)}catch(e){document.getElementById('charBody').innerHTML='';const _cg=document.getElementById('charGrid');if(_cg)_cg.innerHTML='';document.getElementById('charEmpty').style.display='block';setBrowseToolbarCount('char','')}finally{showLoad('char',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}
-async function loadUnits(p=1,opts={}){const s=S.units;s.page=p;s.q=document.getElementById('unitFilter').value.trim();const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('unit');const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=getListStatQuery('unit');const srcQ=getSourceQuerySuffix('unit');const terrQ=getUnitTerrainQuerySuffix();const debQ=getUnitWeaponDebuffQuerySuffix();const linQ=getLineageQuerySuffix('unit');const serQ=getSeriesQuerySuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const gsU=getListViewMode('units')==='grid'?'&grid_skills=1':'';showLoad('unit',true);setBrowseToolbarCount('unit','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${debQ}${linQ}${serQ}${abQ}${gsU}`);const d=await r.json();if(await maybeUnlockNpcView(s.q,d)){loadUnits(p);return}if(applyWeaponDebuffPresentFromApi(d)){await loadUnits(p);return}renderUnitT(d);renderPag('unit',d);setBrowseToolbarCount('unit',`<span class="result-count-num">${d.total}</span> ${t('count_unit')}`)}catch(e){document.getElementById('unitBody').innerHTML='';const _ug=document.getElementById('unitGrid');if(_ug)_ug.innerHTML='';document.getElementById('unitEmpty').style.display='block';setBrowseToolbarCount('unit','')}finally{showLoad('unit',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}
+async function loadUnits(p=1,opts={}){const s=S.units;s.page=p;s.q=document.getElementById('unitFilter').value.trim();const qApi=expandUnitSearchQuery(s.q);const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('unit');const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=getListStatQuery('unit');const srcQ=getSourceQuerySuffix('unit');const terrQ=getUnitTerrainQuerySuffix();const debQ=getUnitWeaponDebuffQuerySuffix();const linQ=getLineageQuerySuffix('unit');const serQ=getSeriesQuerySuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const gsU=getListViewMode('units')==='grid'?'&grid_skills=1':'';showLoad('unit',true);setBrowseToolbarCount('unit','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(qApi)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${debQ}${linQ}${serQ}${abQ}${gsU}`);const d=await r.json();if(await maybeUnlockNpcView(s.q,d)){loadUnits(p);return}if(applyWeaponDebuffPresentFromApi(d)){await loadUnits(p);return}renderUnitT(d);renderPag('unit',d);setBrowseToolbarCount('unit',`<span class="result-count-num">${d.total}</span> ${t('count_unit')}`)}catch(e){document.getElementById('unitBody').innerHTML='';const _ug=document.getElementById('unitGrid');if(_ug)_ug.innerHTML='';document.getElementById('unitEmpty').style.display='block';setBrowseToolbarCount('unit','')}finally{showLoad('unit',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}
 async function loadSupporters(p=1){const s=S.supporters;s.page=p;s.q=document.getElementById('suppFilter').value.trim();const pp=document.getElementById('suppPerPage').value;const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');showLoad('supp',true);setBrowseToolbarCount('supp','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/supporters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}${rq}${linQ}`);const d=await r.json();renderSuppT(d);renderPag('supp',d);setBrowseToolbarCount('supp',`<span class="result-count-num">${d.total}</span> ${t('count_supporter')}`)}catch(e){document.getElementById('suppBody').innerHTML='';const _sg=document.getElementById('suppGrid');if(_sg)_sg.innerHTML='';document.getElementById('suppEmpty').style.display='block';setBrowseToolbarCount('supp','')}finally{showLoad('supp',false);afterListLoadIfSpotlightOpen()}}
 async function loadStages(p=1){const s=S.stages;s.page=p;s.q=document.getElementById('stageFilter').value.trim();const pp=document.getElementById('stagePerPage').value;const df=s.difficultyFilter==='ALL'?'':s.difficultyFilter;showLoad('stage',true);setBrowseToolbarCount('stage','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/stages?lang=${S.lang}&page=${p}&per_page=${pp}&q=${encodeURIComponent(s.q)}&difficulty=${encodeURIComponent(df)}&sort=${s.sort}&dir=${s.dir}`);const d=await r.json();renderStageT(d);renderPag('stage',d);setBrowseToolbarCount('stage',`<span class="result-count-num">${d.total}</span> ${t('count_stage')}`)}catch(e){document.getElementById('stageBody').innerHTML='';const _stg=document.getElementById('stageGrid');if(_stg)_stg.innerHTML='';document.getElementById('stageEmpty').style.display='block';setBrowseToolbarCount('stage','')}finally{showLoad('stage',false);afterListLoadIfSpotlightOpen()}}
 async function loadModifications(p=1){const s=S.modifications;s.page=p;s.q=document.getElementById('modFilter').value.trim();const pp=document.getElementById('modPerPage').value;const ef=encodeURIComponent(s.effectFilter||'ALL');showLoad('mod',true);setBrowseToolbarCount('mod','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetch(`/api/option_parts?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}&rarity=ALL&effect=${ef}`);const d=await r.json();if(d.effect_filter_icons)S._modEffectFilterIcons=d.effect_filter_icons;else S._modEffectFilterIcons=null;renderModT(d);renderPag('mod',d);setBrowseToolbarCount('mod',`<span class="result-count-num">${d.total}</span> ${t('count_mod')}`);updateModEffectFilterLabel();applyModEffectDropdownIcons()}catch(e){document.getElementById('modBody').innerHTML='';const _mg=document.getElementById('modGrid');if(_mg)_mg.innerHTML='';document.getElementById('modEmpty').style.display='block';setBrowseToolbarCount('mod','')}finally{showLoad('mod',false);afterListLoadIfSpotlightOpen()}}
@@ -2874,7 +2896,9 @@ onDcParamChange();
 
 function initDmgCalc(){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;S.dc._activeSkills={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;S.dc._activeSkills={};
+const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap');
+if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value='';
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=0;
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=0;
@@ -2914,6 +2938,9 @@ const stages=await loadDcStages();
 sel.innerHTML=`<option value="">-- Select Stage --</option>`+stages.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.difficulty||'')})</option>`).join('');
 }
 async function onDcStageChange(){
+S.dc.defTargetMode='preset';
+const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap');
+if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';
 const sel=document.getElementById('dcStageSelect');
 const stageId=sel.value;
 if(!stageId){S.dc.npcList=[];S.dc.defNpc=null;renderDcNpcDropdown();renderDcDefStats();onDcParamChange();return}
@@ -2955,6 +2982,45 @@ const bytes=new Uint8Array(bin.length);
 for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
 return new TextDecoder().decode(bytes);
 }
+function _dcManualDefNpcFromDefC(c){
+const num=(k,def)=>{const x=parseInt(c[k],10);return Number.isFinite(x)?x:def};
+return{npc_id:'__manual__',_manual:true,unit:{name:String(c.un||'Custom unit'),portrait:'',thum:'',stats_raw:{HP:num('uHP',0),Attack:num('uATK',0),Defense:num('uDEF',0),Mobility:num('uMOB',0)},bonus_amounts:{}},character:{name:String(c.cn||'Custom pilot'),portrait:'',thum:'',stats_raw:{Ranged:num('cRNG',0),Melee:num('cMEL',0),Awaken:num('cAWK',0),Defense:num('cDEF',0),Reaction:num('cREA',0)},bonus_amounts:{}}};
+}
+function _dcBuildManualDefNpcFromDom(){return _dcManualDefNpcFromDefC(_dcDefManualStatsToPack())}
+function _dcDefManualStatsToPack(){
+return{un:document.getElementById('dcDefManual_uName')?.value||'Custom unit',cn:document.getElementById('dcDefManual_cName')?.value||'Custom pilot',uHP:parseInt(document.getElementById('dcDefManual_uHP')?.value,10)||0,uATK:parseInt(document.getElementById('dcDefManual_uATK')?.value,10)||0,uDEF:parseInt(document.getElementById('dcDefManual_uDEF')?.value,10)||0,uMOB:parseInt(document.getElementById('dcDefManual_uMOB')?.value,10)||0,cRNG:parseInt(document.getElementById('dcDefManual_cRNG')?.value,10)||0,cMEL:parseInt(document.getElementById('dcDefManual_cMEL')?.value,10)||0,cAWK:parseInt(document.getElementById('dcDefManual_cAWK')?.value,10)||0,cDEF:parseInt(document.getElementById('dcDefManual_cDEF')?.value,10)||0,cREA:parseInt(document.getElementById('dcDefManual_cREA')?.value,10)||0};
+}
+function _dcFillManualDefDomFromPack(c){
+const setv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v!=null&&v!==''?String(v):''};
+setv('dcDefManual_uName',c.un);setv('dcDefManual_cName',c.cn);setv('dcDefManual_uHP',c.uHP);setv('dcDefManual_uATK',c.uATK);setv('dcDefManual_uDEF',c.uDEF);setv('dcDefManual_uMOB',c.uMOB);setv('dcDefManual_cRNG',c.cRNG);setv('dcDefManual_cMEL',c.cMEL);setv('dcDefManual_cAWK',c.cAWK);setv('dcDefManual_cDEF',c.cDEF);setv('dcDefManual_cREA',c.cREA);
+}
+function setDcDefTargetMode(mode){
+S.dc.defTargetMode=mode;
+const pw=document.getElementById('dcDefPresetWrap');
+const cw=document.getElementById('dcDefCustomWrap');
+const rp=document.getElementById('dcDefModePreset');
+const rc=document.getElementById('dcDefModeCustom');
+if(rp)rp.checked=mode==='preset';
+if(rc)rc.checked=mode==='custom';
+if(pw)pw.style.display=mode==='preset'?'':'none';
+if(cw)cw.style.display=mode==='custom'?'':'none';
+if(mode==='custom'){
+S.dc.defNpc=_dcBuildManualDefNpcFromDom();
+renderDcDefStats();
+onDcParamChange();
+}else{
+S.dc.defNpc=null;
+const sel=document.getElementById('dcNpcSelect');
+if(sel&&sel.value)selectDcNpc();
+else{renderDcDefStats();onDcParamChange();}
+}
+}
+function syncDcManualDefFromInputs(){
+if((S.dc.defTargetMode||'preset')!=='custom')return;
+S.dc.defNpc=_dcBuildManualDefNpcFromDom();
+renderDcDefStats();
+onDcParamChange();
+}
 function _dcPackShareState(){
 onDcParamChange();
 _dcSnapActiveAttackerToSlot();
@@ -2992,6 +3058,7 @@ const stgSel=document.getElementById('dcStageSelect');
 const npcSel=document.getElementById('dcNpcSelect');
 const defNpc=S.dc.defNpc;
 const D={};
+if((S.dc.defTargetMode||'preset')!=='custom'){
 if(defNpc&&defNpc.npc_id!=null&&String(defNpc.npc_id)!==''){
 D.n=String(defNpc.npc_id);
 if(stgSel&&stgSel.value)D.s=stgSel.value;
@@ -2999,6 +3066,7 @@ if(stgSel&&stgSel.value)D.s=stgSel.value;
 D.n=npcSel.value;
 if(stgSel&&stgSel.value)D.s=stgSel.value;
 }else if(stgSel&&stgSel.value)D.s=stgSel.value;
+}
 if(S.dc.dmgTakenDownPilot)D.dtp=S.dc.dmgTakenDownPilot;
 if(S.dc.dmgTakenDownUnit)D.dttu=S.dc.dmgTakenDownUnit;
 if(S.dc.defDebuffPct)D.defp=S.dc.defDebuffPct;
@@ -3009,6 +3077,7 @@ if(S.dc.defending)D.def=1;
 if(S.dc.shield)D.sh=1;
 const out={v:1,a:S.dc.atkSlotIndex|0,S:slotArr};
 if(Object.keys(D).length)out.D=D;
+if((S.dc.defTargetMode||'preset')==='custom'){out.defM=1;out.defC=_dcDefManualStatsToPack()}
 return out;
 }
 async function _dcLoadSlotFromPackedObj(o){
@@ -3065,7 +3134,30 @@ return slot;
 }
 async function _dcApplyPackedShareState(obj){
 const D=obj.D||{};
+if(obj.defM===1&&obj.defC){
+S.dc.defTargetMode='custom';
+_dcFillManualDefDomFromPack(obj.defC);
+const preset=document.getElementById('dcDefModePreset');
+const custom=document.getElementById('dcDefModeCustom');
+const pw=document.getElementById('dcDefPresetWrap');
+const cw=document.getElementById('dcDefCustomWrap');
+if(preset)preset.checked=false;
+if(custom)custom.checked=true;
+if(pw)pw.style.display='none';
+if(cw)cw.style.display='block';
+S.dc.defNpc=_dcManualDefNpcFromDefC(obj.defC);
+}else{
+S.dc.defTargetMode='preset';
+const preset=document.getElementById('dcDefModePreset');
+const custom=document.getElementById('dcDefModeCustom');
+const pw=document.getElementById('dcDefPresetWrap');
+const cw=document.getElementById('dcDefCustomWrap');
+if(preset)preset.checked=true;
+if(custom)custom.checked=false;
+if(pw)pw.style.display='';
+if(cw)cw.style.display='none';
 if(D.s){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}}
+}
 const arr=Array.isArray(obj.S)?obj.S:[null,null,null];
 const loaded=await Promise.all([0,1,2].map(i=>{
 const o=arr[i];
@@ -3089,7 +3181,7 @@ _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcDetectVigorCondAbilities(S.dc.atkUnitData);
 _dcSyncAttackerDomFromDc();
 S.dc.atkSlots[S.dc.atkSlotIndex]=_dcReadAttackerFromDc();
-if(D.n){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=D.n;selectDcNpc()}}
+if((S.dc.defTargetMode||'preset')==='preset'&&D.n){const nSel=document.getElementById('dcNpcSelect');if(nSel){nSel.value=D.n;selectDcNpc()}}
 if(D.dtp!==undefined){const el=document.getElementById('dcDmgTakenDownPilot');if(el)el.value=String(D.dtp)}
 if(D.dttu!==undefined){const el=document.getElementById('dcDmgTakenDownUnit');if(el)el.value=String(D.dttu)}
 if(D.defp!==undefined){const el=document.getElementById('dcDefDebuffPct');if(el)el.value=String(D.defp)}
@@ -3529,6 +3621,7 @@ return`<option value="${esc(vid)}">${esc(name)}</option>`
 }
 
 function selectDcNpc(){
+if((S.dc.defTargetMode||'preset')==='custom')return;
 const sel=document.getElementById('dcNpcSelect');
 const raw=String(sel.value||'');
 const list=S.dc.npcList||[];
