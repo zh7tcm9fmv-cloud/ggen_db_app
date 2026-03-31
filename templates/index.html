@@ -573,7 +573,11 @@ html{overflow-x:hidden}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
 .dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;font-family:inherit;cursor:pointer}
 .dc-wpn-select:focus,.dc-npc-select:focus,.dc-input-sm:focus{outline:none;border-color:var(--accent-cyan)}
-.dc-stage-search{margin-bottom:6px}
+.dc-stage-dd-wrap{position:relative;width:100%;margin-bottom:8px}
+.dc-stage-dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;cursor:pointer;font-family:inherit}
+.dc-stage-dd-btn::after{content:'▾';flex-shrink:0;font-size:12px;opacity:.75}
+.dc-stage-dd-panel{position:absolute;left:0;right:0;z-index:25;margin-top:4px;padding:8px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.dc-stage-search{margin-bottom:6px;width:100%}
 .dc-stage-list{max-height:220px;overflow-y:auto;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-input)}
 .dc-stage-hit{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 10px;border:none;border-bottom:1px solid rgba(148,163,184,.12);background:transparent;color:var(--text-primary);font-size:13px;cursor:pointer;font-family:inherit}
 .dc-stage-hit:last-child{border-bottom:none}
@@ -1234,9 +1238,14 @@ html{overflow-x:hidden}
 </div>
 <div id="dcDefPresetWrap" class="dc-def-preset-wrap" style="margin-bottom:12px">
 <span class="dc-ctrl-label" style="display:block;margin-bottom:4px">Preset Target (ER Stage)</span>
+<div class="dc-stage-dd-wrap" id="dcStageDdWrap">
 <select class="dc-stage-select-hidden dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" tabindex="-1" aria-hidden="true"><option value="">-- Select Stage --</option></select>
+<button type="button" class="dc-input-sm dc-stage-dd-btn" id="dcStageDdBtn" onclick="_dcToggleDcStageDd(event)" aria-expanded="false" aria-haspopup="listbox" aria-controls="dcStageDdPanel">-- Select Stage --</button>
+<div id="dcStageDdPanel" class="dc-stage-dd-panel" hidden>
 <input type="search" class="dc-input-sm dc-stage-search" id="dcStageSearch" placeholder="Search Eternal Road stages…" autocomplete="off" oninput="_dcOnDcStageSearchInput()">
 <div id="dcStageList" class="dc-stage-list" role="listbox" aria-label="Eternal Road stages"></div>
+</div>
+</div>
 <select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()" style="width:100%"><option value="">-- Select NPC --</option></select>
 </div>
 <div id="dcDefCustomWrap" style="display:none;margin-bottom:12px" class="dc-panel-section">
@@ -1431,14 +1440,15 @@ return `<img class="dc-er-diff-icon dc-er-diff-icon--${c}" src="${escAttr(src)}"
 }
 function _dcFilterDcStages(stages,q){
 const s=(q||'').trim().toLowerCase();
-if(!s)return stages.slice();
-return stages.filter(r=>{
+const arr=!s?stages.slice():stages.filter(r=>{
 const id=String(r.id||'').toLowerCase();
 const nm=String(r.name||'').toLowerCase();
 const df=String(r.difficulty||'').toLowerCase();
 const dc=String(r.difficulty_code||'').toLowerCase();
 return id.includes(s)||nm.includes(s)||df.includes(s)||dc.includes(s);
 });
+arr.sort((a,b)=>(parseInt(String(a.id),10)||0)-(parseInt(String(b.id),10)||0));
+return arr;
 }
 function _dcFillDcStageSelectOptions(stages){
 const sel=document.getElementById('dcStageSelect');
@@ -1446,16 +1456,54 @@ if(!sel)return;
 const prev=sel.value;
 sel.innerHTML='<option value="">-- Select Stage --</option>'+stages.map(s=>`<option value="${escAttr(String(s.id))}">${esc(s.name)} (${esc(s.difficulty||'')})</option>`).join('');
 if(prev&&[...sel.options].some(o=>String(o.value)===String(prev)))sel.value=prev;
+_dcUpdateDcStageDdLabel();
 }
 function _dcOnDcStageSearchInput(){_dcRebuildDcStageUi()}
+function _dcUpdateDcStageDdLabel(){
+const sel=document.getElementById('dcStageSelect');
+const btn=document.getElementById('dcStageDdBtn');
+if(!btn)return;
+const v=sel&&sel.value;
+if(!v){btn.textContent='-- Select Stage --';return}
+const stages=_dcStagesCache||[];
+const hit=stages.find(s=>String(s.id)===String(v));
+if(hit)btn.textContent=`${hit.name} (${hit.difficulty||''})`;
+else btn.textContent=`Stage ${v}`;
+}
+function _dcToggleDcStageDd(ev){
+if(ev)ev.stopPropagation();
+const p=document.getElementById('dcStageDdPanel');
+if(!p)return;
+const opening=!!p.hidden;
+if(opening){
+const b=document.getElementById('dcStageDdBtn');
+if(b)b.setAttribute('aria-expanded','true');
+p.hidden=false;
+const s=document.getElementById('dcStageSearch');
+if(s)s.value='';
+_dcRebuildDcStageUi();
+if(s)requestAnimationFrame(()=>{try{s.focus()}catch(_){}});
+}else{_dcCloseDcStageDd();}
+}
+function _dcCloseDcStageDd(){
+const p=document.getElementById('dcStageDdPanel');
+const b=document.getElementById('dcStageDdBtn');
+const list=document.getElementById('dcStageList');
+if(p)p.hidden=true;
+if(b)b.setAttribute('aria-expanded','false');
+if(list)list.innerHTML='';
+}
 function _dcPickDcStage(sid){
 const sel=document.getElementById('dcStageSelect');
 if(!sel)return;
 sel.value=String(sid);
 onDcStageChange();
-_dcRebuildDcStageUi();
+_dcUpdateDcStageDdLabel();
+_dcCloseDcStageDd();
 }
 function _dcRebuildDcStageUi(){
+const p=document.getElementById('dcStageDdPanel');
+if(p&&p.hidden)return;
 const stages=_dcStagesCache||[];
 const q=document.getElementById('dcStageSearch')?document.getElementById('dcStageSearch').value:'';
 const filtered=_dcFilterDcStages(stages,q);
@@ -1510,7 +1558,7 @@ function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.lang
 function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}
 async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();if(lc!=='JP'&&lc!=='JA')return true;const msg="We apologize for the inconvenience.\nDue to unforeseen conflicts, the Japan version is currently locked.\nThank you for your understanding.";try{const st=await fetch('/api/jp_mode/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return true;alert(st.message||msg);const pw=window.prompt(t('jp_mode_unlock_prompt'));if(!pw)return false;const rr=await fetch('/api/jp_mode/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!rr.ok){alert(t('jp_mode_unlock_wrong'));return false}return true}catch(_){alert(msg);return false}}
 async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);if(S.currentTab==='latest_release')tryLoadLatestRelease();if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
-document.addEventListener('click',e=>{if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
+document.addEventListener('click',e=>{if(!e.target.closest('.dc-stage-dd-wrap'))_dcCloseDcStageDd();if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
 function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent='Damage Calculator';document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
@@ -1729,7 +1777,7 @@ async function loadLatestRelease(loadAll){const root=document.getElementById('la
 function loadMoreLatestRelease(){loadLatestRelease(true)}
 function renderLatestRelease(d){const root=document.getElementById('latestReleaseRoot');const groups=d.groups||[];const hasMore=!!d.has_more;const scope=d.scope||'recent';function cardsForGroup(g){let s='';(g.items||[]).forEach(it=>{const typeLabel=it.type==='unit'?t('lr_type_unit'):(it.type==='character'?t('lr_type_char'):t('lr_type_supp'));const row={thum:it.thum,rarity:it.rarity||'N',role_icon:it.role_icon||'',acquisition_icon:it.acquisition_icon||'',special_icons:it.special_icons||[],is_ultimate:it.is_ultimate};const thumb=renderListThumb(row,it.type==='supporter'?'supp':it.type,72);s+='<div class="lr-card" onclick="openDetail(\''+it.type+'\',\''+escJs(it.id)+'\')"><div class="lr-card-type">'+esc(typeLabel)+'</div><div class="lr-card-thumb">'+thumb+'</div><div class="lr-card-name">'+esc(it.name)+'</div></div>'});return s}if(!groups.length){if(hasMore){root.innerHTML='<div class="lr-page-title">'+esc(t('latest_gasha_title'))+'</div><div class="empty-state"><div class="empty-state-text">'+esc(t('lr_empty_recent'))+'</div></div><div class="lr-load-more-wrap"><button type="button" class="lr-load-more-btn" onclick="loadMoreLatestRelease()">'+esc(t('lr_load_more'))+'</button></div>';return}root.innerHTML='<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">'+t('lr_empty')+'</div></div>';return}let h='<div class="lr-page-title">'+esc(t('latest_gasha_title'))+'</div>';groups.forEach(g=>{const inner=g.locked?'<div class="lr-locked-banner"><span class="lr-locked-icon">🔒</span><span class="lr-locked-text">'+esc(t('lr_section_locked'))+'</span><button type="button" class="lr-unlock-inline-btn" onclick="showLrLockModal()">'+esc(t('lr_unlock_btn'))+'</button></div>':'<div class="lr-row">'+cardsForGroup(g)+'</div>';h+='<section class="lr-section"><h2 class="lr-date">'+esc(g.start_datetime_jst||'')+'</h2>'+inner+'</section>'});if(hasMore&&scope!=='full'){h+='<div class="lr-load-more-wrap"><button type="button" class="lr-load-more-btn" onclick="loadMoreLatestRelease()">'+esc(t('lr_load_more'))+'</button></div>'}root.innerHTML=h}
 function goHome(){closeModal();switchTab('characters')}
-function setupKeys(){document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){e.preventDefault();closeSearchSpotlight();return}const wno=document.getElementById('whatsNewOverlay');if(wno&&wno.classList.contains('active')){e.preventDefault();closeWhatsNew();return}if(document.getElementById('skillModal').classList.contains('active'))closeSkillModalForce();else if(document.getElementById('tagModal').classList.contains('active'))closeTagModalForce();else closeModal()}})}
+function setupKeys(){document.addEventListener('keydown',e=>{if(e.key==='Escape'){const sdp=document.getElementById('dcStageDdPanel');if(sdp&&!sdp.hidden){e.preventDefault();_dcCloseDcStageDd();return}if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){e.preventDefault();closeSearchSpotlight();return}const wno=document.getElementById('whatsNewOverlay');if(wno&&wno.classList.contains('active')){e.preventDefault();closeWhatsNew();return}if(document.getElementById('skillModal').classList.contains('active'))closeSkillModalForce();else if(document.getElementById('tagModal').classList.contains('active'))closeTagModalForce();else closeModal()}})}
 function openWhatsNew(){const ov=document.getElementById('whatsNewOverlay'),body=document.getElementById('whatsNewBody'),title=document.getElementById('whatsNewTitleEl');if(!ov||!body)return;document.getElementById('langDropdown').classList.remove('active');if(title)title.innerHTML='<img class="whats-new-ic" src="'+imgUrl('/static/images/UI/UI_Common_BtnIcon_News.webp')+'" alt=""> <span>'+esc(t('whats_new_title'))+'</span>';body.innerHTML='<div class="loading-overlay" style="min-height:200px"><div class="spinner"></div></div>';ov.classList.add('active');ov.setAttribute('aria-hidden','false');applyBackgroundScrollLock();const u='/api/whats_new?lang='+encodeURIComponent(S.lang||'EN')+'&t='+Date.now();fetch(u,{cache:'no-store',credentials:'same-origin'}).then(r=>r.json()).then(d=>{const tabs=(d&&d.tabs)||[];if(tabs.length){body.innerHTML=renderWhatsNewTabsHTML(tabs);return}const entries=(d&&d.entries)||[];if(!entries.length){body.innerHTML='<p style="color:var(--text-muted);margin:0">'+esc(t('whats_new_empty'))+'</p>';return}body.innerHTML=entries.map(renderWhatsNewBlock).join('')}).catch(err=>{body.innerHTML='<p style="color:var(--text-muted);margin:0">'+esc(String(err))+'</p>'})}
 function whatsNewTabLabel(tab){if(!tab||typeof tab!=='object')return'';const k=tab.kind;function endLabel(){const x=tab.label!=null&&String(tab.label).trim()!==''?String(tab.label):(tab.date!=null&&String(tab.date).trim()!==''?String(tab.date):'');return x}if(k==='pending'){const d=endLabel();return d||t('whats_new_tab_pending')}if(k==='manual'){const d=tab.date!=null&&String(tab.date).trim()!==''?String(tab.date):'';return d?d+' · '+t('whats_new_tab_manual'):t('whats_new_tab_manual')}if(k==='history'){const d=endLabel();return d||'—'}return String(tab.id||'')}
 function whatsNewTabIsEmpty(tab){const ch=tab.changes||[],ad=tab.added||[];return !ch.length&&!ad.length}
@@ -2904,8 +2952,12 @@ function _dcGetAutoWeaponPowerDisplay(){
 const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
 const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn||!wpn.levels||!wpn.levels.length)return null;
 const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0};
-const raw=lvData.power||0;const traitDistPow=S.dc._wpnTraitDistPow||0;const traitHpPow=S.dc._wpnTraitHpPow||0;
-return Math.ceil(raw*(1+(traitDistPow+traitHpPow)/100));
+const raw=lvData.power||0;
+const wt=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
+const effDist=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+const distPct=effDist>0?effDist:(S.dc._wpnTraitDistPow|0);
+const hpPct=Math.min(wt.hpPowerMax||0,S.dc._wpnTraitHpPow|0);
+return Math.ceil(raw*(1+(distPct+hpPct)/100));
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -3083,6 +3135,7 @@ const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa){acoa.checked=f
 const dtp=document.getElementById('dcDmgTakenDownPilot');if(dtp)dtp.value=0;
 const dtu=document.getElementById('dcDmgTakenDownUnit');if(dtu)dtu.value=0;
 const dss=document.getElementById('dcStageSearch');if(dss)dss.value='';
+_dcCloseDcStageDd();_dcUpdateDcStageDdLabel();
 ['dcDefDebuffPct','dcDtuBeam','dcDtuPhysical','dcDtuSpecial'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0});
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcTerrain('normal');
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
@@ -3098,7 +3151,7 @@ if(d&&d.npc_details){
 await loadDcStages();
 _dcFillDcStageSelectOptions(_dcStagesCache||[]);
 const stgSel=document.getElementById('dcStageSelect');
-if(stgSel&&d.id){stgSel.value=d.id;_dcRebuildDcStageUi();await onDcStageChange()}
+if(stgSel&&d.id){stgSel.value=d.id;_dcUpdateDcStageDdLabel();await onDcStageChange()}
 }
 }
 function setDcTerrain(mode){
@@ -3116,7 +3169,6 @@ try{const r=await fetch(`/api/dc_targets?lang=${S.lang}`);const d=await r.json()
 async function renderDcStageDropdown(){
 const stages=await loadDcStages();
 _dcFillDcStageSelectOptions(stages);
-_dcRebuildDcStageUi();
 }
 async function onDcStageChange(){
 S.dc.defTargetMode='preset';
@@ -3124,6 +3176,7 @@ const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementBy
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';
 const sel=document.getElementById('dcStageSelect');
 const stageId=sel.value;
+_dcUpdateDcStageDdLabel();
 if(!stageId){S.dc.npcList=[];S.dc.defNpc=null;renderDcNpcDropdown();renderDcDefStats();onDcParamChange();return}
 try{
 const r=await fetch(`/api/stage/${stageId}?lang=${S.lang}`);const d=await r.json();
@@ -3465,7 +3518,6 @@ if(cw)cw.style.display='none';
 if(D.s){
 const sel=document.getElementById('dcStageSelect');
 if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}
-_dcRebuildDcStageUi();
 }
 }
 const arr=Array.isArray(obj.S)?obj.S:[null,null,null];
@@ -3523,7 +3575,6 @@ isMultiSlotUrl=true;
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(isMultiSlotUrl){
 _dcSyncAttackerDomFromDc();
-const tdp=S.dc._wpnTraitDistPow|0;const tel=document.getElementById('dcWpnTraitDistPow');if(tel)tel.value=String(tdp);
 const thp=S.dc._wpnTraitHpPow|0;const tel2=document.getElementById('dcWpnTraitHpPow');if(tel2)tel2.value=String(thp);
 }
 onDcParamChange();
@@ -3978,6 +4029,7 @@ if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
 }else{
 wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 }
+(wpn.ssp_traits||[]).forEach(t=>allTraits.push(t));
 allTraits.forEach(t=>{
 const txt=String(t).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;
@@ -3990,7 +4042,7 @@ m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
 if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
 if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
-if(/\[Custom\s+Core\s+Effect\]/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
+if(/\[Custom\s+Core/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
 m=txt.match(/Maximum\s+Up\s+(\d+)%/i);
 if(m)traits.distCoreMax=Math.max(traits.distCoreMax,parseInt(m[1],10));
 }
@@ -4028,19 +4080,17 @@ const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${eff
 const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
 const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>Attribute: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const effDistMax=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+if(effDistMax>0)S.dc._wpnTraitDistPow=effDistMax;
 if(effDistMax||wt.hpPowerMax||wt.absoluteHit||wt.dmgReductionNull){
 h+=`<div style="margin-top:6px;font-size:11px;line-height:1.6">`;
 if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
 if(wt.dmgReductionNull)h+=`<div style="color:#4ade80">✓ Attribute Damage Reduction Null</div>`;
-if(effDistMax){
-const cur=S.dc._wpnTraitDistPow||0;
-h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">Distance Power Bonus (0-${effDistMax}%${wt.distCoreMax?'; incl. Custom Core max':''})</span><input type="number" class="dc-input-sm" id="dcWpnTraitDistPow" min="0" max="${effDistMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
-}
+if(effDistMax)h+=`<div style="color:var(--text-muted)">Proximity / Custom Core weapon power: +${effDistMax}% (max, applied automatically)</div>`;
 if(wt.hpPowerMax){
 const cur=S.dc._wpnTraitHpPow||0;
 h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">HP-based Power Bonus (0-${wt.hpPowerMax}%)</span><input type="number" class="dc-input-sm" id="dcWpnTraitHpPow" min="0" max="${wt.hpPowerMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
@@ -4057,10 +4107,10 @@ if(ci){ci.value=String(S.dc._wpnCritDmgUp|0);onDcParamChange();}
 }
 }
 function _dcApplyWpnTraitPow(){
-const dEl=document.getElementById('dcWpnTraitDistPow');
 const hEl=document.getElementById('dcWpnTraitHpPow');
-S.dc._wpnTraitDistPow=dEl?parseInt(dEl.value)||0:0;
 S.dc._wpnTraitHpPow=hEl?parseInt(hEl.value)||0:0;
+const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
+if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);const mx=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));if(mx>0)S.dc._wpnTraitDistPow=mx}
 onDcParamChange();
 }
 
