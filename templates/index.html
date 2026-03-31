@@ -3819,43 +3819,93 @@ _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
 }
 
+/** True when ability text (line + neighbors + name) indicates the bonus applies only with pilot SP stats (Normal/SP toggle). */
+function _dcSpGateHint(block){
+const s=String(block||'');
+if(!s.trim())return false;
+if(/SP\s*enhancement|SP[- ]?enhanced|SP\s+stats?\s*(?:\(|is|are|[:.;])|SP\s+pilot|pilot\s+SP|SP\s+is\s+enhanced|SP\s+stat\s+(?:enhance|boost|buff)/i.test(s))return true;
+if(/(?:after|upon|with)\s+SP\s+(?:enhancement|stats?)/i.test(s))return true;
+if(/SP\s*強化|ＳＰ/.test(s))return true;
+if(/\(\s*SP\s*\)/i.test(s))return true;
+return false;
+}
+function _dcPilotAbilitySpCharGateContext(ab,lineIndex,lineText){
+const t=String(lineText||'');
+const lines=ab.details||[];
+const prev=lineIndex>0?String(lines[lineIndex-1].text||'').replace(/\n/g,' '):'';
+const next=lineIndex<lines.length-1?String(lines[lineIndex+1].text||'').replace(/\n/g,' '):'';
+const name=String(ab.name||'');
+return _dcSpGateHint([t,prev,next,name].join('\n'));
+}
+
+/** Match get_character / unit detail: SP pilot stats use SpAbilityId replacement when toggled. */
+function _dcResolveCharAbilityForMode(ab){
+if(!ab)return null;
+if((S.dc.charStatMode||'normal')==='sp'&&ab.sp_replacement)return ab.sp_replacement;
+return ab;
+}
+/** Match get_unit ep() + detail UI: SSP uses ssp_replacement; ssp_only rows apply only in SSP mode. */
+function _dcResolveUnitAbilityForMode(ab){
+if(!ab)return null;
+const um=S.dc.unitStatMode||'normal';
+if(ab.ssp_only)return um==='ssp'?ab:null;
+if(um==='ssp'&&ab.ssp_replacement)return ab.ssp_replacement;
+return ab;
+}
+
 function _dcParsePilotAbilBonuses(cd){
 const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
-if(!cd||!cd.abilities)return b;
-const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
-cd.abilities.forEach(ab=>{
-const lines=(ab.details||[]);
-lines.forEach(ln=>{
+const ud=S.dc.atkUnitData;
+const unitTagIds=(ud?.tags||[]).map(t=>t.id);
+function parseFromResolved(resolved,src){
+if(!resolved)return;
+const dispName=resolved.display_name||resolved.name||'';
+const lines=(resolved.details||[]);
+lines.forEach((ln,li)=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
 let condMet=false;
 if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
 const isUnmet=hasCond&&!condMet;
+const spCharGate=src==='char'&&_dcPilotAbilitySpCharGateContext(resolved,li,txt);
 let m;
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,abilityHasCond:hasCond,alwaysActive:!hasCond&&!isUnmet})}
+if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,abilityHasCond:hasCond,alwaysActive:!hasCond&&!isUnmet})}
+if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,abilityHasCond:hasCond,alwaysActive:!hasCond&&!isUnmet})}
+if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:ab.name,abilityHasCond:hasCond,locked:true})}
+if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,locked:true,src})}
 });
-});
+}
+if(cd&&cd.abilities){
+cd.abilities.forEach(ab=>parseFromResolved(_dcResolveCharAbilityForMode(ab),'char'));
+}
+if(ud&&ud.abilities&&!ud._manual){
+ud.abilities.forEach(ab=>parseFromResolved(_dcResolveUnitAbilityForMode(ab),'unit'));
+}
 return b;
 }
 function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
 if(!b.items.length)return;
-let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div style="font-size:10px;color:var(--text-muted);margin:4px 0 6px;line-height:1.35">Stat % passives are already baked into pilot totals (see green + under stats). Toggle only affects conditional lines that add to Damage Dealt / Critical Damage %.</div><div class="dc-pilot-bonus-list">`;
+let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div style="font-size:10px;color:var(--text-muted);margin:4px 0 6px;line-height:1.35">Stat % passives are already baked into pilot totals (see green + under stats). <strong>Pilot SP</strong> and <strong>unit SSP</strong> toggles use the same ability text as the database (SpAbilityId / SSP replacement). Lines tied to <strong>SP enhancement</strong> in text apply only when pilot <strong>SP</strong> stat mode is on. Unit lines follow <strong>Normal / SP / SSP</strong> on the unit card.</div><div class="dc-pilot-bonus-list">`;
 b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Conditional)</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
 const inclTag=it.key==='atkPct'&&!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:(it.key==='atkPct'&&it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Not in stats — tags unmet)</span>`:'');
 const alwaysTag=it.alwaysActive?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Always active)</span>`:'';
+const spTag=` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(SP pilot stats)</span>`;
 if(it.key==='atkPct'||it.locked){
 h+=`<div class="dc-pilot-bonus-row dc-pilot-bonus--locked${it.cond?' dc-pilot-bonus--off':''}"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}${inclTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></div>`;
+return;
+}
+if(it.spCharGate){
+const spOn=(S.dc.charStatMode||'normal')==='sp';
+const off=!spOn||it.cond;
+h+=`<div class="dc-pilot-bonus-row dc-pilot-bonus--locked${off?' dc-pilot-bonus--off':''}"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}${spTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></div>`;
 return;
 }
 if(it.alwaysActive){
@@ -3875,6 +3925,13 @@ const b=S.dc._pilotBonuses||{items:[]};
 let dmgDealt=0,critDmg=0;
 b.items.forEach((it,i)=>{
 if(it.key==='atkPct')return;
+if(it.spCharGate){
+if(it.cond)return;
+if((S.dc.charStatMode||'normal')!=='sp')return;
+if(it.key==='dmgDealt')dmgDealt+=it.val;
+if(it.key==='critDmg')critDmg+=it.val;
+return;
+}
 if(it.alwaysActive){
 if(it.key==='dmgDealt')dmgDealt+=it.val;
 if(it.key==='critDmg')critDmg+=it.val;
