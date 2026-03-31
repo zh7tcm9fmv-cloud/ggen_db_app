@@ -7544,6 +7544,10 @@ def get_stage(stage_id):
                 side = 'ally' if is_ally else 'enemy'
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
+                if ue:
+                    umap_uid = normalize_id(ue.get('unit_id', '0'))
+                    if umap_uid != '0':
+                        me['unit_id'] = umap_uid
                 me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):

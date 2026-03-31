@@ -2047,9 +2047,9 @@ function renderStageMapGrid(md){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_large?'large-fill':''}`:'';
-      const clickNpc=(o&&o.origin&&u&&u.npc_id)?` onclick="scrollToNpc('${escJs(u.npc_id)}')"`:'';
-      const clickCls=(o&&o.origin&&u&&u.npc_id)?' npc-clickable':'';
-      html+=`<div class="map-cell ${cls}${clickCls}" title="${u?esc(`${u.name} (${u.side}) @ ${x},${y}`):`${x},${y}`}"${clickNpc}>`;
+      const clickMap=(o&&o.origin&&u&&(u.unit_id||u.npc_id))?` onclick="onStageMapUnitClick('${u.unit_id?escJs(String(u.unit_id)):''}','${u.npc_id?escJs(String(u.npc_id)):''}',event)"`:'';
+      const clickCls=(o&&o.origin&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
+      html+=`<div class="map-cell ${cls}${clickCls}" title="${u?esc(`${u.name} (${u.side}) @ ${x},${y}`):`${x},${y}`}"${clickMap}>`;
       if(o&&o.origin){
         const sl=u.side==='ally'?t('ally'):t('enemy');
         // Keep ally group location icon (UI_GTower_Minimap_Icon_OwnArmy.png) and guest ally (GuestArmy.png) flat—no background hue.
@@ -2366,6 +2366,7 @@ function esc(s){if(s===null||s===undefined)return'';const d=document.createEleme
 function escAttr(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
 function escJs(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n')}
 function scrollToNpc(id){try{const el=document.getElementById('npc-'+String(id));if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('npc-card-highlight');setTimeout(()=>el.classList.remove('npc-card-highlight'),1200)}catch(e){}}
+function onStageMapUnitClick(unitId,npcId,ev){if(ev)ev.stopPropagation();const uid=unitId!=null&&String(unitId).trim()!==''?String(unitId).trim():'';if(uid){openDetail('unit',uid);return}const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';if(nid)scrollToNpc(nid)}
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
 
 const CMP_COLORS=['#e67e22','#2ecc71','#e74c3c'];
@@ -3704,7 +3705,7 @@ const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Pilot EX ability: ATK/DEF bonus to this unit when Conditional Passive is on.</div>':'';
 const cPct=_dcGetCounterOwnAtkPct();
 const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Pilot EX: +'+cPct+'% MS Attack when countering (see Own ATK when countering below).</div>':'';
-const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support (ATK support applies in damage only).</div>':'')+pairNote+counterNote;
+const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts, supporter leader %, and HP support. Supporter ATK support is shown in stats but not added again here (in-game damage matches that).</div>':'')+pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShow)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
@@ -4815,7 +4816,6 @@ const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
 const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
 unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
-const atkSupport=uMod.atkSupport;
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
@@ -4873,12 +4873,10 @@ const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
 const totalNormalMultPct=userDmgIncreasePct+dmgTakenUpPct-takenDown;
 let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
-normalDmg=MX(0,normalDmg+atkSupport);
 
 const totalCritMultPct=userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 let critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
-critDmg=MX(0,critDmg+atkSupport);
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
