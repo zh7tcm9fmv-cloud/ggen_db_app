@@ -3810,10 +3810,13 @@ function _charStatValSpan(nm,val){const cls=_charStatValCls(nm);return`<span${cl
 function _dcCharPassiveBonusLine(nm){
 const ent=_dcFindStatEntry(stats,nm);
 if(!ent||!ent.bonus||ent.bonus<=0)return'';
-return`<div class="dc-stat-mini-bonus" title="Passive ability bonus (included in total)">+${fmtN(ent.bonus)}</div>`;
+const pAtk=['Ranged','Melee','Awaken'].includes(nm)?(skPct[nm]||0):0;
+const pDef=nm==='Defense'?(defPctSk||0):0;
+if(pAtk>0||pDef>0)return'';
+return`<div class="dc-stat-mini-bonus" title="Passive ability bonus (included in the white total above)">+${fmtN(ent.bonus)}</div>`;
 }
 const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">When no pilot skills are toggled, totals match the database. Checked skills apply % to growth base only (same as in-game); passive bonus in green + is then added to that result. Abilities that say ATK apply to both Ranged and Melee.</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged')}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee')}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken')}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense')}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction')}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">Totals match the API: each stat includes <code>trait_pct</code> from ability text (same buckets as the server). With a pilot skill checked, its % adds to that trait % on the growth base (additive): floor(base×(100+trait+skill)/100). In <strong>SP</strong> pilot mode, skills use the SP skill line (replaced_by_sp_id). Skills can buff one stat, two stats (e.g. Ranged and Melee), three stats, or ATK% (all three); the damage calculator uses the same parsing for final damage. Green + is the passive-only bonus and is hidden while a skill buffs that stat.</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged')}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee')}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken')}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense')}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction')}</div></div></div>`;
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
@@ -3980,17 +3983,28 @@ if(chk&&chk.checked){S.dc._activeSkills[skillId]=true}else{delete S.dc._activeSk
 renderDcAtkUnit();
 renderDcAtkChar();
 }
+/** When pilot SP stat mode is on, active skills use SpCharacterSkillId text (e.g. Melee Boost Lv3 +15%) instead of the normal row. */
+function _dcResolveSkillForDcMode(sk){
+const cd=S.dc.atkCharData;
+if(!sk)return sk;
+if((S.dc.charStatMode||'normal')==='sp'&&sk.replaced_by_sp_id&&cd&&Array.isArray(cd.skills)){
+const sp=cd.skills.find(x=>String(x.id)===String(sk.replaced_by_sp_id));
+if(sp)return sp;
+}
+return sk;
+}
 function _dcGetActiveSkillBonuses(){
 const b={defPct:0,mobPct:0,dmgDealt:0};
 if(!S.dc._pilotSkills||!S.dc._activeSkills)return b;
 S.dc._pilotSkills.forEach(sk=>{
 if(!S.dc._activeSkills[sk.id])return;
-const detailLines=(sk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
-const desc=[detailLines,sk.desc||'',sk.sp_desc||''].filter(Boolean).join(' ');
+const rsk=_dcResolveSkillForDcMode(sk);
+const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
+const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
 let m;
-m=desc.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s+(\d+)%/i);
 if(m)b.dmgDealt+=parseInt(m[1],10);
-m=desc.match(/[Ii]ncrease\s+(?:own\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
+m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
 if(m)b.defPct+=parseInt(m[1],10);
 });
 return b;
@@ -4008,21 +4022,29 @@ if(!s)return null;
 const total=Number(s.total);
 const bonus=s.bonus!=null?Number(s.bonus):0;
 const base=s.base!=null?Number(s.base):NaN;
+const tp=s.trait_pct;
+const traitPct=(tp!=null&&Number.isFinite(Number(tp)))?Number(tp):null;
 const baseOk=Number.isFinite(base);
 const totOk=Number.isFinite(total);
 const bonOk=Number.isFinite(bonus)&&bonus>0;
 let b0=baseOk?base:(totOk&&bonOk?total-bonus:total);
 if(!Number.isFinite(b0))b0=totOk?total:0;
-return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0};
+return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0,trait_pct:traitPct};
 }
-/** Pilot skills (Ranged/Melee/DEF %) apply to growth base only; passive ability flat bonus is added after (matches in-game). */
+/** Pilot skills: trait % (API trait_pct, same as get_character buckets) + active skill % are additive on growth base — floor(base×(100+trait+skill)/100), matching in-game SP Melee + Melee Boost Lv3. */
 function _dcPilotSkillAdjustedStat(stats,statName,pct){
 const F=Math.floor;
 const p=Number(pct)||0;
-if(p<=0)return _dcFindStat(stats,statName);
 const ent=_dcFindStatEntry(stats,statName);
 if(!ent)return F(_dcFindStat(stats,statName)*(1+p/100));
-return F(Math.max(0,Number(ent.base)||0)*(1+p/100))+(Number(ent.bonus)||0);
+if(p<=0)return Math.round(Number(ent.total)||0);
+const base=Math.max(0,Number(ent.base)||0);
+let trait=ent.trait_pct;
+if(trait==null||!Number.isFinite(trait)){
+if(base>0&&ent.bonus>0)trait=Math.round(100*ent.bonus/base);
+else trait=0;
+}
+return F(base*(100+trait+p)/100);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
@@ -4644,23 +4666,35 @@ const unique=[...new Set(atkTypes)];
 if(unique.length===1)return _dcFindStat(charStats,unique[0]);
 return Math.max(...unique.map(s=>_dcFindStat(charStats,s)));
 }
+/** Parse one skill description for Ranged/Melee/Awaken % (and ATK% to all three). Pair/triple lines do not short-circuit ATK% or extra single-stat sentences in the same text. */
+function _dcParseSkillDescAtkPct(desc){
+const out={Ranged:0,Melee:0,Awaken:0};
+if(!desc||!String(desc).trim())return out;
+const s=String(desc);
+const pairRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/gi;
+let mp;
+while((mp=pairRe.exec(s))!==null){const p=parseInt(mp[3],10)||0;out[mp[1]]+=p;out[mp[2]]+=p;}
+const mTri=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
+if(mTri){const p=parseInt(mTri[4],10)||0;out[mTri[1]]+=p;out[mTri[2]]+=p;out[mTri[3]]+=p;}
+const mTriOx=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s*,\s*and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
+if(mTriOx){const p=parseInt(mTriOx[4],10)||0;out[mTriOx[1]]+=p;out[mTriOx[2]]+=p;out[mTriOx[3]]+=p;}
+const singleRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+by\s+(\d+)%/gi;
+let mm;
+while((mm=singleRe.exec(s))!==null){out[mm[1]]+=parseInt(mm[2],10)||0;}
+const mAtk=s.match(/Increases?\s+(?:own\s+)?(?:ATK|Attack)\s+by\s+(\d+)%/i);
+if(mAtk){const p=parseInt(mAtk[1],10)||0;out.Ranged+=p;out.Melee+=p;out.Awaken+=p;}
+return out;
+}
 function _dcGetActiveSkillStatPct(){
 const out={Ranged:0,Melee:0,Awaken:0};
 if(!S.dc._pilotSkills||!S.dc._activeSkills)return out;
 S.dc._pilotSkills.forEach(sk=>{
 if(!S.dc._activeSkills[sk.id])return;
-const detailLines=(sk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
-const desc=[detailLines,sk.desc||'',sk.sp_desc||''].filter(Boolean).join(' ');
-if(!desc)return;
-const mPair=desc.match(/Increase\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
-if(mPair){const p=parseInt(mPair[3],10)||0;out[mPair[1]]+=p;out[mPair[2]]+=p;return;}
-const mTri=desc.match(/Increase\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
-if(mTri){const p=parseInt(mTri[4],10)||0;out[mTri[1]]+=p;out[mTri[2]]+=p;out[mTri[3]]+=p;return;}
-const re=/Increase\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+by\s+(\d+)%/gi;
-let mm;
-while((mm=re.exec(desc))!==null){out[mm[1]]+=parseInt(mm[2],10)||0;}
-const mAtk=desc.match(/Increase\s+(?:own\s+)?(?:ATK|Attack)\s+by\s+(\d+)%/i);
-if(mAtk){const p=parseInt(mAtk[1],10)||0;out.Ranged+=p;out.Melee+=p;out.Awaken+=p;}
+const rsk=_dcResolveSkillForDcMode(sk);
+const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
+const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
+const add=_dcParseSkillDescAtkPct(desc);
+out.Ranged+=add.Ranged;out.Melee+=add.Melee;out.Awaken+=add.Awaken;
 });
 return out;
 }
@@ -4895,7 +4929,7 @@ const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
 const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const accDownPct=0,mobDownPct=0;
-const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
+const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,

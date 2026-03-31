@@ -7594,13 +7594,13 @@ def get_character(char_id):
         sne = []; swe = []; ssne = []; sswe = []
         for s in CHAR_STAT_ORDER:
             bv = grown.get(s, 0); bon = math.floor(bv * spbn_u[s] / 100) if bv > 0 else 0
-            sne.append({'name': s, 'base': bv, 'total': bv + bon, 'bonus': bon})
+            sne.append({'name': s, 'base': bv, 'total': bv + bon, 'bonus': bon, 'trait_pct': spbn_u[s]})
             tb = math.floor(bv * (spbn_u[s] + spbn_c[s] + spen[s]) / 100) if bv > 0 else 0
-            swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb})
+            swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb, 'trait_pct': spbn_u[s] + spbn_c[s] + spen[s]})
             sbv = grown_sp.get(s, 0); sbon = math.floor(sbv * spbs_u[s] / 100) if sbv > 0 else 0
-            ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon})
+            ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon, 'trait_pct': spbs_u[s]})
             stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s]) / 100) if sbv > 0 else 0
-            sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb})
+            sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb, 'trait_pct': spbs_u[s] + spbs_c[s] + spes[s]})
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         # CP toggle when "on" state adds anything: conditional passives (e.g. Vigor) and/or EX-trait % (UR EX slot).
         has_ex_stats = any(spbn_c[s] + spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spbs_c[s] + spes[s] > 0 for s in CHAR_STAT_ORDER)
