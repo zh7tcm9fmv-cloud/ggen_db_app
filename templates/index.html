@@ -4722,36 +4722,15 @@ let m;while((m=p.exec(details))!==null){const val=parseInt(m[4],10)||0;const isP
 return bonuses;
 }
 function _dcLeaderSkillPctAndFlags(supporters){
-let pct=0,sameGroup=false;
+let pct=0;
 (supporters||[]).forEach(s=>{
 (s.leader_skills||[]).forEach(ls=>{
 if(ls.applies===false)return;
 const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(!m)return;
 pct+=parseInt(m[1],10)||0;
-if(ls.same_group)sameGroup=true;
 });
 });
-return{pct,sameGroup};
-}
-/** SameGroup leader skills exclude part of the MS ability Attack bonus from the leader multiplier base (matches in-game unit ATK). */
-const DC_SG_LEADER_CAP_NUM=106,DC_SG_LEADER_CAP_DEN=10000;
-function _dcApplyLeaderPctToAttack(unitAtkPreLeader,atkEnt,leaderPct,sameGroupLeader){
-const F=Math.floor;
-const p=leaderPct|0;
-if(p<=0)return unitAtkPreLeader;
-const T=F(Math.max(0,Number(unitAtkPreLeader)||0));
-if(sameGroupLeader&&atkEnt){
-const t0=atkEnt.total|0;
-if(t0>0){
-const g0=atkEnt.base|0;
-const g1=F(T*g0/t0);
-const a1=T-g1;
-const cap=Math.min(a1,F(g1*DC_SG_LEADER_CAP_NUM/DC_SG_LEADER_CAP_DEN));
-const leaderBase=T-cap;
-return F(leaderBase*(100+p)/100);
-}
-}
-return F(T*(100+p)/100);
+return{pct};
 }
 /** EX squad ATK % applies in-game to the MS Attack base (LB/growth line) only — not MS ability Attack bonuses (API bonus field), option parts, or supporter leader %. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
@@ -4819,10 +4798,9 @@ let unitMove=_dcFindStat(atkUnitStats,'Move')||0;
 const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 (S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
-let hpSupport=0,atkSupport=0,leaderPct=0,sameGroupLeader=false;
+let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
-const _ls=_dcLeaderSkillPctAndFlags(S.dc.supporters);
-leaderPct=_ls.pct;sameGroupLeader=_ls.sameGroup;
+leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
 /** Attack % option parts apply to MS growth Attack only (same base as EX squad), not the MS ability Attack bonus — matches in-game sheet and damage. */
 if(opPct.Attack){
 const b=F(Math.max(0,Number(unitAtkExSquadBase)||0)),full=F(unitAtk);
@@ -4835,7 +4813,10 @@ if(opPct.Move)unitMove=F(unitMove*(100+opPct.Move)/100);
 unitAtk+=opFlat.Attack;unitHp+=opFlat.HP;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
 if(leaderPct){
 const p=leaderPct|0;
-unitAtk=_dcApplyLeaderPctToAttack(unitAtk,atkEnt,p,sameGroupLeader);
+const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
+const gAtk=F(b0*(100+(opPct.Attack||0))/100);
+const aAtk=F(unitAtk)-gAtk;
+unitAtk=F(gAtk*(100+p)/100)+aAtk;
 unitHp=F(unitHp*(100+p)/100);
 unitDefVal=F(unitDefVal*(100+p)/100);
 unitMob=F(unitMob*(100+p)/100);
