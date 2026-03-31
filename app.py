@@ -1485,8 +1485,6 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
                 carry_ref[0] = True
             continue
         is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
-        if _char_support_counter_atk_line_counts_as_unconditional_cp(txt, line, char_id=char_id):
-            is_cond = False
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
@@ -2406,31 +2404,23 @@ def create_skill_text_map(d):
 def calc_growth_char(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
-# Pilot "Increase ATK by N%" from Support Attack/Counter-style traits is Ranged only in-game.
-# If detection fails (e.g. unusual wording), pin per-character so Melee is not inflated.
-CHAR_ATK_INCREASE_RANGED_ONLY_IDS = frozenset({
-    '1031000601',  # Daryl Lorenz — Support Attack/Counter ATK% applies to Ranged only
-})
-
-def _char_support_counter_increase_atk_is_ranged_only(full_text):
-    """EN lines like trait 201290402: Support Attack/Counter conditional 'Increase ATK by N%' buffs Ranged only (not Melee)."""
+def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
+    """Support Attack/Counter ATK% lines are combat-only; do not add to dossier pilot Ranged/Melee % totals."""
     if not full_text or not isinstance(full_text, str):
         return False
     tl = full_text.lower()
-    if 'support attack/counter' not in tl:
+    support_ctx = (
+        'support attack/counter' in tl
+        or '支援攻擊' in full_text
+        or '支援反擊' in full_text
+        or '支援攻撃' in full_text
+        or '支援反撃' in full_text
+    )
+    if not support_ctx:
         return False
-    return bool(re.search(r'increases?\s+atk\b', tl))
-
-def _char_support_counter_atk_line_counts_as_unconditional_cp(full_text, line, char_id=None):
-    """Support Attack/Counter ATK% is not part of the pair 'Conditional Passive' toggle — only tag/pair buffs (e.g. +30% Ranged) are."""
-    if not line or not full_text:
-        return False
-    if not re.search(r'increases?\s+atk\b', line, re.IGNORECASE):
-        return False
-    cid = normalize_id(char_id) if char_id else '0'
-    if cid != '0' and cid in CHAR_ATK_INCREASE_RANGED_ONLY_IDS:
-        return True
-    return _char_support_counter_increase_atk_is_ranged_only(full_text)
+    atk_pct = bool(re.search(r'increases?\s+atk\b', tl))
+    atk_pct = atk_pct or '攻擊力' in full_text or '攻击力' in full_text or '攻撃力' in full_text
+    return atk_pct
 
 def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     bonuses = {}; tl = text.lower()
@@ -2452,15 +2442,11 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
             # In-game "ATK" is both pilot attack stats (Ranged + Melee), not Melee-only.
             if u in ("ATK", "ATTACK"):
                 ctx = full_detail_text if full_detail_text is not None else text
-                cid = normalize_id(char_id) if char_id else '0'
-                atk_ranged_only = _char_support_counter_increase_atk_is_ranged_only(ctx) or (
-                    cid != '0' and cid in CHAR_ATK_INCREASE_RANGED_ONLY_IDS
-                )
-                if atk_ranged_only:
-                    bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
-                else:
-                    bonuses["Melee"] = bonuses.get("Melee", 0) + p
-                    bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+                # Support Attack/Counter ATK% is not part of dossier pilot Ranged/Melee (in-combat only).
+                if _char_support_counter_atk_excluded_from_dossier_stats(ctx):
+                    continue
+                bonuses["Melee"] = bonuses.get("Melee", 0) + p
+                bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
             elif u == "DEF":
                 bonuses["Defense"] = bonuses.get("Defense", 0) + p
             elif u == "RANGE":
