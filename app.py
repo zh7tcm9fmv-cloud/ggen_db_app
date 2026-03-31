@@ -1342,23 +1342,13 @@ MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6
 ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids)
 
 
-def _unit_lineage_has_large_2x2_tag(uid):
-    """Matches get_unit: lineage tag 1067 marks a large (2×2) unit on the detail screen."""
-    if not uid:
-        return False
-    for tag_id in unit_lin_map.get(uid, []) or []:
-        if tag_id == '1067' or (isinstance(tag_id, str) and tag_id.endswith('1067')):
-            return True
-    return False
-
-
 def collect_unit_mechanism_mids(info, uid=None):
-    """Mechanism fragment ids for filtering (MECH_MAP_TABLE). 2×2 also applies when tag 1067 matches, same as unit detail."""
+    """Mechanism fragment ids for filtering (MECH_MAP_TABLE). 2×2 also applies when OccupiedAreaId is 2 (large footprint), same as unit detail."""
     if not info:
         return frozenset()
     msid = str(info.get('mechanism_set_id', '0'))
     mids = list(MECH_MAP_TABLE.get(msid, []))
-    if uid and '2x2' not in mids and _unit_lineage_has_large_2x2_tag(uid):
+    if safe_int(info.get('occupied_area_id'), 1) == 2 and '2x2' not in mids:
         mids.append('2x2')
     return frozenset(mids)
 
@@ -2475,7 +2465,11 @@ def create_unit_info_map(m):
                 rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                 rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
                 body_type = normalize_id(item.get('UnitBodyTypeIndex') or item.get('unitBodyTypeIndex'), '1')
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                oaid = item.get('OccupiedAreaId') if item.get('OccupiedAreaId') is not None else item.get('occupiedAreaId')
+                occupied_area_id = safe_int(oaid, 1)
+                if occupied_area_id < 1:
+                    occupied_area_id = 1
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id}
     return lookup
 
 def create_unit_status_map(d):
@@ -2933,7 +2927,7 @@ def collect_unit_mechanism_search_text(info, ld, uid=None):
     """Mechanism names and descriptions for list search."""
     msid = str(info.get('mechanism_set_id', '0'))
     mids = list(MECH_MAP_TABLE.get(msid, []))
-    if uid and '2x2' not in mids and _unit_lineage_has_large_2x2_tag(uid):
+    if safe_int(info.get('occupied_area_id'), 1) == 2 and '2x2' not in mids:
         mids.append('2x2')
     mm = ld.get('mechanism_map', {})
     parts = []
@@ -3494,7 +3488,11 @@ for lang_code, paths in LANG_PATHS.items():
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
                     rec_raw = item.get('RecommendCharacterId') or item.get('recommendCharacterId')
                     rec_cid = normalize_id(rec_raw) if rec_raw not in (None, '', 'None') else '0'
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                    oaid = item.get('OccupiedAreaId') if item.get('OccupiedAreaId') is not None else item.get('occupiedAreaId')
+                    occupied_area_id = safe_int(oaid, 1)
+                    if occupied_area_id < 1:
+                        occupied_area_id = 1
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -4835,13 +4833,7 @@ def is_large_map_npc(npc_id, npc_entry=None):
     if uid == '905100000102000002': return False
     if uid == '1095003400': return False
     ui = unit_info_map.get(uid, {})
-    msid = str(ui.get('mechanism_set_id', '0'))
-    ml = MECH_MAP_TABLE.get(msid, [])
-    if '2x2' in ml: return True
-    ut = unit_lin_map.get(uid, [])
-    for tag_id in ut:
-        if tag_id == '1067' or (isinstance(tag_id, str) and tag_id.endswith('1067')): return True
-    return False
+    return safe_int(ui.get('occupied_area_id'), 1) == 2
 
 def get_npc_unit_display(uid, usr, lc):
     ld = get_lang_data(lc); info = unit_info_map.get(uid, {}); lid = ld.get('unit_id_map', {}).get(uid, '')
@@ -7900,17 +7892,13 @@ def get_unit(unit_id):
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
         acq = info.get('acquisition_route','0'); ai2 = ACQUISITION_ROUTE_ICONS.get(acq, '')
         if ai2: sicons.append(ai2)
-        msid = str(info.get('mechanism_set_id', '0')); ml = MECH_MAP_TABLE.get(msid, [])
-        il = '2x2' in ml
-        if not il:
-            ut = unit_lin_map.get(unit_id, [])
-            for tag_id in ut:
-                if tag_id == '1067' or (isinstance(tag_id, str) and tag_id.endswith('1067')): il = True; break
+        msid = str(info.get('mechanism_set_id', '0'))
+        il = safe_int(info.get('occupied_area_id'), 1) == 2
         mids = list(MECH_MAP_TABLE.get(msid, []))
         if unit_id.startswith('17090') or unit_id.startswith('17050') or unit_id.startswith('17250'):
             if '3' not in mids: mids.append('3')
         mechs = []
-        if il or '2x2' in mids:
+        if il:
             mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.png'})
         rec_cid = normalize_id(info.get('recommend_character_id') or '0')
         if rec_cid == '0':
