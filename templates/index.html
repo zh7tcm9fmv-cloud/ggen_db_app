@@ -573,6 +573,25 @@ html{overflow-x:hidden}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
 .dc-wpn-select,.dc-npc-select,.dc-input-sm{width:100%;padding:8px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;font-family:inherit;cursor:pointer}
 .dc-wpn-select:focus,.dc-npc-select:focus,.dc-input-sm:focus{outline:none;border-color:var(--accent-cyan)}
+.dc-stage-search{margin-bottom:6px}
+.dc-stage-list{max-height:220px;overflow-y:auto;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-input)}
+.dc-stage-hit{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 10px;border:none;border-bottom:1px solid rgba(148,163,184,.12);background:transparent;color:var(--text-primary);font-size:13px;cursor:pointer;font-family:inherit}
+.dc-stage-hit:last-child{border-bottom:none}
+.dc-stage-hit:hover,.dc-stage-hit:focus{background:rgba(56,189,248,.08)}
+.dc-stage-hit.is-active{background:rgba(56,189,248,.14);box-shadow:inset 0 0 0 1px rgba(56,189,248,.25)}
+.dc-stage-hit-name{flex:1;min-width:0}
+.dc-stage-hit-meta{font-size:11px;color:var(--text-muted);font-weight:600}
+.dc-er-diff-icon{flex-shrink:0;width:18px;height:18px;object-fit:contain;vertical-align:middle}
+.dc-er-diff-icon--normal{filter:none}
+.dc-er-diff-icon--hard{filter:hue-rotate(-38deg) saturate(1.25) brightness(1.05)}
+.dc-er-diff-icon--expert{filter:hue-rotate(-95deg) saturate(1.35) brightness(1.02)}
+.dc-er-diff-icon--unknown{opacity:.55}
+.dc-er-diff-fallback{display:inline-block;width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.dc-er-diff-fallback--normal{background:#55c7ff}
+.dc-er-diff-fallback--hard{background:#ff9a3d}
+.dc-er-diff-fallback--expert{background:#ff4b4b}
+.dc-er-diff-fallback--unknown{background:#667085}
+.dc-stage-select-hidden{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;clip:rect(0,0,0,0)}
 .dc-supporter-ctrl-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
 .dc-supporter-lv-input{min-width:4.75rem!important;width:auto!important;max-width:120px!important;padding:4px 10px!important;font-size:13px!important;min-height:30px!important;height:auto!important;line-height:1.2!important;box-sizing:border-box;cursor:text;font-variant-numeric:tabular-nums}
 .dc-supporter-item .dc-supporter-lb-group{flex-shrink:0;display:inline-flex;align-items:center;background:rgba(13,19,33,.65);border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
@@ -1215,7 +1234,9 @@ html{overflow-x:hidden}
 </div>
 <div id="dcDefPresetWrap" class="dc-def-preset-wrap" style="margin-bottom:12px">
 <span class="dc-ctrl-label" style="display:block;margin-bottom:4px">Preset Target (ER Stage)</span>
-<select class="dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" style="width:100%;margin-bottom:8px"><option value="">-- Select Stage --</option></select>
+<select class="dc-stage-select-hidden dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" tabindex="-1" aria-hidden="true"><option value="">-- Select Stage --</option></select>
+<input type="search" class="dc-input-sm dc-stage-search" id="dcStageSearch" placeholder="Search Eternal Road stages…" autocomplete="off" oninput="_dcOnDcStageSearchInput()">
+<div id="dcStageList" class="dc-stage-list" role="listbox" aria-label="Eternal Road stages"></div>
 <select class="dc-npc-select" id="dcNpcSelect" onchange="selectDcNpc()" style="width:100%"><option value="">-- Select NPC --</option></select>
 </div>
 <div id="dcDefCustomWrap" style="display:none;margin-bottom:12px" class="dc-panel-section">
@@ -1402,6 +1423,53 @@ function imgTag(path, opts) {
     const onerrAttr = onerr ? ` onerror="${onerr}"` : '';
     return `<img class="${cls}" src="${src}" alt="${alt}"${loadAttr}${onerrAttr} ${extra}>`.trim();
 }
+function _dcEternalStageDiffIconHtml(code){
+const c=code==='hard'?'hard':code==='expert'?'expert':code==='normal'?'normal':'unknown';
+const base='/static/images/UI/MissionPanel_Level_Cell #4374.webp';
+const src=imgUrl(base);
+return `<img class="dc-er-diff-icon dc-er-diff-icon--${c}" src="${escAttr(src)}" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.outerHTML='<span class=\\'dc-er-diff-fallback dc-er-diff-fallback--${c}\\'></span>'">`;
+}
+function _dcFilterDcStages(stages,q){
+const s=(q||'').trim().toLowerCase();
+if(!s)return stages.slice();
+return stages.filter(r=>{
+const id=String(r.id||'').toLowerCase();
+const nm=String(r.name||'').toLowerCase();
+const df=String(r.difficulty||'').toLowerCase();
+const dc=String(r.difficulty_code||'').toLowerCase();
+return id.includes(s)||nm.includes(s)||df.includes(s)||dc.includes(s);
+});
+}
+function _dcFillDcStageSelectOptions(stages){
+const sel=document.getElementById('dcStageSelect');
+if(!sel)return;
+const prev=sel.value;
+sel.innerHTML='<option value="">-- Select Stage --</option>'+stages.map(s=>`<option value="${escAttr(String(s.id))}">${esc(s.name)} (${esc(s.difficulty||'')})</option>`).join('');
+if(prev&&[...sel.options].some(o=>String(o.value)===String(prev)))sel.value=prev;
+}
+function _dcOnDcStageSearchInput(){_dcRebuildDcStageUi()}
+function _dcPickDcStage(sid){
+const sel=document.getElementById('dcStageSelect');
+if(!sel)return;
+sel.value=String(sid);
+onDcStageChange();
+_dcRebuildDcStageUi();
+}
+function _dcRebuildDcStageUi(){
+const stages=_dcStagesCache||[];
+const q=document.getElementById('dcStageSearch')?document.getElementById('dcStageSearch').value:'';
+const filtered=_dcFilterDcStages(stages,q);
+const sel=document.getElementById('dcStageSelect');
+const list=document.getElementById('dcStageList');
+if(!list||!sel)return;
+const cur=sel.value;
+if(!filtered.length){list.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:12px">No matching stages.</div>';return}
+list.innerHTML=filtered.map(s=>{
+const active=String(cur)===String(s.id);
+const dc=s.difficulty_code||'normal';
+return`<button type="button" class="dc-stage-hit${active?' is-active':''}" role="option" ${active?'aria-selected="true"':'aria-selected="false"'} onclick='_dcPickDcStage(${JSON.stringify(String(s.id))})'>${_dcEternalStageDiffIconHtml(dc)}<span class="dc-stage-hit-name">${esc(s.name)}</span><span class="dc-stage-hit-meta">${esc(s.difficulty||'')}</span></button>`;
+}).join('');
+}
 
 const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Eternal Road',search_char:'Search name, series, tags — …',search_unit:'Search name, series, tags — …',search_supporter:'Search name, series, tags — …',search_stage:'Stage ID or name — , or ; = ALL terms',search_series_click:'View characters & units in this series',search_hint_html:'<div class="search-hint-inner"><strong>Search scope</strong> — Display name, series title, and lineage/tag names only (not abilities, skills, or weapon text).<br><strong>Match all terms</strong> — Separate with commas or semicolons; every segment must match.<br><strong>Exclude</strong> — Put <code>-</code> in front of a term to <strong>hide</strong> any result that still contains that text. Example: <code>zeon, sniper, -wing</code>.<br><strong>Series only</strong> — <code>series:name</code> filters by series name.<br><strong>Tip</strong> — <code>series:msg</code> matches only the original <em>Mobile Suit Gundam</em> (1979), not other series whose titles contain "Gundam".</div>',search_recall:'Quick search',whats_new_title:"What's new",whats_new_btn:"What's new",whats_new_empty:'No data update notes yet. Changes since the last baseline appear automatically after a master import; run python scripts/refresh_whats_new_snapshot.py when you publish to reset the baseline. Optional notes go in data/whats_new.json.',whats_new_date:'Date:',whats_new_changes:'Changes:',whats_new_added:'Added:',whats_new_close:'Close',whats_new_kind_unit_abilities:'Unit abilities',whats_new_kind_unit_weapons:'Weapons',whats_new_kind_char_abilities:'Character abilities',whats_new_slot:'Slot',whats_new_before:'Before',whats_new_after:'After',whats_new_tab_pending:'Since last baseline',whats_new_tab_manual:'Notes',whats_new_tab_empty:'No changes in this section.',whats_new_select_period:'Period:',whats_new_manual_note:'Note',whats_new_label_new_unit:'New unit:',whats_new_label_new_char:'New character:',whats_new_label_new_mod:'New option part:',whats_new_label_new_supporter:'New supporter:',search_spotlight_title:'Search',search_spotlight_close:'Close',search_spotlight_foot:'Esc · tap outside · ✕ to close',search_spotlight_empty:'No quick matches',per_page:'/page',view_grid:'Grid view',view_table:'Table view',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',search_mod:'Name, details, tags — , or ; = ALL terms',count_mod:'modifications',mod_filter_effect:'Effect',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'ATK ↑',mod_filter_effect_def:'DEF ↑',mod_filter_effect_mob:'Mobility ↑',mod_filter_effect_other:'Other (ACC, EVA, Crit, …)',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',char_grid_stat_ranged:'RNG',char_grid_stat_melee:'MEL',char_grid_stat_awaken:'AWK',char_grid_stat_defense:'DEF',char_grid_stat_reaction:'REA',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',stage_npc_friendly_tab:'Friendly NPCs',stage_npc_enemy_tab:'Enemy units',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',unit_filter_weapon_debuff:'All Weapon Effects',unit_filter_weapon_debuff_all:'All Weapon Effects',unit_filter_weapon_debuff_multi:'{n} weapon effects',unit_filter_mechanism:'Mechanism',unit_filter_mechanism_all:'All Mechanisms',unit_filter_mechanism_multi:'{n} mechanisms',unit_filter_mechanism_tt:'Multiple mechanisms: match all (AND). 2×2 includes large units (same MechanismSet + tag 1067 rules as the unit detail page).',unit_filter_wb_atk_dn:'Inflict Attack Down',unit_filter_wb_def_dn:'Inflict Defense Down',unit_filter_wb_mob_dn:'Inflict Mobility Down',unit_filter_wb_acc_dn:'Inflict Accuracy Down',unit_filter_wb_eva_dn:'Inflict Evasion Down',unit_filter_wb_dmg_phys:'Inflict Physical Damage Up',unit_filter_wb_dmg_beam:'Inflict Beam Damage Up',unit_filter_wb_dmg_spec:'Inflict Special Damage Up',unit_filter_wb_wp_phys:'Inflict Physical Weapon Power Down',unit_filter_wb_wp_beam:'Inflict Beam Weapon Power Down',unit_filter_wb_wp_spec:'Inflict Special Weapon Power Down',unit_filter_wb_range_beam:'Inflict Beam Weapon Range Down',unit_filter_wb_range_phys:'Inflict Physical Weapon Range Down',unit_filter_wb_range_all:'Inflict All Weapon Range Down',unit_filter_wb_mp_1:'Inflict MP −1',unit_filter_wb_mp_2:'Inflict MP −2',unit_filter_wb_mp_3:'Inflict MP −3',unit_filter_wb_preemptive:'Preemptive Strike',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',char_data:'Character Data',unit_data:'Unit Data',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',limited_label:'Limited',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',map_legend_use:'Point of Use',map_legend_sel:'Point of Selection',map_legend_range:'Range',map_legend_effect:'Effect Range',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',tag_tab_affinity:'Affinity',tag_results_affinity:'Affinity with Tag:',series_results_unit:'Units in series:',series_results_char:'Characters in series:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',filter_source:'Source',filter_source_all:'All',browse_filters_clear:'Clear',filter_source_assembly:'Units from Unit Assembly',filter_source_development:'Development Unit',filter_source_other:'Other',filter_source_assembly_char:'Unit Assembly Characters',filter_source_development_char:'Scout/Story Character',list_filter_lineage:'Tags / Lineage',list_filter_lineage_multi:'{n} tags',list_filter_series:'Series',list_filter_skill:'Skills',list_filter_ability:'Abilities',list_filter_all_skills:'All Skills',list_filter_all_abilities:'All Abilities',list_filter_ability_char:'Ability',list_filter_all_abilities_char:'All Abilities',list_filter_search_placeholder:'Search filter…',series_filter_all_brand:'Mobile Suit Gundam',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Calculator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_pick_unit:'Select Unit',dc_def_stats_map_note:'Totals include map bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_def_char_stats_note:'Totals include passive ability bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_final_dmg:'Final Damage',dc_crit_final_dmg:'Critical Final Damage',dc_hp_remaining:'HP Remaining',dc_hit_rate:'Hit Rate',dc_hp_remaining_normal:'HP Remaining (Normal)',dc_hp_remaining_crit:'HP Remaining (Crit)',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula'},
 TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'永恆之路',search_char:'搜尋：名稱／系列／標籤',search_unit:'搜尋：名稱／系列／標籤',search_supporter:'搜尋：名稱／系列／標籤',search_stage:'用關卡ID或名稱搜尋...',search_series_click:'檢視此系列的角色與機體',search_hint_html:'<div class="search-hint-inner"><strong>搜尋範圍</strong> — 僅比對顯示名稱、作品系列名稱、系譜／標籤名稱（不含能力、技能、武裝文字）。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字<strong>前面加上</strong> <code>-</code>，可隱藏<strong>仍包含該文字</strong>的結果。例：<code>吉翁, 狙擊, -翼</code>。<br><strong>僅系列</strong> — <code>series:關鍵字</code> 只比對系列名稱。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士鋼彈》，不含其他標題含「鋼彈」的作品。</div>',search_recall:'快速搜尋',whats_new_title:'更新資訊',whats_new_btn:'更新資訊',whats_new_empty:'尚無更新說明。匯入新主資料後會自動與基準檔比對；發布後可執行 python scripts/refresh_whats_new_snapshot.py 重設基準。可選內容放在 data/whats_new.json。',whats_new_date:'日期：',whats_new_changes:'變更：',whats_new_added:'新增：',whats_new_close:'關閉',whats_new_kind_unit_abilities:'機體能力',whats_new_kind_unit_weapons:'武裝',whats_new_kind_char_abilities:'角色能力',whats_new_slot:'欄位',whats_new_before:'變更前',whats_new_after:'變更後',whats_new_tab_pending:'自上次基準',whats_new_tab_manual:'備註',whats_new_tab_empty:'此區段無變更。',whats_new_select_period:'期間：',whats_new_manual_note:'備註',whats_new_label_new_unit:'新機體：',whats_new_label_new_char:'新角色：',whats_new_label_new_mod:'新改造零件：',whats_new_label_new_supporter:'新支援人員：',search_spotlight_title:'搜尋',search_spotlight_close:'關閉',search_spotlight_foot:'Esc · 點背景或 ✕ 關閉',search_spotlight_empty:'沒有符合的項目',per_page:'/頁',view_grid:'格狀檢視',view_table:'表格檢視',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',search_mod:'搜尋：名稱/效果/標籤（逗號或；＝需全部符合）',count_mod:'改造零件',mod_filter_effect:'效果類型',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'攻擊 ↑',mod_filter_effect_def:'防禦 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'其他（命中／迴避等）',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',stage_npc_friendly_tab:'友方 NPC',stage_npc_enemy_tab:'敵方單位',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'全部武裝效果',unit_filter_weapon_debuff_all:'全部武裝效果',unit_filter_weapon_debuff_multi:'{n} 項武裝效果',unit_filter_mechanism:'機制',unit_filter_mechanism_all:'全部機制',unit_filter_mechanism_multi:'{n} 項機制',unit_filter_mechanism_tt:'多選機制：須同時符合（AND）。2×2 含大型機體（與機體詳情相同：MechanismSet 與標籤 1067）。',unit_filter_wb_atk_dn:'攻擊力減少',unit_filter_wb_def_dn:'防禦力減少',unit_filter_wb_mob_dn:'機動力減少',unit_filter_wb_acc_dn:'命中率減少',unit_filter_wb_eva_dn:'閃避率減少',unit_filter_wb_dmg_phys:'物理損傷提升',unit_filter_wb_dmg_beam:'光束損傷提升',unit_filter_wb_dmg_spec:'特殊損傷提升',unit_filter_wb_wp_phys:'物理武裝威力減少',unit_filter_wb_wp_beam:'光束武裝威力減少',unit_filter_wb_wp_spec:'特殊武裝威力減少',unit_filter_wb_range_beam:'光束武裝射程減少',unit_filter_wb_range_phys:'物理武裝射程減少',unit_filter_wb_range_all:'全武裝射程減少',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先發攻擊',role_attack:'攻擊型',role_defense:'耐久型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅耐久型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',char_data:'角色資料',unit_data:'機體資料',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',limited_label:'限定',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',tag_tab_affinity:'親和',tag_results_affinity:'親和（標籤）：',series_results_unit:'此系列的機體：',series_results_char:'此系列的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',filter_source:'取得來源',filter_source_all:'全部',browse_filters_clear:'清除',filter_source_assembly:'機體補給獲得單位',filter_source_development:'開發機體',filter_source_other:'其他',filter_source_assembly_char:'機體補給獲得角色',filter_source_development_char:'招募／劇情角色',list_filter_lineage:'標籤／系譜',list_filter_lineage_multi:'{n} 個標籤',list_filter_series:'作品系列',list_filter_skill:'技能',list_filter_ability:'能力',list_filter_all_skills:'全部技能',list_filter_all_abilities:'全部能力',list_filter_ability_char:'能力',list_filter_all_abilities_char:'全部能力',list_filter_search_placeholder:'搜尋…',series_filter_all_brand:'機動戰士鋼彈',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害計算器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_pick_unit:'選擇機體',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_final_dmg:'最終傷害',dc_crit_final_dmg:'暴擊最終傷害',dc_hp_remaining:'剩餘HP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'剩餘 HP（一般）',dc_hp_remaining_crit:'剩餘 HP（暴擊）',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式'}};T.HK=Object.assign({},T.TW,{search_series_click:'查看此系列的角色與機體',search_stage:'以關卡 ID 或名稱搜尋...',search_hint_html:'<div class="search-hint-inner"><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字<strong>前面加上</strong> <code>-</code>，可隱藏<strong>仍包含該文字</strong>的結果。例：<code>burst, sniper, -mp</code>。<br><strong>僅系列</strong> — <code>series:關鍵字</code> 只比對系列名稱。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士高達》，不含其他標題含「高達」的作品。</div>',series_filter_all_brand:'機動戰士高達',latest_gasha_title:'最新資訊：',lr_empty:'沒有扭蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有扭蛋排程。',lr_load_more:'載入全部扭蛋',lr_lock_hint:'請輸入密碼以在開始前預覽此扭蛋陣容。',lr_section_locked:'此扭蛋尚未開始。請輸入密碼以預覽角色／機體列表。'});
@@ -1441,7 +1509,7 @@ async function loadLangs(){try{const r=await fetch('/api/languages');const d=awa
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
 function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}
 async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();if(lc!=='JP'&&lc!=='JA')return true;const msg="We apologize for the inconvenience.\nDue to unforeseen conflicts, the Japan version is currently locked.\nThank you for your understanding.";try{const st=await fetch('/api/jp_mode/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return true;alert(st.message||msg);const pw=window.prompt(t('jp_mode_unlock_prompt'));if(!pw)return false;const rr=await fetch('/api/jp_mode/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!rr.ok){alert(t('jp_mode_unlock_wrong'));return false}return true}catch(_){alert(msg);return false}}
-async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);if(S.currentTab==='latest_release')tryLoadLatestRelease();if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
+async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);if(S.currentTab==='latest_release')tryLoadLatestRelease();if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
 document.addEventListener('click',e=>{if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
 function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent='Damage Calculator';document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
@@ -2982,7 +3050,7 @@ _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
@@ -2995,7 +3063,7 @@ _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcWeaponArea();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
@@ -3004,7 +3072,7 @@ onDcParamChange();
 
 function initDmgCalc(){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.atkCounterOwnAtk=false;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;S.dc._activeSkills={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.atkCounterOwnAtk=false;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value='';
@@ -3014,6 +3082,7 @@ const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=0;
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa){acoa.checked=false}
 const dtp=document.getElementById('dcDmgTakenDownPilot');if(dtp)dtp.value=0;
 const dtu=document.getElementById('dcDmgTakenDownUnit');if(dtu)dtu.value=0;
+const dss=document.getElementById('dcStageSearch');if(dss)dss.value='';
 ['dcDefDebuffPct','dcDtuBeam','dcDtuPhysical','dcDtuSpecial'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0});
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcTerrain('normal');
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
@@ -3022,12 +3091,14 @@ S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmp
 _dcRefreshAtkSlotUi();
 _dcSyncAtkModeUiFromState();
 }
-function openDmgCalc(){
+async function openDmgCalc(){
 const d=S.currentDetailData;
 switchTab('calculator');
 if(d&&d.npc_details){
+await loadDcStages();
+_dcFillDcStageSelectOptions(_dcStagesCache||[]);
 const stgSel=document.getElementById('dcStageSelect');
-if(stgSel&&d.id){stgSel.value=d.id;onDcStageChange()}
+if(stgSel&&d.id){stgSel.value=d.id;_dcRebuildDcStageUi();await onDcStageChange()}
 }
 }
 function setDcTerrain(mode){
@@ -3041,12 +3112,11 @@ onDcParamChange();
 let _dcStagesCache=null;
 async function loadDcStages(){
 if(_dcStagesCache)return _dcStagesCache;
-try{const r=await fetch(`/api/dc_targets?lang=${S.lang}`);const d=await r.json();_dcStagesCache=d;return d}catch(e){return[]}
-}
+try{const r=await fetch(`/api/dc_targets?lang=${S.lang}`);const d=await r.json();_dcStagesCache=Array.isArray(d)?d:[];return _dcStagesCache}catch(e){return[]}}
 async function renderDcStageDropdown(){
-const sel=document.getElementById('dcStageSelect');
 const stages=await loadDcStages();
-sel.innerHTML=`<option value="">-- Select Stage --</option>`+stages.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.difficulty||'')})</option>`).join('');
+_dcFillDcStageSelectOptions(stages);
+_dcRebuildDcStageUi();
 }
 async function onDcStageChange(){
 S.dc.defTargetMode='preset';
@@ -3200,10 +3270,10 @@ S.dc._unitIsSD=false;
 S.dc.optionParts=[];
 S.dc.lbTier=0;
 S.dc.wpnIdx=0;S.dc.wpnLv=0;
-S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};
+S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;
 S.dc._vigorCondThreshold=null;
 _dcSyncAtkModeUiFromState();
-renderDcAtkUnit();renderDcAtkChar();renderDcWeaponArea();renderDcOptionParts();renderDcSupporters();
+renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 onDcParamChange();
 }else{
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;
@@ -3392,7 +3462,11 @@ if(preset)preset.checked=true;
 if(custom)custom.checked=false;
 if(pw)pw.style.display='';
 if(cw)cw.style.display='none';
-if(D.s){const sel=document.getElementById('dcStageSelect');if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}}
+if(D.s){
+const sel=document.getElementById('dcStageSelect');
+if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}
+_dcRebuildDcStageUi();
+}
 }
 const arr=Array.isArray(obj.S)?obj.S:[null,null,null];
 const loaded=await Promise.all([0,1,2].map(i=>{
@@ -3496,7 +3570,7 @@ return _dcGetCharStatsForCp(!!S.dc.charCondPassive);
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
-if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';return}
+if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};return}
 if(ud._manual){
 area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom unit</div></div></div>`;
 document.getElementById('dcAtkStatsArea').innerHTML='';
@@ -3752,8 +3826,9 @@ const mp=DC_MP[S.dc.mpLevel]||DC_MP.medium;
 dmgDealt+=mp.dmgBonus*100;
 const di=document.getElementById('dcDmgIncrease');
 const ci=document.getElementById('dcCritDmgUp');
+const wCrit=S.dc._wpnCritDmgUp|0;
 if(di)di.value=dmgDealt;
-if(ci)ci.value=critDmg;
+if(ci)ci.value=critDmg+wCrit;
 onDcParamChange();
 }
 function _dcRenderPilotSkills(area,cd){
@@ -3893,19 +3968,32 @@ if(matches)maxR+=mod.rangeInc;
 return{min_range:wpn.min_range,max_range:maxR};
 }
 
-function _dcParseWeaponTraits(wpn){
-const traits={distPowerMax:0,hpPowerMax:0,absoluteHit:false,dmgReductionNull:false};
+function _dcParseWeaponTraits(wpn,lvIdx){
+const traits={distPowerMax:0,hpPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false};
 if(!wpn||!wpn.levels)return traits;
 const allTraits=[];
+const idx=lvIdx!==undefined&&lvIdx>=0?lvIdx:-1;
+if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
+(wpn.levels[idx].traits||[]).forEach(t=>allTraits.push(t));
+}else{
 wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
+}
 allTraits.forEach(t=>{
-const txt=t.replace(/\n/g,' ');
+const txt=String(t).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;
 if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt))traits.dmgReductionNull=true;
 let m=txt.match(/closer\s+you\s+are.*?weapon\s+power\s+increases?\s*\(up\s+to\s+(\d+)%\)/i);
-if(m)traits.distPowerMax=parseInt(m[1],10);
+if(m)traits.distPowerMax=Math.max(traits.distPowerMax,parseInt(m[1],10));
 m=txt.match(/lower\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(up\s+to\s+(\d+)%\)/i);
-if(m)traits.hpPowerMax=parseInt(m[1],10);
+if(m)traits.hpPowerMax=Math.max(traits.hpPowerMax,parseInt(m[1],10));
+m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
+if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
+if(/\[Custom\s+Core\s+Effect\]/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
+m=txt.match(/Maximum\s+Up\s+(\d+)%/i);
+if(m)traits.distCoreMax=Math.max(traits.distCoreMax,parseInt(m[1],10));
+}
 });
 return traits;
 }
@@ -3918,8 +4006,8 @@ return wpn.levels.length-1;
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
 const ud=S.dc.atkUnitData;
-if(ud&&ud._manual){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
-if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
+if(ud&&ud._manual){wa.innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};_dcRefreshFinalWpnPowPlaceholder();return}
+if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};_dcRefreshFinalWpnPowPlaceholder();return}
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
 if(S.dc.wpnIdx>=wpns.length)S.dc.wpnIdx=0;
@@ -3941,15 +4029,17 @@ const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
 const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld.power)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>Attribute: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
-const wt=_dcParseWeaponTraits(cw);
+const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
-if(wt.distPowerMax||wt.hpPowerMax||wt.absoluteHit){
+S.dc._wpnCritDmgUp=wt.critDmgUp|0;
+const effDistMax=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+if(effDistMax||wt.hpPowerMax||wt.absoluteHit||wt.dmgReductionNull){
 h+=`<div style="margin-top:6px;font-size:11px;line-height:1.6">`;
 if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
 if(wt.dmgReductionNull)h+=`<div style="color:#4ade80">✓ Attribute Damage Reduction Null</div>`;
-if(wt.distPowerMax){
+if(effDistMax){
 const cur=S.dc._wpnTraitDistPow||0;
-h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">Distance Power Bonus (0-${wt.distPowerMax}%)</span><input type="number" class="dc-input-sm" id="dcWpnTraitDistPow" min="0" max="${wt.distPowerMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
+h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">Distance Power Bonus (0-${effDistMax}%${wt.distCoreMax?'; incl. Custom Core max':''})</span><input type="number" class="dc-input-sm" id="dcWpnTraitDistPow" min="0" max="${effDistMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
 }
 if(wt.hpPowerMax){
 const cur=S.dc._wpnTraitHpPow||0;
@@ -3961,6 +4051,10 @@ h+=`</div>`;
 wa.innerHTML=h;
 _dcRefreshTotalDebuffsDisplay();
 _dcRefreshFinalWpnPowPlaceholder();
+if(!S.dc.atkCharData||S.dc.atkCharData._manual){
+const ci=document.getElementById('dcCritDmgUp');
+if(ci){ci.value=String(S.dc._wpnCritDmgUp|0);onDcParamChange();}
+}
 }
 function _dcApplyWpnTraitPow(){
 const dEl=document.getElementById('dcWpnTraitDistPow');
@@ -4149,18 +4243,37 @@ function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();
 function setDcWeapon(idx){
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];
 const w=wpns[idx];
-S.dc.wpnIdx=idx;S.dc.wpnLv=w?_dcDefaultWpnLvIndex(w):0;S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;renderDcWeaponArea();onDcParamChange()}
-function setDcWpnLv(lv){S.dc.wpnLv=lv;renderDcWeaponArea();onDcParamChange()}
+S.dc.wpnIdx=idx;S.dc.wpnLv=w?_dcDefaultWpnLvIndex(w):0;
+const wt=w?_dcParseWeaponTraits(w,S.dc.wpnLv):{};
+S.dc._wpnCritDmgUp=wt.critDmgUp|0;
+const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+S.dc._wpnTraitDistPow=effD>0?effD:0;
+S.dc._wpnTraitHpPow=0;
+renderDcWeaponArea();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+}
+function setDcWpnLv(lv){
+S.dc.wpnLv=lv;
+const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
+if(w){
+const wt=_dcParseWeaponTraits(w,lv);
+S.dc._wpnCritDmgUp=wt.critDmgUp|0;
+const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+S.dc._wpnTraitDistPow=effD>0?effD:0;
+S.dc._wpnTraitHpPow=0;
+}
+renderDcWeaponArea();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+}
 function setDcMp(lv){
 const prevKey=_dcGetUnitStatKey();
 S.dc.mpLevel=lv;
 document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===lv));
 const newKey=_dcGetUnitStatKey();
 if(newKey!==prevKey&&S.dc.atkUnitData)renderDcAtkUnit();
+if(S.dc.atkUnitData)renderDcWeaponArea();
 if(S.dc.atkCharData)_dcRecalcPilotBonuses();
-else if(S.dc.atkUnitData){renderDcWeaponArea();onDcParamChange()}
 else onDcParamChange();
-if(S.dc.atkCharData&&S.dc.atkUnitData)renderDcWeaponArea();
 }
 function setDcDefend(v){
 S.dc.defending=v;

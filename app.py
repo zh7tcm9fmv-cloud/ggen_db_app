@@ -2262,7 +2262,7 @@ def create_eternal_stage_map(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('StageId') or item.get('stageId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
-        lookup[sid] = {'stage_id': sid, 'stage_number': safe_int(item.get('StageNumber'), 0), 'stage_name_lang_id': normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')), 'display_unit_id': normalize_id(item.get('DisplayUnitId') or item.get('displayUnitId'))}
+        lookup[sid] = {'stage_id': sid, 'stage_number': safe_int(item.get('StageNumber'), 0), 'stage_name_lang_id': normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')), 'display_unit_id': normalize_id(item.get('DisplayUnitId') or item.get('displayUnitId')), 'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1)}
     return lookup
 
 def create_stage_sortie_set_content_map(d):
@@ -7437,12 +7437,14 @@ def list_dc_targets():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ld = get_lang_data(lc); rows = []
+        diff_order_map = {1: 0, 2: 1, 3: 2}
         for sid, est in eternal_stage_map.items():
             sn = est.get('stage_number', 0)
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Stage {sid}"
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
-            rows.append({'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name']})
-        rows.sort(key=lambda x: (safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
+            dti = safe_int(est.get('stage_difficulty_type_index'), 1)
+            rows.append({'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name'], 'difficulty_code': diff['code'], 'difficulty_order': diff_order_map.get(dti, 99)})
+        rows.sort(key=lambda x: (str(x.get('name') or '').lower(), x.get('difficulty_order', 99), safe_int(x.get('stage_number', 0), 0), safe_int(x['id'], 0)))
         return jsonify(rows)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify([])
