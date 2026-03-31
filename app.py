@@ -1558,6 +1558,24 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
         if m.group(2): n2 = norm(m.group(2)); bonuses[n2] = bonuses.get(n2, 0) + pct
     return bonuses
 
+def _unit_enemy_specified_tags_clause_part(part):
+    """True for 'when enemies are from the specified tags' (not series). Those ATK/DEF bonuses apply in battle only."""
+    low = (part or '').lower()
+    if 'specified series' in low:
+        return False
+    return 'when enemies' in low and 'specified tag' in low
+
+def _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_clause):
+    """After that clause, the next simultaneous ATK+DEF % line is combat-only — exclude from list/sheet stat totals."""
+    if not prev_clause or not part_stats:
+        return part_stats, False
+    atk = part_stats.get('Attack')
+    de = part_stats.get('Defense')
+    if atk is not None and de is not None and atk == de:
+        out = {k: v for k, v in part_stats.items() if k not in ('Attack', 'Defense')}
+        return out, False
+    return part_stats, prev_clause
+
 def _extract_stat_flat_move(text, skip_conditional=True):
     """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1' or 'by1')."""
     if skip_conditional and _is_conditional_stat_text(text): return 0
@@ -4259,11 +4277,15 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
             if not parts: parts = [txt]
             cond_prefix = False
+            prev_enemy_tag_clause = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
+                part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                if _unit_enemy_specified_tags_clause_part(part):
+                    prev_enemy_tag_clause = True
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
@@ -4345,11 +4367,15 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
             if not parts: parts = [txt]
             cond_prefix = False
+            prev_enemy_tag_clause = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
+                part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                if _unit_enemy_specified_tags_clause_part(part):
+                    prev_enemy_tag_clause = True
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
@@ -7737,11 +7763,15 @@ def get_unit(unit_id):
                 parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
                 if not parts: parts = [txt]
                 cond_prefix = False
+                prev_enemy_tag_clause = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
                     if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                         itc = False
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
+                    part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                    if _unit_enemy_specified_tags_clause_part(part):
+                        prev_enemy_tag_clause = True
                     wpn_stats = _extract_weapon_stat_percent_unit(part, skip_conditional=False)
                     flat_move = _extract_stat_flat_move(part, skip_conditional=False)
                     if itc and not part_stats and not flat_move and not wpn_stats:
