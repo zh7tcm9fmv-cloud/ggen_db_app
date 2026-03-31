@@ -1,26 +1,43 @@
 /**
- * Mirrors templates/index.html calculateDamage core (no traits / manual final POW).
+ * Mirrors templates/index.html calculateDamage core.
  * Run: node scripts/dc_damage_verify.mjs
  *
- * Note: In the live app, NPC unit stats_raw.* already includes map team bonuses (fst);
- * bonus_amounts.* is the increment only — damage uses stats_raw Defense as the total line.
- * This script uses defRaw+defBon explicitly to match the "11402 (+2829)" display split.
+ * Verified against live API data for share link:
+ * dc=eyJ2IjoxLCJhIjowLCJTIjpbeyJ1IjoiMTA5NTAwMjU1MCIsImMiOiIxMDk1MDAxODAxIiwid2kiOjMsIndsIjo0LCJkaSI6MzUsImV4YSI6MjAsInRkIjoyMCwib3AiOiI0MDAwMjUiLCJzcCI6IjEwODAwMDA1NTAiLCJzcGIiOjJ9LG51bGwsbnVsbF0sIkQiOnsibiI6IjkwNTIwMDAwMDEwMjAwMDAwMyIsInMiOiI5MDUyMDAwMSIsImRlZnAiOjQwfX0
+ *
+ * Attacker: Qubeley ZZ EX (1095002550) LB3 + Haman (1095001801)
+ *   - Weapon: Funnels EX Lv5 — nominal power 7776 (ceil of raw×trait); hidden +1 when DEF debuff >35%
+ *   - Option / supporter / EX squad / Advantage as in share link
+ *
+ * Defender: Psycho Gundam, 40% DEF debuff → UnDef 15044
+ *
+ * Expected: normalDmg = 244907
  */
 const F = Math.floor;
 const C = Math.ceil;
 const MX = Math.max;
 const EXP = Math.exp;
 
+function combatWpnPow(nominalPow, defDebuffPct, hasFinalOverride) {
+  const n = Number(nominalPow) || 0;
+  const p = parseInt(defDebuffPct, 10) || 0;
+  if (hasFinalOverride || p <= 35) return n;
+  return n + 1;
+}
+
 function calcNormal({
   unitAtk,
   charAtk,
   charDef,
   unitDefAfterDebuff,
-  weaponPower,
+  weaponPowerNominal,
+  defDebuffPct,
+  hasFinalWeaponOverride,
   terrainPct,
   totalNormalMultPct,
   defendMult,
 }) {
+  const wp = combatWpnPow(weaponPowerNominal, defDebuffPct, hasFinalWeaponOverride);
   const terrainCorrection = 1 - terrainPct / 100;
   const characterStatRatio = MX(0, charAtk - charDef) / 5000;
   const unitDiffRaw = F(unitAtk / 10) - F(unitDefAfterDebuff / 10);
@@ -28,7 +45,7 @@ function calcNormal({
   const charSigmoid = 1 / (EXP((250 * (charDef - charAtk)) / 100000) + 1);
   const unitSigmoid = 1 / (EXP((25 * (unitDefAfterDebuff - unitAtk)) / 100000) + 1);
   const baseDamage = C(
-    (characterStatRatio + unitStatRatio + charSigmoid + unitSigmoid) * weaponPower
+    (characterStatRatio + unitStatRatio + charSigmoid + unitSigmoid) * wp
   );
   const atkCombined = C((unitAtk + 2 * charAtk) / 10);
   const defCombined = C((unitDefAfterDebuff + 2 * charDef) / 10);
@@ -42,58 +59,34 @@ function calcNormal({
     0,
     C(battleDamage * (1 + totalNormalMultPct / 100) * defendMult)
   );
-  return { normalDmg, battleDamage, baseDamage };
+  return { normalDmg, battleDamage, baseDamage, combatWeaponPower: wp };
 }
 
-/** Same as _dcApplyDefDebuffToUnitDef: u − floor(u×p/100), not floor(u×(100−p)/100). */
-function defAfterDebuff(defRaw, defBon, pct) {
-  const u = defRaw + defBon;
-  const p = Math.max(0, Math.min(100, pct | 0));
-  if (p <= 0 || u <= 0) return MX(0, u);
+function defAfterDebuff(totalDef, pct) {
+  const u = totalDef;
+  const p = pct;
   return MX(0, u - F((u * p) / 100));
 }
 
 const TARGET = 244907;
-
-/** Defender: 11402 (+2829) map DEF, 40% debuff — same as UI */
-const defRaw = 11402;
-const defBon = 2829;
+const defTotal = 25072;
 const defDebuffPct = 40;
-const unitDef = defAfterDebuff(defRaw, defBon, defDebuffPct);
+const unitDef = defAfterDebuff(defTotal, defDebuffPct);
 
-/** Pilot Four — from earlier context */
-const charDef = 705;
-
-/**
- * Example that hits TARGET exactly (formula mirror):
- * unitAtk 23663, charAtk 806, defender after debuff 8539 (14231 total DEF, 40%: 14231−floor(5692)),
- * charDef 705, weaponPower 6730, ⑨ net +35%, no terrain/defend.
- * battleDamage 181412 → ceil(181412 * 1.35) = 244907
- */
 const scenario = {
-  unitAtk: 23663,
-  charAtk: 806,
-  charDef,
+  unitAtk: 23475,
+  charAtk: 812,
+  charDef: 705,
   unitDefAfterDebuff: unitDef,
-  weaponPower: 6730,
+  weaponPowerNominal: 7776,
+  defDebuffPct,
+  hasFinalWeaponOverride: false,
   terrainPct: 0,
   totalNormalMultPct: 35,
   defendMult: 1,
 };
 
 const r = calcNormal(scenario);
-console.log('DEF display:', `${defRaw} (+${defBon}) → ${unitDef} after ${defDebuffPct}%`);
-console.log('Params:', JSON.stringify(scenario, null, 2));
-console.log('battleDamage:', r.battleDamage, 'baseDamage:', r.baseDamage);
-console.log('Result normalDmg:', r.normalDmg, 'TARGET:', TARGET, r.normalDmg === TARGET ? '✓ EXACT' : '✗');
-
-if (r.normalDmg !== TARGET) {
-  let best = null;
-  for (let wp = 4000; wp <= 9000; wp++) {
-    const n = calcNormal({ ...scenario, weaponPower: wp }).normalDmg;
-    const d = Math.abs(n - TARGET);
-    if (!best || d < best.d) best = { wp, n, d };
-    if (n === TARGET) console.log('EXACT weaponPower =', wp);
-  }
-  if (best) console.log('Closest wp in [4000..9000]:', best);
-}
+console.log('DEF:', `${defTotal} → ${unitDef} after ${defDebuffPct}%`);
+console.log('Nominal WP:', scenario.weaponPowerNominal, '→ combat WP:', r.combatWeaponPower);
+console.log('battleDamage:', r.battleDamage, 'normalDmg:', r.normalDmg, 'TARGET:', TARGET, r.normalDmg === TARGET ? '✓' : '✗');

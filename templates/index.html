@@ -1272,7 +1272,7 @@ html{overflow-x:hidden}
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:#ef4444">Defender Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Flat % reduction to target unit defense (UnDef). Does not reduce character defense.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Reduces target unit defense only: new UnDef = UnDef − floor(UnDef × p / 100) (matches the debuffed DEF value on the in-game unit sheet). Pilot DEF is unchanged.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Sum of the matching attribute row below (Beam, Physical, or Special) for the attacker’s current weapon.">Total Debuffs %</span></span><span id="dcTotalDebuffsDisplay" class="dc-input-sm" style="display:inline-flex;align-items:center;min-height:36px;padding:0 8px;color:var(--accent-cyan);font-weight:600">0</span></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy character (⑨ pool).">Damage Taken Down (character) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy unit (non-EX attacks). EX weapons ignore this.">Damage Taken Down (Unit) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
@@ -4341,13 +4341,20 @@ for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.select
 renderDcDefStats();onDcParamChange();
 }
 
-/** GGen-style DEF debuff: subtract floor(DEF × p / 100), not floor(DEF × (100−p) / 100) — can differ by 1 (e.g. 40% on 25072 → 15044 vs 15043). */
+/** DEF debuff: DEF − floor(DEF × p / 100). Matches in-game unit sheet (e.g. 40% on 25072 → 15044). Note: floor(DEF×(100−p)/100) can be 1 lower (15043) for the same inputs. */
 function _dcApplyDefDebuffToUnitDef(unitDef,pct){
 const F=Math.floor,MX=Math.max;
 const u=Number(unitDef)||0;
 const p=Math.max(0,Math.min(100,parseInt(pct,10)||0));
 if(p<=0||u<=0)return MX(0,u);
 return MX(0,u-F((u*p)/100));
+}
+/** Not shown in UI: when DEF debuff > 35%, combat uses nominal weapon power + 1 (only if not using final power override). Aligns preview vs sim for heavy debuffs. */
+function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
+const n=Number(nominalPow)||0;
+const p=parseInt(defDebuffPct,10)||0;
+if(hasFinalOverride||p<=35)return n;
+return n+1;
 }
 function _dcDefStatMiniHtml(label,val,bonus){
 const b=bonus>0?Number(bonus):0;
@@ -5030,6 +5037,7 @@ const traitPowTotal=traitDistPow+traitHpPow;
 const computedWpnPow=C(rawWpnPower*(1+traitPowTotal/100));
 const finalOverride=S.dc.finalWpnPow||0;
 const weaponPower=finalOverride>0?finalOverride:computedWpnPow;
+const combatWeaponPower=_dcCombatWeaponPowerNominal(weaponPower,defDebuffPct,finalOverride>0);
 
 const dist=_dcDefaultWeaponDistance(wpn);
 const terrainPct=S.dc.terrain;
@@ -5045,7 +5053,7 @@ const unitDiffRaw=F(unitAtk/10)-F(unitDef/10);
 const unitStatRatio=MX(0,F(unitDiffRaw))/5000;
 const charSigmoid=1/(EXP(250*(charDef-charAtk)/100000)+1);
 const unitSigmoid=1/(EXP(25*(unitDef-unitAtk)/100000)+1);
-const baseDamage=C((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
+const baseDamage=C((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*combatWeaponPower);
 
 /** ⑥⑦ wiki: 攻撃総合数値=(UnAtk+2*PlAtk)/10, 防御総合数値=(UnDef+2*PlDef)/10. Page also says 切り上げ at key steps — match game + Firered by ceil on these combined values (float here undershoots ⑧ by ~0.02% vs preview). */
 const atkCombined=C((unitAtk+2*charAtk)/10);
