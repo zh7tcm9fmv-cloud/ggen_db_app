@@ -3463,6 +3463,7 @@ slot._unitIsSD=String(ur.body_type||'')==='3';
 slot._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
 if(o.wi!==undefined){const n=parseInt(o.wi,10);if(!Number.isNaN(n)&&n>=0)slot.wpnIdx=n}else slot.wpnIdx=0;
 if(o.wl!==undefined){const n=parseInt(o.wl,10);if(!Number.isNaN(n)&&n>=0)slot.wpnLv=n}else slot.wpnLv=0;
+if(o.wi===undefined&&o.wl===undefined){const _pb=_dcPickBestWeaponIndices(ur);slot.wpnIdx=_pb.wpnIdx;slot.wpnLv=_pb.wpnLv}
 if(o.lb!==undefined){const n=parseInt(o.lb,10);if(!Number.isNaN(n)&&n>=0)slot.lbTier=n}
 }
 const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
@@ -3758,7 +3759,7 @@ main.removeAttribute('title');
 if(cpAtkBuff)main.classList.add('dc-stat-val--buffed');else main.classList.remove('dc-stat-val--buffed');
 }
 }
-function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual){const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
@@ -4083,11 +4084,49 @@ if(m)traits.distCoreMax=Math.max(traits.distCoreMax,parseInt(m[1],10));
 });
 return traits;
 }
-function _dcDefaultWpnLvIndex(wpn){
+/** Matches calculateDamage() weapon power: ceil(raw * (1 + (dist+hp trait %)/100)). */
+function _dcComputedWeaponPowerForLevel(wpn,lvIdx,hpTraitPow){
+const C=Math.ceil;
+const lvData=(wpn.levels&&wpn.levels[lvIdx])||{power:0};
+const rawWpnPower=lvData.power||0;
+const wtTraits=_dcParseWeaponTraits(wpn,lvIdx);
+const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
+const traitHpPow=Math.min(wtTraits.hpPowerMax||0,hpTraitPow|0);
+const traitPowTotal=traitDistPow+traitHpPow;
+return C(rawWpnPower*(1+traitPowTotal/100));
+}
+function _dcBestLevelIndexForWeapon(wpn){
 if(!wpn||!wpn.levels||!wpn.levels.length)return 0;
-const idx=wpn.levels.findIndex(lv=>Number(lv.level)===5);
-if(idx>=0)return idx;
-return wpn.levels.length-1;
+const hp=0;
+let bestPow=-1,bestJ=0,bestRaw=-1;
+wpn.levels.forEach((lv,j)=>{
+const p=_dcComputedWeaponPowerForLevel(wpn,j,hp);
+const raw=lv.power||0;
+if(p>bestPow||(p===bestPow&&raw>bestRaw)){
+bestPow=p;bestJ=j;bestRaw=raw;
+}
+});
+return bestJ;
+}
+function _dcPickBestWeaponIndices(ud){
+const wpns=_dcNonMapWeapons(ud);
+if(!wpns.length)return{wpnIdx:0,wpnLv:0};
+const hp=0;
+let bestPow=-1,bestI=0,bestJ=0,bestRaw=-1;
+wpns.forEach((w,i)=>{
+if(!w.levels||!w.levels.length)return;
+w.levels.forEach((lv,j)=>{
+const p=_dcComputedWeaponPowerForLevel(w,j,hp);
+const raw=lv.power||0;
+if(p>bestPow||(p===bestPow&&raw>bestRaw)){
+bestPow=p;bestI=i;bestJ=j;bestRaw=raw;
+}
+});
+});
+return{wpnIdx:bestI,wpnLv:bestJ};
+}
+function _dcDefaultWpnLvIndex(wpn){
+return _dcBestLevelIndexForWeapon(wpn);
 }
 function renderDcWeaponArea(){
 const wa=document.getElementById('dcAtkWpnArea');
@@ -4508,9 +4547,10 @@ if(type==='supporter'){await selectDcSupporter(id);return}
 const url=type==='character'?`/api/character/${id}?lang=${S.lang}`:`/api/unit/${id}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
 if(type==='unit'){
-const wpns=_dcNonMapWeapons(d);
-const first=wpns[0];
-S.dc.atkUnit=id;S.dc.atkUnitData=d;S.dc.wpnIdx=0;S.dc.wpnLv=first?_dcDefaultWpnLvIndex(first):0;S.dc.unitStatMode='normal';S.dc.unitCondPassive=false;
+S.dc.atkUnit=id;S.dc.atkUnitData=d;
+const _bw=_dcPickBestWeaponIndices(d);
+S.dc.wpnIdx=_bw.wpnIdx;S.dc.wpnLv=_bw.wpnLv;
+S.dc.unitStatMode='normal';S.dc.unitCondPassive=false;
 S.dc.optionParts=[];S.dc.supporters=[];
 _dcDetectVigorCondAbilities(d);
 const rec=d.recommend_character;const isSD=d.body_type==='3';
