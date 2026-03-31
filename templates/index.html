@@ -4373,13 +4373,14 @@ const defBon=ub.Defense||0;
 const defDeb=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
 let defLine;
 if(defDeb>0){
-let defAfter=defMapTotal;
-const defRed=F(defAfter*defDeb/100);
-defAfter=MX(0,defAfter-defRed);
-const bonSub=defBon>0?`<div style="font-size:10px;color:#4ade80;font-weight:600;margin-top:2px">(+${fmtN(defBon)})</div>`:'';
-defLine=`<div class="dc-stat-mini dc-def-mini--map-bonus"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">
-<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;justify-content:center"><span class="dc-def-stat-num" style="font-size:11px;color:var(--text-muted)">${fmtN(defMapTotal)}</span><span style="color:#f87171;font-weight:800;font-size:15px">→ ${fmtN(defAfter)}</span></div>
-${bonSub}
+const defBefore=defMapTotal+defBon;
+const defAfter=MX(0,F((defBefore*(100-defDeb))/100));
+const defBonHtml=defBon>0?`<div style="font-size:10px;color:#4ade80;font-weight:600;margin-top:2px;line-height:1.2">(+${fmtN(defBon)})</div>`:'';
+const vCls=defBon>0?' dc-stat-val--buffed':'';
+const boxCls=defBon>0?' dc-def-mini--map-bonus':'';
+defLine=`<div class="dc-stat-mini${boxCls}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">
+<span class="dc-def-stat-num${vCls}">${fmtN(defMapTotal)}</span>${defBonHtml}
+<div style="margin-top:6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;justify-content:center"><span style="color:#f87171;font-weight:800;font-size:15px">→ ${fmtN(defAfter)}</span></div>
 <span style="font-size:10px;color:#f87171;font-weight:600;display:block;margin-top:2px">(${defDeb}% DEF debuff)</span>
 </div></div>`;
 }else{
@@ -4993,12 +4994,15 @@ unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.unitAtk
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
-let unitDef=defUnit?(defUnit.stats_raw?.Defense||0):0;
+const defRaw=defUnit?(defUnit.stats_raw?.Defense||0):0;
+const defMapBon=defUnit?(defUnit.bonus_amounts?.Defense||0):0;
+/** ER / map DEF bonus is in bonus_amounts; in-game unit DEF line includes it before debuff. Debuff % applies to that full value (not raw-only). */
+let unitDef=defRaw+defMapBon;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
 let defDebuffPct=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
 if(defDebuffPct>0){
-const defReduction=F(unitDef*defDebuffPct/100);
-unitDef=MX(0,unitDef-defReduction);
+/** Integer DEF debuff: retaining (100−p)% often uses floor(u*(100−p)/100), which can differ by 1 from u−floor(u*p/100) (e.g. 40% on 25073 → 15043 vs 15044). Matches GGET preview when subtract-floor undershoots. */
+unitDef=MX(0,F((unitDef*(100-defDebuffPct))/100));
 }
 
 const rawWpnPower=lvData.power;
