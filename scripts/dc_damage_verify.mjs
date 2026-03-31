@@ -45,9 +45,12 @@ function calcNormal({
   return { normalDmg, battleDamage, baseDamage };
 }
 
+/** Same as _dcApplyDefDebuffToUnitDef: u − floor(u×p/100), not floor(u×(100−p)/100). */
 function defAfterDebuff(defRaw, defBon, pct) {
   const u = defRaw + defBon;
-  return MX(0, F((u * (100 - pct)) / 100));
+  const p = Math.max(0, Math.min(100, pct | 0));
+  if (p <= 0 || u <= 0) return MX(0, u);
+  return MX(0, u - F((u * p) / 100));
 }
 
 const TARGET = 244907;
@@ -63,8 +66,8 @@ const charDef = 705;
 
 /**
  * Example that hits TARGET exactly (formula mirror):
- * unitAtk 23663, charAtk 806, defender after debuff 8538, charDef 705,
- * weaponPower 6730, ⑨ net +35% (e.g. 0 user + 0 vigor + 35 dtu − 0 taken), no terrain/defend.
+ * unitAtk 23663, charAtk 806, defender after debuff 8539 (14231 total DEF, 40%: 14231−floor(5692)),
+ * charDef 705, weaponPower 6730, ⑨ net +35%, no terrain/defend.
  * battleDamage 181412 → ceil(181412 * 1.35) = 244907
  */
 const scenario = {

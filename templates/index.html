@@ -4341,6 +4341,14 @@ for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.select
 renderDcDefStats();onDcParamChange();
 }
 
+/** GGen-style DEF debuff: subtract floor(DEF × p / 100), not floor(DEF × (100−p) / 100) — can differ by 1 (e.g. 40% on 25072 → 15044 vs 15043). */
+function _dcApplyDefDebuffToUnitDef(unitDef,pct){
+const F=Math.floor,MX=Math.max;
+const u=Number(unitDef)||0;
+const p=Math.max(0,Math.min(100,parseInt(pct,10)||0));
+if(p<=0||u<=0)return MX(0,u);
+return MX(0,u-F((u*p)/100));
+}
 function _dcDefStatMiniHtml(label,val,bonus){
 const b=bonus>0?Number(bonus):0;
 const bonLn=b>0?`<div style="font-size:10px;color:#4ade80;font-weight:600;margin-top:2px;line-height:1.2">(+${fmtN(b)})</div>`:'';
@@ -4375,7 +4383,7 @@ const defDeb=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
 let defLine;
 if(defDeb>0){
 const defBefore=defTotal;
-const defAfter=MX(0,F((defBefore*(100-defDeb))/100));
+const defAfter=_dcApplyDefDebuffToUnitDef(defBefore,defDeb);
 const defBonHtml=defBon>0?`<div style="font-size:10px;color:#4ade80;font-weight:600;margin-top:2px;line-height:1.2">(+${fmtN(defBon)})</div>`:'';
 const vCls=defBon>0?' dc-stat-val--buffed':'';
 const boxCls=defBon>0?' dc-def-mini--map-bonus':'';
@@ -5011,8 +5019,7 @@ let unitDef=defRaw;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
 let defDebuffPct=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
 if(defDebuffPct>0){
-/** Integer DEF debuff: retaining (100−p)% often uses floor(u*(100−p)/100), which can differ by 1 from u−floor(u*p/100) (e.g. 40% on 25073 → 15043 vs 15044). Matches GGET preview when subtract-floor undershoots. */
-unitDef=MX(0,F((unitDef*(100-defDebuffPct))/100));
+unitDef=_dcApplyDefDebuffToUnitDef(unitDef,defDebuffPct);
 }
 
 const rawWpnPower=lvData.power;
