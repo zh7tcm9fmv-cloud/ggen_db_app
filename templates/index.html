@@ -5026,6 +5026,7 @@ const charSigmoid=1/(EXP(250*(charDef-charAtk)/100000)+1);
 const unitSigmoid=1/(EXP(25*(unitDef-unitAtk)/100000)+1);
 const baseDamage=C((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*weaponPower);
 
+/** ⑥⑦ wiki: 攻撃総合数値=(UnAtk+2*PlAtk)/10, 防御総合数値=(UnDef+2*PlDef)/10. Page also says 切り上げ at key steps — match game + Firered by ceil on these combined values (float here undershoots ⑧ by ~0.02% vs preview). */
 const atkCombined=C((unitAtk+2*charAtk)/10);
 const defCombined=C((unitDef+2*charDef)/10);
 const offExp=((5000-atkCombined)*30)/100000;
@@ -5045,10 +5046,10 @@ const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
 const isExWeapon=!!wpn.is_ex;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
-const totalNormalMultPct=userDmgIncreasePct+dmgTakenUpPct-takenDown;
+const totalNormalMultPct=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
 let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 
-const totalCritMultPct=userDmgIncreasePct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
+const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 let critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
 
