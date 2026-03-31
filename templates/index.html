@@ -1138,6 +1138,7 @@ html{overflow-x:hidden}
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
 <li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: applies to the MS Attack growth line only (not MS ability Attack bonuses). Order on Attack: option-part % on growth → EX squad % → supporter leader % on the EX-boosted growth line (then pilot pair / counter). Up to 20%. Shown under Unit Attack with a green line.">EX squad ATK %</span> · <span class="dc-tip" title="Some EX traits increase MS Attack when countering. Applies to unit Attack in combat (not pilot Ranged/Melee). Shown when the pilot has a paired unit in the database; requires pilot Conditional Passive on.">Own ATK when countering</span></li>
+<li><span class="dc-tip" title="Abilities such as Advantage: … (when enemies are from the specified tags, increase own ATK and DEF by X%) add MS Attack in combat when the selected defender's unit or pilot tags match the ability's Target Tags. Applied after own ATK when countering (floor on MS Attack).">Advantage (enemy tag)</span></li>
 <li><span class="dc-tip" title="Damage uses the pilot offensive stat that matches the weapon's attack type (Ranged / Melee / Awaken — see icons before Attribute in the weapon row). A passive that raises Melee only affects weapons whose attack type uses Melee; EX weapons follow the same rule from their listed attack type(s).">Pilot stat vs weapon attack type</span></li>
 <li><span class="dc-tip" title="Sum of Beam / Physical / Special DTU rows matching the weapon attribute — adds to ⑨ pool (same bucket as damage dealt up).">Damage Taken Up (debuffs)</span> (<span class="dc-tip" title="Highlighted row(s) match your weapon attribute.">attribute rows</span>)</li>
 <li><span class="dc-tip" title="Reduces final damage: pilot DTU % always; unit DTU % for non-EX weapons.">Damage Taken Down</span> (pilot · unit)</li>
@@ -2881,6 +2882,18 @@ renderCompareContent()
 }
 
 const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
+/** Same keys as app.py ATTACK_ATTR_TYPES — used when attack_types is empty (manual weapons / edge API). */
+const DC_ATTACK_ATTR_TO_KEYS={'1':['Ranged'],'2':['Melee'],'3':['Awaken'],'4':['Ranged','Melee'],'5':['Ranged','Awaken'],'6':['Melee','Awaken'],'7':['Ranged','Melee','Awaken']};
+function _dcWeaponAtkStatKeys(wpn){
+let atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
+if(!atkTypes.length){
+const aa=String(wpn.attack_attribute||wpn.attackAttribute||'').trim();
+const keys=DC_ATTACK_ATTR_TO_KEYS[aa];
+if(keys&&keys.length)atkTypes=keys.slice();
+}
+if(!atkTypes.length)atkTypes.push('Ranged');
+return atkTypes;
+}
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 const DC_ATK_SLOT_COUNT=3;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
@@ -3696,14 +3709,18 @@ let defShow=defS;
 const pr=_dcPilotPairUnitAtkDefPct(atkAfterLeader,defShow);
 const atkAfterPair=pr.unitAtk;
 defShow=pr.unitDefVal;
-const atkShow=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
+const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
+const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
+const atkShow=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct);
 const pairActive=(atkAfterPair!==atkAfterLeader||defShow!==defS);
-const counterActive=(atkShow!==atkAfterPair);
+const counterActive=(atkAfterCounter!==atkAfterPair);
+const advantageTagActive=(advAtkPct|0)>0&&atkShow!==atkAfterCounter;
 const leaderAtkActive=(uEff.leaderPct|0)>0&&atkAfterLeader!==atkAfterEx;
 const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="EX squad ATK % on MS growth line only. Order: option parts → EX squad → supporter leader % on growth line (then pilot pair / counter).">+${fmtN(atkAfterEx-atkS)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
-const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive)?'dc-stat-val--buffed':'';
+const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
-const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${atkMainTitle?` title="${atkMainTitle}"`:''}>${fmtN(atkShow)}</span>`;
+const atkAdvTitle=advantageTagActive?` (+${advAtkPct}% MS Attack vs target tag when enemy matches Advantage: …)`:'';
+const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>`;
 const defPairBuff=defShow!==defS;
 const spDefCls=(hDef||defPairBuff)?'dc-stat-val--buffed':'';
 const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
@@ -3733,7 +3750,8 @@ const atkGB=uEff.unitAtkGrowthAfterOptions!=null?uEff.unitAtkGrowthAfterOptions:
 const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,atkGB,exSq);
 const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,atkGB,exSq,uEff.leaderPct);
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkAfterLeader,uEff.unitDefVal).unitAtk;
-const atkDisp=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
+const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
+const atkDisp=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct);
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=stats;
 if(ud.has_cond_stats&&td){
@@ -4670,8 +4688,7 @@ onDcParamChange();
 }
 
 function _dcGetCharAtkStat(charStats,wpn){
-const atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
-if(!atkTypes.length)atkTypes.push('Ranged');
+const atkTypes=_dcWeaponAtkStatKeys(wpn);
 const unique=[...new Set(atkTypes)];
 if(unique.length===1)return _dcFindStat(charStats,unique[0]);
 return Math.max(...unique.map(s=>_dcFindStat(charStats,s)));
@@ -4710,8 +4727,7 @@ return out;
 }
 function _dcGetCharAtkStatWithSkills(charStats,wpn){
 const sk=_dcGetActiveSkillStatPct();
-const atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
-if(!atkTypes.length)atkTypes.push('Ranged');
+const atkTypes=_dcWeaponAtkStatKeys(wpn);
 const unique=[...new Set(atkTypes)];
 const val=(k)=>_dcPilotSkillAdjustedStat(charStats,k,sk[k]||0);
 if(unique.length===1)return val(unique[0]);
@@ -4781,6 +4797,92 @@ return Number.isFinite(v)?(v|0):0;
 function _dcApplyCounterOwnAtkToUnitAtk(unitAtk){
 const F=Math.floor;
 const p=_dcGetCounterOwnAtkPct();
+if(p<=0)return unitAtk;
+return F(Math.max(0,Number(unitAtk)||0)*(100+p)/100);
+}
+function _dcNormalizeTagToken(s){
+if(!s)return'';
+return String(s).replace(/^\s*TAG:\s*/i,'').trim().toLowerCase();
+}
+function _dcNpcTagTokenSet(npc){
+const out=new Set();
+if(!npc)return out;
+const addArr=(arr)=>{(arr||[]).forEach(t=>{if(t&&t.name){const n=_dcNormalizeTagToken(t.name);if(n)out.add(n)}})};
+if(npc.unit)addArr(npc.unit.tags);
+if(npc.character)addArr(npc.character.tags);
+return out;
+}
+function _dcCollectTargetTagRequirementNames(detail){
+const names=[];
+const pushC=(arr)=>{(arr||[]).forEach(c=>{if(c&&c.name)names.push(c.name)})};
+let fromTarget=false;
+if(detail.condition_groups){
+for(const g of detail.condition_groups){
+const lab=String(g.label||'');
+if(/target\s*tags?/i.test(lab)){
+fromTarget=true;
+pushC(g.conditions);
+}
+}
+}
+if(!fromTarget||!names.length)pushC(detail.conditions);
+return names;
+}
+function _dcTagRequirementMatches(requiredNames,defTokens){
+if(!requiredNames||!requiredNames.length||!defTokens||!defTokens.size)return false;
+for(const req of requiredNames){
+const r=_dcNormalizeTagToken(req);
+if(!r)continue;
+for(const dt of defTokens){
+if(dt===r||dt.includes(r)||r.includes(dt))return true;
+}
+}
+return false;
+}
+function _dcIsEnemyTagAdvantageAtkDefLine(txt){
+const low=String(txt||'').toLowerCase();
+if(low.includes('piloting'))return false;
+if(!low.includes('specified tag'))return false;
+if(!low.includes('enem')&&!low.includes('opponent'))return false;
+return /increase own atk and def by \d+%/i.test(txt);
+}
+function _dcExtractAdvantageAtkDefPct(detailText){
+const m=String(detailText||'').match(/Increase own ATK and DEF by (\d+)%/i);
+if(m)return parseInt(m[1],10)||0;
+const m2=String(detailText||'').match(/increase own ATK and DEF by (\d+)%/i);
+if(m2)return parseInt(m2[1],10)||0;
+return 0;
+}
+function _dcAbilityNameFallbackAdvantageTag(ab){
+const m=String(ab.name||'').match(/Advantage:\s*(.+?)\s+LV\s*\d/i);
+if(!m)return'';
+return m[1].trim();
+}
+function _dcAdvantageTagAtkPctFromAbilities(ud,npc){
+if(!ud||ud._manual||!npc)return 0;
+const defTags=_dcNpcTagTokenSet(npc);
+if(!defTags.size)return 0;
+let total=0;
+for(const ab of ud.abilities||[]){
+for(const d of ab.details||[]){
+const det=typeof d==='string'?{text:d,conditions:[],condition_groups:[]}:d;
+if(!det||!det.text)continue;
+const txt=det.text;
+if(!_dcIsEnemyTagAdvantageAtkDefLine(txt))continue;
+const pct=_dcExtractAdvantageAtkDefPct(txt);
+if(pct<=0)continue;
+let req=_dcCollectTargetTagRequirementNames(det);
+if(!req.length){
+const fb=_dcAbilityNameFallbackAdvantageTag(ab);
+if(fb)req=[fb];
+}
+if(_dcTagRequirementMatches(req,defTags))total+=pct;
+}
+}
+return Math.min(100,total);
+}
+function _dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advPct){
+const F=Math.floor,p=advPct|0;
 if(p<=0)return unitAtk;
 return F(Math.max(0,Number(unitAtk)||0)*(100+p)/100);
 }
@@ -4864,6 +4966,8 @@ const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
 const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
 unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
+const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
+unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
@@ -4941,7 +5045,7 @@ return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,counterOwnAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
@@ -5062,6 +5166,7 @@ lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
+if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +${rr.advantageTagAtkPct}% MS Attack when defender matches unit ability target tags`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`Vigor: ${m.slot.mpLevel||'medium'}, Terrain: ${m.slot.terrainMode||'normal'}`);
@@ -5080,6 +5185,7 @@ lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
+if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +${r.advantageTagAtkPct}% MS Attack when defender matches unit ability target tags`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
