@@ -1438,6 +1438,13 @@ const base='/static/images/UI/MissionPanel_Level_Cell #4374.webp';
 const src=imgUrl(base);
 return `<img class="dc-er-diff-icon dc-er-diff-icon--${c}" src="${escAttr(src)}" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.outerHTML='<span class=\\'dc-er-diff-fallback dc-er-diff-fallback--${c}\\'></span>'">`;
 }
+function _dcDcStageDifficultyRank(code){
+const c=String(code||'').toLowerCase();
+if(c==='expert')return 0;
+if(c==='hard')return 1;
+if(c==='normal')return 2;
+return 99;
+}
 function _dcFilterDcStages(stages,q){
 const s=(q||'').trim().toLowerCase();
 const arr=!s?stages.slice():stages.filter(r=>{
@@ -1447,7 +1454,12 @@ const df=String(r.difficulty||'').toLowerCase();
 const dc=String(r.difficulty_code||'').toLowerCase();
 return id.includes(s)||nm.includes(s)||df.includes(s)||dc.includes(s);
 });
-arr.sort((a,b)=>(parseInt(String(a.id),10)||0)-(parseInt(String(b.id),10)||0));
+arr.sort((a,b)=>{
+const ra=_dcDcStageDifficultyRank(a.difficulty_code);
+const rb=_dcDcStageDifficultyRank(b.difficulty_code);
+if(ra!==rb)return ra-rb;
+return (parseInt(String(a.id),10)||0)-(parseInt(String(b.id),10)||0);
+});
 return arr;
 }
 function _dcFillDcStageSelectOptions(stages){
@@ -4019,6 +4031,26 @@ if(matches)maxR+=mod.rangeInc;
 return{min_range:wpn.min_range,max_range:maxR};
 }
 
+function _dcBaseWeaponIdForSsp(wid){
+const s=String(wid||'');
+if(s.length<8||!/^\d+$/.test(s))return null;
+if(s.endsWith('90')||s.endsWith('80'))return s.slice(0,-2)+'01';
+return null;
+}
+function _dcMergeBaseWeaponTraitsForSsp(wpn,idx,allTraits){
+const bid=_dcBaseWeaponIdForSsp(wpn&&wpn.id);
+if(!bid||String(wpn.id)===bid)return;
+const ud=S.dc&&S.dc.atkUnitData;
+if(!ud||!ud.weapons)return;
+const base=ud.weapons.find(x=>String(x.id)===bid);
+if(!base||!base.levels)return;
+if(idx>=0&&base.levels[idx]&&(base.levels[idx].traits||[]).length){
+(base.levels[idx].traits||[]).forEach(t=>allTraits.push(t));
+}else{
+base.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
+}
+}
+
 function _dcParseWeaponTraits(wpn,lvIdx){
 const traits={distPowerMax:0,hpPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false};
 if(!wpn||!wpn.levels)return traits;
@@ -4030,6 +4062,7 @@ if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
 wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 }
 (wpn.ssp_traits||[]).forEach(t=>allTraits.push(t));
+_dcMergeBaseWeaponTraitsForSsp(wpn,idx,allTraits);
 allTraits.forEach(t=>{
 const txt=String(t).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;

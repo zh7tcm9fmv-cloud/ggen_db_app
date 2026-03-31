@@ -7444,7 +7444,13 @@ def list_dc_targets():
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
             dti = safe_int(est.get('stage_difficulty_type_index'), 1)
             rows.append({'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name'], 'difficulty_code': diff['code'], 'difficulty_order': diff_order_map.get(dti, 99)})
-        rows.sort(key=lambda x: safe_int(x['id'], 0))
+        _dc_diff_rank = {'expert': 0, 'hard': 1, 'normal': 2}
+
+        def _dc_targets_sort_key(row):
+            code = (row.get('difficulty_code') or '').lower()
+            return (_dc_diff_rank.get(code, 99), safe_int(row['id'], 0))
+
+        rows.sort(key=_dc_targets_sort_key)
         return jsonify(rows)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify([])
