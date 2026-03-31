@@ -3689,8 +3689,9 @@ function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNo
 const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense'),hMob=_uCpValBuff('Mobility');
 const spHp=hHp?` class="${hHp}"`:'',spAtk=hAtk?` class="${hAtk}"`:'',spDef=hDef?` class="${hDef}"`:'',spMob=hMob?` class="${hMob}"`:'';
 const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
-const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,uEff.unitAtkExSquadBase,exSq);
-const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,uEff.unitAtkExSquadBase,exSq,uEff.leaderPct);
+const atkGB=uEff.unitAtkGrowthAfterOptions!=null?uEff.unitAtkGrowthAfterOptions:uEff.unitAtkExSquadBase;
+const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,atkGB,exSq);
+const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,atkGB,exSq,uEff.leaderPct);
 let defShow=defS;
 const pr=_dcPilotPairUnitAtkDefPct(atkAfterLeader,defShow);
 const atkAfterPair=pr.unitAtk;
@@ -3728,8 +3729,9 @@ const stats=td?td[statKey]||td.stats_no_cond:[];
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const atkS=uEff.unitAtk;
 const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
-const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,uEff.unitAtkExSquadBase,exSq);
-const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,uEff.unitAtkExSquadBase,exSq,uEff.leaderPct);
+const atkGB=uEff.unitAtkGrowthAfterOptions!=null?uEff.unitAtkGrowthAfterOptions:uEff.unitAtkExSquadBase;
+const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,atkGB,exSq);
+const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,atkGB,exSq,uEff.leaderPct);
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkAfterLeader,uEff.unitDefVal).unitAtk;
 const atkDisp=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
@@ -4735,7 +4737,7 @@ pct+=parseInt(m[1],10)||0;
 });
 return{pct};
 }
-/** EX squad ATK % applies to raw MS growth Attack (LB line) only — not MS ability Attack bonuses. Option-part Attack % and supporter leader % on Attack are applied in order after (leader after EX on the growth line). */
+/** EX squad ATK % applies to the MS growth Attack line after option-part Attack % (if any), not raw LB alone — not MS ability Attack bonuses. Supporter leader % on Attack applies after EX on that growth line. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
 const F=Math.floor;
 const p=Math.min(20,Math.max(0,exPct|0));
@@ -4744,13 +4746,13 @@ const b=F(Math.max(0,Number(unitAtkExBase)||0));
 const full=F(Math.max(0,Number(unitAtkFull)||0));
 return F(b*(100+p)/100)+(full-b);
 }
-/** Supporter leader % on Attack applies after EX squad, to the EX-boosted growth line only (same split as option-part Attack %). */
-function _dcApplyLeaderPctToAttackAfterEx(unitAtkAfterEx,b0Raw,exSq,leaderPct){
+/** Supporter leader % on Attack applies after EX squad, to the EX-boosted growth line only. bGrowthForEx = growth after option-part Attack % (same value passed to EX). */
+function _dcApplyLeaderPctToAttackAfterEx(unitAtkAfterEx,bGrowthForEx,exSq,leaderPct){
 const F=Math.floor;
 const lp=leaderPct|0;
 if(lp<=0)return unitAtkAfterEx;
 const ex=Math.min(20,Math.max(0,exSq|0));
-const b=F(Math.max(0,Number(b0Raw)||0));
+const b=F(Math.max(0,Number(bGrowthForEx)||0));
 const gEx=F(b*(100+ex)/100);
 const aAtk=F(unitAtkAfterEx)-gEx;
 return F(gEx*(100+lp)/100)+aAtk;
@@ -4833,7 +4835,10 @@ unitMob=F(unitMob*(100+p)/100);
 unitMove=F(unitMove*(100+p)/100);
 }
 unitHp+=hpSupport;
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase};
+const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
+const opAt=opPct.Attack||0;
+const unitAtkGrowthAfterOptions=opAt?F(b0*(100+opAt)/100):b0;
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions};
 }
 function calculateDamage(){
 const F=Math.floor,C=Math.ceil,MX=Math.max,EXP=Math.exp;
@@ -4852,8 +4857,9 @@ const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0,accuracy:0,critical:
 const uMod=_dcGetModifiedAttackerUnitStats(atkUnitStats);
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
 const exSquadAtkPct=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
-unitAtk=_dcApplyExSquadToUnitAtk(unitAtk,uMod.unitAtkExSquadBase,exSquadAtkPct);
-unitAtk=_dcApplyLeaderPctToAttackAfterEx(unitAtk,uMod.unitAtkExSquadBase,exSquadAtkPct,uMod.leaderPct);
+const atkGrowthB=uMod.unitAtkGrowthAfterOptions!=null?uMod.unitAtkGrowthAfterOptions:uMod.unitAtkExSquadBase;
+unitAtk=_dcApplyExSquadToUnitAtk(unitAtk,atkGrowthB,exSquadAtkPct);
+unitAtk=_dcApplyLeaderPctToAttackAfterEx(unitAtk,atkGrowthB,exSquadAtkPct,uMod.leaderPct);
 const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
 const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
@@ -5054,7 +5060,7 @@ lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
-if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (growth line; order: option ATK % → EX → supporter leader % on Attack)`);
+if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
@@ -5072,7 +5078,7 @@ lines.push(`Attacker: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
-if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (growth line; order: option ATK % → EX → supporter leader % on Attack)`);
+if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
