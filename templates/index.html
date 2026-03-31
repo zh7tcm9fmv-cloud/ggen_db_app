@@ -3795,10 +3795,9 @@ area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
-const F=Math.floor;
-const r=F(_dcFindStat(stats,'Ranged')*(1+(skPct.Ranged||0)/100)),m=F(_dcFindStat(stats,'Melee')*(1+(skPct.Melee||0)/100)),a=F(_dcFindStat(stats,'Awaken')*(1+(skPct.Awaken||0)/100));
-const defBase=_dcFindStat(stats,'Defense'),defPctSk=skB.defPct||0;
-const d=defPctSk?F(defBase*(1+defPctSk/100)):defBase,re=_dcFindStat(stats,'Reaction');
+const r=_dcPilotSkillAdjustedStat(stats,'Ranged',skPct.Ranged||0),m=_dcPilotSkillAdjustedStat(stats,'Melee',skPct.Melee||0),a=_dcPilotSkillAdjustedStat(stats,'Awaken',skPct.Awaken||0);
+const defPctSk=skB.defPct||0;
+const d=defPctSk?_dcPilotSkillAdjustedStat(stats,'Defense',defPctSk):_dcFindStat(stats,'Defense'),re=_dcFindStat(stats,'Reaction');
 const sa=document.getElementById('dcAtkStatsArea');
 const cMode=S.dc.charStatMode||'normal';
 const cCp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
@@ -3814,7 +3813,7 @@ if(!ent||!ent.bonus||ent.bonus<=0)return'';
 return`<div class="dc-stat-mini-bonus" title="Passive ability bonus (included in total)">+${fmtN(ent.bonus)}</div>`;
 }
 const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">Totals match the database; green + is the passive bonus already included in the white value (not an extra layer). Abilities that say ATK apply to both Ranged and Melee.</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged')}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee')}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken')}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense')}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction')}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">When no pilot skills are toggled, totals match the database. Checked skills apply % to growth base only (same as in-game); passive bonus in green + is then added to that result. Abilities that say ATK apply to both Ranged and Melee.</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged')}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee')}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken')}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense')}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction')}</div></div></div>`;
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
@@ -4015,6 +4014,15 @@ const bonOk=Number.isFinite(bonus)&&bonus>0;
 let b0=baseOk?base:(totOk&&bonOk?total-bonus:total);
 if(!Number.isFinite(b0))b0=totOk?total:0;
 return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0};
+}
+/** Pilot skills (Ranged/Melee/DEF %) apply to growth base only; passive ability flat bonus is added after (matches in-game). */
+function _dcPilotSkillAdjustedStat(stats,statName,pct){
+const F=Math.floor;
+const p=Number(pct)||0;
+if(p<=0)return _dcFindStat(stats,statName);
+const ent=_dcFindStatEntry(stats,statName);
+if(!ent)return F(_dcFindStat(stats,statName)*(1+p/100));
+return F(Math.max(0,Number(ent.base)||0)*(1+p/100))+(Number(ent.bonus)||0);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
@@ -4657,12 +4665,11 @@ if(mAtk){const p=parseInt(mAtk[1],10)||0;out.Ranged+=p;out.Melee+=p;out.Awaken+=
 return out;
 }
 function _dcGetCharAtkStatWithSkills(charStats,wpn){
-const F=Math.floor;
 const sk=_dcGetActiveSkillStatPct();
 const atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
 if(!atkTypes.length)atkTypes.push('Ranged');
 const unique=[...new Set(atkTypes)];
-const val=(k)=>F(_dcFindStat(charStats,k)*(1+(sk[k]||0)/100));
+const val=(k)=>_dcPilotSkillAdjustedStat(charStats,k,sk[k]||0);
 if(unique.length===1)return val(unique[0]);
 return Math.max(...unique.map(val));
 }
