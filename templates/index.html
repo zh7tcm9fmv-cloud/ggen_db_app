@@ -2047,7 +2047,7 @@ function renderStageMapGrid(md){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_large?'large-fill':''}`:'';
-      const di=u.npc_detail_index;
+      const di=u?.npc_detail_index;
       const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
       const clickMap=(o&&o.origin&&u&&(hasDetail||u.unit_id||u.npc_id))?` onclick="onStageMapUnitClick(${hasDetail?Number(di):'null'},event,'${u.unit_id?escJs(String(u.unit_id)):''}','${(u.npc_id!=null&&String(u.npc_id)!=='')?escJs(String(u.npc_id)):''}')"`:'';
       const clickCls=(o&&o.origin&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
@@ -3824,7 +3824,7 @@ const tip=hasSkill?'Bonus over growth base: passive trait % plus active skill % 
 return`<div class="dc-stat-mini-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBase)}</div>`;
 }
 const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">Totals match the API: each stat includes <code>trait_pct</code> from ability text (same buckets as the server). With a pilot skill checked, its % adds to that trait % on the growth base (additive): floor(base×(100+trait+skill)/100). In <strong>SP</strong> pilot mode, skills use the SP skill line (replaced_by_sp_id). Skills can buff one stat, two stats (e.g. Ranged and Melee), three stats, or ATK% (all three); the damage calculator uses the same parsing for final damage. Green + is the bonus over growth base (passive; includes active skill % when a skill buffs that stat).</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction',re)}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div style="font-size:10px;color:var(--text-muted);margin:0 0 6px;line-height:1.35">Totals match the API: each stat includes <code>trait_pct</code> from ability text (same buckets as the server). With a pilot skill checked, the in-game total is passive total + <code>floor(base×skill%/100)</code> (not one combined <code>floor(base×(100+trait+skill)/100)</code>, which can differ by 1). In <strong>SP</strong> pilot mode, skills use the SP skill line (replaced_by_sp_id). Skills can buff one stat, two stats (e.g. Ranged and Melee), three stats, or ATK% (all three); the damage calculator uses the same parsing for final damage. Green + is the bonus over growth base (passive; includes active skill % when a skill buffs that stat).</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction',re)}</div></div></div>`;
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
@@ -4039,20 +4039,16 @@ let b0=baseOk?base:(totOk&&bonOk?total-bonus:total);
 if(!Number.isFinite(b0))b0=totOk?total:0;
 return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0,trait_pct:traitPct};
 }
-/** Pilot skills: trait % (API trait_pct, same as get_character buckets) + active skill % are additive on growth base — floor(base×(100+trait+skill)/100), matching in-game SP Melee + Melee Boost Lv3. */
+/** Pilot skills: passive total (API — trait% on growth base) + floor(base×skill%/100) for active skills. In-game does not use a single floor on (trait+skill) together; that can be +1 vs passive + separate skill floor (e.g. Awaken Boost). */
 function _dcPilotSkillAdjustedStat(stats,statName,pct){
 const F=Math.floor;
-const p=Number(pct)||0;
+const p=Math.max(0,Number(pct)||0);
 const ent=_dcFindStatEntry(stats,statName);
 if(!ent)return F(_dcFindStat(stats,statName)*(1+p/100));
 if(p<=0)return Math.round(Number(ent.total)||0);
 const base=Math.max(0,Number(ent.base)||0);
-let trait=ent.trait_pct;
-if(trait==null||!Number.isFinite(trait)){
-if(base>0&&ent.bonus>0)trait=Math.round(100*ent.bonus/base);
-else trait=0;
-}
-return F(base*(100+trait+p)/100);
+const passiveTotal=Math.round(Number(ent.total)||0);
+return passiveTotal+F(base*p/100);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
