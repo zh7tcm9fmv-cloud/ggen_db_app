@@ -1,6 +1,10 @@
 /**
  * Mirrors templates/index.html calculateDamage core (no traits / manual final POW).
  * Run: node scripts/dc_damage_verify.mjs
+ *
+ * Note: In the live app, NPC unit stats_raw.* already includes map team bonuses (fst);
+ * bonus_amounts.* is the increment only — damage uses stats_raw Defense as the total line.
+ * This script uses defRaw+defBon explicitly to match the "11402 (+2829)" display split.
  */
 const F = Math.floor;
 const C = Math.ceil;
