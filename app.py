@@ -2056,7 +2056,7 @@ def create_trait_condition_raw_map(d, key_field=None):
         else:
             sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
-        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': []}
+        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': [], 'target_types': []}
         for key in ['UnitTags', 'unitTags']:
             val = str(item.get(key) or '')
             if val and val != '0':
@@ -2087,6 +2087,12 @@ def create_trait_condition_raw_map(d, key_field=None):
                 for v in val.split(','):
                     v = v.strip()
                     if v and v != '0' and v not in raw[sid]['types']: raw[sid]['types'].append(v)
+        for key in ['TargetTypes', 'targetTypes']:
+            val = str(item.get(key) or '')
+            if val and val != '0':
+                for v in val.split(','):
+                    v = v.strip()
+                    if v and v not in raw[sid]['target_types']: raw[sid]['target_types'].append(v)
     return raw
 
 def merge_trait_condition_raw_maps(*maps):
@@ -2096,8 +2102,8 @@ def merge_trait_condition_raw_maps(*maps):
             continue
         for sid, row in mp.items():
             if sid not in out:
-                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': []}
-            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'types']:
+                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': [], 'target_types': []}
+            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'types', 'target_types']:
                 vals = row.get(k, []) if isinstance(row, dict) else []
                 for v in vals:
                     if v and v not in out[sid][k]:
@@ -7395,7 +7401,11 @@ def get_supporter(supporter_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         level = min(100, max(1, int(request.args.get('level', 100))))
         lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
-        ck = f"s2_{supporter_id}_{lc}_{level}_{lb_tier}_{lr_schedule_cache_key_fragment()}"
+        for_uid_q = (request.args.get('for_unit_id') or '').strip()
+        for_cid_q = (request.args.get('for_char_id') or '').strip()
+        for_uid_key = normalize_id(for_uid_q) if for_uid_q else '0'
+        for_cid_key = normalize_id(for_cid_q) if for_cid_q else '0'
+        ck = f"s2_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
@@ -7410,9 +7420,16 @@ def get_supporter(supporter_id):
         for l in supporter_leader_map.get(supporter_id, []):
             if l.get('tier') != lb_tier: continue
             desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
-            tags = resolve_condition_tags(l.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
+            tcid = normalize_id(l.get('trait_cond_id', '0'))
+            raw_c = trait_condition_raw_map.get(str(tcid), {})
+            same_group = 'SameGroup' in (raw_c.get('target_types') or [])
+            if for_uid_q and for_uid_key != '0':
+                applies = trait_condition_matches_unit(tcid, for_uid_key, ld, lc, for_cid_key if for_cid_key and for_cid_key != '0' else None)
+            else:
+                applies = True
+            tags = resolve_condition_tags(tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
             sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
-            ls.append({'desc': desc, 'tags': tags, 'separator': sep})
+            ls.append({'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid, 'applies': applies, 'same_group': same_group})
         asks = []
         for a in supporter_active_map.get(supporter_id, []):
             an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), ''); ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')

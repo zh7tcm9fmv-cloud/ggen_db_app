@@ -1134,7 +1134,7 @@ html{overflow-x:hidden}
 <div class="dc-damage-factors-body">
 <ul class="dc-damage-factors-list">
 <li><span class="dc-tip" title="Attacker unit ATK vs defender unit DEF (after DEF debuff), pilot offensive stat vs pilot DEF, and sigmoid terms — scaled by weapon power.">Attacker &amp; defender stats</span></li>
-<li><span class="dc-tip" title="Computed from weapon base power × (1 + distance/HP trait %). Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
+<li><span class="dc-tip" title="Computed from weapon base power × (1 + distance/Custom Core/HP trait % only). Critical Damage Up from weapon traits is never applied here — it goes to Critical Damage Up %. Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
 <li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: applies to the MS Attack growth line only (not MS ability Attack bonuses, option-part %, or supporter leader %); those stack after, matching the in-game unit ATK stat (up to 20%). Shown under Unit Attack with a green line.">EX squad ATK %</span> · <span class="dc-tip" title="Some EX traits increase MS Attack when countering. Applies to unit Attack in combat (not pilot Ranged/Melee). Shown when the pilot has a paired unit in the database; requires pilot Conditional Passive on.">Own ATK when countering</span></li>
@@ -2966,7 +2966,7 @@ const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0};
 const raw=lvData.power||0;
 const wt=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
 const effDist=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-const distPct=effDist>0?effDist:(S.dc._wpnTraitDistPow|0);
+const distPct=effDist;
 const hpPct=Math.min(wt.hpPowerMax||0,S.dc._wpnTraitHpPow|0);
 return Math.ceil(raw*(1+(distPct+hpPct)/100));
 }
@@ -3496,7 +3496,10 @@ if(spId){
 const lv=Math.min(100,Math.max(1,parseInt(o.spl!==undefined?o.spl:100,10)));
 const lb=Math.min(3,Math.max(0,parseInt(o.spb!==undefined?o.spb:3,10)));
 try{
-const rd=await fetch(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`).then(r=>r.json());
+let cq='';
+if(slot.atkUnit&&slot.atkUnit!=='__manual__')cq+='&for_unit_id='+encodeURIComponent(String(slot.atkUnit));
+if(slot.atkChar&&slot.atkChar!=='__manual__')cq+='&for_char_id='+encodeURIComponent(String(slot.atkChar));
+const rd=await fetch(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`).then(r=>r.json());
 if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
 }catch(_){}
 }
@@ -4066,14 +4069,13 @@ allTraits.forEach(t=>{
 const txt=String(t).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;
 if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt))traits.dmgReductionNull=true;
-let m=txt.match(/closer\s+you\s+are.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
+if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(m){traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));return}
+m=txt.match(/closer\s+you\s+are.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(m)traits.distPowerMax=Math.max(traits.distPowerMax,parseInt(m[1],10));
 m=txt.match(/(?:lower|higher)\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(m)traits.hpPowerMax=Math.max(traits.hpPowerMax,parseInt(m[1],10));
-m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
-if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
-m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(m)traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));
 if(/\[Custom\s+Core/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
 m=txt.match(/Maximum\s+Up\s+(\d+)%/i);
 if(m)traits.distCoreMax=Math.max(traits.distCoreMax,parseInt(m[1],10));
@@ -4117,7 +4119,7 @@ const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const effDistMax=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-if(effDistMax>0)S.dc._wpnTraitDistPow=effDistMax;
+S.dc._wpnTraitDistPow=effDistMax;
 if(effDistMax||wt.hpPowerMax||wt.absoluteHit||wt.dmgReductionNull){
 h+=`<div style="margin-top:6px;font-size:11px;line-height:1.6">`;
 if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
@@ -4142,7 +4144,7 @@ function _dcApplyWpnTraitPow(){
 const hEl=document.getElementById('dcWpnTraitHpPow');
 S.dc._wpnTraitHpPow=hEl?parseInt(hEl.value)||0:0;
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
-if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);const mx=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));if(mx>0)S.dc._wpnTraitDistPow=mx}
+if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);const mx=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));S.dc._wpnTraitDistPow=mx}
 onDcParamChange();
 }
 
@@ -4289,6 +4291,14 @@ let q=_dcOptionPartUnitQuery();
 if(S.dc.atkChar)q+='&character_id='+encodeURIComponent(S.dc.atkChar);
 return q;
 }
+/** Context for supporter leader trait checks (SameGroup / lineage) — pass current DC attacker unit & pilot. */
+function _dcForSupporterContextQuery(){
+const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
+let q='';
+if(ud&&!ud._manual&&ud.id)q+='&for_unit_id='+encodeURIComponent(String(ud.id));
+if(cd&&!cd._manual&&cd.id)q+='&for_char_id='+encodeURIComponent(String(cd.id));
+return q;
+}
 async function selectDcOptionPart(id){
 let row=(S._dcPickerFullCache||[]).find(x=>String(x.id)===String(id));
 if(row&&(!row.details||!String(row.details).trim())){
@@ -4304,7 +4314,8 @@ if(row){S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||'',thum:
 }
 async function selectDcSupporter(id){
 try{
-const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());
+const cq=_dcForSupporterContextQuery();
+const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
 if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters=[rd];renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}
 }catch(e){}
 }
@@ -4312,12 +4323,12 @@ async function updateDcSupporterLv(idx,val){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=Math.min(100,Math.max(1,parseInt(val)||100));
 const lb=s._dcLbTier!==undefined?s._dcLbTier:3;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 async function updateDcSupporterLb(idx,tier){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=s._dcLevel||100;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcRefreshAtkPanelsAfterMods()}
 function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}
@@ -4566,10 +4577,37 @@ const p=/(?:Increase|Increases?)\s+(?:squad\s+)?(?:Max\s+)?(HP|EN|Attack|ATK|Def
 let m;while((m=p.exec(details))!==null){const val=parseInt(m[4],10)||0;const isPct=m[5]==='%';const keys=[m[1],m[2],m[3]].filter(Boolean);keys.forEach(k=>add(k,val,isPct))}
 return bonuses;
 }
-function _dcParseLeaderSkillPct(leader_skills){
-let pct=0;
-(leader_skills||[]).forEach(ls=>{const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(m)pct+=parseInt(m[1],10)||0});
-return pct;
+function _dcLeaderSkillPctAndFlags(supporters){
+let pct=0,sameGroup=false;
+(supporters||[]).forEach(s=>{
+(s.leader_skills||[]).forEach(ls=>{
+if(ls.applies===false)return;
+const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(!m)return;
+pct+=parseInt(m[1],10)||0;
+if(ls.same_group)sameGroup=true;
+});
+});
+return{pct,sameGroup};
+}
+/** SameGroup leader skills exclude part of the MS ability Attack bonus from the leader multiplier base (matches in-game unit ATK). */
+const DC_SG_LEADER_CAP_NUM=106,DC_SG_LEADER_CAP_DEN=10000;
+function _dcApplyLeaderPctToAttack(unitAtkPreLeader,atkEnt,leaderPct,sameGroupLeader){
+const F=Math.floor;
+const p=leaderPct|0;
+if(p<=0)return unitAtkPreLeader;
+const T=F(Math.max(0,Number(unitAtkPreLeader)||0));
+if(sameGroupLeader&&atkEnt){
+const t0=atkEnt.total|0;
+if(t0>0){
+const g0=atkEnt.base|0;
+const g1=F(T*g0/t0);
+const a1=T-g1;
+const cap=Math.min(a1,F(g1*DC_SG_LEADER_CAP_NUM/DC_SG_LEADER_CAP_DEN));
+const leaderBase=T-cap;
+return F(leaderBase*(100+p)/100);
+}
+}
+return F(T*(100+p)/100);
 }
 /** EX squad ATK % applies in-game to the MS Attack base (LB/growth line) only — not MS ability Attack bonuses (API bonus field), option parts, or supporter leader %. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
@@ -4637,20 +4675,23 @@ let unitMove=_dcFindStat(atkUnitStats,'Move')||0;
 const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 (S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
-let hpSupport=0,atkSupport=0,leaderPct=0;
-(S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0;leaderPct+=_dcParseLeaderSkillPct(s.leader_skills||[])});
-if(opPct.Attack)unitAtk=F(unitAtk*(1+opPct.Attack/100));
-if(opPct.HP)unitHp=F(unitHp*(1+opPct.HP/100));
-if(opPct.Defense)unitDefVal=F(unitDefVal*(1+opPct.Defense/100));
-if(opPct.Mobility)unitMob=F(unitMob*(1+opPct.Mobility/100));
-if(opPct.Move)unitMove=F(unitMove*(1+opPct.Move/100));
+let hpSupport=0,atkSupport=0,leaderPct=0,sameGroupLeader=false;
+(S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
+const _ls=_dcLeaderSkillPctAndFlags(S.dc.supporters);
+leaderPct=_ls.pct;sameGroupLeader=_ls.sameGroup;
+if(opPct.Attack)unitAtk=F(unitAtk*(100+opPct.Attack)/100);
+if(opPct.HP)unitHp=F(unitHp*(100+opPct.HP)/100);
+if(opPct.Defense)unitDefVal=F(unitDefVal*(100+opPct.Defense)/100);
+if(opPct.Mobility)unitMob=F(unitMob*(100+opPct.Mobility)/100);
+if(opPct.Move)unitMove=F(unitMove*(100+opPct.Move)/100);
 unitAtk+=opFlat.Attack;unitHp+=opFlat.HP;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
 if(leaderPct){
-unitAtk=F(unitAtk*(1+leaderPct/100));
-unitHp=F(unitHp*(1+leaderPct/100));
-unitDefVal=F(unitDefVal*(1+leaderPct/100));
-unitMob=F(unitMob*(1+leaderPct/100));
-unitMove=F(unitMove*(1+leaderPct/100));
+const p=leaderPct|0;
+unitAtk=_dcApplyLeaderPctToAttack(unitAtk,atkEnt,p,sameGroupLeader);
+unitHp=F(unitHp*(100+p)/100);
+unitDefVal=F(unitDefVal*(100+p)/100);
+unitMob=F(unitMob*(100+p)/100);
+unitMove=F(unitMove*(100+p)/100);
 }
 unitHp+=hpSupport;
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase};
@@ -4690,8 +4731,9 @@ unitDef=MX(0,unitDef-defReduction);
 }
 
 const rawWpnPower=lvData.power;
-const traitDistPow=S.dc._wpnTraitDistPow||0;
-const traitHpPow=S.dc._wpnTraitHpPow||0;
+const wtTraits=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
+const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
+const traitHpPow=Math.min(wtTraits.hpPowerMax||0,S.dc._wpnTraitHpPow|0);
 const traitPowTotal=traitDistPow+traitHpPow;
 const computedWpnPow=C(rawWpnPower*(1+traitPowTotal/100));
 const finalOverride=S.dc.finalWpnPow||0;
@@ -4750,9 +4792,8 @@ const critical=lvData.critical;
 const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
 const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
-const wpnTraits=S.dc._wpnTraits||{};
 const accDownPct=0,mobDownPct=0;
-const accResult=wpnTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
+const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,atkCharReaction,charAtk,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
