@@ -640,7 +640,7 @@ def parse_unit_terrain_filter(val):
     """Unit terrain filter expression from query string.
 
     Accepts comma-separated "TerrainName:Level" pairs (AND semantics), e.g.
-    "Space:3,Underwater:2". Only levels 2 and 3 are accepted.
+    "Space:3,Underwater:2". Levels 1 (hyphen), 2 (triangle), and 3 (circle) are accepted.
     """
     if val is None:
         return None
@@ -658,7 +658,7 @@ def parse_unit_terrain_filter(val):
         lv = str(normalize_id(lv_raw, '0')).strip()
         if name not in allowed_names:
             continue
-        if lv not in ('2', '3'):
+        if lv not in ('1', '2', '3'):
             continue
         k = (name, int(lv))
         if k not in seen:
