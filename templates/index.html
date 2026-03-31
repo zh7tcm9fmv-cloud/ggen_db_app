@@ -1138,7 +1138,7 @@ html{overflow-x:hidden}
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
 <li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX Character Ability squad synergy: applies to the MS Attack growth line only (not MS ability Attack bonuses). Order on Attack: option-part % on growth → EX squad % → supporter leader % on the EX-boosted growth line (then pilot pair / counter). Up to 20%. Shown under Unit Attack with a green line.">EX squad ATK %</span> · <span class="dc-tip" title="Some EX traits increase MS Attack when countering. Applies to unit Attack in combat (not pilot Ranged/Melee). Shown when the pilot has a paired unit in the database; requires pilot Conditional Passive on.">Own ATK when countering</span></li>
-<li><span class="dc-tip" title="Abilities such as Advantage: … (when enemies are from the specified tags, increase own ATK and DEF by X%) are not baked into the unit's static ATK in the database (even with Conditional Passive on) — they apply in combat when the defender's tags match. If the unit has Conditional Passive in the sim, turn it on for this bonus. Applied after own ATK when countering (floor on MS Attack).">Advantage (enemy tag)</span></li>
+<li><span class="dc-tip" title="Advantage: … adds floor(X% × growth MS Attack / Defense), not +X% on the total line — matches the in-game sheet when the defender's tags match. Not baked into static DB stats. Applied after own ATK when countering.">Advantage (enemy tag)</span></li>
 <li><span class="dc-tip" title="Damage uses the pilot offensive stat that matches the weapon's attack type (Ranged / Melee / Awaken — see icons before Attribute in the weapon row). A passive that raises Melee only affects weapons whose attack type uses Melee; EX weapons follow the same rule from their listed attack type(s).">Pilot stat vs weapon attack type</span></li>
 <li><span class="dc-tip" title="Sum of Beam / Physical / Special DTU rows matching the weapon attribute — adds to ⑨ pool (same bucket as damage dealt up).">Damage Taken Up (debuffs)</span> (<span class="dc-tip" title="Highlighted row(s) match your weapon attribute.">attribute rows</span>)</li>
 <li><span class="dc-tip" title="Reduces final damage: pilot DTU % always; unit DTU % for non-EX weapons.">Damage Taken Down</span> (pilot · unit)</li>
@@ -1222,7 +1222,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX Character Ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkCounterOwnAtkWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkCounterOwnAtk" onchange="onDcParamChange()"><span class="dc-tip" title="EX traits that raise the mobile suit Attack stat when countering. Uses MS Attack in damage math (not pilot Ranged/Melee). Requires pilot Conditional Passive on and the paired unit listed in the database for this pilot.">Own ATK when countering (unit)</span></label></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkAdvantageEnemyTag" checked onchange="onDcParamChange()"><span class="dc-tip" title="When on, unit abilities such as Advantage: … add MS Attack in combat if the selected defender's tags match Target Tags. Turn off to match in-sheet ATK (no situational enemy-tag bonus) and damage vs untagged enemies.">Advantage (enemy tag) on MS Attack</span></label></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkAdvantageEnemyTag" checked onchange="onDcParamChange()"><span class="dc-tip" title="When on, Advantage: … adds floor(X% × growth MS Attack) if the defender matches Target Tags (flat add, not +X% on total MS Attack). Turn off for no situational bonus.">Advantage (enemy tag) on MS Attack</span></label></div>
 </div>
 </div>
 </div>
@@ -3722,18 +3722,21 @@ const atkAfterPair=pr.unitAtk;
 defShow=pr.unitDefVal;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
-const atkShow=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct);
+const atkShow=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct,uEff.unitAtkExSquadBase);
+const advAtkFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitAtkExSquadBase)||0)*(advAtkPct|0)/100):0;
+const advDefFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitDefExSquadBase)||0)*(advAtkPct|0)/100):0;
+const defShowAdv=defShow+advDefFlat;
 const pairActive=(atkAfterPair!==atkAfterLeader||defShow!==defS);
 const counterActive=(atkAfterCounter!==atkAfterPair);
-const advantageTagActive=(advAtkPct|0)>0&&atkShow!==atkAfterCounter;
+const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0&&atkAfterLeader!==atkAfterEx;
 const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="EX squad ATK % on MS growth line only. Order: option parts → EX squad → supporter leader % on growth line (then pilot pair / counter).">+${fmtN(atkAfterEx-atkS)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
-const atkAdvTitle=advantageTagActive?` (+${advAtkPct}% MS Attack vs target tag when enemy matches Advantage: …)`:'';
+const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
 const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>`;
 const defPairBuff=defShow!==defS;
-const spDefCls=(hDef||defPairBuff)?'dc-stat-val--buffed':'';
+const spDefCls=(hDef||defPairBuff||advDefFlat>0)?'dc-stat-val--buffed':'';
 const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
 const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&&S.dc.supporters.length)||(uEff.leaderPct>0);
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Pilot EX ability: ATK/DEF bonus to this unit when Conditional Passive is on.</div>':'';
@@ -3742,7 +3745,7 @@ const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);
 const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Includes option parts (Attack % on growth line), EX squad, then supporter leader % on Attack (after EX on that line), and HP support. Supporter ATK support is shown in stats but not added again here (in-game damage matches that).</div>':'')+pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShow)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}`;
 renderDcWeaponArea();
 }
 function _dcRefreshDcUnitAtkExOnly(){
@@ -3762,7 +3765,7 @@ const atkAfterEx=_dcApplyExSquadToUnitAtk(atkS,atkGB,exSq);
 const atkAfterLeader=_dcApplyLeaderPctToAttackAfterEx(atkAfterEx,atkGB,exSq,uEff.leaderPct);
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkAfterLeader,uEff.unitDefVal).unitAtk;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
-const atkDisp=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct);
+const atkDisp=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct,uEff.unitAtkExSquadBase);
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=stats;
 if(ud.has_cond_stats&&td){
@@ -4894,10 +4897,13 @@ if(_dcTagRequirementMatches(req,defTags))total+=pct;
 }
 return Math.min(100,total);
 }
-function _dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advPct){
+/** In-game Advantage: … adds floor(X% × growth MS Attack), not +X% on total MS Attack (see unit stat sheet). */
+function _dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advPct,rawGrowthAtk){
 const F=Math.floor,p=advPct|0;
 if(p<=0)return unitAtk;
-return F(Math.max(0,Number(unitAtk)||0)*(100+p)/100);
+const ua=F(Math.max(0,Number(unitAtk)||0));
+const rg=F(Math.max(0,Number(rawGrowthAtk)||0));
+return ua+F(rg*p/100);
 }
 function _dcUpdateCounterOwnAtkUi(){
 const w=document.getElementById('dcAtkCounterOwnAtkWrap');
@@ -4924,6 +4930,8 @@ const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const unitAtkExSquadBase=F((atkEnt&&Number.isFinite(atkEnt.base))?atkEnt.base:unitAtk||0);
 let unitHp=_dcFindStat(atkUnitStats,'HP')||0;
 let unitDefVal=_dcFindStat(atkUnitStats,'Defense')||0;
+const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
+const unitDefExSquadBase=F((defEnt&&Number.isFinite(defEnt.base))?defEnt.base:unitDefVal||0);
 let unitMob=_dcFindStat(atkUnitStats,'Mobility')||0;
 let unitMove=_dcFindStat(atkUnitStats,'Move')||0;
 const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
@@ -4953,7 +4961,7 @@ unitHp+=hpSupport;
 const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
 const opAt=opPct.Attack||0;
 const unitAtkGrowthAfterOptions=opAt?F(b0*(100+opAt)/100):b0;
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions};
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase};
 }
 function calculateDamage(){
 const F=Math.floor,C=Math.ceil,MX=Math.max,EXP=Math.exp;
@@ -4980,7 +4988,7 @@ unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
 const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
 unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
 const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
-unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct);
+unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.unitAtkExSquadBase);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
@@ -5179,7 +5187,7 @@ lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
-if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +${rr.advantageTagAtkPct}% MS Attack when defender matches unit ability target tags`);
+if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`Vigor: ${m.slot.mpLevel||'medium'}, Terrain: ${m.slot.terrainMode||'normal'}`);
@@ -5198,7 +5206,7 @@ lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot Conditional Passive + checkbox)`);
-if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +${r.advantageTagAtkPct}% MS Attack when defender matches unit ability target tags`);
+if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`HP Remaining (Crit): ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
