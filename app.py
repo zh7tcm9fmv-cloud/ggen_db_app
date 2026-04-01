@@ -1876,22 +1876,46 @@ def find_series_icon(series_id):
     return ''
 
 def find_trait_icon(resource_id):
-    """Find trait/ability icon using IMAGE_INDEX."""
+    """Find trait/ability icon under images/Trait (and thum/). Uses index + on-disk files like portraits.
+
+    Master `ResourceId` values (e.g. trait_11430103) match filenames; many WebP uploads are not in image_index.json.
+    """
     if not resource_id or str(resource_id) == '0':
         return None
-    
-    rl = str(resource_id).lower()
-    
-    # Check main trait folder
-    for fn in IMAGE_INDEX.get('images/Trait', []):
-        if rl in fn.lower():
-            return fn
-    
-    # Check thum folder
-    for fn in IMAGE_INDEX.get('images/Trait/thum', []):
-        if rl in fn.lower():
-            return f"thum/{fn}"
-    
+    rid = str(resource_id).strip()
+    if not rid:
+        return None
+    rl = rid.lower()
+
+    trait_files = _merged_index_disk('images/Trait')
+    thum_files = _merged_index_disk('images/Trait/thum')
+
+    def _exact_stem(files, stem_lower):
+        for ext in ('.webp', '.png', '.jpg', '.jpeg'):
+            want = stem_lower + ext
+            for fn in files:
+                if fn.lower() == want:
+                    return fn
+        return None
+
+    hit = _exact_stem(trait_files, rl)
+    if hit:
+        return hit
+
+    hit = _exact_stem(thum_files, f'thum_{rl}')
+    if hit:
+        return f'thum/{hit}'
+
+    matches = [fn for fn in trait_files if rl in fn.lower()]
+    if matches:
+        matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, len(x)))
+        return matches[0]
+
+    matches = [fn for fn in thum_files if rl in fn.lower()]
+    if matches:
+        matches.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, len(x)))
+        return f'thum/{matches[0]}'
+
     return None
 
 
@@ -2826,10 +2850,22 @@ def create_weapon_capability_map(base_dir, lang_dir):
             lookup[csid] = text_map.get(dlid, "None") if dlid != '0' else "None"
     return lookup
 
-def resolve_weapon_icon(wt, ai, ubr):
+def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None):
     if wt == '3': return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
     if wt == '2':
-        tf = find_trait_icon(ubr) if ubr else None
+        cands = []
+        if ubr:
+            cands.append(str(ubr).strip())
+        if isinstance(extra_ex_icon_candidates, (list, tuple)):
+            for x in extra_ex_icon_candidates:
+                s = str(x).strip() if x is not None else ''
+                if s and s != '0' and s not in cands:
+                    cands.append(s)
+        tf = None
+        for cand in cands:
+            tf = find_trait_icon(cand)
+            if tf:
+                break
         return {'icon': f"/static/images/Trait/{tf}" if tf else '', 'overlay': EX_WEAPON_OVERLAY, 'is_ex': True, 'is_map': False}
     ai2 = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
     return {'icon': ai2['icon'], 'overlay': '', 'is_ex': False, 'is_map': False}
@@ -3169,7 +3205,8 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             t_val = entry['text'].strip()
             if t_val == ab_name.strip(): continue
             details.append({'text': t_val, 'conditions': []})
-    res_id = ability_resource_map.get(ab_id, ''); icon_file = find_trait_icon(res_id)
+    res_id = coalesce_ability_resource_id(ab_id, trait_set_id)
+    icon_file = find_trait_icon(res_id) if res_id else None
     has_icon = bool(icon_file); ex_flag = is_ex_character_ability_ui(ab_name)
     disp_name = ex_character_ability_display_label(lang_code) if ex_flag else ab_name
     return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_flag, 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_flag) else '', 'resource_id': res_id}
@@ -3421,13 +3458,55 @@ for item in extract_data_list(ability_master):
     if isinstance(item, dict):
         ai = normalize_id(item.get('Id') or item.get('id') or item.get('AbilityId'))
         ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
-        if ai != '0' and ri != '0': ability_resource_map[ai] = ri
+        ts = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+        if ai != '0' and ri != '0':
+            ability_resource_map[ai] = ri
+        # Sets sometimes reference TraitSetId-adjacent ids; UR rows may only match via trait set key.
+        if ts != '0' and ri != '0':
+            ability_resource_map.setdefault(ts, ri)
 
 abil_link_map = {}
 for item in extract_data_list(ability_master):
     if isinstance(item, dict):
         ai = normalize_id(item.get('Id') or item.get('id')); ti = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
         if ai != '0' and ti != '0': abil_link_map[ai] = ti
+
+
+def coalesce_ability_resource_id(ab_id, trait_set_id=''):
+    """Pick m_ability ResourceId (trait_*) for icon lookup when AbilityId has extra suffix digits or matches TraitSetId."""
+    arm = ability_resource_map
+
+    def _get(k):
+        if not k or k == '0':
+            return ''
+        v = arm.get(k, '')
+        return str(v).strip() if v and str(v) != '0' else ''
+
+    seen, keys = set(), []
+
+    def _add(k):
+        k = normalize_id(k) if k is not None else ''
+        if k and k != '0' and k not in seen:
+            seen.add(k)
+            keys.append(k)
+
+    _add(ab_id)
+    _add(trait_set_id)
+    _add(abil_link_map.get(normalize_id(ab_id), ''))
+    for k in keys:
+        hit = _get(k)
+        if hit:
+            return hit
+    for k in keys:
+        if not k.isdigit():
+            continue
+        b = k
+        while len(b) > 6:
+            b = b[:-2]
+            hit = _get(b)
+            if hit:
+                return hit
+    return ''
 
 SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
 SDC_EXPLICIT_IDS = {'1501000103'}
@@ -4867,7 +4946,16 @@ def resolve_unit_skill(usid, ld, sv):
             continue
         details.append(tdesc)
         blob = (blob + '\n' + tnorm).strip() if blob else tnorm
-    ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(usid, ''); icf = find_trait_icon(ri)
+    ri = str(info.get('resource_id', '') or '').strip() or str(ld.get('skill_resource_map', {}).get(usid, '') or '').strip()
+    icf = find_trait_icon(ri) if ri else None
+    if not icf:
+        for tr in unit_skill_trait_by_skill.get(usid, []):
+            tri = str(tr.get('resource_id', '') or '').strip()
+            if not tri:
+                continue
+            icf = find_trait_icon(tri)
+            if icf:
+                break
     return {'id': usid, 'name': name, 'sort': sv, 'details': details, 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': False, 'frame_overlay': '', 'resource_id': ri, 'skip_skill_modal': True}
 
 def resolve_npc_character_skills(ssid, lc):
@@ -4891,14 +4979,14 @@ def eval_icon_color(tl, wt):
     if hp: return 'purple'
     return 'yellow' if hd else 'orange'
 
-def resolve_npc_unit_weapons(wsid, uid, ubr, lc):
+def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
     ld = get_lang_data(lc); weapons = []
     for w in map_npc_unit_weapon_set_lookup.get(wsid, []):
         wid = w.get('weapon_id', '0'); wm = weapon_info_map.get(wid, {}); wn = ld.get('weapon_text_map', {}).get(wm.get('name_lang_id', '0'), 'Unknown')
         ai = wm.get('attribute', '0'); wt = wm.get('weapon_type', '1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label': 'Unknown', 'icon': ''})
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
-        ic = resolve_weapon_icon(wt, ai, ubr)
+        ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates)
         if uid == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'is_supply': True, 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'label': 'MP'}]
         levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
@@ -7776,7 +7864,7 @@ def get_stage(stage_id):
                     fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb)
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
-                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc); up['bonus_amounts'] = tba
+                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids')); up['bonus_amounts'] = tba
                     dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
                 if ce:
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
@@ -8123,7 +8211,7 @@ def get_unit(unit_id):
             ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
-            ic = resolve_weapon_icon(wt, ai, ubr)
+            ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'))
             if unit_id == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'is_supply': True}]
             levels = ws.get('levels', [{'level':i,'power':ws['power'],'en':ws['en'],'accuracy':ws['accuracy'],'critical':ws['critical'],'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)])
             pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
@@ -8156,8 +8244,18 @@ def get_unit(unit_id):
             isw = wid.endswith('90') or wid.endswith('80')
             siu = ''
             if isw:
-                tf = find_trait_icon(ubr) if ubr else None
-                siu = f"/static/images/Trait/{tf}" if tf else (portrait or '')
+                siu = ''
+                _ssp_cands = [ubr] + list(info.get('resource_ids') or [])
+                for _c in _ssp_cands:
+                    _s = str(_c).strip() if _c is not None else ''
+                    if not _s or _s == '0':
+                        continue
+                    _tf = find_trait_icon(_s)
+                    if _tf:
+                        siu = f"/static/images/Trait/{_tf}"
+                        break
+                if not siu:
+                    siu = portrait or ''
             weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
