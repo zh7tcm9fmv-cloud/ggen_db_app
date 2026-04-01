@@ -5129,16 +5129,50 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
-def calculate_npc_team_bonuses(npc_entries, lc):
-    tb = {'HP': 0, 'EN': 0, 'Attack': 0, 'Defense': 0, 'Mobility': 0, 'Move': 0}
+def _npc_map_unit_line_is_squad_wide(line):
+    """Squad / all-units MS stat % lines apply to every deployed NPC on the map stage."""
+    low = (line or '').lower()
+    if 'squad' in low:
+        return True
+    if re.search(r'\ball\s+units\b', low):
+        return True
+    return False
+
+
+def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
+    """Per eternal map stage: squad-wide % from all NPCs' unit abilities + each NPC's own non-squad lines.
+
+    Multi-line trait text must be split; a single detail blob with a conditional tail must not zero out
+    unconditional stat lines (e.g. \"Increase DEF by 15%.\\nWhen ...\").
+    """
+    keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+    squad = {k: 0 for k in keys}
+    per_npc = {}
     for npc in npc_entries:
-        nu = map_npc_unit_lookup.get(npc['id'], [])
-        if not nu: continue
+        nid = npc['id']
+        nu = map_npc_unit_lookup.get(nid, [])
+        if not nu:
+            continue
+        per_npc.setdefault(nid, {k: 0 for k in keys})
         for ab in resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc):
-            for d in ab.get('details', []):
+            for d in ab.get('details', []) or []:
                 txt = d.get('text', '') if isinstance(d, dict) else str(d)
-                for s, pct in _extract_stat_percent_unit(txt).items(): tb[s] = tb.get(s, 0) + pct
-    return tb
+                if not txt or _char_trait_text_is_support_defense_action(txt):
+                    continue
+                lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
+                for line in lines:
+                    if _char_trait_line_is_squad_unit_effect(line, ab):
+                        continue
+                    if _is_conditional_stat_text(line):
+                        continue
+                    b = _extract_stat_percent_unit(line, skip_conditional=False)
+                    if not b:
+                        continue
+                    tgt = squad if _npc_map_unit_line_is_squad_wide(line) else per_npc[nid]
+                    for s, pct in b.items():
+                        if s in tgt:
+                            tgt[s] = tgt.get(s, 0) + pct
+    return squad, per_npc
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
     final, ba = {}, {}
@@ -8007,14 +8041,16 @@ def get_stage(stage_id):
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
-            uom = []; nt = map_npc_by_map_stage.get(msid, []); tb = calculate_npc_team_bonuses(nt, lc)
+            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
             for npc in nt:
                 nid = npc['id']; nu = map_npc_unit_lookup.get(nid, []); nc = map_npc_character_lookup.get(nid, [])
                 ue = nu[0] if nu else None; ce = nc[0] if nc else None
                 dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
                 if ue:
                     uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc)
-                    fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb)
+                    self_row = self_tb.get(nid, {'HP': 0, 'EN': 0, 'Attack': 0, 'Defense': 0, 'Mobility': 0, 'Move': 0})
+                    tb_merged = {k: squad_tb.get(k, 0) + self_row.get(k, 0) for k in ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']}
+                    fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb_merged)
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
                     up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids')); up['bonus_amounts'] = tba
