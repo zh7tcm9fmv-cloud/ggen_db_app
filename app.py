@@ -81,7 +81,7 @@ else:
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder — invalidated when static/<folder> changes
-_PORTRAIT_FS_CACHE = {}
+_FOLDER_MERGE_CACHE = {}
 
 
 def _list_disk_image_files(rel_path):
@@ -102,28 +102,37 @@ def _list_disk_image_files(rel_path):
     return out
 
 
-def _merged_portrait_files(portrait_folder_key):
-    """Merge image_index.json with files on disk for character portraits only. Unit portraits use the index only."""
-    indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
-    if portrait_folder_key != 'images/portraits':
-        return indexed
-    d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
+def _merged_folder_index_and_disk(folder_key):
+    """Merge image_index.json entry for folder_key with actual files under static/<folder_key>.
+
+    New assets uploaded under static/ (or pulled from GitHub) are picked up without regenerating
+    image_index.json. Used for character/unit portraits and Trait/thum list icons.
+    """
+    indexed = IMAGE_INDEX.get(folder_key, []) or []
+    d = os.path.join(STATIC_ROOT, *folder_key.split('/'))
     try:
         mtime = os.path.getmtime(d)
     except OSError:
         mtime = 0
-    cached = _PORTRAIT_FS_CACHE.get(portrait_folder_key)
+    cached = _FOLDER_MERGE_CACHE.get(folder_key)
     if cached and cached[0] == mtime:
         return cached[1]
-    disk = _list_disk_image_files(portrait_folder_key)
+    disk = _list_disk_image_files(folder_key)
     seen = set()
     merged = []
     for fn in indexed + disk:
         if fn not in seen:
             seen.add(fn)
             merged.append(fn)
-    _PORTRAIT_FS_CACHE[portrait_folder_key] = (mtime, merged)
+    _FOLDER_MERGE_CACHE[folder_key] = (mtime, merged)
     return merged
+
+
+def _merged_portrait_files(portrait_folder_key):
+    """Merge index + disk for character and unit portrait folders (same behavior for both)."""
+    if portrait_folder_key in ('images/portraits', 'images/unit_portraits'):
+        return _merged_folder_index_and_disk(portrait_folder_key)
+    return IMAGE_INDEX.get(portrait_folder_key, []) or []
 
 
 # m_series Id (SeriesId from sets) -> 4-digit logo pad from ResourceId "series_XXXX" (filled after m_series.json load)
@@ -1651,8 +1660,7 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX. Character portraits also merge files on disk under static/images/portraits;
-    unit portraits use image_index.json only (same as before the disk merge).
+    Find portrait using IMAGE_INDEX merged with files on disk for images/portraits and images/unit_portraits.
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
@@ -1861,9 +1869,7 @@ def find_trait_icon(resource_id):
 
 def _find_trait_thum_list_asset(resource_ids, entity_id):
     """images/Trait/thum/thum_<ResourceId>.* — list/grid prefers this over full cb_/ub_ portraits when present."""
-    if not IMAGE_INDEX:
-        return None
-    files = IMAGE_INDEX.get('images/Trait/thum', []) or []
+    files = _merged_folder_index_and_disk('images/Trait/thum')
     if not files:
         return None
     files_by_lower = {f.lower(): f for f in files}
@@ -1894,7 +1900,7 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
 
 
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
-    """List/grid thumbnails: Trait/thum (thum_<ResourceId>) first, then full portrait folder (cb_/ub_/ms_)."""
+    """List/grid thumbnails: Trait/thum (thum_<ResourceId>, index+disk) first, then portrait folder (cb_/ub_/ms_, index+disk)."""
     if portrait_folder_key == 'images/unit_portraits':
         t = _find_trait_thum_list_asset(resource_ids, entity_id)
         if t:
@@ -1908,13 +1914,16 @@ def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
-    """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum). For list view."""
+    """Find supporter thumbnail using images/Trait/thum (index + files on disk). For list view."""
+    files = _merged_folder_index_and_disk('images/Trait/thum')
+    if not files:
+        return None
     candidates = [str(resource_id).strip()] if resource_id and str(resource_id).strip() != '0' else []
     if supporter_id: candidates.append(str(supporter_id).strip())
     for rid in candidates:
         if not rid: continue
         rl = rid.lower()
-        for fn in IMAGE_INDEX.get('images/Trait/thum', []):
+        for fn in files:
             if rl in fn.lower():
                 return f"/static/images/Trait/thum/{fn}"
     return None
@@ -7289,7 +7298,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v5_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v6_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
