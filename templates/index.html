@@ -3976,7 +3976,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="Wiki 表示ステ: OP%+EX%+leader% are summed on growth Attack, then flats (incl. supporter ATK support). EX line shows growth delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="Wiki 表示ステ: unit trait% + OP% + EX% + leader% are summed on growth Attack (trunc), then OP flat and supporter ATK support. EX line = growth delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
@@ -3988,7 +3988,7 @@ const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: ATK/DEF bonus to this unit when the EX ability toggle is on.</div>':'';
 const cPct=_dcGetCounterOwnAtkPct();
 const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: +'+cPct+'% MS Attack when countering (see Own ATK when countering below).</div>':'';
-const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">MS Attack follows wiki 表示ステ: growth × (1+OP%+EX%+leader%) + ability flat + OP flat + supporter ATK support (flat). HP uses leader % on the line below.</div>':'')+pairNote+counterNote;
+const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">MS Attack: trunc(growth × (unit trait% + OP% + EX% + leader%) / 100) + OP flat + supporter ATK (flat). HP uses leader % on the line below.</div>':'')+pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 let unitTurnBuffHtml='';
 if((utb.atkPct|0)>0||(utb.defPct|0)>0){
@@ -4032,7 +4032,7 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='dc-stat-mini-bonus';
-sub.title='Wiki: OP%+EX%+leader% summed on growth; this is the growth delta from EX%.';
+sub.title='Wiki: unit trait% + OP% + EX% + leader% summed on growth (trunc); this line is the growth delta from EX%.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
@@ -5310,7 +5310,7 @@ const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
-/** MS Attack line: wiki 表示ステ — growth × (1+OP%+EX%+leader%) + non-growth ability + OP flat + supporter atk (flat). Percents sum in one bucket, not sequential floors. */
+/** MS Attack: trunc(growth × (100+unitTrait%+OP%+EX%+leader%)/100) + OP flat + supporter ATK (flat). Unit trait% from API trait_pct; legacy payloads omit it and use old split (external % on b0 + ability remainder). */
 if(opPct.HP)unitHp=F(unitHp*(100+opPct.HP)/100);
 if(opPct.Defense)unitDefVal=F(unitDefVal*(100+opPct.Defense)/100);
 if(opPct.Mobility)unitMob=F(unitMob*(100+opPct.Mobility)/100);
@@ -5324,21 +5324,30 @@ unitMob=F(unitMob*(100+p)/100);
 unitMove=F(unitMove*(100+p)/100);
 }
 unitHp+=hpSupport;
-const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
+const T=Math.trunc;
+const b0=T(Math.max(0,Number(unitAtkExSquadBase)||0));
 const opAt=opPct.Attack||0;
 const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const lp=leaderPct|0;
-const sumAtkPct=opAt+exSq+lp;
-const atkNonGrowth=atkStatTotalFromApi-b0;
-/** Growth × summed % can be fractional (e.g. 11575×1.65=19098.75); game rounds to nearest integer, not always floor — fixes 21159 vs 21160. */
-const growthAfterPctSum=Math.round(b0*(100+sumAtkPct)/100);
-unitAtk=growthAfterPctSum+atkNonGrowth+opFlat.Attack+atkSupport;
-const unitAtkGrowthAfterOptions=opAt?Math.round(b0*(100+opAt)/100):b0;
+const upRaw=atkEnt&&atkEnt.trait_pct;
+const hasUnitTraitPct=upRaw!=null&&Number.isFinite(Number(upRaw));
+const unitPct=hasUnitTraitPct?T(Number(upRaw)):0;
+const grow=(p)=>T(b0*(100+T(p))/100);
+let unitAtkGrowthAfterOptions=b0;
 let deltaExAtk=0;
+if(hasUnitTraitPct){
+const sumAll=unitPct+opAt+exSq+lp;
+unitAtk=grow(sumAll)+opFlat.Attack+atkSupport;
+unitAtkGrowthAfterOptions=opAt?grow(unitPct+opAt):grow(unitPct);
+if(exSq>0)deltaExAtk=grow(unitPct+opAt+exSq+lp)-grow(unitPct+opAt+lp);
+}else{
+const atkNonGrowth=atkStatTotalFromApi-b0;
+const sumAtkPct=opAt+exSq+lp;
+unitAtk=grow(sumAtkPct)+atkNonGrowth+opFlat.Attack+atkSupport;
+unitAtkGrowthAfterOptions=opAt?Math.round(b0*(100+opAt)/100):b0;
 if(exSq>0){
-const withEx=Math.round(b0*(100+opAt+exSq+lp)/100);
-const withoutEx=Math.round(b0*(100+opAt+lp)/100);
-deltaExAtk=withEx-withoutEx;
+deltaExAtk=Math.round(b0*(100+opAt+exSq+lp)/100)-Math.round(b0*(100+opAt+lp)/100);
+}
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
 }

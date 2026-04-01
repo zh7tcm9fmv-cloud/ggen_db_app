@@ -4797,26 +4797,28 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 mssp = int(lb_fssp.get('Move', 0) or 0)
                 mbon = max(0, mssp - mbase)
                 bf = spb_move_flat[0]; cf = spc_move_flat[0]; sbf = sspb_move_flat[0]; scf = sspc_move_flat[0]
-                snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf})
-                swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf})
-                spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf})
-                spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf})
-                sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf})
-                sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf})
+                snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf, 'trait_pct': 0})
+                swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf, 'trait_pct': 0})
+                spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf, 'trait_pct': 0})
+                spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf, 'trait_pct': 0})
+                sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf, 'trait_pct': 0})
+                sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf, 'trait_pct': 0})
                 continue
             bst = lb_fs.get(s, 0); spst = lb_fsp.get(s, 0); sspst = lb_fssp.get(s, 0)
             bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
             cb = math.floor(bst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if bst else 0
-            snc.append({'name': s, 'total': bst + bb, 'bonus': bb})
-            swc.append({'name': s, 'total': bst + cb, 'bonus': cb})
+            tpu, tpc = int(spb.get(s, 0) or 0), int((spb.get(s, 0) or 0) + (spc.get(s, 0) or 0))
+            snc.append({'name': s, 'total': bst + bb, 'bonus': bb, 'trait_pct': tpu})
+            swc.append({'name': s, 'total': bst + cb, 'bonus': cb, 'trait_pct': tpc})
             spbb = math.floor(spst * spb.get(s, 0) / 100) if spst else 0
             spcb = math.floor(spst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if spst else 0
-            spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb})
-            spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb})
+            spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb, 'trait_pct': tpu})
+            spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb, 'trait_pct': tpc})
             sspbb = math.floor(sspst * sspb.get(s, 0) / 100) if sspst else 0
             sspcb = math.floor(sspst * (sspb.get(s, 0) + sspc.get(s, 0)) / 100) if sspst else 0
-            sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb})
-            sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb})
+            tsu, tsc = int(sspb.get(s, 0) or 0), int((sspb.get(s, 0) or 0) + (sspc.get(s, 0) or 0))
+            sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb, 'trait_pct': tsu})
+            sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb, 'trait_pct': tsc})
         lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
     return lb_data[3] if len(lb_data) > 3 else (lb_data[-1] if lb_data else None)
 
@@ -7936,7 +7938,9 @@ def get_supporter(supporter_id):
         ri = info.get('rarity', '1'); lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
         base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
         rate = supporter_growth_map.get((level, lb_tier), 10000)
-        hps = math.floor(base_hp * rate / 10000); atks = math.floor(base_atk * rate / 10000)
+        # Flat HP/ATK support: half-up on (base * rate / 10000) matches in-game; plain floor was −1 vs client when the product is fractional.
+        hps = max(0, int(base_hp * rate / 10000 + 0.5))
+        atks = max(0, int(base_atk * rate / 10000 + 0.5))
         ls = []
         for l in supporter_leader_map.get(supporter_id, []):
             if l.get('tier') != lb_tier: continue
@@ -8352,26 +8356,28 @@ def get_unit(unit_id):
                     mssp = int(lb_fssp.get('Move', 0) or 0)
                     mbon = max(0, mssp - mbase)
                     bf = spb_move_flat[0]; cf = spc_move_flat[0]; sbf = sspb_move_flat[0]; scf = sspc_move_flat[0]
-                    snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf})
-                    swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf})
-                    spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf})
-                    spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf})
-                    sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf})
-                    sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf})
+                    snc.append({'name': s, 'total': lb_fs.get(s, 0) + bf, 'bonus': bf, 'trait_pct': 0})
+                    swc.append({'name': s, 'total': lb_fs.get(s, 0) + bf + cf, 'bonus': bf + cf, 'trait_pct': 0})
+                    spnc.append({'name': s, 'total': mbase + bf, 'bonus': bf, 'trait_pct': 0})
+                    spwc.append({'name': s, 'total': mbase + bf + cf, 'bonus': bf + cf, 'trait_pct': 0})
+                    sspnc.append({'name': s, 'total': mssp + sbf, 'bonus': mbon + sbf, 'trait_pct': 0})
+                    sspwc.append({'name': s, 'total': mssp + sbf + scf, 'bonus': mbon + sbf + scf, 'trait_pct': 0})
                     continue
                 bst = lb_fs.get(s, 0); spst = lb_fsp.get(s, 0); sspst = lb_fssp.get(s, 0)
                 bb = math.floor(bst * spb.get(s, 0) / 100) if bst else 0
                 cb = math.floor(bst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if bst else 0
-                snc.append({'name': s, 'total': bst + bb, 'bonus': bb})
-                swc.append({'name': s, 'total': bst + cb, 'bonus': cb})
+                tpu, tpc = int(spb.get(s, 0) or 0), int((spb.get(s, 0) or 0) + (spc.get(s, 0) or 0))
+                snc.append({'name': s, 'total': bst + bb, 'bonus': bb, 'trait_pct': tpu})
+                swc.append({'name': s, 'total': bst + cb, 'bonus': cb, 'trait_pct': tpc})
                 spbb = math.floor(spst * spb.get(s, 0) / 100) if spst else 0
                 spcb = math.floor(spst * (spb.get(s, 0) + spc.get(s, 0)) / 100) if spst else 0
-                spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb})
-                spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb})
+                spnc.append({'name': s, 'total': spst + spbb, 'bonus': spbb, 'trait_pct': tpu})
+                spwc.append({'name': s, 'total': spst + spcb, 'bonus': spcb, 'trait_pct': tpc})
                 sspbb = math.floor(sspst * sspb.get(s, 0) / 100) if sspst else 0
                 sspcb = math.floor(sspst * (sspb.get(s, 0) + sspc.get(s, 0)) / 100) if sspst else 0
-                sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb})
-                sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb})
+                tsu, tsc = int(sspb.get(s, 0) or 0), int((sspb.get(s, 0) or 0) + (sspc.get(s, 0) or 0))
+                sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb, 'trait_pct': tsu})
+                sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb, 'trait_pct': tsc})
             lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
         stats = lb_data[3]['stats_no_cond'] if lb_data else [{'name': s, 'total': fs.get(s, 0), 'bonus': 0} for s in UNIT_STAT_ORDER]
         portrait = find_portrait(info.get('resource_ids', []), unit_id, 'images/unit_portraits', f'unit_{unit_id}')
