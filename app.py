@@ -55,9 +55,23 @@ JP_MODE_PASSWORD = (os.environ.get('JP_MODE_PASSWORD') or '').strip()
 
 IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
 
+
+def _env_flag(val, default=False):
+    if val is None or str(val).strip() == '':
+        return default
+    return str(val).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+# When True (and IMAGE_CDN is set), API JSON rewrites /static/images/* to the CDN. Default False: thumbnails
+# and portraits stay on the same origin as the app so files in static/images/ (e.g. WebP) work without mirroring
+# every release to the CDN. Footer / misc can still use IMAGE_CDN in the template. Set GAME_IMAGES_USE_CDN=1
+# if your CDN mirrors the full static/images tree.
+GAME_IMAGES_USE_CDN = bool(IMAGE_CDN) and _env_flag(os.environ.get('GAME_IMAGES_USE_CDN'), default=False)
+
+
 def convert_image_urls(obj):
-    """Recursively replace /static/images/ paths with CDN URLs in API responses."""
-    if not IMAGE_CDN:
+    """Recursively replace /static/images/ paths with CDN URLs when GAME_IMAGES_USE_CDN is enabled."""
+    if not IMAGE_CDN or not GAME_IMAGES_USE_CDN:
         return obj
     if isinstance(obj, str):
         if obj.startswith('/static/images/'):
@@ -79,9 +93,12 @@ if os.path.exists(IMAGE_INDEX_PATH):
 else:
     print("⚠ Warning: image_index.json not found")
 
+if IMAGE_CDN and not GAME_IMAGES_USE_CDN:
+    print("  Image URLs: /static/images/* served from this app (not IMAGE_CDN). Set GAME_IMAGES_USE_CDN=1 if the CDN mirrors static/images.")
+
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
-# (mtime, merged filenames) — invalidated when static/images/portraits changes
-_PORTRAIT_FS_CACHE = {}
+# (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
+_MERGED_IMAGE_FOLDER_CACHE = {}
 
 
 def _list_disk_image_files(rel_path):
@@ -102,28 +119,33 @@ def _list_disk_image_files(rel_path):
     return out
 
 
-def _merged_portrait_files(portrait_folder_key):
-    """Merge image_index.json with files on disk for character portraits only. Unit portraits use the index only."""
-    indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
-    if portrait_folder_key != 'images/portraits':
-        return indexed
-    d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
+def _merged_index_disk(folder_key):
+    """Union of image_index.json filenames and actual files under static/<folder_key> (WebP uploads, etc.)."""
+    indexed = IMAGE_INDEX.get(folder_key, []) or []
+    d = os.path.join(STATIC_ROOT, *folder_key.split('/'))
     try:
         mtime = os.path.getmtime(d)
     except OSError:
         mtime = 0
-    cached = _PORTRAIT_FS_CACHE.get(portrait_folder_key)
+    cached = _MERGED_IMAGE_FOLDER_CACHE.get(folder_key)
     if cached and cached[0] == mtime:
         return cached[1]
-    disk = _list_disk_image_files(portrait_folder_key)
+    disk = _list_disk_image_files(folder_key)
     seen = set()
     merged = []
     for fn in indexed + disk:
         if fn not in seen:
             seen.add(fn)
             merged.append(fn)
-    _PORTRAIT_FS_CACHE[portrait_folder_key] = (mtime, merged)
+    _MERGED_IMAGE_FOLDER_CACHE[folder_key] = (mtime, merged)
     return merged
+
+
+def _merged_portrait_files(portrait_folder_key):
+    """Character and unit portraits: index + on-disk files (so .webp on disk works when index still lists .png)."""
+    if portrait_folder_key not in ('images/portraits', 'images/unit_portraits'):
+        return IMAGE_INDEX.get(portrait_folder_key, []) or []
+    return _merged_index_disk(portrait_folder_key)
 
 
 # m_series Id (SeriesId from sets) -> 4-digit logo pad from ResourceId "series_XXXX" (filled after m_series.json load)
@@ -1651,8 +1673,8 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX. Character portraits also merge files on disk under static/images/portraits;
-    unit portraits use image_index.json only (same as before the disk merge).
+    Find portrait using image_index.json merged with files on disk under static/images/portraits and
+    static/images/unit_portraits (WebP and other uploads are picked up without regenerating the index).
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
@@ -1697,6 +1719,16 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
             if cb_ok:
                 cb_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
                 return cb_ok[0]
+            ub_pref = f'ub_{rle}.'
+            ub_ok = [m for m in matches if m.lower().startswith(ub_pref)]
+            if ub_ok:
+                ub_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return ub_ok[0]
+            ms_pref = f'ms_{rle}.'
+            ms_ok = [m for m in matches if m.lower().startswith(ms_pref)]
+            if ms_ok:
+                ms_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return ms_ok[0]
             exact = [
                 m for m in matches
                 if m.lower().startswith(rle + '.') or m.lower() in (rle + '.webp', rle + '.png', rle + '.jpg', rle + '.jpeg')
@@ -1705,7 +1737,10 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
                 exact.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
                 return exact[0]
         clean = [m for m in matches if ' #' not in m]
-        return clean[0] if clean else matches[0]
+        if not clean:
+            return matches[0]
+        clean.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+        return clean[0]
 
     candidates = []
     if isinstance(resource_ids, list):
@@ -1861,9 +1896,7 @@ def find_trait_icon(resource_id):
 
 def _find_trait_thum_list_asset(resource_ids, entity_id):
     """images/Trait/thum/thum_<ResourceId>.* — list/grid prefers this over full cb_/ub_ portraits when present."""
-    if not IMAGE_INDEX:
-        return None
-    files = IMAGE_INDEX.get('images/Trait/thum', []) or []
+    files = _merged_index_disk('images/Trait/thum')
     if not files:
         return None
     files_by_lower = {f.lower(): f for f in files}
@@ -1908,27 +1941,36 @@ def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
-    """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum). For list view."""
+    """Find supporter thumbnail using images/Trait/thum (index + on-disk WebP)."""
+    files = _merged_index_disk('images/Trait/thum')
+    if not files:
+        return None
     candidates = [str(resource_id).strip()] if resource_id and str(resource_id).strip() != '0' else []
-    if supporter_id: candidates.append(str(supporter_id).strip())
+    if supporter_id:
+        candidates.append(str(supporter_id).strip())
     for rid in candidates:
-        if not rid: continue
+        if not rid:
+            continue
         rl = rid.lower()
-        for fn in IMAGE_INDEX.get('images/Trait/thum', []):
+        for fn in files:
             if rl in fn.lower():
                 return f"/static/images/Trait/thum/{fn}"
     return None
 
 def find_supporter_full_portrait(resource_id):
-    """Find full supporter portrait (900x504) using IMAGE_INDEX (images/Supporters). For detail view."""
-    if not resource_id or str(resource_id).strip() == '0' or not IMAGE_INDEX:
+    """Find full supporter portrait (900x504) under images/Supporters (index + on-disk)."""
+    if not resource_id or str(resource_id).strip() == '0':
         return None
     rid = str(resource_id).strip().lower()
-    expected = f"sb_{rid}.png"
-    for fn in IMAGE_INDEX.get('images/Supporters', []):
-        if fn.lower() == expected:
-            return f"/static/images/Supporters/{fn}"
-    for fn in IMAGE_INDEX.get('images/Supporters', []):
+    files = _merged_index_disk('images/Supporters')
+    if not files:
+        return None
+    for ext in ('.webp', '.png', '.jpg', '.jpeg'):
+        expected = f"sb_{rid}{ext}"
+        for fn in files:
+            if fn.lower() == expected:
+                return f"/static/images/Supporters/{fn}"
+    for fn in files:
         if rid in fn.lower() and fn.lower().startswith('sb_'):
             return f"/static/images/Supporters/{fn}"
     return None
@@ -5295,6 +5337,7 @@ def _serve_index():
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
     ))
     r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     r.headers['Pragma'] = 'no-cache'
@@ -7475,7 +7518,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v5_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v8_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))

@@ -1422,10 +1422,13 @@ html{overflow-x:hidden}
 <script>
 // CDN URL from Flask - handles both local and deployed
 const IMAGE_CDN = '{{ image_cdn }}'.replace(/\/+$/, '');
+// When false (default): /static/images/* stays on this site so WebP uploads under static/ work. Set GAME_IMAGES_USE_CDN=1 if CDN mirrors all game images.
+const GAME_IMAGES_USE_CDN = {{ (game_images_use_cdn if game_images_use_cdn is defined else false) | tojson }};
 
 function imgUrl(path) {
     if (!path) return '';
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    if (path.startsWith('/static/images/') && !GAME_IMAGES_USE_CDN) return path;
     if (IMAGE_CDN && path.startsWith('/static/images/')) {
         return IMAGE_CDN + '/images/' + path.substring('/static/images/'.length);
     }
