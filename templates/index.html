@@ -375,12 +375,15 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-map-high-vis .weapon-map-legend .map-legend-use-img{filter:brightness(1.12) contrast(1.06) drop-shadow(0 0 2px rgba(0,0,0,.45))}
 .weapon-map-high-vis .map-sel-crosshair .map-sel-marker-img{filter:drop-shadow(0 0 2px rgba(0,0,0,.85)) brightness(1.05)}
 .weapon-map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;align-content:start;justify-content:center;width:max-content;max-width:100%;margin:0 auto;box-sizing:border-box;--map-cell:24px;grid-auto-rows:var(--map-cell)}
-.weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1}
+.weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1;overflow:visible;position:relative}
+.map-use-marker-q{position:absolute;inset:0;overflow:hidden;z-index:3;pointer-events:none}
+.map-use-marker-q img{display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(0,0,0,.5))}
+.weapon-map-high-vis .map-use-marker-q img{filter:brightness(1.12) contrast(1.15) drop-shadow(0 0 2px rgba(0,0,0,.85))}
 .weapon-map-grid .map-cell>img:first-child{object-fit:contain!important}
 .weapon-map-legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text-secondary);justify-content:center;max-width:100%;padding:0 8px}
 .weapon-map-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.map-sel-crosshair{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:4;pointer-events:none;padding:1px;box-sizing:border-box}
-.map-sel-crosshair .map-sel-marker-img{width:100%;height:100%;max-width:22px;max-height:22px;object-fit:contain;display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.map-sel-crosshair{position:absolute;inset:0;display:grid;place-items:center;z-index:4;pointer-events:none;box-sizing:border-box}
+.map-sel-crosshair .map-sel-marker-img{width:min(22px,72%);height:min(22px,72%);aspect-ratio:1;object-fit:contain;object-position:center;display:block;flex-shrink:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
@@ -2310,11 +2313,11 @@ function renderMapGrid(weapon,isLarge){
 
   let aw=mxx-mnx+1,pl=0,pr2=0,fc=0;
   if(aw<3){fc=9;let tp=9-aw;pl=Math.floor(tp/2);pr2=Math.ceil(tp/2)}
-  else if(aw>=8){pl=1;pr2=1;fc=aw+2}
+  else if(aw>=8){pl=2;pr2=2;fc=aw+4}
   else{pl=aw;pr2=aw;fc=aw*3}
 
   let fmnx=mnx-pl,fmxx=mxx+pr2;
-  let ah2=mxy-mny+1,py=Math.max(Math.floor(ah2/3),1);
+  let ah2=mxy-mny+1,py=Math.max(Math.floor(ah2/2),2);
   let fmny=mny-py,fmxy=mxy+py,fr=fmxy-fmny+1;
 
   let uxMin=0,uxMax=0,uyMin=0,uyMax=0;
@@ -2323,13 +2326,21 @@ function renderMapGrid(weapon,isLarge){
   if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;cl=Math.min(cl,Math.max(0,uxMin-fmnx));cr=Math.min(cr,Math.max(0,fmxx-uxMax));fmnx+=cl;fmxx-=cr;fc=19}
   if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
 
-  const mapCell=isLarge?48:24;
-  const mapUseMarker=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
+  const mapHighVisInit=weaponMapGridHighVisPreferred();
+  const mapGap=mapHighVisInit?3:2;
+  const mapCell=isLarge?32:20;
+  const mapUsePosi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
+  const mapUseNega=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.webp');
+  const mapUseFootUrl=t1?mapUsePosi:mapUseNega;
+  const mapSpan=2*mapCell+mapGap;
+  const mapUseQuad=q=>{
+    const o=q==='tl'?'left:0;top:0':q==='tr'?`left:${-(mapCell+mapGap)}px;top:0`:q==='bl'?`left:0;top:${-(mapCell+mapGap)}px`:`left:${-(mapCell+mapGap)}px;top:${-(mapCell+mapGap)}px`;
+    return `<span class="map-use-marker-q" aria-hidden="true"><img src="${mapUseFootUrl}" alt="" style="width:${mapSpan}px;height:${mapSpan}px;object-fit:contain;position:absolute;${o}"></span>`
+  };
   const mapSelMarker=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_SelectMarker_Nega.webp');
   const mapSelHtml=`<span class="map-sel-crosshair" aria-hidden="true"><img class="map-sel-marker-img" src="${mapSelMarker}" alt=""></span>`;
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.png');
   let lsBase=isLarge?`position:absolute;width:${mapCell}px;height:${mapCell}px;top:0;left:0;z-index:2;object-fit:contain;`:`position:absolute;top:0;left:0;width:${mapCell}px;height:${mapCell}px;z-index:2;object-fit:contain;`;
-  const mapHighVisInit=weaponMapGridHighVisPreferred();
   const themeTip=mapHighVisInit?t('map_effect_theme_light'):t('map_effect_theme_dark');
   const mapTileCls=(src)=>{const s=String(src);if(s.includes('Block_Posi'))return'map-cell--posi';if(s.includes('Block_Nega'))return'map-cell--nega';if(s.includes('Block_Moving'))return'map-cell--moving';return'map-cell--normal'};
   let html=`<div class="weapon-map-grid-wrap${mapHighVisInit?' weapon-map-high-vis':''}"><div class="weapon-map-toolbar"><button type="button" class="weapon-map-theme-toggle" onclick="event.stopPropagation();toggleWeaponMapGridTheme(this)" title="${escAttr(themeTip)}" aria-label="${escAttr(themeTip)}" aria-pressed="${mapHighVisInit?'true':'false'}"><svg class="weapon-map-theme-ic weapon-map-theme-ic--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'none':'block'}"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="weapon-map-theme-ic weapon-map-theme-ic--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'block':'none'}"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div><div class="weapon-map-grid" style="--map-cell:${mapCell}px;grid-template-columns:repeat(${fc},var(--map-cell));grid-template-rows:repeat(${fr},var(--map-cell));">`;
@@ -2364,10 +2375,30 @@ function renderMapGrid(weapon,isLarge){
       let bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.png'),mh='',oh='';
       let ls=lsBase;
 
+      let quadM='';
+      if(isLarge&&iu){
+        if(t2){
+          if(cx===ux&&cy===uy)quadM=mapUseQuad('tl');
+          else if(cx===ux+1&&cy===uy)quadM=mapUseQuad('tr');
+          else if(cx===ux&&cy===uy-1)quadM=mapUseQuad('bl');
+          else if(cx===ux+1&&cy===uy-1)quadM=mapUseQuad('br')
+        }else if(t3){
+          if(cx===0&&cy===0)quadM=mapUseQuad('tl');
+          else if(cx===1&&cy===0)quadM=mapUseQuad('tr');
+          else if(cx===0&&cy===-1)quadM=mapUseQuad('bl');
+          else if(cx===1&&cy===-1)quadM=mapUseQuad('br')
+        }else{
+          if(cx===0&&cy===0)quadM=mapUseQuad('tl');
+          else if(cx===1&&cy===0)quadM=mapUseQuad('tr');
+          else if(cx===0&&cy===-1)quadM=mapUseQuad('bl');
+          else if(cx===1&&cy===-1)quadM=mapUseQuad('br')
+        }
+      }
+
       if(t3){
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
+          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:'')
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.png');
           if(iem)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
@@ -2383,11 +2414,11 @@ function renderMapGrid(weapon,isLarge){
       }else if(t2){
         if(its){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
-          mh=mapSelHtml;
-          if(iu&&im)mh=`<img src=\"${mapUseMarker}\" alt=\"\" style=\"${ls}\">`+mh
+          mh=quadM+mapSelHtml;
+          if(iu&&!isLarge)mh=`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`+mapSelHtml
         }else if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(im)mh=`<img src=\"${mapUseMarker}\" alt=\"\" style=\"${ls}\">`
+          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:'')
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }else if(isp){
@@ -2396,18 +2427,18 @@ function renderMapGrid(weapon,isLarge){
       }else{
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(im)mh=`<img src=\"${mapUseMarker}\" alt=\"\" style=\"${ls}\">`
+          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUsePosi}\" alt=\"\" style=\"${ls}\">`:'')
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
       }
 
-      html+=`<div class=\"map-cell ${mapTileCls(bi)}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;\"><img src=\"${bi}\" alt=\"\" style=\"width:${mapCell}px;height:${mapCell}px;position:absolute;top:0;left:0;object-fit:contain;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
+      html+=`<div class=\"map-cell ${mapTileCls(bi)}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;--map-cell:${mapCell}px;\"><img src=\"${bi}\" alt=\"\" style=\"width:${mapCell}px;height:${mapCell}px;position:absolute;top:0;left:0;object-fit:contain;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
     }
   }
 
   html+='</div>';
-  const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+mapUseMarker+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
+  const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+mapUseFootUrl+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
   const legEffect='<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#59a8f0;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_effect')+'</span>';
   if(t2){
     html+='<div class="weapon-map-legend" role="list">'+legUse+
