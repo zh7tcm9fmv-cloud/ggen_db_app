@@ -350,7 +350,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-name-area{flex:1;min-width:0}.weapon-name-text{font-size:18px;font-weight:700;color:var(--text-primary)}.weapon-attack-types{display:flex;gap:4px;margin-top:4px;align-items:center}.weapon-attack-type-icon{width:24px;height:24px;object-fit:contain;background:transparent;border:none;display:block;vertical-align:middle;filter:brightness(1.25) saturate(1.5)}
 .weapon-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1px;background:rgba(0,0,0,.2)}.weapon-stat-item{padding:10px 8px;text-align:center}.weapon-stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.weapon-stat-value{font-size:18px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}.weapon-stat-value.highlight{color:var(--accent-blue)}.weapon-stat-value.weapon-acc-boost{color:#5d9cec!important;font-weight:800;text-shadow:0 0 10px rgba(93,156,236,.45)}
 .weapon-card-body{padding:14px 18px}.weapon-trait-item{display:flex;flex-direction:column;gap:4px;padding:0;font-size:15px;color:var(--text-secondary)}.weapon-trait-line{line-height:1.45}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
-.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:20px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:750px;scroll-behavior:smooth}.map-grid-container.active{display:flex}
+.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:10px 12px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:min(92vh,900px);scroll-behavior:smooth}.map-grid-container.active{display:flex}
 .map-grid-container:has(.weapon-map-high-vis){background:rgba(6,182,212,.06);border-color:rgba(56,189,248,.22)}
 .weapon-map-grid-wrap{display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%;box-sizing:border-box;position:relative;padding-top:0}
 .weapon-map-grid-wrap>.weapon-map-grid,.weapon-map-grid-wrap>.weapon-map-legend{align-self:center;max-width:100%}
@@ -374,16 +374,20 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-map-high-vis .weapon-map-legend .map-legend-sel-img{filter:brightness(1.15) contrast(1.08) drop-shadow(0 0 2px rgba(0,0,0,.5))}
 .weapon-map-high-vis .weapon-map-legend .map-legend-use-img{filter:brightness(1.12) contrast(1.06) drop-shadow(0 0 2px rgba(0,0,0,.45))}
 .weapon-map-high-vis .map-sel-crosshair .map-sel-marker-img{filter:drop-shadow(0 0 2px rgba(0,0,0,.85)) brightness(1.05)}
+.weapon-map-grid .map-cell .map-sel-crosshair{z-index:6}
 .weapon-map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;align-content:start;justify-content:center;width:max-content;max-width:100%;margin:0 auto;box-sizing:border-box;--map-cell:24px;grid-auto-rows:var(--map-cell)}
-.weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1;overflow:visible;position:relative}
-.map-use-marker-q{position:absolute;inset:0;overflow:hidden;z-index:3;pointer-events:none}
-.map-use-marker-q img{display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(0,0,0,.5))}
-.weapon-map-high-vis .map-use-marker-q img{filter:brightness(1.12) contrast(1.15) drop-shadow(0 0 2px rgba(0,0,0,.85))}
+.weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1;overflow:visible;position:relative;z-index:0}
+.map-use-footprint-overlay{grid-column:1/span 1;grid-row:1/span 1;z-index:4;pointer-events:none;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;position:relative}
+.map-use-footprint-overlay img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(0,0,0,.5))}
+.weapon-map-high-vis .map-use-footprint-overlay img{filter:brightness(1.12) contrast(1.15) drop-shadow(0 0 2px rgba(0,0,0,.85))}
 .weapon-map-grid .map-cell>img:first-child{object-fit:contain!important}
 .weapon-map-legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text-secondary);justify-content:center;max-width:100%;padding:0 8px}
 .weapon-map-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.map-sel-crosshair{position:absolute;inset:0;display:grid;place-items:center;z-index:4;pointer-events:none;box-sizing:border-box}
-.map-sel-crosshair .map-sel-marker-img{width:min(22px,72%);height:min(22px,72%);aspect-ratio:1;object-fit:contain;object-position:center;display:block;flex-shrink:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.map-sel-crosshair{position:absolute;inset:0;z-index:5;pointer-events:none;box-sizing:border-box;overflow:visible}
+.map-sel-crosshair .map-sel-marker-img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(22px,calc(var(--map-cell,24px)*0.62));height:min(22px,calc(var(--map-cell,24px)*0.62));aspect-ratio:1;object-fit:contain;object-position:center;display:block;margin:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.map-cell-pou-moving{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.map-cell-pou-moving img{width:min(22px,calc(var(--map-cell,24px)*0.62));height:min(22px,calc(var(--map-cell,24px)*0.62));aspect-ratio:1;object-fit:contain;display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
+.weapon-map-high-vis .map-cell-pou-moving img{filter:brightness(1.12) contrast(1.12) drop-shadow(0 0 2px rgba(0,0,0,.8))}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
@@ -2258,7 +2262,7 @@ if(moon)moon.style.display=on?'none':'block';
 if(sun)sun.style.display=on?'block':'none'}
 function weaponMapGridHighVisPreferred(){try{const v=localStorage.getItem('weaponMapHighVis');if(v==='1')return true;if(v==='0')return false;return localStorage.getItem('weaponMapEffectDark')==='1'}catch(_){return false}}
 function renderWeaponTraitItemHtml(tr){const raw=String(tr??'');const lines=raw.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length);if(!lines.length)return'';return`<div class="weapon-trait-item">${lines.map(l=>`<div class="weapon-trait-line">${esc(l)}</div>`).join('')}</div>`}
-function renderWeaponsDynamic(w,isLarge,isSsp,unitData){if(!w||!w.length)return'';let h=`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-list">`;w.forEach(x=>{if(x.is_ssp_weapon&&!isSsp)return;const wpPct=unitData&&unitData.weapon_passive_pct;const baseM=isSsp&&wpPct&&wpPct.ssp?wpPct.ssp:(wpPct&&wpPct.sp)||{};const condM=isSsp&&wpPct&&wpPct.ssp_cond?wpPct.ssp_cond:(wpPct&&wpPct.sp_cond)||{};const accPct=(baseM.Accuracy||0)+(S.conditionalPassiveActive?(condM.Accuracy||0):0);const critPct=(baseM.Critical||0)+(S.conditionalPassiveActive?(condM.Critical||0):0);const powPct=(baseM.Power||0)+(S.conditionalPassiveActive?(condM.Power||0):0);let lv=S.currentWeaponLevels[x.id]||5;let ld;if(x.levels&&x.levels.length){ld=x.levels.find(l=>l.level===lv)||x.levels[4]||x.levels[0];}else{ld={power:x.power||0,en:x.en_cost||x.en||0,accuracy:x.accuracy||0,critical:x.critical||0,ammo:x.ammo||0,traits:x.traits||[]};}const accB=ld.accuracy||0,critB=ld.critical||0,powB=ld.power||0;const accD=Math.floor(accB*(1+accPct/100)),critD=Math.floor(critB*(1+critPct/100));const isWpnMap=x.weapon_type==='3'||x.is_map;let pp=Math.floor(powB*(1+powPct/100))+(isSsp?(x.ssp_power_bonus||0):0),pa=isWpnMap?(ld.ammo+(isSsp?(x.ssp_ammo_bonus||0):0)):0,pr=x.max_range+(isSsp?(x.ssp_range_bonus||0):0);let pt=[...(ld.traits||[])];if(isSsp&&x.ssp_traits&&x.ssp_traits.length>0)pt=[...pt,...x.ssp_traits];let rc=isSsp?x.ssp_icon_color:x.icon_color;let he=isSsp&&!x.is_ssp_weapon&&((x.ssp_power_bonus>0)||(isWpnMap&&(x.ssp_ammo_bonus>0))||(x.ssp_range_bonus>0)||(isSsp&&x.ssp_traits&&x.ssp_traits.length>0));const powPsv=Math.floor(powB*(1+powPct/100))>powB;let pc=(isSsp&&x.ssp_power_bonus>0)?'ssp-highlight-val':(powPsv?'weapon-acc-boost':'highlight'),rac=(isSsp&&x.ssp_range_bonus>0)?'ssp-highlight-val':'',ac2=(isWpnMap&&isSsp&&x.ssp_ammo_bonus>0)?'ssp-highlight-val':'';const accCls=accD>accB?'weapon-acc-boost':'',critCls=critD>critB?'weapon-acc-boost':'';let sp2=x.is_ssp_weapon&&x.weapon_type!=='3';let lb=`<div class="weapon-level-selector">${[1,2,3,4,5].map(l=>`<button class="w-lv-btn ${lv===l?'active':''}" onclick="switchWeaponLevel('${x.id}',${l})">Lv ${l}</button>`).join('')}</div>`;h+=`<div class="weapon-card"><div class="weapon-card-header"><div class="weapon-header-left"><div class="weapon-icon-wrap${(x.is_ssp_weapon||rc==='map'||rc==='ex')?' weapon-icon-wrap-no-vivid':''}">${sp2?`<img class="ssp-weapon-portrait" src="${imgUrl(x.ssp_icon)}" alt="" onerror="this.style.display='none'">`:`${(rc==='ex'||rc==='map'||!rc)?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'weapon-icon-fallback\\'>MAP</div>'">`:`<div class="weapon-icon-mask color-${rc}" style="-webkit-mask-image:url('${imgUrl(x.icon)}');mask-image:url('${imgUrl(x.icon)}');"></div>`}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}`}${x.is_ssp_weapon?`<img class="ssp-weapon-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.png')}" alt="SSP" onerror="this.style.display='none'">`:(he?`<img class="ssp-enhance-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.png')}" alt="SSP" onerror="this.style.display='none'">`:'')}${x.is_preemptive?`<img class="preemptive-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_PreemptiveAttack.png')}" alt="" onerror="this.style.display='none'">`:''}</div><div class="weapon-name-area"><div class="weapon-name-text">${esc(x.name)}</div><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>at.is_supply?`<span style="font-size:12px;color:var(--accent-cyan);font-weight:600;display:flex;align-items:center;gap:4px;">${t('supply_type')} <img class="weapon-attack-type-icon" src="${imgUrl(at.icon)}" alt="${at.label}"> MP</span>`:`<img class="weapon-attack-type-icon" src="${imgUrl(at.icon)}" alt="${at.label}" title="${at.label}">`).join('')}</div></div></div><div class="weapon-header-trail">${x.attribute?`<div class="weapon-attribute-set">${esc('<'+x.attribute+'>')}</div>`:'<div class="weapon-attribute-set" aria-hidden="true"></div>'}${lb}</div></div><div class="weapon-card-stats"><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_range')}</div><div class="weapon-stat-value ${rac}">${x.min_range}-${pr}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_power')}</div><div class="weapon-stat-value ${pc}">${fmtN(pp)}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_en')}</div><div class="weapon-stat-value">${ld.en}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_acc')}</div><div class="weapon-stat-value ${accCls}">${accD}%</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_crit')}</div><div class="weapon-stat-value ${critCls}">${critD}%</div></div>${pa>0?`<div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_ammo')}</div><div class="weapon-stat-value ${ac2}">${pa}</div></div>`:''}</div>${(pt.length)||(x.usage_restrictions&&x.usage_restrictions.length)||x.is_map?`<div class="weapon-card-body">${pt.length?`<div>${renderWeaponTraitItemHtml(pt.filter(tr=>String(tr??'').trim()).join('\n'))}</div>`:''}${x.usage_restrictions&&x.usage_restrictions.length?`<div class="weapon-restrictions-list">${x.usage_restrictions.map(r=>`<div class="weapon-restriction-item">${esc(r)}</div>`).join('')}</div>`:''}${x.is_map?`<button class="toggle-map-btn" onclick="event.stopPropagation();toggleMapGrid('${x.id}')"><span>${t('view_effect_range')}</span></button><div id="map-${x.id}" class="map-grid-container">${renderMapGrid(x,isLarge)}</div>`:''}</div>`:''}</div>`});h+=`</div></div>`;return h}
+function renderWeaponsDynamic(w,isLarge,isSsp,unitData){if(!w||!w.length)return'';let h=`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-list">`;w.forEach(x=>{if(x.is_ssp_weapon&&!isSsp)return;const wpPct=unitData&&unitData.weapon_passive_pct;const baseM=isSsp&&wpPct&&wpPct.ssp?wpPct.ssp:(wpPct&&wpPct.sp)||{};const condM=isSsp&&wpPct&&wpPct.ssp_cond?wpPct.ssp_cond:(wpPct&&wpPct.sp_cond)||{};const accPct=(baseM.Accuracy||0)+(S.conditionalPassiveActive?(condM.Accuracy||0):0);const critPct=(baseM.Critical||0)+(S.conditionalPassiveActive?(condM.Critical||0):0);const powPct=(baseM.Power||0)+(S.conditionalPassiveActive?(condM.Power||0):0);let lv=S.currentWeaponLevels[x.id]||5;let ld;if(x.levels&&x.levels.length){ld=x.levels.find(l=>l.level===lv)||x.levels[4]||x.levels[0];}else{ld={power:x.power||0,en:x.en_cost||x.en||0,accuracy:x.accuracy||0,critical:x.critical||0,ammo:x.ammo||0,traits:x.traits||[]};}const accB=ld.accuracy||0,critB=ld.critical||0,powB=ld.power||0;const accD=Math.floor(accB*(1+accPct/100)),critD=Math.floor(critB*(1+critPct/100));const isWpnMap=x.weapon_type==='3'||x.is_map;let pp=Math.floor(powB*(1+powPct/100))+(isSsp?(x.ssp_power_bonus||0):0),pa=isWpnMap?(ld.ammo+(isSsp?(x.ssp_ammo_bonus||0):0)):0,pr=x.max_range+(isSsp?(x.ssp_range_bonus||0):0);let pt=[...(ld.traits||[])];if(isSsp&&x.ssp_traits&&x.ssp_traits.length>0)pt=[...pt,...x.ssp_traits];let rc=isSsp?x.ssp_icon_color:x.icon_color;let he=isSsp&&!x.is_ssp_weapon&&((x.ssp_power_bonus>0)||(isWpnMap&&(x.ssp_ammo_bonus>0))||(x.ssp_range_bonus>0)||(isSsp&&x.ssp_traits&&x.ssp_traits.length>0));const powPsv=Math.floor(powB*(1+powPct/100))>powB;let pc=(isSsp&&x.ssp_power_bonus>0)?'ssp-highlight-val':(powPsv?'weapon-acc-boost':'highlight'),rac=!isWpnMap&&(isSsp&&x.ssp_range_bonus>0)?'ssp-highlight-val':'',ac2=(isWpnMap&&isSsp&&x.ssp_ammo_bonus>0)?'ssp-highlight-val':'';const accCls=accD>accB?'weapon-acc-boost':'',critCls=critD>critB?'weapon-acc-boost':'';let sp2=x.is_ssp_weapon&&x.weapon_type!=='3';let lb=`<div class="weapon-level-selector">${[1,2,3,4,5].map(l=>`<button class="w-lv-btn ${lv===l?'active':''}" onclick="switchWeaponLevel('${x.id}',${l})">Lv ${l}</button>`).join('')}</div>`;h+=`<div class="weapon-card"><div class="weapon-card-header"><div class="weapon-header-left"><div class="weapon-icon-wrap${(x.is_ssp_weapon||rc==='map'||rc==='ex')?' weapon-icon-wrap-no-vivid':''}">${sp2?`<img class="ssp-weapon-portrait" src="${imgUrl(x.ssp_icon)}" alt="" onerror="this.style.display='none'">`:`${(rc==='ex'||rc==='map'||!rc)?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'weapon-icon-fallback\\'>MAP</div>'">`:`<div class="weapon-icon-mask color-${rc}" style="-webkit-mask-image:url('${imgUrl(x.icon)}');mask-image:url('${imgUrl(x.icon)}');"></div>`}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}`}${x.is_ssp_weapon?`<img class="ssp-weapon-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.png')}" alt="SSP" onerror="this.style.display='none'">`:(he?`<img class="ssp-enhance-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.png')}" alt="SSP" onerror="this.style.display='none'">`:'')}${x.is_preemptive?`<img class="preemptive-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_PreemptiveAttack.png')}" alt="" onerror="this.style.display='none'">`:''}</div><div class="weapon-name-area"><div class="weapon-name-text">${esc(x.name)}</div><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>at.is_supply?`<span style="font-size:12px;color:var(--accent-cyan);font-weight:600;display:flex;align-items:center;gap:4px;">${t('supply_type')} <img class="weapon-attack-type-icon" src="${imgUrl(at.icon)}" alt="${at.label}"> MP</span>`:`<img class="weapon-attack-type-icon" src="${imgUrl(at.icon)}" alt="${at.label}" title="${at.label}">`).join('')}</div></div></div><div class="weapon-header-trail">${x.attribute?`<div class="weapon-attribute-set">${esc('<'+x.attribute+'>')}</div>`:'<div class="weapon-attribute-set" aria-hidden="true"></div>'}${lb}</div></div><div class="weapon-card-stats"><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_range')}</div><div class="weapon-stat-value ${rac}">${isWpnMap?'MAP':x.min_range+'-'+pr}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_power')}</div><div class="weapon-stat-value ${pc}">${fmtN(pp)}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_en')}</div><div class="weapon-stat-value">${ld.en}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_acc')}</div><div class="weapon-stat-value ${accCls}">${accD}%</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_crit')}</div><div class="weapon-stat-value ${critCls}">${critD}%</div></div>${pa>0?`<div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_ammo')}</div><div class="weapon-stat-value ${ac2}">${pa}</div></div>`:''}</div>${(pt.length)||(x.usage_restrictions&&x.usage_restrictions.length)||x.is_map?`<div class="weapon-card-body">${pt.length?`<div>${renderWeaponTraitItemHtml(pt.filter(tr=>String(tr??'').trim()).join('\n'))}</div>`:''}${x.usage_restrictions&&x.usage_restrictions.length?`<div class="weapon-restrictions-list">${x.usage_restrictions.map(r=>`<div class="weapon-restriction-item">${esc(r)}</div>`).join('')}</div>`:''}${x.is_map?`<button class="toggle-map-btn" onclick="event.stopPropagation();toggleMapGrid('${x.id}')"><span>${t('view_effect_range')}</span></button><div id="map-${x.id}" class="map-grid-container">${renderMapGrid(x,isLarge)}</div>`:''}</div>`:''}</div>`});h+=`</div></div>`;return h}
 function renderMapGrid(weapon,isLarge){
   let ec=weapon.map_coords||[],sc=weapon.shooting_coords||[],hs=sc.length>0;
   if(!ec.length)return'<div style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:8px;">No data.</div>';
@@ -2328,15 +2332,12 @@ function renderMapGrid(weapon,isLarge){
 
   const mapHighVisInit=weaponMapGridHighVisPreferred();
   const mapGap=mapHighVisInit?3:2;
-  const mapCell=isLarge?32:20;
+  const mapCell=isLarge?26:17;
   const mapUsePosi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
   const mapUseNega=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.webp');
+  const mapUseMovingWebp=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.webp');
   const mapUseFootUrl=t1?mapUsePosi:mapUseNega;
-  const mapSpan=2*mapCell+mapGap;
-  const mapUseQuad=q=>{
-    const o=q==='tl'?'left:0;top:0':q==='tr'?`left:${-(mapCell+mapGap)}px;top:0`:q==='bl'?`left:0;top:${-(mapCell+mapGap)}px`:`left:${-(mapCell+mapGap)}px;top:${-(mapCell+mapGap)}px`;
-    return `<span class="map-use-marker-q" aria-hidden="true"><img src="${mapUseFootUrl}" alt="" style="width:${mapSpan}px;height:${mapSpan}px;object-fit:contain;position:absolute;${o}"></span>`
-  };
+  const mapT1LargePouHtml=`<span class="map-cell-pou-moving" aria-hidden="true"><img src="${mapUseMovingWebp}" alt=""></span>`;
   const mapSelMarker=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_SelectMarker_Nega.webp');
   const mapSelHtml=`<span class="map-sel-crosshair" aria-hidden="true"><img class="map-sel-marker-img" src="${mapSelMarker}" alt=""></span>`;
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.png');
@@ -2375,30 +2376,10 @@ function renderMapGrid(weapon,isLarge){
       let bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.png'),mh='',oh='';
       let ls=lsBase;
 
-      let quadM='';
-      if(isLarge&&iu){
-        if(t2){
-          if(cx===ux&&cy===uy)quadM=mapUseQuad('tl');
-          else if(cx===ux+1&&cy===uy)quadM=mapUseQuad('tr');
-          else if(cx===ux&&cy===uy-1)quadM=mapUseQuad('bl');
-          else if(cx===ux+1&&cy===uy-1)quadM=mapUseQuad('br')
-        }else if(t3){
-          if(cx===0&&cy===0)quadM=mapUseQuad('tl');
-          else if(cx===1&&cy===0)quadM=mapUseQuad('tr');
-          else if(cx===0&&cy===-1)quadM=mapUseQuad('bl');
-          else if(cx===1&&cy===-1)quadM=mapUseQuad('br')
-        }else{
-          if(cx===0&&cy===0)quadM=mapUseQuad('tl');
-          else if(cx===1&&cy===0)quadM=mapUseQuad('tr');
-          else if(cx===0&&cy===-1)quadM=mapUseQuad('bl');
-          else if(cx===1&&cy===-1)quadM=mapUseQuad('br')
-        }
-      }
-
       if(t3){
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:'')
+          if(im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.png');
           if(iem)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
@@ -2414,11 +2395,11 @@ function renderMapGrid(weapon,isLarge){
       }else if(t2){
         if(its){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
-          mh=quadM+mapSelHtml;
+          mh=mapSelHtml;
           if(iu&&!isLarge)mh=`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`+mapSelHtml
         }else if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:'')
+          mh=(!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:''
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }else if(isp){
@@ -2427,18 +2408,26 @@ function renderMapGrid(weapon,isLarge){
       }else{
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          mh=quadM||((!isLarge&&im)?`<img src=\"${mapUsePosi}\" alt=\"\" style=\"${ls}\">`:'')
+          if(isLarge)mh=mapT1LargePouHtml;
+          else if(im)mh=`<img src=\"${mapUsePosi}\" alt=\"\" style=\"${ls}\">`
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
       }
 
-      html+=`<div class=\"map-cell ${mapTileCls(bi)}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;--map-cell:${mapCell}px;\"><img src=\"${bi}\" alt=\"\" style=\"width:${mapCell}px;height:${mapCell}px;position:absolute;top:0;left:0;object-fit:contain;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
+      const cellRaise=(t2&&its)?'isolation:isolate;z-index:8;':'';
+      html+=`<div class=\"map-cell ${mapTileCls(bi)}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;--map-cell:${mapCell}px;${cellRaise}\"><img src=\"${bi}\" alt=\"\" style=\"width:${mapCell}px;height:${mapCell}px;position:absolute;top:0;left:0;object-fit:contain;display:block;z-index:0;\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
     }
   }
 
+  if(isLarge&&!t3&&!t1){
+    const ax=t2?ux:0,ay=t2?uy:0;
+    const cIdx=ax-fmnx,rIdx=fmxy-ay;
+    html+=`<div class="map-use-footprint-overlay" style="grid-column:${cIdx+1}/span 2;grid-row:${rIdx+1}/span 2" aria-hidden="true"><img src="${mapUseFootUrl}" alt=""></div>`
+  }
   html+='</div>';
-  const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+mapUseFootUrl+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
+  const legendPouSrc=(t1&&isLarge)?mapUseMovingWebp:mapUseFootUrl;
+  const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+legendPouSrc+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
   const legEffect='<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#59a8f0;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_effect')+'</span>';
   if(t2){
     html+='<div class="weapon-map-legend" role="list">'+legUse+
@@ -2836,7 +2825,8 @@ const attr=w.attribute?esc('<'+w.attribute+'>'):'';
 const pwr=w.power?w.power:0;
 const sspPwrBonus=isSsp&&w.ssp_power_bonus?w.ssp_power_bonus:0;
 const totalPwr=pwr+sspPwrBonus;
-const range=w.min_range!==undefined?`${t('wp_range')}:${w.min_range}-${w.max_range+(isSsp&&w.ssp_range_bonus?w.ssp_range_bonus:0)}`:'';
+const isMapW=w.weapon_type==='3'||w.is_map;
+const range=w.min_range!==undefined?`${t('wp_range')}:${isMapW?'MAP':w.min_range+'-'+(w.max_range+(isSsp&&w.ssp_range_bonus?w.ssp_range_bonus:0))}`:'';
 const pwrStr=totalPwr?`${t('wp_power')}:${fmtN(totalPwr)}`:'';
 const en=w.en_cost?`EN:${w.en_cost}`:'';
 const parts=[attr,range,pwrStr,en].filter(Boolean).join(' / ');
