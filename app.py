@@ -1290,59 +1290,59 @@ LIST_STAT_SORT_PRIMARY = frozenset(
 )
 
 TERRAIN_TYPE_ICON_MAP = {
-    'Space': 'UI_Common_TerrainIcon_Space.png', 
-    'Atmospheric': 'UI_Common_TerrainIcon_Sky.png',
-    'Ground': 'UI_Common_TerrainIcon_Ground.png', 
-    'Sea': 'UI_Common_TerrainIcon_Aquatic.png',
-    'Underwater': 'UI_Common_TerrainIcon_Underwater.png',
+    'Space': 'UI_Common_TerrainIcon_Space.webp',
+    'Atmospheric': 'UI_Common_TerrainIcon_Sky.webp',
+    'Ground': 'UI_Common_TerrainIcon_Ground.webp',
+    'Sea': 'UI_Common_TerrainIcon_Aquatic.webp',
+    'Underwater': 'UI_Common_TerrainIcon_Underwater.webp',
 }
 TERRAIN_LEVEL_ICON_MAP = {
-    3: 'UI_Common_TerrainIcon_Circle.png', 
-    2: 'UI_Common_TerrainIcon_Triangle.png',
-    1: 'UI_Common_TerrainIcon_Hyphen.png',
+    3: 'UI_Common_TerrainIcon_Circle.webp',
+    2: 'UI_Common_TerrainIcon_Triangle.webp',
+    1: 'UI_Common_TerrainIcon_Hyphen.webp',
 }
 WEAPON_ATTR_MAP = {
-    '1': {'label': 'Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_02.png'},
-    '2': {'label': 'Beam', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_01.png'},
-    '3': {'label': 'Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_03.png'},
-    '4': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.png'},
-    '5': {'label': 'Physical/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.png'},
-    '6': {'label': 'Beam/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.png'},
-    '7': {'label': 'Beam/Physical/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.png'},
-    '8': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.png'},
+    '1': {'label': 'Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_02.webp'},
+    '2': {'label': 'Beam', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_01.webp'},
+    '3': {'label': 'Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_03.webp'},
+    '4': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
+    '5': {'label': 'Physical/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
+    '6': {'label': 'Beam/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
+    '7': {'label': 'Beam/Physical/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
+    '8': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
 }
-MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.png'
-EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.png'
-ABILITY_FRAME_OVERLAY = '/static/images/Trait/UI_CharaAbilities_Tmb_Square_Normal_Frame.png'
+MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp'
+EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
+ABILITY_FRAME_OVERLAY = '/static/images/Trait/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
 ATTACK_ATTR_TYPES = {
-    '1': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}],
-    '2': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}],
-    '3': [{'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
-    '4': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}],
-    '5': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
-    '6': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
-    '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.png'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.png'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.png'}],
+    '1': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}],
+    '2': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}],
+    '3': [{'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
+    '4': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}],
+    '5': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
+    '6': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
+    '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
 }
 MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5}
 MP_CONSUMPTION_UNIT_EX = {'1330000750': 2}
 HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
 ACQUISITION_ROUTE_ICONS = {
-    '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.png',
+    '1': '/static/images/UI/UI_Common_Icon_Source_Gasha.webp',
     '2': '',
-    '3': '/static/images/UI/UI_Common_Icon_Source_Event.png',
+    '3': '/static/images/UI/UI_Common_Icon_Source_Event.webp',
 }
-ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.png'
+ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.webp'
 RARITY_ICON_MAP = {
-    '1': '/static/images/Rarity/UI_Common_RarityIcon_N.png', 
-    '2': '/static/images/Rarity/UI_Common_RarityIcon_R.png',
-    '3': '/static/images/Rarity/UI_Common_RarityIcon_SR.png', 
-    '4': '/static/images/Rarity/UI_Common_RarityIcon_SSR.png',
-    '5': '/static/images/Rarity/UI_Common_RarityIcon_UR.png',
+    '1': '/static/images/Rarity/UI_Common_RarityIcon_N.webp',
+    '2': '/static/images/Rarity/UI_Common_RarityIcon_R.webp',
+    '3': '/static/images/Rarity/UI_Common_RarityIcon_SR.webp',
+    '4': '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
+    '5': '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
 }
 ROLE_ICON_MAP = {
-    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.png', 
-    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.png',
+    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
     '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
 }
 EX_ABILITY_PATTERNS = ['ex character ability', 'ex機體能力', 'ex角色能力', 'exキャラクターアビリティ']
@@ -4899,7 +4899,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc):
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr)
-        if uid == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.png', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'is_supply': True, 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.png', 'label': 'MP'}]
+        if uid == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'is_supply': True, 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'label': 'MP'}]
         levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
         weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': ws.get('range_min', 0), 'max_range': ws.get('range_max', 0), 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
@@ -7210,7 +7210,7 @@ def _compute_option_part_effect_filter_icons(ld):
                     details_list.append(desc.strip())
         details = ' '.join(details_list) if details_list else ''
         res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
-        thum = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
+        thum = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
         if not thum:
             continue
         for ek in ('HP', 'EN', 'ATK', 'DEF', 'MOB', 'OTHER'):
@@ -7293,7 +7293,7 @@ def list_option_parts():
             if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
                 continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
-            icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.png" if res_id else ''
+            icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
             rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
@@ -8124,7 +8124,7 @@ def get_unit(unit_id):
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr)
-            if unit_id == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.png', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.png', 'is_supply': True}]
+            if unit_id == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'is_supply': True}]
             levels = ws.get('levels', [{'level':i,'power':ws['power'],'en':ws['en'],'accuracy':ws['accuracy'],'critical':ws['critical'],'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)])
             pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
             am = ws['ammo'] if wt == '3' else 0

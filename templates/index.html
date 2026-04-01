@@ -1428,11 +1428,12 @@ const GAME_IMAGES_USE_CDN = {{ (game_images_use_cdn if game_images_use_cdn is de
 function imgUrl(path) {
     if (!path) return '';
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/static/images/') && !GAME_IMAGES_USE_CDN) return path;
-    if (IMAGE_CDN && path.startsWith('/static/images/')) {
-        return IMAGE_CDN + '/images/' + path.substring('/static/images/'.length);
-    }
-    return path;
+    if (!path.startsWith('/static/images/')) return path;
+    // Ship WebP under static/images; API may still emit legacy .png/.jpg paths.
+    const gamePath = path.replace(/\.(png|jpg|jpeg)(\?|#|$)/i, '.webp$2');
+    if (!GAME_IMAGES_USE_CDN) return gamePath;
+    if (IMAGE_CDN) return IMAGE_CDN + '/images/' + gamePath.substring('/static/images/'.length);
+    return gamePath;
 }
 function imgUrlWebp(path) {
     if (!path) return '';
