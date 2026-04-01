@@ -259,6 +259,76 @@
     "IsBgmHighestPriority": true
   },
   {
+    "Id": 1219000100,
+    "CharacterId": 1219000100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000101,
+    "CharacterId": 1219000101,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000200,
+    "CharacterId": 1219000200,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000201,
+    "CharacterId": 1219000201,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000300,
+    "CharacterId": 1219000300,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000400,
+    "CharacterId": 1219000400,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000500,
+    "CharacterId": 1219000500,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900007,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000700,
+    "CharacterId": 1219000700,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000701,
+    "CharacterId": 1219000701,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1219000800,
+    "CharacterId": 1219000800,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 121900001,
+    "IsBgmHighestPriority": true
+  },
+  {
     "Id": 1230000100,
     "CharacterId": 1230000100,
     "ScheduleId": 2601509902,
@@ -585,6 +655,251 @@
     "CharacterId": 1330002600,
     "ScheduleId": 2512409902,
     "CharacterBgmId": 133000004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000100,
+    "CharacterId": 1370000100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000101,
+    "CharacterId": 1370000101,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000200,
+    "CharacterId": 1370000200,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000300,
+    "CharacterId": 1370000300,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000302,
+    "CharacterId": 1370000302,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000400,
+    "CharacterId": 1370000400,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370000901,
+    "CharacterId": 1370000901,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370001500,
+    "CharacterId": 1370001500,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000005,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370001600,
+    "CharacterId": 1370001600,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000005,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370001700,
+    "CharacterId": 1370001700,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000005,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370001900,
+    "CharacterId": 1370001900,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000005,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370002600,
+    "CharacterId": 1370002600,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003100,
+    "CharacterId": 1370003100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000003,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003300,
+    "CharacterId": 1370003300,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003400,
+    "CharacterId": 1370003400,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003502,
+    "CharacterId": 1370003502,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003601,
+    "CharacterId": 1370003601,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000005,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003701,
+    "CharacterId": 1370003701,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000013,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370003702,
+    "CharacterId": 1370003702,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004001,
+    "CharacterId": 1370004001,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004100,
+    "CharacterId": 1370004100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004200,
+    "CharacterId": 1370004200,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004300,
+    "CharacterId": 1370004300,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004400,
+    "CharacterId": 1370004400,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004500,
+    "CharacterId": 1370004500,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004600,
+    "CharacterId": 1370004600,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004700,
+    "CharacterId": 1370004700,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004800,
+    "CharacterId": 1370004800,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370004902,
+    "CharacterId": 1370004902,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370005000,
+    "CharacterId": 1370005000,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370005100,
+    "CharacterId": 1370005100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370005200,
+    "CharacterId": 1370005200,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370005300,
+    "CharacterId": 1370005300,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000010,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1370006101,
+    "CharacterId": 1370006101,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000012,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1382100100,
+    "CharacterId": 1382100100,
+    "ScheduleId": 2603609902,
+    "CharacterBgmId": 137000001,
     "IsBgmHighestPriority": true
   },
   {

@@ -518,5 +518,13 @@
     "GroundIndex": 3,
     "SurfaceIndex": 3,
     "UnderwaterIndex": 1
+  },
+  {
+    "Id": 66,
+    "SpaceIndex": 2,
+    "AtmosphericIndex": 3,
+    "GroundIndex": 3,
+    "SurfaceIndex": 1,
+    "UnderwaterIndex": 3
   }
 ]

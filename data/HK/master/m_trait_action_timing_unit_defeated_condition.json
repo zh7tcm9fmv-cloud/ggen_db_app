@@ -22,5 +22,23 @@
     "AllyTypeIndex": 1,
     "MainUnitIds": "",
     "CharacterIds": "1013000900"
+  },
+  {
+    "Id": 100000005,
+    "AllyTypeIndex": 2,
+    "MainUnitIds": "",
+    "CharacterIds": "1370003700"
+  },
+  {
+    "Id": 100000006,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1370003202"
+  },
+  {
+    "Id": 100000007,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1370005402"
   }
 ]

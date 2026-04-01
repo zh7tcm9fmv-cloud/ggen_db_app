@@ -252,6 +252,15 @@
     "TargetRewardSetId": 39002603500015
   },
   {
+    "Id": 126036001,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 39002603500017
+  },
+  {
     "Id": 425105001,
     "CampaignEffectTypeIndex": 5,
     "Value": 1,

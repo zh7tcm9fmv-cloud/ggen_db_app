@@ -6,6 +6,12 @@
     "Bgm": "bgm_1500_0001"
   },
   {
+    "Id": 2190,
+    "ScenarioStageSeriesId": 2190,
+    "ScheduleId": 2603609902,
+    "Bgm": "bgm_2190_0007"
+  },
+  {
     "Id": 2300,
     "ScenarioStageSeriesId": 2300,
     "ScheduleId": 2601509902,
@@ -16,6 +22,12 @@
     "ScenarioStageSeriesId": 3300,
     "ScheduleId": 2512409902,
     "Bgm": "bgm_3300_0003"
+  },
+  {
+    "Id": 3700,
+    "ScenarioStageSeriesId": 3700,
+    "ScheduleId": 2603609902,
+    "Bgm": "bgm_3700_0016"
   },
   {
     "Id": 4000,

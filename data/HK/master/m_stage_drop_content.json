@@ -4866,6 +4866,300 @@
     "Weight": 1
   },
   {
+    "Id": 30219001030001,
+    "StageDropContentSetId": 302190010300,
+    "RewardSetId": 30219001030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30219001030002,
+    "StageDropContentSetId": 302190010300,
+    "RewardSetId": 30219001030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30219001030003,
+    "StageDropContentSetId": 302190010300,
+    "RewardSetId": 30219001030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30219001030101,
+    "StageDropContentSetId": 302190010301,
+    "RewardSetId": 30219001030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219001030401,
+    "StageDropContentSetId": 302190010304,
+    "RewardSetId": 30219001030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219002020001,
+    "StageDropContentSetId": 302190020200,
+    "RewardSetId": 30219002020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30219002020002,
+    "StageDropContentSetId": 302190020200,
+    "RewardSetId": 30219002020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30219002020003,
+    "StageDropContentSetId": 302190020200,
+    "RewardSetId": 30219002020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30219002020101,
+    "StageDropContentSetId": 302190020201,
+    "RewardSetId": 30219002020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219002020401,
+    "StageDropContentSetId": 302190020204,
+    "RewardSetId": 30219002020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219003030001,
+    "StageDropContentSetId": 302190030300,
+    "RewardSetId": 30219003030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30219003030002,
+    "StageDropContentSetId": 302190030300,
+    "RewardSetId": 30219003030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30219003030003,
+    "StageDropContentSetId": 302190030300,
+    "RewardSetId": 30219003030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30219003030101,
+    "StageDropContentSetId": 302190030301,
+    "RewardSetId": 30219003030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219003030401,
+    "StageDropContentSetId": 302190030304,
+    "RewardSetId": 30219003030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219004020001,
+    "StageDropContentSetId": 302190040200,
+    "RewardSetId": 30219004020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30219004020002,
+    "StageDropContentSetId": 302190040200,
+    "RewardSetId": 30219004020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30219004020003,
+    "StageDropContentSetId": 302190040200,
+    "RewardSetId": 30219004020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30219004020101,
+    "StageDropContentSetId": 302190040201,
+    "RewardSetId": 30219004020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219004020401,
+    "StageDropContentSetId": 302190040204,
+    "RewardSetId": 30219004020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219005020001,
+    "StageDropContentSetId": 302190050200,
+    "RewardSetId": 30219005020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30219005020002,
+    "StageDropContentSetId": 302190050200,
+    "RewardSetId": 30219005020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30219005020003,
+    "StageDropContentSetId": 302190050200,
+    "RewardSetId": 30219005020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30219005020101,
+    "StageDropContentSetId": 302190050201,
+    "RewardSetId": 30219005020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219005020401,
+    "StageDropContentSetId": 302190050204,
+    "RewardSetId": 30219005020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219006010001,
+    "StageDropContentSetId": 302190060100,
+    "RewardSetId": 30219006010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30219006010002,
+    "StageDropContentSetId": 302190060100,
+    "RewardSetId": 30219006010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30219006010003,
+    "StageDropContentSetId": 302190060100,
+    "RewardSetId": 30219006010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30219006010004,
+    "StageDropContentSetId": 302190060100,
+    "RewardSetId": 30219006010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30219006010101,
+    "StageDropContentSetId": 302190060101,
+    "RewardSetId": 30219006010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219006010401,
+    "StageDropContentSetId": 302190060104,
+    "RewardSetId": 30219006010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219006010501,
+    "StageDropContentSetId": 302190060105,
+    "RewardSetId": 30219006010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30219006010502,
+    "StageDropContentSetId": 302190060105,
+    "RewardSetId": 30219006010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30219007010001,
+    "StageDropContentSetId": 302190070100,
+    "RewardSetId": 30219007010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30219007010002,
+    "StageDropContentSetId": 302190070100,
+    "RewardSetId": 30219007010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30219007010003,
+    "StageDropContentSetId": 302190070100,
+    "RewardSetId": 30219007010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30219007010004,
+    "StageDropContentSetId": 302190070100,
+    "RewardSetId": 30219007010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30219007010101,
+    "StageDropContentSetId": 302190070101,
+    "RewardSetId": 30219007010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219007010401,
+    "StageDropContentSetId": 302190070104,
+    "RewardSetId": 30219007010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219007010501,
+    "StageDropContentSetId": 302190070105,
+    "RewardSetId": 30219007010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30219007010502,
+    "StageDropContentSetId": 302190070105,
+    "RewardSetId": 30219007010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30219008010001,
+    "StageDropContentSetId": 302190080100,
+    "RewardSetId": 30219008010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30219008010002,
+    "StageDropContentSetId": 302190080100,
+    "RewardSetId": 30219008010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30219008010003,
+    "StageDropContentSetId": 302190080100,
+    "RewardSetId": 30219008010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30219008010004,
+    "StageDropContentSetId": 302190080100,
+    "RewardSetId": 30219008010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30219008010101,
+    "StageDropContentSetId": 302190080101,
+    "RewardSetId": 30219008010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30219008010401,
+    "StageDropContentSetId": 302190080104,
+    "RewardSetId": 30219008010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30219008010501,
+    "StageDropContentSetId": 302190080105,
+    "RewardSetId": 30219008010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30219008010502,
+    "StageDropContentSetId": 302190080105,
+    "RewardSetId": 30219008010502,
+    "Weight": 1
+  },
+  {
     "Id": 30230002020003,
     "StageDropContentSetId": 302300020200,
     "RewardSetId": 30230002020001,
@@ -7644,6 +7938,600 @@
     "Weight": 1
   },
   {
+    "Id": 30370013040001,
+    "StageDropContentSetId": 303700130400,
+    "RewardSetId": 30370013040001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370013040002,
+    "StageDropContentSetId": 303700130400,
+    "RewardSetId": 30370013040002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370013040003,
+    "StageDropContentSetId": 303700130400,
+    "RewardSetId": 30370013040003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370013040101,
+    "StageDropContentSetId": 303700130401,
+    "RewardSetId": 30370013040100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370013040401,
+    "StageDropContentSetId": 303700130404,
+    "RewardSetId": 30370013040400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370014030001,
+    "StageDropContentSetId": 303700140300,
+    "RewardSetId": 30370014030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370014030002,
+    "StageDropContentSetId": 303700140300,
+    "RewardSetId": 30370014030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370014030003,
+    "StageDropContentSetId": 303700140300,
+    "RewardSetId": 30370014030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370014030101,
+    "StageDropContentSetId": 303700140301,
+    "RewardSetId": 30370014030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370014030401,
+    "StageDropContentSetId": 303700140304,
+    "RewardSetId": 30370014030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370015020001,
+    "StageDropContentSetId": 303700150200,
+    "RewardSetId": 30370015020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370015020002,
+    "StageDropContentSetId": 303700150200,
+    "RewardSetId": 30370015020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370015020003,
+    "StageDropContentSetId": 303700150200,
+    "RewardSetId": 30370015020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370015020101,
+    "StageDropContentSetId": 303700150201,
+    "RewardSetId": 30370015020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370015020401,
+    "StageDropContentSetId": 303700150204,
+    "RewardSetId": 30370015020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370016030001,
+    "StageDropContentSetId": 303700160300,
+    "RewardSetId": 30370016030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370016030002,
+    "StageDropContentSetId": 303700160300,
+    "RewardSetId": 30370016030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370016030003,
+    "StageDropContentSetId": 303700160300,
+    "RewardSetId": 30370016030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370016030101,
+    "StageDropContentSetId": 303700160301,
+    "RewardSetId": 30370016030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370016030401,
+    "StageDropContentSetId": 303700160304,
+    "RewardSetId": 30370016030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370017030001,
+    "StageDropContentSetId": 303700170300,
+    "RewardSetId": 30370017030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370017030002,
+    "StageDropContentSetId": 303700170300,
+    "RewardSetId": 30370017030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370017030003,
+    "StageDropContentSetId": 303700170300,
+    "RewardSetId": 30370017030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370017030101,
+    "StageDropContentSetId": 303700170301,
+    "RewardSetId": 30370017030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370017030401,
+    "StageDropContentSetId": 303700170304,
+    "RewardSetId": 30370017030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370018030001,
+    "StageDropContentSetId": 303700180300,
+    "RewardSetId": 30370018030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370018030002,
+    "StageDropContentSetId": 303700180300,
+    "RewardSetId": 30370018030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370018030003,
+    "StageDropContentSetId": 303700180300,
+    "RewardSetId": 30370018030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370018030101,
+    "StageDropContentSetId": 303700180301,
+    "RewardSetId": 30370018030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370018030401,
+    "StageDropContentSetId": 303700180304,
+    "RewardSetId": 30370018030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370019040001,
+    "StageDropContentSetId": 303700190400,
+    "RewardSetId": 30370019040001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370019040002,
+    "StageDropContentSetId": 303700190400,
+    "RewardSetId": 30370019040002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370019040003,
+    "StageDropContentSetId": 303700190400,
+    "RewardSetId": 30370019040003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370019040101,
+    "StageDropContentSetId": 303700190401,
+    "RewardSetId": 30370019040100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370019040401,
+    "StageDropContentSetId": 303700190404,
+    "RewardSetId": 30370019040400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370020020001,
+    "StageDropContentSetId": 303700200200,
+    "RewardSetId": 30370020020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370020020002,
+    "StageDropContentSetId": 303700200200,
+    "RewardSetId": 30370020020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370020020003,
+    "StageDropContentSetId": 303700200200,
+    "RewardSetId": 30370020020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370020020101,
+    "StageDropContentSetId": 303700200201,
+    "RewardSetId": 30370020020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370020020401,
+    "StageDropContentSetId": 303700200204,
+    "RewardSetId": 30370020020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370021030001,
+    "StageDropContentSetId": 303700210300,
+    "RewardSetId": 30370021030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370021030002,
+    "StageDropContentSetId": 303700210300,
+    "RewardSetId": 30370021030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370021030003,
+    "StageDropContentSetId": 303700210300,
+    "RewardSetId": 30370021030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370021030101,
+    "StageDropContentSetId": 303700210301,
+    "RewardSetId": 30370021030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370021030401,
+    "StageDropContentSetId": 303700210304,
+    "RewardSetId": 30370021030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370022030001,
+    "StageDropContentSetId": 303700220300,
+    "RewardSetId": 30370022030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370022030002,
+    "StageDropContentSetId": 303700220300,
+    "RewardSetId": 30370022030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370022030003,
+    "StageDropContentSetId": 303700220300,
+    "RewardSetId": 30370022030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370022030101,
+    "StageDropContentSetId": 303700220301,
+    "RewardSetId": 30370022030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370022030401,
+    "StageDropContentSetId": 303700220304,
+    "RewardSetId": 30370022030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370023030001,
+    "StageDropContentSetId": 303700230300,
+    "RewardSetId": 30370023030001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370023030002,
+    "StageDropContentSetId": 303700230300,
+    "RewardSetId": 30370023030002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370023030003,
+    "StageDropContentSetId": 303700230300,
+    "RewardSetId": 30370023030003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370023030101,
+    "StageDropContentSetId": 303700230301,
+    "RewardSetId": 30370023030100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370023030401,
+    "StageDropContentSetId": 303700230304,
+    "RewardSetId": 30370023030400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370024040001,
+    "StageDropContentSetId": 303700240400,
+    "RewardSetId": 30370024040001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370024040002,
+    "StageDropContentSetId": 303700240400,
+    "RewardSetId": 30370024040002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370024040003,
+    "StageDropContentSetId": 303700240400,
+    "RewardSetId": 30370024040003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370024040101,
+    "StageDropContentSetId": 303700240401,
+    "RewardSetId": 30370024040100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370024040401,
+    "StageDropContentSetId": 303700240404,
+    "RewardSetId": 30370024040400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370025020001,
+    "StageDropContentSetId": 303700250200,
+    "RewardSetId": 30370025020001,
+    "Weight": 300
+  },
+  {
+    "Id": 30370025020002,
+    "StageDropContentSetId": 303700250200,
+    "RewardSetId": 30370025020002,
+    "Weight": 400
+  },
+  {
+    "Id": 30370025020003,
+    "StageDropContentSetId": 303700250200,
+    "RewardSetId": 30370025020003,
+    "Weight": 300
+  },
+  {
+    "Id": 30370025020101,
+    "StageDropContentSetId": 303700250201,
+    "RewardSetId": 30370025020100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370025020401,
+    "StageDropContentSetId": 303700250204,
+    "RewardSetId": 30370025020400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370026010001,
+    "StageDropContentSetId": 303700260100,
+    "RewardSetId": 30370026010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30370026010002,
+    "StageDropContentSetId": 303700260100,
+    "RewardSetId": 30370026010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30370026010003,
+    "StageDropContentSetId": 303700260100,
+    "RewardSetId": 30370026010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30370026010004,
+    "StageDropContentSetId": 303700260100,
+    "RewardSetId": 30370026010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30370026010101,
+    "StageDropContentSetId": 303700260101,
+    "RewardSetId": 30370026010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370026010401,
+    "StageDropContentSetId": 303700260104,
+    "RewardSetId": 30370026010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370026010501,
+    "StageDropContentSetId": 303700260105,
+    "RewardSetId": 30370026010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30370026010502,
+    "StageDropContentSetId": 303700260105,
+    "RewardSetId": 30370026010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30370027010001,
+    "StageDropContentSetId": 303700270100,
+    "RewardSetId": 30370027010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30370027010002,
+    "StageDropContentSetId": 303700270100,
+    "RewardSetId": 30370027010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30370027010003,
+    "StageDropContentSetId": 303700270100,
+    "RewardSetId": 30370027010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30370027010004,
+    "StageDropContentSetId": 303700270100,
+    "RewardSetId": 30370027010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30370027010101,
+    "StageDropContentSetId": 303700270101,
+    "RewardSetId": 30370027010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370027010401,
+    "StageDropContentSetId": 303700270104,
+    "RewardSetId": 30370027010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370027010501,
+    "StageDropContentSetId": 303700270105,
+    "RewardSetId": 30370027010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30370027010502,
+    "StageDropContentSetId": 303700270105,
+    "RewardSetId": 30370027010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30370027010503,
+    "StageDropContentSetId": 303700270105,
+    "RewardSetId": 30370027010503,
+    "Weight": 1
+  },
+  {
+    "Id": 30370028010001,
+    "StageDropContentSetId": 303700280100,
+    "RewardSetId": 30370028010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30370028010002,
+    "StageDropContentSetId": 303700280100,
+    "RewardSetId": 30370028010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30370028010003,
+    "StageDropContentSetId": 303700280100,
+    "RewardSetId": 30370028010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30370028010004,
+    "StageDropContentSetId": 303700280100,
+    "RewardSetId": 30370028010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30370028010101,
+    "StageDropContentSetId": 303700280101,
+    "RewardSetId": 30370028010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370028010401,
+    "StageDropContentSetId": 303700280104,
+    "RewardSetId": 30370028010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370028010501,
+    "StageDropContentSetId": 303700280105,
+    "RewardSetId": 30370028010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30370028010502,
+    "StageDropContentSetId": 303700280105,
+    "RewardSetId": 30370028010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30370029010001,
+    "StageDropContentSetId": 303700290100,
+    "RewardSetId": 30370029010001,
+    "Weight": 200
+  },
+  {
+    "Id": 30370029010002,
+    "StageDropContentSetId": 303700290100,
+    "RewardSetId": 30370029010002,
+    "Weight": 250
+  },
+  {
+    "Id": 30370029010003,
+    "StageDropContentSetId": 303700290100,
+    "RewardSetId": 30370029010003,
+    "Weight": 400
+  },
+  {
+    "Id": 30370029010004,
+    "StageDropContentSetId": 303700290100,
+    "RewardSetId": 30370029010004,
+    "Weight": 150
+  },
+  {
+    "Id": 30370029010101,
+    "StageDropContentSetId": 303700290101,
+    "RewardSetId": 30370029010100,
+    "Weight": 1
+  },
+  {
+    "Id": 30370029010401,
+    "StageDropContentSetId": 303700290104,
+    "RewardSetId": 30370029010400,
+    "Weight": 1
+  },
+  {
+    "Id": 30370029010501,
+    "StageDropContentSetId": 303700290105,
+    "RewardSetId": 30370029010501,
+    "Weight": 1
+  },
+  {
+    "Id": 30370029010502,
+    "StageDropContentSetId": 303700290105,
+    "RewardSetId": 30370029010502,
+    "Weight": 1
+  },
+  {
+    "Id": 30370029010503,
+    "StageDropContentSetId": 303700290105,
+    "RewardSetId": 30370029010503,
+    "Weight": 1
+  },
+  {
     "Id": 30400002030001,
     "StageDropContentSetId": 304000020300,
     "RewardSetId": 30400002030001,
@@ -9930,6 +10818,18 @@
     "Weight": 1
   },
   {
+    "Id": 30902000170101,
+    "StageDropContentSetId": 309020001701,
+    "RewardSetId": 30902000170101,
+    "Weight": 1
+  },
+  {
+    "Id": 30902000170201,
+    "StageDropContentSetId": 309020001702,
+    "RewardSetId": 30902000170201,
+    "Weight": 1
+  },
+  {
     "Id": 30902100010101,
     "StageDropContentSetId": 309021000101,
     "RewardSetId": 30902100010101,
@@ -10647,6 +11547,54 @@
     "Id": 30902100150301,
     "StageDropContentSetId": 309021001503,
     "RewardSetId": 30902100150301,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170101,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170101,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170102,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170102,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170103,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170103,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170104,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170104,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170105,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170105,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170106,
+    "StageDropContentSetId": 309021001701,
+    "RewardSetId": 30902100170106,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170201,
+    "StageDropContentSetId": 309021001702,
+    "RewardSetId": 30902100170201,
+    "Weight": 1
+  },
+  {
+    "Id": 30902100170301,
+    "StageDropContentSetId": 309021001703,
+    "RewardSetId": 30902100170301,
     "Weight": 1
   },
   {
@@ -11907,6 +12855,90 @@
     "Id": 30902200150301,
     "StageDropContentSetId": 309022001503,
     "RewardSetId": 30902200150301,
+    "Weight": 1
+  },
+  {
+    "Id": 30902200170101,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170101,
+    "Weight": 20
+  },
+  {
+    "Id": 30902200170102,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170102,
+    "Weight": 20
+  },
+  {
+    "Id": 30902200170103,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170103,
+    "Weight": 20
+  },
+  {
+    "Id": 30902200170104,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170104,
+    "Weight": 25
+  },
+  {
+    "Id": 30902200170105,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170105,
+    "Weight": 25
+  },
+  {
+    "Id": 30902200170106,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170106,
+    "Weight": 25
+  },
+  {
+    "Id": 30902200170107,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170107,
+    "Weight": 40
+  },
+  {
+    "Id": 30902200170108,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170108,
+    "Weight": 40
+  },
+  {
+    "Id": 30902200170109,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170109,
+    "Weight": 40
+  },
+  {
+    "Id": 30902200170110,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170110,
+    "Weight": 15
+  },
+  {
+    "Id": 30902200170111,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170111,
+    "Weight": 15
+  },
+  {
+    "Id": 30902200170112,
+    "StageDropContentSetId": 309022001701,
+    "RewardSetId": 30902200170112,
+    "Weight": 15
+  },
+  {
+    "Id": 30902200170201,
+    "StageDropContentSetId": 309022001702,
+    "RewardSetId": 30902200170201,
+    "Weight": 1
+  },
+  {
+    "Id": 30902200170301,
+    "StageDropContentSetId": 309022001703,
+    "RewardSetId": 30902200170301,
     "Weight": 1
   },
   {
@@ -15660,6 +16692,60 @@
     "Weight": 1
   },
   {
+    "Id": 31219006010001,
+    "StageDropContentSetId": 312190060100,
+    "RewardSetId": 31219006010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31219006010002,
+    "StageDropContentSetId": 312190060100,
+    "RewardSetId": 31219006010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31219006010401,
+    "StageDropContentSetId": 312190060104,
+    "RewardSetId": 31219006010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31219007010001,
+    "StageDropContentSetId": 312190070100,
+    "RewardSetId": 31219007010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31219007010002,
+    "StageDropContentSetId": 312190070100,
+    "RewardSetId": 31219007010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31219007010401,
+    "StageDropContentSetId": 312190070104,
+    "RewardSetId": 31219007010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31219008010001,
+    "StageDropContentSetId": 312190080100,
+    "RewardSetId": 31219008010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31219008010002,
+    "StageDropContentSetId": 312190080100,
+    "RewardSetId": 31219008010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31219008010401,
+    "StageDropContentSetId": 312190080104,
+    "RewardSetId": 31219008010400,
+    "Weight": 1
+  },
+  {
     "Id": 31230009010002,
     "StageDropContentSetId": 312300090100,
     "RewardSetId": 31230009010001,
@@ -15837,6 +16923,78 @@
     "Id": 31370012010401,
     "StageDropContentSetId": 313700120104,
     "RewardSetId": 31370012010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31370026010001,
+    "StageDropContentSetId": 313700260100,
+    "RewardSetId": 31370026010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31370026010002,
+    "StageDropContentSetId": 313700260100,
+    "RewardSetId": 31370026010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31370026010401,
+    "StageDropContentSetId": 313700260104,
+    "RewardSetId": 31370026010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31370027010001,
+    "StageDropContentSetId": 313700270100,
+    "RewardSetId": 31370027010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31370027010002,
+    "StageDropContentSetId": 313700270100,
+    "RewardSetId": 31370027010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31370027010401,
+    "StageDropContentSetId": 313700270104,
+    "RewardSetId": 31370027010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31370028010001,
+    "StageDropContentSetId": 313700280100,
+    "RewardSetId": 31370028010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31370028010002,
+    "StageDropContentSetId": 313700280100,
+    "RewardSetId": 31370028010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31370028010401,
+    "StageDropContentSetId": 313700280104,
+    "RewardSetId": 31370028010400,
+    "Weight": 1
+  },
+  {
+    "Id": 31370029010001,
+    "StageDropContentSetId": 313700290100,
+    "RewardSetId": 31370029010001,
+    "Weight": 600
+  },
+  {
+    "Id": 31370029010002,
+    "StageDropContentSetId": 313700290100,
+    "RewardSetId": 31370029010002,
+    "Weight": 400
+  },
+  {
+    "Id": 31370029010401,
+    "StageDropContentSetId": 313700290104,
+    "RewardSetId": 31370029010400,
     "Weight": 1
   },
   {
