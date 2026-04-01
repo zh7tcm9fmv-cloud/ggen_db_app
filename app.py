@@ -6302,11 +6302,9 @@ def lineage_rows_from_short_ids(short_ids, ld):
     return sorted(by_id.values(), key=lambda x: x['name'].lower())
 
 
-def browse_entity_has_lineage_or_series_tags(lin_map, ser_map, eid, lc, tag_type):
-    """True when entity has at least one lineage tag or series; bare map/NPC rows (no lineage, no series) stay off browse unless id-seek."""
-    if resolve_tags(lin_map, eid, lc, tag_type):
-        return True
-    return bool(resolve_series(ser_map.get(eid, ''), lc))
+def browse_entity_has_resolved_lineage_tags(lin_map, eid, lc, tag_type):
+    """True when entity has at least one lineage tag from the link table (resolve_tags). Series alone does not count — map/story NPCs often have SeriesId but no m_*_lineage row, so they stay off the list unless id-seek."""
+    return bool(resolve_tags(lin_map, eid, lc, tag_type))
 
 
 def character_passes_browse_pool_filters(
@@ -6359,7 +6357,7 @@ def character_passes_browse_pool_filters(
     ser_names_lower = series_names_lower_for_search(ser_list)
     if cid not in char_list_playable_ids and not id_seek:
         return False
-    if not id_seek and not browse_entity_has_lineage_or_series_tags(char_lin_map, ld.get('char_ser_map', {}), cid, lc, 'character'):
+    if not id_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
         return False
     if sq:
         search_chunks = []
@@ -6496,7 +6494,7 @@ def unit_passes_browse_pool_filters(
     ser_names_lower = series_names_lower_for_search(ser_list)
     if uid not in unit_list_playable_ids and not id_seek:
         return False
-    if not id_seek and not browse_entity_has_lineage_or_series_tags(unit_lin_map, unit_ser_map, uid, lc, 'unit'):
+    if not id_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
         return False
     if sq:
         search_chunks = []
@@ -7079,9 +7077,9 @@ def browse_filters():
         if entity == 'supporters':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'supporters')
-                ck = f"browse_filters_v11_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v12_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v11_{lc}_{entity}"
+                ck = f"browse_filters_v12_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify(cached)
@@ -7095,9 +7093,9 @@ def browse_filters():
             return jsonify(convert_image_urls(result))
         if filter_mode == 'current':
             sig = browse_filters_pool_signature(request.args, entity)
-            ck = f"browse_filters_v11_{lc}_{entity}_cur_{sig}"
+            ck = f"browse_filters_v12_{lc}_{entity}_cur_{sig}"
         else:
-            ck = f"browse_filters_v11_{lc}_{entity}"
+            ck = f"browse_filters_v12_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -7159,7 +7157,7 @@ def list_characters():
     skill_ck = lineage_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl27_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl28_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -7206,7 +7204,7 @@ def list_characters():
         ser_names_lower = series_names_lower_for_search(ser_list)
         if cid not in char_list_playable_ids and not id_seek:
             continue
-        if not id_seek and not browse_entity_has_lineage_or_series_tags(char_lin_map, ld.get('char_ser_map', {}), cid, lc, 'character'):
+        if not id_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
             continue
         if sq:
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
@@ -7270,7 +7268,7 @@ def list_units():
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul35_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul36_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -7320,7 +7318,7 @@ def list_units():
         ser_names_lower = series_names_lower_for_search(ser_list)
         if uid not in unit_list_playable_ids and not id_seek:
             continue
-        if not id_seek and not browse_entity_has_lineage_or_series_tags(unit_lin_map, unit_ser_map, uid, lc, 'unit'):
+        if not id_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
             continue
         if sq:
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
