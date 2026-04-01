@@ -87,11 +87,15 @@ def _env_flag(val, default=False):
     return str(val).strip().lower() in ('1', 'true', 'yes', 'on')
 
 
-# When True (and IMAGE_CDN is set), API JSON rewrites /static/images/* to the CDN. Default False: thumbnails
-# and portraits stay on the same origin as the app so files in static/images/ (e.g. WebP) work without mirroring
-# every release to the CDN. Footer / misc can still use IMAGE_CDN in the template. Set GAME_IMAGES_USE_CDN=1
-# if your CDN mirrors the full static/images tree.
-GAME_IMAGES_USE_CDN = bool(IMAGE_CDN) and _env_flag(os.environ.get('GAME_IMAGES_USE_CDN'), default=False)
+# When True (and IMAGE_CDN is set), API JSON rewrites /static/images/* to the CDN.
+# If IMAGE_CDN is set but GAME_IMAGES_USE_CDN is unset, default True so deploys (e.g. Railway) offload
+# thumbnails/portraits to the CDN instead of hammering the app server. Set GAME_IMAGES_USE_CDN=0 to force
+# same-origin /static/images (e.g. local edits without a CDN mirror).
+_gicdn_env = os.environ.get('GAME_IMAGES_USE_CDN')
+if _gicdn_env is None or str(_gicdn_env).strip() == '':
+    GAME_IMAGES_USE_CDN = bool(IMAGE_CDN)
+else:
+    GAME_IMAGES_USE_CDN = bool(IMAGE_CDN) and _env_flag(_gicdn_env, default=False)
 
 
 def convert_image_urls(obj):
@@ -119,7 +123,7 @@ else:
     print("⚠ Warning: image_index.json not found")
 
 if IMAGE_CDN and not GAME_IMAGES_USE_CDN:
-    print("  Image URLs: /static/images/* served from this app (not IMAGE_CDN). Set GAME_IMAGES_USE_CDN=1 if the CDN mirrors static/images.")
+    print("  Image URLs: /static/images/* served from this app (GAME_IMAGES_USE_CDN=0). Remove it or set to 1 to use IMAGE_CDN for game assets.")
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
