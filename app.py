@@ -1698,7 +1698,7 @@ def set_cached_response(cache_key, data):
 
 # Character id -> static URL for character list/detail only (images/portraits); units keep normal ub_/ms_ lookup.
 MANUAL_CHARACTER_PORTRAIT_OVERRIDE = {
-    '1305001400': '/static/images/portraits/' + quote('Easter Egg Mina.gif'),
+    '1305001200': '/static/images/portraits/' + quote('Easter Egg Mina.gif'),
 }
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
@@ -4080,8 +4080,25 @@ def _load_whats_new_history_index():
     except Exception:
         return {'version': 1, 'archives': []}
 
+def _whats_new_snapshot_game_fingerprint(snap):
+    """Stable hash of snapshot game payload (excludes captured_at) for deduping duplicate baselines."""
+    if not isinstance(snap, dict):
+        return ''
+    body = {k: v for k, v in snap.items() if k != 'captured_at'}
+    try:
+        raw = json.dumps(body, sort_keys=True, separators=(',', ':')).encode('utf-8')
+    except (TypeError, ValueError):
+        return ''
+    return hashlib.sha256(raw).hexdigest()
+
 def _load_whats_new_snapshot_chain():
-    """Return [oldest ... newest] snapshot dicts; newest is always whats_new_snapshot.json on disk."""
+    """Return [oldest ... newest] baselines for history diffs.
+
+    - Uses whats_new_history_index.json *captured_at* per archive when set (labels/sort), so tabs do not all show
+      the same calendar day after multiple refresh runs rewrote embedded dates.
+    - Drops consecutive archives with identical game data (e.g. duplicate refresh).
+    - Omits whats_new_snapshot.json from the tail when it matches the last archive file (pending still diffs that file vs live).
+    """
     idx = _load_whats_new_history_index()
     archives = idx.get('archives') or []
     loaded = []
@@ -4093,15 +4110,29 @@ def _load_whats_new_snapshot_chain():
             continue
         path = os.path.join(WHATS_NEW_HISTORY_DIR, fn)
         snap = _load_whats_new_snapshot_from_path(path)
-        if snap:
-            aid = (a.get('id') or fn).strip() or fn
-            loaded.append((aid, snap))
+        if not snap:
+            continue
+        aid = (a.get('id') or fn).strip() or fn
+        idx_ca = (a.get('captured_at') or '').strip()
+        if idx_ca:
+            snap = dict(snap)
+            snap['captured_at'] = idx_ca
+        loaded.append((aid, snap))
     loaded.sort(key=lambda x: ((x[1].get('captured_at') or '').strip(), x[0]))
-    chain = [x[1] for x in loaded]
+    chain = []
+    for _aid, snap in loaded:
+        fp = _whats_new_snapshot_game_fingerprint(snap)
+        if not fp:
+            continue
+        if chain and _whats_new_snapshot_game_fingerprint(chain[-1]) == fp:
+            continue
+        chain.append(snap)
     cur = load_whats_new_snapshot()
     if not cur:
         return []
-    chain.append(cur)
+    cur_fp = _whats_new_snapshot_game_fingerprint(cur)
+    if not chain or cur_fp != _whats_new_snapshot_game_fingerprint(chain[-1]):
+        chain.append(cur)
     return chain
 
 def _build_char_ability_effect_map_from_data(char_abil_data):
@@ -5502,19 +5533,22 @@ def api_whats_new():
         if snap_cur:
             pending = compute_whats_new_delta(lc)
             date = _whats_new_master_data_date()
-            pending_tab = {
-                'kind': 'pending',
-                'id': 'pending',
-                'label': date,
-                'date': date,
-                'changes': (pending or {}).get('changes') or [],
-                'added': (pending or {}).get('added') or [],
-            }
-            entry_pending = {
-                'date': date,
-                'changes': (pending or {}).get('changes') or [],
-                'added': (pending or {}).get('added') or [],
-            }
+            pch = (pending or {}).get('changes') or []
+            pad = (pending or {}).get('added') or []
+            if pending and (pch or pad):
+                pending_tab = {
+                    'kind': 'pending',
+                    'id': 'pending',
+                    'label': date,
+                    'date': date,
+                    'changes': pch,
+                    'added': pad,
+                }
+                entry_pending = {
+                    'date': date,
+                    'changes': pch,
+                    'added': pad,
+                }
         history_items = []
         chain = _load_whats_new_snapshot_chain()
         for i in range(len(chain) - 1, 0, -1):
