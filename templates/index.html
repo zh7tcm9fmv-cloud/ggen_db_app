@@ -350,7 +350,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-name-area{flex:1;min-width:0}.weapon-name-text{font-size:18px;font-weight:700;color:var(--text-primary)}.weapon-attack-types{display:flex;gap:4px;margin-top:4px;align-items:center}.weapon-attack-type-icon{width:24px;height:24px;object-fit:contain;background:transparent;border:none;display:block;vertical-align:middle;filter:brightness(1.25) saturate(1.5)}
 .weapon-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1px;background:rgba(0,0,0,.2)}.weapon-stat-item{padding:10px 8px;text-align:center}.weapon-stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.weapon-stat-value{font-size:18px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}.weapon-stat-value.highlight{color:var(--accent-blue)}.weapon-stat-value.weapon-acc-boost{color:#5d9cec!important;font-weight:800;text-shadow:0 0 10px rgba(93,156,236,.45)}
 .weapon-card-body{padding:14px 18px}.weapon-trait-item{display:flex;flex-direction:column;gap:4px;padding:0;font-size:15px;color:var(--text-secondary)}.weapon-trait-line{line-height:1.45}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
-.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:10px 12px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:min(92vh,900px);scroll-behavior:smooth}.map-grid-container.active{display:flex}
+.map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:10px 12px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:min(90vh,820px);scroll-behavior:smooth}.map-grid-container.active{display:flex}
+.map-grid-container:has(.weapon-map-grid-wrap[data-map-span="s"]){max-height:min(93vh,920px);padding:12px 14px}
+.map-grid-container:has(.weapon-map-grid-wrap[data-map-span="l"]){max-height:min(84vh,680px);padding:6px 8px}
 .map-grid-container:has(.weapon-map-high-vis){background:rgba(6,182,212,.06);border-color:rgba(56,189,248,.22)}
 .weapon-map-grid-wrap{display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%;box-sizing:border-box;position:relative;padding-top:0}
 .weapon-map-grid-wrap>.weapon-map-grid,.weapon-map-grid-wrap>.weapon-map-legend{align-self:center;max-width:100%}
@@ -386,8 +388,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-sel-crosshair{position:absolute;inset:0;z-index:5;pointer-events:none;box-sizing:border-box;overflow:visible}
 .map-sel-crosshair .map-sel-marker-img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(22px,calc(var(--map-cell,24px)*0.62));height:min(22px,calc(var(--map-cell,24px)*0.62));aspect-ratio:1;object-fit:contain;object-position:center;display:block;margin:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
 .map-cell-pou-moving{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
-.map-cell-pou-moving img{width:min(22px,calc(var(--map-cell,24px)*0.62));height:min(22px,calc(var(--map-cell,24px)*0.62));aspect-ratio:1;object-fit:contain;display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
+.map-cell-pou-moving img{width:min(22px,calc(var(--map-cell,24px)*0.62));height:min(22px,calc(var(--map-cell,24px)*0.62));aspect-ratio:1;object-fit:contain;display:block;margin-left:4px;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
 .weapon-map-high-vis .map-cell-pou-moving img{filter:brightness(1.12) contrast(1.12) drop-shadow(0 0 2px rgba(0,0,0,.8))}
+.map-use-footprint-overlay img{transform:translateX(4px)}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
@@ -2330,21 +2333,44 @@ function renderMapGrid(weapon,isLarge){
   if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;cl=Math.min(cl,Math.max(0,uxMin-fmnx));cr=Math.min(cr,Math.max(0,fmxx-uxMax));fmnx+=cl;fmxx-=cr;fc=19}
   if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
 
+  let mapSpan=Math.max(fc,fr);
+  if(mapSpan<=12)py=Math.max(Math.floor(ah2/2),2);
+  else if(mapSpan<=16)py=Math.max(Math.floor(ah2*0.42),2);
+  else py=Math.max(Math.floor(ah2/3),1);
+  fmny=mny-py;fmxy=mxy+py;fr=fmxy-fmny+1;
+  if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
+  mapSpan=Math.max(fc,fr);
+
   const mapHighVisInit=weaponMapGridHighVisPreferred();
   const mapGap=mapHighVisInit?3:2;
-  const mapCell=isLarge?26:17;
+  let mapCell;
+  if(isLarge){
+    if(mapSpan<=11)mapCell=30;
+    else if(mapSpan<=13)mapCell=26;
+    else if(mapSpan<=16)mapCell=22;
+    else mapCell=19
+  }else{
+    if(mapSpan<=9)mapCell=22;
+    else if(mapSpan<=12)mapCell=18;
+    else if(mapSpan<=15)mapCell=15;
+    else mapCell=13
+  }
+  const pouCard=[[-1,0],[1,0],[0,-1],[0,1]];
+  const pouWraps=t1?pouCard.every(([wx,wy])=>ec.some(e=>e.x===wx&&e.y===wy)):(t2&&pouCard.every(([wx,wy])=>ec.some(e=>e.x+sx===wx&&e.y+sy===wy)));
   const mapUsePosi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
   const mapUseNega=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.webp');
   const mapUseMovingWebp=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.webp');
-  const mapUseFootUrl=t1?mapUsePosi:mapUseNega;
+  const mapUseFootOverlay=t2?mapUseNega:mapUsePosi;
   const mapT1LargePouHtml=`<span class="map-cell-pou-moving" aria-hidden="true"><img src="${mapUseMovingWebp}" alt=""></span>`;
   const mapSelMarker=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_SelectMarker_Nega.webp');
   const mapSelHtml=`<span class="map-sel-crosshair" aria-hidden="true"><img class="map-sel-marker-img" src="${mapSelMarker}" alt=""></span>`;
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.png');
   let lsBase=isLarge?`position:absolute;width:${mapCell}px;height:${mapCell}px;top:0;left:0;z-index:2;object-fit:contain;`:`position:absolute;top:0;left:0;width:${mapCell}px;height:${mapCell}px;z-index:2;object-fit:contain;`;
+  let lsPou=isLarge?`position:absolute;width:${mapCell}px;height:${mapCell}px;top:0;left:4px;z-index:2;object-fit:contain;`:`position:absolute;top:0;left:4px;width:${mapCell}px;height:${mapCell}px;z-index:2;object-fit:contain;`;
   const themeTip=mapHighVisInit?t('map_effect_theme_light'):t('map_effect_theme_dark');
   const mapTileCls=(src)=>{const s=String(src);if(s.includes('Block_Posi'))return'map-cell--posi';if(s.includes('Block_Nega'))return'map-cell--nega';if(s.includes('Block_Moving'))return'map-cell--moving';return'map-cell--normal'};
-  let html=`<div class="weapon-map-grid-wrap${mapHighVisInit?' weapon-map-high-vis':''}"><div class="weapon-map-toolbar"><button type="button" class="weapon-map-theme-toggle" onclick="event.stopPropagation();toggleWeaponMapGridTheme(this)" title="${escAttr(themeTip)}" aria-label="${escAttr(themeTip)}" aria-pressed="${mapHighVisInit?'true':'false'}"><svg class="weapon-map-theme-ic weapon-map-theme-ic--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'none':'block'}"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="weapon-map-theme-ic weapon-map-theme-ic--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'block':'none'}"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div><div class="weapon-map-grid" style="--map-cell:${mapCell}px;grid-template-columns:repeat(${fc},var(--map-cell));grid-template-rows:repeat(${fr},var(--map-cell));">`;
+  const mapSpanCat=mapSpan<=11?'s':(mapSpan>=17?'l':'m');
+  let html=`<div class="weapon-map-grid-wrap${mapHighVisInit?' weapon-map-high-vis':''}" data-map-span="${mapSpanCat}"><div class="weapon-map-toolbar"><button type="button" class="weapon-map-theme-toggle" onclick="event.stopPropagation();toggleWeaponMapGridTheme(this)" title="${escAttr(themeTip)}" aria-label="${escAttr(themeTip)}" aria-pressed="${mapHighVisInit?'true':'false'}"><svg class="weapon-map-theme-ic weapon-map-theme-ic--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'none':'block'}"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="weapon-map-theme-ic weapon-map-theme-ic--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:${mapHighVisInit?'block':'none'}"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div><div class="weapon-map-grid" style="--map-cell:${mapCell}px;grid-template-columns:repeat(${fc},var(--map-cell));grid-template-rows:repeat(${fr},var(--map-cell));">`;
 
   for(let r=0;r<fr;r++){
     let cy=fmxy-r;
@@ -2379,10 +2405,10 @@ function renderMapGrid(weapon,isLarge){
       if(t3){
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
+          if(im)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${lsPou}\">`
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.png');
-          if(iem)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${ls}\">`
+          if(iem)mh=`<img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\" style=\"${lsPou}\">`
         }else if(ie||isp){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
@@ -2396,10 +2422,10 @@ function renderMapGrid(weapon,isLarge){
         if(its){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
           mh=mapSelHtml;
-          if(iu&&!isLarge)mh=`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`+mapSelHtml
+          if(iu&&!isLarge)mh=`<img src=\"${mapUseNega}\" alt=\"\" style=\"${lsPou}\">`+mapSelHtml
         }else if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          mh=(!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${ls}\">`:''
+          mh=(!isLarge&&im)?`<img src=\"${mapUseNega}\" alt=\"\" style=\"${lsPou}\">`:''
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }else if(isp){
@@ -2408,8 +2434,8 @@ function renderMapGrid(weapon,isLarge){
       }else{
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(isLarge)mh=mapT1LargePouHtml;
-          else if(im)mh=`<img src=\"${mapUsePosi}\" alt=\"\" style=\"${ls}\">`
+          if(isLarge){if(!pouWraps)mh=mapT1LargePouHtml}
+          else if(im)mh=`<img src=\"${pouWraps?mapUsePosi:mapUseMovingWebp}\" alt=\"\" style=\"${lsPou}\">`
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
@@ -2420,13 +2446,13 @@ function renderMapGrid(weapon,isLarge){
     }
   }
 
-  if(isLarge&&!t3&&!t1){
+  if(isLarge&&!t3&&(t2||(t1&&pouWraps))){
     const ax=t2?ux:0,ay=t2?uy:0;
     const cIdx=ax-fmnx,rIdx=fmxy-ay;
-    html+=`<div class="map-use-footprint-overlay" style="grid-column:${cIdx+1}/span 2;grid-row:${rIdx+1}/span 2" aria-hidden="true"><img src="${mapUseFootUrl}" alt=""></div>`
+    html+=`<div class="map-use-footprint-overlay" style="grid-column:${cIdx+1}/span 2;grid-row:${rIdx+1}/span 2" aria-hidden="true"><img src="${mapUseFootOverlay}" alt=""></div>`
   }
   html+='</div>';
-  const legendPouSrc=(t1&&isLarge)?mapUseMovingWebp:mapUseFootUrl;
+  const legendPouSrc=t2?mapUseNega:(pouWraps?mapUsePosi:mapUseMovingWebp);
   const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+legendPouSrc+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
   const legEffect='<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#59a8f0;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_effect')+'</span>';
   if(t2){
