@@ -80,7 +80,7 @@ else:
     print("⚠ Warning: image_index.json not found")
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
-# (mtime, merged filenames) — invalidated when static/images/portraits changes
+# (mtime, merged filenames) per folder — invalidated when that static/images/* dir changes
 _PORTRAIT_FS_CACHE = {}
 
 
@@ -103,9 +103,14 @@ def _list_disk_image_files(rel_path):
 
 
 def _merged_portrait_files(portrait_folder_key):
-    """Merge image_index.json with files on disk for character portraits only. Unit portraits use the index only."""
+    """Merge image_index.json with files on disk for character and unit portrait folders.
+
+    Unit entries in the index are often still *.png while CDN/static may only have *.webp after conversion;
+    merging disk picks up WebPs without regenerating the index. GitHub image repos must still be copied
+    into static/images/unit_portraits (or the CDN) on deploy — the app does not fetch from GitHub at runtime.
+    """
     indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
-    if portrait_folder_key != 'images/portraits':
+    if portrait_folder_key not in ('images/portraits', 'images/unit_portraits'):
         return indexed
     d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
     try:
@@ -1651,8 +1656,8 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX. Character portraits also merge files on disk under static/images/portraits;
-    unit portraits use image_index.json only (same as before the disk merge).
+    Find portrait using IMAGE_INDEX merged with on-disk files under static/images/portraits and
+    static/images/unit_portraits (so WebP assets synced from your image repo are visible without re-indexing).
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
@@ -1697,6 +1702,16 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
             if cb_ok:
                 cb_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
                 return cb_ok[0]
+            ub_pref = f'ub_{rle}.'
+            ub_ok = [m for m in matches if m.lower().startswith(ub_pref)]
+            if ub_ok:
+                ub_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return ub_ok[0]
+            ms_pref = f'ms_{rle}.'
+            ms_ok = [m for m in matches if m.lower().startswith(ms_pref)]
+            if ms_ok:
+                ms_ok.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+                return ms_ok[0]
             exact = [
                 m for m in matches
                 if m.lower().startswith(rle + '.') or m.lower() in (rle + '.webp', rle + '.png', rle + '.jpg', rle + '.jpeg')
@@ -1705,7 +1720,10 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
                 exact.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
                 return exact[0]
         clean = [m for m in matches if ' #' not in m]
-        return clean[0] if clean else matches[0]
+        if not clean:
+            return matches[0]
+        clean.sort(key=lambda x: (0 if x.lower().endswith('.webp') else 1, x.lower()))
+        return clean[0]
 
     candidates = []
     if isinstance(resource_ids, list):
@@ -7475,7 +7493,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v5_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v7_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
