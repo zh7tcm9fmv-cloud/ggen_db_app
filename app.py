@@ -2596,10 +2596,10 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
         if kw in tl: return bonuses
-    # "Own ATK/DEF" in ability text is the mobile suit's Attack/Defense stat in battle, not pilot Ranged/Melee/Defense.
-    if 'own atk' in tl or 'own attack' in tl:
+    # MS combat lines use abbreviated ATK/DEF (word boundary so pilot "own Defense" is not skipped).
+    if re.search(r'\bown\s+atk\b', tl) or re.search(r'\bown\s+attack\b', tl):
         return bonuses
-    if 'own def' in tl or 'own defense' in tl:
+    if re.search(r'\bown\s+def\b', tl):
         return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
     m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by (\d+)%", text, re.IGNORECASE)
@@ -5279,10 +5279,12 @@ def calculate_npc_character_self_bonus_pct(abilities):
     for ab in abilities:
         for d in (ab.get('details', []) if isinstance(ab, dict) else []):
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
-            if not txt or _char_trait_text_is_support_defense_action(txt) or _is_conditional_stat_text(txt):
+            if not txt or _char_trait_text_is_support_defense_action(txt):
                 continue
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
                 if _char_trait_line_is_squad_unit_effect(line, ab):
+                    continue
+                if _is_conditional_stat_text(line):
                     continue
                 for s, p in extract_stat_percent_char(line, txt, char_id=None).items():
                     if s in bp: bp[s] = bp.get(s, 0) + p

@@ -4155,10 +4155,30 @@ if(um==='ssp'&&ab.ssp_replacement)return ab.ssp_replacement;
 return ab;
 }
 
+/** Match API condition_groups: each group is AND; within a group every condition must match (unit tags, series, etc.). */
+function _dcUnitMeetsAbilityConditionGroups(ud,condGroups){
+if(!condGroups||!condGroups.length)return true;
+if(!ud)return false;
+const tagIds=new Set((ud.tags||[]).map(t=>String(t.id)));
+const seriesIds=new Set((ud.series||[]).map(s=>String(s.id)));
+return condGroups.every(grp=>{
+const conds=grp.conditions||[];
+if(!conds.length)return true;
+return conds.every(c=>{
+const id=String(c.id);
+const src=String(c.source||'');
+if(src==='unit_tags'||c.type==='unit')return tagIds.has(id);
+if(src==='series'||c.type==='series')return seriesIds.has(id);
+if(src==='group_tags')return tagIds.has(id);
+if(src==='char_tags')return tagIds.has(id);
+return false;
+});
+});
+}
+
 function _dcParsePilotAbilBonuses(cd){
 const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
 const ud=S.dc.atkUnitData;
-const unitTagIds=(ud?.tags||[]).map(t=>t.id);
 function parseFromResolved(resolved,src){
 if(!resolved)return;
 const dispName=resolved.display_name||resolved.name||'';
@@ -4168,7 +4188,7 @@ const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
 let condMet=false;
-if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
+if(hasCond)condMet=_dcUnitMeetsAbilityConditionGroups(ud,condGroups);
 const isUnmet=hasCond&&!condMet;
 const spCharGate=src==='char'&&_dcPilotAbilitySpCharGateContext(resolved,li,txt);
 let m;
@@ -4343,10 +4363,10 @@ return passiveTotal+F(base*p/100);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
-const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:6,level:'high'},{min:12,level:'max'},{min:18,level:'super'}];
+const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:5,level:'high'},{min:12,level:'max'},{min:18,level:'super'}];
 function _dcCalcStartingVigor(){
-const cd=S.dc.atkCharData;if(!cd||!cd.abilities)return 'medium';
-const unitTagIds=(S.dc.atkUnitData?.tags||[]).map(t=>t.id);
+const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
+if(!cd||!cd.abilities)return 'medium';
 let totalMp=0;
 cd.abilities.forEach(ab=>{
 (ab.details||[]).forEach(ln=>{
@@ -4356,9 +4376,8 @@ if(!m)return;
 const v=parseInt(m[1],10);
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
-let condMet=false;
-if(hasCond&&unitTagIds.length){condMet=condGroups.every(grp=>(grp.conditions||[]).some(c=>c.source==='unit_tags'&&unitTagIds.includes(c.id)))}
-if(!hasCond||condMet)totalMp+=v;
+const condMet=!hasCond||_dcUnitMeetsAbilityConditionGroups(ud,condGroups);
+if(condMet)totalMp+=v;
 });
 });
 let level='medium';
