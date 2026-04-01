@@ -1673,8 +1673,8 @@ def set_cached_response(cache_key, data):
 # IMAGE FINDING FUNCTIONS (using IMAGE_INDEX)
 # ═══════════════════════════════════════════════════════
 
-# Unit id -> static URL for list/detail portrait (bypasses Trait/thum and index lookup).
-MANUAL_UNIT_PORTRAIT_OVERRIDE = {
+# Character id -> static URL for character list/detail only (images/portraits); units keep normal ub_/ms_ lookup.
+MANUAL_CHARACTER_PORTRAIT_OVERRIDE = {
     '1305001400': '/static/images/portraits/' + quote('Easter Egg Mina.gif'),
 }
 
@@ -1687,8 +1687,8 @@ def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
     """
     eid_ov = normalize_id(entity_id) if entity_id else ''
-    if portrait_folder_key == 'images/unit_portraits' and eid_ov in MANUAL_UNIT_PORTRAIT_OVERRIDE:
-        return MANUAL_UNIT_PORTRAIT_OVERRIDE[eid_ov]
+    if portrait_folder_key == 'images/portraits' and eid_ov in MANUAL_CHARACTER_PORTRAIT_OVERRIDE:
+        return MANUAL_CHARACTER_PORTRAIT_OVERRIDE[eid_ov]
     files = _merged_portrait_files(portrait_folder_key)
     if not files:
         return None
@@ -1963,8 +1963,8 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     """List/grid thumbnails: Trait/thum (thum_<ResourceId>) first, then full portrait folder (cb_/ub_/ms_)."""
     eid_ov = normalize_id(entity_id) if entity_id else ''
-    if portrait_folder_key == 'images/unit_portraits' and eid_ov in MANUAL_UNIT_PORTRAIT_OVERRIDE:
-        return MANUAL_UNIT_PORTRAIT_OVERRIDE[eid_ov]
+    if portrait_folder_key == 'images/portraits' and eid_ov in MANUAL_CHARACTER_PORTRAIT_OVERRIDE:
+        return MANUAL_CHARACTER_PORTRAIT_OVERRIDE[eid_ov]
     if portrait_folder_key == 'images/unit_portraits':
         t = _find_trait_thum_list_asset(resource_ids, entity_id)
         if t:
