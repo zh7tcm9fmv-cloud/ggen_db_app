@@ -1373,15 +1373,20 @@ ROLE_ICON_MAP = {
     '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
     '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
 }
-EX_ABILITY_PATTERNS = ['ex character ability', 'ex機體能力', 'ex角色能力', 'exキャラクターアビリティ']
+# Substrings in trait/ability *names* from master data (not necessarily the same as on-screen UI copy).
+EX_ABILITY_PATTERNS = [
+    'ex character ability', 'ex ability', 'ex機體能力', 'ex角色能力', 'exキャラクターアビリティ',
+]
+
 
 def ex_character_ability_display_label(lang_code):
+    """Short title shown instead of '(Tag conditions) …' style names. EN client uses **EX ability** (verify before renaming)."""
     lc = (lang_code or 'EN').upper()
     if lc in ('TW', 'HK'):
         return 'EX角色能力'
     if lc in ('JA', 'JP'):
         return 'EXキャラクターアビリティ'
-    return 'EX Character Ability'
+    return 'EX ability'
 
 def is_ex_character_ability_frame(ab_name):
     """Square EX frame on trait icon: EX in name, tag conditions, or series conditions (EN/TW/HK/JA wording)."""
@@ -1401,7 +1406,7 @@ def is_ex_character_ability_frame(ab_name):
 
 
 def is_ex_character_ability_rename(ab_name):
-    """Replace title with localized 'EX Character Ability' (tag-style EX only; keep '(Series conditions)…' readable)."""
+    """Replace title with localized EX-ability label (tag-style EX only; keep '(Series conditions)…' as in master)."""
     if is_ex_ability(ab_name):
         return True
     raw = ab_name or ''
