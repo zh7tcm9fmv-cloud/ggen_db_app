@@ -36,6 +36,29 @@ if os.environ.get('FLASK_SESSION_SECURE', '').lower() in ('1', 'true', 'yes'):
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
+# Long-lived browser cache for game images (WebP, etc.). Set STATIC_CACHE_MAX_AGE=0 to disable during asset work.
+_STATIC_CACHEABLE_EXT = frozenset(
+    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.eot')
+)
+_STATIC_CACHE_MAX_AGE = int(os.environ.get('STATIC_CACHE_MAX_AGE', '31536000') or '0')
+
+
+@app.after_request
+def _apply_static_cache_headers(response):
+    if _STATIC_CACHE_MAX_AGE <= 0:
+        return response
+    try:
+        path = request.path or ''
+    except RuntimeError:
+        return response
+    if not path.startswith('/static/'):
+        return response
+    ext = os.path.splitext(path)[1].lower()
+    if ext not in _STATIC_CACHEABLE_EXT:
+        return response
+    response.headers.setdefault('Cache-Control', f'public, max-age={_STATIC_CACHE_MAX_AGE}')
+    return response
+
 # Latest Release: set LATEST_RELEASE_PASSWORD to require unlock + per-session watermark id.
 LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').strip()
 # Optional test pins: lock a specific schedule Id or exact StartDatetime (epoch ms) even if "now" is past start.
