@@ -144,6 +144,18 @@
     "value": "Pre-1st Anniversary Special Featured Unit Assembly"
   },
   {
+    "id": 220100002603600301,
+    "value": "New Unit Featured Unit Assembly"
+  },
+  {
+    "id": 220100002603600501,
+    "value": "[1st Anniversary] 1 UR Unit Guaranteed 5-Pull Unit Assembly"
+  },
+  {
+    "id": 220100002603600502,
+    "value": "[1st Anniversary] 1 UR Supporter Guaranteed 5-Pull Unit Assembly"
+  },
+  {
     "id": 220100002603600601,
     "value": "1st Anniversary Unit Assembly (Up to 47 Free Pulls) (2 UR or Higher Units Guaranteed)"
   },
@@ -194,6 +206,10 @@
   {
     "id": 220500000000000008,
     "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 5th pull on a 5-time pull, the drop rates are as shown in the \"Use 5 times (1st–4th)\" lists.\n*One UR unit is guaranteed to appear on a 5-time pull. The drop rates are as shown in the \"Use 5 times (5th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
+  },
+  {
+    "id": 220500000000000009,
+    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 5th pull on a 5-time pull, the drop rates are as shown in the \"Use 5 times (1st–4th)\" lists.\n*One UR supporter is guaranteed to appear on a 5-time pull. The drop rates are as shown in the \"Use 5 times (5th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
   },
   {
     "id": 220500000000000011,

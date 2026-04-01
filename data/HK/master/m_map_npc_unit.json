@@ -173872,22 +173872,6 @@
     "MapNpcUnitWeaponSetId": 10000001400000501
   },
   {
-    "MapNpcId": 902000001502000002,
-    "Number": 0,
-    "UnitId": 1400000500,
-    "Level": 25,
-    "Hp": 38332,
-    "En": 374,
-    "Exp": 0,
-    "Attack": 1661,
-    "Defense": 4784,
-    "Mobility": 1878,
-    "Movement": 4,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29020001400000501,
-    "MapNpcUnitWeaponSetId": 10000001400000501
-  },
-  {
     "MapNpcId": 902000001502000003,
     "Number": 0,
     "UnitId": 1400001500,
@@ -173901,22 +173885,6 @@
     "Movement": 8,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001400001501
-  },
-  {
-    "MapNpcId": 902000001502000003,
-    "Number": 0,
-    "UnitId": 1400001500,
-    "Level": 25,
-    "Hp": 52147,
-    "En": 381,
-    "Exp": 0,
-    "Attack": 1584,
-    "Defense": 6191,
-    "Mobility": 1759,
-    "Movement": 8,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29020001400004801,
     "MapNpcUnitWeaponSetId": 10000001400001501
   },
   {
@@ -179568,22 +179536,6 @@
     "MapNpcUnitWeaponSetId": 10000001400000501
   },
   {
-    "MapNpcId": 902100001502000002,
-    "Number": 0,
-    "UnitId": 1400000500,
-    "Level": 70,
-    "Hp": 80886,
-    "En": 593,
-    "Exp": 0,
-    "Attack": 3505,
-    "Defense": 10093,
-    "Mobility": 3895,
-    "Movement": 4,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29021001400000501,
-    "MapNpcUnitWeaponSetId": 10000001400000501
-  },
-  {
     "MapNpcId": 902100001502000003,
     "Number": 0,
     "UnitId": 1400001500,
@@ -179597,22 +179549,6 @@
     "Movement": 8,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001400001501
-  },
-  {
-    "MapNpcId": 902100001502000003,
-    "Number": 0,
-    "UnitId": 1400001500,
-    "Level": 70,
-    "Hp": 110039,
-    "En": 589,
-    "Exp": 0,
-    "Attack": 3343,
-    "Defense": 13061,
-    "Mobility": 3711,
-    "Movement": 8,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29021001400004801,
     "MapNpcUnitWeaponSetId": 10000001400001501
   },
   {
@@ -186112,22 +186048,6 @@
     "MapNpcUnitWeaponSetId": 10000001400000501
   },
   {
-    "MapNpcId": 902200001502000002,
-    "Number": 0,
-    "UnitId": 1400000500,
-    "Level": 90,
-    "Hp": 230469,
-    "En": 769,
-    "Exp": 0,
-    "Attack": 5944,
-    "Defense": 20130,
-    "Mobility": 7648,
-    "Movement": 4,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29022001400000501,
-    "MapNpcUnitWeaponSetId": 10000001400000501
-  },
-  {
     "MapNpcId": 902200001502000003,
     "Number": 0,
     "UnitId": 1400001500,
@@ -186141,22 +186061,6 @@
     "Movement": 8,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001400001501
-  },
-  {
-    "MapNpcId": 902200001502000003,
-    "Number": 0,
-    "UnitId": 1400001500,
-    "Level": 90,
-    "Hp": 266504,
-    "En": 757,
-    "Exp": 0,
-    "Attack": 5765,
-    "Defense": 22327,
-    "Mobility": 7489,
-    "Movement": 8,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29022001400004801,
     "MapNpcUnitWeaponSetId": 10000001400001501
   },
   {
@@ -192448,22 +192352,6 @@
     "MapNpcUnitWeaponSetId": 10000001400000501
   },
   {
-    "MapNpcId": 902300001502000002,
-    "Number": 0,
-    "UnitId": 1400000500,
-    "Level": 90,
-    "Hp": 230469,
-    "En": 769,
-    "Exp": 0,
-    "Attack": 5944,
-    "Defense": 20130,
-    "Mobility": 7648,
-    "Movement": 4,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29023001400000501,
-    "MapNpcUnitWeaponSetId": 10000001400000501
-  },
-  {
     "MapNpcId": 902300001502000003,
     "Number": 0,
     "UnitId": 1400001500,
@@ -192477,22 +192365,6 @@
     "Movement": 8,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001400001501
-  },
-  {
-    "MapNpcId": 902300001502000003,
-    "Number": 0,
-    "UnitId": 1400001500,
-    "Level": 90,
-    "Hp": 266504,
-    "En": 757,
-    "Exp": 0,
-    "Attack": 5765,
-    "Defense": 22327,
-    "Mobility": 7489,
-    "Movement": 8,
-    "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 29023001400004801,
     "MapNpcUnitWeaponSetId": 10000001400001501
   },
   {

@@ -472,6 +472,14 @@
     "value": "Land"
   },
   {
+    "id": 110600000000001132,
+    "value": "Shippujinrai"
+  },
+  {
+    "id": 110600000000001133,
+    "value": "Tenacious"
+  },
+  {
     "id": 110700000000001001,
     "value": "U.C. Series"
   },
@@ -942,5 +950,13 @@
   {
     "id": 110700000000001131,
     "value": "Land"
+  },
+  {
+    "id": 110700000000001132,
+    "value": "Shippujinrai"
+  },
+  {
+    "id": 110700000000001133,
+    "value": "Tenacious"
   }
 ]

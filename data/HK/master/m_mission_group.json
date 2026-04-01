@@ -4606,16 +4606,6 @@
     "SortOrder": 212,
     "AvailableScheduleId": 2512409903,
     "ReceivableScheduleId": 2512409903,
-    "TransitionId": 39000000005100,
-    "MissionGroupCategoryTypeIndex": 1
-  },
-  {
-    "Id": 251240090002,
-    "EventId": 0,
-    "MissionResetTypeIndex": 1,
-    "SortOrder": 212,
-    "AvailableScheduleId": 2512409903,
-    "ReceivableScheduleId": 2512409903,
     "TransitionId": 39000000005010,
     "MissionGroupCategoryTypeIndex": 1
   },

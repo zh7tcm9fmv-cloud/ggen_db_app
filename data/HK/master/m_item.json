@@ -18280,20 +18280,6 @@
     "ScheduleId": 0,
     "EffectValue": 0,
     "IsHiddenIfEmpty": false,
-    "SortOrder": 110999900,
-    "IsPrecious": false
-  },
-  {
-    "Id": 200000000002,
-    "ResourceId": "spm_0002",
-    "ItemTypeIndex": 31,
-    "RarityTypeIndex": 5,
-    "NameLanguageId": 150100200000000002,
-    "DescriptionLanguageId": 150200200000000002,
-    "MaxCapacity": 9999,
-    "ScheduleId": 0,
-    "EffectValue": 0,
-    "IsHiddenIfEmpty": false,
     "SortOrder": 112999900,
     "IsPrecious": false
   },

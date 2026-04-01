@@ -1356,8 +1356,64 @@
     "value": "Soris Armonia"
   },
   {
+    "id": 100100001219000100,
+    "value": "Heero Yuy (EW)"
+  },
+  {
+    "id": 100100001219000101,
+    "value": "Heero Yuy (EW)"
+  },
+  {
+    "id": 100100001219000200,
+    "value": "Duo Maxwell (EW)"
+  },
+  {
     "id": 100100001219000201,
     "value": "Duo Maxwell (EW)"
+  },
+  {
+    "id": 100100001219000300,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100100001219000301,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100100001219000302,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100100001219000400,
+    "value": "Quatre Raberba Winner (EW)"
+  },
+  {
+    "id": 100100001219000500,
+    "value": "Chang Wufei (EW)"
+  },
+  {
+    "id": 100100001219000501,
+    "value": "Chang Wufei (EW)"
+  },
+  {
+    "id": 100100001219000600,
+    "value": "Relena Darlian (EW)"
+  },
+  {
+    "id": 100100001219000700,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100100001219000701,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100100001219000702,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100100001219000800,
+    "value": "Lucrezia Noin (EW)"
   },
   {
     "id": 100100001230000100,
@@ -2016,6 +2072,14 @@
     "value": "Sumeragi Lee Noriega"
   },
   {
+    "id": 100100001370000501,
+    "value": "Sumeragi Lee Noriega"
+  },
+  {
+    "id": 100100001370000701,
+    "value": "Feldt Grace"
+  },
+  {
     "id": 100100001370000901,
     "value": "Lasse Aeon"
   },
@@ -2060,6 +2124,10 @@
     "value": "Kati Mannequin"
   },
   {
+    "id": 100100001370003202,
+    "value": "Kati Mannequin"
+  },
+  {
     "id": 100100001370003300,
     "value": "Sergei Smirnov"
   },
@@ -2072,12 +2140,156 @@
     "value": "Ribbons Almark"
   },
   {
+    "id": 100100001370003501,
+    "value": "Ribbons Almark"
+  },
+  {
+    "id": 100100001370003502,
+    "value": "Ribbons Almark"
+  },
+  {
     "id": 100100001370003600,
     "value": "Ali al-Saachez"
   },
   {
     "id": 100100001370003601,
     "value": "Ali al-Saachez"
+  },
+  {
+    "id": 100100001370003700,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100100001370003701,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100100001370003702,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100100001370003703,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100100001370003900,
+    "value": "Arthur Goodman"
+  },
+  {
+    "id": 100100001370004000,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100100001370004001,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100100001370004100,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100100001370004102,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100100001370004200,
+    "value": "Sergei Smirnov"
+  },
+  {
+    "id": 100100001370004300,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100100001370004301,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100100001370004400,
+    "value": "Louise Halevy"
+  },
+  {
+    "id": 100100001370004500,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100100001370004501,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100100001370004600,
+    "value": "Marie Parfacy"
+  },
+  {
+    "id": 100100001370004700,
+    "value": "Andrei Smirnov"
+  },
+  {
+    "id": 100100001370004800,
+    "value": "Bring Stabity"
+  },
+  {
+    "id": 100100001370004902,
+    "value": "Saji Crossroad"
+  },
+  {
+    "id": 100100001370005000,
+    "value": "Barack Zinin"
+  },
+  {
+    "id": 100100001370005100,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100100001370005101,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100100001370005200,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100100001370005201,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100100001370005300,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100100001370005301,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100100001370005400,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100100001370005402,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100100001370005600,
+    "value": "Graham Aker"
+  },
+  {
+    "id": 100100001370005700,
+    "value": "Devine Nova"
+  },
+  {
+    "id": 100100001370005800,
+    "value": "Pang Hercury"
+  },
+  {
+    "id": 100100001370006001,
+    "value": "Lasse Aeon"
+  },
+  {
+    "id": 100100001370006100,
+    "value": "Revive Revival"
+  },
+  {
+    "id": 100100001370006101,
+    "value": "Revive Revival"
   },
   {
     "id": 100100001375000100,
@@ -2094,6 +2306,10 @@
   {
     "id": 100100001379000200,
     "value": "Amy Zimbalist"
+  },
+  {
+    "id": 100100001382100100,
+    "value": "Michael"
   },
   {
     "id": 100100001400000100,
@@ -3220,6 +3436,10 @@
     "value": "Maganac Corps Member"
   },
   {
+    "id": 100100002219000100,
+    "value": "Mariemaia Soldier"
+  },
+  {
     "id": 100100002230000200,
     "value": "Alternative Company Pilot"
   },
@@ -3334,6 +3554,26 @@
   {
     "id": 100100002370000800,
     "value": "Taribia Soldier"
+  },
+  {
+    "id": 100100002370001300,
+    "value": "A-LAWS Soldier"
+  },
+  {
+    "id": 100100002370001500,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100100002370001600,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100100002370001700,
+    "value": "Katharon Soldier"
+  },
+  {
+    "id": 100100002370001800,
+    "value": "Katharon Soldier"
   },
   {
     "id": 100100002400000100,
@@ -4872,8 +5112,64 @@
     "value": "A trusted associate of Valder Farkill and a Mobile Suit pilot of OZ Prize.\nShe is the elder of two sisters; her younger sister is Luna Armonia.\nThey both lost their parents at a young age.\nThe colonial independence movement raised them to be special agents, but they did not make the cut when the Gundam pilots were selected. Valder Farkill recruited them after that.\nBoth sisters swore loyalty to Valder for saving them, and they have carried out numerous missions under his orders."
   },
   {
+    "id": 100200001219000100,
+    "value": "Former agent of the Colony Liberation Organization. \nHe is still the silent, surly type even a year after the cessation of hostilities between Earth's nations and the White Fang.\nLittle by little, his friends helped him regain his humanity and come to grips with the guilt of having taken lives on a mission thus far. \nIn the midst of his renewal, he began working with Duo Maxwell after deducing the truth behind Relena Darlian's kidnapping at the hands of Mariemaia Kushrenada's rebel army.\nHoping to put an end to the tragedy of endless war, he piloted the Wing Gundam Zero to continue the fight against the Mariemaia Army."
+  },
+  {
+    "id": 100200001219000101,
+    "value": "Former agent of the Colony Liberation Organization. \nHe is still the silent, surly type even a year after the cessation of hostilities between Earth's nations and the White Fang.\nLittle by little, his friends helped him regain his humanity and come to grips with the guilt of having taken lives on a mission thus far. \nIn the midst of his renewal, he began working with Duo Maxwell after deducing the truth behind Relena Darlian's kidnapping at the hands of Mariemaia Kushrenada's rebel army.\nHoping to put an end to the tragedy of endless war, he piloted the Wing Gundam Zero to continue the fight against the Mariemaia Army."
+  },
+  {
+    "id": 100200001219000200,
+    "value": "Former agent of the Colony Liberation Organization.\nHe is still the life of the party and frequent companion of Heero Yuy even a year after the cessation of hostilities between Earth's nations and the White Fang.\nThough he helped send the Gundams to the Sun in hopes of bringing peace to the world, learning of Relena Darlian's abduction by the Mariemaia Army immediately afterward saw him join up with Heero to take the fight to the hostile colonies. \nHe later dropped onto Mareimaia-occupied Brussels in his recovered Gundam Deathscythe Hell to fight alongside his former allies in a fierce battle."
+  },
+  {
     "id": 100200001219000201,
     "value": "Former agent of the Colony Liberation Organization.\nHe is still the life of the party and frequent companion of Heero Yuy even a year after the cessation of hostilities between Earth's nations and the White Fang.\nThough he helped send the Gundams to the Sun in hopes of bringing peace to the world, learning of Relena Darlian's abduction by the Mariemaia Army immediately afterward saw him join up with Heero to take the fight to the hostile colonies. \nHe later dropped onto Mareimaia-occupied Brussels in his recovered Gundam Deathscythe Hell to fight alongside his former allies in a fierce battle."
+  },
+  {
+    "id": 100200001219000300,
+    "value": "Former agent of the Colony Liberation Organization. \nA year after the end of the war between the Earth's nations and the White Fang saw him and Catherine Bloom in a traveling circus troupe.\nBrought to the L3 Colony Cluster while on tour, he joined the Mariemaia Army after picking up on the telltale signs of rebellion.\nWith Heero and the others back in action, Trowa worked with them to prevent the Army's colony drop.\nHe then piloted the Gundam Heavyarms Custom again in Mariemaia-occupied Brussels to join in the fierce battle against the Serpents. "
+  },
+  {
+    "id": 100200001219000301,
+    "value": "Former agent of the Colony Liberation Organization. \nA year after the end of the war between the Earth's nations and the White Fang saw him and Catherine Bloom in a traveling circus troupe.\nBrought to the L3 Colony Cluster while on tour, he joined the Mariemaia Army after picking up on the telltale signs of rebellion.\nWith Heero and the others back in action, Trowa worked with them to prevent the Army's colony drop.\nHe then piloted the Gundam Heavyarms Custom again in Mariemaia-occupied Brussels to join in the fierce battle against the Serpents. "
+  },
+  {
+    "id": 100200001219000302,
+    "value": "Former agent of the Colony Liberation Organization. \nA year after the end of the war between the Earth's nations and the White Fang saw him and Catherine Bloom in a traveling circus troupe.\nBrought to the L3 Colony Cluster while on tour, he joined the Mariemaia Army after picking up on the telltale signs of rebellion.\nWith Heero and the others back in action, Trowa worked with them to prevent the Army's colony drop.\nHe then piloted the Gundam Heavyarms Custom again in Mariemaia-occupied Brussels to join in the fierce battle against the Serpents. "
+  },
+  {
+    "id": 100200001219000400,
+    "value": "Former agent of the Colony Liberation Organization. \nOne year after the cessation of hostilities between the Earth's nations and the White Fang, he proposed that the Gundam pilot's machines be sent to the Sun for destruction in hopes of bringing peace to the world.\nHowever, the outbreak of the Mariemaia Army's rebellion while en route saw him and the Maganac Corps spring into action to recover the Gundams. \nHe then took to the battlefield again in his recovered Gundam Sandrock Custom, traveling to Mariemaia-occupied Brussels to fight alongside his former allies in a fierce battle."
+  },
+  {
+    "id": 100200001219000500,
+    "value": "Former agent of the Colony Liberation Organization. \nOne year after the cessation of hostilities between the Earth's nations, his inability to live in a world without war left him unable to support Quatre Raberba Winner's proposal to destroy the Gundams. \nIn search of the meaning of justice and peace, he consciously sided with evil, taking the Altron Gundam to join the Mariemaia Army in their uprising.\nDuring the conflict, he stood in the way of Heero Yuy and the Wing Gundam Zero, fighting fiercely through satellite orbit as he questioned his conflicted comrade-in-arm's own sense of justice."
+  },
+  {
+    "id": 100200001219000501,
+    "value": "Former agent of the Colony Liberation Organization. \nOne year after the cessation of hostilities between the Earth's nations, his inability to live in a world without war left him unable to support Quatre Raberba Winner's proposal to destroy the Gundams. \nIn search of the meaning of justice and peace, he consciously sided with evil, taking the Altron Gundam to join the Mariemaia Army in their uprising.\nDuring the conflict, he stood in the way of Heero Yuy and the Wing Gundam Zero, fighting fiercely through satellite orbit as he questioned his conflicted comrade-in-arm's own sense of justice."
+  },
+  {
+    "id": 100200001219000600,
+    "value": ""
+  },
+  {
+    "id": 100200001219000700,
+    "value": "A Preventers Mobile Suit pilot.\nThis name is used by Zechs Merquise, once known as Milliardo Peacecraft.\nRemaining hidden after the end of the war between the Earth Nation and the White Fang, he made contact with the Preventers intelligence agency at the outset of the Mariemaia uprising, joining them in hopes of quelling it.\nHe adopted the codename \"Wind.\"\nPiloting the Tallgeese III in the Preventers' possession, he launched an attack on the rebel's stronghold at MO-III and fought hard at Brussels alongside Lucrezia Noin."
+  },
+  {
+    "id": 100200001219000701,
+    "value": "A Preventers Mobile Suit pilot.\nThis name is used by Zechs Merquise, once known as Milliardo Peacecraft.\nRemaining hidden after the end of the war between the Earth Nation and the White Fang, he made contact with the Preventers intelligence agency at the outset of the Mariemaia uprising, joining them in hopes of quelling it.\nHe adopted the codename \"Wind.\"\nPiloting the Tallgeese III in the Preventers' possession, he launched an attack on the rebel's stronghold at MO-III and fought hard at Brussels alongside Lucrezia Noin."
+  },
+  {
+    "id": 100200001219000702,
+    "value": "A Preventers Mobile Suit pilot.\nThis name is used by Zechs Merquise, once known as Milliardo Peacecraft.\nRemaining hidden after the end of the war between the Earth Nation and the White Fang, he made contact with the Preventers intelligence agency at the outset of the Mariemaia uprising, joining them in hopes of quelling it.\nHe adopted the codename \"Wind.\"\nPiloting the Tallgeese III in the Preventers' possession, he launched an attack on the rebel's stronghold at MO-III and fought hard at Brussels alongside Lucrezia Noin."
+  },
+  {
+    "id": 100200001219000800,
+    "value": "A member of the Preventers. \nA year after the end of the war between the Earth's nations, she joined the Preventers, a Unified Nation intelligence agency, working alongside Sally Po to preserve the peace.\nHer codename in the organization is \"Fire.\"\nThe uprising of the Mariemaia Army saw her help first responder Heero Yuy and his team break into L3 Colony X-18999.\nShe later piloted a Taurus alongside Zechs Merquise in a fierce battle against the Serpents in Mariemaia-occupied Brussels. "
   },
   {
     "id": 100200001230000100,
@@ -5532,6 +5828,14 @@
     "value": "Celestial Being's tactical forecaster.\n\nEffectively the commander of the Ptolemaios, Celestial\nBeing's tactical mothership, Sumeragi issues mission\nplans and orders to the Gundam Meisters.\n\nThough she once worked as a tactical forecaster for\nthe AEU, a tactical error resulted in the death of her\nbeloved, and led to her joining Celestial Being to aid\ntheir efforts to eliminate conflict.\n\nThough she vowed to never make another mistake, past\ntrauma leads her to drink prodigiously in an effort to\nconceal weakness, even during missions.\n\nSumeragi Lee Noriega is her codename within Celestial\nBeing. Her real name is Lisa Kujo."
   },
   {
+    "id": 100200001370000501,
+    "value": "-"
+  },
+  {
+    "id": 100200001370000701,
+    "value": "-"
+  },
+  {
     "id": 100200001370000901,
     "value": "Celestial Being's gunner.\nA reserve Gundam Meister, he can usually be found serving as support for Lichtendahl Tsery on the Ptolemaios.\nLasse is a young man with a powerful, well-built physique.\nThough he often expresses himself in a cynical manner, he takes his mission seriously and is sincerely trusted by the rest of the crew.\nWhen the GN Arms was provided for combat, he became its pilot and demonstrated his considerable gunnery skills to assist Setsuna F. Seiei and the rest of the Gundam Meisters in combat."
   },
@@ -5576,6 +5880,10 @@
     "value": "A Mobile Suit team operational commander of the AEU.\nEven as a student, Kati was well-known as a tactical forecaster. She was recruited by the AEU, and the Celestial Being member Sumeragi Lee Noriega was one of her contemporaries in college.\nKati has a sharp mind and a collected personality. As a soldier, she is also extremely strict, and accidentally wins the affections of Patrick Colasour when she punches him for being late to a strategy meeting.\nShe participated in the joint military exercises conducted by the three major powers as the AEU's operational commander, was entrusted with duties including command of the GN-X team after the United Nations Forces were formed, and dedicated herself to hunting down Celestial Being."
   },
   {
+    "id": 100200001370003202,
+    "value": "-"
+  },
+  {
     "id": 100200001370003300,
     "value": "A Mobile Suit team commander of the Human Reform League.\nSergei is a seasoned soldier also known as the \"Wild Bear of Russia.\" An experienced suit pilot, he has stood on the frontlines of many engagements, and is an exceptional commander with countless military achievements to his name. He is also trusted by his subordinates.\nSergei was similarly trusted by his commanding officer, Commander Kim, and was appointed the leader of Chobu, a special forces squad formed to capture a Gundam. He was entrusted with Soma Peries (aka Super Soldier Number 1), a weapon developed by the Super Human Research Institute.\nSergei led teams against Gundams on countless occasions and commanded the GN-X team along with Kati Mannequin after the United Nations Forces were formed."
   },
@@ -5588,12 +5896,156 @@
     "value": "A mysterious young man who works with Alejandro Corner.\nAlthough he seems neutral, including a soft demeanor and calm manner, he is an enigmatic figure whose origins are unknown.\nWhile under the protection of the Observer Alejandro Corner, Ribbons obeyed the man even as he closely monitored the actions of Celestial Being's Gundam Meisters.\nWhen Alejandro starts taking action to hijack Aeolia Schenberg's plan, Ribbons controls Veda, which was on the Moon, to help him achieve his vision.\nIn addition, the young Setsuna F. Seiei, who later became a Gundam Meister, witnesses Ribbons as he pilots the 0 Gundam during the armed intervention in a conflict in the Republic of Krugis."
   },
   {
+    "id": 100200001370003501,
+    "value": "-"
+  },
+  {
+    "id": 100200001370003502,
+    "value": "The self-proclaimed Innovator who secretly controls the the Autonomous Peacekeeping Force A-LAWS from behind the scenes.\nRibbons is actually an Innovade, an artificial version of an Innovator (an evolved class of humans) created to help implement Aeolia Schenberg's plan.\nAs a being created to help awaken humanity, Ribbons is genetically engineered to have a longer life and can directly link to Veda with his Quantum Brainwaves.\nHowever, he soon starts to think of himself as the messiah intended to guide humanity.\nHe temporarily leaves Celestial Being out of operation, forms the A-LAWS in an attempt to forcibly unify the world, and otherwise twists Aeolia Schenberg's plan."
+  },
+  {
     "id": 100200001370003600,
     "value": "-"
   },
   {
     "id": 100200001370003601,
     "value": "A mercenary affiliated with PMC Trust.\nAl-Saachez is a warmonger who loves to fight and lives only for the thrill of battle.\nDuring his time as the leader of the anti-government guerrilla organization KPSA, he was involved in a conflict in Krugis, where he brainwashed and trained the young Setsuna F. Seiei and others to become child soldiers.\nHe was also the ringleader behind the terrorist act that resulted in the murder of the Dylandy brothers' family.\nIn addition to possessing formidable hand-to-hand combat capabilities, he is an exceptional Mobile Suit pilot, and gave the Gundam Exia a lot of trouble when they first battled during the armed intervention in Moralia.\nHe piloted his Enact Custom, which was inferior in terms of performance.\nAfter that, he contacted the Celestial Being Observer Alejandro Corner, killed two of the Trinity siblings under the Observer's orders, and captured the Gundam Throne Zwei.\nHe went on to join the United Nations Forces under an assumed name and continued battling Celestial Being's Gundams."
+  },
+  {
+    "id": 100200001370003700,
+    "value": "One of Celestial Being's Gundam Meisters.\nSetsuna's whereabouts were unknown following the battle with the UN Forces, but he continued operating independently.\nSensing something twisted in the yet- unchanged world, he reunited with Celestial Being and began armed interventions against the Autonomous Peacekeeping Force A-LAWS.\nThough his taciturn attitude is unchanged, he has clearly grown, trusting his friends and possessing a strong sense of purpose.\nHe has also expressed a desire to change from his past self as someone who lived only for combat.\nDuring his fight against the Innovade Ribbons Almark, who plotted to rule the world, the large number of GN particles released by the 00 Raiser affected a change in Setsuna himself, causing him to evolve into a genuine Innovator."
+  },
+  {
+    "id": 100200001370003701,
+    "value": "One of Celestial Being's Gundam Meisters.\nSetsuna's whereabouts were unknown following the battle with the UN Forces, but he continued operating independently.\nSensing something twisted in the yet- unchanged world, he reunited with Celestial Being and began armed interventions against the Autonomous Peacekeeping Force A-LAWS.\nThough his taciturn attitude is unchanged, he has clearly grown, trusting his friends and possessing a strong sense of purpose.\nHe has also expressed a desire to change from his past self as someone who lived only for combat.\nDuring his fight against the Innovade Ribbons Almark, who plotted to rule the world, the large number of GN particles released by the 00 Raiser affected a change in Setsuna himself, causing him to evolve into a genuine Innovator."
+  },
+  {
+    "id": 100200001370003702,
+    "value": "One of Celestial Being's Gundam Meisters.\nSetsuna's whereabouts were unknown following the battle with the UN Forces, but he continued operating independently.\nSensing something twisted in the yet- unchanged world, he reunited with Celestial Being and began armed interventions against the Autonomous Peacekeeping Force A-LAWS.\nThough his taciturn attitude is unchanged, he has clearly grown, trusting his friends and possessing a strong sense of purpose.\nHe has also expressed a desire to change from his past self as someone who lived only for combat.\nDuring his fight against the Innovade Ribbons Almark, who plotted to rule the world, the large number of GN particles released by the 00 Raiser affected a change in Setsuna himself, causing him to evolve into a genuine Innovator."
+  },
+  {
+    "id": 100200001370003703,
+    "value": "-"
+  },
+  {
+    "id": 100200001370003900,
+    "value": "-"
+  },
+  {
+    "id": 100200001370004000,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nFormerly an ace pilot of the AEU, Patrick signed up with the A-LAWS so he could follow Kati Mannequin, the commanding officer he fell in love with at first sight, and protect her.\nUnder Mannequin's command, he later piloted the GN-XIII in a fight against Celestial Being, but defected from the A-LAWS with her following the Break Pillar incident.\nAfter that, Patrick fought alongside Celestial Being as a member of the coup d'état faction led by Mannequin."
+  },
+  {
+    "id": 100200001370004001,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nFormerly an ace pilot of the AEU, Patrick signed up with the A-LAWS so he could follow Kati Mannequin, the commanding officer he fell in love with at first sight, and protect her.\nUnder Mannequin's command, he later piloted the GN-XIII in a fight against Celestial Being, but defected from the A-LAWS with her following the Break Pillar incident.\nAfter that, Patrick fought alongside Celestial Being as a member of the coup d'état faction led by Mannequin."
+  },
+  {
+    "id": 100200001370004100,
+    "value": "A genius with expert-level knowledge in astrophysics, Mobile Suit engineering, and regenerative medicine, Anew would end up in a romantic relationship with Lyle Dylandy.\nHowever, her true nature is that of an Innovade, an artificial imitation of evolved humans known as Innovators, who operated as a spy unaware of her true nature, and whose existence leaked the location of the Ptolemaios 2 to its enemies.\nRevive Revival uses Quantum Brainwaves contact to awaken Anew's Innovator personality, leading her to leave Celestial Being and eventually face her former lover Lyle on the battlefield."
+  },
+  {
+    "id": 100200001370004102,
+    "value": "-"
+  },
+  {
+    "id": 100200001370004200,
+    "value": "A soldier of the ESF Peacekeeping Force.\nFormerly affiliated with the Human Reform League, Sergei transferred to the ESF Peacekeeping Force after the decisive battle between the United Nations Forces and Celestial Being. He was promoted to the rank of Captain.\nHe was skeptical regarding the despotic structure of the Federation government and cautious about the Autonomous Peacekeeping Force A-LAWS.\nSergei was like a father to Soma Peries and hoped to adopt her, but decided to put her happiness first and entrusted her to Allelujah Haptism when she regained her original personality (Marie Parfacy) during a battle with the Ptolemaios 2.\nWhen the coup d'état faction later occupied the orbital elevator (the Break Pillar incident), Sergei was given secret orders by Commander Kim to convince the ringleader and his friend, Pang Hercury, to stand down."
+  },
+  {
+    "id": 100200001370004300,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nHiling is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nShe takes pride in her status as an Innovator, and regards the inner lives and emotion-driven actions of human beings with contempt, possibly because she shares the same genetic pattern as Ribbons Almark. In battle, she is artless and belligerent, and often operates alongside Revive Revival.\nHiling was assigned to the A-LAWS with a special license enabling her to operate independently.\nShe piloted the Gadessa during the battle of Memento Mori, shot down many enemy ships, and later switched to piloting the Garazzo for many battles against Celestial Being."
+  },
+  {
+    "id": 100200001370004301,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nHiling is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nShe takes pride in her status as an Innovator, and regards the inner lives and emotion-driven actions of human beings with contempt, possibly because she shares the same genetic pattern as Ribbons Almark. In battle, she is artless and belligerent, and often operates alongside Revive Revival.\nHiling was assigned to the A-LAWS with a special license enabling her to operate independently.\nShe piloted the Gadessa during the battle of Memento Mori, shot down many enemy ships, and later switched to piloting the Garazzo for many battles against Celestial Being."
+  },
+  {
+    "id": 100200001370004400,
+    "value": "A Mobile Suit pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nShe used the Halevy family conglomerate fortune to contribute to the military and became the A-LAWS' most important investor.\nLouise loathes Gundams because Nena Trinity, a member of Celestial Being's second team Trinity, deprived her of her family and happy former life.\nAs a side effect of regularly taking medicine capsules that contain nanomachines intended to treat the cellular damage she sustained from the Gundam attack, she gained a limited ability to utilize Quantum Brainwaves.\nShe reunites with her ex-boyfriend Saji Crossroad on the battlefield while fighting for the A-LAWS.\nThe fact that he was working with Celestial Being only deepened her hatred for Gundams."
+  },
+  {
+    "id": 100200001370004500,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nHe is a one-man army assigned to the A-LAWS with a special license that enables him to operate independently.\nHe hides the facial scars resulting from his past conflict with Celestial Being behind a mask and wears a distinctive surcoat-like uniform.\nThose around him call him \"Mr. Bushido.\"\nDriven by an all-consuming obsession with Gundams, he believes that the fate of his Gundam is tied to that of the one piloted by Setsuna F. Seiei, and settling business with Setsuna is his sole reason for taking to the battlefield.\nAs a result, he does not participate in any operation that does not involve direct confrontation with Gundams, and often acts independently, not bothering to finish battles with opposing Gundams he finds unworthy.\nMr. Bushido initially piloted the Sakigake, an improved form of the Ahead, and later piloted the new Masurao Mobile Suit, which he had his friend Billy Katagiri develop.\nHe also piloted the Susanowo in his pursuit of ever-stronger Gundams."
+  },
+  {
+    "id": 100200001370004501,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nHe is a one-man army assigned to the A-LAWS with a special license that enables him to operate independently.\nHe hides the facial scars resulting from his past conflict with Celestial Being behind a mask and wears a distinctive surcoat-like uniform.\nThose around him call him \"Mr. Bushido.\"\nDriven by an all-consuming obsession with Gundams, he believes that the fate of his Gundam is tied to that of the one piloted by Setsuna F. Seiei, and settling business with Setsuna is his sole reason for taking to the battlefield.\nAs a result, he does not participate in any operation that does not involve direct confrontation with Gundams, and often acts independently, not bothering to finish battles with opposing Gundams he finds unworthy.\nMr. Bushido initially piloted the Sakigake, an improved form of the Ahead, and later piloted the new Masurao Mobile Suit, which he had his friend Billy Katagiri develop.\nHe also piloted the Susanowo in his pursuit of ever-stronger Gundams."
+  },
+  {
+    "id": 100200001370004600,
+    "value": "A Celestial Being pilot.\nThis is who Soma Peries becomes after her past memories are restored.\nShe fought against Celestial Being as a member of the A-LAWS.\nShe lost her memories as Marie Parfacy in the process of transforming her into a Super Soldier, but recovered them as a result of meeting Allelujah Haptism.\nShe leaves the A-LAWS thanks to Sergei Smirnov, after that she boards the Ptolemaios 2 and works with Allelujah.\nAfter Marie witnessed Sergei's death during the Break Pillar Incident, her personality once again reverted to Soma's, and she fought against the A-LAWS to avenge his death."
+  },
+  {
+    "id": 100200001370004700,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nAndrei is the only son of Sergei Smirnov, a Captain in the ESF Peacekeeping Force.\nAndrei believes that his father stood by as his mother,who was also a soldier, died during a past Solar War.\nHe hates his father for it, and eventually cuts off all contact with him, and then joined the military to spite him and became a member of the A-LAWS.\nHe secretly loves Louise Halevy, who ends up on the same team as him, and he worries about this emotionally unstable woman.\nDuring the Break Pillar incident, Andrei shot down Pang Hercury, Commander of the coup d'état faction, and then attacked Sergei, whom he mistook for being complicit in the revolt."
+  },
+  {
+    "id": 100200001370004800,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nBring is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nBring is a man of few words whose emotions do not generally show on his face.\nAlthough he has exceptional combat capabilities, he prefers to avoid unnecessary fighting.\nHe is strongly committed to his mission as an Innovator, and even tries to get Tieria Erde to join the cause while fighting against him.\nBring was assigned to the A-LAWS with a special license enabling him to operate independently, and participated in attacks against Celestial Being."
+  },
+  {
+    "id": 100200001370004902,
+    "value": "A young civilian engaged in aerospace development.\nSaji's fate has been radically changed by experiences including the death of his older sister due to a past incident involving Celestial Being as well as his breakup with his girlfriend.\nWhile working as a colony-development engineer, a long-cherished dream of his, he was arrested for suspected involvement with the anti-Federation organization Katharon, and he would have been killed during an automaton experiment if not for the help of Setsuna F. Seiei.\nWhile safely aboard the Ptolemaios 2, Saji learned that Setsuna was a member of Celestial Being and angrily confronted him about it, but he later caused the deaths of many people while he was visiting Katharon's base, and he started trying to redeem himself by working on ship repairs and other tasks.\nHe eventually learned that his ex-girlfriend Louise was with the A-LAWS, decided to win her back, and ended up taking his place on the battlefield in the 0 Raiser."
+  },
+  {
+    "id": 100200001370005000,
+    "value": "A pilot affiliated with the Autonomous Peacekeeping Force A-LAWS.\nBarack is a Mobile Suit team commander and Louise Halevy's commanding officer.\nHe holds the rank of Captain.\nIn addition to losing many friends during past conflicts with Celestial Being, he also lost his wife due to an anti-Federation terrorist attack by Katharon.\nThis drove him to sign up with the A-LAWS to help work towards global unity, and he does not hesitate during operations against anti-Earth Federation forces, no matter how ruthless.\nWhen Barack participated in an operation to destroy Katharon's forces in the colony Proud, he drove Setsuna F. Seiei's Gundam Exia Repair to the wall, and was involved in many fights with Gundams after that as well."
+  },
+  {
+    "id": 100200001370005100,
+    "value": "One of Celestial Being's Gundam Meisters.\nHis real name is Lyle Dylandy. He is the twin brother of Neil Dylandy, who perished in battle against the UN Forces.\nHis personality is remarkably similar to Neil's, and he possesses incredible sniping skills like his brother.\nWhile serving as an agent of anti-Federation organization Katharon, he was contacted by Setsuna F.\nSeiei and informed of his brother's activities as a member of Celestial Being. He would then join Celestial Being in order to leak information to Katharon, carrying forward the Lockon Stratos codename.\nPiloting the Cherudim Gundam, Lyle is cheery and outgoing. \nAfter meeting (and losing) his beloved Anew Returner and working alongside his friends, he vowed to fight against the Innovators of his own volition."
+  },
+  {
+    "id": 100200001370005101,
+    "value": "One of Celestial Being's Gundam Meisters.\nHis real name is Lyle Dylandy. He is the twin brother of Neil Dylandy, who perished in battle against the UN Forces.\nHis personality is remarkably similar to Neil's, and he possesses incredible sniping skills like his brother.\nWhile serving as an agent of anti-Federation organization Katharon, he was contacted by Setsuna F.\nSeiei and informed of his brother's activities as a member of Celestial Being. He would then join Celestial Being in order to leak information to Katharon, carrying forward the Lockon Stratos codename.\nPiloting the Cherudim Gundam, Lyle is cheery and outgoing. \nAfter meeting (and losing) his beloved Anew Returner and working alongside his friends, he vowed to fight against the Innovators of his own volition."
+  },
+  {
+    "id": 100200001370005200,
+    "value": "One of Celestial Being's Gundam Meisters.\nAllelujah lost his other personality, Hallelujah, during the battle with the UN Forces.\nHe then spent four years in an HRL detention facility for anti-government elements before being broken out by Setsuna F. Seiei and returning to Celestial Being once more.\nDuring the rescue operation, Allelujah realized that A-LAWS member Soma Peries is Marie Parfacy, who gave him a reason to live when he was young, and vows to fight so that he might one day rescue her.\nDuring the final battle against the A-LAWS, he merged once more with the revived Hallelujah, unleashing his powers as a true Super Soldier."
+  },
+  {
+    "id": 100200001370005201,
+    "value": "One of Celestial Being's Gundam Meisters.\nAllelujah lost his other personality, Hallelujah, during the battle with the UN Forces.\nHe then spent four years in an HRL detention facility for anti-government elements before being broken out by Setsuna F. Seiei and returning to Celestial Being once more.\nDuring the rescue operation, Allelujah realized that A-LAWS member Soma Peries is Marie Parfacy, who gave him a reason to live when he was young, and vows to fight so that he might one day rescue her.\nDuring the final battle against the A-LAWS, he merged once more with the revived Hallelujah, unleashing his powers as a true Super Soldier."
+  },
+  {
+    "id": 100200001370005300,
+    "value": "One of Celestial Being's Gundam Meisters.\nTieria is an Innovade, an artificial imitation of evolved humans known as Innovators.\nDuring the past battles against the UN Forces, Tieria prioritized Veda's plan above all else and made many cold-hearted decisions.\nHowever, his experience fighting alongside friends has allowed him to bring some humanity to his decision-making.\nHe was the first Gundam Meister to reunite with Celestial Being following its reformation and work alongside his friends once more, but after learning that he was fighting against Innovades like himself, he felt a profound sense of conflict over his role in Aeolia's plans.\nUltimately, Tieria finds himself unable to agree with Ribbons Almark's actions, and vowed to fight alongside his friends in Celestial Being."
+  },
+  {
+    "id": 100200001370005301,
+    "value": "One of Celestial Being's Gundam Meisters.\nTieria is an Innovade, an artificial imitation of evolved humans known as Innovators.\nDuring the past battles against the UN Forces, Tieria prioritized Veda's plan above all else and made many cold-hearted decisions.\nHowever, his experience fighting alongside friends has allowed him to bring some humanity to his decision-making.\nHe was the first Gundam Meister to reunite with Celestial Being following its reformation and work alongside his friends once more, but after learning that he was fighting against Innovades like himself, he felt a profound sense of conflict over his role in Aeolia's plans.\nUltimately, Tieria finds himself unable to agree with Ribbons Almark's actions, and vowed to fight alongside his friends in Celestial Being."
+  },
+  {
+    "id": 100200001370005400,
+    "value": "A pilot with the A-LAWS.\nShe is Super Soldier 1, a product of the Super Human Research Institute of the former Human Reform League.\nAfter the decisive battle between the UN Forces and Celestial Being, she lives with Sergei Smirnov and develops human emotions.\nWhile serving with the Earth Federation Peacekeeping Forces, she received orders to transfer to the A-LAWS, where she once again fought against Celestial Being, which had resumed its activities.\nDuring an operation to rescue Allelujah Haptism, imprisoned at a Human Reform League anti-government-forces detainment facility, she tracks him down.\nHe revealed that her real name is Marie Parfacy, causing her to recall memories that had been locked away."
+  },
+  {
+    "id": 100200001370005402,
+    "value": "A pilot with the A-LAWS.\nShe is Super Soldier 1, a product of the Super Human Research Institute of the former Human Reform League.\nAfter the decisive battle between the UN Forces and Celestial Being, she lives with Sergei Smirnov and develops human emotions.\nWhile serving with the Earth Federation Peacekeeping Forces, she received orders to transfer to the A-LAWS, where she once again fought against Celestial Being, which had resumed its activities.\nDuring an operation to rescue Allelujah Haptism, imprisoned at a Human Reform League anti-government-forces detainment facility, she tracks him down.\nHe revealed that her real name is Marie Parfacy, causing her to recall memories that had been locked away."
+  },
+  {
+    "id": 100200001370005600,
+    "value": "-"
+  },
+  {
+    "id": 100200001370005700,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nDevine is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nLike Bring Stabity, whom he shares genetic pattern with, he is a man of few words whose face does not generally betray his emotions.\nHowever, he is also extremely proud to be an Innovator.\nAfter Bring died in action, Devine was assigned to the A-LAWS along with the prototype Mobile Armor Empruss, and participated in attacks against Celestial Being."
+  },
+  {
+    "id": 100200001370005800,
+    "value": "-"
+  },
+  {
+    "id": 100200001370006001,
+    "value": "-"
+  },
+  {
+    "id": 100200001370006100,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nRevive is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nHe looks down on human beings in general, but does respect the abilities of exceptional people such as Kati Mannequin.\nHe is calm and intelligent overall, but also quick to let loose in battle and has a passionate side as well.\nHe often operates alongside Hiling Care.\nRevive was assigned to the A-LAWS with a special license enabling him to operate independently, and fought in many battles with Gundams under Ribbons Almark's orders.\nIn addition, Revive has the same genetic pattern as Anew Returner, who is positioned as a sleeper agent within Celestial Being.\nHe intentionally gets himself captured by them so he can awaken her personality as an Innovade and steal Celestial Being's confidential data."
+  },
+  {
+    "id": 100200001370006101,
+    "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nRevive is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nHe looks down on human beings in general, but does respect the abilities of exceptional people such as Kati Mannequin.\nHe is calm and intelligent overall, but also quick to let loose in battle and has a passionate side as well.\nHe often operates alongside Hiling Care.\nRevive was assigned to the A-LAWS with a special license enabling him to operate independently, and fought in many battles with Gundams under Ribbons Almark's orders.\nIn addition, Revive has the same genetic pattern as Anew Returner, who is positioned as a sleeper agent within Celestial Being.\nHe intentionally gets himself captured by them so he can awaken her personality as an Innovade and steal Celestial Being's confidential data."
   },
   {
     "id": 100200001375000100,
@@ -5610,6 +6062,10 @@
   {
     "id": 100200001379000200,
     "value": "An ace pilot with the Earth Federation Peacekeeping Forces.\nFormerly with the AEU, he served as a backup pilot on the UN Forces GN-X team. However, he ended up piloting a GN-X after the death of one of the main pilots.\nHis skills were an extremely good fit for the solar-reactor-powered machine, and the expertise with which he piloted it earned him the nickname the \"Steel Cowboy.\"\nHe was also called the \"Devil of Unification\" by the opposing anti-Federation forces, who feared him.\nHe is loose when it comes to women and quite the playboy."
+  },
+  {
+    "id": 100200001382100100,
+    "value": "Full name: Michael Chang.\nHe fights alongside Jennifer, Warren, and Olson.\nHis special move is Hyper Rising Sword: Final Attack.\nHe suffers from cosmic particle syndrome.\nHe has a father, mother, and elder brother."
   },
   {
     "id": 100200001400000100,
@@ -6736,6 +7192,10 @@
     "value": "-"
   },
   {
+    "id": 100200002219000100,
+    "value": "-"
+  },
+  {
     "id": 100200002230000200,
     "value": "-"
   },
@@ -6849,6 +7309,26 @@
   },
   {
     "id": 100200002370000800,
+    "value": "-"
+  },
+  {
+    "id": 100200002370001300,
+    "value": "-"
+  },
+  {
+    "id": 100200002370001500,
+    "value": "-"
+  },
+  {
+    "id": 100200002370001600,
+    "value": "-"
+  },
+  {
+    "id": 100200002370001700,
+    "value": "-"
+  },
+  {
+    "id": 100200002370001800,
     "value": "-"
   },
   {
@@ -8388,8 +8868,64 @@
     "value": "Soris Armonia"
   },
   {
+    "id": 100300001219000100,
+    "value": "Heero Yuy (EW)"
+  },
+  {
+    "id": 100300001219000101,
+    "value": "Heero Yuy (EW)"
+  },
+  {
+    "id": 100300001219000200,
+    "value": "Duo Maxwell (EW)"
+  },
+  {
     "id": 100300001219000201,
     "value": "Duo Maxwell"
+  },
+  {
+    "id": 100300001219000300,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100300001219000301,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100300001219000302,
+    "value": "Trowa Barton (EW)"
+  },
+  {
+    "id": 100300001219000400,
+    "value": "Quatre Raberba Winner (EW)"
+  },
+  {
+    "id": 100300001219000500,
+    "value": "Chang Wufei (EW)"
+  },
+  {
+    "id": 100300001219000501,
+    "value": "Chang Wufei (EW)"
+  },
+  {
+    "id": 100300001219000600,
+    "value": "Relena Darlian (EW)"
+  },
+  {
+    "id": 100300001219000700,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100300001219000701,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100300001219000702,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100300001219000800,
+    "value": "Lucrezia Noin (EW)"
   },
   {
     "id": 100300001230000100,
@@ -9048,6 +9584,14 @@
     "value": "Sumeragi Lee Noriega"
   },
   {
+    "id": 100300001370000501,
+    "value": "Sumeragi Lee Noriega"
+  },
+  {
+    "id": 100300001370000701,
+    "value": "Feldt Grace"
+  },
+  {
     "id": 100300001370000901,
     "value": "Lasse Aeon"
   },
@@ -9092,6 +9636,10 @@
     "value": "Kati Mannequin"
   },
   {
+    "id": 100300001370003202,
+    "value": "Kati Mannequin"
+  },
+  {
     "id": 100300001370003300,
     "value": "Sergei Smirnov"
   },
@@ -9104,12 +9652,156 @@
     "value": "Ribbons Almark"
   },
   {
+    "id": 100300001370003501,
+    "value": "Ribbons Almark"
+  },
+  {
+    "id": 100300001370003502,
+    "value": "Ribbons Almark"
+  },
+  {
     "id": 100300001370003600,
     "value": "Ali al-Saachez"
   },
   {
     "id": 100300001370003601,
     "value": "Ali al-Saachez"
+  },
+  {
+    "id": 100300001370003700,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100300001370003701,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100300001370003702,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100300001370003703,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100300001370003900,
+    "value": "Arthur Goodman"
+  },
+  {
+    "id": 100300001370004000,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100300001370004001,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100300001370004100,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100300001370004102,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100300001370004200,
+    "value": "Sergei Smirnov"
+  },
+  {
+    "id": 100300001370004300,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100300001370004301,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100300001370004400,
+    "value": "Louise Halevy"
+  },
+  {
+    "id": 100300001370004500,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100300001370004501,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100300001370004600,
+    "value": "Marie Parfacy"
+  },
+  {
+    "id": 100300001370004700,
+    "value": "Andrei Smirnov"
+  },
+  {
+    "id": 100300001370004800,
+    "value": "Bring Stabity"
+  },
+  {
+    "id": 100300001370004902,
+    "value": "Saji Crossroad"
+  },
+  {
+    "id": 100300001370005000,
+    "value": "Barack Zinin"
+  },
+  {
+    "id": 100300001370005100,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100300001370005101,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100300001370005200,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100300001370005201,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100300001370005300,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100300001370005301,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100300001370005400,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100300001370005402,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100300001370005600,
+    "value": "Graham Aker"
+  },
+  {
+    "id": 100300001370005700,
+    "value": "Devine Nova"
+  },
+  {
+    "id": 100300001370005800,
+    "value": "Pang Hercury"
+  },
+  {
+    "id": 100300001370006001,
+    "value": "Lasse Aeon"
+  },
+  {
+    "id": 100300001370006100,
+    "value": "Revive Revival"
+  },
+  {
+    "id": 100300001370006101,
+    "value": "Revive Revival"
   },
   {
     "id": 100300001375000100,
@@ -9126,6 +9818,10 @@
   {
     "id": 100300001379000200,
     "value": "Amy Zimbalist"
+  },
+  {
+    "id": 100300001382100100,
+    "value": "Michael"
   },
   {
     "id": 100300001400000100,
@@ -10252,6 +10948,10 @@
     "value": "Maganac Corps Member"
   },
   {
+    "id": 100300002219000100,
+    "value": "Mariemaia Soldier"
+  },
+  {
     "id": 100300002230000200,
     "value": "Alternative Company Pilot"
   },
@@ -10317,7 +11017,7 @@
   },
   {
     "id": 100300002305000100,
-    "value": "傭兵"
+    "value": "Mercenary"
   },
   {
     "id": 100300002310000100,
@@ -10366,6 +11066,26 @@
   {
     "id": 100300002370000800,
     "value": "Taribia Soldier"
+  },
+  {
+    "id": 100300002370001300,
+    "value": "A-LAWS Soldier"
+  },
+  {
+    "id": 100300002370001500,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100300002370001600,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100300002370001700,
+    "value": "Katharon Soldier"
+  },
+  {
+    "id": 100300002370001800,
+    "value": "Katharon Soldier"
   },
   {
     "id": 100300002400000100,
@@ -11904,8 +12624,64 @@
     "value": "Soris Armonia"
   },
   {
+    "id": 100400001219000100,
+    "value": "Heero Yuy"
+  },
+  {
+    "id": 100400001219000101,
+    "value": "Heero Yuy"
+  },
+  {
+    "id": 100400001219000200,
+    "value": "Duo Maxwell"
+  },
+  {
     "id": 100400001219000201,
     "value": "Duo Maxwell"
+  },
+  {
+    "id": 100400001219000300,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000301,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000302,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000400,
+    "value": "Quatre Raberba Winner"
+  },
+  {
+    "id": 100400001219000500,
+    "value": "Chang Wufei"
+  },
+  {
+    "id": 100400001219000501,
+    "value": "Chang Wufei"
+  },
+  {
+    "id": 100400001219000600,
+    "value": "Relena Darlian"
+  },
+  {
+    "id": 100400001219000700,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000701,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000702,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000800,
+    "value": "Lucrezia Noin"
   },
   {
     "id": 100400001230000100,
@@ -12564,6 +13340,14 @@
     "value": "Sumeragi Lee Noriega"
   },
   {
+    "id": 100400001370000501,
+    "value": "Sumeragi Lee Noriega"
+  },
+  {
+    "id": 100400001370000701,
+    "value": "Feldt Grace"
+  },
+  {
     "id": 100400001370000901,
     "value": "Lasse Aeon"
   },
@@ -12608,6 +13392,10 @@
     "value": "Kati Mannequin"
   },
   {
+    "id": 100400001370003202,
+    "value": "Kati Mannequin"
+  },
+  {
     "id": 100400001370003300,
     "value": "Sergei Smirnov"
   },
@@ -12620,12 +13408,156 @@
     "value": "Ribbons Almark"
   },
   {
+    "id": 100400001370003501,
+    "value": "Ribbons Almark"
+  },
+  {
+    "id": 100400001370003502,
+    "value": "Ribbons Almark"
+  },
+  {
     "id": 100400001370003600,
     "value": "Ali al-Saachez"
   },
   {
     "id": 100400001370003601,
     "value": "Ali al-Saachez"
+  },
+  {
+    "id": 100400001370003700,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003701,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003702,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003703,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003900,
+    "value": "Arthur Goodman"
+  },
+  {
+    "id": 100400001370004000,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100400001370004001,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100400001370004100,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100400001370004102,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100400001370004200,
+    "value": "Sergei Smirnov"
+  },
+  {
+    "id": 100400001370004300,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100400001370004301,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100400001370004400,
+    "value": "Louise Halevy"
+  },
+  {
+    "id": 100400001370004500,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100400001370004501,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100400001370004600,
+    "value": "Marie Parfacy"
+  },
+  {
+    "id": 100400001370004700,
+    "value": "Andrei Smirnov"
+  },
+  {
+    "id": 100400001370004800,
+    "value": "Bring Stabity"
+  },
+  {
+    "id": 100400001370004902,
+    "value": "Saji Crossroad"
+  },
+  {
+    "id": 100400001370005000,
+    "value": "Barack Zinin"
+  },
+  {
+    "id": 100400001370005100,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100400001370005101,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100400001370005200,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100400001370005201,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100400001370005300,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100400001370005301,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100400001370005400,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100400001370005402,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100400001370005600,
+    "value": "Graham Aker"
+  },
+  {
+    "id": 100400001370005700,
+    "value": "Devine Nova"
+  },
+  {
+    "id": 100400001370005800,
+    "value": "Pang Hercury"
+  },
+  {
+    "id": 100400001370006001,
+    "value": "Lasse Aeon"
+  },
+  {
+    "id": 100400001370006100,
+    "value": "Revive Revival"
+  },
+  {
+    "id": 100400001370006101,
+    "value": "Revive Revival"
   },
   {
     "id": 100400001375000100,
@@ -12642,6 +13574,10 @@
   {
     "id": 100400001379000200,
     "value": "Amy Zimbalist"
+  },
+  {
+    "id": 100400001382100100,
+    "value": "Michael"
   },
   {
     "id": 100400001400000100,
@@ -13768,6 +14704,10 @@
     "value": "Maganac Corps Member"
   },
   {
+    "id": 100400002219000100,
+    "value": "Mariemaia Soldier"
+  },
+  {
     "id": 100400002230000200,
     "value": "Alternative Company Pilot"
   },
@@ -13882,6 +14822,26 @@
   {
     "id": 100400002370000800,
     "value": "Taribia Soldier"
+  },
+  {
+    "id": 100400002370001300,
+    "value": "A-LAWS Soldier"
+  },
+  {
+    "id": 100400002370001500,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100400002370001600,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100400002370001700,
+    "value": "Katharon Soldier"
+  },
+  {
+    "id": 100400002370001800,
+    "value": "Katharon Soldier"
   },
   {
     "id": 100400002400000100,
@@ -14813,7 +15773,7 @@
   },
   {
     "id": 101100001150000500,
-    "value": ""
+    "value": "-"
   },
   {
     "id": 101100001150000501,
@@ -15000,8 +15960,44 @@
     "value": "They got me so easily... This is pathetic!"
   },
   {
+    "id": 101100001219000100,
+    "value": "So this is it... I'm sorry, Relena!"
+  },
+  {
+    "id": 101100001219000101,
+    "value": "So this is it... I'm sorry, Relena!"
+  },
+  {
+    "id": 101100001219000200,
+    "value": "Damn it! This is so pathetic,\nI don't know whether to laugh of cry!"
+  },
+  {
     "id": 101100001219000201,
     "value": "Damn it! This is so pathetic,\nI don't know whether to laugh of cry!"
+  },
+  {
+    "id": 101100001219000300,
+    "value": "I made a mistake?!"
+  },
+  {
+    "id": 101100001219000400,
+    "value": "My machine... Isn't going to last much longer!"
+  },
+  {
+    "id": 101100001219000500,
+    "value": "Nataku... I'm sorry!"
+  },
+  {
+    "id": 101100001219000700,
+    "value": "Argh! This...can't be it!"
+  },
+  {
+    "id": 101100001219000701,
+    "value": "Argh! This...can't be it!"
+  },
+  {
+    "id": 101100001219000800,
+    "value": "Damn it! I should have taken them more seriously...!"
   },
   {
     "id": 101100001230000100,
@@ -15420,8 +16416,80 @@
     "value": "I'll never forget this humiliation...!"
   },
   {
+    "id": 101100001370003502,
+    "value": "You're an insolent one, you know that?"
+  },
+  {
     "id": 101100001370003601,
     "value": "Rgh! How could YOU do this to ME?!"
+  },
+  {
+    "id": 101100001370003701,
+    "value": "The entire world...is distorted...!"
+  },
+  {
+    "id": 101100001370003702,
+    "value": "The entire world...is distorted...!"
+  },
+  {
+    "id": 101100001370004001,
+    "value": "ARGH! Not again!"
+  },
+  {
+    "id": 101100001370004100,
+    "value": "AAAHH!"
+  },
+  {
+    "id": 101100001370004200,
+    "value": "Ngh! This is it...!"
+  },
+  {
+    "id": 101100001370004300,
+    "value": "Rgh! How dare you?! HOW DARE YOU?!"
+  },
+  {
+    "id": 101100001370004400,
+    "value": "N-No! There's still something I have to—!"
+  },
+  {
+    "id": 101100001370004500,
+    "value": "Urgh!\nThe way of bushido...means knowing deaaaaath!"
+  },
+  {
+    "id": 101100001370004600,
+    "value": "T-This is all I can do... Forgive me...!"
+  },
+  {
+    "id": 101100001370004700,
+    "value": "Argh! How could I let them take me down like that?!"
+  },
+  {
+    "id": 101100001370004800,
+    "value": "Am I to die...without completing my mission...?"
+  },
+  {
+    "id": 101100001370004902,
+    "value": "N-No...!"
+  },
+  {
+    "id": 101100001370005000,
+    "value": "What?!"
+  },
+  {
+    "id": 101100001370005100,
+    "value": "Tch... This is it!"
+  },
+  {
+    "id": 101100001370005200,
+    "value": "They got me?! Urgh...!"
+  },
+  {
+    "id": 101100001370005300,
+    "value": "What a disgrace...!"
+  },
+  {
+    "id": 101100001370006101,
+    "value": "How could they defeat an Innovator...?!"
   },
   {
     "id": 101100001375000100,
@@ -15438,6 +16506,10 @@
   {
     "id": 101100001379000200,
     "value": "Sorry, but I'm retreating!\nToo many babes would cry over my death!"
+  },
+  {
+    "id": 101100001382100100,
+    "value": "No, not yet..."
   },
   {
     "id": 101100001400000100,
@@ -17388,8 +18460,64 @@
     "value": "Yuhko Kaida"
   },
   {
+    "id": 101400001219000100,
+    "value": "Hikaru Midorikawa"
+  },
+  {
+    "id": 101400001219000101,
+    "value": "Hikaru Midorikawa"
+  },
+  {
+    "id": 101400001219000200,
+    "value": "Toshihiko Seki"
+  },
+  {
     "id": 101400001219000201,
     "value": "Toshihiko Seki"
+  },
+  {
+    "id": 101400001219000300,
+    "value": "Shigeru Nakahara"
+  },
+  {
+    "id": 101400001219000301,
+    "value": "Shigeru Nakahara"
+  },
+  {
+    "id": 101400001219000302,
+    "value": "Shigeru Nakahara"
+  },
+  {
+    "id": 101400001219000400,
+    "value": "Ai Orikasa"
+  },
+  {
+    "id": 101400001219000500,
+    "value": "Ryuzou Ishino"
+  },
+  {
+    "id": 101400001219000501,
+    "value": "Ryuzou Ishino"
+  },
+  {
+    "id": 101400001219000600,
+    "value": "-"
+  },
+  {
+    "id": 101400001219000700,
+    "value": "Takehito Koyasu"
+  },
+  {
+    "id": 101400001219000701,
+    "value": "Takehito Koyasu"
+  },
+  {
+    "id": 101400001219000702,
+    "value": "Takehito Koyasu"
+  },
+  {
+    "id": 101400001219000800,
+    "value": "Chisa Yokoyama"
   },
   {
     "id": 101400001230000100,
@@ -18048,6 +19176,14 @@
     "value": ""
   },
   {
+    "id": 101400001370000501,
+    "value": "-"
+  },
+  {
+    "id": 101400001370000701,
+    "value": "-"
+  },
+  {
     "id": 101400001370000901,
     "value": "Hiroki Touchi"
   },
@@ -18092,6 +19228,10 @@
     "value": ""
   },
   {
+    "id": 101400001370003202,
+    "value": "-"
+  },
+  {
     "id": 101400001370003300,
     "value": "Unsho Ishizuka"
   },
@@ -18104,12 +19244,156 @@
     "value": ""
   },
   {
+    "id": 101400001370003501,
+    "value": "Noboru Sougetsu"
+  },
+  {
+    "id": 101400001370003502,
+    "value": "Noboru Sougetsu"
+  },
+  {
     "id": 101400001370003600,
     "value": "Keiji Fujiwara"
   },
   {
     "id": 101400001370003601,
     "value": "Keiji Fujiwara"
+  },
+  {
+    "id": 101400001370003700,
+    "value": "Mamoru Miyano"
+  },
+  {
+    "id": 101400001370003701,
+    "value": "Mamoru Miyano"
+  },
+  {
+    "id": 101400001370003702,
+    "value": "Mamoru Miyano"
+  },
+  {
+    "id": 101400001370003703,
+    "value": "-"
+  },
+  {
+    "id": 101400001370003900,
+    "value": "-"
+  },
+  {
+    "id": 101400001370004000,
+    "value": "Kenji Hamada"
+  },
+  {
+    "id": 101400001370004001,
+    "value": "Kenji Hamada"
+  },
+  {
+    "id": 101400001370004100,
+    "value": "Ryoko Shiraishi"
+  },
+  {
+    "id": 101400001370004102,
+    "value": "-"
+  },
+  {
+    "id": 101400001370004200,
+    "value": "Unsho Ishizuka"
+  },
+  {
+    "id": 101400001370004300,
+    "value": "Miyuki Kawasho"
+  },
+  {
+    "id": 101400001370004301,
+    "value": "Miyuki Kawasho"
+  },
+  {
+    "id": 101400001370004400,
+    "value": "Chiwa Saito"
+  },
+  {
+    "id": 101400001370004500,
+    "value": "Yuichi Nakamura"
+  },
+  {
+    "id": 101400001370004501,
+    "value": "Yuichi Nakamura"
+  },
+  {
+    "id": 101400001370004600,
+    "value": "Arisa Ogasawara"
+  },
+  {
+    "id": 101400001370004700,
+    "value": "Tetsu Shiratori"
+  },
+  {
+    "id": 101400001370004800,
+    "value": "Ryotaro Okiayu"
+  },
+  {
+    "id": 101400001370004902,
+    "value": "Miyu Irino"
+  },
+  {
+    "id": 101400001370005000,
+    "value": "Tetsu Inada"
+  },
+  {
+    "id": 101400001370005100,
+    "value": "Shin-ichiro Miki"
+  },
+  {
+    "id": 101400001370005101,
+    "value": "Shin-ichiro Miki"
+  },
+  {
+    "id": 101400001370005200,
+    "value": "Hiroyuki Yoshino"
+  },
+  {
+    "id": 101400001370005201,
+    "value": "Hiroyuki Yoshino"
+  },
+  {
+    "id": 101400001370005300,
+    "value": "Hiroshi Kamiya"
+  },
+  {
+    "id": 101400001370005301,
+    "value": "Hiroshi Kamiya"
+  },
+  {
+    "id": 101400001370005400,
+    "value": "Arisa Ogasawara"
+  },
+  {
+    "id": 101400001370005402,
+    "value": "Arisa Ogasawara"
+  },
+  {
+    "id": 101400001370005600,
+    "value": "-"
+  },
+  {
+    "id": 101400001370005700,
+    "value": "-"
+  },
+  {
+    "id": 101400001370005800,
+    "value": "-"
+  },
+  {
+    "id": 101400001370006001,
+    "value": "-"
+  },
+  {
+    "id": 101400001370006100,
+    "value": "Mitsuki Saiga"
+  },
+  {
+    "id": 101400001370006101,
+    "value": "Mitsuki Saiga"
   },
   {
     "id": 101400001375000100,
@@ -18126,6 +19410,10 @@
   {
     "id": 101400001379000200,
     "value": "Tetsuya Kakihara"
+  },
+  {
+    "id": 101400001382100100,
+    "value": "-"
   },
   {
     "id": 101400001400000100,
@@ -19089,7 +20377,7 @@
   },
   {
     "id": 101400002001000700,
-    "value": ""
+    "value": "-"
   },
   {
     "id": 101400002001000900,
@@ -19097,7 +20385,7 @@
   },
   {
     "id": 101400002001001000,
-    "value": ""
+    "value": "-"
   },
   {
     "id": 101400002009000100,
@@ -19260,6 +20548,10 @@
     "value": ""
   },
   {
+    "id": 101400002219000100,
+    "value": "-"
+  },
+  {
     "id": 101400002230000200,
     "value": ""
   },
@@ -19374,6 +20666,26 @@
   {
     "id": 101400002370000800,
     "value": ""
+  },
+  {
+    "id": 101400002370001300,
+    "value": "-"
+  },
+  {
+    "id": 101400002370001500,
+    "value": "-"
+  },
+  {
+    "id": 101400002370001600,
+    "value": "-"
+  },
+  {
+    "id": 101400002370001700,
+    "value": "-"
+  },
+  {
+    "id": 101400002370001800,
+    "value": "-"
   },
   {
     "id": 101400002400000100,

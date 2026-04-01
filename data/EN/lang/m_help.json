@@ -80,6 +80,10 @@
     "value": "Unit Ability"
   },
   {
+    "id": 170200000001011085,
+    "value": "Unit Skills"
+  },
+  {
     "id": 170200000001011091,
     "value": "Modification"
   },
@@ -457,11 +461,15 @@
   },
   {
     "id": 170300000001011071,
-    "value": "Certain units can wield special weapons.\nUnlike regular weapons, MAP Weapons can attack multiple units within range at once, deal damage to the entire area, restore HP or increase MP of allies, etc.\n\nNotes on MAP Weapons:\n- MAP Weapons cannot be used after moving.\n- Bonus Actions will not be triggered upon destroying an enemy unit with a MAP Weapon.\n- Auto Bonus Actions will not activate after using MAP Weapons.\n- MAP Weapons have a limited number of uses."
+    "value": "Certain units can wield special weapons.\nUnlike regular weapons, MAP Weapons can attack multiple units within range at once, deal damage to the entire area, restore HP or increase MP of allies, etc.\n\nNotes on MAP Weapons:\n- Except for certain special MAP Weapons, they cannot be used after moving.\n- Bonus Actions will not be triggered upon destroying an enemy unit with a MAP Weapon.\n- Auto Bonus Actions will not activate after using MAP Weapons.\n- MAP Weapons have a limited number of uses."
   },
   {
     "id": 170300000001011081,
     "value": "Unit Abilities are unique effects that units possess."
+  },
+  {
+    "id": 170300000001011085,
+    "value": "Certain units possess unique skills called Unit Skills.\n\nThese skills can be activated during your phase by consuming a use, as long as the units have not yet taken an action.\nAfter activating a Unit Skill, you cannot activate another Unit Skill with the same effect on the target unit\nuntil the original effect expires.\n\nNote that these skills take effect in a set order of priority."
   },
   {
     "id": 170300000001011091,

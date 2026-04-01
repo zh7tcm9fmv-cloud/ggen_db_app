@@ -169,19 +169,6 @@
     "ExtendStageId": 90230013
   },
   {
-    "Id": 90200013,
-    "Priority": 130,
-    "UnitId": 1330005900,
-    "ScheduleId": 2512401003,
-    "BromideMovePositionX": 0,
-    "BromideMovePositionY": -120,
-    "BromideScaleRatePercent": 130,
-    "BromideInvasionTopMovePositionX": 0,
-    "BromideInvasionTopMovePositionY": -100,
-    "BromideInvasionTopScaleRatePercent": 90,
-    "ExtendStageId": 90230013
-  },
-  {
     "Id": 90200014,
     "Priority": 140,
     "UnitId": 1230005400,
@@ -195,38 +182,12 @@
     "ExtendStageId": 90230014
   },
   {
-    "Id": 90200014,
-    "Priority": 140,
-    "UnitId": 1230005400,
-    "ScheduleId": 2601501003,
-    "BromideMovePositionX": -60,
-    "BromideMovePositionY": 20,
-    "BromideScaleRatePercent": 150,
-    "BromideInvasionTopMovePositionX": -30,
-    "BromideInvasionTopMovePositionY": 20,
-    "BromideInvasionTopScaleRatePercent": 100,
-    "ExtendStageId": 90230014
-  },
-  {
     "Id": 90200015,
     "Priority": 150,
     "UnitId": 1408000300,
     "ScheduleId": 2602401003,
     "BromideMovePositionX": 30,
     "BromideMovePositionY": 0,
-    "BromideScaleRatePercent": 135,
-    "BromideInvasionTopMovePositionX": -60,
-    "BromideInvasionTopMovePositionY": -70,
-    "BromideInvasionTopScaleRatePercent": 100,
-    "ExtendStageId": 90230015
-  },
-  {
-    "Id": 90200015,
-    "Priority": 150,
-    "UnitId": 1408000300,
-    "ScheduleId": 2602401003,
-    "BromideMovePositionX": 0,
-    "BromideMovePositionY": -50,
     "BromideScaleRatePercent": 135,
     "BromideInvasionTopMovePositionX": -60,
     "BromideInvasionTopMovePositionY": -70,

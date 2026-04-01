@@ -30,10 +30,22 @@
     "TargetId": 1500
   },
   {
+    "ItemId": 240000012190,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 2190
+  },
+  {
     "ItemId": 240000013300,
     "TargetIndex": 1,
     "TargetTypeIndex": 2,
     "TargetId": 3300
+  },
+  {
+    "ItemId": 240000013700,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 3700
   },
   {
     "ItemId": 240000014000,

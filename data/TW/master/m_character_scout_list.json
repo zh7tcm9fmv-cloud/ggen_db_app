@@ -742,6 +742,41 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1219000300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 21900103,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1219000400,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 21900303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1219000500,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 21900502,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1219000701,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 21900202,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1219000800,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 21900202,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
     "CharacterId": 1230000500,
     "RegisterConditionTypeIndex": 2,
     "TargetId": 23000303,
@@ -1120,11 +1155,116 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1370003502,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002502,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
     "CharacterId": 1370003601,
     "RegisterConditionTypeIndex": 2,
     "TargetId": 37000903,
     "ScoutCapital": 3000,
     "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1370003702,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004001,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002404,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004400,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004500,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002203,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004600,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001603,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004700,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002002,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004800,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001703,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370004902,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370005000,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001703,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370005100,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001403,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370005200,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001502,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370005300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37001303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
+  },
+  {
+    "CharacterId": 1370006101,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 37002404,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2603609901
   },
   {
     "CharacterId": 1400001400,

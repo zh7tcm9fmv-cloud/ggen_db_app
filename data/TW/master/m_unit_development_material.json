@@ -1035,6 +1035,121 @@
     "ConsumeCount": 3
   },
   {
+    "DevelopMaterialSetId": 1211000101,
+    "ItemId": 180000002190,
+    "ConsumeCount": 50
+  },
+  {
+    "DevelopMaterialSetId": 1211000101,
+    "ItemId": 189900000001,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1211000102,
+    "ItemId": 180000002190,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1211000102,
+    "ItemId": 189900000002,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1211000500,
+    "ItemId": 180000002190,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1211000700,
+    "ItemId": 180000002190,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1211000800,
+    "ItemId": 180000002190,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1211000900,
+    "ItemId": 180000002190,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1211001000,
+    "ItemId": 180000002190,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1211001100,
+    "ItemId": 180000002190,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1219000100,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000100,
+    "ItemId": 181219000100,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000200,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000200,
+    "ItemId": 181219000200,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000300,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000300,
+    "ItemId": 181219000300,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000400,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000400,
+    "ItemId": 181219000400,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000500,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000500,
+    "ItemId": 181219000500,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000600,
+    "ItemId": 180000002190,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1219000600,
+    "ItemId": 181219000600,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1219000700,
+    "ItemId": 180000002190,
+    "ConsumeCount": 12
+  },
+  {
     "DevelopMaterialSetId": 1230000100,
     "ItemId": 180000002300,
     "ConsumeCount": 16
@@ -1631,6 +1746,206 @@
   },
   {
     "DevelopMaterialSetId": 1370005600,
+    "ItemId": 180000003700,
+    "ConsumeCount": 8
+  },
+  {
+    "DevelopMaterialSetId": 1370005700,
+    "ItemId": 180000003700,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1370005700,
+    "ItemId": 181370005700,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370005900,
+    "ItemId": 181370005900,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370006200,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370006400,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370006600,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370007000,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370007200,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370007800,
+    "ItemId": 180000003700,
+    "ConsumeCount": 8
+  },
+  {
+    "DevelopMaterialSetId": 1370007900,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008000,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008100,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008300,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008500,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008700,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370008800,
+    "ItemId": 181370008800,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370008900,
+    "ItemId": 181370008900,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370009100,
+    "ItemId": 181370009100,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370009200,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370009300,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370009500,
+    "ItemId": 180000003700,
+    "ConsumeCount": 8
+  },
+  {
+    "DevelopMaterialSetId": 1370009600,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370009900,
+    "ItemId": 180000003700,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1370010100,
+    "ItemId": 180000003700,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1370010100,
+    "ItemId": 181370010100,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370010300,
+    "ItemId": 180000003700,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1370010300,
+    "ItemId": 181370010300,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370010500,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370010700,
+    "ItemId": 180000003700,
+    "ConsumeCount": 8
+  },
+  {
+    "DevelopMaterialSetId": 1370010800,
+    "ItemId": 181370010800,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1370011000,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370011100,
+    "ItemId": 180000003700,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1370011100,
+    "ItemId": 181370011100,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1379000101,
+    "ItemId": 180000003700,
+    "ConsumeCount": 50
+  },
+  {
+    "DevelopMaterialSetId": 1379000101,
+    "ItemId": 189900000001,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1379000102,
+    "ItemId": 180000003700,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1379000102,
+    "ItemId": 189900000002,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1379000300,
+    "ItemId": 180000003700,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1379000300,
+    "ItemId": 181379000300,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1379001900,
     "ItemId": 180000003700,
     "ConsumeCount": 8
   },

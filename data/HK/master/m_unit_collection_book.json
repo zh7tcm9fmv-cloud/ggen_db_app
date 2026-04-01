@@ -4490,17 +4490,6 @@
   {
     "Id": 21900001,
     "DefaultUnitId": 1219000250,
-    "SortOrder": 21900001,
-    "SeriesId": 2190,
-    "DescriptionLanguageId": 110200001219000250,
-    "ScheduleId": 2506109901,
-    "OverrideKomaSize": 0,
-    "KomaMovePositionX": 0,
-    "KomaMovePositionY": 0
-  },
-  {
-    "Id": 21900001,
-    "DefaultUnitId": 1219000250,
     "SortOrder": 21900002,
     "SeriesId": 2190,
     "DescriptionLanguageId": 110200001219000250,

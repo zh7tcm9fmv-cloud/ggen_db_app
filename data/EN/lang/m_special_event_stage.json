@@ -28,6 +28,14 @@
     "value": "Zaku Day"
   },
   {
+    "id": 130100000099000109,
+    "value": "Wing Gundam Zero (EW) (EX)\nSpecial Stage"
+  },
+  {
+    "id": 130100000099000110,
+    "value": "00 Raiser Final Battle Type (EX)\nSpecial Stage"
+  },
+  {
     "id": 310200000099000101,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   },
@@ -54,5 +62,13 @@
   {
     "id": 310200000099000107,
     "value": "March 9th is Zaku Day!\nA special stage that can only be attempted during the event."
+  },
+  {
+    "id": 310200000099000109,
+    "value": "A special stage that can only be attempted during the event."
+  },
+  {
+    "id": 310200000099000110,
+    "value": "A special stage that can only be attempted during the event."
   }
 ]

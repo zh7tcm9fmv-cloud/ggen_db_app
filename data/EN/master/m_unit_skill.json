@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 137000595000,
+    "NameLanguageId": 141300137000595000,
+    "DescriptionLanguageId": 141400137000595000,
+    "ResourceId": "trait_11430103",
+    "StartEffectResourceId": "ef_mpc_0091_05_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_05_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1
+  }
+]

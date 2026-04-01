@@ -230,6 +230,26 @@
     "ScheduleId": 0
   },
   {
+    "Id": 1219000100,
+    "ResourceId": "g2190u00100",
+    "NameLanguageId": 110100001219000100,
+    "ProfileLanguageId": 110200001219000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2190,
+    "ModelNumber": "XXXG-00W0",
+    "ScheduleId": 2603609901
+  },
+  {
+    "Id": 1219000300,
+    "ResourceId": "g2190u00300",
+    "NameLanguageId": 110100001219000300,
+    "ProfileLanguageId": 110200001219000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2190,
+    "ModelNumber": "OZ-00MS2B",
+    "ScheduleId": 2603609901
+  },
+  {
     "Id": 1230000100,
     "ResourceId": "g2300u00100",
     "NameLanguageId": 110100001230000100,
@@ -358,6 +378,26 @@
     "SeriesId": 3700,
     "ModelNumber": "GN-001",
     "ScheduleId": 0
+  },
+  {
+    "Id": 1370005900,
+    "ResourceId": "g3700u05900",
+    "NameLanguageId": 110100001370005900,
+    "ProfileLanguageId": 110200001370005900,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3700,
+    "ModelNumber": "GN-0000+GNR-010",
+    "ScheduleId": 2603609901
+  },
+  {
+    "Id": 1370011100,
+    "ResourceId": "g3700u11100",
+    "NameLanguageId": 110100001370011100,
+    "ProfileLanguageId": 110200001370011100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3700,
+    "ModelNumber": "CB-0000G/C",
+    "ScheduleId": 2603609901
   },
   {
     "Id": 1400000100,

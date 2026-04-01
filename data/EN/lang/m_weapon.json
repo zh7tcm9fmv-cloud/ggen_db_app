@@ -8792,6 +8792,90 @@
     "value": "Beam Cannon"
   },
   {
+    "id": 120100121100010001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121100010002,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100010003,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100010004,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100010101,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121100010102,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100010103,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100010104,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100010201,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121100010202,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100010203,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100010204,
+    "value": "Zweihander Mode (Fully Open)"
+  },
+  {
+    "id": 120100121100020001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100020101,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100020201,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121100030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121100030002,
+    "value": "Machine Cannon"
+  },
+  {
+    "id": 120100121100030003,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100030004,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100030080,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100030090,
+    "value": "Buster Rifle SSP"
+  },
+  {
     "id": 120100121100036001,
     "value": "Beam Saber"
   },
@@ -8812,12 +8896,192 @@
     "value": "Buster Rifle SSP"
   },
   {
+    "id": 120100121100040001,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100040080,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100040090,
+    "value": "Buster Rifle SSP"
+  },
+  {
     "id": 120100121100046001,
     "value": "Buster Rifle"
   },
   {
     "id": 120100121100046090,
     "value": "Buster Rifle SSP"
+  },
+  {
+    "id": 120100121100050001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121100050002,
+    "value": "Machine Cannon"
+  },
+  {
+    "id": 120100121100050003,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100050004,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121100050005,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121100050080,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121100050090,
+    "value": "Twin Buster Rifle SSP"
+  },
+  {
+    "id": 120100121100060001,
+    "value": "Wing Vulcan"
+  },
+  {
+    "id": 120100121100060002,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121100060003,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121100060080,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121100060090,
+    "value": "Twin Buster Rifle SSP"
+  },
+  {
+    "id": 120100121100070001,
+    "value": "Beam Scythe"
+  },
+  {
+    "id": 120100121100070002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121100070003,
+    "value": "Buster Shield"
+  },
+  {
+    "id": 120100121100070090,
+    "value": "Buster Shield SSP"
+  },
+  {
+    "id": 120100121100080001,
+    "value": "Army Knife"
+  },
+  {
+    "id": 120100121100080002,
+    "value": "Hatch Full Open Mode"
+  },
+  {
+    "id": 120100121100080003,
+    "value": "Beam Gatling Gun"
+  },
+  {
+    "id": 120100121100080004,
+    "value": "Expend All Missiles"
+  },
+  {
+    "id": 120100121100080005,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100121100080080,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100121100080090,
+    "value": "Expend All Missiles SSP"
+  },
+  {
+    "id": 120100121100090001,
+    "value": "Heat Shotel"
+  },
+  {
+    "id": 120100121100090002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121100090003,
+    "value": "Cross Crusher"
+  },
+  {
+    "id": 120100121100090004,
+    "value": "Beam Submachine Gun"
+  },
+  {
+    "id": 120100121100090090,
+    "value": "Beam Submachine Gun SSP"
+  },
+  {
+    "id": 120100121100100001,
+    "value": "Liaoya"
+  },
+  {
+    "id": 120100121100100002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121100100003,
+    "value": "Dragon Fang"
+  },
+  {
+    "id": 120100121100100004,
+    "value": "Dragon Fang Fire"
+  },
+  {
+    "id": 120100121100100090,
+    "value": "Dragon Fang SSP"
+  },
+  {
+    "id": 120100121100110001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121100110002,
+    "value": "Dober Gun"
+  },
+  {
+    "id": 120100121100110003,
+    "value": "Heat Lance \"Tempest\""
+  },
+  {
+    "id": 120100121100110090,
+    "value": "Dober Gun SSP"
+  },
+  {
+    "id": 120100121200010001,
+    "value": "Beam Bayonet (Saber)"
+  },
+  {
+    "id": 120100121200010002,
+    "value": "Beam Bayonet (Rifle)"
+  },
+  {
+    "id": 120100121200010090,
+    "value": "Beam Bayonet (Rifle) SSP"
+  },
+  {
+    "id": 120100121200020001,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100121200020090,
+    "value": "Beam Bayonet (Rifle) SSP"
   },
   {
     "id": 120100121700011001,
@@ -8868,6 +9132,86 @@
     "value": "Double Beam Cannon SSP"
   },
   {
+    "id": 120100121900010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121900010002,
+    "value": "Machine Cannon"
+  },
+  {
+    "id": 120100121900010003,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121900010004,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121900010005,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121900010090,
+    "value": "Twin Buster Rifle SSP"
+  },
+  {
+    "id": 120100121900015001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121900015002,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121900015003,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121900015004,
+    "value": "Twin Buster Rifle EX"
+  },
+  {
+    "id": 120100121900015005,
+    "value": "Rolling Buster Rifle"
+  },
+  {
+    "id": 120100121900015101,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121900015102,
+    "value": "Buster Rifle"
+  },
+  {
+    "id": 120100121900015103,
+    "value": "Twin Buster Rifle"
+  },
+  {
+    "id": 120100121900015104,
+    "value": "Twin Buster Rifle EX"
+  },
+  {
+    "id": 120100121900015105,
+    "value": "Rolling Buster Rifle"
+  },
+  {
+    "id": 120100121900020001,
+    "value": "Beam Scissor"
+  },
+  {
+    "id": 120100121900020002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121900020080,
+    "value": "Beam Scissor"
+  },
+  {
+    "id": 120100121900020090,
+    "value": "Beam Scissor SSP"
+  },
+  {
     "id": 120100121900025001,
     "value": "Beam Scissor"
   },
@@ -8878,6 +9222,130 @@
   {
     "id": 120100121900025003,
     "value": "Beam Scissor EX"
+  },
+  {
+    "id": 120100121900030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121900030002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121900030003,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100121900030004,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100121900030005,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100121900030090,
+    "value": "Mega Cannon SSP"
+  },
+  {
+    "id": 120100121900035001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121900035002,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100121900035003,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100121900035004,
+    "value": "Mega Cannon EX"
+  },
+  {
+    "id": 120100121900035005,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100121900040001,
+    "value": "Double Gatling Gun (Point Blank)"
+  },
+  {
+    "id": 120100121900040002,
+    "value": "Machine Cannon"
+  },
+  {
+    "id": 120100121900040003,
+    "value": "Double Gatling Gun"
+  },
+  {
+    "id": 120100121900040004,
+    "value": "Hatch Full Open Mode"
+  },
+  {
+    "id": 120100121900040005,
+    "value": "Hatch Full Open Mode"
+  },
+  {
+    "id": 120100121900040090,
+    "value": "Double Gatling Gun SSP"
+  },
+  {
+    "id": 120100121900050001,
+    "value": "Heat Shotel"
+  },
+  {
+    "id": 120100121900050002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121900050003,
+    "value": "Heat Shotel"
+  },
+  {
+    "id": 120100121900050090,
+    "value": "Heat Shotel SSP"
+  },
+  {
+    "id": 120100121900060001,
+    "value": "Twim Beam Trident"
+  },
+  {
+    "id": 120100121900060002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121900060003,
+    "value": "Dragon Fang"
+  },
+  {
+    "id": 120100121900060090,
+    "value": "Twin Beam Trident SSP"
+  },
+  {
+    "id": 120100121900070001,
+    "value": "Bazooka"
+  },
+  {
+    "id": 120100121900070002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121900070003,
+    "value": "Double Gatling Gun"
+  },
+  {
+    "id": 120100121900070004,
+    "value": "Shoulder-Mounted 8-Tube Missile Launcher"
+  },
+  {
+    "id": 120100121900070080,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100121900070090,
+    "value": "Double Gatling Gun SSP"
   },
   {
     "id": 120100123000010001,
@@ -13096,6 +13564,30 @@
     "value": "GN Sword EX"
   },
   {
+    "id": 120100137000016001,
+    "value": "GN Sword"
+  },
+  {
+    "id": 120100137000016002,
+    "value": "GN Beam Dagger"
+  },
+  {
+    "id": 120100137000016003,
+    "value": "Seven Sword"
+  },
+  {
+    "id": 120100137000016004,
+    "value": "GN Sword Rifle Mode"
+  },
+  {
+    "id": 120100137000016005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000016090,
+    "value": "Seven Sword SSP"
+  },
+  {
     "id": 120100137000030001,
     "value": "GN Beam Saber"
   },
@@ -13980,6 +14472,950 @@
     "value": "GN Beam Saber SSP"
   },
   {
+    "id": 120100137000570001,
+    "value": "GN Sword II"
+  },
+  {
+    "id": 120100137000570002,
+    "value": "GN Sword II Twin Lance Beam Saber Mode"
+  },
+  {
+    "id": 120100137000570003,
+    "value": "GN Sword II Rifle Mode"
+  },
+  {
+    "id": 120100137000570004,
+    "value": "GN Micro Missile"
+  },
+  {
+    "id": 120100137000570005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000570006,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000570090,
+    "value": "Trans-Am SSP"
+  },
+  {
+    "id": 120100137000590001,
+    "value": "GN Sword III"
+  },
+  {
+    "id": 120100137000590002,
+    "value": "GN Sword III Beam Saber Mode"
+  },
+  {
+    "id": 120100137000590003,
+    "value": "GN Sword III Rifle Mode"
+  },
+  {
+    "id": 120100137000590004,
+    "value": "GN Micro Missile"
+  },
+  {
+    "id": 120100137000590005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000590006,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000590007,
+    "value": "Trans-Am Burst"
+  },
+  {
+    "id": 120100137000590090,
+    "value": "Raiser Sword SSP"
+  },
+  {
+    "id": 120100137000595001,
+    "value": "GN Sword III"
+  },
+  {
+    "id": 120100137000595002,
+    "value": "GN Sword III Beam Saber Mode"
+  },
+  {
+    "id": 120100137000595003,
+    "value": "GN Sword III Rifle Mode"
+  },
+  {
+    "id": 120100137000595004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000595005,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000595006,
+    "value": "Raiser Sword EX"
+  },
+  {
+    "id": 120100137000595007,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000595101,
+    "value": "GN Sword III"
+  },
+  {
+    "id": 120100137000595102,
+    "value": "GN Sword III Beam Saber Mode"
+  },
+  {
+    "id": 120100137000595103,
+    "value": "GN Sword III Rifle Mode"
+  },
+  {
+    "id": 120100137000595104,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000595105,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000595106,
+    "value": "Raiser Sword EX"
+  },
+  {
+    "id": 120100137000595107,
+    "value": "Raiser Sword"
+  },
+  {
+    "id": 120100137000610001,
+    "value": "GN Sword"
+  },
+  {
+    "id": 120100137000610002,
+    "value": "GN Sword Rifle Mode"
+  },
+  {
+    "id": 120100137000610090,
+    "value": "GN Sword SSP"
+  },
+  {
+    "id": 120100137000620001,
+    "value": "GN Sword II"
+  },
+  {
+    "id": 120100137000620002,
+    "value": "GN Sword II Beam Saber Mode"
+  },
+  {
+    "id": 120100137000620003,
+    "value": "GN Sword II Rifle Mode"
+  },
+  {
+    "id": 120100137000620004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000620090,
+    "value": "GN Sword II Rifle Mode SSP"
+  },
+  {
+    "id": 120100137000640001,
+    "value": "GN Beam Pistol II"
+  },
+  {
+    "id": 120100137000640002,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000640003,
+    "value": "GN Shield Bit"
+  },
+  {
+    "id": 120100137000640004,
+    "value": "GN Sniper Rifle II"
+  },
+  {
+    "id": 120100137000640005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000640006,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000640090,
+    "value": "GN Shield Bit SSP"
+  },
+  {
+    "id": 120100137000660001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000660002,
+    "value": "GN Submachine Gun"
+  },
+  {
+    "id": 120100137000660003,
+    "value": "GN Twin Beam Rifle"
+  },
+  {
+    "id": 120100137000660004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000660090,
+    "value": "GN Twin Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000680001,
+    "value": "GN Beam Shield Claw Mode"
+  },
+  {
+    "id": 120100137000680002,
+    "value": "GN Twin Beam Rifle"
+  },
+  {
+    "id": 120100137000680003,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000680090,
+    "value": "GN Twin Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000700001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000700002,
+    "value": "GN Bazooka II"
+  },
+  {
+    "id": 120100137000700003,
+    "value": "GN Bazooka II Double Bazooka Burst Mode"
+  },
+  {
+    "id": 120100137000700004,
+    "value": "Quad Cannon Face Burst Mode"
+  },
+  {
+    "id": 120100137000700005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000700006,
+    "value": "Quad Cannon"
+  },
+  {
+    "id": 120100137000700090,
+    "value": "GN Bazooka II Double Bazooka Burst Mode SSP"
+  },
+  {
+    "id": 120100137000720001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000720002,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137000720003,
+    "value": "GN Bazooka II Double Bazooka"
+  },
+  {
+    "id": 120100137000720004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000720090,
+    "value": "GN Bazooka II Double Bazooka SSP"
+  },
+  {
+    "id": 120100137000740001,
+    "value": "GN Beam Machine Gun"
+  },
+  {
+    "id": 120100137000740002,
+    "value": "GN Micro Missile"
+  },
+  {
+    "id": 120100137000741001,
+    "value": "GN Beam Machine Gun"
+  },
+  {
+    "id": 120100137000741002,
+    "value": "GN Micro Missile"
+  },
+  {
+    "id": 120100137000741090,
+    "value": "GN Micro Missile SSP"
+  },
+  {
+    "id": 120100137000751001,
+    "value": "Sonic Blade"
+  },
+  {
+    "id": 120100137000751002,
+    "value": "Linear Rifle"
+  },
+  {
+    "id": 120100137000751090,
+    "value": "Linear Rifle SSP"
+  },
+  {
+    "id": 120100137000761001,
+    "value": "Plasma Sword"
+  },
+  {
+    "id": 120100137000761002,
+    "value": "Linear Rifle"
+  },
+  {
+    "id": 120100137000761090,
+    "value": "Linear Rifle SSP"
+  },
+  {
+    "id": 120100137000771001,
+    "value": "Linear Rifle"
+  },
+  {
+    "id": 120100137000771002,
+    "value": "Missile"
+  },
+  {
+    "id": 120100137000771090,
+    "value": "Linear Rifle SSP"
+  },
+  {
+    "id": 120100137000780001,
+    "value": "GN Lance"
+  },
+  {
+    "id": 120100137000780002,
+    "value": "GN Lance Rifle Mode"
+  },
+  {
+    "id": 120100137000780003,
+    "value": "GN Beam Rifle"
+  },
+  {
+    "id": 120100137000780090,
+    "value": "GN Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000790001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000790002,
+    "value": "GN Submachine Gun"
+  },
+  {
+    "id": 120100137000790003,
+    "value": "GN Beam Rifle"
+  },
+  {
+    "id": 120100137000790090,
+    "value": "GN Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000800001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000800002,
+    "value": "GN Submachine Gun"
+  },
+  {
+    "id": 120100137000800003,
+    "value": "GN Beam Rifle"
+  },
+  {
+    "id": 120100137000800090,
+    "value": "GN Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000810001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000810002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137000810003,
+    "value": "GN Short Beam Cannon"
+  },
+  {
+    "id": 120100137000810090,
+    "value": "GN Short Beam Cannon SSP"
+  },
+  {
+    "id": 120100137000830001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000830002,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137000830003,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000830004,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137000830090,
+    "value": "GN Mega Launcher SSP"
+  },
+  {
+    "id": 120100137000850001,
+    "value": "GN Beam Claw"
+  },
+  {
+    "id": 120100137000850002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137000850090,
+    "value": "GN Beam Claw SSP"
+  },
+  {
+    "id": 120100137000860001,
+    "value": "GN Lance"
+  },
+  {
+    "id": 120100137000860002,
+    "value": "GN Lance Rifle Mode"
+  },
+  {
+    "id": 120100137000860003,
+    "value": "GN Beam Rifle"
+  },
+  {
+    "id": 120100137000870001,
+    "value": "GN Sword Kai"
+  },
+  {
+    "id": 120100137000870002,
+    "value": "GN Beam Dagger"
+  },
+  {
+    "id": 120100137000870003,
+    "value": "GN Sword Kai Rifle Mode"
+  },
+  {
+    "id": 120100137000870090,
+    "value": "GN Sword Kai SSP"
+  },
+  {
+    "id": 120100137000880001,
+    "value": "GN Beam Pistol II"
+  },
+  {
+    "id": 120100137000880002,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000880003,
+    "value": "GN Shield Bit"
+  },
+  {
+    "id": 120100137000880004,
+    "value": "GN Sniper Rifle II"
+  },
+  {
+    "id": 120100137000880005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000880006,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000880007,
+    "value": "GN Shield Bit"
+  },
+  {
+    "id": 120100137000880090,
+    "value": "GN Sniper Rifle II SSP"
+  },
+  {
+    "id": 120100137000890001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000890002,
+    "value": "GN Submachine Gun"
+  },
+  {
+    "id": 120100137000890003,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137000890004,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137000890005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000890090,
+    "value": "GN Cannon SSP"
+  },
+  {
+    "id": 120100137000900001,
+    "value": "GN Beam Shield Claw Mode"
+  },
+  {
+    "id": 120100137000900002,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137000900003,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137000900004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000900090,
+    "value": "GN Cannon SSP"
+  },
+  {
+    "id": 120100137000910001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000910002,
+    "value": "GN Bazooka II"
+  },
+  {
+    "id": 120100137000910003,
+    "value": "GN Bazooka II Double Bazooka Burst Mode"
+  },
+  {
+    "id": 120100137000910004,
+    "value": "Hyper Burst"
+  },
+  {
+    "id": 120100137000910005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000910006,
+    "value": "Hyper Burst"
+  },
+  {
+    "id": 120100137000910090,
+    "value": "GN Bazooka II Double Bazooka Burst Mode SSP"
+  },
+  {
+    "id": 120100137000912001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000912002,
+    "value": "GN Bazooka II"
+  },
+  {
+    "id": 120100137000912003,
+    "value": "GN Bazooka II Double Bazooka Burst Mode"
+  },
+  {
+    "id": 120100137000912004,
+    "value": "Hyper Burst"
+  },
+  {
+    "id": 120100137000912005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000912006,
+    "value": "Hyper Burst"
+  },
+  {
+    "id": 120100137000920001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000920002,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137000920003,
+    "value": "GN Bazooka II Double Bazooka"
+  },
+  {
+    "id": 120100137000920004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000920090,
+    "value": "GN Cannon SSP"
+  },
+  {
+    "id": 120100137000922001,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137000922002,
+    "value": "GN Bazooka II Double Bazooka"
+  },
+  {
+    "id": 120100137000930001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000930002,
+    "value": "GN Beam Rifle"
+  },
+  {
+    "id": 120100137000930003,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000930090,
+    "value": "GN Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000940001,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137000940002,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000940090,
+    "value": "GN Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000950001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100137000950002,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100137000950090,
+    "value": "Beam Gun SSP"
+  },
+  {
+    "id": 120100137000960001,
+    "value": "Punch"
+  },
+  {
+    "id": 120100137000960002,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100137000960003,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100137000960090,
+    "value": "Punch SSP"
+  },
+  {
+    "id": 120100137000971001,
+    "value": "Carbon Blade"
+  },
+  {
+    "id": 120100137000971002,
+    "value": "200mm x 25 Smoothbore Gun (Space Type)"
+  },
+  {
+    "id": 120100137000971090,
+    "value": "200mm x 25 Smoothbore Gun (Space Type) SSP"
+  },
+  {
+    "id": 120100137000980001,
+    "value": "Non-Solar Reactor Specialized Beam Saber"
+  },
+  {
+    "id": 120100137000980002,
+    "value": "Non-Solar Reactor Specialized Beam Rifle"
+  },
+  {
+    "id": 120100137000981001,
+    "value": "Non-Solar Reactor Specialized Beam Saber"
+  },
+  {
+    "id": 120100137000981002,
+    "value": "Non-Solar Reactor Specialized Beam Rifle"
+  },
+  {
+    "id": 120100137000981090,
+    "value": "Non-Solar Reactor Specialized Beam Rifle SSP"
+  },
+  {
+    "id": 120100137000990001,
+    "value": "GN Beam Saber \"Howard/Daryl\""
+  },
+  {
+    "id": 120100137000990002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137000990003,
+    "value": "Beam Chakram"
+  },
+  {
+    "id": 120100137000990004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000990090,
+    "value": "GN Beam Saber \"Howard/Daryl\" SSP"
+  },
+  {
+    "id": 120100137001010001,
+    "value": "Enhanced Saber \"Souten\""
+  },
+  {
+    "id": 120100137001010002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001010003,
+    "value": "Beam Chakram"
+  },
+  {
+    "id": 120100137001010004,
+    "value": "Tri-Punisher"
+  },
+  {
+    "id": 120100137001010005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137001010090,
+    "value": "Enhanced Saber \"Souten\" SSP"
+  },
+  {
+    "id": 120100137001030001,
+    "value": "GN Buster Sword"
+  },
+  {
+    "id": 120100137001030002,
+    "value": "GN Buster Sword Rifle Mode"
+  },
+  {
+    "id": 120100137001030003,
+    "value": "GN Fang (Melee)"
+  },
+  {
+    "id": 120100137001030004,
+    "value": "GN Fang (Shot)"
+  },
+  {
+    "id": 120100137001030090,
+    "value": "GN Fang (Melee) SSP"
+  },
+  {
+    "id": 120100137001040001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137001040002,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137001040003,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137001041001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137001041002,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137001041003,
+    "value": "GN Mega Launcher"
+  },
+  {
+    "id": 120100137001041090,
+    "value": "GN Mega Launcher SSP"
+  },
+  {
+    "id": 120100137001050001,
+    "value": "GN Beam Claw"
+  },
+  {
+    "id": 120100137001050002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001050003,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137001050090,
+    "value": "GN Beam Claw SSP"
+  },
+  {
+    "id": 120100137001060001,
+    "value": "GN Heat Saber"
+  },
+  {
+    "id": 120100137001060002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001060003,
+    "value": "GN Beam Saber Fang"
+  },
+  {
+    "id": 120100137001061001,
+    "value": "GN Heat Saber"
+  },
+  {
+    "id": 120100137001061002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001061003,
+    "value": "GN Beam Saber Fang"
+  },
+  {
+    "id": 120100137001061090,
+    "value": "GN Beam Saber Fang SSP"
+  },
+  {
+    "id": 120100137001070001,
+    "value": "Egner Whip"
+  },
+  {
+    "id": 120100137001070002,
+    "value": "GN Beam Cannon"
+  },
+  {
+    "id": 120100137001070003,
+    "value": "Large Beam Cannon"
+  },
+  {
+    "id": 120100137001070080,
+    "value": "Large Beam Cannon"
+  },
+  {
+    "id": 120100137001070090,
+    "value": "GN Beam Cannon SSP"
+  },
+  {
+    "id": 120100137001080001,
+    "value": "Egner Whip"
+  },
+  {
+    "id": 120100137001080002,
+    "value": "GN Micro Missile"
+  },
+  {
+    "id": 120100137001080003,
+    "value": "GN Fang"
+  },
+  {
+    "id": 120100137001080004,
+    "value": "GN Beam Cannon"
+  },
+  {
+    "id": 120100137001080005,
+    "value": "GN Beam Cannon"
+  },
+  {
+    "id": 120100137001080090,
+    "value": "GN Fang SSP"
+  },
+  {
+    "id": 120100137001090001,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001090002,
+    "value": "Egner Whip"
+  },
+  {
+    "id": 120100137001090003,
+    "value": "GN Fang"
+  },
+  {
+    "id": 120100137001090004,
+    "value": "GN Beam Cannon"
+  },
+  {
+    "id": 120100137001090005,
+    "value": "GN Beam Cannon"
+  },
+  {
+    "id": 120100137001090090,
+    "value": "GN Fang SSP"
+  },
+  {
+    "id": 120100137001100001,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137001100002,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137001100003,
+    "value": "Gaga Assault"
+  },
+  {
+    "id": 120100137001100090,
+    "value": "Trans-Am SSP"
+  },
+  {
+    "id": 120100137001110001,
+    "value": "Large GN Beam Saber"
+  },
+  {
+    "id": 120100137001110002,
+    "value": "GN Buster Rifle"
+  },
+  {
+    "id": 120100137001110003,
+    "value": "GN Fin Fang"
+  },
+  {
+    "id": 120100137001110004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137001110090,
+    "value": "GN Fin Fang SSP"
+  },
+  {
+    "id": 120100137001130001,
+    "value": "Egner Whip"
+  },
+  {
+    "id": 120100137001130002,
+    "value": "GN Buster Rifle"
+  },
+  {
+    "id": 120100137001130003,
+    "value": "GN Cannon (Max Power)"
+  },
+  {
+    "id": 120100137001130004,
+    "value": "GN Cannon"
+  },
+  {
+    "id": 120100137001130090,
+    "value": "GN Fin Fang SSP"
+  },
+  {
     "id": 120100137500021001,
     "value": "GN Beam Saber"
   },
@@ -14040,6 +15476,138 @@
     "value": "Alvaaron Cannon SSP"
   },
   {
+    "id": 120100137900010001,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010002,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900010003,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137900010004,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900010005,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010101,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010102,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900010103,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137900010104,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900010105,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010201,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010202,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900010203,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137900010204,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900010205,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020001,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020002,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900020003,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900020004,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020101,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020102,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900020103,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900020104,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020201,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020202,
+    "value": "GN Blaster"
+  },
+  {
+    "id": 120100137900020203,
+    "value": "Turbulenz"
+  },
+  {
+    "id": 120100137900020204,
+    "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100137900030002,
+    "value": "Gundam Vulcan"
+  },
+  {
+    "id": 120100137900030003,
+    "value": "Twin Beam Gun"
+  },
+  {
+    "id": 120100137900030004,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100137900030005,
+    "value": "GN Feather"
+  },
+  {
+    "id": 120100137900030090,
+    "value": "Beam Bazooka SSP"
+  },
+  {
     "id": 120100137900051001,
     "value": "GN Lance Prototype"
   },
@@ -14070,6 +15638,30 @@
   {
     "id": 120100137900061090,
     "value": "GN Kunai SSP"
+  },
+  {
+    "id": 120100137900190001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137900190002,
+    "value": "GN Vulcan"
+  },
+  {
+    "id": 120100137900190003,
+    "value": "Prototype GN Mega Launcher"
+  },
+  {
+    "id": 120100137900190004,
+    "value": "Prototype GN Mega Launcher"
+  },
+  {
+    "id": 120100137900190080,
+    "value": "Prototype GN Mega Launcher"
+  },
+  {
+    "id": 120100137900190090,
+    "value": "Prototype GN Mega Launcher SSP"
   },
   {
     "id": 120100140000010001,
@@ -19581,6 +21173,30 @@
   },
   {
     "id": 120100237000080002,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100237000090001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100237000090002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100237000090003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100237000100001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100237000100002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100237000100003,
     "value": "Bombardment"
   },
   {

@@ -2180,8 +2180,40 @@
     "value": "SSR Altron Gundam Limit Break Material"
   },
   {
+    "id": 150100171211000300,
+    "value": "R Wing Gundam EW Limit Break Material"
+  },
+  {
     "id": 150100171211000360,
     "value": "SSR Wing Gundam EW Limit Break Material"
+  },
+  {
+    "id": 150100171211000500,
+    "value": "SR Wing Gundam Proto Zero EW Limit Break Material"
+  },
+  {
+    "id": 150100171211000700,
+    "value": "SR Gundam Deathscythe EW Rousette Limit Break Material"
+  },
+  {
+    "id": 150100171211000800,
+    "value": "SR Gundam Heavyarms EW Eagle Limit Break Material"
+  },
+  {
+    "id": 150100171211000900,
+    "value": "SR Gundam Sandrock EW Armadillo Limit Break Material"
+  },
+  {
+    "id": 150100171211001000,
+    "value": "SR Shenlong Gundam EW Liaoya Limit Break Material"
+  },
+  {
+    "id": 150100171211001100,
+    "value": "SR Tallgeese F Limit Break Material"
+  },
+  {
+    "id": 150100171212000100,
+    "value": "SSR Scorpio Limit Break Material"
   },
   {
     "id": 150100171217000110,
@@ -2196,8 +2228,44 @@
     "value": "SSR Vayeate Suivant Limit Break Material"
   },
   {
+    "id": 150100171219000100,
+    "value": "SSR Wing Gundam Zero (EW) Limit Break Material"
+  },
+  {
+    "id": 150100171219000150,
+    "value": "UR Wing Gundam Zero (EW) (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171219000200,
+    "value": "SSR Gundam Deathscythe Hell (EW) Limit Break Material"
+  },
+  {
     "id": 150100171219000250,
     "value": "UR Gundam Deathscythe Hell (EW) (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171219000300,
+    "value": "SSR Tallgeese III Limit Break Material"
+  },
+  {
+    "id": 150100171219000350,
+    "value": "UR Tallgeese III (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171219000400,
+    "value": "SSR Gundam Heavyarms Custom EW Limit Break Material"
+  },
+  {
+    "id": 150100171219000500,
+    "value": "SSR Gundam Sandrock Custom EW Limit Break Material"
+  },
+  {
+    "id": 150100171219000600,
+    "value": "SSR Altron Gundam EW Limit Break Material"
+  },
+  {
+    "id": 150100171219000700,
+    "value": "SR Serpent Limit Break Material"
   },
   {
     "id": 150100171230000100,
@@ -3048,6 +3116,10 @@
     "value": "UR Gundam Exia (EX) Limit Break Material"
   },
   {
+    "id": 150100171370000160,
+    "value": "SSR Gundam Exia [Trans-Am] Limit Break Material"
+  },
+  {
     "id": 150100171370000300,
     "value": "SR Gundam Dynames Limit Break Material"
   },
@@ -3268,6 +3340,158 @@
     "value": "SR Graham's Union Flag Custom II \"GN Flag\" Limit Break Material"
   },
   {
+    "id": 150100171370005700,
+    "value": "SSR 00 Raiser Limit Break Material"
+  },
+  {
+    "id": 150100171370005900,
+    "value": "SSR 00 Raiser Final Battle Type Limit Break Material"
+  },
+  {
+    "id": 150100171370005950,
+    "value": "UR 00 Raiser Final Battle Type (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171370006100,
+    "value": "R Gundam Exia Repair Limit Break Material"
+  },
+  {
+    "id": 150100171370006200,
+    "value": "SR 00 Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370006400,
+    "value": "SR Cherudim Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370006600,
+    "value": "SR Arios Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370007000,
+    "value": "SR Seravee Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370007200,
+    "value": "SR Seraphim Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370007410,
+    "value": "SR 0 Raiser Limit Break Material"
+  },
+  {
+    "id": 150100171370007510,
+    "value": "SR Union Realdo Space Type (Katharon Colors) Limit Break Material"
+  },
+  {
+    "id": 150100171370007610,
+    "value": "SR AEU Enact Space Type (Katharon Colors) Limit Break Material"
+  },
+  {
+    "id": 150100171370007800,
+    "value": "SR GN-X III Limit Break Material"
+  },
+  {
+    "id": 150100171370007900,
+    "value": "SR Ahead Limit Break Material"
+  },
+  {
+    "id": 150100171370008000,
+    "value": "SR Ahead Quantum Brainwave Type (Smultron) Limit Break Material"
+  },
+  {
+    "id": 150100171370008100,
+    "value": "SR Ahead Close-Combat Type (Sakigake) Limit Break Material"
+  },
+  {
+    "id": 150100171370008300,
+    "value": "SR Gadessa (Revive) Limit Break Material"
+  },
+  {
+    "id": 150100171370008500,
+    "value": "SR Garazzo (Bring) Limit Break Material"
+  },
+  {
+    "id": 150100171370008700,
+    "value": "SR Gundam Exia Repair II Limit Break Material"
+  },
+  {
+    "id": 150100171370008800,
+    "value": "SSR Cherudim Gundam GNHW/R Limit Break Material"
+  },
+  {
+    "id": 150100171370008900,
+    "value": "SSR Arios Gundam GNHW/M Limit Break Material"
+  },
+  {
+    "id": 150100171370009100,
+    "value": "SSR Seravee Gundam GNHW/B Limit Break Material"
+  },
+  {
+    "id": 150100171370009200,
+    "value": "SR Seraphim Gundam GNHW/B Limit Break Material"
+  },
+  {
+    "id": 150100171370009300,
+    "value": "SR GN Archer Limit Break Material"
+  },
+  {
+    "id": 150100171370009500,
+    "value": "SR 0 Gundam (Combat Unit GN Particle Condenser Type) Limit Break Material"
+  },
+  {
+    "id": 150100171370009600,
+    "value": "SR 0 Gundam (Combat Unit GN Drive Type) Limit Break Material"
+  },
+  {
+    "id": 150100171370009710,
+    "value": "SR Tieren Space Type (Katharon Colors) Limit Break Material"
+  },
+  {
+    "id": 150100171370009810,
+    "value": "SSR Tieren All-Region Type Limit Break Material"
+  },
+  {
+    "id": 150100171370009900,
+    "value": "SR Masurao Limit Break Material"
+  },
+  {
+    "id": 150100171370010100,
+    "value": "SSR Susanowo Limit Break Material"
+  },
+  {
+    "id": 150100171370010300,
+    "value": "SSR Arche Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370010410,
+    "value": "SSR Gadessa (Hilling) Limit Break Material"
+  },
+  {
+    "id": 150100171370010500,
+    "value": "SR Garazzo (Hilling) Limit Break Material"
+  },
+  {
+    "id": 150100171370010610,
+    "value": "SSR Gaddess Limit Break Material"
+  },
+  {
+    "id": 150100171370010700,
+    "value": "SR Empruss Limit Break Material"
+  },
+  {
+    "id": 150100171370010800,
+    "value": "SSR Regnant Limit Break Material"
+  },
+  {
+    "id": 150100171370011000,
+    "value": "SR Gaga Limit Break Material"
+  },
+  {
+    "id": 150100171370011100,
+    "value": "SSR Reborns Gundam Limit Break Material"
+  },
+  {
     "id": 150100171375000210,
     "value": "SSR Gundam Rasiel Limit Break Material"
   },
@@ -3284,12 +3508,20 @@
     "value": "SSR 1.5 Gundam Limit Break Material"
   },
   {
+    "id": 150100171379000300,
+    "value": "SSR 0 Gundam Full Armor Limit Break Material"
+  },
+  {
     "id": 150100171379000510,
     "value": "SSR Advanced GN-X Limit Break Material"
   },
   {
     "id": 150100171379000610,
     "value": "SSR Superbia GN-X Limit Break Material"
+  },
+  {
+    "id": 150100171379001900,
+    "value": "SR GRM Gundam Limit Break Material"
   },
   {
     "id": 150100171400000100,
@@ -4316,6 +4548,10 @@
     "value": "Development Material (W)"
   },
   {
+    "id": 150100180000002190,
+    "value": "Development Material (EW)"
+  },
+  {
     "id": 150100180000002300,
     "value": "Development Material (X)"
   },
@@ -4572,6 +4808,30 @@
     "value": "Altron Gundam's Technical Journal"
   },
   {
+    "id": 150100181219000100,
+    "value": "Wing Gundam Zero (EW)'s Technical Journal"
+  },
+  {
+    "id": 150100181219000200,
+    "value": "Gundam Deathscythe Hell (EW)'s Technical Journal"
+  },
+  {
+    "id": 150100181219000300,
+    "value": "Tallgeese III's Technical Journal"
+  },
+  {
+    "id": 150100181219000400,
+    "value": "Gundam Heavyarms Custom EW's Technical Journal"
+  },
+  {
+    "id": 150100181219000500,
+    "value": "Gundam Sandrock Custom EW's Technical Journal"
+  },
+  {
+    "id": 150100181219000600,
+    "value": "Altron Gundam EW's Technical Journal"
+  },
+  {
     "id": 150100181230000200,
     "value": "Gundam X Divider's Technical Journal"
   },
@@ -4690,6 +4950,46 @@
   {
     "id": 150100181370004800,
     "value": "Alvatore's Technical Journal"
+  },
+  {
+    "id": 150100181370005700,
+    "value": "00 Raiser's Technical Journal"
+  },
+  {
+    "id": 150100181370005900,
+    "value": "00 Raiser Final Battle Type's Technical Journal"
+  },
+  {
+    "id": 150100181370008800,
+    "value": "Cherudim Gundam GNHW/R's Technical Journal"
+  },
+  {
+    "id": 150100181370008900,
+    "value": "Arios Gundam GNHW/M's Technical Journal"
+  },
+  {
+    "id": 150100181370009100,
+    "value": "Seravee Gundam GNHW/B's Technical Journal"
+  },
+  {
+    "id": 150100181370010100,
+    "value": "Susanowo's Technical Journal"
+  },
+  {
+    "id": 150100181370010300,
+    "value": "Arche Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181370010800,
+    "value": "Regnant's Technical Journal"
+  },
+  {
+    "id": 150100181370011100,
+    "value": "Reborns Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181379000300,
+    "value": "0 Gundam Full Armor's Technical Journal"
   },
   {
     "id": 150100181400000200,
@@ -4904,6 +5204,14 @@
     "value": "[8 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket"
   },
   {
+    "id": 150100191400000007,
+    "value": "[1st Anniversary] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket"
+  },
+  {
+    "id": 150100191400000008,
+    "value": "[1st Anniversary] 1 UR Supporter Guaranteed 5-Pull Unit Assembly Ticket"
+  },
+  {
     "id": 150100191400000009,
     "value": "1st Anniversary Unit Assembly Ticket (Up to 47 Free Pulls)"
   },
@@ -5060,6 +5368,10 @@
     "value": "Custom Core Learning Parts N"
   },
   {
+    "id": 150100240000010010,
+    "value": "Mobile Suit Gundam 00 SP Conversion Chips"
+  },
+  {
     "id": 150100240000010090,
     "value": "Mobile Suit Gundam MS IGLOO Series SP Conversion Chips"
   },
@@ -5078,6 +5390,10 @@
   {
     "id": 150100240000013300,
     "value": "Mobile Suit Gundam SEED Destiny Series SP Conversion Chips"
+  },
+  {
+    "id": 150100240000013700,
+    "value": "Mobile Suit Gundam Wing Endless Waltz SP Conversion Chips"
   },
   {
     "id": 150100240000014000,
@@ -7300,8 +7616,40 @@
     "value": "An item used to perform Limit Break on SSR Altron Gundam"
   },
   {
+    "id": 150200171211000300,
+    "value": "An item used to perform Limit Break on R Wing Gundam EW"
+  },
+  {
     "id": 150200171211000360,
     "value": "An item used to perform Limit Break on SSR Wing Gundam EW"
+  },
+  {
+    "id": 150200171211000500,
+    "value": "An item used to perform Limit Break on SR Wing Gundam Proto Zero EW"
+  },
+  {
+    "id": 150200171211000700,
+    "value": "An item used to perform Limit Break on SR Gundam Deathscythe EW Rousette"
+  },
+  {
+    "id": 150200171211000800,
+    "value": "An item used to perform Limit Break on SR Gundam Heavyarms EW Eagle"
+  },
+  {
+    "id": 150200171211000900,
+    "value": "An item used to perform Limit Break on SR Gundam Sandrock EW Armadillo"
+  },
+  {
+    "id": 150200171211001000,
+    "value": "An item used to perform Limit Break on SR Shenlong Gundam EW Liaoya"
+  },
+  {
+    "id": 150200171211001100,
+    "value": "An item used to perform Limit Break on SR Tallgeese F"
+  },
+  {
+    "id": 150200171212000100,
+    "value": "An item used to perform Limit Break on SSR Scorpio"
   },
   {
     "id": 150200171217000110,
@@ -7316,8 +7664,44 @@
     "value": "An item used to perform Limit Break on SSR Vayeate Suivant"
   },
   {
+    "id": 150200171219000100,
+    "value": "An item used to perform Limit Break on SSR Wing Gundam Zero (EW)"
+  },
+  {
+    "id": 150200171219000150,
+    "value": "An item used to perform Limit Break on UR Wing Gundam Zero (EW) (EX)"
+  },
+  {
+    "id": 150200171219000200,
+    "value": "An item used to perform Limit Break on SSR Gundam Deathscythe Hell (EW)"
+  },
+  {
     "id": 150200171219000250,
     "value": "An item used to perform Limit Break on UR Gundam Deathscythe Hell (EW) (EX)"
+  },
+  {
+    "id": 150200171219000300,
+    "value": "An item used to perform Limit Break on SSR Tallgeese III"
+  },
+  {
+    "id": 150200171219000350,
+    "value": "An item used to perform Limit Break on UR Tallgeese III (EX)"
+  },
+  {
+    "id": 150200171219000400,
+    "value": "An item used to perform Limit Break on SSR Gundam Heavyarms Custom EW"
+  },
+  {
+    "id": 150200171219000500,
+    "value": "An item used to perform Limit Break on SSR Gundam Sandrock Custom EW"
+  },
+  {
+    "id": 150200171219000600,
+    "value": "An item used to perform Limit Break on SSR Altron Gundam EW"
+  },
+  {
+    "id": 150200171219000700,
+    "value": "An item used to perform Limit Break on SR Serpent"
   },
   {
     "id": 150200171230000100,
@@ -8168,6 +8552,10 @@
     "value": "An item used to perform Limit Break on UR Gundam Exia (EX)"
   },
   {
+    "id": 150200171370000160,
+    "value": "An item used to perform Limit Break on SSR Gundam Exia [Trans-Am]"
+  },
+  {
     "id": 150200171370000300,
     "value": "An item used to perform Limit Break on SR Gundam Dynames"
   },
@@ -8388,6 +8776,158 @@
     "value": "An item used to perform Limit Break on SR Graham's Union Flag Custom II \"GN Flag\""
   },
   {
+    "id": 150200171370005700,
+    "value": "An item used to perform Limit Break on SSR 00 Raiser"
+  },
+  {
+    "id": 150200171370005900,
+    "value": "An item used to perform Limit Break on SSR 00 Raiser Final Battle Type"
+  },
+  {
+    "id": 150200171370005950,
+    "value": "An item used to perform Limit Break on UR 00 Raiser Final Battle Type (EX)"
+  },
+  {
+    "id": 150200171370006100,
+    "value": "An item used to perform Limit Break on R Gundam Exia Repair"
+  },
+  {
+    "id": 150200171370006200,
+    "value": "An item used to perform Limit Break on SR 00 Gundam"
+  },
+  {
+    "id": 150200171370006400,
+    "value": "An item used to perform Limit Break on SR Cherudim Gundam"
+  },
+  {
+    "id": 150200171370006600,
+    "value": "An item used to perform Limit Break on SR Arios Gundam"
+  },
+  {
+    "id": 150200171370007000,
+    "value": "An item used to perform Limit Break on SR Seravee Gundam"
+  },
+  {
+    "id": 150200171370007200,
+    "value": "An item used to perform Limit Break on SR Seraphim Gundam"
+  },
+  {
+    "id": 150200171370007410,
+    "value": "An item used to perform Limit Break on SR 0 Raiser"
+  },
+  {
+    "id": 150200171370007510,
+    "value": "An item used to perform Limit Break on SR Union Realdo Space Type (Katharon Colors)"
+  },
+  {
+    "id": 150200171370007610,
+    "value": "An item used to perform Limit Break on SR AEU Enact Space Type (Katharon Colors)"
+  },
+  {
+    "id": 150200171370007800,
+    "value": "An item used to perform Limit Break on SR GN-X III"
+  },
+  {
+    "id": 150200171370007900,
+    "value": "An item used to perform Limit Break on SR Ahead"
+  },
+  {
+    "id": 150200171370008000,
+    "value": "An item used to perform Limit Break on SR Ahead Quantum Brainwave Type (Smultron)"
+  },
+  {
+    "id": 150200171370008100,
+    "value": "An item used to perform Limit Break on SR Ahead Close-Combat Type (Sakigake)"
+  },
+  {
+    "id": 150200171370008300,
+    "value": "An item used to perform Limit Break on SR Gadessa (Revive)"
+  },
+  {
+    "id": 150200171370008500,
+    "value": "An item used to perform Limit Break on SR Garazzo (Bring)"
+  },
+  {
+    "id": 150200171370008700,
+    "value": "An item used to perform Limit Break on SR Gundam Exia Repair II"
+  },
+  {
+    "id": 150200171370008800,
+    "value": "An item used to perform Limit Break on SSR Cherudim Gundam GNHW/R"
+  },
+  {
+    "id": 150200171370008900,
+    "value": "An item used to perform Limit Break on SSR Arios Gundam GNHW/M"
+  },
+  {
+    "id": 150200171370009100,
+    "value": "An item used to perform Limit Break on SSR Seravee Gundam GNHW/B"
+  },
+  {
+    "id": 150200171370009200,
+    "value": "An item used to perform Limit Break on SR Seraphim Gundam GNHW/B"
+  },
+  {
+    "id": 150200171370009300,
+    "value": "An item used to perform Limit Break on SR GN Archer"
+  },
+  {
+    "id": 150200171370009500,
+    "value": "An item used to perform Limit Break on SR 0 Gundam (Combat Unit GN Particle Condenser Type)"
+  },
+  {
+    "id": 150200171370009600,
+    "value": "An item used to perform Limit Break on SR 0 Gundam (Combat Unit GN Drive Type)"
+  },
+  {
+    "id": 150200171370009710,
+    "value": "An item used to perform Limit Break on SR Tieren Space Type (Katharon Colors)"
+  },
+  {
+    "id": 150200171370009810,
+    "value": "An item used to perform Limit Break on SSR Tieren All-Region Type"
+  },
+  {
+    "id": 150200171370009900,
+    "value": "An item used to perform Limit Break on SR Masurao"
+  },
+  {
+    "id": 150200171370010100,
+    "value": "An item used to perform Limit Break on SSR Susanowo"
+  },
+  {
+    "id": 150200171370010300,
+    "value": "An item used to perform Limit Break on SSR Arche Gundam"
+  },
+  {
+    "id": 150200171370010410,
+    "value": "An item used to perform Limit Break on SSR Gadessa (Hilling)"
+  },
+  {
+    "id": 150200171370010500,
+    "value": "An item used to perform Limit Break on SR Garazzo (Hilling)"
+  },
+  {
+    "id": 150200171370010610,
+    "value": "An item used to perform Limit Break on SSR Gaddess"
+  },
+  {
+    "id": 150200171370010700,
+    "value": "An item used to perform Limit Break on SR Empruss"
+  },
+  {
+    "id": 150200171370010800,
+    "value": "An item used to perform Limit Break on SSR Regnant"
+  },
+  {
+    "id": 150200171370011000,
+    "value": "An item used to perform Limit Break on SR Gaga"
+  },
+  {
+    "id": 150200171370011100,
+    "value": "An item used to perform Limit Break on SSR Reborns Gundam"
+  },
+  {
     "id": 150200171375000210,
     "value": "An item used to perform Limit Break on SSR Gundam Rasiel"
   },
@@ -8404,12 +8944,20 @@
     "value": "An item used to perform Limit Break on SSR 1.5 Gundam"
   },
   {
+    "id": 150200171379000300,
+    "value": "An item used to perform Limit Break on SSR 0 Gundam Full Armor"
+  },
+  {
     "id": 150200171379000510,
     "value": "An item used to perform Limit Break on SSR Advanced GN-X"
   },
   {
     "id": 150200171379000610,
     "value": "An item used to perform Limit Break on SSR Superbia GN-X"
+  },
+  {
+    "id": 150200171379001900,
+    "value": "An item used to perform Limit Break on SR GRM Gundam"
   },
   {
     "id": 150200171400000100,
@@ -9436,6 +9984,10 @@
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam Wing] diagram."
   },
   {
+    "id": 150200180000002190,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam Wing Endless Waltz] diagram."
+  },
+  {
     "id": 150200180000002300,
     "value": "Material required for developing units that appear on the [After War Gundam X] diagram."
   },
@@ -9692,6 +10244,30 @@
     "value": "Material required to develop Altron Gundam appearing in the Development Diagram."
   },
   {
+    "id": 150200181219000100,
+    "value": "Material required to develop Wing Gundam Zero (EW) appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181219000200,
+    "value": "Material required to develop Gundam Deathscythe Hell (EW) appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181219000300,
+    "value": "Material required to develop Tallgeese III appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181219000400,
+    "value": "Material required to develop Gundam Heavyarms Custom EW appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181219000500,
+    "value": "Material required to develop Gundam Sandrock Custom EW appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181219000600,
+    "value": "Material required to develop Altron Gundam EW appearing in the Development Diagram."
+  },
+  {
     "id": 150200181230000200,
     "value": "Material required to develop Gundam X Divider appearing in the Development Diagram."
   },
@@ -9810,6 +10386,46 @@
   {
     "id": 150200181370004800,
     "value": "Material required to develop Alvatore appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370005700,
+    "value": "Material required to develop 00 Raiser appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370005900,
+    "value": "Material required to develop 00 Raiser Final Battle Type appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370008800,
+    "value": "Material required to develop Cherudim Gundam GNHW/R appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370008900,
+    "value": "Material required to develop Arios Gundam GNHW/M appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370009100,
+    "value": "Material required to develop Seravee Gundam GNHW/B appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370010100,
+    "value": "Material required to develop Susanowo appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370010300,
+    "value": "Material required to develop Arche Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370010800,
+    "value": "Material required to develop Regnant appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181370011100,
+    "value": "Material required to develop Reborns Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181379000300,
+    "value": "Material required to develop 0 Gundam Full Armor appearing in the Development Diagram."
   },
   {
     "id": 150200181400000200,
@@ -10024,6 +10640,14 @@
     "value": "A ticket that lets you use the [8 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly."
   },
   {
+    "id": 150200191400000007,
+    "value": "A ticket that lets you use the [1st Anniversary] 1 UR Unit Guaranteed 5-Pull Unit Assembly."
+  },
+  {
+    "id": 150200191400000008,
+    "value": "A ticket that lets you use the [1st Anniversary] 1 UR Supporter Guaranteed 5-Pull Unit Assembly."
+  },
+  {
     "id": 150200191400000009,
     "value": "A ticket that lets you use the 1st Anniversary Unit Assembly (Up to 47 Free Pulls)."
   },
@@ -10180,6 +10804,10 @@
     "value": "An item that grants Learning Pts when used on Custom Cores. It can be used in place of Weapon Upgrade Parts."
   },
   {
+    "id": 150200240000010010,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000010090,
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -10197,6 +10825,10 @@
   },
   {
     "id": 150200240000013300,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000013700,
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

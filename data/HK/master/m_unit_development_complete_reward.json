@@ -500,13 +500,6 @@
     "Id": 13700104,
     "UnitDevelopmentDiagramId": 137001,
     "CompleteRate": 100,
-    "RewardSetId": 0,
-    "ScheduleId": 0
-  },
-  {
-    "Id": 13700104,
-    "UnitDevelopmentDiagramId": 137001,
-    "CompleteRate": 100,
     "RewardSetId": 26000013700104,
     "ScheduleId": 0
   },
@@ -529,13 +522,6 @@
     "UnitDevelopmentDiagramId": 137002,
     "CompleteRate": 75,
     "RewardSetId": 26000013700203,
-    "ScheduleId": 0
-  },
-  {
-    "Id": 13700204,
-    "UnitDevelopmentDiagramId": 137002,
-    "CompleteRate": 100,
-    "RewardSetId": 0,
     "ScheduleId": 0
   },
   {

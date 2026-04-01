@@ -26,5 +26,12 @@
     "GroupId": "",
     "UnitTags": "1047",
     "UnitSeries": ""
+  },
+  {
+    "Id": 1000005,
+    "TraitBoostConditionSetId": 1000005,
+    "GroupId": "",
+    "UnitTags": "1026",
+    "UnitSeries": ""
   }
 ]

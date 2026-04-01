@@ -1232,6 +1232,174 @@
     "value": "6: Development Requests"
   },
   {
+    "id": 100901121900010101,
+    "value": "1: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010102,
+    "value": "1: Raise Funds"
+  },
+  {
+    "id": 100901121900010103,
+    "value": "2: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010104,
+    "value": "2: Raise Funds"
+  },
+  {
+    "id": 100901121900010105,
+    "value": "3: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010106,
+    "value": "3: Raise Funds"
+  },
+  {
+    "id": 100901121900010107,
+    "value": "4: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010108,
+    "value": "4: Raise Funds"
+  },
+  {
+    "id": 100901121900010109,
+    "value": "5: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010110,
+    "value": "5: Raise Funds"
+  },
+  {
+    "id": 100901121900010111,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901121900010112,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901121900010113,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901121900010114,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901121900050001,
+    "value": "1: Development Requests"
+  },
+  {
+    "id": 100901121900050002,
+    "value": "1: Sortie Requests"
+  },
+  {
+    "id": 100901121900050003,
+    "value": "2: Development Requests"
+  },
+  {
+    "id": 100901121900050004,
+    "value": "2: Sortie Requests"
+  },
+  {
+    "id": 100901121900050005,
+    "value": "3: Development Requests"
+  },
+  {
+    "id": 100901121900050006,
+    "value": "3: Sortie Requests"
+  },
+  {
+    "id": 100901121900050007,
+    "value": "4: Development Requests"
+  },
+  {
+    "id": 100901121900050008,
+    "value": "4: Sortie Requests"
+  },
+  {
+    "id": 100901121900050009,
+    "value": "5: Development Requests"
+  },
+  {
+    "id": 100901121900050010,
+    "value": "5: Sortie Requests"
+  },
+  {
+    "id": 100901121900050011,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901121900050012,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901121900050013,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901121900050014,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901121900060001,
+    "value": "1: Sortie Requests"
+  },
+  {
+    "id": 100901121900060002,
+    "value": "1: Raise Funds"
+  },
+  {
+    "id": 100901121900060003,
+    "value": "2: Sortie Requests"
+  },
+  {
+    "id": 100901121900060004,
+    "value": "2: Raise Funds"
+  },
+  {
+    "id": 100901121900060005,
+    "value": "3: Sortie Requests"
+  },
+  {
+    "id": 100901121900060006,
+    "value": "3: Raise Funds"
+  },
+  {
+    "id": 100901121900060007,
+    "value": "4: Sortie Requests"
+  },
+  {
+    "id": 100901121900060008,
+    "value": "4: Raise Funds"
+  },
+  {
+    "id": 100901121900060009,
+    "value": "5: Sortie Requests"
+  },
+  {
+    "id": 100901121900060010,
+    "value": "5: Raise Funds"
+  },
+  {
+    "id": 100901121900060011,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901121900060012,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901121900060013,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901121900060014,
+    "value": "6: Development Requests"
+  },
+  {
     "id": 100901123000010001,
     "value": "1: Squad Enhancements"
   },
@@ -1845,6 +2013,62 @@
   },
   {
     "id": 100901137000050015,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901137000350201,
+    "value": "1: Development Requests"
+  },
+  {
+    "id": 100901137000350202,
+    "value": "1: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350203,
+    "value": "2: Development Requests"
+  },
+  {
+    "id": 100901137000350204,
+    "value": "2: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350205,
+    "value": "3: Development Requests"
+  },
+  {
+    "id": 100901137000350206,
+    "value": "3: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350207,
+    "value": "4: Development Requests"
+  },
+  {
+    "id": 100901137000350208,
+    "value": "4: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350209,
+    "value": "5: Development Requests"
+  },
+  {
+    "id": 100901137000350210,
+    "value": "5: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350211,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901137000350212,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901137000350213,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901137000350214,
     "value": "6: Development Requests"
   },
   {
@@ -2736,6 +2960,66 @@
     "value": "5: Special Request from Relena"
   },
   {
+    "id": 100902121900010101,
+    "value": "1: Special Request from Heero"
+  },
+  {
+    "id": 100902121900010102,
+    "value": "2: Special Request from Heero"
+  },
+  {
+    "id": 100902121900010103,
+    "value": "3: Special Request from Heero"
+  },
+  {
+    "id": 100902121900010104,
+    "value": "4: Special Request from Heero"
+  },
+  {
+    "id": 100902121900010105,
+    "value": "5: Special Request from Heero"
+  },
+  {
+    "id": 100902121900050001,
+    "value": "1: Special Request from Wufei"
+  },
+  {
+    "id": 100902121900050002,
+    "value": "2: Special Request from Wufei"
+  },
+  {
+    "id": 100902121900050003,
+    "value": "3: Special Request from Wufei"
+  },
+  {
+    "id": 100902121900050004,
+    "value": "4: Special Request from Wufei"
+  },
+  {
+    "id": 100902121900050005,
+    "value": "5: Special Request from Wufei"
+  },
+  {
+    "id": 100902121900060001,
+    "value": "1: Special Request from Relena"
+  },
+  {
+    "id": 100902121900060002,
+    "value": "2: Special Request from Relena"
+  },
+  {
+    "id": 100902121900060003,
+    "value": "3: Special Request from Relena"
+  },
+  {
+    "id": 100902121900060004,
+    "value": "4: Special Request from Relena"
+  },
+  {
+    "id": 100902121900060005,
+    "value": "5: Special Request from Relena"
+  },
+  {
     "id": 100902123000010001,
     "value": "1: Special Request from Garrod"
   },
@@ -2954,6 +3238,26 @@
   {
     "id": 100902137000050005,
     "value": "5: Special Request from Sumeragi"
+  },
+  {
+    "id": 100902137000350201,
+    "value": "1: Special Request from Ribbons"
+  },
+  {
+    "id": 100902137000350202,
+    "value": "2: Special Request from Ribbons"
+  },
+  {
+    "id": 100902137000350203,
+    "value": "3: Special Request from Ribbons"
+  },
+  {
+    "id": 100902137000350204,
+    "value": "4: Special Request from Ribbons"
+  },
+  {
+    "id": 100902137000350205,
+    "value": "5: Special Request from Ribbons"
   },
   {
     "id": 100902140000010101,
@@ -4404,6 +4708,174 @@
     "value": "Develop units from the \"Mobile Suit Gundam Wing\" series 3 times."
   },
   {
+    "id": 101301121900010101,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 1 time."
+  },
+  {
+    "id": 101301121900010102,
+    "value": "Transfer 1000 Capital."
+  },
+  {
+    "id": 101301121900010103,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 2 times."
+  },
+  {
+    "id": 101301121900010104,
+    "value": "Transfer 1500 Capital."
+  },
+  {
+    "id": 101301121900010105,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 3 times."
+  },
+  {
+    "id": 101301121900010106,
+    "value": "Transfer 2000 Capital."
+  },
+  {
+    "id": 101301121900010107,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 4 times."
+  },
+  {
+    "id": 101301121900010108,
+    "value": "Transfer 3000 Capital."
+  },
+  {
+    "id": 101301121900010109,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 5 times."
+  },
+  {
+    "id": 101301121900010110,
+    "value": "Transfer 4000 Capital."
+  },
+  {
+    "id": 101301121900010111,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 5 times."
+  },
+  {
+    "id": 101301121900010112,
+    "value": "Transfer \"[SR] Wing Gundam Proto Zero EW.\""
+  },
+  {
+    "id": 101301121900010113,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301121900010114,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 3 times."
+  },
+  {
+    "id": 101301121900050001,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 1 time."
+  },
+  {
+    "id": 101301121900050002,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 1 time."
+  },
+  {
+    "id": 101301121900050003,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 2 times."
+  },
+  {
+    "id": 101301121900050004,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 2 times."
+  },
+  {
+    "id": 101301121900050005,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 3 times."
+  },
+  {
+    "id": 101301121900050006,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 3 times."
+  },
+  {
+    "id": 101301121900050007,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 4 times."
+  },
+  {
+    "id": 101301121900050008,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 4 times."
+  },
+  {
+    "id": 101301121900050009,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 5 times."
+  },
+  {
+    "id": 101301121900050010,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 5 times."
+  },
+  {
+    "id": 101301121900050011,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 5 times."
+  },
+  {
+    "id": 101301121900050012,
+    "value": "Transfer \"[SR] Shenlong Gundam EW Liaoya.\""
+  },
+  {
+    "id": 101301121900050013,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301121900050014,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 3 times."
+  },
+  {
+    "id": 101301121900060001,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 1 time."
+  },
+  {
+    "id": 101301121900060002,
+    "value": "Transfer 1000 Capital."
+  },
+  {
+    "id": 101301121900060003,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 2 times."
+  },
+  {
+    "id": 101301121900060004,
+    "value": "Transfer 1500 Capital."
+  },
+  {
+    "id": 101301121900060005,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 3 times."
+  },
+  {
+    "id": 101301121900060006,
+    "value": "Transfer 2000 Capital."
+  },
+  {
+    "id": 101301121900060007,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 4 times."
+  },
+  {
+    "id": 101301121900060008,
+    "value": "Transfer 3000 Capital."
+  },
+  {
+    "id": 101301121900060009,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Wing Endless Waltz\" 5 times."
+  },
+  {
+    "id": 101301121900060010,
+    "value": "Transfer 4000 Capital."
+  },
+  {
+    "id": 101301121900060011,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Wing Endless Waltz\" series 5 times."
+  },
+  {
+    "id": 101301121900060012,
+    "value": "Transfer \"[SR] Tallgeese F.\""
+  },
+  {
+    "id": 101301121900060013,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301121900060014,
+    "value": "Develop units from the \"Mobile Suit Gundam Wing Endless Waltz\" series 3 times."
+  },
+  {
     "id": 101301123000010001,
     "value": "Upgrade a unit from the \"After War Gundam X\" series 1 time."
   },
@@ -5017,6 +5489,62 @@
   },
   {
     "id": 101301137000050015,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 3 times."
+  },
+  {
+    "id": 101301137000350201,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 1 time."
+  },
+  {
+    "id": 101301137000350202,
+    "value": "Transfer \"[SR] GN-X.\""
+  },
+  {
+    "id": 101301137000350203,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 2 times."
+  },
+  {
+    "id": 101301137000350204,
+    "value": "Transfer \"[SR] Gundam Throne Zwei.\""
+  },
+  {
+    "id": 101301137000350205,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 3 times."
+  },
+  {
+    "id": 101301137000350206,
+    "value": "Transfer \"[SR] Ahead.\""
+  },
+  {
+    "id": 101301137000350207,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 4 times."
+  },
+  {
+    "id": 101301137000350208,
+    "value": "Transfer \"[SR] Gaga.\""
+  },
+  {
+    "id": 101301137000350209,
+    "value": "Develop units from the \"Mobile Suit Gundam 00\" series 5 times."
+  },
+  {
+    "id": 101301137000350210,
+    "value": "Transfer \"[SR] Empruss.\""
+  },
+  {
+    "id": 101301137000350211,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam 00\" series 5 times."
+  },
+  {
+    "id": 101301137000350212,
+    "value": "Transfer \"[SR] Garazzo (Bring).\""
+  },
+  {
+    "id": 101301137000350213,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301137000350214,
     "value": "Develop units from the \"Mobile Suit Gundam 00\" series 3 times."
   },
   {
@@ -5908,6 +6436,66 @@
     "value": "Transfer \"[SSR] Tallgeese II.\""
   },
   {
+    "id": 101302121900010101,
+    "value": "Transfer \"[R] Wing Gundam EW.\""
+  },
+  {
+    "id": 101302121900010102,
+    "value": "Transfer \"[SR] Tallgeese F.\""
+  },
+  {
+    "id": 101302121900010103,
+    "value": "Transfer \"[SR] Gundam Sandrock EW Armadillo.\""
+  },
+  {
+    "id": 101302121900010104,
+    "value": "Transfer \"[SR] Wing Gundam Proto Zero EW.\""
+  },
+  {
+    "id": 101302121900010105,
+    "value": "Transfer \"[SSR] Wing Gundam Zero (EW).\""
+  },
+  {
+    "id": 101302121900050001,
+    "value": "Transfer \"[R] Wing Gundam EW.\""
+  },
+  {
+    "id": 101302121900050002,
+    "value": "Transfer \"[SR] Wing Gundam Proto Zero EW.\""
+  },
+  {
+    "id": 101302121900050003,
+    "value": "Transfer \"[SR] Gundam Deathscythe EW Rousette.\""
+  },
+  {
+    "id": 101302121900050004,
+    "value": "Transfer \"[SR] Shenlong Gundam EW Liaoya.\""
+  },
+  {
+    "id": 101302121900050005,
+    "value": "Transfer \"[SSR] Altron Gundam EW.\""
+  },
+  {
+    "id": 101302121900060001,
+    "value": "Transfer \"[R] Wing Gundam EW.\""
+  },
+  {
+    "id": 101302121900060002,
+    "value": "Transfer \"[SR] Wing Gundam Proto Zero EW.\""
+  },
+  {
+    "id": 101302121900060003,
+    "value": "Transfer \"[SR] Serpent.\""
+  },
+  {
+    "id": 101302121900060004,
+    "value": "Transfer \"[SR] Tallgeese F.\""
+  },
+  {
+    "id": 101302121900060005,
+    "value": "Transfer \"[SSR] Tallgeese III.\""
+  },
+  {
     "id": 101302123000010001,
     "value": "Transfer \"[R] GX-Bit.\""
   },
@@ -6126,6 +6714,26 @@
   {
     "id": 101302137000050005,
     "value": "Transfer \"[SSR] Alvatore.\""
+  },
+  {
+    "id": 101302137000350201,
+    "value": "Transfer \"[SR] GRM Gundam.\""
+  },
+  {
+    "id": 101302137000350202,
+    "value": "Transfer \"[SR] Alvaaron.\""
+  },
+  {
+    "id": 101302137000350203,
+    "value": "Transfer \"[SR] Ahead Quantum Brainwave Type (Smultron).\""
+  },
+  {
+    "id": 101302137000350204,
+    "value": "Transfer \"[SR] Garazzo (Hilling).\""
+  },
+  {
+    "id": 101302137000350205,
+    "value": "[SSR] 0 Gundam Full Armor."
   },
   {
     "id": 101302140000010101,

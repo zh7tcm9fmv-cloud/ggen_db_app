@@ -1380,6 +1380,10 @@
     "value": "Increased Max HP & EN Recovery (Single Unit) LV 2"
   },
   {
+    "id": 140100000100780100,
+    "value": "Increased Max EN & EN Recovery (Single Unit) LV 1"
+  },
+  {
     "id": 140100000100780200,
     "value": "Increased Max EN & EN Recovery (Single Unit) LV 2"
   },
@@ -1406,6 +1410,10 @@
   {
     "id": 140100000100800300,
     "value": "Increased DEF & EN Recovery (Single Unit) LV3"
+  },
+  {
+    "id": 140100000100810100,
+    "value": "Increased MOB & EN Recovery (Single Unit) LV 1"
   },
   {
     "id": 140100000100810200,
@@ -1716,6 +1724,10 @@
     "value": "(HP conditions) Increased ATK LV 1"
   },
   {
+    "id": 140100000101150101,
+    "value": "(When supporting) Increased ATK LV 1"
+  },
+  {
     "id": 140100000101150201,
     "value": "(When supporting) Increased ATK LV2"
   },
@@ -1844,6 +1856,78 @@
     "value": "GN Field LV 4"
   },
   {
+    "id": 140100000101330301,
+    "value": "A.S. Planet Defenser LV 3"
+  },
+  {
+    "id": 140100000101340201,
+    "value": "(Battle conditions) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000101340301,
+    "value": "(Battle conditions) Increased ATK LV 3"
+  },
+  {
+    "id": 140100000101350100,
+    "value": "Advantage:  Celestial Being LV 1"
+  },
+  {
+    "id": 140100000101350200,
+    "value": "Advantage:  Celestial Being LV 2"
+  },
+  {
+    "id": 140100000101360101,
+    "value": "GN Shield Bit LV 1"
+  },
+  {
+    "id": 140100000101370200,
+    "value": "Advantage:  Mobile Suit Gundam 00 LV 2"
+  },
+  {
+    "id": 140100000101370300,
+    "value": "Advantage:  Mobile Suit Gundam 00 LV 3"
+  },
+  {
+    "id": 140100000101370400,
+    "value": "Advantage:  Mobile Suit Gundam 00 LV 4"
+  },
+  {
+    "id": 140100000101380200,
+    "value": "Advantage: Mobile Suit Gundam Wing Endless Waltz LV 2"
+  },
+  {
+    "id": 140100000101380300,
+    "value": "Advantage: Mobile Suit Gundam Wing Endless Waltz LV 3"
+  },
+  {
+    "id": 140100000101380400,
+    "value": "Advantage: Mobile Suit Gundam Wing Endless Waltz LV 4"
+  },
+  {
+    "id": 140100000101390200,
+    "value": "Increased ATK & DEF LV 2"
+  },
+  {
+    "id": 140100000101390300,
+    "value": "Increased ATK & DEF LV 3"
+  },
+  {
+    "id": 140100000101400200,
+    "value": "Increased DEF & MOB LV 2"
+  },
+  {
+    "id": 140100000101400300,
+    "value": "Increased DEF & MOB LV 3"
+  },
+  {
+    "id": 140100000101410200,
+    "value": "Increased Max EN & DEF LV 2"
+  },
+  {
+    "id": 140100000101420101,
+    "value": "(Squad conditions) Increased ATK LV 1"
+  },
+  {
     "id": 140100000101430100,
     "value": "Positron Reflector LV 1"
   },
@@ -1890,6 +1974,26 @@
   {
     "id": 140100000101500200,
     "value": "Advantage: Newtype LV 2"
+  },
+  {
+    "id": 140100000101520100,
+    "value": "(Regular & Vigor Conditions) Increased ATK  LV 1"
+  },
+  {
+    "id": 140100000101520200,
+    "value": "(Regular & Vigor Conditions) Increased ATK  LV 2"
+  },
+  {
+    "id": 140100000101520300,
+    "value": "(Regular & Vigor Conditions) Increased ATK  LV 3"
+  },
+  {
+    "id": 140100000101520400,
+    "value": "(Regular & Vigor Conditions) Increased ATK  LV 4"
+  },
+  {
+    "id": 140100000101520500,
+    "value": "(Regular & Vigor Conditions) Increased ATK  LV 5"
   },
   {
     "id": 140100000200010101,
@@ -4692,6 +4796,78 @@
     "value": "EX Character Ability"
   },
   {
+    "id": 140100000202400101,
+    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000202410101,
+    "value": "(Series conditions) Support Defense LV 1"
+  },
+  {
+    "id": 140100000202420101,
+    "value": "(Tag conditions) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202430100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202440100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202440211,
+    "value": "Supercharged EX1 (Setsuna F. Seiei)"
+  },
+  {
+    "id": 140100000202440212,
+    "value": "(Vigor conditions) Damage Reduced"
+  },
+  {
+    "id": 140100000202440213,
+    "value": "(Vigor conditions)Increased Melee"
+  },
+  {
+    "id": 140100000202440214,
+    "value": "(Vigor conditions)Increased Reaction"
+  },
+  {
+    "id": 140100000202440220,
+    "value": "Supercharged EX1 (Setsuna F. Seiei)"
+  },
+  {
+    "id": 140100000202440301,
+    "value": ""
+  },
+  {
+    "id": 140100000202440311,
+    "value": "Supercharged EX2 (Setsuna F. Seiei)"
+  },
+  {
+    "id": 140100000202440312,
+    "value": "(Vigor conditions) Damage Reduced"
+  },
+  {
+    "id": 140100000202440313,
+    "value": "(Vigor conditions)Increased Melee"
+  },
+  {
+    "id": 140100000202440314,
+    "value": "(Vigor conditions)Increased Reaction"
+  },
+  {
+    "id": 140100000202440401,
+    "value": "Decreased MP"
+  },
+  {
+    "id": 140100000202450100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202450103,
+    "value": "(Series conditions) Increased ATK"
+  },
+  {
     "id": 140100000202470101,
     "value": "(Tag conditions)HP Restoration (Single Unit) LV 1"
   },
@@ -5533,39 +5709,39 @@
   },
   {
     "id": 140100000300350101,
-    "value": ""
+    "value": "Piercing LV 1"
   },
   {
     "id": 140100000300350201,
-    "value": ""
+    "value": "Piercing LV 2"
   },
   {
     "id": 140100000300350301,
-    "value": ""
+    "value": "Piercing LV 3"
   },
   {
     "id": 140100000300350401,
-    "value": ""
+    "value": "Piercing LV 4"
   },
   {
     "id": 140100000300350501,
-    "value": ""
+    "value": "Piercing LV 5"
   },
   {
     "id": 140100000300350601,
-    "value": ""
+    "value": "Piercing LV 6"
   },
   {
     "id": 140100000300350701,
-    "value": ""
+    "value": "Piercing LV 7"
   },
   {
     "id": 140100000300350801,
-    "value": ""
+    "value": "Piercing LV 8"
   },
   {
     "id": 140100000300350901,
-    "value": ""
+    "value": "Piercing LV 9"
   },
   {
     "id": 140100000310010101,
@@ -9732,12 +9908,76 @@
     "value": "Limiter OFF SSR (Mobile Suit Gundam AGE)"
   },
   {
+    "id": 140100000406230101,
+    "value": "Add-OSR Armor SR (A-Laws)"
+  },
+  {
+    "id": 140100000406240101,
+    "value": "Limiter OFF SR (A-Laws)"
+  },
+  {
+    "id": 140100000406250100,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406260101,
+    "value": "Add-OR Armor R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406270101,
+    "value": "Reinforced Armor  SR (Zero System)"
+  },
+  {
+    "id": 140100000406280101,
+    "value": "Limiter OFF SR (Zero System)"
+  },
+  {
+    "id": 140100000406290101,
+    "value": "Reinforced Armor R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406300101,
+    "value": "Limiter OFF R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406310101,
+    "value": "Booster Parts R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406320100,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 140100000406330101,
+    "value": "Add-OSR Armor SR (Wing Series)"
+  },
+  {
+    "id": 140100000406340101,
+    "value": "Limiter OFF SR (Wing Series)"
+  },
+  {
     "id": 140100000406350100,
     "value": "Gold Haro [1st Anniv.]"
   },
   {
     "id": 140100000406360100,
     "value": "Silver Haro [1st Anniv.]"
+  },
+  {
+    "id": 140100000406370100,
+    "value": "Reinforced Armor  SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406380100,
+    "value": "Add-On Armor  SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406390101,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam Wing)"
+  },
+  {
+    "id": 140100000406400101,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam 00)"
   },
   {
     "id": 140100000510010101,
@@ -9804,34 +10044,6 @@
     "value": "Increased DEF LV 2"
   },
   {
-    "id": 140100000510020301,
-    "value": "Increased DEF LV 3"
-  },
-  {
-    "id": 140100000510020401,
-    "value": "Increased DEF LV 4"
-  },
-  {
-    "id": 140100000510020501,
-    "value": "Increased DEF LV 5"
-  },
-  {
-    "id": 140100000510020601,
-    "value": "Increased DEF LV 6"
-  },
-  {
-    "id": 140100000510020701,
-    "value": "Increased DEF LV 7"
-  },
-  {
-    "id": 140100000510020801,
-    "value": "Increased DEF LV 8"
-  },
-  {
-    "id": 140100000510020901,
-    "value": "Increased DEF LV 9"
-  },
-  {
     "id": 140100000510021001,
     "value": "Increased DEF LV 10"
   },
@@ -9842,42 +10054,6 @@
   {
     "id": 140100000510023001,
     "value": "Increased DEF LV 30"
-  },
-  {
-    "id": 140100000510030101,
-    "value": "Increased MOB LV 1"
-  },
-  {
-    "id": 140100000510030201,
-    "value": "Increased MOB LV 2"
-  },
-  {
-    "id": 140100000510030301,
-    "value": "Increased MOB LV 3"
-  },
-  {
-    "id": 140100000510030401,
-    "value": "Increased MOB LV 4"
-  },
-  {
-    "id": 140100000510030501,
-    "value": "Increased MOB LV 5"
-  },
-  {
-    "id": 140100000510030601,
-    "value": "Increased MOB LV 6"
-  },
-  {
-    "id": 140100000510030701,
-    "value": "Increased MOB LV 7"
-  },
-  {
-    "id": 140100000510030801,
-    "value": "Increased MOB LV 8"
-  },
-  {
-    "id": 140100000510030901,
-    "value": "Increased MOB LV 9"
   },
   {
     "id": 140100000510031001,
@@ -9968,36 +10144,12 @@
     "value": "HP Restoration (Single Unit) LV 1"
   },
   {
-    "id": 140100000510060201,
-    "value": "HP Restoration (Single Unit) LV 2"
-  },
-  {
     "id": 140100000510060301,
     "value": "HP Restoration (Single Unit) LV 3"
   },
   {
-    "id": 140100000510060401,
-    "value": "HP Restoration (Single Unit) LV 4"
-  },
-  {
     "id": 140100000510060501,
     "value": "HP Restoration (Single Unit) LV 5"
-  },
-  {
-    "id": 140100000510060601,
-    "value": "HP Restoration (Single Unit) LV 6"
-  },
-  {
-    "id": 140100000510060701,
-    "value": "HP Restoration (Single Unit) LV 7"
-  },
-  {
-    "id": 140100000510060801,
-    "value": "HP Restoration (Single Unit) LV 8"
-  },
-  {
-    "id": 140100000510060901,
-    "value": "HP Restoration (Single Unit) LV 9"
   },
   {
     "id": 140100000510061001,
@@ -10022,22 +10174,6 @@
   {
     "id": 140100000510070501,
     "value": "Increased ATK (All Units) LV 5"
-  },
-  {
-    "id": 140100000510070601,
-    "value": "Increased ATK (All Units) LV 6"
-  },
-  {
-    "id": 140100000510070701,
-    "value": "Increased ATK (All Units) LV 7"
-  },
-  {
-    "id": 140100000510070801,
-    "value": "Increased ATK (All Units) LV 8"
-  },
-  {
-    "id": 140100000510070901,
-    "value": "Increased ATK (All Units) LV 9"
   },
   {
     "id": 140100000510071001,
@@ -10084,46 +10220,6 @@
     "value": "Increased DEF (All Units) LV 10"
   },
   {
-    "id": 140100000510090101,
-    "value": "Increased MOB (All Units) LV 1"
-  },
-  {
-    "id": 140100000510090201,
-    "value": "Increased MOB (All Units) LV 2"
-  },
-  {
-    "id": 140100000510090301,
-    "value": "Increased MOB (All Units) LV 3"
-  },
-  {
-    "id": 140100000510090401,
-    "value": "Increased MOB (All Units) LV 4"
-  },
-  {
-    "id": 140100000510090501,
-    "value": "Increased MOB (All Units) LV 5"
-  },
-  {
-    "id": 140100000510090601,
-    "value": "Increased MOB (All Units) LV 6"
-  },
-  {
-    "id": 140100000510090701,
-    "value": "Increased MOB (All Units) LV 7"
-  },
-  {
-    "id": 140100000510090801,
-    "value": "Increased MOB (All Units) LV 8"
-  },
-  {
-    "id": 140100000510090901,
-    "value": "Increased MOB (All Units) LV 9"
-  },
-  {
-    "id": 140100000510091001,
-    "value": "Increased MOB (All Units) LV 10"
-  },
-  {
     "id": 140100000510100101,
     "value": "Increased ACC (All Units) LV 1"
   },
@@ -10164,46 +10260,6 @@
     "value": "Increased ACC (All Units) LV 10"
   },
   {
-    "id": 140100000510110101,
-    "value": "Increased EVA (All Units) LV 1"
-  },
-  {
-    "id": 140100000510110201,
-    "value": "Increased EVA (All Units) LV 2"
-  },
-  {
-    "id": 140100000510110301,
-    "value": "Increased EVA (All Units) LV 3"
-  },
-  {
-    "id": 140100000510110401,
-    "value": "Increased EVA (All Units) LV 4"
-  },
-  {
-    "id": 140100000510110501,
-    "value": "Increased EVA (All Units) LV 5"
-  },
-  {
-    "id": 140100000510110601,
-    "value": "Increased EVA (All Units) LV 6"
-  },
-  {
-    "id": 140100000510110701,
-    "value": "Increased EVA (All Units) LV 7"
-  },
-  {
-    "id": 140100000510110801,
-    "value": "Increased EVA (All Units) LV 8"
-  },
-  {
-    "id": 140100000510110901,
-    "value": "Increased EVA (All Units) LV 9"
-  },
-  {
-    "id": 140100000510111001,
-    "value": "Increased EVA (All Units) LV 10"
-  },
-  {
     "id": 140100000510120101,
     "value": "HP Restoration (All Units) LV 1"
   },
@@ -10216,120 +10272,8 @@
     "value": "HP Restoration (All Units) LV 3"
   },
   {
-    "id": 140100000510120401,
-    "value": "HP Restoration (All Units) LV 4"
-  },
-  {
     "id": 140100000510120501,
     "value": "HP Restoration (All Units) LV 5"
-  },
-  {
-    "id": 140100000510120601,
-    "value": "HP Restoration (All Units) LV 6"
-  },
-  {
-    "id": 140100000510120701,
-    "value": "HP Restoration (All Units) LV 7"
-  },
-  {
-    "id": 140100000510120801,
-    "value": "HP Restoration (All Units) LV 8"
-  },
-  {
-    "id": 140100000510120901,
-    "value": "HP Restoration (All Units) LV 9"
-  },
-  {
-    "id": 140100000510121001,
-    "value": "HP Restoration (All Units) LV 10"
-  },
-  {
-    "id": 140100000510130101,
-    "value": "Increased Close Range Damage [ LV 値] LV 1"
-  },
-  {
-    "id": 140100000510130201,
-    "value": "Increased Close Range Damage [ LV 値] LV 2"
-  },
-  {
-    "id": 140100000510130301,
-    "value": "Increased Close Range Damage [ LV 値] LV 3"
-  },
-  {
-    "id": 140100000510130401,
-    "value": "Increased Close Range Damage [ LV 値] LV 4"
-  },
-  {
-    "id": 140100000510130501,
-    "value": "Increased Close Range Damage [ LV 値] LV 5"
-  },
-  {
-    "id": 140100000510130601,
-    "value": "Increased Close Range Damage [ LV 値] LV 6"
-  },
-  {
-    "id": 140100000510130701,
-    "value": "Increased Close Range Damage [ LV 値] LV 7"
-  },
-  {
-    "id": 140100000510130801,
-    "value": "Increased Close Range Damage [ LV 値] LV 8"
-  },
-  {
-    "id": 140100000510130901,
-    "value": "Increased Close Range Damage [ LV 値] LV 9"
-  },
-  {
-    "id": 140100000510131001,
-    "value": "Increased Close Range Damage [ LV 値] LV 10"
-  },
-  {
-    "id": 140100000510140101,
-    "value": "Increased Long Range Damage [ LV 値] LV 1"
-  },
-  {
-    "id": 140100000510140201,
-    "value": "Increased Long Range Damage [ LV 値] LV 2"
-  },
-  {
-    "id": 140100000510140301,
-    "value": "Increased Long Range Damage [ LV 値] LV 3"
-  },
-  {
-    "id": 140100000510140401,
-    "value": "Increased Long Range Damage [ LV 値] LV 4"
-  },
-  {
-    "id": 140100000510140501,
-    "value": "Increased Long Range Damage [ LV 値] LV 5"
-  },
-  {
-    "id": 140100000510140601,
-    "value": "Increased Long Range Damage [ LV 値] LV 6"
-  },
-  {
-    "id": 140100000510140701,
-    "value": "Increased Long Range Damage [ LV 値] LV 7"
-  },
-  {
-    "id": 140100000510140801,
-    "value": "Increased Long Range Damage [ LV 値] LV 8"
-  },
-  {
-    "id": 140100000510140901,
-    "value": "Increased Long Range Damage [ LV 値] LV 9"
-  },
-  {
-    "id": 140100000510141001,
-    "value": "Increased Long Range Damage [ LV 値] LV 10"
-  },
-  {
-    "id": 140100000510150101,
-    "value": "Increased ATK"
-  },
-  {
-    "id": 140100000510160101,
-    "value": "Increased ATK"
   },
   {
     "id": 140100000510170101,
@@ -10338,14 +10282,6 @@
   {
     "id": 140100000510170201,
     "value": "Increased DEF"
-  },
-  {
-    "id": 140100000510180101,
-    "value": "Increased ATK"
-  },
-  {
-    "id": 140100000510180201,
-    "value": "Increased ATK"
   },
   {
     "id": 140100000510190101,
@@ -10362,18 +10298,6 @@
   {
     "id": 140100000510190401,
     "value": "(HP conditions) HP Restoration (Single Unit) "
-  },
-  {
-    "id": 140100000510200101,
-    "value": "HP Restoration (All Units)"
-  },
-  {
-    "id": 140100000510200201,
-    "value": "HP Restoration (All Units)"
-  },
-  {
-    "id": 140100000510200301,
-    "value": "HP Restoration (All Units)"
   },
   {
     "id": 140100000510360101,
@@ -11228,20 +11152,44 @@
     "value": "(Vigor conditions) Increased DEF LV3"
   },
   {
+    "id": 140100000511060101,
+    "value": "Reinforcements"
+  },
+  {
+    "id": 140100000511070101,
+    "value": "(Unit conditions) HP Restoration"
+  },
+  {
+    "id": 140100000511080101,
+    "value": "EN Restoration  (All Units)"
+  },
+  {
+    "id": 140100000511090101,
+    "value": "(Range Condition) Damage Reduction"
+  },
+  {
+    "id": 140100000511100201,
+    "value": "(HP conditions) HP Restoration (Single Unit)"
+  },
+  {
+    "id": 140100000511110101,
+    "value": "(HP conditions)Reinforcements"
+  },
+  {
+    "id": 140100000511120100,
+    "value": "Decreased ATK & DEF & MOV"
+  },
+  {
+    "id": 140100000511140101,
+    "value": "Action Pattern"
+  },
+  {
     "id": 140100000530010100,
     "value": "(HP conditions) Increased ATK, DEF & MOB "
   },
   {
     "id": 140100000530010200,
     "value": "(HP conditions) Increased ATK, DEF & MOB "
-  },
-  {
-    "id": 140100000530020100,
-    "value": "Increased ATK, DEF & MOB"
-  },
-  {
-    "id": 140100000530020200,
-    "value": "Increased ATK, DEF & MOB"
   },
   {
     "id": 140100000530030100,
@@ -12180,6 +12128,10 @@
     "value": "Support Defense LV5"
   },
   {
+    "id": 140100000610351100,
+    "value": "Support Defense LV10"
+  },
+  {
     "id": 140100000610370101,
     "value": "Support Attack / Counter Support "
   },
@@ -12678,6 +12630,82 @@
   {
     "id": 140100000611450101,
     "value": "(Defeat Conditions)  Increased MP Lv 1"
+  },
+  {
+    "id": 140100000611470101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611480101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611490101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611500101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611510101,
+    "value": "(HP conditions) Reduced Weapon EN Consumption"
+  },
+  {
+    "id": 140100000611520101,
+    "value": "Guaranteed Bonus Action"
+  },
+  {
+    "id": 140100000611530101,
+    "value": "Support Defense"
+  },
+  {
+    "id": 140100000611540101,
+    "value": "Support Defense"
+  },
+  {
+    "id": 140100000611550101,
+    "value": "Support Defense"
+  },
+  {
+    "id": 140100000611560101,
+    "value": "Support Defense"
+  },
+  {
+    "id": 140100000611570101,
+    "value": "Support Defense"
+  },
+  {
+    "id": 140100000611580101,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611580102,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611590101,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611590102,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611600101,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611600102,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611610001,
+    "value": "(Battle conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611620001,
+    "value": "(Battle conditions) Increased DEF"
   },
   {
     "id": 140100000699000101,

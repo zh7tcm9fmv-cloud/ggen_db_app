@@ -138,6 +138,18 @@
     "IsDisplayWhenNotAcquired": true
   },
   {
+    "MsDockUnitId": 1219000100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 21900505,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1219000300,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 2190,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
     "MsDockUnitId": 1230000100,
     "AcquisitionMethodTypeIndex": 13,
     "TargetId": 23000803,
@@ -213,6 +225,18 @@
     "MsDockUnitId": 1370000100,
     "AcquisitionMethodTypeIndex": 13,
     "TargetId": 37001105,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1370005900,
+    "AcquisitionMethodTypeIndex": 12,
+    "TargetId": 3700,
+    "IsDisplayWhenNotAcquired": true
+  },
+  {
+    "MsDockUnitId": 1370011100,
+    "AcquisitionMethodTypeIndex": 13,
+    "TargetId": 37002503,
     "IsDisplayWhenNotAcquired": true
   },
   {

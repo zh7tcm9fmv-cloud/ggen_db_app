@@ -15126,6 +15126,42 @@
     "TargetId": 121000360003
   },
   {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100030002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100030002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100030003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100030003
+  },
+  {
     "UnitSspCustomCoreReleaseFunctionSetId": 121100036001,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 5,
@@ -15156,6 +15192,42 @@
     "TargetId": 121100036003
   },
   {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100040001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100040001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100040002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100040002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100040003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100040003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100040003
+  },
+  {
     "UnitSspCustomCoreReleaseFunctionSetId": 121100046001,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 5,
@@ -15172,6 +15244,264 @@
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 7,
     "TargetId": 121100046003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100050001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100050001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100050002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100050002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100050003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100050003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100060001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100060001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100060002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100060002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100060003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100060003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100070001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100070001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100070002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100070002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100070003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100070003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100070003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100070003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100080001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100080001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100080002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100080002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100080003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100080003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100080003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100090001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100090001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100090001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100090001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100090002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100090002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100090003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100090003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100090003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100090003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100100001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100100001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100100001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100100001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100100002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121100100002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100100003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100100003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100100003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100100003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121100110001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100110001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100110002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 31
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121100110003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121100110003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121100110003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200010001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121200010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200010001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121200010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200010002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121200010002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200010003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121200010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200010003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121200010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200020001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121200020001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200020002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121200020002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121200020003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121200020003
   },
   {
     "UnitSspCustomCoreReleaseFunctionSetId": 121700011001,
@@ -15262,6 +15592,240 @@
     "SortOrder": 2,
     "ReleaseFunctionTypeIndex": 1,
     "TargetId": 121700051003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900010001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900010001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900010002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900010002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900010003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900010003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900020001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900020001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900020002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121900020002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900020003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900020003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900020003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121900030002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 31
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900030003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900040001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900040001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900040001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900040001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900040002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900040002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900040003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900040003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900040003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900040003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900050002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121900050002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900050003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900060001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900060001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900060001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900060001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900060002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 121900060002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900060003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900060003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900060003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900060003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 121900070002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900070002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 121900070003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 121900070003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 121900070003
   },
   {
     "UnitSspCustomCoreReleaseFunctionSetId": 123000010001,
@@ -22110,6 +22674,36 @@
     "TargetId": 137000010003
   },
   {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000016001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000016001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000016001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000016001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000016002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000016002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000016003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000016003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000016003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000016003
+  },
+  {
     "UnitSspCustomCoreReleaseFunctionSetId": 137000030001,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 5,
@@ -23982,6 +24576,1356 @@
     "TargetId": 137000560003
   },
   {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000570001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000570001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000570001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000570001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000570002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000570002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000570003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000570003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000570003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000570003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000590001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000590001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000590001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000590001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000590002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000590002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000590003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000590003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000590003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000590003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000610001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000610001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000610002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000610002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000610003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000610003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000610003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000620001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000620001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000620001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000620001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000620002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000620002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000620003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000620003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000620003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000620003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000640001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000640001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000640001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000640001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000640002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000640002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000640003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000640003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000640003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000640003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000660001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000660001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000660001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000660001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000660002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000660002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000660003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000660003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000660003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000660003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000680001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000680001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000680001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000680001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000680002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000680002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000680003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000680003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000680003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000680003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000700001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000700001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000700001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000700001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000700002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000700002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000700003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000700003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000700003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000700003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000720001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000720001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000720001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000720001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000720002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000720002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000720003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000720003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000720003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000720003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000741001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000741001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000741001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000741001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000741002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000741002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000741003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000741003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000741003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000741003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000751001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000751001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000751002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 44
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000751003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000751003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000751003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000761001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000761001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000761002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 44
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000761003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000761003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000761003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000771001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000771001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000771002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 44
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000771003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000771003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000771003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000780001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000780001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000780001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000780001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000780002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000780002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000780003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000780003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000780003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000780003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000790001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000790001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000790001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000790001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000790002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000790002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000790003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000790003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000790003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000790003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000800001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000800001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000800001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000800001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000800002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000800002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000800003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000800003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000800003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000800003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000810001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000810001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000810001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000810001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000810002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000810002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000810003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000810003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000810003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000810003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000830001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000830001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000830001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000830001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000830002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000830002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000830003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000830003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000830003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000830003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000850001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000850001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000850001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000850001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000850002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000850002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000850003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000850003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000850003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000850003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000870001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000870001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000870001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000870001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000870002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000870002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000870003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000870003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000870003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000870003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000880001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000880001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000880001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000880001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000880002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000880002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000880003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000880003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000880003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000880003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000890001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000890001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000890001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000890001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000890002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000890002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000890003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000890003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000890003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000890003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000900001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000900001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000900001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000900001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000900002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000900002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000900003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000900003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000900003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000900003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000910001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000910001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000910001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000910001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000910002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000910002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000910003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000910003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000910003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000910003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000920001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000920001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000920001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000920001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000920002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000920002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000920003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000920003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000920003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000920003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000930001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000930001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000930001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000930001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000930002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000930002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000930003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000930003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000930003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000930003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000940001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000940001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000940001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000940001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000940002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000940002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000940003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000940003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000940003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000940003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000950001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000950001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000950001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000950001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000950002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000950002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000950003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000950003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000950003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000950003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000960001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000960001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000960001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000960001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000960002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000960002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000960003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000960003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000960003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000960003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000971001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000971001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000971002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000971002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971002,
+    "SortOrder": 3,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 12
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000971003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000971003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000971003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000981001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000981001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000981001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000981001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000981002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000981002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000981003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000981003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000981003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000981003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000990001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137000990001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000990001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000990001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000990002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137000990002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000990003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137000990003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137000990003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137000990003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001010001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001010001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001010001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001010002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137001010002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001010003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001010003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001010003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001030001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001030001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001030002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001030002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001030003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001030003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001041001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001041001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001041001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001041001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001041002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137001041002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001041003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001041003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001041003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001041003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001050001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001050001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001050001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001050002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137001050002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001050003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001050003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001050003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001061001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001061001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001061002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 31
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001061003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001061003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001061003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001070001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001070002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001070002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001070003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001070003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001070003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001080001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001080001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001080002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 39
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001080003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001080003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001080003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001090001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001090001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001090001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001090001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001090002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001090002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001090003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001090003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001090003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001090003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001100001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001100001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137001100002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100002,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 4,
+    "TargetId": 44
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001100003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001100003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001100003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001110001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001110001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001110001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001110001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001110002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001110002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001110003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001110003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001110003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001110003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001130001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137001130001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001130001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001130001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001130002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001130002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001130003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137001130003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137001130003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137001130003
+  },
+  {
     "UnitSspCustomCoreReleaseFunctionSetId": 137500021001,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 5,
@@ -24120,6 +26064,36 @@
     "TargetId": 137800011003
   },
   {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900030001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137900030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900030001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137900030001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900030002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 3,
+    "TargetId": 137900030002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900030003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137900030003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900030003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137900030003
+  },
+  {
     "UnitSspCustomCoreReleaseFunctionSetId": 137900051001,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 5,
@@ -24184,6 +26158,36 @@
     "SortOrder": 2,
     "ReleaseFunctionTypeIndex": 1,
     "TargetId": 137900061003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900190001,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137900190001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900190001,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137900190001
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900190002,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 5,
+    "TargetId": 137900190002
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900190003,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 7,
+    "TargetId": 137900190003
+  },
+  {
+    "UnitSspCustomCoreReleaseFunctionSetId": 137900190003,
+    "SortOrder": 2,
+    "ReleaseFunctionTypeIndex": 1,
+    "TargetId": 137900190003
   },
   {
     "UnitSspCustomCoreReleaseFunctionSetId": 140000010001,

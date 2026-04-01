@@ -11456,6 +11456,14 @@
     "value": "I'll kill you!"
   },
   {
+    "id": 101000121000010020,
+    "value": "Activating the Trans-Am!"
+  },
+  {
+    "id": 101000121000010021,
+    "value": "I'm familiar with the School of Master Asia."
+  },
+  {
     "id": 101000121000020001,
     "value": "I don't have time for this!"
   },
@@ -11526,6 +11534,26 @@
   {
     "id": 101000121000020018,
     "value": "Sorry, but no one walks away after seeing the God of Death!"
+  },
+  {
+    "id": 101000121000020019,
+    "value": "Go already!"
+  },
+  {
+    "id": 101000121000020020,
+    "value": "Get out there, funnels!"
+  },
+  {
+    "id": 101000121000020021,
+    "value": "Oh, you're going to like my fangs!"
+  },
+  {
+    "id": 101000121000020022,
+    "value": "This is going to be great! Trans-Am!"
+  },
+  {
+    "id": 101000121000020023,
+    "value": "No one can stop the God of Death, you hear me?! No one!"
   },
   {
     "id": 101000121000030001,
@@ -11600,6 +11628,30 @@
     "value": "We're going to do things my way here."
   },
   {
+    "id": 101000121000030019,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 101000121000030020,
+    "value": "Now!"
+  },
+  {
+    "id": 101000121000030021,
+    "value": "I'll use my Fangs!"
+  },
+  {
+    "id": 101000121000030022,
+    "value": "Using Trans-Am!"
+  },
+  {
+    "id": 101000121000030023,
+    "value": "I'll use the Burning Finger according to my emotions!"
+  },
+  {
+    "id": 101000121000030024,
+    "value": "This is the proper way to live as a Gundam pilot!"
+  },
+  {
     "id": 101000121000040001,
     "value": "I...I'm here on the battlefield of my own will!"
   },
@@ -11670,6 +11722,18 @@
   {
     "id": 101000121000040018,
     "value": "We have to keep fighting... No matter how tough things get!"
+  },
+  {
+    "id": 101000121000040019,
+    "value": "Let's go, funnels!"
+  },
+  {
+    "id": 101000121000040020,
+    "value": "What's that glow?!\nIs that the heart of space?!"
+  },
+  {
+    "id": 101000121000040021,
+    "value": "Using the Trans-Am!"
   },
   {
     "id": 101000121000040101,
@@ -11744,6 +11808,18 @@
     "value": "Alright, let's put an end to all this!"
   },
   {
+    "id": 101000121000040119,
+    "value": "No one understands anything\nabout the Burning Gundam!"
+  },
+  {
+    "id": 101000121000040120,
+    "value": "They're only using Darkness Finger!"
+  },
+  {
+    "id": 101000121000040121,
+    "value": "Odd. Why am I crying...?"
+  },
+  {
     "id": 101000121000060001,
     "value": "I'll end this fighting right here, right now!"
   },
@@ -11814,6 +11890,18 @@
   {
     "id": 101000121000060018,
     "value": "Your inexperience is your undoing!"
+  },
+  {
+    "id": 101000121000060019,
+    "value": "Liaoya! Shred the enemy!"
+  },
+  {
+    "id": 101000121000060020,
+    "value": "Nataku! Use your fangs to tear through the enemy!"
+  },
+  {
+    "id": 101000121000060021,
+    "value": "Warriors discover who they are in the heat of battle!"
   },
   {
     "id": 101000121000140001,
@@ -11948,6 +12036,14 @@
     "value": "I must live up to my reputation as a warrior!"
   },
   {
+    "id": 101000121000150019,
+    "value": "My Burning Gundam is plenty strong!"
+  },
+  {
+    "id": 101000121000150020,
+    "value": "A Heat End? I must say, I did pretty well!"
+  },
+  {
     "id": 101000121000160001,
     "value": "A lot of people will be needed to fight this war!"
   },
@@ -12020,6 +12116,14 @@
     "value": "I'll show no mercy against those who oppose me!"
   },
   {
+    "id": 101000121000160019,
+    "value": "Do you now understand the power of the Burning Finger?!"
+  },
+  {
+    "id": 101000121000160020,
+    "value": "This is what a Heat End is!"
+  },
+  {
     "id": 101000121000170001,
     "value": "You don't treat the battle field seriously enough!"
   },
@@ -12074,6 +12178,26 @@
   {
     "id": 101000121000170014,
     "value": "This will win this battle!"
+  },
+  {
+    "id": 101000121000170015,
+    "value": "To gamble with our lives like this..."
+  },
+  {
+    "id": 101000121000170016,
+    "value": "If it's a revolution you desire, you must seek one out!"
+  },
+  {
+    "id": 101000121000170017,
+    "value": "I haven't given up hope!"
+  },
+  {
+    "id": 101000121000170018,
+    "value": "I don't care who you are, I'm not letting anyone interfere with me!"
+  },
+  {
+    "id": 101000121000170019,
+    "value": "I fight to protect those who are dear to me!"
   },
   {
     "id": 101000121000190001,
@@ -12146,6 +12270,18 @@
   {
     "id": 101000121000190018,
     "value": "It pains me to say this, but all plays must come to an end!"
+  },
+  {
+    "id": 101000121000190019,
+    "value": "And now, the Trans-Am in action!"
+  },
+  {
+    "id": 101000121000190020,
+    "value": "What I would give to experience defeat..."
+  },
+  {
+    "id": 101000121000190021,
+    "value": "A bite from these fangs will leave quite the scar!"
   },
   {
     "id": 101000121700020001,
@@ -12292,6 +12428,106 @@
     "value": "You had best mind your manners!"
   },
   {
+    "id": 101000121900010001,
+    "value": "This cruel and sad history ends now!"
+  },
+  {
+    "id": 101000121900010002,
+    "value": "Our war already ended!"
+  },
+  {
+    "id": 101000121900010003,
+    "value": "If things continue like this, soldiers like us will be needed again!"
+  },
+  {
+    "id": 101000121900010004,
+    "value": "A history of tragedy can't be repeated!"
+  },
+  {
+    "id": 101000121900010005,
+    "value": "I know, Zero..."
+  },
+  {
+    "id": 101000121900010006,
+    "value": "Zero, begin pursuit!"
+  },
+  {
+    "id": 101000121900010007,
+    "value": "This is the end."
+  },
+  {
+    "id": 101000121900010008,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 101000121900010009,
+    "value": "I'll remove that hindrance!"
+  },
+  {
+    "id": 101000121900010010,
+    "value": "Get out of the way already!"
+  },
+  {
+    "id": 101000121900010011,
+    "value": "Not bad!"
+  },
+  {
+    "id": 101000121900010012,
+    "value": "You're fast!"
+  },
+  {
+    "id": 101000121900010013,
+    "value": "Gahhh!"
+  },
+  {
+    "id": 101000121900010014,
+    "value": "So this is it... I'm sorry, Relena!"
+  },
+  {
+    "id": 101000121900010015,
+    "value": "I see it clear as day!"
+  },
+  {
+    "id": 101000121900010016,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 101000121900010017,
+    "value": "Understood, Fangs!"
+  },
+  {
+    "id": 101000121900010018,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000121900010019,
+    "value": "I'm familiar with the School of Master Asia."
+  },
+  {
+    "id": 101000121900010020,
+    "value": "Just how many times more I have to attack with Burning Finger...!"
+  },
+  {
+    "id": 101000121900010021,
+    "value": "Heheheh... Hahahahaha!\nDarkness Finger!"
+  },
+  {
+    "id": 101000121900010022,
+    "value": "Zero doesn't tell me anything..."
+  },
+  {
+    "id": 101000121900010023,
+    "value": "It doesn't matter who wins or loses this fight."
+  },
+  {
+    "id": 101000121900010024,
+    "value": "We our responsible for our own futures!"
+  },
+  {
+    "id": 101000121900010025,
+    "value": "Zero, guide me along with Tallgeese's spirit!"
+  },
+  {
     "id": 101000121900020101,
     "value": "We can't turn back now!"
   },
@@ -12390,6 +12626,406 @@
   {
     "id": 101000121900020125,
     "value": "I'm taking you with me to hell!"
+  },
+  {
+    "id": 101000121900030001,
+    "value": "I simply can't walk away from a fight."
+  },
+  {
+    "id": 101000121900030002,
+    "value": "They're just soldiers, like us."
+  },
+  {
+    "id": 101000121900030003,
+    "value": "The value of a weapon is determined by its wielder."
+  },
+  {
+    "id": 101000121900030004,
+    "value": "The battlefield is where I belong."
+  },
+  {
+    "id": 101000121900030005,
+    "value": "High mobility and firepower... That's what I like."
+  },
+  {
+    "id": 101000121900030006,
+    "value": "It looks like I've got a connection to the Gundam."
+  },
+  {
+    "id": 101000121900030007,
+    "value": "I won't miss."
+  },
+  {
+    "id": 101000121900030008,
+    "value": "I'll render you useless."
+  },
+  {
+    "id": 101000121900030009,
+    "value": "No, you're not going to get me!"
+  },
+  {
+    "id": 101000121900030010,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 101000121900030011,
+    "value": "Urgh!"
+  },
+  {
+    "id": 101000121900030012,
+    "value": "Ugh!"
+  },
+  {
+    "id": 101000121900030013,
+    "value": "I'm hit..."
+  },
+  {
+    "id": 101000121900030014,
+    "value": "I made a mistake?!"
+  },
+  {
+    "id": 101000121900030015,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 101000121900030016,
+    "value": "Now!"
+  },
+  {
+    "id": 101000121900030017,
+    "value": "This is not just for show!"
+  },
+  {
+    "id": 101000121900030018,
+    "value": "I'll use my Fangs!"
+  },
+  {
+    "id": 101000121900030019,
+    "value": "Using Trans-Am!"
+  },
+  {
+    "id": 101000121900030020,
+    "value": "I'll strike with\nShining Finger!"
+  },
+  {
+    "id": 101000121900030021,
+    "value": "Erupting! Burning Fingerrrr!"
+  },
+  {
+    "id": 101000121900030022,
+    "value": "This will be my last performance!"
+  },
+  {
+    "id": 101000121900030023,
+    "value": "Mission accomplished. Another self-destruction device wasted."
+  },
+  {
+    "id": 101000121900030024,
+    "value": "I will destroy it...\nThis is my mission!"
+  },
+  {
+    "id": 101000121900030025,
+    "value": "Operation Meteor can't happen any other way."
+  },
+  {
+    "id": 101000121900040001,
+    "value": "I'll do whatever I can to help!"
+  },
+  {
+    "id": 101000121900040002,
+    "value": "A little danger can't be avoided!"
+  },
+  {
+    "id": 101000121900040003,
+    "value": "I fight so we can keep our hopes alive for peace!"
+  },
+  {
+    "id": 101000121900040004,
+    "value": "Let's keep maintaining our styles to the end!"
+  },
+  {
+    "id": 101000121900040005,
+    "value": "I can do this... I know I can!"
+  },
+  {
+    "id": 101000121900040006,
+    "value": "Let's go, Sandrock!"
+  },
+  {
+    "id": 101000121900040007,
+    "value": "That machine looks just like the Sandrock!"
+  },
+  {
+    "id": 101000121900040008,
+    "value": "Don't miss!"
+  },
+  {
+    "id": 101000121900040009,
+    "value": "This is it!"
+  },
+  {
+    "id": 101000121900040010,
+    "value": "You're open!"
+  },
+  {
+    "id": 101000121900040011,
+    "value": "GOOO!!!"
+  },
+  {
+    "id": 101000121900040012,
+    "value": "What the?!"
+  },
+  {
+    "id": 101000121900040013,
+    "value": "They're better than I thought..."
+  },
+  {
+    "id": 101000121900040014,
+    "value": "They got me?!"
+  },
+  {
+    "id": 101000121900040015,
+    "value": "My machine... Isn't going to last much longer!"
+  },
+  {
+    "id": 101000121900040016,
+    "value": "This is it! Now!"
+  },
+  {
+    "id": 101000121900040017,
+    "value": "Let's go, funnels!"
+  },
+  {
+    "id": 101000121900040018,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 101000121900040019,
+    "value": "I'm using my Fangs!"
+  },
+  {
+    "id": 101000121900040020,
+    "value": "Using the Trans-Am!"
+  },
+  {
+    "id": 101000121900040021,
+    "value": "What's that glow?!\nIs that the heart of space?!"
+  },
+  {
+    "id": 101000121900040022,
+    "value": "I'll destroy them all\nwith this Gundam!"
+  },
+  {
+    "id": 101000121900040023,
+    "value": "Someone has to bring this war to an end!"
+  },
+  {
+    "id": 101000121900040024,
+    "value": "If somebody has to fight,\nit might as well be me!"
+  },
+  {
+    "id": 101000121900040025,
+    "value": "I'm going to need your help again, Sandrock!"
+  },
+  {
+    "id": 101000121900050001,
+    "value": "It's through combat that I can see the way!"
+  },
+  {
+    "id": 101000121900050002,
+    "value": "I'll end this battle right now!"
+  },
+  {
+    "id": 101000121900050003,
+    "value": "I'll destroy all the weapons here!"
+  },
+  {
+    "id": 101000121900050004,
+    "value": "That's right, Treize is gone!"
+  },
+  {
+    "id": 101000121900050005,
+    "value": "Lead the way, Nataku!"
+  },
+  {
+    "id": 101000121900050006,
+    "value": "Nataku will help me carry out my justice!"
+  },
+  {
+    "id": 101000121900050007,
+    "value": "Liaoya! Shred the enemy!"
+  },
+  {
+    "id": 101000121900050008,
+    "value": "Eat this!"
+  },
+  {
+    "id": 101000121900050009,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 101000121900050010,
+    "value": "Don't underestimate me!"
+  },
+  {
+    "id": 101000121900050011,
+    "value": "Aaaaaaaah!"
+  },
+  {
+    "id": 101000121900050012,
+    "value": "Damn it!"
+  },
+  {
+    "id": 101000121900050013,
+    "value": "What the?!"
+  },
+  {
+    "id": 101000121900050014,
+    "value": "Urgh! What's going on?!"
+  },
+  {
+    "id": 101000121900050015,
+    "value": "Ugh... Now we're talking..."
+  },
+  {
+    "id": 101000121900050016,
+    "value": "Now!"
+  },
+  {
+    "id": 101000121900050017,
+    "value": "Don't take me lightly! Funnels!"
+  },
+  {
+    "id": 101000121900050018,
+    "value": "Go, fin funnels!"
+  },
+  {
+    "id": 101000121900050019,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 101000121900050020,
+    "value": "Let's show them what we can do!"
+  },
+  {
+    "id": 101000121900050021,
+    "value": "I'll never forget about Meilan!"
+  },
+  {
+    "id": 101000121900050022,
+    "value": "She is my wife!"
+  },
+  {
+    "id": 101000121900050023,
+    "value": "Why do you fight when you know you can't win?!"
+  },
+  {
+    "id": 101000121900050024,
+    "value": "You think you're in the right?\nFine, show me!"
+  },
+  {
+    "id": 101000121900050025,
+    "value": "This is the new and improved Nataku!"
+  },
+  {
+    "id": 101000121900070001,
+    "value": "My current role is Wind, the extinguisher of flames!"
+  },
+  {
+    "id": 101000121900070002,
+    "value": "Disarm and surrender yourself now!"
+  },
+  {
+    "id": 101000121900070003,
+    "value": "There's no need for a second Milliardo Peacecraft!"
+  },
+  {
+    "id": 101000121900070004,
+    "value": "I will do whatever I can to help the world..."
+  },
+  {
+    "id": 101000121900070005,
+    "value": "Treize, I'm going to borrow this one!"
+  },
+  {
+    "id": 101000121900070006,
+    "value": "Let's see what the Tallgeese can really do."
+  },
+  {
+    "id": 101000121900070007,
+    "value": "Firing Tallgeese's mega cannon!"
+  },
+  {
+    "id": 101000121900070008,
+    "value": "This will finish you!"
+  },
+  {
+    "id": 101000121900070009,
+    "value": "I've got you!"
+  },
+  {
+    "id": 101000121900070010,
+    "value": "You can't stop me!"
+  },
+  {
+    "id": 101000121900070011,
+    "value": "Just try and stop me!"
+  },
+  {
+    "id": 101000121900070012,
+    "value": "Gngh!"
+  },
+  {
+    "id": 101000121900070013,
+    "value": "Ngh!"
+  },
+  {
+    "id": 101000121900070014,
+    "value": "I wasn't expecting that!"
+  },
+  {
+    "id": 101000121900070015,
+    "value": "Please...\nJoin me in this humiliation!"
+  },
+  {
+    "id": 101000121900070016,
+    "value": "Heh... There!"
+  },
+  {
+    "id": 101000121900070017,
+    "value": "Funnels!"
+  },
+  {
+    "id": 101000121900070018,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 101000121900070019,
+    "value": "Fangs!"
+  },
+  {
+    "id": 101000121900070020,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000121900070021,
+    "value": "Wait until you get a taste of these flames!"
+  },
+  {
+    "id": 101000121900070022,
+    "value": "Now we don't have to abandon hope!"
+  },
+  {
+    "id": 101000121900070023,
+    "value": "It seems my reading of the situation proved true."
+  },
+  {
+    "id": 101000121900070024,
+    "value": "My mission is to end this fighting!"
+  },
+  {
+    "id": 101000121900070025,
+    "value": "This machine is harder to control than the Epyon!"
   },
   {
     "id": 101000123000010001,
@@ -18564,6 +19200,106 @@
     "value": "I'll bring them down!"
   },
   {
+    "id": 101000137000350201,
+    "value": "Leave the future of this unified world to me."
+  },
+  {
+    "id": 101000137000350202,
+    "value": "Those who oppose me will receive no mercy!"
+  },
+  {
+    "id": 101000137000350203,
+    "value": "Innovators are a cut above mere humans!"
+  },
+  {
+    "id": 101000137000350204,
+    "value": "I am the one true inheritor of Aeolia's will!"
+  },
+  {
+    "id": 101000137000350205,
+    "value": "None are more skilled with Gundams than I!"
+  },
+  {
+    "id": 101000137000350206,
+    "value": "This is the Gundam...that will guide humanity!"
+  },
+  {
+    "id": 101000137000350207,
+    "value": "You may die now!"
+  },
+  {
+    "id": 101000137000350208,
+    "value": "Take this!"
+  },
+  {
+    "id": 101000137000350209,
+    "value": "So long!"
+  },
+  {
+    "id": 101000137000350210,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000137000350211,
+    "value": "Tch..."
+  },
+  {
+    "id": 101000137000350212,
+    "value": "Ngh..."
+  },
+  {
+    "id": 101000137000350213,
+    "value": "How dare you do this to me..."
+  },
+  {
+    "id": 101000137000350214,
+    "value": "Machine damage at its limit? DAMMIT!"
+  },
+  {
+    "id": 101000137000350215,
+    "value": "All too predictable!"
+  },
+  {
+    "id": 101000137000350216,
+    "value": "To battle! Fin Funnels!"
+  },
+  {
+    "id": 101000137000350217,
+    "value": "Fin Fangs!"
+  },
+  {
+    "id": 101000137000350218,
+    "value": "It's mine at last! The original Gundam\nfit for a god!"
+  },
+  {
+    "id": 101000137000350219,
+    "value": "What Gundam could be more suitable for a god?"
+  },
+  {
+    "id": 101000137000350220,
+    "value": "Heat End... Adieu."
+  },
+  {
+    "id": 101000137000350221,
+    "value": "Why do they choose such a foolish path?"
+  },
+  {
+    "id": 101000137000350222,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000350223,
+    "value": "I shall deliver judgement myself!"
+  },
+  {
+    "id": 101000137000350224,
+    "value": "This Gundam is for more than mere show!"
+  },
+  {
+    "id": 101000137000350225,
+    "value": "This is the power of the Twin Drive!"
+  },
+  {
     "id": 101000137000360001,
     "value": "See if you can squirm your way outta this!"
   },
@@ -18634,6 +19370,1182 @@
   {
     "id": 101000137000360018,
     "value": "This is fun! Ain't war a riot!?"
+  },
+  {
+    "id": 101000137000370001,
+    "value": "These are our Gundams!"
+  },
+  {
+    "id": 101000137000370002,
+    "value": "Destruction brings about its own creation!"
+  },
+  {
+    "id": 101000137000370003,
+    "value": "I will be a force of destruction!"
+  },
+  {
+    "id": 101000137000370004,
+    "value": "As long as war persists, so will we!"
+  },
+  {
+    "id": 101000137000370005,
+    "value": "We're not stopping... Nothing can stop us!"
+  },
+  {
+    "id": 101000137000370006,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 101000137000370007,
+    "value": "Too slow!"
+  },
+  {
+    "id": 101000137000370008,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 101000137000370009,
+    "value": "Nice try!"
+  },
+  {
+    "id": 101000137000370010,
+    "value": "Tch!"
+  },
+  {
+    "id": 101000137000370011,
+    "value": "Guh!"
+  },
+  {
+    "id": 101000137000370012,
+    "value": "Did they just...!?"
+  },
+  {
+    "id": 101000137000370013,
+    "value": "Not...yet!"
+  },
+  {
+    "id": 101000137000370014,
+    "value": "Is this it for me!?"
+  },
+  {
+    "id": 101000137000370015,
+    "value": "I'll make this count!"
+  },
+  {
+    "id": 101000137000370016,
+    "value": "There! Funnels!"
+  },
+  {
+    "id": 101000137000370017,
+    "value": "Hit, Fangs!"
+  },
+  {
+    "id": 101000137000370018,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000137000370019,
+    "value": "This is...my Gundam!"
+  },
+  {
+    "id": 101000137000370020,
+    "value": "We will sever what twists this world!"
+  },
+  {
+    "id": 101000137000370021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000370022,
+    "value": "Trans-Am! RAISER!"
+  },
+  {
+    "id": 101000137000370023,
+    "value": "RAAAGH!"
+  },
+  {
+    "id": 101000137000370024,
+    "value": "I fight for the future, together with my friends!"
+  },
+  {
+    "id": 101000137000370025,
+    "value": "We'll make the choice to destroy!"
+  },
+  {
+    "id": 101000137000400101,
+    "value": "The immortal Colasour is here!"
+  },
+  {
+    "id": 101000137000400102,
+    "value": "My special techniques will take you down!"
+  },
+  {
+    "id": 101000137000400103,
+    "value": "The goddess of victory smiles upon me!"
+  },
+  {
+    "id": 101000137000400104,
+    "value": "I'll show you how it's done!"
+  },
+  {
+    "id": 101000137000400105,
+    "value": "Here I go!"
+  },
+  {
+    "id": 101000137000400106,
+    "value": "Go down already!"
+  },
+  {
+    "id": 101000137000400107,
+    "value": "ORYAAAH!"
+  },
+  {
+    "id": 101000137000400108,
+    "value": "You're going down!"
+  },
+  {
+    "id": 101000137000400109,
+    "value": "Whoa!"
+  },
+  {
+    "id": 101000137000400110,
+    "value": "How dare you?!"
+  },
+  {
+    "id": 101000137000400111,
+    "value": "You're kidding me, right?!"
+  },
+  {
+    "id": 101000137000400112,
+    "value": "This can't be happening!!"
+  },
+  {
+    "id": 101000137000400113,
+    "value": "Let's do this!"
+  },
+  {
+    "id": 101000137000400114,
+    "value": "Funnels!"
+  },
+  {
+    "id": 101000137000400115,
+    "value": "Anyone who stands in the way of\ntrue love gets a beatdown from ME!"
+  },
+  {
+    "id": 101000137000400116,
+    "value": "This is the embodiment of my love!!"
+  },
+  {
+    "id": 101000137000400117,
+    "value": "I love you, Kati!!!"
+  },
+  {
+    "id": 101000137000400118,
+    "value": "Now it's my turn to win some glory!"
+  },
+  {
+    "id": 101000137000410001,
+    "value": "Please stop opposing us!"
+  },
+  {
+    "id": 101000137000410002,
+    "value": "I'll carry out the Innovators' mission!"
+  },
+  {
+    "id": 101000137000410003,
+    "value": "If you want to fight me, I'll give you a fight!"
+  },
+  {
+    "id": 101000137000410004,
+    "value": "No more of that, now!"
+  },
+  {
+    "id": 101000137000410005,
+    "value": "I truly love you, Lyle!"
+  },
+  {
+    "id": 101000137000410006,
+    "value": "Huh?! Lyle's brother?!"
+  },
+  {
+    "id": 101000137000410007,
+    "value": "I'll make this hit count!"
+  },
+  {
+    "id": 101000137000410008,
+    "value": "Haaah!!"
+  },
+  {
+    "id": 101000137000410009,
+    "value": "This should do it!"
+  },
+  {
+    "id": 101000137000410010,
+    "value": "Hit!"
+  },
+  {
+    "id": 101000137000410011,
+    "value": "Agh?!"
+  },
+  {
+    "id": 101000137000410012,
+    "value": "Tch..."
+  },
+  {
+    "id": 101000137000410013,
+    "value": "Urgh..."
+  },
+  {
+    "id": 101000137000410014,
+    "value": "But how?!"
+  },
+  {
+    "id": 101000137000410015,
+    "value": "Go that way!"
+  },
+  {
+    "id": 101000137000410016,
+    "value": "Fangs! Slash them to pieces!"
+  },
+  {
+    "id": 101000137000410017,
+    "value": "Using Trans-Am!"
+  },
+  {
+    "id": 101000137000410018,
+    "value": "Anyone who stands between me\nand my love gets a Burning Finger!"
+  },
+  {
+    "id": 101000137000410019,
+    "value": "Go to hell!"
+  },
+  {
+    "id": 101000137000410020,
+    "value": "Let me demonstrate the power gap between us!"
+  },
+  {
+    "id": 101000137000430001,
+    "value": "No offense, but nobody's a match for me!"
+  },
+  {
+    "id": 101000137000430002,
+    "value": "Okay, what would you like me to do?"
+  },
+  {
+    "id": 101000137000430003,
+    "value": "I'll give you a nice big wound!"
+  },
+  {
+    "id": 101000137000430004,
+    "value": "How can humans be so stupid?"
+  },
+  {
+    "id": 101000137000430005,
+    "value": "My Garazzo will turn you to scrap!"
+  },
+  {
+    "id": 101000137000430006,
+    "value": "Ahahahaha!"
+  },
+  {
+    "id": 101000137000430007,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000137000430008,
+    "value": "Too slow!"
+  },
+  {
+    "id": 101000137000430009,
+    "value": "Here!"
+  },
+  {
+    "id": 101000137000430010,
+    "value": "No way?!"
+  },
+  {
+    "id": 101000137000430011,
+    "value": "How?!"
+  },
+  {
+    "id": 101000137000430012,
+    "value": "How can they hit me?!"
+  },
+  {
+    "id": 101000137000430013,
+    "value": "Oh, come on!"
+  },
+  {
+    "id": 101000137000430014,
+    "value": "It's all so clear!"
+  },
+  {
+    "id": 101000137000430015,
+    "value": "Go on now, Fangs!"
+  },
+  {
+    "id": 101000137000430016,
+    "value": "Humans are stupid! STUPID!"
+  },
+  {
+    "id": 101000137000430017,
+    "value": "No! Touching!"
+  },
+  {
+    "id": 101000137000430018,
+    "value": "Trans-Am!!"
+  },
+  {
+    "id": 101000137000440001,
+    "value": "A... A soldier follows orders!"
+  },
+  {
+    "id": 101000137000440002,
+    "value": "I won't let anyone else go through\nwhat I've suffered!"
+  },
+  {
+    "id": 101000137000440003,
+    "value": "I don't care why you're rebelling!\nI'll destroy any hostiles!"
+  },
+  {
+    "id": 101000137000440004,
+    "value": "If you step up, I'll take you down!"
+  },
+  {
+    "id": 101000137000440005,
+    "value": "I'd know that Gundam anywhere!!"
+  },
+  {
+    "id": 101000137000440006,
+    "value": "Haaah!"
+  },
+  {
+    "id": 101000137000440007,
+    "value": "I'll do this!"
+  },
+  {
+    "id": 101000137000440008,
+    "value": "Now the finish!"
+  },
+  {
+    "id": 101000137000440009,
+    "value": "Don't get in my way!"
+  },
+  {
+    "id": 101000137000440010,
+    "value": "Ack!"
+  },
+  {
+    "id": 101000137000440011,
+    "value": "Urgh!"
+  },
+  {
+    "id": 101000137000440012,
+    "value": "How dare you!"
+  },
+  {
+    "id": 101000137000440013,
+    "value": "Agh... Louise Halevy, retreating!"
+  },
+  {
+    "id": 101000137000440014,
+    "value": "I see it!"
+  },
+  {
+    "id": 101000137000440015,
+    "value": "Now! Funnels!"
+  },
+  {
+    "id": 101000137000440016,
+    "value": "Go ahead, Fangs!"
+  },
+  {
+    "id": 101000137000440017,
+    "value": "A shiny gold figure is nice and all,\nbut what I'd really like is a fancy gold ring!"
+  },
+  {
+    "id": 101000137000440018,
+    "value": "STUPID SAJI!"
+  },
+  {
+    "id": 101000137000440019,
+    "value": "*pant* *pant* Ngh, my head...!"
+  },
+  {
+    "id": 101000137000440020,
+    "value": "To take you down is my mission!"
+  },
+  {
+    "id": 101000137000450001,
+    "value": "At heart, I am always on the battlefield!"
+  },
+  {
+    "id": 101000137000450002,
+    "value": "Even if this is a doomed journey..."
+  },
+  {
+    "id": 101000137000450003,
+    "value": "I demand your best!"
+  },
+  {
+    "id": 101000137000450004,
+    "value": "This is what I want! The path of bloodshed!"
+  },
+  {
+    "id": 101000137000450005,
+    "value": "Can you see through my\ndeadly swordsmanship?!"
+  },
+  {
+    "id": 101000137000450006,
+    "value": "I am Gundam Bushido!"
+  },
+  {
+    "id": 101000137000450007,
+    "value": "Behold the secret technique of my Masurao!"
+  },
+  {
+    "id": 101000137000450008,
+    "value": "Gnahhh!"
+  },
+  {
+    "id": 101000137000450009,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 101000137000450010,
+    "value": "You're wide open!"
+  },
+  {
+    "id": 101000137000450011,
+    "value": "DEYAAAGH!!"
+  },
+  {
+    "id": 101000137000450012,
+    "value": "Gah!"
+  },
+  {
+    "id": 101000137000450013,
+    "value": "Nrgh?!"
+  },
+  {
+    "id": 101000137000450014,
+    "value": "How?!"
+  },
+  {
+    "id": 101000137000450015,
+    "value": "How careless of me..."
+  },
+  {
+    "id": 101000137000450016,
+    "value": "I see the enemy, clear as day!"
+  },
+  {
+    "id": 101000137000450017,
+    "value": "Strike, Bushido Funnels!!"
+  },
+  {
+    "id": 101000137000450018,
+    "value": "Deadly attack! Bushido Fangs!"
+  },
+  {
+    "id": 101000137000450019,
+    "value": "Look! Bushido is burning bright red!!"
+  },
+  {
+    "id": 101000137000450020,
+    "value": "Is this the limit...!"
+  },
+  {
+    "id": 101000137000450021,
+    "value": "My mind is clear and free of distractions..."
+  },
+  {
+    "id": 101000137000450022,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000450023,
+    "value": "I apologize...for CUTTING YOU DOWN!"
+  },
+  {
+    "id": 101000137000450024,
+    "value": "This is what I want! The path of bloodshed!"
+  },
+  {
+    "id": 101000137000450025,
+    "value": "I bear the Union's emblem!"
+  },
+  {
+    "id": 101000137000460001,
+    "value": "If there's a call for a supersoldier..."
+  },
+  {
+    "id": 101000137000460002,
+    "value": "I want to repay the colonel's kindness."
+  },
+  {
+    "id": 101000137000460003,
+    "value": "I'll complete my mission. Same as always."
+  },
+  {
+    "id": 101000137000460004,
+    "value": "I'm another weapon of war!"
+  },
+  {
+    "id": 101000137000460005,
+    "value": "Marie is NOT my name!"
+  },
+  {
+    "id": 101000137000460006,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 101000137000460007,
+    "value": "Eat this!"
+  },
+  {
+    "id": 101000137000460008,
+    "value": "There!"
+  },
+  {
+    "id": 101000137000460009,
+    "value": "Hahhhh!"
+  },
+  {
+    "id": 101000137000460010,
+    "value": "Ngh!"
+  },
+  {
+    "id": 101000137000460011,
+    "value": "Get away from me!"
+  },
+  {
+    "id": 101000137000460012,
+    "value": "This is bad...!"
+  },
+  {
+    "id": 101000137000460013,
+    "value": "Is retreat the only option left?!"
+  },
+  {
+    "id": 101000137000460014,
+    "value": "GO!"
+  },
+  {
+    "id": 101000137000460015,
+    "value": "I'm counting on you, funnels!"
+  },
+  {
+    "id": 101000137000460016,
+    "value": "Don't think you're the only one who can use\nthe Burning Gundam!"
+  },
+  {
+    "id": 101000137000460017,
+    "value": "Heat End!"
+  },
+  {
+    "id": 101000137000460018,
+    "value": "I won't fall behind you guys!"
+  },
+  {
+    "id": 101000137000470001,
+    "value": "Why do you refuse to recognize\nthe Earth Federation?!"
+  },
+  {
+    "id": 101000137000470002,
+    "value": "Absolutely no more casualties are acceptable!"
+  },
+  {
+    "id": 101000137000470003,
+    "value": "The world needs the A-LAWS to unify it!"
+  },
+  {
+    "id": 101000137000470004,
+    "value": "For the peace my mother strove for!"
+  },
+  {
+    "id": 101000137000470005,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 101000137000470006,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 101000137000470007,
+    "value": "Here I go!"
+  },
+  {
+    "id": 101000137000470008,
+    "value": "It's over for you!"
+  },
+  {
+    "id": 101000137000470009,
+    "value": "You little..."
+  },
+  {
+    "id": 101000137000470010,
+    "value": "Rgh!"
+  },
+  {
+    "id": 101000137000470011,
+    "value": "What?!"
+  },
+  {
+    "id": 101000137000470012,
+    "value": "How can I retreat in the face of the enemy?!"
+  },
+  {
+    "id": 101000137000470013,
+    "value": "Using special armament!"
+  },
+  {
+    "id": 101000137000470014,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000480001,
+    "value": "You won't go any farther."
+  },
+  {
+    "id": 101000137000480002,
+    "value": "I'll wipe out any impediment!"
+  },
+  {
+    "id": 101000137000480003,
+    "value": "You know nothing of what it means to defy us."
+  },
+  {
+    "id": 101000137000480004,
+    "value": "All is according to Aeolia's plan."
+  },
+  {
+    "id": 101000137000480005,
+    "value": "Haaah!"
+  },
+  {
+    "id": 101000137000480006,
+    "value": "I don't think so!"
+  },
+  {
+    "id": 101000137000480007,
+    "value": "You won't get away!"
+  },
+  {
+    "id": 101000137000480008,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 101000137000480009,
+    "value": "Gah!"
+  },
+  {
+    "id": 101000137000480010,
+    "value": "Gah!"
+  },
+  {
+    "id": 101000137000480011,
+    "value": "Tch."
+  },
+  {
+    "id": 101000137000480012,
+    "value": "Alas... This is it..."
+  },
+  {
+    "id": 101000137000480013,
+    "value": "Go!"
+  },
+  {
+    "id": 101000137000480014,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000490001,
+    "value": "I want to find the future, too!"
+  },
+  {
+    "id": 101000137000490002,
+    "value": "If this is a battle to protect..."
+  },
+  {
+    "id": 101000137000490003,
+    "value": "I'll protect everyone!\nI'll protect my friends!"
+  },
+  {
+    "id": 101000137000490004,
+    "value": "We build a future by understanding\none another!"
+  },
+  {
+    "id": 101000137000490005,
+    "value": "I can do this!"
+  },
+  {
+    "id": 101000137000490006,
+    "value": "Here we go!"
+  },
+  {
+    "id": 101000137000490007,
+    "value": "It has to be done!"
+  },
+  {
+    "id": 101000137000490008,
+    "value": "You're getting too close!"
+  },
+  {
+    "id": 101000137000490009,
+    "value": "Whoa!"
+  },
+  {
+    "id": 101000137000490010,
+    "value": "Rgh?!"
+  },
+  {
+    "id": 101000137000490011,
+    "value": "I took a hit?!"
+  },
+  {
+    "id": 101000137000490012,
+    "value": "Aaah!"
+  },
+  {
+    "id": 101000137000490013,
+    "value": "Go on!"
+  },
+  {
+    "id": 101000137000490014,
+    "value": "Uh, seizing happiness is easier said than done..."
+  },
+  {
+    "id": 101000137000490015,
+    "value": "L... LOUIIIISE! I LOVE YOOOUUU!!"
+  },
+  {
+    "id": 101000137000500001,
+    "value": "Target confirmed. Attacking!"
+  },
+  {
+    "id": 101000137000500002,
+    "value": "I'll bring this to an end!"
+  },
+  {
+    "id": 101000137000500003,
+    "value": "Allow me to witness your strength!"
+  },
+  {
+    "id": 101000137000500004,
+    "value": "You're no match for me!"
+  },
+  {
+    "id": 101000137000500005,
+    "value": "No match for an Ahead!"
+  },
+  {
+    "id": 101000137000500006,
+    "value": "There you are!"
+  },
+  {
+    "id": 101000137000500007,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 101000137000500008,
+    "value": "Bringing 'em down!"
+  },
+  {
+    "id": 101000137000500009,
+    "value": "Going for a strike!"
+  },
+  {
+    "id": 101000137000500010,
+    "value": "Rgh!"
+  },
+  {
+    "id": 101000137000500011,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000137000500012,
+    "value": "Agh! You'll pay for this!"
+  },
+  {
+    "id": 101000137000500013,
+    "value": "What?!"
+  },
+  {
+    "id": 101000137000500014,
+    "value": "I see you now!"
+  },
+  {
+    "id": 101000137000510001,
+    "value": "I'll do this MY way!"
+  },
+  {
+    "id": 101000137000510002,
+    "value": "I'm here to defang you guys!"
+  },
+  {
+    "id": 101000137000510003,
+    "value": "I don't care how dumb this seems.\nIt's gotta be done!"
+  },
+  {
+    "id": 101000137000510004,
+    "value": "I can't just ignore you guys!"
+  },
+  {
+    "id": 101000137000510005,
+    "value": "Cherudim! Clear an assault path!"
+  },
+  {
+    "id": 101000137000510006,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 101000137000510007,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 101000137000510008,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 101000137000510009,
+    "value": "RAAGH!"
+  },
+  {
+    "id": 101000137000510010,
+    "value": "Tch!"
+  },
+  {
+    "id": 101000137000510011,
+    "value": "Rgh?!"
+  },
+  {
+    "id": 101000137000510012,
+    "value": "Not bad..."
+  },
+  {
+    "id": 101000137000510013,
+    "value": "Is this how I go out?"
+  },
+  {
+    "id": 101000137000510014,
+    "value": "I got this!"
+  },
+  {
+    "id": 101000137000510015,
+    "value": "Rifle Bits!"
+  },
+  {
+    "id": 101000137000510016,
+    "value": "Funnels, over there!"
+  },
+  {
+    "id": 101000137000510017,
+    "value": "Have a taste of my Fangs!"
+  },
+  {
+    "id": 101000137000510018,
+    "value": "I'll give you a Burning Finger as a bonus!"
+  },
+  {
+    "id": 101000137000510019,
+    "value": "Heat End!!"
+  },
+  {
+    "id": 101000137000510020,
+    "value": "It's an improvement, I guess."
+  },
+  {
+    "id": 101000137000510021,
+    "value": "You see that? That's Celestial Being!"
+  },
+  {
+    "id": 101000137000510022,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000510023,
+    "value": "Shield Bits, Assault Mode!"
+  },
+  {
+    "id": 101000137000510024,
+    "value": "Sorry, but I'm done with the pleasantries!"
+  },
+  {
+    "id": 101000137000510025,
+    "value": "I have a reputation to live up to! You're dead!!"
+  },
+  {
+    "id": 101000137000520001,
+    "value": "If fighting is all a supersoldier's good for..."
+  },
+  {
+    "id": 101000137000520002,
+    "value": "You'll never achieve real peace like that!"
+  },
+  {
+    "id": 101000137000520003,
+    "value": "I'll sever this nightmarish chain for good!"
+  },
+  {
+    "id": 101000137000520004,
+    "value": "I have a reason to fight now!"
+  },
+  {
+    "id": 101000137000520005,
+    "value": "Stop this! You're Marie Parfacy!"
+  },
+  {
+    "id": 101000137000520006,
+    "value": "Arios! Moving to intercept!"
+  },
+  {
+    "id": 101000137000520007,
+    "value": "Don't you even try!"
+  },
+  {
+    "id": 101000137000520008,
+    "value": "How slow!"
+  },
+  {
+    "id": 101000137000520009,
+    "value": "Get lost!"
+  },
+  {
+    "id": 101000137000520010,
+    "value": "Wake up!"
+  },
+  {
+    "id": 101000137000520011,
+    "value": "I got set up?!"
+  },
+  {
+    "id": 101000137000520012,
+    "value": "That was nothing!"
+  },
+  {
+    "id": 101000137000520013,
+    "value": "Agh, I'm hit?!"
+  },
+  {
+    "id": 101000137000520014,
+    "value": "Is this...it for us?"
+  },
+  {
+    "id": 101000137000520015,
+    "value": "I see it! Go!"
+  },
+  {
+    "id": 101000137000520016,
+    "value": "In that case, funnels!"
+  },
+  {
+    "id": 101000137000520017,
+    "value": "Fangs!"
+  },
+  {
+    "id": 101000137000520018,
+    "value": "Shining Finger!"
+  },
+  {
+    "id": 101000137000520019,
+    "value": "I should be able to use the Finger Sword!"
+  },
+  {
+    "id": 101000137000520020,
+    "value": "I don't think someone as peaceful\nby nature as me is cut out for this..."
+  },
+  {
+    "id": 101000137000520021,
+    "value": "Must've picked the wrong pilot..."
+  },
+  {
+    "id": 101000137000520022,
+    "value": "I'll fight! The future depends on what we do!"
+  },
+  {
+    "id": 101000137000520023,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000520024,
+    "value": "Even without quantum brainwaves, I can still..."
+  },
+  {
+    "id": 101000137000520025,
+    "value": "I can make it even without Hallelujah!"
+  },
+  {
+    "id": 101000137000530001,
+    "value": "Tieria Erde, destroying target!"
+  },
+  {
+    "id": 101000137000530002,
+    "value": "I won't let you go unchallenged!"
+  },
+  {
+    "id": 101000137000530003,
+    "value": "I swore to protect my companions\nand consign my enemies to death!"
+  },
+  {
+    "id": 101000137000530004,
+    "value": "We'll build the world he wanted!"
+  },
+  {
+    "id": 101000137000530005,
+    "value": "Seravee, intercept the target!"
+  },
+  {
+    "id": 101000137000530006,
+    "value": "The Seravee can fight up close, too!"
+  },
+  {
+    "id": 101000137000530007,
+    "value": "Hyper Burst! Full release!"
+  },
+  {
+    "id": 101000137000530008,
+    "value": "Destroy!"
+  },
+  {
+    "id": 101000137000530009,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 101000137000530010,
+    "value": "There you are!"
+  },
+  {
+    "id": 101000137000530011,
+    "value": "Allow me!"
+  },
+  {
+    "id": 101000137000530012,
+    "value": "Gah?!"
+  },
+  {
+    "id": 101000137000530013,
+    "value": "What?!"
+  },
+  {
+    "id": 101000137000530014,
+    "value": "What the?!"
+  },
+  {
+    "id": 101000137000530015,
+    "value": "Even if I fall, more will take up my duty."
+  },
+  {
+    "id": 101000137000530016,
+    "value": "Got you in my sights!"
+  },
+  {
+    "id": 101000137000530017,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 101000137000530018,
+    "value": "Fangs!"
+  },
+  {
+    "id": 101000137000530019,
+    "value": "Shining Finger!"
+  },
+  {
+    "id": 101000137000530020,
+    "value": "The future is in the hand of Burning Finger!"
+  },
+  {
+    "id": 101000137000530021,
+    "value": "Heat end!"
+  },
+  {
+    "id": 101000137000530022,
+    "value": "No matter how hard it gets,\nI have my own reasons for not backing down!"
+  },
+  {
+    "id": 101000137000530023,
+    "value": "Trans-Am!!"
+  },
+  {
+    "id": 101000137000530024,
+    "value": "Your presence here means danger! Disappear!"
+  },
+  {
+    "id": 101000137000530025,
+    "value": "With the Gundams,\nwe shall rectify this twisted world!"
+  },
+  {
+    "id": 101000137000610101,
+    "value": "I am an envoy of the world's revival!"
+  },
+  {
+    "id": 101000137000610102,
+    "value": "Yes, soon the world will change!"
+  },
+  {
+    "id": 101000137000610103,
+    "value": "You've already done your job."
+  },
+  {
+    "id": 101000137000610104,
+    "value": "Are you ready? It's time to end this!"
+  },
+  {
+    "id": 101000137000610105,
+    "value": "The Gadessa can easily aim at this range!"
+  },
+  {
+    "id": 101000137000610106,
+    "value": "There!"
+  },
+  {
+    "id": 101000137000610107,
+    "value": "Don't mess with me!"
+  },
+  {
+    "id": 101000137000610108,
+    "value": "Haaah!"
+  },
+  {
+    "id": 101000137000610109,
+    "value": "Sink!!"
+  },
+  {
+    "id": 101000137000610110,
+    "value": "Impossible!"
+  },
+  {
+    "id": 101000137000610111,
+    "value": "Rgh!"
+  },
+  {
+    "id": 101000137000610112,
+    "value": "I'm hit?!"
+  },
+  {
+    "id": 101000137000610113,
+    "value": "What the..."
+  },
+  {
+    "id": 101000137000610114,
+    "value": "I know all of your moves!"
+  },
+  {
+    "id": 101000137000610115,
+    "value": "Fangs!"
+  },
+  {
+    "id": 101000137000610116,
+    "value": "Is this the raw power of Burning Finger...?!"
+  },
+  {
+    "id": 101000137000610117,
+    "value": "What a distasteful interest..."
+  },
+  {
+    "id": 101000137000610118,
+    "value": "Trans-Am!"
   },
   {
     "id": 101000137500010001,
@@ -18922,6 +20834,70 @@
   {
     "id": 101000137900020018,
     "value": "You'll find no chivalry here!"
+  },
+  {
+    "id": 101000138210010001,
+    "value": "Who wants to live in a world where peace is built\non oppressing the minority?!"
+  },
+  {
+    "id": 101000138210010002,
+    "value": "You're no match for us!\nYou're nothing but a bunch of puppets!"
+  },
+  {
+    "id": 101000138210010003,
+    "value": "I'll end it myself!"
+  },
+  {
+    "id": 101000138210010004,
+    "value": "Another...Gundam?!"
+  },
+  {
+    "id": 101000138210010005,
+    "value": "Graaaaaah!"
+  },
+  {
+    "id": 101000138210010006,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000138210010007,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 101000138210010008,
+    "value": "Tch!"
+  },
+  {
+    "id": 101000138210010009,
+    "value": "Ungh!"
+  },
+  {
+    "id": 101000138210010010,
+    "value": "This is bad!"
+  },
+  {
+    "id": 101000138210010011,
+    "value": "This damned cosmic particle syndrome..."
+  },
+  {
+    "id": 101000138210010012,
+    "value": "No, not yet..."
+  },
+  {
+    "id": 101000138210010013,
+    "value": "It can't be..."
+  },
+  {
+    "id": 101000138210010014,
+    "value": "This is Celestial Being for you!"
+  },
+  {
+    "id": 101000138210010015,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000138210010016,
+    "value": "To forge a new world—this is why we fight!"
   },
   {
     "id": 101000140000010001,

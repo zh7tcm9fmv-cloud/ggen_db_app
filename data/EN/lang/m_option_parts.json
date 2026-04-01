@@ -1420,6 +1420,30 @@
     "value": "Limiter OFF R (Mobile Suit Gundam AGE)"
   },
   {
+    "id": 270100000000200278,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 270100000000200279,
+    "value": "Add-OR Armor R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 270100000000200280,
+    "value": "Reinforced Armor R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 270100000000200281,
+    "value": "Limiter OFF R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 270100000000200282,
+    "value": "Booster Parts R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
+    "id": 270100000000200283,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Wing Endless Waltz)"
+  },
+  {
     "id": 270100000000300001,
     "value": "Add-On Armor SR (Mobile Suit Gundam SEED Astray)"
   },
@@ -2208,6 +2232,34 @@
     "value": "Limiter OFF  SR (Fierce Enemy Assault)"
   },
   {
+    "id": 270100000000300203,
+    "value": "Add-OSR Armor SR (A-Laws)"
+  },
+  {
+    "id": 270100000000300204,
+    "value": "Limiter OFF SR (A-Laws)"
+  },
+  {
+    "id": 270100000000300205,
+    "value": "Reinforced Armor SR (Zero System)"
+  },
+  {
+    "id": 270100000000300206,
+    "value": "Limiter OFF SR (Zero System)"
+  },
+  {
+    "id": 270100000000300207,
+    "value": "Add-OSR Armor SR (Wing Series)"
+  },
+  {
+    "id": 270100000000300208,
+    "value": "Limiter OFF SR (Wing Series)"
+  },
+  {
+    "id": 270100000000300209,
+    "value": "Reinforced Armor  SR (Fierce Enemy Assault)"
+  },
+  {
     "id": 270100000000400001,
     "value": "Limiter OFF SSR (U.C. Series)"
   },
@@ -2494,5 +2546,17 @@
   {
     "id": 270100000000400074,
     "value": "Silver Haro [1st Anniv.]"
+  },
+  {
+    "id": 270100000000400075,
+    "value": "Add-On Armor  SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 270100000000400076,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam Wing)"
+  },
+  {
+    "id": 270100000000400077,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam 00)"
   }
 ]

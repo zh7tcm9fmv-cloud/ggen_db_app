@@ -1656,8 +1656,72 @@
     "value": "Soris Armonia"
   },
   {
+    "id": 100400001219000100,
+    "value": "Heero Yuy"
+  },
+  {
+    "id": 100400001219000101,
+    "value": "Heero Yuy"
+  },
+  {
+    "id": 100400001219000200,
+    "value": "Duo Maxwell"
+  },
+  {
     "id": 100400001219000201,
     "value": "Duo Maxwell"
+  },
+  {
+    "id": 100400001219000300,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000301,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000302,
+    "value": "Trowa Barton"
+  },
+  {
+    "id": 100400001219000400,
+    "value": "Quatre Raberba Winner"
+  },
+  {
+    "id": 100400001219000500,
+    "value": "Chang Wufei"
+  },
+  {
+    "id": 100400001219000501,
+    "value": "Chang Wufei"
+  },
+  {
+    "id": 100400001219000502,
+    "value": "Chang Wufei"
+  },
+  {
+    "id": 100400001219000600,
+    "value": "Relena Darlian"
+  },
+  {
+    "id": 100400001219000700,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000701,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000702,
+    "value": "Preventer Wind"
+  },
+  {
+    "id": 100400001219000800,
+    "value": "Lucrezia Noin"
+  },
+  {
+    "id": 100400001219001200,
+    "value": "Dekim Barton"
   },
   {
     "id": 100400001230000100,
@@ -2432,11 +2496,19 @@
     "value": "Sumeragi Lee Noriega"
   },
   {
+    "id": 100400001370000501,
+    "value": "Sumeragi Lee Noriega"
+  },
+  {
     "id": 100400001370000600,
     "value": "Christina Sierra"
   },
   {
     "id": 100400001370000700,
+    "value": "Feldt Grace"
+  },
+  {
+    "id": 100400001370000701,
     "value": "Feldt Grace"
   },
   {
@@ -2452,12 +2524,20 @@
     "value": "Ian Vashti"
   },
   {
+    "id": 100400001370001001,
+    "value": "Ian Vashti"
+  },
+  {
     "id": 100400001370001200,
     "value": "Haro"
   },
   {
     "id": 100400001370001300,
     "value": "Wang Liu Mei"
+  },
+  {
+    "id": 100400001370001400,
+    "value": "Hong Long"
   },
   {
     "id": 100400001370001500,
@@ -2516,6 +2596,14 @@
     "value": "Kati Mannequin"
   },
   {
+    "id": 100400001370003201,
+    "value": "Kati Mannequin"
+  },
+  {
+    "id": 100400001370003202,
+    "value": "Kati Mannequin"
+  },
+  {
     "id": 100400001370003300,
     "value": "Sergei Smirnov"
   },
@@ -2536,6 +2624,14 @@
     "value": "Ribbons Almark"
   },
   {
+    "id": 100400001370003501,
+    "value": "Ribbons Almark"
+  },
+  {
+    "id": 100400001370003502,
+    "value": "Ribbons Almark"
+  },
+  {
     "id": 100400001370003600,
     "value": "Ali al-Saachez"
   },
@@ -2544,12 +2640,180 @@
     "value": "Ali al-Saachez"
   },
   {
+    "id": 100400001370003700,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003701,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003702,
+    "value": "Setsuna F. Seiei"
+  },
+  {
+    "id": 100400001370003703,
+    "value": "Setsuna F. Seiei"
+  },
+  {
     "id": 100400001370003800,
     "value": "Marina Ismail"
   },
   {
     "id": 100400001370003900,
     "value": "Arthur Goodman"
+  },
+  {
+    "id": 100400001370003901,
+    "value": "Arthur Goodman"
+  },
+  {
+    "id": 100400001370004000,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100400001370004001,
+    "value": "Patrick Colasour"
+  },
+  {
+    "id": 100400001370004100,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100400001370004101,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100400001370004102,
+    "value": "Anew Returner"
+  },
+  {
+    "id": 100400001370004200,
+    "value": "Sergei Smirnov"
+  },
+  {
+    "id": 100400001370004300,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100400001370004301,
+    "value": "Hiling Care"
+  },
+  {
+    "id": 100400001370004400,
+    "value": "Louise Halevy"
+  },
+  {
+    "id": 100400001370004500,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100400001370004501,
+    "value": "Mr. Bushido"
+  },
+  {
+    "id": 100400001370004600,
+    "value": "Marie Parfacy"
+  },
+  {
+    "id": 100400001370004700,
+    "value": "Andrei Smirnov"
+  },
+  {
+    "id": 100400001370004701,
+    "value": "Andrei Smirnov"
+  },
+  {
+    "id": 100400001370004800,
+    "value": "Bring Stabity"
+  },
+  {
+    "id": 100400001370004901,
+    "value": "Saji Crossroad"
+  },
+  {
+    "id": 100400001370004902,
+    "value": "Saji Crossroad"
+  },
+  {
+    "id": 100400001370005000,
+    "value": "Barack Zinin"
+  },
+  {
+    "id": 100400001370005100,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100400001370005101,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100400001370005200,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100400001370005201,
+    "value": "Allelujah Haptism"
+  },
+  {
+    "id": 100400001370005202,
+    "value": "Hallelujah Haptism"
+  },
+  {
+    "id": 100400001370005300,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100400001370005301,
+    "value": "Tieria Erde"
+  },
+  {
+    "id": 100400001370005400,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100400001370005401,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100400001370005402,
+    "value": "Soma Peries"
+  },
+  {
+    "id": 100400001370005500,
+    "value": "Aber Rindt"
+  },
+  {
+    "id": 100400001370005600,
+    "value": "Graham Aker"
+  },
+  {
+    "id": 100400001370005700,
+    "value": "Devine Nova"
+  },
+  {
+    "id": 100400001370005800,
+    "value": "Pang Hercury"
+  },
+  {
+    "id": 100400001370005900,
+    "value": "Mileina Vashti"
+  },
+  {
+    "id": 100400001370006000,
+    "value": "Lasse Aeon"
+  },
+  {
+    "id": 100400001370006001,
+    "value": "Lasse Aeon"
+  },
+  {
+    "id": 100400001370006100,
+    "value": "Revive Revival"
+  },
+  {
+    "id": 100400001370006101,
+    "value": "Revive Revival"
   },
   {
     "id": 100400001375000100,
@@ -2566,6 +2830,10 @@
   {
     "id": 100400001379000200,
     "value": "Amy Zimbalist"
+  },
+  {
+    "id": 100400001382100100,
+    "value": "Michael"
   },
   {
     "id": 100400001400000100,
@@ -4372,6 +4640,14 @@
     "value": "Maganac Corps Member"
   },
   {
+    "id": 100400002219000001,
+    "value": "Mariemaia Khushrenada"
+  },
+  {
+    "id": 100400002219000100,
+    "value": "Mariemaia Soldier"
+  },
+  {
     "id": 100400002230000001,
     "value": "Techs Farzenberg"
   },
@@ -4668,6 +4944,30 @@
     "value": "Barack Zinin"
   },
   {
+    "id": 100400002370000015,
+    "value": "Haro"
+  },
+  {
+    "id": 100400002370000020,
+    "value": "Katharon Captain"
+  },
+  {
+    "id": 100400002370000022,
+    "value": "Regene Regetta"
+  },
+  {
+    "id": 100400002370000023,
+    "value": "Saji and Louise"
+  },
+  {
+    "id": 100400002370000024,
+    "value": "Setsuna and Graham"
+  },
+  {
+    "id": 100400002370000025,
+    "value": "Katharon Soldier"
+  },
+  {
     "id": 100400002370000300,
     "value": "UN Soldier"
   },
@@ -4702,6 +5002,30 @@
   {
     "id": 100400002370001200,
     "value": "AEU Soldier"
+  },
+  {
+    "id": 100400002370001300,
+    "value": "A-LAWS Soldier"
+  },
+  {
+    "id": 100400002370001400,
+    "value": "A-LAWS Soldier"
+  },
+  {
+    "id": 100400002370001500,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100400002370001600,
+    "value": "Innovade Soldier"
+  },
+  {
+    "id": 100400002370001700,
+    "value": "Katharon Soldier"
+  },
+  {
+    "id": 100400002370001800,
+    "value": "Katharon Soldier"
   },
   {
     "id": 100400002400000001,
@@ -5238,6 +5562,14 @@
   {
     "id": 100400002999000022,
     "value": "Commander"
+  },
+  {
+    "id": 100400002999000023,
+    "value": "Citizen"
+  },
+  {
+    "id": 100400002999000024,
+    "value": "Citizens"
   },
   {
     "id": 100400002999000100,

@@ -140,6 +140,11 @@
     "TargetId": 4000
   },
   {
+    "StageSortieRestrictionSetId": 120018,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 2190
+  },
+  {
     "StageSortieRestrictionSetId": 130001,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1001

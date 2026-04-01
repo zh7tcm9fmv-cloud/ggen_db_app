@@ -29297,18 +29297,6 @@
     "Level": 5,
     "ReleasePoint": 2000,
     "AcquireItemTypeIndex": 26,
-    "UnitSspCustomCoreMaterialSetId": 10000000000002100,
-    "UnitSspCustomCoreReleaseFunctionSetId": 121100036002,
-    "DisplayIconTypeIndex": 3,
-    "ScheduleId": 2511209901,
-    "ReleaseConditionCustomCoreId": 0
-  },
-  {
-    "Id": 121100036002,
-    "UnitSspCustomCoreGroupId": 1211000360,
-    "Level": 5,
-    "ReleasePoint": 2000,
-    "AcquireItemTypeIndex": 26,
     "UnitSspCustomCoreMaterialSetId": 10000000021002190,
     "UnitSspCustomCoreReleaseFunctionSetId": 121100036002,
     "DisplayIconTypeIndex": 3,
@@ -29326,18 +29314,6 @@
     "DisplayIconTypeIndex": 1,
     "ScheduleId": 2511209901,
     "ReleaseConditionCustomCoreId": 121100036001
-  },
-  {
-    "Id": 121100036004,
-    "UnitSspCustomCoreGroupId": 1211000360,
-    "Level": 15,
-    "ReleasePoint": 3000,
-    "AcquireItemTypeIndex": 26,
-    "UnitSspCustomCoreMaterialSetId": 10000000000002100,
-    "UnitSspCustomCoreReleaseFunctionSetId": 121100036004,
-    "DisplayIconTypeIndex": 2,
-    "ScheduleId": 9999990001,
-    "ReleaseConditionCustomCoreId": 0
   },
   {
     "Id": 121100036004,
@@ -29441,18 +29417,6 @@
     "Level": 5,
     "ReleasePoint": 2000,
     "AcquireItemTypeIndex": 26,
-    "UnitSspCustomCoreMaterialSetId": 10000000000002100,
-    "UnitSspCustomCoreReleaseFunctionSetId": 121100046002,
-    "DisplayIconTypeIndex": 3,
-    "ScheduleId": 2511209901,
-    "ReleaseConditionCustomCoreId": 0
-  },
-  {
-    "Id": 121100046002,
-    "UnitSspCustomCoreGroupId": 1211000460,
-    "Level": 5,
-    "ReleasePoint": 2000,
-    "AcquireItemTypeIndex": 26,
     "UnitSspCustomCoreMaterialSetId": 10000000021002190,
     "UnitSspCustomCoreReleaseFunctionSetId": 121100046002,
     "DisplayIconTypeIndex": 3,
@@ -29470,18 +29434,6 @@
     "DisplayIconTypeIndex": 1,
     "ScheduleId": 2511209901,
     "ReleaseConditionCustomCoreId": 121100046001
-  },
-  {
-    "Id": 121100046004,
-    "UnitSspCustomCoreGroupId": 1211000460,
-    "Level": 15,
-    "ReleasePoint": 3000,
-    "AcquireItemTypeIndex": 26,
-    "UnitSspCustomCoreMaterialSetId": 10000000000002100,
-    "UnitSspCustomCoreReleaseFunctionSetId": 121100046004,
-    "DisplayIconTypeIndex": 2,
-    "ScheduleId": 9999990001,
-    "ReleaseConditionCustomCoreId": 0
   },
   {
     "Id": 121100046004,

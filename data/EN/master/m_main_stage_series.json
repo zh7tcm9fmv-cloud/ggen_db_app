@@ -96,6 +96,18 @@
     "GuestStageStatusBuffId": 0
   },
   {
+    "Id": 2190,
+    "ScenarioStageSeriesId": 2190,
+    "ScheduleId": 2603601801,
+    "ReleaseConditionStageId": 21001702,
+    "SeriesClearRewardSetId": 0,
+    "CompleteRewardSetId": 0,
+    "ReleaseRewardSetId": 292190003000,
+    "SeriesGroupFormationStageStatusBuffId": 10001,
+    "FreeGroupFormationStageStatusBuffId": 0,
+    "GuestStageStatusBuffId": 0
+  },
+  {
     "Id": 2300,
     "ScenarioStageSeriesId": 2300,
     "ScheduleId": 0,

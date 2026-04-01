@@ -590,5 +590,21 @@
   {
     "id": 160500001850000460,
     "value": "Squad units within range\nRestore HP by 30%."
+  },
+  {
+    "id": 161000001370000550,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 161000001370000551,
+    "value": "Damage Reduced"
+  },
+  {
+    "id": 161100001370000550,
+    "value": "Squad units within range\nRestore HP by 30%."
+  },
+  {
+    "id": 161100001370000551,
+    "value": "Reduce damage taken by 15% [1turn]."
   }
 ]

@@ -41440,11 +41440,6 @@
     "IsExclusiveAdv": true
   },
   {
-    "MapNpcId": 400001000402000028,
-    "UnitLeaveTypeIndex": 2,
-    "IsExclusiveAdv": true
-  },
-  {
     "MapNpcId": 400001100202000001,
     "UnitLeaveTypeIndex": 0,
     "IsExclusiveAdv": false

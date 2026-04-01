@@ -1716,6 +1716,14 @@
     "value": ""
   },
   {
+    "id": 141200000100780101,
+    "value": "Increase Max EN by 5%.\nRestore own EN 5% at the start of every turn."
+  },
+  {
+    "id": 141200000100780102,
+    "value": ""
+  },
+  {
     "id": 141200000100780201,
     "value": "Increase Max EN by 10%.\nRestore own EN 5% at the start of every turn."
   },
@@ -1770,6 +1778,14 @@
   {
     "id": 141200000100800302,
     "value": "Restore own EN 5% at the start of every turn."
+  },
+  {
+    "id": 141200000100810101,
+    "value": "Increase Mobility by 5%.\nRestore own EN 5% at the start of every turn."
+  },
+  {
+    "id": 141200000100810102,
+    "value": ""
   },
   {
     "id": 141200000100810201,
@@ -2308,6 +2324,10 @@
     "value": ""
   },
   {
+    "id": 141200000101150101,
+    "value": "Increase own ATK by 5%\nwhen executing Support Attack/Counter."
+  },
+  {
     "id": 141200000101150201,
     "value": "Increase own ATK by 10%\nwhen executing Support Attack/Counter."
   },
@@ -2504,6 +2524,130 @@
     "value": "When damage taken is 4500 or less, there is no effect."
   },
   {
+    "id": 141200000101330301,
+    "value": "When the enemy attacks with physical or beam ranged weapons,\nreduce damage taken by 40%."
+  },
+  {
+    "id": 141200000101340201,
+    "value": "In a one-on-one battle\nIncrease own ATK by 10%."
+  },
+  {
+    "id": 141200000101340301,
+    "value": "In a one-on-one battle\nIncrease own ATK by 15%."
+  },
+  {
+    "id": 141200000101350101,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+  },
+  {
+    "id": 141200000101350102,
+    "value": ""
+  },
+  {
+    "id": 141200000101350201,
+    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+  },
+  {
+    "id": 141200000101350202,
+    "value": ""
+  },
+  {
+    "id": 141200000101360101,
+    "value": "When the enemy attacks with beam ranged weapons,\nReduce damage taken by 30%."
+  },
+  {
+    "id": 141200000101370201,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+  },
+  {
+    "id": 141200000101370202,
+    "value": ""
+  },
+  {
+    "id": 141200000101370301,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+  },
+  {
+    "id": 141200000101370302,
+    "value": ""
+  },
+  {
+    "id": 141200000101370401,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+  },
+  {
+    "id": 141200000101370402,
+    "value": ""
+  },
+  {
+    "id": 141200000101380201,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+  },
+  {
+    "id": 141200000101380202,
+    "value": ""
+  },
+  {
+    "id": 141200000101380301,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+  },
+  {
+    "id": 141200000101380302,
+    "value": ""
+  },
+  {
+    "id": 141200000101380401,
+    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+  },
+  {
+    "id": 141200000101380402,
+    "value": ""
+  },
+  {
+    "id": 141200000101390201,
+    "value": "Increase own ATK and DEF by 10%"
+  },
+  {
+    "id": 141200000101390202,
+    "value": ""
+  },
+  {
+    "id": 141200000101390301,
+    "value": "Increase own ATK and DEF by 15%"
+  },
+  {
+    "id": 141200000101390302,
+    "value": ""
+  },
+  {
+    "id": 141200000101400201,
+    "value": "Increase DEF and MOB by 10%."
+  },
+  {
+    "id": 141200000101400202,
+    "value": ""
+  },
+  {
+    "id": 141200000101400301,
+    "value": "Increase DEF and MOB by 15%."
+  },
+  {
+    "id": 141200000101400302,
+    "value": ""
+  },
+  {
+    "id": 141200000101410201,
+    "value": "Increase Max EN and DEF by 10%."
+  },
+  {
+    "id": 141200000101410202,
+    "value": ""
+  },
+  {
+    "id": 141200000101420101,
+    "value": "Increase ATK by 2% (up to 10%)\nfor each Unit bearing the above tag in the same squad."
+  },
+  {
     "id": 141200000101430101,
     "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 5%."
   },
@@ -2602,6 +2746,46 @@
   {
     "id": 141200000101500202,
     "value": ""
+  },
+  {
+    "id": 141200000101520101,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000101520102,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 5%."
+  },
+  {
+    "id": 141200000101520201,
+    "value": "Increase ATK by 10%."
+  },
+  {
+    "id": 141200000101520202,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 10%."
+  },
+  {
+    "id": 141200000101520301,
+    "value": "Increase ATK by 15%."
+  },
+  {
+    "id": 141200000101520302,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 15%."
+  },
+  {
+    "id": 141200000101520401,
+    "value": "Increase ATK by 20%."
+  },
+  {
+    "id": 141200000101520402,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 20%."
+  },
+  {
+    "id": 141200000101520501,
+    "value": "Increase ATK by 25%."
+  },
+  {
+    "id": 141200000101520502,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 25%."
   },
   {
     "id": 141200000200010101,
@@ -6100,12 +6284,20 @@
     "value": ""
   },
   {
+    "id": 141200000201150103,
+    "value": "When piloting unit with the specified series and tag:\nIncrease MP by 1."
+  },
+  {
     "id": 141200000201150201,
     "value": "Increase own Defense and Reaction by 10%."
   },
   {
     "id": 141200000201150202,
     "value": ""
+  },
+  {
+    "id": 141200000201150203,
+    "value": "When piloting unit with the specified series and tag:\nIncrease MP by 2."
   },
   {
     "id": 141200000201150301,
@@ -6116,6 +6308,10 @@
     "value": ""
   },
   {
+    "id": 141200000201150303,
+    "value": "When piloting unit with the specified series and tag:\nIncrease MP by 3."
+  },
+  {
     "id": 141200000201150401,
     "value": "Increase own Defense and Reaction by 20%."
   },
@@ -6124,12 +6320,20 @@
     "value": ""
   },
   {
+    "id": 141200000201150403,
+    "value": "When piloting unit with the specified series and tag:\nIncrease MP by 4."
+  },
+  {
     "id": 141200000201150501,
     "value": "Increase own Defense and Reaction by 25%."
   },
   {
     "id": 141200000201150502,
     "value": ""
+  },
+  {
+    "id": 141200000201150503,
+    "value": "When piloting unit with the specified series and tag:\nIncrease MP by 5."
   },
   {
     "id": 141200000201160101,
@@ -7612,6 +7816,138 @@
     "value": ""
   },
   {
+    "id": 141200000202400101,
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202410101,
+    "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
+  },
+  {
+    "id": 141200000202420101,
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)"
+  },
+  {
+    "id": 141200000202430101,
+    "value": "Chance Step +1 time"
+  },
+  {
+    "id": 141200000202430102,
+    "value": "When piloting Wing Gundam Zero (EW) (EX),\n Reduce weapons MP consumption by 3."
+  },
+  {
+    "id": 141200000202430103,
+    "value": "When piloting units with specified tags,\nIncrease MP by 5."
+  },
+  {
+    "id": 141200000202430104,
+    "value": "Reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202440101,
+    "value": "Support Defense +1 time"
+  },
+  {
+    "id": 141200000202440102,
+    "value": "If HP falls to 0% when piloting 00 Raiser Final Battle Type (EX),\nrestores own HP by 7% 1 time."
+  },
+  {
+    "id": 141200000202440103,
+    "value": ""
+  },
+  {
+    "id": 141200000202440104,
+    "value": "When own Vigor is Supercharged,\nand piloting unit with the specified series and tag:\n\"Supercharged EX 1 (Setsuna F. Seiei)\" (1 turn).\nIncrease own Melee and Reaction by 20%.\nReduce own damage taken by 5%.\nApply MP Lock to self.\n\nWhen effect ends:\n\"Supercharged EX 2 (Setsuna F. Seiei)\" (1 turn).\nIncrease own Melee and Reaction by 50%.\nReduce own damage taken by 15%.\nApply MP Lock to self.\n\nWhen effect ends:\nDecrease own MP by 12."
+  },
+  {
+    "id": 141200000202440105,
+    "value": ""
+  },
+  {
+    "id": 141200000202440106,
+    "value": ""
+  },
+  {
+    "id": 141200000202440107,
+    "value": ""
+  },
+  {
+    "id": 141200000202440108,
+    "value": ""
+  },
+  {
+    "id": 141200000202440211,
+    "value": "MP Lock (1 turn)"
+  },
+  {
+    "id": 141200000202440212,
+    "value": "Reduce damage taken by 5% [1turn]."
+  },
+  {
+    "id": 141200000202440213,
+    "value": "Increase Melee by 20% [1turn]."
+  },
+  {
+    "id": 141200000202440214,
+    "value": "Increase Reaction by 20%. [1turn]."
+  },
+  {
+    "id": 141200000202440221,
+    "value": "MP Lock (1 turn)"
+  },
+  {
+    "id": 141200000202440222,
+    "value": "Reduce own damage taken by 5%."
+  },
+  {
+    "id": 141200000202440223,
+    "value": "Increase Melee by 20% [1turn]."
+  },
+  {
+    "id": 141200000202440224,
+    "value": "Increase Reaction by 20%. [1turn]."
+  },
+  {
+    "id": 141200000202440225,
+    "value": "MP Lock (1 turn)"
+  },
+  {
+    "id": 141200000202440311,
+    "value": "MP Lock (1 turn)"
+  },
+  {
+    "id": 141200000202440312,
+    "value": "Reduce damage taken by 15% [1turn]."
+  },
+  {
+    "id": 141200000202440313,
+    "value": "Increase Melee by 50% [1turn]."
+  },
+  {
+    "id": 141200000202440314,
+    "value": "Increase Reaction by 50%. [1turn]."
+  },
+  {
+    "id": 141200000202440401,
+    "value": "Decrease MP by 12"
+  },
+  {
+    "id": 141200000202450101,
+    "value": "Support Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202450102,
+    "value": "When piloting Tallgeese III (EX),\nincreases ATK by 5% for units bearing the above series in the same squad (permanent)."
+  },
+  {
+    "id": 141200000202450103,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000202450104,
+    "value": "When piloting Tallgeese III (EX), if Vigor is Supercharged or higher, \nThe max range of Beam Weapon is increased by 1."
+  },
+  {
     "id": 141200000202470101,
     "value": "Restore own HP 5% at the start of every turn.\nwhen piloting units with specified tags."
   },
@@ -8453,39 +8789,39 @@
   },
   {
     "id": 141200000300350101,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 2% for this attack."
   },
   {
     "id": 141200000300350201,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 5% for this attack."
   },
   {
     "id": 141200000300350301,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 10% for this attack."
   },
   {
     "id": 141200000300350401,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
   },
   {
     "id": 141200000300350501,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
   },
   {
     "id": 141200000300350601,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
   },
   {
     "id": 141200000300350701,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 30% for this attack."
   },
   {
     "id": 141200000300350801,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 35% for this attack."
   },
   {
     "id": 141200000300350901,
-    "value": ""
+    "value": "When this unit attacks, reduce enemy's DEF by 40% for this attack."
   },
   {
     "id": 141200000310010101,
@@ -13180,6 +13516,62 @@
     "value": "Increase ATK by 12%."
   },
   {
+    "id": 141200000406230101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406240101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406250101,
+    "value": "Increase DEF by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406250102,
+    "value": ""
+  },
+  {
+    "id": 141200000406260101,
+    "value": "Increase Max HP by 2000."
+  },
+  {
+    "id": 141200000406270101,
+    "value": "Increase DEF by 8%."
+  },
+  {
+    "id": 141200000406280101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406290101,
+    "value": "Increase DEF by 200."
+  },
+  {
+    "id": 141200000406300101,
+    "value": "Increase ATK by 200."
+  },
+  {
+    "id": 141200000406310101,
+    "value": "Increase Mobility by 200."
+  },
+  {
+    "id": 141200000406320101,
+    "value": "Increase ATK by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406320102,
+    "value": ""
+  },
+  {
+    "id": 141200000406330101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406340101,
+    "value": "Increase ATK by 8%."
+  },
+  {
     "id": 141200000406350101,
     "value": "Increase ATK by 860.\nIncrease Mobility by 86."
   },
@@ -13196,12 +13588,36 @@
     "value": ""
   },
   {
+    "id": 141200000406370101,
+    "value": "Increase DEF by 5%."
+  },
+  {
+    "id": 141200000406370102,
+    "value": "When the equipped unit is Scorpio or Scorpio MA,\nincrease own DEF by an additional 2%."
+  },
+  {
+    "id": 141200000406380101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406380102,
+    "value": "When the equipped unit is Scorpio or Scorpio MA,\nincrease own Max HP by an additional 2%."
+  },
+  {
+    "id": 141200000406390101,
+    "value": "Increase ATK by 12%."
+  },
+  {
+    "id": 141200000406400101,
+    "value": "Increase ATK by 12%."
+  },
+  {
     "id": 141200000510010101,
-    "value": ""
+    "value": "Increase ATK by 10%."
   },
   {
     "id": 141200000510010201,
-    "value": ""
+    "value": "Increase ATK by 20%."
   },
   {
     "id": 141200000510010301,
@@ -13209,7 +13625,7 @@
   },
   {
     "id": 141200000510010401,
-    "value": ""
+    "value": "Increase ATK by 40%."
   },
   {
     "id": 141200000510010501,
@@ -13217,19 +13633,19 @@
   },
   {
     "id": 141200000510010601,
-    "value": ""
+    "value": "Increase ATK by 60%."
   },
   {
     "id": 141200000510010701,
-    "value": ""
+    "value": "Increase ATK by 70%."
   },
   {
     "id": 141200000510010801,
-    "value": ""
+    "value": "Increase ATK by 80%."
   },
   {
     "id": 141200000510010901,
-    "value": ""
+    "value": "Increase ATK by 90%."
   },
   {
     "id": 141200000510011001,
@@ -13246,10 +13662,6 @@
   {
     "id": 141200000510013001,
     "value": "Increase ATK by 300%."
-  },
-  {
-    "id": 141200000510015001,
-    "value": ""
   },
   {
     "id": 141200000510016001,
@@ -13280,16 +13692,8 @@
     "value": "Increase Mobility by 100%."
   },
   {
-    "id": 141200000510031501,
-    "value": "Increase Mobility by 150%."
-  },
-  {
-    "id": 141200000510032001,
-    "value": "Increase Mobility by 200%."
-  },
-  {
     "id": 141200000510040101,
-    "value": ""
+    "value": "Increases Accuracy by 10%."
   },
   {
     "id": 141200000510040201,
@@ -13297,7 +13701,7 @@
   },
   {
     "id": 141200000510040301,
-    "value": ""
+    "value": "Increases Accuracy by 30%."
   },
   {
     "id": 141200000510040401,
@@ -13309,23 +13713,23 @@
   },
   {
     "id": 141200000510040601,
-    "value": ""
+    "value": "Increases Accuracy by 60%."
   },
   {
     "id": 141200000510040701,
-    "value": ""
+    "value": "Increases Accuracy by 70%."
   },
   {
     "id": 141200000510040801,
-    "value": ""
+    "value": "Increases Accuracy by 80%."
   },
   {
     "id": 141200000510040901,
-    "value": ""
+    "value": "Increases Accuracy by 90%."
   },
   {
     "id": 141200000510041001,
-    "value": ""
+    "value": "Increases Accuracy by 100%."
   },
   {
     "id": 141200000510050101,
@@ -13333,27 +13737,27 @@
   },
   {
     "id": 141200000510050201,
-    "value": ""
+    "value": "Increase Evasion by 20%."
   },
   {
     "id": 141200000510050301,
-    "value": ""
+    "value": "Increase Evasion by 30%."
   },
   {
     "id": 141200000510050401,
-    "value": ""
+    "value": "Increase Evasion by 40%."
   },
   {
     "id": 141200000510050501,
-    "value": ""
+    "value": "Increase Evasion by 50%."
   },
   {
     "id": 141200000510050601,
-    "value": ""
+    "value": "Increase Evasion by 60%."
   },
   {
     "id": 141200000510050701,
-    "value": ""
+    "value": "Increase Evasion by 70%."
   },
   {
     "id": 141200000510050801,
@@ -13361,7 +13765,7 @@
   },
   {
     "id": 141200000510050901,
-    "value": ""
+    "value": "Increase Evasion by 90%."
   },
   {
     "id": 141200000510051001,
@@ -13421,7 +13825,7 @@
   },
   {
     "id": 141200000510080401,
-    "value": ""
+    "value": "Increase squad DEF by 40%."
   },
   {
     "id": 141200000510080501,
@@ -13429,19 +13833,19 @@
   },
   {
     "id": 141200000510080601,
-    "value": ""
+    "value": "Increase squad DEF by 60%."
   },
   {
     "id": 141200000510080701,
-    "value": ""
+    "value": "Increase squad DEF by 70%."
   },
   {
     "id": 141200000510080801,
-    "value": ""
+    "value": "Increase squad DEF by 80%."
   },
   {
     "id": 141200000510080901,
-    "value": ""
+    "value": "Increase squad DEF by 90%."
   },
   {
     "id": 141200000510081001,
@@ -13449,43 +13853,43 @@
   },
   {
     "id": 141200000510100101,
-    "value": ""
+    "value": "Increase squad ACC by 10%."
   },
   {
     "id": 141200000510100201,
-    "value": ""
+    "value": "Increase squad ACC by 20%."
   },
   {
     "id": 141200000510100301,
-    "value": ""
+    "value": "Increase squad ACC by 30%."
   },
   {
     "id": 141200000510100401,
-    "value": ""
+    "value": "Increase squad ACC by 40%."
   },
   {
     "id": 141200000510100501,
-    "value": ""
+    "value": "Increase squad ACC by 50%."
   },
   {
     "id": 141200000510100601,
-    "value": ""
+    "value": "Increase squad ACC by 60%."
   },
   {
     "id": 141200000510100701,
-    "value": ""
+    "value": "Increase squad ACC by 70%."
   },
   {
     "id": 141200000510100801,
-    "value": ""
+    "value": "Increase squad ACC by 80%."
   },
   {
     "id": 141200000510100901,
-    "value": ""
+    "value": "Increase squad ACC by 90%."
   },
   {
     "id": 141200000510101001,
-    "value": ""
+    "value": "Increase squad ACC by 100%."
   },
   {
     "id": 141200000510120101,
@@ -13506,18 +13910,6 @@
   {
     "id": 141200000510190101,
     "value": "When HP is 50% or below,\nrestore own HP by 30%. (2 times)."
-  },
-  {
-    "id": 141200000510190102,
-    "value": ""
-  },
-  {
-    "id": 141200000510190103,
-    "value": ""
-  },
-  {
-    "id": 141200000510190104,
-    "value": ""
   },
   {
     "id": 141200000510190201,
@@ -14329,7 +14721,7 @@
   },
   {
     "id": 141200000510790101,
-    "value": "Increase ATK by {0}%."
+    "value": "Increase ATK by 10%."
   },
   {
     "id": 141200000510790201,
@@ -14341,7 +14733,7 @@
   },
   {
     "id": 141200000510791101,
-    "value": "Increase ATK by {0}%."
+    "value": "Increase ATK by 5%."
   },
   {
     "id": 141200000510830101,
@@ -14450,6 +14842,46 @@
   {
     "id": 141200000511050301,
     "value": "When Vigor is Supercharged or higher,\nIncrease DEF by 200%."
+  },
+  {
+    "id": 141200000511060101,
+    "value": "While operational,\n2 reinforcements will appear within 2 spaces at the start of the turn (3 times)."
+  },
+  {
+    "id": 141200000511070101,
+    "value": "At the start of every turn, restores Wing Gundam Zero (EW) and Tallgeese III's HP by 50%"
+  },
+  {
+    "id": 141200000511080101,
+    "value": "Restore squad EN by 100%"
+  },
+  {
+    "id": 141200000511090101,
+    "value": "When the enemy attacks from 5 spaces or more,\nreduce damage taken by 50%."
+  },
+  {
+    "id": 141200000511100201,
+    "value": "When HP is 0% or below,\nrestore Hp by 50%."
+  },
+  {
+    "id": 141200000511110101,
+    "value": "When own HP falls below 50%,\nCherudim Gundam and Arios Gundam appear as reinforcements."
+  },
+  {
+    "id": 141200000511120201,
+    "value": "Decrease enemy squad MOV by 3"
+  },
+  {
+    "id": 141200000511120202,
+    "value": "Decrease enemy squad ATK by 50%."
+  },
+  {
+    "id": 141200000511120203,
+    "value": "Decrease enemy squad DEF by 50%."
+  },
+  {
+    "id": 141200000511140101,
+    "value": "Prioritize attacking the enemy with the highest HP."
   },
   {
     "id": 141200000511360101,
@@ -15584,6 +16016,14 @@
     "value": "When executing Support Defense.\nReduce damage taken by 100%."
   },
   {
+    "id": 141200000610351101,
+    "value": "Support Defense +5 time(s)."
+  },
+  {
+    "id": 141200000610351102,
+    "value": "When executing Support Defense.\nReduce damage taken by 200%."
+  },
+  {
     "id": 141200000610370101,
     "value": "Support Attack/Counter +5 time(s)"
   },
@@ -16198,6 +16638,82 @@
   {
     "id": 141200000611450101,
     "value": "When Norris Packard in your squad is destroyed:\nIncrease MP by 12."
+  },
+  {
+    "id": 141200000611470101,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000611480101,
+    "value": "Increased DEF by 100%\nfor squad units piloted by 【$キャラクター名】"
+  },
+  {
+    "id": 141200000611490101,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000611500101,
+    "value": "Increased DEF by 100%\nfor squad units piloted by Zechs Merquise."
+  },
+  {
+    "id": 141200000611510101,
+    "value": "When HP is 50% or below,\nReduce weapons EN consumption by 99%."
+  },
+  {
+    "id": 141200000611520101,
+    "value": "Force your squad's Heero Yuy (EW)\nto activate Chance Step 1 time."
+  },
+  {
+    "id": 141200000611530101,
+    "value": "Support Defense +6 time(s)."
+  },
+  {
+    "id": 141200000611540101,
+    "value": "Support Defense +7 time(s)."
+  },
+  {
+    "id": 141200000611550101,
+    "value": "Support Defense +8 time(s)."
+  },
+  {
+    "id": 141200000611560101,
+    "value": "Support Defense +9 time(s)."
+  },
+  {
+    "id": 141200000611570101,
+    "value": "Support Defense +10 time(s)."
+  },
+  {
+    "id": 141200000611580101,
+    "value": "When the enemy squad's Setsuna F. Seiei is destroyed,\nincrease own ATK by 200%."
+  },
+  {
+    "id": 141200000611580102,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611590101,
+    "value": "When your squad's Kati Mannequin is destroyed,\nincrease own ATK by 200%."
+  },
+  {
+    "id": 141200000611590102,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611600101,
+    "value": "When your squad's Soma Peries is destroyed,\nincrease own ATK by 300%."
+  },
+  {
+    "id": 141200000611600102,
+    "value": "Increase ATK by 300%."
+  },
+  {
+    "id": 141200000611610001,
+    "value": "When executing a Support Attack/Counter during battle, \nincrease ATK by 100%."
+  },
+  {
+    "id": 141200000611620001,
+    "value": "When executing a Support Attack/Counter during battle, \nincrease DEF by 300%."
   },
   {
     "id": 141200000699000101,

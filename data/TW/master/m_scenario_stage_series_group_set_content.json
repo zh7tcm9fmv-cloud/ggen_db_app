@@ -568,6 +568,38 @@
     "ScenarioStageId": 21002001
   },
   {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900103
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900202
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900303
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900402
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900502
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900601
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900701
+  },
+  {
+    "ScenarioStageSeriesGroupId": 219001,
+    "ScenarioStageId": 21900801
+  },
+  {
     "ScenarioStageSeriesGroupId": 230001,
     "ScenarioStageId": 23000104
   },
@@ -1002,6 +1034,74 @@
   {
     "ScenarioStageSeriesGroupId": 370001,
     "ScenarioStageId": 37001201
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001303
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001403
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001502
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001603
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001703
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001803
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37001904
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002002
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002103
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002203
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002303
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002404
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002502
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002601
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002701
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002801
+  },
+  {
+    "ScenarioStageSeriesGroupId": 370002,
+    "ScenarioStageId": 37002901
   },
   {
     "ScenarioStageSeriesGroupId": 400001,

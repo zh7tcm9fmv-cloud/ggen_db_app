@@ -54,5 +54,13 @@
   {
     "SalesAppealId": 2601500201,
     "AvailableMinute": 4320
+  },
+  {
+    "SalesAppealId": 2603600201,
+    "AvailableMinute": 4320
+  },
+  {
+    "SalesAppealId": 2603600202,
+    "AvailableMinute": 4320
   }
 ]

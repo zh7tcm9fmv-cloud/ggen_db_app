@@ -5274,6 +5274,36 @@
     "TerrainCapabilityTypeIndex": 1
   },
   {
+    "MapNpcId": 370001900402000024,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 370001900402000024,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 370001900402000024,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 370001900402000024,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 370001900402000024,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
     "MapNpcId": 430002400202000033,
     "Number": 0,
     "TerrainTypeIndex": 4,

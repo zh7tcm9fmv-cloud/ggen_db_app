@@ -6056,6 +6056,38 @@
     "value": "Hiyaaah!"
   },
   {
+    "id": 100701219000100001,
+    "value": "This is the end."
+  },
+  {
+    "id": 100701219000100002,
+    "value": "This is the end."
+  },
+  {
+    "id": 100701219000100003,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 100701219000100004,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 100701219000100005,
+    "value": "I'll remove that hindrance!"
+  },
+  {
+    "id": 100701219000100006,
+    "value": "I'll remove that hindrance!"
+  },
+  {
+    "id": 100701219000100007,
+    "value": "Get out of the way already!"
+  },
+  {
+    "id": 100701219000100008,
+    "value": "Get out of the way already!"
+  },
+  {
     "id": 100701219000201001,
     "value": "Haaaaa!"
   },
@@ -6086,6 +6118,134 @@
   {
     "id": 100701219000201008,
     "value": "There!"
+  },
+  {
+    "id": 100701219000300001,
+    "value": "I won't miss."
+  },
+  {
+    "id": 100701219000300002,
+    "value": "I won't miss."
+  },
+  {
+    "id": 100701219000300003,
+    "value": "I'll render you useless."
+  },
+  {
+    "id": 100701219000300004,
+    "value": "I'll render you useless."
+  },
+  {
+    "id": 100701219000300005,
+    "value": "No, you're not going to get me!"
+  },
+  {
+    "id": 100701219000300006,
+    "value": "No, you're not going to get me!"
+  },
+  {
+    "id": 100701219000300007,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 100701219000300008,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 100701219000400001,
+    "value": "Don't miss!"
+  },
+  {
+    "id": 100701219000400002,
+    "value": "Don't miss!"
+  },
+  {
+    "id": 100701219000400003,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701219000400004,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701219000400005,
+    "value": "You're open!"
+  },
+  {
+    "id": 100701219000400006,
+    "value": "You're open!"
+  },
+  {
+    "id": 100701219000400007,
+    "value": "GOOO!!!"
+  },
+  {
+    "id": 100701219000400008,
+    "value": "GOOO!!!"
+  },
+  {
+    "id": 100701219000500001,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701219000500002,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701219000500003,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 100701219000500004,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 100701219000500005,
+    "value": "Don't underestimate me!"
+  },
+  {
+    "id": 100701219000500006,
+    "value": "Don't underestimate me!"
+  },
+  {
+    "id": 100701219000500007,
+    "value": "Aaaaaaaah!"
+  },
+  {
+    "id": 100701219000500008,
+    "value": "Aaaaaaaah!"
+  },
+  {
+    "id": 100701219000700001,
+    "value": "This will finish you!"
+  },
+  {
+    "id": 100701219000700002,
+    "value": "This will finish you!"
+  },
+  {
+    "id": 100701219000700003,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701219000700004,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701219000700005,
+    "value": "You can't stop me!"
+  },
+  {
+    "id": 100701219000700006,
+    "value": "You can't stop me!"
+  },
+  {
+    "id": 100701219000700007,
+    "value": "Just try and stop me!"
+  },
+  {
+    "id": 100701219000700008,
+    "value": "Just try and stop me!"
   },
   {
     "id": 100701230000100001,
@@ -9008,6 +9168,38 @@
     "value": "Pointless!"
   },
   {
+    "id": 100701370003502001,
+    "value": "You may die now!"
+  },
+  {
+    "id": 100701370003502002,
+    "value": "You may die now!"
+  },
+  {
+    "id": 100701370003502003,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701370003502004,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701370003502005,
+    "value": "So long!"
+  },
+  {
+    "id": 100701370003502006,
+    "value": "So long!"
+  },
+  {
+    "id": 100701370003502007,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701370003502008,
+    "value": "You're mine!"
+  },
+  {
     "id": 100701370003600001,
     "value": "Rest in peace."
   },
@@ -9038,6 +9230,486 @@
   {
     "id": 100701370003600008,
     "value": "Time to die!"
+  },
+  {
+    "id": 100701370003700001,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 100701370003700002,
+    "value": "I'll destroy you!"
+  },
+  {
+    "id": 100701370003700003,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701370003700004,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701370003700005,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 100701370003700006,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 100701370003700007,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701370003700008,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701370004001001,
+    "value": "Here I go!"
+  },
+  {
+    "id": 100701370004001002,
+    "value": "Here I go!"
+  },
+  {
+    "id": 100701370004001003,
+    "value": "Go down already!"
+  },
+  {
+    "id": 100701370004001004,
+    "value": "Go down already!"
+  },
+  {
+    "id": 100701370004001005,
+    "value": "ORYAAAH!"
+  },
+  {
+    "id": 100701370004001006,
+    "value": "ORYAAAH!"
+  },
+  {
+    "id": 100701370004001007,
+    "value": "You're going down!"
+  },
+  {
+    "id": 100701370004001008,
+    "value": "You're going down!"
+  },
+  {
+    "id": 100701370004100001,
+    "value": "I'll make this hit count!"
+  },
+  {
+    "id": 100701370004100002,
+    "value": "I'll make this hit count!"
+  },
+  {
+    "id": 100701370004100003,
+    "value": "Haaah!!"
+  },
+  {
+    "id": 100701370004100004,
+    "value": "Haaah!!"
+  },
+  {
+    "id": 100701370004100005,
+    "value": "This should do it!"
+  },
+  {
+    "id": 100701370004100006,
+    "value": "This should do it!"
+  },
+  {
+    "id": 100701370004100007,
+    "value": "Hit!"
+  },
+  {
+    "id": 100701370004100008,
+    "value": "Hit!"
+  },
+  {
+    "id": 100701370004300001,
+    "value": "Ahahahaha!"
+  },
+  {
+    "id": 100701370004300002,
+    "value": "Ahahahaha!"
+  },
+  {
+    "id": 100701370004300003,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701370004300004,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701370004300005,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701370004300006,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701370004300007,
+    "value": "Here!"
+  },
+  {
+    "id": 100701370004300008,
+    "value": "Here!"
+  },
+  {
+    "id": 100701370004400001,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370004400002,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370004400003,
+    "value": "I'll do this!"
+  },
+  {
+    "id": 100701370004400004,
+    "value": "I'll do this!"
+  },
+  {
+    "id": 100701370004400005,
+    "value": "Now the finish!"
+  },
+  {
+    "id": 100701370004400006,
+    "value": "Now the finish!"
+  },
+  {
+    "id": 100701370004400007,
+    "value": "Don't get in my way!"
+  },
+  {
+    "id": 100701370004400008,
+    "value": "Don't get in my way!"
+  },
+  {
+    "id": 100701370004500001,
+    "value": "Gnahhh!"
+  },
+  {
+    "id": 100701370004500002,
+    "value": "Gnahhh!"
+  },
+  {
+    "id": 100701370004500003,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701370004500004,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701370004500005,
+    "value": "You're wide open!"
+  },
+  {
+    "id": 100701370004500006,
+    "value": "You're wide open!"
+  },
+  {
+    "id": 100701370004500007,
+    "value": "DEYAAAGH!!"
+  },
+  {
+    "id": 100701370004500008,
+    "value": "DEYAAAGH!!"
+  },
+  {
+    "id": 100701370004600001,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 100701370004600002,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 100701370004600003,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701370004600004,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701370004600005,
+    "value": "There!"
+  },
+  {
+    "id": 100701370004600006,
+    "value": "There!"
+  },
+  {
+    "id": 100701370004600007,
+    "value": "Hahhhh!"
+  },
+  {
+    "id": 100701370004600008,
+    "value": "Hahhhh!"
+  },
+  {
+    "id": 100701370004700001,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 100701370004700002,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 100701370004700003,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 100701370004700004,
+    "value": "I'll bring you down!"
+  },
+  {
+    "id": 100701370004700005,
+    "value": "Here I go!"
+  },
+  {
+    "id": 100701370004700006,
+    "value": "Here I go!"
+  },
+  {
+    "id": 100701370004700007,
+    "value": "It's over for you!"
+  },
+  {
+    "id": 100701370004700008,
+    "value": "It's over for you!"
+  },
+  {
+    "id": 100701370004800001,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370004800002,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370004800003,
+    "value": "I don't think so!"
+  },
+  {
+    "id": 100701370004800004,
+    "value": "I don't think so!"
+  },
+  {
+    "id": 100701370004800005,
+    "value": "You won't get away!"
+  },
+  {
+    "id": 100701370004800006,
+    "value": "You won't get away!"
+  },
+  {
+    "id": 100701370004800007,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 100701370004800008,
+    "value": "Get out of my sight!"
+  },
+  {
+    "id": 100701370004900001,
+    "value": "I can do this!"
+  },
+  {
+    "id": 100701370004900002,
+    "value": "I can do this!"
+  },
+  {
+    "id": 100701370004900003,
+    "value": "Here we go!"
+  },
+  {
+    "id": 100701370004900004,
+    "value": "Here we go!"
+  },
+  {
+    "id": 100701370004900005,
+    "value": "It has to be done!"
+  },
+  {
+    "id": 100701370004900006,
+    "value": "It has to be done!"
+  },
+  {
+    "id": 100701370004900007,
+    "value": "You're getting too close!"
+  },
+  {
+    "id": 100701370004900008,
+    "value": "You're getting too close!"
+  },
+  {
+    "id": 100701370005000001,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701370005000002,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701370005000003,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 100701370005000004,
+    "value": "You won't escape!"
+  },
+  {
+    "id": 100701370005000005,
+    "value": "Bringing 'em down!"
+  },
+  {
+    "id": 100701370005000006,
+    "value": "Bringing 'em down!"
+  },
+  {
+    "id": 100701370005000007,
+    "value": "Going for a strike!"
+  },
+  {
+    "id": 100701370005000008,
+    "value": "Going for a strike!"
+  },
+  {
+    "id": 100701370005100001,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 100701370005100002,
+    "value": "Out of my way!"
+  },
+  {
+    "id": 100701370005100003,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701370005100004,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701370005100005,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 100701370005100006,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 100701370005100007,
+    "value": "RAAGH!"
+  },
+  {
+    "id": 100701370005100008,
+    "value": "RAAGH!"
+  },
+  {
+    "id": 100701370005200001,
+    "value": "Don't you even try!"
+  },
+  {
+    "id": 100701370005200002,
+    "value": "Don't you even try!"
+  },
+  {
+    "id": 100701370005200003,
+    "value": "How slow!"
+  },
+  {
+    "id": 100701370005200004,
+    "value": "How slow!"
+  },
+  {
+    "id": 100701370005200005,
+    "value": "Get lost!"
+  },
+  {
+    "id": 100701370005200006,
+    "value": "Get lost!"
+  },
+  {
+    "id": 100701370005200007,
+    "value": "Wake up!"
+  },
+  {
+    "id": 100701370005200008,
+    "value": "Wake up!"
+  },
+  {
+    "id": 100701370005300001,
+    "value": "Destroy!"
+  },
+  {
+    "id": 100701370005300002,
+    "value": "Destroy!"
+  },
+  {
+    "id": 100701370005300003,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 100701370005300004,
+    "value": "Stay out of my way!"
+  },
+  {
+    "id": 100701370005300005,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701370005300006,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701370005300007,
+    "value": "Allow me!"
+  },
+  {
+    "id": 100701370005300008,
+    "value": "Allow me!"
+  },
+  {
+    "id": 100701370006101001,
+    "value": "There!"
+  },
+  {
+    "id": 100701370006101002,
+    "value": "There!"
+  },
+  {
+    "id": 100701370006101003,
+    "value": "Don't mess with me!"
+  },
+  {
+    "id": 100701370006101004,
+    "value": "Don't mess with me!"
+  },
+  {
+    "id": 100701370006101005,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370006101006,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701370006101007,
+    "value": "Sink!!"
+  },
+  {
+    "id": 100701370006101008,
+    "value": "Sink!!"
   },
   {
     "id": 100701375000100001,
@@ -9166,6 +9838,30 @@
   {
     "id": 100701379000200008,
     "value": "Ready to attack!"
+  },
+  {
+    "id": 100701382100100001,
+    "value": "Graaaaaah!"
+  },
+  {
+    "id": 100701382100100002,
+    "value": "Graaaaaah!"
+  },
+  {
+    "id": 100701382100100003,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701382100100004,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701382100100005,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701382100100006,
+    "value": "You're not getting away!"
   },
   {
     "id": 100701400000100001,

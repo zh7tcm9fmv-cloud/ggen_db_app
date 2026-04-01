@@ -1584,8 +1584,40 @@
     "value": "An upgraded version of the Shenlong Gundam.\nSalvaged from the OZ Lunar Base, repairs and improvements were made on the original by the Gundam Scientists.\nAltron, in keeping with its namesake two-headed dragon, is now equipped with Dragon Fangs on both hands and has had its Beam Glaive replaced with the Twin Beam Trident.\nThe Beam Cannon installed on its back compensates for its previous long-range handicap."
   },
   {
+    "id": 110200001211000100,
+    "value": "Weapon parts for the Gundam Epyon. Treize sent Dorothy to deliver them to Zechs.\nThey mount on the forearms and are connected to the shield with cables.\nEven when they are mounted to the forearms, the Gundam Epyon can still transform into MA form, and they support both offensive and defensive modes.\nZweihänder mode is an offensive configuration that mounts these weapon parts onto the beam sword.\nThis mode is capable of generating a massive beam blade, which is considered the Gundam Epyon's most powerful weapon.\nDefenser mode is an application of the Virgo's Planet Defenser technology.\nThis mode generates a barrier around the Epyon, which successfully withstood a full-power Twin Buster Rifle blast from the Wing Gundam Zero."
+  },
+  {
     "id": 110200001211000360,
     "value": "Wing Gundam's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely similar to Wing Gundam Zero EW, with a different color scheme using the tricolor style.\nThe Wing Binders on its back have been made to look more mechanical, with complex parts.\nIts main weapon, the Buster Rifle, has been made bigger and longer, and it has a firing capacity of 9 shots, including reserve energy packs."
+  },
+  {
+    "id": 110200001211000500,
+    "value": "A new design for the manga, Glory of the Losers, and a prototype that would later be overhauled into Wing Gundam Zero EW.\nIt emulates the TV version of Wing Gundam Zero's design, but with a larger Twin Buster Rifle and shield, and wings added to its Neo Bird Mode.\nLike in the TV series, it was built by Quatre Raberba Winner, then later had the Tallgeese F's Wing Binders transplanted onto it, overhauling it into Wing Gundam Zero EW."
+  },
+  {
+    "id": 110200001211000700,
+    "value": "Gundam Deathscythe's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIts shoulders have spikes like Gundam Deathscythe Hell EW, and its main weapon, the Beam Scythe, has been altered somewhat.\nIt also has some differences in color scheme from the TV version, with a head that uses white coloring.\nIn addition, it comes equipped with extra parts called Rousettes on either side of its backpack.\nBy unfurling these wings, it can not only fly, but also temporarily exhibit mobility on par with that of the Wing Gundam."
+  },
+  {
+    "id": 110200001211000800,
+    "value": "Gundam Heavyarms's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt has the same color scheme as it does in the TV series, but portions of its body are different.\nIts weapons have been moved around and changed up, and its main weapon, the Beam Gatling Gun, has been enlarged.\nWhen equipped with its Igel, a set of extra armaments, it gets weapon containers on its shoulders, extra Missile Pods on its legs, and drive units to help it maintain mobility with the extra weight added on."
+  },
+  {
+    "id": 110200001211000900,
+    "value": "Gundam Sandrock's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely the same as Gundam Sandrock Custom EW.\nIts main weapon, Heat Shotels, have been enlarged, and a claw has been added to the tip of its shield.\nIt also has an extra set of armor called the Armadillo, which gives it reinforced defenses and improved thrust by virtue of its auxiliary boosters."
+  },
+  {
+    "id": 110200001211001000,
+    "value": "Shenlong Gundam's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely similar to Altron Gundam EW, but it uses the same tricolor coloring scheme as the TV series.\nSome of its weapons have been altered, such as its Dragon Fangs, which have been enlarged.\nIt also comes equipped with a solid Chinese-style broadsword called the Liaoya, which is potent enough to cleave Leos in half with a single swing."
+  },
+  {
+    "id": 110200001211001100,
+    "value": "A Tallgeese Space Type newly designed for the manga, Glory of the Losers.\nThis is the Tallgeese that Howard modified for Zechs Merquise after he came to space following his leave from OZ.\nThe four Wing Binders attached to its back as rear thruster units give it astounding levels of mobility.\nThe shape of the crest on its head has also been altered.\nIts Wing Binders are later transplanted onto the Wing Gundam Zero EW."
+  },
+  {
+    "id": 110200001212000100,
+    "value": "A giant Mobile Suit developed by OZ for base defense.\nIt is equipped with a transformation mechanism, and it transforms between a melee-centric Mobile Suit form and a high-mobility Mobile Armor form.\nIt is also loaded with the Mobile Doll System, enabling it to be fielded unmanned.\nIts primary weapon is a Beam Bayonet that doubles as both a Beam Saber and Beam Rifle, and it also wields the Heat Rod that serves as the tail for the Mobile Armor form.\nIt also comes with a large AS Planet Defenser shield that enables the use of Planet Defensers, giving it formidable defense.\nBeing 1.5 times the size of a regular Mobile Suit led to it being passed over for mass production, though.\nThe one prototype that did get built was dispatched to Vulkanus, an unmanned production plant.\nIts name comes from the constellation Scorpio."
   },
   {
     "id": 110200001217000100,
@@ -1600,8 +1632,32 @@
     "value": "A customized OZ Prize Vayeate.\nAn improvement on the Vayeate developed by the OZ equipped with dual Beam Cannons and Beam Generators, it dwarfs the original in terms of sheer firepower.\nThese machines were used by the personal guard of OZ Prize's Valder Farkill."
   },
   {
+    "id": 110200001219000100,
+    "value": "The Wing Gundam Zero's OVA and movie version.\nIts back-mounted Wing Binders have been exchanged for a pair of magnificent wings which control the suit while in flight, acting also as a heat shield when entering Earth's atmosphere.\nIts ability to transform into Neo-Bird Mode has been removed.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to be piloted again by Heero Yuy in the fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+  },
+  {
     "id": 110200001219000250,
     "value": "The Gundam Deathscythe Hell's OVA and movie version.\nWith its Active Cloak reminiscent of a pair of otherworldly wings, this suit looks like a vision of the reaper itself.\nIts Buster Shield has been replaced in favor of a compact shield attached to each arm.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+  },
+  {
+    "id": 110200001219000300,
+    "value": "A new Tallgeese model belonging to the Preventers.\nFeaturing enhanced weaponry, this unit was developed by Treize Khushrenada at the same time as the Tallgeese II.\nSwitching out its main Dober Gun for a Mega Cannon results in a dramatic increase in firepower, and its shield has been replaced by a larger version featuring the same retractable Heat Rods as the Epyon's.\nZechs Merquise piloted this suit during the Barton Uprising, using it to destroy the MO-III which had served as the Mariemaia Army's base.\nIt was used again later to infiltrate Mariemaia-occupied Brussels and engage in a fierce battle against the Serpents."
+  },
+  {
+    "id": 110200001219000400,
+    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt now comes equipped with Gatling Guns on each arm and an increased number of Leg-Mounted Missile Pods for extra firepower.\nConversely, its Army Knife has been stripped, making it strictly a projectile user.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and TV version of the Custom, and is known to don a clown half-mask while on missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+  },
+  {
+    "id": 110200001219000500,
+    "value": "The Gundam Sandrock Custom's OVA and movie version.\nIts primary Heat Shotels are now larger and it sports a new purple color scheme.\nThe optional cape which wraps around its body has been reinforced and works to protect the suit from friction-induced heat when entering Earth's atmosphere.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+  },
+  {
+    "id": 110200001219000600,
+    "value": "The Altron Gundam's OVA and movie version.\nIts arms can now extend, giving extra range to its enlarged Dragon Fangs, and the loss of its back-mounted Wing Binders gives it a much more streamlined profile.\nStripped of its Flamethrower and Beam Cannons, it is now a close quarters-only Mobile Suit.\nHidden after the battle with Libra, it reappeared with the Mariemaia forces during the Barton Uprising to engage in a fierce fight with the Wing Gundam Zero.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+  },
+  {
+    "id": 110200001219000700,
+    "value": "The Mariemaia Army's primary Mobile Suit.\nDeveloped based on an old Alliance prototype, it was upgraded using Heavyarms data acquired by the Barton Foundation before being put into production.\nMade with Neo Titanium alloy, its armor is exceptionally durable compared to other varieties of mass-produced Mobile Suits.\nSpecced for mid- to long-range combat, it comes equipped with Double Gatling Guns and Missile Launchers.\nIt can also be armed with optional weapons including Bazookas and Beam Cannons.\nProduced in massive quantities to defend colonies and gain ground, this Mariemaia Army's mainstay was thrown into many fierce engagements with the Gundams.\nIt takes its name from the constellation Ophiuchus."
   },
   {
     "id": 110200001230000100,
@@ -2376,6 +2432,10 @@
     "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nThe GN Particles generated by the Drive make the Exia an astoundingly agile close-combat machine even among other Gundams of its generation.\nSpecialized for close fights, its weaponry includes four Beam Sabers and three swords, a combination which gave it the development code \"Seven Swords.\"\nThe swords' ability to cut through a defensive GN Shield makes it evident that this model was made to fight Gundams.\n"
   },
   {
+    "id": 110200001370000160,
+    "value": "A melee-focused, third-generation Gundam mobile suit known under the development codename Seven Swords and belonging to Celestial Being.\nConsidering the possibility of betrayal within the organization, it was also designed with \"anti-Gundam\" capability in mind.\nIn fact, when facing the pseudo solar reactor-equipped GNMS-XCVII Alvaaron piloted by Alejandro Corner—traitor to the organization—it broke apart the GN Field and destroyed the mobile suit.\nDuring this battle, the Gundam's special mode \"Trans-Am\" was used.\nThis is a system that was hidden inside the original solar reactor's black box by the founder of Celestial Being, Aeolia Schenberg, to be activated only in the event that his plans went awry.\nWhen the Trans-Am is used, a Gundam fully liberates the compressed high-density particles accumulated within its frame.\nAs this occurs, the GN particles floating around the mobile suit in their high-density state become controlled by the armor's surface, enveloping it in a red glow.\nThe particles thus covering the mobile suit not only bolster its defense, but also increase its propulsion, raising its output to three times its normal specs while Trans-Am is active."
+  },
+  {
     "id": 110200001370000300,
     "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
   },
@@ -2524,6 +2584,154 @@
     "value": "A new and improved Union Flag used exclusively by Union ace Graham Aker.\nIt is also known as a GN Flag.\nInstalled with a pseudo solar reactor from a GN-X acquired by Union technical adviser Billy Katagiri, the GN Flag boasts incredible speed and maneuverability.\nHowever, this was only accomplished by ignoring the original design.\nThe end result is a highly unbalanced machine that is nearly impossible to handle for normal pilots.\nIts main weapon is a GN Beam Saber stolen from the Gundam Throne Eins, but using it requires moving the pseudo solar reactor from the GN Flag's back to its left shoulder in order to connect the saber directly."
   },
   {
+    "id": 110200001370005700,
+    "value": "Formed when the 00 Gundam and 0 Raiser combine.\nWith the 0 Raiser combat support unit acting as a regulator for the GN Drive, the unstable Twin Drive System can be used to its full potential.\nThis also allows the use of the Trans-Am System, which previously carried the risk of overloading the system.\nHaving surpassed theoretical limits, it stands above all other Gundams.\nFor this reason, it is no longer a Gundam— it is the 00 Raiser."
+  },
+  {
+    "id": 110200001370005900,
+    "value": "A different equipment configuration of the 00 Raiser.\nThe 00 Raiser's main weapon, the GN Sword II, was unable to properly harness the twin drive's tremendous GN Particle output.\nFor this reason, it has been outfitted with the newly- designed GN Sword III, which now has a 3-barrel design in Rifle Mode capable of condensing beam output into a powerful blast.\nAdditionally, its cutting power in Sword Mode is improved over the GN Sword II's, resulting in a considerable increase in the 00 Raiser's offensive capabilities.\nSetsuna F. Seiei launched in the GN Sword III-equipped 00 Raiser in the final battle against the Innovators, where he engaged Ribbons Almark and his Reborns Gundam in fierce combat."
+  },
+  {
+    "id": 110200001370006100,
+    "value": "The Gundam Exia received emergency repairs following its battle with the GN Flag, and this is the result.\nIts left arm, lost in combat, is hidden away beneath a protective sheet, while the right camera eye in its damaged head has been replaced with a mono-eye salvaged from a Tieren.\nNearly weaponless, its GN Sword is missing its edge.\nFour years after the decisive battle with the UN Forces, the ESF Autonomous Peacekeeping Force known as the A-LAWS conduct an operation to exterminate anti-government elements at \"Proud,\" an under-construction space colony.\nThere, the Exia Repair appears and engages the A-LAWS' new Mobile Suit model, the Ahead, in combat."
+  },
+  {
+    "id": 110200001370006200,
+    "value": "One of the new Gundams developed by Celestial Being using 3rd-generation Gundam combat data, and the successor to the Gundam Exia.\nIts Twin Drive System synchronizes two GN Drives to generate staggering GN Particle output.\nHowever, the system's strict operating demands meant that stable  operation remained elusive, even when equipped with the highly-synchronized GN Drives from the Exia and 0 Gundam.\nStartup was finally achieved via Trans-Am mode, albeit with the added risk of overloading the GN Drives.\nIts GN Sword II is the successor to the Exia's GN Sword, and can swap between three modes.\nSword Mode uses a physical blade, Beam Saber Mode generates a Beam Saber, and Rifle Mode allows for long-range attacks."
+  },
+  {
+    "id": 110200001370006400,
+    "value": "One of the new Gundams developed by Celestial Being using 3rd-generation Gundam combat data, and the successor to the Gundam Dynames.\nLike the Dynames, its concept and defining characteristics are specialized around sniping enemies from long distances, but the Cherudim's core capabilities have been improved considerably.\nIts new primary armament, the GN Sniper Rifle II, boasts both increased firepower and the ability to transform into a new 3-Barrel Vulcan Mode for a rapid-fire barrage.\nIn addition, the Cherudim is also equipped with 2 GN Beam  Pistols and nine GN Shield Bits, which are guided remotely  by Haro to provide defensive and offensive capabilities  from any angle.\nIt can also deploy a holoscreen while using the Trans-Am System to provide a staggering improvement in sniping accuracy."
+  },
+  {
+    "id": 110200001370006600,
+    "value": "One of the new Gundams developed by Celestial Being using 3rd-generation Gundam combat data, and the successor to the Gundam Kyrios.\nIt carries forward the Gundam Kyrios' ability to transform into a flight mode, along with its specialization in high speed, hit-and-run tactics, while also boasting greatly improved core performance.\nIts firepower is also considerably improved, armed with both the rapid-fire GN Twin Beam Rifle and 2-Barrel GN Submachine Guns in its forearms.\nThe Arios' defensive capabilities have also been improved thanks to its GN Beam Shield, which generates a barrier using GN beam emitters in its shoulders."
+  },
+  {
+    "id": 110200001370007000,
+    "value": "One of the new Gundams developed by Celestial Being using 3rd-generation Gundam combat data, and the successor to the Gundam Virtue.\nIts core specs have received a massive upgrade, while still boasting powerful defensive capabilities like its GN Field, and a weapons loadout that allows it to excel in anti-ship and base combat.\nOther than the Seravee's GN Bazooka II, an improvement to its predecessor's GN Bazooka, its back and knees are now equipped with GN Cannons.\nCombining these together allows for a plethora of attack variations.\nThe Seravee enters Face Burst Mode at full power, enabling Burst Mode for the GN Bazooka II.\nImprovements to the GN Field's defensive capabilities provides it with a much better performance on offense and defense alike."
+  },
+  {
+    "id": 110200001370007200,
+    "value": "Concealed as part of the Seravee Gundam, this machine is the successor to the Gundam Nadleeh.\nThe Trial System's effective range has been expanded into the current Trial Field, but activating it requires a link with Veda.\nIts arms are capable of transforming into GN Cannons.\nThough it may result in a drop in output, the Seraphim can also use the Seravee Gundam's GN Bazooka II, making it a considerable upgrade over the Gundam Nadleeh in terms of power.\nIt normally serves as the Seravee Gundam's backpack, making its existence something of a secret."
+  },
+  {
+    "id": 110200001370007400,
+    "value": "A support fighter designed specifically for Celestial Being's 00 Gundam.\nLacking a GN Drive of its own, the 0 Raiser instead uses its large onboard GN Condenser as an energy source, which it recharges by docking with the 00 Gundam when needed.\nIt packs considerable firepower and maneuverability flying solo, with the ability to lay down supporting cover fire, perform search functions with its powerful sensors, and more.\nHowever, due to the 00 Gundam's inability to achieve stable Twin Drive System performance, the 0 Raiser's main purpose is to combine with the 00 to regulate and fully activate the Trans-Am System."
+  },
+  {
+    "id": 110200001370007500,
+    "value": "A space-type Union Realdo used by Katharon, an anti- Federation resistance group.\nThe various atmospheric propulsion devices attached to the main flight unit have been replaced or bolstered with spaceflight-capable thrusters, and its sensors have been improved as well.\nMost of Katharon's machines were simply brought along by their pilots when they defected.\nThough they have minor differences in loadout and appearance, there are few, if any, major differences in performance.\nA handful of machines have been modified by their pilots, but they are the exception, not the rule."
+  },
+  {
+    "id": 110200001370007600,
+    "value": "A space-type AEU Enact used by Katharon, an anti- Federation resistance group.\nIts plasma jet engine, originally intended for atmospheric flight, has been replaced with a rocket motor, and other improvements have been made to better accommodate spaceflight.\nMost of Katharon's machines were simply brought along by their pilots when they defected.\nThough they have minor differences in loadout and appearance, there are few, if any, major differences in performance.\nA handful of machines have been modified by their pilots, but they are the exception, not the rule."
+  },
+  {
+    "id": 110200001370007800,
+    "value": "The main Mobile Suit of the Autonomous Peacekeeping Force A-LAWS, the GN-X III is the successor to the pseudo solar reactor-based GN-X suits, originally employed by the UN Forces.\nIt boasts numerous improvements to the GN-X II used shortly after the last great conflict leading up to the formation of the Earth Federation, including further miniaturization of its particle regulators.\nWith its new GN Lance, which integrates a Beam Rifle for mid- and close-range combat, the GN-X III boasts power far beyond that of the old superpower era's non-GN-Drive machines.\nThough equipped with the same standard loadout as the machines used by the ESF Peacekeeping Force, these models have been given a slick crimson paint job.\nSome machines have also been tuned to match the quirks of specific pilots, allowing them to draw out even greater performance from their machines."
+  },
+  {
+    "id": 110200001370007900,
+    "value": "A pseudo solar reactor-equipped Mobile Suit used by the Autonomous Peacekeeping Force A-LAWS, the Ahead is a next-generation machine designed to replace the GN-X with improved performance and a frame design that is closer to that of a Gundam.\nAs public perception towards Gundams was largely negative at the time, most of the machine's distinctive external features other than the cone on its back were concealed.\n Its GN Beam Rifle boasts considerably greater destructive power and range than those equipped on the GN-X series, and the overall capabilities of the Ahead are said to surpass even the 3rd-gen Gundams.\nThe Ahead was effectively deployed only to the A-LAWS for use by squadron leaders.\nA few were also deployed as general-use machines for testing purposes, along with a handful of customized units equipped with unique loadouts."
+  },
+  {
+    "id": 110200001370008000,
+    "value": "A high-mobility variant of the Ahead, the Smultron has been modified for incredibly precise brainwave-based control.\nTo take advantage of this, it was designed to be highly mobile, with the large thrusters on its shoulders and backpack providing excellent maneuverability.\nIn the hands of A-LAWS pilot Soma Peries, it went toe- to-toe with Celestial Being's Gundams.\nFollowing her defection from the A-LAWS, it was given to Louise Halevy.\nThe name \"Smultron\" means \"wild berry\" in Swedish."
+  },
+  {
+    "id": 110200001370008100,
+    "value": "A variant of the Ahead specialized for melee combat, it was developed specifically for Mr.Bushido, a pilot in the Autonomous Peacekeeping Force A-LAWS.\nIts development codename was \"Sakigake.\"\nIts distinctive exterior, which resembles a samurai in full armor, is the result of taking Mr.Bushido's opinions into account during the design stage.\nTo help accommodate the machine's melee-focused design, the shoulder-mounted particle thrusters are vertically- oriented to avoid collisions with the arms when using its sabers.\nTrue to form, the Sakigake is equipped with a large and powerful GN Beam Saber.\nIts firearms, however, are limited to mid-range weaponry intended to restrict an opponent's movements.\nIt more than held its own in combat against Celestial Being's 00 Gundam."
+  },
+  {
+    "id": 110200001370008300,
+    "value": "A ranged combat Mobile Suit belonging to the Innovators.\nOne of the specialized Innovator suits developed using Celestial Being's Mobile Suit data within Veda.\nIts internal pseudo solar reactor has been greatly improved to the point that it is nearly a match for the original solar reactor.\nIt was later installed with a Trans-Am System courtesy of Anew Returner's stolen intel.\nIt specializes in long-range bombardments.\nIt was developed using Gundam Virtue's design data, and its primary armament is the highly powerful GN Mega Launcher.\nThis is Revive Revival's personal suit, colored green to distinguish it from Hiling Care's personal machine of the same model.\nThey are both the same, performance-wise.\nThis unit was sent to the Autonomous Peacekeeping Force A-LAWS for an attack on the Ptolemaios 2, and it performed admirably in battle against Gundams."
+  },
+  {
+    "id": 110200001370008500,
+    "value": "A close-combat Mobile Suit belonging to the Innovators.\nOne of the specialized Innovator suits developed using Celestial Being's Mobile Suit data within Veda.\nIts internal pseudo solar reactor has been greatly improved to the point that it is nearly a match for the original solar reactor.\nIt is specialized for close combat, with its primary weapon being a GN Beam Claw that generates ten Beam Sabers from its fingertips.\nIt has a GN Field generator on its left shoulder, giving it strong defense against both beams and solid ammunition.\nThis is Bring Stabity's personal suit, colored purple to distinguish it from Hiling Care's personal machine of the same model.\nThey are both the same, performance-wise.\nThis unit was sent to the Autonomous Peacekeeping Force A-LAWS for an attack on the Ptolemaios 2, and it performed admirably in battle against Gundams."
+  },
+  {
+    "id": 110200001370008700,
+    "value": "The Gundam Exia Repair, following repairs and modifications.\nIan Vashti and the other mechanics of Celestial Being recovered the Gundam Exia Repair, destroyed in combat with the A-LAWS, and completely renovated it.\nInternal particle flow has been completely redesigned, eliminating the particle transfer cables on the arms and feet, which allows for the addition of thrusters across the frame.\nAdditionally, the Repair II can enter a temporary boost state by releasing the safeties on its GN Drive.\nThough the original model's seven swords have been reduced to three, the Repair II's GN Sword Kai was developed using the same technology used to create the cutting-edge 00 Raiser's GN Sword III, and boasts an overall improvement in combat potential."
+  },
+  {
+    "id": 110200001370008800,
+    "value": "The Cherudim Gundam when using the GNHW/R (GN Heavy Weapon/Rifle) weapons loadout.\nSeven GN Shield Bits have been concentrated in its left shoulder, along with six GN Rifle Bits— a new addition.\nThese large remote weapons pack the same firepower as the GN Sniper Rifle, giving the Cherudim Gundam a further boost in firepower.\nThe Cherudim Gundam received these new weapons in the lead-up to the final battle against the Innovators and A-LAWS, where it faced off against Ali al-Saachez in the Arche Gundam and Revive Revival in the Gadessa."
+  },
+  {
+    "id": 110200001370008900,
+    "value": "The Arios Gundam when using the GNHW/M (GN Heavy Weapon/Missile) weapons loadout.\nEquipped with two large missile containers loaded with GN Missiles and swapping out the GN Twin Beam Rifle for a high-output GN Cannon, this configuration has received a significant boost in firepower.\nThe Arios Gundam received these new weapons in the lead- up to the final battle against the Innovators and A-LAWS, where it fought against Hiling Care in the Garazzo."
+  },
+  {
+    "id": 110200001370009100,
+    "value": "The Seravee Gundam when using the GNHW/B (GN Heavy Weapon/Beam) weapons loadout.\nBeyond the additional GN Cannons, its shoulders and legs have been installed with new GN Condenser-equipped GN Field generators, improving its offensive and defensive capabilities alike.\nThe Seravee Gundam received these new weapons in the lead- up to the final battle against the Innovators and A-LAWS, where it fought against Revive Revival in the Gadessa."
+  },
+  {
+    "id": 110200001370009200,
+    "value": "The Seraphim Gundam when using the Seravee Gundam's GNHW/B (GN Heavy Weapon/Beam) weapons loadout.\nThe Seravee Gundam's additional equipment like the GN Verniers and hip GN Cannons are connected to the Seraphim Gundam in backpack mode, allowing the Seraphim Gundam to use them even when separated."
+  },
+  {
+    "id": 110200001370009300,
+    "value": "A support Mobile Suit for Celestial Being's Arios Gundam.\nThough originally intended to serve as one of the 3rd-generation Gundams, it was repurposed as a support craft after the original plans were cancelled.\nBy combining with the Arios Gundam to form the Archer Arios, it receives a significant speed and power boost.\nIt uses a large GN Condenser as a power source, which it charges when combined with the Arios Gundam.\nIt transforms into a Mobile Suit, and is also equipped with particle Beam Weapons like the GN Beam Rifle, making it quite formidable when fighting solo.\nThough its name is written \"GN Archer,\" it's actually pronounced \"Gun Archer.\""
+  },
+  {
+    "id": 110200001370009500,
+    "value": "The 0 Gundam equipped for live combat, delivered to the Ptolemaios for use in the final battle with the Innovators.\nIn place of its solar reactor, which was transferred to the 00 Gundam, it has been equipped with a GN Particle Condenser to allow it to fight for short periods of time.\nLasse Aeon piloted it into the final battle with the Innovators, but it ran out of power and was abandoned."
+  },
+  {
+    "id": 110200001370009600,
+    "value": "The 0 Gundam equipped for live combat.\nAfter Lasse Aseon abandoned it, it was recovered by Ribbons Almark, who installed the solar reactor taken from the 00 Raiser's left shoulder and reactivated it.\nAfter the Reborns Gundam was heavily damaged in the battle with the 00 Raiser, Ribbons transferred to this Gundam and had a final confrontation with Setsuna F. Seiei in the Gundam Exia Repair II."
+  },
+  {
+    "id": 110200001370009700,
+    "value": "A space-type Tieren used by Katharon, an anti-Federation resistance group.\nMost of Katharon's machines were simply brought along by their pilots when they defected.\nThough they have minor differences in loadout and appearance, there are few, if any, major differences in performance.\nA handful of machines have been modified by their pilots, but they are the exception, not the rule."
+  },
+  {
+    "id": 110200001370009800,
+    "value": "A specialized variation of the Tieren, the All-Region Type was one of the machines originally intended to succeed the Tieren during the old era of national superpowers.\nWith additional thrusters, including large thrusters on both feet and movable shoulder plates, it boasts high mobility both on Earth and in space without the need for any extra configuration.\nIt has also been tuned specifically for its pilot, Sergei Smirnov.\nIts main weapon is the Non-Solar Reactor Specialized Beam Rifle which contains a large GN Condenser, but only an extremely skilled pilot is capable of using it.\nThough not the same machine as the Tieren Taozi, its design similarities and strong Super Soldier aesthetic has led to it being referred to as \"Taozi,\" particularly by former members of the Human Reform League."
+  },
+  {
+    "id": 110200001370009900,
+    "value": "A prototype designed by ex-Union engineers to serve as the Federation's next-generation staple Mobile Suit.\nThough originally based on the Ahead, its design was heavily altered once it was decided that Mr.Bushido would be the pilot, with the Union Flag serving as its base instead.\nIts capabilities, including a focus on mobility, reflect the close-combat specialization of its pilot.\nThe Masurao is also the first suit with a pseudo solar reactor to have the Trans-Am System.\nIts main weapons are a pair of incredibly powerful GN Beam Sabers modeled after a traditional Japanese daisho sword pairing, while its head contains a Beam Chakram that fires ring-shaped particle beams.\nMr.Bushido named the Masurao's two GN Beam Sabers Howard and Daryl in honor of his fallen wingmen."
+  },
+  {
+    "id": 110200001370010100,
+    "value": "An upgraded version of the Masurao used by A-LAWS pilot Mr.Bushido.\nThough considered complete, the Masurao has undergone further improvements, and is now reborn as the Susanowo.\nIt carries forward the Masurao's close-combat emphasis, using two GN Blades named Shiranui and Unryu that resemble solid katanas.\nThe Susanowo is also equipped with the experimental Tri-Punisher, which uses beams emitted from its abdomen and shoulders to form a massive fireball.\nIt fought the 00 Raiser near Eclipse, a colony in the L5 sector, with both pilots activating Trans-Am in a duel to the death."
+  },
+  {
+    "id": 110200001370010300,
+    "value": "A pseudo solar reactor-equipped Mobile Suit belonging to the Innovators.\nThis unit was developed by Ribbons Almark based on the design data for Gundam Throne Zwei.\nIt is the personal machine of Ali al-Saachez, a mercenary working with the Innovators.\nIt is the final Throne series version fielded in battle, and while it inherits the base model's distinguishing features, the introduction of cutting-edge technology vastly improves its performance so much so that it could be considered a completely different machine.\nIt also has improved weaponry such as the 10 specialized GN Fangs which al-Saachez freely controls remotely."
+  },
+  {
+    "id": 110200001370010400,
+    "value": "A ranged combat Mobile Suit belonging to the Innovators.\nOne of the specialized Innovator suits developed using Celestial Being's Mobile Suit data within Veda.\nIts internal pseudo solar reactor has been greatly improved to the point that it is nearly a match for the original solar reactor.\nIt specializes in long-range bombardments.\nIt was developed using Gundam Virtue's design data, and its primary armament is the highly powerful GN Mega Launcher.\nThis is Hiling Care's personal suit, colored grey to distinguish it from Revive Revival's personal machine of the same model.\nThey are both the same, performance-wise.\nThis unit was sent to the Autonomous Peacekeeping Force A-LAWS for an attack on the Ptolemaios 2, and it performed admirably in battle against Gundams."
+  },
+  {
+    "id": 110200001370010500,
+    "value": "A close combat Mobile Suit belonging to the Innovators.\nOne of the specialized Innovator suits developed using Celestial Being's Mobile Suit data within Veda.\nIts internal pseudo solar reactor has been greatly improved to the point that it is nearly a match for the original solar reactor.\nIt was later installed with a Trans-Am System courtesy of Anew Returner's stolen intel.\nIt is specialized for close combat, with its primary weapon being a GN Beam Claw that generates ten Beam Sabers from its fingertips.\nIt has a GN Field generator on its left shoulder, giving it strong defense against both beams and solid ammunition.\nThis is Hiling Care's personal suit, colored grey to distinguish it from Bring Stabity's personal machine of the same model.\nThey are both the same, performance-wise.\nThis unit was sent to the Autonomous Peacekeeping Force A-LAWS for an attack on the Ptolemaios 2, and it performed admirably in battle against Gundams."
+  },
+  {
+    "id": 110200001370010600,
+    "value": "A generic Mobile Suit belonging to the Innovators.\nOne of the specialized Innovator suits developed using Celestial Being's Mobile Suit data within Veda.\nIts internal pseudo solar reactor has been greatly improved to the point that it is nearly a match for the original solar reactor.\nThis unit was developed to be the personal suit of Anew Returner, a spy who infiltrated Celestial Being.\nSince she was an intelligence-gathering Innovade, her unit was given multiple remote-controlled GN Beam Saber fangs to help keep her out of direct combat.\nThis unit was provided to Anew after she awoke and rejoined the Innovators, and she used it to fight Celestial Being's Cherudim Gundam on equal footing."
+  },
+  {
+    "id": 110200001370010700,
+    "value": "A prototype Mobile Armor belonging to the Innovators.\nThis is a pseudo solar reactor unit developed to ascertain the usefulness of Mobile Armors.\nIt is derived from the Alvatore, the Mobile Armor fielded by the old UN Forces to fight against Celestial Being.\nIt has no transformation mechanism, but it is capable of flight in space and atmosphere, and also form a GN Field with high defense.\nIt is equipped with powerful weapons in anticipation of fighting Gundams, including Large Beam Cannons installed in its neck, and an electromagnetic Egner Whip that pierces GN Fields to directly damage enemy pilots.\nOnce completed, this unit and its pilot Devine Nova were dispatched to the Autonomous Peacekeeping Force A-LAWS to fight against Gundams."
+  },
+  {
+    "id": 110200001370010800,
+    "value": "A transforming Mobile Armor belonging to the Innovators.\nA pseudo solar reactor unit developed to be piloted by the Autonomous Peacekeeping Force A-LAWS pilot and sponsor, Louise Halevy.\nIt was perfected using data acquired from its predecessor prototype Mobile Armor, the Empruss.\nIt is outfitted with a transformation mechanism that enables it to transform into a Mobile Suit.\nIt uses the same electromagnetic Egner Whip as the Empruss, along with a GN Beam Cannon capable of curving a beam's firing arc.\nThis gives it extremely devastating combat prowess, with the ability to form a GN Field for good measure.\nThis unit was transferred to Louise upon completion, and it performed well in battles against the Gundams.\nIt even put up an impressive fight against the 00 Raiser in their final battle against Celestial Being."
+  },
+  {
+    "id": 110200001370011000,
+    "value": "A mass production Mobile Suit belonging to the Innovators.\nIt is a pseudo solar reactor unit produced in the internal production plant of the colony-class deep space mothership Celestial Being.\nIt is a high-stakes weapon designed to charge into things and self-destruct.\nIts only armament is its GN Vulcan.\nThe machine has a minimalist structure, and it does not even have legs of its own.\nBy attaching extra boosters, it can close in on enemy units at even higher speeds.\nWhile it only has a pseudo solar reactor, it is loaded with the Trans-Am system, which allows it to achieve even greater levels of acceleration when activated.\nThis unit was produced in large numbers and piloted by Innovades who were mass-produced in similar numbers, dealing tremendous damage to enemy forces."
+  },
+  {
+    "id": 110200001370011100,
+    "value": "A generic transforming Mobile Suit belonging to the Innovators.\nIt is capable of activating a Trans-Am System thanks to Anew Returner's stolen intel, and it also integrates a Twin Drive System that synchronizes two pseudo solar reactors to give it output on par with that of the 00 Raiser.\nIt carries multiple dangerous armaments, including a Large GN Beam Saber, a GN Buster Rifle that hooks directly to the pseudo solar reactor in its elbow to fire out a powerful particle beam, and the remote-controlled GN Fin Fangs.\nIts transformation mechanism allows it to transform from the all-rounder Gundam mode to a cannon mode that specializes in long-range fire.\nIt was fielded in the final battle against Celestial Being, where it fought a hard battle against Setsuna F. Seiei's 00 Raiser."
+  },
+  {
     "id": 110200001375000200,
     "value": "A third generation Gundam named after an angel whose name means \"God is my mystery.\"\nIts model number has been classified, and only a few within the organization responsible for its development know anything about it.\nIt was created as a \"battlefield observer\" and operates in places where collecting data directly would prove infeasible for Veda, such as the battlefield."
   },
@@ -2540,12 +2748,24 @@
     "value": "The upgraded 1 Gundam.\nAfter the 1 Gundam was heavily damaged in the battle with Fon Spaak, it was repaired and upgraded.\nThe twin binders on its back increase its mobility and can also be transformed into a powerful Beam Weapon called the Avalon Cannon, or ground arms called Binder Rifles, increasing its firepower as well.\nIt was known as the 1.5 Gundam because all of its specs were 1.5 times that of the original.\nSince 1.5 looks like the letters \"IS,\" it's also known as the I'S Gundam."
   },
   {
+    "id": 110200001379000100,
+    "value": "A Throne Eins with additional equipment for enhanced functionality.\nA high mobility type, it can transform from a mobile suit form to one suitable for flight.\nThe Turbulenz (from \"turbulence\"), an added aerial unit, also comes equipped with its own special power source, a GN Drive [T].\nThis not only extends the mobile suit's operational time, but it also enables the Turbulenz unit to be detached and operated as an unmanned support machine after arriving at its destination."
+  },
+  {
+    "id": 110200001379000300,
+    "value": "Equipment designed by Celestial Being's support organization Fereshte.\nThe additional full-body protection incorporates GN composite armor, which creates an internal GN field.\nMoreover, its weight has been decreased by the mass-reducing effect of GN particles.\nWhen the 0 Gundam sortied in its final confrontation with the Innovators, it was equipped with a particle condenser rather than a solar reactor, causing the mobile suit to operate without this equipment due to its high particle consumption."
+  },
+  {
     "id": 110200001379000500,
     "value": "A customized GN-X.\nBased on feedback from the battlefield, the later productions of the GN-X were updated.\nDefense Rods were attached to the shoulder hardpoints, and Verniers were added to the legs.\nThe weapon loadout was also improved; including upgrading the GN-X's standard rifle into the Advanced GN Beam Rifle and adding the prototype Proto GN Lance that would be used by the GN-X III.\nThe unit can also be further tuned to allow the pilot's maximum potential.\nThe model achieved great results in active duty, but never made up more than 3% of all GN-X units produced.\nIt was primarily used by the UN's ace pilots.\nCombat data from these units was used in the development of the next generation main forces, the GN-X II."
   },
   {
     "id": 110200001379000600,
     "value": "A GN-X specialized for ground assault combat.\nIt was designed as an offshoot of the GN-X III to be used for water-to-ground ambushes.\nHowever, the Innovades secretly included cutting-edge technology, making its specs a near-match for the next-generation GN-X IV, developed at the same time.\nWhile advancing underwater, it has equipment specialized for assault like sensors, weapons, and hover units which are purged after landfall.\nThe GN Kunai on its arms are physical blades attached to the GN Vulcans.\nIt also stores a GN Beam Needle inside the frame for the assault.\nThe units were used for Special Ops under the command of the A-LAWS.\nThe pilots were restricted to A-LAWS; Soldiers or Licensors with special authorization to act independently."
+  },
+  {
+    "id": 110200001379001900,
+    "value": "The prototype for the Innovator forces.\nThis model would be the prototype for many of the Mobile Suits used by the Innovators, starting with the Gadessa.\nIt was designed based on Gundam blueprints found in Veda.\nInfluences from the Gundam Plutone are especially pronounced, such as the introduction of the Core Fighter system.\nSeveral of its weapons would also be developed and used by later models.\nThe prototype GN Mega Launcher was completed and used by the Gadessa, while the GN Shield was developed into the GN Field used by the Garozzo.\nBecause the Innovator forces became part of the A-LAWS, these units would fight against Celestial Being.\nAs a result, its successors became the GNZ series and had a different design from the Gundams."
   },
   {
     "id": 110200001400000100,

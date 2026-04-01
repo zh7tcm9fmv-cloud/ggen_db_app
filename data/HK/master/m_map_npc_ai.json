@@ -254304,24 +254304,6 @@
     "OverrideAiUseSkillSetId": 0
   },
   {
-    "MapNpcId": 400001000402000028,
-    "MapNpcAiTypeIndex": 1,
-    "MapNpcAiPresetId": 0,
-    "AiAttackConditionTypeIndex": 0,
-    "AiAttackConditionParameterValue": "0",
-    "AiAttackRuleTypeIndex": 1,
-    "AiAttackRuleParameterTypeIndex": 0,
-    "AiAttackRuleParameterValue": "0",
-    "AiCounterRuleTypeIndex": 4,
-    "AiSupportActionRuleTypeIndex": 2,
-    "AiSupportActionRuleParameterValue": "",
-    "AiUseSkillTypeIndex": 0,
-    "AiAttackDecisionTypeIndex": 1,
-    "OverrideAiAttackRuleSetId": 0,
-    "OverrideAiCounterRuleSetId": 0,
-    "OverrideAiUseSkillSetId": 0
-  },
-  {
     "MapNpcId": 400001100202000001,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,

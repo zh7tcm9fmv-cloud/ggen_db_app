@@ -1,0 +1,11 @@
+[
+  {
+    "Id": 26036001,
+    "PlatformTypeIndex": 1,
+    "TransitionId": 0,
+    "ResourceId": "shop_payment_link_banner_26036001",
+    "ScheduleId": 2603609907,
+    "Priority": 1,
+    "RequiresAgeVerification": false
+  }
+]
