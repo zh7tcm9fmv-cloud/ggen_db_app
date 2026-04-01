@@ -12,6 +12,7 @@ except ImportError:
     pass
 
 from flask import Flask, render_template, jsonify, request, make_response, session
+from werkzeug.exceptions import NotFound
 import json
 import re
 import math
@@ -2756,7 +2757,7 @@ def mechanism_list_filter_rows_from_ids(mids_union, ld):
     for mid in mids_union:
         mid = str(mid)
         if mid == '2x2':
-            rows.append({'id': '2x2', 'name': '2x2', 'icon': '/static/images/mechanism/mechanism_0002.png'})
+            rows.append({'id': '2x2', 'name': '2x2', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
             continue
         mm = ld.get('mechanism_map', {})
         hit = None
@@ -7787,7 +7788,7 @@ def get_stage(stage_id):
                         cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
                 is_ally = npc.get('battle_side_type', '2') == '1'
                 side = 'ally' if is_ally else 'enemy'
-                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.png' if is_ally else None
+                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_ally else None
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
@@ -7797,7 +7798,7 @@ def get_stage(stage_id):
                 me['npc_detail_index'] = len(nd)
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
-                uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.png', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
+                uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.webp', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             max_x = max_y = 0
             for u in uom:
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
@@ -8170,7 +8171,7 @@ def get_unit(unit_id):
             if '3' not in mids: mids.append('3')
         mechs = []
         if il:
-            mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.png'})
+            mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
         rec_cid = normalize_id(info.get('recommend_character_id') or '0')
         if rec_cid == '0':
             rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
@@ -8206,6 +8207,15 @@ def serve_spa(path):
     """Serve index.html for any non-API path (SPA-style routing)."""
     if path.startswith('api/'):
         return jsonify({'error': 'Not found'}), 404
+    # Do not return index.html for static files (belt-and-suspenders if routing order differs).
+    if path.startswith('static/'):
+        rel = path[len('static/') :].replace('\\', '/')
+        if not rel or any(seg == '..' for seg in rel.split('/')):
+            return jsonify({'error': 'Not found'}), 404
+        try:
+            return app.send_static_file(rel)
+        except NotFound:
+            return jsonify({'error': 'Not found'}), 404
     return _serve_index()
 
 if __name__ == '__main__':
