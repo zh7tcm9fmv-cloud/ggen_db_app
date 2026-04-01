@@ -375,7 +375,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-map-high-vis .weapon-map-legend .weapon-map-legend-item>span[aria-hidden="true"]:first-child{color:#7dd3fc!important}
 .weapon-map-high-vis .weapon-map-legend .map-legend-sel-img{filter:brightness(1.15) contrast(1.08) drop-shadow(0 0 2px rgba(0,0,0,.5))}
 .weapon-map-high-vis .weapon-map-legend .map-legend-use-img{filter:brightness(1.12) contrast(1.06) drop-shadow(0 0 2px rgba(0,0,0,.45))}
-.weapon-map-high-vis .map-sel-crosshair .map-sel-marker-img{filter:drop-shadow(0 0 2px rgba(0,0,0,.85)) brightness(1.05)}
+.weapon-map-high-vis .weapon-map-grid .map-sel-crosshair .map-sel-marker-img{filter:brightness(1.15) contrast(1.3) drop-shadow(0 0 3px rgba(0,0,0,.9))!important}
 .weapon-map-grid .map-cell .map-sel-crosshair{z-index:6}
 .weapon-map-grid{display:grid;gap:2px;background:#0c1220;padding:10px;border-radius:12px;position:relative;align-content:start;justify-content:center;width:max-content;max-width:100%;margin:0 auto;box-sizing:border-box;--map-cell:24px;grid-auto-rows:var(--map-cell)}
 .weapon-map-grid .map-cell{box-sizing:border-box;flex-shrink:0;aspect-ratio:1;overflow:visible;position:relative;z-index:0}
@@ -383,14 +383,19 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-use-footprint-overlay img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(0,0,0,.5));transform:none}
 .weapon-map-high-vis .map-use-footprint-overlay img{filter:brightness(1.12) contrast(1.15) drop-shadow(0 0 2px rgba(0,0,0,.85))}
 .weapon-map-grid .map-cell>img:first-child{object-fit:contain!important}
-.weapon-map-grid .map-cell-unit-marker{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(28px,calc(var(--map-cell,24px)*0.78));height:min(28px,calc(var(--map-cell,24px)*0.78));z-index:2;object-fit:contain;object-position:center;pointer-events:none;display:block;margin:0}
-.weapon-map-grid .map-cell-step-marker{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(28px,calc(var(--map-cell,24px)*0.78));height:min(28px,calc(var(--map-cell,24px)*0.78));z-index:1;object-fit:contain;object-position:center;pointer-events:none;display:block;margin:0;filter:drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 0 6px rgba(255,255,255,.55)) brightness(1.35) contrast(1.35)}
+/* Flexbox shells avoid transform+filter subpixel drift on marker imgs (was reading off-center). */
+.map-cell-marker-shell{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;box-sizing:border-box;padding:0;margin:0}
+.map-cell-marker-shell--step{z-index:1}
+.weapon-map-grid .map-cell-marker-shell>img{width:min(32px,calc(var(--map-cell,24px)*0.85));height:min(32px,calc(var(--map-cell,24px)*0.85));object-fit:contain;object-position:center;display:block;flex-shrink:0;margin:0;padding:0;box-sizing:border-box}
+.weapon-map-grid .map-cell-step-marker{filter:drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 0 6px rgba(255,255,255,.55)) brightness(1.35) contrast(1.35)}
+.weapon-map-high-vis .weapon-map-grid .map-cell-marker-shell>img:not(.map-cell-step-marker){filter:brightness(1.15) contrast(1.3) drop-shadow(0 0 3px rgba(0,0,0,.9))!important}
+.weapon-map-high-vis .weapon-map-grid .map-cell-marker-shell>img.map-cell-step-marker{filter:brightness(1.12) contrast(1.25) drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 0 5px rgba(255,255,255,.5)) brightness(1.3) contrast(1.28)!important}
 .weapon-map-legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text-secondary);justify-content:center;max-width:100%;padding:0 8px}
 .weapon-map-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.map-sel-crosshair{position:absolute;inset:0;z-index:5;pointer-events:none;box-sizing:border-box;overflow:visible}
-.map-sel-crosshair .map-sel-marker-img{position:absolute;left:50%;top:50%;width:min(28px,calc(var(--map-cell,24px)*0.78));height:min(28px,calc(var(--map-cell,24px)*0.78));aspect-ratio:1;object-fit:contain;object-position:center;display:block;margin:0;padding:0;transform:translate(-50%,-50%);filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
-.map-cell-pou-moving{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
-.map-cell-pou-moving img{width:min(28px,calc(var(--map-cell,24px)*0.78));height:min(28px,calc(var(--map-cell,24px)*0.78));aspect-ratio:1;object-fit:contain;object-position:center;display:block;margin:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
+.map-sel-crosshair{position:absolute;inset:0;z-index:5;pointer-events:none;box-sizing:border-box;overflow:visible;display:flex;align-items:center;justify-content:center;padding:0;margin:0}
+.map-sel-crosshair .map-sel-marker-img{position:static;width:min(32px,calc(var(--map-cell,24px)*0.85));height:min(32px,calc(var(--map-cell,24px)*0.85));object-fit:contain;object-position:center;display:block;flex-shrink:0;margin:0;padding:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.map-cell-pou-moving{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center;padding:0;margin:0}
+.map-cell-pou-moving img{width:min(32px,calc(var(--map-cell,24px)*0.85));height:min(32px,calc(var(--map-cell,24px)*0.85));object-fit:contain;object-position:center;display:block;flex-shrink:0;margin:0;padding:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
 .weapon-map-high-vis .map-cell-pou-moving img{filter:brightness(1.12) contrast(1.12) drop-shadow(0 0 2px rgba(0,0,0,.8))}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
@@ -2345,15 +2350,15 @@ function renderMapGrid(weapon,isLarge){
   const mapHighVisInit=weaponMapGridHighVisPreferred();
   let mapCell;
   if(isLarge){
-    if(mapSpan<=11)mapCell=34;
-    else if(mapSpan<=13)mapCell=28;
-    else if(mapSpan<=16)mapCell=24;
-    else mapCell=21
+    if(mapSpan<=11)mapCell=36;
+    else if(mapSpan<=13)mapCell=30;
+    else if(mapSpan<=16)mapCell=26;
+    else mapCell=23
   }else{
-    if(mapSpan<=9)mapCell=28;
-    else if(mapSpan<=12)mapCell=24;
-    else if(mapSpan<=15)mapCell=20;
-    else mapCell=18
+    if(mapSpan<=9)mapCell=30;
+    else if(mapSpan<=12)mapCell=26;
+    else if(mapSpan<=15)mapCell=22;
+    else mapCell=20
   }
   const pouCard=[[-1,0],[1,0],[0,-1],[0,1]];
   const pouWraps=t1?pouCard.every(([wx,wy])=>ec.some(e=>e.x===wx&&e.y===wy)):(t2&&pouCard.every(([wx,wy])=>ec.some(e=>e.x+sx===wx&&e.y+sy===wy)));
@@ -2402,26 +2407,26 @@ function renderMapGrid(weapon,isLarge){
       if(t3){
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          if(im)mh=`<img class=\"map-cell-unit-marker\" src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\">`
+          if(im)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\"></span>`
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.png');
-          if(iem)mh=`<img class=\"map-cell-unit-marker\" src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\">`
+          if(iem)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.png')}\" alt=\"\"></span>`
         }else if(ie||isp){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
 
         // Dash path "white arrows": higher contrast, and only in the center column.
         if((ie||isp)&&!iu&&!ieb&&cx===0){
-          oh=`<img class=\"map-cell-step-marker\" src=\"${step}\" alt=\"\">`
+          oh=`<span class=\"map-cell-marker-shell map-cell-marker-shell--step\" aria-hidden=\"true\"><img class=\"map-cell-step-marker\" src=\"${step}\" alt=\"\"></span>`
         }
       }else if(t2){
         if(its){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png');
           mh=mapSelHtml;
-          if(iu&&!isLarge)mh=`<img class=\"map-cell-unit-marker\" src=\"${mapUseNega}\" alt=\"\">`+mapSelHtml
+          if(iu&&!isLarge)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"></span>`+mapSelHtml
         }else if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
-          mh=(!isLarge&&im)?`<img class=\"map-cell-unit-marker\" src=\"${mapUseNega}\" alt=\"\">`:''
+          mh=(!isLarge&&im)?`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"></span>`:''
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }else if(isp){
@@ -2431,7 +2436,7 @@ function renderMapGrid(weapon,isLarge){
         if(iu){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.png');
           if(isLarge){if(!pouWraps)mh=mapT1LargePouHtml}
-          else if(im)mh=`<img class=\"map-cell-unit-marker\" src=\"${pouWraps?mapUsePosi:mapUseMovingWebp}\" alt=\"\">`
+          else if(im)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${pouWraps?mapUsePosi:mapUseMovingWebp}\" alt=\"\"></span>`
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.png')
         }
