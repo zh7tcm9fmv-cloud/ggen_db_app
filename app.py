@@ -5168,6 +5168,10 @@ def api_whats_new():
             delta = compute_whats_new_delta_between(chain[i - 1], chain[i], lc)
             if not delta:
                 continue
+            # Skip no-op history pairs (e.g. duplicate baseline captured same day as current snapshot).
+            _ch, _ad = delta.get('changes') or [], delta.get('added') or []
+            if not _ch and not _ad:
+                continue
             snap_newer = chain[i]
             label_date = (snap_newer.get('captured_at') or '').strip()
             if not label_date:
