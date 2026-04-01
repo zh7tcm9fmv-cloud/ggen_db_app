@@ -80,8 +80,8 @@ else:
     print("⚠ Warning: image_index.json not found")
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
-# (mtime, merged filenames) per folder — invalidated when static/<folder> changes
-_FOLDER_MERGE_CACHE = {}
+# (mtime, merged filenames) — invalidated when static/images/portraits changes
+_PORTRAIT_FS_CACHE = {}
 
 
 def _list_disk_image_files(rel_path):
@@ -102,37 +102,28 @@ def _list_disk_image_files(rel_path):
     return out
 
 
-def _merged_folder_index_and_disk(folder_key):
-    """Merge image_index.json entry for folder_key with actual files under static/<folder_key>.
-
-    New assets uploaded under static/ (or pulled from GitHub) are picked up without regenerating
-    image_index.json. Used for character/unit portraits and Trait/thum list icons.
-    """
-    indexed = IMAGE_INDEX.get(folder_key, []) or []
-    d = os.path.join(STATIC_ROOT, *folder_key.split('/'))
+def _merged_portrait_files(portrait_folder_key):
+    """Merge image_index.json with files on disk for character portraits only. Unit portraits use the index only."""
+    indexed = IMAGE_INDEX.get(portrait_folder_key, []) or []
+    if portrait_folder_key != 'images/portraits':
+        return indexed
+    d = os.path.join(STATIC_ROOT, *portrait_folder_key.split('/'))
     try:
         mtime = os.path.getmtime(d)
     except OSError:
         mtime = 0
-    cached = _FOLDER_MERGE_CACHE.get(folder_key)
+    cached = _PORTRAIT_FS_CACHE.get(portrait_folder_key)
     if cached and cached[0] == mtime:
         return cached[1]
-    disk = _list_disk_image_files(folder_key)
+    disk = _list_disk_image_files(portrait_folder_key)
     seen = set()
     merged = []
     for fn in indexed + disk:
         if fn not in seen:
             seen.add(fn)
             merged.append(fn)
-    _FOLDER_MERGE_CACHE[folder_key] = (mtime, merged)
+    _PORTRAIT_FS_CACHE[portrait_folder_key] = (mtime, merged)
     return merged
-
-
-def _merged_portrait_files(portrait_folder_key):
-    """Merge index + disk for character and unit portrait folders (same behavior for both)."""
-    if portrait_folder_key in ('images/portraits', 'images/unit_portraits'):
-        return _merged_folder_index_and_disk(portrait_folder_key)
-    return IMAGE_INDEX.get(portrait_folder_key, []) or []
 
 
 # m_series Id (SeriesId from sets) -> 4-digit logo pad from ResourceId "series_XXXX" (filled after m_series.json load)
@@ -1660,7 +1651,8 @@ def set_cached_response(cache_key, data):
 
 def find_portrait(resource_ids, entity_id, portrait_folder_key, debug_label=''):
     """
-    Find portrait using IMAGE_INDEX merged with files on disk for images/portraits and images/unit_portraits.
+    Find portrait using IMAGE_INDEX. Character portraits also merge files on disk under static/images/portraits;
+    unit portraits use image_index.json only (same as before the disk merge).
     portrait_folder_key: e.g., 'images/portraits' or 'images/unit_portraits'
     Game files often use cb_<ResourceId>.webp (characters) or ub_/ms_ (units); ResourceId alone is not the filename.
     Prefers filenames without ' #' (space+hash) suffix for CDN compatibility.
@@ -1869,7 +1861,9 @@ def find_trait_icon(resource_id):
 
 def _find_trait_thum_list_asset(resource_ids, entity_id):
     """images/Trait/thum/thum_<ResourceId>.* — list/grid prefers this over full cb_/ub_ portraits when present."""
-    files = _merged_folder_index_and_disk('images/Trait/thum')
+    if not IMAGE_INDEX:
+        return None
+    files = IMAGE_INDEX.get('images/Trait/thum', []) or []
     if not files:
         return None
     files_by_lower = {f.lower(): f for f in files}
@@ -1900,7 +1894,7 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
 
 
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
-    """List/grid thumbnails: Trait/thum (thum_<ResourceId>, index+disk) first, then portrait folder (cb_/ub_/ms_, index+disk)."""
+    """List/grid thumbnails: Trait/thum (thum_<ResourceId>) first, then full portrait folder (cb_/ub_/ms_)."""
     if portrait_folder_key == 'images/unit_portraits':
         t = _find_trait_thum_list_asset(resource_ids, entity_id)
         if t:
@@ -1914,16 +1908,13 @@ def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
-    """Find supporter thumbnail using images/Trait/thum (index + files on disk). For list view."""
-    files = _merged_folder_index_and_disk('images/Trait/thum')
-    if not files:
-        return None
+    """Find supporter thumbnail using IMAGE_INDEX (images/Trait/thum). For list view."""
     candidates = [str(resource_id).strip()] if resource_id and str(resource_id).strip() != '0' else []
     if supporter_id: candidates.append(str(supporter_id).strip())
     for rid in candidates:
         if not rid: continue
         rl = rid.lower()
-        for fn in files:
+        for fn in IMAGE_INDEX.get('images/Trait/thum', []):
             if rl in fn.lower():
                 return f"/static/images/Trait/thum/{fn}"
     return None
@@ -3194,6 +3185,9 @@ map_npc_character_skill_set_content_data = load_json(os.path.join(BASE_DIR, "m_m
 map_npc_unit_weapon_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_weapon_set_content.json"))
 map_stage_group_initial_placement_data = load_json(os.path.join(BASE_DIR, "m_map_stage_group_initial_placement.json"))
 char_skill_base_data = load_json(os.path.join(BASE_DIR, "m_character_skill.json"))
+unit_skill_master_data = load_json(os.path.join(BASE_DIR, "m_unit_skill.json"))
+unit_skill_set_content_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_set_content.json"))
+unit_skill_trait_master_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_trait.json"))
 unit_ssp_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_config.json"))
 unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.json"))
 ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
@@ -3248,6 +3242,65 @@ if map_stage_group_initial_placement_data:
         if msid == '0': continue
         map_stage_group_initial_placement_lookup.setdefault(msid, []).append({'battle_side_type': normalize_id(item.get('BattleSidePlacedTypeIndex') or item.get('battleSidePlacedTypeIndex')), 'x': safe_int(item.get('X'), 0), 'y': safe_int(item.get('Y'), 0), 'direction': normalize_id(item.get('DirectionTypeIndex') or item.get('directionTypeIndex'))})
 char_skill_info_map = create_char_skill_info_map(char_skill_base_data) if char_skill_base_data else {}
+
+
+def create_unit_skill_info_map(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        s = normalize_id(item.get('Id') or item.get('id'))
+        if s == '0':
+            continue
+        lk[s] = {
+            'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
+            'duration': safe_int(item.get('Duration') or item.get('duration'), 0),
+            'usage_limit': safe_int(item.get('UsageLimit') or item.get('usageLimit'), 0),
+        }
+    return lk
+
+
+def create_unit_skill_set_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        uid = normalize_id(item.get('UnitId') or item.get('unitId'))
+        sid = normalize_id(item.get('UnitSkillId') or item.get('unitSkillId'))
+        if uid == '0' or sid == '0':
+            continue
+        so = safe_int(item.get('SortOrder') or item.get('sortOrder'), 0)
+        lk.setdefault(uid, []).append({'sort': so, 'unit_skill_id': sid})
+    for k in lk:
+        lk[k].sort(key=lambda x: x['sort'])
+    return lk
+
+
+def create_unit_skill_trait_by_skill_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        usid = normalize_id(item.get('UnitSkillId') or item.get('unitSkillId'))
+        tid = normalize_id(item.get('Id') or item.get('id'))
+        if usid == '0':
+            continue
+        lk.setdefault(usid, []).append({
+            'id': tid,
+            'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
+        })
+    for k in lk:
+        lk[k].sort(key=lambda x: x['id'])
+    return lk
+
+
+unit_skill_info_map = create_unit_skill_info_map(unit_skill_master_data) if unit_skill_master_data else {}
+unit_skill_set_lookup = create_unit_skill_set_lookup(unit_skill_set_content_data) if unit_skill_set_content_data else {}
+unit_skill_trait_by_skill = create_unit_skill_trait_by_skill_lookup(unit_skill_trait_master_data) if unit_skill_trait_master_data else {}
 unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_unit_status_map(unit_status_data)
 LIMITED_TIME_UNIT_IDS = frozenset({
     '1150000150', '1095002550', '1200003950', '1330000750', '1114000150', '1501002250', '1430003450',
@@ -3520,7 +3573,14 @@ for lang_code, paths in LANG_PATHS.items():
     char_text = load_json(os.path.join(lang_dir, "m_character.json"))
     skill_trait_lang = load_json(os.path.join(lang_dir, "m_character_skill_trait.json"))
     skill_lang = load_json(os.path.join(lang_dir, "m_character_skill.json"))
-    skill_text_data = list(extract_data_list(skill_trait_lang)) + list(extract_data_list(skill_lang) or [])
+    unit_skill_trait_lang = load_json(os.path.join(lang_dir, "m_unit_skill_trait.json"))
+    unit_skill_lang = load_json(os.path.join(lang_dir, "m_unit_skill.json"))
+    skill_text_data = (
+        list(extract_data_list(skill_trait_lang))
+        + list(extract_data_list(skill_lang) or [])
+        + list(extract_data_list(unit_skill_trait_lang) or [])
+        + list(extract_data_list(unit_skill_lang) or [])
+    )
     unit_text_data = load_json(os.path.join(lang_dir, "m_unit.json")); weapon_text_data = load_json(os.path.join(lang_dir, "m_weapon.json"))
     supporter_text = load_json(os.path.join(lang_dir, "m_supporter.json")); supporter_leader_text = load_json(os.path.join(lang_dir, "m_supporter_leader_skill_content.json"))
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
@@ -3565,6 +3625,44 @@ for lang_code, paths in LANG_PATHS.items():
                     if entries and isinstance(entries, list) and len(entries) > 0:
                         best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
                         skill_trait_desc_fallback[tid] = best.get('text', '')
+    unit_skill_name_fallback = {}
+    unit_skill_desc_fallback = {}
+    if unit_skill_master_data:
+        for item in extract_data_list(unit_skill_master_data):
+            if not isinstance(item, dict):
+                continue
+            sid = normalize_id(item.get('Id') or item.get('id'))
+            nlid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+            dlid = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
+            if sid != '0' and nlid != '0':
+                entries = stm.get(nlid)
+                if entries and isinstance(entries, list) and len(entries) > 0:
+                    best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+                    unit_skill_name_fallback[sid] = best.get('text', '')
+            if sid != '0' and dlid != '0':
+                entries = stm.get(dlid)
+                if entries and isinstance(entries, list) and len(entries) > 0:
+                    best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
+                    unit_skill_desc_fallback[sid] = best.get('text', '')
+    unit_skill_trait_name_fallback = {}
+    unit_skill_trait_desc_fallback = {}
+    if unit_skill_trait_master_data:
+        for item in extract_data_list(unit_skill_trait_master_data):
+            if not isinstance(item, dict):
+                continue
+            tid = normalize_id(item.get('Id') or item.get('id'))
+            nlid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+            dlid = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
+            if tid != '0' and nlid != '0':
+                entries = stm.get(nlid)
+                if entries and isinstance(entries, list) and len(entries) > 0:
+                    best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+                    unit_skill_trait_name_fallback[tid] = best.get('text', '')
+            if tid != '0' and dlid != '0':
+                entries = stm.get(dlid)
+                if entries and isinstance(entries, list) and len(entries) > 0:
+                    best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
+                    unit_skill_trait_desc_fallback[tid] = best.get('text', '')
     srm = {}
     for item in extract_data_list(trait_set_data):
         if isinstance(item, dict):
@@ -3579,8 +3677,18 @@ for lang_code, paths in LANG_PATHS.items():
             if isinstance(item, dict):
                 si = normalize_id(item.get('CharacterSkillId') or item.get('SkillId') or item.get('Id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri; (len(si) > 2 and si[:-2] not in srm and srm.update({si[:-2]: ri}))
+    if unit_skill_master_data:
+        for item in extract_data_list(unit_skill_master_data):
+            if isinstance(item, dict):
+                si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
+                if si != '0' and ri != '0': srm[si] = ri
+    if unit_skill_trait_master_data:
+        for item in extract_data_list(unit_skill_trait_master_data):
+            if isinstance(item, dict):
+                si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
+                if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 def _precompute_sdc_data():
@@ -4649,6 +4757,75 @@ def resolve_char_skill(sid, ld, sv, isp):
         name = fallback_name
     ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(sid, ''); icf = find_trait_icon(ri)
     return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri}
+
+def resolve_unit_skill(usid, ld, sv):
+    stm = ld.get('skill_text_map', {}); info = unit_skill_info_map.get(usid, {})
+    nlid = normalize_id(info.get('name_lang_id', '')); dlid = normalize_id(info.get('desc_lang_id', ''))
+    name, desc = 'Unknown', ''
+    fallback_name = ld.get('unit_skill_name_fallback', {}).get(usid, '')
+    fallback_desc = ld.get('unit_skill_desc_fallback', {}).get(usid, '')
+    if nlid and nlid != '0':
+        entries = stm.get(nlid)
+        if entries and isinstance(entries, list) and len(entries) > 0:
+            best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+            name = best.get('text', '')
+            if fallback_name and name != fallback_name:
+                name = fallback_name
+    if dlid and dlid != '0':
+        entries = stm.get(dlid)
+        if entries and isinstance(entries, list) and len(entries) > 0:
+            best = next((x for x in entries if x.get('full_id') == dlid), entries[0])
+            desc = best.get('text', '') or ''
+    if fallback_desc and not desc:
+        desc = fallback_desc
+    if name == 'Unknown':
+        bi = usid[:-2] if len(usid) > 2 else usid
+        for k in [bi, usid, usid[-9:] if len(usid) >= 9 else None]:
+            if k and k in stm:
+                entries = stm[k]
+                if entries:
+                    best = next((x for x in entries if x.get('full_id') == nlid), entries[0])
+                    name = best.get('text', '')
+                    if fallback_name and name != fallback_name:
+                        name = fallback_name
+                    if len(entries) > 1:
+                        others = [x.get('text', '') for x in entries if x.get('full_id') == dlid]
+                        if others: desc = '\n'.join(others)
+                break
+    if name == 'Unknown' and fallback_name:
+        name = fallback_name
+    details = []
+    blob = (desc or '').strip()
+    if desc:
+        details.append(desc)
+    tnf = ld.get('unit_skill_trait_name_fallback', {}); tdf = ld.get('unit_skill_trait_desc_fallback', {})
+    for tr in unit_skill_trait_by_skill.get(usid, []):
+        tlid = normalize_id(tr.get('desc_lang_id', ''))
+        tdesc = ''
+        if tlid and tlid != '0':
+            entries = stm.get(tlid)
+            if entries and isinstance(entries, list) and len(entries) > 0:
+                best = next((x for x in entries if x.get('full_id') == tlid), entries[0])
+                tdesc = best.get('text', '') or ''
+        tid = tr.get('id', '')
+        if not tdesc:
+            tdesc = tdf.get(tid, '')
+        if not tdesc:
+            nl = normalize_id(tr.get('name_lang_id', ''))
+            if nl and nl != '0':
+                entries = stm.get(nl)
+                if entries and isinstance(entries, list) and len(entries) > 0:
+                    best = next((x for x in entries if x.get('full_id') == nl), entries[0])
+                    tdesc = best.get('text', '') or ''
+        if not tdesc:
+            tdesc = tnf.get(tid, '')
+        tnorm = (tdesc or '').strip()
+        if not tnorm or tnorm in blob:
+            continue
+        details.append(tdesc)
+        blob = (blob + '\n' + tnorm).strip() if blob else tnorm
+    ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(usid, ''); icf = find_trait_icon(ri)
+    return {'id': usid, 'name': name, 'sort': sv, 'details': details, 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': False, 'frame_overlay': '', 'resource_id': ri, 'skip_skill_modal': True}
 
 def resolve_npc_character_skills(ssid, lc):
     if not ssid or ssid == '0': return []
@@ -7298,7 +7475,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v6_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v5_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -7686,7 +7863,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp8_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp9_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -7975,7 +8152,8 @@ def get_unit(unit_id):
                     mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
                     break
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS}
+        skills = [resolve_unit_skill(row['unit_skill_id'], ld, row['sort']) for row in unit_skill_set_lookup.get(unit_id, [])]
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
