@@ -1418,7 +1418,12 @@ EX_ABILITY_PATTERNS = [
 
 
 def ex_character_ability_display_label(lang_code):
-    """Short title shown instead of '(Tag conditions) …' style names. EN client uses **EX ability** (verify before renaming)."""
+    """Short **trait/ability card** title for renamed EX-style rows in API `display_name` only.
+
+    Do not use this for stats toggles, list CP buttons, or other UI chrome — those use the
+    front-end i18n key `conditional_passive` (EN: 'Conditional Passive'), which must stay
+    independent of master-data strings and of this shorthand.
+    """
     lc = (lang_code or 'EN').upper()
     if lc in ('TW', 'HK'):
         return 'EX角色能力'
@@ -3407,6 +3412,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     icon_file = find_trait_icon(res_id) if res_id else None
     has_icon = bool(icon_file)
     ex_frame = is_ex_character_ability_frame(ab_name) or ability_details_imply_ex_piloting_ex_unit(details)
+    # Trait list display_name only. Stats/compare CP toggles use JS `t('conditional_passive')`, not this field.
     if is_ex_character_ability_rename(ab_name):
         uid = normalize_id(unit_id) if unit_id else ''
         if uid in UNIT_IDS_CONDITIONAL_PASSIVE_TRAIT_TITLE:
