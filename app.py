@@ -2750,7 +2750,10 @@ def create_unit_info_map(m):
                 occupied_area_id = safe_int(oaid, 1)
                 if occupied_area_id < 1:
                     occupied_area_id = 1
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id}
+                main_uid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId') or uid)
+                if main_uid == '0':
+                    main_uid = uid
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': main_uid}
     return lookup
 
 def create_unit_status_map(d):
@@ -3899,7 +3902,10 @@ for lang_code, paths in LANG_PATHS.items():
                     occupied_area_id = safe_int(oaid, 1)
                     if occupied_area_id < 1:
                         occupied_area_id = 1
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id}
+                    _muid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId') or uid)
+                    if _muid == '0':
+                        _muid = uid
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': _muid}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -4025,6 +4031,26 @@ for lang_code, paths in LANG_PATHS.items():
     
     LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
+
+
+def build_unit_transform_partner_map():
+    """Each main unit id maps to its single transform alt and vice versa (m_unit.MainUnitId)."""
+    main_to_alt = {}
+    for u, row in unit_info_map.items():
+        mid = normalize_id(row.get('main_unit_id', u))
+        if mid == '0':
+            mid = u
+        if u != mid:
+            main_to_alt[mid] = u
+    partner = {}
+    for m, a in main_to_alt.items():
+        partner[m] = a
+        partner[a] = m
+    return partner
+
+
+unit_transform_partner_map = build_unit_transform_partner_map()
+
 
 def _precompute_sdc_data():
     """Find all character ability IDs whose detail text contains the SDC marker.
@@ -5858,6 +5884,11 @@ def get_tag_units():
                 continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
+            _muid = normalize_id(info.get('main_unit_id', uid))
+            if _muid == '0':
+                _muid = uid
+            if uid != _muid:
+                continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
             tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), lc)))
@@ -5992,6 +6023,11 @@ def get_tag_affinity():
                 ri2 = str(info.get('role', '0'))
                 if ri2 not in ['1', '2', '3']:
                     continue
+                _muid = normalize_id(info.get('main_unit_id', uid))
+                if _muid == '0':
+                    _muid = uid
+                if uid != _muid:
+                    continue
                 lid = ld.get('unit_id_map', {}).get(uid, '')
                 name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
                 if not name:
@@ -6088,6 +6124,11 @@ def get_series_units():
                 continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']:
+                continue
+            _muid = normalize_id(info.get('main_unit_id', uid))
+            if _muid == '0':
+                _muid = uid
+            if uid != _muid:
                 continue
             ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
             if not _entity_has_series_id(ser_list, raw_sid):
@@ -6190,6 +6231,11 @@ def get_ability_units():
                 continue
             ri2 = str(info.get('role', '0'))
             if ri2 not in ['1', '2', '3']: continue
+            _muid = normalize_id(info.get('main_unit_id', uid))
+            if _muid == '0':
+                _muid = uid
+            if uid != _muid:
+                continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
             ab_names = []
@@ -6607,6 +6653,11 @@ def unit_passes_browse_pool_filters(
     role_id = info.get('role', '0')
     id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
     if role_id == '0' and not (id_seek and npc_password_unlocked()):
+        return False
+    _muid = normalize_id(info.get('main_unit_id', uid))
+    if _muid == '0':
+        _muid = uid
+    if uid != _muid and not id_seek:
         return False
     if role_filter is not None:
         if not role_filter:
@@ -7436,6 +7487,11 @@ def list_units():
         id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
         if role_id == '0' and not (id_seek and npc_password_unlocked()):
             continue
+        _muid = normalize_id(info.get('main_unit_id', uid))
+        if _muid == '0':
+            _muid = uid
+        if uid != _muid and not id_seek:
+            continue
         if role_filter is not None:
             if not role_filter:
                 continue
@@ -7946,6 +8002,11 @@ def api_latest_release():
         if sched in skip_sched or sched not in schedule_start_ms_by_id:
             continue
         if info.get('role', '0') == '0':
+            continue
+        _muid = normalize_id(info.get('main_unit_id', uid))
+        if _muid == '0':
+            _muid = uid
+        if uid != _muid:
             continue
         if uid not in unit_list_playable_ids:
             continue
@@ -8595,7 +8656,10 @@ def get_unit(unit_id):
                     break
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
         skills = [resolve_unit_skill(row['unit_skill_id'], ld, row['sort']) for row in unit_skill_set_lookup.get(unit_id, [])]
+        _tpid = unit_transform_partner_map.get(unit_id)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS}
+        if _tpid:
+            result['transform_partner_id'] = _tpid
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
