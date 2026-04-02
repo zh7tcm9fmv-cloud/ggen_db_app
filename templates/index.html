@@ -4275,8 +4275,7 @@ if(it.key==='critDmg')critDmg+=it.val;
 });
 const skB=_dcGetActiveSkillBonuses();
 dmgDealt+=skB.dmgDealt;
-const mp=DC_MP[S.dc.mpLevel]||DC_MP.medium;
-dmgDealt+=mp.dmgBonus*100;
+/** Vigor dmg % is only in calculateDamage (vigorDmgBonusPct); adding DC_MP here double-counts. */
 const di=document.getElementById('dcDmgIncrease');
 const ci=document.getElementById('dcCritDmgUp');
 const wCrit=S.dc._wpnCritDmgUp|0;
