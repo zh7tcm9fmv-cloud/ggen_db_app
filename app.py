@@ -5976,7 +5976,8 @@ def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld):
 
 @app.route('/api/tag_affinity')
 def get_tag_affinity():
-    """Tag modal Affinity tab: from character context list units with tag; from unit context list characters with Affinity ability names matching tag(s)."""
+    """Tag modal Affinity tab: from character context list units with tag; from unit context list playable
+    characters (with lineage tags, same pool as browse) whose Affinity-style ability names match tag(s)."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ts = request.args.get('tags', '').strip()
@@ -5985,7 +5986,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v2_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -5997,6 +5998,11 @@ def get_tag_affinity():
                     continue
                 ri2 = str(info.get('role', '0'))
                 if ri2 not in ['1', '2', '3']:
+                    continue
+                # Same pool as character browse: map/story NPCs have no m_*_lineage tags (e.g. affinity text may still mention a faction).
+                if cid not in char_list_playable_ids:
+                    continue
+                if not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
                     continue
                 if not _character_has_affinity_tag_match(cid, tl, op, ld):
                     continue
