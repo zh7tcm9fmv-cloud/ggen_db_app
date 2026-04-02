@@ -2159,7 +2159,7 @@ function renderUnitShell(d){let lb='';if(!d.is_ultimate){lb=`<div class="lb-cont
 function renderSupporterShell(d){const lv=d.level||100;const lb=Number(d.lb_tier)===d.lb_tier?d.lb_tier:parseInt(d.lb_tier,10);const lbVal=Math.min(3,Math.max(0,isNaN(lb)?3:lb));const lbBtns=`<div class="lb-btn-group supporter-lb-group"><button class="lb-icon-btn${lbVal===0?' active':''}" data-val="0" onclick="updateSupporterLbTier(0)"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"></button><button class="lb-icon-btn${lbVal===1?' active':''}" data-val="1" onclick="updateSupporterLbTier(1)"><img src="${imgUrl(LB_ICONS['Neutral'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"></button><button class="lb-icon-btn${lbVal===2?' active':''}" data-val="2" onclick="updateSupporterLbTier(2)"><img src="${imgUrl(LB_ICONS['Neutral'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['Neutral'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['None'])}" loading="lazy"></button><button class="lb-icon-btn${lbVal===3?' active':''}" data-val="3" onclick="updateSupporterLbTier(3)"><img src="${imgUrl(LB_ICONS['Max'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['Max'])}" loading="lazy"><img src="${imgUrl(LB_ICONS['Max'])}" loading="lazy"></button></div>`;const lvCtrl=`<div class="supporter-control-row"><div class="supporter-control-group"><label class="supporter-control-label">${t('supp_level')}</label><div class="supporter-level-control"><input type="range" id="suppLevelSlider" min="1" max="100" value="${lv}" oninput="updateSupporterLevel(parseInt(this.value,10))" onchange="clearTimeout(S._supporterLevelDebounce);refreshSupporterDetail()"><span id="suppLevelVal">${lv}</span></div></div></div>`;return`<div class="modal-top-label">${t('supp_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header supporter-detail-header"><div class="supporter-portrait-wrap">${d.portrait?imgTag(d.portrait,{cls:'supporter-portrait',alt:esc(d.name),webp:true,onerror:"this.parentElement.outerHTML='<div class=\\'detail-portrait-placeholder supporter-portrait-placeholder\\'>🎧</div>'"}) :`<div class="detail-portrait-placeholder supporter-portrait-placeholder">🎧</div>`}</div><div class="detail-title-area supporter-title-area"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta supporter-meta-row" style="align-items:center;margin-bottom:0;gap:12px;">${d.rarity_icon?`<img class="detail-rarity-icon" style="height:40px;" src="${imgUrl(d.rarity_icon)}" alt="${d.rarity}" loading="lazy">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}${lbBtns}</div>${renderLimitedTimeBanner(d,'character')}${lvCtrl}<div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="support-stat-badge support-hp">${t('hp_support')} +${fmtN(d.hp_support)}</span><span class="support-stat-badge support-atk">${t('atk_support')} +${fmtN(d.atk_support)}</span></div></div></div><div class="detail-body"><div id="detailLeaderSkillContainer"></div><div id="detailAbilitiesContainer"></div></div>`}
 function renderStageShell(d){return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area"><div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div><div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body"><div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
 function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage')document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);if(type==='character'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive)}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(d.weapons,d.is_large,S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id)}}
-function renderStatsWrapper(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr,bs;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return'';if(d.has_sp){if(S.sspActive){sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;bs=td.ssp_stats_no_cond}else if(S.spActive){sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;bs=td.sp_stats_no_cond}else{sr=cp?td.stats_with_cond:td.stats_no_cond;bs=td.stats_no_cond}}else{sr=cp?td.stats_with_cond:td.stats_no_cond;bs=td.stats_no_cond}}else{if(d.has_sp){if(S.spActive){sr=cp?d.sp_stats_with_ex:d.sp_stats;bs=d.sp_stats}else{sr=cp?d.stats_with_ex:d.stats;bs=d.stats}}else{sr=cp?d.stats_with_ex:d.stats;bs=d.stats}}let th='';if(hcf)th=`<div class="conditional-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-switch"></span><span class="toggle-label">${t('conditional_passive')}</span></div></div>`;return`${th}<div class="stats-grid">${sr.map((s,i)=>{const b=bs[i];const hcb=cp&&s.total>b.total;let eb='';if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}return`<div class="stat-card ${hcb?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s.name))}</div><div class="stat-card-value ${hcb?'has-bonus-val':''}">${fmtN(s.total)}</div>${eb}</div>`}).join('')}</div>`}
+function renderStatsWrapper(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr,bs;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return'';if(d.has_sp){if(S.sspActive){sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;bs=td.ssp_stats_no_cond}else if(S.spActive){sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;bs=td.sp_stats_no_cond}else{sr=cp?td.stats_with_cond:td.stats_no_cond;bs=td.stats_no_cond}}else{sr=cp?td.stats_with_cond:td.stats_no_cond;bs=td.stats_no_cond}}else{if(d.has_sp){if(S.spActive){sr=cp?d.sp_stats_with_ex:d.sp_stats;bs=d.sp_stats}else{sr=cp?d.stats_with_ex:d.stats;bs=d.stats}}else{sr=cp?d.stats_with_ex:d.stats;bs=d.stats}}let th='';if(hcf){const cplab=type==='unit'?_dcUnitConditionalToggleLabel(d):t('conditional_passive');th=`<div class="conditional-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-switch"></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}return`${th}<div class="stats-grid">${sr.map((s,i)=>{const b=bs[i];const hcb=cp&&s.total>b.total;let eb='';if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}return`<div class="stat-card ${hcb?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s.name))}</div><div class="stat-card-value ${hcb?'has-bonus-val':''}">${fmtN(s.total)}</div>${eb}</div>`}).join('')}</div>`}
 function toggleConditionalPassive(c){S.conditionalPassiveActive=c;updateDetailDynamicSections(S.currentDetailType)}
 function renderStageRestrictions(d){if(!d.sortie_groups||!d.sortie_groups.length)return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div>${d.sortie_groups.map(g=>`<div class="stage-restriction-block"><div class="stage-restriction-group-title">${t('sortie_group')} ${g.group_no}</div>${(g.restrictions||[]).map(r=>`<div class="stage-restriction-row"><div class="stage-restriction-applies">${esc(r.applies_to||'-')}</div><div class="stage-tags-wrap">${(r.restriction_names||[]).length?(r.restriction_names||[]).map(n=>createTagHtml({id:'',name:n,type:'group'})).join(''):`<span style="color:var(--text-muted)">${t('none')}</span>`}</div></div>`).join('')}</div>`).join('')}</div>`}
 function renderStageMapSection(d){
@@ -3893,6 +3893,14 @@ return 'stats'+sfx;
 function _dcGetUnitStatKey(){
 return _dcGetUnitStatKeyForCp(!!S.dc.unitCondPassive);
 }
+/** 00 Raiser (1370005950): in-game labels this slot Conditional Passive, not the generic EX-ability title. */
+function _dcUnitConditionalToggleLabel(ud){
+if(!ud||String(ud.id)!=='1370005950')return t('conditional_passive');
+const lc=String(S.lang||'EN').toUpperCase();
+if(lc==='TW'||lc==='HK')return'條件被動';
+if(lc==='JA'||lc==='JP')return'条件パッシブ';
+return'Conditional Passive';
+}
 function _dcCharHasConditional(cd){if(!cd)return false;return cd.has_conditional_passive!=null?cd.has_conditional_passive:!!cd.has_ex_stats}
 function _dcGetCharStatsForCp(charCpOn){
 const cd=S.dc.atkCharData;if(!cd)return[];
@@ -3932,7 +3940,7 @@ lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp
 }
 let unitCpToggle='';
 if(ud.has_cond_stats){
-unitCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(t('conditional_passive'))}</span></div></div></div>`;
+unitCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(_dcUnitConditionalToggleLabel(ud))}</span></div></div></div>`;
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -3965,7 +3973,7 @@ defShow=pr.unitDefVal;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
 const atkShowPreTurn=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct,uEff.unitAtkExSquadBase);
-const atkShow=_dcApplyUnitTurnBuffAtkToMsAtk(atkShowPreTurn,ud);
+const atkShow=atkShowPreTurn;
 const advAtkFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitAtkExSquadBase)||0)*(advAtkPct|0)/100):0;
 const advDefFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitDefExSquadBase)||0)*(advAtkPct|0)/100):0;
 const defShowAdv=_dcApplyUnitTurnBuffDefToMsDef(defShow+advDefFlat,ud);
@@ -3995,7 +4003,7 @@ if((utb.atkPct|0)>0||(utb.defPct|0)>0){
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
 if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)"><span>MS ATK +${utb.atkPct}% (1 turn)</span></label>`;
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
-unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS DEF toggle updates the panel only (this calculator’s damage line uses the <strong>defender</strong>’s MS DEF).</div></div>`;
+unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) is added into the same growth-line % bucket as unit passive, option parts, EX squad, and leader — not applied again on top of the final MS Attack. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
 }
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uVis}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
@@ -4017,7 +4025,7 @@ const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkS,uEff.unitDefVal).unitAtk;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct,uEff.unitAtkExSquadBase);
-const atkDisp=_dcApplyUnitTurnBuffAtkToMsAtk(atkMid,ud);
+const atkDisp=atkMid;
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=stats;
 if(ud.has_cond_stats&&td){
@@ -5243,14 +5251,6 @@ defPct=Math.max(defPct,x.def);
 });
 return{atkPct,defPct};
 }
-function _dcApplyUnitTurnBuffAtkToMsAtk(unitAtk,ud){
-const F=Math.floor;
-if(!ud||ud._manual||!S.dc.unitTurnBuffAtk)return unitAtk;
-const p=_dcGetDetectedUnitTurnBuffPercents(ud).atkPct|0;
-if(p<=0)return unitAtk;
-const ua=F(Math.max(0,Number(unitAtk)||0));
-return ua+F(ua*p/100);
-}
 function _dcApplyUnitTurnBuffDefToMsDef(unitDef,ud){
 const F=Math.floor;
 if(!ud||ud._manual||!S.dc.unitTurnBuffDef)return unitDef;
@@ -5314,7 +5314,7 @@ const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
-/** MS Attack (in-game): round(base × (100 + passive% + OP% + EX squad% + leader%) / 100), then + OP Attack flat + supporter ATK support flat. Do not add OP Attack flat before that round. Matches stat screen (e.g. 9661 base × 158% → 15265, not floor 15264). */
+/** MS Attack (in-game): round(base × (100 + passive% + OP% + EX squad% + leader% + optional unit-skill 1-turn ATK%) / 100), then + OP Attack flat + supporter ATK support flat. Unit-skill ATK% (when its toggle is on) stacks in that same sum on the growth line — not a second % on the final total. */
 if(opPct.HP)unitHp=F(unitHp*(100+opPct.HP)/100);
 if(opPct.Defense)unitDefVal=F(unitDefVal*(100+opPct.Defense)/100);
 if(opPct.Mobility)unitMob=F(unitMob*(100+opPct.Mobility)/100);
@@ -5332,15 +5332,17 @@ const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
 const opAt=opPct.Attack||0;
 const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const lp=leaderPct|0;
-const sumAtkPct=passivePct+opAt+exSq+lp;
+let turnAtkPct=0;
+if(S.dc.unitTurnBuffAtk&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(S.dc.atkUnitData).atkPct|0);
+const sumAtkPct=passivePct+opAt+exSq+lp+turnAtkPct;
 const R=Math.round;
 const coreAtk=R(b0*(100+sumAtkPct)/100);
 unitAtk=coreAtk+opFlat.Attack+atkSupport;
 const unitAtkGrowthAfterOptions=opAt?R(b0*(100+passivePct+opAt)/100):R(b0*(100+passivePct)/100);
 let deltaExAtk=0;
 if(exSq>0){
-const withEx=R(b0*(100+passivePct+opAt+exSq+lp)/100);
-const withoutEx=R(b0*(100+passivePct+opAt+lp)/100);
+const withEx=R(b0*(100+passivePct+opAt+exSq+lp+turnAtkPct)/100);
+const withoutEx=R(b0*(100+passivePct+opAt+lp+turnAtkPct)/100);
 deltaExAtk=withEx-withoutEx;
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
@@ -5367,7 +5369,6 @@ const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
 unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
 const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
 unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.unitAtkExSquadBase);
-unitAtk=_dcApplyUnitTurnBuffAtkToMsAtk(unitAtk,ud);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;

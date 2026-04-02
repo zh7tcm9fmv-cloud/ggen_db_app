@@ -1388,6 +1388,21 @@ def ex_character_ability_display_label(lang_code):
         return 'EXキャラクターアビリティ'
     return 'EX ability'
 
+
+# Unit IDs whose EX-framed tag/squad trait is shown as **Conditional Passive** in-game (not the generic EX-ability title).
+UNIT_IDS_CONDITIONAL_PASSIVE_TRAIT_TITLE = frozenset({'1370005950'})
+
+
+def conditional_passive_trait_display_label(lang_code):
+    """Localized title for UNIT_IDS_CONDITIONAL_PASSIVE_TRAIT_TITLE (e.g. 00 Raiser)."""
+    lc = (lang_code or 'EN').upper()
+    if lc in ('TW', 'HK'):
+        return '條件被動'
+    if lc in ('JA', 'JP'):
+        return '条件パッシブ'
+    return 'Conditional Passive'
+
+
 def is_ex_character_ability_frame(ab_name):
     """Square EX frame on trait icon: EX in name, tag conditions, or series conditions (EN/TW/HK/JA wording)."""
     if is_ex_ability(ab_name):
@@ -2183,7 +2198,14 @@ def create_ability_maps(name_data, desc_data_lang):
         if isinstance(item, dict):
             rid = normalize_id(item.get('id') or item.get('Id'))
             val = item.get('value') or item.get('Value') or item.get('name') or item.get('Name') or item.get('text') or item.get('Text')
-            if rid != '0' and val: name_map[rid] = val; (len(rid) > 9 and name_map.update({rid[:-2][-7:]: val}))
+            if rid != '0' and val:
+                name_map[rid] = val
+                # Legacy shortcut for AbilityId-style lookups; multiple detail ids can share the same
+                # last-7 slice (e.g. 140100000202450100 vs 140100000202450103 → 2024501). First wins.
+                if len(rid) > 9:
+                    short = rid[:-2][-7:]
+                    if short:
+                        name_map.setdefault(short, val)
     seen = set()
     for item in extract_data_list(desc_data_lang):
         if isinstance(item, dict):
@@ -2198,6 +2220,34 @@ def create_ability_maps(name_data, desc_data_lang):
                     aid = rid[:-2][-7:]; desc_map.setdefault(aid, [])
                     if not any(x['full_id'] == rid for x in desc_map[aid]): desc_map[aid].append(entry)
     return name_map, desc_map
+
+# m_trait_set_detail.json name row ids are 140100000 + m_trait_set.Id (see master TraitSetId / ability link).
+TRAIT_SET_DETAIL_NAME_ID_PREFIX = '140100000'
+
+
+def trait_set_detail_name_lang_id(trait_set_id):
+    ts = normalize_id(trait_set_id)
+    if not ts or ts == '0' or not ts.isdigit():
+        return ''
+    return f'{TRAIT_SET_DETAIL_NAME_ID_PREFIX}{ts}'
+
+
+def resolve_ability_display_name_from_maps(ab_id, abil_name_map, abil_link_map):
+    """Ability title from m_trait_set_detail via TraitSetId; avoids ambiguous 7-digit alias collisions."""
+    aid = normalize_id(ab_id)
+    if not aid or aid == '0':
+        return None
+    trait_set_id = normalize_id(abil_link_map.get(aid, aid))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    detail_nid = trait_set_detail_name_lang_id(trait_set_id)
+    for key in (trait_set_id, detail_nid, lookup_id, aid):
+        if not key:
+            continue
+        v = abil_name_map.get(key)
+        if v:
+            return v
+    return None
+
 
 def create_trait_set_to_traits_map(d):
     lookup = {}
@@ -3035,10 +3085,9 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
 
 def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
-    if not ab_id or ab_id == '0': return ''
-    trait_set_id = abil_link_map.get(ab_id, ab_id)
-    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
-    return abil_name_map.get(trait_set_id, abil_name_map.get(lookup_id, abil_name_map.get(ab_id, '')))
+    if not ab_id or normalize_id(ab_id) == '0':
+        return ''
+    return resolve_ability_display_name_from_maps(ab_id, abil_name_map, abil_link_map) or ''
 
 def collect_ability_search_text(aid, ld):
     """Ability name + trait / description text for substring search (list APIs)."""
@@ -3138,10 +3187,10 @@ def collect_unit_mechanism_search_text(info, ld, uid=None):
                 break
     return ' '.join(parts)
 
-def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN'):
-    trait_set_id = abil_link_map.get(ab_id, ab_id)
+def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN', unit_id=None):
+    trait_set_id = normalize_id(abil_link_map.get(ab_id, ab_id))
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
-    ab_name = abil_name_map.get(trait_set_id, abil_name_map.get(lookup_id, abil_name_map.get(ab_id, "Unknown")))
+    ab_name = resolve_ability_display_name_from_maps(ab_id, abil_name_map, abil_link_map) or 'Unknown'
     trait_ids = trait_set_traits_map.get(trait_set_id, [])
     if not trait_ids: trait_ids = trait_set_traits_map.get(lookup_id, [])
     trait_info = []
@@ -3312,7 +3361,14 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     icon_file = find_trait_icon(res_id) if res_id else None
     has_icon = bool(icon_file)
     ex_frame = is_ex_character_ability_frame(ab_name) or ability_details_imply_ex_piloting_ex_unit(details)
-    disp_name = ex_character_ability_display_label(lang_code) if is_ex_character_ability_rename(ab_name) else ab_name
+    if is_ex_character_ability_rename(ab_name):
+        uid = normalize_id(unit_id) if unit_id else ''
+        if uid in UNIT_IDS_CONDITIONAL_PASSIVE_TRAIT_TITLE:
+            disp_name = conditional_passive_trait_display_label(lang_code)
+        else:
+            disp_name = ex_character_ability_display_label(lang_code)
+    else:
+        disp_name = ab_name
     return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_frame, 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_frame) else '', 'resource_id': res_id}
 
 # ═══════════════════════════════════════════════════════
@@ -8210,22 +8266,22 @@ def get_unit(unit_id):
         ua = unit_abil_map.get(unit_id, [])
         abilities = []
         for ab in sorted(ua, key=lambda x: x['sort']):
-            bab = build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc)
-            if str(ab['id']) in rm: bab['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc)
+            bab = build_ability_entry(str(ab['id']), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc, unit_id=unit_id)
+            if str(ab['id']) in rm: bab['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=ab['sort'], lang_code=lc, unit_id=unit_id)
             abilities.append(bab)
         ac = []
         for ab in sorted(ua, key=lambda x: x['sort']):
-            bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
-            if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG)
+            bac = build_ability_entry(str(ab['id']), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG, unit_id=unit_id)
+            if str(ab['id']) in rm: bac['ssp_replacement'] = build_ability_entry(rm[str(ab['id'])], ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=ab['sort'], lang_code=CALC_LANG, unit_id=unit_id)
             ac.append(bac)
         max_ab_sort = max((int(a.get('sort', 0) or 0) for a in ua), default=0)
         if has_sp:
             for idx, gain_aid in enumerate(unit_ssp_abil_gain_list.get(unit_id, [])):
                 so = max_ab_sort + idx + 1
-                bab = build_ability_entry(str(gain_aid), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=so, lang_code=lc)
+                bab = build_ability_entry(str(gain_aid), ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=so, lang_code=lc, unit_id=unit_id)
                 bab['ssp_only'] = True
                 abilities.append(bab)
-                bac = build_ability_entry(str(gain_aid), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=so, lang_code=CALC_LANG)
+                bac = build_ability_entry(str(gain_aid), ldc['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, ldc['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ldc['lineage_lookup'], ldc['series_name_map'], ability_resource_map, ldc['abil_desc_map'], sort_order=so, lang_code=CALC_LANG, unit_id=unit_id)
                 bac['ssp_only'] = True
                 ac.append(bac)
         spb = {s: 0 for s in UNIT_STAT_ORDER}
