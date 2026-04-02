@@ -1447,20 +1447,13 @@ def conditional_passive_trait_display_label(lang_code):
 
 
 def is_ex_character_ability_frame(ab_name):
-    """Square EX frame on trait icon: EX in name, tag conditions, or series conditions (EN/TW/HK/JA wording)."""
-    if is_ex_ability(ab_name):
-        return True
-    raw = ab_name or ''
-    low = raw.lower()
-    if '(tag conditions)' in low or '(series conditions)' in low:
-        return True
-    if '標籤條件' in raw or '标签条件' in raw:
-        return True
-    if '系列條件' in raw or '系列条件' in raw:
-        return True
-    if 'シリーズ条件' in raw:
-        return True
-    return False
+    """Square EX frame on trait icon: only when the trait title is the EX character-ability type (EX_ABILITY_PATTERNS).
+
+    Series- and tag-condition passives (e.g. \"(Series conditions) …\") use a normal frame in-game; do not
+    treat those titles as EX-framed. Body text that references piloting a named (EX) unit still adds the
+    frame via ability_details_imply_ex_piloting_ex_unit in build_ability_entry.
+    """
+    return bool(ab_name and is_ex_ability(ab_name))
 
 
 def _is_official_ex_slot_umbrella_title(ab_name):
@@ -5946,15 +5939,19 @@ def _resolved_ability_name_for_tag_scan(abil_id, abnm):
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
     return abnm.get(trait_set_id, abnm.get(lookup_id, abnm.get(abil_id, '')))
 
+# Localized "Affinity: …" trait titles in m_trait_set_detail (tag modal Affinity tab).
+# TW/HK use 契合度; JP アフィニティ; some builds use 親和 / 亲和. Keep in sync with
+# scripts/verify_affinity_trait_titles.py when adding a new official prefix.
+_AFFINITY_TITLE_MARKERS_CJK = frozenset(('親和', '亲和', 'アフィニティ', '契合度'))
+
+
 def _name_indicates_affinity_ability(ab_name):
     if not ab_name:
         return False
     n = ab_name.lower()
     if 'affinity' in n:
         return True
-    if '親和' in ab_name or 'アフィニティ' in ab_name:
-        return True
-    return False
+    return any(m in ab_name for m in _AFFINITY_TITLE_MARKERS_CJK)
 
 def _affinity_ability_name_matches_tags(ab_name, tag_tokens_lc, op):
     if not ab_name or not _name_indicates_affinity_ability(ab_name):
