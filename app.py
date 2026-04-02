@@ -730,13 +730,26 @@ def parse_unit_terrain_filter(val):
 
 
 def parse_list_series_filter(val):
-    """Optional series id; None = no filter."""
+    """Optional series filter; None = no filter; frozenset = OR (entity matches any selected id).
+    Comma- or semicolon-separated ids in the query string; single id unchanged for callers."""
     if val is None:
         return None
     s = (val or '').strip()
     if not s or s.upper() == 'ALL':
         return None
-    return normalize_id(s)
+    seen = []
+    seen_set = set()
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        nid = normalize_id(token)
+        if not nid or nid == '0' or nid in seen_set:
+            continue
+        seen_set.add(nid)
+        seen.append(nid)
+    if not seen:
+        return None
+    if len(seen) == 1:
+        return seen[0]
+    return frozenset(seen)
 
 
 def lineage_filter_cache_fragment(lid):
@@ -1008,6 +1021,11 @@ def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None):
 def series_filter_cache_fragment(sid):
     if sid is None:
         return 's0'
+    if isinstance(sid, (frozenset, set)):
+        xs = sorted(str(x).replace('%', '')[:48] for x in sid if str(x).strip())
+        if not xs:
+            return 's0'
+        return ('s' + '__'.join(xs))[:220]
     return 's' + str(sid)[:32]
 
 
@@ -1037,8 +1055,19 @@ def entity_matches_lineage(lin_map, eid, want_lid):
 def entity_matches_series(ser_set_id, want_series_id, lc):
     if want_series_id is None:
         return True
+    resolved = resolve_series(ser_set_id or '', lc)
+    if isinstance(want_series_id, (frozenset, set, list, tuple)):
+        if not want_series_id:
+            return True
+        want_ids = {normalize_id(w) for w in want_series_id if str(w).strip()}
+        want_ids.discard('')
+        want_ids.discard('0')
+        if not want_ids:
+            return True
+        entity_ids = {normalize_id(s.get('id', '')) for s in resolved if s.get('id')}
+        return not entity_ids.isdisjoint(want_ids)
     ws = normalize_id(want_series_id)
-    for s in resolve_series(ser_set_id or '', lc):
+    for s in resolved:
         if normalize_id(s.get('id', '')) == ws:
             return True
     return False
