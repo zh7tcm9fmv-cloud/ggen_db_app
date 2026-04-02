@@ -3984,7 +3984,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: round(base×(100+passive%+OP%+EX%+leader%)/100) + OP flat + supporter flat. This line is the rounded base delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: ceil(base×(100+passive%+OP%+EX%+leader%)/100) + OP flat + supporter flat. This line is the ceil’d base delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
@@ -3996,7 +3996,7 @@ const hasUnitMods=(S.dc.optionParts&&S.dc.optionParts.length)||(S.dc.supporters&
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: ATK/DEF bonus to this unit when the EX ability toggle is on.</div>':'';
 const cPct=_dcGetCounterOwnAtkPct();
 const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: +'+cPct+'% MS Attack when countering (see Own ATK when countering below).</div>':'';
-const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">MS Attack: round(base×(100+unit passive%+OP%+EX%+leader%)/100) + OP Attack flat + supporter ATK support. HP uses leader % on the line below.</div>':'')+pairNote+counterNote;
+const unitModNote=(hasUnitMods?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">MS Attack: ceil(base×(100+unit passive%+OP%+EX%+leader%)/100) + OP Attack flat + supporter ATK support. HP uses leader % on the line below.</div>':'')+pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 let unitTurnBuffHtml='';
 if((utb.atkPct|0)>0||(utb.defPct|0)>0){
@@ -4040,7 +4040,7 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='dc-stat-mini-bonus';
-sub.title='round(base×(100+passive%+OP%+EX%+leader%)/100): delta from EX% in that sum.';
+sub.title='ceil(base×(100+passive%+OP%+EX%+leader%)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
@@ -5314,7 +5314,7 @@ const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
-/** MS Attack (in-game): round(base × (100 + passive% + OP% + EX squad% + leader% + optional unit-skill 1-turn ATK%) / 100), then + OP Attack flat + supporter ATK support flat. Unit-skill ATK% (when its toggle is on) stacks in that same sum on the growth line — not a second % on the final total. */
+/** MS Attack (in-game): ceil(base × (100 + passive% + OP% + EX squad% + leader% + optional unit-skill 1-turn ATK%) / 100), then + OP Attack flat + supporter ATK support flat. (NOT Math.round: e.g. 9661×158% = 15264.38 rounds to 15264 with IEEE “nearest”; game/UI uses 15265 → +240 = 15505.) Unit-skill ATK% stacks in that same sum on the growth line. */
 if(opPct.HP)unitHp=F(unitHp*(100+opPct.HP)/100);
 if(opPct.Defense)unitDefVal=F(unitDefVal*(100+opPct.Defense)/100);
 if(opPct.Mobility)unitMob=F(unitMob*(100+opPct.Mobility)/100);
@@ -5334,15 +5334,16 @@ const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
 const lp=leaderPct|0;
 let turnAtkPct=0;
 if(S.dc.unitTurnBuffAtk&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(S.dc.atkUnitData).atkPct|0);
-const sumAtkPct=passivePct+opAt+exSq+lp+turnAtkPct;
-const R=Math.round;
-const coreAtk=R(b0*(100+sumAtkPct)/100);
-unitAtk=coreAtk+opFlat.Attack+atkSupport;
-const unitAtkGrowthAfterOptions=opAt?R(b0*(100+passivePct+opAt)/100):R(b0*(100+passivePct)/100);
+const sumAtkPct=(passivePct|0)+(opAt|0)+(exSq|0)+(lp|0)+(turnAtkPct|0);
+const Cg=Math.ceil;
+const coreAtk=Cg((Math.max(0,b0|0)*(100+sumAtkPct))/100);
+unitAtk=coreAtk+(opFlat.Attack|0)+(atkSupport|0);
+const unitAtkGrowthAfterOptions=opAt?Cg((Math.max(0,b0|0)*(100+(passivePct|0)+(opAt|0)))/100):Cg((Math.max(0,b0|0)*(100+(passivePct|0)))/100);
 let deltaExAtk=0;
 if(exSq>0){
-const withEx=R(b0*(100+passivePct+opAt+exSq+lp+turnAtkPct)/100);
-const withoutEx=R(b0*(100+passivePct+opAt+lp+turnAtkPct)/100);
+const bG=Math.max(0,b0|0),p=passivePct|0,o=opAt|0,e=exSq|0,l=lp|0,t=turnAtkPct|0;
+const withEx=Cg((bG*(100+p+o+e+l+t))/100);
+const withoutEx=Cg((bG*(100+p+o+l+t))/100);
 deltaExAtk=withEx-withoutEx;
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};

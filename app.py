@@ -1420,8 +1420,16 @@ def is_ex_character_ability_frame(ab_name):
     return False
 
 
+def _is_official_ex_slot_umbrella_title(ab_name):
+    """m_trait_set_detail umbrella row (e.g. id …202450100) — must show verbatim, not shortened to 'EX ability'."""
+    n = ' '.join((ab_name or '').strip().split()).lower()
+    return n == 'ex character ability'
+
+
 def is_ex_character_ability_rename(ab_name):
-    """Replace title with localized EX-ability label (tag-style EX only; keep '(Series conditions)…' as in master)."""
+    """Replace long tag-style titles with short EX slot label. Never replace official umbrella names from master."""
+    if _is_official_ex_slot_umbrella_title(ab_name):
+        return False
     if is_ex_ability(ab_name):
         return True
     raw = ab_name or ''
