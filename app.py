@@ -496,7 +496,7 @@ ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 def parse_list_rarity_filter(val):
     """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
-    tuple (letters, need_limited, need_ultimate) = UR/SSR/... plus optional LT (limited-time) and ULT filters."""
+    tuple (letters, need_limited, need_ultimate, exclude_limited) = star tiers + LT / ULT / NLT (exclude limited-time)."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -509,16 +509,19 @@ def parse_list_rarity_filter(val):
         return None
     has_lt = 'LT' in parts
     has_ult = 'ULT' in parts
+    exclude_limited = 'NLT' in parts
+    if has_lt and exclude_limited:
+        return set()
     letters = {p for p in parts if p in RARITY_LETTERS}
-    if any(p not in RARITY_LETTERS and p not in ('LT', 'ULT') for p in parts):
+    if any(p not in RARITY_LETTERS and p not in ('LT', 'ULT', 'NLT') for p in parts):
         return set()
     if has_lt and has_ult and letters == RARITY_LETTERS:
         return None
-    if letters == RARITY_LETTERS and not has_lt and not has_ult:
+    if letters == RARITY_LETTERS and not has_lt and not has_ult and not exclude_limited:
         return None
-    if not letters and not has_lt and not has_ult:
+    if not letters and not has_lt and not has_ult and not exclude_limited:
         return set()
-    return (frozenset(letters), has_lt, has_ult)
+    return (frozenset(letters), has_lt, has_ult, exclude_limited)
 
 
 def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
@@ -528,7 +531,10 @@ def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
     if rf == set():
         return False
     if isinstance(rf, tuple):
-        letters, need_lt, need_ult = rf
+        letters, need_lt, need_ult = rf[0], rf[1], rf[2]
+        exclude_limited = rf[3] if len(rf) > 3 else False
+        if exclude_limited and is_limited:
+            return False
         if need_lt and not is_limited:
             return False
         if need_ult and not is_ultimate:
@@ -545,13 +551,16 @@ def rarity_filter_cache_fragment(rf):
     if not rf:
         return 'none'
     if isinstance(rf, tuple):
-        letters, need_lt, need_ult = rf
+        letters, need_lt, need_ult = rf[0], rf[1], rf[2]
+        exclude_limited = rf[3] if len(rf) > 3 else False
         core = ','.join(sorted(letters)) if letters else '*'
         frag = core
         if need_lt:
             frag += '_lt'
         if need_ult:
             frag += '_ult'
+        if exclude_limited:
+            frag += '_nlt'
         return frag
     return ','.join(sorted(rf))
 
@@ -3554,6 +3563,7 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1150000150', '1095002550', '1200003950', '1330000750', '1114000150', '1501002250', '1430003450',
     '1080000150', '1330000150', '1339000150', '1400000550', '1230003850', '1125001450', '1125001150',
     '1060000550', '1060000450', '1705000550', '1060000350',
+    '1219000150', '1370005950',
 })
 
 
@@ -8539,7 +8549,7 @@ def get_unit(unit_id):
                 if not cname:
                     cname = f'Unknown ({rec_cid})'
                 cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
-                recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or ''}
+                recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
         mm = ld.get('mechanism_map', {})
         for mid in mids:
             if mid == '2x2': continue
