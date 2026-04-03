@@ -1594,6 +1594,61 @@ def trait_title_implies_conditional_stat_bonuses(name):
     return False
 
 
+def _char_trait_title_counts_as_conditional_bucket(bab):
+    """(Battle/tag/… conditions) in the trait *name* counts toward the CP bucket only if details back it up.
+
+    Structured condition tags, [Condition N] placeholders, or when/if-style lines count; a bare \"%\" line
+    under a condition-style title does not (matches in-game: title is categorical, stats are always on)."""
+    if not bab or not isinstance(bab, dict):
+        return False
+    name = bab.get('name') or ''
+    if not trait_title_implies_conditional_stat_bonuses(name):
+        return False
+    for d2 in bab.get('details', []) or []:
+        if not isinstance(d2, dict):
+            continue
+        if d2.get('conditions') or d2.get('condition_groups'):
+            return True
+        txt = (d2.get('text') or '').strip()
+        if not txt:
+            continue
+        if '[condition' in txt.lower():
+            return True
+        for ln in re.split(r'\r?\n+', txt):
+            ln = (ln or '').strip()
+            if not ln:
+                continue
+            if _is_conditional_stat_text(ln):
+                return True
+    return False
+
+
+def ability_name_implies_unit_stat_conditional_bucket(ad):
+    """True when the ability *title* gates the whole trait behind conditional stats / CP toggle.
+
+    Do not scan ability body text here: phrases like \"at the start of every turn\" on one line
+    would incorrectly force unconditional stat lines in the same ability (e.g. Mobility %) into
+    the conditional bucket. Per-sentence routing uses _is_conditional_stat_text inside ep()."""
+    if not ad or not isinstance(ad, dict):
+        return False
+    name = (ad.get('name') or '').strip()
+    if not name:
+        return False
+    if trait_title_implies_conditional_stat_bonuses(name):
+        return True
+    low = name.lower()
+    if 'unconditional' in low:
+        return False
+    if 'condition' in low or 'conditional' in low:
+        return True
+    if re.search(r'(?<![a-z])when(?![a-z])', low):
+        return True
+    for w in ('when countering', 'when counter', 'when attacking', 'when attacked', 'during battle'):
+        if w in low:
+            return True
+    return False
+
+
 def _char_detail_is_conditional(d2, txt):
     """True if this trait line uses structured tags or conditional wording (CP must be on to apply)."""
     if isinstance(d2, dict):
@@ -1686,7 +1741,7 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        title_c = trait_title_implies_conditional_stat_bonuses((bab.get('name') or ''))
+        title_c = _char_trait_title_counts_as_conditional_bucket(bab)
         is_cond = title_c or carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
@@ -4777,22 +4832,9 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
         ac.append(bac)
     spb = {s: 0 for s in UNIT_STAT_ORDER}; spc = {s: 0 for s in UNIT_STAT_ORDER}; nxs = {s: 0 for s in UNIT_STAT_ORDER}
     spb_move_flat = [0]; spc_move_flat = [0]
-    def _ability_has_condition_word(ad):
-        name_raw = (ad.get('name') or '').lower()
-        cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-        name = '' if 'unconditional' in name_raw else name_raw
-        if name and any(w in name for w in cond_words):
-            return True
-        for d2 in ad.get('details', []):
-            txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-            if 'unconditional' in txt:
-                continue
-            if any(w in txt for w in cond_words):
-                return True
-        return False
     def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
-        ie = ad.get('is_ex', False); ability_cond = _ability_has_condition_word(ad)
+        ie = ad.get('is_ex', False); ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
         for d2 in ad.get('details', []):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
@@ -4870,24 +4912,10 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
     nxss = {s: 0 for s in UNIT_STAT_ORDER}
     spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
 
-    def _ability_has_condition_word(ad):
-        name_raw = (ad.get('name') or '').lower()
-        cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-        name = '' if 'unconditional' in name_raw else name_raw
-        if name and any(w in name for w in cond_words):
-            return True
-        for d2 in ad.get('details', []):
-            txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-            if 'unconditional' in txt:
-                continue
-            if any(w in txt for w in cond_words):
-                return True
-        return False
-
     def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
         ie = ad.get('is_ex', False)
-        ability_cond = _ability_has_condition_word(ad)
+        ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
         for d2 in ad.get('details', []):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
@@ -5374,7 +5402,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
         if bab.get('is_ex', False):
             continue
         hc = any(cond for d2 in bab.get('details', []) for cond in d2.get('conditions', []))
-        title_c = trait_title_implies_conditional_stat_bonuses((bab.get('name') or ''))
+        title_c = _char_trait_title_counts_as_conditional_bucket(bab)
         for d2 in bab.get('details', []):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
@@ -5390,7 +5418,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
                 part_stats = extract_stat_percent_char(part, txt, char_id=char_id)
                 if itc and not part_stats:
                     cond_prefix = True
-                is_cond = title_c or itc or cond_prefix
+                is_cond = title_c or itc or cond_prefix or _char_detail_is_conditional(d2, txt)
                 for s, pct in part_stats.items():
                     if s not in CHAR_STAT_ORDER:
                         continue
@@ -8465,24 +8493,10 @@ def get_unit(unit_id):
         wpn_nxs = {k: 0 for k in _WPN_KEYS}
         wpn_nxss = {k: 0 for k in _WPN_KEYS}
 
-        def _ability_has_condition_word(ad):
-            name_raw = (ad.get('name') or '').lower()
-            cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-            name = '' if 'unconditional' in name_raw else name_raw
-            if name and any(w in name for w in cond_words):
-                return True
-            for d2 in ad.get('details', []):
-                txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-                if 'unconditional' in txt:
-                    continue
-                if any(w in txt for w in cond_words):
-                    return True
-            return False
-
         def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
-            ability_cond = _ability_has_condition_word(ad)
+            ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
             inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
             for d2 in ad.get('details', []):
                 txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
