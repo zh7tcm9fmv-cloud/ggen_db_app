@@ -1566,6 +1566,34 @@ def _is_conditional_stat_text(t):
         if kw in tl: return True
     return False
 
+
+def trait_title_implies_conditional_stat_bonuses(name):
+    """m_trait_set_detail title marks in-game gated passives; body text may be a bare '%' line without 'when/if'.
+
+    Those bonuses belong in the conditional-passive / has_cond pool only (not base list stats)."""
+    if not name:
+        return False
+    low = name.lower()
+    en_markers = (
+        '(battle conditions)', '(tag conditions)', '(series conditions)',
+        '(hp conditions)', '(vigor conditions)', '(no. of battles conditions)',
+        '(when supporting)', '(map conditions)', '(ally conditions)',
+    )
+    if any(m in low for m in en_markers):
+        return True
+    cjk_markers = (
+        '（戰鬥條件）', '（战斗条件）', '（標籤條件）', '（标签条件）',
+        '（系列條件）', '（系列条件）', '（戰鬥次數條件）', '（战斗次数条件）',
+        '（體力條件）', '（体力条件）', '（氣勢條件）', '（气势条件）',
+        '（支援時', '（選擇閃避開始戰鬥時）',
+    )
+    if any(m in name for m in cjk_markers):
+        return True
+    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', '支援時')):
+        return True
+    return False
+
+
 def _char_detail_is_conditional(d2, txt):
     """True if this trait line uses structured tags or conditional wording (CP must be on to apply)."""
     if isinstance(d2, dict):
@@ -1658,7 +1686,8 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        is_cond = carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
+        title_c = trait_title_implies_conditional_stat_bonuses((bab.get('name') or ''))
+        is_cond = title_c or carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
         tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
@@ -4749,12 +4778,17 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
     spb = {s: 0 for s in UNIT_STAT_ORDER}; spc = {s: 0 for s in UNIT_STAT_ORDER}; nxs = {s: 0 for s in UNIT_STAT_ORDER}
     spb_move_flat = [0]; spc_move_flat = [0]
     def _ability_has_condition_word(ad):
-        name = (ad.get('name') or '').lower()
+        name_raw = (ad.get('name') or '').lower()
         cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-        if any(w in name for w in cond_words): return True
+        name = '' if 'unconditional' in name_raw else name_raw
+        if name and any(w in name for w in cond_words):
+            return True
         for d2 in ad.get('details', []):
             txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-            if any(w in txt for w in cond_words): return True
+            if 'unconditional' in txt:
+                continue
+            if any(w in txt for w in cond_words):
+                return True
         return False
     def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
@@ -4780,13 +4814,13 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 is_cond = itc or cond_prefix
                 if flat_move:
                     if inx: pass
-                    elif hc or ie or is_cond: cd_move_flat[0] += flat_move
+                    elif hc or ie or is_cond or ability_cond: cd_move_flat[0] += flat_move
                     else: bd_move_flat[0] += flat_move
                 for s, pct in part_stats.items():
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
                     if inx: nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or is_cond: cd[s] = cd.get(s, 0) + pct
+                    elif hc or ie or is_cond or ability_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
@@ -4837,12 +4871,17 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
     spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
 
     def _ability_has_condition_word(ad):
-        name = (ad.get('name') or '').lower()
+        name_raw = (ad.get('name') or '').lower()
         cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-        if any(w in name for w in cond_words): return True
+        name = '' if 'unconditional' in name_raw else name_raw
+        if name and any(w in name for w in cond_words):
+            return True
         for d2 in ad.get('details', []):
             txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-            if any(w in txt for w in cond_words): return True
+            if 'unconditional' in txt:
+                continue
+            if any(w in txt for w in cond_words):
+                return True
         return False
 
     def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
@@ -4871,7 +4910,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 if flat_move:
                     if inx:
                         pass
-                    elif hc or ie or is_cond:
+                    elif hc or ie or is_cond or ability_cond:
                         cd_move_flat[0] += flat_move
                     else:
                         bd_move_flat[0] += flat_move
@@ -4882,7 +4921,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                         continue
                     if inx:
                         nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or is_cond:
+                    elif hc or ie or is_cond or ability_cond:
                         cd[s] = cd.get(s, 0) + pct
                     else:
                         bd[s] = bd.get(s, 0) + pct
@@ -5335,6 +5374,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
         if bab.get('is_ex', False):
             continue
         hc = any(cond for d2 in bab.get('details', []) for cond in d2.get('conditions', []))
+        title_c = trait_title_implies_conditional_stat_bonuses((bab.get('name') or ''))
         for d2 in bab.get('details', []):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
@@ -5350,7 +5390,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
                 part_stats = extract_stat_percent_char(part, txt, char_id=char_id)
                 if itc and not part_stats:
                     cond_prefix = True
-                is_cond = itc or cond_prefix
+                is_cond = title_c or itc or cond_prefix
                 for s, pct in part_stats.items():
                     if s not in CHAR_STAT_ORDER:
                         continue
@@ -5378,6 +5418,8 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
     spbs = {s: 0 for s in CHAR_STAT_ORDER}
     for bab in ac:
         sab = bab.get('sp_replacement', bab)
+        if trait_title_implies_conditional_stat_bonuses((sab.get('name') or '')):
+            continue
         for d2 in sab.get('details', []):
             rawt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             spl = [ln.strip() for ln in re.split(r'\r?\n+', rawt) if ln.strip()]
@@ -8272,7 +8314,7 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r9_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r10_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -8366,7 +8408,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp9_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp10_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -8424,12 +8466,17 @@ def get_unit(unit_id):
         wpn_nxss = {k: 0 for k in _WPN_KEYS}
 
         def _ability_has_condition_word(ad):
-            name = (ad.get('name') or '').lower()
+            name_raw = (ad.get('name') or '').lower()
             cond_words = ('condition', 'conditional', 'when countering', 'when counter', 'when attacking', 'when attacked', 'during battle', 'at the start of', 'each time', 'every time')
-            if any(w in name for w in cond_words): return True
+            name = '' if 'unconditional' in name_raw else name_raw
+            if name and any(w in name for w in cond_words):
+                return True
             for d2 in ad.get('details', []):
                 txt = (d2.get('text', '') if isinstance(d2, dict) else str(d2)).lower()
-                if any(w in txt for w in cond_words): return True
+                if 'unconditional' in txt:
+                    continue
+                if any(w in txt for w in cond_words):
+                    return True
             return False
 
         def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd):
@@ -8459,7 +8506,7 @@ def get_unit(unit_id):
                     if flat_move:
                         if inx:
                             pass
-                        elif hc or ie or is_cond:
+                        elif hc or ie or is_cond or ability_cond:
                             cd_move_flat[0] += flat_move
                         else:
                             bd_move_flat[0] += flat_move
@@ -8470,14 +8517,14 @@ def get_unit(unit_id):
                             continue
                         if inx:
                             nd[s] = max(nd.get(s, 0), pct)
-                        elif hc or ie or is_cond:
+                        elif hc or ie or is_cond or ability_cond:
                             cd[s] = cd.get(s, 0) + pct
                         else:
                             bd[s] = bd.get(s, 0) + pct
                     for wk, pct in wpn_stats.items():
                         if inx:
                             wpn_nd[wk] = max(wpn_nd.get(wk, 0), pct)
-                        elif hc or ie or is_cond:
+                        elif hc or ie or is_cond or ability_cond:
                             wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
