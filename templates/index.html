@@ -3154,6 +3154,9 @@ return atkTypes;
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
 const DC_ATK_SLOT_COUNT=3;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
+function _dcIsZhCalcLang(){const lc=(S.lang||'EN').toUpperCase();return lc==='TW'||lc==='HK';}
+function _dcTwZhWeaponTypesToEn(zhBlob){const map={物理:'physical',光束:'beam',特殊:'special'};return String(zhBlob||'').split(/、/).map(s=>map[s.trim()]||'').filter(Boolean).join(' or ');}
+function _dcTwBattleSpiritToVigorKey(spirit){const t=String(spirit||'').trim();if(t==='超一擊')return'supercharged';if(t==='超強勢')return'max';if(t==='強勢')return'high';return'medium';}
 function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();if(DC_SHINN_ASUKA_CHAR_IDS.has(id))return true;const mid=cd.main_character_id!=null?String(cd.main_character_id).trim():'';if(mid&&DC_SHINN_ASUKA_CHAR_IDS.has(mid))return true;const n=(cd.name||'').toLowerCase();return n.includes('shinn')&&n.includes('asuka')}
 function _dcCharAbilitiesTextBlob(cd){
 if(!cd||!cd.abilities)return'';
@@ -3168,7 +3171,11 @@ function _dcShouldAutoSuperchargedVigorOnCharCp(cd){
 if(!cd)return false;
 if(_dcIsShinnAsukaCharacter(cd))return true;
 const blob=_dcCharAbilitiesTextBlob(cd);
-return blob.includes('supercharged')&&blob.includes('shinn');
+let abRaw='';
+(cd.abilities||[]).forEach(ab=>{(ab.details||[]).forEach(d=>{abRaw+=(typeof d==='string'?d:(d&&d.text)||'')+'\n'})});
+if(blob.includes('supercharged')&&blob.includes('shinn'))return true;
+if(abRaw.includes('超一擊')&&abRaw.includes('飛鳥'))return true;
+return false;
 }
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
@@ -3184,12 +3191,13 @@ function _dcWeaponElementFromWeaponType(wpn){const t=String(wpn.weapon_type||'')
 function _dcWeaponAttributeKeys(wpn){
 const aid=String(wpn.attribute_id!=null&&wpn.attribute_id!==undefined?wpn.attribute_id:'').trim();
 if(aid&&DC_WPN_ATTR_ID_KEYS[aid])return DC_WPN_ATTR_ID_KEYS[aid];
-const lab=(wpn.attribute||'').toLowerCase();
-if(lab){
+const labRaw=String(wpn.attribute||'');
+const lab=labRaw.toLowerCase();
+if(lab||labRaw){
 const pk=[];
-if(lab.includes('beam'))pk.push('beam');
-if(lab.includes('physical'))pk.push('physical');
-if(lab.includes('special'))pk.push('special');
+if(lab.includes('beam')||labRaw.includes('光束'))pk.push('beam');
+if(lab.includes('physical')||labRaw.includes('物理'))pk.push('physical');
+if(lab.includes('special')||labRaw.includes('特殊'))pk.push('special');
 if(pk.length)return[...new Set(pk)];
 }
 return [_dcWeaponElementFromWeaponType(wpn)];
@@ -4221,13 +4229,18 @@ const isUnmet=hasCond&&!condMet;
 const spCharGate=src==='char'&&_dcPilotAbilitySpCharGateContext(resolved,li,txt);
 let m;
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(?:物理武裝|光束武裝|特殊武裝)?造成的損傷提升(\d+)%/);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/對敵方造成的損傷提升(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身受到的損傷減輕(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
-if(m){const v=parseInt(m[1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,locked:true,src})}
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%/);
+if(m){const v=parseInt(m[m.length-1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,locked:true,src})}
 });
 }
 if(cd&&cd.abilities){
@@ -4349,8 +4362,10 @@ const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||''
 const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
 let m;
 m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=desc.match(/對敵方造成的損傷提升(\d+)%/);
 if(m)b.dmgDealt+=parseInt(m[1],10);
 m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=desc.match(/自身防禦力提升(\d+)%/);
 if(m)b.defPct+=parseInt(m[1],10);
 });
 return b;
@@ -4400,7 +4415,8 @@ let totalMp=0;
 cd.abilities.forEach(ab=>{
 (ab.details||[]).forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
-const m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+let m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身MP增加(\d+)/);
 if(!m)return;
 const v=parseInt(m[1],10);
 const condGroups=ln.condition_groups||[];
@@ -4428,10 +4444,37 @@ function _dcParseRangeModifiers(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||!ud)return[];
 const unitName=(ud.name||'').toLowerCase();
+const unitBare=(ud.name||'').replace(/\s*\(EX\)\s*/gi,'').trim().toLowerCase();
 const mods=[];
 const sources=[];
 (cd.skills||[]).forEach(sk=>{if(sk.desc)sources.push(sk.desc);if(sk.replaced_by_sp&&sk.sp_desc)sources.push(sk.sp_desc)});
 (cd.abilities||[]).forEach(ab=>{(ab.details||[]).forEach(d=>{if(typeof d==='object'&&d.text)sources.push(d.text);else if(typeof d==='string')sources.push(d)})});
+function enPushIfUnit(reqUnitRaw,reqVigorKey,wpnTypesStr,rangeInc){
+const ru=(reqUnitRaw||'').trim().toLowerCase();
+if(ru&&!unitName.includes(ru)&&!ru.includes(unitBare))return;
+mods.push({reqVigor:reqVigorKey,wpnTypes:wpnTypesStr,rangeInc});
+}
+if(_dcIsZhCalcLang()){
+sources.forEach(txt=>{
+let m;
+const twFull=/搭乘(?:單位為)?「([^」]+)」[^]*?自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+while((m=twFull.exec(txt))!==null){
+enPushIfUnit(m[1],_dcTwBattleSpiritToVigorKey(m[2]),_dcTwZhWeaponTypesToEn(m[3]),parseInt(m[4],10)||0);
+}
+if(!/搭乘/.test(txt)){
+const twVigor=/自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+while((m=twVigor.exec(txt))!==null){
+enPushIfUnit('',_dcTwBattleSpiritToVigorKey(m[1]),_dcTwZhWeaponTypesToEn(m[2]),parseInt(m[3],10)||0);
+}
+}
+const twPilot=/搭乘「([^」]+)」時[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+while((m=twPilot.exec(txt))!==null){
+if(/自身戰意為/.test(m[0]))continue;
+enPushIfUnit(m[1],'medium',_dcTwZhWeaponTypesToEn(m[2]),parseInt(m[3],10)||0);
+}
+});
+return mods;
+}
 const re=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapon\s+)?is\s+increased\s+by\s+(\d+)/gi;
 sources.forEach(txt=>{
 let m;const re2=new RegExp(re.source,'gi');
@@ -4440,7 +4483,7 @@ const reqUnit=m[1].trim().toLowerCase();
 const reqVigor=m[2].trim().toLowerCase();
 const wpnTypes=m[3].trim().toLowerCase();
 const rangeInc=parseInt(m[4],10)||0;
-if(unitName.includes(reqUnit)||reqUnit.includes(unitName.replace(/\s*\(ex\)\s*/gi,'').trim())){
+if(unitName.includes(reqUnit)||reqUnit.includes(unitBare)){
 mods.push({reqVigor,wpnTypes,rangeInc});
 }
 }
@@ -4452,13 +4495,14 @@ const mods=_dcParseRangeModifiers();
 let maxR=wpn.max_range||0;
 const curVigor=VIGOR_LEVEL_ORDER[S.dc.mpLevel]||0;
 const WPN_ATTR_TYPES={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
+const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
 mods.forEach(mod=>{
 const reqLv=VIGOR_LEVEL_ORDER[mod.reqVigor]!==undefined?VIGOR_LEVEL_ORDER[mod.reqVigor]:99;
 if(curVigor>=reqLv){
 const types=mod.wpnTypes.split(/\s+or\s+|,\s*/);
 const wpnAttrLabel=(wpn.attribute||'').toLowerCase();
 const wpnTypeLabel=WPN_ATTR_TYPES[wpn.weapon_type]||'';
-const matches=types.some(t=>{const tl=t.trim().toLowerCase();return wpnAttrLabel.includes(tl)||wpnTypeLabel.includes(tl)});
+const matches=types.some(t=>{const tl=t.trim().toLowerCase();return wpnKeySet.has(tl)||wpnAttrLabel.includes(tl)||wpnTypeLabel.includes(tl)});
 if(matches)maxR+=mod.rangeInc;
 }
 });
@@ -4499,15 +4543,18 @@ wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 _dcMergeBaseWeaponTraitsForSsp(wpn,idx,allTraits);
 allTraits.forEach(t=>{
 const txt=String(t).replace(/\n/g,' ');
-if(/absolute\s+hit/i.test(txt))traits.absoluteHit=true;
-if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt))traits.dmgReductionNull=true;
+if(/absolute\s+hit/i.test(txt)||txt.includes('絕對命中'))traits.absoluteHit=true;
+if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt)||txt.includes('武裝屬性損傷減輕無效'))traits.dmgReductionNull=true;
 let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
 if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));return}
 // EN m_weapon_trait: "The closer you are to the enemy..." and "The farther you are from the enemy..." (long-range mirror). Sim applies max % like other distance traits.
 m=txt.match(/(?:closer\s+you\s+are|(?:farther|further)\s+you\s+are).*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(m)traits.distPowerMax=Math.max(traits.distPowerMax,parseInt(m[1],10));
 m=txt.match(/(?:lower|higher)\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(m)traits.hpPowerMax=Math.max(traits.hpPowerMax,parseInt(m[1],10));
 if(/\[Custom\s+Core/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
 m=txt.match(/Maximum\s+Up\s+(\d+)%/i);
