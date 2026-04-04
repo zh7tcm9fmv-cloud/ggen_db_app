@@ -5466,8 +5466,12 @@ def apply_bonus_to_char_stats(stats, bonus_pct):
     return final, ba
 
 def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
-    """List view: main 5 stats with passive bonuses that apply without toggles — same rules as unit list.
-    Excludes: EX character abilities (detail: stats vs stats_with_ex), conditional sentences, trait-condition abilities."""
+    """Browse list / table: same 5 stats as get_character default `stats` (growth + unconditional non-EX trait %).
+
+    Delegates to _accumulate_character_trait_percent_buckets so parsing matches the character detail sheet.
+    The previous implementation set a per-ability flag when *any* detail row had legacy `conditions`, then
+    skipped every stat line from that ability — that dropped unconditional bonuses still present in the same
+    ability (common on newer passives with condition_groups / multi-line text)."""
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
     def build_ab(ab):
         bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
@@ -5477,38 +5481,11 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn = {s: 0 for s in CHAR_STAT_ORDER}
-    for bab in ac:
-        if bab.get('is_ex', False):
-            continue
-        hc = any(cond for d2 in bab.get('details', []) for cond in d2.get('conditions', []))
-        title_c = _char_trait_title_counts_as_conditional_bucket(bab)
-        for d2 in bab.get('details', []):
-            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
-            if not parts:
-                parts = [txt]
-            cond_prefix = False
-            if _char_trait_text_is_support_defense_action(txt):
-                continue
-            for part in parts:
-                if _char_trait_line_is_squad_unit_effect(part, bab):
-                    continue
-                itc = _is_conditional_stat_text(part)
-                part_stats = extract_stat_percent_char(part, txt, char_id=char_id)
-                if itc and not part_stats:
-                    cond_prefix = True
-                is_cond = title_c or itc or cond_prefix or _char_detail_is_conditional(d2, txt)
-                for s, pct in part_stats.items():
-                    if s not in CHAR_STAT_ORDER:
-                        continue
-                    if hc or is_cond:
-                        continue
-                    spbn[s] = spbn.get(s, 0) + pct
+    spbn_u, _, _, _, _, _ = _accumulate_character_trait_percent_buckets(ac, char_id)
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
-        tb = math.floor(bv * spbn[s] / 100) if bv > 0 else 0
+        tb = math.floor(bv * spbn_u[s] / 100) if bv > 0 else 0
         totals[s] = bv + tb
     return totals
 
