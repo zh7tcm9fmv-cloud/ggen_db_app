@@ -622,6 +622,8 @@ html{overflow-x:hidden}
 .dc-dc-cond-toggle .toggle-clickable.active .toggle-switch::after{left:18px}
 .dc-picked-change{padding:4px 8px;font-size:11px;background:transparent;border:1px solid var(--border-color);color:var(--text-muted);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0}
 .dc-picked-change:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+.dc-atk-char-wrap{display:flex;flex-direction:column;gap:8px;width:100%;min-width:0;align-items:stretch}
+.dc-atk-char-ex-tier{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;box-sizing:border-box;padding:0;margin:0}
 .dc-stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
 .dc-stat-mini{text-align:center;padding:8px;background:rgba(0,0,0,.2);border-radius:6px}
 .dc-stat-mini-label{font-size:10px;color:var(--text-muted);font-weight:600}
@@ -4132,7 +4134,7 @@ let charExTierRow='';
 if(_dcCharHasConditional(cd)&&S.dc.charCondPassive&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
 const tiers=cd.ex_supercharged_tiers;
 const ti=Math.min(Math.max(0,S.dc.dcSuperchargedExTier|0),tiers.length-1);
-charExTierRow=`<div class="dc-lb-row dc-char-ex-tier-row" style="margin-top:4px">`+tiers.map((et,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setDcSuperchargedExTier(${idx})">${esc(et.label||('EX '+et.tier))}</button>`).join('')+`</div>`;
+charExTierRow=`<div class="dc-atk-char-ex-tier dc-lb-row" role="group" aria-label="Supercharged EX tier">`+tiers.map((et,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;flex:1 1 auto;min-width:min(100%,8rem);white-space:normal;text-align:center;padding:6px 8px" onclick="setDcSuperchargedExTier(${idx})">${esc(et.label||('EX '+et.tier))}</button>`).join('')+`</div>`;
 }
 const hasSpChar=cd.has_sp!==undefined?cd.has_sp:(parseInt(cd.rarity_id||'5')<=4);
 let charStatModeHtml='';
@@ -4140,7 +4142,7 @@ if(hasSpChar){
 const cModeRow=S.dc.charStatMode||'normal';
 charStatModeHtml=`<div class="dc-lb-row dc-char-stat-mode-row"><button type="button" class="dc-lb-btn${cModeRow==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${cModeRow==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
 }
-area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charCpToggle}${charExTierRow}${charStatModeHtml}${changeBtn}</div>`;
+area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charCpToggle}${charStatModeHtml}${changeBtn}</div>${charExTierRow}</div>`;
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
