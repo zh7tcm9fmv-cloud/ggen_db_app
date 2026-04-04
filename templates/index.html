@@ -4364,10 +4364,10 @@ const rsk=_dcResolveSkillForDcMode(sk);
 const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
 const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
 let m;
-m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s+(\d+)%/i);
+m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s*(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=desc.match(/對敵方造成的損傷提升(\d+)%/);
 if(m)b.dmgDealt+=parseInt(m[1],10);
-m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
+m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?DEF(?:ense)?\s+by\s*(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=desc.match(/自身防禦力提升(\d+)%/);
 if(m)b.defPct+=parseInt(m[1],10);
 });
@@ -5088,23 +5088,36 @@ const unique=[...new Set(atkTypes)];
 if(unique.length===1)return _dcFindStat(charStats,unique[0]);
 return Math.max(...unique.map(s=>_dcFindStat(charStats,s)));
 }
-/** Parse one skill description for Ranged/Melee/Awaken % (and ATK% to all three). Pair/triple lines do not short-circuit ATK% or extra single-stat sentences in the same text. */
+/** Parse one skill description for Ranged/Melee/Awaken % (and ATK% to all three). Pair/triple lines do not short-circuit ATK% or extra single-stat sentences in the same text.
+ * EN data often uses "by25%" (no space); JA/HK/TW use 自身射擊值提升25%（1回合） etc. */
 function _dcParseSkillDescAtkPct(desc){
 const out={Ranged:0,Melee:0,Awaken:0};
 if(!desc||!String(desc).trim())return out;
 const s=String(desc);
-const pairRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/gi;
+const pairRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s*(\d+)%/gi;
 let mp;
 while((mp=pairRe.exec(s))!==null){const p=parseInt(mp[3],10)||0;out[mp[1]]+=p;out[mp[2]]+=p;}
-const mTri=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
+const mTri=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s*(\d+)%/i);
 if(mTri){const p=parseInt(mTri[4],10)||0;out[mTri[1]]+=p;out[mTri[2]]+=p;out[mTri[3]]+=p;}
-const mTriOx=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s*,\s*and\s+(Ranged|Melee|Awaken)\s+by\s+(\d+)%/i);
+const mTriOx=s.match(/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s*,\s*and\s+(Ranged|Melee|Awaken)\s+by\s*(\d+)%/i);
 if(mTriOx){const p=parseInt(mTriOx[4],10)||0;out[mTriOx[1]]+=p;out[mTriOx[2]]+=p;out[mTriOx[3]]+=p;}
-const singleRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+by\s+(\d+)%/gi;
+const singleRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+by\s*(\d+)%/gi;
 let mm;
 while((mm=singleRe.exec(s))!==null){out[mm[1]]+=parseInt(mm[2],10)||0;}
-const mAtk=s.match(/Increases?\s+(?:own\s+)?(?:ATK|Attack)\s+by\s+(\d+)%/i);
+const mAtk=s.match(/Increases?\s+(?:own\s+)?(?:ATK|Attack)\s+by\s*(\d+)%/i);
 if(mAtk){const p=parseInt(mAtk[1],10)||0;out.Ranged+=p;out.Melee+=p;out.Awaken+=p;}
+const zhMap={射擊值:'Ranged',格鬥值:'Melee',覺醒值:'Awaken'};
+const zhComb=s.match(/自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%/);
+if(zhComb){
+const p=parseInt(zhComb[3],10)||0;
+const k0=zhMap[zhComb[1]];if(k0)out[k0]+=p;
+const rest=zhComb[2]||'';let zm;const zre=/及(射擊值|格鬥值|覺醒值)/g;
+while((zm=zre.exec(rest))!==null){const kk=zhMap[zm[1]];if(kk)out[kk]+=p;}
+}else{
+const mR=s.match(/自身射擊值提升(\d+)%/);if(mR)out.Ranged+=parseInt(mR[1],10)||0;
+const mM=s.match(/自身格鬥值提升(\d+)%/);if(mM)out.Melee+=parseInt(mM[1],10)||0;
+const mA=s.match(/自身覺醒值提升(\d+)%/);if(mA)out.Awaken+=parseInt(mA[1],10)||0;
+}
 return out;
 }
 function _dcGetActiveSkillStatPct(){
