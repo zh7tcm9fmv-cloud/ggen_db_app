@@ -3913,23 +3913,70 @@ if ssp_release_fn_content_data:
         sid = normalize_id(item.get('UnitSspCustomCoreReleaseFunctionSetId') or item.get('unitSspCustomCoreReleaseFunctionSetId'))
         t = normalize_id(item.get('ReleaseFunctionTypeIndex') or item.get('releaseFunctionTypeIndex'))
         tid = normalize_id(item.get('TargetId') or item.get('targetId'))
-        if sid != '0': ssp_release_fn_content_by_set.setdefault(sid, []).append({'type': t, 'target_id': tid})
+        so = safe_int(item.get('SortOrder') or item.get('sortOrder'), 0)
+        if sid != '0': ssp_release_fn_content_by_set.setdefault(sid, []).append({'type': t, 'target_id': tid, 'sort': so})
 
-SSP_TERRAIN_TARGET_MAP = {'2': ('Underwater', 1, 2), '4': ('Atmospheric', 1, 2), '6': ('Underwater', 1, 3), '9': ('Underwater', 1, 3), '28': ('Underwater', 2, 3), '29': ('Underwater', 1, 3), '32': ('Underwater', 2, 3), '12': ('Ground', 2, 3), '24': ('Ground', 1, 2), '26': ('Ground', 1, 2), '21': ('Space', 1, 2), '23': ('Space', 1, 2), '30': ('Space', 2, 3), '36': ('Space', 1, 2), '39': ('Space', 2, 3), '51': ('Space', 1, 2), '52': ('Space', 1, 2), '54': ('Space', 1, 2), '57': ('Space', 1, 2), '58': ('Space', 1, 2), '59': ('Space', 1, 2), '22': ('Atmospheric', 1, 2), '31': ('Atmospheric', 2, 3), '38': ('Atmospheric', 1, 2), '44': ('Atmospheric', 1, 2), '61': ('Atmospheric', 2, 3), '64': ('Atmospheric', 1, 2), '41': ('Sea', 1, 2)}
+# Fallback when ReleaseFunctionTypeIndex=4 TargetId is not a row in m_terrain_capability_set (should be rare).
+SSP_TERRAIN_TYPE4_LEGACY_MAP = {'2': ('Underwater', 1, 2), '4': ('Atmospheric', 1, 2), '6': ('Underwater', 1, 3), '9': ('Underwater', 1, 3), '28': ('Underwater', 2, 3), '29': ('Underwater', 1, 3), '32': ('Underwater', 2, 3), '12': ('Ground', 2, 3), '24': ('Ground', 1, 2), '26': ('Ground', 1, 2), '21': ('Space', 1, 2), '23': ('Space', 1, 2), '30': ('Space', 2, 3), '36': ('Space', 1, 2), '51': ('Space', 1, 2), '52': ('Space', 1, 2), '54': ('Space', 1, 2), '57': ('Space', 1, 2), '58': ('Space', 1, 2), '59': ('Space', 1, 2), '22': ('Atmospheric', 1, 2), '31': ('Atmospheric', 2, 3), '38': ('Atmospheric', 1, 2), '44': ('Atmospheric', 1, 2), '61': ('Atmospheric', 2, 3), '64': ('Atmospheric', 1, 2), '41': ('Sea', 1, 2)}
+
+_SSP_TERRAIN_NAMES = ('Space', 'Atmospheric', 'Ground', 'Sea', 'Underwater')
+
+
+def _ssp_terrain_tier_norm(v):
+    try:
+        n = int(v or 0)
+    except Exception:
+        n = 0
+    if n < 1:
+        return 1
+    if n > 3:
+        return 3
+    return n
+
+
+def _ssp_base_terrain_levels(info):
+    td = unit_ter_map.get(info.get('terrain_set', ''), {})
+    return {tn: _ssp_terrain_tier_norm(td.get(tn, 1)) for tn in _SSP_TERRAIN_NAMES}
+
 
 def get_ssp_custom_core_bonuses_for_unit(unit_id):
+    """SSP Custom Core release functions: move (type 3), terrain (type 4) from m_terrain_capability_set TargetId vs unit base (max per terrain), legacy tuple if set id missing."""
     out = {'move': 0, 'terrain_upgrades': []}
     uid = normalize_id(unit_id)
-    if uid == '0': return out
+    if uid == '0':
+        return out
+    info = unit_info_map.get(uid, {})
     fn_sets = unit_ssp_custom_core_group_entries.get(uid, set())
-    for sid in fn_sets:
-        for it in ssp_release_fn_content_by_set.get(sid, []):
+    type4_cap_set_ids = []
+    type4_legacy_tuples = []
+    for sid in sorted(fn_sets):
+        items = sorted(ssp_release_fn_content_by_set.get(sid, []), key=lambda z: safe_int(z.get('sort', 0), 0))
+        for it in items:
             t = it.get('type', '0')
-            if t == '3': out['move'] += 1
+            if t == '3':
+                out['move'] += 1
             elif t == '4':
-                tid = str(it.get('target_id', '0'))
-                if tid in SSP_TERRAIN_TARGET_MAP and not any(x[0] == SSP_TERRAIN_TARGET_MAP[tid][0] for x in out['terrain_upgrades']):
-                    out['terrain_upgrades'].append(SSP_TERRAIN_TARGET_MAP[tid])
+                tid = normalize_id(it.get('target_id', '0'))
+                if tid in unit_ter_map:
+                    type4_cap_set_ids.append(tid)
+                elif tid in SSP_TERRAIN_TYPE4_LEGACY_MAP:
+                    type4_legacy_tuples.append(SSP_TERRAIN_TYPE4_LEGACY_MAP[tid])
+    base = _ssp_base_terrain_levels(info)
+    eff = dict(base)
+    for cap_id in type4_cap_set_ids:
+        tgt = unit_ter_map.get(cap_id, {})
+        for tn in _SSP_TERRAIN_NAMES:
+            eff[tn] = max(eff[tn], _ssp_terrain_tier_norm(tgt.get(tn, 1)))
+    for tn, fr, to in type4_legacy_tuples:
+        if tn not in eff:
+            continue
+        cur = eff[tn]
+        frn = _ssp_terrain_tier_norm(fr)
+        ton = _ssp_terrain_tier_norm(to)
+        eff[tn] = ton if cur == frn else max(cur, ton)
+    for tn in _SSP_TERRAIN_NAMES:
+        if eff[tn] > base[tn]:
+            out['terrain_upgrades'].append((tn, base[tn], eff[tn]))
     return out
 
 # Build series icon to ID mapping

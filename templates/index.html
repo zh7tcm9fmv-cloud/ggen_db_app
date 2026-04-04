@@ -2440,13 +2440,15 @@ function renderMapGrid(weapon,isLarge){
   }
 
   if(isLarge){
-    // Expand each logical tile to the same 2×2 footprint as a large MS (matches unit cells at (0,0),(1,0),(0,-1),(1,-1)).
-    let exp=c=>{
+    // Large MS is 2 tiles wide on the map. Master coords are one point per logical cell: widen each
+    // (x,y) to (x,y) and (x+1,y) only — do NOT stamp the full 2×2 MS footprint at every cell (that pulls
+    // effect tiles onto the unit row and makes POU clip into the effect, e.g. 137001080005 / 120000520004).
+    let expWide=c=>{
       let e=[];
-      c.forEach(cc=>{[[0,0],[1,0],[0,-1],[1,-1]].forEach(([dx,dy])=>e.push({x:cc.x+dx,y:cc.y+dy}))});
+      c.forEach(cc=>{[[0,0],[1,0]].forEach(([dx,dy])=>e.push({x:cc.x+dx,y:cc.y+dy}))});
       return e.filter((v,i,a)=>a.findIndex(t2=>(t2.x===v.x&&t2.y===v.y))===i)
     };
-    ec=exp(ec);sc=exp(sc)
+    ec=expWide(ec);sc=expWide(sc)
   }
 
   let sx=0,sy=0,ux=0,uy=0,ex2=0,ey=0;
