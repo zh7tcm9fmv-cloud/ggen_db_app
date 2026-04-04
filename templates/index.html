@@ -4322,13 +4322,14 @@ S.dc._pilotSkills=cd.skills;S.dc._activeSkills=S.dc._activeSkills||{};
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Skills</div><div style="font-size:12px;line-height:1.6">`;
 cd.skills.forEach((sk,i)=>{
 if(sk.is_sp)return;
-const desc=((sk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ')||sk.desc||'').replace(/\n/g,' ');
+const dsk=_dcResolveSkillForDcMode(sk);
+const desc=((dsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ')||dsk.desc||'').replace(/\n/g,' ');
 const togId=`dcSkillChk_${i}`;
 const isOn=!!S.dc._activeSkills[sk.id];
 h+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px">`;
 h+=`<input type="checkbox" id="${togId}" ${isOn?'checked':''} onchange="_dcToggleSkill('${sk.id}',${i})">`;
-if(sk.icon)h+=`<img src="${imgUrl(sk.icon)}" style="width:20px;height:20px;border-radius:3px" onerror="this.style.display='none'">`;
-h+=`<span style="font-weight:600">${esc(sk.name)}</span>`;
+if(dsk.icon)h+=`<img src="${imgUrl(dsk.icon)}" style="width:20px;height:20px;border-radius:3px" onerror="this.style.display='none'">`;
+h+=`<span style="font-weight:600">${esc(dsk.name||sk.name)}</span>`;
 if(desc)h+=`<span class="dc-pilot-skill-desc" style="margin-left:4px">${esc(desc.substring(0,60))}${desc.length>60?'...':''}</span>`;
 h+=`</label>`;
 });
@@ -4413,7 +4414,9 @@ const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
 if(!cd||!cd.abilities)return 'medium';
 let totalMp=0;
 cd.abilities.forEach(ab=>{
-(ab.details||[]).forEach(ln=>{
+const rab=_dcResolveCharAbilityForMode(ab);
+if(!rab)return;
+(rab.details||[]).forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 let m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身MP增加(\d+)/);
@@ -4447,8 +4450,16 @@ const unitName=(ud.name||'').toLowerCase();
 const unitBare=(ud.name||'').replace(/\s*\(EX\)\s*/gi,'').trim().toLowerCase();
 const mods=[];
 const sources=[];
-(cd.skills||[]).forEach(sk=>{if(sk.desc)sources.push(sk.desc);if(sk.replaced_by_sp&&sk.sp_desc)sources.push(sk.sp_desc)});
-(cd.abilities||[]).forEach(ab=>{(ab.details||[]).forEach(d=>{if(typeof d==='object'&&d.text)sources.push(d.text);else if(typeof d==='string')sources.push(d)})});
+(cd.skills||[]).forEach(sk=>{
+if(sk.is_sp)return;
+const rsk=_dcResolveSkillForDcMode(sk);
+if(rsk.desc)sources.push(rsk.desc);
+if(rsk.sp_desc)sources.push(rsk.sp_desc);
+});
+(cd.abilities||[]).forEach(ab=>{
+const r=_dcResolveCharAbilityForMode(ab);
+if(!r)return;
+(r.details||[]).forEach(d=>{if(typeof d==='object'&&d.text)sources.push(d.text);else if(typeof d==='string')sources.push(d)})});
 function enPushIfUnit(reqUnitRaw,reqVigorKey,wpnTypesStr,rangeInc){
 const ru=(reqUnitRaw||'').trim().toLowerCase();
 if(ru&&!unitName.includes(ru)&&!ru.includes(unitBare))return;
