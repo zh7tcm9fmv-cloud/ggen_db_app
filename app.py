@@ -1512,17 +1512,19 @@ def ability_details_imply_ex_piloting_ex_unit(details):
         return True
     return False
 
-MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['2x2', '4'], '6': ['1', '5'], '7': ['2x2', '6'], '8': ['1', '7'], '9': ['1', '6']}
-ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids)
+# MechanismSetId -> mechanism fragment ids for browse filter. Do not embed synthetic '2x2' here:
+# large footprint is determined only by OccupiedAreaId==2 (same as get_unit is_large / mechanism banner).
+MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['4'], '6': ['1', '5'], '7': ['6'], '8': ['1', '7'], '9': ['1', '6']}
+ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids) | frozenset({'2x2'})
 
 
 def collect_unit_mechanism_mids(info, uid=None):
-    """Mechanism fragment ids for filtering (MECH_MAP_TABLE). 2×2 also applies when OccupiedAreaId is 2 (large footprint), same as unit detail."""
+    """Mechanism fragment ids for filtering. '2x2' iff OccupiedAreaId is 2 (matches unit detail)."""
     if not info:
         return frozenset()
     msid = str(info.get('mechanism_set_id', '0'))
-    mids = list(MECH_MAP_TABLE.get(msid, []))
-    if safe_int(info.get('occupied_area_id'), 1) == 2 and '2x2' not in mids:
+    mids = [m for m in MECH_MAP_TABLE.get(msid, []) if m != '2x2']
+    if safe_int(info.get('occupied_area_id'), 1) == 2:
         mids.append('2x2')
     return frozenset(mids)
 
@@ -3157,7 +3159,8 @@ def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None):
 def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_code='EN', unit_id=''):
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
-    dr = {'range_min':0,'range_max':0,'levels':[{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)],'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
+    zl = [{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)]
+    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
     tid = mwid if mwid != '0' else wid
     if tid == '0': return dr
     ws = wsm.get(tid)
@@ -3298,8 +3301,8 @@ def collect_unit_model_search_text(info):
 def collect_unit_mechanism_search_text(info, ld, uid=None):
     """Mechanism names and descriptions for list search."""
     msid = str(info.get('mechanism_set_id', '0'))
-    mids = list(MECH_MAP_TABLE.get(msid, []))
-    if safe_int(info.get('occupied_area_id'), 1) == 2 and '2x2' not in mids:
+    mids = [m for m in MECH_MAP_TABLE.get(msid, []) if m != '2x2']
+    if safe_int(info.get('occupied_area_id'), 1) == 2:
         mids.append('2x2')
     mm = ld.get('mechanism_map', {})
     parts = []
@@ -3740,7 +3743,6 @@ def _build_char_list_playable_ids():
 
 
 char_list_playable_ids = _build_char_list_playable_ids()
-unit_list_playable_ids = set(unit_abil_map.keys()) | set(unit_weapon_map.keys())
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
 growth_pattern_map = create_growth_pattern_map(weapon_growth_data)
@@ -3862,6 +3864,20 @@ if ssp_abil_replace_data:
             lst = unit_ssp_abil_gain_list.setdefault(uid, [])
             if a_id not in lst:
                 lst.append(a_id)
+
+
+def unit_has_ms_ability_content(uid):
+    """True if unit has MS traits from m_unit_ability and/or SSP Custom Core ability gains (not weapons-only / map NPC shells)."""
+    u = normalize_id(uid)
+    if unit_abil_map.get(u):
+        return True
+    if unit_ssp_abil_gain_list.get(u):
+        return True
+    return False
+
+
+# Browse / filters: exclude units that only exist for maps/story (weapons but no MS abilities), same visibility as other NPCs.
+unit_list_playable_ids = {u for u in (set(unit_abil_map.keys()) | set(unit_weapon_map.keys())) if unit_has_ms_ability_content(u)}
 
 unit_ssp_custom_core_group_entries = {}
 if ssp_custom_core_data:
@@ -6734,6 +6750,8 @@ def unit_passes_browse_pool_filters(
     id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
     if role_id == '0' and not (id_seek and npc_password_unlocked()):
         return False
+    if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
+        return False
     _muid = normalize_id(info.get('main_unit_id', uid))
     if _muid == '0':
         _muid = uid
@@ -7566,6 +7584,8 @@ def list_units():
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
         if role_id == '0' and not (id_seek and npc_password_unlocked()):
+            continue
+        if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
             continue
         _muid = normalize_id(info.get('main_unit_id', uid))
         if _muid == '0':
@@ -8445,6 +8465,8 @@ def get_unit(unit_id):
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if str(info.get('role', '0')) == '0' and not npc_password_unlocked():
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
+        if not unit_has_ms_ability_content(unit_id) and not npc_password_unlocked():
+            return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
         has_sp = int(ri) <= 4
@@ -8645,8 +8667,8 @@ def get_unit(unit_id):
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'))
             if unit_id == '1330005900' and wt == '3': ic = {'icon': '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp', 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'is_supply': True}]
-            levels = ws.get('levels', [{'level':i,'power':ws['power'],'en':ws['en'],'accuracy':ws['accuracy'],'critical':ws['critical'],'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)])
-            pw, en, acc, crit = ws['power'], ws['en'], ws['accuracy'], ws['critical']
+            levels = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
+            pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
             am = ws['ammo'] if wt == '3' else 0
             trl = ws.get('traits', [])
             ssp_power, ssp_ammo, ssp_range = 0, 0, 0
