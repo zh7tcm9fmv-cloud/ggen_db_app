@@ -1515,17 +1515,32 @@ def ability_details_imply_ex_piloting_ex_unit(details):
 # MechanismSetId -> mechanism fragment ids for browse filter. Do not embed synthetic '2x2' here:
 # large footprint is determined only by OccupiedAreaId==2 (same as get_unit is_large / mechanism banner).
 MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['4'], '6': ['1', '5'], '7': ['6'], '8': ['1', '7'], '9': ['1', '6']}
-ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids) | frozenset({'2x2'})
+# '3' = m_mechanism SD (not assigned via m_mechanism_set); tied to body type / legacy unit-id prefixes (see _unit_has_sd_mechanism).
+ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids) | frozenset({'2x2', '3'})
+
+
+def _unit_has_sd_mechanism(info, uid=None):
+    """SD (m_mechanism id 3) is not in m_mechanism_set rows; match in-game via body type and get_unit legacy prefixes."""
+    if not info:
+        return False
+    if str(info.get('body_type', '1')) == '3':
+        return True
+    u = normalize_id(uid or '')
+    if u.startswith('17090') or u.startswith('17050') or u.startswith('17250'):
+        return True
+    return False
 
 
 def collect_unit_mechanism_mids(info, uid=None):
-    """Mechanism fragment ids for filtering. '2x2' iff OccupiedAreaId is 2 (matches unit detail)."""
+    """Mechanism fragment ids for filtering. '2x2' iff OccupiedAreaId is 2; '3' (SD) from body type / SD unit ids."""
     if not info:
         return frozenset()
     msid = str(info.get('mechanism_set_id', '0'))
     mids = [m for m in MECH_MAP_TABLE.get(msid, []) if m != '2x2']
     if safe_int(info.get('occupied_area_id'), 1) == 2:
         mids.append('2x2')
+    if _unit_has_sd_mechanism(info, uid) and '3' not in mids:
+        mids.append('3')
     return frozenset(mids)
 
 
@@ -3304,6 +3319,8 @@ def collect_unit_mechanism_search_text(info, ld, uid=None):
     mids = [m for m in MECH_MAP_TABLE.get(msid, []) if m != '2x2']
     if safe_int(info.get('occupied_area_id'), 1) == 2:
         mids.append('2x2')
+    if _unit_has_sd_mechanism(info, uid) and '3' not in mids:
+        mids.append('3')
     mm = ld.get('mechanism_map', {})
     parts = []
     for mid in mids:
@@ -8719,8 +8736,8 @@ def get_unit(unit_id):
         msid = str(info.get('mechanism_set_id', '0'))
         il = safe_int(info.get('occupied_area_id'), 1) == 2
         mids = list(MECH_MAP_TABLE.get(msid, []))
-        if unit_id.startswith('17090') or unit_id.startswith('17050') or unit_id.startswith('17250'):
-            if '3' not in mids: mids.append('3')
+        if _unit_has_sd_mechanism(info, unit_id) and '3' not in mids:
+            mids.append('3')
         mechs = []
         if il:
             mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
