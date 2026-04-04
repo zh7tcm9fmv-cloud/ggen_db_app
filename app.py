@@ -1722,6 +1722,74 @@ def _char_trait_line_is_squad_unit_effect(line, bab):
         return True
     return False
 
+def _clean_supercharged_ex_tier_label(lb):
+    s = (lb or '').strip().strip('"').strip("'")
+    s = re.sub(r'\s*\(?\s*1\s*turn\s*\)?\.?\s*$', '', s, flags=re.IGNORECASE)
+    return s.strip().strip('"').strip("'")
+
+
+def _slice_supercharged_ex_tier_sections(blob):
+    """Split EX trait text at Supercharged EX 1 / 2 (EN) or 超一擊EX1 / 2 (ZH) headers. Returns [(tier, label, chunk), ...]."""
+    if not blob or not isinstance(blob, str):
+        return []
+    rx = re.compile(r'(?:Supercharged\s+EX|超一擊EX)\s*([12])\b', re.IGNORECASE)
+    matches = list(rx.finditer(blob))
+    if len(matches) < 2:
+        return []
+    out = []
+    for i, m in enumerate(matches):
+        tier = int(m.group(1))
+        start = m.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(blob)
+        chunk = blob[start:end]
+        line_end = blob.find('\n', m.start())
+        if line_end == -1 or line_end > end:
+            line_end = min(m.end(), end)
+        label = blob[m.start():line_end].strip().strip('"').strip("'")
+        out.append((tier, label, chunk))
+    return out
+
+
+def _extract_supercharged_ex_tier_chunk_stat_pct(chunk, char_id, bab):
+    pct = {s: 0 for s in CHAR_STAT_ORDER}
+    if not chunk:
+        return pct
+    lines = [ln.strip() for ln in re.split(r'\r?\n+', chunk) if ln.strip()] or [chunk]
+    for line in lines:
+        if _char_trait_line_is_squad_unit_effect(line, bab):
+            continue
+        for s, p in extract_stat_percent_char(line, chunk, char_id=char_id).items():
+            if s in CHAR_STAT_ORDER:
+                pct[s] += p
+    return pct
+
+
+def collect_supercharged_ex_stat_tiers(ac, char_id):
+    """Per-tier EX % for abilities whose description contains Supercharged EX 1 and 2 (mutually exclusive in-game)."""
+    merged = {}
+    for bab in ac:
+        if not bab.get('is_ex'):
+            continue
+        for d2 in bab.get('details', []) or []:
+            txt = (d2.get('text') or '').strip()
+            if not txt:
+                continue
+            slices = _slice_supercharged_ex_tier_sections(txt)
+            if len(slices) < 2:
+                continue
+            for tier, label, chunk in slices:
+                add_pct = _extract_supercharged_ex_tier_chunk_stat_pct(chunk, char_id, bab)
+                if tier not in merged:
+                    merged[tier] = {'label': label or '', 'ex_pct': {s: 0 for s in CHAR_STAT_ORDER}}
+                for s in CHAR_STAT_ORDER:
+                    merged[tier]['ex_pct'][s] += add_pct[s]
+                if label and len(label) > len(merged[tier]['label'] or ''):
+                    merged[tier]['label'] = label
+    if len(merged) < 2:
+        return []
+    return [{'tier': t, 'label': _clean_supercharged_ex_tier_label(merged[t]['label']), 'ex_pct': dict(merged[t]['ex_pct'])} for t in sorted(merged.keys())]
+
+
 def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, char_id=None):
     """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
@@ -1733,6 +1801,9 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
         carry_ref[0] = False
         return
     if bab.get('is_ex', False):
+        if len(_slice_supercharged_ex_tier_sections(txt)) >= 2:
+            carry_ref[0] = False
+            return
         lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
         if not lines:
             lines = [txt]
@@ -2796,8 +2867,21 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
         return bonuses
     if re.search(r'\bown\s+def\b', tl):
         return bonuses
+    # Triple: "Increase own Critical Rate, Melee, and Reaction by 20%" (Supercharged EX; Critical is not a dossier stat).
+    m3 = re.search(
+        r"Increases? own Critical Rate,\s*(Melee|Ranged|Awaken)\s*,\s*and\s+(Melee|Ranged|Defense|Reaction|Awaken)\s+by\s*(\d+)%",
+        text, re.IGNORECASE)
+    if m3:
+        p = int(m3.group(3))
+        for gi in (1, 2):
+            raw = m3.group(gi)
+            if not raw:
+                continue
+            n = raw.title()
+            bonuses[n] = bonuses.get(n, 0) + p
+        return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
-    m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by (\d+)%", text, re.IGNORECASE)
+    m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by\s*(\d+)%", text, re.IGNORECASE)
     if m:
         p = int(m.group(3))
         for s in [m.group(1), m.group(2)]:
@@ -8438,9 +8522,21 @@ def get_character(char_id):
             ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon, 'trait_pct': spbs_u[s]})
             stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s]) / 100) if sbv > 0 else 0
             sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb, 'trait_pct': spbs_u[s] + spbs_c[s] + spes[s]})
+        ex_supercharged_tiers = collect_supercharged_ex_stat_tiers(ac, char_id)
+        ex_supercharged_tiers_payload = []
+        if ex_supercharged_tiers:
+            for et in ex_supercharged_tiers:
+                row = []
+                for s in CHAR_STAT_ORDER:
+                    bv = grown.get(s, 0)
+                    pct = spbn_u[s] + spbn_c[s] + et['ex_pct'][s]
+                    tbb = math.floor(bv * pct / 100) if bv > 0 else 0
+                    row.append({'name': s, 'base': bv, 'total': bv + tbb, 'bonus': tbb, 'trait_pct': pct})
+                ex_supercharged_tiers_payload.append({'tier': et['tier'], 'label': et['label'], 'stats': row})
+            swe = ex_supercharged_tiers_payload[0]['stats']
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         # CP toggle when "on" state adds anything: conditional passives (e.g. Vigor) and/or EX-trait % (UR EX slot).
-        has_ex_stats = any(spbn_c[s] + spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spbs_c[s] + spes[s] > 0 for s in CHAR_STAT_ORDER)
+        has_ex_stats = any(spbn_c[s] + spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spbs_c[s] + spes[s] > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
         thum = find_list_thumb(info.get('resource_ids', []), char_id, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
@@ -8484,12 +8580,12 @@ def get_character(char_id):
         pair_units = _char_pair_conditional_unit_ids(char_id)
         rec_id = normalize_id(recommend_unit['id']) if recommend_unit else '0'
         pair_ok = bool(pair_units) and rec_id in pair_units
-        has_ex_slot_only = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER)
+        has_ex_slot_only = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
         if pair_units and not pair_ok:
             has_conditional_passive = has_ex_slot_only
         else:
             has_conditional_passive = has_ex_stats
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
