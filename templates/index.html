@@ -2435,7 +2435,6 @@ function renderMapGrid(weapon,unitData){
   const fpOcc=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
   const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:0}]:fpOcc;
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
-  const mapDashEyBoost=Number(weapon.map_dash_ey_boost)||0;
 
   let t1=false,t2=false,t3=false;
   if(!hs)t1=true;
@@ -2449,11 +2448,16 @@ function renderMapGrid(weapon,unitData){
 
   const dashEndCols=(t3&&mapDashDualWide)?[0,1]:[0];
 
-  let sx=0,sy=0,ux=0,uy=0,ey=0;
+  let sx=0,sy=0,ux=0,uy=0,ey=0,dashEndYDual=null;
   if(t3){
     let ac=ec.concat(sc);
     let my=Math.max(...ac.map(c=>c.y));
-    ey=my+1+mapDashEyBoost
+    if(mapDashDualWide&&sc.length){
+      dashEndYDual=Math.max(...sc.map(c=>c.y));
+      ey=dashEndYDual
+    }else{
+      ey=my+1
+    }
   }else if(t2){
     ux=0;uy=0;
     const topY=Math.max(...sc.map(c=>c.y));
@@ -2469,21 +2473,33 @@ function renderMapGrid(weapon,unitData){
   if(t2||t3){
     sc.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y})
   }
-  if(t3){
+  if(t3&&!mapDashDualWide){
     dashEndCols.forEach(dx=>{let c={x:dx,y:ey};if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
   }
 
-  let aw=mxx-mnx+1,pl=0,pr2=0,fc=0;
-  if(aw<3){fc=9;let tp=9-aw;pl=Math.floor(tp/2);pr2=Math.ceil(tp/2)}
-  else if(aw>=8){pl=2;pr2=2;fc=aw+4}
-  else{pl=aw;pr2=aw;fc=aw*3}
-
-  let fmnx=mnx-pl,fmxx=mxx+pr2;
+  let aw=mxx-mnx+1,fc=0;
+  if(aw<3){fc=9}
+  else if(aw>=8){fc=aw+4}
+  else{fc=aw*3}
+  let hpad=fc-aw;
+  let fmnx=mnx-Math.floor(hpad/2);
+  let fmxx=fmnx+fc-1;
   let ah2=mxy-mny+1,py=Math.max(Math.floor(ah2/2),2);
   let fmny=mny-py,fmxy=mxy+py,fr=fmxy-fmny+1;
 
-  let uxMin=Math.min(...fpOcc.map(p=>p.x)),uxMax=Math.max(...fpOcc.map(p=>p.x)),uyMin=Math.min(...fpOcc.map(p=>p.y)),uyMax=Math.max(...fpOcc.map(p=>p.y));
-  if(fc>19){let df=fc-19;let cl=Math.floor(df/2),cr=df-cl;cl=Math.min(cl,Math.max(0,uxMin-fmnx));cr=Math.min(cr,Math.max(0,fmxx-uxMax));fmnx+=cl;fmxx-=cr;fc=19}
+  let uxMin=mnx,uxMax=mxx,uyMin=mny,uyMax=mxy;
+  if(fc>19){
+    if(aw<=19){
+      fc=19;
+      hpad=fc-aw;
+      fmnx=mnx-Math.floor(hpad/2);
+      fmxx=fmnx+fc-1;
+    }else{
+      fc=aw;
+      fmnx=mnx;
+      fmxx=mxx;
+    }
+  }
   if(fr>19){let df=fr-19;let cb=Math.floor(df/2),ct=df-cb;cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
 
   let mapSpan=Math.max(fc,fr);
@@ -2526,7 +2542,7 @@ function renderMapGrid(weapon,unitData){
         ie=ec.some(e=>(e.x+sx===cx)&&(e.y+sy===cy));
         isp=sc.some(s=>s.x===cx&&s.y===cy)
       }else if(t3){
-        ieb=dashEndCols.some(dc=>cx===dc&&cy===ey);iem=ieb;
+        ieb=mapDashDualWide?(dashEndYDual!=null&&dashEndCols.some(dc=>cx===dc&&cy===dashEndYDual)):dashEndCols.some(dc=>cx===dc&&cy===ey);iem=ieb;
         ie=ec.some(e=>e.x===cx&&e.y===cy);
         isp=sc.some(s=>s.x===cx&&s.y===cy)
       }else{
