@@ -1393,6 +1393,8 @@ GROWTH_MAP = {'1': 60, '2': 70, '3': 80, '4': 90, '5': 100}
 TERRAIN_SYMBOLS = {'1': '-', '2': '▲', '3': '●'}
 CHAR_STAT_ORDER = ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction']
 UNIT_STAT_ORDER = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+# Parsed from unit ability text; not a real stat key in UNIT_STAT_ORDER (handled separately for crit DMG in API/DC).
+UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY = '__crit_dmg_pct__'
 # List API: sort by these columns using stat value as primary key (not rarity), so SP / SSP toggles reorder correctly.
 LIST_STAT_SORT_PRIMARY = frozenset(
     ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction', 'HP', 'EN', 'ATK', 'DEF', 'MOB', 'MOV']
@@ -1953,6 +1955,22 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
     if skip_conditional and _is_conditional_stat_text(text): return bonuses
+    # "Increase own ATK and Critical Damage by 10%." — generic ({sn}) pattern fails on second stat; handle explicitly (EN / TW / HK / JA).
+    mcd = re.search(
+        r"Increases? (?:own )?(?:squad )?(?:MS )?(?:Attack|ATK) and Critical Damage by (\d+)%",
+        text, re.IGNORECASE)
+    if not mcd:
+        mcd = re.search(r"自身攻擊力及爆擊損傷提升(\d+)%", text)
+    if not mcd:
+        mcd = re.search(r"自身の攻撃力とクリティカルダメージが(\d+)%上昇", text)
+    if mcd:
+        pct = int(mcd.group(1))
+        up_to = re.search(r'[\(\s]up to (\d+)%', text, re.IGNORECASE)
+        if up_to:
+            pct = max(pct, int(up_to.group(1)))
+        bonuses['Attack'] = bonuses.get('Attack', 0) + pct
+        bonuses[UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY] = bonuses.get(UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY, 0) + pct
+        return bonuses
     m = re.search(fr"Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
@@ -3080,6 +3098,18 @@ def extract_stat_bonus_unit(text, fs):
     bonuses = {}; tl = text.lower()
     for kw in ['when ','if ','during ','at the start']:
         if kw in tl: return bonuses
+    mcd = re.search(
+        r"Increases? (?:own )?(?:squad )?(?:MS )?(?:Attack|ATK) and Critical Damage by (\d+)%",
+        text, re.IGNORECASE)
+    if not mcd:
+        mcd = re.search(r"自身攻擊力及爆擊損傷提升(\d+)%", text)
+    if not mcd:
+        mcd = re.search(r"自身の攻撃力とクリティカルダメージが(\d+)%上昇", text)
+    if mcd:
+        pct = int(mcd.group(1))
+        b_atk = math.floor(fs.get('Attack', 0) * pct / 100)
+        bonuses['Attack'] = bonuses.get('Attack', 0) + b_atk
+        return bonuses
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
     m = re.search(fr"Increases? (?:own )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
     if m:
@@ -5146,7 +5176,8 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
         ac.append(bac)
     spb = {s: 0 for s in UNIT_STAT_ORDER}; spc = {s: 0 for s in UNIT_STAT_ORDER}; nxs = {s: 0 for s in UNIT_STAT_ORDER}
     spb_move_flat = [0]; spc_move_flat = [0]
-    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
+    spb_crit = [0]; spc_crit = [0]
+    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, bd_crit, cd_crit):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
         ie = ad.get('is_ex', False); ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
@@ -5173,13 +5204,20 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     elif hc or ie or is_cond or ability_cond: cd_move_flat[0] += flat_move
                     else: bd_move_flat[0] += flat_move
                 for s, pct in part_stats.items():
+                    if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
+                        if not inx:
+                            if hc or ie or is_cond or ability_cond:
+                                cd_crit[0] += pct
+                            else:
+                                bd_crit[0] += pct
+                        continue
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
                     if inx: nd[s] = max(nd.get(s, 0), pct)
                     elif hc or ie or is_cond or ability_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
     for ab in ac:
-        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
+        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, spb_crit, spc_crit)
     for s in UNIT_STAT_ORDER: spc[s] = spc.get(s, 0) + nxs.get(s, 0)
     result = {}
     for s in UNIT_STAT_ORDER:
@@ -5225,8 +5263,9 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
     nxs = {s: 0 for s in UNIT_STAT_ORDER}
     nxss = {s: 0 for s in UNIT_STAT_ORDER}
     spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
+    spb_crit = [0]; spc_crit = [0]; sspb_crit = [0]; sspc_crit = [0]
 
-    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat):
+    def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, bd_crit, cd_crit):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
         ie = ad.get('is_ex', False)
         ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
@@ -5257,6 +5296,13 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                     else:
                         bd_move_flat[0] += flat_move
                 for s, pct in part_stats.items():
+                    if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
+                        if not inx:
+                            if hc or ie or is_cond or ability_cond:
+                                cd_crit[0] += pct
+                            else:
+                                bd_crit[0] += pct
+                        continue
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5:
                         bd[s] = bd.get(s, 0) + pct
@@ -5270,13 +5316,13 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
 
     for ab in ac:
         if ab.get('ssp_only'):
-            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, sspb_crit, sspc_crit)
             continue
-        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat)
+        ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, spb_crit, spc_crit)
         if 'ssp_replacement' in ab:
-            ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+            ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, sspb_crit, sspc_crit)
         else:
-            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat)
+            ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, sspb_crit, sspc_crit)
     for s in UNIT_STAT_ORDER:
         spc[s] = spc.get(s, 0) + nxs.get(s, 0)
         sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
@@ -8750,7 +8796,7 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp10_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp11_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -8801,6 +8847,7 @@ def get_unit(unit_id):
         nxs = {s: 0 for s in UNIT_STAT_ORDER}
         nxss = {s: 0 for s in UNIT_STAT_ORDER}
         spb_move_flat = [0]; spc_move_flat = [0]; sspb_move_flat = [0]; sspc_move_flat = [0]
+        spb_crit = [0]; spc_crit = [0]; sspb_crit = [0]; sspc_crit = [0]
         _WPN_KEYS = ('Accuracy', 'Critical', 'Power')
         wpn_spb = {k: 0 for k in _WPN_KEYS}
         wpn_spc = {k: 0 for k in _WPN_KEYS}
@@ -8809,7 +8856,7 @@ def get_unit(unit_id):
         wpn_nxs = {k: 0 for k in _WPN_KEYS}
         wpn_nxss = {k: 0 for k in _WPN_KEYS}
 
-        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd):
+        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd, bd_crit, cd_crit):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
             ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
@@ -8841,6 +8888,13 @@ def get_unit(unit_id):
                         else:
                             bd_move_flat[0] += flat_move
                     for s, pct in part_stats.items():
+                        if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
+                            if not inx:
+                                if hc or ie or is_cond or ability_cond:
+                                    cd_crit[0] += pct
+                                else:
+                                    bd_crit[0] += pct
+                            continue
                         if s == 'Move': continue
                         if unit_id == '1400000550' and s == 'HP' and pct == 5:
                             bd[s] = bd.get(s, 0) + pct
@@ -8861,13 +8915,13 @@ def get_unit(unit_id):
 
         for ab in ac:
             if ab.get('ssp_only'):
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
                 continue
-            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, wpn_spb, wpn_spc, wpn_nxs)
+            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, wpn_spb, wpn_spc, wpn_nxs, spb_crit, spc_crit)
             if 'ssp_replacement' in ab:
-                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
+                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
             else:
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
         wpn_spc_pure = {k: wpn_spc.get(k, 0) for k in _WPN_KEYS}
         wpn_sspc_pure = {k: wpn_sspc.get(k, 0) for k in _WPN_KEYS}
         for k in _WPN_KEYS:
@@ -8884,7 +8938,14 @@ def get_unit(unit_id):
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
         hcond = (any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
                  any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
-                 spc_move_flat[0] > 0 or sspc_move_flat[0] > 0)
+                 spc_move_flat[0] > 0 or sspc_move_flat[0] > 0 or
+                 spc_crit[0] > 0 or sspc_crit[0] > 0)
+        ability_passive_crit_dmg_pct = {
+            'no_cond': spb_crit[0],
+            'cond_only': spc_crit[0],
+            'ssp_no_cond': sspb_crit[0],
+            'ssp_cond_only': sspc_crit[0],
+        }
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
             cm = 1.0 if info.get('is_ultimate', False) else mult
@@ -9048,7 +9109,7 @@ def get_unit(unit_id):
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
             _muid = unit_id
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
         if _tpid:
             result['transform_partner_id'] = _tpid
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))

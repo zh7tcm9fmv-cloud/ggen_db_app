@@ -3160,6 +3160,7 @@ const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20
 const DC_ATK_SLOT_COUNT=3;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
 function _dcIsZhCalcLang(){const lc=(S.lang||'EN').toUpperCase();return lc==='TW'||lc==='HK';}
+function _dcIsJaCalcLang(){return (S.lang||'EN').toUpperCase()==='JA';}
 function _dcTwZhWeaponTypesToEn(zhBlob){const map={物理:'physical',光束:'beam',特殊:'special'};return String(zhBlob||'').split(/、/).map(s=>map[s.trim()]||'').filter(Boolean).join(' or ');}
 function _dcTwBattleSpiritToVigorKey(spirit){const t=String(spirit||'').trim();if(t==='超一擊')return'supercharged';if(t==='超強勢')return'max';if(t==='強勢')return'high';return'medium';}
 function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();if(DC_SHINN_ASUKA_CHAR_IDS.has(id))return true;const mid=cd.main_character_id!=null?String(cd.main_character_id).trim():'';if(mid&&DC_SHINN_ASUKA_CHAR_IDS.has(mid))return true;const n=(cd.name||'').toLowerCase();return n.includes('shinn')&&n.includes('asuka')}
@@ -4253,6 +4254,10 @@ m=txt.match(/[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(?:物理武裝|光束武裝|特殊武裝)?造成的損傷提升(\d+)%/);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/對敵方造成的損傷提升(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.dmgDealt+=isUnmet?0:v;b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:MS\s+)?(?:ATK|Attack)\s+and\s+[Cc]ritical\s+[Dd]amage\s+by\s+(\d+)%/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身攻擊力及爆擊損傷提升(\d+)%/);
+if(!m&&_dcIsJaCalcLang())m=txt.match(/自身の攻撃力とクリティカルダメージが(\d+)%上昇/);
+if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}% (MS ATK +${v}% on growth line)`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
