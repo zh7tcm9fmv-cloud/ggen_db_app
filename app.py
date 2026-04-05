@@ -9185,15 +9185,6 @@ def get_unit(unit_id):
                 if not siu:
                     siu = portrait or ''
             weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
-            if str(wid) == '100100270004':
-                try:
-                    _mc = ws.get('map_coords', []) or []
-                    _sc = ws.get('shooting_coords', []) or []
-                    _dbg_p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug-73d474.log')
-                    with open(_dbg_p, 'a', encoding='utf-8') as _df:
-                        _df.write(json.dumps({'sessionId': '73d474', 'hypothesisId': 'H4', 'location': 'app.py:unit_detail_weapon', 'message': 'bz_serialize', 'data': {'wid': wid, 'mc_len': len(_mc), 'sc_len': len(_sc), 'has_1_4': any(int(c.get('x', 0)) == 1 and int(c.get('y', 0)) == 4 for c in _mc), 'is_dash': bool(ws.get('is_dash', False))}, 'timestamp': int(time.time() * 1000)}) + '\n')
-                except Exception:
-                    pass
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
