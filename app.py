@@ -3154,7 +3154,10 @@ def create_weapon_master_map(d):
                 if v is not None and str(v).strip() not in ('', '0', 'None'):
                     try: hp_cost = int(v); break
                     except (ValueError, TypeError): pass
-            lookup[wid] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'attribute': normalize_id(item.get('WeaponAttributeSetId') or item.get('weaponAttributeSetId')), 'weapon_type': normalize_id(item.get('WeaponTypeIndex') or item.get('weaponTypeIndex'), '1'), 'main_weapon_id': normalize_id(item.get('MainWeaponId') or item.get('mainWeaponId')), 'attack_attribute': normalize_id(item.get('AttackAttributeSetId') or item.get('attackAttributeSetId')), 'capability_set_id': normalize_id(item.get('WeaponCapabilitySetId') or item.get('weaponCapabilitySetId')), 'tension_type': normalize_id(item.get('TensionTypeIndex') or item.get('tensionTypeIndex'), '0'), 'hp_cost_rate': hp_cost}
+            wsid = normalize_id(item.get('WeaponStatusId') or item.get('weaponStatusId'))
+            if wsid == '0':
+                wsid = wid
+            lookup[wid] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'attribute': normalize_id(item.get('WeaponAttributeSetId') or item.get('weaponAttributeSetId')), 'weapon_type': normalize_id(item.get('WeaponTypeIndex') or item.get('weaponTypeIndex'), '1'), 'main_weapon_id': normalize_id(item.get('MainWeaponId') or item.get('mainWeaponId')), 'weapon_status_id': wsid, 'attack_attribute': normalize_id(item.get('AttackAttributeSetId') or item.get('attackAttributeSetId')), 'capability_set_id': normalize_id(item.get('WeaponCapabilitySetId') or item.get('weaponCapabilitySetId')), 'tension_type': normalize_id(item.get('TensionTypeIndex') or item.get('tensionTypeIndex'), '0'), 'hp_cost_rate': hp_cost}
     return lookup
 
 def create_weapon_status_map(d):
@@ -3375,7 +3378,21 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     zl = [{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)]
     dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
-    tid = mwid if mwid != '0' else wid
+    wid_norm = normalize_id(wid) if wid else '0'
+    wsid = normalize_id(wm.get('weapon_status_id') or '0')
+    if wsid == '0':
+        wsid = wid_norm
+    # Use m_weapon.WeaponStatusId (or weapon id) for m_weapon_status rows. Do not prefer MainWeaponId:
+    # transform alternates share MainWeaponId with the base weapon but have their own status (lower power, etc.).
+    tid = '0'
+    if wsid != '0' and wsm.get(wsid):
+        tid = wsid
+    elif wid_norm != '0' and wsm.get(wid_norm):
+        tid = wid_norm
+    elif mwid != '0' and wsm.get(mwid):
+        tid = mwid
+    else:
+        tid = wsid if wsid != '0' else wid_norm
     if tid == '0': return dr
     ws = wsm.get(tid)
     if not ws: return dr
