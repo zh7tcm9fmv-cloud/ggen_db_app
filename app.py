@@ -3535,6 +3535,29 @@ def collect_unit_mechanism_search_text(info, ld, uid=None):
                 break
     return ' '.join(parts)
 
+
+def trait_text_implies_show_target_condition_tags(en_text, display_text):
+    """True when trait copy points at TargetConditionSetId scope (tags or series).
+
+    Master text often says \"above tags\" / \"specified tags\" or the series equivalent
+    (\"above series\", JA 上記シリーズ, ZH 上述…系列). Without this, target-only conditions
+    (e.g. UnitSeries on the squad scope) never merge into displayed tags.
+    """
+    blob = ((en_text or '') + '\n' + (display_text or '')).strip()
+    if not blob:
+        return False
+    low = blob.lower()
+    if 'above tag' in low or 'specified tag' in low:
+        return True
+    if 'above series' in low or 'specified series' in low:
+        return True
+    if '上記シリーズ' in blob or '指定シリーズ' in blob:
+        return True
+    if '上述' in blob and '系列' in blob:
+        return True
+    return False
+
+
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN', unit_id=None):
     trait_set_id = normalize_id(abil_link_map.get(ab_id, ab_id))
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
@@ -3558,10 +3581,9 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         trait_conds = []
         # Display tags are sourced from active/boost conditions only.
         # TargetConditionSetId is often structural and can cause noisy tags,
-        # UNLESS the text references "above tags" / "specified tags" — then
-        # target conditions are exactly the tags the player needs to see.
-        _en_lower = (en_text or '').lower()
-        _include_target = target_conds and ('above tag' in _en_lower or 'specified tag' in _en_lower)
+        # UNLESS the text references the target scope (above/specified tags or series) —
+        # then target conditions are exactly what the player needs to see.
+        _include_target = target_conds and trait_text_implies_show_target_condition_tags(en_text, display_text)
         for c in active_conds:
             if c not in trait_conds:
                 trait_conds.append(c)
@@ -3624,7 +3646,13 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if '[condition' in txt:
             return True
         # Heuristic: only attach implicit condition tags on clearly conditional lines.
-        return (' when ' in (' ' + txt)) or (' if ' in (' ' + txt)) or ('specified' in txt) or ('above tag' in txt)
+        return (
+            (' when ' in (' ' + txt))
+            or (' if ' in (' ' + txt))
+            or ('specified' in txt)
+            or ('above tag' in txt)
+            or ('above series' in txt)
+        )
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
         groups = []
