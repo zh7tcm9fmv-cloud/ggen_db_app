@@ -3186,14 +3186,36 @@ def create_weapon_status_map(d):
             lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2}
     return lookup
 
+# MAP preview: Big Zam (1001002700) uses this 3-wide band as base, then 2×2 footprint Minkowski sum in resolve_weapon_stats.
+MAP_EFFECT_BASE_STRING_1001002700 = (
+    '(-1,5),(0,5),(1,5),(-1,4),(0,4),(1,4),(-1,3),(0,3),(1,3),(-1,2),(0,2),(1,2),(-1,1),(0,1),(1,1)'
+)
+MAP_FOOTPRINT_2X2_DXDY = ((0, 0), (1, 0), (0, -1), (1, -1))
+
+
+def parse_map_effect_coord_string(mr):
+    return [{'x': int(x), 'y': int(y)} for x, y in re.findall(r'\((-?\d+),\s*(-?\d+)\)', str(mr or ''))]
+
+
+def minkowski_map_coords_with_2x2_footprint(coords):
+    """Union of base cells translated by 2×2 unit footprint (anchor-relative)."""
+    if not coords:
+        return coords
+    seen = set()
+    out = []
+    for c in coords:
+        for dx, dy in MAP_FOOTPRINT_2X2_DXDY:
+            nx, ny = c['x'] + dx, c['y'] + dy
+            if (nx, ny) not in seen:
+                seen.add((nx, ny))
+                out.append({'x': nx, 'y': ny})
+    return out
+
+
 def augment_map_coords_for_occupied_area_2(coords, unit_id):
-    """Add tiles for 2×2 units (m_unit OccupiedAreaId 2).
+    """Add tiles for 2×2 units (m_unit OccupiedAreaId 2): each row gets (max_x + 1, y) if missing.
 
-    Most units: for every y row, append (max_x + 1, y) if missing (includes top row → e.g. (2,5) on
-    1125001500, (2,4) on 1060000550 wedge cap).
-
-    Big Zam (1001002700): do not apply row-wide east fill (would over-expand the diamond); only add
-    the three apex-adjacent cells the game uses for the 2×2 footprint.
+    Big Zam (1001002700) is handled separately in resolve_weapon_stats (Minkowski base band).
     """
     if not coords:
         return coords
@@ -3205,12 +3227,6 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
         return coords
     out = [{'x': c['x'], 'y': c['y']} for c in coords]
     seen = {(c['x'], c['y']) for c in out}
-    if uid == '1001002700':
-        for nx, ny in ((1, 4), (-1, 5), (-1, -4)):
-            if (nx, ny) not in seen:
-                seen.add((nx, ny))
-                out.append({'x': nx, 'y': ny})
-        return out
     by_y = {}
     for c in out:
         by_y.setdefault(c['y'], []).append(c['x'])
@@ -3450,7 +3466,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     zl = [{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)]
-    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False,'map_dash_dual_wide':False}
+    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False,'map_dash_dual_wide':False,'map_dash_ey_boost':0,'map_single_pou':False}
     wid_norm = normalize_id(wid) if wid else '0'
     wsid = normalize_id(wm.get('weapon_status_id') or '0')
     if wsid == '0':
@@ -3548,16 +3564,25 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc_am))
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
     map_dash_dual_wide = False
+    map_dash_ey_boost = 0
+    map_single_pou = False
+    uidn = normalize_id(unit_id) if unit_id else '0'
     if wts == '3':
-        mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
+        if uidn == '1001002700':
+            mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in parse_map_effect_coord_string(MAP_EFFECT_BASE_STRING_1001002700)])
+            map_single_pou = True
+        else:
+            mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
         scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
         if not map_dash_dual_wide:
             scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
+        if map_dash_dual_wide and uidn in ('1060000500', '1060000550'):
+            map_dash_ey_boost = 1
         isd = bool(mc and scc and len(mc) == len(scc) and {(c['x'], c['y']) for c in mc} == {(c['x'], c['y']) for c in scc})
         if map_dash_dual_wide:
             isd = True
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
-    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd,'map_dash_dual_wide': map_dash_dual_wide}
+    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd,'map_dash_dual_wide': map_dash_dual_wide,'map_dash_ey_boost': map_dash_ey_boost,'map_single_pou': map_single_pou}
 
 def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
     if not ab_id or normalize_id(ab_id) == '0':
@@ -9252,7 +9277,7 @@ def get_unit(unit_id):
                         break
                 if not siu:
                     siu = portrait or ''
-            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_ey_boost': ws.get('map_dash_ey_boost', 0), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
