@@ -1432,6 +1432,18 @@ MAP_WEAPON_AFTER_MOVE_ICON = '/static/images/UI/UI_Common_WeaponIcon_map_after_m
 # Recovery/supply MAP (e.g. Lacus): standard blue MAP icon + "Supply Type: MP" in the header (not the attack-attribute row).
 MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS = frozenset({('1330005900', '133000590003')})
 MAP_WEAPON_SUPPLY_TYPE_MP_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp'
+# Lacus (1330005900) MAP: in-game battle UI blue MAP art (CDN /static/images mirror — use game_image_public_url).
+MAP_WEAPON_BLUE_BATTLE_UI_ICON = '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp'
+MAP_WEAPON_BLUE_BATTLE_UI_PAIRS = frozenset({('1330005900', '133000590003')})
+
+
+def is_map_weapon_blue_battle_ui(unit_id, wid, wt):
+    wts = str(wt) if wt is not None else ''
+    if wts != '3':
+        return False
+    u = normalize_id(unit_id) if unit_id else ''
+    w = normalize_id(wid) if wid else ''
+    return bool(u and w and (u, w) in MAP_WEAPON_BLUE_BATTLE_UI_PAIRS)
 
 
 def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
@@ -3354,6 +3366,8 @@ def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None, wid=None, un
     if wts == '3':
         if is_map_weapon_after_move_unit_weapon(unit_id, wid, wts):
             return {'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_ICON), 'overlay': '', 'is_ex': False, 'is_map': True}
+        if is_map_weapon_blue_battle_ui(unit_id, wid, wts):
+            return {'icon': game_image_public_url(MAP_WEAPON_BLUE_BATTLE_UI_ICON), 'overlay': '', 'is_ex': False, 'is_map': True}
         return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
     if wts == '2':
         cands = []
