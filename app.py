@@ -3187,11 +3187,13 @@ def create_weapon_status_map(d):
     return lookup
 
 def augment_map_coords_for_occupied_area_2(coords, unit_id):
-    """Add one east tile per MAP row for 2×2 units (m_unit OccupiedAreaId 2).
+    """Add tiles for 2×2 units (m_unit OccupiedAreaId 2).
 
-    For each y below the global max y, append (max_x + 1, y) if missing. For the max-y row only,
-    append when that row extends farther right than the row at y - 1 (wedge tip); skip when the top
-    band matches the row inward (rectangular cap) or the tip is narrower than y-1 (diamond peak).
+    Most units: for every y row, append (max_x + 1, y) if missing (includes top row → e.g. (2,5) on
+    1125001500, (2,4) on 1060000550 wedge cap).
+
+    Big Zam (1001002700): do not apply row-wide east fill (would over-expand the diamond); only add
+    the three apex-adjacent cells the game uses for the 2×2 footprint.
     """
     if not coords:
         return coords
@@ -3202,25 +3204,46 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
     if safe_int(info.get('occupied_area_id'), 1) != 2:
         return coords
     out = [{'x': c['x'], 'y': c['y']} for c in coords]
+    seen = {(c['x'], c['y']) for c in out}
+    if uid == '1001002700':
+        for nx, ny in ((1, 4), (-1, 5), (-1, -4)):
+            if (nx, ny) not in seen:
+                seen.add((nx, ny))
+                out.append({'x': nx, 'y': ny})
+        return out
     by_y = {}
     for c in out:
         by_y.setdefault(c['y'], []).append(c['x'])
-    y_top = max(by_y.keys())
-    seen = {(c['x'], c['y']) for c in out}
     for y, xs in sorted(by_y.items()):
-        x_max = max(xs)
-        nx, ny = x_max + 1, y
-        if (nx, ny) in seen:
-            continue
-        if y < y_top:
+        nx, ny = max(xs) + 1, y
+        if (nx, ny) not in seen:
             seen.add((nx, ny))
             out.append({'x': nx, 'y': ny})
-        elif y == y_top:
-            below = by_y.get(y - 1)
-            if below is not None and x_max > max(below):
-                seen.add((nx, ny))
-                out.append({'x': nx, 'y': ny})
     return out
+
+
+def augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id):
+    """MAP dash line weapons: duplicate a single-column shooting path at x+1 for 2×2 units (two lanes)."""
+    if not scc or len(scc) < 2:
+        return scc, False
+    uid = normalize_id(unit_id) if unit_id else '0'
+    if uid == '0':
+        return scc, False
+    info = unit_info_map.get(uid) or {}
+    if safe_int(info.get('occupied_area_id'), 1) != 2:
+        return scc, False
+    xs_set = {c['x'] for c in scc}
+    if len(xs_set) != 1:
+        return scc, False
+    x0 = next(iter(xs_set))
+    out = [{'x': c['x'], 'y': c['y']} for c in scc]
+    seen = {(c['x'], c['y']) for c in out}
+    for c in scc:
+        nx, ny = x0 + 1, c['y']
+        if (nx, ny) not in seen:
+            seen.add((nx, ny))
+            out.append({'x': nx, 'y': ny})
+    return out, True
 
 def create_weapon_text_map(d):
     lookup = {}
@@ -3427,7 +3450,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     zl = [{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)]
-    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False}
+    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False,'map_dash_dual_wide':False}
     wid_norm = normalize_id(wid) if wid else '0'
     wsid = normalize_id(wm.get('weapon_status_id') or '0')
     if wsid == '0':
@@ -3524,12 +3547,17 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         mpc_am = pat_mpc if pat_mpc > 0 else mpc
         rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc_am))
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
+    map_dash_dual_wide = False
     if wts == '3':
         mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
-        scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
+        scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
+        if not map_dash_dual_wide:
+            scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         isd = bool(mc and scc and len(mc) == len(scc) and {(c['x'], c['y']) for c in mc} == {(c['x'], c['y']) for c in scc})
+        if map_dash_dual_wide:
+            isd = True
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
-    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
+    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd,'map_dash_dual_wide': map_dash_dual_wide}
 
 def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
     if not ab_id or normalize_id(ab_id) == '0':
@@ -9224,7 +9252,7 @@ def get_unit(unit_id):
                         break
                 if not siu:
                     siu = portrait or ''
-            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
         weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
