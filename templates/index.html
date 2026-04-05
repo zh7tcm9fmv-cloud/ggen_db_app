@@ -2443,24 +2443,25 @@ function renderMapGrid(weapon,isLarge){
   }
 
   if(isLarge){
-    // Large MS is 2 tiles wide on the map. Master coords are one point per logical cell: widen each
-    // (x,y) to (x,y) and (x+1,y) only — do NOT stamp the full 2×2 MS footprint at every cell (that pulls
-    // effect tiles onto the unit row and makes POU clip into the effect, e.g. 137001080005 / 120000520004).
+    // Large MS: for t2/t3 (shooting data present), each master point is one logical column — widen to
+    // (x,y)+(x+1,y). For t1 (no shooting), MapWeaponEffectRange already lists every tile in unit-anchor
+    // space; expWide would duplicate (+1,0) per entry and shred symmetric diamonds (e.g. 100100270004).
     let expWide=c=>{
       let e=[];
       c.forEach(cc=>{[[0,0],[1,0]].forEach(([dx,dy])=>e.push({x:cc.x+dx,y:cc.y+dy}))});
       return e.filter((v,i,a)=>a.findIndex(t2=>(t2.x===v.x&&t2.y===v.y))===i)
     };
-    // Widen logical columns to two tiles for 2×2 MS. Widening e.g. (-1,0) also creates (0,0), which lies on
-    // the MS footprint; master omits (0,0) from this MAP so the center must stay POU-only (see in-game /
-    // reference diamond). Drop widened footprint tiles not listed in raw master coords.
     const stripFootprintArtifacts=(coords)=>{
       if(!coords.length)return coords;
       const orig=new Set(coords.map(c=>`${c.x},${c.y}`));
       const onLargeFootprint=(x,y)=>(x===0||x===1)&&(y===0||y===-1);
       return expWide(coords).filter(c=>!onLargeFootprint(c.x,c.y)||orig.has(`${c.x},${c.y}`));
     };
-    ec=stripFootprintArtifacts(ec);sc=stripFootprintArtifacts(sc)
+    if(t1){
+      sc=sc.length?stripFootprintArtifacts(sc):sc
+    }else{
+      ec=stripFootprintArtifacts(ec);sc=stripFootprintArtifacts(sc)
+    }
   }
 
   let sx=0,sy=0,ux=0,uy=0,ex2=0,ey=0;
