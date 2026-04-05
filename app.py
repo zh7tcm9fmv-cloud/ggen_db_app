@@ -3260,7 +3260,7 @@ def append_gp03_map_dash_end_cells(scc, unit_id, map_dash_dual_wide):
         return scc
     out = [{'x': c['x'], 'y': c['y']} for c in scc]
     seen = {(c['x'], c['y']) for c in out}
-    for nx, ny in ((0, 6), (1, 6)):
+    for nx, ny in ((0, 5), (1, 5)):
         if (nx, ny) not in seen:
             seen.add((nx, ny))
             out.append({'x': nx, 'y': ny})
