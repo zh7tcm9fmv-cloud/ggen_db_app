@@ -1427,6 +1427,18 @@ MAP_WEAPON_AFTER_MOVE_PAIRS = frozenset({
     ('1219000151', '121900015105'),
 })
 MAP_WEAPON_AFTER_MOVE_ICON = '/static/images/UI/UI_Common_WeaponIcon_map_after_move.webp'
+# Recovery/supply MAP (e.g. Lacus): standard blue MAP icon + "Supply Type: MP" in the header (not the attack-attribute row).
+MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS = frozenset({('1330005900', '133000590003')})
+MAP_WEAPON_SUPPLY_TYPE_MP_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp'
+
+
+def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
+    wts = str(wt) if wt is not None else ''
+    if wts != '3':
+        return False
+    u = normalize_id(unit_id) if unit_id else ''
+    w = normalize_id(wid) if wid else ''
+    return bool(u and w and (u, w) in MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS)
 
 
 def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
@@ -5582,6 +5594,8 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates, wid=wid, unit_id=uid)
+        if is_map_weapon_recovery_supply_mp(uid, wid, wt):
+            at = [{'is_supply': True, 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'label': 'MP'}]
         levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
         weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': ws.get('range_min', 0), 'max_range': ws.get('range_max', 0), 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
@@ -8903,6 +8917,8 @@ def get_unit(unit_id):
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+            if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
+                at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
             levels = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
             pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
             am = ws['ammo'] if wt == '3' else 0
