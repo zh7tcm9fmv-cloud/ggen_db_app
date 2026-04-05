@@ -1415,11 +1415,22 @@ WEAPON_ATTR_MAP = {
     '8': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
 }
 MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp'
-# Wing Gundam Zero (EW) — unit 1219000150, MAP weapon "Rolling Buster Rifle" (121900015005); after-move + MP cost in UI.
-MAP_WEAPON_AFTER_MOVE_UID = '1219000150'
-MAP_WEAPON_AFTER_MOVE_WID = '121900015005'
+# Wing Gundam Zero (EW): playable 1219000150 / MAP 121900015005; NPC shell 1219000151 / MAP 121900015105 (same after-move MAP treatment).
+MAP_WEAPON_AFTER_MOVE_PAIRS = frozenset({
+    ('1219000150', '121900015005'),
+    ('1219000151', '121900015105'),
+})
 MAP_WEAPON_AFTER_MOVE_ICON = '/static/images/UI/UI_Common_WeaponIcon_map_after_move.webp'
 MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp'
+
+
+def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
+    wts = str(wt) if wt is not None else ''
+    if wts != '3':
+        return False
+    u = normalize_id(unit_id) if unit_id else ''
+    w = normalize_id(wid) if wid else ''
+    return bool(u and w and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
@@ -1432,7 +1443,7 @@ ATTACK_ATTR_TYPES = {
     '6': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
 }
-MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5, '121900015005': 5}
+MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5, '121900015005': 5, '121900015105': 5}
 MP_CONSUMPTION_UNIT_EX = {'1330000750': 2}
 HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
 ACQUISITION_ROUTE_ICONS = {
@@ -3280,9 +3291,7 @@ def create_weapon_capability_map(base_dir, lang_dir):
 def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None, wid=None, unit_id=None):
     wts = str(wt) if wt is not None else ''
     if wts == '3':
-        uidn = normalize_id(unit_id) if unit_id else ''
-        widn = normalize_id(wid) if wid else ''
-        if uidn == MAP_WEAPON_AFTER_MOVE_UID and widn == MAP_WEAPON_AFTER_MOVE_WID:
+        if is_map_weapon_after_move_unit_weapon(unit_id, wid, wts):
             return {'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_ICON), 'overlay': '', 'is_ex': False, 'is_map': True}
         return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
     if wts == '2':
@@ -3352,8 +3361,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
             lev['ammo'] = 0
     rest = []
     widn = normalize_id(wid) if wid else '0'
-    uid_ctx = normalize_id(unit_id) if unit_id else '0'
-    after_move_map = uid_ctx == MAP_WEAPON_AFTER_MOVE_UID and widn == MAP_WEAPON_AFTER_MOVE_WID and wts == '3'
+    after_move_map = is_map_weapon_after_move_unit_weapon(unit_id, wid, wts)
     if wts == '3' and not after_move_map:
         rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
@@ -5538,7 +5546,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates, wid=wid, unit_id=uid)
-        if normalize_id(uid) == MAP_WEAPON_AFTER_MOVE_UID and normalize_id(wid) == MAP_WEAPON_AFTER_MOVE_WID and str(wt) == '3':
+        if is_map_weapon_after_move_unit_weapon(uid, wid, wt):
             at = [{'is_supply': True, 'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON), 'label': 'MP'}]
         levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
@@ -8861,7 +8869,7 @@ def get_unit(unit_id):
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
             ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
-            if normalize_id(unit_id) == MAP_WEAPON_AFTER_MOVE_UID and normalize_id(wid) == MAP_WEAPON_AFTER_MOVE_WID and str(wt) == '3':
+            if is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
                 at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON), 'is_supply': True}]
             levels = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
             pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
