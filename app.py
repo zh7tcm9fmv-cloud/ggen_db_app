@@ -112,6 +112,17 @@ def convert_image_urls(obj):
         return [convert_image_urls(item) for item in obj]
     return obj
 
+
+def game_image_public_url(path):
+    """Resolve /static/images/* to an absolute CDN URL when IMAGE_CDN and GAME_IMAGES_USE_CDN are set."""
+    if not path or not isinstance(path, str):
+        return path
+    if not path.startswith('/static/images/'):
+        return path
+    if IMAGE_CDN and GAME_IMAGES_USE_CDN:
+        return IMAGE_CDN.rstrip('/') + '/images/' + path[len('/static/images/'):]
+    return path
+
 # Load the image map
 IMAGE_INDEX_PATH = os.path.join(os.path.dirname(__file__), 'image_index.json')
 IMAGE_INDEX = {}
@@ -243,6 +254,7 @@ UI_LABELS = {
         'restriction_before_moving': 'Useable only before moving.',
         'restriction_tension_max': 'Can be used at Tension Max or greater.',
         'restriction_mp': 'Can be used when consuming {} MP.',
+        'restriction_map_after_move_mp': 'Usable after moving. Consumes {} MP when used.',
         'restriction_hp': 'Can be used when consuming {}% HP.',
         'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Sortie Group {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
@@ -254,6 +266,7 @@ UI_LABELS = {
         'restriction_before_moving': '僅限移動前使用。',
         'restriction_tension_max': '鬥志Max以上時可使用。',
         'restriction_mp': '消耗{}MP時可使用。',
+        'restriction_map_after_move_mp': '移動後可使用。使用時消耗{}MP。',
         'restriction_hp': '消耗{}%HP時可使用。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出擊群組 {}',
         'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
@@ -265,6 +278,7 @@ UI_LABELS = {
         'restriction_before_moving': '移動前のみ使用可能。',
         'restriction_tension_max': 'テンションMax以上で使用可能。',
         'restriction_mp': '{}MP消費時に使用可能。',
+        'restriction_map_after_move_mp': '移動後に使用できる。使用時に{}MPを消費する。',
         'restriction_hp': '{}%HP消費時に使用可能。',
         'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出撃グループ {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
@@ -1401,8 +1415,11 @@ WEAPON_ATTR_MAP = {
     '8': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
 }
 MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp'
-MAP_WEAPON_AFTER_MOVE_UID = '1330005900'
+# Wing Gundam Zero (EW) — unit 1219000150, MAP weapon "Rolling Buster Rifle" (121900015005); after-move + MP cost in UI.
+MAP_WEAPON_AFTER_MOVE_UID = '1219000150'
+MAP_WEAPON_AFTER_MOVE_WID = '121900015005'
 MAP_WEAPON_AFTER_MOVE_ICON = '/static/images/UI/UI_Common_WeaponIcon_map_after_move.webp'
+MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp'
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
@@ -1415,7 +1432,7 @@ ATTACK_ATTR_TYPES = {
     '6': [{'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Melee', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
 }
-MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5}
+MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5, '121900015005': 5}
 MP_CONSUMPTION_UNIT_EX = {'1330000750': 2}
 HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
 ACQUISITION_ROUTE_ICONS = {
@@ -3260,9 +3277,15 @@ def create_weapon_capability_map(base_dir, lang_dir):
             lookup[csid] = text_map.get(dlid, "None") if dlid != '0' else "None"
     return lookup
 
-def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None):
-    if wt == '3': return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
-    if wt == '2':
+def resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates=None, wid=None, unit_id=None):
+    wts = str(wt) if wt is not None else ''
+    if wts == '3':
+        uidn = normalize_id(unit_id) if unit_id else ''
+        widn = normalize_id(wid) if wid else ''
+        if uidn == MAP_WEAPON_AFTER_MOVE_UID and widn == MAP_WEAPON_AFTER_MOVE_WID:
+            return {'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_ICON), 'overlay': '', 'is_ex': False, 'is_map': True}
+        return {'icon': MAP_WEAPON_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}
+    if wts == '2':
         cands = []
         if ubr:
             cands.append(str(ubr).strip())
@@ -3323,27 +3346,30 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
                 if d2 and d2 not in tl: tl.append(d2)
         if not tl: tl = list(btl)
         levels.append({'level':lv,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl})
-    if wt != '3':
+    wts = str(wt) if wt is not None else ''
+    if wts != '3':
         for lev in levels:
             lev['ammo'] = 0
     rest = []
-    uidn = normalize_id(unit_id) if unit_id else '0'
-    after_move_map = uidn == MAP_WEAPON_AFTER_MOVE_UID and wt == '3'
-    if wt == '3' and not after_move_map:
+    widn = normalize_id(wid) if wid else '0'
+    uid_ctx = normalize_id(unit_id) if unit_id else '0'
+    after_move_map = uid_ctx == MAP_WEAPON_AFTER_MOVE_UID and widn == MAP_WEAPON_AFTER_MOVE_WID and wts == '3'
+    if wts == '3' and not after_move_map:
         rest.append(get_ui_label(lang_code, 'restriction_before_moving'))
     if tt == '4': rest.append(get_ui_label(lang_code, 'restriction_tension_max'))
     mpc = MP_CONSUMPTION_WEAPON_IDS.get(wid, 0)
-    if mpc <= 0 and unit_id in MP_CONSUMPTION_UNIT_EX and wt == '2': mpc = MP_CONSUMPTION_UNIT_EX[unit_id]
+    if mpc <= 0 and unit_id in MP_CONSUMPTION_UNIT_EX and wts == '2': mpc = MP_CONSUMPTION_UNIT_EX[unit_id]
     if mpc > 0 and not after_move_map:
         rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc))
     hp_rate = wm.get('hp_cost_rate', 0)
-    if hp_rate <= 0 and unit_id in HP_CONSUMPTION_UNIT_EX and wt == '2': hp_rate = HP_CONSUMPTION_UNIT_EX[unit_id]
+    if hp_rate <= 0 and unit_id in HP_CONSUMPTION_UNIT_EX and wts == '2': hp_rate = HP_CONSUMPTION_UNIT_EX[unit_id]
     if hp_rate > 0: rest.append(get_ui_label(lang_code, 'restriction_hp').format(hp_rate))
     if csid != '0':
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
     if after_move_map:
-        rest.append(get_ui_label(lang_code, 'restriction_mp').format(5))
+        mpc_am = int(MP_CONSUMPTION_WEAPON_IDS.get(widn, 0) or 5)
+        rest.append(get_ui_label(lang_code, 'restriction_map_after_move_mp').format(mpc_am))
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
     return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
@@ -5511,8 +5537,9 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         ai = wm.get('attribute', '0'); wt = wm.get('weapon_type', '1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label': 'Unknown', 'icon': ''})
         at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, ld.get('weapon_trait_detail_map', {}), wid=wid, lang_code=lc, unit_id=uid)
-        ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates)
-        if normalize_id(uid) == MAP_WEAPON_AFTER_MOVE_UID and wt == '3': ic = {'icon': MAP_WEAPON_AFTER_MOVE_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'is_supply': True, 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'label': 'MP'}]
+        ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates, wid=wid, unit_id=uid)
+        if normalize_id(uid) == MAP_WEAPON_AFTER_MOVE_UID and normalize_id(wid) == MAP_WEAPON_AFTER_MOVE_WID and str(wt) == '3':
+            at = [{'is_supply': True, 'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON), 'label': 'MP'}]
         levels = ws.get('levels', [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if wt == '3' else 0, 'traits': ws.get('traits', [])} for i in range(1, 6)])
         lv5t = levels[4]['traits'] if len(levels) > 4 else []; ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
         weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': ws.get('range_min', 0), 'max_range': ws.get('range_max', 0), 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
@@ -8833,8 +8860,9 @@ def get_unit(unit_id):
             ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
             at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
             ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
-            ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'))
-            if normalize_id(unit_id) == MAP_WEAPON_AFTER_MOVE_UID and wt == '3': ic = {'icon': MAP_WEAPON_AFTER_MOVE_ICON, 'overlay': '', 'is_ex': False, 'is_map': True}; at = [{'label': 'MP', 'icon': '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp', 'is_supply': True}]
+            ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+            if normalize_id(unit_id) == MAP_WEAPON_AFTER_MOVE_UID and normalize_id(wid) == MAP_WEAPON_AFTER_MOVE_WID and str(wt) == '3':
+                at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_AFTER_MOVE_MP_ATK_ICON), 'is_supply': True}]
             levels = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
             pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
             am = ws['ammo'] if wt == '3' else 0
