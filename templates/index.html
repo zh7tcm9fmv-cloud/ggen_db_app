@@ -2432,6 +2432,24 @@ function renderMapGrid(weapon,isLarge){
   let ec=weapon.map_coords||[],sc=weapon.shooting_coords||[],hs=sc.length>0;
   if(!ec.length)return'<div style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:8px;">No data.</div>';
 
+  // MapWeaponRangeTypeIndex 1: master often omits MapWeaponShootingRange but effect tiles are authored
+  // relative to a forward point-of-use (in-game you pick a POU, then see this pattern). t1 (unit-only frame)
+  // misplaces the blast and shows a misleading "Point of Use" legend. Default POU = outermost row by +y
+  // (tip of the diamond), tie-break center x — matches existing t2 "top of aim pattern" rule.
+  const ecSnap=ec.map(c=>({x:c.x,y:c.y}));
+  const _mrt=weapon.map_range_type;
+  const mrt=_mrt!=null&&_mrt!==''?String(_mrt).trim():'';
+  const noCenterTile=!ecSnap.some(c=>c.x===0&&c.y===0);
+  if(!hs&&mrt==='1'&&noCenterTile){
+    const tipY=Math.max(...ecSnap.map(c=>c.y));
+    const front=ecSnap.filter(c=>c.y===tipY);
+    if(front.length){
+      front.sort((a,b)=>Math.abs(a.x)-Math.abs(b.x)||a.x-b.x);
+      sc=[{x:front[0].x,y:front[0].y}];
+      hs=true;
+    }
+  }
+
   let t1=false,t2=false,t3=false;
   if(!hs)t1=true;
   else if(weapon.is_dash)t3=true;
