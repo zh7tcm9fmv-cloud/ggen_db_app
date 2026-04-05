@@ -2451,7 +2451,16 @@ function renderMapGrid(weapon,isLarge){
       c.forEach(cc=>{[[0,0],[1,0]].forEach(([dx,dy])=>e.push({x:cc.x+dx,y:cc.y+dy}))});
       return e.filter((v,i,a)=>a.findIndex(t2=>(t2.x===v.x&&t2.y===v.y))===i)
     };
-    ec=expWide(ec);sc=expWide(sc)
+    // Widening (-1,0) adds (0,0), which is on the 2×2 unit footprint. If master omits (0,0) from the blast
+    // (forward MAP, ring, etc.), that tile must not become effect — same for other footprint cells only
+    // introduced by widening (e.g. 100100270004 on MA-08 Big Zam).
+    const stripFootprintArtifacts=(coords)=>{
+      if(!coords.length)return coords;
+      const orig=new Set(coords.map(c=>`${c.x},${c.y}`));
+      const onLargeFootprint=(x,y)=>(x===0||x===1)&&(y===0||y===-1);
+      return expWide(coords).filter(c=>!onLargeFootprint(c.x,c.y)||orig.has(`${c.x},${c.y}`));
+    };
+    ec=stripFootprintArtifacts(ec);sc=stripFootprintArtifacts(sc)
   }
 
   let sx=0,sy=0,ux=0,uy=0,ex2=0,ey=0;
