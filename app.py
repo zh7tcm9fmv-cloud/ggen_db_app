@@ -5919,9 +5919,22 @@ def series_alias_tokens_for_haystack(ser_list):
     return toks
 
 def parse_q_scope(val):
-    """Browse list text search breadth: 'full' includes abilities/skills/weapons/etc.; 'primary' is name, id, tags, series, aliases only.
-    ASCII token matching uses word-start (or whole-word for short tokens); pure-digit terms still match as substrings for id fragments."""
-    return 'primary' if (val or '').strip().lower() == 'primary' else 'full'
+    """Browse list text search breadth (default: name_id).
+
+    - name_id: display name + entity id only (default when q_scope omitted).
+    - primary: also tags, series titles, series alias tokens (e.g. msg); no ability/skill/weapon text.
+    - full: primary plus ability/skill/weapon search text where applicable.
+    """
+    v = (val or '').strip().lower()
+    if v == 'primary':
+        return 'primary'
+    if v == 'full':
+        return 'full'
+    return 'name_id'
+
+
+def browse_q_scope_cache_letter(q_scope):
+    return 'n' if q_scope == 'name_id' else ('p' if q_scope == 'primary' else 'f')
 
 
 def parse_search_query(sq):
@@ -6934,7 +6947,7 @@ def browse_entity_has_resolved_lineage_tags(lin_map, eid, lc, tag_type):
 def character_passes_browse_pool_filters(
     cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
     lineage_filter, series_filter, skill_filter, ability_filter=None,
-    *, q_scope='full', apply_lineage=True, apply_series=True, apply_skill=True, apply_ability=True,
+    *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_skill=True, apply_ability=True,
 ):
     """list_characters inclusion with optional lineage/series/skill/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -6985,7 +6998,7 @@ def character_passes_browse_pool_filters(
         return False
     if sq:
         search_chunks = []
-        if q_scope != 'primary':
+        if q_scope == 'full':
             for ab in extract_data_list(char_abil):
                 if normalize_id(ab.get('CharacterId', '')) != cid:
                     continue
@@ -7002,18 +7015,21 @@ def character_passes_browse_pool_filters(
                         blob = collect_skill_search_text(sid, ld)
                         if blob:
                             search_chunks.append(blob)
-        alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-        ss = (
-            f'{name} {cid} '
-            + ' '.join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')])
-            + ' '
-            + ' '.join([s['name'] for s in ser_list])
-            + ' '
-            + alias_h
-            + ' '
-            + ' '.join(search_chunks)
-        )
-        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid, primary=(q_scope == 'primary')):
+        if q_scope == 'name_id':
+            ss = f'{name} {cid}'.strip().lower()
+        else:
+            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+            ss = (
+                f'{name} {cid} '
+                + ' '.join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')])
+                + ' '
+                + ' '.join([s['name'] for s in ser_list])
+                + ' '
+                + alias_h
+                + ' '
+                + ' '.join(search_chunks)
+            ).strip().lower()
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
             return False
     return True
 
@@ -7068,7 +7084,7 @@ def unit_passes_browse_pool_filters(
     uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
     weapon_debuff_filter=None,
-    *, q_scope='full', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
+    *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -7129,7 +7145,7 @@ def unit_passes_browse_pool_filters(
         return False
     if sq:
         search_chunks = []
-        if q_scope != 'primary':
+        if q_scope == 'full':
             ua = unit_abil_map.get(uid, [])
             rm = unit_ssp_abil_replace_map.get(uid, {})
             for ab in ua:
@@ -7153,19 +7169,22 @@ def unit_passes_browse_pool_filters(
             wtxt = collect_unit_weapons_search_text(uid, ld, lc)
             if wtxt:
                 search_chunks.append(wtxt)
-        alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-        ss = (
-            f'{name} {uid} '
-            + ' '.join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')])
-            + ' '
-            + ' '.join([s['name'] for s in ser_list])
-            + ' '
-            + alias_h
-            + ' '
-            + ' '.join(search_chunks)
-        )
-        ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip()
-        if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')):
+        if q_scope == 'name_id':
+            ss = f'{name} {uid}'.strip().lower()
+        else:
+            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+            ss = (
+                f'{name} {uid} '
+                + ' '.join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')])
+                + ' '
+                + ' '.join([s['name'] for s in ser_list])
+                + ' '
+                + alias_h
+                + ' '
+                + ' '.join(search_chunks)
+            ).strip()
+            ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
             return False
     return True
 
@@ -7767,7 +7786,7 @@ def list_characters():
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
-    scope_ck = 'p' if q_scope == 'primary' else 'f'
+    scope_ck = browse_q_scope_cache_letter(q_scope)
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     sp_list = request.args.get('sp', '').strip().lower() in ('1', 'true', 'yes')
@@ -7788,7 +7807,7 @@ def list_characters():
     skill_ck = ability_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl29_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl30_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -7838,10 +7857,40 @@ def list_characters():
         if not id_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
             continue
         if sq:
-            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-            ss = f"{name} " + " ".join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h
-            ss = ss.strip()
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=cid, primary=(q_scope == 'primary')): continue
+            search_chunks = []
+            if q_scope == 'full':
+                for ab in extract_data_list(char_abil):
+                    if normalize_id(ab.get('CharacterId', '')) != cid:
+                        continue
+                    for aid in [normalize_id(ab.get('AbilityId', '')), normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))]:
+                        if aid and aid != '0' and aid != 'None':
+                            blob = collect_ability_search_text(aid, ld)
+                            if blob:
+                                search_chunks.append(blob)
+                for sk in extract_data_list(char_skill):
+                    if normalize_id(sk.get('CharacterId', '')) != cid:
+                        continue
+                    for sid in [normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', '')), normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))]:
+                        if sid and sid != '0':
+                            blob = collect_skill_search_text(sid, ld)
+                            if blob:
+                                search_chunks.append(blob)
+            if q_scope == 'name_id':
+                ss = f'{name} {cid}'.strip().lower()
+            else:
+                alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+                ss = (
+                    f'{name} {cid} '
+                    + ' '.join([t['name'] for t in resolve_tags(char_lin_map, cid, lc, 'character')])
+                    + ' '
+                    + ' '.join([s['name'] for s in ser_list])
+                    + ' '
+                    + alias_h
+                    + ' '
+                    + ' '.join(search_chunks)
+                ).strip().lower()
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
+                continue
         raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
         has_sp_char = int(str(ri)) <= 4
@@ -7871,7 +7920,7 @@ def list_units():
     pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
-    scope_ck = 'p' if q_scope == 'primary' else 'f'
+    scope_ck = browse_q_scope_cache_letter(q_scope)
     role_arg = request.args.get('role', '').strip(); role_filter = parse_list_role_filter(role_arg); role_ck = role_filter_cache_fragment(role_filter)
     rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
@@ -7899,7 +7948,7 @@ def list_units():
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul36_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul37_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -7959,10 +8008,48 @@ def list_units():
         if not id_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
             continue
         if sq:
-            alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
-            ss = f"{name} " + " ".join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')]) + " " + " ".join([s['name'] for s in ser_list]) + " " + alias_h
-            ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip()
-            if not search_row_matches_query(sq, ss.lower(), ser_names_lower, ser_list, entity_id=uid, primary=(q_scope == 'primary')): continue
+            search_chunks = []
+            if q_scope == 'full':
+                ua = unit_abil_map.get(uid, [])
+                rm = unit_ssp_abil_replace_map.get(uid, {})
+                for ab in ua:
+                    blob = collect_ability_search_text(str(ab['id']), ld)
+                    if blob:
+                        search_chunks.append(blob)
+                    if str(ab['id']) in rm:
+                        blob2 = collect_ability_search_text(rm[str(ab['id'])], ld)
+                        if blob2:
+                            search_chunks.append(blob2)
+                for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+                    gb = collect_ability_search_text(str(gain_aid), ld)
+                    if gb:
+                        search_chunks.append(gb)
+                mod = collect_unit_model_search_text(info)
+                if mod:
+                    search_chunks.append(mod)
+                mech = collect_unit_mechanism_search_text(info, ld, uid)
+                if mech:
+                    search_chunks.append(mech)
+                wtxt = collect_unit_weapons_search_text(uid, ld, lc)
+                if wtxt:
+                    search_chunks.append(wtxt)
+            if q_scope == 'name_id':
+                ss = f'{name} {uid}'.strip().lower()
+            else:
+                alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+                ss = (
+                    f'{name} {uid} '
+                    + ' '.join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')])
+                    + ' '
+                    + ' '.join([s['name'] for s in ser_list])
+                    + ' '
+                    + alias_h
+                    + ' '
+                    + ' '.join(search_chunks)
+                ).strip()
+                ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
+                continue
         if uid not in _debuff_memo:
             _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
         _debuff_keys_union |= set(_debuff_memo[uid])
