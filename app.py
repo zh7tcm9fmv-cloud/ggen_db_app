@@ -797,6 +797,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'range_beam', 'range_phys', 'range_all',
     'mp_1', 'mp_2', 'mp_3',
     'preemptive',
+    'map_weapon',
 })
 
 def parse_unit_weapon_debuff_filter(val):
@@ -1002,6 +1003,13 @@ def collect_unit_weapon_debuff_keys(uid, ld, lc):
     acc = set()
     for line in iter_unit_weapon_trait_texts(uid, ld, lc):
         acc |= set(classify_unit_weapon_trait_debuff_keys(line))
+    for wp in unit_weapon_map.get(uid, []):
+        wid = wp['id']
+        wm = weapon_info_map.get(wid, {})
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            acc.add('map_weapon')
+            break
     return frozenset(acc)
 
 def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None):
