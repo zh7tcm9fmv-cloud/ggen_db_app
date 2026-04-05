@@ -1590,13 +1590,13 @@ ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m
 
 
 def _unit_has_sd_mechanism(info, uid=None):
-    """SD (m_mechanism id 3) is not in m_mechanism_set rows; match in-game via body type and get_unit legacy prefixes."""
+    """SD (m_mechanism id 3) is not in m_mechanism_set rows; infer from legacy id prefixes or roster body type (not map NPC shells)."""
     if not info:
         return False
-    if str(info.get('body_type', '1')) == '3':
-        return True
     u = normalize_id(uid or '')
     if u.startswith('17090') or u.startswith('17050') or u.startswith('17250'):
+        return True
+    if str(info.get('body_type', '1')) == '3' and u and u in unit_list_playable_ids:
         return True
     return False
 
@@ -4121,6 +4121,15 @@ def unit_has_ms_ability_content(uid):
 # Browse / filters: exclude units that only exist for maps/story (weapons but no MS abilities), same visibility as other NPCs.
 unit_list_playable_ids = {u for u in (set(unit_abil_map.keys()) | set(unit_weapon_map.keys())) if unit_has_ms_ability_content(u)}
 
+
+def unit_qualifies_for_unit_tag_series_modals(uid, lc):
+    """Same pool as unit browse: MS abilities + resolved lineage tags (excludes map NPC shells from tag/series pickers)."""
+    u = normalize_id(uid)
+    if u not in unit_list_playable_ids:
+        return False
+    return browse_entity_has_resolved_lineage_tags(unit_lin_map, u, lc, 'unit')
+
+
 unit_ssp_custom_core_group_entries = {}
 if ssp_custom_core_data:
     for item in extract_data_list(ssp_custom_core_data):
@@ -6220,7 +6229,7 @@ def get_tag_units():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ts = request.args.get('tags', '').strip(); op = request.args.get('op', 'and').lower()
         if not ts: return jsonify({'1': [], '2': [], '3': []})
-        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_v2_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
@@ -6237,6 +6246,8 @@ def get_tag_units():
                 continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
+            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
+                continue
             tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), lc)))
             if rnm.get(ri2): tset.add(rnm[ri2].lower())
             if rnm_en.get(ri2): tset.add(rnm_en[ri2].lower())
@@ -6339,7 +6350,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v2_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v3_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -6387,6 +6398,8 @@ def get_tag_affinity():
                 lid = ld.get('unit_id_map', {}).get(uid, '')
                 name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
                 if not name:
+                    continue
+                if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
                     continue
                 tset = set([t.get('name', '').lower() for t in resolve_tags(unit_lin_map, uid, lc, 'unit')] + series_names_lower_for_search(resolve_series(unit_ser_map.get(uid, ''), lc)))
                 if rnm.get(ri2):
@@ -6468,7 +6481,7 @@ def get_series_units():
         raw_sid = request.args.get('series_id', '').strip()
         if not raw_sid:
             return jsonify({'1': [], '2': [], '3': []})
-        ck = f"series_units_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"series_units_v2_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -6485,6 +6498,8 @@ def get_series_units():
             if _muid == '0':
                 _muid = uid
             if uid != _muid:
+                continue
+            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
                 continue
             ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
             if not _entity_has_series_id(ser_list, raw_sid):
