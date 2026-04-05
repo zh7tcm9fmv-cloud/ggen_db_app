@@ -3186,6 +3186,42 @@ def create_weapon_status_map(d):
             lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2}
     return lookup
 
+def augment_map_coords_for_occupied_area_2(coords, unit_id):
+    """Add one east tile per MAP row for 2×2 units (m_unit OccupiedAreaId 2).
+
+    For each y below the global max y, append (max_x + 1, y) if missing. For the max-y row only,
+    append when that row extends farther right than the row at y - 1 (wedge tip); skip when the top
+    band matches the row inward (rectangular cap) or the tip is narrower than y-1 (diamond peak).
+    """
+    if not coords:
+        return coords
+    uid = normalize_id(unit_id) if unit_id else '0'
+    if uid == '0':
+        return coords
+    info = unit_info_map.get(uid) or {}
+    if safe_int(info.get('occupied_area_id'), 1) != 2:
+        return coords
+    out = [{'x': c['x'], 'y': c['y']} for c in coords]
+    by_y = {}
+    for c in out:
+        by_y.setdefault(c['y'], []).append(c['x'])
+    y_top = max(by_y.keys())
+    seen = {(c['x'], c['y']) for c in out}
+    for y, xs in sorted(by_y.items()):
+        x_max = max(xs)
+        nx, ny = x_max + 1, y
+        if (nx, ny) in seen:
+            continue
+        if y < y_top:
+            seen.add((nx, ny))
+            out.append({'x': nx, 'y': ny})
+        elif y == y_top:
+            below = by_y.get(y - 1)
+            if below is not None and x_max > max(below):
+                seen.add((nx, ny))
+                out.append({'x': nx, 'y': ny})
+    return out
+
 def create_weapon_text_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -3488,6 +3524,10 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         mpc_am = pat_mpc if pat_mpc > 0 else mpc
         rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc_am))
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
+    if wts == '3':
+        mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
+        scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
+        isd = bool(mc and scc and len(mc) == len(scc) and {(c['x'], c['y']) for c in mc} == {(c['x'], c['y']) for c in scc})
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
     return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd}
 
