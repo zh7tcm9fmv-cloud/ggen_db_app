@@ -58,5 +58,10 @@
     "MechanismSetId": 9,
     "MechanismId": 6,
     "SortOrder": 2
+  },
+  {
+    "MechanismSetId": 10,
+    "MechanismId": 7,
+    "SortOrder": 1
   }
 ]

@@ -45,6 +45,11 @@
     "CompleteRewardSetId": 292100002000
   },
   {
+    "Id": 219001,
+    "ClearRewardSetId": 292190001000,
+    "CompleteRewardSetId": 292190002000
+  },
+  {
     "Id": 230001,
     "ClearRewardSetId": 292300001000,
     "CompleteRewardSetId": 292300002000
@@ -78,6 +83,11 @@
     "Id": 370001,
     "ClearRewardSetId": 293700001000,
     "CompleteRewardSetId": 293700002000
+  },
+  {
+    "Id": 370002,
+    "ClearRewardSetId": 293700004000,
+    "CompleteRewardSetId": 293700005000
   },
   {
     "Id": 400001,

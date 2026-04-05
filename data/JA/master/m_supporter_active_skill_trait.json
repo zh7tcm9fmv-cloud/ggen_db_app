@@ -696,6 +696,30 @@
     "EffectResourceId": "ef_mps_0001_005_hprecovery_ur"
   },
   {
+    "Id": 1370000550,
+    "TraitTypeIndex": 3,
+    "Value": 30,
+    "DurationTurn": 0,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 161000001370000550,
+    "DescriptionLanguageId": 161100001370000550,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "EffectResourceId": "ef_mps_0001_005_hprecovery_ur"
+  },
+  {
+    "Id": 1370000551,
+    "TraitTypeIndex": 8,
+    "Value": 15,
+    "DurationTurn": 1,
+    "ResourceId": "trait_10510101",
+    "NameLanguageId": 161000001370000551,
+    "DescriptionLanguageId": 161100001370000551,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "EffectResourceId": "ef_mps_0007_004_damagetakendown_ur"
+  },
+  {
     "Id": 1400000150,
     "TraitTypeIndex": 3,
     "Value": 40,

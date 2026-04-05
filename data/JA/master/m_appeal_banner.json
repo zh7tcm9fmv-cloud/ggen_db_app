@@ -6,7 +6,7 @@
     "DestinationId": 2504100101,
     "SortOrder": 1001,
     "ResourceId": "gasha_2504100101",
-    "ScheduleId": 0,
+    "ScheduleId": 9999990001,
     "BannerResourceTypeIndex": 0
   },
   {
@@ -16,6 +16,26 @@
     "DestinationId": 2504100201,
     "SortOrder": 1,
     "ResourceId": "gasha_2504100201",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2504100103,
+    "TransitionId": 28002504100601,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504100601,
+    "SortOrder": 3,
+    "ResourceId": "gasha_2504100601",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2504100104,
+    "TransitionId": 28002504100602,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2504100602,
+    "SortOrder": 2,
+    "ResourceId": "gasha_2504100602",
     "ScheduleId": 9999990001,
     "BannerResourceTypeIndex": 0
   },
@@ -407,6 +427,26 @@
     "SortOrder": 1,
     "ResourceId": "gasha_2603500201",
     "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2603600201,
+    "TransitionId": 42260350000001,
+    "DestinationTypeIndex": 0,
+    "DestinationId": 0,
+    "SortOrder": 10,
+    "ResourceId": "hp_link_homeimg_info",
+    "ScheduleId": 2603609906,
+    "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2603600301,
+    "TransitionId": 28002603600301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2603600301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2603600301",
+    "ScheduleId": 2603601702,
     "BannerResourceTypeIndex": 0
   },
   {

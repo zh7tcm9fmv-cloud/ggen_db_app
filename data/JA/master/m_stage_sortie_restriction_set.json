@@ -140,6 +140,11 @@
     "IsAnd": false
   },
   {
+    "StageSortieRestrictionSetId": 120018,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false
+  },
+  {
     "StageSortieRestrictionSetId": 130001,
     "SortieRestrictionTargetTypeIndex": 1,
     "IsAnd": false

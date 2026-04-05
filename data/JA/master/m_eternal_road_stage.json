@@ -330,6 +330,17 @@
     "Unknown_Col_8": 0
   },
   {
+    "StageId": 90510014,
+    "StageDifficultyTypeIndex": 2,
+    "StageNumber": 28,
+    "DisplayUnitId": 1370005900,
+    "StageNameLanguageId": 130100000090510014,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0,
+    "Unknown_Col_8": 0
+  },
+  {
     "StageId": 90510015,
     "StageDifficultyTypeIndex": 2,
     "StageNumber": 21,
@@ -583,6 +594,17 @@
     "Unknown_Col_8": 0
   },
   {
+    "StageId": 90520008,
+    "StageDifficultyTypeIndex": 3,
+    "StageNumber": 22,
+    "DisplayUnitId": 1219000100,
+    "StageNameLanguageId": 130100000090520008,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0,
+    "Unknown_Col_8": 0
+  },
+  {
     "StageId": 90520009,
     "StageDifficultyTypeIndex": 3,
     "StageNumber": 20,
@@ -610,6 +632,17 @@
     "StageNumber": 19,
     "DisplayUnitId": 1230003800,
     "StageNameLanguageId": 130100000090520013,
+    "Unknown_Col_5": 0,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0,
+    "Unknown_Col_8": 0
+  },
+  {
+    "StageId": 90520014,
+    "StageDifficultyTypeIndex": 3,
+    "StageNumber": 23,
+    "DisplayUnitId": 1370005900,
+    "StageNameLanguageId": 130100000090520014,
     "Unknown_Col_5": 0,
     "Unknown_Col_6": 0,
     "Unknown_Col_7": 0,

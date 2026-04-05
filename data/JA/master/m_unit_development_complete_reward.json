@@ -308,6 +308,34 @@
     "ScheduleId": 0
   },
   {
+    "Id": 12190101,
+    "UnitDevelopmentDiagramId": 121901,
+    "CompleteRate": 25,
+    "RewardSetId": 26000012910201,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 12190102,
+    "UnitDevelopmentDiagramId": 121901,
+    "CompleteRate": 50,
+    "RewardSetId": 26000012910202,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 12190103,
+    "UnitDevelopmentDiagramId": 121901,
+    "CompleteRate": 75,
+    "RewardSetId": 26000012910203,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 12190104,
+    "UnitDevelopmentDiagramId": 121901,
+    "CompleteRate": 100,
+    "RewardSetId": 26000012910204,
+    "ScheduleId": 0
+  },
+  {
     "Id": 12300101,
     "UnitDevelopmentDiagramId": 123001,
     "CompleteRate": 25,
@@ -472,7 +500,7 @@
     "Id": 13700104,
     "UnitDevelopmentDiagramId": 137001,
     "CompleteRate": 100,
-    "RewardSetId": 0,
+    "RewardSetId": 26000013700104,
     "ScheduleId": 0
   },
   {
@@ -500,7 +528,7 @@
     "Id": 13700204,
     "UnitDevelopmentDiagramId": 137002,
     "CompleteRate": 100,
-    "RewardSetId": 0,
+    "RewardSetId": 26000013700204,
     "ScheduleId": 0
   },
   {

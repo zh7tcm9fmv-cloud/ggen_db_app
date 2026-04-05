@@ -1320,6 +1320,30 @@
     "SupporterActiveSkillId": 1370000450
   },
   {
+    "SupporterId": 1370000550,
+    "LimitBreakStep": 0,
+    "SupporterLeaderSkillId": 137000055000,
+    "SupporterActiveSkillId": 1370000550
+  },
+  {
+    "SupporterId": 1370000550,
+    "LimitBreakStep": 1,
+    "SupporterLeaderSkillId": 137000055001,
+    "SupporterActiveSkillId": 1370000550
+  },
+  {
+    "SupporterId": 1370000550,
+    "LimitBreakStep": 2,
+    "SupporterLeaderSkillId": 137000055002,
+    "SupporterActiveSkillId": 1370000550
+  },
+  {
+    "SupporterId": 1370000550,
+    "LimitBreakStep": 3,
+    "SupporterLeaderSkillId": 137000055003,
+    "SupporterActiveSkillId": 1370000550
+  },
+  {
     "SupporterId": 1400000150,
     "LimitBreakStep": 0,
     "SupporterLeaderSkillId": 140000015000,

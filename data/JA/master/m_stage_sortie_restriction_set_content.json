@@ -168,6 +168,12 @@
     "StageSortieRestrictionSetGroupId": 120017
   },
   {
+    "StageSortieRestrictionSetId": 120018,
+    "SortieRestrictionTargetTypeIndex": 3,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120018
+  },
+  {
     "StageSortieRestrictionSetId": 130001,
     "SortieRestrictionTargetTypeIndex": 1,
     "IsAnd": false,

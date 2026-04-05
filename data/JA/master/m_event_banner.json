@@ -66,6 +66,12 @@
     "TransitionId": 33000000000000
   },
   {
+    "Id": 100012,
+    "EventId": 100012,
+    "Priority": 26036001,
+    "TransitionId": 33000000000000
+  },
+  {
     "Id": 110001,
     "EventId": 110001,
     "Priority": 25073001,
@@ -182,7 +188,7 @@
   {
     "Id": 220004,
     "EventId": 220004,
-    "Priority": 90000001,
+    "Priority": 10000001,
     "TransitionId": 48000000220004
   },
   {
@@ -190,6 +196,12 @@
     "EventId": 220005,
     "Priority": 26031001,
     "TransitionId": 48000000220005
+  },
+  {
+    "Id": 220006,
+    "EventId": 220006,
+    "Priority": 26036002,
+    "TransitionId": 48000000220006
   },
   {
     "Id": 230001,

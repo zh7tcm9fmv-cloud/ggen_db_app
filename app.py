@@ -798,6 +798,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'mp_1', 'mp_2', 'mp_3',
     'preemptive',
     'map_weapon',
+    'enemy_def_atk',
 })
 
 def parse_unit_weapon_debuff_filter(val):
@@ -857,6 +858,19 @@ def classify_unit_weapon_trait_debuff_keys(line):
         return frozenset()
     keys = set()
     sl = s.lower()
+    compact_sl = re.sub(r'\s+', ' ', sl)
+
+    # On attack: reduce enemy DEF by X% for this attack (weapon trait; EN/JA/TW phrasing).
+    enemy_def_on_atk = False
+    if re.search(r"when this unit attacks,\s*reduce enemy'?s\s+def\s+by\s+\d+\s*%", compact_sl) and 'for this attack' in compact_sl:
+        keys.add('enemy_def_atk')
+        enemy_def_on_atk = True
+    if re.search(r'自身の攻撃時、敵の防御力を\d+[%％]減少させた状態で攻撃', s):
+        keys.add('enemy_def_atk')
+        enemy_def_on_atk = True
+    if re.search(r'自身攻擊時，以敵方防禦力減少\d+%的狀態攻擊', s):
+        keys.add('enemy_def_atk')
+        enemy_def_on_atk = True
 
     if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in sl or re.search(r'mp減少1(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
         keys.add('mp_1')
@@ -874,15 +888,16 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or re.search(r'攻擊力.*減少', s)
     ):
         keys.add('atk_dn')
-    if (
-        re.search(r'decreased\s+def\b', sl)
-        or re.search(r'\bdef\s+down\b', sl)
-        or '防御力減少' in s
-        or '防禦力減少' in s
-        or re.search(r'防御力.*減少', s)
-        or re.search(r'防禦力.*減少', s)
-    ):
-        keys.add('def_dn')
+    if not enemy_def_on_atk:
+        if (
+            re.search(r'decreased\s+def\b', sl)
+            or re.search(r'\bdef\s+down\b', sl)
+            or '防御力減少' in s
+            or '防禦力減少' in s
+            or re.search(r'防御力.*減少', s)
+            or re.search(r'防禦力.*減少', s)
+        ):
+            keys.add('def_dn')
     if (
         re.search(r'decreased\s+mob\b', sl)
         or re.search(r'\bmob\s+down\b', sl)
