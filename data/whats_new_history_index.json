@@ -2,24 +2,14 @@
   "version": 1,
   "archives": [
     {
-      "id": "20260401T013207Z",
+      "id": "20260406T040239Z",
       "captured_at": "2026-03-23",
-      "filename": "20260401T013207Z.json"
+      "filename": "20260406T040239Z.json"
     },
     {
-      "id": "20260401T013701Z",
-      "captured_at": "2026-03-27",
-      "filename": "20260401T013701Z.json"
-    },
-    {
-      "id": "20260401T022015Z",
-      "captured_at": "2026-04-01",
-      "filename": "20260401T022015Z.json"
-    },
-    {
-      "id": "20260406T034201Z",
-      "captured_at": "2026-04-01",
-      "filename": "20260406T034201Z.json"
+      "id": "20260406T040249Z",
+      "captured_at": "2026-03-25",
+      "filename": "20260406T040249Z.json"
     }
   ]
 }
