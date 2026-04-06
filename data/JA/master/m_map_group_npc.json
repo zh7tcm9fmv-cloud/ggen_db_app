@@ -7819,6 +7819,90 @@
     "NpcGroupName": "39"
   },
   {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
+    "MapGroupId": 990000100802000001,
+    "MapNpcId": 990000100802000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "6"
+  },
+  {
     "MapGroupId": 2200070020200000001,
     "MapNpcId": 22000700202000002,
     "GroupUnitTypeIndex": 3,

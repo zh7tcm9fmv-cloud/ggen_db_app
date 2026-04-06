@@ -50965,6 +50965,16 @@
     "RewardId": 2099000107000002
   },
   {
+    "RewardSetId": 20990001080000,
+    "SortOrder": 1,
+    "RewardId": 2099000108000001
+  },
+  {
+    "RewardSetId": 20990001080000,
+    "SortOrder": 2,
+    "RewardId": 2099000108000002
+  },
+  {
     "RewardSetId": 20990001090000,
     "SortOrder": 1,
     "RewardId": 2099000109000001

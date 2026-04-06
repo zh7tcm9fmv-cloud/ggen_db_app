@@ -15618,7 +15618,7 @@
     "AssetDownloadTimingTypeIndex": 1,
     "CharacterStatusId": 1370004902,
     "AcquisitionVoiceResourceId": "vc_btl_g3700c04900_9001",
-    "CharacterAcquisitionRouteTypeIndex": 3,
+    "CharacterAcquisitionRouteTypeIndex": 2,
     "KilledQuoteLanguageId": 101100001370004902,
     "VoiceResourceId": "g3700c04900",
     "IsBgmHighestPriority": false

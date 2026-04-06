@@ -4950,6 +4950,12 @@
     "MapId": 1060003
   },
   {
+    "Id": 990000100802000000,
+    "StageId": 99000108,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1022004
+  },
+  {
     "Id": 990000100902000000,
     "StageId": 99000109,
     "StageDifficultyTypeIndex": 1,

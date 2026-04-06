@@ -5380,6 +5380,10 @@
     "value": "Zaku-Tag SP Conversion Chips"
   },
   {
+    "id": 150100240000011113,
+    "value": "GM-Tag SP Conversion Chips"
+  },
+  {
     "id": 150100240000011125,
     "value": "Tank-Tag SP Conversion Chips"
   },
@@ -10813,6 +10817,10 @@
   },
   {
     "id": 150200240000011112,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000011113,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

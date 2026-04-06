@@ -947,5 +947,18 @@
     "Priority": 1,
     "ShouldTransition": true,
     "ContentImageResourceId": "99000109"
+  },
+  {
+    "Id": 2604100601,
+    "DisplayConditionSetId": 20990001010000,
+    "ScheduleId": 2604102601,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2604100601,
+    "TransitionId": 48000099000108,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "99000108"
   }
 ]

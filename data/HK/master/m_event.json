@@ -442,6 +442,19 @@
     "EventTopDisplayPriority": 26036001
   },
   {
+    "Id": 220007,
+    "EventTypeIndex": 8,
+    "ResourceId": "sp_banner_220001",
+    "ScheduleId": 2604102601,
+    "ChallengeScheduleId": 2604102601,
+    "EventBonusSetId": 0,
+    "PickupRewardSetId": 0,
+    "TitleLanguageId": 250100000000220007,
+    "PointItemId": 0,
+    "ShopId": 0,
+    "EventTopDisplayPriority": 260410001
+  },
+  {
     "Id": 230001,
     "EventTypeIndex": 9,
     "ResourceId": "lite_scenario_event_banner_230001",

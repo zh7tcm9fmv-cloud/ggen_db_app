@@ -460,7 +460,7 @@
   },
   {
     "Id": 370002700102000005,
-    "MapStageConditionId": 370002700102000004,
+    "MapStageConditionId": 370002700102000005,
     "IngameEventAdditionalConditionTypeIndex": 1,
     "IngameEventAdditionalConditionParameterTypeIndex": 1,
     "AdditionalParameterValue": "2",
