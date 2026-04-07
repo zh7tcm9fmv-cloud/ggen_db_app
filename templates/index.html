@@ -3439,6 +3439,7 @@ const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=String(S.dc.critD
 const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=String(Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)));
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa)acoa.checked=!!S.dc.atkCounterOwnAtk;
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=S.dc.applyAdvantageEnemyTag!==false;
+const mlb=document.getElementById('dcMasterLeagueBuff');if(mlb)mlb.checked=!!S.dc.masterLeagueBuff;
 document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===S.dc.mpLevel));
 const nb=document.getElementById('dcTerrainNormal'),hb=document.getElementById('dcTerrainHalved');
 if(nb)nb.classList.toggle('active',S.dc.terrainMode==='normal');
@@ -5251,6 +5252,7 @@ document.getElementById('dcShieldOn').classList.toggle('active',v);
 onDcParamChange();
 }
 function onDcParamChange(){
+{const m=document.getElementById('dcMasterLeagueBuff');if(m)S.dc.masterLeagueBuff=!!m.checked;else if(!S.dc.atkCharData)S.dc.masterLeagueBuff=false}
 const fwpEl=document.getElementById('dcFinalWpnPow');
 const fwpRaw=fwpEl&&String(fwpEl.value).trim()!==''?parseInt(fwpEl.value,10):NaN;
 S.dc.finalWpnPow=Number.isFinite(fwpRaw)&&fwpRaw>0?fwpRaw:0;
