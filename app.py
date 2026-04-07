@@ -440,10 +440,14 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 # substring-matches; add shorthand aliases for search (same idea as msg).
 SERIES_ID_08TH_MS_TEAM = '130'
 
-# Appended to unit list search text so plain "god" finds Burning Gundam (G Gundam; name has no "God" substring).
+# Appended to unit list search text (all q_scope values, including name_id) for names that lack English
+# substring tokens. E.g. "god" → Burning Gundam; "dx"/shortcut "double x" → Gundam Double X when the
+# localized name is e.g. ガンダムDX (no "double"/standalone "x" for AND subterms).
 UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200003900': ' god',
     '1200003950': ' god',
+    '1200003800': ' double x gundam dx',
+    '1230003850': ' double x gundam dx',
 }
 
 def jst_three_month_window_start_ms():
@@ -6145,6 +6149,7 @@ SEARCH_QUERY_SHORTCUTS_EXACT = {
     'fatb': 'full armor gundam thunderbolt',
     'sf': 'strike freedom',
     'god': 'burning gundam',
+    'dx': 'double x',
     'devil gundam': 'dark gundam',
     'devilgundam': 'dark gundam',
 }
@@ -7389,7 +7394,7 @@ def unit_passes_browse_pool_filters(
             if wtxt:
                 search_chunks.append(wtxt)
         if q_scope == 'name_id':
-            ss = f'{name} {uid}'.strip().lower()
+            ss = f'{name} {uid}'.strip()
         else:
             alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
             ss = (
@@ -7402,7 +7407,7 @@ def unit_passes_browse_pool_filters(
                 + ' '
                 + ' '.join(search_chunks)
             ).strip()
-            ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
+        ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
         if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
             return False
     return True
@@ -8253,7 +8258,7 @@ def list_units():
                 if wtxt:
                     search_chunks.append(wtxt)
             if q_scope == 'name_id':
-                ss = f'{name} {uid}'.strip().lower()
+                ss = f'{name} {uid}'.strip()
             else:
                 alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
                 ss = (
@@ -8266,7 +8271,7 @@ def list_units():
                     + ' '
                     + ' '.join(search_chunks)
                 ).strip()
-                ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
+            ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
         if uid not in _debuff_memo:
