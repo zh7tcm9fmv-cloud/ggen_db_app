@@ -4337,7 +4337,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: ceil(base×(100+passive%+OP%+EX%+leader%)/100) + OP flat + supporter flat. This line is the ceil’d base delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: floor(base×(100+passive%+OP%+EX%+leader%+ML(+50)+…)/100) + flats. This line is the floor’d delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn||masterLeagueOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
@@ -4394,7 +4394,7 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='dc-stat-mini-bonus';
-sub.title='ceil(base×(100+passive%+OP%+EX%+leader%)/100): delta from EX% in that sum.';
+sub.title='floor(base×(100+passive%+OP%+EX%+leader%+ML)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
@@ -4751,6 +4751,15 @@ const bonOk=Number.isFinite(bonus)&&bonus>0;
 let b0=baseOk?base:(totOk&&bonOk?total-bonus:total);
 if(!Number.isFinite(b0))b0=totOk?total:0;
 return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0,trait_pct:traitPct,passive_pct:passivePct};
+}
+/** Passive % for unit sheet stats (API passive_pct or infer from floor(base×p/100)===bonus). */
+function _dcStatPassivePctFromEntry(ent){
+const F=Math.floor;
+if(!ent)return 0;
+if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
+const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
+if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
+return 0;
 }
 /** Pilot skills: passive total (API — trait% on growth base) + floor(base×skill%/100) for active skills. In-game does not use a single floor on (trait+skill) together; that can be +1 vs passive + separate skill floor (e.g. Awaken Boost). */
 function _dcPilotSkillAdjustedStat(stats,statName,pct){
@@ -5782,62 +5791,49 @@ cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){
 const F=Math.floor;
-const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
-const atkTotal=_dcFindStat(atkUnitStats,'Attack');
-let unitAtkExSquadBase=F((atkEnt&&Number.isFinite(atkEnt.base))?atkEnt.base:atkTotal||0);
-let passivePct=0;
-if(atkEnt&&atkEnt.passive_pct!=null&&Number.isFinite(atkEnt.passive_pct))passivePct=Math.max(0,atkEnt.passive_pct);
-else if(atkEnt){const bInf=F(Math.max(0,atkEnt.base||0)),bon=F(Math.max(0,atkEnt.bonus||0));if(bInf>0&&bon>0){for(let p=0;p<=500;p++){if(F(bInf*p/100)===bon){passivePct=p;break}}}}
-let unitHp=_dcFindStat(atkUnitStats,'HP')||0;
-let unitDefVal=_dcFindStat(atkUnitStats,'Defense')||0;
-const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
-let unitDefExSquadBase=F((defEnt&&Number.isFinite(defEnt.base))?defEnt.base:unitDefVal||0);
-let unitMob=_dcFindStat(atkUnitStats,'Mobility')||0;
-let unitMove=_dcFindStat(atkUnitStats,'Move')||0;
-if(S.dc.masterLeagueBuff){
-const mlb=(x)=>F(Math.max(0,Number(x)||0)*1.5);
-unitHp=mlb(unitHp);
-unitDefVal=mlb(unitDefVal);
-unitMob=mlb(unitMob);
-unitMove=mlb(unitMove);
-unitAtkExSquadBase=mlb(unitAtkExSquadBase);
-unitDefExSquadBase=mlb(unitDefExSquadBase);
-}
+const mlPct=S.dc.masterLeagueBuff?50:0;
 const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 (S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
-/** MS Attack (in-game): floor(base × (100 + passive% + OP% + EX squad% + leader% + optional unit-skill 1-turn ATK%) / 100), then + OP Attack flat + supporter ATK support flat. Same bucket for all % on the growth line (e.g. 12065×163% → 19665, +360 flat → 20025; ceil would be +1). Unit-skill ATK% stacks in that sum. */
-if(opPct.HP)unitHp=F(unitHp*(100+opPct.HP)/100);
-if(opPct.Defense)unitDefVal=F(unitDefVal*(100+opPct.Defense)/100);
-if(opPct.Mobility)unitMob=F(unitMob*(100+opPct.Mobility)/100);
-if(opPct.Move)unitMove=F(unitMove*(100+opPct.Move)/100);
-unitHp+=opFlat.HP;unitDefVal+=opFlat.Defense;unitMob+=opFlat.Mobility;unitMove+=opFlat.Move;
-if(leaderPct){
-const p=leaderPct|0;
-unitHp=F(unitHp*(100+p)/100);
-unitDefVal=F(unitDefVal*(100+p)/100);
-unitMob=F(unitMob*(100+p)/100);
-unitMove=F(unitMove*(100+p)/100);
-}
-unitHp+=hpSupport;
-const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
+const lp=leaderPct|0;
+const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
+const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
+const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
+const mobEnt=_dcFindStatEntry(atkUnitStats,'Mobility');
+const moveEnt=_dcFindStatEntry(atkUnitStats,'Move');
+const atkBase=F(Math.max(0,atkEnt?atkEnt.base:0));
+const defBase=F(Math.max(0,defEnt?defEnt.base:0));
+const hpBase=F(Math.max(0,hpEnt?hpEnt.base:0));
+const mobBase=F(Math.max(0,mobEnt?mobEnt.base:0));
+const moveBase=F(Math.max(0,moveEnt?moveEnt.base:0));
+const pAtk=_dcStatPassivePctFromEntry(atkEnt);
+const pDef=_dcStatPassivePctFromEntry(defEnt);
+const pHp=_dcStatPassivePctFromEntry(hpEnt);
+const pMob=_dcStatPassivePctFromEntry(mobEnt);
+const pMove=_dcStatPassivePctFromEntry(moveEnt);
+/** MS stats (in-game): one floor on growth base — floor(base×(100+passive%+OP%+leader%+ML(+50 if on)+…)/100) + flats. ML adds +50 in the same % bucket as other buffs, not ×1.5 on sheet. Attack also stacks EX squad % and optional 1-turn ATK% in that sum; then + OP Attack flat + supporter ATK flat. */
+let unitHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+mlPct)/100)+(opFlat.HP|0)+hpSupport;
+let unitDefVal=F(defBase*(100+pDef+(opPct.Defense|0)+lp+mlPct)/100)+(opFlat.Defense|0);
+let unitMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+mlPct)/100)+(opFlat.Mobility|0);
+let unitMove=F(moveBase*(100+pMove+(opPct.Move|0)+lp+mlPct)/100)+(opFlat.Move|0);
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPct();
-const lp=leaderPct|0;
 let turnAtkPct=0;
 if(S.dc.unitTurnBuffAtk&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(S.dc.atkUnitData).atkPct|0);
-const sumAtkPct=(passivePct|0)+(opAt|0)+(exSq|0)+(lp|0)+(turnAtkPct|0);
-const coreAtk=F((Math.max(0,b0|0)*(100+sumAtkPct))/100);
+const tAtk=turnAtkPct|0;
+const coreAtk=F(atkBase*(100+pAtk+opAt+(exSq|0)+lp+tAtk+mlPct)/100);
 let unitAtk=coreAtk+(opFlat.Attack|0)+(atkSupport|0);
-const unitAtkGrowthAfterOptions=opAt?F((Math.max(0,b0|0)*(100+(passivePct|0)+(opAt|0)))/100):F((Math.max(0,b0|0)*(100+(passivePct|0)))/100);
+const unitAtkExSquadBase=F(atkBase*(100+pAtk+mlPct)/100);
+const unitDefExSquadBase=F(defBase*(100+pDef+mlPct)/100);
+const unitAtkGrowthAfterOptions=opAt?F(atkBase*(100+pAtk+opAt+mlPct)/100):F(atkBase*(100+pAtk+mlPct)/100);
 let deltaExAtk=0;
-if(exSq>0){
-const bG=Math.max(0,b0|0),p=passivePct|0,o=opAt|0,e=exSq|0,l=lp|0,t=turnAtkPct|0;
-const withEx=F((bG*(100+p+o+e+l+t))/100);
-const withoutEx=F((bG*(100+p+o+l+t))/100);
+if((exSq|0)>0){
+const o=opAt|0,e=exSq|0,l=lp|0;
+const withEx=F(atkBase*(100+pAtk+o+e+l+tAtk+mlPct)/100);
+const withoutEx=F(atkBase*(100+pAtk+o+l+tAtk+mlPct)/100);
 deltaExAtk=withEx-withoutEx;
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
