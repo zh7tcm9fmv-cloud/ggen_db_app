@@ -447,6 +447,7 @@ UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200003900': ' god',
     '1200003950': ' god',
     '1200003800': ' double x gundam dx',
+    '1230003800': ' double x gundam dx',
     '1230003850': ' double x gundam dx',
 }
 
