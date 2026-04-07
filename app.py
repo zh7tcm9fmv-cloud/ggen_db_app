@@ -6237,13 +6237,19 @@ def _search_fold(s):
     return t
 
 
+def _search_substring_in_haystack(t, haystack_lower):
+    """Contiguous substring on raw haystack (already lowercased). Min length 2 to limit noise."""
+    return len(t) >= 2 and t in haystack_lower
+
+
 def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     """Match a search token against haystack (already lowercased).
     Full: len<=2 ASCII uses whole-word boundaries; len>2 pure-digit tokens use substring (id fragments);
     len>2 otherwise uses word-start (prefix-friendly) so e.g. 'wing' does not match inside 'throwing'.
     Hyphenated compounds (e.g. 'zero-g') do not match the prefix token alone ('zero').
     Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'.
-    Fallback: if strict match fails, substring match on _search_fold (hyphen/space insensitive)."""
+    Fallbacks: folded substring (hyphen/space insensitive); then plain substring (len>=2) so e.g. 'dx' matches
+    localized names like 鋼彈dx on name_id (Unicode \\w blocked whole-word match before)."""
     if not term:
         return True
     t = term.lower()
@@ -6252,7 +6258,9 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             return True
         tf = _search_fold(t)
         hf = _search_fold(haystack_lower)
-        return len(tf) >= 2 and tf in hf
+        if len(tf) >= 2 and tf in hf:
+            return True
+        return _search_substring_in_haystack(t, haystack_lower)
     if primary:
         if len(t) <= 2:
             try:
@@ -6268,7 +6276,10 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             return True
         tf = _search_fold(t)
         hf = _search_fold(haystack_lower)
-        return len(tf) >= 3 and tf in hf
+        min_fold = 2 if len(t) <= 2 else 3
+        if len(tf) >= min_fold and tf in hf:
+            return True
+        return _search_substring_in_haystack(t, haystack_lower)
     if len(t) <= 2:
         try:
             ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
@@ -6278,13 +6289,17 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             return True
         tf = _search_fold(t)
         hf = _search_fold(haystack_lower)
-        return len(tf) >= 2 and tf in hf
+        if len(tf) >= 2 and tf in hf:
+            return True
+        return _search_substring_in_haystack(t, haystack_lower)
     if t.isdigit():
         if t in haystack_lower:
             return True
         tf = _search_fold(t)
         hf = _search_fold(haystack_lower)
-        return len(tf) >= 3 and tf in hf
+        if len(tf) >= 3 and tf in hf:
+            return True
+        return _search_substring_in_haystack(t, haystack_lower)
     try:
         ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
     except re.error:
@@ -6293,7 +6308,9 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
         return True
     tf = _search_fold(t)
     hf = _search_fold(haystack_lower)
-    return len(tf) >= 3 and tf in hf
+    if len(tf) >= 3 and tf in hf:
+        return True
+    return _search_substring_in_haystack(t, haystack_lower)
 
 def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
