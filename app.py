@@ -441,15 +441,17 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 SERIES_ID_08TH_MS_TEAM = '130'
 
 # Appended to unit list search text (all q_scope values, including name_id) for names that lack English
-# substring tokens. E.g. "god" → Burning Gundam; "dx"/shortcut "double x" → Gundam Double X when the
-# localized name is e.g. ガンダムDX (no "double"/standalone "x" for AND subterms).
+# substring tokens (e.g. "god" → Burning Gundam).
 UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200003900': ' god',
     '1200003950': ' god',
-    '1200003800': ' double x gundam dx',
-    '1230003800': ' double x gundam dx',
-    '1230003850': ' double x gundam dx',
 }
+
+# Plain "dx" search matches substring in names (e.g. G-Falcon DX). Exclude Gundam Double X roster ids so
+# ガンダムDX / 鋼彈DX does not appear for dx-only queries; use "double x" or an id to find those units.
+UNIT_IDS_EXCLUDED_WHEN_SEARCH_IS_DX_ONLY = frozenset({
+    '1200003800', '1230003800', '1230003850',
+})
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -6179,7 +6181,6 @@ SEARCH_QUERY_SHORTCUTS_EXACT = {
     'fatb': 'full armor gundam thunderbolt',
     'sf': 'strike freedom',
     'god': 'burning gundam',
-    'dx': 'double x',
     'devil gundam': 'dark gundam',
     'devilgundam': 'dark gundam',
 }
@@ -6225,6 +6226,16 @@ def _positive_segment_subterms(term):
         return []
     parts = [p for p in str(term).split() if p]
     return parts if parts else [term]
+
+
+def _search_positive_is_dx_only(pq):
+    """True if the only positive segments are the single token 'dx' (no series/negative filters)."""
+    if not pq or pq.get('negative') or pq.get('series') or pq.get('series_ids'):
+        return False
+    pos = pq.get('positive') or []
+    if len(pos) != 1:
+        return False
+    return (pos[0] or '').strip().lower() == 'dx'
 
 
 def _search_fold(s):
@@ -6325,6 +6336,9 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
         return True
     id_match = entity_id is not None and search_query_matches_entity_id(sq, entity_id)
     if not id_match:
+        eid_n = normalize_id(entity_id) if entity_id is not None else ''
+        if eid_n and _search_positive_is_dx_only(pq) and eid_n in UNIT_IDS_EXCLUDED_WHEN_SEARCH_IS_DX_ONLY:
+            return False
         for p in pq['positive']:
             for sub in _positive_segment_subterms(p):
                 if not _search_term_matches_in_text(sub, haystack_lower, primary=primary):
