@@ -1327,7 +1327,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseEffectiveLine" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcExSquadAtkWrap"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkCounterOwnAtkWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkCounterOwnAtk" onchange="onDcParamChange()"><span class="dc-tip" title="EX traits that raise the mobile suit Attack stat when countering. Uses MS Attack in damage math (not pilot Ranged/Melee). Requires pilot EX ability (toggle) on and the paired unit listed in the database for this pilot.">Own ATK when countering (unit)</span></label></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkAdvantageEnemyTagWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkAdvantageEnemyTag" checked onchange="onDcParamChange()"><span class="dc-tip" title="When on, Advantage: … adds floor(X% × growth MS Attack) if the defender matches Target Tags (flat add, not +X% on total MS Attack). Only shown for units with this effect on an ability.">Advantage (enemy tag) on MS Attack</span></label></div>
 </div>
@@ -3437,6 +3437,7 @@ const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value=S.dc.finalWp
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=String(S.dc.dmgIncrease||0);
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=String(S.dc.critDmgUp||0);
 const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=String(Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)));
+_dcUpdateExSquadAtkGroupVisibility();
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa)acoa.checked=!!S.dc.atkCounterOwnAtk;
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=S.dc.applyAdvantageEnemyTag!==false;
 const mlb=_dcMasterLeagueBuffInput();if(mlb)mlb.checked=!!S.dc.masterLeagueBuff;
@@ -4234,15 +4235,40 @@ return cp?cd.stats_with_ex:cd.stats;
 function _dcGetCharStats(){
 return _dcGetCharStatsForCp(!!S.dc.charCondPassive);
 }
+function _dcCharExSquadSynergyAbilityBlob(cd){
+if(!cd||cd._manual||!Array.isArray(cd.abilities))return'';
+let out='';
+for(const ab of cd.abilities){
+const r=_dcResolveCharAbilityForMode(ab);
+if(!r)continue;
+out+=String(r.name||'')+'\n';
+const det=r.details||[];
+for(let i=0;i<det.length;i++)out+=String((det[i]&&det[i].text)||'')+'\n';
+if(r.desc)out+=String(r.desc)+'\n';
+}
+return out;
+}
+function _dcCharHasExSquadSynergyAbility(cd){return/\bsquad\b/i.test(_dcCharExSquadSynergyAbilityBlob(cd));}
+function _dcEffectiveExSquadAtkPct(){return _dcCharHasExSquadSynergyAbility(S.dc.atkCharData)?Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)):0;}
+function _dcUpdateExSquadAtkGroupVisibility(){
+const wrap=document.getElementById('dcExSquadAtkWrap');
+if(!wrap)return;
+const inp=document.getElementById('dcExSquadAtkPct');
+const cd=S.dc.atkCharData;
+const show=!!(cd&&!cd._manual&&_dcCharHasExSquadSynergyAbility(cd));
+if(show)wrap.style.removeProperty('display');
+else{wrap.style.display='none';S.dc.exSquadAtkPct=0;if(inp)inp.value='0';}
+}
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
-if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();return}
+if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();_dcUpdateExSquadAtkGroupVisibility();return}
 if(ud._manual){
 area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom unit</div></div></div>`;
 document.getElementById('dcAtkStatsArea').innerHTML='';
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
+_dcUpdateExSquadAtkGroupVisibility();
 return;
 }
 _dcDetectVigorCondAbilities(ud);
@@ -4291,7 +4317,7 @@ const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense
 const masterLeagueOn=!!S.dc.masterLeagueBuff;
 function _dcUnitMiniStatCls(cp){if(cp&&masterLeagueOn)return` class="${cp} dc-stat-val--buffed"`;if(cp)return` class="${cp}"`;if(masterLeagueOn)return` class="dc-stat-val--buffed"`;return''}
 const spHp=_dcUnitMiniStatCls(hHp),spAtk=hAtk?` class="${hAtk}"`:'',spMob=_dcUnitMiniStatCls(hMob);
-const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const exSq=_dcEffectiveExSquadAtkPct();
 const utb=_dcGetDetectedUnitTurnBuffPercents(ud);
 let defShow=defS;
 const pr=_dcPilotPairUnitAtkDefPct(atkS,defShow);
@@ -4333,9 +4359,10 @@ unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top
 }
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 const uGridCls=masterLeagueOn?`${uVis} dc-stats-mini--ml-buff`:uVis;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div>${masterLeagueOn?'<div style="font-size:10px;color:#c4b5fd;margin:-4px 0 6px;line-height:1.35;font-weight:600">Master League: sheet HP / MS ATK growth / DEF / Mob ×1.5 (floor) first, then option parts, EX squad, leader, etc.</div>':''}<div class="${uGridCls}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
+_dcUpdateExSquadAtkGroupVisibility();
 }
 function _dcRefreshDcUnitAtkExOnly(){
 const main=document.getElementById('dcAtkUnitAtkMain');
@@ -4348,7 +4375,7 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const atkS=uEff.unitAtk;
-const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const exSq=_dcEffectiveExSquadAtkPct();
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkS,uEff.unitDefVal).unitAtk;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct,uEff.unitAtkExSquadBase);
@@ -4403,7 +4430,7 @@ function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();re
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function _dcHtmlMasterLeagueBuff(){
 const on=!!S.dc.masterLeagueBuff;
-return`<div class="dc-master-league-buff-wrap" style="margin-top:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--text-secondary)"><input type="checkbox" id="dcMasterLeagueBuff" ${on?'checked':''} onchange="setDcMasterLeagueBuff(this.checked)"><span>Master League Buff</span></label><div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">+50% (×1.5, floor) to <strong>unit</strong> sheet stats before option parts / EX squad / leader: HP, MS ATK growth line, MS DEF, Mobility, Move. Pilot stats are unchanged. Highlighted unit values include the buff.</div></div>`;
+return`<div class="dc-master-league-buff-wrap" style="margin-top:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--text-secondary)"><input type="checkbox" id="dcMasterLeagueBuff" ${on?'checked':''} onchange="setDcMasterLeagueBuff(this.checked)"><span>Master League Buff</span></label></div>`;
 }
 function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
@@ -4415,11 +4442,12 @@ function renderDcAtkChar(){
 const area=document.getElementById('dcAtkCharArea');
 const cd=S.dc.atkCharData;
 const isSD=!!S.dc._unitIsSD;
-if(!cd){area.innerHTML=isSD?`<div style="color:var(--text-muted);font-size:12px">SD unit — character locked</div>`:`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;return}
+if(!cd){area.innerHTML=isSD?`<div style="color:var(--text-muted);font-size:12px">SD unit — character locked</div>`:`<button class="dc-pick-btn" onclick="openDcPicker('character')">${t('dc_pick_char')}</button>`;_dcUpdateExSquadAtkGroupVisibility();return}
 if(cd._manual){
 S.dc._pilotSkills=[];
 area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom pilot</div></div></div>`;
 area.innerHTML+=_dcHtmlMasterLeagueBuff();
+_dcUpdateExSquadAtkGroupVisibility();
 return;
 }
 S.dc._pilotSkills=cd.skills||[];
@@ -4479,6 +4507,7 @@ area.innerHTML+=_dcHtmlMasterLeagueBuff();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 _dcRecalcPilotBonuses();
+_dcUpdateExSquadAtkGroupVisibility();
 }
 
 /** True when ability text (line + neighbors + name) indicates the bonus applies only with pilot SP stats (Normal/SP toggle). */
@@ -5275,7 +5304,7 @@ const fwpRaw=fwpEl&&String(fwpEl.value).trim()!==''?parseInt(fwpEl.value,10):NaN
 S.dc.finalWpnPow=Number.isFinite(fwpRaw)&&fwpRaw>0?fwpRaw:0;
 S.dc.dmgIncrease=parseInt(document.getElementById('dcDmgIncrease')?.value)||0;
 S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp')?.value)||0;
-{const raw=parseInt(document.getElementById('dcExSquadAtkPct')?.value,10);S.dc.exSquadAtkPct=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value)!==String(S.dc.exSquadAtkPct))el.value=String(S.dc.exSquadAtkPct)}
+{let v=0;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData)){const raw=parseInt(document.getElementById('dcExSquadAtkPct')?.value,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}S.dc.exSquadAtkPct=v;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value)!==String(S.dc.exSquadAtkPct))el.value=String(S.dc.exSquadAtkPct)}
 {const c=document.getElementById('dcAtkCounterOwnAtk');if(c)S.dc.atkCounterOwnAtk=!!c.checked}
 {const wAdv=document.getElementById('dcAtkAdvantageEnemyTagWrap');const a=document.getElementById('dcAtkAdvantageEnemyTag');if(a&&wAdv&&wAdv.style.display!=='none')S.dc.applyAdvantageEnemyTag=!!a.checked}
 _dcUpdateCounterOwnAtkUi();
@@ -5796,7 +5825,7 @@ unitMove=F(unitMove*(100+p)/100);
 unitHp+=hpSupport;
 const b0=F(Math.max(0,Number(unitAtkExSquadBase)||0));
 const opAt=opPct.Attack||0;
-const exSq=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const exSq=_dcEffectiveExSquadAtkPct();
 const lp=leaderPct|0;
 let turnAtkPct=0;
 if(S.dc.unitTurnBuffAtk&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(S.dc.atkUnitData).atkPct|0);
@@ -5918,7 +5947,7 @@ const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const accDownPct=0,mobDownPct=0;
 const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
-const exSquadAtkPct=Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0));
+const exSquadAtkPct=_dcEffectiveExSquadAtkPct();
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
