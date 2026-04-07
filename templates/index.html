@@ -676,6 +676,15 @@ html{overflow-x:hidden}
 .dc-ctrl-btn:hover{border-color:var(--accent-cyan)}
 .dc-result{padding:0 24px 24px}
 .dc-result-box{background:rgba(26,34,54,.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;text-align:center}
+.dc-battle-stats-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 12px;overflow-y:auto;box-sizing:border-box}
+.dc-battle-stats-panel{position:relative;max-width:560px;width:100%;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:var(--shadow-lg);margin:20px auto}
+.dc-battle-stats-title{font-size:18px;font-weight:800;color:var(--accent-cyan);margin:0 0 16px;padding-right:40px}
+.dc-battle-stats-body{font-size:13px;line-height:1.5;color:var(--text-secondary)}
+.dc-battle-stats-section{margin-bottom:18px}
+.dc-battle-stats-section h3{font-size:12px;font-weight:700;color:var(--accent-gold);margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em}
+.dc-battle-stats-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.12)}
+.dc-battle-stats-row span:first-child{color:var(--text-muted);flex:1;min-width:0}
+.dc-battle-stats-row span:last-child{font-weight:700;color:var(--text-primary);text-align:right;font-family:'RobotoMediumNumbers',monospace;flex-shrink:0;max-width:55%}
 .dc-result-row{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:16px}
 .dc-result-item{text-align:center}
 .dc-result-label{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
@@ -1226,6 +1235,13 @@ html{overflow-x:hidden}
 <div class="dc-result dc-result--top" id="dcResultArea" style="margin:0 0 16px">
 <div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select attacker unit, character, and a defender target to calculate damage</div></div>
 </div>
+<div id="dcBattleStatsOverlay" class="dc-battle-stats-overlay" role="dialog" aria-modal="true" aria-labelledby="dcBattleStatsTitle" onclick="if(event.target===this)toggleDcBattleStats(false)">
+<div class="dc-battle-stats-panel" onclick="event.stopPropagation()">
+<button type="button" class="dc-modal-close" onclick="toggleDcBattleStats(false)" aria-label="Close">×</button>
+<h2 id="dcBattleStatsTitle" class="dc-battle-stats-title">Battle Stats</h2>
+<div id="dcBattleStatsBody" class="dc-battle-stats-body"></div>
+</div>
+</div>
 <div class="dc-tab-panels" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 <!-- ATTACKER PANEL -->
 <div class="dc-tab-panel dc-attacker-tab-panel" style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:10px;padding:16px">
@@ -1295,7 +1311,7 @@ html{overflow-x:hidden}
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Halved: final damage is multiplied by (1 − penalty). Used for e.g. underwater vs land weapons.">Terrain Penalty</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseEffectiveLine" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkCounterOwnAtkWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkCounterOwnAtk" onchange="onDcParamChange()"><span class="dc-tip" title="EX traits that raise the mobile suit Attack stat when countering. Uses MS Attack in damage math (not pilot Ranged/Melee). Requires pilot EX ability (toggle) on and the paired unit listed in the database for this pilot.">Own ATK when countering (unit)</span></label></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkAdvantageEnemyTagWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkAdvantageEnemyTag" checked onchange="onDcParamChange()"><span class="dc-tip" title="When on, Advantage: … adds floor(X% × growth MS Attack) if the defender matches Target Tags (flat add, not +X% on total MS Attack). Only shown for units with this effect on an ability.">Advantage (enemy tag) on MS Attack</span></label></div>
@@ -3321,17 +3337,30 @@ _dcRefreshDmgIncreaseVigorSub();
 }
 function _dcRefreshDmgIncreaseVigorSub(){
 const el=document.getElementById('dcDmgIncreaseVigorSub');
-if(!el)return;
+const effEl=document.getElementById('dcDmgIncreaseEffectiveLine');
+const user=parseInt(document.getElementById('dcDmgIncrease')?.value,10)||0;
 const mp=_dcMpProfile(S.dc.mpLevel);
-const pct=Math.round((mp.dmgBonus||0)*100);
-if(pct<=0){el.style.display='none';el.textContent='';el.setAttribute('aria-hidden','true');return}
+const vigPct=Math.round((mp.dmgBonus||0)*100);
+const total=user+vigPct;
+if(effEl){
+if(vigPct>0||user>0){
+effEl.style.display='';
+effEl.removeAttribute('aria-hidden');
+effEl.textContent=`Effective ⑨ total: ${total}% (${user}% in field${vigPct>0?` + ${vigPct}% vigor`:''}) — same value used in damage.`;
+effEl.title='Damage Dealt Up % field plus vigor bonus share one pool; they are not applied twice.';
+}else{
+effEl.style.display='none';effEl.textContent='';effEl.setAttribute('aria-hidden','true');
+}
+}
+if(!el)return;
+if(vigPct<=0){el.style.display='none';el.textContent='';el.setAttribute('aria-hidden','true');return}
 const lk=_dcNormMpLevel(S.dc.mpLevel);
 const MP_LBL={medium:'Normal',high:'High',max:'Max',super:'Supercharged'};
 el.style.display='';
 el.removeAttribute('aria-hidden');
 el.className='dc-stat-mini-bonus';
 el.title='Vigor adds this % into the same ⑨ damage increase pool as Damage Dealt Up % (not double-counted).';
-el.textContent=`+${pct}% from ${MP_LBL[lk]||lk} vigor (included in damage; stacks with the field above)`;
+el.textContent=`+${vigPct}% from ${MP_LBL[lk]||lk} vigor (included in line above and in damage)`;
 }
 function _dcRefreshTotalDebuffsDisplay(){
 const el=document.getElementById('dcTotalDebuffsDisplay');if(!el)return;
@@ -4204,7 +4233,7 @@ const cur=cmpLbPipsAtTier(tier);
 let lbMenu='';
 for(let tt=0;tt<=maxTier;tt++){
 const p=cmpLbPipsAtTier(tt);
-lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" onclick="setDcLbTier(${tt});var _dlb=document.getElementById('dcLbTierDetails');if(_dlb)_dlb.open=false" role="option" aria-selected="${tt===tier}">${cmpLbPipsRow(p[0],p[1],p[2])}<span class="cmp-lb-opt-num">${tt}</span></button>`;
+lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" onclick="setDcLbTier(${tt});var _dlb=document.getElementById('dcLbTierDetails');if(_dlb)_dlb.open=false" role="option" aria-selected="${tt===tier}">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
 }
 lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
@@ -4342,7 +4371,7 @@ function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();re
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function _dcHtmlMasterLeagueBuff(){
 const on=!!S.dc.masterLeagueBuff;
-return`<div class="dc-master-league-buff-wrap" style="margin-top:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--text-secondary)"><input type="checkbox" id="dcMasterLeagueBuff" ${on?'checked':''} onchange="setDcMasterLeagueBuff(this.checked)"><span>Master League Buff</span></label><div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">+50% to unit HP, MS Attack, MS DEF, Mobility, and Move (not EN).</div></div>`;
+return`<div class="dc-master-league-buff-wrap" style="margin-top:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--text-secondary)"><input type="checkbox" id="dcMasterLeagueBuff" ${on?'checked':''} onchange="setDcMasterLeagueBuff(this.checked)"><span>Master League Buff</span></label><div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">+50% to unit HP, MS Attack, MS DEF, Mobility, and pilot combat stats (Ranged / Melee / Awaken / DEF / Reaction). Not EN or Move.</div></div>`;
 }
 function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
@@ -4385,9 +4414,12 @@ area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class=
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
-const r=_dcPilotSkillAdjustedStat(stats,'Ranged',skPct.Ranged||0),m=_dcPilotSkillAdjustedStat(stats,'Melee',skPct.Melee||0),a=_dcPilotSkillAdjustedStat(stats,'Awaken',skPct.Awaken||0);
+const r0=_dcPilotSkillAdjustedStat(stats,'Ranged',skPct.Ranged||0),m0=_dcPilotSkillAdjustedStat(stats,'Melee',skPct.Melee||0),a0=_dcPilotSkillAdjustedStat(stats,'Awaken',skPct.Awaken||0);
 const defPctSk=skB.defPct||0;
-const d=defPctSk?_dcPilotSkillAdjustedStat(stats,'Defense',defPctSk):_dcFindStat(stats,'Defense'),re=_dcFindStat(stats,'Reaction');
+const d0=defPctSk?_dcPilotSkillAdjustedStat(stats,'Defense',defPctSk):_dcFindStat(stats,'Defense'),re0=_dcFindStat(stats,'Reaction');
+const mlPilot=!!S.dc.masterLeagueBuff;
+const r=mlPilot?_dcMasterLeagueCharStat(r0):r0,m=mlPilot?_dcMasterLeagueCharStat(m0):m0,a=mlPilot?_dcMasterLeagueCharStat(a0):a0;
+const d=mlPilot?_dcMasterLeagueCharStat(d0):d0,re=mlPilot?_dcMasterLeagueCharStat(re0):re0;
 const sa=document.getElementById('dcAtkStatsArea');
 const cMode=S.dc.charStatMode||'normal';
 const cCp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
@@ -4411,7 +4443,8 @@ const tip=hasSkill?'Bonus over growth base: passive trait % plus active skill % 
 return`<div class="dc-stat-mini-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBase)}</div>`;
 }
 const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${_dcCharPassiveBonusLine('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${_dcCharPassiveBonusLine('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${_dcCharPassiveBonusLine('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${_dcCharPassiveBonusLine('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${_dcCharPassiveBonusLine('Reaction',re)}</div></div></div>`;
+const bonLn=(nm,v)=>mlPilot?'':_dcCharPassiveBonusLine(nm,v);
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div>${mlPilot?'<div style="font-size:10px;color:var(--accent-cyan);margin:-4px 0 6px;line-height:1.35">Master League: pilot stats ×1.5 (floor), included above and in damage.</div>':''}<div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}</div></div></div>`;
 area.innerHTML+=_dcHtmlMasterLeagueBuff();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
@@ -4997,18 +5030,30 @@ function renderDcDefStats(){
 const uArea=document.getElementById('dcDefUnitArea');
 const cArea=document.getElementById('dcDefCharArea');
 const sArea=document.getElementById('dcDefStatsArea');
+const dbMode=(S.dc.defTargetMode||'preset')==='database';
+if(uArea)uArea.style.display=dbMode?'none':'';
+if(cArea)cArea.style.display=dbMode?'none':'';
 const n=S.dc.defNpc;
-if(!n){uArea.innerHTML='';cArea.innerHTML='';sArea.innerHTML='';return}
+if(!n){
+if(uArea)uArea.innerHTML='';
+if(cArea)cArea.innerHTML='';
+sArea.innerHTML='';
+return;
+}
 const u=n.unit,ch=n.character;
-if(u){
-const us=u.stats_raw||{};
+if(uArea){
+if(dbMode)uArea.innerHTML='';
+else if(u){
 uArea.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(u.portrait||u.thum||'')}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(u.name||'NPC')}</div><div class="dc-picked-badges">${u.rarity_icon?`<img src="${imgUrl(u.rarity_icon)}">`:''}${u.role_icon?`<img src="${imgUrl(u.role_icon)}">`:''}</div></div></div>`;
-}else{uArea.innerHTML=''}
-if(ch){
-const cs=ch.stats_raw||{};
+}else uArea.innerHTML='';
+}
+if(cArea){
+if(dbMode)cArea.innerHTML='';
+else if(ch){
 const cThum=ch.portrait||ch.thum||'';
 cArea.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(cThum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ch.name||'NPC')}</div></div></div>`;
-}else{cArea.innerHTML=''}
+}else cArea.innerHTML='';
+}
 let h='';
 if(u){
 const us=u.stats_raw||{},ub=u.bonus_amounts||{};
@@ -5732,13 +5777,23 @@ unitHp=mlb(unitHp);
 unitAtk=mlb(unitAtk);
 unitDefVal=mlb(unitDefVal);
 unitMob=mlb(unitMob);
-unitMove=mlb(unitMove);
 unitAtkExSquadBase=mlb(unitAtkExSquadBase);
 unitDefExSquadBase=mlb(unitDefExSquadBase);
 unitAtkGrowthAfterOptions=mlb(unitAtkGrowthAfterOptions);
 deltaExAtk=mlb(deltaExAtk);
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
+}
+function _dcMasterLeagueCharStat(v){
+const F=Math.floor;
+return S.dc.masterLeagueBuff?F(Math.max(0,Number(v)||0)*1.5):Math.max(0,Number(v)||0);
+}
+function _dcPilotAtkStatLabelForWeapon(wpn){
+const k=_dcWeaponAtkStatKeys(wpn||{});
+const u=[...new Set(k)];
+if(!u.length)return'Pilot ATK stat';
+if(u.length===1)return u[0];
+return u.join(' / ');
 }
 function calculateDamage(){
 const F=Math.floor,C=Math.ceil,MX=Math.max,EXP=Math.exp;
@@ -5763,6 +5818,7 @@ unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
 const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
 unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.unitAtkExSquadBase);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
+charAtk=_dcMasterLeagueCharStat(charAtk);
 
 const defUnit=npc.unit;const defChar=npc.character;
 const defRaw=defUnit?(defUnit.stats_raw?.Defense||0):0;
@@ -5833,7 +5889,7 @@ const npcHp=defUnit?(defUnit.stats_raw?.HP||0):0;
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
-const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
+const atkCharReaction=_dcMasterLeagueCharStat(_dcFindStat(atkCharStats,'Reaction'));
 const defUnitMob=defUnit?(defUnit.stats_raw?.Mobility||0):0;
 const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const accDownPct=0,mobDownPct=0;
@@ -5927,12 +5983,80 @@ return`<div class="dc-result-multi-col"><div class="dc-result-multi-head">${head
 }).join('')+`</div>`;
 }
 area.innerHTML=`<div class="dc-result-box">${inner}
-<div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
-<button class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
-<button class="dc-ctrl-btn" onclick="shareDcLink()" style="font-size:12px;padding:6px 14px">🔗 Share Link</button>
+<div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<button type="button" class="dc-ctrl-btn" onclick="toggleDcBattleStats(true)" style="font-size:12px;padding:6px 14px">Battle Stats</button>
+<button type="button" class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
+<button type="button" class="dc-ctrl-btn" onclick="shareDcLink()" style="font-size:12px;padding:6px 14px">🔗 Share Link</button>
 </div>
 <div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
 </div>`;
+}
+function toggleDcBattleStats(show){
+const ov=document.getElementById('dcBattleStatsOverlay');
+if(!ov)return;
+const on=show===undefined?ov.style.display==='none'||ov.style.display==='':!!show;
+ov.style.display=on?'flex':'none';
+if(on)_dcRenderBattleStatsPanel();
+}
+function _dcBattleStatsRow(lab,val){
+return`<div class="dc-battle-stats-row"><span>${esc(lab)}</span><span>${val}</span></div>`;
+}
+function _dcRenderBattleStatsDefender(npc,r){
+if(!npc)return'';
+const u=npc.unit,ch=npc.character;
+const uDefRaw=u?(u.stats_raw?.Defense||0):0;
+const deb=r.defDebuffPct|0;
+const uDefEff=deb>0?_dcApplyDefDebuffToUnitDef(uDefRaw,deb):uDefRaw;
+const cDef=ch?(ch.stats_raw?.Defense||0):0;
+const hp=u?(u.stats_raw?.HP||0):0;
+let h='<div class="dc-battle-stats-section"><h3>Defender</h3>';
+h+=_dcBattleStatsRow('Unit DEF (effective)',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
+h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
+h+=_dcBattleStatsRow('Damage taken up (weapon attr ⑨)',String(r.dmgTakenUpTyped|0)+'%');
+h+=_dcBattleStatsRow('Damage taken down (total −%)',String(r.takenDown|0)+'%');
+h+=_dcBattleStatsRow('Hit rate',String(r.hitRate)+'%');
+h+=_dcBattleStatsRow('Max HP',fmtN(hp));
+h+='</div>';
+return h;
+}
+function _dcRenderBattleStatsPanel(){
+const body=document.getElementById('dcBattleStatsBody');
+if(!body)return;
+const multi=S.dc._lastMultiResults;
+if(!multi||!multi.length){body.innerHTML='<div style="color:var(--text-muted)">Calculate damage first (attacker + defender).</div>';return}
+const activeIdx=S.dc.atkSlotIndex|0;
+const r0=(multi.find(m=>m.idx===activeIdx)||multi[0]).result;
+let h='';
+multi.forEach(m=>{
+const r=m.result,sl=m.slot,ud=sl.atkUnitData,cd=sl.atkCharData;
+const wpns=ud?_dcNonMapWeapons(ud):[];
+const wpn=wpns[sl.wpnIdx|0]||null;
+const wName=wpn?esc(wpn.name):'—';
+const atkLab=_dcPilotAtkStatLabelForWeapon(wpn);
+const opts=(sl.optionParts||[]).map(o=>esc(o.name||'—')).join(', ')||'—';
+const sups=(sl.supporters||[]).map(s=>esc(s.name||'—')).join(', ')||'—';
+const mpL=_dcNormMpLevel(sl.mpLevel||'medium');
+const VN={medium:'Normal',high:'High',max:'Max',super:'Supercharged'};
+const vigLbl=VN[mpL]||mpL;
+const dmgPool=(r.userDmgIncreasePct|0)+(r.vigorDmgBonusPct|0);
+const isAct=m.idx===activeIdx;
+h+=`<div class="dc-battle-stats-section"${isAct?' style="padding:10px;border-radius:8px;border:1px solid rgba(56,189,248,.35)"':''}><h3>Attacker ${m.idx+1}${isAct?' · active':''}</h3>`;
+h+=_dcBattleStatsRow('Unit',esc(ud?.name||'—'));
+h+=_dcBattleStatsRow('Pilot',esc(cd?.name||'—'));
+h+=_dcBattleStatsRow('MS Attack (formula)',fmtN(r.unitAtk));
+h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk));
+h+=_dcBattleStatsRow('Weapon',wName);
+h+=_dcBattleStatsRow('Weapon power (formula)',fmtN(r.weaponPower));
+h+=_dcBattleStatsRow('Damage dealt ⑨ total',`${dmgPool}% (${r.userDmgIncreasePct|0}% field + ${r.vigorDmgBonusPct|0}% vigor)`);
+h+=_dcBattleStatsRow('Crit rate (weapon %)',String(r.critical)+'%');
+h+=_dcBattleStatsRow('Vigor state',esc(vigLbl));
+h+=_dcBattleStatsRow('Master League (attacker)',sl.masterLeagueBuff?'On (+50% MS stats / pilot stats)':'Off');
+h+=_dcBattleStatsRow('Option parts',opts);
+h+=_dcBattleStatsRow('Supporter',sups);
+h+='</div>';
+});
+h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
+body.innerHTML=h;
 }
 function _dcBuildShareUrl(){
 onDcParamChange();
