@@ -1963,6 +1963,71 @@ def _unit_hp_threshold_active_at_assumed_full_hp(part):
         return True
     return False
 
+
+def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
+    """Extract (threshold_pct, atk_bonus_pct) for HP-or-above ATK lines (EN/JA). Used to fix CP bucket split."""
+    if not txt:
+        return []
+    t = txt.replace('\r', '')
+    out = []
+    for m in re.finditer(r'when\s+hp\s+is\s+(\d+)%\s+or\s+above', t, re.IGNORECASE):
+        chunk = t[m.end():m.end() + 220]
+        m2 = re.search(
+            r'(?:increase(?:s)?\s+)?(?:own\s+)?(?:squad\s+)?(?:ms\s+)?atk\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        if m2:
+            out.append((int(m.group(1)), int(m2.group(1))))
+    for m in re.finditer(r'hpが(\d+)%以上', t, re.IGNORECASE):
+        chunk = t[m.end():m.end() + 220]
+        m2 = re.search(r'攻撃力が(\d+)%上昇', chunk)
+        if m2:
+            out.append((int(m.group(1)), int(m2.group(1))))
+    return out
+
+
+def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc):
+    """(HP conditions) Increased ATK: ability_cond forces lines into spc, stacking 75%/10% and 50%/5%.
+
+    In-game only one tier applies at a time. At assumed full HP, stats_no_cond should use the highest
+    threshold (10%); stats_with_cond should reflect the weakest tier (5%) via spb + spc net."""
+    name = (ad.get('name') or '').strip()
+    if not name:
+        return
+    nl = name.lower()
+    if ('(hp conditions)' not in nl and 'hp条件' not in name.lower()
+            and '體力條件' not in name and '体力条件' not in name):
+        return
+    if ('increased atk' not in nl and '攻撃力上昇' not in name
+            and '攻擊力上昇' not in name):
+        return
+    chunks = []
+    for d2 in ad.get('details', []) or []:
+        if isinstance(d2, dict):
+            chunks.append(d2.get('text') or '')
+    blob = '\n'.join(chunks)
+    tiers = _parse_hp_or_above_atk_tiers_from_trait_text(blob)
+    if not tiers:
+        return
+    by_th = {}
+    for th, pct in tiers:
+        by_th[th] = max(by_th.get(th, 0), pct)
+    uniq = sorted(by_th.items(), key=lambda x: -x[0])
+    wrong = sum(p for _, p in uniq)
+    atk_key = 'Attack'
+    if spc.get(atk_key, 0) < wrong:
+        return
+    if len(uniq) == 1:
+        lone = uniq[0][1]
+        spc[atk_key] = spc.get(atk_key, 0) - lone
+        spb[atk_key] = spb.get(atk_key, 0) + lone
+        return
+    hi_pct = uniq[0][1]
+    lo_pct = uniq[-1][1]
+    spc[atk_key] = spc.get(atk_key, 0) - wrong
+    spb[atk_key] = spb.get(atk_key, 0) + hi_pct
+    spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
+
+
 def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
@@ -5352,6 +5417,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     if inx: nd[s] = max(nd.get(s, 0), pct)
                     elif hc or ie or is_cond or ability_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
+        _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, spb_crit, spc_crit)
     for s in UNIT_STAT_ORDER: spc[s] = spc.get(s, 0) + nxs.get(s, 0)
@@ -5449,6 +5515,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                         cd[s] = cd.get(s, 0) + pct
                     else:
                         bd[s] = bd.get(s, 0) + pct
+        _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
 
     for ab in ac:
         if ab.get('ssp_only'):
@@ -6073,6 +6140,22 @@ def browse_q_scope_cache_letter(q_scope):
     return 'n' if q_scope == 'name_id' else ('p' if q_scope == 'primary' else 'f')
 
 
+# Whole-segment shortcuts (lowercase key → expanded positive segment text). Browse + API list search.
+SEARCH_QUERY_SHORTCUTS_EXACT = {
+    'fatb': 'full armor gundam thunderbolt',
+    'sf': 'strike freedom',
+    'god': 'burning gundam',
+    'devil gundam': 'dark gundam',
+    'devilgundam': 'dark gundam',
+}
+
+
+def _expand_search_positive_segment(sl):
+    """Map a single lowercased positive segment to friendlier query text (exact segment match only)."""
+    s = (sl or '').strip().lower()
+    return SEARCH_QUERY_SHORTCUTS_EXACT.get(s, sl)
+
+
 def parse_search_query(sq):
     """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
     Leading '-' = exclusion. 'series:foo' = match series only (handled separately).
@@ -6097,7 +6180,7 @@ def parse_search_query(sq):
             if rest:
                 series.append(rest.lower())
             continue
-        positive.append(sl)
+        positive.append(_expand_search_positive_segment(sl))
     return {'positive': positive, 'negative': negative, 'series': series, 'series_ids': series_ids}
 
 def _positive_segment_subterms(term):
@@ -9135,6 +9218,7 @@ def get_unit(unit_id):
                             wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
+            _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
 
         for ab in ac:
             if ab.get('ssp_only'):
@@ -9159,10 +9243,11 @@ def get_unit(unit_id):
         for s in UNIT_STAT_ORDER:
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
-        hcond = (any(spc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
-                 any(sspc.get(s, 0) > 0 for s in UNIT_STAT_ORDER) or
-                 spc_move_flat[0] > 0 or sspc_move_flat[0] > 0 or
-                 spc_crit[0] > 0 or sspc_crit[0] > 0)
+        # Use != 0 so negative spc (e.g. HP-tier ATK exclusive fix) still enables the conditional toggle.
+        hcond = (any(spc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
+                 any(sspc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
+                 spc_move_flat[0] != 0 or sspc_move_flat[0] != 0 or
+                 spc_crit[0] != 0 or sspc_crit[0] != 0)
         ability_passive_crit_dmg_pct = {
             'no_cond': spb_crit[0],
             'cond_only': spc_crit[0],
