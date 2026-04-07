@@ -4045,6 +4045,7 @@ unit_ssp_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_config.json"
 unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.json"))
 ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
 ssp_custom_core_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core.json"))
+ssp_custom_core_status_up_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_status_up.json"))
 ssp_release_fn_content_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_release_function_set_content.json"))
 ssp_weap_enhance_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_enhance_set.json"))
 ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_effect.json"))
@@ -4376,6 +4377,24 @@ if ssp_custom_core_data:
         fnid = normalize_id(item.get('UnitSspCustomCoreReleaseFunctionSetId') or item.get('unitSspCustomCoreReleaseFunctionSetId'))
         if gid != '0' and fnid != '0': unit_ssp_custom_core_group_entries.setdefault(gid, set()).add(fnid)
 
+# m_unit_ssp_custom_core_status_up: UnitStatusTypeIndex 6 = Movement; EffectValue is the real flat MOV (can be 2+).
+# ReleaseFunctionTypeIndex 3 alone always added +1 and undercounted rows with EffectValue 2.
+ssp_custom_core_row_move_bonus = {}
+if ssp_custom_core_status_up_data:
+    for item in extract_data_list(ssp_custom_core_status_up_data):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        st = normalize_id(item.get('UnitStatusTypeIndex') or item.get('unitStatusTypeIndex'))
+        if cid == '0' or st != '6':
+            continue
+        try:
+            ev = int(float(item.get('EffectValue') or item.get('effectValue') or 0))
+        except (TypeError, ValueError):
+            ev = 0
+        if ev > 0:
+            ssp_custom_core_row_move_bonus[cid] = ev
+
 ssp_release_fn_content_by_set = {}
 if ssp_release_fn_content_data:
     for item in extract_data_list(ssp_release_fn_content_data):
@@ -4410,12 +4429,24 @@ def _ssp_base_terrain_levels(info):
 
 
 def get_ssp_custom_core_bonuses_for_unit(unit_id):
-    """SSP Custom Core release functions: move (type 3), terrain (type 4) from m_terrain_capability_set TargetId vs unit base (max per terrain), legacy tuple if set id missing."""
+    """SSP Custom Core: flat Move from m_unit_ssp_custom_core_status_up (per core row); terrain from release type 4."""
     out = {'move': 0, 'terrain_upgrades': []}
     uid = normalize_id(unit_id)
     if uid == '0':
         return out
     info = unit_info_map.get(uid, {})
+    if ssp_custom_core_data:
+        for item in extract_data_list(ssp_custom_core_data):
+            if not isinstance(item, dict):
+                continue
+            gid = normalize_id(item.get('UnitSspCustomCoreGroupId') or item.get('unitSspCustomCoreGroupId'))
+            if gid != uid:
+                continue
+            sched = normalize_id(item.get('ScheduleId') or item.get('scheduleId'))
+            if sched == '9999990001':
+                continue
+            cid = normalize_id(item.get('Id') or item.get('id'))
+            out['move'] += ssp_custom_core_row_move_bonus.get(cid, 0)
     fn_sets = unit_ssp_custom_core_group_entries.get(uid, set())
     type4_cap_set_ids = []
     type4_legacy_tuples = []
@@ -4423,9 +4454,7 @@ def get_ssp_custom_core_bonuses_for_unit(unit_id):
         items = sorted(ssp_release_fn_content_by_set.get(sid, []), key=lambda z: safe_int(z.get('sort', 0), 0))
         for it in items:
             t = it.get('type', '0')
-            if t == '3':
-                out['move'] += 1
-            elif t == '4':
+            if t == '4':
                 tid = normalize_id(it.get('target_id', '0'))
                 if tid in unit_ter_map:
                     type4_cap_set_ids.append(tid)
