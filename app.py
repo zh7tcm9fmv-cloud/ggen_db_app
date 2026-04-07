@@ -439,6 +439,8 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 # m_series Id=130 — "Mobile Suit Gundam: The 08th MS Team". Display text uses "08th" so plain "08 ms" never
 # substring-matches; add shorthand aliases for search (same idea as msg).
 SERIES_ID_08TH_MS_TEAM = '130'
+# m_series Id=2300 — "After War Gundam X" (SeriesSetId …02300). series:dx / series:12300 resolve here (all locales).
+SERIES_ID_AFTER_WAR_GUNDAM_X = '2300'
 
 # Appended to unit list search text (all q_scope values, including name_id) for names that lack English
 # substring tokens (e.g. "god" → Burning Gundam).
@@ -447,11 +449,8 @@ UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200003950': ' god',
 }
 
-# Plain "dx" search matches substring in names (e.g. G-Falcon DX). Exclude Gundam Double X roster ids so
-# ガンダムDX / 鋼彈DX does not appear for dx-only queries; use "double x" or an id to find those units.
-UNIT_IDS_EXCLUDED_WHEN_SEARCH_IS_DX_ONLY = frozenset({
-    '1200003800', '1230003800', '1230003850',
-})
+# A search box query that is only the token "dx" (DX ≡ Double X) returns exactly these roster rows; locale-agnostic.
+DOUBLE_X_DX_TOKEN_UNIT_IDS = frozenset({'1230003800', '1230003850', '1230005300'})
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -6195,7 +6194,8 @@ def _expand_search_positive_segment(sl):
 def parse_search_query(sq):
     """Parse list search: comma/semicolon segments. positive (must appear in haystack), negative (must not), series (substring in any series name).
     Leading '-' = exclusion. 'series:foo' = match series only (handled separately).
-    'series_id:10' = exact m_series SeriesId (numeric) for that row's resolved series (no substring bleed with other Gundam titles)."""
+    'series_id:10' = exact m_series SeriesId (numeric) for that row's resolved series (no substring bleed with other Gundam titles).
+    'series:dx' and 'series:12300' = same as series_id for After War Gundam X (m_series Id 2300), all locales."""
     positive, negative, series, series_ids = [], [], [], []
     if not sq or not str(sq).strip():
         return {'positive': [], 'negative': [], 'series': [], 'series_ids': []}
@@ -6214,7 +6214,11 @@ def parse_search_query(sq):
         if m:
             rest = m.group(1).strip()
             if rest:
-                series.append(rest.lower())
+                rs = rest.strip().lower().replace(' ', '')
+                if rs == 'dx' or rs == '12300':
+                    series_ids.append(SERIES_ID_AFTER_WAR_GUNDAM_X)
+                else:
+                    series.append(rest.lower())
             continue
         positive.append(_expand_search_positive_segment(sl))
     return {'positive': positive, 'negative': negative, 'series': series, 'series_ids': series_ids}
@@ -6228,8 +6232,8 @@ def _positive_segment_subterms(term):
     return parts if parts else [term]
 
 
-def _search_positive_is_dx_only(pq):
-    """True if the only positive segments are the single token 'dx' (no series/negative filters)."""
+def _search_query_is_dx_token_only(pq):
+    """True if the query is only the positive token dx/DX (no series_id, series name, or negative segments)."""
     if not pq or pq.get('negative') or pq.get('series') or pq.get('series_ids'):
         return False
     pos = pq.get('positive') or []
@@ -6337,12 +6341,14 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
     id_match = entity_id is not None and search_query_matches_entity_id(sq, entity_id)
     if not id_match:
         eid_n = normalize_id(entity_id) if entity_id is not None else ''
-        if eid_n and _search_positive_is_dx_only(pq) and eid_n in UNIT_IDS_EXCLUDED_WHEN_SEARCH_IS_DX_ONLY:
-            return False
-        for p in pq['positive']:
-            for sub in _positive_segment_subterms(p):
-                if not _search_term_matches_in_text(sub, haystack_lower, primary=primary):
-                    return False
+        if _search_query_is_dx_token_only(pq):
+            if not eid_n or eid_n not in DOUBLE_X_DX_TOKEN_UNIT_IDS:
+                return False
+        else:
+            for p in pq['positive']:
+                for sub in _positive_segment_subterms(p):
+                    if not _search_term_matches_in_text(sub, haystack_lower, primary=primary):
+                        return False
     for n in pq['negative']:
         if _search_term_matches_in_text(n, haystack_lower, primary=primary):
             return False
