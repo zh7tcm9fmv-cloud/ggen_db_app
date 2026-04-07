@@ -676,8 +676,8 @@ html{overflow-x:hidden}
 .dc-ctrl-btn:hover{border-color:var(--accent-cyan)}
 .dc-result{padding:0 24px 24px}
 .dc-result-box{background:rgba(26,34,54,.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;text-align:center}
-.dc-battle-stats-overlay{position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.92);display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 12px;overflow-y:auto;box-sizing:border-box}
-.dc-battle-stats-panel{position:relative;max-width:560px;width:100%;background:color-mix(in srgb,var(--card-bg) 92%,#0f172a);border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:0 24px 48px rgba(0,0,0,.55),var(--shadow-lg);margin:20px auto}
+.dc-battle-stats-overlay{position:fixed;inset:0;z-index:200;background:#0f172a;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 12px;overflow-y:auto;box-sizing:border-box}
+.dc-battle-stats-panel{position:relative;max-width:640px;width:100%;background:#1e293b;border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:0 24px 48px rgba(0,0,0,.55);margin:20px auto;opacity:1}
 .dc-battle-stats-title{font-size:18px;font-weight:800;color:var(--accent-cyan);margin:0 0 16px;padding-right:40px}
 .dc-battle-stats-body{font-size:13px;line-height:1.55;color:var(--text-primary)}
 .dc-battle-stats-section{margin-bottom:18px}
@@ -685,6 +685,15 @@ html{overflow-x:hidden}
 .dc-battle-stats-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.2)}
 .dc-battle-stats-row span:first-child{color:var(--text-secondary);flex:1;min-width:0}
 .dc-battle-stats-row span:last-child{font-weight:700;color:var(--text-primary);text-align:right;font-family:'RobotoMediumNumbers',monospace;flex-shrink:0;max-width:55%}
+.dc-battle-stats-block{margin:8px 0 12px;padding-bottom:12px;border-bottom:1px solid rgba(148,163,184,.22)}
+.dc-battle-stats-section>.dc-battle-stats-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dc-battle-stats-block-label{font-size:11px;font-weight:700;color:var(--accent-gold);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.dc-battle-stats-block-body{font-size:12px;line-height:1.5;color:var(--text-primary)}
+.dc-bs-item{margin-top:10px}
+.dc-bs-item:first-child{margin-top:0}
+.dc-bs-item-detail{font-size:11px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap;word-break:break-word}
+.dc-bs-item-flat{font-size:11px;color:var(--accent-cyan);margin-top:4px;font-weight:700;font-family:'RobotoMediumNumbers',monospace}
+.dc-bs-tag{display:inline-block;margin-right:6px;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,.15);color:#fbbf24;font-size:10px;font-weight:600}
 .dc-result-row{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:16px}
 .dc-result-item{text-align:center}
 .dc-result-label{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
@@ -4170,22 +4179,31 @@ _dcRefreshAtkSlotUi();
 
 const DC_VIGOR_ORDER=['medium','high','max','super'];
 function _dcVigorAtLeast(cur,thr){const a=_dcNormMpLevel(cur),b=_dcNormMpLevel(thr);return DC_VIGOR_ORDER.indexOf(a)>=DC_VIGOR_ORDER.indexOf(b)}
-/** When unit conditional stats are vigor-gated, MS conditional passive matches selected vigor (e.g. Max+ → +15% ATK for Burning Gundam EX). */
+/** For vigor-gated unit conditional passives, require at least Max (so Max and Supercharged qualify). If ability text requires Supercharged only, keep that stricter tier. */
+function _dcVigorTierMax(a,b){
+const na=_dcNormMpLevel(a||'medium'),nb=_dcNormMpLevel(b||'medium');
+const ia=DC_VIGOR_ORDER.indexOf(na),ib=DC_VIGOR_ORDER.indexOf(nb);
+return ia>=ib?na:nb;
+}
+function _dcUnitCpVigorRequirement(){
+if(!S.dc._vigorCondThreshold)return null;
+return _dcVigorTierMax(S.dc._vigorCondThreshold,'max');
+}
+/** When unit conditional stats are vigor-gated, sync passive from vigor (Max+). Call from setDcMp / unit pick only — not every render — so the toggle can override until vigor changes. */
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
 if(!ud||ud._manual||!ud.has_cond_stats||!S.dc._vigorCondThreshold)return;
-S.dc.unitCondPassive=_dcVigorAtLeast(S.dc.mpLevel,S.dc._vigorCondThreshold);
-}
-function _dcUnitCondPassiveVigorLocked(){
-const ud=S.dc.atkUnitData;
-return !!(ud&&!ud._manual&&ud.has_cond_stats&&S.dc._vigorCondThreshold);
+const req=_dcUnitCpVigorRequirement();
+if(!req)return;
+S.dc.unitCondPassive=_dcVigorAtLeast(S.dc.mpLevel,req);
 }
 function _dcDetectVigorCondAbilities(ud){
 S.dc._vigorCondThreshold=_dcVigorThresholdFromUnit(ud);
-_dcSyncUnitCondPassiveFromVigor();
 }
 function _dcIsVigorCondActive(){
-return S.dc._vigorCondThreshold&&_dcVigorAtLeast(S.dc.mpLevel,S.dc._vigorCondThreshold);
+if(!S.dc._vigorCondThreshold)return false;
+const req=_dcUnitCpVigorRequirement();
+return req?_dcVigorAtLeast(S.dc.mpLevel,req):false;
 }
 function _dcGetUnitStatKeyForCp(useCondPassive){
 const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
@@ -4255,10 +4273,9 @@ lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp
 }
 let unitCpToggle='';
 if(ud.has_cond_stats){
-const vLock=_dcUnitCondPassiveVigorLocked();
-const vHint=vLock?` title="${escAttr('Follows selected vigor — on when it meets this unit’s passive (e.g. Max or higher).')}"`:'';
-const vRo=vLock?' style="opacity:0.88;cursor:default"':'';
-unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}"${vRo} role="button" tabindex="0" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(_dcUnitConditionalToggleLabel(ud))}</span></div></div></div>`;
+const vGated=!!S.dc._vigorCondThreshold;
+const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
+unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(_dcUnitConditionalToggleLabel(ud))}</span></div></div></div>`;
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -4335,7 +4352,6 @@ const main=document.getElementById('dcAtkUnitAtkMain');
 const sub=document.getElementById('dcAtkUnitAtkExSub');
 if(!main||!sub)return;
 const ud=S.dc.atkUnitData;if(!ud||ud._manual)return;
-_dcSyncUnitCondPassiveFromVigor();
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
 const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
@@ -4402,7 +4418,7 @@ return`<div class="dc-master-league-buff-wrap" style="margin-top:10px"><label st
 function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
 function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function toggleDcUnitCondPassive(){if(_dcUnitCondPassiveVigorLocked())return;setDcUnitCondPassive(!S.dc.unitCondPassive)}
+function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
 function renderDcAtkChar(){
@@ -6027,6 +6043,38 @@ if(on)_dcRenderBattleStatsPanel();
 function _dcBattleStatsRow(lab,val){
 return`<div class="dc-battle-stats-row"><span>${esc(lab)}</span><span>${val}</span></div>`;
 }
+function _dcBattleStatsBlock(lab,innerHtml){
+return`<div class="dc-battle-stats-block"><div class="dc-battle-stats-block-label">${esc(lab)}</div><div class="dc-battle-stats-block-body">${innerHtml}</div></div>`;
+}
+function _dcFormatBattleStatsOptionParts(parts){
+if(!parts||!parts.length)return _dcBattleStatsRow('Option parts','—');
+return _dcBattleStatsBlock('Option parts',parts.map(o=>{
+const det=String(o.details||'').trim();
+return`<div class="dc-bs-item"><strong>${esc(o.name||'—')}</strong>${det?`<div class="dc-bs-item-detail">${esc(det)}</div>`:''}</div>`;
+}).join(''));
+}
+function _dcFormatBattleStatsSupporters(sups){
+if(!sups||!sups.length)return _dcBattleStatsRow('Supporter','—');
+return _dcBattleStatsBlock('Supporter',sups.map(s=>{
+const atkFlat=Number(s.atk_support)||0;
+const hpFlat=Number(s.hp_support)||0;
+const flatBits=[];
+if(hpFlat)flatBits.push('HP +'+fmtN(hpFlat));
+if(atkFlat)flatBits.push('ATK +'+fmtN(atkFlat));
+const flatLine=flatBits.length?`<div class="dc-bs-item-flat">${esc(flatBits.join(' · '))}</div>`:'';
+let skillHtml='';
+(s.leader_skills||[]).forEach(ls=>{
+const desc=String(ls.desc||'').trim();
+const tags=(ls.tags||[]).map(tg=>tg.name||'').filter(Boolean);
+const tagStr=tags.length?tags.join(ls.separator==='and'?' & ':' / '):'';
+if(!tagStr&&!desc)return;
+skillHtml+=`<div class="dc-bs-item-detail">${tagStr?`<span class="dc-bs-tag">${esc(tagStr)}</span> ` : ''}${esc(desc)}</div>`;
+});
+const boost=String(s.boost||'').trim();
+if(!skillHtml&&boost)skillHtml=`<div class="dc-bs-item-detail">${esc(boost.split('\n').slice(0,8).join('\n'))}</div>`;
+return`<div class="dc-bs-item"><strong>${esc(s.name||'—')}</strong>${flatLine}${skillHtml}</div>`;
+}).join(''));
+}
 function _dcRenderBattleStatsDefender(npc,r){
 if(!npc)return'';
 const u=npc.unit,ch=npc.character;
@@ -6036,10 +6084,10 @@ const uDefEff=deb>0?_dcApplyDefDebuffToUnitDef(uDefRaw,deb):uDefRaw;
 const cDef=ch?(ch.stats_raw?.Defense||0):0;
 const hp=u?(u.stats_raw?.HP||0):0;
 let h='<div class="dc-battle-stats-section"><h3>Defender</h3>';
-h+=_dcBattleStatsRow('Unit DEF (effective)',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
+h+=_dcBattleStatsRow('Unit DEF',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
 h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
-h+=_dcBattleStatsRow('Damage taken up (weapon attr ⑨)',String(r.dmgTakenUpTyped|0)+'%');
-h+=_dcBattleStatsRow('Damage taken down (total −%)',String(r.takenDown|0)+'%');
+h+=_dcBattleStatsRow('Damage Taken Up',String(r.dmgTakenUpTyped|0)+'%');
+h+=_dcBattleStatsRow('Damage Taken Down',String(r.takenDown|0)+'%');
 h+=_dcBattleStatsRow('Hit rate',String(r.hitRate)+'%');
 h+=_dcBattleStatsRow('Max HP',fmtN(hp));
 h+='</div>';
@@ -6059,8 +6107,6 @@ const wpns=ud?_dcNonMapWeapons(ud):[];
 const wpn=wpns[sl.wpnIdx|0]||null;
 const wName=wpn?esc(wpn.name):'—';
 const atkLab=_dcPilotAtkStatLabelForWeapon(wpn);
-const opts=(sl.optionParts||[]).map(o=>esc(o.name||'—')).join(', ')||'—';
-const sups=(sl.supporters||[]).map(s=>esc(s.name||'—')).join(', ')||'—';
 const mpL=_dcNormMpLevel(sl.mpLevel||'medium');
 const VN={medium:'Normal',high:'High',max:'Max',super:'Supercharged'};
 const vigLbl=VN[mpL]||mpL;
@@ -6069,16 +6115,16 @@ const isAct=m.idx===activeIdx;
 h+=`<div class="dc-battle-stats-section"${isAct?' style="padding:10px;border-radius:8px;border:1px solid rgba(56,189,248,.35)"':''}><h3>Attacker ${m.idx+1}${isAct?' · active':''}</h3>`;
 h+=_dcBattleStatsRow('Unit',esc(ud?.name||'—'));
 h+=_dcBattleStatsRow('Pilot',esc(cd?.name||'—'));
-h+=_dcBattleStatsRow('MS Attack (formula)',fmtN(r.unitAtk));
+h+=_dcBattleStatsRow('MS ATK',fmtN(r.unitAtk));
 h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk));
 h+=_dcBattleStatsRow('Weapon',wName);
-h+=_dcBattleStatsRow('Weapon power (formula)',fmtN(r.weaponPower));
-h+=_dcBattleStatsRow('Damage dealt ⑨ total',`${dmgPool}% (${r.userDmgIncreasePct|0}% field + ${r.vigorDmgBonusPct|0}% vigor)`);
+h+=_dcBattleStatsRow('Weapon Power',fmtN(r.weaponPower));
+h+=_dcBattleStatsRow('Damage Dealt % Total',`${dmgPool}% (${r.userDmgIncreasePct|0}% field + ${r.vigorDmgBonusPct|0}% vigor)`);
 h+=_dcBattleStatsRow('Crit rate (weapon %)',String(r.critical)+'%');
 h+=_dcBattleStatsRow('Vigor state',esc(vigLbl));
 h+=_dcBattleStatsRow('Master League (attacker)',sl.masterLeagueBuff?'On (+50% unit sheet base first, then OP/EX/leader; pilot ×1.5)':'Off');
-h+=_dcBattleStatsRow('Option parts',opts);
-h+=_dcBattleStatsRow('Supporter',sups);
+h+=_dcFormatBattleStatsOptionParts(sl.optionParts||[]);
+h+=_dcFormatBattleStatsSupporters(sl.supporters||[]);
 h+='</div>';
 });
 h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
