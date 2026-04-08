@@ -2069,6 +2069,23 @@ def _unit_hp_threshold_active_at_assumed_full_hp(part):
     return False
 
 
+def _unit_vigor_normal_baseline_stat_line(part):
+    """Paired vigor traits: synthetic copy like 'When Vigor is Normal, increase ATK by 10%.' (_augment_bare_vigor_lines_next_to_supercharged).
+
+    That tier is always active outside Supercharged; it must use the unconditional (stats_no_cond) bucket, not CP."""
+    t = (part or '').strip()
+    if not t:
+        return False
+    tl = t.lower()
+    if 'when vigor is normal' in tl or 'when vigor is regular' in tl:
+        return True
+    if '戰意為一般' in t or '战意为一般' in t:
+        return True
+    if 'テンションが「超一撃」未満' in t:
+        return True
+    return False
+
+
 def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
     """Extract (threshold_pct, atk_bonus_pct) for HP-or-above ATK lines (EN/JA). Used to fix CP bucket split."""
     if not txt:
@@ -5610,6 +5627,8 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                     itc = False
+                if itc and _unit_vigor_normal_baseline_stat_line(part):
+                    itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                 part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
                 if _unit_enemy_specified_tags_clause_part(part):
@@ -5699,6 +5718,8 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                    itc = False
+                if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                 part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
@@ -9522,6 +9543,8 @@ def get_unit(unit_id):
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
                     if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                        itc = False
+                    if itc and _unit_vigor_normal_baseline_stat_line(part):
                         itc = False
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
                     part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
