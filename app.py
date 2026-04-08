@@ -589,8 +589,8 @@ def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited
     return False
 
 
-def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False, *, is_unit=False):
-    """Apply parse_list_rarity_filter result. Pass is_unit=True for MS list so ULT vs star tiers use OR semantics."""
+def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
+    """Apply parse_list_rarity_filter result. Characters, units, and supporters share MS-list LT/UR/NLT semantics; pass is_ultimate only for units (False for char/supp)."""
     if rf is None:
         return True
     if rf == set():
@@ -598,19 +598,9 @@ def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False, *, is_u
     if isinstance(rf, tuple):
         letters, need_lt, need_ult = rf[0], rf[1], rf[2]
         exclude_limited = rf[3] if len(rf) > 3 else False
-        if is_unit:
-            return _unit_row_matches_rarity_tuple(
-                letters, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate,
-            )
-        if exclude_limited and is_limited:
-            return False
-        if need_lt and not is_limited:
-            return False
-        if need_ult:
-            return False
-        if letters:
-            return letter in letters
-        return True
+        return _unit_row_matches_rarity_tuple(
+            letters, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate,
+        )
     return letter in rf
 
 
@@ -4231,13 +4221,16 @@ def _compute_limited_time_character_ids():
     return frozenset(out)
 
 
-LIMITED_TIME_CHARACTER_IDS = _compute_limited_time_character_ids()
+LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | frozenset({
+    normalize_id('1705000200'),
+})
 LIMITED_TIME_SUPPORTER_IDS = frozenset(
     normalize_id(x) for x in (
         '1110000150',
         '1300000450',
         '1125000250',
         '1330000250',
+        '1370000550',
     )
 )
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
@@ -7468,7 +7461,7 @@ def unit_passes_browse_pool_filters(
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = uid in LIMITED_TIME_UNIT_IDS
             if not row_matches_rarity_filter(
-                rarity_filter, letter, lim, bool(info.get('is_ultimate', False)), is_unit=True,
+                rarity_filter, letter, lim, bool(info.get('is_ultimate', False)),
             ):
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
@@ -8357,7 +8350,7 @@ def list_units():
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = uid in LIMITED_TIME_UNIT_IDS
                 if not row_matches_rarity_filter(
-                    rarity_filter, letter, lim, bool(info.get('is_ultimate', False)), is_unit=True,
+                    rarity_filter, letter, lim, bool(info.get('is_ultimate', False)),
                 ):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
