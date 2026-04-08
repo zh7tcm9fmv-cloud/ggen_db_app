@@ -1226,7 +1226,11 @@ html{overflow-x:hidden}
 .tb-slot-col{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;width:min(20vw,124px);min-width:92px;max-width:min(20vw,124px);box-sizing:border-box}
 .tb-slot{position:relative;width:100%;min-width:0;aspect-ratio:10/16;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s;background:#0b1020;box-sizing:border-box}
 .tb-slot-lb-outside{width:100%;max-width:100%;display:flex;justify-content:center;align-items:stretch;min-height:0;box-sizing:border-box}
-.tb-slot-lb-select{width:100%;max-width:100%;font-size:10px;padding:4px 5px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border-color);box-sizing:border-box;cursor:pointer}
+.tb-slot-lb-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;width:100%;box-sizing:border-box}
+.tb-slot-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0;box-sizing:border-box}
+.tb-slot-lb-ic:hover{background:rgba(0,0,0,.58)}
+.tb-slot-lb-ic--sel{border-color:rgba(34,211,238,.65);box-shadow:0 0 0 1px rgba(34,211,238,.2)}
+.tb-slot-lb-ic img{width:11px;height:11px;object-fit:contain;display:block}
 .tb-slot-op-outside{width:100%;max-width:100%;margin-top:4px;box-sizing:border-box}
 .tb-op-box--under-slot{margin:0;padding:5px 6px;border-radius:6px;background:rgba(15,23,42,.92);border:1px solid rgba(148,163,184,.35);max-height:120px;overflow-y:auto;box-sizing:border-box}
 .tb-op-box--under-slot .tb-op-head{margin-bottom:4px;gap:4px}
@@ -1235,14 +1239,22 @@ html{overflow-x:hidden}
 .tb-op-box--under-slot .tb-op-row{padding:3px 4px;margin-bottom:3px;font-size:9px}
 .tb-op-box--under-slot .tb-op-rm{width:22px;height:22px;font-size:11px}
 .tb-op-box--under-slot .tb-op-empty{font-size:9px}
-.tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0 auto;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.tb-op-row--rich{display:flex;align-items:center;gap:4px;flex-wrap:nowrap}
+.tb-op-thum{width:22px;height:22px;object-fit:contain;flex-shrink:0;border-radius:4px;background:rgba(0,0,0,.25)}
+.tb-op-row-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.tb-op-sum{font-size:8px;line-height:1.2;color:var(--accent-cyan);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-op-name--sub{font-size:7px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-picker-option-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:100%;box-sizing:border-box}
+.tb-picker-option-list .tb-picker-item.cmp-picker-item{width:100%;box-sizing:border-box}
+.tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0;flex-shrink:0;-webkit-tap-highlight-color:transparent;align-self:flex-start}
 .tb-supp-tb-back{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .tb-supp-tb-back .list-thumb-base{position:absolute;inset:0;width:100%;height:100%;margin:0;object-fit:contain;object-position:center;display:block;border:0}
-.tb-supp-tb-composite .tb-supp-tb-portrait-wrap{z-index:1;top:12%;left:20%;right:20%;bottom:20%;display:flex;align-items:center;justify-content:center}
-.tb-supp-tb-side{position:absolute;top:0;bottom:0;width:34%;z-index:2;pointer-events:none;object-fit:contain;margin:0;border:0;display:block}
+.tb-supp-tb-composite .tb-supp-tb-portrait-wrap{z-index:1;top:10%;left:18%;right:18%;bottom:16%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tb-supp-tb-composite .tb-supp-tb-portrait-wrap .list-thumb-portrait{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center top;display:block}
+.tb-supp-tb-side{position:absolute;top:0;bottom:0;width:32%;z-index:2;pointer-events:none;object-fit:cover;margin:0;border:0;display:block}
 .tb-supp-tb-side--left{left:0;object-position:left center}
 .tb-supp-tb-side--right{right:0;transform:scaleX(-1);object-position:right center}
-.tb-supp-tb-bottom{position:absolute;left:0;right:0;bottom:0;height:22%;z-index:3;width:100%;pointer-events:none;object-fit:fill;object-position:center bottom;margin:0;border:0;display:block}
+.tb-supp-tb-bottom{position:absolute;left:0;right:0;bottom:0;height:24%;z-index:3;width:100%;pointer-events:none;object-fit:cover;object-position:center bottom;margin:0;border:0;display:block}
 .tb-supp-tb-composite .tb-supp-tb-side picture,.tb-supp-tb-composite .tb-supp-tb-bottom picture{display:block;width:100%;height:100%}
 .tb-supp-tb-composite .tb-supp-tb-side img,.tb-supp-tb-composite .tb-supp-tb-bottom img{width:100%;height:100%;object-fit:inherit;display:block;border:0;vertical-align:middle}
 .tb-long-card--empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:stretch;justify-content:stretch}
@@ -1257,10 +1269,10 @@ html{overflow-x:hidden}
 .tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:7;border-radius:50%;overflow:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
 .tb-long-pilot-corner{position:absolute;right:2px;bottom:2px;z-index:8;display:flex;flex-direction:row;align-items:flex-end;justify-content:flex-end;gap:3px;flex-wrap:nowrap;max-width:calc(100% - 4px)}
-.tb-long-pilot{position:relative;right:auto;bottom:auto;width:clamp(26px,30%,44px);max-width:44px;aspect-ratio:1;flex-shrink:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.tb-long-pilot{position:relative;right:auto;bottom:auto;width:clamp(36px,45%,66px);max-width:66px;aspect-ratio:1;flex-shrink:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 6px rgba(0,0,0,.5)}
 .tb-long-pilot img{width:100%;height:100%;object-fit:cover}
-.tb-long-pilot-corner .tb-slot-rec-pilot{width:clamp(24px,28%,40px);max-width:40px;min-width:22px}
-.tb-long-pilot-corner .tb-slot-add-pilot--corner{position:relative;right:auto;bottom:auto;width:clamp(24px,28%,40px);max-width:40px;min-width:24px;aspect-ratio:1;font-size:13px;font-weight:700}
+.tb-long-pilot-corner .tb-slot-rec-pilot{width:clamp(36px,42%,60px);max-width:60px;min-width:28px}
+.tb-long-pilot-corner .tb-slot-add-pilot--corner{position:relative;right:auto;bottom:auto;width:clamp(36px,42%,60px);max-width:60px;min-width:28px;aspect-ratio:1;font-size:15px;font-weight:700}
 .tb-long-lb{position:absolute;left:4px;bottom:4px;right:4px;z-index:6;display:flex;align-items:center;justify-content:center;gap:2px;font-size:9px;color:#e2e8f0;text-shadow:0 1px 2px #000}
 .tb-long-lb--interactive{cursor:pointer;padding:3px 4px;border-radius:6px;background:rgba(0,0,0,.5);user-select:none}
 .tb-long-lb--interactive:hover{background:rgba(0,0,0,.65)}
@@ -1304,9 +1316,19 @@ html{overflow-x:hidden}
 .tb-supp-col{display:flex;flex-direction:column;gap:6px;min-width:0}
 .tb-supp-col-lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
 .tb-supp-card{position:relative;min-height:100px;border-radius:10px;overflow:hidden;background:rgba(15,23,42,.6);border:1px solid var(--border-color);cursor:pointer}
-.tb-supp-card-stack{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 8px 10px;width:100%;box-sizing:border-box}
-.tb-supp-card-stack .tb-supp-frames{padding:4px 8px 0;min-height:80px}
-.tb-supp-frames{display:flex;align-items:flex-start;justify-content:center;gap:0;padding:8px 8px 0;position:relative;min-height:88px}
+.tb-supp-card-stack{display:flex;flex-direction:row;align-items:flex-start;gap:8px;padding:6px 8px 8px;width:100%;box-sizing:border-box}
+.tb-supp-card-stack--full{min-height:0}
+.tb-supp-card-stack .tb-supp-frames{padding:0;margin:0;min-height:0;flex:0 0 auto}
+.tb-supp-frames{display:flex;align-items:flex-start;justify-content:flex-start;gap:0;padding:0;position:relative;min-height:88px}
+.tb-supp-frames--left{margin-right:auto;margin-left:0;align-self:flex-start}
+.tb-supp-card-meta-in{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;align-self:stretch;justify-content:flex-start;padding:2px 0 0}
+.tb-supp-card-name{font-size:13px;color:var(--text);line-height:1.25;display:block;overflow:hidden;text-overflow:ellipsis}
+.tb-supp-meta-line--in-card{margin-bottom:0;align-items:center;gap:6px;flex-wrap:wrap}
+.tb-supp-lb-icons{display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center}
+.tb-supp-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0}
+.tb-supp-lb-ic:hover{background:rgba(0,0,0,.58)}
+.tb-supp-lb-ic--sel{border-color:rgba(34,211,238,.65)}
+.tb-supp-lb-ic img{width:11px;height:11px;object-fit:contain;display:block}
 .tb-supp-side{width:22%;max-width:56px;object-fit:contain}
 .tb-supp-side.mirror{transform:scaleX(-1)}
 .tb-supp-portrait{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:42%;max-width:72px;aspect-ratio:1;border-radius:6px;overflow:hidden}
@@ -1349,9 +1371,9 @@ html{overflow-x:hidden}
 .tb-supp-meta-line--lvl{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;margin-bottom:8px;max-width:100%;white-space:nowrap}
 .tb-supp-meta-line--lvl .tb-supp-lvl-txt{flex-shrink:0;white-space:nowrap;display:inline}
 .tb-supp-lb-select{flex-shrink:0;font-size:11px;padding:2px 6px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border-color);min-width:0;max-width:100%}
-.tb-stats-all{margin-top:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tb-stats-all-inner{display:flex;flex-direction:row;gap:8px;align-items:stretch;padding:2px 0;min-width:min-content}
-.tb-stats-unit-col{flex:0 0 auto;width:128px;min-width:118px;max-width:150px;padding:8px;border-radius:8px;border:1px solid rgba(148,163,184,.28);background:rgba(0,0,0,.22);cursor:pointer;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.tb-stats-all{margin-top:4px;width:100%;overflow-x:visible}
+.tb-stats-all-inner{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:auto;gap:8px 10px;align-items:stretch;padding:2px 0;width:100%;box-sizing:border-box}
+.tb-stats-unit-col{min-width:0;padding:8px;border-radius:8px;border:1px solid rgba(148,163,184,.28);background:rgba(0,0,0,.22);cursor:pointer;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
 .tb-stats-unit-col:hover{border-color:rgba(148,163,184,.45)}
 .tb-stats-unit-col.is-sel{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 1px rgba(34,211,238,.22)}
 .tb-stats-unit-col:focus-visible{outline:2px solid var(--accent-cyan);outline-offset:2px}
@@ -1981,10 +2003,10 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2'});
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_pick_pilot_unit:'Choose pilot for this unit'});
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_pick_pilot_unit:'このユニットのパイロットを選択'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -4751,13 +4773,6 @@ const max=lb.length-1;
 sl.lbTier=Math.min(Math.max(0,tier|0),max);
 renderTeamBuilder();
 }
-function tbOnSlotLbSelect(key,sel){
-initTeamBuilder();
-if(S.tb.rearrange)return;
-const v=parseInt(String(sel&&sel.value!=null?sel.value:'0'),10);
-if(Number.isNaN(v))return;
-tbSetSlotLbTier(key,v,null);
-}
 function tbSlotContextMenu(key,ev){
 if(ev)ev.preventDefault();
 initTeamBuilder();
@@ -4767,6 +4782,136 @@ const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 if(sl.unitData)openTbPicker(sl.charData?'option':'char',key);
 else openTbPicker('unit',key);
 }
+function _tbFormatOptionBonusesShort(details){
+try{
+const b=_dcParseOptionPartBonuses(details);
+const out=[];
+const P=(label,v)=>{if(!v)return;if(v.pct)out.push(label+'+'+v.pct+'%');if(v.flat)out.push(label+'+'+fmtN(v.flat))};
+P('ATK',b.Attack);P('HP',b.HP);P('DEF',b.Defense);P('MOB',b.Mobility);P('MOV',b.Move);P('EN',b.EN);
+return out.slice(0,3).join(' ')||(details?String(details).trim().slice(0,48):'');
+}catch(_){return details?String(details).trim().slice(0,48):''}
+}
+function _tbCollectUsedOptionPartIds(exceptKey){
+initTeamBuilder();
+const u=new Set();
+for(let si=1;si<=2;si++){
+const squ=S.tb.squads[si];
+for(let col=0;col<5;col++){
+const k=_tbKey(si,col);
+if(exceptKey!=null&&k===exceptKey)continue;
+const sl=squ.slots[col];
+(sl.optionParts||[]).forEach(p=>{if(p&&p.id)u.add(String(p.id))});
+}}
+return u;
+}
+function _tbDedupeOptionPartsAcrossTeam(){
+initTeamBuilder();
+const seen=new Set();
+for(let si=1;si<=2;si++){
+const squ=S.tb.squads[si];
+for(let col=0;col<5;col++){
+const sl=squ.slots[col];
+if(!sl||!sl.optionParts||!sl.optionParts.length)continue;
+const next=[];
+for(let i=0;i<sl.optionParts.length;i++){
+const p=sl.optionParts[i];
+const id=p&&p.id;if(!id)continue;
+const ks=String(id);
+if(seen.has(ks))continue;
+seen.add(ks);next.push(p);
+}
+sl.optionParts=next;
+}}}
+function _tbUnitRoleKind(ud){
+if(!ud)return'atk';
+const id=String(ud.role_id!=null?ud.role_id:'').trim();
+if(id==='2')return'def';
+if(id==='3')return'sup';
+const r=String(ud.role||'').toLowerCase();
+if(r.includes('defens')||r.includes('耐久'))return'def';
+if(r.includes('support')||r.includes('支援'))return'sup';
+return'atk';
+}
+function _tbUnitTagIdSet(ud){
+const ids=new Set();
+if(!ud)return ids;
+(ud.skill_tag_data||[]).forEach(block=>{(block.tags||[]).forEach(tg=>{const x=tg&&tg.id;if(x)ids.add(String(x))})});
+(ud.tags||[]).forEach(tg=>{const x=tg&&tg.id;if(x)ids.add(String(x))});
+return ids;
+}
+function _tbOptionSharesUnitLineage(row,unitTagIds){
+const tags=row.tags||[];
+for(let i=0;i<tags.length;i++){
+const id=tags[i]&&tags[i].id;
+if(id&&unitTagIds.has(String(id)))return true;
+}
+return false;
+}
+function _tbScoreOptionRowForAuto(row,roleKind,unitTagIds){
+const b=_dcParseOptionPartBonuses(row.details||'');
+const atk=b.Attack.pct+b.Attack.flat/1e6;
+const hp=b.HP.pct+b.HP.flat/1e6;
+const def=b.Defense.pct+b.Defense.flat/1e6;
+const mob=b.Mobility.pct+b.Move.pct+b.EN.pct;
+let s=0;
+if(roleKind==='def'){
+s=hp*1e4+def*9500+atk*100+mob*50;
+if(b.HP.pct===12)s+=888;
+if(b.Defense.pct===12)s+=777;
+if(b.HP.pct>0&&b.HP.pct!==12)s+=b.HP.pct*10;
+if(b.Defense.pct>0&&b.Defense.pct!==12)s+=b.Defense.pct*9;
+}else{
+s=atk*1e4+hp*800+def*600+mob*40;
+if(b.Attack.pct===12)s+=888;
+if(b.Attack.pct>0&&b.Attack.pct!==12)s+=b.Attack.pct*11;
+}
+if(_tbOptionSharesUnitLineage(row,unitTagIds))s+=5e5;
+const rarityBonus={'UR':4,'SSR':3,'SR':2,'R':1}[row.rarity]||0;
+s+=rarityBonus;
+return s;
+}
+async function tbAutoFillEmptyOptionParts(){
+if(typeof S==='undefined'||!S.tb)return;
+if(S.tb._tbAutoOpBusy)return;
+initTeamBuilder();
+const order=[];
+for(let si=1;si<=2;si++)for(let col=0;col<5;col++)order.push({si,col,key:_tbKey(si,col)});
+const tasks=[];
+for(let o of order){
+const sl=S.tb.squads[o.si].slots[o.col];
+if(sl&&sl.unitData&&sl.unitId&&(!sl.optionParts||!sl.optionParts.length))tasks.push(o);
+}
+if(!tasks.length)return;
+S.tb._tbAutoOpBusy=true;
+try{
+const cache=S.tb._tbOpAllRowsByUnit||(S.tb._tbOpAllRowsByUnit={});
+const used=_tbCollectUsedOptionPartIds(null);
+let changed=false;
+for(const o of tasks){
+const sl=S.tb.squads[o.si].slots[o.col];
+const ud=sl.unitData;
+const uid=String(sl.unitId);
+let rows=cache[uid];
+if(!rows){
+rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(uid));
+cache[uid]=rows;
+}
+const rk=_tbUnitRoleKind(ud);
+const uTags=_tbUnitTagIdSet(ud);
+let best=null,bestS=-1;
+for(let i=0;i<rows.length;i++){
+const row=rows[i];
+const id=String(row.id);
+if(used.has(id))continue;
+const sc=_tbScoreOptionRowForAuto(row,rk,uTags);
+if(sc>bestS){bestS=sc;best=row}
+}
+if(best!=null){sl.optionParts=[best];used.add(String(best.id));changed=true}
+}
+if(changed){renderTbSlots();renderTbStats()}
+}catch(_){}
+finally{S.tb._tbAutoOpBusy=false}
+}
 function _tbSlotLbOutsideHtml(sl,slotKey){
 const ud=sl.unitData;
 if(!ud)return'';
@@ -4774,19 +4919,25 @@ const lb=ud.lb_data;
 if(!lb||lb.length<=1||ud.is_ultimate)return'';
 const maxT=lb.length-1;
 const cur=Math.min(sl.lbTier|0,maxT);
-const lbLbl=escAttr(t('supp_lb_tier')||'LB');
 const lbOpt=String(t('supp_lb_tier')||'LB');
-let opts='';
+let btns='';
 for(let ti=0;ti<=maxT;ti++){
-opts+=`<option value="${ti}"${ti===cur?' selected':''}>${esc(lbOpt+' '+ti)}</option>`;
+const p=cmpLbPipsAtTier(ti);
+const sel=ti===cur?' tb-slot-lb-ic--sel':'';
+btns+=`<button type="button" class="tb-slot-lb-ic${sel}" title="${escAttr(lbOpt+' '+ti)}" aria-pressed="${ti===cur?'true':'false'}" aria-label="${escAttr(lbOpt+' '+ti)}" onclick="event.stopPropagation();tbSetSlotLbTier(${slotKey},${ti},event)">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
 }
-return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><select class="tb-slot-lb-select" aria-label="${lbLbl}" onchange="event.stopPropagation();tbOnSlotLbSelect(${slotKey},this)">${opts}</select></div>`;
+return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><div class="tb-slot-lb-icons">${btns}</div></div>`;
 }
 function _tbSlotOpOutsideHtml(key,sl){
 if(!sl.unitData)return'';
 const opN=(sl.optionParts||[]).length;
-const opRows=(sl.optionParts||[]).map((p,i)=>`<div class="tb-op-row"><span class="tb-op-name">${esc(p.name||'')}</span><button type="button" class="tb-op-rm" aria-label="Remove" onclick="event.stopPropagation();tbRemoveOptionPart(${key},${i},event)">✕</button></div>`).join('');
-return`<div class="tb-slot-op-outside" onclick="event.stopPropagation()"><div class="tb-op-box tb-op-box--under-slot"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tab_mod'))}</span><button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
+const opRows=(sl.optionParts||[]).map((p,i)=>{
+const th=p.thum?`<img class="tb-op-thum" src="${imgUrl(p.thum)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
+const sum=esc(_tbFormatOptionBonusesShort(p.details));
+const nm=p.name?`<span class="tb-op-name--sub">${esc(p.name)}</span>`:'';
+return`<div class="tb-op-row tb-op-row--rich">${th}<div class="tb-op-row-mid"><span class="tb-op-sum">${sum}</span>${nm}</div><button type="button" class="tb-op-rm" aria-label="Remove" onclick="event.stopPropagation();tbRemoveOptionPart(${key},${i},event)">✕</button></div>`;
+}).join('');
+return`<div class="tb-slot-op-outside" onclick="event.stopPropagation()"><div class="tb-op-box tb-op-box--under-slot"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tb_op_label')||'OP')}</span><button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
 }
 function _tbLongCardHtml(sl,slotKey){
 const ud=sl.unitData;
@@ -4809,7 +4960,7 @@ let parts='';
 const rc=ud.recommend_character;
 const rTh=rc&&(rc.portrait||rc.thum);
 const recTitle=escAttr([t('rec_char_shortcut'),rc&&rc.name?String(rc.name):''].filter(Boolean).join(' — '));
-const addTitle=escAttr(t('tab_char'));
+const addTitle=escAttr(t('tb_pick_pilot_unit')||t('tab_char'));
 if(rc&&rc.id){
 if(rTh){
 parts+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
@@ -4817,7 +4968,7 @@ parts+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTi
 parts+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
 }
 }
-parts+=`<div class="tb-slot-add-pilot tb-slot-add-pilot--corner" role="button" tabindex="0" title="${addTitle}" onclick="event.stopPropagation();tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}">+</div>`;
+parts+=`<div class="tb-slot-add-pilot tb-slot-add-pilot--corner" role="button" tabindex="0" title="${addTitle}" aria-label="${addTitle}" onclick="event.stopPropagation();tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}">+</div>`;
 pilotInner=`<div class="tb-long-pilot-corner">${parts}</div>`;
 }
 const portraitInner=(portraitSrc?imgTag(portraitSrc,{cls:'tb-long-portrait',webp:true,alt:''}):'')+leaderIc+pilotInner;
@@ -4827,6 +4978,7 @@ return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}"
 }
 function renderTbSlots(){
 initTeamBuilder();
+_tbDedupeOptionPartsAcrossTeam();
 const r1f=document.getElementById('tbSlotsSquad1Front'),r1r=document.getElementById('tbSlotsSquad1Rear'),r2f=document.getElementById('tbSlotsSquad2Front'),r2r=document.getElementById('tbSlotsSquad2Rear');
 if(!r1f||!r1r||!r2f||!r2r)return;
 function rowHtml(side,col0,col1){
@@ -4845,6 +4997,7 @@ return h;
 r1f.innerHTML=rowHtml(1,0,3);r1r.innerHTML=rowHtml(1,3,5);
 r2f.innerHTML=rowHtml(2,0,3);r2r.innerHTML=rowHtml(2,3,5);
 scheduleTbLeaderRefresh();
+queueMicrotask(()=>{tbAutoFillEmptyOptionParts()});
 }
 let _tbLeaderFt=null;
 function scheduleTbLeaderRefresh(){clearTimeout(_tbLeaderFt);_tbLeaderFt=setTimeout(tbRefreshLeaderApplies,100)}
@@ -4886,28 +5039,27 @@ if(uId)x+='&for_unit_id='+encodeURIComponent(uId);
 if(cId)x+='&for_char_id='+encodeURIComponent(cId);
 return x;
 }
-function _tbSupporterLbSelectHtml(side,s){
+function _tbSupporterLbIconsHtml(side,s){
 const ent=S.tb.supBySide[side];
 const cur=Math.min(3,Math.max(0,(ent&&ent.lbTier!=null?ent.lbTier|0:(s.lb_tier!=null?s.lb_tier|0:0))));
-const al=escAttr(t('supp_lb_tier')||'LB');
 const lbOpt=String(t('supp_lb_tier')||'LB');
-let opts='';
+let btns='';
 for(let i=0;i<=3;i++){
-opts+=`<option value="${i}"${i===cur?' selected':''}>${esc(lbOpt+' '+i)}</option>`;
+const p=cmpLbPipsAtTier(i);
+const sel=i===cur?' tb-supp-lb-ic--sel':'';
+btns+=`<button type="button" class="tb-supp-lb-ic${sel}" aria-pressed="${i===cur?'true':'false'}" title="${escAttr(lbOpt+' '+i)}" aria-label="${escAttr(lbOpt+' '+i)}" onclick="event.stopPropagation();tbSetSupporterLbFromIcon(${side},${i},event)">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
 }
-return`<select class="tb-supp-lb-select" aria-label="${al}" onchange="event.stopPropagation();tbSetSupporterLbFromSelect(${side},this)">${opts}</select>`;
+return`<div class="tb-supp-lb-icons">${btns}</div>`;
 }
-function tbSetSupporterLbFromSelect(side,sel){
+function tbSetSupporterLbFromIcon(side,tier,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
 initTeamBuilder();
 const ent=S.tb.supBySide[side];
 if(!ent||!ent.id)return;
-const v=parseInt(String(sel&&sel.value!=null?sel.value:'0'),10);
-if(Number.isNaN(v))return;
-ent.lbTier=Math.min(3,Math.max(0,v));
+ent.lbTier=Math.min(3,Math.max(0,tier|0));
 _tbRefetchSupporterForSide(side).then(()=>renderTeamBuilder());
 }
 function _tbSupporterDetailHtml(s,side){
-const metaLine=`<div class="tb-supp-meta-line tb-supp-meta-line--lvl"><span class="tb-supp-lvl-txt"><strong>${esc(t('supp_level'))}</strong>: ${fmtN(s.level||100)}</span>${_tbSupporterLbSelectHtml(side,s)}</div>`;
 const boost=`<div class="tb-supp-boost"><span class="support-stat-badge support-hp">${esc(t('hp_support'))} +${fmtN(s.hp_support||0)}</span><span class="support-stat-badge support-atk">${esc(t('atk_support'))} +${fmtN(s.atk_support||0)}</span></div>`;
 let leaders='';
 if(s.leader_skills&&s.leader_skills.length){
@@ -4921,7 +5073,7 @@ let act='';
 if(s.active_skills&&s.active_skills.length){
 act=`<div class="tb-supp-sec"><div class="tb-supp-sec-title">${esc(t('sec_active_skills'))}</div>`+s.active_skills.map(sk=>`<div class="tb-supp-act-item">${sk.icon?`<img class="tb-supp-act-ic" src="${imgUrl(sk.icon)}" alt="" loading="lazy">`:''}<div><div class="tb-supp-act-name">${esc(sk.name)}</div>${sk.desc?`<div class="tb-supp-act-desc">${esc(sk.desc)}</div>`:''}</div></div>`).join('')+'</div>';
 }
-return`${metaLine}${boost}${leaders}${act}`;
+return`${boost}${leaders}${act}`;
 }
 async function _tbRefetchSupporterForSide(side){
 initTeamBuilder();
@@ -4941,8 +5093,8 @@ if(!ent||!ent.id){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_p
 const s=ent.data;
 if(!s){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_pick_supp'))}</div>`;det.innerHTML='';return}
 const row={thum:s.portrait||s.thum,rarity:s.rarity||'N',role_icon:s.role_icon||'',acquisition_icon:'',special_icons:[],is_ultimate:false};
-card.innerHTML=`<div class="tb-supp-card-stack"><div class="tb-supp-frames" style="justify-content:center">${renderTbSupporterCardThumb(row,96)}</div></div>`;
-det.innerHTML=`<strong>${esc(s.name||'')}</strong>${_tbSupporterDetailHtml(s,side)}`;
+card.innerHTML=`<div class="tb-supp-card-stack tb-supp-card-stack--full"><div class="tb-supp-frames tb-supp-frames--left">${renderTbSupporterCardThumb(row,96)}</div><div class="tb-supp-card-meta-in"><strong class="tb-supp-card-name">${esc(s.name||'')}</strong><div class="tb-supp-meta-line tb-supp-meta-line--lvl tb-supp-meta-line--in-card"><span class="tb-supp-lvl-txt"><strong>${esc(t('supp_level'))}</strong>: ${fmtN(s.level||100)}</span>${_tbSupporterLbIconsHtml(side,s)}</div></div></div>`;
+det.innerHTML=_tbSupporterDetailHtml(s,side);
 }
 function renderTbSupporter(){
 initTeamBuilder();
@@ -5030,8 +5182,7 @@ if(!sl||!sl.unitId){body.innerHTML=`<div style="padding:16px;color:var(--text-mu
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 const uq='&unit_id='+encodeURIComponent(sl.unitId);
-const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=200&sort=name&dir=asc&q=&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
-S.tb.picker.rows=d.rows||[];
+S.tb.picker.rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+uq);
 filterTbPickerList();
 }catch(_){body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 setTimeout(()=>inp.focus(),50);
@@ -5095,13 +5246,24 @@ const pType=S.tb.picker.type;
 const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLowerCase();
 let rows=S.tb.picker.rows||[];
 if(q&&pType!=='unit'&&pType!=='character'){
-rows=rows.filter(r=>String(r.name||'').toLowerCase().includes(q)||String(r.details||r.boost||'').toLowerCase().includes(q));
+rows=rows.filter(r=>{
+const tagHay=(r.tags||[]).map(tg=>String(tg.name||'')).join(' ').toLowerCase();
+const hay=(String(r.name||'')+' '+String(r.details||r.boost||'')+' '+tagHay).toLowerCase();
+return hay.includes(q);
+});
 }
 if(!rows.length){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;return}
 const th=52;
 let cells;
 if(pType==='option'){
-cells=rows.map(r=>`<div class="tb-picker-item" role="button" tabindex="0" data-tb-pick-id="${escAttr(String(r.id))}"><span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`);
+const RARITY_COLORS={'UR':'#fbbf24','SSR':'#f97316','SR':'#a78bfa','R':'#60a5fa','N':'#94a3b8'};
+cells=rows.map(r=>{
+const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
+const meta=((r.details||'').trim()+(r.tags&&r.tags.length?(' · '+r.tags.map(tg=>tg.name).filter(Boolean).join(' · ')):''));
+return`<div class="tb-picker-item cmp-picker-item" role="button" tabindex="0" data-tb-pick-id="${escAttr(String(r.id))}" style="padding:8px 12px;cursor:pointer;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg)"><div><div style="display:flex;align-items:center;gap:6px"><span style="color:${rc};font-weight:700;font-size:11px">${esc(r.rarity||'')}</span><span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span></div>${meta?`<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.35">${esc(meta)}</div>`:''}</div></div>`;
+}).join('');
+body.innerHTML=`<div class="tb-picker-option-list">${cells}</div>`;
+return;
 }else if(pType==='supporter'){
 cells=rows.map(r=>tbRenderPickerItemCell(r,'supp',th));
 }else{
@@ -5150,12 +5312,16 @@ try{const d=await fetch(`/api/unit/${encodeURIComponent(sid)}?lang=${S.lang}`).t
 }else if(type==='character'){
 try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=sid;sl.charData=d}}catch(_){}
 }else if(type==='option'){
-try{
-const uq=sl.unitId?'&unit_id='+encodeURIComponent(sl.unitId):'';
-const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(sid)}&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
-const hit=(d.rows||[]).find(x=>String(x.id)===String(sid));
-if(hit){if(!sl.optionParts)sl.optionParts=[];if(sl.optionParts.length>=5)return;sl.optionParts.push(hit)}
-}catch(_){}
+const rows=(S.tb.picker&&S.tb.picker.rows)||[];
+const hit=rows.find(x=>String(x.id)===String(sid));
+if(hit){
+if(!sl.optionParts)sl.optionParts=[];
+if(sl.optionParts.length>=5)return;
+const used=_tbCollectUsedOptionPartIds(slotKey);
+if(used.has(String(hit.id)))return;
+if(sl.optionParts.some(p=>p&&String(p.id)===String(hit.id)))return;
+sl.optionParts.push(hit);
+}
 }
 renderTeamBuilder();
 }
