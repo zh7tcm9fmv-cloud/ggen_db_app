@@ -3872,6 +3872,78 @@ def collect_unit_mechanism_search_text(info, ld, uid=None):
     return ' '.join(parts)
 
 
+def _augment_bare_vigor_lines_next_to_supercharged(details, lang_code):
+    """Pair traits use a bare stat line (normal vigor) + a Supercharged line. The bare line has no
+    vigor wording in master data; add explicit normal-vigor scope so both +X% lines read clearly."""
+    if not details or len(details) < 2:
+        return
+    lc = (lang_code or 'EN').upper()
+
+    def _pct_in_text(pct, blob):
+        return bool(re.search(rf'(?:{re.escape(pct)})\s*%', blob))
+
+    for i in range(len(details) - 1):
+        d1 = details[i]
+        d2 = details[i + 1]
+        if not isinstance(d1, dict) or not isinstance(d2, dict):
+            continue
+        t1 = (d1.get('text') or '').strip()
+        t2 = (d2.get('text') or '').strip()
+        if not t1 or not t2:
+            continue
+
+        if lc in ('EN',):
+            m1 = re.match(
+                r'^\s*Increase\s+(?:own\s+)?(ATK|Attack|DEF|Defense|Mobility|MOB|Move)\s+by\s+(\d+)%\s*\.?\s*$',
+                t1, re.I)
+            if not m1:
+                continue
+            if 'supercharged' not in t2.lower():
+                continue
+            st_raw, pct = m1.group(1), m1.group(2)
+            if not _pct_in_text(pct, t2):
+                continue
+            st_key = st_raw.strip().lower()
+            disp = {'atk': 'ATK', 'attack': 'ATK', 'def': 'DEF', 'defense': 'DEF',
+                    'mob': 'Mobility', 'mobility': 'Mobility', 'move': 'Move'}.get(st_key, st_raw.upper())
+            t2_low = t2.lower()
+            if st_key in ('attack', 'atk') and 'atk' not in t2_low and 'attack' not in t2_low:
+                continue
+            if st_key in ('defense', 'def') and 'def' not in t2_low and 'defense' not in t2_low:
+                continue
+            if st_key in ('mobility', 'mob') and 'mob' not in t2_low and 'mobility' not in t2_low:
+                continue
+            if st_key == 'move' and 'move' not in t2_low and 'movement' not in t2_low:
+                continue
+            d1['text'] = f'When Vigor is Normal, increase {disp} by {pct}%.'
+        elif lc in ('TW', 'HK'):
+            m1 = re.match(
+                r'^\s*自身(攻擊力|防禦力|機動力|移動力|最大HP|最大EN)提升(\d+)%\s*$',
+                t1)
+            if not m1:
+                continue
+            if '超一擊' not in t2:
+                continue
+            stat_zh, pct = m1.group(1), m1.group(2)
+            if f'提升{pct}%' not in t2.replace(' ', '') and f'{pct}%' not in t2:
+                continue
+            if stat_zh not in t2:
+                continue
+            d1['text'] = f'自身戰意為一般時，\n自身{stat_zh}提升{pct}%'
+        elif lc in ('JA', 'JP'):
+            m1 = re.match(
+                r'^\s*自身の(攻撃力|防禦力|機動力|移動力|最大HP|最大EN)が(\d+)%上昇\s*$',
+                t1)
+            if not m1:
+                continue
+            if '超一撃' not in t2:
+                continue
+            stat_ja, pct = m1.group(1), m1.group(2)
+            if f'{pct}%' not in t2 or stat_ja not in t2:
+                continue
+            d1['text'] = f'自身のテンションが「超一撃」未満の時\n自身の{stat_ja}が{pct}%上昇'
+
+
 def trait_text_implies_show_target_condition_tags(en_text, display_text):
     """True when trait copy points at TargetConditionSetId scope (tags or series).
 
@@ -4069,6 +4141,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             t_val = entry['text'].strip()
             if t_val == ab_name.strip(): continue
             details.append({'text': t_val, 'conditions': []})
+    _augment_bare_vigor_lines_next_to_supercharged(details, lang_code)
     res_id = coalesce_ability_resource_id(ab_id, trait_set_id)
     icon_file = find_trait_icon(res_id) if res_id else None
     has_icon = bool(icon_file)
