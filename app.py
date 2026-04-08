@@ -432,6 +432,8 @@ def normalize_id(value, default='0', debug_context=None):
 RARITY_MAP = {'1': 'N', '2': 'R', '3': 'SR', '4': 'SSR', '5': 'UR'}
 RARITY_SORT = {'5': 0, '4': 1, '3': 2, '2': 3, '1': 4}
 RARITY_LETTERS = frozenset(RARITY_MAP.values())
+# ULT rarity filter alone (no star-tier checkboxes): same idea as Limited alone — restrict to top rarities (SSR + UR).
+ULT_FILTER_DEFAULT_STAR_LETTERS = frozenset({'SSR', 'UR'})
 
 # m_series Id=10 / ResourceId series_0010 — original "Mobile Suit Gundam" (1979). Used to add search alias `msg`
 # so series:msg targets this series only, not every title containing "Gundam".
@@ -551,7 +553,7 @@ def parse_list_rarity_filter(val):
 
 
 def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
-    """Apply parse_list_rarity_filter result."""
+    """Apply parse_list_rarity_filter result. ULT without star letters = SSR+UR only (units pass is_ultimate)."""
     if rf is None:
         return True
     if rf == set():
@@ -565,6 +567,8 @@ def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
             return False
         if need_ult and not is_ultimate:
             return False
+        if need_ult and is_ultimate and not letters:
+            return letter in ULT_FILTER_DEFAULT_STAR_LETTERS
         if letters:
             return letter in letters
         return True
