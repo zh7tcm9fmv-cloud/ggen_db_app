@@ -1270,20 +1270,52 @@ def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
     return all(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
 
 
-def trait_condition_matches_unit(cond_id, uid, ld, lc, char_id=None):
-    """Whether a supporter leader trait condition applies to the given unit (and optional pilot).
+def trait_condition_item_field_vectors(item):
+    """Single m_trait_condition row -> tag/series/role lists (AND within this row)."""
+    if not isinstance(item, dict):
+        return [], [], [], [], []
+    ut, gt, ser, ct, tp = [], [], [], [], []
+    for key in ['UnitTags', 'unitTags']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in ut:
+                    ut.append(v)
+    for key in ['GroupTags', 'groupTags', 'GroupTag', 'groupTag']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in gt:
+                    gt.append(v)
+    for key in ['CharacterTags', 'characterTags']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in ct:
+                    ct.append(v)
+    for key in ['UnitSeries', 'unitSeries']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in ser:
+                    ser.append(v)
+    for key in ['UnitRoleTypes', 'unitRoleTypes']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in tp:
+                    tp.append(v)
+    return ut, gt, ser, ct, tp
 
-    Uses the same raw fields as resolve_condition_tags. Character tags are only enforced when
-    char_id is provided; otherwise they are ignored so the list stays usable before a pilot is chosen.
-    """
-    if not cond_id or cond_id == '0':
-        return True
-    raw = trait_condition_raw_map.get(str(cond_id), {})
-    ut = raw.get('unit_tags') or []
-    gt = raw.get('group_tags') or []
-    tp = raw.get('types') or []
-    ser = raw.get('series') or []
-    ct = raw.get('char_tags') or []
+
+def trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id=None):
+    """AND across non-empty fields on one trait-condition row."""
+    uid = normalize_id(uid)
     if not any([ut, gt, tp, ser, ct]):
         return True
     ok = True
@@ -1308,6 +1340,29 @@ def trait_condition_matches_unit(cond_id, uid, ld, lc, char_id=None):
         cls = char_lin_map.get(cid, [])
         ok = ok and bool(cls) and any(_tag_id_list_matches_lineage_want(ct, cl) for cl in cls)
     return ok
+
+
+def trait_condition_matches_unit(cond_id, uid, ld, lc, char_id=None):
+    """Whether trait condition set applies: OR across rows in m_trait_condition with same TraitConditionSetId.
+
+    Merging all rows into one map incorrectly ANDs unrelated rows (e.g. series OR unit tag for Neo Zeon leaders).
+    """
+    cond_id = normalize_id(cond_id)
+    if not cond_id or cond_id == '0':
+        return True
+    uid = normalize_id(uid)
+    rows = trait_condition_rows_by_set_id.get(cond_id) if trait_condition_rows_by_set_id else None
+    if not rows:
+        raw = trait_condition_raw_map.get(str(cond_id), {})
+        return trait_condition_vectors_match_unit(
+            raw.get('unit_tags') or [], raw.get('group_tags') or [],
+            raw.get('series') or [], raw.get('types') or [], raw.get('char_tags') or [],
+            uid, ld, lc, char_id)
+    for item in rows:
+        ut, gt, ser, ct, tp = trait_condition_item_field_vectors(item)
+        if trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id):
+            return True
+    return False
 
 
 def supporter_leader_applies_to_unit(sid, uid, ld, lc, char_id=None):
@@ -4112,6 +4167,14 @@ for _sit in extract_data_list(schedule_master_data):
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
 trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
+trait_condition_rows_by_set_id = {}
+for _tci in extract_data_list(trait_cond_data_r):
+    if not isinstance(_tci, dict):
+        continue
+    _tsid = normalize_id(_tci.get('TraitConditionSetId') or _tci.get('traitConditionSetId') or '')
+    if _tsid == '0':
+        continue
+    trait_condition_rows_by_set_id.setdefault(_tsid, []).append(_tci)
 trait_boost_condition_raw_map = create_trait_condition_raw_map(trait_boost_cond_data, key_field='TraitBoostConditionSetId')
 char_info_map = create_char_info_map(char_master); char_stat_map = create_char_status_map(char_status)
 char_lin_map = create_char_lineage_link_map(char_lineage_data)
@@ -9040,7 +9103,7 @@ def get_supporter(supporter_id):
         for_cid_q = (request.args.get('for_char_id') or '').strip()
         for_uid_key = normalize_id(for_uid_q) if for_uid_q else '0'
         for_cid_key = normalize_id(for_cid_q) if for_cid_q else '0'
-        ck = f"s2_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s3_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)

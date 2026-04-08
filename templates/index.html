@@ -1231,6 +1231,10 @@ html{overflow-x:hidden}
 .tb-slot-lb-details .cmp-lb-summary img{width:16px;height:16px}
 .tb-slot-lb-details .cmp-lb-menu{left:0;right:0;width:100%;min-width:0;box-sizing:border-box;z-index:50}
 .tb-slot-lb-details .cmp-lb-opt img{width:16px;height:16px}
+.tb-slot-stat-mode{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;width:100%;max-width:100%;margin-top:3px;box-sizing:border-box}
+.tb-slot-stat-mode-btn{font-size:8px;line-height:1;padding:3px 5px;border-radius:5px;border:1px solid rgba(148,163,184,.35);background:rgba(0,0,0,.35);color:var(--text);cursor:pointer;min-width:0}
+.tb-slot-stat-mode-btn.is-active{border-color:rgba(34,211,238,.65);background:rgba(34,211,238,.12);color:var(--accent-cyan);font-weight:600}
+.tb-slot-stat-mode-btn:hover{border-color:rgba(148,163,184,.55)}
 .tb-supp-lb-icons{display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center}
 .tb-supp-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0}
 .tb-supp-lb-ic:hover{background:rgba(0,0,0,.58)}
@@ -1251,9 +1255,9 @@ html{overflow-x:hidden}
 .tb-op-limiter-tag{font-size:7px;font-weight:600;color:var(--text-muted);padding:1px 4px;border-radius:4px;background:rgba(148,163,184,.15);flex-shrink:0}
 .tb-op-row-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
 .tb-op-name--sub{font-size:7px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tb-supp-portrait-only{border-radius:10px;overflow:hidden;background:rgba(0,0,0,.35);border:1px solid rgba(148,163,184,.28);flex-shrink:0;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.tb-supp-portrait-only{border-radius:10px;overflow:visible;background:rgba(0,0,0,.35);border:1px solid rgba(148,163,184,.28);flex-shrink:0;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
 .tb-supp-portrait-only--empty{color:var(--text-muted);font-size:22px}
-.tb-supp-portrait-only-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.tb-supp-portrait-only-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:center center;display:block}
 .tb-picker-option-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:100%;box-sizing:border-box}
 .tb-picker-option-list .tb-picker-item.cmp-picker-item{width:100%;box-sizing:border-box}
 .tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0;flex-shrink:0;-webkit-tap-highlight-color:transparent;align-self:flex-start}
@@ -1327,7 +1331,7 @@ html{overflow-x:hidden}
 @media(max-width:700px){.tb-supp-row{grid-template-columns:1fr}}
 .tb-supp-col{display:flex;flex-direction:column;gap:6px;min-width:0}
 .tb-supp-col-lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
-.tb-supp-card{position:relative;min-height:100px;border-radius:10px;overflow:hidden;background:rgba(15,23,42,.6);border:1px solid var(--border-color);cursor:pointer}
+.tb-supp-card{position:relative;min-height:100px;border-radius:10px;overflow:visible;background:rgba(15,23,42,.6);border:1px solid var(--border-color);cursor:pointer}
 .tb-supp-card-stack{display:flex;flex-direction:row;align-items:flex-start;gap:8px;padding:6px 8px 8px;width:100%;box-sizing:border-box}
 .tb-supp-card-stack--full{min-height:0}
 .tb-supp-card-stack .tb-supp-frames{padding:0;margin:0;min-height:0;flex:0 0 auto}
@@ -2017,10 +2021,10 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_pick_pilot_unit:'Choose pilot for this unit'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_pick_pilot_unit:'このユニットのパイロットを選択'});
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit'});
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體'});
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體'});
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -2045,7 +2049,7 @@ function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return 
 const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 function scheduleBrowsePrimeChain(){function ric(cb){if(typeof requestIdleCallback!=='undefined')requestIdleCallback(cb,{timeout:4500});else setTimeout(cb,160)}ric(()=>{primeBrowseTabIfNeeded('units');ric(()=>{primeBrowseTabIfNeeded('supporters');ric(()=>{primeBrowseTabIfNeeded('stages');ric(()=>primeBrowseTabIfNeeded('modifications'))})})})}
-document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();const _qs=new URLSearchParams(location.search);if(_qs.get('tab')!=='calculator'&&_qs.get('tab')!=='team_builder'&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams()}});
+document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();const _qs=new URLSearchParams(location.search);if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -2256,7 +2260,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();renderTeamBuilder()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();renderTeamBuilder()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}syncMainTabQueryParam(tab);}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -2483,6 +2487,37 @@ const WARMED_DETAIL_IMG_MAX=800;
 let _detailPrefetchHoverTimer=null;
 let _detailPrefetchIntentWired=false;
 function syncHistoryToBrowsePath(path){try{const tail=(location.search||'')+(location.hash||'');history.replaceState(history.state||{},'',path+tail)}catch(_){}}
+const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
+function syncMainTabQueryParam(tab){
+try{
+const u=new URL(location.href);
+const code=MAIN_TAB_URL_SHORT[tab];
+if(code)u.searchParams.set('tab',code);else u.searchParams.delete('tab');
+history.replaceState(history.state||{},'',u.pathname+u.search+u.hash);
+}catch(_){}
+}
+function urlTabParamBlocksBrowseShortPath(te){
+if(te==null||te==='')return false;
+const e=String(te).trim();
+return e==='calculator'||e==='DS'||e==='team_builder'||e==='TB'||e==='ER'||e==='stages'||e==='op'||e==='modifications'||e==='OP';
+}
+function stagesOrModsTabFromQueryOnLoad(){
+const p=new URLSearchParams(location.search);
+const raw=String(p.get('tab')||'').trim();
+const path=(location.pathname||'').replace(/\/$/,'');
+if(raw==='ER'||raw==='stages'){switchTab('stages');return}
+if(raw==='op'||raw==='OP'||raw==='modifications'){
+if(/^\/op\/[^/]+$/.test(path)){
+const parsed=parseBrowseShortPath(location.pathname);
+if(parsed&&parsed.kind==='option_part'){
+switchTab('modifications');
+const f=document.getElementById('modFilter');if(f)f.value=parsed.id;S.modifications.q=parsed.id;loadModifications(1);try{window.scrollTo(0,0)}catch(_){}
+}
+return;
+}
+switchTab('modifications');
+}
+}
 function browseShortPathForDetailType(type,id){
 const enc=encodeURIComponent(String(id||'').trim());
 if(type==='unit')return'/u/'+enc;
@@ -4581,7 +4616,8 @@ _dcSyncAtkModeUiFromState();
 }
 async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
-if(p.get('tab')!=='calculator')return;
+const _t=p.get('tab');
+if(_t!=='calculator'&&_t!=='DS')return;
 initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
 let isMultiSlotUrl=false;
@@ -4722,6 +4758,18 @@ const ls=(d.leader_skills||[]).map(ls=>Object.assign({},ls,{applies:false}));
 return Object.assign({},d,{leader_skills:ls});
 }
 const TB_PLUS_EX_SQUAD_UNIT_ID='1095002550';
+const TB_QUBELEY_ZZ_PILOT_ID='1095001801';
+/** All five slots; each MS with Neo Zeon counts once (4% each, cap 20%), including the piloted Qubeley when it bears that tag. */
+function _tbNeoZeonUnitCountInSquad(side){
+const squ=S.tb.squads[side|0];
+if(!squ)return 0;
+let n=0;
+for(let i=0;i<5;i++){
+const sl=squ.slots[i];
+if(sl&&sl.unitData&&_tbUnitHasNeoZeonTag(sl.unitData))n++;
+}
+return n;
+}
 function _tbSquadHasUnitId(side,uidNeed){
 if(!uidNeed)return false;
 const squ=S.tb.squads[side|0];if(!squ)return false;
@@ -4733,26 +4781,40 @@ if(sl&&sl.unitData&&String(sl.unitData.id)===need)return true;
 return false;
 }
 function _tbNameLooksNeoZeon(n){
-const s=String(n||'').toLowerCase();
-return s.includes('neo zeon')||/\bneo[\s-]?zeon\b/.test(s);
+const s=String(n||'');
+const sl=s.toLowerCase();
+if(sl.includes('neo zeon')||/\bneo[\s-]?zeon\b/.test(sl))return true;
+return /ネオ[_・\s]*ジオン|新ジオン|新吉翁/i.test(s);
 }
 function _tbUnitHasNeoZeonTag(ud){
 if(!ud)return false;
+const tagNeo=(tg)=>{if(!tg)return false;const id=String(tg.id||'').trim();if(id==='1019')return true;return _tbNameLooksNeoZeon(tg.name)};
 const tags=ud.tags||[];
-for(let i=0;i<tags.length;i++){if(_tbNameLooksNeoZeon(tags[i]&&tags[i].name))return true}
+for(let i=0;i<tags.length;i++){if(tagNeo(tags[i]))return true}
 const blocks=ud.skill_tag_data||[];
 for(let b=0;b<blocks.length;b++){
 const tgs=(blocks[b]&&blocks[b].tags)||[];
-for(let j=0;j<tgs.length;j++){if(_tbNameLooksNeoZeon(tgs[j]&&tgs[j].name))return true}
+for(let j=0;j<tgs.length;j++){if(tagNeo(tgs[j]))return true}
 }
 return false;
 }
 function _tbEffectiveExSquadAtkPctForTb(sl,side){
+const ud=sl.unitData;
+const cd=sl.charData||null;
 const raw=Math.min(20,Math.max(0,sl.exSquadAtkPct|0));
+if(ud&&String(ud.id)===TB_PLUS_EX_SQUAD_UNIT_ID&&cd&&String(cd.id)===TB_QUBELEY_ZZ_PILOT_ID){
+const c=_tbNeoZeonUnitCountInSquad(side);
+return Math.min(20,4*c);
+}
 if(raw<=0)return 0;
-if(_dcCharHasExSquadSynergyAbility(sl.charData||null))return raw;
-if(_tbSquadHasUnitId(side,TB_PLUS_EX_SQUAD_UNIT_ID)&&_tbUnitHasNeoZeonTag(sl.unitData))return raw;
+if(_dcCharHasExSquadSynergyAbility(cd))return raw;
+if(_tbSquadHasUnitId(side,TB_PLUS_EX_SQUAD_UNIT_ID)&&_tbUnitHasNeoZeonTag(ud))return raw;
 return 0;
+}
+function _tbUnitAllowsSpSsp(ud){
+if(!ud||ud._manual)return false;
+if(ud.has_sp!==undefined)return!!ud.has_sp;
+return parseInt(ud.rarity_id||'5',10)<=4;
 }
 function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
@@ -4811,7 +4873,7 @@ if(S.tb.rearrange){tbRearrangeTap(key);return}
 S.tb.selectedKey=key;
 const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 renderTbSlots();renderTbStats();
-if(!sl.unitData)openTbPicker('unit',key);
+openTbPicker('unit',key);
 }
 function tbPilotAddClick(key,ev){
 if(ev){ev.preventDefault();ev.stopPropagation()}
@@ -4845,6 +4907,19 @@ const lb=ud&&ud.lb_data;
 if(!lb||lb.length<=1||ud.is_ultimate)return;
 const max=lb.length-1;
 sl.lbTier=Math.min(Math.max(0,tier|0),max);
+renderTeamBuilder();
+}
+function tbSetSlotUnitStatMode(key,mode,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+if(S.tb.rearrange)return;
+S.tb.selectedKey=key;
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+const ud=sl.unitData;
+if(!ud||!_tbUnitAllowsSpSsp(ud))return;
+if(mode!=='normal'&&mode!=='sp'&&mode!=='ssp')return;
+sl.unitStatMode=mode;
+S.tb._leaderApplyCache={};
 renderTeamBuilder();
 }
 function tbSlotContextMenu(key,ev){
@@ -5003,6 +5078,15 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${ti===cur?' is-active':''}" onc
 }
 return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><details id="${detId}" class="cmp-lb-details tb-slot-lb-details"><summary class="cmp-lb-summary tb-slot-lb-summary" title="${escAttr(lbOpt)}" aria-label="${escAttr(lbOpt)}">${cmpLbPipsRow(curP[0],curP[1],curP[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${escAttr(lbOpt)}">${lbMenu}</div></details></div>`;
 }
+function _tbSlotStatModeHtml(key,sl){
+const ud=sl.unitData;
+if(!ud||ud._manual||!_tbUnitAllowsSpSsp(ud))return'';
+const m=sl.unitStatMode||'normal';
+const labN=escAttr(t('tb_stat_normal')||'Normal');
+const labSp=escAttr(t('tb_stat_sp')||'SP');
+const labSsp=escAttr(t('tb_stat_ssp')||'SSP');
+return`<div class="tb-slot-stat-mode" onclick="event.stopPropagation()"><button type="button" class="tb-slot-stat-mode-btn${m==='normal'?' is-active':''}" title="${labN}" aria-label="${labN}" onclick="tbSetSlotUnitStatMode(${key},'normal',event)">${esc(t('tb_stat_normal')||'Normal')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='sp'?' is-active':''}" title="${labSp}" aria-label="${labSp}" onclick="tbSetSlotUnitStatMode(${key},'sp',event)">${esc(t('tb_stat_sp')||'SP')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='ssp'?' is-active':''}" title="${labSsp}" aria-label="${labSsp}" onclick="tbSetSlotUnitStatMode(${key},'ssp',event)">${esc(t('tb_stat_ssp')||'SSP')}</button></div>`;
+}
 function _tbSlotOpOutsideHtml(key,sl){
 if(!sl.unitData)return'';
 const opN=(sl.optionParts||[]).length;
@@ -5061,7 +5145,7 @@ const sl=squ.slots[col];
 const sel=S.tb.selectedKey===key;
 let cls='tb-slot'+(sel?' is-sel':'');
 if(S.tb.rearrange&&S.tb.rearrange.pendingKey===key)cls+=' is-rearrange-pending';
-h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
+h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotStatModeHtml(key,sl)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
 }
 return h;
 }
@@ -5338,11 +5422,22 @@ role=`<span class="tb-picker-role-inline" aria-hidden="true">${pictureRasterHtml
 }
 return`<div class="tb-picker-item" role="button" tabindex="0" data-tb-pick-id="${id}">${thumb}${role}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
 }
+function _tbSortPickerEntityRows(rows){
+return(rows||[]).slice().sort((a,b)=>{
+const ra=-(Number(a.rarity_sort)||4);const rb=-(Number(b.rarity_sort)||4);
+if(ra!==rb)return ra-rb;
+const sa=String(a.id??'');const sb=String(b.id??'');
+const ia=parseInt(sa,10);const ib=parseInt(sb,10);
+if(Number.isFinite(ia)&&Number.isFinite(ib)&&ia!==ib)return ia-ib;
+return sa.localeCompare(sb,'en',{numeric:true,sensitivity:'base'});
+});
+}
 function filterTbPickerList(){
 const body=document.getElementById('tbPickerBody');if(!body)return;
 const pType=S.tb.picker.type;
 const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLowerCase();
 let rows=S.tb.picker.rows||[];
+if(pType==='unit'||pType==='character')rows=_tbSortPickerEntityRows(rows);
 if(q&&pType!=='unit'&&pType!=='character'){
 rows=rows.filter(r=>{
 const tagHay=(r.tags||[]).map(tg=>String(tg.name||'')).join(' ').toLowerCase();
@@ -5390,13 +5485,14 @@ const url=`${base}?lang=${S.lang}&page=1&per_page=100&sort=rarity&dir=desc&q=${e
 const r=await fetch(url,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_tbPickerGen)return;
-S.tb.picker.rows=d.rows||[];
+S.tb.picker.rows=_tbSortPickerEntityRows(d.rows||[]);
 filterTbPickerList();
 }catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 }
 async function _tbAssignUnitDataToSlot(sl,d,sidStr){
 if(!sl||!d||d.error)return;
 sl.unitId=String(sidStr!=null?sidStr:d.id);sl.unitData=d;sl.optionParts=[];
+if(!_tbUnitAllowsSpSsp(d))sl.unitStatMode='normal';
 sl.charId=null;sl.charData=null;
 const rc=d.recommend_character;
 if(rc&&rc.id){
@@ -5582,7 +5678,8 @@ _tbWriteFormations(arr);openTbFormationModal();
 async function tbLoadFormationSlot(i){const arr=_tbReadFormations();const x=arr[i];if(x&&x.data)await tbApplySnapshot(x.data);closeTbFormationModal()}
 function _tbCheckUrlParams(){
 const p=new URLSearchParams(location.search);
-if(p.get('tab')!=='team_builder')return;
+const _t=p.get('tab');
+if(_t!=='team_builder'&&_t!=='TB')return;
 initTeamBuilder();switchTab('team_builder');
 }
 
@@ -7588,7 +7685,7 @@ _dcSnapActiveAttackerToSlot();
 const packed=_dcPackShareState();
 const json=JSON.stringify(packed);
 const b64=_dcB64UrlEncode(json);
-return`${location.origin}${location.pathname}?tab=calculator&dc=${encodeURIComponent(b64)}`;
+return`${location.origin}${location.pathname}?tab=DS&dc=${encodeURIComponent(b64)}`;
 }
 function copyDcResultText(){
 const r=S.dc._lastResult;if(!r)return;
