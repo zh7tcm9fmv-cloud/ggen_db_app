@@ -2086,6 +2086,37 @@ def _unit_vigor_normal_baseline_stat_line(part):
     return False
 
 
+def _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part):
+    """Master pair: bare own-stat % on detail[0], Supercharged line on detail[1]. Tags set hc=True but the first row is still base vigor."""
+    if detail_idx != 0:
+        return False
+    dets = [x for x in (ad.get('details') or []) if isinstance(x, dict)]
+    if len(dets) < 2:
+        return False
+    t_next = (dets[1].get('text') or '').replace('\r', '')
+    if 'supercharged' not in t_next.lower() and '超一擊' not in t_next and '超一撃' not in t_next:
+        return False
+    p = (part or '').strip()
+    if re.match(
+            r'^\s*Increase\s+(?:own\s+)?(ATK|Attack|DEF|Defense|Mobility|MOB|Move)\s+by\s+\d+%\s*\.?\s*$',
+            p, re.I):
+        return True
+    if re.match(r'^\s*自身(攻擊力|防禦力|機動力|移動力)提升\d+%\s*$', p):
+        return True
+    if re.match(r'^\s*自身の(攻撃力|防禦力|機動力|移動力)が\d+%上昇\s*$', p):
+        return True
+    return False
+
+
+def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad=None, detail_idx=None):
+    """Structured trait tags set hc=True for the whole ability; vigor-normal baseline % must still use the unconditional bucket."""
+    if _unit_vigor_normal_baseline_stat_line(part):
+        return False
+    if ad is not None and detail_idx is not None and _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part):
+        return False
+    return bool(hc or ie or is_cond or ability_cond)
+
+
 def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
     """Extract (threshold_pct, atk_bonus_pct) for HP-or-above ATK lines (EN/JA). Used to fix CP bucket split."""
     if not txt:
@@ -5617,7 +5648,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
         ie = ad.get('is_ex', False); ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
-        for d2 in ad.get('details', []):
+        for di, d2 in enumerate(ad.get('details', [])):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
             if not parts: parts = [txt]
@@ -5637,14 +5668,15 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
+                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
                 if flat_move:
                     if inx: pass
-                    elif hc or ie or is_cond or ability_cond: cd_move_flat[0] += flat_move
+                    elif line_cond: cd_move_flat[0] += flat_move
                     else: bd_move_flat[0] += flat_move
                 for s, pct in part_stats.items():
                     if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
                         if not inx:
-                            if hc or ie or is_cond or ability_cond:
+                            if line_cond:
                                 cd_crit[0] += pct
                             else:
                                 bd_crit[0] += pct
@@ -5652,7 +5684,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     if s == 'Move': continue
                     if unit_id == '1400000550' and s == 'HP' and pct == 5: bd[s] = bd.get(s, 0) + pct; continue
                     if inx: nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or is_cond or ability_cond: cd[s] = cd.get(s, 0) + pct
+                    elif line_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
         _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
     for ab in ac:
@@ -5709,7 +5741,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
         ie = ad.get('is_ex', False)
         ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
-        for d2 in ad.get('details', []):
+        for di, d2 in enumerate(ad.get('details', [])):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
             if not parts: parts = [txt]
@@ -5729,17 +5761,18 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
+                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
                 if flat_move:
                     if inx:
                         pass
-                    elif hc or ie or is_cond or ability_cond:
+                    elif line_cond:
                         cd_move_flat[0] += flat_move
                     else:
                         bd_move_flat[0] += flat_move
                 for s, pct in part_stats.items():
                     if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
                         if not inx:
-                            if hc or ie or is_cond or ability_cond:
+                            if line_cond:
                                 cd_crit[0] += pct
                             else:
                                 bd_crit[0] += pct
@@ -5750,7 +5783,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                         continue
                     if inx:
                         nd[s] = max(nd.get(s, 0), pct)
-                    elif hc or ie or is_cond or ability_cond:
+                    elif line_cond:
                         cd[s] = cd.get(s, 0) + pct
                     else:
                         bd[s] = bd.get(s, 0) + pct
@@ -9534,7 +9567,7 @@ def get_unit(unit_id):
             ie = ad.get('is_ex', False)
             ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
             inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
-            for d2 in ad.get('details', []):
+            for di, d2 in enumerate(ad.get('details', [])):
                 txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
                 parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
                 if not parts: parts = [txt]
@@ -9555,17 +9588,18 @@ def get_unit(unit_id):
                     if itc and not part_stats and not flat_move and not wpn_stats:
                         cond_prefix = True
                     is_cond = itc or cond_prefix
+                    line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
                     if flat_move:
                         if inx:
                             pass
-                        elif hc or ie or is_cond or ability_cond:
+                        elif line_cond:
                             cd_move_flat[0] += flat_move
                         else:
                             bd_move_flat[0] += flat_move
                     for s, pct in part_stats.items():
                         if s == UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY:
                             if not inx:
-                                if hc or ie or is_cond or ability_cond:
+                                if line_cond:
                                     cd_crit[0] += pct
                                 else:
                                     bd_crit[0] += pct
@@ -9576,14 +9610,14 @@ def get_unit(unit_id):
                             continue
                         if inx:
                             nd[s] = max(nd.get(s, 0), pct)
-                        elif hc or ie or is_cond or ability_cond:
+                        elif line_cond:
                             cd[s] = cd.get(s, 0) + pct
                         else:
                             bd[s] = bd.get(s, 0) + pct
                     for wk, pct in wpn_stats.items():
                         if inx:
                             wpn_nd[wk] = max(wpn_nd.get(wk, 0), pct)
-                        elif hc or ie or is_cond or ability_cond:
+                        elif line_cond:
                             wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
