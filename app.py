@@ -8271,6 +8271,25 @@ def list_characters():
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
+
+def unit_list_recommend_character_brief(uid, info, ld, lc):
+    """Minimal recommended pilot for unit list rows (Team Builder uses before full /api/unit load)."""
+    rec_cid = normalize_id(info.get('recommend_character_id') or '0')
+    if rec_cid == '0':
+        rec_cid = normalize_id(MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    if rec_cid == '0' or rec_cid not in char_info_map:
+        return None
+    cinfo = char_info_map[rec_cid]
+    if entity_hidden_by_lr_schedule_lock(cinfo.get('schedule_id', '0')):
+        return None
+    clid = ld.get('char_id_map', {}).get(rec_cid, '')
+    cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
+    if not cname:
+        cname = f'Unknown ({rec_cid})'
+    cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
+    return {'id': rec_cid, 'name': cname, 'thum': cthum or ''}
+
+
 @app.route('/api/units')
 def list_units():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
@@ -8432,6 +8451,9 @@ def list_units():
         urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         if grid_skills_u:
             urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc, stat_mode)
+        _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
+        if _rec_brief:
+            urow['recommend_character'] = _rec_brief
         rows.append(urow)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)

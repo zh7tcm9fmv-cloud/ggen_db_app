@@ -1291,11 +1291,16 @@ html{overflow-x:hidden}
 .tb-picker-dialog{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;width:min(920px,calc(100vw - 32px));max-height:78vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
 .tb-picker-head{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--border-color);align-items:center}
 .tb-picker-head input{flex:1;min-width:0;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
-.tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:min(56vh,calc(78vh - 56px))}
+.tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:min(56vh,calc(78vh - 56px));background:var(--card-bg)}
 .tb-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.tb-picker-item{padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px;min-width:0;font-size:12px}
-.tb-picker-item>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tb-picker-item:hover{background:rgba(255,255,255,.06)}
+.tb-picker-item{padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;background:var(--card-bg)}
+.tb-picker-item-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.tb-picker-role-inline{flex-shrink:0;display:flex;align-items:center}
+.tb-picker-role-ic{width:22px;height:22px;object-fit:contain;display:block}
+.list-thumb-composite--picker .list-thumb-icons:empty{display:none}
+.tb-slot-rec-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:40px;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.45);z-index:8;cursor:pointer;background:rgba(15,23,42,.5)}
+.tb-slot-rec-pilot img{width:100%;height:100%;object-fit:cover;display:block}
+.tb-slot-rec-pilot:focus{outline:2px solid var(--accent-cyan);outline-offset:1px}
 .tb-batch-tabbar{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border-color)}
 .tb-batch-tabbar button{padding:6px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:12px}
 .tb-batch-tabbar button.is-active{border-color:var(--accent-cyan)}
@@ -1881,7 +1886,7 @@ function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return 
 const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 function scheduleBrowsePrimeChain(){function ric(cb){if(typeof requestIdleCallback!=='undefined')requestIdleCallback(cb,{timeout:4500});else setTimeout(cb,160)}ric(()=>{primeBrowseTabIfNeeded('units');ric(()=>{primeBrowseTabIfNeeded('supporters');ric(()=>{primeBrowseTabIfNeeded('stages');ric(()=>primeBrowseTabIfNeeded('modifications'))})})})}
-document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();const _qs=new URLSearchParams(location.search);if(_qs.get('tab')!=='calculator'&&_qs.get('tab')!=='team_builder'&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams()}});
+document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();const _qs=new URLSearchParams(location.search);if(_qs.get('tab')!=='calculator'&&_qs.get('tab')!=='team_builder'&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams()}});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -2011,7 +2016,8 @@ function clearUnitMechanismOnly(){S.listUnitMechanism=[];const body=document.get
 function getLineageQuerySuffix(which){const p=which==='char'?'char':(which==='supp'?'supp':'unit');const key=p==='char'?'listCharLineage':(p==='supp'?'listSuppLineage':'listUnitLineage');let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&lineage_id='+encodeURIComponent(sel.join(','))}
 function getSeriesQuerySuffix(which){const p=which==='char'?'char':'unit';let sel=S[p==='char'?'listCharSeries':'listUnitSeries'];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel)){if(String(sel).trim())sel=[String(sel)];else sel=[]}if(!sel.length)return '';return '&series_id='+encodeURIComponent(sel.join(','))}
 function getSkillOrAbilityQuerySuffix(which){const p=which==='char'?'char':'unit';const key=p==='char'?'listCharSkills':'listUnitAbilities';let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';const param=p==='char'?'skill_id':'ability_id';return '&'+param+'='+encodeURIComponent(sel.join(','))}
-function expandUnitSearchQuery(q){let s=String(q||'').trim();if(!s)return'';s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');return s.trim()}
+function expandUnitSearchQuery(q){let s=String(q||'').trim();if(!s)return'';s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');return s.trim()}
+function expandTbPickerSearchQuery(q,type){if(type==='unit')return expandUnitSearchQuery(q);if(type==='character'){let s=String(q||'').trim();s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');return s.trim()}return String(q||'').trim()}
 function buildBrowsePoolQuery(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');return `q=${encodeURIComponent(q)}${rq}${linQ}`}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const qRaw=(qEl&&qEl.value.trim())||'';const q=which==='unit'?expandUnitSearchQuery(qRaw):qRaw;const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const mechQ=which==='unit'?getUnitMechanismQuerySuffix():'';const linQ=getLineageQuerySuffix(which);const serQ=getSeriesQuerySuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const abQ=which==='char'?getAbilityQuerySuffix(which):'';return `q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${debQ}${mechQ}${linQ}${serQ}${skAb}${abQ}`}
 function buildBrowsePoolSig(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');return [q,rq,linQ].join('|')}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const mechQ=which==='unit'?getUnitMechanismQuerySuffix():'';const linQ=getLineageQuerySuffix(which);const serQ=getSeriesQuerySuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const abQ=which==='char'?getAbilityQuerySuffix(which):'';return [q,roleQ,rq,stQ,srcQ,terrQ,debQ,mechQ,linQ,serQ,skAb,abQ].join('|')}
 function buildSkillBrowseHtml(p){const pack=getBrowsePack(p)||{};const rows=groupBrowseRowsNoLevel(p==='char'?(pack.skills||[]):(pack.abilities||[]));const nameAttr=p==='char'?'charSkillSel':'unitSkillSel';let h='';rows.forEach((row,idx)=>{const ft=String(row.name||'').toLowerCase();if((p==='char'||p==='unit')&&row.icon){h+=`<label class="list-filter-tag-item skill-browse-row" data-skill-order="${idx}" data-filter-text="${escAttr(ft)}"><input type="checkbox" name="${nameAttr}" class="list-filter-sr skill-browse-item" value="${escAttr(String(row.id))}" onchange="onSkillBrowseItemChange('${p}')"><span class="tag-composite list-filter-tag-composite skill-browse-row-inner"><span class="tag-part-icon"><img class="skill-browse-ic" src="${imgUrl(row.icon)}" alt="" loading="lazy"></span><span class="tag-part-value">${esc(row.name)}</span></span></label>`}else{h+=`<label class="list-filter-tag-item skill-browse-row" data-skill-order="${idx}" data-filter-text="${escAttr(ft)}"><input type="checkbox" name="${nameAttr}" class="list-filter-sr skill-browse-item" value="${escAttr(String(row.id))}" onchange="onSkillBrowseItemChange('${p}')"><span class="tag-part-value">${esc(row.name)}</span></label>`}});return h}
@@ -2224,7 +2230,7 @@ function closeWhatsNew(){const ov=document.getElementById('whatsNewOverlay');if(
 function debounceLoad(tab){clearTimeout(S.ft);S.ft=setTimeout(()=>{if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)},300)}
 function isLikelyIdQuery(q){return/^\d{4,}$/.test(String(q||'').trim())}
 async function maybeUnlockNpcView(q,data){if(!isLikelyIdQuery(q))return false;const total=(data&&typeof data.total==='number')?data.total:0;if(total>0)return false;try{const st=await fetch('/api/npc_view/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return false;const pw=window.prompt(t('npc_unlock_prompt'));if(!pw)return false;const res=await fetch('/api/npc_view/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!res.ok){alert(t('npc_unlock_wrong'));return false}return true}catch(_){return false}}
-function renderListThumb(row,type,size){const r=row.rarity||'N';const ld=size?'eager':'lazy';const base=type==='supp'?(SUPPORTER_BASE_MAP[r]||SUPPORTER_BASE_MAP['N']):(RARITY_BASE_MAP[r]||RARITY_BASE_MAP['N']);const frame=type==='supp'?null:(RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP['N']);const ph=type==='char'?'👤':type==='unit'?'🤖':'🎧';const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";let portrait='';if(row.thum){portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">${ph}</div>`;let icons='';if(type!=='supp'){if(row.role_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.role_icon,{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}if(type==='unit'&&(row.is_ultimate===true||row.is_ultimate===1)){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_Icon_ULT.webp',{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'ULT',lazy:false})}</span>`}if(row.acquisition_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}}const hz=frame?' list-thumb-has-frame':'';const sz=size?` style="width:${size}px;height:${size}px"`:'';const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';return`<div class="list-thumb-composite${hz}"${sz}>${frame?`<div class="list-thumb-back">${baseEl}</div><div class="list-thumb-portrait-wrap">${portrait}</div>${frameEl}`:`${baseEl}<div class="list-thumb-portrait-wrap">${portrait}</div>`}<div class="list-thumb-icons">${icons}</div></div>`}
+function renderListThumb(row,type,size,opts){const o=opts||{};const r=row.rarity||'N';const ld=size?'eager':'lazy';const base=type==='supp'?(SUPPORTER_BASE_MAP[r]||SUPPORTER_BASE_MAP['N']):(RARITY_BASE_MAP[r]||RARITY_BASE_MAP['N']);const frame=type==='supp'?null:(RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP['N']);const ph=type==='char'?'👤':type==='unit'?'🤖':'🎧';const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";let portrait='';if(row.thum){portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">${ph}</div>`;let icons='';if(!o.pickerThumb&&type!=='supp'){if(row.role_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.role_icon,{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}if(type==='unit'&&(row.is_ultimate===true||row.is_ultimate===1)){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_Icon_ULT.webp',{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'ULT',lazy:false})}</span>`}if(row.acquisition_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}}const hz=frame?' list-thumb-has-frame':'';const pk=o.pickerThumb?' list-thumb-composite--picker':'';const sz=size?` style="width:${size}px;height:${size}px"`:'';const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';return`<div class="list-thumb-composite${pk}${hz}"${sz}>${frame?`<div class="list-thumb-back">${baseEl}</div><div class="list-thumb-portrait-wrap">${portrait}</div>${frameEl}`:`${baseEl}<div class="list-thumb-portrait-wrap">${portrait}</div>`}${iconsWrap}</div>`}
 function buildTableHeaders(){const cs=S.characters,us=S.units,ss=S.supporters;const _csl=k=>`<span class="th-full">${t('col_'+k.toLowerCase())}</span><span class="th-mob">${charGridStatLabel(k)}</span>`;document.getElementById('charThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${cs.sort==='name'?'sort-active':''}" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${cs.sort==='Ranged'?'sort-active':''}" title="${esc(t('col_ranged'))}" onclick="sortCol('characters','Ranged')">${_csl('Ranged')} <span class="sort-arrow">${cs.sort==='Ranged'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Melee'?'sort-active':''}" title="${esc(t('col_melee'))}" onclick="sortCol('characters','Melee')">${_csl('Melee')} <span class="sort-arrow">${cs.sort==='Melee'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Awaken'?'sort-active':''}" title="${esc(t('col_awaken'))}" onclick="sortCol('characters','Awaken')">${_csl('Awaken')} <span class="sort-arrow">${cs.sort==='Awaken'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Defense'?'sort-active':''}" title="${esc(t('col_defense'))}" onclick="sortCol('characters','Defense')">${_csl('Defense')} <span class="sort-arrow">${cs.sort==='Defense'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Reaction'?'sort-active':''}" title="${esc(t('col_reaction'))}" onclick="sortCol('characters','Reaction')">${_csl('Reaction')} <span class="sort-arrow">${cs.sort==='Reaction'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('unitThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${us.sort==='name'?'sort-active':''}" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${us.sort==='HP'?'sort-active':''}" onclick="sortCol('units','HP')">${t('col_hp')} <span class="sort-arrow">${us.sort==='HP'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='EN'?'sort-active':''}" onclick="sortCol('units','EN')">${t('col_en')} <span class="sort-arrow">${us.sort==='EN'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='ATK'?'sort-active':''}" onclick="sortCol('units','ATK')">${t('col_atk')} <span class="sort-arrow">${us.sort==='ATK'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='DEF'?'sort-active':''}" onclick="sortCol('units','DEF')">${t('col_def')} <span class="sort-arrow">${us.sort==='DEF'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOB'?'sort-active':''}" onclick="sortCol('units','MOB')">${t('col_mob')} <span class="sort-arrow">${us.sort==='MOB'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOV'?'sort-active':''}" onclick="sortCol('units','MOV')">${t('col_mov')} <span class="sort-arrow">${us.sort==='MOV'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('suppThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${ss.sort==='name'?'sort-active':''}" onclick="sortCol('supporters','name')">${t('col_name')} <span class="sort-arrow">${ss.sort==='name'?(ss.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ss.sort==='series_tag'?'sort-active':''}" onclick="sortCol('supporters','series_tag')">${t('col_series_tag')} <span class="sort-arrow">${ss.sort==='series_tag'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-boost ${ss.sort==='boost'?'sort-active':''}" onclick="sortCol('supporters','boost')">${t('col_boost')} <span class="sort-arrow">${ss.sort==='boost'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-skill" style="cursor:default">${t('sec_active_skills')}</th></tr>`;const st=S.stages;const ms=S.modifications;document.getElementById('modThead').innerHTML=`<tr><th class="col-thum" style="cursor:default;width:48px"></th><th class="col-name ${ms.sort==='name'?'sort-active':''}" onclick="sortColMod('name')">${t('col_name')} <span class="sort-arrow">${ms.sort==='name'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ms.sort==='tags'?'sort-active':''}" onclick="sortColMod('tags')">${t('col_series_tag')} <span class="sort-arrow">${ms.sort==='tags'?(ms.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-details ${ms.sort==='details'?'sort-active':''}" onclick="sortColMod('details')">${t('col_details')} <span class="sort-arrow">${ms.sort==='details'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th></tr>`;document.getElementById('stageThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-diff" style="cursor:default">${t('col_stage_diff')}</th><th class="col-number ${st.sort==='stage_number'?'sort-active':''}" onclick="sortColStage('stage_number')">${t('col_stage_no')} <span class="sort-arrow">${st.sort==='stage_number'?(st.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-name" style="cursor:default">${t('col_name')}</th><th class="col-cp" style="cursor:default">${t('col_stage_cp')}</th><th class="col-terrain" style="cursor:default">${t('col_stage_terrain')}</th></tr>`}
 const DEFAULT_BROWSE_LIST_PER_PAGE=50;
 function getBrowseListPerPage(which){const id=which==='char'?'charPerPage':'unitPerPage';const el=document.getElementById(id);if(!el)return DEFAULT_BROWSE_LIST_PER_PAGE;const v=parseInt(String(el.value||'').trim(),10);return Number.isFinite(v)&&v>0?v:DEFAULT_BROWSE_LIST_PER_PAGE}
@@ -4539,6 +4545,17 @@ S.tb.selectedKey=key;
 renderTbSlots();renderTbStats();
 openTbPicker('char',key);
 }
+async function tbPilotPickRecommended(key,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+if(S.tb.rearrange)return;
+S.tb.selectedKey=key;
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+const rc=sl.unitData&&sl.unitData.recommend_character;
+if(!rc||!rc.id)return;
+try{const d=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(rc.id);sl.charData=d}}catch(_){}
+renderTeamBuilder();
+}
 function tbSlotContextMenu(key,ev){
 if(ev)ev.preventDefault();
 initTeamBuilder();
@@ -4563,7 +4580,22 @@ if(lb&&lb.length>1&&!ud.is_ultimate){const tier=Math.min(sl.lbTier|0,lb.length-1
 const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[String(ud.id)+':'+String(sl.charData&&sl.charData.id||'')])?`<img class="tb-long-leader-ic" src="${imgUrl(TB_LEADER_ICON)}" alt="" loading="lazy">`:'';
 const opN=(sl.optionParts||[]).length;
 const opMini=opN?`<div class="tb-slot-op-mini">${esc(t('tb_op_count').replace('{n}',String(opN)))}</div>`:'';
-return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${!sl.charData?`<div class="tb-slot-add-pilot" role="button" tabindex="0" onclick="tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}"><span style="font-size:14px;color:#93c5fd">+</span></div>`:''}`;
+let pilotCorner='';
+if(!sl.charData){
+const rc=ud.recommend_character;
+const rTh=rc&&(rc.thum||rc.portrait);
+const recTitle=escAttr([t('rec_char_shortcut'),rc&&rc.name?String(rc.name):''].filter(Boolean).join(' — '));
+if(rc&&rc.id){
+if(rTh){
+pilotCorner=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
+}else{
+pilotCorner=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
+}
+}else{
+pilotCorner=`<div class="tb-slot-add-pilot" role="button" tabindex="0" onclick="tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}"><span style="font-size:14px;color:#93c5fd">+</span></div>`;
+}
+}
+return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${pilotCorner}`;
 }
 function renderTbSlots(){
 initTeamBuilder();
@@ -4715,15 +4747,54 @@ setTimeout(()=>inp.focus(),50);
 await _tbDoPickerSearch();
 }
 function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},120)}
+function wireTbPickerBodyClicks(){
+const body=document.getElementById('tbPickerBody');
+if(!body||body.dataset.tbPickWired)return;
+body.dataset.tbPickWired='1';
+body.addEventListener('click',function(ev){
+const item=ev.target.closest('.tb-picker-item');
+if(!item)return;
+const id=item.getAttribute('data-tb-pick-id');
+if(id==null||id==='')return;
+pickTbItem(id);
+});
+body.addEventListener('keydown',function(ev){
+if(ev.key!=='Enter'&&ev.key!==' ')return;
+const item=ev.target.closest('.tb-picker-item');
+if(!item||document.activeElement!==item)return;
+ev.preventDefault();
+const id=item.getAttribute('data-tb-pick-id');
+if(id!=null&&id!=='')pickTbItem(id);
+});
+}
+function tbRenderPickerItemCell(r,t,th){
+const id=escAttr(String(r.id));
+const thumb=renderListThumb(r,t,th,{pickerThumb:true});
+let role='';
+if((t==='unit'||t==='character')&&r.role_icon){
+role=`<span class="tb-picker-role-inline" aria-hidden="true">${pictureRasterHtml(r.role_icon,{cls:'tb-picker-role-ic',loading:'eager',decoding:'async',alt:'',lazy:false})}</span>`;
+}
+return`<div class="tb-picker-item" role="button" tabindex="0" data-tb-pick-id="${id}">${thumb}${role}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
+}
 function filterTbPickerList(){
 const body=document.getElementById('tbPickerBody');if(!body)return;
+const pType=S.tb.picker.type;
 const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLowerCase();
 let rows=S.tb.picker.rows||[];
-if(q)rows=rows.filter(r=>String(r.name||'').toLowerCase().includes(q)||String(r.details||r.boost||'').toLowerCase().includes(q));
+if(q&&pType!=='unit'&&pType!=='character'){
+rows=rows.filter(r=>String(r.name||'').toLowerCase().includes(q)||String(r.details||r.boost||'').toLowerCase().includes(q));
+}
 if(!rows.length){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;return}
-const t=S.tb.picker.type,th=32;
-const cells=rows.map(r=>`<div class="tb-picker-item" onclick="pickTbItem(${JSON.stringify(String(r.id))})">${t==='supporter'?renderListThumb(r,'supp',th):renderListThumb(r,t==='character'?'char':'unit',th)}<span>${esc(r.name||'')}</span></div>`).join('');
-body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
+const th=Math.round(32*1.3);
+let cells;
+if(pType==='option'){
+cells=rows.map(r=>`<div class="tb-picker-item" role="button" tabindex="0" data-tb-pick-id="${escAttr(String(r.id))}"><span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`);
+}else if(pType==='supporter'){
+cells=rows.map(r=>tbRenderPickerItemCell(r,'supp',th));
+}else{
+cells=rows.map(r=>tbRenderPickerItemCell(r,pType==='character'?'char':'unit',th));
+}
+body.innerHTML=`<div class="tb-picker-grid">${cells.join('')}</div>`;
 }
 async function _tbDoPickerSearch(){
 const type=S.tb.picker.type,q=document.getElementById('tbPickerSearch').value.trim(),body=document.getElementById('tbPickerBody');
@@ -4731,7 +4802,7 @@ if(!body)return;
 if(_tbPickerAbort){try{_tbPickerAbort.abort()}catch(_){}}
 const ac=new AbortController();_tbPickerAbort=ac;const myGen=++_tbPickerGen;
 const base=type==='character'?'/api/characters':'/api/units';
-const qU=type==='unit'?expandUnitSearchQuery(q):q;
+const qU=expandTbPickerSearchQuery(q,type);
 const terr=type==='unit'?_tbTerrainQuery():'';
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
@@ -4744,24 +4815,27 @@ filterTbPickerList();
 }catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 }
 async function pickTbItem(id){
+const sid=String(id==null?'':id).trim();
 const type=S.tb.picker.type,slotKey=S.tb.picker.slotKey;
 closeTbPicker();
 initTeamBuilder();
 if(type==='supporter'){
-try{const d=await fetch(`/api/supporter/${encodeURIComponent(id)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!d.error){S.tb.supporterId=String(id);S.tb.supporterData=d;S.tb._leaderApplyCache={}}}catch(_){}
+if(!sid)return;
+try{const d=await fetch(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!d.error){S.tb.supporterId=sid;S.tb.supporterData=d;S.tb._leaderApplyCache={}}}catch(_){}
 renderTeamBuilder();return;
 }
 if(slotKey==null)return;
+if(!sid)return;
 const squ=_tbSquFromKey(slotKey);const sl=squ.slots[_tbIdxFromKey(slotKey)];
 if(type==='unit'){
-try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(id);sl.unitData=d;sl.optionParts=[]}}catch(_){}
+try{const d=await fetch(`/api/unit/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=sid;sl.unitData=d;sl.optionParts=[]}}catch(_){}
 }else if(type==='character'){
-try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(id);sl.charData=d}}catch(_){}
+try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=sid;sl.charData=d}}catch(_){}
 }else if(type==='option'){
 try{
 const uq=sl.unitId?'&unit_id='+encodeURIComponent(sl.unitId):'';
-const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(id)}&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
-const hit=(d.rows||[]).find(x=>String(x.id)===String(id));
+const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(sid)}&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
+const hit=(d.rows||[]).find(x=>String(x.id)===String(sid));
 if(hit){if(!sl.optionParts)sl.optionParts=[];if(sl.optionParts.length>=5)return;sl.optionParts.push(hit)}
 }catch(_){}
 }
