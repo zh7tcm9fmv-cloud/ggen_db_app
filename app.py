@@ -525,9 +525,9 @@ ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 def parse_list_rarity_filter(val):
     """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
     tuple (letters, need_limited, need_ultimate, exclude_limited) = star tiers + LT / ULT / NLT.
-    Unit lists (is_unit=True in row_matches_rarity_filter): star tiers OR together; ULT widens selected tiers to
-    include ultimates; UR/SSR alone exclude ultimates and limited unless LT and/or ULT are checked;
-    ULT alone = SSR+UR ultimates; LT+ULT with no stars = all limited OR SSR/UR ultimates."""
+    Unit lists (is_unit=True in row_matches_rarity_filter): star tiers OR together; ULT adds ultimates to tiers;
+    star tier alone = that tier excluding limited and ultimate; star + LT = that tier excluding ultimate only
+    (plain + limited); star + ULT = full tier; LT+ULT with no stars = all limited OR SSR/UR ultimates."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -556,9 +556,9 @@ def parse_list_rarity_filter(val):
 
 
 def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate):
-    """Unit list: selected star rows are OR'd. ULT checkbox adds ultimates into selected tiers (not a global AND).
-    UR/SSR without ULT/LT = that tier excluding is_ultimate and is_limited; with ULT = full tier; with LT = limited rows.
-    LT+ULT with no star checkboxes = all limited units OR all SSR/UR ultimates (not both required on one row)."""
+    """Unit list: selected star rows are OR'd. Per tier L: no LT/no ULT = L only if not limited and not ultimate;
+    +LT = any L row that is not ultimate (plain + limited); +ULT (with or without LT) = any L row (full tier).
+    LT+ULT with no star checkboxes = all limited OR SSR/UR ultimates."""
     if exclude_limited and is_limited:
         return False
     letters = set(letters_f)
@@ -582,16 +582,12 @@ def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited
         return False
 
     for L in letters:
-        if need_lt:
-            if need_ult:
-                ok = (letter == L and is_limited) or (letter == L and is_ultimate)
-            else:
-                ok = letter == L and is_limited and not is_ultimate
+        if need_ult:
+            ok = letter == L
+        elif need_lt:
+            ok = letter == L and not is_ultimate
         else:
-            if need_ult:
-                ok = letter == L
-            else:
-                ok = letter == L and not is_ultimate and not is_limited
+            ok = letter == L and not is_ultimate and not is_limited
         if ok:
             return True
     return False
