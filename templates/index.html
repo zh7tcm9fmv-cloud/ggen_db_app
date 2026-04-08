@@ -5433,7 +5433,12 @@ else onDcParamChange();
 }
 
 let _dcPickerDebounce=null;
+let _dcPickerSearchAbort=null;
+let _dcPickerSearchGen=0;
 async function openDcPicker(type){
+clearTimeout(_dcPickerDebounce);_dcPickerDebounce=null;
+if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
+_dcPickerSearchGen++;
 S._dcPickerType=type;S._dcPickerCache=[];S._dcPickerFullCache=null;
 const overlay=document.getElementById('dcPickerOverlay');
 overlay.classList.add('active');
@@ -5461,14 +5466,18 @@ inp.placeholder=(type==='character'||type==='def_character')?'Type to search cha
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
 setTimeout(()=>inp.focus(),50);
 }
-function closeDcPicker(){document.getElementById('dcPickerOverlay').classList.remove('active')}
+function closeDcPicker(){
+clearTimeout(_dcPickerDebounce);_dcPickerDebounce=null;
+if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
+document.getElementById('dcPickerOverlay').classList.remove('active')}
 function filterDcPicker(){
 clearTimeout(_dcPickerDebounce);
 _dcPickerDebounce=setTimeout(()=>{
+_dcPickerDebounce=null;
 const t=S._dcPickerType;
 if(t==='option_parts'||t==='supporter')_dcFilterDcPickerClientSide();
 else _dcDoPickerSearch();
-},200);
+},100);
 }
 function _dcFilterDcPickerClientSide(){
 const q=String(document.getElementById('dcPickerSearch').value||'').trim().toLowerCase();
@@ -5485,15 +5494,27 @@ const q=document.getElementById('dcPickerSearch').value.trim();
 const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
 if(type==='option_parts'||type==='supporter'){_dcFilterDcPickerClientSide();return}
-if(q.length<2){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';return}
+if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
+if(q.length<2){
+_dcPickerSearchGen++;
+body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
+return
+}
+const ac=new AbortController();
+_dcPickerSearchAbort=ac;
+const myGen=++_dcPickerSearchGen;
 const base=(type==='character'||type==='def_character')?'/api/characters':'/api/units';
 body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
-const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`);
+const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`,{signal:ac.signal});
 const d=await r.json();
+if(myGen!==_dcPickerSearchGen)return;
 S._dcPickerCache=d.rows||[];
 renderDcPickerList();
-}catch(e){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>'}
+}catch(e){
+if(e&&e.name==='AbortError')return;
+if(myGen!==_dcPickerSearchGen)return;
+body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>'}
 }
 function renderDcPickerList(){
 const items=S._dcPickerCache;
