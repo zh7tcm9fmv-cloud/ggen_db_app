@@ -524,7 +524,9 @@ ROLE_FILTER_IDS = frozenset({'1', '2', '3'})
 
 def parse_list_rarity_filter(val):
     """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
-    tuple (letters, need_limited, need_ultimate, exclude_limited) = star tiers + LT / ULT / NLT (exclude limited-time)."""
+    tuple (letters, need_limited, need_ultimate, exclude_limited) = star tiers + LT / ULT / NLT.
+    Unit lists (is_unit=True in row_matches_rarity_filter): star tiers OR together; ULT widens selected tiers to
+    include ultimates; UR/SSR alone exclude ultimates unless ULT is also checked; ULT alone = SSR+UR ultimates."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -552,8 +554,47 @@ def parse_list_rarity_filter(val):
     return (frozenset(letters), has_lt, has_ult, exclude_limited)
 
 
-def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
-    """Apply parse_list_rarity_filter result. ULT without star letters = SSR+UR only (units pass is_ultimate)."""
+def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate):
+    """Unit list: selected star rows are OR'd. ULT checkbox adds ultimates into selected tiers (not a global AND).
+    UR/SSR without ULT = that tier excluding is_ultimate; with ULT = full tier. ULT alone (no stars) = SSR+UR ultimates."""
+    if exclude_limited and is_limited:
+        return False
+    letters = set(letters_f)
+
+    if need_lt and not letters and not need_ult:
+        return is_limited
+
+    if need_lt and not letters and need_ult:
+        return is_limited and is_ultimate and letter in ULT_FILTER_DEFAULT_STAR_LETTERS
+
+    if need_ult and not letters:
+        if not is_ultimate or letter not in ULT_FILTER_DEFAULT_STAR_LETTERS:
+            return False
+        if need_lt and not is_limited:
+            return False
+        return True
+
+    if not letters:
+        return False
+
+    for L in letters:
+        if need_lt:
+            if need_ult:
+                ok = (letter == L and is_limited) or (letter == L and is_ultimate)
+            else:
+                ok = letter == L and is_limited and not is_ultimate
+        else:
+            if need_ult:
+                ok = letter == L
+            else:
+                ok = letter == L and not is_ultimate
+        if ok:
+            return True
+    return False
+
+
+def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False, *, is_unit=False):
+    """Apply parse_list_rarity_filter result. Pass is_unit=True for MS list so ULT vs star tiers use OR semantics."""
     if rf is None:
         return True
     if rf == set():
@@ -561,14 +602,16 @@ def row_matches_rarity_filter(rf, letter, is_limited, is_ultimate=False):
     if isinstance(rf, tuple):
         letters, need_lt, need_ult = rf[0], rf[1], rf[2]
         exclude_limited = rf[3] if len(rf) > 3 else False
+        if is_unit:
+            return _unit_row_matches_rarity_tuple(
+                letters, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate,
+            )
         if exclude_limited and is_limited:
             return False
         if need_lt and not is_limited:
             return False
-        if need_ult and not is_ultimate:
+        if need_ult:
             return False
-        if need_ult and is_ultimate and not letters:
-            return letter in ULT_FILTER_DEFAULT_STAR_LETTERS
         if letters:
             return letter in letters
         return True
@@ -7407,7 +7450,9 @@ def unit_passes_browse_pool_filters(
         if not id_seek:
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = uid in LIMITED_TIME_UNIT_IDS
-            if not row_matches_rarity_filter(rarity_filter, letter, lim, bool(info.get('is_ultimate', False))):
+            if not row_matches_rarity_filter(
+                rarity_filter, letter, lim, bool(info.get('is_ultimate', False)), is_unit=True,
+            ):
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
@@ -8275,7 +8320,9 @@ def list_units():
             if not id_seek:
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = uid in LIMITED_TIME_UNIT_IDS
-                if not row_matches_rarity_filter(rarity_filter, letter, lim, bool(info.get('is_ultimate', False))):
+                if not row_matches_rarity_filter(
+                    rarity_filter, letter, lim, bool(info.get('is_ultimate', False)), is_unit=True,
+                ):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
