@@ -526,7 +526,8 @@ def parse_list_rarity_filter(val):
     """Multi-select rarity for list APIs. None = all; set() = none; frozenset = legacy letter-only;
     tuple (letters, need_limited, need_ultimate, exclude_limited) = star tiers + LT / ULT / NLT.
     Unit lists (is_unit=True in row_matches_rarity_filter): star tiers OR together; ULT widens selected tiers to
-    include ultimates; UR/SSR alone exclude ultimates unless ULT is also checked; ULT alone = SSR+UR ultimates."""
+    include ultimates; UR/SSR alone exclude ultimates and limited unless LT and/or ULT are checked;
+    ULT alone = SSR+UR ultimates; LT+ULT with no stars = all limited OR SSR/UR ultimates."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -556,7 +557,8 @@ def parse_list_rarity_filter(val):
 
 def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited, letter, is_limited, is_ultimate):
     """Unit list: selected star rows are OR'd. ULT checkbox adds ultimates into selected tiers (not a global AND).
-    UR/SSR without ULT = that tier excluding is_ultimate; with ULT = full tier. ULT alone (no stars) = SSR+UR ultimates."""
+    UR/SSR without ULT/LT = that tier excluding is_ultimate and is_limited; with ULT = full tier; with LT = limited rows.
+    LT+ULT with no star checkboxes = all limited units OR all SSR/UR ultimates (not both required on one row)."""
     if exclude_limited and is_limited:
         return False
     letters = set(letters_f)
@@ -565,7 +567,9 @@ def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited
         return is_limited
 
     if need_lt and not letters and need_ult:
-        return is_limited and is_ultimate and letter in ULT_FILTER_DEFAULT_STAR_LETTERS
+        if is_limited:
+            return True
+        return bool(is_ultimate and letter in ULT_FILTER_DEFAULT_STAR_LETTERS)
 
     if need_ult and not letters:
         if not is_ultimate or letter not in ULT_FILTER_DEFAULT_STAR_LETTERS:
@@ -587,7 +591,7 @@ def _unit_row_matches_rarity_tuple(letters_f, need_lt, need_ult, exclude_limited
             if need_ult:
                 ok = letter == L
             else:
-                ok = letter == L and not is_ultimate
+                ok = letter == L and not is_ultimate and not is_limited
         if ok:
             return True
     return False
