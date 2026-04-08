@@ -1215,8 +1215,7 @@ html{overflow-x:hidden}
 .tb-main{display:block;max-width:100%}
 .tb-dual-squads{display:flex;flex-direction:column;gap:16px}
 .tb-squad-panel{display:block}
-.tb-grid-map-row{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:start}
-@media(max-width:700px){.tb-grid-map-row{grid-template-columns:1fr}}
+.tb-grid-map-row{display:block}
 .tb-slots-wrap{background:rgba(15,23,42,.5);border:1px solid var(--border-color);border-radius:10px;padding:12px}
 .tb-slots-label{font-size:11px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
 .tb-slot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
@@ -1224,22 +1223,31 @@ html{overflow-x:hidden}
 .tb-slot.is-sel{border-color:var(--accent-cyan)}
 .tb-slot.is-rearrange-pending{outline:2px solid #eab308;outline-offset:2px}
 .tb-long-card{position:absolute;inset:0;display:flex;flex-direction:column}
-.tb-long-base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-.tb-long-frames-left{position:absolute;left:0;top:0;bottom:0;width:28%;display:flex;flex-direction:column;pointer-events:none;z-index:2}
-.tb-long-frames-left img{width:100%;flex:1;object-fit:fill;display:block}
-.tb-long-portrait-wrap{position:absolute;left:22%;right:8%;top:8%;bottom:22%;z-index:1;display:flex;align-items:center;justify-content:center}
+.tb-long-base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+.tb-long-portrait-wrap{position:absolute;left:10%;right:10%;top:10%;bottom:26%;z-index:1;display:flex;align-items:center;justify-content:center}
 .tb-long-portrait{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;pointer-events:none}
+.tb-long-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;z-index:2;pointer-events:none}
 .tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:4;border-radius:50%;overflow:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
-.tb-long-pilot{position:absolute;right:4px;bottom:18%;width:32%;max-width:48px;aspect-ratio:1;z-index:5;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35)}
+.tb-long-pilot{position:absolute;right:4px;width:54%;max-width:81px;aspect-ratio:1;z-index:5;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35)}
+.tb-long-pilot.tb-long-pilot--with-lb{bottom:30%}
+.tb-long-pilot.tb-long-pilot--no-lb{bottom:18%}
 .tb-long-pilot img{width:100%;height:100%;object-fit:cover}
-.tb-long-lb{position:absolute;left:4px;bottom:4px;right:4px;z-index:6;display:flex;align-items:center;gap:2px;font-size:9px;color:#e2e8f0;text-shadow:0 1px 2px #000}
+.tb-long-lb{position:absolute;left:4px;bottom:4px;right:4px;z-index:6;display:flex;align-items:center;justify-content:center;gap:2px;font-size:9px;color:#e2e8f0;text-shadow:0 1px 2px #000}
+.tb-long-lb--interactive{cursor:pointer;padding:3px 4px;border-radius:6px;background:rgba(0,0,0,.5);user-select:none}
+.tb-long-lb--interactive:hover{background:rgba(0,0,0,.65)}
+.tb-long-pilot-actions{position:absolute;right:2px;display:flex;flex-direction:row;align-items:flex-end;gap:3px;z-index:9}
+.tb-long-pilot-actions.tb-long-pilot-actions--with-lb{bottom:26px}
+.tb-long-pilot-actions.tb-long-pilot-actions--no-lb{bottom:2px}
+.tb-slot-rec-pilot{position:relative;right:auto;bottom:auto;width:28%;max-width:36px;min-width:26px;aspect-ratio:1}
+.tb-slot-add-pilot--mini{width:22%;max-width:30px;min-width:22px;aspect-ratio:1;font-size:12px}
 .tb-long-lv{position:absolute;left:4px;bottom:20px;z-index:6;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px #000}
 .tb-long-leader-ic{position:absolute;right:4px;top:4px;width:22px;height:22px;z-index:7;object-fit:contain;filter:contrast(1.2) brightness(1.08);animation:tb-leader-pulse 1.8s ease-in-out infinite}
 @keyframes tb-leader-pulse{0%,100%{opacity:.88}50%{opacity:1}}
 .tb-slot-add-ms{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(15,23,42,.72)}
 .tb-slot-add-ms img{width:40%;max-width:44px;opacity:.85}
-.tb-slot-add-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:36px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;z-index:8}
+.tb-slot-add-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:36px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;z-index:8;border-radius:6px;border:1px solid rgba(255,255,255,.45);background:rgba(15,23,42,.5);cursor:pointer}
+.tb-long-pilot-actions .tb-slot-add-pilot{position:relative;right:auto;bottom:auto;flex-shrink:0}
 .tb-slot-add-pilot img{width:70%;opacity:.85}
 .tb-deploy-map{display:grid;grid-template-rows:auto auto;gap:8px;padding:8px;background:rgba(15,23,42,.6);border:1px solid var(--border-color);border-radius:10px;font-size:11px;font-weight:700;color:var(--text-muted)}
 .tb-deploy-squad-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin:2px 0 0}
@@ -1263,8 +1271,10 @@ html{overflow-x:hidden}
 .tb-batch-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
 .tb-batch-row:hover{background:rgba(255,255,255,.04)}
 .tb-batch-row input{flex-shrink:0}
-.tb-supp-row{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:12px;margin-top:14px;align-items:start}
+.tb-supp-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}
 @media(max-width:700px){.tb-supp-row{grid-template-columns:1fr}}
+.tb-supp-col{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tb-supp-col-lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
 .tb-supp-card{position:relative;min-height:100px;border-radius:10px;overflow:hidden;background:rgba(15,23,42,.6);border:1px solid var(--border-color);cursor:pointer}
 .tb-supp-frames{display:flex;align-items:flex-start;justify-content:center;gap:0;padding:8px 8px 0;position:relative;min-height:88px}
 .tb-supp-side{width:22%;max-width:56px;object-fit:contain}
@@ -1273,7 +1283,32 @@ html{overflow-x:hidden}
 .tb-supp-portrait img{width:100%;height:100%;object-fit:cover}
 .tb-supp-bottom{position:absolute;left:15%;right:15%;bottom:4px;height:18%;object-fit:fill;width:70%;pointer-events:none}
 .tb-supp-placeholder{display:flex;align-items:center;justify-content:center;min-height:100px;font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
-.tb-supp-detail{font-size:12px;line-height:1.5;color:var(--text-secondary)}
+.tb-supp-detail{font-size:11px;line-height:1.45;color:var(--text-secondary);margin-top:4px;min-height:0}
+.tb-supp-detail strong{display:block;margin-bottom:6px;font-size:14px;color:var(--text)}
+.tb-supp-meta-line{font-size:12px;color:var(--text-secondary);margin-bottom:6px}
+.tb-supp-lb-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tb-supp-inline-lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em}
+.tb-supp-lb-pips{display:inline-flex;align-items:center}
+.tb-supp-boost{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tb-supp-sec{margin-top:10px;padding-top:8px;border-top:1px solid rgba(148,163,184,.2)}
+.tb-supp-sec-title{font-size:11px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;letter-spacing:.04em}
+.tb-supp-leader-item{margin-bottom:10px;font-size:12px;line-height:1.45}
+.tb-supp-leader-desc{color:var(--text-secondary)}
+.tb-supp-na{color:var(--text-muted);font-size:11px;margin-left:4px}
+.tb-supp-act-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px}
+.tb-supp-act-ic{width:28px;height:28px;object-fit:contain;flex-shrink:0}
+.tb-supp-act-name{font-weight:600}
+.tb-supp-act-desc{color:var(--text-muted);font-size:11px;margin-top:2px;white-space:pre-wrap}
+.tb-op-box{margin-top:14px;padding-top:12px;border-top:1px solid var(--border-color)}
+.tb-op-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.tb-op-title{font-size:12px;font-weight:700;color:var(--accent-cyan)}
+.tb-op-add{min-width:36px;height:32px;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:18px;line-height:1}
+.tb-op-add:disabled{opacity:.45;cursor:not-allowed}
+.tb-op-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,.2);margin-bottom:6px;font-size:12px}
+.tb-op-name{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tb-op-rm{border:none;background:rgba(239,68,68,.25);color:#fecaca;border-radius:6px;width:28px;height:28px;cursor:pointer;line-height:1;font-size:14px}
+.tb-op-empty{font-size:12px;color:var(--text-muted)}
+.tb-slot-rec-pilot{border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.45);cursor:pointer;background:rgba(15,23,42,.5)}
 .tb-stats-panel{margin-top:12px;padding:12px;background:rgba(15,23,42,.45);border:1px solid var(--border-color);border-radius:10px;font-size:12px}
 .tb-stats-hint{font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.4}
 .tb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
@@ -1289,8 +1324,9 @@ html{overflow-x:hidden}
 .tb-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:540;display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto}
 .tb-picker-overlay.active{display:flex}
 .tb-picker-dialog{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;width:min(920px,calc(100vw - 32px));max-height:78vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
-.tb-picker-head{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--border-color);align-items:center}
+.tb-picker-head{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--border-color);align-items:center;background:var(--card-bg)}
 .tb-picker-head input{flex:1;min-width:0;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
+.tb-picker-head button{background:var(--card-bg);color:var(--text);border:1px solid var(--border-color);border-radius:6px}
 .tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:min(56vh,calc(78vh - 56px));background:var(--card-bg)}
 .tb-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .tb-picker-item{padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;background:var(--card-bg)}
@@ -1298,7 +1334,6 @@ html{overflow-x:hidden}
 .tb-picker-role-inline{flex-shrink:0;display:flex;align-items:center}
 .tb-picker-role-ic{width:22px;height:22px;object-fit:contain;display:block}
 .list-thumb-composite--picker .list-thumb-icons:empty{display:none}
-.tb-slot-rec-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:40px;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.45);z-index:8;cursor:pointer;background:rgba(15,23,42,.5)}
 .tb-slot-rec-pilot img{width:100%;height:100%;object-fit:cover;display:block}
 .tb-slot-rec-pilot:focus{outline:2px solid var(--accent-cyan);outline-offset:1px}
 .tb-batch-tabbar{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border-color)}
@@ -1534,11 +1569,18 @@ html{overflow-x:hidden}
 </div>
 </div>
 </div>
-<div class="tb-deploy-map" id="tbDeployMap" aria-hidden="true"></div>
 </div>
 <div class="tb-supp-row">
-<div class="tb-supp-card" id="tbSuppCard" onclick="openTbSupporterPicker()"></div>
-<div class="tb-supp-detail" id="tbSuppDetail"></div>
+<div class="tb-supp-col">
+<div class="tb-supp-col-lbl" id="tbSuppLbl1"></div>
+<div class="tb-supp-card" id="tbSuppCard1" onclick="openTbSupporterPicker(1)"></div>
+<div class="tb-supp-detail" id="tbSuppDetail1"></div>
+</div>
+<div class="tb-supp-col">
+<div class="tb-supp-col-lbl" id="tbSuppLbl2"></div>
+<div class="tb-supp-card" id="tbSuppCard2" onclick="openTbSupporterPicker(2)"></div>
+<div class="tb-supp-detail" id="tbSuppDetail2"></div>
+</div>
 </div>
 <div class="tb-stats-panel" id="tbStatsPanel"></div>
 <div class="tb-toolbar">
@@ -4442,8 +4484,16 @@ function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:nu
 function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
 function initTeamBuilder(){
 if(!S.tb){
-S.tb={squads:{1:{slots:Array.from({length:5},()=>_tbEmptySlot())},2:{slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Ground',supporterId:null,supporterData:null,selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[]},masterLeague:false,_leaderApplyCache:{}};
+S.tb={squads:{1:{slots:Array.from({length:5},()=>_tbEmptySlot())},2:{slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Ground',supBySide:{1:{id:null,data:null,lbTier:3},2:{id:null,data:null,lbTier:3}},selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[]},masterLeague:false,_leaderApplyCache:{}};
 return;
+}
+if(!S.tb.supBySide){
+const legId=S.tb.supporterId!=null?S.tb.supporterId:null;
+const legData=S.tb.supporterData||null;
+S.tb.supBySide={1:{id:legId,data:legData,lbTier:3},2:{id:null,data:null,lbTier:3}};
+delete S.tb.supporterId;delete S.tb.supporterData;
+}else{
+for(const ss of[1,2]){const e=S.tb.supBySide[ss];if(e&&e.lbTier==null)e.lbTier=3}
 }
 for(const side of[1,2]){
 const w=S.tb.squads&&S.tb.squads[side];
@@ -4458,14 +4508,19 @@ delete S.tb.activeSquad;
 function _tbReadFormations(){try{const s=localStorage.getItem(TB_FORMS_KEY);const a=JSON.parse(s);if(!Array.isArray(a)||a.length<5)throw 0;return a.map((x,i)=>({name:String((x&&x.name)||'').trim()||('Formation '+(i+1)),data:x&&x.data||null}))}catch(_){return Array.from({length:5},(_,i)=>({name:'Formation '+(i+1),data:null}))}}
 function _tbWriteFormations(arr){try{localStorage.setItem(TB_FORMS_KEY,JSON.stringify(arr))}catch(_){}}
 function _tbSlotToSave(sl){return{unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0}}
-function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,masterLeague:!!S.tb.masterLeague,supporterId:S.tb.supporterId,squads:{1:{slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
+function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,masterLeague:!!S.tb.masterLeague,supporter1:S.tb.supBySide[1].id,supporter2:S.tb.supBySide[2].id,supLb1:S.tb.supBySide[1].lbTier!=null?S.tb.supBySide[1].lbTier|0:3,supLb2:S.tb.supBySide[2].lbTier!=null?S.tb.supBySide[2].lbTier|0:3,squads:{1:{slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
 async function tbApplySnapshot(snap){
 if(!snap||snap.v!==1)return;
 initTeamBuilder();
 S.tb.terrainType=snap.terrainType||'Ground';
 S.tb.masterLeague=!!snap.masterLeague;
-S.tb.supporterId=snap.supporterId||null;
-S.tb.supporterData=null;
+S.tb.supBySide={1:{id:null,data:null,lbTier:3},2:{id:null,data:null,lbTier:3}};
+const sid1=snap.supporter1!=null?snap.supporter1:snap.supporterId;
+const sid2=snap.supporter2;
+if(sid1)S.tb.supBySide[1].id=String(sid1);
+if(sid2)S.tb.supBySide[2].id=String(sid2);
+if(snap.supLb1!=null)S.tb.supBySide[1].lbTier=Math.min(3,Math.max(0,snap.supLb1|0));
+if(snap.supLb2!=null)S.tb.supBySide[2].lbTier=Math.min(3,Math.max(0,snap.supLb2|0));
 S.tb._leaderApplyCache={};
 function blank(){return Array.from({length:5},()=>_tbEmptySlot())}
 const s1=(snap.squads&&snap.squads[1]&&snap.squads[1].slots)||[];
@@ -4482,7 +4537,7 @@ const ids=Array.isArray(o.optionPartIds)?o.optionPartIds:[];
 for(const pid of ids){if(!pid)continue;try{const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(pid)}&rarity=ALL&effect=ALL&unit_id=${encodeURIComponent(sl.unitId||'0')}`).then(r=>r.json());const hit=(d.rows||[]).find(x=>String(x.id)===String(pid));if(hit)sl.optionParts.push(hit)}catch(_){}}
 }}
 await hydrateSide(1,s1);await hydrateSide(2,s2);
-if(S.tb.supporterId)try{const rd=await fetch(`/api/supporter/${encodeURIComponent(S.tb.supporterId)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!rd.error)S.tb.supporterData=rd}catch(_){}
+for(const ss of[1,2]){const ent=S.tb.supBySide[ss];if(!ent||!ent.id)continue;const lb=Math.min(3,Math.max(0,ent.lbTier|0));try{const rd=await fetch(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=100&lb_tier=${lb}${_tbSupporterFetchQs(ss)}`).then(r=>r.json());if(!rd.error){ent.data=rd;if(rd.lb_tier!=null)ent.lbTier=rd.lb_tier|0}}catch(_){}}
 const ml=document.getElementById('tbMasterLeagueChk');if(ml)ml.checked=S.tb.masterLeague;
 tbFillTerrainSelects();renderTeamBuilder();
 }
@@ -4556,6 +4611,19 @@ if(!rc||!rc.id)return;
 try{const d=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(rc.id);sl.charData=d}}catch(_){}
 renderTeamBuilder();
 }
+function tbCycleSlotLb(key,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+if(S.tb.rearrange)return;
+S.tb.selectedKey=key;
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+const ud=sl.unitData;
+const lb=ud&&ud.lb_data;
+if(!lb||lb.length<=1||ud.is_ultimate)return;
+const max=lb.length-1;
+sl.lbTier=((sl.lbTier|0)+1)%(max+1);
+renderTeamBuilder();
+}
 function tbSlotContextMenu(key,ev){
 if(ev)ev.preventDefault();
 initTeamBuilder();
@@ -4568,34 +4636,45 @@ else openTbPicker('unit',key);
 function _tbLongCardHtml(sl,slotKey){
 const ud=sl.unitData;
 if(!ud)return`<div class="tb-slot-add-ms"><span style="font-size:28px;color:var(--accent-cyan);opacity:.85">+</span></div>`;
+const side=_tbSideFromKey(slotKey);
 const r=ud.rarity||'N';
 const base=RARITY_BASE_MAP[r]||RARITY_BASE_MAP.N;
 const frame=RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP.N;
-const thumErr="this.style.display='none'";
-const portrait=ud.thum?`<img class="tb-long-portrait" src="${imgUrl(ud.thum)}" alt="" loading="lazy" onerror="${thumErr}">`:'';
+const portraitSrc=ud.portrait||ud.thum;
+const portrait=portraitSrc?`<div class="tb-long-portrait-wrap">${imgTag(portraitSrc,{cls:'tb-long-portrait',webp:true,alt:''})}</div>`:'';
+const frameImg=frame?imgTag(frame,{cls:'tb-long-frame',webp:true,alt:''}):'';
 const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
-const pilot=sl.charData&&(sl.charData.thum||sl.charData.portrait)?`<div class="tb-long-pilot"><img src="${imgUrl(sl.charData.thum||sl.charData.portrait)}" alt="" loading="lazy"></div>`:'';
-const lb=ud.lb_data;let lbHtml='';
-if(lb&&lb.length>1&&!ud.is_ultimate){const tier=Math.min(sl.lbTier|0,lb.length-1);const p=cmpLbPipsAtTier(tier);lbHtml=`<div class="tb-long-lb">${cmpLbPipsRow(p[0],p[1],p[2])}</div>`}
-const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[String(ud.id)+':'+String(sl.charData&&sl.charData.id||'')])?`<img class="tb-long-leader-ic" src="${imgUrl(TB_LEADER_ICON)}" alt="" loading="lazy">`:'';
+const lb=ud.lb_data;
+const hasLbBar=!!(lb&&lb.length>1&&!ud.is_ultimate);
+let lbHtml='';
+if(hasLbBar){const tier=Math.min(sl.lbTier|0,lb.length-1);const p=cmpLbPipsAtTier(tier);const lbTitle=escAttr(t('supp_lb_tier')||'LB');
+lbHtml=`<div class="tb-long-lb tb-long-lb--interactive" role="button" tabindex="0" title="${lbTitle}" onclick="tbCycleSlotLb(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbCycleSlotLb(${slotKey},event)}">${cmpLbPipsRow(p[0],p[1],p[2])}</div>`}
+const lk=`${side}:`+String(ud.id)+':'+String(sl.charData&&sl.charData.id||'');
+const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[lk])?`<img class="tb-long-leader-ic" src="${imgUrl(TB_LEADER_ICON)}" alt="" loading="lazy">`:'';
 const opN=(sl.optionParts||[]).length;
 const opMini=opN?`<div class="tb-slot-op-mini">${esc(t('tb_op_count').replace('{n}',String(opN)))}</div>`:'';
-let pilotCorner='';
+let pilotHtml='';
+if(sl.charData&&(sl.charData.portrait||sl.charData.thum)){
+const psrc=sl.charData.portrait||sl.charData.thum;
+pilotHtml=`<div class="tb-long-pilot ${hasLbBar?'tb-long-pilot--with-lb':'tb-long-pilot--no-lb'}">${imgTag(psrc,{webp:true,alt:''})}</div>`;
+}
+let actionsInner='';
 if(!sl.charData){
 const rc=ud.recommend_character;
-const rTh=rc&&(rc.thum||rc.portrait);
+const rTh=rc&&(rc.portrait||rc.thum);
 const recTitle=escAttr([t('rec_char_shortcut'),rc&&rc.name?String(rc.name):''].filter(Boolean).join(' — '));
 if(rc&&rc.id){
 if(rTh){
-pilotCorner=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
+actionsInner+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
 }else{
-pilotCorner=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
-}
-}else{
-pilotCorner=`<div class="tb-slot-add-pilot" role="button" tabindex="0" onclick="tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}"><span style="font-size:14px;color:#93c5fd">+</span></div>`;
+actionsInner+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
 }
 }
-return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${pilotCorner}`;
+}
+actionsInner+=`<div class="tb-slot-add-pilot tb-slot-add-pilot--mini" role="button" tabindex="0" title="${escAttr(t('dc_pick_char'))}" onclick="tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}"><span style="font-size:14px;color:#93c5fd">+</span></div>`;
+const actCls=`tb-long-pilot-actions ${hasLbBar?'tb-long-pilot-actions--with-lb':'tb-long-pilot-actions--no-lb'}`;
+const pilotActions=`<div class="${actCls}">${actionsInner}</div>`;
+return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt="" loading="lazy">${portrait}${frameImg}${role}${pilotHtml}${pilotActions}${lbHtml}${leaderIc}${opMini}</div>`;
 }
 function renderTbSlots(){
 initTeamBuilder();
@@ -4615,39 +4694,29 @@ h+=`<div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncon
 return h;
 }
 r1.innerHTML=rowHtml(1);r2.innerHTML=rowHtml(2);
-tbRenderDeployMap();scheduleTbLeaderRefresh();
-}
-function tbRenderDeployMap(){
-const el=document.getElementById('tbDeployMap');if(!el)return;
-function cells(side){
-const squ=S.tb.squads[side];
-return[0,1,2,3,4].map(c=>{const sl=squ.slots[c];return sl&&sl.unitData?'<div class="tb-deploy-cell">●</div>':'<div class="tb-deploy-cell">·</div>'}).join('');
-}
-el.innerHTML=`<div class="tb-deploy-squad-lbl" id="tbDeployLbl1"></div><div class="tb-deploy-row">${cells(1)}</div><div class="tb-deploy-squad-lbl" id="tbDeployLbl2" style="margin-top:6px"></div><div class="tb-deploy-row">${cells(2)}</div>`;
-const l1=document.getElementById('tbDeployLbl1'),l2=document.getElementById('tbDeployLbl2');
-if(l1)l1.textContent=t('tb_squad1');
-if(l2)l2.textContent=t('tb_squad2');
+scheduleTbLeaderRefresh();
 }
 let _tbLeaderFt=null;
 function scheduleTbLeaderRefresh(){clearTimeout(_tbLeaderFt);_tbLeaderFt=setTimeout(tbRefreshLeaderApplies,100)}
 async function tbRefreshLeaderApplies(){
 initTeamBuilder();
-const sup=S.tb.supporterData;
-if(!sup||!sup.id)return;
 S.tb._leaderApplyCache=S.tb._leaderApplyCache||{};
 const tasks=[];
 for(const side of[1,2]){
+const sup=S.tb.supBySide[side].data;
+if(!sup||!sup.id)continue;
 const squ=S.tb.squads[side];
 for(let i=0;i<5;i++){
 const sl=squ.slots[i];
 if(!sl||!sl.unitData||sl.unitData._manual)continue;
 const uid=String(sl.unitData.id);
 const cid=sl.charData&&sl.charData.id?String(sl.charData.id):'';
-const k=uid+':'+cid;
+const k=`${side}:`+uid+':'+cid;
 if(S.tb._leaderApplyCache[k]!==undefined)continue;
 tasks.push((async()=>{
 try{
-let q=`/api/supporter/${encodeURIComponent(sup.id)}?lang=${S.lang}&level=100&lb_tier=3&for_unit_id=${encodeURIComponent(uid)}`;
+const lbQ=Math.min(3,Math.max(0,(S.tb.supBySide[side].lbTier|0)));
+let q=`/api/supporter/${encodeURIComponent(sup.id)}?lang=${S.lang}&level=100&lb_tier=${lbQ}&for_unit_id=${encodeURIComponent(uid)}`;
 if(cid)q+='&for_char_id='+encodeURIComponent(cid);
 const d=await fetch(q).then(r=>r.json());
 const ls=d&&d.leader_skills||[];
@@ -4657,15 +4726,83 @@ S.tb._leaderApplyCache[k]=ls.some(x=>x&&x.applies);
 }}
 if(tasks.length){await Promise.all(tasks);renderTbSlots()}
 }
-function renderTbSupporter(){
+function _tbSupporterFetchQs(side){
 initTeamBuilder();
-const card=document.getElementById('tbSuppCard'),det=document.getElementById('tbSuppDetail');
+const squ=S.tb.squads[side];
+let uId=null,cId=null;
+for(let i=0;i<5;i++){const sl=squ.slots[i];if(sl&&sl.unitData){uId=sl.unitId;cId=sl.charId;break}}
+let x='';
+if(uId)x+='&for_unit_id='+encodeURIComponent(uId);
+if(cId)x+='&for_char_id='+encodeURIComponent(cId);
+return x;
+}
+function _tbSupporterDetailHtml(s,side){
+const tier=Math.min(3,Math.max(0,(s.lb_tier!=null?s.lb_tier|0:0)));
+const p=cmpLbPipsAtTier(tier);
+const lbRow=`<div class="tb-supp-lb-wrap"><span class="tb-supp-inline-lbl">${esc(t('supp_lb_tier'))}</span><div class="tb-long-lb tb-long-lb--interactive tb-supp-lb-pips" role="button" tabindex="0" onclick="tbCycleSupporterLb(${side},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbCycleSupporterLb(${side},event)}">${cmpLbPipsRow(p[0],p[1],p[2])}</div></div>`;
+const boost=`<div class="tb-supp-boost"><span class="support-stat-badge support-hp">${esc(t('hp_support'))} +${fmtN(s.hp_support||0)}</span><span class="support-stat-badge support-atk">${esc(t('atk_support'))} +${fmtN(s.atk_support||0)}</span></div>`;
+let leaders='';
+if(s.leader_skills&&s.leader_skills.length){
+leaders=`<div class="tb-supp-sec"><div class="tb-supp-sec-title">${esc(t('sec_leader_skill'))}</div>`+s.leader_skills.map(ls=>{
+const na=ls.applies===false?`<span class="tb-supp-na">(—)</span>`:'';
+const tagRow=ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:6px">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:'';
+return`<div class="tb-supp-leader-item"><div class="tb-supp-leader-desc">${esc(ls.desc)}${na}</div>${tagRow}</div>`;
+}).join('')+'</div>';
+}
+let act='';
+if(s.active_skills&&s.active_skills.length){
+act=`<div class="tb-supp-sec"><div class="tb-supp-sec-title">${esc(t('sec_active_skills'))}</div>`+s.active_skills.map(sk=>`<div class="tb-supp-act-item">${sk.icon?`<img class="tb-supp-act-ic" src="${imgUrl(sk.icon)}" alt="" loading="lazy">`:''}<div><div class="tb-supp-act-name">${esc(sk.name)}</div>${sk.desc?`<div class="tb-supp-act-desc">${esc(sk.desc)}</div>`:''}</div></div>`).join('')+'</div>';
+}
+return`<div class="tb-supp-meta-line"><strong>${esc(t('supp_level'))}</strong>: ${fmtN(s.level||100)}</div>${lbRow}${boost}${leaders}${act}`;
+}
+async function _tbRefetchSupporterForSide(side){
+initTeamBuilder();
+const ent=S.tb.supBySide[side];
+if(!ent||!ent.id)return;
+const lb=Math.min(3,Math.max(0,ent.lbTier|0));
+try{
+const d=await fetch(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=100&lb_tier=${lb}${_tbSupporterFetchQs(side)}`).then(r=>r.json());
+if(!d.error){ent.data=d;ent.lbTier=d.lb_tier!=null?d.lb_tier|0:lb;S.tb._leaderApplyCache={}}
+}catch(_){}
+}
+function tbCycleSupporterLb(side,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+const ent=S.tb.supBySide[side];
+if(!ent||!ent.id)return;
+ent.lbTier=((ent.lbTier|0)+1)%4;
+_tbRefetchSupporterForSide(side).then(()=>renderTeamBuilder());
+}
+function _tbRenderOneSupporterCol(cardId,detId,side){
+const card=document.getElementById(cardId),det=document.getElementById(detId);
 if(!card||!det)return;
-const s=S.tb.supporterData;
+const ent=S.tb.supBySide[side];
+if(!ent||!ent.id){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_pick_supp'))}</div>`;det.innerHTML='';return}
+const s=ent.data;
 if(!s){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_pick_supp'))}</div>`;det.innerHTML='';return}
 const row={thum:s.portrait||s.thum,rarity:s.rarity||'N',role_icon:s.role_icon||'',acquisition_icon:'',special_icons:[],is_ultimate:false};
 card.innerHTML=`<div class="tb-supp-frames" style="justify-content:center;padding:12px">${renderListThumb(row,'supp',96)}</div>`;
-det.innerHTML=`<strong>${esc(s.name||'')}</strong><div style="margin-top:6px">${esc(t('supp_level'))}: 100 · ${esc(t('supp_lb_tier'))}: 3</div>`;
+det.innerHTML=`<strong>${esc(s.name||'')}</strong>${_tbSupporterDetailHtml(s,side)}`;
+}
+function renderTbSupporter(){
+initTeamBuilder();
+_tbRenderOneSupporterCol('tbSuppCard1','tbSuppDetail1',1);
+_tbRenderOneSupporterCol('tbSuppCard2','tbSuppDetail2',2);
+}
+function tbOpenOptionPartsPicker(key){
+initTeamBuilder();
+S.tb.selectedKey=key;
+renderTbSlots();
+openTbPicker('option',key);
+}
+function tbRemoveOptionPart(key,idx,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+if(!sl||!sl.optionParts||idx<0||idx>=sl.optionParts.length)return;
+sl.optionParts.splice(idx,1);
+S.tb.selectedKey=key;
+renderTeamBuilder();
 }
 function renderTbStats(){
 initTeamBuilder();
@@ -4679,13 +4816,18 @@ const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier
 const statKey=_tbGetUnitStatKey(ud,sl);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
-const supporters=S.tb.supporterData?[S.tb.supporterData]:[];
+const supSide=_tbSideFromKey(key);
+const supEnt=S.tb.supBySide[supSide];
+const supporters=supEnt&&supEnt.data?[supEnt.data]:[];
 const ctx={masterLeagueBuff:!!S.tb.masterLeague,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:sl.exSquadAtkPct|0};
 const uEff=_dcGetModifiedAttackerUnitStatsFromCtx(ctx,stats);
 let atk=uEff.unitAtk,def=uEff.unitDefVal;
 const pr=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,atk,def);
 atk=pr.unitAtk;def=pr.unitDefVal;
-pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_stats_hint'))}</div><div style="font-weight:600;margin-bottom:4px">${esc(ud.name||'')}</div><div class="tb-stats-grid"><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_hp')}</div><div class="tb-stat-val">${fmtN(uEff.unitHp)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_atk')}</div><div class="tb-stat-val">${fmtN(atk)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_def')}</div><div class="tb-stat-val">${fmtN(def)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mob')}</div><div class="tb-stat-val">${fmtN(uEff.unitMob)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mov')}</div><div class="tb-stat-val">${fmtN(uEff.unitMove)}</div></div></div>`;
+const opN=(sl.optionParts||[]).length;
+const opRows=(sl.optionParts||[]).map((p,i)=>`<div class="tb-op-row"><span class="tb-op-name">${esc(p.name||'')}</span><button type="button" class="tb-op-rm" aria-label="Remove" onclick="tbRemoveOptionPart(${key},${i},event)">✕</button></div>`).join('');
+const opBox=`<div class="tb-op-box"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tab_mod'))}</span><button type="button" class="tb-op-add" onclick="tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div>`;
+pan.innerHTML=`<div style="font-weight:600;margin-bottom:4px">${esc(ud.name||'')}</div><div class="tb-stats-grid"><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_hp')}</div><div class="tb-stat-val">${fmtN(uEff.unitHp)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_atk')}</div><div class="tb-stat-val">${fmtN(atk)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_def')}</div><div class="tb-stat-val">${fmtN(def)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mob')}</div><div class="tb-stat-val">${fmtN(uEff.unitMob)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mov')}</div><div class="tb-stat-val">${fmtN(uEff.unitMove)}</div></div></div>${opBox}`;
 }
 function tbApplyLangStatic(){
 const el=id=>document.getElementById(id);
@@ -4704,6 +4846,8 @@ if(el('tbBatchTitle'))el('tbBatchTitle').textContent=t('tb_batch_title');
 if(el('tbBatchApplyBtn'))el('tbBatchApplyBtn').textContent=t('tb_apply');
 if(el('tbFormModalTitle'))el('tbFormModalTitle').textContent=t('tb_saved_formations');
 if(el('tbMlLbl'))el('tbMlLbl').textContent=t('tb_master_league');
+if(el('tbSuppLbl1'))el('tbSuppLbl1').textContent=t('tb_squad1')+' · '+t('tab_supporter');
+if(el('tbSuppLbl2'))el('tbSuppLbl2').textContent=t('tb_squad2')+' · '+t('tab_supporter');
 const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=(S.tb&&S.tb.batch&&S.tb.batch.kind==='char')?t('search_char'):t('search_unit');
 }
 function renderTeamBuilder(){initTeamBuilder();tbFillTerrainSelects();tbApplyLangStatic();const ml=document.getElementById('tbMasterLeagueChk');if(ml)ml.checked=!!S.tb.masterLeague;renderTbSlots();renderTbSupporter();renderTbStats()}
@@ -4733,7 +4877,12 @@ if(type==='supporter'){
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 let extra='&rarity=ALL';
-const k=S.tb.selectedKey;if(k!=null){const squ=_tbSquFromKey(k);const sl=squ.slots[_tbIdxFromKey(k)];if(sl&&sl.unitId)extra+='&unit_id='+encodeURIComponent(sl.unitId);if(sl&&sl.charId)extra+='&character_id='+encodeURIComponent(sl.charId)}
+const ss=S._tbSupPickerSide===2?2:1;
+const squ=S.tb.squads[ss];
+let uId=null,cId=null;
+for(let i=0;i<5;i++){const sl=squ.slots[i];if(sl&&sl.unitData){uId=sl.unitId;cId=sl.charId;break}}
+if(uId)extra+='&unit_id='+encodeURIComponent(uId);
+if(cId)extra+='&character_id='+encodeURIComponent(cId);
 const d=await fetch(`/api/supporters?lang=${S.lang}&page=1&per_page=200&sort=rarity&dir=desc&q=${encodeURIComponent('')}${extra}`).then(r=>r.json());
 S.tb.picker.rows=d.rows||[];
 filterTbPickerList();
@@ -4821,7 +4970,12 @@ closeTbPicker();
 initTeamBuilder();
 if(type==='supporter'){
 if(!sid)return;
-try{const d=await fetch(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!d.error){S.tb.supporterId=sid;S.tb.supporterData=d;S.tb._leaderApplyCache={}}}catch(_){}
+const ss=S._tbSupPickerSide===2?2:1;
+try{
+const prevLb=S.tb.supBySide[ss]&&S.tb.supBySide[ss].lbTier!=null?S.tb.supBySide[ss].lbTier|0:3;
+const d=await fetch(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=100&lb_tier=${prevLb}${_tbSupporterFetchQs(ss)}`).then(r=>r.json());
+if(!d.error){S.tb.supBySide[ss]={id:sid,data:d,lbTier:d.lb_tier!=null?d.lb_tier|0:prevLb};S.tb._leaderApplyCache={}}
+}catch(_){}
 renderTeamBuilder();return;
 }
 if(slotKey==null)return;
@@ -4841,7 +4995,7 @@ if(hit){if(!sl.optionParts)sl.optionParts=[];if(sl.optionParts.length>=5)return;
 }
 renderTeamBuilder();
 }
-function openTbSupporterPicker(){initTeamBuilder();S.tb.picker.slotKey=null;openTbPicker('supporter',null)}
+function openTbSupporterPicker(side){initTeamBuilder();S._tbSupPickerSide=side===2?2:1;S.tb.picker.slotKey=null;openTbPicker('supporter',null)}
 function tbStartRearrange(){
 initTeamBuilder();
 S.tb.rearrange={draft:JSON.parse(JSON.stringify(S.tb.squads)),pendingKey:null};
@@ -5560,6 +5714,10 @@ return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:
 function _dcStatPassivePctFromEntry(ent){
 const F=Math.floor;
 if(!ent)return 0;
+if(ent.name==='Move'||ent.name==='MOV'||ent.name==='Movement'){
+if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
+return 0;
+}
 if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
 const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
 if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
@@ -6629,7 +6787,7 @@ const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
 const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
 const mobEnt=_dcFindStatEntry(atkUnitStats,'Mobility');
-const moveEnt=_dcFindStatEntry(atkUnitStats,'Move');
+const moveEnt=_dcFindStatEntry(atkUnitStats,'Move')||_dcFindStatEntry(atkUnitStats,'MOV')||_dcFindStatEntry(atkUnitStats,'Movement');
 const atkBase=F(Math.max(0,atkEnt?atkEnt.base:0));
 const defBase=F(Math.max(0,defEnt?defEnt.base:0));
 const hpBase=F(Math.max(0,hpEnt?hpEnt.base:0));
