@@ -3565,6 +3565,7 @@ onDcParamChange();
 }
 
 function initDmgCalc(){
+S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
 S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;
 renderDcDefDbPicks();
@@ -3615,10 +3616,13 @@ const stages=await loadDcStages();
 _dcFillDcStageSelectOptions(stages);
 }
 async function onDcStageChange(){
+const keepDb=((S.dc.defTargetMode||'preset')==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData._manual&&!S.dc.defCharData._manual&&!S.dc.defUnitData.error&&!S.dc.defCharData.error);
+if(!keepDb){
 S.dc.defTargetMode='preset';
 S.dc.defUnitData=null;S.dc.defCharData=null;
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
+}
 const sel=document.getElementById('dcStageSelect');
 const stageId=sel.value;
 _dcUpdateDcStageDdLabel();
@@ -3803,6 +3807,16 @@ if(defDbReady)_dcSyncDefNpcFromDatabase();
 else renderDcDefDbPicks();
 }
 function setDcDefTargetMode(mode){
+const prev=S.dc.defTargetMode||'preset';
+if(prev==='preset'&&S.dc.defNpc)
+try{S._dcDefPresetNpcBackup=JSON.parse(JSON.stringify(S.dc.defNpc))}catch(_){S._dcDefPresetNpcBackup=S.dc.defNpc}
+if(prev==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error&&!S.dc.defUnitData._manual){
+try{
+S._dcDefDbBackup={defLbTier:S.dc.defLbTier|0,unitData:JSON.parse(JSON.stringify(S.dc.defUnitData)),charData:JSON.parse(JSON.stringify(S.dc.defCharData))}
+}catch(_){S._dcDefDbBackup=null}
+}
+if(prev==='custom')
+try{S._dcDefCustomPackBackup=_dcDefManualStatsToPack()}catch(_){}
 S.dc.defTargetMode=mode;
 const pw=document.getElementById('dcDefPresetWrap');
 const cw=document.getElementById('dcDefCustomWrap');
@@ -3818,18 +3832,33 @@ if(cw)cw.style.display=mode==='custom'?'':'none';
 if(dbw)dbw.style.display=mode==='database'?'':'none';
 if(mode==='custom'){
 S.dc.defUnitData=null;S.dc.defCharData=null;
+if(S._dcDefCustomPackBackup)_dcFillManualDefDomFromPack(S._dcDefCustomPackBackup);
 S.dc.defNpc=_dcBuildManualDefNpcFromDom();
 renderDcDefStats();
 onDcParamChange();
 }else if(mode==='database'){
-if(S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error)_dcSyncDefNpcFromDatabase();
-else{S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();onDcParamChange();}
+if(S._dcDefDbBackup&&S._dcDefDbBackup.unitData&&S._dcDefDbBackup.charData){
+S.dc.defUnitData=S._dcDefDbBackup.unitData;
+S.dc.defCharData=S._dcDefDbBackup.charData;
+S.dc.defLbTier=S._dcDefDbBackup.defLbTier|0;
+_dcSyncDefNpcFromDatabase();
+}else if(S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error)_dcSyncDefNpcFromDatabase();
+else{S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();onDcParamChange();return}
+renderDcDefStats();
+onDcParamChange();
 }else{
 S.dc.defUnitData=null;S.dc.defCharData=null;
-S.dc.defNpc=null;
+if(S._dcDefPresetNpcBackup){
+try{S.dc.defNpc=JSON.parse(JSON.stringify(S._dcDefPresetNpcBackup))}catch(_){S.dc.defNpc=S._dcDefPresetNpcBackup}
 const sel=document.getElementById('dcNpcSelect');
-if(sel&&sel.value)selectDcNpc();
-else{renderDcDefStats();onDcParamChange();}
+if(sel&&S.dc.defNpc&&S.dc.defNpc.npc_id!=null&&String(S.dc.defNpc.npc_id)!==''){
+const want=String(S.dc.defNpc.npc_id);
+for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.selectedIndex=j;break}}
+}
+}else{S.dc.defNpc=null}
+const sel=document.getElementById('dcNpcSelect');
+if(!S.dc.defNpc&&sel&&sel.value)selectDcNpc();
+else{renderDcDefStats();onDcParamChange()}
 }
 }
 function syncDcManualDefFromInputs(){
@@ -3898,12 +3927,14 @@ return{_manual:true,name:String(p.cn||'Custom pilot'),id:'__manual__',stats:stat
 }
 function setDcAtkTargetMode(mode){
 if(mode==='custom'){
+if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual&&(S.dc.atkUnit||S.dc.atkChar))
+try{S._dcAtkPresetBackup=_dcReadAttackerFromDc()}catch(_){S._dcAtkPresetBackup=null}
+if(S._dcAtkManualPackBackup)_dcFillManualAtkDomFromPack(S._dcAtkManualPackBackup);
 S.dc.atkUnit='__manual__';S.dc.atkChar='__manual__';
 S.dc.atkUnitData=_dcBuildManualAtkUnitFromDom();
 S.dc.atkCharData=_dcBuildManualAtkCharFromDom();
 S.dc.atkUnitData._manual=true;
 S.dc._unitIsSD=false;
-S.dc.optionParts=[];
 S.dc.lbTier=0;
 S.dc.wpnIdx=0;S.dc.wpnLv=0;
 S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;
@@ -3912,14 +3943,23 @@ _dcSyncAtkModeUiFromState();
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 onDcParamChange();
 }else{
+if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)
+try{S._dcAtkManualPackBackup=_dcAtkManualPackFromSlot(_dcReadAttackerFromDc())}catch(_){}
+if(S._dcAtkPresetBackup){
+try{_dcWriteAttackerToDc(S._dcAtkPresetBackup)}catch(_){S._dcAtkPresetBackup=null;S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc._unitIsSD=false}
+}
+if(!S._dcAtkPresetBackup||!S.dc.atkUnitData||S.dc.atkUnitData._manual){
+if(!S.dc.atkUnitData||S.dc.atkUnitData._manual){
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;
 S.dc._unitIsSD=false;
-S.dc.optionParts=[];S.dc.supporters=[];
-document.getElementById('dcAtkUnitArea').innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">${t('dc_pick_unit')}</button>`;
-document.getElementById('dcAtkCharArea').innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">${t('dc_pick_char')}</button>`;
-document.getElementById('dcAtkStatsArea').innerHTML='';
+const uA=document.getElementById('dcAtkUnitArea'),cA=document.getElementById('dcAtkCharArea'),sA=document.getElementById('dcAtkStatsArea');
+if(uA)uA.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')" id="dcPickUnitBtn">${t('dc_pick_unit')}</button>`;
+if(cA)cA.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('character')" id="dcPickCharBtn">${t('dc_pick_char')}</button>`;
+if(sA)sA.innerHTML='';
+}
+}
 _dcSyncAtkModeUiFromState();
-renderDcWeaponArea();renderDcOptionParts();renderDcSupporters();
+renderDcWeaponArea();renderDcOptionParts();renderDcSupporters();renderDcAtkUnit();renderDcAtkChar();
 onDcParamChange();
 }
 }
