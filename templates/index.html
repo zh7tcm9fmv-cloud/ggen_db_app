@@ -1321,15 +1321,6 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 .tb-rearrange-overlay.active{display:flex}
 .tb-rearrange-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;max-width:min(960px,100%);width:100%;max-height:90vh;overflow:auto;padding:16px}
 .tb-rearrange-banner{text-align:center;padding:8px;margin-bottom:12px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);border-radius:8px;font-size:13px;color:var(--accent-cyan)}
-.tb-batch-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:525;display:none;align-items:center;justify-content:center;padding:16px}
-.tb-batch-overlay.active{display:flex}
-.tb-batch-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;max-width:min(720px,100%);width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column}
-.tb-batch-head{padding:12px 16px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;gap:8px}
-.tb-batch-body{padding:12px 16px;overflow-y:auto;flex:1;min-height:120px}
-.tb-batch-search{width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text);margin-bottom:10px;box-sizing:border-box}
-.tb-batch-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
-.tb-batch-row:hover{background:rgba(255,255,255,.04)}
-.tb-batch-row input{flex-shrink:0}
 .tb-supp-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 14px;align-items:start}
 @media(max-width:700px){.tb-supp-row{grid-template-columns:1fr}}
 @media(max-width:768px){
@@ -1448,9 +1439,6 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 #panel-team_builder #tbPickerBody .list-thumb-composite--picker.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{max-width:100%;max-height:100%}
 .tb-slot-rec-pilot img{width:100%;height:100%;object-fit:cover;display:block}
 .tb-slot-rec-pilot:focus{outline:2px solid var(--accent-cyan);outline-offset:1px}
-.tb-batch-tabbar{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border-color)}
-.tb-batch-tabbar button{padding:6px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:12px}
-.tb-batch-tabbar button.is-active{border-color:var(--accent-cyan)}
 .tb-slot-op-mini{font-size:9px;color:var(--text-muted);position:absolute;left:4px;top:30px;z-index:8;max-width:90%;line-height:1.2;text-shadow:0 1px 2px #000}
 </style>
 </head>
@@ -1713,7 +1701,6 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 <div class="tb-toolbar">
 <button type="button" onclick="openTbFormationModal()"><span id="tbBtnFormation">Formation</span></button>
 <button type="button" onclick="tbStartRearrange()"><img class="tb-toolbar-ic" src="/static/images/UI/Sprite/UI_Common_BtnIcon_Reshuffling.webp" alt="" loading="lazy" onerror="this.style.display='none'"><span id="tbBtnRearrange">Rearrange</span></button>
-<button type="button" onclick="openTbBatchModal()"><span id="tbBtnBatch">Batch Form</span></button>
 </div>
 </div>
 </div>
@@ -1726,18 +1713,6 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
 <button type="button" onclick="tbRearrangeCancel()" id="tbRearrangeCancelBtn">Cancel</button>
 <button type="button" onclick="tbRearrangeConfirm()" id="tbRearrangeOkBtn" style="background:var(--accent-cyan);color:#0f172a;border:none">Confirm</button>
-</div>
-</div>
-</div>
-<div class="tb-batch-overlay" id="tbBatchOverlay" aria-hidden="true">
-<div class="tb-batch-card">
-<div class="tb-batch-head"><span id="tbBatchTitle">Batch Form</span><button type="button" onclick="closeTbBatchModal()">✕</button></div>
-<div class="tb-batch-tabbar"><button type="button" class="is-active" id="tbBatchTabUnits" onclick="tbSetBatchKind('unit')">Units</button><button type="button" id="tbBatchTabChars" onclick="tbSetBatchKind('char')">Pilots</button></div>
-<input type="search" class="tb-batch-search" id="tbBatchSearch" placeholder="Search…" autocomplete="off" oninput="tbOnBatchSearchInput()">
-<div class="tb-batch-body" id="tbBatchList"></div>
-<div style="padding:12px 16px;border-top:1px solid var(--border-color);display:flex;justify-content:flex-end;gap:8px">
-<button type="button" onclick="closeTbBatchModal()">Cancel</button>
-<button type="button" onclick="tbBatchApply()" id="tbBatchApplyBtn">Apply</button>
 </div>
 </div>
 </div>
@@ -2071,7 +2046,7 @@ async function loadLangs(){try{const r=await fetch('/api/languages');const d=awa
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
 function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}
 async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();if(lc!=='JP'&&lc!=='JA')return true;const msg="We apologize for the inconvenience.\nDue to unforeseen conflicts, the Japan version is currently locked.\nThank you for your understanding.";try{const st=await fetch('/api/jp_mode/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return true;alert(st.message||msg);const pw=window.prompt(t('jp_mode_unlock_prompt'));if(!pw)return false;const rr=await fetch('/api/jp_mode/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!rr.ok){alert(t('jp_mode_unlock_wrong'));return false}return true}catch(_){alert(msg);return false}}
-async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;S._browsePrimed={};invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);S._browsePrimed={characters:1,units:1,supporters:1,stages:1,modifications:1};if(S.currentTab==='latest_release')tryLoadLatestRelease();if(S.currentTab==='team_builder'){initTeamBuilder();renderTeamBuilder()}if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
+async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;S._browsePrimed={};invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);S._browsePrimed={characters:1,units:1,supporters:1,stages:1,modifications:1};if(S.currentTab==='latest_release')tryLoadLatestRelease();if(S.currentTab==='team_builder'){S._tbPickerRowCache=null;initTeamBuilder();renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)}if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
 document.addEventListener('click',e=>{if(!e.target.closest('.dc-stage-dd-wrap'))_dcCloseDcStageDd();if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
 function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent=t('dc_title');const _ntb=document.getElementById('navTbTab');if(_ntb)_ntb.textContent=t('tab_team_builder');tbApplyLangStatic();const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
@@ -2274,7 +2249,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();renderTeamBuilder()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}syncMainTabQueryParam(tab);}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}syncMainTabQueryParam(tab);}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -4671,7 +4646,7 @@ function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:nu
 function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
 function initTeamBuilder(){
 if(!S.tb){
-S.tb={squads:{1:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())},2:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Space',supBySide:{1:{id:null,data:null,lbTier:3,level:100},2:{id:null,data:null,lbTier:3,level:100}},selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[],opReplaceIdx:null},masterLeague:false,_leaderApplyCache:{}};
+S.tb={squads:{1:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())},2:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Space',supBySide:{1:{id:null,data:null,lbTier:3,level:100},2:{id:null,data:null,lbTier:3,level:100}},selectedKey:null,rearrange:null,picker:{type:null,slotKey:null,abort:null,gen:0,rows:[],opReplaceIdx:null},masterLeague:false,_leaderApplyCache:{}};
 return;
 }
 if(!S.tb.supBySide){
@@ -4929,6 +4904,7 @@ function onTbTerrainChange(){
 initTeamBuilder();
 const ts=document.getElementById('tbTerrainSelect');
 if(ts)S.tb.terrainType=ts.value||'Space';
+tbInvalidateTbPickerUnitCache();
 renderTeamBuilder();
 }
 function onTbMasterLeagueChange(){
@@ -5401,18 +5377,14 @@ if(el('tbSquad1Lbl'))el('tbSquad1Lbl').textContent=t('tb_squad1');
 if(el('tbSquad2Lbl'))el('tbSquad2Lbl').textContent=t('tb_squad2');
 if(el('tbBtnFormation'))el('tbBtnFormation').textContent=t('tb_formation');
 if(el('tbBtnRearrange'))el('tbBtnRearrange').textContent=t('tb_rearrange');
-if(el('tbBtnBatch'))el('tbBtnBatch').textContent=t('tb_batch');
 if(el('tbRearrangeBanner'))el('tbRearrangeBanner').textContent=t('tb_rearrange_banner');
 if(el('tbRearrangeLinkedLbl'))el('tbRearrangeLinkedLbl').textContent=t('tb_linked_move');
 if(el('tbRearrangeCancelBtn'))el('tbRearrangeCancelBtn').textContent=t('tb_cancel');
 if(el('tbRearrangeOkBtn'))el('tbRearrangeOkBtn').textContent=t('tb_confirm');
-if(el('tbBatchTitle'))el('tbBatchTitle').textContent=t('tb_batch_title');
-if(el('tbBatchApplyBtn'))el('tbBatchApplyBtn').textContent=t('tb_apply');
 if(el('tbFormModalTitle'))el('tbFormModalTitle').textContent=t('tb_saved_formations');
 if(el('tbMlLbl'))el('tbMlLbl').textContent=t('tb_master_league');
 if(el('tbSuppLbl1'))el('tbSuppLbl1').textContent=t('tb_squad1')+' · '+t('tab_supporter');
 if(el('tbSuppLbl2'))el('tbSuppLbl2').textContent=t('tb_squad2')+' · '+t('tab_supporter');
-const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=(S.tb&&S.tb.batch&&S.tb.batch.kind==='char')?t('search_char'):t('search_unit');
 }
 function renderTeamBuilder(){initTeamBuilder();tbFillTerrainSelects();tbApplyLangStatic();const ml=document.getElementById('tbMasterLeagueChk');if(ml)ml.checked=!!S.tb.masterLeague;renderTbSlots();renderTbSupporter();void renderTbStats()}
 let _tbPickerDebounce=null,_tbPickerAbort=null,_tbPickerGen=0;
@@ -5462,11 +5434,14 @@ setTimeout(()=>inp.focus(),50);
 return;
 }
 inp.placeholder=type==='character'?t('search_char'):t('search_unit');
-body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+const cached=(type==='unit'||type==='character')?_tbPickerCacheGet(type,slotKey):null;
+if(cached&&cached.length)S.tb.picker.rows=cached.slice();
+if(S.tb.picker.rows&&S.tb.picker.rows.length)filterTbPickerList();
+else body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 setTimeout(()=>inp.focus(),50);
 await _tbDoPickerSearch();
 }
-function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},120)}
+function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},55)}
 function wireTbPickerBodyClicks(){
 const body=document.getElementById('tbPickerBody');
 if(!body||body.dataset.tbPickWired)return;
@@ -5506,6 +5481,65 @@ const ia=parseInt(sa,10);const ib=parseInt(sb,10);
 if(Number.isFinite(ia)&&Number.isFinite(ib)&&ia!==ib)return ia-ib;
 return sa.localeCompare(sb,'en',{numeric:true,sensitivity:'base'});
 });
+}
+function tbInvalidateTbPickerUnitCache(){if(S._tbPickerRowCache&&S._tbPickerRowCache.unitBySide)delete S._tbPickerRowCache.unitBySide}
+function _tbPickerCharCacheKey(){return'C|'+S.lang}
+function _tbPickerUnitCacheKey(side){
+initTeamBuilder();
+const terr=S.tb.terrainType||'Space';
+const sup=S.tb.supBySide[side];
+const b=sup&&sup.id?String(sup.id):'';
+return'U|'+S.lang+'|'+terr+'|'+side+'|'+b;
+}
+function _tbPickerCacheGet(type,slotKey){
+if(type!=='unit'&&type!=='character')return null;
+const c=S._tbPickerRowCache;if(!c)return null;
+if(type==='character'){const e=c.character;if(e&&e.key===_tbPickerCharCacheKey())return e.rows;return null}
+const side=slotKey!=null?_tbSideFromKey(slotKey):1;
+const want=_tbPickerUnitCacheKey(side);
+const e=c.unitBySide&&c.unitBySide[String(side)];
+if(e&&e.key===want)return e.rows;
+return null;
+}
+function _tbPickerCachePut(type,slotKey,qU,rows){
+if(qU)return;
+const sorted=_tbSortPickerEntityRows(rows||[]);
+S._tbPickerRowCache=S._tbPickerRowCache||{};
+if(type==='character'){S._tbPickerRowCache.character={key:_tbPickerCharCacheKey(),rows:sorted};return}
+if(type==='unit'){
+const side=slotKey!=null?_tbSideFromKey(slotKey):1;
+if(!S._tbPickerRowCache.unitBySide)S._tbPickerRowCache.unitBySide={};
+S._tbPickerRowCache.unitBySide[String(side)]={key:_tbPickerUnitCacheKey(side),rows:sorted};
+}
+}
+async function tbPrimePickerCaches(){
+if(typeof S==='undefined'||!S.tb)return;
+initTeamBuilder();
+if(S._tbPickerPrimeBusy)return;
+S._tbPickerPrimeBusy=true;
+const terr=_tbTerrainQuery();
+const lang=S.lang;
+try{
+const charP=fetch(`/api/characters?lang=${lang}&page=1&per_page=100&sort=rarity&dir=desc&q=`).then(r=>r.json()).then(d=>{
+const rows=_tbSortPickerEntityRows(d.rows||[]);
+S._tbPickerRowCache=S._tbPickerRowCache||{};
+S._tbPickerRowCache.character={key:_tbPickerCharCacheKey(),rows};
+}).catch(()=>{});
+function primeSide(side){
+const sup=S.tb.supBySide[side];
+const bq=sup&&sup.id?String(sup.id):'';
+const boostQ=bq?'&tb_boost_supporter='+encodeURIComponent(bq):'';
+const url=`/api/units?lang=${lang}&page=1&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent('')}${terr}${boostQ}`;
+return fetch(url).then(r=>r.json()).then(d=>{
+const rows=_tbSortPickerEntityRows(d.rows||[]);
+S._tbPickerRowCache=S._tbPickerRowCache||{};
+if(!S._tbPickerRowCache.unitBySide)S._tbPickerRowCache.unitBySide={};
+S._tbPickerRowCache.unitBySide[String(side)]={key:_tbPickerUnitCacheKey(side),rows};
+}).catch(()=>{});
+}
+await Promise.all([charP,primeSide(1),primeSide(2)]);
+}catch(_){}
+finally{S._tbPickerPrimeBusy=false}
 }
 function filterTbPickerList(){
 const body=document.getElementById('tbPickerBody');if(!body)return;
@@ -5558,15 +5592,17 @@ const side=sk!=null?_tbSideFromKey(sk):1;
 const sup=S.tb.supBySide[side];
 if(sup&&sup.id)boostQ='&tb_boost_supporter='+encodeURIComponent(sup.id);
 }
-body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+const haveInstantList=!qU&&S.tb.picker.rows&&S.tb.picker.rows.length;
+if(!haveInstantList||qU)body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 const url=`${base}?lang=${S.lang}&page=1&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent(qU)}${terr}${boostQ}`;
 const r=await fetch(url,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_tbPickerGen)return;
 S.tb.picker.rows=_tbSortPickerEntityRows(d.rows||[]);
+_tbPickerCachePut(type,S.tb.picker.slotKey,qU,S.tb.picker.rows);
 filterTbPickerList();
-}catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+}catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;if(!haveInstantList||qU)body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 }
 async function _tbAssignUnitDataToSlot(sl,d,sidStr){
 if(!sl||!d||d.error)return;
@@ -5596,7 +5632,7 @@ try{
 const prevLb=S.tb.supBySide[ss]&&S.tb.supBySide[ss].lbTier!=null?S.tb.supBySide[ss].lbTier|0:3;
 const prevLv=S.tb.supBySide[ss]&&S.tb.supBySide[ss].level!=null?S.tb.supBySide[ss].level|0:100;
 const d=await fetch(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=${prevLv}&lb_tier=${prevLb}${_tbSupporterFetchQs(ss)}`).then(r=>r.json());
-if(!d.error){S.tb.supBySide[ss]={id:sid,data:d,lbTier:d.lb_tier!=null?d.lb_tier|0:prevLb,level:Math.min(100,Math.max(1,d.level!=null?d.level|0:prevLv))};S.tb._leaderApplyCache={}}
+if(!d.error){S.tb.supBySide[ss]={id:sid,data:d,lbTier:d.lb_tier!=null?d.lb_tier|0:prevLb,level:Math.min(100,Math.max(1,d.level!=null?d.level|0:prevLv))};S.tb._leaderApplyCache={};tbInvalidateTbPickerUnitCache()}
 }catch(_){}
 renderTeamBuilder();return;
 }
@@ -5685,62 +5721,6 @@ S.tb.rearrange=null;
 const o=document.getElementById('tbRearrangeOverlay');if(o){o.classList.remove('active');o.setAttribute('aria-hidden','true')}
 S.tb._leaderApplyCache={};
 renderTeamBuilder();
-}
-function openTbBatchModal(){
-initTeamBuilder();
-S.tb.batch.selected=new Set();
-document.getElementById('tbBatchOverlay').classList.add('active');
-document.getElementById('tbBatchTabUnits').classList.toggle('is-active',S.tb.batch.kind==='unit');
-document.getElementById('tbBatchTabChars').classList.toggle('is-active',S.tb.batch.kind==='char');
-const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=S.tb.batch.kind==='char'?t('search_char'):t('search_unit');
-tbFetchBatchList();
-}
-function closeTbBatchModal(){document.getElementById('tbBatchOverlay').classList.remove('active')}
-let _tbBatchSearchDeb=null;
-function tbOnBatchSearchInput(){clearTimeout(_tbBatchSearchDeb);_tbBatchSearchDeb=setTimeout(tbFetchBatchList,220)}
-function tbSetBatchKind(k){initTeamBuilder();S.tb.batch.kind=k==='char'?'char':'unit';document.getElementById('tbBatchTabUnits').classList.toggle('is-active',S.tb.batch.kind==='unit');document.getElementById('tbBatchTabChars').classList.toggle('is-active',S.tb.batch.kind==='char');const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=S.tb.batch.kind==='char'?t('search_char'):t('search_unit');tbFetchBatchList()}
-async function tbFetchBatchList(){
-const body=document.getElementById('tbBatchList');if(!body)return;
-const q=String(document.getElementById('tbBatchSearch')&&document.getElementById('tbBatchSearch').value||'').trim();
-body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
-initTeamBuilder();S.tb.batch.loading=true;
-try{
-const kind=S.tb.batch.kind;
-const url=kind==='char'?`/api/characters?lang=${S.lang}&page=1&per_page=80&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`:`/api/units?lang=${S.lang}&page=1&per_page=80&sort=rarity&dir=desc&q=${encodeURIComponent(expandUnitSearchQuery(q))}${_tbTerrainQuery()}`;
-const d=await fetch(url).then(r=>r.json());
-S.tb.batch.rows=d.rows||[];
-let h='';
-S.tb.batch.rows.forEach(r=>{const id=String(r.id);const ck=S.tb.batch.selected.has(id)?' checked':'';h+=`<label class="tb-batch-row"><input type="checkbox"${ck} data-tb-bid="${escAttr(id)}" onchange="tbBatchToggleFromCb(this)">${kind==='char'?renderListThumb(r,'char',36):renderListThumb(r,'unit',36)}<span>${esc(r.name||'')}</span></label>`});
-body.innerHTML=h||`<div style="padding:12px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;
-}catch(_){body.innerHTML=`<div style="padding:12px">—</div>`}
-S.tb.batch.loading=false;
-}
-function tbBatchToggleFromCb(cb){initTeamBuilder();const id=cb&&cb.getAttribute('data-tb-bid');if(!id)return;if(cb.checked)S.tb.batch.selected.add(id);else S.tb.batch.selected.delete(id)}
-async function tbBatchApply(){
-initTeamBuilder();
-const ids=[...S.tb.batch.selected];
-const kind=S.tb.batch.kind;
-function nextEmptyUnitSlot(){
-for(const side of[1,2]){const squ=S.tb.squads[side];for(let slot=0;slot<5;slot++)if(!squ.slots[slot].unitData)return{side,slot}}
-return null
-}
-function nextEmptyPilotSlot(){
-for(const side of[1,2]){const squ=S.tb.squads[side];for(let slot=0;slot<5;slot++)if(squ.slots[slot].unitData&&!squ.slots[slot].charData)return{side,slot}}
-return null
-}
-for(const rawId of ids){
-const id=rawId;
-if(kind==='unit'){
-const pos=nextEmptyUnitSlot();if(!pos)break;
-const sl=S.tb.squads[pos.side].slots[pos.slot];
-try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());await _tbAssignUnitDataToSlot(sl,d,id)}catch(_){}
-}else{
-const pos=nextEmptyPilotSlot();if(!pos)break;
-const sl=S.tb.squads[pos.side].slots[pos.slot];
-try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=id;sl.charData=d}}catch(_){}
-}
-}
-closeTbBatchModal();S.tb._leaderApplyCache={};renderTeamBuilder();
 }
 function openTbFormationModal(){
 const list=document.getElementById('tbFormationList');if(!list)return;
