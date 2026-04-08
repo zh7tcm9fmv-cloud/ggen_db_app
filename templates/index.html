@@ -1282,7 +1282,7 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 .tb-long-portrait-wrap .tb-long-pilot-corner{pointer-events:auto}
 .tb-long-portrait{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:50% 26%;pointer-events:none;display:block}
 .tb-long-portrait--sd{object-position:50% 40%}
-.tb-long-portrait--thum-slot{object-position:50% 50%}
+.tb-long-portrait--face-balance{object-position:55% 26%}
 .tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:7;border-radius:50%;overflow:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
 .tb-long-pilot-corner{position:absolute;right:2px;bottom:2px;z-index:8;display:flex;flex-direction:row;align-items:flex-end;justify-content:flex-end;gap:3px;flex-wrap:nowrap;max-width:calc(100% - 4px)}
@@ -5162,8 +5162,7 @@ return`<div class="tb-long-card tb-long-card--empty"><div class="tb-slot-add-ms"
 const side=_tbSideFromKey(slotKey);
 const r=ud.rarity||'N';
 const base=TB_LONG_BASE_MAP[r]||TB_LONG_BASE_MAP.N;
-const faceLong=TB_LONG_PORTRAIT_FACE_IDS.has(String(ud.id));
-const portraitSrc=faceLong?(ud.thum||ud.portrait):(ud.portrait||ud.thum);
+const portraitSrc=ud.portrait||ud.thum;
 const lk=`${side}:`+String(ud.id)+':'+String(sl.charData&&sl.charData.id||'');
 const oneBuff=imgTag(TB_LEADER_ICON,{cls:'tb-long-supporter-buff-img',webp:true,alt:''});
 const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[lk])?`<div class="tb-long-supporter-buff">${oneBuff}</div>`:'';
@@ -5179,7 +5178,7 @@ pilotInner=`<div class="tb-long-pilot-corner">${plus}</div>`;
 }
 let pCls='tb-long-portrait';
 if(String(ud.body_type||'')==='3')pCls+=' tb-long-portrait--sd';
-else if(faceLong)pCls+=' tb-long-portrait--thum-slot';
+else if(TB_LONG_PORTRAIT_FACE_IDS.has(String(ud.id)))pCls+=' tb-long-portrait--face-balance';
 const portraitInner=(portraitSrc?imgTag(portraitSrc,{cls:pCls,webp:true,alt:''}):'')+leaderIc+pilotInner;
 const portrait=`<div class="tb-long-portrait-wrap">${portraitInner}</div>`;
 const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
