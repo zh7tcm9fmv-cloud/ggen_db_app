@@ -1225,24 +1225,42 @@ html{overflow-x:hidden}
 .tb-slot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
 .tb-slot-col{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;width:min(20vw,124px);min-width:92px;max-width:min(20vw,124px);box-sizing:border-box}
 .tb-slot{position:relative;width:100%;min-width:0;aspect-ratio:10/16;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s;background:#0b1020;box-sizing:border-box}
-.tb-slot-lb-outside{width:100%;max-width:100%;display:flex;justify-content:center;align-items:center;min-height:0;box-sizing:border-box}
-.tb-slot-lb-tier-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:3px;width:100%;max-width:100%;box-sizing:border-box}
-.tb-slot-lb-tier{display:inline-flex;align-items:center;justify-content:center;gap:1px;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.4);cursor:pointer;line-height:0;box-sizing:border-box;font:inherit;color:inherit}
-.tb-slot-lb-tier:hover{background:rgba(0,0,0,.55)}
-.tb-slot-lb-tier--sel{border-color:rgba(34,211,238,.65);box-shadow:0 0 0 1px rgba(34,211,238,.2)}
-.tb-slot-lb-tier img{width:12px;height:12px;object-fit:contain;display:block}
+.tb-slot-lb-outside{width:100%;max-width:100%;display:flex;justify-content:center;align-items:stretch;min-height:0;box-sizing:border-box}
+.tb-slot-lb-select{width:100%;max-width:100%;font-size:10px;padding:4px 5px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border-color);box-sizing:border-box;cursor:pointer}
+.tb-slot-op-outside{width:100%;max-width:100%;margin-top:4px;box-sizing:border-box}
+.tb-op-box--under-slot{margin:0;padding:5px 6px;border-radius:6px;background:rgba(15,23,42,.92);border:1px solid rgba(148,163,184,.35);max-height:120px;overflow-y:auto;box-sizing:border-box}
+.tb-op-box--under-slot .tb-op-head{margin-bottom:4px;gap:4px}
+.tb-op-box--under-slot .tb-op-title{font-size:9px}
+.tb-op-box--under-slot .tb-op-add{min-width:26px;height:24px;font-size:14px;padding:0}
+.tb-op-box--under-slot .tb-op-row{padding:3px 4px;margin-bottom:3px;font-size:9px}
+.tb-op-box--under-slot .tb-op-rm{width:22px;height:22px;font-size:11px}
+.tb-op-box--under-slot .tb-op-empty{font-size:9px}
+.tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0 auto;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.tb-supp-tb-back{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.tb-supp-tb-back .list-thumb-base{position:absolute;inset:0;width:100%;height:100%;margin:0;object-fit:contain;object-position:center;display:block;border:0}
+.tb-supp-tb-composite .tb-supp-tb-portrait-wrap{z-index:1;top:12%;left:20%;right:20%;bottom:20%;display:flex;align-items:center;justify-content:center}
+.tb-supp-tb-side{position:absolute;top:0;bottom:0;width:34%;z-index:2;pointer-events:none;object-fit:contain;margin:0;border:0;display:block}
+.tb-supp-tb-side--left{left:0;object-position:left center}
+.tb-supp-tb-side--right{right:0;transform:scaleX(-1);object-position:right center}
+.tb-supp-tb-bottom{position:absolute;left:0;right:0;bottom:0;height:22%;z-index:3;width:100%;pointer-events:none;object-fit:fill;object-position:center bottom;margin:0;border:0;display:block}
+.tb-supp-tb-composite .tb-supp-tb-side picture,.tb-supp-tb-composite .tb-supp-tb-bottom picture{display:block;width:100%;height:100%}
+.tb-supp-tb-composite .tb-supp-tb-side img,.tb-supp-tb-composite .tb-supp-tb-bottom img{width:100%;height:100%;object-fit:inherit;display:block;border:0;vertical-align:middle}
 .tb-long-card--empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:stretch;justify-content:stretch}
 .tb-long-card--empty .tb-slot-add-ms{position:relative;inset:auto;flex:1;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.72);min-height:0}
 .tb-slot.is-sel{border-color:var(--accent-cyan)}
 .tb-slot.is-rearrange-pending{outline:2px solid #eab308;outline-offset:2px}
 .tb-long-card{position:absolute;inset:0;display:flex;flex-direction:column}
 .tb-long-base{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top;pointer-events:none;z-index:0}
-.tb-long-portrait-wrap{position:absolute;inset:0;z-index:1;display:block;overflow:hidden}
+.tb-long-portrait-wrap{position:absolute;inset:0;z-index:1;display:block;overflow:hidden;pointer-events:none}
+.tb-long-portrait-wrap .tb-long-pilot-corner{pointer-events:auto}
 .tb-long-portrait{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center top;pointer-events:none;display:block}
 .tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:7;border-radius:50%;overflow:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
-.tb-long-pilot{position:absolute;right:3px;bottom:3px;width:32%;max-width:56px;aspect-ratio:1;z-index:6;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.tb-long-pilot-corner{position:absolute;right:2px;bottom:2px;z-index:8;display:flex;flex-direction:row;align-items:flex-end;justify-content:flex-end;gap:3px;flex-wrap:nowrap;max-width:calc(100% - 4px)}
+.tb-long-pilot{position:relative;right:auto;bottom:auto;width:clamp(26px,30%,44px);max-width:44px;aspect-ratio:1;flex-shrink:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 6px rgba(0,0,0,.5)}
 .tb-long-pilot img{width:100%;height:100%;object-fit:cover}
+.tb-long-pilot-corner .tb-slot-rec-pilot{width:clamp(24px,28%,40px);max-width:40px;min-width:22px}
+.tb-long-pilot-corner .tb-slot-add-pilot--corner{position:relative;right:auto;bottom:auto;width:clamp(24px,28%,40px);max-width:40px;min-width:24px;aspect-ratio:1;font-size:13px;font-weight:700}
 .tb-long-lb{position:absolute;left:4px;bottom:4px;right:4px;z-index:6;display:flex;align-items:center;justify-content:center;gap:2px;font-size:9px;color:#e2e8f0;text-shadow:0 1px 2px #000}
 .tb-long-lb--interactive{cursor:pointer;padding:3px 4px;border-radius:6px;background:rgba(0,0,0,.5);user-select:none}
 .tb-long-lb--interactive:hover{background:rgba(0,0,0,.65)}
@@ -1250,8 +1268,8 @@ html{overflow-x:hidden}
 .tb-slot-rec-pilot{position:relative;right:auto;bottom:auto;width:28%;max-width:36px;min-width:26px;aspect-ratio:1}
 .tb-slot-add-pilot--mini{width:22%;max-width:30px;min-width:22px;aspect-ratio:1;font-size:12px}
 .tb-long-lv{position:absolute;left:4px;bottom:20px;z-index:6;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px #000}
-.tb-long-supporter-buff{position:absolute;right:2px;top:-4px;z-index:10;display:flex;flex-direction:column;align-items:center;gap:0;line-height:0;pointer-events:none}
-.tb-long-supporter-buff .tb-long-supporter-buff-img{width:16px;height:16px;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(34,197,94,.9)) drop-shadow(0 0 2px rgba(74,222,128,.85));animation:tb-leader-pulse 1.8s ease-in-out infinite}
+.tb-long-supporter-buff{position:absolute;right:4px;top:4px;z-index:9;display:flex;flex-direction:column;align-items:center;gap:0;line-height:0;pointer-events:none}
+.tb-long-supporter-buff .tb-long-supporter-buff-img{width:20px;height:20px;object-fit:contain;display:block;filter:drop-shadow(0 0 6px rgba(74,222,128,1)) drop-shadow(0 0 3px rgba(34,197,94,1)) brightness(1.12) saturate(1.15);animation:tb-leader-pulse 1.8s ease-in-out infinite}
 @keyframes tb-leader-pulse{0%,100%{opacity:.88}50%{opacity:1}}
 .tb-slot-add-ms{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(15,23,42,.72)}
 .tb-slot-add-ms img{width:40%;max-width:44px;opacity:.85}
@@ -1328,13 +1346,26 @@ html{overflow-x:hidden}
 .tb-long-op .tb-op-row{padding:3px 4px;margin-bottom:3px;font-size:9px}
 .tb-long-op .tb-op-rm{width:22px;height:22px;font-size:11px}
 .tb-long-op .tb-op-empty{font-size:9px}
-.tb-supp-meta-line--lvl{display:flex;flex-wrap:nowrap;align-items:center;gap:10px;white-space:nowrap;margin-bottom:8px;overflow-x:auto;max-width:100%}
-.tb-supp-meta-line--lvl .tb-supp-lvl-txt{flex-shrink:0}
-.tb-supp-meta-line--lvl .tb-supp-inline-lbl{flex-shrink:0;margin:0}
-.tb-supp-meta-line--lvl .tb-supp-lb-pips{margin:0;flex-shrink:0}
-.tb-supp-meta-line--lvl .tb-long-lb{position:relative;left:auto;right:auto;bottom:auto;top:auto;padding:2px 4px}
+.tb-supp-meta-line--lvl{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;margin-bottom:8px;max-width:100%;white-space:nowrap}
+.tb-supp-meta-line--lvl .tb-supp-lvl-txt{flex-shrink:0;white-space:nowrap;display:inline}
+.tb-supp-lb-select{flex-shrink:0;font-size:11px;padding:2px 6px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border-color);min-width:0;max-width:100%}
+.tb-stats-all{margin-top:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tb-stats-all-inner{display:flex;flex-direction:row;gap:8px;align-items:stretch;padding:2px 0;min-width:min-content}
+.tb-stats-unit-col{flex:0 0 auto;width:128px;min-width:118px;max-width:150px;padding:8px;border-radius:8px;border:1px solid rgba(148,163,184,.28);background:rgba(0,0,0,.22);cursor:pointer;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.tb-stats-unit-col:hover{border-color:rgba(148,163,184,.45)}
+.tb-stats-unit-col.is-sel{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 1px rgba(34,211,238,.22)}
+.tb-stats-unit-col:focus-visible{outline:2px solid var(--accent-cyan);outline-offset:2px}
+.tb-stats-unit-name{font-weight:600;font-size:10px;line-height:1.25;margin-bottom:6px;max-height:2.5em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.tb-stats-unit-name--empty{color:var(--text-muted);text-align:center;font-weight:500}
+.tb-stats-unit-rows{display:flex;flex-direction:column;gap:3px}
+.tb-stats-unit-row{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:baseline;gap:4px;font-size:10px;line-height:1.3}
+.tb-stats-unit-row .tb-sul{color:var(--text-muted);flex-shrink:0}
+.tb-stats-unit-row .tb-suv-wrap{text-align:right;min-width:0;font-variant-numeric:tabular-nums}
+.tb-stats-unit-row .tb-suv{font-weight:700}
+.tb-stat-plus{color:#4ade80;font-weight:600;font-size:9px;white-space:nowrap}
+.tb-stat-minus{color:#f87171;font-size:9px;white-space:nowrap}
 .tb-slot-rec-pilot{border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.45);cursor:pointer;background:rgba(15,23,42,.5)}
-.tb-stats-panel{margin-top:12px;padding:12px;background:rgba(15,23,42,.45);border:1px solid var(--border-color);border-radius:10px;font-size:12px}
+.tb-stats-panel{margin-top:12px;padding:10px 12px;background:rgba(15,23,42,.45);border:1px solid var(--border-color);border-radius:10px;font-size:12px;overflow:hidden}
 .tb-stats-hint{font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.4}
 .tb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
 @media(max-width:600px){.tb-stats-grid{grid-template-columns:repeat(2,1fr)}}
@@ -1962,6 +1993,9 @@ const RARITY_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp
 const RARITY_FRAME_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_UR_Frame.webp','SSR':'/static/images/UI/UI_Common_Tmb_Square_SSR_Frame.webp','SR':'/static/images/UI/UI_Common_Tmb_Square_SR_Frame.webp','R':'/static/images/UI/UI_Common_Tmb_Square_R_Frame.webp','N':'/static/images/UI/UI_Common_Tmb_Square_None_Frame%20%236338.webp'};
 const TB_LONG_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Long_UR_Base.webp','SSR':'/static/images/UI/UI_Common_Tmb_Long_SSR_Base.webp','SR':'/static/images/UI/UI_Common_Tmb_Long_SR_Base.webp','R':'/static/images/UI/UI_Common_Tmb_Long_R_Base.webp','N':'/static/images/UI/UI_Common_Tmb_Long_N_Base.webp'};
 const SUPPORTER_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_UR.webp','SSR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SSR.webp','SR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SR.webp','R':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_R.webp','N':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_N.webp'};
+const TB_SUPPORTER_TB_BASE='/static/images/UI/UI_Common_Tmb_Supporter_Base.webp';
+const TB_SUPPORTER_TB_FRAME_LR='/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_01.webp';
+const TB_SUPPORTER_TB_FRAME_BT='/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_02.webp';
 const LB_ICONS={'None':'/static/images/UI/UI_Common_Icon_Grade_M_None.webp','Neutral':'/static/images/UI/UI_Common_Icon_Grade_M_Neutral.webp','Max':'/static/images/UI/UI_Common_Icon_Grade_M_Max.webp'};
 const CMP_LB_TIER_PIPS=[[LB_ICONS.None,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.Neutral,LB_ICONS.None],[LB_ICONS.Max,LB_ICONS.Max,LB_ICONS.Max]];
 function cmpLbPipsRow(a0,a1,a2){return [a0,a1,a2].map(src=>`<img src="${imgUrl(src)}" alt="" loading="lazy" decoding="async" fetchpriority="low">`).join('')}
@@ -2320,6 +2354,19 @@ function debounceLoad(tab){clearTimeout(S.ft);S.ft=setTimeout(()=>{if(tab==='cha
 function isLikelyIdQuery(q){return/^\d{4,}$/.test(String(q||'').trim())}
 async function maybeUnlockNpcView(q,data){if(!isLikelyIdQuery(q))return false;const total=(data&&typeof data.total==='number')?data.total:0;if(total>0)return false;try{const st=await fetch('/api/npc_view/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return false;const pw=window.prompt(t('npc_unlock_prompt'));if(!pw)return false;const res=await fetch('/api/npc_view/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!res.ok){alert(t('npc_unlock_wrong'));return false}return true}catch(_){return false}}
 function renderListThumb(row,type,size,opts){const o=opts||{};const r=row.rarity||'N';const ld=size?'eager':'lazy';const base=type==='supp'?(SUPPORTER_BASE_MAP[r]||SUPPORTER_BASE_MAP['N']):(RARITY_BASE_MAP[r]||RARITY_BASE_MAP['N']);const frame=type==='supp'?null:(RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP['N']);const ph=type==='char'?'👤':type==='unit'?'🤖':'🎧';const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";let portrait='';if(row.thum){portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">${ph}</div>`;let icons='';if(!o.pickerThumb&&type!=='supp'){if(row.role_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.role_icon,{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}if(type==='unit'&&(row.is_ultimate===true||row.is_ultimate===1)){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_Icon_ULT.webp',{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'ULT',lazy:false})}</span>`}if(row.acquisition_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}}const hz=frame?' list-thumb-has-frame':'';const pk=o.pickerThumb?' list-thumb-composite--picker':'';const sz=size?` style="width:${size}px;height:${size}px"`:'';const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';return`<div class="list-thumb-composite${pk}${hz}"${sz}>${frame?`<div class="list-thumb-back">${baseEl}</div><div class="list-thumb-portrait-wrap">${portrait}</div>${frameEl}`:`${baseEl}<div class="list-thumb-portrait-wrap">${portrait}</div>`}${iconsWrap}</div>`}
+function renderTbSupporterCardThumb(row,size){
+const sz=size||96;
+const ld='eager';
+const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";
+let portrait='';
+if(row.thum){portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}
+portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">🎧</div>`;
+const baseInner=pictureRasterHtml(TB_SUPPORTER_TB_BASE,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});
+const frL=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_LR,{cls:'tb-supp-tb-side tb-supp-tb-side--left',loading:ld,decoding:'async',alt:'',lazy:false});
+const frR=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_LR,{cls:'tb-supp-tb-side tb-supp-tb-side--right',loading:ld,decoding:'async',alt:'',lazy:false});
+const frB=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_BT,{cls:'tb-supp-tb-bottom',loading:ld,decoding:'async',alt:'',lazy:false});
+return`<div class="tb-supp-tb-composite" style="width:${sz}px;height:${sz}px"><div class="tb-supp-tb-back">${baseInner}</div><div class="list-thumb-portrait-wrap tb-supp-tb-portrait-wrap">${portrait}</div>${frL}${frR}${frB}</div>`;
+}
 function buildTableHeaders(){const cs=S.characters,us=S.units,ss=S.supporters;const _csl=k=>`<span class="th-full">${t('col_'+k.toLowerCase())}</span><span class="th-mob">${charGridStatLabel(k)}</span>`;document.getElementById('charThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${cs.sort==='name'?'sort-active':''}" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${cs.sort==='Ranged'?'sort-active':''}" title="${esc(t('col_ranged'))}" onclick="sortCol('characters','Ranged')">${_csl('Ranged')} <span class="sort-arrow">${cs.sort==='Ranged'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Melee'?'sort-active':''}" title="${esc(t('col_melee'))}" onclick="sortCol('characters','Melee')">${_csl('Melee')} <span class="sort-arrow">${cs.sort==='Melee'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Awaken'?'sort-active':''}" title="${esc(t('col_awaken'))}" onclick="sortCol('characters','Awaken')">${_csl('Awaken')} <span class="sort-arrow">${cs.sort==='Awaken'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Defense'?'sort-active':''}" title="${esc(t('col_defense'))}" onclick="sortCol('characters','Defense')">${_csl('Defense')} <span class="sort-arrow">${cs.sort==='Defense'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Reaction'?'sort-active':''}" title="${esc(t('col_reaction'))}" onclick="sortCol('characters','Reaction')">${_csl('Reaction')} <span class="sort-arrow">${cs.sort==='Reaction'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('unitThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${us.sort==='name'?'sort-active':''}" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${us.sort==='HP'?'sort-active':''}" onclick="sortCol('units','HP')">${t('col_hp')} <span class="sort-arrow">${us.sort==='HP'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='EN'?'sort-active':''}" onclick="sortCol('units','EN')">${t('col_en')} <span class="sort-arrow">${us.sort==='EN'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='ATK'?'sort-active':''}" onclick="sortCol('units','ATK')">${t('col_atk')} <span class="sort-arrow">${us.sort==='ATK'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='DEF'?'sort-active':''}" onclick="sortCol('units','DEF')">${t('col_def')} <span class="sort-arrow">${us.sort==='DEF'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOB'?'sort-active':''}" onclick="sortCol('units','MOB')">${t('col_mob')} <span class="sort-arrow">${us.sort==='MOB'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOV'?'sort-active':''}" onclick="sortCol('units','MOV')">${t('col_mov')} <span class="sort-arrow">${us.sort==='MOV'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('suppThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${ss.sort==='name'?'sort-active':''}" onclick="sortCol('supporters','name')">${t('col_name')} <span class="sort-arrow">${ss.sort==='name'?(ss.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ss.sort==='series_tag'?'sort-active':''}" onclick="sortCol('supporters','series_tag')">${t('col_series_tag')} <span class="sort-arrow">${ss.sort==='series_tag'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-boost ${ss.sort==='boost'?'sort-active':''}" onclick="sortCol('supporters','boost')">${t('col_boost')} <span class="sort-arrow">${ss.sort==='boost'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-skill" style="cursor:default">${t('sec_active_skills')}</th></tr>`;const st=S.stages;const ms=S.modifications;document.getElementById('modThead').innerHTML=`<tr><th class="col-thum" style="cursor:default;width:48px"></th><th class="col-name ${ms.sort==='name'?'sort-active':''}" onclick="sortColMod('name')">${t('col_name')} <span class="sort-arrow">${ms.sort==='name'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ms.sort==='tags'?'sort-active':''}" onclick="sortColMod('tags')">${t('col_series_tag')} <span class="sort-arrow">${ms.sort==='tags'?(ms.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-details ${ms.sort==='details'?'sort-active':''}" onclick="sortColMod('details')">${t('col_details')} <span class="sort-arrow">${ms.sort==='details'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th></tr>`;document.getElementById('stageThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-diff" style="cursor:default">${t('col_stage_diff')}</th><th class="col-number ${st.sort==='stage_number'?'sort-active':''}" onclick="sortColStage('stage_number')">${t('col_stage_no')} <span class="sort-arrow">${st.sort==='stage_number'?(st.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-name" style="cursor:default">${t('col_name')}</th><th class="col-cp" style="cursor:default">${t('col_stage_cp')}</th><th class="col-terrain" style="cursor:default">${t('col_stage_terrain')}</th></tr>`}
 const DEFAULT_BROWSE_LIST_PER_PAGE=50;
 function getBrowseListPerPage(which){const id=which==='char'?'charPerPage':'unitPerPage';const el=document.getElementById(id);if(!el)return DEFAULT_BROWSE_LIST_PER_PAGE;const v=parseInt(String(el.value||'').trim(),10);return Number.isFinite(v)&&v>0?v:DEFAULT_BROWSE_LIST_PER_PAGE}
@@ -4611,6 +4658,33 @@ if(row.atk_pct)a=F(a*(100+row.atk_pct)/100);
 if(row.def_pct)d=F(d*(100+row.def_pct)/100);
 return{unitAtk:a,unitDefVal:d};
 }
+function _tbFmtStatDelta(n){
+const d=Math.round(Number(n)||0);
+if(d>0)return` <span class="tb-stat-plus">(+${fmtN(d)})</span>`;
+if(d<0)return` <span class="tb-stat-minus">(${fmtN(Math.abs(d))})</span>`;
+return'';
+}
+function _tbBuildSlotStatEff(sl,side){
+if(!sl||!sl.unitData)return null;
+const ud=sl.unitData;
+const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
+const statKey=_tbGetUnitStatKey(ud,sl);
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const stats=td?td[statKey]||td.stats_no_cond:[];
+const supEnt=S.tb.supBySide[side];
+const supporters=supEnt&&supEnt.data?[supEnt.data]:[];
+const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:sl.exSquadAtkPct|0};
+const baseCtx={masterLeagueBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0};
+const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats);
+const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
+let batk=b.unitAtk,bdef=b.unitDefVal;
+const prb=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,batk,bdef);
+batk=prb.unitAtk;bdef=prb.unitDefVal;
+let fatk=f.unitAtk,fdef=f.unitDefVal;
+const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
+fatk=prf.unitAtk;fdef=prf.unitDefVal;
+return{ud,hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove,dHp:f.unitHp-b.unitHp,dAtk:fatk-batk,dDef:fdef-bdef,dMob:f.unitMob-b.unitMob,dMov:f.unitMove-b.unitMove};
+}
 function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Space';return'&terrain='+encodeURIComponent(tt+':2+')}
 function tbFillTerrainSelects(){
 initTeamBuilder();
@@ -4677,6 +4751,13 @@ const max=lb.length-1;
 sl.lbTier=Math.min(Math.max(0,tier|0),max);
 renderTeamBuilder();
 }
+function tbOnSlotLbSelect(key,sel){
+initTeamBuilder();
+if(S.tb.rearrange)return;
+const v=parseInt(String(sel&&sel.value!=null?sel.value:'0'),10);
+if(Number.isNaN(v))return;
+tbSetSlotLbTier(key,v,null);
+}
 function tbSlotContextMenu(key,ev){
 if(ev)ev.preventDefault();
 initTeamBuilder();
@@ -4693,21 +4774,19 @@ const lb=ud.lb_data;
 if(!lb||lb.length<=1||ud.is_ultimate)return'';
 const maxT=lb.length-1;
 const cur=Math.min(sl.lbTier|0,maxT);
-const lbTitle=escAttr(t('supp_lb_tier')||'LB');
-let inner='';
-for(let t=0;t<=maxT;t++){
-const p=cmpLbPipsAtTier(t);
-const sel=t===cur?' tb-slot-lb-tier--sel':'';
-const ti=escAttr(`${lbTitle} ${t}`);
-inner+=`<button type="button" class="tb-slot-lb-tier${sel}" title="${ti}" aria-pressed="${t===cur?'true':'false'}" onclick="event.stopPropagation();tbSetSlotLbTier(${slotKey},${t},event)">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
+const lbLbl=escAttr(t('supp_lb_tier')||'LB');
+const lbOpt=String(t('supp_lb_tier')||'LB');
+let opts='';
+for(let ti=0;ti<=maxT;ti++){
+opts+=`<option value="${ti}"${ti===cur?' selected':''}>${esc(lbOpt+' '+ti)}</option>`;
 }
-return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><div class="tb-slot-lb-tier-row">${inner}</div></div>`;
+return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><select class="tb-slot-lb-select" aria-label="${lbLbl}" onchange="event.stopPropagation();tbOnSlotLbSelect(${slotKey},this)">${opts}</select></div>`;
 }
-function _tbSlotOpBoxHtml(key,sl){
+function _tbSlotOpOutsideHtml(key,sl){
 if(!sl.unitData)return'';
 const opN=(sl.optionParts||[]).length;
 const opRows=(sl.optionParts||[]).map((p,i)=>`<div class="tb-op-row"><span class="tb-op-name">${esc(p.name||'')}</span><button type="button" class="tb-op-rm" aria-label="Remove" onclick="event.stopPropagation();tbRemoveOptionPart(${key},${i},event)">✕</button></div>`).join('');
-return`<div class="tb-long-op" onclick="event.stopPropagation()"><div class="tb-op-box"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tab_mod'))}</span><button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
+return`<div class="tb-slot-op-outside" onclick="event.stopPropagation()"><div class="tb-op-box tb-op-box--under-slot"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tab_mod'))}</span><button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
 }
 function _tbLongCardHtml(sl,slotKey){
 const ud=sl.unitData;
@@ -4718,33 +4797,33 @@ const side=_tbSideFromKey(slotKey);
 const r=ud.rarity||'N';
 const base=TB_LONG_BASE_MAP[r]||TB_LONG_BASE_MAP.N;
 const portraitSrc=ud.portrait||ud.thum;
-const portrait=portraitSrc?`<div class="tb-long-portrait-wrap">${imgTag(portraitSrc,{cls:'tb-long-portrait',webp:true,alt:''})}</div>`:'';
-const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
 const lk=`${side}:`+String(ud.id)+':'+String(sl.charData&&sl.charData.id||'');
 const oneBuff=imgTag(TB_LEADER_ICON,{cls:'tb-long-supporter-buff-img',webp:true,alt:''});
 const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[lk])?`<div class="tb-long-supporter-buff">${oneBuff}</div>`:'';
-let pilotHtml='';
+let pilotInner='';
 if(sl.charData&&(sl.charData.portrait||sl.charData.thum)){
 const psrc=sl.charData.portrait||sl.charData.thum;
-pilotHtml=`<div class="tb-long-pilot">${imgTag(psrc,{webp:true,alt:''})}</div>`;
-}
-let pilotActions='';
-if(!sl.charData){
-let actionsInner='';
+pilotInner=`<div class="tb-long-pilot-corner"><div class="tb-long-pilot">${imgTag(psrc,{webp:true,alt:''})}</div></div>`;
+}else{
+let parts='';
 const rc=ud.recommend_character;
 const rTh=rc&&(rc.portrait||rc.thum);
 const recTitle=escAttr([t('rec_char_shortcut'),rc&&rc.name?String(rc.name):''].filter(Boolean).join(' — '));
+const addTitle=escAttr(t('tab_char'));
 if(rc&&rc.id){
 if(rTh){
-actionsInner+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
+parts+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}"><img src="${imgUrl(rTh)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>`;
 }else{
-actionsInner+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
+parts+=`<div class="tb-slot-rec-pilot" role="button" tabindex="0" title="${recTitle}" onclick="event.stopPropagation();tbPilotPickRecommended(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotPickRecommended(${slotKey},event)}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#93c5fd">★</div>`;
 }
 }
-if(actionsInner)pilotActions=`<div class="tb-long-pilot-actions">${actionsInner}</div>`;
+parts+=`<div class="tb-slot-add-pilot tb-slot-add-pilot--corner" role="button" tabindex="0" title="${addTitle}" onclick="event.stopPropagation();tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}">+</div>`;
+pilotInner=`<div class="tb-long-pilot-corner">${parts}</div>`;
 }
-const opBox=_tbSlotOpBoxHtml(slotKey,sl);
-return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt="" loading="lazy">${portrait}${role}${pilotHtml}${pilotActions}${leaderIc}${opBox}</div>`;
+const portraitInner=(portraitSrc?imgTag(portraitSrc,{cls:'tb-long-portrait',webp:true,alt:''}):'')+leaderIc+pilotInner;
+const portrait=`<div class="tb-long-portrait-wrap">${portraitInner}</div>`;
+const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
+return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt="" loading="lazy">${portrait}${role}</div>`;
 }
 function renderTbSlots(){
 initTeamBuilder();
@@ -4759,7 +4838,7 @@ const sl=squ.slots[col];
 const sel=S.tb.selectedKey===key;
 let cls='tb-slot'+(sel?' is-sel':'');
 if(S.tb.rearrange&&S.tb.rearrange.pendingKey===key)cls+=' is-rearrange-pending';
-h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}</div>`;
+h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
 }
 return h;
 }
@@ -4807,13 +4886,28 @@ if(uId)x+='&for_unit_id='+encodeURIComponent(uId);
 if(cId)x+='&for_char_id='+encodeURIComponent(cId);
 return x;
 }
-function _tbSupporterLbPipsHtml(side,s){
-const tier=Math.min(3,Math.max(0,(s.lb_tier!=null?s.lb_tier|0:0)));
-const p=cmpLbPipsAtTier(tier);
-return`<div class="tb-long-lb tb-long-lb--interactive tb-supp-lb-pips" role="button" tabindex="0" onclick="event.stopPropagation();tbCycleSupporterLb(${side},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbCycleSupporterLb(${side},event)}">${cmpLbPipsRow(p[0],p[1],p[2])}</div>`;
+function _tbSupporterLbSelectHtml(side,s){
+const ent=S.tb.supBySide[side];
+const cur=Math.min(3,Math.max(0,(ent&&ent.lbTier!=null?ent.lbTier|0:(s.lb_tier!=null?s.lb_tier|0:0))));
+const al=escAttr(t('supp_lb_tier')||'LB');
+const lbOpt=String(t('supp_lb_tier')||'LB');
+let opts='';
+for(let i=0;i<=3;i++){
+opts+=`<option value="${i}"${i===cur?' selected':''}>${esc(lbOpt+' '+i)}</option>`;
+}
+return`<select class="tb-supp-lb-select" aria-label="${al}" onchange="event.stopPropagation();tbSetSupporterLbFromSelect(${side},this)">${opts}</select>`;
+}
+function tbSetSupporterLbFromSelect(side,sel){
+initTeamBuilder();
+const ent=S.tb.supBySide[side];
+if(!ent||!ent.id)return;
+const v=parseInt(String(sel&&sel.value!=null?sel.value:'0'),10);
+if(Number.isNaN(v))return;
+ent.lbTier=Math.min(3,Math.max(0,v));
+_tbRefetchSupporterForSide(side).then(()=>renderTeamBuilder());
 }
 function _tbSupporterDetailHtml(s,side){
-const metaLine=`<div class="tb-supp-meta-line tb-supp-meta-line--lvl"><span class="tb-supp-lvl-txt"><strong>${esc(t('supp_level'))}</strong>: ${fmtN(s.level||100)}</span><span class="tb-supp-inline-lbl">${esc(t('supp_lb_tier'))}</span>${_tbSupporterLbPipsHtml(side,s)}</div>`;
+const metaLine=`<div class="tb-supp-meta-line tb-supp-meta-line--lvl"><span class="tb-supp-lvl-txt"><strong>${esc(t('supp_level'))}</strong>: ${fmtN(s.level||100)}</span>${_tbSupporterLbSelectHtml(side,s)}</div>`;
 const boost=`<div class="tb-supp-boost"><span class="support-stat-badge support-hp">${esc(t('hp_support'))} +${fmtN(s.hp_support||0)}</span><span class="support-stat-badge support-atk">${esc(t('atk_support'))} +${fmtN(s.atk_support||0)}</span></div>`;
 let leaders='';
 if(s.leader_skills&&s.leader_skills.length){
@@ -4839,14 +4933,6 @@ const d=await fetch(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}
 if(!d.error){ent.data=d;ent.lbTier=d.lb_tier!=null?d.lb_tier|0:lb;S.tb._leaderApplyCache={}}
 }catch(_){}
 }
-function tbCycleSupporterLb(side,ev){
-if(ev){ev.preventDefault();ev.stopPropagation()}
-initTeamBuilder();
-const ent=S.tb.supBySide[side];
-if(!ent||!ent.id)return;
-ent.lbTier=((ent.lbTier|0)+1)%4;
-_tbRefetchSupporterForSide(side).then(()=>renderTeamBuilder());
-}
 function _tbRenderOneSupporterCol(cardId,detId,side){
 const card=document.getElementById(cardId),det=document.getElementById(detId);
 if(!card||!det)return;
@@ -4855,7 +4941,7 @@ if(!ent||!ent.id){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_p
 const s=ent.data;
 if(!s){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_pick_supp'))}</div>`;det.innerHTML='';return}
 const row={thum:s.portrait||s.thum,rarity:s.rarity||'N',role_icon:s.role_icon||'',acquisition_icon:'',special_icons:[],is_ultimate:false};
-card.innerHTML=`<div class="tb-supp-card-stack"><div class="tb-supp-frames" style="justify-content:center">${renderListThumb(row,'supp',96)}</div></div>`;
+card.innerHTML=`<div class="tb-supp-card-stack"><div class="tb-supp-frames" style="justify-content:center">${renderTbSupporterCardThumb(row,96)}</div></div>`;
 det.innerHTML=`<strong>${esc(s.name||'')}</strong>${_tbSupporterDetailHtml(s,side)}`;
 }
 function renderTbSupporter(){
@@ -4881,24 +4967,27 @@ renderTeamBuilder();
 function renderTbStats(){
 initTeamBuilder();
 const pan=document.getElementById('tbStatsPanel');if(!pan)return;
-const key=S.tb.selectedKey;
-if(key==null){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
-const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
-if(!sl||!sl.unitData){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
-const ud=sl.unitData;
-const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
-const statKey=_tbGetUnitStatKey(ud,sl);
-const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const stats=td?td[statKey]||td.stats_no_cond:[];
-const supSide=_tbSideFromKey(key);
-const supEnt=S.tb.supBySide[supSide];
-const supporters=supEnt&&supEnt.data?[supEnt.data]:[];
-const ctx={masterLeagueBuff:!!S.tb.masterLeague,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:sl.exSquadAtkPct|0};
-const uEff=_dcGetModifiedAttackerUnitStatsFromCtx(ctx,stats);
-let atk=uEff.unitAtk,def=uEff.unitDefVal;
-const pr=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,atk,def);
-atk=pr.unitAtk;def=pr.unitDefVal;
-pan.innerHTML=`<div style="font-weight:600;margin-bottom:4px">${esc(ud.name||'')}</div><div class="tb-stats-grid"><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_hp')}</div><div class="tb-stat-val">${fmtN(uEff.unitHp)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_atk')}</div><div class="tb-stat-val">${fmtN(atk)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_def')}</div><div class="tb-stat-val">${fmtN(def)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mob')}</div><div class="tb-stat-val">${fmtN(uEff.unitMob)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mov')}</div><div class="tb-stat-val">${fmtN(uEff.unitMove)}</div></div></div>`;
+const cols=[];
+for(let si=1;si<=2;si++){
+const squ=S.tb.squads[si];
+for(let col=0;col<5;col++){
+const key=_tbKey(si,col);
+const sl=squ.slots[col];
+const sel=S.tb.selectedKey===key;
+const cls='tb-stats-unit-col'+(sel?' is-sel':'');
+if(!sl||!sl.unitData){
+cols.push(`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name tb-stats-unit-name--empty">—</div><div class="tb-stats-unit-rows"></div></div>`);
+continue;
+}
+const st=_tbBuildSlotStatEff(sl,si);
+if(!st){
+cols.push(`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name tb-stats-unit-name--empty">—</div></div>`);
+continue;
+}
+const mkRow=(lbl,v,d)=>`<div class="tb-stats-unit-row"><span class="tb-sul">${lbl}</span><span class="tb-suv-wrap"><span class="tb-suv">${fmtN(v)}</span>${_tbFmtStatDelta(d)}</span></div>`;
+cols.push(`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name">${esc(st.ud.name||'')}</div><div class="tb-stats-unit-rows">${mkRow(t('col_hp'),st.hp,st.dHp)}${mkRow(t('col_atk'),st.atk,st.dAtk)}${mkRow(t('col_def'),st.def,st.dDef)}${mkRow(t('col_mob'),st.mob,st.dMob)}${mkRow(t('col_mov'),st.mov,st.dMov)}</div></div>`);
+}}
+pan.innerHTML=`<div class="tb-stats-all"><div class="tb-stats-all-inner">${cols.join('')}</div></div>`;
 }
 function tbApplyLangStatic(){
 const el=id=>document.getElementById(id);
@@ -5087,7 +5176,7 @@ for(let col=col0;col<col1;col++){
 const key=_tbKey(side,col);
 const sl=squ.slots[col];
 const pk=S.tb.rearrange.pendingKey===key;
-h+=`<div class="tb-slot-col tb-slot-col--rearrange" style="width:100px"><div class="tb-slot${pk?' is-rearrange-pending':''}" style="width:100%;max-width:100px" onclick="tbRearrangeTap(${key})">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}</div>`;
+h+=`<div class="tb-slot-col tb-slot-col--rearrange" style="width:100px"><div class="tb-slot${pk?' is-rearrange-pending':''}" style="width:100%;max-width:100px" onclick="tbRearrangeTap(${key})">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
 }
 return`<div class="tb-slot-row ${rowCls}">${h}</div>`;
 }
