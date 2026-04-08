@@ -770,6 +770,8 @@ def parse_unit_terrain_filter(val):
 
     Accepts comma-separated "TerrainName:Level" pairs (AND semantics), e.g.
     "Space:3,Underwater:2". Levels 1 (hyphen), 2 (triangle), and 3 (circle) are accepted.
+    A trailing + on the level means "this tier or higher", e.g. "Ground:2+" excludes
+    hyphen-only (tier 1) on that terrain.
     """
     if val is None:
         return None
@@ -784,12 +786,16 @@ def parse_unit_terrain_filter(val):
             continue
         name_raw, lv_raw = token.split(':', 1)
         name = str(name_raw or '').strip().title()
-        lv = str(normalize_id(lv_raw, '0')).strip()
+        lv_part = str(lv_raw or '').strip()
+        ge = lv_part.endswith('+')
+        if ge:
+            lv_part = lv_part[:-1].strip()
+        lv = str(normalize_id(lv_part, '0')).strip()
         if name not in allowed_names:
             continue
         if lv not in ('1', '2', '3'):
             continue
-        k = (name, int(lv))
+        k = (name, int(lv), ge)
         if k not in seen:
             seen.add(k)
             out.append(k)
@@ -852,8 +858,13 @@ def unit_terrain_filter_cache_fragment(expr):
     if expr is None:
         return 't0'
     xs = []
-    for name, lv in expr:
-        xs.append(f'{name}:{int(lv)}')
+    for item in expr:
+        if len(item) == 3:
+            name, lv, ge = item
+        else:
+            name, lv = item
+            ge = False
+        xs.append(f'{name}:{int(lv)}{"+" if ge else ""}')
     xs.sort()
     return ('t' + '__'.join(xs))[:220]
 
@@ -7408,8 +7419,18 @@ def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal'):
     if want_filter is None:
         return True
     levels = _unit_terrain_levels_for_mode(uid, info, stat_mode)
-    for name, lv in want_filter:
-        if _terrain_tier_norm(levels.get(name, 1)) != _terrain_tier_norm(lv):
+    for item in want_filter:
+        if len(item) == 3:
+            name, lv, ge = item
+        else:
+            name, lv = item
+            ge = False
+        got = _terrain_tier_norm(levels.get(name, 1))
+        req = _terrain_tier_norm(lv)
+        if ge:
+            if got < req:
+                return False
+        elif got != req:
             return False
     return True
 

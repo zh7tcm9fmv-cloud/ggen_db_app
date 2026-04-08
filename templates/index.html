@@ -1212,12 +1212,9 @@ html{overflow-x:hidden}
 .tb-title{color:var(--accent-cyan);font-size:22px;margin:0}
 .tb-terrain-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--text-secondary)}
 .tb-terrain-row select{background:var(--card-bg);border:1px solid var(--border-color);color:var(--text);padding:6px 10px;border-radius:6px;font-size:13px}
-.tb-main{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:start}
-@media(max-width:900px){.tb-main{grid-template-columns:1fr}}
-.tb-squad-tabs{display:flex;flex-direction:column;gap:6px}
-.tb-squad-tab{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:600}
-.tb-squad-tab.is-active{border-color:var(--accent-cyan);box-shadow:0 0 0 1px var(--accent-cyan)}
-.tb-squad-tab-hint{font-size:10px;color:var(--text-muted);font-weight:400;margin-top:4px}
+.tb-main{display:block;max-width:100%}
+.tb-dual-squads{display:flex;flex-direction:column;gap:16px}
+.tb-squad-panel{display:block}
 .tb-grid-map-row{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:start}
 @media(max-width:700px){.tb-grid-map-row{grid-template-columns:1fr}}
 .tb-slots-wrap{background:rgba(15,23,42,.5);border:1px solid var(--border-color);border-radius:10px;padding:12px}
@@ -1244,7 +1241,9 @@ html{overflow-x:hidden}
 .tb-slot-add-ms img{width:40%;max-width:44px;opacity:.85}
 .tb-slot-add-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:36px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;z-index:8}
 .tb-slot-add-pilot img{width:70%;opacity:.85}
-.tb-deploy-map{display:grid;grid-template-rows:1fr 1fr;gap:6px;padding:8px;background:rgba(15,23,42,.6);border:1px solid var(--border-color);border-radius:10px;font-size:11px;font-weight:700;color:var(--text-muted)}
+.tb-deploy-map{display:grid;grid-template-rows:auto auto;gap:8px;padding:8px;background:rgba(15,23,42,.6);border:1px solid var(--border-color);border-radius:10px;font-size:11px;font-weight:700;color:var(--text-muted)}
+.tb-deploy-squad-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin:2px 0 0}
+.tb-rearrange-squad{margin-bottom:4px}
 .tb-deploy-row{display:flex;gap:4px;justify-content:center}
 .tb-deploy-cell{flex:1;min-height:32px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(148,163,184,.35);border-radius:6px;color:var(--text-secondary);font-size:10px;padding:2px;text-align:center;line-height:1.2}
 .tb-toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
@@ -1289,11 +1288,13 @@ html{overflow-x:hidden}
 .tb-form-row input[type=text]{flex:1;padding:6px 8px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
 .tb-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:540;display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto}
 .tb-picker-overlay.active{display:flex}
-.tb-picker-dialog{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;width:min(480px,100%);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.tb-picker-dialog{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;width:min(920px,calc(100vw - 32px));max-height:78vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
 .tb-picker-head{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--border-color);align-items:center}
 .tb-picker-head input{flex:1;min-width:0;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
-.tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:50vh}
-.tb-picker-item{padding:10px 12px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px}
+.tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:min(56vh,calc(78vh - 56px))}
+.tb-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tb-picker-item{padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px;min-width:0;font-size:12px}
+.tb-picker-item>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tb-picker-item:hover{background:rgba(255,255,255,.06)}
 .tb-batch-tabbar{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border-color)}
 .tb-batch-tabbar button{padding:6px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:12px}
@@ -1511,21 +1512,22 @@ html{overflow-x:hidden}
 <div class="tb-head"><h2 class="tb-title" id="tbPageTitle">Team Builder</h2>
 <div class="tb-terrain-row"><span id="tbTerrainLbl">Terrain</span>
 <select id="tbTerrainSelect" onchange="onTbTerrainChange()"></select>
-<select id="tbTerrainLvSelect" onchange="onTbTerrainChange()" title="Min terrain level"><option value="1">Lv 1+</option><option value="2">Lv 2+</option><option value="3">Lv 3</option></select>
 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px"><input type="checkbox" id="tbMasterLeagueChk" onchange="onTbMasterLeagueChange()"> <span id="tbMlLbl">Master League Buff</span></label>
 </div></div>
 <div class="tb-main">
-<div class="tb-squad-tabs">
-<button type="button" class="tb-squad-tab is-active" id="tbSquadTab1" onclick="tbSetSquad(1)"><span id="tbSquad1Lbl">Squad 1</span><div class="tb-squad-tab-hint" id="tbSquad1Fill"></div></button>
-<button type="button" class="tb-squad-tab" id="tbSquadTab2" onclick="tbSetSquad(2)"><span id="tbSquad2Lbl">Squad 2</span><div class="tb-squad-tab-hint" id="tbSquad2Fill"></div></button>
-</div>
 <div>
 <div class="tb-grid-map-row">
 <div class="tb-slots-wrap">
-<div class="tb-slots-label" id="tbFrontLbl">Front</div>
-<div class="tb-slot-row" id="tbSlotsFront"></div>
-<div class="tb-slots-label" style="margin-top:10px" id="tbRearLbl">Rear</div>
-<div class="tb-slot-row" id="tbSlotsRear"></div>
+<div class="tb-dual-squads">
+<div class="tb-squad-panel">
+<div class="tb-slots-label" id="tbSquad1Lbl">Squad 1</div>
+<div class="tb-slot-row" id="tbSlotsSquad1"></div>
+</div>
+<div class="tb-squad-panel">
+<div class="tb-slots-label" id="tbSquad2Lbl">Squad 2</div>
+<div class="tb-slot-row" id="tbSlotsSquad2"></div>
+</div>
+</div>
 </div>
 <div class="tb-deploy-map" id="tbDeployMap" aria-hidden="true"></div>
 </div>
@@ -4433,29 +4435,39 @@ const TB_LEADER_ICON='/static/images/UI/Sprite/UI_Organization_Icon_SupporterLea
 function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitCondPassive:true,charCondPassive:true,unitTurnBuffAtk:false,exSquadAtkPct:0}}
 function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
 function initTeamBuilder(){
-if(S.tb)return;
-S.tb={activeSquad:1,squads:{1:{slots:Array.from({length:10},()=>_tbEmptySlot())},2:{slots:Array.from({length:10},()=>_tbEmptySlot())}},terrainType:'Ground',terrainLv:3,supporterId:null,supporterData:null,selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[]},masterLeague:false,_leaderApplyCache:{}};
+if(!S.tb){
+S.tb={squads:{1:{slots:Array.from({length:5},()=>_tbEmptySlot())},2:{slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Ground',supporterId:null,supporterData:null,selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[]},masterLeague:false,_leaderApplyCache:{}};
+return;
+}
+for(const side of[1,2]){
+const w=S.tb.squads&&S.tb.squads[side];
+if(!w||!Array.isArray(w.slots))continue;
+if(w.slots.length===5)continue;
+const next=w.slots.slice(0,5);
+while(next.length<5)next.push(_tbEmptySlot());
+w.slots=next;
+}
+delete S.tb.activeSquad;
 }
 function _tbReadFormations(){try{const s=localStorage.getItem(TB_FORMS_KEY);const a=JSON.parse(s);if(!Array.isArray(a)||a.length<5)throw 0;return a.map((x,i)=>({name:String((x&&x.name)||'').trim()||('Formation '+(i+1)),data:x&&x.data||null}))}catch(_){return Array.from({length:5},(_,i)=>({name:'Formation '+(i+1),data:null}))}}
 function _tbWriteFormations(arr){try{localStorage.setItem(TB_FORMS_KEY,JSON.stringify(arr))}catch(_){}}
 function _tbSlotToSave(sl){return{unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0}}
-function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,terrainLv:S.tb.terrainLv|0,masterLeague:!!S.tb.masterLeague,supporterId:S.tb.supporterId,squads:{1:{slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
+function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,masterLeague:!!S.tb.masterLeague,supporterId:S.tb.supporterId,squads:{1:{slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
 async function tbApplySnapshot(snap){
 if(!snap||snap.v!==1)return;
 initTeamBuilder();
 S.tb.terrainType=snap.terrainType||'Ground';
-S.tb.terrainLv=Math.min(3,Math.max(1,snap.terrainLv|0))||3;
 S.tb.masterLeague=!!snap.masterLeague;
 S.tb.supporterId=snap.supporterId||null;
 S.tb.supporterData=null;
 S.tb._leaderApplyCache={};
-function blank(){return Array.from({length:10},()=>_tbEmptySlot())}
+function blank(){return Array.from({length:5},()=>_tbEmptySlot())}
 const s1=(snap.squads&&snap.squads[1]&&snap.squads[1].slots)||[];
 const s2=(snap.squads&&snap.squads[2]&&snap.squads[2].slots)||[];
 S.tb.squads[1].slots=blank();
 S.tb.squads[2].slots=blank();
 async function hydrateSide(sideIdx,src){
-for(let i=0;i<10&&i<src.length;i++){
+for(let i=0;i<5&&i<src.length;i++){
 const o=src[i];if(!o)continue;const sl=S.tb.squads[sideIdx].slots[i];
 sl.lbTier=o.lbTier!=null?o.lbTier:3;sl.unitCondPassive=o.unitCondPassive!==false;sl.charCondPassive=o.charCondPassive!==false;sl.unitTurnBuffAtk=!!o.unitTurnBuffAtk;sl.exSquadAtkPct=o.exSquadAtkPct|0;
 if(o.unitId)try{const d=await fetch(`/api/unit/${encodeURIComponent(o.unitId)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(o.unitId);sl.unitData=d}}catch(_){}
@@ -4487,20 +4499,18 @@ if(row.atk_pct)a=F(a*(100+row.atk_pct)/100);
 if(row.def_pct)d=F(d*(100+row.def_pct)/100);
 return{unitAtk:a,unitDefVal:d};
 }
-function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Ground';const lv=S.tb.terrainLv|0;return'&terrain='+encodeURIComponent(tt+','+lv)}
+function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Ground';return'&terrain='+encodeURIComponent(tt+':2+')}
 function tbFillTerrainSelects(){
 initTeamBuilder();
-const ts=document.getElementById('tbTerrainSelect'),lv=document.getElementById('tbTerrainLvSelect');
+const ts=document.getElementById('tbTerrainSelect');
 if(!ts)return;
 const cur=S.tb.terrainType,items=_tbTerrainItems();
 ts.innerHTML=items.map(x=>`<option value="${escAttr(x)}"${x===cur?' selected':''}>${esc(tTerrain(x))}</option>`).join('');
-if(lv){const n=Math.min(3,Math.max(1,S.tb.terrainLv|0));lv.value=String(n);S.tb.terrainLv=n}
 }
 function onTbTerrainChange(){
 initTeamBuilder();
-const ts=document.getElementById('tbTerrainSelect'),lv=document.getElementById('tbTerrainLvSelect');
+const ts=document.getElementById('tbTerrainSelect');
 if(ts)S.tb.terrainType=ts.value||'Ground';
-if(lv)S.tb.terrainLv=parseInt(lv.value,10)||3;
 renderTeamBuilder();
 }
 function onTbMasterLeagueChange(){
@@ -4509,30 +4519,32 @@ const ml=document.getElementById('tbMasterLeagueChk');
 S.tb.masterLeague=!!(ml&&ml.checked);
 renderTbStats();
 }
-function tbSetSquad(n){
-initTeamBuilder();
-S.tb.activeSquad=n===2?2:1;
-document.querySelectorAll('.tb-squad-tab').forEach(el=>el.classList.remove('is-active'));
-const t=document.getElementById('tbSquadTab'+S.tb.activeSquad);if(t)t.classList.add('is-active');
-S.tb.selectedKey=null;
-renderTeamBuilder();
-}
-function _tbSquad(){initTeamBuilder();return S.tb.squads[S.tb.activeSquad]}
-function _tbKey(row,col){return(S.tb.activeSquad<<8)+(row*5+col)}
-function _tbRowColFromKey(key){const k=key&0xff;return{row:k<5?0:1,col:k%5}}
+function _tbSideFromKey(key){const s=(key>>8)&255;return s===2?2:1}
+function _tbIdxFromKey(key){return key&255}
+function _tbSquFromKey(key){initTeamBuilder();return S.tb.squads[_tbSideFromKey(key)]}
+function _tbKey(side,col){return((side===2?2:1)<<8)+(col|0)}
 function tbSlotClick(key){
 initTeamBuilder();
 if(S.tb.rearrange){tbRearrangeTap(key);return}
 S.tb.selectedKey=key;
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 renderTbSlots();renderTbStats();
+if(!sl.unitData)openTbPicker('unit',key);
+}
+function tbPilotAddClick(key,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+if(S.tb.rearrange)return;
+S.tb.selectedKey=key;
+renderTbSlots();renderTbStats();
+openTbPicker('char',key);
 }
 function tbSlotContextMenu(key,ev){
 if(ev)ev.preventDefault();
 initTeamBuilder();
 if(S.tb.rearrange)return;
 S.tb.selectedKey=key;
-const rc=_tbRowColFromKey(key);
-const sl=_tbSquad().slots[rc.row*5+rc.col];
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 if(sl.unitData)openTbPicker(sl.charData?'option':'char',key);
 else openTbPicker('unit',key);
 }
@@ -4551,19 +4563,18 @@ if(lb&&lb.length>1&&!ud.is_ultimate){const tier=Math.min(sl.lbTier|0,lb.length-1
 const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[String(ud.id)+':'+String(sl.charData&&sl.charData.id||'')])?`<img class="tb-long-leader-ic" src="${imgUrl(TB_LEADER_ICON)}" alt="" loading="lazy">`:'';
 const opN=(sl.optionParts||[]).length;
 const opMini=opN?`<div class="tb-slot-op-mini">${esc(t('tb_op_count').replace('{n}',String(opN)))}</div>`:'';
-return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${!sl.charData?`<div class="tb-slot-add-pilot"><span style="font-size:14px;color:#93c5fd">+</span></div>`:''}`;
+return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${!sl.charData?`<div class="tb-slot-add-pilot" role="button" tabindex="0" onclick="tbPilotAddClick(${slotKey},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbPilotAddClick(${slotKey},event)}"><span style="font-size:14px;color:#93c5fd">+</span></div>`:''}`;
 }
 function renderTbSlots(){
 initTeamBuilder();
-const front=document.getElementById('tbSlotsFront'),rear=document.getElementById('tbSlotsRear');
-if(!front||!rear)return;
-const squ=_tbSquad();
-function rowHtml(row){
+const r1=document.getElementById('tbSlotsSquad1'),r2=document.getElementById('tbSlotsSquad2');
+if(!r1||!r2)return;
+function rowHtml(side){
+const squ=S.tb.squads[side];
 let h='';
 for(let col=0;col<5;col++){
-const idx=row*5+col;
-const key=_tbKey(row,col);
-const sl=squ.slots[idx];
+const key=_tbKey(side,col);
+const sl=squ.slots[col];
 const sel=S.tb.selectedKey===key;
 let cls='tb-slot'+(sel?' is-sel':'');
 if(S.tb.rearrange&&S.tb.rearrange.pendingKey===key)cls+=' is-rearrange-pending';
@@ -4571,21 +4582,19 @@ h+=`<div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncon
 }
 return h;
 }
-front.innerHTML=rowHtml(0);rear.innerHTML=rowHtml(1);
-tbUpdateSquadHints();tbRenderDeployMap();scheduleTbLeaderRefresh();
+r1.innerHTML=rowHtml(1);r2.innerHTML=rowHtml(2);
+tbRenderDeployMap();scheduleTbLeaderRefresh();
 }
 function tbRenderDeployMap(){
 const el=document.getElementById('tbDeployMap');if(!el)return;
-const squ=_tbSquad();
-function cell(row,col){const sl=squ.slots[row*5+col];if(sl&&sl.unitData)return'<div class="tb-deploy-cell">●</div>';return'<div class="tb-deploy-cell">·</div>'}
-el.innerHTML='<div class="tb-deploy-row">'+[0,1,2,3,4].map(c=>cell(0,c)).join('')+'</div><div class="tb-deploy-row">'+[0,1,2,3,4].map(c=>cell(1,c)).join('')+'</div>';
+function cells(side){
+const squ=S.tb.squads[side];
+return[0,1,2,3,4].map(c=>{const sl=squ.slots[c];return sl&&sl.unitData?'<div class="tb-deploy-cell">●</div>':'<div class="tb-deploy-cell">·</div>'}).join('');
 }
-function tbUpdateSquadHints(){
-initTeamBuilder();
-function count(side){let n=0;for(let i=0;i<10;i++)if(S.tb.squads[side].slots[i].unitData)n++;return n}
-const f1=document.getElementById('tbSquad1Fill'),f2=document.getElementById('tbSquad2Fill');
-if(f1)f1.textContent=t('tb_squad_fill').replace('{n}',String(count(1)));
-if(f2)f2.textContent=t('tb_squad_fill').replace('{n}',String(count(2)));
+el.innerHTML=`<div class="tb-deploy-squad-lbl" id="tbDeployLbl1"></div><div class="tb-deploy-row">${cells(1)}</div><div class="tb-deploy-squad-lbl" id="tbDeployLbl2" style="margin-top:6px"></div><div class="tb-deploy-row">${cells(2)}</div>`;
+const l1=document.getElementById('tbDeployLbl1'),l2=document.getElementById('tbDeployLbl2');
+if(l1)l1.textContent=t('tb_squad1');
+if(l2)l2.textContent=t('tb_squad2');
 }
 let _tbLeaderFt=null;
 function scheduleTbLeaderRefresh(){clearTimeout(_tbLeaderFt);_tbLeaderFt=setTimeout(tbRefreshLeaderApplies,100)}
@@ -4597,7 +4606,7 @@ S.tb._leaderApplyCache=S.tb._leaderApplyCache||{};
 const tasks=[];
 for(const side of[1,2]){
 const squ=S.tb.squads[side];
-for(let i=0;i<10;i++){
+for(let i=0;i<5;i++){
 const sl=squ.slots[i];
 if(!sl||!sl.unitData||sl.unitData._manual)continue;
 const uid=String(sl.unitData.id);
@@ -4631,9 +4640,7 @@ initTeamBuilder();
 const pan=document.getElementById('tbStatsPanel');if(!pan)return;
 const key=S.tb.selectedKey;
 if(key==null){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
-const rc=_tbRowColFromKey(key);
-const squ=_tbSquad();
-const sl=squ.slots[rc.row*5+rc.col];
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 if(!sl||!sl.unitData){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
 const ud=sl.unitData;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
@@ -4652,8 +4659,6 @@ function tbApplyLangStatic(){
 const el=id=>document.getElementById(id);
 if(el('tbPageTitle'))el('tbPageTitle').textContent=t('tab_team_builder');
 if(el('tbTerrainLbl'))el('tbTerrainLbl').textContent=t('terrain');
-if(el('tbFrontLbl'))el('tbFrontLbl').textContent=t('tb_front');
-if(el('tbRearLbl'))el('tbRearLbl').textContent=t('tb_rear');
 if(el('tbSquad1Lbl'))el('tbSquad1Lbl').textContent=t('tb_squad1');
 if(el('tbSquad2Lbl'))el('tbSquad2Lbl').textContent=t('tb_squad2');
 if(el('tbBtnFormation'))el('tbBtnFormation').textContent=t('tb_formation');
@@ -4680,7 +4685,7 @@ if(!ov||!inp||!body)return;
 inp.value='';
 ov.classList.add('active');
 if(type==='option'){
-const squ=_tbSquad();const rc=_tbRowColFromKey(slotKey);const sl=squ.slots[rc.row*5+rc.col];
+const squ=_tbSquFromKey(slotKey);const sl=squ.slots[_tbIdxFromKey(slotKey)];
 if(!sl||!sl.unitId){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('dc_pick_unit'))}</div>`;return}
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
@@ -4696,7 +4701,7 @@ if(type==='supporter'){
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 let extra='&rarity=ALL';
-const squ=_tbSquad();const k=S.tb.selectedKey;if(k!=null){const rc=_tbRowColFromKey(k);const sl=squ.slots[rc.row*5+rc.col];if(sl&&sl.unitId)extra+='&unit_id='+encodeURIComponent(sl.unitId);if(sl&&sl.charId)extra+='&character_id='+encodeURIComponent(sl.charId)}
+const k=S.tb.selectedKey;if(k!=null){const squ=_tbSquFromKey(k);const sl=squ.slots[_tbIdxFromKey(k)];if(sl&&sl.unitId)extra+='&unit_id='+encodeURIComponent(sl.unitId);if(sl&&sl.charId)extra+='&character_id='+encodeURIComponent(sl.charId)}
 const d=await fetch(`/api/supporters?lang=${S.lang}&page=1&per_page=200&sort=rarity&dir=desc&q=${encodeURIComponent('')}${extra}`).then(r=>r.json());
 S.tb.picker.rows=d.rows||[];
 filterTbPickerList();
@@ -4705,8 +4710,9 @@ setTimeout(()=>inp.focus(),50);
 return;
 }
 inp.placeholder=type==='character'?t('search_char'):t('search_unit');
-body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('cmp_type_to_search'))}</div>`;
+body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 setTimeout(()=>inp.focus(),50);
+await _tbDoPickerSearch();
 }
 function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},120)}
 function filterTbPickerList(){
@@ -4715,13 +4721,13 @@ const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLow
 let rows=S.tb.picker.rows||[];
 if(q)rows=rows.filter(r=>String(r.name||'').toLowerCase().includes(q)||String(r.details||r.boost||'').toLowerCase().includes(q));
 if(!rows.length){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;return}
-const t=S.tb.picker.type;
-body.innerHTML=rows.map(r=>`<div class="tb-picker-item" onclick="pickTbItem(${JSON.stringify(String(r.id))})">${t==='supporter'?renderListThumb(r,'supp',40):renderListThumb(r,t==='character'?'char':'unit',40)}<span>${esc(r.name||'')}</span></div>`).join('');
+const t=S.tb.picker.type,th=32;
+const cells=rows.map(r=>`<div class="tb-picker-item" onclick="pickTbItem(${JSON.stringify(String(r.id))})">${t==='supporter'?renderListThumb(r,'supp',th):renderListThumb(r,t==='character'?'char':'unit',th)}<span>${esc(r.name||'')}</span></div>`).join('');
+body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 }
 async function _tbDoPickerSearch(){
 const type=S.tb.picker.type,q=document.getElementById('tbPickerSearch').value.trim(),body=document.getElementById('tbPickerBody');
 if(!body)return;
-if(q.length<2){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('cmp_type_to_search'))}</div>`;return}
 if(_tbPickerAbort){try{_tbPickerAbort.abort()}catch(_){}}
 const ac=new AbortController();_tbPickerAbort=ac;const myGen=++_tbPickerGen;
 const base=type==='character'?'/api/characters':'/api/units';
@@ -4729,7 +4735,7 @@ const qU=type==='unit'?expandUnitSearchQuery(q):q;
 const terr=type==='unit'?_tbTerrainQuery():'';
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
-const url=`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(qU)}${terr}`;
+const url=`${base}?lang=${S.lang}&page=1&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent(qU)}${terr}`;
 const r=await fetch(url,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_tbPickerGen)return;
@@ -4746,7 +4752,7 @@ try{const d=await fetch(`/api/supporter/${encodeURIComponent(id)}?lang=${S.lang}
 renderTeamBuilder();return;
 }
 if(slotKey==null)return;
-const squ=_tbSquad();const rc=_tbRowColFromKey(slotKey);const idx=rc.row*5+rc.col;const sl=squ.slots[idx];
+const squ=_tbSquFromKey(slotKey);const sl=squ.slots[_tbIdxFromKey(slotKey)];
 if(type==='unit'){
 try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(id);sl.unitData=d;sl.optionParts=[]}}catch(_){}
 }else if(type==='character'){
@@ -4771,9 +4777,18 @@ tbRenderRearrangeBody();
 }
 function tbRenderRearrangeBody(){
 const body=document.getElementById('tbRearrangeBody');if(!body)return;
-const squ=S.tb.rearrange.draft[S.tb.activeSquad];
-function rowHtml(row){let h='';for(let col=0;col<5;col++){const idx=row*5+col;const key=_tbKey(row,col);const sl=squ.slots[idx];const pk=S.tb.rearrange.pendingKey===key;h+=`<div class="tb-slot${pk?' is-rearrange-pending':''}" style="width:100px" onclick="tbRearrangeTap(${key})">${_tbLongCardHtml(sl,key)}</div>`}return`<div class="tb-slot-row">${h}</div>`}
-body.innerHTML=rowHtml(0)+rowHtml(1);
+function five(side){
+const squ=S.tb.rearrange.draft[side];
+let h='';
+for(let col=0;col<5;col++){
+const key=_tbKey(side,col);
+const sl=squ.slots[col];
+const pk=S.tb.rearrange.pendingKey===key;
+h+=`<div class="tb-slot${pk?' is-rearrange-pending':''}" style="width:100px" onclick="tbRearrangeTap(${key})">${_tbLongCardHtml(sl,key)}</div>`;
+}
+return`<div class="tb-slot-row">${h}</div>`;
+}
+body.innerHTML=`<div class="tb-rearrange-squad"><div class="tb-slots-label">${esc(t('tb_squad1'))}</div>${five(1)}</div><div class="tb-rearrange-squad" style="margin-top:14px"><div class="tb-slots-label">${esc(t('tb_squad2'))}</div>${five(2)}</div>`;
 }
 function tbRearrangeTap(key){
 if(!S.tb.rearrange)return;
@@ -4781,11 +4796,13 @@ const linked=!!document.getElementById('tbRearrangeLinked').checked;
 if(S.tb.rearrange.pendingKey==null){S.tb.rearrange.pendingKey=key;tbRenderRearrangeBody();return}
 const a=S.tb.rearrange.pendingKey,b=key;
 if(a===b){S.tb.rearrange.pendingKey=null;tbRenderRearrangeBody();return}
-const squ=S.tb.rearrange.draft[S.tb.activeSquad];
-const ia=_tbRowColFromKey(a),ib=_tbRowColFromKey(b);
-const sa=squ.slots[ia.row*5+ia.col],sb=squ.slots[ib.row*5+ib.col];
-if(linked){const ta=JSON.parse(JSON.stringify(sa));const tbj=JSON.parse(JSON.stringify(sb));Object.keys(sa).forEach(k=>delete sa[k]);Object.assign(sa,tbj);Object.keys(sb).forEach(k=>delete sb[k]);Object.assign(sb,ta)}
-else{const ua={unitId:sa.unitId,unitData:sa.unitData,optionParts:sa.optionParts,lbTier:sa.lbTier};const ub={unitId:sb.unitId,unitData:sb.unitData,optionParts:sb.optionParts,lbTier:sb.lbTier};sa.unitId=ub.unitId;sa.unitData=ub.unitData;sa.optionParts=ub.optionParts||[];sb.unitId=ua.unitId;sb.unitData=ua.unitData;sb.optionParts=ua.optionParts||[];sa.lbTier=ub.lbTier;sb.lbTier=ua.lbTier}
+const sa=_tbSideFromKey(a),sb=_tbSideFromKey(b);
+if(sa!==sb){S.tb.rearrange.pendingKey=key;tbRenderRearrangeBody();return}
+const squ=S.tb.rearrange.draft[sa];
+const ia=_tbIdxFromKey(a),ib=_tbIdxFromKey(b);
+const slotA=squ.slots[ia],slotB=squ.slots[ib];
+if(linked){const ta=JSON.parse(JSON.stringify(slotA));const tbj=JSON.parse(JSON.stringify(slotB));Object.keys(slotA).forEach(k=>delete slotA[k]);Object.assign(slotA,tbj);Object.keys(slotB).forEach(k=>delete slotB[k]);Object.assign(slotB,ta)}
+else{const ua={unitId:slotA.unitId,unitData:slotA.unitData,optionParts:slotA.optionParts,lbTier:slotA.lbTier};const ub={unitId:slotB.unitId,unitData:slotB.unitData,optionParts:slotB.optionParts,lbTier:slotB.lbTier};slotA.unitId=ub.unitId;slotA.unitData=ub.unitData;slotA.optionParts=ub.optionParts||[];slotB.unitId=ua.unitId;slotB.unitData=ua.unitData;slotB.optionParts=ua.optionParts||[];slotA.lbTier=ub.lbTier;slotB.lbTier=ua.lbTier}
 S.tb.rearrange.pendingKey=null;tbRenderRearrangeBody();
 }
 function tbRearrangeCancel(){
@@ -4833,20 +4850,27 @@ S.tb.batch.loading=false;
 function tbBatchToggleFromCb(cb){initTeamBuilder();const id=cb&&cb.getAttribute('data-tb-bid');if(!id)return;if(cb.checked)S.tb.batch.selected.add(id);else S.tb.batch.selected.delete(id)}
 async function tbBatchApply(){
 initTeamBuilder();
-const squ=_tbSquad();
 const ids=[...S.tb.batch.selected];
-let slot=0;
 const kind=S.tb.batch.kind;
+function nextEmptyUnitSlot(){
+for(const side of[1,2]){const squ=S.tb.squads[side];for(let slot=0;slot<5;slot++)if(!squ.slots[slot].unitData)return{side,slot}}
+return null
+}
+function nextEmptyPilotSlot(){
+for(const side of[1,2]){const squ=S.tb.squads[side];for(let slot=0;slot<5;slot++)if(squ.slots[slot].unitData&&!squ.slots[slot].charData)return{side,slot}}
+return null
+}
 for(const rawId of ids){
-if(kind==='unit'){while(slot<10&&squ.slots[slot].unitData)slot++}else{while(slot<10&&!(squ.slots[slot].unitData&&!squ.slots[slot].charData))slot++}
-if(slot>=10)break;
 const id=rawId;
 if(kind==='unit'){
-try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){squ.slots[slot].unitId=id;squ.slots[slot].unitData=d;squ.slots[slot].optionParts=[]}}catch(_){}
+const pos=nextEmptyUnitSlot();if(!pos)break;
+const sl=S.tb.squads[pos.side].slots[pos.slot];
+try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=id;sl.unitData=d;sl.optionParts=[]}}catch(_){}
 }else{
-try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){squ.slots[slot].charId=id;squ.slots[slot].charData=d}}catch(_){}
+const pos=nextEmptyPilotSlot();if(!pos)break;
+const sl=S.tb.squads[pos.side].slots[pos.slot];
+try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=id;sl.charData=d}}catch(_){}
 }
-slot++;
 }
 closeTbBatchModal();S.tb._leaderApplyCache={};renderTeamBuilder();
 }
