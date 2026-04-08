@@ -1225,12 +1225,12 @@ html{overflow-x:hidden}
 .tb-slot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
 .tb-slot-col{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;width:min(20vw,124px);min-width:92px;max-width:min(20vw,124px);box-sizing:border-box}
 .tb-slot{position:relative;width:100%;min-width:0;aspect-ratio:10/16;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s;background:#0b1020;box-sizing:border-box}
-.tb-slot-lb-outside{width:100%;max-width:100%;display:flex;justify-content:center;align-items:stretch;min-height:0;box-sizing:border-box}
-.tb-slot-lb-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;width:100%;box-sizing:border-box}
-.tb-slot-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0;box-sizing:border-box}
-.tb-slot-lb-ic:hover{background:rgba(0,0,0,.58)}
-.tb-slot-lb-ic--sel{border-color:rgba(34,211,238,.65);box-shadow:0 0 0 1px rgba(34,211,238,.2)}
-.tb-slot-lb-ic img{width:11px;height:11px;object-fit:contain;display:block}
+.tb-slot-lb-outside{width:100%;max-width:100%;display:flex;justify-content:center;align-items:stretch;min-height:0;box-sizing:border-box;position:relative;z-index:4}
+.tb-slot-lb-details.cmp-lb-details{width:100%;max-width:100%}
+.tb-slot-lb-details .cmp-lb-summary{min-height:32px;padding:4px 8px;font-size:10px}
+.tb-slot-lb-details .cmp-lb-summary img{width:16px;height:16px}
+.tb-slot-lb-details .cmp-lb-menu{left:0;right:0;width:100%;min-width:0;box-sizing:border-box;z-index:50}
+.tb-slot-lb-details .cmp-lb-opt img{width:16px;height:16px}
 .tb-supp-lb-icons{display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center}
 .tb-supp-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0}
 .tb-supp-lb-ic:hover{background:rgba(0,0,0,.58)}
@@ -1280,6 +1280,7 @@ html{overflow-x:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
 .tb-long-pilot-corner{position:absolute;right:2px;bottom:2px;z-index:8;display:flex;flex-direction:row;align-items:flex-end;justify-content:flex-end;gap:3px;flex-wrap:nowrap;max-width:calc(100% - 4px)}
 .tb-long-pilot{position:relative;right:auto;bottom:auto;width:clamp(61px,76%,112px);max-width:112px;aspect-ratio:1;flex-shrink:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.tb-long-pilot.tb-long-pilot--click{border:none;box-shadow:none;background:transparent}
 .tb-long-pilot--click{cursor:pointer}
 .tb-long-pilot img{width:100%;height:100%;object-fit:cover}
 .tb-long-pilot-corner .tb-slot-rec-pilot{width:clamp(61px,71.5%,101px);max-width:101px;min-width:47px}
@@ -2009,10 +2010,10 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_op_swap:'Change option part',tb_pick_pilot_unit:'Choose pilot for this unit'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_op_swap:'オプションパーツを変更',tb_pick_pilot_unit:'このユニットのパイロットを選択'});
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_pick_pilot_unit:'Choose pilot for this unit'});
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_pick_pilot_unit:'選擇此機體的駕駛員'});
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_pick_pilot_unit:'このユニットのパイロットを選択'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -4636,7 +4637,7 @@ delete S.tb.activeSquad;
 }
 function _tbReadFormations(){try{const s=localStorage.getItem(TB_FORMS_KEY);const a=JSON.parse(s);if(!Array.isArray(a)||a.length<5)throw 0;return a.map((x,i)=>({name:String((x&&x.name)||'').trim()||('Formation '+(i+1)),data:x&&x.data||null}))}catch(_){return Array.from({length:5},(_,i)=>({name:'Formation '+(i+1),data:null}))}}
 function _tbWriteFormations(arr){try{localStorage.setItem(TB_FORMS_KEY,JSON.stringify(arr))}catch(_){}}
-function _tbSlotToSave(sl){const o={unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0};if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;if(sl.unitTurnBuffDef)o.utd=1;return o}
+function _tbSlotToSave(sl){const o={unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).slice(0,1).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0};if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;if(sl.unitTurnBuffDef)o.utd=1;return o}
 function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,masterLeague:!!S.tb.masterLeague,supporter1:S.tb.supBySide[1].id,supporter2:S.tb.supBySide[2].id,supLb1:S.tb.supBySide[1].lbTier!=null?S.tb.supBySide[1].lbTier|0:3,supLb2:S.tb.supBySide[2].lbTier!=null?S.tb.supBySide[2].lbTier|0:3,squads:{1:{name:String(S.tb.squads[1].name||'').trim().slice(0,40),slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{name:String(S.tb.squads[2].name||'').trim().slice(0,40),slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
 async function tbApplySnapshot(snap){
 if(!snap||snap.v!==1)return;
@@ -4665,7 +4666,7 @@ const o=src[i];if(!o)continue;const sl=S.tb.squads[sideIdx].slots[i];
 sl.lbTier=o.lbTier!=null?o.lbTier:3;const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')sl.unitStatMode=um;else sl.unitStatMode='normal';sl.unitCondPassive=!!o.unitCondPassive;sl.charCondPassive=!!o.charCondPassive;sl.unitTurnBuffAtk=!!o.unitTurnBuffAtk;sl.unitTurnBuffDef=!!o.utd||!!o.unitTurnBuffDef;sl.exSquadAtkPct=o.exSquadAtkPct|0;
 if(o.unitId)try{const d=await fetch(`/api/unit/${encodeURIComponent(o.unitId)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(o.unitId);sl.unitData=d}}catch(_){}
 if(o.charId)try{const d=await fetch(`/api/character/${encodeURIComponent(o.charId)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(o.charId);sl.charData=d}}catch(_){}
-const ids=Array.isArray(o.optionPartIds)?o.optionPartIds:[];
+const ids=Array.isArray(o.optionPartIds)?o.optionPartIds.slice(0,1):[];
 for(const pid of ids){if(!pid)continue;try{const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(pid)}&rarity=ALL&effect=ALL&unit_id=${encodeURIComponent(sl.unitId||'0')}`).then(r=>r.json());const hit=(d.rows||[]).find(x=>String(x.id)===String(pid));if(hit)sl.optionParts.push(hit)}catch(_){}}
 }}
 await hydrateSide(1,s1);await hydrateSide(2,s2);
@@ -4853,7 +4854,7 @@ const ks=String(id);
 if(seen.has(ks))continue;
 seen.add(ks);next.push(p);
 }
-sl.optionParts=next;
+sl.optionParts=next.slice(0,1);
 }}}
 function _tbUnitRoleKind(ud){
 if(!ud)return'atk';
@@ -4953,13 +4954,14 @@ if(!lb||lb.length<=1||ud.is_ultimate)return'';
 const maxT=lb.length-1;
 const cur=Math.min(sl.lbTier|0,maxT);
 const lbOpt=String(t('supp_lb_tier')||'LB');
-let btns='';
+const detId=`tbSlotLbDet${slotKey}`;
+const curP=cmpLbPipsAtTier(cur);
+let lbMenu='';
 for(let ti=0;ti<=maxT;ti++){
 const pip=cmpLbPipsAtTier(ti);
-const sel=ti===cur?' tb-slot-lb-ic--sel':'';
-btns+=`<button type="button" class="tb-slot-lb-ic${sel}" title="${escAttr(lbOpt+' '+ti)}" aria-pressed="${ti===cur?'true':'false'}" aria-label="${escAttr(lbOpt+' '+ti)}" onclick="event.stopPropagation();tbSetSlotLbTier(${slotKey},${ti},event)">${cmpLbPipsRow(pip[0],pip[1],pip[2])}</button>`;
+lbMenu+=`<button type="button" class="cmp-lb-opt${ti===cur?' is-active':''}" onclick="event.stopPropagation();tbSetSlotLbTier(${slotKey},${ti},event);var _tbd=document.getElementById('${detId}');if(_tbd)_tbd.open=false" role="option" aria-selected="${ti===cur}" aria-label="${escAttr(lbOpt+' '+ti)}">${cmpLbPipsRow(pip[0],pip[1],pip[2])}</button>`;
 }
-return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><div class="tb-slot-lb-icons">${btns}</div></div>`;
+return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><details id="${detId}" class="cmp-lb-details tb-slot-lb-details"><summary class="cmp-lb-summary tb-slot-lb-summary" title="${escAttr(lbOpt)}" aria-label="${escAttr(lbOpt)}">${cmpLbPipsRow(curP[0],curP[1],curP[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${escAttr(lbOpt)}">${lbMenu}</div></details></div>`;
 }
 function _tbSlotOpOutsideHtml(key,sl){
 if(!sl.unitData)return'';
@@ -4968,10 +4970,10 @@ const swapT=escAttr(t('tb_op_swap')||'Change option part');
 const opRows=(sl.optionParts||[]).map((p,i)=>{
 const th=p.thum?`<img class="tb-op-thum" src="${imgUrl(p.thum)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
 const sum=esc(_tbFormatOptionBonusesShort(p.details));
-const lim=/limiter/i.test(String(p.name||''))?`<span class="tb-op-limiter-tag">Limiter</span>`:'';
-return`<div class="tb-op-row tb-op-row--rich tb-op-row--pick" role="button" tabindex="0" title="${swapT}" aria-label="${swapT}" onclick="event.stopPropagation();tbOpenOptionReplacePicker(${key},${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbOpenOptionReplacePicker(${key},${i},event)}">${th}<span class="tb-op-sum">${sum}</span>${lim}</div>`;
+return`<div class="tb-op-row tb-op-row--rich tb-op-row--pick" role="button" tabindex="0" title="${swapT}" aria-label="${swapT}" onclick="event.stopPropagation();tbOpenOptionReplacePicker(${key},${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbOpenOptionReplacePicker(${key},${i},event)}">${th}<span class="tb-op-sum">${sum}</span></div>`;
 }).join('');
-return`<div class="tb-slot-op-outside" onclick="event.stopPropagation()"><div class="tb-op-box tb-op-box--under-slot"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tb_op_label')||'OP')}</span><button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})"${opN>=5?' disabled':''}>+</button></div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
+const addBtn=opN>=1?'':`<button type="button" class="tb-op-add" onclick="event.stopPropagation();tbOpenOptionPartsPicker(${key})">+</button>`;
+return`<div class="tb-slot-op-outside" onclick="event.stopPropagation()"><div class="tb-op-box tb-op-box--under-slot"><div class="tb-op-head"><span class="tb-op-title">${esc(t('tb_option_part')||'Option Part')}</span>${addBtn}</div>${opRows?opRows:`<div class="tb-op-empty">${esc(t('none'))}</div>`}</div></div>`;
 }
 function _tbLongCardHtml(sl,slotKey){
 const ud=sl.unitData;
@@ -5387,7 +5389,7 @@ if(sl.optionParts.length>=5)return;
 const used=_tbCollectUsedOptionPartIds(slotKey);
 if(used.has(String(hit.id)))return;
 if(sl.optionParts.some(p=>p&&String(p.id)===String(hit.id)))return;
-sl.optionParts.push(hit);
+sl.optionParts=[hit];
 }
 }
 }
@@ -5698,7 +5700,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: floor(base×(100+passive%+OP%+EX%+leader%+ML(+50)+…)/100) + flats. This line is the floor’d delta from EX% in that sum.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: floor(base×(100+all ATK % including EX)/100)+option flat+supporter flat. This line is the delta from EX squad % only in that single floor.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn||masterLeagueOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
@@ -5716,7 +5718,7 @@ if((utb.atkPct|0)>0||(utb.defPct|0)>0){
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
 if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)"><span>MS ATK +${utb.atkPct}% (1 turn)</span></label>`;
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
-unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) is added into the same growth-line % bucket as unit passive, option parts, EX squad, and leader — not applied again on top of the final MS Attack. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
+unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) is added into the same floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML%)/100) bucket as the other MS Attack % lines. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
 }
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 const uGridCls=masterLeagueOn?`${uVis} dc-stats-mini--ml-buff`:uVis;
@@ -5755,7 +5757,7 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='dc-stat-mini-bonus';
-sub.title='floor(base×(100+passive%+OP%+EX%+leader%+ML)/100): delta from EX% in that sum.';
+sub.title='floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
@@ -7213,17 +7215,12 @@ if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(
 const tAtk=turnAtkPct|0;
 const unitAtkExSquadBase=F(atkBase*(100+pAtk+mlPct)/100);
 const unitDefExSquadBase=F(defBase*(100+pDef+mlPct)/100);
-const gOp=F(atkBase*(100+pAtk+opAt+tAtk+mlPct)/100);
-let growthAtk=gOp;
-if((exSq|0)>0)growthAtk=_dcApplyExSquadToUnitAtk(gOp,gOp,exSq);
-if((lp|0)>0)growthAtk=_dcApplyLeaderPctToAttackAfterEx(growthAtk,gOp,exSq,lp);
-let unitAtk=growthAtk+(opFlat.Attack|0)+(atkSupport|0);
-const unitAtkGrowthAfterOptions=gOp;
+const unitAtkGrowthAfterOptions=F(atkBase*(100+pAtk+opAt+tAtk+mlPct)/100);
+const sumAtkPctNoEx=(pAtk+opAt+tAtk+mlPct+lp)|0;
+const sumAtkPctFull=sumAtkPctNoEx+(exSq|0);
+let unitAtk=F(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
-if((exSq|0)>0){
-const wEx=_dcApplyExSquadToUnitAtk(gOp,gOp,exSq);
-deltaExAtk=wEx-gOp;
-}
+if((exSq|0)>0)deltaExAtk=F(atkBase*(100+sumAtkPctNoEx+exSq)/100)-F(atkBase*(100+sumAtkPctNoEx)/100);
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
