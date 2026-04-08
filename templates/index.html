@@ -1282,7 +1282,7 @@ html{overflow-x:hidden;width:100%;max-width:100%}
 .tb-long-portrait-wrap .tb-long-pilot-corner{pointer-events:auto}
 .tb-long-portrait{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:50% 26%;pointer-events:none;display:block}
 .tb-long-portrait--sd{object-position:50% 40%}
-.tb-long-portrait--face{object-position:50% 34%}
+.tb-long-portrait--thum-slot{object-position:50% 50%}
 .tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:7;border-radius:50%;overflow:hidden}
 .tb-long-role img{width:100%;height:100%;object-fit:cover}
 .tb-long-pilot-corner{position:absolute;right:2px;bottom:2px;z-index:8;display:flex;flex-direction:row;align-items:flex-end;justify-content:flex-end;gap:3px;flex-wrap:nowrap;max-width:calc(100% - 4px)}
@@ -4855,16 +4855,40 @@ fatk=prf.unitAtk;fdef=prf.unitDefVal;
 fdef=_tbApplyUnitTurnBuffDefToMsDef(fdef,ud,!!sl.unitTurnBuffDef);
 return{hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove};
 }
-function _tbScoreOptionForAutoFill(sl,side,row,supForSlot,rk,uTags){
-const rkU=rk!=null?rk:_tbUnitRoleKind(sl.unitData);
-const tagU=uTags!=null?uTags:_tbUnitTagIdSet(sl.unitData);
-const tie=_tbScoreOptionRowForAuto(row,rkU,tagU);
+function _tbRarityRankOption(row){return{UR:4,SSR:3,SR:2,R:1}[row&&row.rarity]||0}
+function _tbRankOptionForAutoFill(sl,side,row,supForSlot){
+const rk=_tbUnitRoleKind(sl.unitData);
+const b=_dcParseOptionPartBonuses(row.details||'');
 const part={id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[]};
 const z=_tbStatTotalsWithFullCtx(sl,side,[],supForSlot);
 const w=_tbStatTotalsWithFullCtx(sl,side,[part],supForSlot);
-if(!z||!w)return tie;
-const dHp=w.hp-z.hp,dAtk=w.atk-z.atk,dDef=w.def-z.def,dMob=w.mob-z.mob,dMov=w.mov-z.mov;
-return dHp+dAtk+dDef+dMob+dMov+tie*1e-6;
+const dAtk=z&&w?w.atk-z.atk:0;
+const dHp=z&&w?w.hp-z.hp:0;
+const dDef=z&&w?w.def-z.def:0;
+const atk12=b.Attack.pct===12;
+const hp12=b.HP.pct===12;
+const def12=b.Defense.pct===12;
+const rid=parseInt(String(row.id),10)||0;
+const rb=_tbRarityRankOption(row);
+if(rk==='def'){
+if(hp12)return[4,dHp,dDef,dAtk,rb,rid];
+if(def12)return[3,dDef,dHp,dAtk,rb,rid];
+return[2,dHp+dDef,dDef,dHp,rb,rid];
+}
+if(rk==='sup'){
+if(atk12)return[4,dAtk,0,0,rb,rid];
+return[2,dAtk,0,0,rb,rid];
+}
+if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
+return[2,dAtk,dHp+dDef,dDef,rb,rid];
+}
+function _tbCompareRankAuto(a,b){
+for(let i=0;i<Math.max(a.length,b.length);i++){
+const x=a[i]??0,y=b[i]??0;
+if(x>y)return 1;
+if(x<y)return -1;
+}
+return 0;
 }
 function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
@@ -5031,44 +5055,6 @@ if(r.includes('defens')||r.includes('耐久'))return'def';
 if(r.includes('support')||r.includes('支援'))return'sup';
 return'atk';
 }
-function _tbUnitTagIdSet(ud){
-const ids=new Set();
-if(!ud)return ids;
-(ud.skill_tag_data||[]).forEach(block=>{(block.tags||[]).forEach(tg=>{const x=tg&&tg.id;if(x)ids.add(String(x))})});
-(ud.tags||[]).forEach(tg=>{const x=tg&&tg.id;if(x)ids.add(String(x))});
-return ids;
-}
-function _tbOptionSharesUnitLineage(row,unitTagIds){
-const tags=row.tags||[];
-for(let i=0;i<tags.length;i++){
-const id=tags[i]&&tags[i].id;
-if(id&&unitTagIds.has(String(id)))return true;
-}
-return false;
-}
-function _tbScoreOptionRowForAuto(row,roleKind,unitTagIds){
-const b=_dcParseOptionPartBonuses(row.details||'');
-const atk=b.Attack.pct+b.Attack.flat/1e6;
-const hp=b.HP.pct+b.HP.flat/1e6;
-const def=b.Defense.pct+b.Defense.flat/1e6;
-const mob=b.Mobility.pct+b.Move.pct+b.EN.pct;
-let s=0;
-if(roleKind==='def'){
-s=hp*1e4+def*9500+atk*100+mob*50;
-if(b.HP.pct===12)s+=888;
-if(b.Defense.pct===12)s+=777;
-if(b.HP.pct>0&&b.HP.pct!==12)s+=b.HP.pct*10;
-if(b.Defense.pct>0&&b.Defense.pct!==12)s+=b.Defense.pct*9;
-}else{
-s=atk*1e4+hp*800+def*600+mob*40;
-if(b.Attack.pct===12)s+=888;
-if(b.Attack.pct>0&&b.Attack.pct!==12)s+=b.Attack.pct*11;
-}
-if(_tbOptionSharesUnitLineage(row,unitTagIds))s+=5e5;
-const rarityBonus={'UR':4,'SSR':3,'SR':2,'R':1}[row.rarity]||0;
-s+=rarityBonus;
-return s;
-}
 async function tbAutoFillEmptyOptionParts(){
 if(typeof S==='undefined'||!S.tb)return;
 if(S.tb._tbAutoOpBusy)return;
@@ -5111,16 +5097,13 @@ rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_i
 cache[uid]=rows;
 }
 const supForSlot=supByKey[slotK];
-const rk=_tbUnitRoleKind(ud);
-const uTags=_tbUnitTagIdSet(ud);
-let best=null,bestS=-Infinity,bestTie=-Infinity;
+let best=null,bestR=null;
 for(let i=0;i<rows.length;i++){
 const row=rows[i];
 const id=String(row.id);
 if(used.has(id))continue;
-const sc=_tbScoreOptionForAutoFill(sl,o.si,row,supForSlot,rk,uTags);
-const tb=_tbScoreOptionRowForAuto(row,rk,uTags);
-if(sc>bestS||(sc===bestS&&tb>bestTie)){bestS=sc;bestTie=tb;best=row}
+const ra=_tbRankOptionForAutoFill(sl,o.si,row,supForSlot);
+if(!bestR||_tbCompareRankAuto(ra,bestR)>0){bestR=ra;best=row}
 }
 if(best!=null){sl.optionParts=[best];used.add(String(best.id));changed=true}
 }
@@ -5179,7 +5162,8 @@ return`<div class="tb-long-card tb-long-card--empty"><div class="tb-slot-add-ms"
 const side=_tbSideFromKey(slotKey);
 const r=ud.rarity||'N';
 const base=TB_LONG_BASE_MAP[r]||TB_LONG_BASE_MAP.N;
-const portraitSrc=ud.portrait||ud.thum;
+const faceLong=TB_LONG_PORTRAIT_FACE_IDS.has(String(ud.id));
+const portraitSrc=faceLong?(ud.thum||ud.portrait):(ud.portrait||ud.thum);
 const lk=`${side}:`+String(ud.id)+':'+String(sl.charData&&sl.charData.id||'');
 const oneBuff=imgTag(TB_LEADER_ICON,{cls:'tb-long-supporter-buff-img',webp:true,alt:''});
 const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[lk])?`<div class="tb-long-supporter-buff">${oneBuff}</div>`:'';
@@ -5195,7 +5179,7 @@ pilotInner=`<div class="tb-long-pilot-corner">${plus}</div>`;
 }
 let pCls='tb-long-portrait';
 if(String(ud.body_type||'')==='3')pCls+=' tb-long-portrait--sd';
-else if(TB_LONG_PORTRAIT_FACE_IDS.has(String(ud.id)))pCls+=' tb-long-portrait--face';
+else if(faceLong)pCls+=' tb-long-portrait--thum-slot';
 const portraitInner=(portraitSrc?imgTag(portraitSrc,{cls:pCls,webp:true,alt:''}):'')+leaderIc+pilotInner;
 const portrait=`<div class="tb-long-portrait-wrap">${portraitInner}</div>`;
 const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
