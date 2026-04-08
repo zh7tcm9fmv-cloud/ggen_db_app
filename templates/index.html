@@ -1205,6 +1205,100 @@ html{overflow-x:hidden}
   .nav-tab{scroll-snap-align:start}
   .modal-content{-webkit-overflow-scrolling:touch}
 }
+
+/* --- Team Builder --- */
+.tb-wrap{max-width:1400px;margin:0 auto;padding:16px 20px 32px}
+.tb-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.tb-title{color:var(--accent-cyan);font-size:22px;margin:0}
+.tb-terrain-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--text-secondary)}
+.tb-terrain-row select{background:var(--card-bg);border:1px solid var(--border-color);color:var(--text);padding:6px 10px;border-radius:6px;font-size:13px}
+.tb-main{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:start}
+@media(max-width:900px){.tb-main{grid-template-columns:1fr}}
+.tb-squad-tabs{display:flex;flex-direction:column;gap:6px}
+.tb-squad-tab{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:600}
+.tb-squad-tab.is-active{border-color:var(--accent-cyan);box-shadow:0 0 0 1px var(--accent-cyan)}
+.tb-squad-tab-hint{font-size:10px;color:var(--text-muted);font-weight:400;margin-top:4px}
+.tb-grid-map-row{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:start}
+@media(max-width:700px){.tb-grid-map-row{grid-template-columns:1fr}}
+.tb-slots-wrap{background:rgba(15,23,42,.5);border:1px solid var(--border-color);border-radius:10px;padding:12px}
+.tb-slots-label{font-size:11px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.tb-slot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.tb-slot{position:relative;width:min(19vw,118px);min-width:86px;aspect-ratio:3/5;max-height:220px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s;background:rgba(0,0,0,.25)}
+.tb-slot.is-sel{border-color:var(--accent-cyan)}
+.tb-slot.is-rearrange-pending{outline:2px solid #eab308;outline-offset:2px}
+.tb-long-card{position:absolute;inset:0;display:flex;flex-direction:column}
+.tb-long-base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.tb-long-frames-left{position:absolute;left:0;top:0;bottom:0;width:28%;display:flex;flex-direction:column;pointer-events:none;z-index:2}
+.tb-long-frames-left img{width:100%;flex:1;object-fit:fill;display:block}
+.tb-long-portrait-wrap{position:absolute;left:22%;right:8%;top:8%;bottom:22%;z-index:1;display:flex;align-items:center;justify-content:center}
+.tb-long-portrait{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;pointer-events:none}
+.tb-long-role{position:absolute;left:6px;top:6px;width:26px;height:26px;z-index:4;border-radius:50%;overflow:hidden}
+.tb-long-role img{width:100%;height:100%;object-fit:cover}
+.tb-long-pilot{position:absolute;right:4px;bottom:18%;width:32%;max-width:48px;aspect-ratio:1;z-index:5;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.35)}
+.tb-long-pilot img{width:100%;height:100%;object-fit:cover}
+.tb-long-lb{position:absolute;left:4px;bottom:4px;right:4px;z-index:6;display:flex;align-items:center;gap:2px;font-size:9px;color:#e2e8f0;text-shadow:0 1px 2px #000}
+.tb-long-lv{position:absolute;left:4px;bottom:20px;z-index:6;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px #000}
+.tb-long-leader-ic{position:absolute;right:4px;top:4px;width:22px;height:22px;z-index:7;object-fit:contain;filter:contrast(1.2) brightness(1.08);animation:tb-leader-pulse 1.8s ease-in-out infinite}
+@keyframes tb-leader-pulse{0%,100%{opacity:.88}50%{opacity:1}}
+.tb-slot-add-ms{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(15,23,42,.72)}
+.tb-slot-add-ms img{width:40%;max-width:44px;opacity:.85}
+.tb-slot-add-pilot{position:absolute;right:2px;bottom:2px;width:28%;max-width:36px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;z-index:8}
+.tb-slot-add-pilot img{width:70%;opacity:.85}
+.tb-deploy-map{display:grid;grid-template-rows:1fr 1fr;gap:6px;padding:8px;background:rgba(15,23,42,.6);border:1px solid var(--border-color);border-radius:10px;font-size:11px;font-weight:700;color:var(--text-muted)}
+.tb-deploy-row{display:flex;gap:4px;justify-content:center}
+.tb-deploy-cell{flex:1;min-height:32px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(148,163,184,.35);border-radius:6px;color:var(--text-secondary);font-size:10px;padding:2px;text-align:center;line-height:1.2}
+.tb-toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.tb-toolbar button{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:13px}
+.tb-toolbar button:hover{border-color:var(--accent-cyan)}
+.tb-toolbar img.tb-toolbar-ic{width:22px;height:22px}
+.tb-rearrange-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:520;display:none;align-items:center;justify-content:center;padding:16px}
+.tb-rearrange-overlay.active{display:flex}
+.tb-rearrange-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;max-width:min(960px,100%);width:100%;max-height:90vh;overflow:auto;padding:16px}
+.tb-rearrange-banner{text-align:center;padding:8px;margin-bottom:12px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);border-radius:8px;font-size:13px;color:var(--accent-cyan)}
+.tb-batch-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:525;display:none;align-items:center;justify-content:center;padding:16px}
+.tb-batch-overlay.active{display:flex}
+.tb-batch-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;max-width:min(720px,100%);width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column}
+.tb-batch-head{padding:12px 16px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tb-batch-body{padding:12px 16px;overflow-y:auto;flex:1;min-height:120px}
+.tb-batch-search{width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text);margin-bottom:10px;box-sizing:border-box}
+.tb-batch-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+.tb-batch-row:hover{background:rgba(255,255,255,.04)}
+.tb-batch-row input{flex-shrink:0}
+.tb-supp-row{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:12px;margin-top:14px;align-items:start}
+@media(max-width:700px){.tb-supp-row{grid-template-columns:1fr}}
+.tb-supp-card{position:relative;min-height:100px;border-radius:10px;overflow:hidden;background:rgba(15,23,42,.6);border:1px solid var(--border-color);cursor:pointer}
+.tb-supp-frames{display:flex;align-items:flex-start;justify-content:center;gap:0;padding:8px 8px 0;position:relative;min-height:88px}
+.tb-supp-side{width:22%;max-width:56px;object-fit:contain}
+.tb-supp-side.mirror{transform:scaleX(-1)}
+.tb-supp-portrait{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:42%;max-width:72px;aspect-ratio:1;border-radius:6px;overflow:hidden}
+.tb-supp-portrait img{width:100%;height:100%;object-fit:cover}
+.tb-supp-bottom{position:absolute;left:15%;right:15%;bottom:4px;height:18%;object-fit:fill;width:70%;pointer-events:none}
+.tb-supp-placeholder{display:flex;align-items:center;justify-content:center;min-height:100px;font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+.tb-supp-detail{font-size:12px;line-height:1.5;color:var(--text-secondary)}
+.tb-stats-panel{margin-top:12px;padding:12px;background:rgba(15,23,42,.45);border:1px solid var(--border-color);border-radius:10px;font-size:12px}
+.tb-stats-hint{font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.4}
+.tb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+@media(max-width:600px){.tb-stats-grid{grid-template-columns:repeat(2,1fr)}}
+.tb-stat-cell{background:rgba(0,0,0,.2);padding:8px;border-radius:6px;text-align:center}
+.tb-stat-lbl{font-size:10px;color:var(--text-muted)}
+.tb-stat-val{font-size:15px;font-weight:700;color:var(--text)}
+.tb-form-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:530;display:none;align-items:center;justify-content:center;padding:16px}
+.tb-form-overlay.active{display:flex}
+.tb-form-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;max-width:420px;width:100%;max-height:85vh;overflow:auto}
+.tb-form-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tb-form-row input[type=text]{flex:1;padding:6px 8px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
+.tb-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:540;display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto}
+.tb-picker-overlay.active{display:flex}
+.tb-picker-dialog{background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;width:min(480px,100%);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.tb-picker-head{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--border-color);align-items:center}
+.tb-picker-head input{flex:1;min-width:0;padding:8px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg);color:var(--text)}
+.tb-picker-body{overflow-y:auto;padding:8px;min-height:120px;max-height:50vh}
+.tb-picker-item{padding:10px 12px;border-radius:6px;cursor:pointer;border:1px solid transparent;display:flex;align-items:center;gap:8px}
+.tb-picker-item:hover{background:rgba(255,255,255,.06)}
+.tb-batch-tabbar{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border-color)}
+.tb-batch-tabbar button{padding:6px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text);cursor:pointer;font-size:12px}
+.tb-batch-tabbar button.is-active{border-color:var(--accent-cyan)}
+.tb-slot-op-mini{font-size:9px;color:var(--text-muted);position:absolute;left:4px;top:30px;z-index:8;max-width:90%;line-height:1.2;text-shadow:0 1px 2px #000}
 </style>
 </head>
 <body>
@@ -1221,6 +1315,7 @@ html{overflow-x:hidden}
 <button class="nav-tab" data-tab="modifications" id="navModTab" onclick="switchTab('modifications')">Modifications</button>
 <button class="nav-tab" data-tab="stages" id="navStageTab" onclick="switchTab('stages')">Eternal Road</button>
 <button class="nav-tab" data-tab="calculator" id="navCalcTab" onclick="switchTab('calculator')">Damage Simulator</button>
+<button class="nav-tab" data-tab="team_builder" id="navTbTab" onclick="switchTab('team_builder')">Team Builder</button>
 <button class="nav-tab" data-tab="latest_release" id="navLatestTab" onclick="switchTab('latest_release')">Latest Release</button>
 </div>
 </header>
@@ -1409,6 +1504,78 @@ html{overflow-x:hidden}
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="tab-panel" id="panel-team_builder">
+<div class="tb-wrap">
+<div class="tb-head"><h2 class="tb-title" id="tbPageTitle">Team Builder</h2>
+<div class="tb-terrain-row"><span id="tbTerrainLbl">Terrain</span>
+<select id="tbTerrainSelect" onchange="onTbTerrainChange()"></select>
+<select id="tbTerrainLvSelect" onchange="onTbTerrainChange()" title="Min terrain level"><option value="1">Lv 1+</option><option value="2">Lv 2+</option><option value="3">Lv 3</option></select>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px"><input type="checkbox" id="tbMasterLeagueChk" onchange="onTbMasterLeagueChange()"> <span id="tbMlLbl">Master League Buff</span></label>
+</div></div>
+<div class="tb-main">
+<div class="tb-squad-tabs">
+<button type="button" class="tb-squad-tab is-active" id="tbSquadTab1" onclick="tbSetSquad(1)"><span id="tbSquad1Lbl">Squad 1</span><div class="tb-squad-tab-hint" id="tbSquad1Fill"></div></button>
+<button type="button" class="tb-squad-tab" id="tbSquadTab2" onclick="tbSetSquad(2)"><span id="tbSquad2Lbl">Squad 2</span><div class="tb-squad-tab-hint" id="tbSquad2Fill"></div></button>
+</div>
+<div>
+<div class="tb-grid-map-row">
+<div class="tb-slots-wrap">
+<div class="tb-slots-label" id="tbFrontLbl">Front</div>
+<div class="tb-slot-row" id="tbSlotsFront"></div>
+<div class="tb-slots-label" style="margin-top:10px" id="tbRearLbl">Rear</div>
+<div class="tb-slot-row" id="tbSlotsRear"></div>
+</div>
+<div class="tb-deploy-map" id="tbDeployMap" aria-hidden="true"></div>
+</div>
+<div class="tb-supp-row">
+<div class="tb-supp-card" id="tbSuppCard" onclick="openTbSupporterPicker()"></div>
+<div class="tb-supp-detail" id="tbSuppDetail"></div>
+</div>
+<div class="tb-stats-panel" id="tbStatsPanel"></div>
+<div class="tb-toolbar">
+<button type="button" onclick="openTbFormationModal()"><span id="tbBtnFormation">Formation</span></button>
+<button type="button" onclick="tbStartRearrange()"><img class="tb-toolbar-ic" src="/static/images/UI/Sprite/UI_Common_BtnIcon_Reshuffling.webp" alt="" loading="lazy" onerror="this.style.display='none'"><span id="tbBtnRearrange">Rearrange</span></button>
+<button type="button" onclick="openTbBatchModal()"><span id="tbBtnBatch">Batch Form</span></button>
+</div>
+</div>
+</div>
+</div>
+<div class="tb-rearrange-overlay" id="tbRearrangeOverlay" aria-hidden="true">
+<div class="tb-rearrange-card">
+<div class="tb-rearrange-banner" id="tbRearrangeBanner">Tap two slots to swap</div>
+<label style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;cursor:pointer"><input type="checkbox" id="tbRearrangeLinked" checked> <span id="tbRearrangeLinkedLbl">Move unit and pilot together</span></label>
+<div id="tbRearrangeBody"></div>
+<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+<button type="button" onclick="tbRearrangeCancel()" id="tbRearrangeCancelBtn">Cancel</button>
+<button type="button" onclick="tbRearrangeConfirm()" id="tbRearrangeOkBtn" style="background:var(--accent-cyan);color:#0f172a;border:none">Confirm</button>
+</div>
+</div>
+</div>
+<div class="tb-batch-overlay" id="tbBatchOverlay" aria-hidden="true">
+<div class="tb-batch-card">
+<div class="tb-batch-head"><span id="tbBatchTitle">Batch Form</span><button type="button" onclick="closeTbBatchModal()">✕</button></div>
+<div class="tb-batch-tabbar"><button type="button" class="is-active" id="tbBatchTabUnits" onclick="tbSetBatchKind('unit')">Units</button><button type="button" id="tbBatchTabChars" onclick="tbSetBatchKind('char')">Pilots</button></div>
+<input type="search" class="tb-batch-search" id="tbBatchSearch" placeholder="Search…" autocomplete="off" oninput="tbOnBatchSearchInput()">
+<div class="tb-batch-body" id="tbBatchList"></div>
+<div style="padding:12px 16px;border-top:1px solid var(--border-color);display:flex;justify-content:flex-end;gap:8px">
+<button type="button" onclick="closeTbBatchModal()">Cancel</button>
+<button type="button" onclick="tbBatchApply()" id="tbBatchApplyBtn">Apply</button>
+</div>
+</div>
+</div>
+<div class="tb-form-overlay" id="tbFormationOverlay" aria-hidden="true">
+<div class="tb-form-card">
+<div style="font-weight:700;margin-bottom:10px" id="tbFormModalTitle">Saved formations</div>
+<div id="tbFormationList"></div>
+<button type="button" onclick="closeTbFormationModal()" style="margin-top:12px">Close</button>
+</div>
+</div>
+<div class="tb-picker-overlay" id="tbPickerOverlay" onclick="if(event.target===event.currentTarget)closeTbPicker()">
+<div class="tb-picker-dialog" onclick="event.stopPropagation()">
+<div class="tb-picker-head"><input type="search" id="tbPickerSearch" placeholder="Search…" autocomplete="off" oninput="filterTbPicker()"><button type="button" onclick="closeTbPicker()" aria-label="Close">✕</button></div>
+<div class="tb-picker-body" id="tbPickerBody"></div>
 </div>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
@@ -1680,8 +1847,8 @@ return`<button type="button" class="dc-stage-hit${active?' is-active':''}" role=
 }).join('');
 }
 
-const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Eternal Road',search_char:'Search name or ID — …',search_unit:'Search name or ID — …',search_supporter:'Search name, series, tags — …',search_stage:'Stage ID or name — , or ; = ALL terms',search_series_click:'View characters & units in this series',search_hint_html:'<div class="search-hint-inner"><strong>Characters &amp; units (default)</strong> — Free text matches <strong>display name</strong> and <strong>entity ID</strong> only (not series, tags, or abilities). Supporters still use name / series / tags.<br><strong>Match all terms</strong> — Separate with commas or semicolons; every segment must match.<br><strong>Exclude</strong> — Put <code>-</code> in front of a term to hide any result that still contains that text.<br><strong>Series</strong> — <code>series:name</code> still filters by series title.<br><strong>Wider search (API)</strong> — Use query param <code>q_scope=primary</code> (adds tags, series names, alias tokens) or <code>q_scope=full</code> (adds ability/skill/weapon text too).<br><strong>Tip</strong> — <code>series:msg</code> matches only the original <em>Mobile Suit Gundam</em> (1979).</div>',search_recall:'Quick search',whats_new_title:"What's new",whats_new_btn:"What's new",whats_new_empty:'No data update notes yet. Changes since the last baseline appear automatically after a master import; run python scripts/refresh_whats_new_snapshot.py when you publish to reset the baseline. Optional notes go in data/whats_new.json.',whats_new_date:'Date:',whats_new_changes:'Changes:',whats_new_added:'Added:',whats_new_close:'Close',whats_new_kind_unit_abilities:'Unit abilities',whats_new_kind_unit_weapons:'Weapons',whats_new_kind_char_abilities:'Character abilities',whats_new_slot:'Slot',whats_new_before:'Before',whats_new_after:'After',whats_new_tab_pending:'Since last baseline',whats_new_tab_manual:'Notes',whats_new_tab_empty:'No changes in this section.',whats_new_select_period:'Period:',whats_new_manual_note:'Note',whats_new_label_new_unit:'New unit:',whats_new_label_new_char:'New character:',whats_new_label_new_mod:'New option part:',whats_new_label_new_supporter:'New supporter:',search_spotlight_title:'Search',search_spotlight_close:'Close',search_spotlight_foot:'Esc · tap outside · ✕ to close',search_spotlight_empty:'No quick matches',per_page:'/page',view_grid:'Grid view',view_table:'Table view',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',search_mod:'Name, details, tags — , or ; = ALL terms',count_mod:'modifications',mod_filter_effect:'Effect',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'ATK ↑',mod_filter_effect_def:'DEF ↑',mod_filter_effect_mob:'Mobility ↑',mod_filter_effect_other:'Other (ACC, EVA, Crit, …)',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',char_grid_stat_ranged:'RNG',char_grid_stat_melee:'MEL',char_grid_stat_awaken:'AWK',char_grid_stat_defense:'DEF',char_grid_stat_reaction:'REA',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',stage_npc_friendly_tab:'Friendly NPCs',stage_npc_enemy_tab:'Enemy units',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',unit_filter_weapon_debuff:'All Weapon Effects',unit_filter_weapon_debuff_all:'All Weapon Effects',unit_filter_weapon_debuff_multi:'{n} weapon effects',unit_filter_mechanism:'Mechanism',unit_filter_mechanism_all:'All Mechanisms',unit_filter_mechanism_multi:'{n} mechanisms',unit_filter_mechanism_tt:'Multiple mechanisms: match all (AND). 2×2 matches units with OccupiedAreaId 2 in master data (large footprint), same as unit detail.',unit_filter_wb_atk_dn:'Inflict Attack Down',unit_filter_wb_def_dn:'Inflict Defense Down',unit_filter_wb_enemy_def_atk:'Reduce enemy DEF (this attack)',unit_filter_wb_mob_dn:'Inflict Mobility Down',unit_filter_wb_acc_dn:'Inflict Accuracy Down',unit_filter_wb_eva_dn:'Inflict Evasion Down',unit_filter_wb_dmg_phys:'Inflict Physical Damage Up',unit_filter_wb_dmg_beam:'Inflict Beam Damage Up',unit_filter_wb_dmg_spec:'Inflict Special Damage Up',unit_filter_wb_wp_phys:'Inflict Physical Weapon Power Down',unit_filter_wb_wp_beam:'Inflict Beam Weapon Power Down',unit_filter_wb_wp_spec:'Inflict Special Weapon Power Down',unit_filter_wb_range_beam:'Inflict Beam Weapon Range Down',unit_filter_wb_range_phys:'Inflict Physical Weapon Range Down',unit_filter_wb_range_all:'Inflict All Weapon Range Down',unit_filter_wb_mp_1:'Inflict MP −1',unit_filter_wb_mp_2:'Inflict MP −2',unit_filter_wb_mp_3:'Inflict MP −3',unit_filter_wb_preemptive:'Preemptive Strike',unit_filter_wb_map_weapon:'MAP weapon',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',char_data:'Character Data',unit_data:'Unit Data',unit_transform_title:'Open alternate form',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',limited_label:'Limited',rarity_exclude_limited:'Exclude limited',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',map_legend_use:'Point of Use',map_legend_sel:'Point of Selection',map_legend_range:'Range',map_legend_effect:'Effect Range',map_effect_theme_dark:'Dark / contrast map: outlines + inverted empty tiles',map_effect_theme_light:'Light map — original tiles (default)',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',tag_tab_affinity:'Affinity',tag_results_affinity:'Affinity with Tag:',series_results_unit:'Units in series:',series_results_char:'Characters in series:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',filter_source:'Source',filter_source_all:'All',browse_filters_clear:'Clear',filter_source_assembly:'Units from Unit Assembly',filter_source_development:'Development Unit',filter_source_other:'Other',filter_source_assembly_char:'Unit Assembly Characters',filter_source_development_char:'Scout/Story Character',list_filter_lineage:'Tags / Lineage',list_filter_lineage_multi:'{n} tags',list_filter_series:'Series',list_filter_series_multi:'{n} series',list_filter_skill:'Skills',list_filter_ability:'Abilities',list_filter_all_skills:'All Skills',list_filter_all_abilities:'All Abilities',list_filter_ability_char:'Ability',list_filter_all_abilities_char:'All Abilities',list_filter_search_placeholder:'Search filter…',series_filter_all_brand:'Mobile Suit Gundam',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Simulator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_pick_unit:'Select Unit',dc_def_stats_map_note:'Totals include map bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_def_char_stats_note:'Totals include passive ability bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_final_dmg:'Final Damage',dc_crit_final_dmg:'Critical Final Damage',dc_hp_remaining:'HP Remaining',dc_hit_rate:'Hit Rate',dc_hp_remaining_normal:'HP Remaining (Normal)',dc_hp_remaining_crit:'HP Remaining (Crit)',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula'},
-TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'永恆之路',search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_supporter:'搜尋：名稱／系列／標籤',search_stage:'用關卡ID或名稱搜尋...',search_series_click:'檢視此系列的角色與機體',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>（不含系列、標籤、能力）。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依作品系列篩選。<br><strong>擴大搜尋（API）</strong> — <code>q_scope=primary</code> 可納入標籤、系列名、別名；<code>q_scope=full</code> 另含能力／技能／武裝文字。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士鋼彈》。</div>',search_recall:'快速搜尋',whats_new_title:'更新資訊',whats_new_btn:'更新資訊',whats_new_empty:'尚無更新說明。匯入新主資料後會自動與基準檔比對；發布後可執行 python scripts/refresh_whats_new_snapshot.py 重設基準。可選內容放在 data/whats_new.json。',whats_new_date:'日期：',whats_new_changes:'變更：',whats_new_added:'新增：',whats_new_close:'關閉',whats_new_kind_unit_abilities:'機體能力',whats_new_kind_unit_weapons:'武裝',whats_new_kind_char_abilities:'角色能力',whats_new_slot:'欄位',whats_new_before:'變更前',whats_new_after:'變更後',whats_new_tab_pending:'自上次基準',whats_new_tab_manual:'備註',whats_new_tab_empty:'此區段無變更。',whats_new_select_period:'期間：',whats_new_manual_note:'備註',whats_new_label_new_unit:'新機體：',whats_new_label_new_char:'新角色：',whats_new_label_new_mod:'新改造零件：',whats_new_label_new_supporter:'新支援人員：',search_spotlight_title:'搜尋',search_spotlight_close:'關閉',search_spotlight_foot:'Esc · 點背景或 ✕ 關閉',search_spotlight_empty:'沒有符合的項目',per_page:'/頁',view_grid:'格狀檢視',view_table:'表格檢視',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',search_mod:'搜尋：名稱/效果/標籤（逗號或；＝需全部符合）',count_mod:'改造零件',mod_filter_effect:'效果類型',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'攻擊 ↑',mod_filter_effect_def:'防禦 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'其他（命中／迴避等）',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',stage_npc_friendly_tab:'友方 NPC',stage_npc_enemy_tab:'敵方單位',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'全部武裝效果',unit_filter_weapon_debuff_all:'全部武裝效果',unit_filter_weapon_debuff_multi:'{n} 項武裝效果',unit_filter_mechanism:'機制',unit_filter_mechanism_all:'全部機制',unit_filter_mechanism_multi:'{n} 項機制',unit_filter_mechanism_tt:'多選機制：須同時符合（AND）。2×2 對應主資料 OccupiedAreaId=2（大型佔格），與機體詳情相同。',unit_filter_wb_atk_dn:'攻擊力減少',unit_filter_wb_def_dn:'防禦力減少',unit_filter_wb_mob_dn:'機動力減少',unit_filter_wb_acc_dn:'命中率減少',unit_filter_wb_eva_dn:'閃避率減少',unit_filter_wb_dmg_phys:'物理損傷提升',unit_filter_wb_dmg_beam:'光束損傷提升',unit_filter_wb_dmg_spec:'特殊損傷提升',unit_filter_wb_wp_phys:'物理武裝威力減少',unit_filter_wb_wp_beam:'光束武裝威力減少',unit_filter_wb_wp_spec:'特殊武裝威力減少',unit_filter_wb_range_beam:'光束武裝射程減少',unit_filter_wb_range_phys:'物理武裝射程減少',unit_filter_wb_range_all:'全武裝射程減少',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先發攻擊',unit_filter_wb_map_weapon:'MAP武裝',role_attack:'攻擊型',role_defense:'耐久型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅耐久型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',char_data:'角色資料',unit_data:'機體資料',unit_transform_title:'切換形態',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',limited_label:'限定',rarity_exclude_limited:'不含限定',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',map_effect_theme_dark:'深色／高對比：框線＋空格圖塊反相',map_effect_theme_light:'淺色地圖：原始圖塊（預設）',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',tag_tab_affinity:'契合度',tag_results_affinity:'契合度（標籤）：',series_results_unit:'此系列的機體：',series_results_char:'此系列的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',filter_source:'取得來源',filter_source_all:'全部',browse_filters_clear:'清除',filter_source_assembly:'機體補給獲得單位',filter_source_development:'開發機體',filter_source_other:'其他',filter_source_assembly_char:'機體補給獲得角色',filter_source_development_char:'招募／劇情角色',list_filter_lineage:'標籤／系譜',list_filter_lineage_multi:'{n} 個標籤',list_filter_series:'作品系列',list_filter_series_multi:'{n} 個系列',list_filter_skill:'技能',list_filter_ability:'能力',list_filter_all_skills:'全部技能',list_filter_all_abilities:'全部能力',list_filter_ability_char:'能力',list_filter_all_abilities_char:'全部能力',list_filter_search_placeholder:'搜尋…',series_filter_all_brand:'機動戰士鋼彈',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害模擬器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_pick_unit:'選擇機體',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_final_dmg:'最終傷害',dc_crit_final_dmg:'暴擊最終傷害',dc_hp_remaining:'剩餘HP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'剩餘 HP（一般）',dc_hp_remaining_crit:'剩餘 HP（暴擊）',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式'}};T.HK=Object.assign({},T.TW,{search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_series_click:'查看此系列的角色與機體',search_stage:'以關卡 ID 或名稱搜尋...',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依系列篩選。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士高達》。</div>',series_filter_all_brand:'機動戰士高達',latest_gasha_title:'最新資訊：',lr_empty:'沒有扭蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有扭蛋排程。',lr_load_more:'載入全部扭蛋',lr_lock_hint:'請輸入密碼以在開始前預覽此扭蛋陣容。',lr_section_locked:'此扭蛋尚未開始。請輸入密碼以預覽角色／機體列表。'});
+const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Eternal Road',search_char:'Search name or ID — …',search_unit:'Search name or ID — …',search_supporter:'Search name, series, tags — …',search_stage:'Stage ID or name — , or ; = ALL terms',search_series_click:'View characters & units in this series',search_hint_html:'<div class="search-hint-inner"><strong>Characters &amp; units (default)</strong> — Free text matches <strong>display name</strong> and <strong>entity ID</strong> only (not series, tags, or abilities). Supporters still use name / series / tags.<br><strong>Match all terms</strong> — Separate with commas or semicolons; every segment must match.<br><strong>Exclude</strong> — Put <code>-</code> in front of a term to hide any result that still contains that text.<br><strong>Series</strong> — <code>series:name</code> still filters by series title.<br><strong>Wider search (API)</strong> — Use query param <code>q_scope=primary</code> (adds tags, series names, alias tokens) or <code>q_scope=full</code> (adds ability/skill/weapon text too).<br><strong>Tip</strong> — <code>series:msg</code> matches only the original <em>Mobile Suit Gundam</em> (1979).</div>',search_recall:'Quick search',whats_new_title:"What's new",whats_new_btn:"What's new",whats_new_empty:'No data update notes yet. Changes since the last baseline appear automatically after a master import; run python scripts/refresh_whats_new_snapshot.py when you publish to reset the baseline. Optional notes go in data/whats_new.json.',whats_new_date:'Date:',whats_new_changes:'Changes:',whats_new_added:'Added:',whats_new_close:'Close',whats_new_kind_unit_abilities:'Unit abilities',whats_new_kind_unit_weapons:'Weapons',whats_new_kind_char_abilities:'Character abilities',whats_new_slot:'Slot',whats_new_before:'Before',whats_new_after:'After',whats_new_tab_pending:'Since last baseline',whats_new_tab_manual:'Notes',whats_new_tab_empty:'No changes in this section.',whats_new_select_period:'Period:',whats_new_manual_note:'Note',whats_new_label_new_unit:'New unit:',whats_new_label_new_char:'New character:',whats_new_label_new_mod:'New option part:',whats_new_label_new_supporter:'New supporter:',search_spotlight_title:'Search',search_spotlight_close:'Close',search_spotlight_foot:'Esc · tap outside · ✕ to close',search_spotlight_empty:'No quick matches',per_page:'/page',view_grid:'Grid view',view_table:'Table view',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',search_mod:'Name, details, tags — , or ; = ALL terms',count_mod:'modifications',mod_filter_effect:'Effect',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'ATK ↑',mod_filter_effect_def:'DEF ↑',mod_filter_effect_mob:'Mobility ↑',mod_filter_effect_other:'Other (ACC, EVA, Crit, …)',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',char_grid_stat_ranged:'RNG',char_grid_stat_melee:'MEL',char_grid_stat_awaken:'AWK',char_grid_stat_defense:'DEF',char_grid_stat_reaction:'REA',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',stage_npc_friendly_tab:'Friendly NPCs',stage_npc_enemy_tab:'Enemy units',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',unit_filter_weapon_debuff:'All Weapon Effects',unit_filter_weapon_debuff_all:'All Weapon Effects',unit_filter_weapon_debuff_multi:'{n} weapon effects',unit_filter_mechanism:'Mechanism',unit_filter_mechanism_all:'All Mechanisms',unit_filter_mechanism_multi:'{n} mechanisms',unit_filter_mechanism_tt:'Multiple mechanisms: match all (AND). 2×2 matches units with OccupiedAreaId 2 in master data (large footprint), same as unit detail.',unit_filter_wb_atk_dn:'Inflict Attack Down',unit_filter_wb_def_dn:'Inflict Defense Down',unit_filter_wb_enemy_def_atk:'Reduce enemy DEF (this attack)',unit_filter_wb_mob_dn:'Inflict Mobility Down',unit_filter_wb_acc_dn:'Inflict Accuracy Down',unit_filter_wb_eva_dn:'Inflict Evasion Down',unit_filter_wb_dmg_phys:'Inflict Physical Damage Up',unit_filter_wb_dmg_beam:'Inflict Beam Damage Up',unit_filter_wb_dmg_spec:'Inflict Special Damage Up',unit_filter_wb_wp_phys:'Inflict Physical Weapon Power Down',unit_filter_wb_wp_beam:'Inflict Beam Weapon Power Down',unit_filter_wb_wp_spec:'Inflict Special Weapon Power Down',unit_filter_wb_range_beam:'Inflict Beam Weapon Range Down',unit_filter_wb_range_phys:'Inflict Physical Weapon Range Down',unit_filter_wb_range_all:'Inflict All Weapon Range Down',unit_filter_wb_mp_1:'Inflict MP −1',unit_filter_wb_mp_2:'Inflict MP −2',unit_filter_wb_mp_3:'Inflict MP −3',unit_filter_wb_preemptive:'Preemptive Strike',unit_filter_wb_map_weapon:'MAP weapon',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',char_data:'Character Data',unit_data:'Unit Data',unit_transform_title:'Open alternate form',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',limited_label:'Limited',rarity_exclude_limited:'Exclude limited',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',map_legend_use:'Point of Use',map_legend_sel:'Point of Selection',map_legend_range:'Range',map_legend_effect:'Effect Range',map_effect_theme_dark:'Dark / contrast map: outlines + inverted empty tiles',map_effect_theme_light:'Light map — original tiles (default)',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',tag_tab_affinity:'Affinity',tag_results_affinity:'Affinity with Tag:',series_results_unit:'Units in series:',series_results_char:'Characters in series:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',filter_source:'Source',filter_source_all:'All',browse_filters_clear:'Clear',filter_source_assembly:'Units from Unit Assembly',filter_source_development:'Development Unit',filter_source_other:'Other',filter_source_assembly_char:'Unit Assembly Characters',filter_source_development_char:'Scout/Story Character',list_filter_lineage:'Tags / Lineage',list_filter_lineage_multi:'{n} tags',list_filter_series:'Series',list_filter_series_multi:'{n} series',list_filter_skill:'Skills',list_filter_ability:'Abilities',list_filter_all_skills:'All Skills',list_filter_all_abilities:'All Abilities',list_filter_ability_char:'Ability',list_filter_all_abilities_char:'All Abilities',list_filter_search_placeholder:'Search filter…',series_filter_all_brand:'Mobile Suit Gundam',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Simulator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_pick_unit:'Select Unit',dc_def_stats_map_note:'Totals include map bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_def_char_stats_note:'Totals include passive ability bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_final_dmg:'Final Damage',dc_crit_final_dmg:'Critical Final Damage',dc_hp_remaining:'HP Remaining',dc_hit_rate:'Hit Rate',dc_hp_remaining_normal:'HP Remaining (Normal)',dc_hp_remaining_crit:'HP Remaining (Crit)',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula',tab_team_builder:'Team Builder',tb_front:'Front',tb_rear:'Rear',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_formation:'Formation',tb_rearrange:'Rearrange',tb_batch:'Batch Form',tb_stats_hint:'Modified MS stats use Normal vigor baseline (fixed). No defender or vigor UI. Option parts, supporter, Master League, and pilot pair bonus apply.',tb_pick_supp:'Tap to select supporter',tb_empty_stats:'Select a unit slot.',tb_squad_fill:'{n} / 10 units',tb_saved_formations:'Saved formations',tb_save:'Save',tb_load:'Load',tb_rearrange_banner:'Tap two slots to swap',tb_linked_move:'Move unit and pilot together',tb_cancel:'Cancel',tb_confirm:'Confirm',tb_batch_title:'Batch Form',tb_apply:'Apply',tb_master_league:'Master League Buff',tb_op_count:'OP ×{n}'},
+TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'永恆之路',search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_supporter:'搜尋：名稱／系列／標籤',search_stage:'用關卡ID或名稱搜尋...',search_series_click:'檢視此系列的角色與機體',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>（不含系列、標籤、能力）。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依作品系列篩選。<br><strong>擴大搜尋（API）</strong> — <code>q_scope=primary</code> 可納入標籤、系列名、別名；<code>q_scope=full</code> 另含能力／技能／武裝文字。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士鋼彈》。</div>',search_recall:'快速搜尋',whats_new_title:'更新資訊',whats_new_btn:'更新資訊',whats_new_empty:'尚無更新說明。匯入新主資料後會自動與基準檔比對；發布後可執行 python scripts/refresh_whats_new_snapshot.py 重設基準。可選內容放在 data/whats_new.json。',whats_new_date:'日期：',whats_new_changes:'變更：',whats_new_added:'新增：',whats_new_close:'關閉',whats_new_kind_unit_abilities:'機體能力',whats_new_kind_unit_weapons:'武裝',whats_new_kind_char_abilities:'角色能力',whats_new_slot:'欄位',whats_new_before:'變更前',whats_new_after:'變更後',whats_new_tab_pending:'自上次基準',whats_new_tab_manual:'備註',whats_new_tab_empty:'此區段無變更。',whats_new_select_period:'期間：',whats_new_manual_note:'備註',whats_new_label_new_unit:'新機體：',whats_new_label_new_char:'新角色：',whats_new_label_new_mod:'新改造零件：',whats_new_label_new_supporter:'新支援人員：',search_spotlight_title:'搜尋',search_spotlight_close:'關閉',search_spotlight_foot:'Esc · 點背景或 ✕ 關閉',search_spotlight_empty:'沒有符合的項目',per_page:'/頁',view_grid:'格狀檢視',view_table:'表格檢視',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',search_mod:'搜尋：名稱/效果/標籤（逗號或；＝需全部符合）',count_mod:'改造零件',mod_filter_effect:'效果類型',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'攻擊 ↑',mod_filter_effect_def:'防禦 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'其他（命中／迴避等）',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',stage_npc_friendly_tab:'友方 NPC',stage_npc_enemy_tab:'敵方單位',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'全部武裝效果',unit_filter_weapon_debuff_all:'全部武裝效果',unit_filter_weapon_debuff_multi:'{n} 項武裝效果',unit_filter_mechanism:'機制',unit_filter_mechanism_all:'全部機制',unit_filter_mechanism_multi:'{n} 項機制',unit_filter_mechanism_tt:'多選機制：須同時符合（AND）。2×2 對應主資料 OccupiedAreaId=2（大型佔格），與機體詳情相同。',unit_filter_wb_atk_dn:'攻擊力減少',unit_filter_wb_def_dn:'防禦力減少',unit_filter_wb_mob_dn:'機動力減少',unit_filter_wb_acc_dn:'命中率減少',unit_filter_wb_eva_dn:'閃避率減少',unit_filter_wb_dmg_phys:'物理損傷提升',unit_filter_wb_dmg_beam:'光束損傷提升',unit_filter_wb_dmg_spec:'特殊損傷提升',unit_filter_wb_wp_phys:'物理武裝威力減少',unit_filter_wb_wp_beam:'光束武裝威力減少',unit_filter_wb_wp_spec:'特殊武裝威力減少',unit_filter_wb_range_beam:'光束武裝射程減少',unit_filter_wb_range_phys:'物理武裝射程減少',unit_filter_wb_range_all:'全武裝射程減少',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先發攻擊',unit_filter_wb_map_weapon:'MAP武裝',role_attack:'攻擊型',role_defense:'耐久型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅耐久型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',char_data:'角色資料',unit_data:'機體資料',unit_transform_title:'切換形態',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',limited_label:'限定',rarity_exclude_limited:'不含限定',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',map_effect_theme_dark:'深色／高對比：框線＋空格圖塊反相',map_effect_theme_light:'淺色地圖：原始圖塊（預設）',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',tag_tab_affinity:'契合度',tag_results_affinity:'契合度（標籤）：',series_results_unit:'此系列的機體：',series_results_char:'此系列的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',filter_source:'取得來源',filter_source_all:'全部',browse_filters_clear:'清除',filter_source_assembly:'機體補給獲得單位',filter_source_development:'開發機體',filter_source_other:'其他',filter_source_assembly_char:'機體補給獲得角色',filter_source_development_char:'招募／劇情角色',list_filter_lineage:'標籤／系譜',list_filter_lineage_multi:'{n} 個標籤',list_filter_series:'作品系列',list_filter_series_multi:'{n} 個系列',list_filter_skill:'技能',list_filter_ability:'能力',list_filter_all_skills:'全部技能',list_filter_all_abilities:'全部能力',list_filter_ability_char:'能力',list_filter_all_abilities_char:'全部能力',list_filter_search_placeholder:'搜尋…',series_filter_all_brand:'機動戰士鋼彈',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害模擬器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_pick_unit:'選擇機體',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_final_dmg:'最終傷害',dc_crit_final_dmg:'暴擊最終傷害',dc_hp_remaining:'剩餘HP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'剩餘 HP（一般）',dc_hp_remaining_crit:'剩餘 HP（暴擊）',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式',tab_team_builder:'隊伍編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_formation:'編隊',tb_rearrange:'調整站位',tb_batch:'批次編成',tb_stats_hint:'機體能力為固定「普通」鬥氣基準，不含防禦方與鬥氣介面。改造零件、支援、大師聯賽加成與駕駛員搭檔加成仍會套用。',tb_pick_supp:'點選以選擇支援',tb_empty_stats:'請選擇有機體的欄位。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'已存編隊',tb_save:'儲存',tb_load:'讀取',tb_rearrange_banner:'點兩個欄位交換',tb_linked_move:'機體與駕駛員一起移動',tb_cancel:'取消',tb_confirm:'確定',tb_batch_title:'批次編成',tb_apply:'套用',tb_master_league:'大師聯賽加成',tb_op_count:'OP ×{n}'}};T.HK=Object.assign({},T.TW,{search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_series_click:'查看此系列的角色與機體',search_stage:'以關卡 ID 或名稱搜尋...',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依系列篩選。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士高達》。</div>',series_filter_all_brand:'機動戰士高達',latest_gasha_title:'最新資訊：',lr_empty:'沒有扭蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有扭蛋排程。',lr_load_more:'載入全部扭蛋',lr_lock_hint:'請輸入密碼以在開始前預覽此扭蛋陣容。',lr_section_locked:'此扭蛋尚未開始。請輸入密碼以預覽角色／機體列表。'});
 const STAT_NAME_MAP={EN:{},TW:{'Ranged':'射擊','Melee':'格鬥','Awaken':'覺醒','Defense':'守備','Reaction':'反應','HP':'HP','EN':'EN','Attack':'攻擊','Mobility':'機動','Move':'移動'}};
 STAT_NAME_MAP.HK=Object.assign({},STAT_NAME_MAP.TW);
 const TERRAIN_NAME_MAP={EN:{},TW:{'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'}};
@@ -1690,7 +1857,7 @@ const ROLE_NAME_MAP={EN:{'Attack':'Attack','Defense':'Defense','Support':'Suppor
 ROLE_NAME_MAP.HK=Object.assign({},ROLE_NAME_MAP.TW);
 const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'Support Only'},TW:{'':'全部類型','1':'僅攻擊型','2':'僅耐久型','3':'僅支援型'}};
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
-const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式'};
+const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
@@ -1709,10 +1876,10 @@ function charGridStatLabel(k){const colMap={Ranged:'col_ranged',Melee:'col_melee
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 function scheduleBrowsePrimeChain(){function ric(cb){if(typeof requestIdleCallback!=='undefined')requestIdleCallback(cb,{timeout:4500});else setTimeout(cb,160)}ric(()=>{primeBrowseTabIfNeeded('units');ric(()=>{primeBrowseTabIfNeeded('supporters');ric(()=>{primeBrowseTabIfNeeded('stages');ric(()=>primeBrowseTabIfNeeded('modifications'))})})})}
-document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();const _qs=new URLSearchParams(location.search);if(_qs.get('tab')!=='calculator'&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams()}});
+document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();initDetailPrefetchIntentHandlers();const _qs=new URLSearchParams(location.search);if(_qs.get('tab')!=='calculator'&&_qs.get('tab')!=='team_builder'&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams()}});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -1720,10 +1887,10 @@ async function loadLangs(){try{const r=await fetch('/api/languages');const d=awa
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
 function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}
 async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();if(lc!=='JP'&&lc!=='JA')return true;const msg="We apologize for the inconvenience.\nDue to unforeseen conflicts, the Japan version is currently locked.\nThank you for your understanding.";try{const st=await fetch('/api/jp_mode/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return true;alert(st.message||msg);const pw=window.prompt(t('jp_mode_unlock_prompt'));if(!pw)return false;const rr=await fetch('/api/jp_mode/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!rr.ok){alert(t('jp_mode_unlock_wrong'));return false}return true}catch(_){alert(msg);return false}}
-async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;S._browsePrimed={};invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);S._browsePrimed={characters:1,units:1,supporters:1,stages:1,modifications:1};if(S.currentTab==='latest_release')tryLoadLatestRelease();if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
+async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;S._browsePrimed={};invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);S._browsePrimed={characters:1,units:1,supporters:1,stages:1,modifications:1};if(S.currentTab==='latest_release')tryLoadLatestRelease();if(S.currentTab==='team_builder'){initTeamBuilder();renderTeamBuilder()}if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
 document.addEventListener('click',e=>{if(!e.target.closest('.dc-stage-dd-wrap'))_dcCloseDcStageDd();if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
-function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent=t('dc_title');const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
+function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent=t('dc_title');const _ntb=document.getElementById('navTbTab');if(_ntb)_ntb.textContent=t('tab_team_builder');tbApplyLangStatic();const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
 const RARITY_LIST_KEYS=['UR','SSR','SR','R','N'];
 const RARITY_FILTER_ICONS={ULT:'/static/images/UI/UI_Common_Icon_ULT.webp',UR:'/static/images/Rarity/UI_Common_RarityIcon_UR.webp',SSR:'/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',SR:'/static/images/Rarity/UI_Common_RarityIcon_SR.webp',R:'/static/images/Rarity/UI_Common_RarityIcon_R.webp',N:'/static/images/Rarity/UI_Common_RarityIcon_N.webp'};
@@ -1922,7 +2089,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();renderTeamBuilder()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab)}}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -1935,9 +2102,9 @@ async function refreshSpotlightResults(){const ov=document.getElementById('searc
 function closeSearchSpotlight(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;clearSpotlightResults();const real=getActiveSearchInput();const inp=document.getElementById('searchSpotlightInput');if(real&&inp){real.value=inp.value;updateSearchHintVisibility(real.id);if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}ov.classList.remove('active');ov.setAttribute('aria-hidden','true');document.body.classList.remove('search-spotlight-open');releaseBackgroundScrollLock()}
 function scrollActiveListToolbarIntoView(){try{const pan=document.getElementById('panel-'+S.currentTab);const el=pan&&pan.querySelector('.list-toolbar');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}}
 function afterListLoadIfSpotlightOpen(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;requestAnimationFrame(()=>scrollActiveListToolbarIntoView())}
-function openSearchSpotlight(){if(S.currentTab==='latest_release'||S.currentTab==='calculator')return;const real=getActiveSearchInput();if(!real)return;const ov=document.getElementById('searchSpotlightOverlay');const inp=document.getElementById('searchSpotlightInput');const hint=document.getElementById('searchSpotlightHint');const tabLine=document.getElementById('searchSpotlightTabLine');const title=document.getElementById('searchSpotlightTitle');const foot=document.getElementById('searchSpotlightFoot');if(!ov||!inp)return;const spotWasActive=ov.classList.contains('active');inp.value=real.value;inp.placeholder=t(getTabSearchPlaceholderKey());if(title)title.textContent=t('search_spotlight_title');if(tabLine)tabLine.textContent=getTabNameForSpotlight();if(hint)hint.innerHTML=t('search_hint_html');if(foot)foot.textContent=t('search_spotlight_foot');const sc=document.getElementById('searchSpotlightClose');if(sc)sc.setAttribute('aria-label',t('search_spotlight_close'));ov.classList.add('active');ov.setAttribute('aria-hidden','false');document.body.classList.add('search-spotlight-open');if(!spotWasActive)applyBackgroundScrollLock();requestAnimationFrame(()=>{try{inp.focus({preventScroll:true});inp.select()}catch(_){inp.focus()}});debounceSpotlightResults()}
+function openSearchSpotlight(){if(S.currentTab==='latest_release'||S.currentTab==='calculator'||S.currentTab==='team_builder')return;const real=getActiveSearchInput();if(!real)return;const ov=document.getElementById('searchSpotlightOverlay');const inp=document.getElementById('searchSpotlightInput');const hint=document.getElementById('searchSpotlightHint');const tabLine=document.getElementById('searchSpotlightTabLine');const title=document.getElementById('searchSpotlightTitle');const foot=document.getElementById('searchSpotlightFoot');if(!ov||!inp)return;const spotWasActive=ov.classList.contains('active');inp.value=real.value;inp.placeholder=t(getTabSearchPlaceholderKey());if(title)title.textContent=t('search_spotlight_title');if(tabLine)tabLine.textContent=getTabNameForSpotlight();if(hint)hint.innerHTML=t('search_hint_html');if(foot)foot.textContent=t('search_spotlight_foot');const sc=document.getElementById('searchSpotlightClose');if(sc)sc.setAttribute('aria-label',t('search_spotlight_close'));ov.classList.add('active');ov.setAttribute('aria-hidden','false');document.body.classList.add('search-spotlight-open');if(!spotWasActive)applyBackgroundScrollLock();requestAnimationFrame(()=>{try{inp.focus({preventScroll:true});inp.select()}catch(_){inp.focus()}});debounceSpotlightResults()}
 function recallSearchBar(){openSearchSpotlight()}
-function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab)return;if(S.currentTab==='latest_release'||S.currentTab==='calculator'){fab.classList.remove('visible');return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel)return;const tb=panel.querySelector('.list-toolbar');if(!tb)return;S._searchRecallObs=new IntersectionObserver(entries=>{const e=entries[0];fab.classList.toggle('visible',!!e&&!e.isIntersecting)},{root:null,threshold:0,rootMargin:'-64px 0px 0px 0px'});S._searchRecallObs.observe(tb)}
+function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab)return;if(S.currentTab==='latest_release'||S.currentTab==='calculator'||S.currentTab==='team_builder'){fab.classList.remove('visible');return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel)return;const tb=panel.querySelector('.list-toolbar');if(!tb)return;S._searchRecallObs=new IntersectionObserver(entries=>{const e=entries[0];fab.classList.toggle('visible',!!e&&!e.isIntersecting)},{root:null,threshold:0,rootMargin:'-64px 0px 0px 0px'});S._searchRecallObs.observe(tb)}
 function tryLoadLatestRelease(){loadLatestRelease()}
 function showLrLockModal(){const o=document.getElementById('lrLockOverlay');if(!o)return;o.style.display='flex';const err=document.getElementById('lrLockErr');if(err)err.textContent='';const inp=document.getElementById('lrLockInput');if(inp)inp.value='';fillLrLockTexts();setTimeout(()=>{if(inp)inp.focus()},80)}
 function hideLrLockModal(){const o=document.getElementById('lrLockOverlay');if(o)o.style.display='none'}
@@ -4261,6 +4428,448 @@ S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmp
 _dcRefreshAtkSlotUi();
 }
 
+const TB_FORMS_KEY='ggen_tb_forms';
+const TB_LEADER_ICON='/static/images/UI/Sprite/UI_Organization_Icon_SupporterLeader_Posi.webp';
+function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitCondPassive:true,charCondPassive:true,unitTurnBuffAtk:false,exSquadAtkPct:0}}
+function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
+function initTeamBuilder(){
+if(S.tb)return;
+S.tb={activeSquad:1,squads:{1:{slots:Array.from({length:10},()=>_tbEmptySlot())},2:{slots:Array.from({length:10},()=>_tbEmptySlot())}},terrainType:'Ground',terrainLv:3,supporterId:null,supporterData:null,selectedKey:null,rearrange:null,batch:{kind:'unit',selected:new Set(),rows:[],loading:false},picker:{type:null,slotKey:null,abort:null,gen:0,rows:[]},masterLeague:false,_leaderApplyCache:{}};
+}
+function _tbReadFormations(){try{const s=localStorage.getItem(TB_FORMS_KEY);const a=JSON.parse(s);if(!Array.isArray(a)||a.length<5)throw 0;return a.map((x,i)=>({name:String((x&&x.name)||'').trim()||('Formation '+(i+1)),data:x&&x.data||null}))}catch(_){return Array.from({length:5},(_,i)=>({name:'Formation '+(i+1),data:null}))}}
+function _tbWriteFormations(arr){try{localStorage.setItem(TB_FORMS_KEY,JSON.stringify(arr))}catch(_){}}
+function _tbSlotToSave(sl){return{unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0}}
+function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,terrainLv:S.tb.terrainLv|0,masterLeague:!!S.tb.masterLeague,supporterId:S.tb.supporterId,squads:{1:{slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
+async function tbApplySnapshot(snap){
+if(!snap||snap.v!==1)return;
+initTeamBuilder();
+S.tb.terrainType=snap.terrainType||'Ground';
+S.tb.terrainLv=Math.min(3,Math.max(1,snap.terrainLv|0))||3;
+S.tb.masterLeague=!!snap.masterLeague;
+S.tb.supporterId=snap.supporterId||null;
+S.tb.supporterData=null;
+S.tb._leaderApplyCache={};
+function blank(){return Array.from({length:10},()=>_tbEmptySlot())}
+const s1=(snap.squads&&snap.squads[1]&&snap.squads[1].slots)||[];
+const s2=(snap.squads&&snap.squads[2]&&snap.squads[2].slots)||[];
+S.tb.squads[1].slots=blank();
+S.tb.squads[2].slots=blank();
+async function hydrateSide(sideIdx,src){
+for(let i=0;i<10&&i<src.length;i++){
+const o=src[i];if(!o)continue;const sl=S.tb.squads[sideIdx].slots[i];
+sl.lbTier=o.lbTier!=null?o.lbTier:3;sl.unitCondPassive=o.unitCondPassive!==false;sl.charCondPassive=o.charCondPassive!==false;sl.unitTurnBuffAtk=!!o.unitTurnBuffAtk;sl.exSquadAtkPct=o.exSquadAtkPct|0;
+if(o.unitId)try{const d=await fetch(`/api/unit/${encodeURIComponent(o.unitId)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(o.unitId);sl.unitData=d}}catch(_){}
+if(o.charId)try{const d=await fetch(`/api/character/${encodeURIComponent(o.charId)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(o.charId);sl.charData=d}}catch(_){}
+const ids=Array.isArray(o.optionPartIds)?o.optionPartIds:[];
+for(const pid of ids){if(!pid)continue;try{const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(pid)}&rarity=ALL&effect=ALL&unit_id=${encodeURIComponent(sl.unitId||'0')}`).then(r=>r.json());const hit=(d.rows||[]).find(x=>String(x.id)===String(pid));if(hit)sl.optionParts.push(hit)}catch(_){}}
+}}
+await hydrateSide(1,s1);await hydrateSide(2,s2);
+if(S.tb.supporterId)try{const rd=await fetch(`/api/supporter/${encodeURIComponent(S.tb.supporterId)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!rd.error)S.tb.supporterData=rd}catch(_){}
+const ml=document.getElementById('tbMasterLeagueChk');if(ml)ml.checked=S.tb.masterLeague;
+tbFillTerrainSelects();renderTeamBuilder();
+}
+function _tbGetUnitStatKey(ud,slot){
+if(!ud)return'stats_no_cond';
+const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
+const hasCond=!!ud.has_cond_stats;
+const passiveOn=!!(hasCond&&slot.unitCondPassive);
+const sfx=passiveOn?'_with_cond':'_no_cond';
+return'stats'+sfx;
+}
+function _tbPilotPairUnitAtkDef(cd,ud,charCondPassive,unitAtk,unitDefVal){
+const F=Math.floor;
+const pm=cd&&cd.pair_unit_stat_mod;
+if(!pm||!ud||ud._manual||!charCondPassive)return{unitAtk,unitDefVal};
+const row=pm[String(ud.id||'')];
+if(!row)return{unitAtk,unitDefVal};
+let a=unitAtk,d=unitDefVal;
+if(row.atk_pct)a=F(a*(100+row.atk_pct)/100);
+if(row.def_pct)d=F(d*(100+row.def_pct)/100);
+return{unitAtk:a,unitDefVal:d};
+}
+function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Ground';const lv=S.tb.terrainLv|0;return'&terrain='+encodeURIComponent(tt+','+lv)}
+function tbFillTerrainSelects(){
+initTeamBuilder();
+const ts=document.getElementById('tbTerrainSelect'),lv=document.getElementById('tbTerrainLvSelect');
+if(!ts)return;
+const cur=S.tb.terrainType,items=_tbTerrainItems();
+ts.innerHTML=items.map(x=>`<option value="${escAttr(x)}"${x===cur?' selected':''}>${esc(tTerrain(x))}</option>`).join('');
+if(lv){const n=Math.min(3,Math.max(1,S.tb.terrainLv|0));lv.value=String(n);S.tb.terrainLv=n}
+}
+function onTbTerrainChange(){
+initTeamBuilder();
+const ts=document.getElementById('tbTerrainSelect'),lv=document.getElementById('tbTerrainLvSelect');
+if(ts)S.tb.terrainType=ts.value||'Ground';
+if(lv)S.tb.terrainLv=parseInt(lv.value,10)||3;
+renderTeamBuilder();
+}
+function onTbMasterLeagueChange(){
+initTeamBuilder();
+const ml=document.getElementById('tbMasterLeagueChk');
+S.tb.masterLeague=!!(ml&&ml.checked);
+renderTbStats();
+}
+function tbSetSquad(n){
+initTeamBuilder();
+S.tb.activeSquad=n===2?2:1;
+document.querySelectorAll('.tb-squad-tab').forEach(el=>el.classList.remove('is-active'));
+const t=document.getElementById('tbSquadTab'+S.tb.activeSquad);if(t)t.classList.add('is-active');
+S.tb.selectedKey=null;
+renderTeamBuilder();
+}
+function _tbSquad(){initTeamBuilder();return S.tb.squads[S.tb.activeSquad]}
+function _tbKey(row,col){return(S.tb.activeSquad<<8)+(row*5+col)}
+function _tbRowColFromKey(key){const k=key&0xff;return{row:k<5?0:1,col:k%5}}
+function tbSlotClick(key){
+initTeamBuilder();
+if(S.tb.rearrange){tbRearrangeTap(key);return}
+S.tb.selectedKey=key;
+renderTbSlots();renderTbStats();
+}
+function tbSlotContextMenu(key,ev){
+if(ev)ev.preventDefault();
+initTeamBuilder();
+if(S.tb.rearrange)return;
+S.tb.selectedKey=key;
+const rc=_tbRowColFromKey(key);
+const sl=_tbSquad().slots[rc.row*5+rc.col];
+if(sl.unitData)openTbPicker(sl.charData?'option':'char',key);
+else openTbPicker('unit',key);
+}
+function _tbLongCardHtml(sl,slotKey){
+const ud=sl.unitData;
+if(!ud)return`<div class="tb-slot-add-ms"><span style="font-size:28px;color:var(--accent-cyan);opacity:.85">+</span></div>`;
+const r=ud.rarity||'N';
+const base=RARITY_BASE_MAP[r]||RARITY_BASE_MAP.N;
+const frame=RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP.N;
+const thumErr="this.style.display='none'";
+const portrait=ud.thum?`<img class="tb-long-portrait" src="${imgUrl(ud.thum)}" alt="" loading="lazy" onerror="${thumErr}">`:'';
+const role=ud.role_icon?`<div class="tb-long-role"><img src="${imgUrl(ud.role_icon)}" alt=""></div>`:'';
+const pilot=sl.charData&&(sl.charData.thum||sl.charData.portrait)?`<div class="tb-long-pilot"><img src="${imgUrl(sl.charData.thum||sl.charData.portrait)}" alt="" loading="lazy"></div>`:'';
+const lb=ud.lb_data;let lbHtml='';
+if(lb&&lb.length>1&&!ud.is_ultimate){const tier=Math.min(sl.lbTier|0,lb.length-1);const p=cmpLbPipsAtTier(tier);lbHtml=`<div class="tb-long-lb">${cmpLbPipsRow(p[0],p[1],p[2])}</div>`}
+const leaderIc=(S.tb._leaderApplyCache&&S.tb._leaderApplyCache[String(ud.id)+':'+String(sl.charData&&sl.charData.id||'')])?`<img class="tb-long-leader-ic" src="${imgUrl(TB_LEADER_ICON)}" alt="" loading="lazy">`:'';
+const opN=(sl.optionParts||[]).length;
+const opMini=opN?`<div class="tb-slot-op-mini">${esc(t('tb_op_count').replace('{n}',String(opN)))}</div>`:'';
+return`<div class="tb-long-card"><img class="tb-long-base" src="${imgUrl(base)}" alt=""><div class="tb-long-frames-left">${frame?`<img src="${imgUrl(frame)}" alt="">`:''}</div><div class="tb-long-portrait-wrap">${portrait}</div>${role}${pilot}${lbHtml}${leaderIc}${opMini}</div>${!sl.charData?`<div class="tb-slot-add-pilot"><span style="font-size:14px;color:#93c5fd">+</span></div>`:''}`;
+}
+function renderTbSlots(){
+initTeamBuilder();
+const front=document.getElementById('tbSlotsFront'),rear=document.getElementById('tbSlotsRear');
+if(!front||!rear)return;
+const squ=_tbSquad();
+function rowHtml(row){
+let h='';
+for(let col=0;col<5;col++){
+const idx=row*5+col;
+const key=_tbKey(row,col);
+const sl=squ.slots[idx];
+const sel=S.tb.selectedKey===key;
+let cls='tb-slot'+(sel?' is-sel':'');
+if(S.tb.rearrange&&S.tb.rearrange.pendingKey===key)cls+=' is-rearrange-pending';
+h+=`<div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>`;
+}
+return h;
+}
+front.innerHTML=rowHtml(0);rear.innerHTML=rowHtml(1);
+tbUpdateSquadHints();tbRenderDeployMap();scheduleTbLeaderRefresh();
+}
+function tbRenderDeployMap(){
+const el=document.getElementById('tbDeployMap');if(!el)return;
+const squ=_tbSquad();
+function cell(row,col){const sl=squ.slots[row*5+col];if(sl&&sl.unitData)return'<div class="tb-deploy-cell">●</div>';return'<div class="tb-deploy-cell">·</div>'}
+el.innerHTML='<div class="tb-deploy-row">'+[0,1,2,3,4].map(c=>cell(0,c)).join('')+'</div><div class="tb-deploy-row">'+[0,1,2,3,4].map(c=>cell(1,c)).join('')+'</div>';
+}
+function tbUpdateSquadHints(){
+initTeamBuilder();
+function count(side){let n=0;for(let i=0;i<10;i++)if(S.tb.squads[side].slots[i].unitData)n++;return n}
+const f1=document.getElementById('tbSquad1Fill'),f2=document.getElementById('tbSquad2Fill');
+if(f1)f1.textContent=t('tb_squad_fill').replace('{n}',String(count(1)));
+if(f2)f2.textContent=t('tb_squad_fill').replace('{n}',String(count(2)));
+}
+let _tbLeaderFt=null;
+function scheduleTbLeaderRefresh(){clearTimeout(_tbLeaderFt);_tbLeaderFt=setTimeout(tbRefreshLeaderApplies,100)}
+async function tbRefreshLeaderApplies(){
+initTeamBuilder();
+const sup=S.tb.supporterData;
+if(!sup||!sup.id)return;
+S.tb._leaderApplyCache=S.tb._leaderApplyCache||{};
+const tasks=[];
+for(const side of[1,2]){
+const squ=S.tb.squads[side];
+for(let i=0;i<10;i++){
+const sl=squ.slots[i];
+if(!sl||!sl.unitData||sl.unitData._manual)continue;
+const uid=String(sl.unitData.id);
+const cid=sl.charData&&sl.charData.id?String(sl.charData.id):'';
+const k=uid+':'+cid;
+if(S.tb._leaderApplyCache[k]!==undefined)continue;
+tasks.push((async()=>{
+try{
+let q=`/api/supporter/${encodeURIComponent(sup.id)}?lang=${S.lang}&level=100&lb_tier=3&for_unit_id=${encodeURIComponent(uid)}`;
+if(cid)q+='&for_char_id='+encodeURIComponent(cid);
+const d=await fetch(q).then(r=>r.json());
+const ls=d&&d.leader_skills||[];
+S.tb._leaderApplyCache[k]=ls.some(x=>x&&x.applies);
+}catch(_){S.tb._leaderApplyCache[k]=false}
+})());
+}}
+if(tasks.length){await Promise.all(tasks);renderTbSlots()}
+}
+function renderTbSupporter(){
+initTeamBuilder();
+const card=document.getElementById('tbSuppCard'),det=document.getElementById('tbSuppDetail');
+if(!card||!det)return;
+const s=S.tb.supporterData;
+if(!s){card.innerHTML=`<div class="tb-supp-placeholder">${esc(t('tb_pick_supp'))}</div>`;det.innerHTML='';return}
+const row={thum:s.portrait||s.thum,rarity:s.rarity||'N',role_icon:s.role_icon||'',acquisition_icon:'',special_icons:[],is_ultimate:false};
+card.innerHTML=`<div class="tb-supp-frames" style="justify-content:center;padding:12px">${renderListThumb(row,'supp',96)}</div>`;
+det.innerHTML=`<strong>${esc(s.name||'')}</strong><div style="margin-top:6px">${esc(t('supp_level'))}: 100 · ${esc(t('supp_lb_tier'))}: 3</div>`;
+}
+function renderTbStats(){
+initTeamBuilder();
+const pan=document.getElementById('tbStatsPanel');if(!pan)return;
+const key=S.tb.selectedKey;
+if(key==null){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
+const rc=_tbRowColFromKey(key);
+const squ=_tbSquad();
+const sl=squ.slots[rc.row*5+rc.col];
+if(!sl||!sl.unitData){pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_empty_stats'))}</div>`;return}
+const ud=sl.unitData;
+const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
+const statKey=_tbGetUnitStatKey(ud,sl);
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const stats=td?td[statKey]||td.stats_no_cond:[];
+const supporters=S.tb.supporterData?[S.tb.supporterData]:[];
+const ctx={masterLeagueBuff:!!S.tb.masterLeague,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:sl.exSquadAtkPct|0};
+const uEff=_dcGetModifiedAttackerUnitStatsFromCtx(ctx,stats);
+let atk=uEff.unitAtk,def=uEff.unitDefVal;
+const pr=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,atk,def);
+atk=pr.unitAtk;def=pr.unitDefVal;
+pan.innerHTML=`<div class="tb-stats-hint">${esc(t('tb_stats_hint'))}</div><div style="font-weight:600;margin-bottom:4px">${esc(ud.name||'')}</div><div class="tb-stats-grid"><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_hp')}</div><div class="tb-stat-val">${fmtN(uEff.unitHp)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_atk')}</div><div class="tb-stat-val">${fmtN(atk)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_def')}</div><div class="tb-stat-val">${fmtN(def)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mob')}</div><div class="tb-stat-val">${fmtN(uEff.unitMob)}</div></div><div class="tb-stat-cell"><div class="tb-stat-lbl">${t('col_mov')}</div><div class="tb-stat-val">${fmtN(uEff.unitMove)}</div></div></div>`;
+}
+function tbApplyLangStatic(){
+const el=id=>document.getElementById(id);
+if(el('tbPageTitle'))el('tbPageTitle').textContent=t('tab_team_builder');
+if(el('tbTerrainLbl'))el('tbTerrainLbl').textContent=t('terrain');
+if(el('tbFrontLbl'))el('tbFrontLbl').textContent=t('tb_front');
+if(el('tbRearLbl'))el('tbRearLbl').textContent=t('tb_rear');
+if(el('tbSquad1Lbl'))el('tbSquad1Lbl').textContent=t('tb_squad1');
+if(el('tbSquad2Lbl'))el('tbSquad2Lbl').textContent=t('tb_squad2');
+if(el('tbBtnFormation'))el('tbBtnFormation').textContent=t('tb_formation');
+if(el('tbBtnRearrange'))el('tbBtnRearrange').textContent=t('tb_rearrange');
+if(el('tbBtnBatch'))el('tbBtnBatch').textContent=t('tb_batch');
+if(el('tbRearrangeBanner'))el('tbRearrangeBanner').textContent=t('tb_rearrange_banner');
+if(el('tbRearrangeLinkedLbl'))el('tbRearrangeLinkedLbl').textContent=t('tb_linked_move');
+if(el('tbRearrangeCancelBtn'))el('tbRearrangeCancelBtn').textContent=t('tb_cancel');
+if(el('tbRearrangeOkBtn'))el('tbRearrangeOkBtn').textContent=t('tb_confirm');
+if(el('tbBatchTitle'))el('tbBatchTitle').textContent=t('tb_batch_title');
+if(el('tbBatchApplyBtn'))el('tbBatchApplyBtn').textContent=t('tb_apply');
+if(el('tbFormModalTitle'))el('tbFormModalTitle').textContent=t('tb_saved_formations');
+if(el('tbMlLbl'))el('tbMlLbl').textContent=t('tb_master_league');
+const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=(S.tb&&S.tb.batch&&S.tb.batch.kind==='char')?t('search_char'):t('search_unit');
+}
+function renderTeamBuilder(){initTeamBuilder();tbFillTerrainSelects();tbApplyLangStatic();const ml=document.getElementById('tbMasterLeagueChk');if(ml)ml.checked=!!S.tb.masterLeague;renderTbSlots();renderTbSupporter();renderTbStats()}
+let _tbPickerDebounce=null,_tbPickerAbort=null,_tbPickerGen=0;
+function closeTbPicker(){if(_tbPickerAbort){try{_tbPickerAbort.abort()}catch(_){}_tbPickerAbort=null}document.getElementById('tbPickerOverlay').classList.remove('active')}
+async function openTbPicker(type,slotKey){
+initTeamBuilder();closeTbPicker();clearTimeout(_tbPickerDebounce);S.tb.picker={type,slotKey,abort:null,gen:0,rows:[]};
+_tbPickerGen++;
+const ov=document.getElementById('tbPickerOverlay'),inp=document.getElementById('tbPickerSearch'),body=document.getElementById('tbPickerBody');
+if(!ov||!inp||!body)return;
+inp.value='';
+ov.classList.add('active');
+if(type==='option'){
+const squ=_tbSquad();const rc=_tbRowColFromKey(slotKey);const sl=squ.slots[rc.row*5+rc.col];
+if(!sl||!sl.unitId){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('dc_pick_unit'))}</div>`;return}
+body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+try{
+const uq='&unit_id='+encodeURIComponent(sl.unitId);
+const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=200&sort=name&dir=asc&q=&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
+S.tb.picker.rows=d.rows||[];
+filterTbPickerList();
+}catch(_){body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+setTimeout(()=>inp.focus(),50);
+return;
+}
+if(type==='supporter'){
+body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+try{
+let extra='&rarity=ALL';
+const squ=_tbSquad();const k=S.tb.selectedKey;if(k!=null){const rc=_tbRowColFromKey(k);const sl=squ.slots[rc.row*5+rc.col];if(sl&&sl.unitId)extra+='&unit_id='+encodeURIComponent(sl.unitId);if(sl&&sl.charId)extra+='&character_id='+encodeURIComponent(sl.charId)}
+const d=await fetch(`/api/supporters?lang=${S.lang}&page=1&per_page=200&sort=rarity&dir=desc&q=${encodeURIComponent('')}${extra}`).then(r=>r.json());
+S.tb.picker.rows=d.rows||[];
+filterTbPickerList();
+}catch(_){S.tb.picker.rows=[];body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+setTimeout(()=>inp.focus(),50);
+return;
+}
+inp.placeholder=type==='character'?t('search_char'):t('search_unit');
+body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('cmp_type_to_search'))}</div>`;
+setTimeout(()=>inp.focus(),50);
+}
+function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},120)}
+function filterTbPickerList(){
+const body=document.getElementById('tbPickerBody');if(!body)return;
+const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLowerCase();
+let rows=S.tb.picker.rows||[];
+if(q)rows=rows.filter(r=>String(r.name||'').toLowerCase().includes(q)||String(r.details||r.boost||'').toLowerCase().includes(q));
+if(!rows.length){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;return}
+const t=S.tb.picker.type;
+body.innerHTML=rows.map(r=>`<div class="tb-picker-item" onclick="pickTbItem(${JSON.stringify(String(r.id))})">${t==='supporter'?renderListThumb(r,'supp',40):renderListThumb(r,t==='character'?'char':'unit',40)}<span>${esc(r.name||'')}</span></div>`).join('');
+}
+async function _tbDoPickerSearch(){
+const type=S.tb.picker.type,q=document.getElementById('tbPickerSearch').value.trim(),body=document.getElementById('tbPickerBody');
+if(!body)return;
+if(q.length<2){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('cmp_type_to_search'))}</div>`;return}
+if(_tbPickerAbort){try{_tbPickerAbort.abort()}catch(_){}}
+const ac=new AbortController();_tbPickerAbort=ac;const myGen=++_tbPickerGen;
+const base=type==='character'?'/api/characters':'/api/units';
+const qU=type==='unit'?expandUnitSearchQuery(q):q;
+const terr=type==='unit'?_tbTerrainQuery():'';
+body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+try{
+const url=`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(qU)}${terr}`;
+const r=await fetch(url,{signal:ac.signal});
+const d=await r.json();
+if(myGen!==_tbPickerGen)return;
+S.tb.picker.rows=d.rows||[];
+filterTbPickerList();
+}catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+}
+async function pickTbItem(id){
+const type=S.tb.picker.type,slotKey=S.tb.picker.slotKey;
+closeTbPicker();
+initTeamBuilder();
+if(type==='supporter'){
+try{const d=await fetch(`/api/supporter/${encodeURIComponent(id)}?lang=${S.lang}&level=100&lb_tier=3`).then(r=>r.json());if(!d.error){S.tb.supporterId=String(id);S.tb.supporterData=d;S.tb._leaderApplyCache={}}}catch(_){}
+renderTeamBuilder();return;
+}
+if(slotKey==null)return;
+const squ=_tbSquad();const rc=_tbRowColFromKey(slotKey);const idx=rc.row*5+rc.col;const sl=squ.slots[idx];
+if(type==='unit'){
+try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.unitId=String(id);sl.unitData=d;sl.optionParts=[]}}catch(_){}
+}else if(type==='character'){
+try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(id);sl.charData=d}}catch(_){}
+}else if(type==='option'){
+try{
+const uq=sl.unitId?'&unit_id='+encodeURIComponent(sl.unitId):'';
+const d=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=50&q=${encodeURIComponent(id)}&rarity=ALL&effect=ALL${uq}`).then(r=>r.json());
+const hit=(d.rows||[]).find(x=>String(x.id)===String(id));
+if(hit){if(!sl.optionParts)sl.optionParts=[];if(sl.optionParts.length>=5)return;sl.optionParts.push(hit)}
+}catch(_){}
+}
+renderTeamBuilder();
+}
+function openTbSupporterPicker(){initTeamBuilder();S.tb.picker.slotKey=null;openTbPicker('supporter',null)}
+function tbStartRearrange(){
+initTeamBuilder();
+S.tb.rearrange={draft:JSON.parse(JSON.stringify(S.tb.squads)),pendingKey:null};
+document.getElementById('tbRearrangeOverlay').classList.add('active');
+document.getElementById('tbRearrangeOverlay').setAttribute('aria-hidden','false');
+tbRenderRearrangeBody();
+}
+function tbRenderRearrangeBody(){
+const body=document.getElementById('tbRearrangeBody');if(!body)return;
+const squ=S.tb.rearrange.draft[S.tb.activeSquad];
+function rowHtml(row){let h='';for(let col=0;col<5;col++){const idx=row*5+col;const key=_tbKey(row,col);const sl=squ.slots[idx];const pk=S.tb.rearrange.pendingKey===key;h+=`<div class="tb-slot${pk?' is-rearrange-pending':''}" style="width:100px" onclick="tbRearrangeTap(${key})">${_tbLongCardHtml(sl,key)}</div>`}return`<div class="tb-slot-row">${h}</div>`}
+body.innerHTML=rowHtml(0)+rowHtml(1);
+}
+function tbRearrangeTap(key){
+if(!S.tb.rearrange)return;
+const linked=!!document.getElementById('tbRearrangeLinked').checked;
+if(S.tb.rearrange.pendingKey==null){S.tb.rearrange.pendingKey=key;tbRenderRearrangeBody();return}
+const a=S.tb.rearrange.pendingKey,b=key;
+if(a===b){S.tb.rearrange.pendingKey=null;tbRenderRearrangeBody();return}
+const squ=S.tb.rearrange.draft[S.tb.activeSquad];
+const ia=_tbRowColFromKey(a),ib=_tbRowColFromKey(b);
+const sa=squ.slots[ia.row*5+ia.col],sb=squ.slots[ib.row*5+ib.col];
+if(linked){const ta=JSON.parse(JSON.stringify(sa));const tbj=JSON.parse(JSON.stringify(sb));Object.keys(sa).forEach(k=>delete sa[k]);Object.assign(sa,tbj);Object.keys(sb).forEach(k=>delete sb[k]);Object.assign(sb,ta)}
+else{const ua={unitId:sa.unitId,unitData:sa.unitData,optionParts:sa.optionParts,lbTier:sa.lbTier};const ub={unitId:sb.unitId,unitData:sb.unitData,optionParts:sb.optionParts,lbTier:sb.lbTier};sa.unitId=ub.unitId;sa.unitData=ub.unitData;sa.optionParts=ub.optionParts||[];sb.unitId=ua.unitId;sb.unitData=ua.unitData;sb.optionParts=ua.optionParts||[];sa.lbTier=ub.lbTier;sb.lbTier=ua.lbTier}
+S.tb.rearrange.pendingKey=null;tbRenderRearrangeBody();
+}
+function tbRearrangeCancel(){
+S.tb.rearrange=null;
+const o=document.getElementById('tbRearrangeOverlay');if(o){o.classList.remove('active');o.setAttribute('aria-hidden','true')}
+renderTeamBuilder();
+}
+function tbRearrangeConfirm(){
+if(!S.tb.rearrange)return;
+S.tb.squads=JSON.parse(JSON.stringify(S.tb.rearrange.draft));
+S.tb.rearrange=null;
+const o=document.getElementById('tbRearrangeOverlay');if(o){o.classList.remove('active');o.setAttribute('aria-hidden','true')}
+S.tb._leaderApplyCache={};
+renderTeamBuilder();
+}
+function openTbBatchModal(){
+initTeamBuilder();
+S.tb.batch.selected=new Set();
+document.getElementById('tbBatchOverlay').classList.add('active');
+document.getElementById('tbBatchTabUnits').classList.toggle('is-active',S.tb.batch.kind==='unit');
+document.getElementById('tbBatchTabChars').classList.toggle('is-active',S.tb.batch.kind==='char');
+const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=S.tb.batch.kind==='char'?t('search_char'):t('search_unit');
+tbFetchBatchList();
+}
+function closeTbBatchModal(){document.getElementById('tbBatchOverlay').classList.remove('active')}
+let _tbBatchSearchDeb=null;
+function tbOnBatchSearchInput(){clearTimeout(_tbBatchSearchDeb);_tbBatchSearchDeb=setTimeout(tbFetchBatchList,220)}
+function tbSetBatchKind(k){initTeamBuilder();S.tb.batch.kind=k==='char'?'char':'unit';document.getElementById('tbBatchTabUnits').classList.toggle('is-active',S.tb.batch.kind==='unit');document.getElementById('tbBatchTabChars').classList.toggle('is-active',S.tb.batch.kind==='char');const bs=document.getElementById('tbBatchSearch');if(bs)bs.placeholder=S.tb.batch.kind==='char'?t('search_char'):t('search_unit');tbFetchBatchList()}
+async function tbFetchBatchList(){
+const body=document.getElementById('tbBatchList');if(!body)return;
+const q=String(document.getElementById('tbBatchSearch')&&document.getElementById('tbBatchSearch').value||'').trim();
+body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+initTeamBuilder();S.tb.batch.loading=true;
+try{
+const kind=S.tb.batch.kind;
+const url=kind==='char'?`/api/characters?lang=${S.lang}&page=1&per_page=80&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`:`/api/units?lang=${S.lang}&page=1&per_page=80&sort=rarity&dir=desc&q=${encodeURIComponent(expandUnitSearchQuery(q))}${_tbTerrainQuery()}`;
+const d=await fetch(url).then(r=>r.json());
+S.tb.batch.rows=d.rows||[];
+let h='';
+S.tb.batch.rows.forEach(r=>{const id=String(r.id);const ck=S.tb.batch.selected.has(id)?' checked':'';h+=`<label class="tb-batch-row"><input type="checkbox"${ck} data-tb-bid="${escAttr(id)}" onchange="tbBatchToggleFromCb(this)">${kind==='char'?renderListThumb(r,'char',36):renderListThumb(r,'unit',36)}<span>${esc(r.name||'')}</span></label>`});
+body.innerHTML=h||`<div style="padding:12px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;
+}catch(_){body.innerHTML=`<div style="padding:12px">—</div>`}
+S.tb.batch.loading=false;
+}
+function tbBatchToggleFromCb(cb){initTeamBuilder();const id=cb&&cb.getAttribute('data-tb-bid');if(!id)return;if(cb.checked)S.tb.batch.selected.add(id);else S.tb.batch.selected.delete(id)}
+async function tbBatchApply(){
+initTeamBuilder();
+const squ=_tbSquad();
+const ids=[...S.tb.batch.selected];
+let slot=0;
+const kind=S.tb.batch.kind;
+for(const rawId of ids){
+if(kind==='unit'){while(slot<10&&squ.slots[slot].unitData)slot++}else{while(slot<10&&!(squ.slots[slot].unitData&&!squ.slots[slot].charData))slot++}
+if(slot>=10)break;
+const id=rawId;
+if(kind==='unit'){
+try{const d=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){squ.slots[slot].unitId=id;squ.slots[slot].unitData=d;squ.slots[slot].optionParts=[]}}catch(_){}
+}else{
+try{const d=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){squ.slots[slot].charId=id;squ.slots[slot].charData=d}}catch(_){}
+}
+slot++;
+}
+closeTbBatchModal();S.tb._leaderApplyCache={};renderTeamBuilder();
+}
+function openTbFormationModal(){
+const list=document.getElementById('tbFormationList');if(!list)return;
+const arr=_tbReadFormations();
+list.innerHTML=arr.map((x,i)=>`<div class="tb-form-row"><span style="min-width:22px;font-weight:700">${i+1}.</span><input type="text" id="tbFormName${i}" value="${escAttr(x.name)}"><button type="button" onclick="tbSaveFormationSlot(${i})">${esc(t('tb_save'))}</button><button type="button" onclick="tbLoadFormationSlot(${i})">${esc(t('tb_load'))}</button></div>`).join('');
+document.getElementById('tbFormationOverlay').classList.add('active');
+}
+function closeTbFormationModal(){document.getElementById('tbFormationOverlay').classList.remove('active')}
+function tbSaveFormationSlot(i){
+const arr=_tbReadFormations();
+const ni=document.getElementById('tbFormName'+i);
+arr[i]={name:ni?ni.value.trim()||arr[i].name:arr[i].name,data:tbSnapshot()};
+_tbWriteFormations(arr);openTbFormationModal();
+}
+async function tbLoadFormationSlot(i){const arr=_tbReadFormations();const x=arr[i];if(x&&x.data)await tbApplySnapshot(x.data);closeTbFormationModal()}
+function _tbCheckUrlParams(){
+const p=new URLSearchParams(location.search);
+if(p.get('tab')!=='team_builder')return;
+initTeamBuilder();switchTab('team_builder');
+}
+
 const DC_VIGOR_ORDER=['medium','high','max','super'];
 function _dcVigorAtLeast(cur,thr){const a=_dcNormMpLevel(cur),b=_dcNormMpLevel(thr);return DC_VIGOR_ORDER.indexOf(a)>=DC_VIGOR_ORDER.indexOf(b)}
 /** For vigor-gated unit conditional passives, require at least Max (so Max and Supercharged qualify). If ability text requires Supercharged only, keep that stricter tier. */
@@ -4342,7 +4951,11 @@ if(r.desc)out+=String(r.desc)+'\n';
 return out;
 }
 function _dcCharHasExSquadSynergyAbility(cd){return/\bsquad\b/i.test(_dcCharExSquadSynergyAbilityBlob(cd));}
-function _dcEffectiveExSquadAtkPct(){return _dcCharHasExSquadSynergyAbility(S.dc.atkCharData)?Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)):0;}
+function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.dc);}
+function _dcEffectiveExSquadAtkPctFromCtx(ctx){
+const c=ctx||{};
+return _dcCharHasExSquadSynergyAbility(c.atkCharData)?Math.min(20,Math.max(0,c.exSquadAtkPct|0)):0;
+}
 function _dcUpdateExSquadAtkGroupVisibility(){
 const wrap=document.getElementById('dcExSquadAtkWrap');
 if(!wrap)return;
@@ -5903,15 +6516,16 @@ w.style.display='';
 cb.disabled=false;
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
-function _dcGetModifiedAttackerUnitStats(atkUnitStats){
+function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
 const F=Math.floor;
-const mlPct=S.dc.masterLeagueBuff?50:0;
+const c=ctx||{};
+const mlPct=c.masterLeagueBuff?50:0;
 const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
 const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
-(S.dc.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
+(c.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
 let hpSupport=0,atkSupport=0,leaderPct=0;
-(S.dc.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
-leaderPct=_dcLeaderSkillPctAndFlags(S.dc.supporters).pct;
+(c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
+leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
 const lp=leaderPct|0;
 const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
@@ -5928,15 +6542,14 @@ const pDef=_dcStatPassivePctFromEntry(defEnt);
 const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
-/** MS stats (in-game): one floor on growth base — floor(base×(100+passive%+OP%+leader%+ML(+50 if on)+…)/100) + flats. ML adds +50 in the same % bucket as other buffs, not ×1.5 on sheet. Attack also stacks EX squad % and optional 1-turn ATK% in that sum; then + OP Attack flat + supporter ATK flat. */
 let unitHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+mlPct)/100)+(opFlat.HP|0)+hpSupport;
 let unitDefVal=F(defBase*(100+pDef+(opPct.Defense|0)+lp+mlPct)/100)+(opFlat.Defense|0);
 let unitMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+mlPct)/100)+(opFlat.Mobility|0);
 let unitMove=F(moveBase*(100+pMove+(opPct.Move|0)+lp+mlPct)/100)+(opFlat.Move|0);
 const opAt=opPct.Attack||0;
-const exSq=_dcEffectiveExSquadAtkPct();
+const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
 let turnAtkPct=0;
-if(S.dc.unitTurnBuffAtk&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(S.dc.atkUnitData).atkPct|0);
+if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
 const coreAtk=F(atkBase*(100+pAtk+opAt+(exSq|0)+lp+tAtk+mlPct)/100);
 let unitAtk=coreAtk+(opFlat.Attack|0)+(atkSupport|0);
@@ -5952,6 +6565,7 @@ deltaExAtk=withEx-withoutEx;
 }
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk};
 }
+function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
 function _dcPilotAtkStatLabelForWeapon(wpn){
 const k=_dcWeaponAtkStatKeys(wpn||{});
 const u=[...new Set(k)];
