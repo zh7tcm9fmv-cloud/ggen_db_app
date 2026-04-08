@@ -8317,7 +8317,11 @@ def list_units():
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"ul37_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    tb_boost = normalize_id(request.args.get('tb_boost_supporter', '').strip())
+    if not tb_boost or tb_boost not in supporter_info_map:
+        tb_boost = None
+    tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
+    ck = f"ul38_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -8448,7 +8452,25 @@ def list_units():
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
         rows.append(urow)
-    rows = sort_rows(rows, sb, sd, {'name','role','rarity','ATK','DEF','MOB','HP','EN','MOV'})
+    if tb_boost:
+        def _tb_unit_leader_boosted(row):
+            uid = normalize_id(row.get('id'))
+            return supporter_leader_applies_to_unit(tb_boost, uid, ld, lc, None)
+
+        def _tb_rarity_name_key(r):
+            return (-(r.get('rarity_sort') or 4), (r.get('name') or '').lower())
+
+        if sq:
+            boosted = [r for r in rows if _tb_unit_leader_boosted(r)]
+            other = [r for r in rows if not _tb_unit_leader_boosted(r)]
+            boosted.sort(key=_tb_rarity_name_key)
+            other.sort(key=_tb_rarity_name_key)
+            rows = boosted + other
+        else:
+            rows = [r for r in rows if _tb_unit_leader_boosted(r)]
+            rows.sort(key=_tb_rarity_name_key)
+    else:
+        rows = sort_rows(rows, sb, sd, {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
     _wbp = sorted(k for k in _debuff_keys_union if k in UNIT_WEAPON_DEBUFF_FILTER_KEYS)
@@ -8646,21 +8668,44 @@ def list_supporters():
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
+        uids = []
+        cids = []
+        u_bulk = (request.args.get('unit_ids') or '').strip()
+        c_bulk = (request.args.get('char_ids') or '').strip()
+        if u_bulk:
+            for part in u_bulk.split(','):
+                u = normalize_id(part.strip())
+                if u and u in unit_info_map:
+                    uids.append(u)
+            c_parts = [p.strip() for p in c_bulk.split(',')] if c_bulk else []
+            for i in range(len(uids)):
+                cid = None
+                if i < len(c_parts) and c_parts[i]:
+                    cc = normalize_id(c_parts[i])
+                    if cc in char_info_map:
+                        cid = cc
+                cids.append(cid)
         for_unit = None
         u_arg = request.args.get('unit_id', '').strip()
-        if u_arg:
+        if u_arg and not uids:
             u = normalize_id(u_arg)
             if u in unit_info_map:
                 for_unit = u
         for_char = None
         c_arg = request.args.get('character_id', '').strip()
-        if c_arg:
+        if c_arg and not uids:
             c = normalize_id(c_arg)
             if c in char_info_map:
                 for_char = c
-        uf = f"u{for_unit}" if for_unit else 'u0'
-        cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        if uids:
+            uf = 'm' + hashlib.md5(
+                (','.join(uids) + '|' + ','.join((c or '') for c in cids)).encode('utf-8')
+            ).hexdigest()[:16]
+            cf = 'c0'
+        else:
+            uf = f"u{for_unit}" if for_unit else 'u0'
+            cf = f"c{for_char}" if for_char else 'c0'
+        ck = f"sl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -8675,7 +8720,17 @@ def list_supporters():
             if lineage_filter is not None:
                 if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
                     continue
-            if for_unit and not id_seek and not supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char):
+            if uids:
+                if not id_seek:
+                    applies_any = False
+                    for i, uid in enumerate(uids):
+                        cid = cids[i] if i < len(cids) else None
+                        if supporter_leader_applies_to_unit(sid, uid, ld, lc, cid):
+                            applies_any = True
+                            break
+                    if not applies_any:
+                        continue
+            elif for_unit and not id_seek and not supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char):
                 continue
             if rarity_filter is not None:
                 if not rarity_filter:
