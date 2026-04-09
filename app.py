@@ -1084,6 +1084,125 @@ def classify_unit_weapon_trait_debuff_keys(line):
 
     return frozenset(keys)
 
+
+def _strip_custom_core_trait_prefix_for_dc(text):
+    if not text:
+        return ''
+    s = str(text).strip()
+    for pref in ('[Custom Core Effect] ', '[Custom Core效果] '):
+        if s.startswith(pref):
+            s = s[len(pref):].lstrip()
+            break
+    return s
+
+
+def _trait_line_is_vigor_supercharged_gate(line_lower, line_orig):
+    if 'vigor is supercharged' in line_lower and 'higher' in line_lower:
+        return True
+    if 'テンションが' in line_orig and '超一撃' in line_orig and '以上' in line_orig:
+        return True
+    if '戰意為' in line_orig and '超一擊' in line_orig and '以上' in line_orig:
+        return True
+    return False
+
+
+def _enemy_def_debuff_pct_from_single_trait_line(line):
+    if not line:
+        return 0
+    ll = line.lower()
+    compact = re.sub(r'\s+', ' ', ll)
+    m = re.search(r"when this unit attacks,\s*reduce enemy'?s\s+def\s+by\s+(\d+)\s*%", compact)
+    if m and 'for this attack' in compact:
+        return min(100, max(0, safe_int(m.group(1), 0)))
+    m = re.search(r'自身の攻撃時、敵の防御力を(\d+)[%％]減少させた状態で攻撃', line)
+    if m:
+        return min(100, max(0, safe_int(m.group(1), 0)))
+    m = re.search(r'自身攻擊時，以敵方防禦力減少(\d+)%的狀態攻擊', line)
+    if m:
+        return min(100, max(0, safe_int(m.group(1), 0)))
+    m = re.search(r'自身攻击时，以敌方防御力减少(\d+)%的状态攻击', line)
+    if m:
+        return min(100, max(0, safe_int(m.group(1), 0)))
+    return 0
+
+
+def _enemy_def_pct_from_custom_core_effect_value_blob(blob):
+    """
+    Custom Core weapon lines: explicit DEF Down, or EN 'Maximum Up' / JA·TW 最大値(提升|上昇) phrasing
+    from m_weapon_trait descriptions (on-attack enemy DEF reduction for those effects).
+    """
+    if not blob:
+        return 0
+    best = 0
+    patterns = (
+        (r'Weapon Effect Value Up\s*\(\s*&\s*DEF Down\s*(\d+)\s*%\s*\)', re.I),
+        (r'Weapon Effect Value Up\s*\(\s*&\s*Maximum Up\s*(\d+)\s*%\s*\)', re.I),
+        (r'武装効果の効果値UP（さらに防御力(\d+)%減少）', 0),
+        (r'武装効果の効果値UP（さらに最大値(\d+)%上昇）', 0),
+        (r'武裝效果的效果值UP（且防禦力減少(\d+)%）', 0),
+        (r'武裝效果的效果值UP（且最大值提升(\d+)%）', 0),
+    )
+    for pat, flags in patterns:
+        for m in re.finditer(pat, blob, flags):
+            best = max(best, min(100, safe_int(m.group(1), 0)))
+    return best
+
+
+def parse_enemy_def_debuff_pcts_from_trait_text(text):
+    """
+    Parse on-attack enemy unit DEF reduction from one weapon / SSP trait blob (multi-line OK).
+    Returns (always_on_pct, supercharged_vigor_only_pct). Supercharged line applies only when DC vigor is Supercharged.
+    """
+    raw = str(text or '')
+    had_custom_core_prefix = raw.lstrip().startswith(('[Custom Core Effect] ', '[Custom Core效果] '))
+    s = _strip_custom_core_trait_prefix_for_dc(raw)
+    if not s:
+        return (0, 0)
+    unconditional = 0
+    vigor_only = 0
+    pending_vigor = False
+    for raw_ln in s.split('\n'):
+        line = raw_ln.strip()
+        if not line:
+            continue
+        ll = line.lower()
+        if _trait_line_is_vigor_supercharged_gate(ll, line):
+            pending_vigor = True
+            continue
+        p = _enemy_def_debuff_pct_from_single_trait_line(line)
+        if p > 0:
+            if pending_vigor:
+                vigor_only = max(vigor_only, p)
+                pending_vigor = False
+            else:
+                unconditional = max(unconditional, p)
+        else:
+            pending_vigor = False
+    if had_custom_core_prefix:
+        unconditional = max(unconditional, _enemy_def_pct_from_custom_core_effect_value_blob(s))
+    return (unconditional, vigor_only)
+
+
+def enrich_weapon_levels_with_enemy_def_debuff(levels, ssp_trait_lines):
+    out = []
+    ssp_list = [x for x in (ssp_trait_lines or []) if x]
+    for lev in levels or []:
+        base_m, vig_m = 0, 0
+        for t in lev.get('traits') or []:
+            b, v = parse_enemy_def_debuff_pcts_from_trait_text(t)
+            base_m = max(base_m, b)
+            vig_m = max(vig_m, v)
+        for st in ssp_list:
+            b, v = parse_enemy_def_debuff_pcts_from_trait_text(st)
+            base_m = max(base_m, b)
+            vig_m = max(vig_m, v)
+        d = dict(lev)
+        d['enemy_def_debuff_base_pct'] = base_m
+        d['enemy_def_debuff_supercharged_pct'] = vig_m
+        out.append(d)
+    return out
+
+
 def collect_unit_weapon_debuff_keys(uid, ld, lc):
     acc = set()
     for line in iter_unit_weapon_trait_texts(uid, ld, lc):
@@ -9734,7 +9853,6 @@ def get_unit(unit_id):
             ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
             if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
                 at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
-            levels = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
             pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
             am = ws['ammo'] if wt == '3' else 0
             trl = ws.get('traits', [])
@@ -9759,6 +9877,8 @@ def get_unit(unit_id):
                             ft = ccl + tt2
                             if ft not in sat: sat.append(ft)
                     break
+            levels_raw = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
+            levels = enrich_weapon_levels_with_enemy_def_debuff(levels_raw, sat)
             lv5t = trl
             ip = any('preemptive strike' in (tr or '').lower() or '先制' in (tr or '') for tr in lv5t + sat)
             icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)

@@ -1638,7 +1638,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:#ef4444">Defender Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Reduces target unit defense only: new UnDef = UnDef − floor(UnDef × p / 100) (matches the debuffed DEF value on the in-game unit sheet). Pilot DEF is unchanged.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Extra debuff you type in (other sources). The simulator also adds on-attack enemy DEF down from the selected weapon’s traits / Custom Core text when present (capped 100% total with this field). UnDef = UnDef − floor(UnDef × p / 100); pilot DEF unchanged.">DEF debuff (target) %</span></span><input type="number" class="dc-input-sm" id="dcDefDebuffPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Sum of the matching attribute row below (Beam, Physical, or Special) for the attacker’s current weapon.">Total Debuffs %</span></span><span id="dcTotalDebuffsDisplay" class="dc-input-sm" style="display:inline-flex;align-items:center;min-height:36px;padding:0 8px;color:var(--accent-cyan);font-weight:600">0</span></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy character (⑨ pool).">Damage Taken Down (character) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownPilot" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Damage reduction on the enemy unit (non-EX attacks). EX weapons ignore this.">Damage Taken Down (Unit) %</span></span><input type="number" class="dc-input-sm" id="dcDmgTakenDownUnit" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
@@ -3754,6 +3754,26 @@ function _dcNonMapWeapons(ud){
 if(!ud||!ud.weapons)return[];
 const um=S.dc.unitStatMode||'normal';
 return ud.weapons.filter(w=>w.weapon_type!=='3'&&(!w.is_ssp_weapon||um==='ssp'));
+}
+/** From API: per-level enemy DEF % down on this attack (base + optional Supercharged-only line). */
+function _dcWeaponEnemyDefDebuffEffective(wpn,wpnLvIdx){
+if(!wpn||!wpn.levels)return 0;
+const lv=wpn.levels[wpnLvIdx]||{};
+let b=parseInt(lv.enemy_def_debuff_base_pct,10);
+let sp=parseInt(lv.enemy_def_debuff_supercharged_pct,10);
+if(Number.isNaN(b))b=0;
+if(Number.isNaN(sp))sp=0;
+if(!b&&!sp){
+const leg=parseInt(lv.enemy_def_debuff_pct,10);
+if(!Number.isNaN(leg)&&leg>0)b=leg;
+}
+const sup=_dcNormMpLevel(S.dc.mpLevel)==='super';
+return Math.min(100,Math.max(b,sup?Math.max(b,sp):b));
+}
+function _dcManualPlusWeaponDefDebuffPct(wpn,wpnLvIdx){
+const manual=parseInt(document.getElementById('dcDefDebuffPct')?.value,10)||0;
+const wp=_dcWeaponEnemyDefDebuffEffective(wpn,wpnLvIdx);
+return Math.min(100,manual+wp);
 }
 function _dcGetAutoWeaponPowerDisplay(){
 const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
@@ -6761,7 +6781,12 @@ if(u){
 const us=u.stats_raw||{},ub=u.bonus_amounts||{};
 const defTotal=us.Defense||0;
 const defBon=ub.Defense||0;
-const defDeb=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
+const manualDeb=parseInt(document.getElementById('dcDefDebuffPct')?.value,10)||0;
+const atkUd=S.dc.atkUnitData;
+const atkWpns=atkUd?_dcNonMapWeapons(atkUd):[];
+const atkW=atkWpns[S.dc.wpnIdx];
+const wDeb=atkW?_dcWeaponEnemyDefDebuffEffective(atkW,S.dc.wpnLv):0;
+const defDeb=Math.min(100,manualDeb+wDeb);
 let defLine;
 if(defDeb>0){
 const defBefore=defTotal;
@@ -6769,10 +6794,11 @@ const defAfter=_dcApplyDefDebuffToUnitDef(defBefore,defDeb);
 const defBonHtml=defBon>0?`<div style="font-size:10px;color:#4ade80;font-weight:600;margin-top:2px;line-height:1.2">(+${fmtN(defBon)})</div>`:'';
 const vCls=defBon>0?' dc-stat-val--buffed':'';
 const boxCls=defBon>0?' dc-def-mini--map-bonus':'';
+const debSub=(manualDeb>0&&wDeb>0)?`<span style="font-size:9px;color:var(--text-muted);display:block;margin-top:3px;line-height:1.25">${manualDeb}% field + ${wDeb}% weapon</span>`:'';
 defLine=`<div class="dc-stat-mini${boxCls}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val">
 <span class="dc-def-stat-num${vCls}">${fmtN(defBefore)}</span>${defBonHtml}
 <div style="margin-top:6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;justify-content:center"><span style="color:#f87171;font-weight:800;font-size:15px">→ ${fmtN(defAfter)}</span></div>
-<span style="font-size:10px;color:#f87171;font-weight:600;display:block;margin-top:2px">(${defDeb}% DEF debuff)</span>
+<span style="font-size:10px;color:#f87171;font-weight:600;display:block;margin-top:2px">(${defDeb}% DEF debuff)</span>${debSub}
 </div></div>`;
 }else{
 defLine=_dcDefStatMiniHtml(t('col_def'),defTotal,defBon);
@@ -6902,6 +6928,7 @@ S.dc._wpnTraitDistPow=effD>0?effD:0;
 S.dc._wpnTraitHpPow=0;
 renderDcWeaponArea();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+else onDcParamChange();
 }
 function setDcWpnLv(lv){
 S.dc.wpnLv=lv;
@@ -6915,6 +6942,7 @@ S.dc._wpnTraitHpPow=0;
 }
 renderDcWeaponArea();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+else onDcParamChange();
 }
 function setDcMp(lv){
 const prevKey=_dcGetUnitStatKey();
@@ -7535,7 +7563,7 @@ const defRaw=defUnit?(defUnit.stats_raw?.Defense||0):0;
 /** stats_raw is post–team-bonus (fst from API); bonus_amounts is the increment only — do not add twice. */
 let unitDef=defRaw;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
-let defDebuffPct=parseInt(document.getElementById('dcDefDebuffPct')?.value)||0;
+let defDebuffPct=_dcManualPlusWeaponDefDebuffPct(wpn,S.dc.wpnLv);
 if(defDebuffPct>0){
 unitDef=_dcApplyDefDebuffToUnitDef(unitDef,defDebuffPct);
 }
