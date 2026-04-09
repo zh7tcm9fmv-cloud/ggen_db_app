@@ -8789,7 +8789,7 @@ def list_units():
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
 _OP_PART_STAT_INCREASE_RE = re.compile(
-    r'(?:Increase|Increases?)\s+(?:squad\s+)?(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move)(?:\s*,\s*(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))*(?:\s+and\s+(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))?\s+by\s+(\d+)(%?)',
+    r'(?:Increase|Increases?)\s+(?:squad\s+)?(?:own\s+)?(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move)(?:\s*,\s*(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))*(?:\s+and\s+(?:Max\s+)?(HP|EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move))?\s+by\s*(\d+)(%?)',
     re.I,
 )
 OPTION_PART_EFFECT_FILTERS = frozenset({'ALL', 'HP', 'EN', 'ATK', 'DEF', 'MOB', 'OTHER'})
