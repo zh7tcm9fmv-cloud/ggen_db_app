@@ -638,6 +638,14 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-dc-cond-toggle .toggle-switch{width:38px;height:22px;border-radius:11px}
 .dc-dc-cond-toggle .toggle-switch::after{width:16px;height:16px;top:2px;left:2px}
 .dc-dc-cond-toggle .toggle-clickable.active .toggle-switch::after{left:18px}
+.dc-sheet-buff-wrap{max-width:100%;box-sizing:border-box}
+@media(min-width:769px){
+  /* Keep DC sheet buff toggles symmetric on desktop (avoid viewport-based vw widths). */
+  .dc-sheet-buff-wrap{align-items:flex-end}
+  .dc-sheet-buff-wrap .dc-dc-cond-toggle{width:fit-content;max-width:100%}
+  .dc-sheet-buff-wrap .toggle-clickable{min-height:28px;justify-content:flex-end}
+  .dc-sheet-buff-wrap .toggle-label{max-width:220px;white-space:nowrap}
+}
 .dc-picked-change{padding:4px 8px;font-size:11px;background:transparent;border:1px solid var(--border-color);color:var(--text-muted);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0}
 .dc-picked-change:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
 .dc-atk-char-wrap{display:flex;flex-direction:column;gap:8px;width:100%;min-width:0;align-items:stretch}
