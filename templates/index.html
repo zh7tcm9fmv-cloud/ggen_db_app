@@ -427,6 +427,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .footer-logo-m{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:400;font-style:italic;letter-spacing:1.5px;color:rgba(212,175,55,0.5);text-shadow:0 0 8px rgba(212,175,55,0.3);pointer-events:none}
 .map-cell.npc-clickable{cursor:pointer;outline:2px solid transparent;transition:var(--transition)}
 .map-cell.npc-clickable:hover{outline-color:rgba(0,212,255,.55)}
+.map-cell.npc-clickable .map-unit-dot,.map-cell.npc-clickable .map-unit-dot *{pointer-events:none}
 .npc-card-highlight{box-shadow:0 0 0 2px rgba(0,212,255,.75),0 0 18px rgba(0,212,255,.35);border-radius:var(--radius-lg)}
 .npc-card .detail-title-area{min-width:0;max-width:100%;overflow-x:hidden;box-sizing:border-box}
 .npc-card .stats-grid{grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:10px}
@@ -3232,8 +3233,43 @@ function esc(s){if(s===null||s===undefined)return'';const d=document.createEleme
 function escAttr(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
 function escJs(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n')}
 function scrollToNpc(id){try{const el=document.getElementById('npc-'+String(id));if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('npc-card-highlight');setTimeout(()=>el.classList.remove('npc-card-highlight'),1200)}catch(e){}}
-function scrollToNpcDetail(idx){try{const el=document.getElementById('npc-detail-'+String(idx));if(!el)return;const panel=el.closest('.stage-npc-tab-panel');if(panel&&panel.classList.contains('hidden')){const wrap=panel.closest('[data-stage-npc-group]');if(wrap){const gid=wrap.getAttribute('data-stage-npc-group')||'';const panels=Array.from(wrap.querySelectorAll('.stage-npc-tab-panel'));const tabIdx=panels.indexOf(panel);if(tabIdx>=0&&gid){const btn=document.getElementById('sn-tab-'+gid+'-'+tabIdx);if(btn)switchStageNpcTab(btn)}}}el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('npc-card-highlight');setTimeout(()=>el.classList.remove('npc-card-highlight'),1200)}catch(e){}}
-function onStageMapUnitClick(detailIdx,ev,unitId,npcId){if(ev)ev.stopPropagation();if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){const i=parseInt(detailIdx,10);if(!Number.isNaN(i)){scrollToNpcDetail(i);return}}const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';if(nid)scrollToNpc(nid)}
+function scrollToNpcDetail(idx){
+try{
+  const el=document.getElementById('npc-detail-'+String(idx));
+  if(!el)return false;
+  const panel=el.closest('.stage-npc-tab-panel');
+  if(panel&&panel.classList.contains('hidden')){
+    const wrap=panel.closest('[data-stage-npc-group]');
+    if(wrap){
+      const gid=wrap.getAttribute('data-stage-npc-group')||'';
+      const panels=Array.from(wrap.querySelectorAll('.stage-npc-tab-panel'));
+      const tabIdx=panels.indexOf(panel);
+      if(tabIdx>=0&&gid){
+        const btn=document.getElementById('sn-tab-'+gid+'-'+tabIdx);
+        if(btn)switchStageNpcTab(btn)
+      }
+    }
+  }
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  el.classList.add('npc-card-highlight');
+  setTimeout(()=>el.classList.remove('npc-card-highlight'),1200);
+  return true;
+}catch(e){return false}
+}
+function onStageMapUnitClick(detailIdx,ev,unitId,npcId){
+if(ev)ev.stopPropagation();
+if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
+  const i=parseInt(detailIdx,10);
+  if(!Number.isNaN(i)){
+    // Some data sources use 0-based while others use 1-based indices. Try both.
+    if(scrollToNpcDetail(i))return;
+    if(scrollToNpcDetail(i-1))return;
+    if(scrollToNpcDetail(i+1))return;
+  }
+}
+const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';
+if(nid)scrollToNpc(nid)
+}
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
 
 const CMP_COLORS=['#e67e22','#2ecc71','#e74c3c'];
