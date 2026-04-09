@@ -69,6 +69,10 @@ LATEST_RELEASE_TEST_LOCK_START_MS = int(_ts) if _ts.isdigit() else None
 # Set to 0/false to lock ONLY test pins (LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID / _START_MS), not all future gachas.
 _prel = (os.environ.get('LATEST_RELEASE_LOCK_FUTURE_STARTS') or '1').strip().lower()
 LATEST_RELEASE_LOCK_FUTURE_STARTS = _prel not in ('0', 'false', 'no', 'off')
+# Eternal Road: ETERNAL_STAGE_LOCK_UNTIL_MS locks specific stage IDs until a UTC date (YYYY-MM-DD) or epoch ms. See _parse_eternal_stage_lock_until_map().
+# ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK=1 (default): Latest Release session unlock also bypasses that env time lock (early access for testers).
+_eslr = (os.environ.get('ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK') or '1').strip().lower()
+ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK = _eslr not in ('0', 'false', 'no', 'off')
 # NPC visibility lock (separate from Latest Release): set NPC_VIEW_PASSWORD to require unlock before NPC rows/details are shown.
 NPC_VIEW_PASSWORD = (os.environ.get('NPC_VIEW_PASSWORD') or '').strip()
 # JP mode lock (separate): set JP_MODE_PASSWORD to require unlock before using JP/JA language mode.
@@ -424,6 +428,36 @@ def normalize_id(value, default='0', debug_context=None):
             except ValueError: return value
         return str(value)
     except (ValueError, TypeError): return default
+
+
+def _parse_eternal_stage_lock_until_map():
+    """Parse ETERNAL_STAGE_LOCK_UNTIL_MS: comma/newline-separated stageId=value. Value = epoch ms (digits) or YYYY-MM-DD (UTC 00:00:00)."""
+    raw = (os.environ.get('ETERNAL_STAGE_LOCK_UNTIL_MS') or '').strip()
+    out = {}
+    if not raw:
+        return out
+    for part in re.split(r'[\s,;]+', raw):
+        part = part.strip()
+        if not part or '=' not in part:
+            continue
+        a, b = part.split('=', 1)
+        sid = normalize_id(a.strip())
+        b = b.strip()
+        if not sid or sid == '0':
+            continue
+        if b.isdigit():
+            out[sid] = int(b)
+            continue
+        try:
+            dpart = b[:10]
+            dt = datetime.strptime(dpart, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            out[sid] = int(dt.timestamp() * 1000)
+        except (ValueError, TypeError):
+            pass
+    return out
+
+
+ETERNAL_STAGE_LOCK_UNTIL_MS_MAP = _parse_eternal_stage_lock_until_map()
 
 # ═══════════════════════════════════════════════════════
 # CONSTANTS
@@ -3147,7 +3181,14 @@ def create_eternal_stage_map(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('StageId') or item.get('stageId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
-        lookup[sid] = {'stage_id': sid, 'stage_number': safe_int(item.get('StageNumber'), 0), 'stage_name_lang_id': normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')), 'display_unit_id': normalize_id(item.get('DisplayUnitId') or item.get('displayUnitId')), 'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1)}
+        lookup[sid] = {
+            'stage_id': sid,
+            'stage_number': safe_int(item.get('StageNumber'), 0),
+            'stage_name_lang_id': normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')),
+            'display_unit_id': normalize_id(item.get('DisplayUnitId') or item.get('displayUnitId')),
+            'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
+            'strategy_info_schedule_id': normalize_id(item.get('StrategyInfoScheduleId') or item.get('strategyInfoScheduleId') or '0'),
+        }
     return lookup
 
 def create_stage_sortie_set_content_map(d):
@@ -9190,6 +9231,28 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
     return latest_release_schedule_content_locked(sid, sm)
 
 
+def eternal_stage_locked_for_request(stage_id, est):
+    """Hide Eternal Road stage from list/detail until env unlock time and/or StrategyInfoScheduleId LR lock."""
+    sid = normalize_id(stage_id)
+    unlock = ETERNAL_STAGE_LOCK_UNTIL_MS_MAP.get(sid)
+    if unlock is not None:
+        now_ms = int(time.time() * 1000)
+        if now_ms < int(unlock):
+            if not (ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK and LATEST_RELEASE_PASSWORD and session.get('lr_unlocked') is True):
+                return True
+    sched = normalize_id((est or {}).get('strategy_info_schedule_id', '0'))
+    if entity_hidden_by_lr_schedule_lock(sched):
+        return True
+    return False
+
+
+def eternal_stage_list_cache_time_fragment():
+    """Short cache buckets while any env-based stage time lock may flip (avoids stale list after unlock)."""
+    if not ETERNAL_STAGE_LOCK_UNTIL_MS_MAP:
+        return ''
+    return '_t' + str(int(time.time() // 300))
+
+
 def npc_password_unlocked():
     """NPC visibility gate (separate password/session)."""
     if not NPC_VIEW_PASSWORD:
@@ -9472,6 +9535,8 @@ def list_dc_targets():
         ld = get_lang_data(lc); rows = []
         diff_order_map = {1: 0, 2: 1, 3: 2}
         for sid, est in eternal_stage_map.items():
+            if eternal_stage_locked_for_request(sid, est):
+                continue
             sn = est.get('stage_number', 0)
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Stage {sid}"
             sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
@@ -9494,11 +9559,13 @@ def list_stages():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
-        ck = f"stages4_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}"
+        ck = f"stages4_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
         for sid, est in eternal_stage_map.items():
+            if eternal_stage_locked_for_request(sid, est):
+                continue
             sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
             if sq:
                 searchable = f"{sid} {sname} {sn}".lower()
@@ -9524,11 +9591,14 @@ def list_stages():
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id); ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id)
+        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); est = eternal_stage_map.get(stage_id)
         if not est: return jsonify({'error': f'Stage {stage_id} not found'}), 404
+        if eternal_stage_locked_for_request(stage_id, est):
+            return jsonify({'error': f'Stage {stage_id} not found'}), 404
         sm = stage_map.get(stage_id, {}); sn = est.get('stage_number', 0)
         sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         diff = get_stage_difficulty(stage_id, lc); duid = est.get('display_unit_id', '0'); portrait = ''
