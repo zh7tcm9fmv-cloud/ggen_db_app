@@ -3554,24 +3554,24 @@
   {
     "Id": 14000100014,
     "StartUnitDevelopmentPieceId": 140001006006,
-    "EndUnitDevelopmentPieceId": 140001008006,
+    "EndUnitDevelopmentPieceId": 140001008004,
     "RequiredLevel": 55
   },
   {
     "Id": 14000100015,
     "StartUnitDevelopmentPieceId": 140001006004,
-    "EndUnitDevelopmentPieceId": 140001008006,
+    "EndUnitDevelopmentPieceId": 140001008004,
     "RequiredLevel": 55
   },
   {
     "Id": 14000100016,
     "StartUnitDevelopmentPieceId": 140001006002,
-    "EndUnitDevelopmentPieceId": 140001008006,
+    "EndUnitDevelopmentPieceId": 140001008004,
     "RequiredLevel": 55
   },
   {
     "Id": 14000100017,
-    "StartUnitDevelopmentPieceId": 140001008006,
+    "StartUnitDevelopmentPieceId": 140001008004,
     "EndUnitDevelopmentPieceId": 140001010006,
     "RequiredLevel": 55
   },

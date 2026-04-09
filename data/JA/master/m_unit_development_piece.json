@@ -4710,9 +4710,9 @@
     "BeforeUnitDevelopmentPieceId": 140001006000
   },
   {
-    "Id": 140001008006,
+    "Id": 140001008004,
     "UnitDevelopmentDiagramId": 140001,
-    "RowNumber": 6,
+    "RowNumber": 4,
     "ColNumber": 8,
     "UnitId": 1400002100,
     "IsMultipleUnitDevelopment": false,
@@ -4747,7 +4747,7 @@
     "UnitId": 1400001500,
     "IsMultipleUnitDevelopment": true,
     "InitialLevel": 55,
-    "BeforeUnitDevelopmentPieceId": 140001008006
+    "BeforeUnitDevelopmentPieceId": 140001008004
   },
   {
     "Id": 140001012000,

@@ -12558,6 +12558,34 @@
     "UnitId": 0
   },
   {
+    "StageBattleConditionSetId": 90500026,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009050002601,
+    "UnitId": 2300000200
+  },
+  {
+    "StageBattleConditionSetId": 90500026,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300009050002603,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 90500027,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009050002701,
+    "UnitId": 1017000100
+  },
+  {
+    "StageBattleConditionSetId": 90500027,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300009050002704,
+    "UnitId": 0
+  },
+  {
     "StageBattleConditionSetId": 90510001,
     "CategoryTypeIndex": 1,
     "SortOrder": 1,
@@ -12978,6 +13006,48 @@
     "UnitId": 0
   },
   {
+    "StageBattleConditionSetId": 90510034,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009051003401,
+    "UnitId": 1001000100
+  },
+  {
+    "StageBattleConditionSetId": 90510034,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300009051003404,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 90510035,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009051003501,
+    "UnitId": 1850001300
+  },
+  {
+    "StageBattleConditionSetId": 90510035,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 2,
+    "TextLanguageId": 130300009051003502,
+    "UnitId": 1001000100
+  },
+  {
+    "StageBattleConditionSetId": 90510035,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300009051003504,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 90510035,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 5,
+    "TextLanguageId": 130300009051003505,
+    "UnitId": 0
+  },
+  {
     "StageBattleConditionSetId": 90520001,
     "CategoryTypeIndex": 1,
     "SortOrder": 1,
@@ -13367,6 +13437,20 @@
     "CategoryTypeIndex": 5,
     "SortOrder": 5,
     "TextLanguageId": 130300009052002605,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 90520027,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009052002701,
+    "UnitId": 1110000100
+  },
+  {
+    "StageBattleConditionSetId": 90520027,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300009052002704,
     "UnitId": 0
   },
   {
