@@ -833,9 +833,9 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-supporter-item img:not(.dc-dc-mod-thumb),.dc-option-item img:not(.dc-dc-mod-thumb){width:28px;height:28px;object-fit:contain}
 .dc-option-item img.dc-dc-mod-thumb,.dc-supporter-item img.dc-dc-mod-thumb{width:48px!important;height:48px!important;max-width:48px;max-height:48px;object-fit:contain!important;object-position:center center;border-radius:6px;background:var(--bg-input);flex-shrink:0}
 .dc-supporter-item.dc-supporter-item--layout{flex-direction:column;align-items:stretch;gap:8px}
-.dc-supporter-item--layout .dc-supporter-item-main{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.dc-supporter-item--layout .dc-supporter-item-main{display:flex;align-items:center;gap:8px;min-width:0;width:100%}
 .dc-supporter-item--layout .dc-supporter-item-text{flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}
-.dc-supporter-item--layout .dc-supporter-item-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.dc-supporter-item--layout .dc-supporter-item-actions{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;margin-left:auto}
 .dc-supporter-item--layout .dc-supp-remove-btn{display:inline-flex;align-items:center;justify-content:center;min-width:36px;min-height:36px;padding:4px;border:0;background:transparent;cursor:pointer;border-radius:6px}
 .dc-supporter-item--layout .dc-supp-remove-btn img{width:22px;height:22px;object-fit:contain;opacity:.85}
 .dc-supporter-item--layout .dc-supp-remove-btn:hover img{opacity:1}
@@ -6715,6 +6715,7 @@ const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-be
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 const sa=document.getElementById('dcAtkStatsArea');
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
+const msEnh=_dcMsStatEnhancementLinesHtml(S.dc,stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
 const uMode=S.dc.unitStatMode||'normal';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
@@ -6771,7 +6772,7 @@ unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top
 }
 const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
 const uGridCls=sheetBuffOn?`${uVis} dc-stats-mini--ml-buff`:uVis;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span></div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span></div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span></div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span>${msEnh.hpHtml}</div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${msEnh.atkHtml}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${msEnh.defHtml}</div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span>${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
 _dcUpdateExSquadAtkGroupVisibility();
@@ -7623,8 +7624,7 @@ ${tagStr?`<span style="display:inline-block;padding:1px 5px;border-radius:3px;ba
 const rmTitle=escAttr(t('tb_clear_supporter')||t('tb_op_clear')||'Clear');
 const trashSrc=imgUrlWebp(TB_TRASH_ICON);
 area.innerHTML=`<div class="dc-supporter-item dc-supporter-item--layout">
-<div class="dc-supporter-item-main">${thumHtml}<div class="dc-supporter-item-text" style="font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></div></div>
-<div class="dc-supporter-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('supporter')">Change</button><button type="button" class="dc-supp-remove-btn" onclick="removeDcSupporter(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div>
+<div class="dc-supporter-item-main">${thumHtml}<div class="dc-supporter-item-text" style="font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></div><div class="dc-supporter-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('supporter')">${esc(t('dc_change'))}</button><button type="button" class="dc-supp-remove-btn" onclick="removeDcSupporter(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div>
 ${lsHtml}
 <div class="dc-supporter-ctrl-row">
 <span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm dc-supporter-lv-input" value="${lvl}" min="1" max="100" onchange="updateDcSupporterLv(0,this.value)">
@@ -8273,6 +8273,51 @@ return;
 w.style.display='';
 cb.disabled=false;
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
+}
+/** Green +lines under MS HP/ATK/DEF/MOB: % bucket (matches single floor in damage math), then flats. ATK % line excludes EX squad % (shown separately). */
+function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
+const F=Math.floor;
+const c=ctx||{};
+const mlPct=c.masterLeagueBuff?50:0;
+const goPct=c.grandOffensiveBuff?100:0;
+const sheetBuffPct=mlPct+goPct;
+const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
+const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
+(c.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
+let hpSupport=0,atkSupport=0,leaderPct=0;
+(c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
+leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
+const lp=leaderPct|0;
+const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
+const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
+const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
+const mobEnt=_dcFindStatEntry(atkUnitStats,'Mobility');
+const atkBase=F(Math.max(0,atkEnt?atkEnt.base:0));
+const defBase=F(Math.max(0,defEnt?defEnt.base:0));
+const hpBase=F(Math.max(0,hpEnt?hpEnt.base:0));
+const mobBase=F(Math.max(0,mobEnt?mobEnt.base:0));
+const pAtk=_dcStatPassivePctFromEntry(atkEnt);
+const pDef=_dcStatPassivePctFromEntry(defEnt);
+const pHp=_dcStatPassivePctFromEntry(hpEnt);
+const pMob=_dcStatPassivePctFromEntry(mobEnt);
+const opAt=opPct.Attack||0;
+let turnAtkPct=0;
+if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
+const tAtk=turnAtkPct|0;
+function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="dc-stat-mini-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
+const coreHp=F(hpBase*(100+pHp)/100);
+const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
+const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
+const coreDef=F(defBase*(100+pDef)/100);
+const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct)/100)-coreDef;
+const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)')+L(opFlat.Defense|0,'OP+','Option part flat Defense');
+const coreMob=F(mobBase*(100+pMob)/100);
+const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
+const mobHtml=L(pctMob,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'OP+','Option part flat Mobility');
+const coreAtk=F(atkBase*(100+pAtk)/100);
+const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp)/100)-coreAtk;
+const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
+return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
 const F=Math.floor;
