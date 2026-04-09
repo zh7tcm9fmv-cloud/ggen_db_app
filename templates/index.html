@@ -425,9 +425,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
 .footer-logo{height:80px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:brightness(0.95) contrast(1.1)}
 .footer-logo-m{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:400;font-style:italic;letter-spacing:1.5px;color:rgba(212,175,55,0.5);text-shadow:0 0 8px rgba(212,175,55,0.3);pointer-events:none}
-.map-cell.npc-clickable{cursor:pointer;outline:2px solid transparent;transition:var(--transition)}
+.map-cell.npc-clickable{cursor:pointer;outline:2px solid transparent;transition:var(--transition);touch-action:manipulation;position:relative;z-index:1}
 .map-cell.npc-clickable:hover{outline-color:rgba(0,212,255,.55)}
 .map-cell.npc-clickable .map-unit-dot,.map-cell.npc-clickable .map-unit-dot *{pointer-events:none}
+.map-grid>.map-cell:not(.npc-clickable){z-index:0}
 .npc-card-highlight{box-shadow:0 0 0 2px rgba(0,212,255,.75),0 0 18px rgba(0,212,255,.35);border-radius:var(--radius-lg)}
 .npc-card .detail-title-area{min-width:0;max-width:100%;overflow-x:hidden;box-sizing:border-box}
 .npc-card .stats-grid{grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:10px}
@@ -841,6 +842,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 #dcAtkUnitArea .cmp-lb-details.dc-lb-tier-details,#dcDefDbUnitSlot .cmp-lb-details.dc-lb-tier-details{width:max-content;min-width:148px;max-width:none;z-index:50}
 #dcAtkUnitArea .cmp-lb-menu{left:0;right:auto;min-width:100%;width:max-content;box-sizing:border-box;z-index:100}
 #dcAtkUnitArea details.cmp-lb-details.dc-lb-tier-details{overflow:visible}
+.dc-atk-unit-below-portrait{display:contents}
 #dcDefDbUnitSlot{position:relative;z-index:29;overflow:visible}
 #dcDefDatabaseWrap .dc-picked{overflow:visible}
 #dcDefDbUnitSlot .cmp-lb-menu{left:0;right:auto;min-width:100%;width:max-content;box-sizing:border-box;z-index:100}
@@ -854,6 +856,16 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 #dcDefDbUnitSlot .dc-picked>.dc-unit-lb-stat-cluster .dc-lb-inline-wrap{width:100%;max-width:100%}
 #dcDefDbUnitSlot .dc-picked>.dc-unit-lb-stat-cluster .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
 #dcDefDbUnitSlot .dc-picked>.dc-unit-lb-stat-cluster .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
+#dcAtkUnitArea .dc-picked{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;row-gap:8px}
+#dcAtkUnitArea .dc-picked>.dc-thum{grid-column:1;grid-row:1}
+#dcAtkUnitArea .dc-picked>.dc-picked-info{grid-column:2;grid-row:1;min-width:0}
+#dcAtkUnitArea .dc-picked>.dc-picked-change{grid-column:3;grid-row:1;align-self:start}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:flex-start;grid-column:1/-1;grid-row:2;width:100%;min-width:0;box-sizing:border-box}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-picked-controls{flex:0 1 auto;min-width:0;align-items:flex-start;justify-content:flex-start}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-unit-lb-stat-cluster{flex:1 1 100%;min-width:0;justify-content:flex-start}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-lb-inline-wrap{width:100%;max-width:100%}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
 }
 .dc-wlv-row{display:flex;gap:4px;align-items:center}
 .dc-wlv-btn{padding:3px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
@@ -2174,7 +2186,7 @@ function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return 
 const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 function scheduleBrowsePrimeChain(){function ric(cb){if(typeof requestIdleCallback!=='undefined')requestIdleCallback(cb,{timeout:4500});else setTimeout(cb,160)}ric(()=>{primeBrowseTabIfNeeded('units');ric(()=>{primeBrowseTabIfNeeded('supporters');ric(()=>{primeBrowseTabIfNeeded('stages');ric(()=>primeBrowseTabIfNeeded('modifications'))})})})}
-document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();const _qs=new URLSearchParams(location.search);if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
+document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -2872,9 +2884,10 @@ function renderStageMapGrid(md){
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_large?'large-fill':''}`:'';
       const di=u?.npc_detail_index;
       const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
-      const clickMap=(o&&o.origin&&u&&(hasDetail||u.unit_id||u.npc_id))?` onclick="onStageMapUnitClick(${hasDetail?Number(di):'null'},event,'${u.unit_id?escJs(String(u.unit_id)):''}','${(u.npc_id!=null&&String(u.npc_id)!=='')?escJs(String(u.npc_id)):''}')"`:'';
-      const clickCls=(o&&o.origin&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
-      html+=`<div class="map-cell ${cls}${clickCls}" title="${u?esc(`${u.name} (${u.side}) @ ${x},${y}`):`${x},${y}`}"${clickMap}>`;
+      const canMapClick=!!(o&&u&&(hasDetail||u.unit_id||u.npc_id));
+      const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+      const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
+      html+=`<div class="map-cell ${cls}${clickCls}" title="${u?esc(`${u.name} (${u.side}) @ ${x},${y}`):`${x},${y}`}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='ally'?t('ally'):t('enemy');
         // Keep ally group location icon (UI_GTower_Minimap_Icon_OwnArmy.webp) and guest ally (GuestArmy.webp) flat—no background hue.
@@ -3006,7 +3019,7 @@ fitStageMapToUnits(false)
 function focusStageMap(){const c=document.getElementById('stageMapGridWrap');if(!c)return;const md=S.currentDetailData?.map_data||{};const units=md.units||[];const mh=md.height||28;if(!units.length){c.scrollLeft=0;c.scrollTop=0;return}let mnX=999,mxX=-1,mnY=999,mxY=-1;units.forEach(un=>{const cls=un.cells||[{x:un.x,y:un.y}];cls.forEach(cl=>{const cx=Number(cl.x)+1,cy=Number(cl.y)+1;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy})});if(mnX===999){c.scrollLeft=0;c.scrollTop=0;return}const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));const cell=Math.round(50*z)+2;const gridPad=15;const contPad=20;const centerX=(mnX+mxX)/2;const centerY=(mnY+mxY)/2;const xPx=contPad+gridPad+(centerX-1)*cell+cell/2;const yPx=contPad+gridPad+((mh-centerY))*cell+cell/2;let targetLeft=xPx-c.clientWidth/2;let targetTop=yPx-c.clientHeight/2;const maxLeft=Math.max(0,c.scrollWidth-c.clientWidth);const maxTop=Math.max(0,c.scrollHeight-c.clientHeight);c.scrollLeft=Math.max(0,Math.min(maxLeft,targetLeft));c.scrollTop=Math.max(0,Math.min(maxTop,targetTop))}
 function switchStageNpcTab(btn){if(!btn)return;const idx=parseInt(btn.getAttribute('data-tab-idx'),10)||0;const root=btn.closest('[data-stage-npc-group]');if(!root)return;const tabs=root.querySelectorAll('.stage-npc-tab-btn');const panels=root.querySelectorAll('.stage-npc-tab-panel');tabs.forEach((b,i)=>{b.classList.toggle('active',i===idx);b.setAttribute('aria-selected',String(i===idx))});panels.forEach((p,i)=>{p.classList.toggle('hidden',i!==idx)})}
 function renderNpcDetails(list,stageId){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i}));const allies=indexed.filter(o=>o.n.side==='ally');const enemies=indexed.filter(o=>o.n.side!=='ally');function npcLabel(n){const u=n.unit,ch=n.character;return(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`}function tabbedGroup(groupKey,indexedRows,open){if(!indexedRows||!indexedRows.length)return'';const gk=sid+'_'+groupKey;const title=groupKey==='ally'?t('stage_npc_friendly_tab'):t('stage_npc_enemy_tab');let tb='',pn='';indexedRows.forEach((item,i)=>{const n=item.n,idx=item.idx;const lab=esc(npcLabel(n));tb+=`<button type="button" class="stage-npc-tab-btn ${i===0?'active':''}" role="tab" aria-selected="${i===0}" data-tab-idx="${i}" id="sn-tab-${escAttr(gk)}-${i}" aria-controls="sn-panel-${escAttr(gk)}-${i}" onclick="switchStageNpcTab(this)">${lab}</button>`;pn+=`<div class="stage-npc-tab-panel ${i===0?'':'hidden'}" role="tabpanel" id="sn-panel-${escAttr(gk)}-${i}" aria-labelledby="sn-tab-${escAttr(gk)}-${i}">${renderNpcCard(n,idx)}</div>`});return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${indexedRows.length})</span></summary><div class="stage-npc-tab-wrap" data-stage-npc-group="${escAttr(gk)}"><div class="stage-npc-tablist" role="tablist">${tb}</div>${pn}</div></details>`}const body=tabbedGroup('ally',allies,true)+tabbedGroup('enemy',enemies,!allies.length);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
-function renderNpcCard(n,detailIdx){const u=n.unit,ch=n.character,us=u?.stats_raw||{},ub=u?.bonus_amounts||{},cs=ch?.stats_raw||{},cb=ch?.bonus_amounts||{};let unitHtml='';if(u){unitHtml=`<div class="detail-header" style="padding:20px;background:rgba(0,0,0,0.3);border-radius:var(--radius-md);border:1px solid var(--border-color);margin-bottom:12px;"><div style="display:flex;gap:20px;flex-wrap:wrap;"><div class="detail-portrait-wrap" style="width:180px;">${u.portrait?`<img class="detail-portrait" src="${imgUrl(u.portrait)}" style="width:180px;height:240px;object-fit:contain;" alt="" loading="lazy">`:`<div class="detail-portrait-placeholder" style="width:180px;height:240px;font-size:40px;">🤖</div>`}</div><div class="detail-title-area" style="justify-content:center;flex:1;min-width:250px;"><div class="detail-name" style="font-size:24px;margin-bottom:8px;">${esc(u.name||`NPC ${n.npc_id}`)}</div><div class="detail-meta" style="margin-bottom:8px;">${u.rarity_icon?`<img class="detail-rarity-icon" style="height:35px;" src="${imgUrl(u.rarity_icon)}" alt="">`:''}<span class="detail-role-label">${u.role_icon?`<img src="${imgUrl(u.role_icon)}" style="height:25px;" alt="">`:''}${esc(tRole(u.role))}</span><span class="stage-meta-badge" style="background:rgba(26,34,54,0.6);margin-left:10px;">MAP: X:${fmtN(n.x)} Y:${fmtN(n.y)} ${n.is_large?' (2x2)':''}</span></div>${renderSeries(u.series,'units')}${renderTags(u.tags)}<div class="stats-grid" style="margin-top:12px;">${['HP','EN','Attack','Defense','Mobility','Move'].map(s=>{let b=ub[s]||0;let v=us[s]||0;let hl=b>0?'has-bonus-val':'';let bt=b>0?`<div class="stat-card-bonus" style="font-size:12px;color:var(--accent-green);margin-top:2px;">(+${fmtN(b)})</div>`:'';return`<div class="stat-card ${b>0?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s))}</div><div class="stat-card-value ${hl}">${fmtN(v)}</div>${bt}</div>`}).join('')}</div></div></div></div>${u.abilities&&u.abilities.length?renderAbilsDynamic(u.abilities,t('npc_unit_abilities'),false,false,'unit'):''}${u.weapons&&u.weapons.length?renderWeaponsDynamic(u.weapons,false,n):''}`}let charHtml='';if(ch){charHtml=`<div class="detail-header" style="padding:20px;background:rgba(0,0,0,0.3);border-radius:var(--radius-md);border:1px solid var(--border-color);margin-bottom:12px;margin-top:24px;"><div style="display:flex;gap:20px;flex-wrap:wrap;"><div class="detail-portrait-wrap" style="width:180px;">${ch.portrait?`<img class="detail-portrait" src="${imgUrl(ch.portrait)}" style="width:180px;height:240px;object-fit:contain;" alt="" loading="lazy">`:`<div class="detail-portrait-placeholder" style="width:180px;height:240px;font-size:40px;">👤</div>`}</div><div class="detail-title-area" style="justify-content:center;flex:1;min-width:250px;"><div class="detail-name" style="font-size:24px;margin-bottom:8px;">${esc(ch.name)}</div><div class="detail-meta" style="margin-bottom:8px;">${ch.rarity_icon?`<img class="detail-rarity-icon" style="height:35px;" src="${imgUrl(ch.rarity_icon)}" alt="">`:``}</div>${renderSeries(ch.series,'characters')}${renderTags(ch.tags)}<div class="stats-grid" style="margin-top:12px;">${['Ranged','Melee','Defense','Reaction','Awaken'].map(s=>{let b=cb[s]||0;let v=cs[s]||0;let hl=b>0?'has-bonus-val':'';let bt=b>0?`<div class="stat-card-bonus" style="font-size:12px;color:var(--accent-green);margin-top:2px;">(+${fmtN(b)})</div>`:'';return`<div class="stat-card ${b>0?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s))}</div><div class="stat-card-value ${hl}">${fmtN(v)}</div>${bt}</div>`}).join('')}</div></div></div></div>${ch.abilities&&ch.abilities.length&&typeof ch.abilities[0]!=='string'?renderAbilsDynamic(ch.abilities,t('npc_character_abilities'),false,false,'character'):''}${ch.skills&&ch.skills.length&&typeof ch.skills[0]!=='string'?renderSkills(ch.skills,false):''}`}return`<div id="npc-detail-${detailIdx}" class="detail-section npc-card" style="border:2px solid var(--border-accent);border-radius:var(--radius-lg);padding:16px;background:rgba(0,0,0,0.2);margin-bottom:24px;"><div style="font-size:20px;font-weight:900;color:var(--accent-cyan);margin-bottom:16px;border-bottom:1px solid var(--border-accent);padding-bottom:8px;">${esc(u?.name||ch?.name||`NPC ${n.npc_id}`)}</div>${unitHtml}${charHtml}</div>`}
+function renderNpcCard(n,detailIdx){const u=n.unit,ch=n.character,us=u?.stats_raw||{},ub=u?.bonus_amounts||{},cs=ch?.stats_raw||{},cb=ch?.bonus_amounts||{};let unitHtml='';if(u){unitHtml=`<div class="detail-header" style="padding:20px;background:rgba(0,0,0,0.3);border-radius:var(--radius-md);border:1px solid var(--border-color);margin-bottom:12px;"><div style="display:flex;gap:20px;flex-wrap:wrap;"><div class="detail-portrait-wrap" style="width:180px;">${u.portrait?`<img class="detail-portrait" src="${imgUrl(u.portrait)}" style="width:180px;height:240px;object-fit:contain;" alt="" loading="lazy">`:`<div class="detail-portrait-placeholder" style="width:180px;height:240px;font-size:40px;">🤖</div>`}</div><div class="detail-title-area" style="justify-content:center;flex:1;min-width:250px;"><div class="detail-name" style="font-size:24px;margin-bottom:8px;">${esc(u.name||`NPC ${n.npc_id}`)}</div><div class="detail-meta" style="margin-bottom:8px;">${u.rarity_icon?`<img class="detail-rarity-icon" style="height:35px;" src="${imgUrl(u.rarity_icon)}" alt="">`:''}<span class="detail-role-label">${u.role_icon?`<img src="${imgUrl(u.role_icon)}" style="height:25px;" alt="">`:''}${esc(tRole(u.role))}</span><span class="stage-meta-badge" style="background:rgba(26,34,54,0.6);margin-left:10px;">MAP: X:${fmtN(n.x)} Y:${fmtN(n.y)} ${n.is_large?' (2x2)':''}</span></div>${renderSeries(u.series,'units')}${renderTags(u.tags)}<div class="stats-grid" style="margin-top:12px;">${['HP','EN','Attack','Defense','Mobility','Move'].map(s=>{let b=ub[s]||0;let v=us[s]||0;let hl=b>0?'has-bonus-val':'';let bt=b>0?`<div class="stat-card-bonus" style="font-size:12px;color:var(--accent-green);margin-top:2px;">(+${fmtN(b)})</div>`:'';return`<div class="stat-card ${b>0?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s))}</div><div class="stat-card-value ${hl}">${fmtN(v)}</div>${bt}</div>`}).join('')}</div></div></div></div>${u.abilities&&u.abilities.length?renderAbilsDynamic(u.abilities,t('npc_unit_abilities'),false,false,'unit'):''}${u.weapons&&u.weapons.length?renderWeaponsDynamic(u.weapons,false,n):''}`}let charHtml='';if(ch){charHtml=`<div class="detail-header" style="padding:20px;background:rgba(0,0,0,0.3);border-radius:var(--radius-md);border:1px solid var(--border-color);margin-bottom:12px;margin-top:24px;"><div style="display:flex;gap:20px;flex-wrap:wrap;"><div class="detail-portrait-wrap" style="width:180px;">${ch.portrait?`<img class="detail-portrait" src="${imgUrl(ch.portrait)}" style="width:180px;height:240px;object-fit:contain;" alt="" loading="lazy">`:`<div class="detail-portrait-placeholder" style="width:180px;height:240px;font-size:40px;">👤</div>`}</div><div class="detail-title-area" style="justify-content:center;flex:1;min-width:250px;"><div class="detail-name" style="font-size:24px;margin-bottom:8px;">${esc(ch.name)}</div><div class="detail-meta" style="margin-bottom:8px;">${ch.rarity_icon?`<img class="detail-rarity-icon" style="height:35px;" src="${imgUrl(ch.rarity_icon)}" alt="">`:``}</div>${renderSeries(ch.series,'characters')}${renderTags(ch.tags)}<div class="stats-grid" style="margin-top:12px;">${['Ranged','Melee','Defense','Reaction','Awaken'].map(s=>{let b=cb[s]||0;let v=cs[s]||0;let hl=b>0?'has-bonus-val':'';let bt=b>0?`<div class="stat-card-bonus" style="font-size:12px;color:var(--accent-green);margin-top:2px;">(+${fmtN(b)})</div>`:'';return`<div class="stat-card ${b>0?'has-cond-bonus':''}"><div class="stat-card-label">${esc(tStat(s))}</div><div class="stat-card-value ${hl}">${fmtN(v)}</div>${bt}</div>`}).join('')}</div></div></div></div>${ch.abilities&&ch.abilities.length&&typeof ch.abilities[0]!=='string'?renderAbilsDynamic(ch.abilities,t('npc_character_abilities'),false,false,'character'):''}${ch.skills&&ch.skills.length&&typeof ch.skills[0]!=='string'?renderSkills(ch.skills,false):''}`}return`<div id="npc-detail-${detailIdx}" class="detail-section npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}" style="border:2px solid var(--border-accent);border-radius:var(--radius-lg);padding:16px;background:rgba(0,0,0,0.2);margin-bottom:24px;"><div style="font-size:20px;font-weight:900;color:var(--accent-cyan);margin-bottom:16px;border-bottom:1px solid var(--border-accent);padding-bottom:8px;">${esc(u?.name||ch?.name||`NPC ${n.npc_id}`)}</div>${unitHtml}${charHtml}</div>`}
 function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}return`<div class="tag-composite" onclick="event.stopPropagation();${onClick}" title="Click to view"><div class="tag-part-icon">${li?`<img class="tag-icon-fg" src="${imgUrl(li)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</div><div class="tag-part-value">${esc(tn)}</div></div>`}
 function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row" style="margin-top:12px;">${tags.map(createTagHtml).join('')}</div>`}
@@ -3253,43 +3266,91 @@ function renderMapGrid(weapon,unitData){
 function esc(s){if(s===null||s===undefined)return'';const d=document.createElement('div');d.textContent=String(s);return d.innerHTML}
 function escAttr(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
 function escJs(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n')}
-function scrollToNpc(id){try{const el=document.getElementById('npc-'+String(id));if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('npc-card-highlight');setTimeout(()=>el.classList.remove('npc-card-highlight'),1200)}catch(e){}}
+function _ensureNpcCardVisible(el){
+if(!el)return;
+const outer=el.closest('details.stage-npc-group');
+if(outer&&!outer.open)outer.open=true;
+const panel=el.closest('.stage-npc-tab-panel');
+if(panel&&panel.classList.contains('hidden')){
+const wrap=panel.closest('[data-stage-npc-group]');
+if(wrap){
+const gid=wrap.getAttribute('data-stage-npc-group')||'';
+const panels=Array.from(wrap.querySelectorAll('.stage-npc-tab-panel'));
+const tabIdx=panels.indexOf(panel);
+if(tabIdx>=0&&gid){
+const btn=document.getElementById('sn-tab-'+gid+'-'+tabIdx);
+if(btn)switchStageNpcTab(btn)
+}
+}
+}
+}
+function _flashNpcCard(el){
+if(!el)return;
+el.classList.add('npc-card-highlight');
+setTimeout(()=>el.classList.remove('npc-card-highlight'),1200);
+}
+function findNpcDetailCardByNpcId(nid){
+const raw=String(nid!=null?nid:'').trim();
+if(!raw)return null;
+const root=document.getElementById('detailNpcContainer');
+if(!root)return null;
+const nodes=root.querySelectorAll('.npc-card[data-npc-id]');
+for(let i=0;i<nodes.length;i++){
+const n=nodes[i];
+if(String(n.getAttribute('data-npc-id')||'').trim()===raw)return n;
+}
+return null;
+}
+function scrollToNpcDetailByNpcId(nid){
+const el=findNpcDetailCardByNpcId(nid);
+if(!el)return false;
+_ensureNpcCardVisible(el);
+setTimeout(()=>{try{el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}_flashNpcCard(el)},0);
+return true;
+}
+function scrollToNpc(id){scrollToNpcDetailByNpcId(id)}
 function scrollToNpcDetail(idx){
 try{
-  const el=document.getElementById('npc-detail-'+String(idx));
-  if(!el)return false;
-  const panel=el.closest('.stage-npc-tab-panel');
-  if(panel&&panel.classList.contains('hidden')){
-    const wrap=panel.closest('[data-stage-npc-group]');
-    if(wrap){
-      const gid=wrap.getAttribute('data-stage-npc-group')||'';
-      const panels=Array.from(wrap.querySelectorAll('.stage-npc-tab-panel'));
-      const tabIdx=panels.indexOf(panel);
-      if(tabIdx>=0&&gid){
-        const btn=document.getElementById('sn-tab-'+gid+'-'+tabIdx);
-        if(btn)switchStageNpcTab(btn)
-      }
-    }
-  }
-  el.scrollIntoView({behavior:'smooth',block:'start'});
-  el.classList.add('npc-card-highlight');
-  setTimeout(()=>el.classList.remove('npc-card-highlight'),1200);
-  return true;
+const el=document.getElementById('npc-detail-'+String(idx));
+if(!el)return false;
+_ensureNpcCardVisible(el);
+setTimeout(()=>{try{el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}_flashNpcCard(el)},0);
+return true;
 }catch(e){return false}
 }
 function onStageMapUnitClick(detailIdx,ev,unitId,npcId){
 if(ev)ev.stopPropagation();
-if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
-  const i=parseInt(detailIdx,10);
-  if(!Number.isNaN(i)){
-    // Some data sources use 0-based while others use 1-based indices. Try both.
-    if(scrollToNpcDetail(i))return;
-    if(scrollToNpcDetail(i-1))return;
-    if(scrollToNpcDetail(i+1))return;
-  }
-}
 const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';
-if(nid)scrollToNpc(nid)
+if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
+const i=parseInt(detailIdx,10);
+if(!Number.isNaN(i)){
+if(scrollToNpcDetail(i))return;
+if(scrollToNpcDetail(i-1))return;
+if(scrollToNpcDetail(i+1))return;
+if(scrollToNpcDetail(i+2))return;
+if(scrollToNpcDetail(i-2))return;
+}
+}
+if(nid&&scrollToNpcDetailByNpcId(nid))return;
+}
+function wireStageMapNpcClicks(){
+const dm=document.getElementById('detailModal');
+if(!dm||dm.dataset.stageMapNpcWired==='1')return;
+dm.dataset.stageMapNpcWired='1';
+dm.addEventListener('click',function(e){
+const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable');
+if(!cell)return;
+e.stopPropagation();
+let detailIdx=null;
+const rawD=cell.getAttribute('data-npc-map-detail');
+if(rawD!=null&&String(rawD).trim()!==''){
+const n=parseInt(rawD,10);
+if(!Number.isNaN(n))detailIdx=n;
+}
+const npcId=String(cell.getAttribute('data-npc-map-npc-id')||'').trim();
+const unitId=String(cell.getAttribute('data-npc-map-unit-id')||'').trim();
+onStageMapUnitClick(detailIdx,e,unitId,npcId);
+});
 }
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
 
@@ -6600,7 +6661,8 @@ const uModeRow=S.dc.unitStatMode||'normal';
 unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row"><button type="button" class="dc-lb-btn${uModeRow==='normal'?' active':''}" onclick="setDcUnitStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${uModeRow==='sp'?' active':''}" onclick="setDcUnitStatMode('sp')">SP</button><button type="button" class="dc-lb-btn${uModeRow==='ssp'?' active':''}" onclick="setDcUnitStatMode('ssp')">SSP</button></div>`;
 }
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
-area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${unitCpToggle}${lbStatCluster}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
+const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
+area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 const sa=document.getElementById('dcAtkStatsArea');
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
