@@ -2614,6 +2614,14 @@ function stagesOrModsTabFromQueryOnLoad(){
 const p=new URLSearchParams(location.search);
 const raw=String(p.get('tab')||'').trim();
 const path=(location.pathname||'').replace(/\/$/,'');
+/* When tab=ER blocks applyBrowseShortPathOnLoad, still honor /es/:id like /op/:id for modifications. */
+const stageFromPath=parseBrowseShortPath(location.pathname);
+if(stageFromPath&&stageFromPath.kind==='detail'&&stageFromPath.type==='stage'&&(raw==='ER'||raw==='stages')){
+switchTab('stages');
+openDetail('stage',stageFromPath.id,{skipHistoryReplace:true});
+try{window.scrollTo(0,0)}catch(_){}
+return
+}
 if(raw==='ER'||raw==='stages'){switchTab('stages');return}
 if(raw==='op'||raw==='OP'||raw==='modifications'){
 if(/^\/op\/[^/]+$/.test(path)){
