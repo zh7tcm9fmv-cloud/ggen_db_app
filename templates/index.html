@@ -4822,10 +4822,160 @@ function _tbReadFormations(){try{const s=localStorage.getItem(TB_FORMS_KEY);cons
 function _tbWriteFormations(arr){try{localStorage.setItem(TB_FORMS_KEY,JSON.stringify(arr))}catch(_){}}
 function _tbSlotToSave(sl){const o={unitId:sl.unitId,charId:sl.charId,optionPartIds:(sl.optionParts||[]).slice(0,1).map(p=>String(p&&p.id||'')).filter(Boolean),lbTier:sl.lbTier|0,unitCondPassive:!!sl.unitCondPassive,charCondPassive:!!sl.charCondPassive,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,exSquadAtkPct:sl.exSquadAtkPct|0};if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;if(sl.unitTurnBuffDef)o.utd=1;return o}
 function tbSnapshot(){initTeamBuilder();return{v:1,terrainType:S.tb.terrainType,masterLeague:!!S.tb.masterLeague,supporter1:S.tb.supBySide[1].id,supporter2:S.tb.supBySide[2].id,supLb1:S.tb.supBySide[1].lbTier!=null?S.tb.supBySide[1].lbTier|0:3,supLb2:S.tb.supBySide[2].lbTier!=null?S.tb.supBySide[2].lbTier|0:3,supLv1:S.tb.supBySide[1].level!=null?Math.min(100,Math.max(1,S.tb.supBySide[1].level|0)):100,supLv2:S.tb.supBySide[2].level!=null?Math.min(100,Math.max(1,S.tb.supBySide[2].level|0)):100,squads:{1:{name:String(S.tb.squads[1].name||'').trim().slice(0,40),slots:S.tb.squads[1].slots.map(_tbSlotToSave)},2:{name:String(S.tb.squads[2].name||'').trim().slice(0,40),slots:S.tb.squads[2].slots.map(_tbSlotToSave)}}}}
-function _tbBuildShareUrl(){
+const _TB_TERRAIN_IDX=['Space','Atmospheric','Ground','Sea','Underwater'];
+function _tbU8ToB64Url(u8){
+let bin='';
+for(let i=0;i<u8.length;i++)bin+=String.fromCharCode(u8[i]);
+return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function _tbB64UrlToU8(s){
+if(!s)return new Uint8Array(0);
+let pad=String(s).replace(/-/g,'+').replace(/_/g,'/');
+while(pad.length%4)pad+='=';
+const bin=atob(pad);
+const u8=new Uint8Array(bin.length);
+for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+return u8;
+}
+function _tbEncShareSlot(sl){
+if(!sl||!sl.unitId)return null;
+const o=_tbSlotToSave(sl);
+const u=String(o.unitId),c=o.charId?String(o.charId):'',op=(o.optionPartIds&&o.optionPartIds[0])?String(o.optionPartIds[0]):'';
+const l=o.lbTier|0,f=(o.unitCondPassive?1:0)|(o.charCondPassive?2:0)|(o.unitTurnBuffAtk?4:0)|(o.utd?8:0),x=o.exSquadAtkPct|0;
+const um=o.um==='sp'?1:o.um==='ssp'?2:0;
+const a=[u,c,op,l,f,x,um];
+while(a.length>6&&a[6]===0)a.pop();
+while(a.length>5&&a[5]===0)a.pop();
+while(a.length>4&&a[4]===0)a.pop();
+while(a.length>3&&a[3]===3)a.pop();
+while(a.length>2&&a[2]==='')a.pop();
+while(a.length>1&&a[1]==='')a.pop();
+return a;
+}
+function _tbDecShareSlot(a){
+if(a==null)return null;
+if(typeof a==='string')a=[a];
+if(!Array.isArray(a)||!a.length)return null;
+const u=a[0];if(!u)return null;
+const c=a.length>1?String(a[1]||''):'';
+const op=a.length>2?String(a[2]||''):'';
+const l=a.length>3?a[3]|0:3;
+const f=a.length>4?a[4]|0:0;
+const x=a.length>5?a[5]|0:0;
+const um=a.length>6?a[6]|0:0;
+const umStr=um===1?'sp':um===2?'ssp':'normal';
+const out={unitId:String(u),charId:c||null,optionPartIds:op?[op]:[],lbTier:l,unitCondPassive:!!(f&1),charCondPassive:!!(f&2),unitTurnBuffAtk:!!(f&4),exSquadAtkPct:x};
+if(f&8)out.utd=1;
+if(umStr!=='normal')out.um=umStr;
+return out;
+}
+function _tbPackShareSup(ss){
+const e=S.tb.supBySide[ss];
+if(!e||!e.id)return null;
+const id=String(e.id),lb=e.lbTier|0,lv=Math.min(100,Math.max(1,e.level|0));
+if(lb===3&&lv===100)return id;
+if(lv===100)return[id,lb];
+return[id,lb,lv];
+}
+function _tbUnpackShareSup(x){
+if(x==null)return{id:null,lbTier:3,level:100};
+if(typeof x==='string')return{id:x,lbTier:3,level:100};
+if(!Array.isArray(x)||!x.length)return{id:null,lbTier:3,level:100};
+const id=x[0]!=null?String(x[0]):null;
+const lb=x.length>1?x[1]|0:3;
+const lv=x.length>2?x[2]|0:100;
+return{id,lbTier:lb,level:Math.min(100,Math.max(1,lv))};
+}
+function _tbSnapshotCompactV2(){
 initTeamBuilder();
-let enc='';
-try{enc=_dcB64UrlEncode(JSON.stringify(tbSnapshot()))}catch(_){return''}
+const te=Math.max(0,_TB_TERRAIN_IDX.indexOf(S.tb.terrainType||'Space'));
+const s1=_tbPackShareSup(1),s2=_tbPackShareSup(2);
+const slotsTrim=(slots)=>{
+const enc=slots.map(_tbEncShareSlot);
+while(enc.length&&enc[enc.length-1]==null)enc.pop();
+return enc;
+};
+const q=[
+[String(S.tb.squads[1].name||'').trim().slice(0,40),slotsTrim(S.tb.squads[1].slots)],
+[String(S.tb.squads[2].name||'').trim().slice(0,40),slotsTrim(S.tb.squads[2].slots)]
+];
+const o={v:2,q:q};
+if(S.tb.masterLeague)o.m=1;
+if(te!==0)o.e=te;
+if(s1!=null||s2!=null)o.s=[s1,s2];
+return o;
+}
+function _tbExpandSnapshotV2(z){
+if(!z||z.v!==2)return null;
+const terrainType=_TB_TERRAIN_IDX[z.e!=null?z.e|0:0]||'Space';
+const s=z.s;
+const p1=_tbUnpackShareSup(s&&s[0]),p2=_tbUnpackShareSup(s&&s[1]);
+const q=z.q||[[],[]];
+const n1=q[0]&&q[0][0]!=null?String(q[0][0]).slice(0,40):'';
+const n2=q[1]&&q[1][0]!=null?String(q[1][0]).slice(0,40):'';
+const raw1=(q[0]&&q[0][1])||[];
+const raw2=(q[1]&&q[1][1])||[];
+const pad5=(arr)=>{
+const out=[];
+for(let i=0;i<5;i++)out.push(_tbDecShareSlot(arr&&arr[i]!=null?arr[i]:null));
+return out;
+};
+return{v:1,terrainType,masterLeague:!!z.m,supporter1:p1.id,supporter2:p2.id,supLb1:p1.lbTier,supLb2:p2.lbTier,supLv1:p1.level,supLv2:p2.level,squads:{1:{name:n1,slots:pad5(raw1)},2:{name:n2,slots:pad5(raw2)}}};
+}
+async function _tbDecodeTeamShare(b64){
+const u8=_tbB64UrlToU8(b64);
+if(!u8.length)return null;
+if(u8[0]===0x7b){
+try{return JSON.parse(new TextDecoder().decode(u8))}catch(_){return null}
+}
+const kind=u8[0],body=u8.slice(1);
+if(kind===1){
+try{
+if(typeof DecompressionStream==='undefined')return null;
+const ds=new DecompressionStream('deflate');
+const stream=new Blob([body]).stream().pipeThrough(ds);
+const out=await new Response(stream).arrayBuffer();
+return JSON.parse(new TextDecoder().decode(out));
+}catch(_){return null}
+}
+if(kind===2){
+try{return JSON.parse(new TextDecoder().decode(body))}catch(_){return null}
+}
+return null;
+}
+async function _tbBuildShareUrl(){
+initTeamBuilder();
+let finalU8;
+try{
+const compact=_tbSnapshotCompactV2();
+const json=JSON.stringify(compact);
+const bytes=new TextEncoder().encode(json);
+if(typeof CompressionStream!=='undefined'){
+try{
+const cs=new CompressionStream('deflate');
+const blob=new Blob([bytes]).stream().pipeThrough(cs);
+const comp=new Uint8Array(await new Response(blob).arrayBuffer());
+if(comp.length+1<bytes.length){
+finalU8=new Uint8Array(1+comp.length);
+finalU8[0]=1;
+finalU8.set(comp,1);
+}else{
+finalU8=new Uint8Array(1+bytes.length);
+finalU8[0]=2;
+finalU8.set(bytes,1);
+}
+}catch(_){
+finalU8=new Uint8Array(1+bytes.length);
+finalU8[0]=2;
+finalU8.set(bytes,1);
+}
+}else{
+finalU8=new Uint8Array(1+bytes.length);
+finalU8[0]=2;
+finalU8.set(bytes,1);
+}
+}catch(_){return''}
+const enc=_tbU8ToB64Url(finalU8);
 if(!enc)return'';
 const u=new URL(location.origin+location.pathname);
 u.searchParams.set('tab','TB');
@@ -4881,7 +5031,7 @@ return`<div class="tb-fpv-squad"><div class="tb-fpv-squad-head"><input type="tex
 root.innerHTML=`<div id="tbFormationPreviewRoot" class="tb-fpv-root">${squadBlock(1)+_tbFormationOptionPartsHtmlForSquad(1)+squadBlock(2)+_tbFormationOptionPartsHtmlForSquad(2)}</div>`;
 }
 async function tbFormationCopyLink(){
-const url=_tbBuildShareUrl();
+const url=await _tbBuildShareUrl();
 if(!url)return;
 try{
 await navigator.clipboard.writeText(url);
@@ -6198,8 +6348,10 @@ switchTab('team_builder');
 if(teamRaw){
 void (async()=>{
 try{
-const obj=JSON.parse(_dcB64UrlDecode(teamRaw));
-if(obj&&obj.v===1)await tbApplySnapshot(obj);
+const obj=await _tbDecodeTeamShare(teamRaw);
+if(!obj)return;
+const snap=obj.v===2?_tbExpandSnapshotV2(obj):(obj.v===1?obj:null);
+if(snap)await tbApplySnapshot(snap);
 }catch(e){console.warn('team share payload',e)}
 })();
 }
