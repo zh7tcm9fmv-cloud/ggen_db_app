@@ -8595,7 +8595,7 @@ def unit_list_recommend_character_brief(uid, info, ld, lc):
 @app.route('/api/units')
 def list_units():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-    pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
+    sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
     scope_ck = browse_q_scope_cache_letter(q_scope)
@@ -8629,6 +8629,9 @@ def list_units():
     tb_boost = normalize_id(request.args.get('tb_boost_supporter', '').strip())
     if not tb_boost or tb_boost not in supporter_info_map:
         tb_boost = None
+    # Team builder: boosted-only lists can exceed 100 rows (UR first); raise cap so SSR etc. are not truncated.
+    _pp_cap = 600 if tb_boost else 100
+    pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
     ck = f"ul38_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
