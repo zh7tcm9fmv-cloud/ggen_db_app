@@ -6612,7 +6612,7 @@ let bestPow=-1,bestJ=0,bestRaw=-1;
 wpn.levels.forEach((lv,j)=>{
 const p=_dcComputedWeaponPowerForLevel(wpn,j,hp);
 const raw=lv.power||0;
-if(p>bestPow||(p===bestPow&&raw>bestRaw)){
+if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&j>bestJ)))){
 bestPow=p;bestJ=j;bestRaw=raw;
 }
 });
@@ -6628,7 +6628,7 @@ if(!w.levels||!w.levels.length)return;
 w.levels.forEach((lv,j)=>{
 const p=_dcComputedWeaponPowerForLevel(w,j,hp);
 const raw=lv.power||0;
-if(p>bestPow||(p===bestPow&&raw>bestRaw)){
+if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&j>bestJ)))){
 bestPow=p;bestI=i;bestJ=j;bestRaw=raw;
 }
 });
