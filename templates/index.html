@@ -661,6 +661,8 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 }
 .dc-picked-change{padding:4px 8px;font-size:11px;background:transparent;border:1px solid var(--border-color);color:var(--text-muted);border-radius:var(--radius-sm);cursor:pointer;flex-shrink:0}
 .dc-picked-change:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+.dc-picked-change.dc-picked-change--static{border:none;cursor:default}
+.dc-picked-change.dc-picked-change--static:hover{border-color:transparent;color:var(--text-muted)}
 .dc-atk-char-wrap{display:flex;flex-direction:column;gap:8px;width:100%;min-width:0;align-items:stretch}
 .dc-atk-char-ex-tier{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;box-sizing:border-box;padding:0;margin:0}
 .dc-stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
@@ -853,6 +855,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 #dcAtkUnitArea .cmp-lb-menu{left:0;right:auto;min-width:100%;width:max-content;box-sizing:border-box;z-index:100}
 #dcAtkUnitArea details.cmp-lb-details.dc-lb-tier-details{overflow:visible}
 .dc-atk-unit-below-portrait{display:contents}
+.dc-atk-char-below-portrait{display:contents}
 #dcDefDbUnitSlot{position:relative;z-index:29;overflow:visible}
 #dcDefDatabaseWrap .dc-picked{overflow:visible}
 #dcDefDbUnitSlot .cmp-lb-menu{left:0;right:auto;min-width:100%;width:max-content;box-sizing:border-box;z-index:100}
@@ -876,6 +879,13 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-lb-inline-wrap{width:100%;max-width:100%}
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
+#dcAtkCharArea .dc-picked{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;row-gap:8px}
+#dcAtkCharArea .dc-picked>.dc-thum{grid-column:1;grid-row:1}
+#dcAtkCharArea .dc-picked>.dc-picked-info{grid-column:2;grid-row:1;min-width:0}
+#dcAtkCharArea .dc-picked>.dc-picked-change{grid-column:3;grid-row:1;align-self:start}
+#dcAtkCharArea .dc-picked>.dc-atk-char-below-portrait{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:flex-start;grid-column:1/-1;grid-row:2;width:100%;min-width:0;box-sizing:border-box}
+#dcAtkCharArea .dc-picked>.dc-atk-char-below-portrait .dc-picked-controls{flex:0 1 auto;min-width:0;align-items:flex-start;justify-content:flex-start}
+#dcAtkCharArea .dc-picked>.dc-atk-char-below-portrait .dc-dc-cond-toggle .toggle-label{max-width:none;text-align:left;white-space:normal}
 }
 .dc-wlv-row{display:flex;gap:4px;align-items:center}
 .dc-wlv-btn{padding:3px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);font-weight:700}
@@ -6835,11 +6845,11 @@ return;
 S.dc._pilotSkills=cd.skills||[];
 const stats=_dcGetCharStats();
 const thum=cd.thum||cd.portrait||'';
-const changeBtn=isSD?`<span style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
+const changeBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
 let charCpToggle='';
 if(_dcCharHasConditional(cd)){
-const _cpl=t('conditional_passive'),_cps=t('conditional_passive_abbr');
-charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.charCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" onclick="toggleDcCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcCharCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-long">${esc(_cpl)}</span><span class="toggle-label toggle-label--cp-short">${esc(_cps)}</span></div></div></div>`;
+const _cpl=t('conditional_passive');
+charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.charCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" onclick="toggleDcCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcCharCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(_cpl)}</span></div></div></div>`;
 }
 let charExTierRow='';
 if(_dcCharHasConditional(cd)&&S.dc.charCondPassive&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
@@ -6853,7 +6863,8 @@ if(hasSpChar){
 const cModeRow=S.dc.charStatMode||'normal';
 charStatModeHtml=`<div class="dc-lb-row dc-char-stat-mode-row"><button type="button" class="dc-lb-btn${cModeRow==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${cModeRow==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
 }
-area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charCpToggle}${charStatModeHtml}${changeBtn}</div>${charExTierRow}</div>`;
+const charBelowPortrait=(charCpToggle||charStatModeHtml)?`<div class="dc-atk-char-below-portrait">${charCpToggle}${charStatModeHtml}</div>`:'';
+area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charBelowPortrait}${changeBtn}</div>${charExTierRow}</div>`;
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
