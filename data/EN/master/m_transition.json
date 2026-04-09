@@ -168,9 +168,33 @@
     "TargetId2": 0
   },
   {
+    "Id": 14000090500026,
+    "TransitionTypeIndex": 5,
+    "TargetId1": 90500026,
+    "TargetId2": 0
+  },
+  {
+    "Id": 14000090500027,
+    "TransitionTypeIndex": 5,
+    "TargetId1": 90500027,
+    "TargetId2": 0
+  },
+  {
     "Id": 14000090510001,
     "TransitionTypeIndex": 5,
     "TargetId1": 90510001,
+    "TargetId2": 0
+  },
+  {
+    "Id": 14000090510034,
+    "TransitionTypeIndex": 5,
+    "TargetId1": 90510034,
+    "TargetId2": 0
+  },
+  {
+    "Id": 14000090510035,
+    "TransitionTypeIndex": 5,
+    "TargetId1": 90510035,
     "TargetId2": 0
   },
   {
@@ -309,6 +333,12 @@
     "Id": 14000090520026,
     "TransitionTypeIndex": 5,
     "TargetId1": 90520026,
+    "TargetId2": 0
+  },
+  {
+    "Id": 14000090520027,
+    "TransitionTypeIndex": 5,
+    "TargetId1": 90520027,
     "TargetId2": 0
   },
   {

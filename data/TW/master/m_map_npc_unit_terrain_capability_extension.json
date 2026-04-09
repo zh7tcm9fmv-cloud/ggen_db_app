@@ -5832,6 +5832,12 @@
     "TerrainCapabilityTypeIndex": 1
   },
   {
+    "MapNpcId": 905100003502000021,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
     "MapNpcId": 908000101602000002,
     "Number": 0,
     "TerrainTypeIndex": 2,

@@ -254,9 +254,9 @@
     "CarddassThumbnailResourceId": "",
     "StoryMemoryBgResourceId": "story_event_top_bg_200007",
     "StageSelectBackgroundEffectResourceId": "story_event_stage_select_effect_200007",
-    "TopBgmResourceId": "",
-    "StageSelectBgmResourceId": "",
-    "BossBattleBgmResourceId": ""
+    "TopBgmResourceId": "bgm_0220_0004",
+    "StageSelectBgmResourceId": "bgm_0220_0001",
+    "BossBattleBgmResourceId": "bgm_0220_0006"
   },
   {
     "Id": 200008,

@@ -3582,5 +3582,19 @@
     "BaseBackgroundResourceId": "",
     "RarityTypeIndex": 5,
     "IsSimpleThumbnail": true
+  },
+  {
+    "Id": 16905200270001,
+    "ProfileTitleTypeIndex": 1,
+    "ProfileTitleRarityTypeIndex": 5,
+    "BackgroundResourceId": "profile_title_16905200270001",
+    "TitleImageDisplayLanguageId": 240116905200270001,
+    "TitleNameLanguageId": 240216905200270001,
+    "AcquisitionRouteLanguageId": 240316905200270001,
+    "SortOrder": 160000012,
+    "ScheduleId": 2604201205,
+    "BaseBackgroundResourceId": "",
+    "RarityTypeIndex": 5,
+    "IsSimpleThumbnail": true
   }
 ]

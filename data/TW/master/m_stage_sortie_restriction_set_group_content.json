@@ -245,6 +245,26 @@
     "TargetId": 1083
   },
   {
+    "StageSortieRestrictionSetGroupId": 130021,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1112
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130022,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1131
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130023,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1117
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130024,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1003
+  },
+  {
     "StageSortieRestrictionSetGroupId": 140001,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1014
@@ -293,6 +313,26 @@
     "StageSortieRestrictionSetGroupId": 140010,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1056
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 140014,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1021
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 140015,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1101
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 140016,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1099
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 140017,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1105
   },
   {
     "StageSortieRestrictionSetGroupId": 900001,

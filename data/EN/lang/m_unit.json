@@ -5400,6 +5400,10 @@
     "value": "Haro"
   },
   {
+    "id": 110100001850001300,
+    "value": "Psycho Haro"
+  },
+  {
     "id": 110100001850001350,
     "value": "Psycho Haro (EX)"
   },
@@ -10746,6 +10750,10 @@
   {
     "id": 110200001850001200,
     "value": "A gigantic weapon of destruction shrouded in complete mystery.\nWhen was it built, and where, and for what purpose? Nobody knows.\nIt has the form of a Haro, the mascot robot of the Gundam universe, but its cute form belies its extremely high performance.\nIt has a number of special weapons such as the Haro Drill, Haro Bubble, and Haro Bits, giving it overwhelming power on the field and earning it the nickname \"Round Devil.\"\nBut nobody knows what it really is..."
+  },
+  {
+    "id": 110200001850001300,
+    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\n Since it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"ultimate Weapon of Destruction.\"\n But still, nobody knows what it really is..."
   },
   {
     "id": 110200001850001350,
@@ -16788,6 +16796,10 @@
     "value": "Haro"
   },
   {
+    "id": 110300001850001300,
+    "value": "Psycho Haro"
+  },
+  {
     "id": 110300001850001350,
     "value": "Psycho Haro (EX)"
   },
@@ -22826,6 +22838,10 @@
   {
     "id": 110400001850001210,
     "value": "Haro"
+  },
+  {
+    "id": 110400001850001300,
+    "value": "Psycho Haro"
   },
   {
     "id": 110400001850001350,

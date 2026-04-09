@@ -76,6 +76,14 @@
     "value": "Mobile Suit Gundam AGE"
   },
   {
+    "id": 130100000090500026,
+    "value": "Zaku/ZAFT"
+  },
+  {
+    "id": 130100000090500027,
+    "value": "Land/Soldier"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -188,6 +196,14 @@
     "value": "Mobile Suit Gundam AGE"
   },
   {
+    "id": 130100000090510034,
+    "value": "Red/Mask"
+  },
+  {
+    "id": 130100000090510035,
+    "value": "G GENERATION Series"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -274,5 +290,9 @@
   {
     "id": 130100000090520026,
     "value": "Mobile Suit Gundam AGE"
+  },
+  {
+    "id": 130100000090520027,
+    "value": "Gundam/Gundam Pilot"
   }
 ]

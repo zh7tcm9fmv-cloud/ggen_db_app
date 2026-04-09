@@ -7500,6 +7500,21 @@
     "GooglePlayGameServiceAchievementsId": 0
   },
   {
+    "Id": 200010002501,
+    "MissionGroupId": 2000100025,
+    "GameEventConditionId": 200010002501,
+    "TitleLanguageId": 180100200010002501,
+    "OverrideTitleLanguageId": 180100200010002501,
+    "OverrideConditionTemplateLanguageId": 0,
+    "MissionCategoryTypeIndex": 2,
+    "TargetProgressCount": 1,
+    "RewardSetId": 16250010002501,
+    "AvailableScheduleId": 2604201205,
+    "ReceivableScheduleId": 2604201205,
+    "IsHidden": false,
+    "GooglePlayGameServiceAchievementsId": 0
+  },
+  {
     "Id": 200010100101,
     "MissionGroupId": 2000101001,
     "GameEventConditionId": 200010100101,
@@ -7845,6 +7860,21 @@
     "GooglePlayGameServiceAchievementsId": 0
   },
   {
+    "Id": 200010102501,
+    "MissionGroupId": 2000101025,
+    "GameEventConditionId": 200010102501,
+    "TitleLanguageId": 180100200010102501,
+    "OverrideTitleLanguageId": 180100200010102501,
+    "OverrideConditionTemplateLanguageId": 0,
+    "MissionCategoryTypeIndex": 2,
+    "TargetProgressCount": 1,
+    "RewardSetId": 16250010102501,
+    "AvailableScheduleId": 2604201205,
+    "ReceivableScheduleId": 2604201205,
+    "IsHidden": false,
+    "GooglePlayGameServiceAchievementsId": 0
+  },
+  {
     "Id": 200010200101,
     "MissionGroupId": 2000102001,
     "GameEventConditionId": 200010200101,
@@ -7976,6 +8006,21 @@
     "RewardSetId": 16250010202301,
     "AvailableScheduleId": 2603601201,
     "ReceivableScheduleId": 2603601201,
+    "IsHidden": false,
+    "GooglePlayGameServiceAchievementsId": 0
+  },
+  {
+    "Id": 200010202501,
+    "MissionGroupId": 2000102025,
+    "GameEventConditionId": 200010202501,
+    "TitleLanguageId": 180100200010202501,
+    "OverrideTitleLanguageId": 180100200010202501,
+    "OverrideConditionTemplateLanguageId": 0,
+    "MissionCategoryTypeIndex": 2,
+    "TargetProgressCount": 1,
+    "RewardSetId": 16250010202501,
+    "AvailableScheduleId": 2604201205,
+    "ReceivableScheduleId": 2604201205,
     "IsHidden": false,
     "GooglePlayGameServiceAchievementsId": 0
   },

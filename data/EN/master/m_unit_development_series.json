@@ -34,10 +34,10 @@
     "DefaultBackgroundResourceId": "",
     "CompleteBackgroundResourceId": "",
     "LogoResourceId": "series_0220",
-    "IsVisibleTop": false,
+    "IsVisibleTop": true,
     "ScenarioStageSeriesId": 220,
-    "ScheduleId": 2511109901,
-    "SeriesId": 0
+    "ScheduleId": 2604209901,
+    "SeriesId": 220
   },
   {
     "Id": 320,

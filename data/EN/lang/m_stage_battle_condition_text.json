@@ -7056,6 +7056,22 @@
     "value": "All of your units are destroyed.\nLimit: 3 turns."
   },
   {
+    "id": 130300009050002601,
+    "value": "Defeat Lacus Clyne."
+  },
+  {
+    "id": 130300009050002603,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009050002701,
+    "value": "Defeat Gundam NT-1."
+  },
+  {
+    "id": 130300009050002704,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
     "id": 130300009051000101,
     "value": "Destroy all enemy units."
   },
@@ -7296,6 +7312,30 @@
     "value": "All of your units are destroyed.\nLimit: 3 turns."
   },
   {
+    "id": 130300009051003401,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300009051003404,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009051003501,
+    "value": "Destroy 4 Psycho Haro(s)."
+  },
+  {
+    "id": 130300009051003502,
+    "value": "Destroy 10 enemies."
+  },
+  {
+    "id": 130300009051003504,
+    "value": "All of your units are destroyed.\nHaro and Guest force destroyed. / Limit: 3 turns."
+  },
+  {
+    "id": 130300009051003505,
+    "value": "All of your units are destroyed.\nHaro and Guest force destroyed. / Limit: 3 turns."
+  },
+  {
     "id": 130300009052000101,
     "value": "Destroy all enemy units."
   },
@@ -7509,6 +7549,14 @@
   },
   {
     "id": 130300009052002605,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052002701,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300009052002704,
     "value": "All of your units are destroyed.\nLimit: 3 turns."
   },
   {

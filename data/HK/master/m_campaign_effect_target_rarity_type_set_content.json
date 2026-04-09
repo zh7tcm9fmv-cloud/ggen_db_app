@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 1180000000101,
+    "CampaignEffectTargetRarityTypeSetId": 11800000001,
+    "RarityTypeIndex": 1
+  },
+  {
+    "Id": 1180000000102,
+    "CampaignEffectTargetRarityTypeSetId": 11800000001,
+    "RarityTypeIndex": 2
+  },
+  {
+    "Id": 1180000000103,
+    "CampaignEffectTargetRarityTypeSetId": 11800000001,
+    "RarityTypeIndex": 3
+  },
+  {
+    "Id": 1180000000104,
+    "CampaignEffectTargetRarityTypeSetId": 11800000001,
+    "RarityTypeIndex": 4
+  }
+]

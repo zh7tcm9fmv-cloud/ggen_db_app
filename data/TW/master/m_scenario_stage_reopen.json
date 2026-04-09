@@ -1,5 +1,65 @@
 [
   {
+    "ScenarioStageId": 2200103,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 0
+  },
+  {
+    "ScenarioStageId": 2200204,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200103
+  },
+  {
+    "ScenarioStageId": 2200304,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200204
+  },
+  {
+    "ScenarioStageId": 2200404,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200304
+  },
+  {
+    "ScenarioStageId": 2200503,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200404
+  },
+  {
+    "ScenarioStageId": 2200603,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200503
+  },
+  {
+    "ScenarioStageId": 2200702,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200603
+  },
+  {
+    "ScenarioStageId": 2200801,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200702
+  },
+  {
+    "ScenarioStageId": 2200901,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200801
+  },
+  {
+    "ScenarioStageId": 2201001,
+    "ScenarioOnlyStageFirstClearRewardSetId": 0,
+    "ScenarioOnlyStageFirstClearPickupRewardId": 0,
+    "ReleaseConditionReopenScenarioStageId": 2200901
+  },
+  {
     "ScenarioStageId": 3200103,
     "ScenarioOnlyStageFirstClearRewardSetId": 0,
     "ScenarioOnlyStageFirstClearPickupRewardId": 0,

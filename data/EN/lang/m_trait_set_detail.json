@@ -9980,6 +9980,10 @@
     "value": "Limiter OFF SSR (Mobile Suit Gundam 00)"
   },
   {
+    "id": 140100000406410100,
+    "value": "Composite Equipment AD SSR (Gundam)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -12624,12 +12628,68 @@
     "value": "Advantage: Tank LV 1"
   },
   {
+    "id": 140100000611410101,
+    "value": "Increased MOV (All Units)"
+  },
+  {
+    "id": 140100000611430101,
+    "value": "Increased MOV"
+  },
+  {
     "id": 140100000611440101,
     "value": "(Defeat Conditions)  Increased MP Lv 1"
   },
   {
     "id": 140100000611450101,
     "value": "(Defeat Conditions)  Increased MP Lv 1"
+  },
+  {
+    "id": 140100000611460100,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF, force-activate Chance Step +1 time"
+  },
+  {
+    "id": 140100000611460111,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611460112,
+    "value": "(Defeat Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611460113,
+    "value": "(Defeat Conditions) force-activate Chance Step +1 time"
+  },
+  {
+    "id": 140100000611460200,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF, force-activate Chance Step +1 time"
+  },
+  {
+    "id": 140100000611460211,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611460212,
+    "value": "(Defeat Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611460213,
+    "value": "(Defeat Conditions) force-activate Chance Step +1 time"
+  },
+  {
+    "id": 140100000611460300,
+    "value": "(Defeat Conditions) HP Restoration, Increased ATK & DEF, force-activate Chance Step +1 time"
+  },
+  {
+    "id": 140100000611460311,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611460312,
+    "value": "(Defeat Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611460313,
+    "value": "(Defeat Conditions) force-activate Chance Step +1 time"
   },
   {
     "id": 140100000611470101,
@@ -12706,6 +12766,18 @@
   {
     "id": 140100000611620001,
     "value": "(Battle conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611660101,
+    "value": "Restore MAP Weapon Ammo"
+  },
+  {
+    "id": 140100000611670101,
+    "value": "We Are Gundams!"
+  },
+  {
+    "id": 140100000611680101,
+    "value": "Supercharged EX"
   },
   {
     "id": 140100000699000101,

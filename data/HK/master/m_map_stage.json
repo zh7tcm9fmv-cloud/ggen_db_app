@@ -4110,6 +4110,18 @@
     "MapId": 1400005
   },
   {
+    "Id": 905000002602000000,
+    "StageId": 90500026,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1999905
+  },
+  {
+    "Id": 905000002702000000,
+    "StageId": 90500027,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1230002
+  },
+  {
     "Id": 905100000102000000,
     "StageId": 90510001,
     "StageDifficultyTypeIndex": 1,
@@ -4278,6 +4290,18 @@
     "MapId": 1400010
   },
   {
+    "Id": 905100003402000000,
+    "StageId": 90510034,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1999903
+  },
+  {
+    "Id": 905100003502000000,
+    "StageId": 90510035,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1430011
+  },
+  {
     "Id": 905200000102000000,
     "StageId": 90520001,
     "StageDifficultyTypeIndex": 1,
@@ -4414,6 +4438,12 @@
     "StageId": 90520026,
     "StageDifficultyTypeIndex": 1,
     "MapId": 1400010
+  },
+  {
+    "Id": 905200002702000000,
+    "StageId": 90520027,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1300003
   },
   {
     "Id": 906000100102000000,

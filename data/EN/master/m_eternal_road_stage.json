@@ -209,6 +209,28 @@
     "MapBgOffsetY": 0
   },
   {
+    "StageId": 90500026,
+    "StageDifficultyTypeIndex": 1,
+    "StageNumber": 20,
+    "DisplayUnitId": 2300000200,
+    "StageNameLanguageId": 130100000090500026,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
+    "StageId": 90500027,
+    "StageDifficultyTypeIndex": 1,
+    "StageNumber": 21,
+    "DisplayUnitId": 1017000100,
+    "StageNameLanguageId": 130100000090500027,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
     "StageId": 90510001,
     "StageDifficultyTypeIndex": 2,
     "StageNumber": 1,
@@ -517,6 +539,28 @@
     "MapBgOffsetY": 0
   },
   {
+    "StageId": 90510034,
+    "StageDifficultyTypeIndex": 2,
+    "StageNumber": 29,
+    "DisplayUnitId": 1001000100,
+    "StageNameLanguageId": 130100000090510034,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
+    "StageId": 90510035,
+    "StageDifficultyTypeIndex": 2,
+    "StageNumber": 30,
+    "DisplayUnitId": 1850001300,
+    "StageNameLanguageId": 130100000090510035,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
     "StageId": 90520001,
     "StageDifficultyTypeIndex": 3,
     "StageNumber": 1,
@@ -764,6 +808,17 @@
     "StageNumber": 21,
     "DisplayUnitId": 1400006400,
     "StageNameLanguageId": 130100000090520026,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
+    "StageId": 90520027,
+    "StageDifficultyTypeIndex": 3,
+    "StageNumber": 24,
+    "DisplayUnitId": 1110000100,
+    "StageNameLanguageId": 130100000090520027,
     "StrategyInfoScheduleId": 0,
     "InitialMinimapPosY": 0,
     "MapBgOffsetX": 0,

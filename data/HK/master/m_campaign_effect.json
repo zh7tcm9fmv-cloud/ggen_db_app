@@ -261,6 +261,618 @@
     "TargetRewardSetId": 39002603500017
   },
   {
+    "Id": 126042001,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042002,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042003,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042004,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042005,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042006,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042007,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042008,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042009,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042010,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042011,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042012,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042013,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042014,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042015,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042016,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042017,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042018,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042019,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042020,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042021,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042022,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042023,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042024,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042025,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042026,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042027,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042028,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042029,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042030,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042031,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042032,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042033,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042034,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042035,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042036,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042037,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042038,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042039,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042040,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042041,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042042,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042043,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042044,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042045,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042046,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042047,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042048,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042049,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042050,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042051,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042052,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042053,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042054,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042055,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042056,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042057,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042058,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042059,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042060,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042061,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042062,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042063,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042064,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042065,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042066,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042067,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126042068,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
     "Id": 425105001,
     "CampaignEffectTypeIndex": 5,
     "Value": 1,

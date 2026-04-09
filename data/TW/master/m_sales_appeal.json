@@ -574,7 +574,7 @@
   {
     "Id": 2601100101,
     "DisplayConditionSetId": 37431001050000,
-    "ScheduleId": 2601109901,
+    "ScheduleId": 2604209902,
     "IsInfiniteDisplay": false,
     "SalesAppealDisplaySourceSetId": 2601100101,
     "TransitionId": 19000000000000,
@@ -960,5 +960,18 @@
     "Priority": 1,
     "ShouldTransition": true,
     "ContentImageResourceId": "99000108"
+  },
+  {
+    "Id": 2604200101,
+    "DisplayConditionSetId": 37022001030000,
+    "ScheduleId": 2604209901,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2604200101,
+    "TransitionId": 19000000000000,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": false,
+    "ContentImageResourceId": "2604200101"
   }
 ]

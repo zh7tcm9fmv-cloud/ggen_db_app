@@ -13612,6 +13612,14 @@
     "value": "Increase ATK by 12%."
   },
   {
+    "id": 141200000406410101,
+    "value": "Increase own ATK and DEF by 7%"
+  },
+  {
+    "id": 141200000406410102,
+    "value": ""
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -14245,67 +14253,67 @@
   },
   {
     "id": 141200000510600101,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 10%."
+    "value": "Increase DEF by 10% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600201,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 15%."
+    "value": "Increase DEF by 15% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600301,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 20%."
+    "value": "Increase DEF by 20% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600401,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 25%."
+    "value": "Increase DEF by 25% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600501,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 30%."
+    "value": "Increase DEF by 30% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600601,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 50%."
+    "value": "Increase DEF by 50% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600701,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 75%."
+    "value": "Increase DEF by 75% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510600801,
-    "value": "When piloting units with specified tags,\nIncrease DEF by 100%."
+    "value": "Increase DEF by 100% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610101,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 10%."
+    "value": "Increase ATK by 10% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610201,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 15%."
+    "value": "Increase ATK by 15% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610301,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 20%."
+    "value": "Increase ATK by 20% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610401,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 25%."
+    "value": "Increase ATK by 25% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610501,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 30%."
+    "value": "Increase ATK by 30% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610601,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 50%."
+    "value": "Increase ATK by 50% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610701,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 75%."
+    "value": "Increase ATK by 75% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510610801,
-    "value": "When piloting units with specified tags,\nIncrease ATK by 100%."
+    "value": "Increase ATK by 100% for units in the same squad with the specified tags."
   },
   {
     "id": 141200000510620101,
@@ -16632,12 +16640,104 @@
     "value": "When enemies are from the specified tags.\nIncrease own ATK by 100%"
   },
   {
+    "id": 141200000611410101,
+    "value": "Increase squad MOV by 5."
+  },
+  {
+    "id": 141200000611430101,
+    "value": "Increase MOV by 5."
+  },
+  {
     "id": 141200000611440101,
     "value": "When Aina Sakhalin in your squad is destroyed:\nIncrease MP by 12."
   },
   {
     "id": 141200000611450101,
     "value": "When Norris Packard in your squad is destroyed:\nIncrease MP by 12."
+  },
+  {
+    "id": 141200000611460101,
+    "value": "When Amuro Ray in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+  },
+  {
+    "id": 141200000611460102,
+    "value": ""
+  },
+  {
+    "id": 141200000611460103,
+    "value": ""
+  },
+  {
+    "id": 141200000611460104,
+    "value": ""
+  },
+  {
+    "id": 141200000611460111,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611460112,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000611460123,
+    "value": "force-activate Chance Step +1 time"
+  },
+  {
+    "id": 141200000611460201,
+    "value": "When Banagher Links in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+  },
+  {
+    "id": 141200000611460202,
+    "value": ""
+  },
+  {
+    "id": 141200000611460203,
+    "value": ""
+  },
+  {
+    "id": 141200000611460204,
+    "value": ""
+  },
+  {
+    "id": 141200000611460211,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611460212,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000611460223,
+    "value": "force-activate Chance Step +1 time"
+  },
+  {
+    "id": 141200000611460301,
+    "value": "When Asemu Asuno in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+  },
+  {
+    "id": 141200000611460302,
+    "value": ""
+  },
+  {
+    "id": 141200000611460303,
+    "value": ""
+  },
+  {
+    "id": 141200000611460304,
+    "value": ""
+  },
+  {
+    "id": 141200000611460311,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611460312,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000611460323,
+    "value": "force-activate Chance Step +1 time"
   },
   {
     "id": 141200000611470101,
@@ -16714,6 +16814,42 @@
   {
     "id": 141200000611620001,
     "value": "When executing a Support Attack/Counter during battle, \nincrease DEF by 300%."
+  },
+  {
+    "id": 141200000611660101,
+    "value": "At the beginning of the turn, restore MAP Weapon ammo by 1."
+  },
+  {
+    "id": 141200000611670101,
+    "value": "Increase squad ATK and DEF by 50%."
+  },
+  {
+    "id": 141200000611670102,
+    "value": ""
+  },
+  {
+    "id": 141200000611670103,
+    "value": "At the beginning of the turn, increase your squad's MP by 6."
+  },
+  {
+    "id": 141200000611680101,
+    "value": "When own Vigor is Supercharged,\n\"Supercharged EX\" (permanent)."
+  },
+  {
+    "id": 141200000611680102,
+    "value": "restores own HP by 10% 5 times.\neach time you take damage from an enemy."
+  },
+  {
+    "id": 141200000611680103,
+    "value": "Grant Guaranteed Critical to self"
+  },
+  {
+    "id": 141200000611680104,
+    "value": "Increase own ATK and DEF by 100%"
+  },
+  {
+    "id": 141200000611680105,
+    "value": ""
   },
   {
     "id": 141200000699000101,

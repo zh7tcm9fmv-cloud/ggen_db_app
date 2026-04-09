@@ -4949,6 +4949,90 @@
     "NpcGroupName": "a"
   },
   {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 905000002702000001,
+    "MapNpcId": 905000002702000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "<default>"
+  },
+  {
     "MapGroupId": 905100000102000004,
     "MapNpcId": 905100000102000001,
     "GroupUnitTypeIndex": 3,
@@ -5920,6 +6004,202 @@
     "GroupUnitTypeIndex": 3,
     "SortOrder": 23,
     "NpcGroupName": "boss"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "amuro"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "kai"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "hayato"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "seira"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "slegger"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "bork"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "terry"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "shiro"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "eredor"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "karen"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "char"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "ramba_lar"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "gaia"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "ortega"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "mash"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "hideto"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "caspen"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "jan"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "monique"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "mai"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "four"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "pull_two"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "pull_twelve"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "saikoro_gundam"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "psycho_halo"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "psycho_halo"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "psycho_halo"
+  },
+  {
+    "MapGroupId": 905100003502000001,
+    "MapNpcId": 905100003502000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "psycho_halo"
   },
   {
     "MapGroupId": 905200000102000001,
