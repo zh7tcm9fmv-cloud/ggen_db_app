@@ -8967,6 +8967,81 @@ def list_option_parts():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
+
+def _find_option_part_master_item(op_id_raw):
+    want = normalize_id(op_id_raw)
+    for item in extract_data_list(option_parts_data or []):
+        if not isinstance(item, dict):
+            continue
+        oid = str(item.get('Id') or item.get('id', 0))
+        if oid == want:
+            return item
+    return None
+
+
+def _option_part_detail_row(item, lc):
+    """Single option part JSON (same shape as list rows) for detail API."""
+    if not isinstance(item, dict):
+        return None
+    opid = str(item.get('Id') or item.get('id', 0))
+    if opid == '0':
+        return None
+    ld = get_lang_data(lc)
+    op_text_map = ld.get('op_text_map', {})
+    ltm = ld.get('lang_text_map', {})
+    ri = str(item.get('RarityTypeIndex') or 1)
+    name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
+    name = op_text_map.get(name_lid, '') if name_lid else ''
+    if not name:
+        name = f'Option Part {opid}'
+    trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+    trait_ids = trait_set_traits_map.get(trait_set_id, [])
+    details_list = []
+    for tid in trait_ids:
+        tdata = trait_data_map.get(tid, {})
+        dlid = tdata.get('desc_lang_id', '')
+        if dlid:
+            desc = ltm.get(dlid, '')
+            if desc:
+                details_list.append(desc.strip())
+    details = ' '.join(details_list) if details_list else ''
+    lineage_ids = option_parts_lineage_map.get(opid, [])
+    tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+    tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
+    tags_join = ', '.join(t['name'] for t in tags)
+    res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+    icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
+    return {
+        'id': opid,
+        'name': name,
+        'details': details,
+        'rarity': RARITY_MAP.get(ri, 'N'),
+        'rarity_id': ri,
+        'rarity_sort': RARITY_SORT.get(ri, 4),
+        'rarity_icon': RARITY_ICON_MAP.get(ri, ''),
+        'thum': icon,
+        'tags': tags,
+        'tags_join': tags_join,
+        'lang': lc,
+    }
+
+
+@app.route('/api/option_part/<option_part_id>')
+def get_option_part(option_part_id):
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        item = _find_option_part_master_item(option_part_id)
+        if not item:
+            return jsonify({'error': 'Not found'}), 404
+        row = _option_part_detail_row(item, lc)
+        if not row:
+            return jsonify({'error': 'Not found'}), 404
+        return jsonify(convert_image_urls(row))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/supporters')
 def list_supporters():
     try:
