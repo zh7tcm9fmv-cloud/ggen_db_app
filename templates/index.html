@@ -5164,12 +5164,13 @@ if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
 const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,masterLeagueBuffMove:false,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side)};
-const baseCtx={masterLeagueBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0};
+const baseCtx={masterLeagueBuff:!!S.tb.masterLeague,masterLeagueBuffMove:false,optionParts:[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side)};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
 let batk=b.unitAtk,bdef=b.unitDefVal;
 const prb=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,batk,bdef);
 batk=prb.unitAtk;bdef=prb.unitDefVal;
+bdef=_tbApplyUnitTurnBuffDefToMsDef(bdef,ud,!!sl.unitTurnBuffDef);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
 fatk=prf.unitAtk;fdef=prf.unitDefVal;
