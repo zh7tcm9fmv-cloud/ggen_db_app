@@ -840,9 +840,9 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-supporter-item--layout .dc-supp-remove-btn img{width:22px;height:22px;object-fit:contain;opacity:.85}
 .dc-supporter-item--layout .dc-supp-remove-btn:hover img{opacity:1}
 .dc-option-item.dc-option-item--layout{flex-direction:column;align-items:stretch;gap:8px}
-.dc-option-item--layout .dc-option-item-main{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.dc-option-item--layout .dc-option-item-main{display:flex;align-items:center;gap:8px;min-width:0;width:100%}
 .dc-option-item--layout .dc-option-item-text{flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}
-.dc-option-item--layout .dc-option-item-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;width:100%}
+.dc-option-item--layout .dc-option-item-actions{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;margin-left:auto}
 .dc-option-item--layout .dc-option-item-actions .dc-picked-change{flex:0 0 auto}
 .dc-option-item--layout .dc-op-remove-btn{display:inline-flex;align-items:center;justify-content:center;min-width:36px;min-height:36px;padding:4px;border:0;background:transparent;cursor:pointer;border-radius:6px}
 .dc-option-item--layout .dc-op-remove-btn img{width:22px;height:22px;object-fit:contain;opacity:.85}
@@ -7600,7 +7600,7 @@ const thumHtml=o.thum?`<img class="dc-thum dc-dc-mod-thumb" src="${imgUrl(o.thum
 const optTagLine=o.tags&&o.tags.length?`<div class="detail-tags-row" style="margin-top:4px;flex-wrap:wrap;">${o.tags.map(tg=>createTagHtml(tg,{defaultTarget:'unit'})).join('')}</div>`:'';
 const rmTitle=escAttr(t('tb_op_clear'));
 const trashSrc=imgUrlWebp(TB_TRASH_ICON);
-area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="dc-option-item-main">${thumHtml}<div class="dc-option-item-text" style="font-size:12px"><strong>${esc(o.name)}</strong>${optTagLine}${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</div></div><div class="dc-option-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('option_parts')">${esc(t('dc_change'))}</button><button type="button" class="remove dc-op-remove-btn" onclick="removeDcOptionPart(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div>`;
+area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="dc-option-item-main">${thumHtml}<div class="dc-option-item-text" style="font-size:12px"><strong>${esc(o.name)}</strong>${optTagLine}${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</div><div class="dc-option-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('option_parts')">${esc(t('dc_change'))}</button><button type="button" class="remove dc-op-remove-btn" onclick="removeDcOptionPart(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div></div>`;
 }
 function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
@@ -8038,13 +8038,26 @@ const twSing=new RegExp('(?:自身所屬部隊|自身)'+twStat+'(提升|減少)(
 while((m=twSing.exec(norm))!==null){const sign=m[2]==='減少'?-1:1;const v=parseInt(m[3],10)||0;const isPct=m[4]==='%';const k=twMap[m[1]];if(k)add(k,sign*v,isPct)}
 return bonuses;
 }
+function _dcLeaderPctFromLeaderSkillDesc(d){
+const s=String(d||'').normalize('NFKC');
+let m=s.match(/by\s+(\d+)\s*[%％]/i);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/(\d+)\s*[%％]\s*上昇/);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/全能力值(\d+)\s*[%％]/);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/能力值(\d+)\s*[%％]/);
+if(m)return parseInt(m[1],10)||0;
+return 0;
+}
 function _dcLeaderSkillPctAndFlags(supporters){
 let pct=0;
 (supporters||[]).forEach(s=>{
 (s.leader_skills||[]).forEach(ls=>{
 if(ls.applies===false)return;
-const d=ls.desc||'';const m=d.match(/by\s+(\d+)%/i);if(!m)return;
-pct+=parseInt(m[1],10)||0;
+const d=ls.desc||'';
+const v=_dcLeaderPctFromLeaderSkillDesc(d);
+if(v>0)pct+=v;
 });
 });
 return{pct};
