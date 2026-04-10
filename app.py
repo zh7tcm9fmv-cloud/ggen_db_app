@@ -5313,10 +5313,14 @@ for _uid in sorted(unit_info_map.keys()):
     if _rid != '0' and _rid not in CHAR_RECOMMEND_UNIT_MAP:
         CHAR_RECOMMEND_UNIT_MAP[_rid] = _uid
 
-# EX abilities that buff the pilot's MS (or squad) — applied to unit ATK/DEF in the damage calculator when paired.
+# EX abilities that buff the pilot's MS — applied to unit ATK/DEF in the damage calculator when paired.
 # Keys: character_id -> unit_id -> pct (not pilot Ranged/Melee; excluded via _char_trait_line_is_squad_unit_effect).
-CHAR_PAIR_UNIT_STAT_MOD_PCT = {
-    '1300001801': {'1300004650': {'atk_pct': 5, 'def_pct': 5}},
+# Do not duplicate "same squad + tag" ATK/DEF here; those are modeled by squad conditions in index.html.
+CHAR_PAIR_UNIT_STAT_MOD_PCT = {}
+
+# Characters whose conditional-passive / recommend pairing is tied to a specific unit, without a stat shortcut above.
+CHAR_PAIR_CONDITIONAL_PASSIVE_UNIT_IDS = {
+    '1300001801': ('1300004650',),
 }
 
 # "Increase own ATK by X% when countering" — MS Attack in combat; DC applies when user enables counter-attack mode.
@@ -5335,6 +5339,8 @@ def _char_pair_conditional_unit_ids(char_id):
     m2 = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(cid)
     if m2:
         out.update(normalize_id(u) for u in m2.keys())
+    for uid in CHAR_PAIR_CONDITIONAL_PASSIVE_UNIT_IDS.get(cid, ()):
+        out.add(normalize_id(uid))
     return out
 
 

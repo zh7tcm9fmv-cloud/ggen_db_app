@@ -1746,6 +1746,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseEffectiveLine" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcExSquadAtkWrap"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcSquadCondWrap"><span class="dc-ctrl-label"><span class="dc-tip" id="dcSquadCondTip" title="">Squad conditions</span> <span id="dcSquadCondRange" style="font-size:10px;color:var(--text-muted)"></span></span><input type="number" class="dc-input-sm" id="dcSquadCondPct" min="0" max="100" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkCounterOwnAtkWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkCounterOwnAtk" onchange="onDcParamChange()"><span class="dc-tip" title="EX traits that raise the mobile suit Attack stat when countering. Uses MS Attack in damage math (not pilot Ranged/Melee). Requires pilot EX ability (toggle) on and the paired unit listed in the database for this pilot.">Own ATK when countering (unit)</span></label></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkAdvantageEnemyTagWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcAtkAdvantageEnemyTag" checked onchange="onDcParamChange()"><span class="dc-tip" title="When on, Advantage: … adds floor(X% × growth MS Attack) if the defender matches Target Tags (flat add, not +X% on total MS Attack). Only shown for units with this effect on an ability.">Advantage (enemy tag) on MS Attack</span></label></div>
 </div>
@@ -2204,10 +2205,10 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',er_stage_lock_hint:'パスワードを入力するとステージの詳細（マップ・NPC・出撃制限など）を表示します。',er_stage_unlock_btn:'解除',er_stage_pw_wrong:'パスワードが違います。',er_stage_locked_badge:'ロック',er_stage_lock_wait:'開催開始時刻になると自動で解放されます。',er_stage_redacted_row:'非公開',er_stage_redacted_title:'非公開ステージ',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',conditional_passive_abbr:'CP',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_defender_status:'防御側ステータス',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。'});
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',tb_stats_hint_squad:' Squad tag passives (ATK stack or ATK+DEF) are applied from your formation when tags match.'});
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。'});
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。'});
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',tb_stats_hint_squad:' タグが一致する分隊被動（攻撃の積み上げまたは攻防）は編成から自動反映されます。'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -2229,7 +2230,7 @@ function charGridStatLabel(k){const colMap={Ranged:'col_ranged',Melee:'col_melee
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitMechanism:[],listSuppLineage:[],listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false};
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 function scheduleBrowsePrimeChain(){function ric(cb){if(typeof requestIdleCallback!=='undefined')requestIdleCallback(cb,{timeout:4500});else setTimeout(cb,160)}ric(()=>{primeBrowseTabIfNeeded('units');ric(()=>{primeBrowseTabIfNeeded('supporters');ric(()=>{primeBrowseTabIfNeeded('stages');ric(()=>primeBrowseTabIfNeeded('modifications'))})})})}
 document.addEventListener('DOMContentLoaded',async()=>{loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>syncBrowseSearchWidths(),120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');scheduleBrowsePrimeChain();setupKeys();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
@@ -2243,7 +2244,7 @@ async function ensureJpModeUnlockedForSwitch(l){const lc=(l||'').toUpperCase();i
 async function selLang(l){if(!(await ensureJpModeUnlockedForSwitch(l)))return;S.lang=l;persistLang(l);S.lrCacheKey=null;S.lrCacheData=null;S._browseFilters=null;_dcStagesCache=null;S._browsePrimed={};invalidateBrowseFilterPanels();document.getElementById('langLabel').textContent=l;document.getElementById('langDropdown').classList.remove('active');renderLangDD();applyLang();buildTableHeaders();updateRoleFilterButtons();loadCharacters(1);loadUnits(1);loadSupporters(1);loadStages(1);loadModifications(1);S._browsePrimed={characters:1,units:1,supporters:1,stages:1,modifications:1};if(S.currentTab==='latest_release')tryLoadLatestRelease();if(S.currentTab==='team_builder'){S._tbPickerRowCache=null;initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')fetchAndRenderSeriesModal();else if(S._currentTagStr)fetchAndRenderTagModal()}}
 document.addEventListener('click',e=>{if(!e.target.closest('.dc-stage-dd-wrap'))_dcCloseDcStageDd();if(!e.target.closest('.lang-selector'))document.getElementById('langDropdown').classList.remove('active');if(!e.target.closest('.rarity-filter-wrap')&&!e.target.closest('.role-filter-wrap')&&!e.target.closest('.source-filter-wrap')&&!e.target.closest('.terrain-filter-wrap')&&!e.target.closest('.debuff-filter-wrap')&&!e.target.closest('.mechanism-filter-wrap')&&!e.target.closest('.lineage-filter-wrap')&&!e.target.closest('.series-filter-wrap')&&!e.target.closest('.skill-filter-wrap')&&!e.target.closest('.ability-filter-wrap')&&!e.target.closest('#stageDiffWrap'))closeAllFilterPanels()});
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
-function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent=t('dc_title');const _ntb=document.getElementById('navTbTab');if(_ntb)_ntb.textContent=t('tab_team_builder');tbApplyLangStatic();const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop()}
+function applyLang(){updateListViewToggleLabels();document.getElementById('navCharTab').textContent=t('tab_char');document.getElementById('navUnitTab').textContent=t('tab_unit');document.getElementById('navSuppTab').textContent=t('tab_supporter');document.getElementById('navStageTab').textContent=t('tab_stage');document.getElementById('navModTab').textContent=t('tab_mod');document.getElementById('navCalcTab').textContent=t('dc_title');const _ntb=document.getElementById('navTbTab');if(_ntb)_ntb.textContent=t('tab_team_builder');tbApplyLangStatic();const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');document.getElementById('navLatestTab').textContent=t('tab_latest');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});updateAbilBrowseFilterLabel('char')}).catch(()=>{});if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop();const _pdc=document.getElementById('panel-calculator');if(_pdc&&_pdc.classList.contains('active')){_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility()}}
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
 const RARITY_LIST_KEYS=['UR','SSR','SR','R','N'];
 const RARITY_FILTER_ICONS={ULT:'/static/images/UI/UI_Common_Icon_ULT.webp',UR:'/static/images/Rarity/UI_Common_RarityIcon_UR.webp',SSR:'/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',SR:'/static/images/Rarity/UI_Common_RarityIcon_SR.webp',R:'/static/images/Rarity/UI_Common_RarityIcon_R.webp',N:'/static/images/Rarity/UI_Common_RarityIcon_N.webp'};
@@ -4142,7 +4143,7 @@ _vigorCondThreshold:null,
 _activeSkills:{},
 mpLevel:'medium',
 terrainMode:'normal',terrain:0,
-finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,atkCounterOwnAtk:false,applyAdvantageEnemyTag:true,
+finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,squadCondPct:0,atkCounterOwnAtk:false,applyAdvantageEnemyTag:true,
 unitTurnBuffAtk:false,unitTurnBuffDef:false,masterLeagueBuff:false,grandOffensiveBuff:false
 }));
 }
@@ -4161,7 +4162,7 @@ _vigorCondThreshold:S.dc._vigorCondThreshold||null,
 _activeSkills:S.dc._activeSkills||{},
 mpLevel:S.dc.mpLevel||'medium',
 terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
-finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
+finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
 unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff
@@ -4169,6 +4170,10 @@ grandOffensiveBuff:!!S.dc.grandOffensiveBuff
 }
 function _dcWriteAttackerToDc(slot){
 if(!slot)return;
+if(slot._dcSquadCondShareMissing&&slot.atkCharData&&slot.atkUnitData){
+slot._dcSquadCondShareMissing=0;
+if(_dcCharShouldShowSquadCondUi(slot.atkCharData,slot.atkUnitData))slot.squadCondPct=_dcSquadCondInputCap(slot.atkCharData,slot.atkUnitData);
+}
 S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
 S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
@@ -4182,10 +4187,11 @@ S.dc._vigorCondThreshold=slot._vigorCondThreshold;
 S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
 S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
 S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
-S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
+S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
+_dcSyncSquadCondEffectiveFromState();
 if(S.dc.atkCharData)S.dc._pilotSkills=S.dc.atkCharData.skills||[];
 }
 function _dcSnapActiveAttackerToSlot(){
@@ -4200,6 +4206,7 @@ const di=document.getElementById('dcDmgIncrease');if(di)di.value=String(S.dc.dmg
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=String(S.dc.critDmgUp||0);
 const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=String(Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)));
 _dcUpdateExSquadAtkGroupVisibility();
+_dcUpdateSquadConditionGroupVisibility();
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa)acoa.checked=!!S.dc.atkCounterOwnAtk;
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=S.dc.applyAdvantageEnemyTag!==false;
 document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggle('active',b.dataset.mp===S.dc.mpLevel));
@@ -4277,7 +4284,7 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -4285,6 +4292,7 @@ const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value='';
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=0;
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=0;
 const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=0;
+const sqc=document.getElementById('dcSquadCondPct');if(sqc)sqc.value=0;
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa){acoa.checked=false}
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=true;
 const dtp=document.getElementById('dcDmgTakenDownPilot');if(dtp)dtp.value=0;
@@ -4744,6 +4752,7 @@ if(sl.finalWpnPow)o.fwp=sl.finalWpnPow;
 if(sl.dmgIncrease)o.di=sl.dmgIncrease;
 if(sl.critDmgUp)o.cu=sl.critDmgUp;
 if(sl.exSquadAtkPct)o.exa=sl.exSquadAtkPct;
+if(_dcSlotShouldPackSquadCond(sl))o.sqc=sl.squadCondPct|0;
 if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
 if(sl._wpnTraitHpPow)o.th=sl._wpnTraitHpPow;
 if(sl.unitCondPassive)o.ucp=1;
@@ -4840,6 +4849,8 @@ if(o.fwp!==undefined){const n=parseInt(o.fwp,10);if(Number.isFinite(n))slot.fina
 if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n)){slot.dmgIncrease=n;slot._dmgIncreasePacked=n}}
 if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critDmgUp=n;slot._critDmgUpPacked=n}}
 if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n))slot.exSquadAtkPct=Math.min(20,Math.max(0,n))}
+if(o.sqc!==undefined){const n=parseInt(o.sqc,10);if(Number.isFinite(n))slot.squadCondPct=Math.max(0,n);else slot.squadCondPct=0}
+else if(!o.atkM)slot._dcSquadCondShareMissing=1;
 if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitDistPow=n}
 if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitHpPow=n}
 if(o.ucp)slot.unitCondPassive=true;
@@ -5483,9 +5494,148 @@ const c=_tbNeoZeonUnitCountInSquad(side);
 return Math.min(20,4*c);
 }
 if(raw<=0)return 0;
-if(_dcCharHasExSquadSynergyAbility(cd))return raw;
+if(_dcCharHasExSquadSynergyAbility(cd,ud))return raw;
 if(_tbSquadHasUnitId(side,TB_PLUS_EX_SQUAD_UNIT_ID)&&_tbUnitHasNeoZeonTag(ud))return raw;
 return 0;
+}
+/** Squad tag / count EX passives (ATK stack or ATK+DEF flat). Qubeley ZZ + EX unit uses EX squad % only. */
+function _scIsQubeleyExCombo(cd,ud){
+return!!(cd&&ud&&String(cd.id)===TB_QUBELEY_ZZ_PILOT_ID&&String(ud.id)===TB_PLUS_EX_SQUAD_UNIT_ID);
+}
+function _scTextImpliesSquadBuff(txt){
+if(!txt)return false;
+if(/支援攻擊|支援攻撃|support attack/i.test(txt))return false;
+return/同部隊|部隊內|same squad|in the same squad|in your squad|for each (?:unit |)bearing.*squad|squad unit bearing|each squad unit/i.test(txt);
+}
+function _scParseSquadLineStats(txt){
+if(!txt)return null;
+const raw=String(txt).replace(/\r/g,'');
+const t=raw.replace(/\s+/g,' ');
+let m=t.match(/increase own ATK by (\d+)%[\s\S]*?\(up to (\d+)%\)/i);
+if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
+if(/(?:\[condition\s*1\]|【條件1】|【条件1】)/i.test(raw)){
+m=t.match(/自身の攻撃力が(\d+)%上昇（最大(\d+)%）/);
+if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
+m=t.match(/自身攻擊力提升(\d+)%（最高(\d+)%）/);
+if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
+}
+m=t.match(/Increase ATK by (\d+)% \(up to (\d+)%\)/i);
+if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
+m=t.match(/攻撃力が(\d+)%上昇（最大(\d+)%）/);
+if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
+m=t.match(/自身攻擊力提升(\d+)%（最高(\d+)%）/);
+if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
+m=t.match(/increases ATK and DEF by (\d+)%/i);
+if(m)return{kind:'flat_ad',flat:+m[1]};
+m=t.match(/gain increased ATK and DEF (\d+)%/i);
+if(m)return{kind:'flat_ad',flat:+m[1]};
+m=t.match(/攻撃力と防御力(\d+)%アップ/);
+if(m)return{kind:'flat_ad',flat:+m[1]};
+m=t.match(/攻擊力、防禦力提升(\d+)%/);
+if(m)return{kind:'flat_ad',flat:+m[1]};
+m=raw.match(/「攻擊力提升(\d+)%」、「防禦力提升(\d+)%」/);
+if(m&&m[1]===m[2])return{kind:'flat_ad',flat:+m[1]};
+return null;
+}
+function _scBuildBindingFromParsed(parsed,groups,txt){
+const G=Array.isArray(groups)?groups:[];
+if(!parsed)return null;
+if(parsed.kind==='dual_stack_atk'){
+const g1=G.find(x=>/condition\s*1/i.test(String(x.label||'')))||G[0];
+const g2=G.find(x=>/condition\s*2/i.test(String(x.label||'')))||G[1];
+if(!g1||!g2||!((g1.conditions||[]).length)||!((g2.conditions||[]).length))return null;
+return{kind:'dual_stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:[g1],countGroup:g2,affectsDef:false,inputCap:parsed.max};
+}
+if(parsed.kind==='stack_atk'){
+if(G.length>=2){
+const gPilot=G.find(x=>/condition\s*1/i.test(String(x.label||'')))||G[0];
+const gCount=G.find(x=>/condition\s*2|target tags/i.test(String(x.label||'')))||G[1];
+if(!((gCount.conditions||[]).length))return null;
+return{kind:'stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:[gPilot],countGroup:gCount,affectsDef:false,inputCap:parsed.max};
+}
+if(G.length===1&&!((G[0].conditions||[]).length))return null;
+if(G.length===1)return{kind:'stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:null,countGroup:G[0],affectsDef:false,inputCap:parsed.max};
+return null;
+}
+if(parsed.kind==='flat_ad'){
+if(G.length>=2){
+const gPilot=G[0];
+const gRecv=G.find(x=>/target tags/i.test(String(x.label||'')))||G[1];
+return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[gPilot],recvGroup:gRecv,affectsDef:true,inputCap:parsed.flat};
+}
+if(G.length===1)return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[G[0]],recvGroup:G[0],affectsDef:true,inputCap:parsed.flat};
+return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:null,recvGroup:null,affectsDef:true,inputCap:parsed.flat};
+}
+return null;
+}
+function _scWalkAbilityDetailsForSquad(cd,ud,visitor){
+function walkResolved(resolved){
+if(!resolved)return;
+const det=resolved.details||[];
+for(let i=0;i<det.length;i++){
+const ln=det[i];
+const tx=String((ln&&ln.text)||'');
+if(!_scTextImpliesSquadBuff(tx))continue;
+const parsed=_scParseSquadLineStats(tx);
+if(!parsed)continue;
+const b=_scBuildBindingFromParsed(parsed,ln.condition_groups||[],tx);
+if(b)visitor(b,ln);
+}
+}
+if(cd&&!cd._manual&&Array.isArray(cd.abilities)){
+for(let a=0;a<cd.abilities.length;a++)walkResolved(_dcResolveCharAbilityForMode(cd.abilities[a]));
+}
+if(ud&&!ud._manual&&Array.isArray(ud.abilities)){
+for(let a=0;a<ud.abilities.length;a++)walkResolved(_dcResolveUnitAbilityForMode(ud.abilities[a]));
+}
+}
+function _scFindSquadConditionBinding(cd,ud){
+let found=null;
+_scWalkAbilityDetailsForSquad(cd,ud,(b)=>{if(!found)found=b});
+return found;
+}
+function _tbWithSlotDcStatModes(sl,fn){
+const um=S.dc.unitStatMode,cm=S.dc.charStatMode;
+try{
+S.dc.unitStatMode=(sl&&sl.unitStatMode)||'normal';
+S.dc.charStatMode=(sl&&sl.charStatMode)||'normal';
+return fn();
+}finally{
+S.dc.unitStatMode=um;
+S.dc.charStatMode=cm;
+}
+}
+function _tbCountSquadUnitsMatchingGroup(side,group){
+if(!group||!((group.conditions||[]).length))return 0;
+const squ=S.tb.squads[side|0];
+if(!squ)return 0;
+let n=0;
+for(let i=0;i<5;i++){
+const sl=squ.slots[i];
+const u2=sl&&sl.unitData;
+if(u2&&!u2._manual&&_dcUnitMeetsAbilityConditionGroups(u2,[group]))n++;
+}
+return n;
+}
+function _tbComputeSquadConditionSheetPcts(sl,side){
+const cd=sl.charData,ud=sl.unitData;
+const z={atk:0,def:0};
+if(!ud||ud._manual||_scIsQubeleyExCombo(cd,ud))return z;
+return _tbWithSlotDcStatModes(sl,()=>{
+const b=_scFindSquadConditionBinding(cd,ud);
+if(!b)return z;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcUnitMeetsAbilityConditionGroups(ud,b.pilotGroups))return z;
+if(b.kind==='flat_ad'){
+const rg=b.recvGroup;
+if(rg&&((rg.conditions||[]).length)&&!_dcUnitMeetsAbilityConditionGroups(ud,[rg]))return z;
+return{atk:b.flatPct|0,def:b.flatPct|0};
+}
+if(b.kind==='stack_atk'||b.kind==='dual_stack_atk'){
+const n=_tbCountSquadUnitsMatchingGroup(side,b.countGroup);
+return{atk:Math.min(b.max|0,(b.perUnit|0)*n),def:0};
+}
+return z;
+});
 }
 function _tbUnitAllowsSpSsp(ud){
 if(!ud||ud._manual)return false;
@@ -5506,7 +5656,8 @@ else if(supEnt&&supEnt.data){
 if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
-const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side)};
+const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
+const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -5563,8 +5714,9 @@ else if(supEnt&&supEnt.data){
 if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
-const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side)};
-const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,masterLeagueBuffMove:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0};
+const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
+const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,masterLeagueBuffMove:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
 let batk=b.unitAtk,bdef=b.unitDefVal;
@@ -6119,7 +6271,7 @@ const lab=si===1?t('tb_squad1'):t('tb_squad2');
 const cols=jobs.filter(j=>j.si===si).map(colHtml);
 sections.push(`<div class="tb-stats-squad"><div class="tb-stats-squad-h">${esc(lab)}</div><div class="tb-stats-squad-cols">${cols.join('')}</div></div>`);
 }
-pan.innerHTML=`<div class="tb-stats-all tb-stats-all--squads">${sections.join('')}</div>`;
+pan.innerHTML=`<div class="tb-stats-hint" style="font-size:11px;color:var(--text-muted);margin-bottom:10px;line-height:1.45">${esc(t('tb_stats_hint'))}${esc(t('tb_stats_hint_squad'))}</div><div class="tb-stats-all tb-stats-all--squads">${sections.join('')}</div>`;
 }
 function tbApplyLangStatic(){
 const el=id=>document.getElementById(id);
@@ -6684,31 +6836,91 @@ if(r.desc)out+=String(r.desc)+'\n';
 }
 return out;
 }
-function _dcCharHasExSquadSynergyAbility(cd){return/\bsquad\b/i.test(_dcCharExSquadSynergyAbilityBlob(cd));}
+function _dcCharHasExSquadSynergyAbility(cd,udOpt){
+const blob=_dcCharExSquadSynergyAbilityBlob(cd);
+if(!blob)return false;
+if(!/\bsquad\b/i.test(blob)&&!/同部隊/i.test(blob))return false;
+const ud=udOpt!==undefined?udOpt:S.dc.atkUnitData;
+if(ud&&!ud._manual){
+const b=_scFindSquadConditionBinding(cd,ud);
+if(b&&!_scIsQubeleyExCombo(cd,ud))return false;
+}
+return/\bIncrease ATK by \d+%/i.test(blob)||/攻撃力が\d+%上昇/.test(blob)||/自身攻擊力提升\d+%/.test(blob);
+}
+function _dcCharShouldShowSquadCondUi(cd,ud){
+if(!cd||cd._manual||!ud||ud._manual)return false;
+if(_scIsQubeleyExCombo(cd,ud))return false;
+return!!_scFindSquadConditionBinding(cd,ud);
+}
+function _dcSlotShouldPackSquadCond(sl){
+if(!sl||!sl.atkUnit||!sl.atkChar||sl.atkUnit==='__manual__'||sl.atkChar==='__manual__')return false;
+return _dcCharShouldShowSquadCondUi(sl.atkCharData,sl.atkUnitData);
+}
+function _dcSquadCondInputCap(cd,ud){
+const b=_scFindSquadConditionBinding(cd,ud);
+if(!b)return 0;
+return(b.inputCap!=null?b.inputCap:(b.kind==='flat_ad'?b.flatPct:b.max))|0;
+}
+function _dcSyncSquadCondEffectiveFromState(){
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+S.dc.squadCondAtkPct=0;
+S.dc.squadCondDefPct=0;
+if(!ud||ud._manual||_scIsQubeleyExCombo(cd,ud))return;
+const b=_scFindSquadConditionBinding(cd,ud);
+if(!b)return;
+const cap=_dcSquadCondInputCap(cd,ud);
+const raw=Math.max(0,S.dc.squadCondPct|0);
+const v=Math.min(Math.max(0,cap),raw);
+if(b.kind==='flat_ad'){S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=v;}
+else{S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=0;}
+}
+function _dcUpdateSquadConditionGroupVisibility(){
+const wrap=document.getElementById('dcSquadCondWrap');
+const inp=document.getElementById('dcSquadCondPct');
+const tip=document.getElementById('dcSquadCondTip');
+const rg=document.getElementById('dcSquadCondRange');
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+const show=_dcCharShouldShowSquadCondUi(cd,ud);
+if(!wrap||!inp){return}
+if(!show){
+wrap.style.display='none';
+if(tip)tip.textContent=t('dc_squad_cond_label');
+return;
+}
+wrap.style.removeProperty('display');
+const cap=_dcSquadCondInputCap(cd,ud);
+if(tip){tip.textContent=t('dc_squad_cond_label');tip.title=t('dc_squad_cond_tip')}
+if(rg)rg.textContent='(0–'+cap+')';
+inp.min='0';
+inp.max=String(Math.max(0,cap));
+const cur=Math.min(Math.max(0,cap),Math.max(0,S.dc.squadCondPct|0));
+if(String(inp.value)!==String(cur))inp.value=String(cur);
+}
 function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.dc);}
 function _dcEffectiveExSquadAtkPctFromCtx(ctx){
 const c=ctx||{};
-return _dcCharHasExSquadSynergyAbility(c.atkCharData)?Math.min(20,Math.max(0,c.exSquadAtkPct|0)):0;
+return _dcCharHasExSquadSynergyAbility(c.atkCharData,c.atkUnitData)?Math.min(20,Math.max(0,c.exSquadAtkPct|0)):0;
 }
 function _dcUpdateExSquadAtkGroupVisibility(){
 const wrap=document.getElementById('dcExSquadAtkWrap');
 if(!wrap)return;
 const inp=document.getElementById('dcExSquadAtkPct');
 const cd=S.dc.atkCharData;
-const show=!!(cd&&!cd._manual&&_dcCharHasExSquadSynergyAbility(cd));
+const show=!!(cd&&!cd._manual&&_dcCharHasExSquadSynergyAbility(cd,S.dc.atkUnitData));
 if(show)wrap.style.removeProperty('display');
 else{wrap.style.display='none';S.dc.exSquadAtkPct=0;if(inp)inp.value='0';}
 }
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
-if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();_dcUpdateExSquadAtkGroupVisibility();return}
+if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility();return}
 if(ud._manual){
 area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom unit</div></div></div>`;
 document.getElementById('dcAtkStatsArea').innerHTML='';
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
 _dcUpdateExSquadAtkGroupVisibility();
+_dcUpdateSquadConditionGroupVisibility();
 return;
 }
 _dcDetectVigorCondAbilities(ud);
@@ -6742,6 +6954,9 @@ unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row"><button type="but
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
 const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
 area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
+_dcUpdateExSquadAtkGroupVisibility();
+_dcUpdateSquadConditionGroupVisibility();
+_dcSyncSquadCondEffectiveFromState();
 const sa=document.getElementById('dcAtkStatsArea');
 const uEff=_dcGetModifiedAttackerUnitStats(stats);
 const msEnh=_dcMsStatEnhancementLinesHtml(S.dc,stats);
@@ -6805,7 +7020,6 @@ const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
-_dcUpdateExSquadAtkGroupVisibility();
 }
 function _dcRefreshDcUnitAtkExOnly(){
 const main=document.getElementById('dcAtkUnitAtkMain');
@@ -7791,7 +8005,11 @@ const fwpRaw=fwpEl&&String(fwpEl.value).trim()!==''?parseInt(fwpEl.value,10):NaN
 S.dc.finalWpnPow=Number.isFinite(fwpRaw)&&fwpRaw>0?fwpRaw:0;
 S.dc.dmgIncrease=parseInt(document.getElementById('dcDmgIncrease')?.value)||0;
 S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp')?.value)||0;
-{let v=0;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData)){const raw=parseInt(document.getElementById('dcExSquadAtkPct')?.value,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}S.dc.exSquadAtkPct=v;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value)!==String(S.dc.exSquadAtkPct))el.value=String(S.dc.exSquadAtkPct)}
+{let v=0;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData,S.dc.atkUnitData)){const raw=parseInt(document.getElementById('dcExSquadAtkPct')?.value,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}S.dc.exSquadAtkPct=v;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value)!==String(S.dc.exSquadAtkPct))el.value=String(S.dc.exSquadAtkPct)}
+const _prevScEffAtk=S.dc.squadCondAtkPct|0,_prevScEffDef=S.dc.squadCondDefPct|0;
+if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData)){const el=document.getElementById('dcSquadCondPct');if(el){const raw=parseInt(el.value,10);S.dc.squadCondPct=Number.isFinite(raw)?Math.max(0,raw):0}}else S.dc.squadCondPct=0;
+_dcSyncSquadCondEffectiveFromState();
+const _sqPanelChg=_prevScEffAtk!==(S.dc.squadCondAtkPct|0)||_prevScEffDef!==(S.dc.squadCondDefPct|0);
 {const c=document.getElementById('dcAtkCounterOwnAtk');if(c)S.dc.atkCounterOwnAtk=!!c.checked}
 {const wAdv=document.getElementById('dcAtkAdvantageEnemyTagWrap');const a=document.getElementById('dcAtkAdvantageEnemyTag');if(a&&wAdv&&wAdv.style.display!=='none')S.dc.applyAdvantageEnemyTag=!!a.checked}
 _dcUpdateCounterOwnAtkUi();
@@ -7809,7 +8027,8 @@ if(S.dc.atkSlots&&Array.isArray(S.dc.atkSlots)&&S.dc.atkSlots.length){
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 if(si<S.dc.atkSlots.length)S.dc.atkSlots[si]=_dcReadAttackerFromDc();
 }
-_dcRefreshDcUnitAtkExOnly();
+if(_sqPanelChg&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)renderDcAtkUnit();
+else _dcRefreshDcUnitAtkExOnly();
 renderDcResult();
 }
 function _dcRefreshAtkPanelsAfterMods(){
@@ -7977,6 +8196,8 @@ S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.charCondPassi
 S.dc.supporters=[];
 }
 _dcAutoSetVigor();
+if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcSquadCondInputCap(S.dc.atkCharData,S.dc.atkUnitData);
+else S.dc.squadCondPct=0;
 renderDcAtkUnit();renderDcAtkChar();
 renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
@@ -8360,20 +8581,24 @@ function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)ret
 const coreHp=F(hpBase*(100+pHp)/100);
 const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
+const scAtk=c.squadCondAtkPct|0;
+const scDef=c.squadCondDefPct|0;
 const coreDef=F(defBase*(100+pDef)/100);
-const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct)/100)-coreDef;
-const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)')+L(opFlat.Defense|0,'OP+','Option part flat Defense');
+const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
+const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'OP+','Option part flat Defense');
 const coreMob=F(mobBase*(100+pMob)/100);
 const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
 const mobHtml=L(pctMob,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'OP+','Option part flat Mobility');
 const coreAtk=F(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp)/100)-coreAtk;
-const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
+const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
+const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
+const scAtk=c.squadCondAtkPct|0;
+const scDef=c.squadCondDefPct|0;
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
@@ -8400,7 +8625,7 @@ const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
 let unitHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
-let unitDefVal=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct)/100)+(opFlat.Defense|0);
+let unitDefVal=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
 let unitMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
 const mlMovePct=(c.masterLeagueBuff&&c.masterLeagueBuffMove!==false)?mlPct:0;
 let unitMove=F(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
@@ -8413,7 +8638,7 @@ const unitAtkExSquadBase=F(atkBase*(100+pAtk+sheetBuffPct)/100);
 const unitDefExSquadBase=F(defBase*(100+pDef+sheetBuffPct)/100);
 const unitAtkGrowthAfterOptions=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
 const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
-const sumAtkPctFull=sumAtkPctNoEx+(exSq|0);
+const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0);
 let unitAtk=F(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
 if((exSq|0)>0)deltaExAtk=F(atkBase*(100+sumAtkPctNoEx+exSq)/100)-F(atkBase*(100+sumAtkPctNoEx)/100);
@@ -8526,11 +8751,12 @@ const defCharReaction=defChar?(defChar.stats_raw?.Reaction||0):0;
 const accDownPct=0,mobDownPct=0;
 const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 const exSquadAtkPct=_dcEffectiveExSquadAtkPct();
+const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPct|0;
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
@@ -8749,6 +8975,7 @@ lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
+if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
 if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
@@ -8768,6 +8995,7 @@ lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
+if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
 if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
