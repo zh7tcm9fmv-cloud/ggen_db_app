@@ -678,11 +678,11 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-atk-char-wrap{display:flex;flex-direction:column;gap:8px;width:100%;min-width:0;align-items:stretch}
 .dc-atk-char-ex-tier{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;box-sizing:border-box;padding:0;margin:0}
 .dc-stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-#panel-calculator .dc-def-ers.stats-grid{margin-top:6px}
-#panel-calculator .dc-def-ers .stat-card{background:rgba(0,0,0,.22);border-radius:6px;padding:6px 4px}
-#panel-calculator .dc-def-ers .stat-card-value{font-size:17px}
-#panel-calculator .dc-def-ers .stat-card-label{font-size:10px;letter-spacing:.04em}
-#panel-calculator .dc-def-ers .stat-card-bonus{font-size:11px}
+#panel-calculator .dc-def-ers.stats-grid,#panel-calculator .dc-atk-ers.stats-grid{margin-top:6px}
+#panel-calculator .dc-def-ers .stat-card,#panel-calculator .dc-atk-ers .stat-card{background:rgba(0,0,0,.22);border-radius:6px;padding:6px 4px;border:1px solid transparent}
+#panel-calculator .dc-def-ers .stat-card-value,#panel-calculator .dc-atk-ers .stat-card-value{font-size:17px;font-weight:700;line-height:1.15}
+#panel-calculator .dc-def-ers .stat-card-label,#panel-calculator .dc-atk-ers .stat-card-label{font-size:10px;letter-spacing:.04em;color:var(--text-muted);font-weight:600;text-transform:none}
+#panel-calculator .dc-def-ers .stat-card-bonus,#panel-calculator .dc-atk-ers .stat-card-bonus{font-size:11px}
 .dc-stat-mini{text-align:center;padding:8px;background:rgba(0,0,0,.2);border-radius:6px}
 .dc-stat-mini-label{font-size:10px;color:var(--text-muted);font-weight:600}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}
@@ -925,6 +925,8 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 @media(max-width:520px){
 #panel-calculator .dc-stats-mini[style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important}
 #panel-calculator .dc-stats-mini[style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
+#panel-calculator .stats-grid.dc-atk-ers.dc-stat-grid-4{grid-template-columns:repeat(2,1fr)!important}
+#panel-calculator .stats-grid.dc-atk-ers.dc-stat-grid-5{grid-template-columns:repeat(2,1fr)!important}
 #panel-calculator .dc-picked{flex-wrap:wrap}
 #panel-calculator .dc-picked .dc-picked-change{margin-left:auto}
 #panel-calculator .dc-picked-controls .toggle-label--cp-long{display:none}
@@ -948,21 +950,21 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-dtu-row--on.dc-dtu--special .dc-ctrl-label{color:#d8b4fe;font-weight:800}
 .dc-dtu-row--on.dc-dtu--special .dc-input-sm{border-color:rgba(192,132,252,.58)!important;box-shadow:0 0 0 1px rgba(192,132,252,.22)}
 .dc-stat-val--buffed{color:#4ade80!important;font-weight:700}
-.dc-stats-mini.dc-stats-mini--ml-buff{padding:8px 6px;border-radius:8px;background:rgba(167,139,250,.08);box-shadow:0 0 0 2px rgba(167,139,250,.45),0 0 18px rgba(139,92,246,.18)}
-.dc-stats-mini.dc-stats-mini--ml-buff .dc-stat-mini-val,.dc-stats-mini.dc-stats-mini--ml-buff .dc-stat-mini-val span{color:#86efac!important;font-weight:800}
+.dc-stats-mini.dc-stats-mini--ml-buff,.stats-grid.dc-atk-ers.dc-stats-mini--ml-buff{padding:8px 6px;border-radius:8px;background:rgba(167,139,250,.08);box-shadow:0 0 0 2px rgba(167,139,250,.45),0 0 18px rgba(139,92,246,.18)}
+.dc-stats-mini.dc-stats-mini--ml-buff .dc-stat-mini-val,.dc-stats-mini.dc-stats-mini--ml-buff .dc-stat-mini-val span,.stats-grid.dc-atk-ers.dc-stats-mini--ml-buff .stat-card-value,.stats-grid.dc-atk-ers.dc-stats-mini--ml-buff .stat-card-value span{color:#86efac!important;font-weight:800}
 .dc-unit-lb-stat-cluster{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
 .dc-unit-stat-mode-row,.dc-char-stat-mode-row{margin:0;flex-shrink:0}
-.dc-stats-mini.dc-stat-visual--sp{background:rgba(251,191,36,.07);border-radius:8px;padding:6px 4px;box-shadow:0 0 0 1px rgba(251,191,36,.45),0 0 14px rgba(251,191,36,.18)}
-.dc-stats-mini.dc-stat-visual--ssp{background:rgba(168,85,247,.09);border-radius:8px;padding:6px 4px;box-shadow:0 0 0 1px rgba(192,132,252,.55),0 0 16px rgba(168,85,247,.22)}
-.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 0 0 12px rgba(251,191,36,.12)}
-.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 0 0 12px rgba(168,85,247,.12)}
-.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp{background:rgba(45,212,191,.06);box-shadow:inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 0 1px rgba(45,212,191,.35)}
-.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(251,191,36,.1)}
-.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(168,85,247,.1)}
-.dc-stats-mini .dc-stat-mini.dc-stat-mini--skill{background:rgba(251,191,36,.1);box-shadow:inset 4px 0 0 0 rgba(251,191,36,.8),inset 0 0 0 1px rgba(251,191,36,.38)}
-.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(251,191,36,.45),inset 4px 0 0 0 rgba(251,191,36,.85),inset 0 0 10px rgba(251,191,36,.15)}
-.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(192,132,252,.45),inset 4px 0 0 0 rgba(251,191,36,.82),inset 0 0 12px rgba(168,85,247,.12)}
-.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp.dc-stat-mini--skill{background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(251,191,36,.12));box-shadow:inset 4px 0 0 0 rgba(45,212,191,.88),inset 0 0 0 1px rgba(251,191,36,.45),0 0 14px rgba(251,191,36,.1)}
+.dc-stats-mini.dc-stat-visual--sp,.stats-grid.dc-atk-ers.dc-stat-visual--sp{background:rgba(251,191,36,.07);border-radius:8px;padding:6px 4px;box-shadow:0 0 0 1px rgba(251,191,36,.45),0 0 14px rgba(251,191,36,.18)}
+.dc-stats-mini.dc-stat-visual--ssp,.stats-grid.dc-atk-ers.dc-stat-visual--ssp{background:rgba(168,85,247,.09);border-radius:8px;padding:6px 4px;box-shadow:0 0 0 1px rgba(192,132,252,.55),0 0 16px rgba(168,85,247,.22)}
+.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini,.stats-grid.dc-atk-ers.dc-stat-visual--sp .stat-card{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 0 0 12px rgba(251,191,36,.12)}
+.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini,.stats-grid.dc-atk-ers.dc-stat-visual--ssp .stat-card{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 0 0 12px rgba(168,85,247,.12)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp,.stats-grid.dc-atk-ers .stat-card.dc-stat-mini--cp{background:rgba(45,212,191,.06);box-shadow:inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 0 1px rgba(45,212,191,.35)}
+.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--cp,.stats-grid.dc-atk-ers.dc-stat-visual--sp .stat-card.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(251,191,36,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(251,191,36,.1)}
+.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--cp,.stats-grid.dc-atk-ers.dc-stat-visual--ssp .stat-card.dc-stat-mini--cp{box-shadow:inset 0 0 0 1px rgba(192,132,252,.5),inset 4px 0 0 0 rgba(45,212,191,.85),inset 0 0 12px rgba(168,85,247,.1)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--skill,.stats-grid.dc-atk-ers .stat-card.dc-stat-mini--skill{background:rgba(251,191,36,.1);box-shadow:inset 4px 0 0 0 rgba(251,191,36,.8),inset 0 0 0 1px rgba(251,191,36,.38)}
+.dc-stats-mini.dc-stat-visual--sp .dc-stat-mini.dc-stat-mini--skill,.stats-grid.dc-atk-ers.dc-stat-visual--sp .stat-card.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(251,191,36,.45),inset 4px 0 0 0 rgba(251,191,36,.85),inset 0 0 10px rgba(251,191,36,.15)}
+.dc-stats-mini.dc-stat-visual--ssp .dc-stat-mini.dc-stat-mini--skill,.stats-grid.dc-atk-ers.dc-stat-visual--ssp .stat-card.dc-stat-mini--skill{box-shadow:inset 0 0 0 1px rgba(192,132,252,.45),inset 4px 0 0 0 rgba(251,191,36,.82),inset 0 0 12px rgba(168,85,247,.12)}
+.dc-stats-mini .dc-stat-mini.dc-stat-mini--cp.dc-stat-mini--skill,.stats-grid.dc-atk-ers .stat-card.dc-stat-mini--cp.dc-stat-mini--skill{background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(251,191,36,.12));box-shadow:inset 4px 0 0 0 rgba(45,212,191,.88),inset 0 0 0 1px rgba(251,191,36,.45),0 0 14px rgba(251,191,36,.1)}
 .dc-pilot-bonus-row{opacity:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-family:inherit;font-size:12px;line-height:1.45;color:var(--text-primary)}
 .dc-pilot-bonus-row>input{flex-shrink:0;margin-top:3px}
 .dc-pilot-bonus-line{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
@@ -6755,7 +6757,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="dc-stat-mini-bonus" title="MS ATK: floor(base×(100+all ATK % including EX)/100)+option flat+supporter flat. This line is the delta from EX squad % only in that single floor.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="MS ATK: floor(base×(100+all ATK % including EX)/100)+option flat+supporter flat. This line is the delta from EX squad % only in that single floor.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
@@ -6775,9 +6777,9 @@ if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:ce
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
 unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) is added into the same floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML%)/100) bucket as the other MS Attack % lines. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
 }
-const uVis=`dc-stats-mini dc-stat-visual--${uMode}`;
-const uGridCls=sheetBuffOn?`${uVis} dc-stats-mini--ml-buff`:uVis;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}" style="grid-template-columns:repeat(4,1fr)"><div class="dc-stat-mini${_uCpCell('HP')}"><div class="dc-stat-mini-label">HP</div><div class="dc-stat-mini-val"><span${spHp}>${fmtN(hpS)}</span>${msEnh.hpHtml}</div></div><div class="dc-stat-mini${_uCpCell('Attack')}"><div class="dc-stat-mini-label">${t('col_atk')}</div><div class="dc-stat-mini-val">${atkMainSpan}${msEnh.atkHtml}${atkExSub}</div></div><div class="dc-stat-mini${_uCpCell('Defense')}"><div class="dc-stat-mini-label">${t('col_def')}</div><div class="dc-stat-mini-val"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${msEnh.defHtml}</div></div><div class="dc-stat-mini${_uCpCell('Mobility')}"><div class="dc-stat-mini-label">${t('col_mob')}</div><div class="dc-stat-mini-val"><span${spMob}>${fmtN(mobS)}</span>${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
+const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
 _dcUpdateExSquadAtkGroupVisibility();
@@ -6811,7 +6813,7 @@ const cPct=_dcGetCounterOwnAtkPct();
 if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
-sub.className='dc-stat-mini-bonus';
+sub.className='stat-card-bonus';
 sub.title='floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
 main.classList.add('dc-stat-val--buffed');
@@ -6819,7 +6821,7 @@ main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'
 }else if(cPct>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
-sub.className='dc-stat-mini-bonus';
+sub.className='stat-card-bonus';
 sub.title='EX ability: MS Attack when countering';
 sub.textContent=`+${fmtN(atkMid-atkAfterPair)} · counter +${cPct}%`;
 main.classList.add('dc-stat-val--buffed');
@@ -6927,11 +6929,11 @@ const pAtk=['Ranged','Melee','Awaken'].includes(nm)?(skPct[nm]||0):0;
 const pDef=nm==='Defense'?(defPctSk||0):0;
 const hasSkill=(['Ranged','Melee','Awaken'].includes(nm)&&pAtk>0)||(nm==='Defense'&&pDef>0);
 const tip=hasSkill?'Bonus over growth base: passive trait % plus active skill % (included in total above)':'Passive ability bonus (included in the total above)';
-return`<div class="dc-stat-mini-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBase)}</div>`;
+return`<div class="stat-card-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBase)}</div>`;
 }
-const cVis=`dc-stats-mini dc-stat-visual--${cMode}`;
+const cVis=`stats-grid dc-atk-ers dc-stat-visual--${cMode} dc-stat-grid-5`;
 const bonLn=(nm,v)=>_dcCharPassiveBonusLine(nm,v);
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}" style="grid-template-columns:repeat(5,1fr)"><div class="dc-stat-mini${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="dc-stat-mini-label">${t('col_ranged')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}</div></div><div class="dc-stat-mini${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="dc-stat-mini-label">${t('col_melee')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}</div></div><div class="dc-stat-mini${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="dc-stat-mini-label">${t('col_awaken')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}</div></div><div class="dc-stat-mini${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="dc-stat-mini-label">${t('col_defense')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}</div></div><div class="dc-stat-mini${_cCpCell('Reaction')}"><div class="dc-stat-mini-label">${t('col_reaction')}</div><div class="dc-stat-mini-val">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}"><div class="stat-card${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="stat-card-label">${t('col_ranged')}</div><div class="stat-card-value">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}</div></div><div class="stat-card${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="stat-card-label">${t('col_melee')}</div><div class="stat-card-value">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}</div></div><div class="stat-card${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="stat-card-label">${t('col_awaken')}</div><div class="stat-card-value">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}</div></div><div class="stat-card${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="stat-card-label">${t('col_defense')}</div><div class="stat-card-value">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}</div></div><div class="stat-card${_cCpCell('Reaction')}"><div class="stat-card-label">${t('col_reaction')}</div><div class="stat-card-value">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}</div></div></div>`;
 area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
@@ -8330,7 +8332,7 @@ const opAt=opPct.Attack||0;
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="dc-stat-mini-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
+function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
 const coreHp=F(hpBase*(100+pHp)/100);
 const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
