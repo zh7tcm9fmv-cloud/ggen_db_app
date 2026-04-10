@@ -4958,7 +4958,10 @@ def unit_has_ms_ability_content(uid):
 
 
 # Browse / filters: exclude units that only exist for maps/story (weapons but no MS abilities), same visibility as other NPCs.
+# Also exclude specific roster rows that are not meant for normal browsing (still loadable via /api/unit/<id> and ID search).
+UNIT_IDS_HIDDEN_FROM_UNIT_BROWSE = frozenset({normalize_id('1307000400')})
 unit_list_playable_ids = {u for u in (set(unit_abil_map.keys()) | set(unit_weapon_map.keys())) if unit_has_ms_ability_content(u)}
+unit_list_playable_ids -= UNIT_IDS_HIDDEN_FROM_UNIT_BROWSE
 
 
 def unit_qualifies_for_unit_tag_series_modals(uid, lc):
@@ -7255,7 +7258,7 @@ def get_tag_units():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ts = request.args.get('tags', '').strip(); op = request.args.get('op', 'and').lower()
         if not ts: return jsonify({'1': [], '2': [], '3': []})
-        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_v2_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        tl = [t.strip().lower() for t in ts.split(',') if t.strip()]; ck = f"tag_units_v3_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
@@ -7376,7 +7379,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v3_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v4_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -7507,7 +7510,7 @@ def get_series_units():
         raw_sid = request.args.get('series_id', '').strip()
         if not raw_sid:
             return jsonify({'1': [], '2': [], '3': []})
-        ck = f"series_units_v2_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"series_units_v3_{raw_sid}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -7618,7 +7621,7 @@ def get_ability_units():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         an = request.args.get('ability_name', '').strip()
         if not an: return jsonify({'1': [], '2': [], '3': []})
-        ck = f"abil_units_{an}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"abil_units_v2_{an}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); results = {'1': [], '2': [], '3': []}
@@ -7632,6 +7635,8 @@ def get_ability_units():
             if _muid == '0':
                 _muid = uid
             if uid != _muid:
+                continue
+            if uid not in unit_list_playable_ids:
                 continue
             lid = ld.get('unit_id_map', {}).get(uid, ''); name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
             if not name: continue
@@ -8706,9 +8711,9 @@ def browse_filters():
         if entity == 'supporters':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'supporters')
-                ck = f"browse_filters_v12_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v12_{lc}_{entity}"
+                ck = f"browse_filters_v13_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify(cached)
@@ -8722,9 +8727,9 @@ def browse_filters():
             return jsonify(convert_image_urls(result))
         if filter_mode == 'current':
             sig = browse_filters_pool_signature(request.args, entity)
-            ck = f"browse_filters_v12_{lc}_{entity}_cur_{sig}"
+            ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
         else:
-            ck = f"browse_filters_v12_{lc}_{entity}"
+            ck = f"browse_filters_v13_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -8953,7 +8958,7 @@ def list_units():
     _pp_cap = 600 if tb_boost else 100
     pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
-    ck = f"ul38_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul39_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
