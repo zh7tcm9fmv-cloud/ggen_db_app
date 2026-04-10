@@ -3244,6 +3244,49 @@ def create_eternal_stage_map(d):
         }
     return lookup
 
+def create_stage_name_lang_lookup(stage_master):
+    lk = {}
+    for item in extract_data_list(stage_master):
+        if not isinstance(item, dict): continue
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        if sid == '0': continue
+        lk[sid] = normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId'))
+    return lk
+
+def create_map_event_score_attack_stage_map(score_data, stage_master):
+    name_by_stage = create_stage_name_lang_lookup(stage_master) if stage_master else {}
+    lookup = {}
+    seq = 0
+    for item in extract_data_list(score_data):
+        if not isinstance(item, dict): continue
+        stid = normalize_id(item.get('StageId') or item.get('stageId'))
+        if stid == '0': continue
+        boss = normalize_id(item.get('BossMapNpcId') or item.get('bossMapNpcId'))
+        row_lang = normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')) or '0'
+        snlid = row_lang if row_lang != '0' else name_by_stage.get(stid, '0')
+        seq += 1
+        lookup[stid] = {
+            'boss_map_npc_id': boss,
+            'stage_name_lang_id': snlid,
+            'score_attack_row_id': normalize_id(item.get('Id') or item.get('id')),
+            'list_seq': seq,
+        }
+    return lookup
+
+def create_map_stage_meta_by_stage_id(d):
+    """First m_map_stage row per StageId (for StageDifficultyTypeIndex when stage id is not 905x-prefixed)."""
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict): continue
+        sid = normalize_id(item.get('StageId') or item.get('stageId'))
+        if sid == '0' or sid in lk: continue
+        lk[sid] = {
+            'map_stage_id': normalize_id(item.get('Id') or item.get('id')),
+            'map_id': normalize_id(item.get('MapId') or item.get('mapId')),
+            'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
+        }
+    return lk
+
 def create_stage_sortie_set_content_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -4500,6 +4543,7 @@ supporter_growth_data = load_json(os.path.join(BASE_DIR, "m_supporter_growth.jso
 supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_skill_content.json"))
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
+map_event_score_attack_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage.json"))
 stage_master_data = load_json(os.path.join(BASE_DIR, "m_stage.json"))
 stage_sortie_set_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_content.json"))
 stage_sortie_group_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_group_content.json"))
@@ -4561,10 +4605,12 @@ supporter_leader_map = create_supporter_leader_skill_map(supporter_leader_data) 
 supporter_active_map = create_supporter_active_skill_map(supporter_active_data) if supporter_active_data else {}
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
 eternal_stage_map = create_eternal_stage_map(eternal_stage_data) if eternal_stage_data else {}
+map_event_score_attack_stage_map = create_map_event_score_attack_stage_map(map_event_score_attack_stage_data, stage_master_data) if map_event_score_attack_stage_data else {}
 stage_sortie_set_content_map = create_stage_sortie_set_content_map(stage_sortie_set_content_data) if stage_sortie_set_content_data else {}
 stage_sortie_group_content_map = create_stage_sortie_group_content_map(stage_sortie_group_content_data) if stage_sortie_group_content_data else {}
 stage_condition_map = create_stage_condition_map(stage_battle_condition_text_base_data) if stage_battle_condition_text_base_data else {}
 map_stage_lookup = create_map_stage_lookup(map_stage_data) if map_stage_data else {}
+map_stage_meta_by_stage_id = create_map_stage_meta_by_stage_id(map_stage_data) if map_stage_data else {}
 map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data else {}
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
 map_npc_unit_lookup = create_map_npc_unit_lookup(map_npc_unit_data) if map_npc_unit_data else {}
@@ -6205,6 +6251,14 @@ def get_stage_difficulty(sid, lc='EN'):
     if s.startswith('9050'): return {'code': 'normal', 'name': get_ui_label(lc, 'difficulty_normal')}
     if s.startswith('9051'): return {'code': 'hard', 'name': get_ui_label(lc, 'difficulty_hard')}
     if s.startswith('9052'): return {'code': 'expert', 'name': get_ui_label(lc, 'difficulty_expert')}
+    return {'code': 'unknown', 'name': 'Unknown'}
+
+def get_stage_difficulty_by_type_index(dti, lc='EN'):
+    """Normalizes StageDifficultyTypeIndex from m_map_stage / eternal road (1=normal, 2=hard, 3=expert)."""
+    i = safe_int(dti, 1)
+    if i == 1: return {'code': 'normal', 'name': get_ui_label(lc, 'difficulty_normal')}
+    if i == 2: return {'code': 'hard', 'name': get_ui_label(lc, 'difficulty_hard')}
+    if i == 3: return {'code': 'expert', 'name': get_ui_label(lc, 'difficulty_expert')}
     return {'code': 'unknown', 'name': 'Unknown'}
 
 def resolve_sortie_restriction_set(set_id, lc):
@@ -9730,16 +9784,30 @@ def list_dc_targets():
             if vis:
                 rows.append({
                     'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name'], 'difficulty_code': diff['code'],
-                    'difficulty_order': dord, 'content_locked': False,
+                    'difficulty_order': dord, 'content_locked': False, 'stage_category': 'eternal',
                 })
             else:
                 rows.append({
                     'id': sid, 'name': '', 'stage_number': None, 'difficulty': '', 'difficulty_code': '',
-                    'difficulty_order': dord, 'content_locked': True,
+                    'difficulty_order': dord, 'content_locked': True, 'stage_category': 'eternal',
                 })
 
+        for sid, sas in (map_event_score_attack_stage_map or {}).items():
+            sn = safe_int(sas.get('list_seq'), 0)
+            sname = ld.get('stage_text_map', {}).get(sas.get('stage_name_lang_id', ''), '') or f"Stage {sid}"
+            mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
+            dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
+            diff = get_stage_difficulty_by_type_index(dti, lc)
+            dord = diff_order_map.get(dti, 99)
+            rows.append({
+                'id': sid, 'name': sname, 'stage_number': sn, 'difficulty': diff['name'], 'difficulty_code': diff['code'],
+                'difficulty_order': dord, 'content_locked': False, 'stage_category': 'score_attack',
+            })
+
         def _dc_targets_sort_key(row):
-            return (row.get('difficulty_order', 99), safe_int(row['id'], 0))
+            cat = row.get('stage_category') or 'eternal'
+            cat_ord = 0 if cat == 'eternal' else 1
+            return (cat_ord, row.get('difficulty_order', 99), safe_int(row['id'], 0))
 
         rows.sort(key=_dc_targets_sort_key)
         return jsonify(rows)
@@ -9752,39 +9820,69 @@ def list_stages():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
         pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
-        ck = f"stages4_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        cat = (request.args.get('category') or 'eternal').strip().lower()
+        if cat not in ('eternal', 'score_attack'): cat = 'eternal'
+        ck = f"stages5_{cat}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
-        for sid, est in eternal_stage_map.items():
-            sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
-            vis = eternal_stage_content_visible(sid, est)
-            if sq:
-                searchable = (f"{sid} {sname} {sn}" if vis else str(sid)).lower()
-                if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
-            sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
-            if df != 'all' and df != '' and diff['code'] != df: continue
-            duid = est.get('display_unit_id', '0'); portrait = ''
-            if vis and duid != '0':
-                uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
-            sn_sort = safe_int(sn, 0)
-            if vis:
+        if cat == 'score_attack':
+            for sid, sas in (map_event_score_attack_stage_map or {}).items():
+                sn = safe_int(sas.get('list_seq'), 0)
+                sname = ld.get('stage_text_map', {}).get(sas.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
+                if sq:
+                    searchable = f"{sid} {sname} {sn}".lower()
+                    if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
+                sm = stage_map.get(sid, {})
+                mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
+                dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
+                diff = get_stage_difficulty_by_type_index(dti, lc)
+                if df != 'all' and df != '' and diff['code'] != df: continue
+                boss_id = sas.get('boss_map_npc_id', '0')
+                nu = map_npc_unit_lookup.get(boss_id, []) if map_npc_unit_lookup else []
+                duid = nu[0].get('unit_id', '0') if nu else '0'
+                portrait = ''
+                if duid != '0':
+                    uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
+                sn_sort = sn
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': sn, 'name': sname,
                     'recommended_cp': sm.get('recommended_cp', 0),
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
                     'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
-                    'content_locked': False,
+                    'content_locked': False, 'stage_category': 'score_attack',
                 })
-            else:
-                rows.append({
-                    '_sn_sort': sn_sort,
-                    'id': sid, 'stage_number': None, 'name': '',
-                    'recommended_cp': None, 'terrain': '',
-                    'difficulty_code': '', 'difficulty_name': '', 'portrait': '',
-                    'content_locked': True,
-                })
+        else:
+            for sid, est in eternal_stage_map.items():
+                sn = est.get('stage_number', 0); sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
+                vis = eternal_stage_content_visible(sid, est)
+                if sq:
+                    searchable = (f"{sid} {sname} {sn}" if vis else str(sid)).lower()
+                    if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
+                sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
+                if df != 'all' and df != '' and diff['code'] != df: continue
+                duid = est.get('display_unit_id', '0'); portrait = ''
+                if vis and duid != '0':
+                    uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
+                sn_sort = safe_int(sn, 0)
+                if vis:
+                    rows.append({
+                        '_sn_sort': sn_sort,
+                        'id': sid, 'stage_number': sn, 'name': sname,
+                        'recommended_cp': sm.get('recommended_cp', 0),
+                        'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+                        'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+                        'content_locked': False, 'stage_category': 'eternal',
+                    })
+                else:
+                    rows.append({
+                        '_sn_sort': sn_sort,
+                        'id': sid, 'stage_number': None, 'name': '',
+                        'recommended_cp': None, 'terrain': '',
+                        'difficulty_code': '', 'difficulty_name': '', 'portrait': '',
+                        'content_locked': True, 'stage_category': 'eternal',
+                    })
         if sb == 'stage_number':
             if sd == 'asc': rows.sort(key=lambda x: (x['_sn_sort'], safe_int(x['id'], 0)))
             else: rows.sort(key=lambda x: (-x['_sn_sort'], safe_int(x['id'], 0)))
@@ -9802,10 +9900,26 @@ def list_stages():
 def get_stage(stage_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id)
-        ld = get_lang_data(lc); est = eternal_stage_map.get(stage_id)
-        if not est: return jsonify({'error': f'Stage {stage_id} not found'}), 404
-        vis = eternal_stage_content_visible(stage_id, est)
-        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_np2"
+        ld = get_lang_data(lc)
+        sas = map_event_score_attack_stage_map.get(stage_id) if map_event_score_attack_stage_map else None
+        est = eternal_stage_map.get(stage_id)
+        if not est and not sas: return jsonify({'error': f'Stage {stage_id} not found'}), 404
+        is_score_attack = bool(sas)
+        if is_score_attack:
+            boss_id = sas.get('boss_map_npc_id', '0')
+            nu = map_npc_unit_lookup.get(boss_id, []) if map_npc_unit_lookup else []
+            duid_syn = nu[0].get('unit_id', '0') if nu else '0'
+            mmeta = map_stage_meta_by_stage_id.get(stage_id, {}) if map_stage_meta_by_stage_id else {}
+            est = {
+                'stage_number': safe_int(sas.get('list_seq'), 0),
+                'stage_name_lang_id': sas.get('stage_name_lang_id', '0'),
+                'display_unit_id': duid_syn,
+                'stage_difficulty_type_index': safe_int(mmeta.get('stage_difficulty_type_index'), 1),
+            }
+            vis = True
+        else:
+            vis = eternal_stage_content_visible(stage_id, est)
+        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{'sa' if is_score_attack else 'er'}_np2"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -9818,7 +9932,7 @@ def get_stage(stage_id):
             set_cached_response(ck, result); return jsonify(convert_image_urls(result))
         sn = est.get('stage_number', 0)
         sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
-        diff = get_stage_difficulty(stage_id, lc)
+        diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc) if is_score_attack else get_stage_difficulty(stage_id, lc)
         sm = stage_map.get(stage_id, {}); duid = est.get('display_unit_id', '0'); portrait = ''
         if duid != '0':
             uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
@@ -9873,7 +9987,7 @@ def get_stage(stage_id):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
             pad = 2; w = max(w, max_x + 1 + pad); h = max(h, max_y + 1 + pad)
             md = build_map_grid(w, h, uom)
-        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc}
+        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': 'score_attack' if is_score_attack else 'eternal'}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
