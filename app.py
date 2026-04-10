@@ -29,6 +29,21 @@ except ImportError:
 
 app = Flask(__name__)
 
+# Bust cache when static/js/app.js changes (content-addressed tag, computed at import).
+def _app_js_bundle_version_tag():
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js', 'app.js')
+    try:
+        st = os.stat(p)
+        return hashlib.sha256(f'{st.st_mtime_ns}:{st.st_size}'.encode()).hexdigest()[:16]
+    except OSError:
+        return '0'
+
+
+APP_JS_VERSION = _app_js_bundle_version_tag()
+
+# Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
+INDEX_HTML_CACHE_CONTROL = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
+
 # Sessions (Latest Release password gate). Set FLASK_SECRET_KEY in production.
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'ggen-dev-secret-change-in-production')
 if os.environ.get('FLASK_SESSION_SECURE', '').lower() in ('1', 'true', 'yes'):
@@ -38,7 +53,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Long-lived browser cache for game images (WebP, etc.). Set STATIC_CACHE_MAX_AGE=0 to disable during asset work.
 _STATIC_CACHEABLE_EXT = frozenset(
-    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.eot')
+    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.eot', '.js')
 )
 _STATIC_CACHE_MAX_AGE = int(os.environ.get('STATIC_CACHE_MAX_AGE', '31536000') or '0')
 
@@ -5295,6 +5310,12 @@ for lang_code, paths in LANG_PATHS.items():
     LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
+# Filled by _build_browse_list_performance_caches() after stat helpers are defined.
+CHAR_BROWSE_LIST_ROW_CACHE = {}
+UNIT_BROWSE_LIST_ROW_CACHE = {}
+UNIT_MECHANISM_MIDS_CACHE = {}
+UNIT_WEAPON_DEBUFF_KEYS_CACHE = {}
+
 
 def build_unit_transform_partner_map():
     """Each main unit id maps to its single transform alt and vice versa (m_unit.MainUnitId)."""
@@ -6760,6 +6781,76 @@ def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
         totals[s] = sbv + math.floor(sbv * pct / 100) if sbv > 0 else 0
     return totals
 
+
+def _build_browse_list_performance_caches():
+    """Precompute list-row stats and unit filter unions so /api/characters and /api/units avoid O(n) heavy work per request."""
+    global CHAR_BROWSE_LIST_ROW_CACHE, UNIT_BROWSE_LIST_ROW_CACHE
+    global UNIT_MECHANISM_MIDS_CACHE, UNIT_WEAPON_DEBUFF_KEYS_CACHE
+    ldc = LANG_DATA.get(CALC_LANG) or LANG_DATA.get(DEFAULT_LANG) or {}
+    if not ldc:
+        CHAR_BROWSE_LIST_ROW_CACHE = {}
+        UNIT_BROWSE_LIST_ROW_CACHE = {}
+        UNIT_MECHANISM_MIDS_CACHE = {}
+        UNIT_WEAPON_DEBUFF_KEYS_CACHE = {}
+        print('Browse list perf caches: skipped (no calc lang data)')
+        return
+    t0 = time.perf_counter()
+    char_cache = {}
+    for cid, info in char_info_map.items():
+        raw = char_stat_map.get(cid, {})
+        ri = info.get('rarity', '1')
+        has_sp_char = int(str(ri)) <= 4
+        t = lambda s, r=raw: r.get(s, (0, 0, 0))
+        grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
+        sub = {}
+        for cond in (False, True):
+            if cond:
+                totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown)
+            else:
+                totals = compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
+            sub[('n', cond)] = (totals, grown)
+        if has_sp_char:
+            rv = lambda s, r=raw: r.get(s, (0, 0, 0))
+            grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
+            for cond in (False, True):
+                if cond:
+                    totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp)
+                else:
+                    totals = compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
+                sub[('sp', cond)] = (totals, grown_sp)
+        char_cache[cid] = sub
+    unit_cache = {}
+    for uid, info in unit_info_map.items():
+        raw = unit_stat_map.get(uid, {})
+        try:
+            fs_nc = compute_unit_stats_no_cond(uid, info, raw, ldc)
+        except Exception:
+            fs_nc = {s: 0 for s in UNIT_STAT_ORDER}
+        try:
+            lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
+        except Exception:
+            lb = None
+        unit_cache[uid] = {'nc': fs_nc, 'lb': lb}
+    mids = {uid: collect_unit_mechanism_mids(info, uid) for uid, info in unit_info_map.items()}
+    wd = {}
+    for lc, ld in LANG_DATA.items():
+        d2 = {}
+        for uid in unit_info_map:
+            try:
+                d2[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
+            except Exception:
+                d2[uid] = frozenset()
+        wd[lc] = d2
+    CHAR_BROWSE_LIST_ROW_CACHE = char_cache
+    UNIT_BROWSE_LIST_ROW_CACHE = unit_cache
+    UNIT_MECHANISM_MIDS_CACHE = mids
+    UNIT_WEAPON_DEBUFF_KEYS_CACHE = wd
+    print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
+
+
+_build_browse_list_performance_caches()
+
+
 def calculate_npc_character_self_bonus_pct(abilities):
     bp = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
     if not abilities: return bp
@@ -7117,10 +7208,14 @@ def _serve_index():
         'index.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=APP_JS_VERSION,
     ))
-    r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    r.headers['Pragma'] = 'no-cache'
-    r.headers['Expires'] = '0'
+    if INDEX_HTML_CACHE_CONTROL:
+        r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
+    else:
+        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        r.headers['Pragma'] = 'no-cache'
+        r.headers['Expires'] = '0'
     return r
 
 @app.route('/')
@@ -8791,7 +8886,7 @@ def list_characters():
     skill_ck = ability_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl30_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -8875,26 +8970,36 @@ def list_characters():
                 ).strip().lower()
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
-        raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
         has_sp_char = int(str(ri)) <= 4
-        if sp_list and has_sp_char:
-            rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
-            totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp) if cond_list else compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
-            base_src = grown_sp
+        cr = CHAR_BROWSE_LIST_ROW_CACHE.get(cid)
+        if cr:
+            if sp_list and has_sp_char:
+                totals, base_src = cr[('sp', cond_list)]
+            else:
+                totals, base_src = cr[('n', cond_list)]
         else:
-            totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown) if cond_list else compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
-            base_src = grown
+            raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
+            if sp_list and has_sp_char:
+                rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
+                totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp) if cond_list else compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
+                base_src = grown_sp
+            else:
+                totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown) if cond_list else compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
+                base_src = grown
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
-        if grid_skills:
-            has_sp_char = int(str(ri)) <= 4
-            row['grid_skills'] = collect_character_grid_skills(cid, ld, use_sp=bool(sp_list and has_sp_char))
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
+    if grid_skills:
+        for row in pr:
+            _cid = row['id']
+            _ri = row.get('rarity_id', '1')
+            _hsp = int(str(_ri)) <= 4
+            row['grid_skills'] = collect_character_grid_skills(_cid, ld, use_sp=bool(sp_list and _hsp))
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
@@ -8958,7 +9063,7 @@ def list_units():
     _pp_cap = 600 if tb_boost else 100
     pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
-    ck = f"ul39_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul40_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -9062,29 +9167,40 @@ def list_units():
             ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
-        if uid not in _debuff_memo:
-            _debuff_memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
-        _debuff_keys_union |= set(_debuff_memo[uid])
+        wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
+        if wmap is not None and uid in wmap:
+            dk = wmap[uid]
+        else:
+            dk = collect_unit_weapon_debuff_keys(uid, ld, lc)
+        _debuff_memo[uid] = dk
+        _debuff_keys_union |= set(dk)
         if weapon_debuff_filter:
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
                 continue
-        mechanism_union |= set(collect_unit_mechanism_mids(info, uid))
+        mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, collect_unit_mechanism_mids(info, uid)))
         if mechanism_filter:
             if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid):
                 continue
-        raw = unit_stat_map.get(uid, {})
-        if stat_mode == 'normal' and not cond_list:
-            fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
+        ue = UNIT_BROWSE_LIST_ROW_CACHE.get(uid)
+        if ue:
+            if stat_mode == 'normal' and not cond_list:
+                fs = ue['nc']
+            else:
+                lb = ue['lb']
+                sm = stat_mode if stat_mode != 'normal' else 'normal'
+                fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else ue['nc']
         else:
-            lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
-            sm = stat_mode if stat_mode != 'normal' else 'normal'
-            fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
+            raw = unit_stat_map.get(uid, {})
+            if stat_mode == 'normal' and not cond_list:
+                fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
+            else:
+                lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
+                sm = stat_mode if stat_mode != 'normal' else 'normal'
+                fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
-        if grid_skills_u:
-            urow['grid_abilities'] = collect_unit_grid_abilities(uid, ld, ldc, lc, stat_mode)
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
@@ -9110,6 +9226,10 @@ def list_units():
         rows = sort_rows(rows, sb, sd, {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'})
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
+    if grid_skills_u:
+        for urow in pr:
+            _uid = urow['id']
+            urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(k for k in _debuff_keys_union if k in UNIT_WEAPON_DEBUFF_FILTER_KEYS)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows}
