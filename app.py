@@ -427,6 +427,11 @@ def normalize_id(value, default='0', debug_context=None):
         elif isinstance(value, str):
             value = value.strip()
             if value == '' or value.lower() == 'none': return default
+            # Digit-only strings: parse with int() so language IDs > 2^53 stay exact (float() rounds).
+            if value.isdigit():
+                return str(int(value))
+            if value.startswith('-') and value[1:].isdigit():
+                return str(int(value))
             try: return str(int(float(value)))
             except ValueError: return value
         return str(value)
@@ -9833,7 +9838,7 @@ def list_stages():
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
         cat = (request.args.get('category') or 'eternal').strip().lower()
         if cat not in ('eternal', 'score_attack'): cat = 'eternal'
-        ck = f"stages6_{cat}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages7_{cat}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -9930,7 +9935,7 @@ def get_stage(stage_id):
             vis = True
         else:
             vis = eternal_stage_content_visible(stage_id, est)
-        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{'sa' if is_score_attack else 'er'}_np3"
+        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{'sa' if is_score_attack else 'er'}_np4"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
