@@ -391,7 +391,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-icon-wrap{width:50px;height:50px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:visible;background:transparent}.ssp-weapon-portrait{width:50px;height:50px;border-radius:50%;background:transparent;border:none;object-fit:contain;z-index:1;filter:brightness(1.25) saturate(1.5)}.ssp-weapon-badge,.ssp-enhance-badge{position:absolute;top:-8px;left:-8px;width:22px;z-index:4;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))}.ssp-enhance-badge{z-index:6}.preemptive-badge{position:absolute;top:-8px;right:-8px;width:22px;height:22px;z-index:5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))}.weapon-icon-img{width:100%;height:100%;object-fit:contain;border-radius:50%;background:transparent;filter:brightness(1.25) saturate(1.5)}.weapon-icon-fallback{width:50px;height:50px;border-radius:50%;background:transparent;border:none;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;letter-spacing:.6px;color:var(--accent-blue);text-transform:uppercase}.weapon-icon-mask{width:100%;height:100%;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;opacity:1;filter:brightness(1.25) saturate(1.5) contrast(1.5)}.weapon-icon-mask.color-green{background-color:#4ade80}.weapon-icon-mask.color-yellow{background-color:#ffd700}.weapon-icon-mask.color-orange{background-color:#ff8c00}.weapon-icon-mask.color-purple{background-color:#c084fc;filter:brightness(1.25) saturate(1.5) contrast(1.5) brightness(2.2)}.weapon-overlay{position:absolute;top:-6px;right:-6px;width:24px;height:24px;opacity:1!important;z-index:3;filter:brightness(1.25) saturate(1.5)}.weapon-icon-wrap-no-vivid .weapon-icon-img,.weapon-icon-wrap-no-vivid .weapon-overlay,.weapon-icon-wrap-no-vivid .weapon-icon-fallback,.weapon-icon-wrap-no-vivid .ssp-weapon-portrait{filter:none}
 .weapon-name-area{flex:1;min-width:0}.weapon-name-text{font-size:18px;font-weight:700;color:var(--text-primary)}.weapon-attack-types{display:flex;gap:4px;margin-top:4px;align-items:center}.weapon-attack-type-icon{width:24px;height:24px;object-fit:contain;background:transparent;border:none;display:block;vertical-align:middle;filter:brightness(1.25) saturate(1.5)}
 .weapon-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1px;background:rgba(0,0,0,.2)}.weapon-stat-item{padding:10px 8px;text-align:center}.weapon-stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}.weapon-stat-value{font-size:18px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}.weapon-stat-value.highlight{color:var(--accent-blue)}.weapon-stat-value.weapon-acc-boost{color:#5d9cec!important;font-weight:800;text-shadow:0 0 10px rgba(93,156,236,.45)}
-.weapon-card-body{padding:14px 18px}.weapon-trait-item{display:flex;flex-direction:column;gap:4px;padding:0;font-size:15px;color:var(--text-secondary)}.weapon-trait-line{line-height:1.45}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
+.weapon-card-body{padding:14px 18px}.weapon-trait-item{display:flex;flex-direction:column;gap:4px;padding:0;font-size:15px;color:var(--text-secondary)}.weapon-trait-line{line-height:1.45}.dc-wpn-trait-line--pow{padding:3px 6px;margin:2px 0;border-radius:4px;border-left:3px solid rgba(74,222,128,.85);background:rgba(74,222,128,.1);color:var(--text-primary);font-weight:600}.weapon-restrictions-list{margin-top:8px}.weapon-restriction-item{font-size:14px;color:var(--accent-orange);font-weight:500;padding:3px 0;display:flex;align-items:center;gap:6px}.weapon-restriction-item::before{content:'⚠';font-size:12px}
 .map-grid-container{margin-top:12px;display:none;justify-content:center;align-items:flex-start;padding:10px 12px;background:rgba(0,0,0,.3);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.05);overflow:auto;max-height:min(90vh,820px);scroll-behavior:smooth}.map-grid-container.active{display:flex}
 .map-grid-container:has(.weapon-map-grid-wrap[data-map-span="s"]){max-height:min(93vh,920px);padding:12px 14px}
 .map-grid-container:has(.weapon-map-grid-wrap[data-map-span="l"]){max-height:min(92vh,900px);padding:8px 10px}
@@ -1652,7 +1652,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 <div class="dc-damage-factors-body">
 <ul class="dc-damage-factors-list">
 <li><span class="dc-tip" title="Attacker unit ATK vs defender unit DEF (after DEF debuff), pilot offensive stat vs pilot DEF, and sigmoid terms — scaled by weapon power.">Attacker &amp; defender stats</span></li>
-<li><span class="dc-tip" title="Computed from weapon base power × (1 + distance-scaling / Custom Core / HP trait % only). Distance traits include EN lines like &quot;closer you are to the enemy&quot; and &quot;farther you are from the enemy&quot; (max % applied automatically). Critical Damage Up from weapon traits is never applied here — it goes to Critical Damage Up %. Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
+<li><span class="dc-tip" title="Computed from weapon base power × (1 + total trait % / 100). Traits include distance (closer/farther), remaining HP, MP at battle start, and — only when unit stat mode is SSP — Custom Core &quot;Maximum Up&quot; stacked onto the matching scaling line (max % each). Critical Damage Up from weapon traits is not applied here; it goes to Critical Damage Up %. Overridden if Final weapon power is set.">Weapon power</span> (and optional <span class="dc-tip" title="When set, replaces computed weapon power entirely.">Final weapon power</span>)</li>
 <li><span class="dc-tip" title="Normal / High / Max / Supercharged — adds to the ⑨ damage pool and changes crit multiplier.">Vigor level</span></li>
 <li><span class="dc-tip" title="Halved applies a 50% terrain penalty to final damage (before defend).">Terrain penalty</span></li>
 <li><span class="dc-tip" title="Your buffs: Damage Dealt Up % and Critical Damage Up % (crit only). Pilot passives may auto-fill these when applicable.">Damage Dealt Up %</span> · <span class="dc-tip" title="Added only to critical hit damage line.">Critical Damage Up %</span> · <span class="dc-tip" title="EX ability squad synergy: applies to the MS Attack growth line only (not MS ability Attack bonuses). Order on Attack: option-part % on growth → EX squad % → supporter leader % on the EX-boosted growth line (then pilot pair / counter). Up to 20%. Shown under Unit Attack with a green line.">EX squad ATK %</span> · <span class="dc-tip" title="Some EX traits increase MS Attack when countering. Applies to unit Attack in combat (not pilot Ranged/Melee). Shown when the pilot has a paired unit in the database; requires pilot EX ability (toggle) on.">Own ATK when countering</span></li>
@@ -1742,7 +1742,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 <button class="dc-ctrl-btn" data-mp="super" onclick="setDcMp('super')">Supercharged</button>
 </div></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Halved: final damage is multiplied by (1 − penalty). Used for e.g. underwater vs land weapons.">Terrain Penalty</span></span><div class="dc-ctrl-toggle"><button class="dc-ctrl-btn active" id="dcTerrainNormal" onclick="setDcTerrain('normal')">Normal</button><button class="dc-ctrl-btn" id="dcTerrainHalved" onclick="setDcTerrain('halved')">Halved (50%)</button></div></div>
-<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and distance/HP traits (leave 0 or empty to use the value from the weapon).">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and all parsed weapon traits (distance / HP / MP / SSP Custom Core when SSP mode is on). Leave 0 or empty to use the value computed from the weapon.">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseEffectiveLine" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcExSquadAtkWrap"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
@@ -2205,10 +2205,10 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'エターナルロード',tab_mod:'改造パーツ',tab_latest:'最新登場',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',er_stage_lock_hint:'パスワードを入力するとステージの詳細（マップ・NPC・出撃制限など）を表示します。',er_stage_unlock_btn:'解除',er_stage_pw_wrong:'パスワードが違います。',er_stage_locked_badge:'ロック',er_stage_lock_wait:'開催開始時刻になると自動で解放されます。',er_stage_redacted_row:'非公開',er_stage_redacted_title:'非公開ステージ',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',conditional_passive_abbr:'CP',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_pick_unit:'ユニット選択',dc_defender_status:'防御側ステータス',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',tb_stats_hint_squad:' Squad tag passives (ATK stack or ATK+DEF) are applied from your formation when tags match.'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',tb_stats_hint_squad:' タグが一致する分隊被動（攻撃の積み上げまたは攻防）は編成から自動反映されます。'});
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',tb_stats_hint_squad:' Squad tag passives (ATK stack or ATK+DEF) are applied from your formation when tags match.',dc_wpn_trait_effects:'Weapon power from effects',dc_wpn_trait_dist:'Distance scaling',dc_wpn_trait_custom_core:'Custom Core (SSP)',dc_wpn_trait_hp:'HP scaling',dc_wpn_trait_mp:'MP / battle-start scaling',dc_wpn_trait_max_applied:'max, applied automatically in damage',dc_wpn_trait_ssp_hint:'Turn on SSP (unit mode) to apply Custom Core weapon effect lines.',dc_wpn_trait_lines:'Trait text',dc_wpn_trait_override_note:'Final weapon power override is on; breakdown below is the auto trait math (not used for damage).'});
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_max_applied:'已套用上限（傷害計算）',dc_wpn_trait_ssp_hint:'請在上方將機體模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'效果原文',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（傷害計算未使用）。'});
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'霸主聯賽補正 +50%',tb_grand_offensive:'大攻勢補正 +100%',dc_toggle_master_league:'霸主聯賽補正 +50%',dc_toggle_grand_offensive:'大攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_max_applied:'已套用上限（傷害計算）',dc_wpn_trait_ssp_hint:'請在上方將機體模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'效果原文',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（傷害計算未使用）。'});
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',tb_stats_hint_squad:' タグが一致する分隊被動（攻撃の積み上げまたは攻防）は編成から自動反映されます。',dc_wpn_trait_effects:'武装威力（効果による加算）',dc_wpn_trait_dist:'距離による加算',dc_wpn_trait_custom_core:'カスタムコア（SSP）',dc_wpn_trait_hp:'残りHPによる加算',dc_wpn_trait_mp:'MP／戦闘開始時による加算',dc_wpn_trait_max_applied:'上限まで自動反映（ダメージ計算）',dc_wpn_trait_ssp_hint:'カスタムコアの武装効果を反映するには、上の機体モードをSSPにしてください。',dc_wpn_trait_lines:'効果テキスト',dc_wpn_trait_override_note:'最終武装威力を上書き中です。以下は自動計算の特効内訳（ダメージには反映されません）。'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -4071,9 +4071,8 @@ const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0};
 const raw=lvData.power||0;
 const wt=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
 const effDist=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-const distPct=effDist;
-const hpPct=Math.min(wt.hpPowerMax||0,S.dc._wpnTraitHpPow|0);
-return Math.ceil(raw*(1+(distPct+hpPct)/100));
+const scalePct=(wt.hpPowerMax||0)+(wt.mpPowerMax||0);
+return Math.ceil(raw*(1+(effDist+scalePct)/100));
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -4192,7 +4191,7 @@ S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurn
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
 _dcSyncSquadCondEffectiveFromState();
-if(S.dc.atkCharData)S.dc._pilotSkills=S.dc.atkCharData.skills||[];
+if(S.dc.atkCharData)S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
 }
 function _dcSnapActiveAttackerToSlot(){
 if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))S.dc.atkSlots=Array.from({length:DC_ATK_SLOT_COUNT},()=>_dcCreateEmptyAttackerSlot());
@@ -7081,7 +7080,15 @@ if(keepBuff)main.classList.add('dc-stat-val--buffed');else main.classList.remove
 }
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual){const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcCharStatMode(mode){S.dc.charStatMode=mode;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcCharStatMode(mode){
+S.dc.charStatMode=mode;
+if(S.dc.atkCharData&&S.dc.atkCharData.skills&&!S.dc.atkCharData._manual){
+const vis=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
+const visIds=new Set(vis.map(s=>String(s.id)));
+if(S.dc._activeSkills)Object.keys(S.dc._activeSkills).forEach(k=>{if(!visIds.has(k))delete S.dc._activeSkills[k]});
+}
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -7116,7 +7123,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcUpdateExSquadAtkGroupVisibility();
 return;
 }
-S.dc._pilotSkills=cd.skills||[];
+S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(cd)||[];
 const stats=_dcGetCharStats();
 const thum=cd.thum||cd.portrait||'';
 const changeBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
@@ -7276,6 +7283,26 @@ ud.abilities.forEach(ab=>parseFromResolved(_dcResolveUnitAbilityForMode(ab),'uni
 }
 return b;
 }
+/** Skills shown in DC: normal rows always; SP-only rows only when pilot SP mode is on and the id is not already used as replaced_by_sp_id (avoid duplicate checkbox). */
+function _dcPilotSkillsVisibleForDc(cd){
+if(!cd||!Array.isArray(cd.skills)||!cd.skills.length)return[];
+const spOn=(S.dc.charStatMode||'normal')==='sp';
+const hasSp=cd.has_sp!==undefined?!!cd.has_sp:(parseInt(String(cd.rarity_id||'5'),10)<=4);
+const replaced=new Set();
+cd.skills.forEach(sk=>{
+const rid=sk&&sk.replaced_by_sp_id;
+if(rid!=null&&String(rid)!==''&&String(rid)!=='0')replaced.add(String(rid));
+});
+return cd.skills.filter(sk=>{
+if(!sk)return false;
+if(sk.is_sp){
+if(!hasSp||!spOn)return false;
+if(replaced.has(String(sk.id)))return false;
+return true;
+}
+return true;
+});
+}
 function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
@@ -7343,10 +7370,12 @@ onDcParamChange();
 }
 function _dcRenderPilotSkills(area,cd){
 if(!cd||!cd.skills||!cd.skills.length)return;
-S.dc._pilotSkills=cd.skills;S.dc._activeSkills=S.dc._activeSkills||{};
+const skillsList=_dcPilotSkillsVisibleForDc(cd)||[];
+S.dc._pilotSkills=skillsList;
+if(!skillsList.length)return;
+S.dc._activeSkills=S.dc._activeSkills||{};
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Skills</div><div style="font-size:12px;line-height:1.6">`;
-cd.skills.forEach((sk,i)=>{
-if(sk.is_sp)return;
+skillsList.forEach((sk,i)=>{
 const dsk=_dcResolveSkillForDcMode(sk);
 const desc=((dsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ')||dsk.desc||'').replace(/\n/g,' ');
 const togId=`dcSkillChk_${i}`;
@@ -7578,9 +7607,44 @@ base.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 }
 }
 
+function _dcWeaponPowLvToMaxPct(lv){
+const i=(parseInt(lv,10)||0)-1;
+const arr=[5,7,10,12,15,17,20,22,25];
+return(i>=0&&i<arr.length)?arr[i]:0;
+}
+function _dcDcIncludeSspWeaponEffects(){
+return(S.dc&&S.dc.unitStatMode||'normal')==='ssp';
+}
+function _dcIsCustomCoreTraitLine(txt){
+return /\[Custom\s*Core/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt);
+}
+function _dcExtractCustomCoreMaxUpPct(txt){
+if(!txt)return 0;
+const s=String(txt);
+let m=s.match(/Maximum\s+Up\s+(\d+)%/i);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/\(\s*&\s*Maximum\s+Up\s+(\d+)%\s*\)/i);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/さらに最大値(\d+)%上昇/);
+if(m)return parseInt(m[1],10)||0;
+m=s.match(/且最大值提升(\d+)%/);
+if(m)return parseInt(m[1],10)||0;
+return 0;
+}
+function _dcApplySspCorePowBonus(traits,bonus){
+const x=bonus|0;if(!x)return;
+if((traits.mpPowerMax|0)>0)traits.mpPowerMax=(traits.mpPowerMax|0)+x;
+else if((traits.hpPowerMax|0)>0)traits.hpPowerMax=(traits.hpPowerMax|0)+x;
+else traits.distCoreMax=(traits.distCoreMax|0)+x;
+}
 function _dcParseWeaponTraits(wpn,lvIdx){
-const traits={distPowerMax:0,hpPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false};
+const traits={distPowerMax:0,hpPowerMax:0,mpPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false,powTraitHitSet:null};
 if(!wpn||!wpn.levels)return traits;
+const hit=new Set();
+const noteHit=(raw)=>{if(raw!=null&&raw!=='')hit.add(String(raw).trim())};
+const includeSsp=_dcDcIncludeSspWeaponEffects();
+const zh=_dcIsZhCalcLang();
+const isJa=(S.lang||'EN').toUpperCase()==='JA';
 const allTraits=[];
 const idx=lvIdx!==undefined&&lvIdx>=0?lvIdx:-1;
 if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
@@ -7588,47 +7652,64 @@ if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
 }else{
 wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 }
-(wpn.ssp_traits||[]).forEach(t=>allTraits.push(t));
+if(includeSsp)(wpn.ssp_traits||[]).forEach(t=>allTraits.push(t));
 _dcMergeBaseWeaponTraitsForSsp(wpn,idx,allTraits);
-allTraits.forEach(t=>{
-const txt=String(t).replace(/\n/g,' ');
+let sspCoreBonus=0;
+if(includeSsp){
+(wpn.ssp_traits||[]).forEach(raw=>{
+const c=_dcExtractCustomCoreMaxUpPct(String(raw||''));
+if(c>sspCoreBonus)sspCoreBonus=c;
+if(c>0)noteHit(raw);
+});
+}
+allTraits.forEach(raw=>{
+const txt=String(raw).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt)||txt.includes('絕對命中'))traits.absoluteHit=true;
 if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt)||txt.includes('武裝屬性損傷減輕無效'))traits.dmgReductionNull=true;
 let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
 if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
-if(!m&&_dcIsZhCalcLang())m=txt.match(/自身爆擊損傷提升(\d+)%/);
+if(!m&&zh)m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));return}
-// EN m_weapon_trait: "The closer you are to the enemy..." and "The farther you are from the enemy..." (long-range mirror). Sim applies max % like other distance traits.
 m=txt.match(/(?:closer\s+you\s+are|(?:farther|further)\s+you\s+are).*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
-if(!m&&_dcIsZhCalcLang())m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
-if(m)traits.distPowerMax=Math.max(traits.distPowerMax,parseInt(m[1],10));
+if(!m&&zh)m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
+if(!m&&isJa){m=txt.match(/敵から(?:近い|遠い)ほど武装POWERが上昇[（(]最大(\d+)%上昇[）)]/);}
+if(m){const p=parseInt(m[1],10)||0;traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}
 m=txt.match(/(?:lower|higher)\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
-if(!m&&_dcIsZhCalcLang())m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
-if(m)traits.hpPowerMax=Math.max(traits.hpPowerMax,parseInt(m[1],10));
-if(/\[Custom\s+Core/i.test(txt)||/\bCustom\s+Core\s+Effect\b/i.test(txt)){
-m=txt.match(/Maximum\s+Up\s+(\d+)%/i);
-if(m)traits.distCoreMax=Math.max(traits.distCoreMax,parseInt(m[1],10));
-}
+if(!m&&zh)m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
+if(!m&&isJa)m=txt.match(/自身の残HPが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）/);
+if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}
+m=txt.match(/(?:With\s+More|With\s+Less)\s+Remaining\s+HP,?\s*Higher\s+Weapon\s+Power\s*LV\s*(\d+)/i);
+if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}
+if(zh){m=txt.match(/剩餘HP越(?:高|低)武裝POWER提升\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}}
+if(isJa){m=txt.match(/残HP(?:多い|少ない)ほど武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}}
+m=txt.match(/the\s+higher\s+your\s+MP\s+is,?\s*the\s+greater\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}
+if(zh){m=txt.match(/(?:戰鬥開始時，)?自身MP越高，武裝POWER越為提升（最高提升(\d+)%）/);if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
+if(isJa){m=txt.match(/戦闘開始時、自身のMPが多いほど武装POWERが上昇（最大(\d+)%上昇）/);if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
+m=txt.match(/Scaling\s+Weapon\s+Power\s+\(High\s+(?:Max\s+)?MP\)(?:\s*LV\s*(\d+))?/i);
+if(m){const p=m[1]?_dcWeaponPowLvToMaxPct(m[1]):0;if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
+if(zh){m=txt.match(/MP越高武裝POWER提升\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}}
+if(isJa){m=txt.match(/MP高いほど武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}}
 });
+_dcApplySspCorePowBonus(traits,sspCoreBonus);
+traits.powTraitHitSet=hit;
 return traits;
 }
-/** Matches calculateDamage() weapon power: ceil(raw * (1 + (dist+hp trait %)/100)). */
-function _dcComputedWeaponPowerForLevel(wpn,lvIdx,hpTraitPow){
+/** Matches calculateDamage(): ceil(raw * (1 + (distance/core + HP + MP scaling %) / 100)). Max HP/MP scaling applied automatically; Custom Core power only when SSP unit mode is on. */
+function _dcComputedWeaponPowerForLevel(wpn,lvIdx){
 const C=Math.ceil;
 const lvData=(wpn.levels&&wpn.levels[lvIdx])||{power:0};
 const rawWpnPower=lvData.power||0;
-const wtTraits=_dcParseWeaponTraits(wpn,lvIdx);
-const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
-const traitHpPow=Math.min(wtTraits.hpPowerMax||0,hpTraitPow|0);
-const traitPowTotal=traitDistPow+traitHpPow;
-return C(rawWpnPower*(1+traitPowTotal/100));
+const wt=_dcParseWeaponTraits(wpn,lvIdx);
+const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+const traitScaling=(wt.hpPowerMax||0)+(wt.mpPowerMax||0);
+return C(rawWpnPower*(1+(traitDistPow+traitScaling)/100));
 }
 function _dcBestLevelIndexForWeapon(wpn){
 if(!wpn||!wpn.levels||!wpn.levels.length)return 0;
-const hp=0;
 let bestPow=-1,bestJ=0,bestRaw=-1;
 wpn.levels.forEach((lv,j)=>{
-const p=_dcComputedWeaponPowerForLevel(wpn,j,hp);
+const p=_dcComputedWeaponPowerForLevel(wpn,j);
 const raw=lv.power||0;
 if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&j>bestJ)))){
 bestPow=p;bestJ=j;bestRaw=raw;
@@ -7639,12 +7720,11 @@ return bestJ;
 function _dcPickBestWeaponIndices(ud){
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length)return{wpnIdx:0,wpnLv:0};
-const hp=0;
 let bestPow=-1,bestI=0,bestJ=0,bestRaw=-1;
 wpns.forEach((w,i)=>{
 if(!w.levels||!w.levels.length)return;
 w.levels.forEach((lv,j)=>{
-const p=_dcComputedWeaponPowerForLevel(w,j,hp);
+const p=_dcComputedWeaponPowerForLevel(w,j);
 const raw=lv.power||0;
 if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&j>bestJ)))){
 bestPow=p;bestI=i;bestJ=j;bestRaw=raw;
@@ -7685,16 +7765,29 @@ h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(ld
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
-const effDistMax=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+const distBase=wt.distPowerMax|0;
+const effDistMax=Math.min(100,distBase+(wt.distCoreMax|0));
+const coreExtra=Math.max(0,effDistMax-distBase);
 S.dc._wpnTraitDistPow=effDistMax;
-if(effDistMax||wt.hpPowerMax||wt.absoluteHit||wt.dmgReductionNull){
-h+=`<div style="margin-top:6px;font-size:11px;line-height:1.6">`;
+const powHit=wt.powTraitHitSet;
+const hasPowScaling=effDistMax>0||(wt.hpPowerMax|0)>0||(wt.mpPowerMax|0)>0;
+if(hasPowScaling||wt.absoluteHit||wt.dmgReductionNull||(ld.traits&&ld.traits.length)||((cw.ssp_traits||[]).length)){
+h+=`<div style="margin-top:8px;font-size:11px;line-height:1.55">`;
 if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
 if(wt.dmgReductionNull)h+=`<div style="color:#4ade80">✓ Attribute Damage Reduction Null</div>`;
-if(effDistMax)h+=`<div style="color:var(--text-muted)">Distance (closer or farther) / Custom Core weapon power: +${effDistMax}% (max, applied automatically)</div>`;
-if(wt.hpPowerMax){
-const cur=S.dc._wpnTraitHpPow||0;
-h+=`<div class="dc-ctrl-group" style="margin:4px 0"><span class="dc-ctrl-label" style="font-size:11px">HP-based Power Bonus (0-${wt.hpPowerMax}%)</span><input type="number" class="dc-input-sm" id="dcWpnTraitHpPow" min="0" max="${wt.hpPowerMax}" value="${cur}" onchange="_dcApplyWpnTraitPow()"></div>`;
+if(hasPowScaling){
+h+=`<div style="font-weight:700;color:var(--text-secondary);margin:4px 0 2px">${esc(t('dc_wpn_trait_effects'))}</div>`;
+if(distBase)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_dist'))}: +${distBase}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(coreExtra)h+=`<div style="color:#c084fc">${esc(t('dc_wpn_trait_custom_core'))}: +${coreExtra}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.hpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_hp'))}: +${wt.hpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: +${wt.mpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if((cw.ssp_traits||[]).length&&!_dcDcIncludeSspWeaponEffects())h+=`<div style="color:#eab308;margin-top:4px">${esc(t('dc_wpn_trait_ssp_hint'))}</div>`;
+}
+const trLines=(arr,prefix)=>{(arr||[]).forEach(tr=>{const s=String(tr||'').trim();if(!s)return;const hi=powHit&&powHit.has(s);const cls=hi?'dc-wpn-trait-line dc-wpn-trait-line--pow':'dc-wpn-trait-line';const pre=prefix?`<span style="display:inline-block;margin-right:6px;padding:0 5px;border-radius:3px;background:rgba(192,132,252,.25);font-size:9px;font-weight:800;color:#e9d5ff">SSP</span>`:'';h+=`<div class="${cls}">${pre}${esc(s)}</div>`;});};
+if((ld.traits&&ld.traits.length)||(_dcDcIncludeSspWeaponEffects()&&(cw.ssp_traits||[]).length)){
+h+=`<div style="font-weight:700;color:var(--text-secondary);margin:8px 0 2px">${esc(t('dc_wpn_trait_lines'))}</div>`;
+trLines(ld.traits,false);
+if(_dcDcIncludeSspWeaponEffects())trLines(cw.ssp_traits,true);
 }
 h+=`</div>`;
 }
@@ -7708,10 +7801,8 @@ if(ci){ci.value=String(S.dc._wpnCritDmgUp|0);onDcParamChange();}
 }
 }
 function _dcApplyWpnTraitPow(){
-const hEl=document.getElementById('dcWpnTraitHpPow');
-S.dc._wpnTraitHpPow=hEl?parseInt(hEl.value)||0:0;
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
-if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);const mx=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));S.dc._wpnTraitDistPow=mx}
+if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);S.dc._wpnTraitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0))}
 onDcParamChange();
 }
 
@@ -8689,10 +8780,12 @@ unitDef=_dcApplyDefDebuffToUnitDef(unitDef,defDebuffPct);
 const rawWpnPower=lvData.power;
 const wtTraits=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
 const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
-const traitHpPow=Math.min(wtTraits.hpPowerMax||0,S.dc._wpnTraitHpPow|0);
-const traitPowTotal=traitDistPow+traitHpPow;
+const traitHpPow=wtTraits.hpPowerMax|0;
+const traitMpPow=wtTraits.mpPowerMax|0;
+const traitPowTotal=traitDistPow+traitHpPow+traitMpPow;
 const computedWpnPow=C(rawWpnPower*(1+traitPowTotal/100));
 const finalOverride=S.dc.finalWpnPow||0;
+const finalWpnPowOverride=finalOverride>0;
 const weaponPower=finalOverride>0?finalOverride:computedWpnPow;
 const combatWeaponPower=_dcCombatWeaponPowerNominal(weaponPower,defDebuffPct,finalOverride>0);
 
@@ -8756,7 +8849,7 @@ return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult};
 }
@@ -8858,6 +8951,33 @@ if(on)_dcRenderBattleStatsPanel();
 function _dcBattleStatsRow(lab,val){
 return`<div class="dc-battle-stats-row"><span>${esc(lab)}</span><span>${val}</span></div>`;
 }
+function _dcHasWeaponTraitBonus(r){
+if(!r)return false;
+return((r.traitWpnDistBasePct|0)>0||(r.traitWpnCoreBonusPct|0)>0||(r.traitHpPow|0)>0||(r.traitMpPow|0)>0);
+}
+function _dcAppendWeaponTraitBattleStats(h,r){
+if(!_dcHasWeaponTraitBonus(r))return h;
+const tot=(r.traitDistPow|0)+(r.traitHpPow|0)+(r.traitMpPow|0);
+h+=_dcBattleStatsRow(t('dc_wpn_trait_effects'),`+${tot}% (${esc(t('dc_wpn_trait_max_applied'))})`);
+if(r.finalWpnPowOverride)h+=`<div class="dc-battle-stats-row" style="grid-column:1/-1;font-size:11px;color:var(--text-muted)">${esc(t('dc_wpn_trait_override_note'))}</div>`;
+if(r.traitWpnDistBasePct)h+=_dcBattleStatsRow(t('dc_wpn_trait_dist'),`+${r.traitWpnDistBasePct|0}%`);
+if(r.traitWpnCoreBonusPct)h+=_dcBattleStatsRow(t('dc_wpn_trait_custom_core'),`+${r.traitWpnCoreBonusPct|0}%`);
+if(r.traitHpPow)h+=_dcBattleStatsRow(t('dc_wpn_trait_hp'),`+${r.traitHpPow|0}%`);
+if(r.traitMpPow)h+=_dcBattleStatsRow(t('dc_wpn_trait_mp'),`+${r.traitMpPow|0}%`);
+return h;
+}
+function _dcCopyLinesWeaponTraitBonus(rr){
+if(!_dcHasWeaponTraitBonus(rr))return[];
+const tot=(rr.traitDistPow|0)+(rr.traitHpPow|0)+(rr.traitMpPow|0);
+const o=[];
+o.push(`${t('dc_wpn_trait_effects')}: +${tot}% (${t('dc_wpn_trait_max_applied')})`);
+if(rr.finalWpnPowOverride)o.push(t('dc_wpn_trait_override_note'));
+if(rr.traitWpnDistBasePct)o.push(`  ${t('dc_wpn_trait_dist')}: +${rr.traitWpnDistBasePct|0}%`);
+if(rr.traitWpnCoreBonusPct)o.push(`  ${t('dc_wpn_trait_custom_core')}: +${rr.traitWpnCoreBonusPct|0}%`);
+if(rr.traitHpPow)o.push(`  ${t('dc_wpn_trait_hp')}: +${rr.traitHpPow|0}%`);
+if(rr.traitMpPow)o.push(`  ${t('dc_wpn_trait_mp')}: +${rr.traitMpPow|0}%`);
+return o;
+}
 function _dcBattleStatsBlock(lab,innerHtml){
 return`<div class="dc-battle-stats-block"><div class="dc-battle-stats-block-label">${esc(lab)}</div><div class="dc-battle-stats-block-body">${innerHtml}</div></div>`;
 }
@@ -8934,6 +9054,7 @@ h+=_dcBattleStatsRow('MS ATK',fmtN(r.unitAtk));
 h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk));
 h+=_dcBattleStatsRow('Weapon',wName);
 h+=_dcBattleStatsRow('Weapon Power',fmtN(r.weaponPower));
+h=_dcAppendWeaponTraitBattleStats(h,r);
 h+=_dcBattleStatsRow('Damage Dealt % Total',`${dmgPool}% (${r.userDmgIncreasePct|0}% field + ${r.vigorDmgBonusPct|0}% vigor)`);
 h+=_dcBattleStatsRow('Crit rate (weapon %)',String(r.critical)+'%');
 h+=_dcBattleStatsRow('Vigor state',esc(vigLbl));
@@ -8974,6 +9095,7 @@ lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
+_dcCopyLinesWeaponTraitBonus(rr).forEach(x=>lines.push(x));
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
@@ -8994,6 +9116,7 @@ lines.push(`Attacker: ${uName} + ${cName}`);
 lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`Critical Damage: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
+_dcCopyLinesWeaponTraitBonus(r).forEach(x=>lines.push(x));
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
