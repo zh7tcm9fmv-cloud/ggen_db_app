@@ -1,0 +1,19 @@
+---
+description: Damage Simulator (calculator tab) — vigor-gated unit conditional passive and attacker stat cards
+globs: templates/index.html
+alwaysApply: false
+---
+
+# Damage Simulator (`templates/index.html`)
+
+When editing the calculator / damage sim (`S.dc`, `renderDcAtkUnit`, `setDcMp`, `_dcVigor*`, `_dcSyncUnitCondPassiveFromVigor`):
+
+1. **Vigor-linked unit conditional passive**  
+   Units with `has_cond_stats` and abilities gated on vigor/tension/戰意/テンション must set `S.dc._vigorCondThreshold` via `_dcVigorThresholdFromUnit` using **all UI languages** (EN/JA/TW/HK), not only English. Include text from `ab`, `ab.ssp_replacement`, and `ab.sp_replacement` (`_dcVigorAbilityTextBlob`).  
+   Call `_dcSyncUnitCondPassiveFromVigor()` when restoring shared/URL state after `_dcDetectVigorCondAbilities`, and when vigor changes (`setDcMp`). Do **not** call sync on every `renderDcAtkUnit` (manual toggle must stay overridable until vigor changes).
+
+2. **Attacker stat cards (`dc-atk-ers` / `stat-card`)**  
+   When conditional passive is on (`uCp`), keep **both**: CP highlight classes (`dc-stat-mini--cp`) and **`(+Δ)`** lines from growth-row deltas (`_uCpBonusHtml` or equivalent). Changing stat-card markup should preserve this pair so the UI matches defender-style bonuses.
+
+3. **Re-render after vigor sync**  
+   If `setDcMp` updates `S.dc.unitCondPassive`, re-render attacker panels when either the unit stat key **or** `unitCondPassive` changes (not only when `_dcGetUnitStatKey()` string changes).
