@@ -3262,8 +3262,7 @@ def create_map_event_score_attack_stage_map(score_data, stage_master):
         stid = normalize_id(item.get('StageId') or item.get('stageId'))
         if stid == '0': continue
         boss = normalize_id(item.get('BossMapNpcId') or item.get('bossMapNpcId'))
-        row_lang = normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')) or '0'
-        snlid = row_lang if row_lang != '0' else name_by_stage.get(stid, '0')
+        snlid = name_by_stage.get(stid, '0')
         seq += 1
         lookup[stid] = {
             'boss_map_npc_id': boss,
@@ -5116,6 +5115,7 @@ for lang_code, paths in LANG_PATHS.items():
     supporter_text = load_json(os.path.join(lang_dir, "m_supporter.json")); supporter_leader_text = load_json(os.path.join(lang_dir, "m_supporter_leader_skill_content.json"))
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
     stage_lang_text = load_json(os.path.join(lang_dir, "m_eternal_road_stage.json")); stage_battle_condition_text_lang = load_json(os.path.join(lang_dir, "m_stage_battle_condition_text.json"))
+    stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
     
@@ -5128,6 +5128,7 @@ for lang_code, paths in LANG_PATHS.items():
     supp_leader_tm = create_lang_text_map(supporter_leader_text) if supporter_leader_text else {}
     supp_active_tm = create_lang_text_map(supporter_active_text) if supporter_active_text else {}
     stage_text_map = create_lang_text_map(stage_lang_text) if stage_lang_text else {}
+    stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
     for item in extract_data_list(stage_battle_condition_text_lang):
         if isinstance(item, dict):
@@ -5219,7 +5220,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 
@@ -6260,6 +6261,16 @@ def get_stage_difficulty_by_type_index(dti, lc='EN'):
     if i == 2: return {'code': 'hard', 'name': get_ui_label(lc, 'difficulty_hard')}
     if i == 3: return {'code': 'expert', 'name': get_ui_label(lc, 'difficulty_expert')}
     return {'code': 'unknown', 'name': 'Unknown'}
+
+def resolve_stage_name_from_lang_m_stage(ld, stage_name_lang_id, stage_id):
+    """m_stage master StageNameLanguageId + same-locale lang m_stage.json text rows."""
+    lid = normalize_id(stage_name_lang_id) or '0'
+    sid = normalize_id(stage_id)
+    if lid != '0':
+        txt = (ld.get('stage_master_text_map') or {}).get(lid, '')
+        if txt:
+            return txt
+    return f"Unknown ({sid})"
 
 def resolve_sortie_restriction_set(set_id, lc):
     if not set_id or set_id == '0': return []
@@ -9794,7 +9805,7 @@ def list_dc_targets():
 
         for sid, sas in (map_event_score_attack_stage_map or {}).items():
             sn = safe_int(sas.get('list_seq'), 0)
-            sname = ld.get('stage_text_map', {}).get(sas.get('stage_name_lang_id', ''), '') or f"Stage {sid}"
+            sname = resolve_stage_name_from_lang_m_stage(ld, sas.get('stage_name_lang_id', '0'), sid)
             mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
             dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
             diff = get_stage_difficulty_by_type_index(dti, lc)
@@ -9822,14 +9833,14 @@ def list_stages():
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
         cat = (request.args.get('category') or 'eternal').strip().lower()
         if cat not in ('eternal', 'score_attack'): cat = 'eternal'
-        ck = f"stages5_{cat}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages6_{cat}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
         if cat == 'score_attack':
             for sid, sas in (map_event_score_attack_stage_map or {}).items():
                 sn = safe_int(sas.get('list_seq'), 0)
-                sname = ld.get('stage_text_map', {}).get(sas.get('stage_name_lang_id', ''), '') or f"Unknown ({sid})"
+                sname = resolve_stage_name_from_lang_m_stage(ld, sas.get('stage_name_lang_id', '0'), sid)
                 if sq:
                     searchable = f"{sid} {sname} {sn}".lower()
                     if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
@@ -9919,7 +9930,7 @@ def get_stage(stage_id):
             vis = True
         else:
             vis = eternal_stage_content_visible(stage_id, est)
-        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{'sa' if is_score_attack else 'er'}_np2"
+        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{'sa' if is_score_attack else 'er'}_np3"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -9931,7 +9942,10 @@ def get_stage(stage_id):
             }
             set_cached_response(ck, result); return jsonify(convert_image_urls(result))
         sn = est.get('stage_number', 0)
-        sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
+        if is_score_attack:
+            sname = resolve_stage_name_from_lang_m_stage(ld, est.get('stage_name_lang_id', '0'), stage_id)
+        else:
+            sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc) if is_score_attack else get_stage_difficulty(stage_id, lc)
         sm = stage_map.get(stage_id, {}); duid = est.get('display_unit_id', '0'); portrait = ''
         if duid != '0':
