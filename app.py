@@ -1925,7 +1925,12 @@ def unit_matches_mechanism_filter(info, want_filter, uid=None):
 def _is_conditional_stat_text(t):
     tl = (t or '').lower()
     for kw in ['when ', 'if ', 'during ', 'at the start', 'each time', 'every time', 'each time you', 'every time you']:
-        if kw in tl: return True
+        if kw in tl:
+            return True
+    raw = t or ''
+    # JA / TW / HK: gated squad / series lines (split by newline in data; single-line still flagged).
+    if '包含上述' in raw or 'を含む時' in raw or '含む時' in raw:
+        return True
     return False
 
 
@@ -2337,6 +2342,48 @@ def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc):
     spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
 
 
+def _extract_stat_percent_unit_cjk(text):
+    """JA/TW/HK MS stat % lines (aligned with front-end _dcParseOptionPartBonuses)."""
+    bonuses = {}
+    if not text:
+        return bonuses
+    ja_map = {'最大HP': 'HP', '最大EN': 'EN', '攻撃力': 'Attack', '防御力': 'Defense', '機動力': 'Mobility', '移動力': 'Move'}
+    ja_one = '(最大HP|最大EN|攻撃力|防御力|機動力|移動力)'
+    for m in re.finditer(r'(?:自部隊の|自身の)' + ja_one + r'と' + ja_one + r'が(\d+)(%?)(上昇|減少)', text):
+        v = int(m.group(3))
+        if m.group(5) == '減少':
+            v = -v
+        for gi in (1, 2):
+            k = ja_map.get(m.group(gi))
+            if k:
+                bonuses[k] = bonuses.get(k, 0) + v
+    for m in re.finditer(r'(?:自部隊の|自身の)' + ja_one + r'が(\d+)(%?)(上昇|減少)', text):
+        v = int(m.group(2))
+        if m.group(4) == '減少':
+            v = -v
+        k = ja_map.get(m.group(1))
+        if k:
+            bonuses[k] = bonuses.get(k, 0) + v
+    tw_map = {'最大HP': 'HP', '最大EN': 'EN', '攻擊力': 'Attack', '防禦力': 'Defense', '機動力': 'Mobility', '移動力': 'Move'}
+    tw_one = '(最大HP|最大EN|攻擊力|防禦力|機動力|移動力)'
+    for m in re.finditer(r'自身' + tw_one + r'及' + tw_one + r'(提升|減少)(\d+)(%?)', text):
+        v = int(m.group(4))
+        if m.group(3) == '減少':
+            v = -v
+        for gi in (1, 2):
+            k = tw_map.get(m.group(gi))
+            if k:
+                bonuses[k] = bonuses.get(k, 0) + v
+    for m in re.finditer(r'(?:自身所屬部隊|自身)' + tw_one + r'(提升|減少)(\d+)(%?)', text):
+        v = int(m.group(3))
+        if m.group(2) == '減少':
+            v = -v
+        k = tw_map.get(m.group(1))
+        if k:
+            bonuses[k] = bonuses.get(k, 0) + v
+    return bonuses
+
+
 def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
@@ -2374,6 +2421,9 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
             return n
         n1 = norm(m.group(1)); bonuses[n1] = bonuses.get(n1, 0) + pct
         if m.group(2): n2 = norm(m.group(2)); bonuses[n2] = bonuses.get(n2, 0) + pct
+    else:
+        for k, v in _extract_stat_percent_unit_cjk(text).items():
+            bonuses[k] = bonuses.get(k, 0) + v
     return bonuses
 
 def _unit_enemy_specified_tags_clause_part(part):
@@ -3339,6 +3389,46 @@ def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
     atk_pct = atk_pct or '攻擊力' in full_text or '攻击力' in full_text or '攻撃力' in full_text
     return atk_pct
 
+
+def _extract_stat_percent_char_cjk(text):
+    """Pilot stat % for map NPCs / traits in JA and TW/HK (EN handled by extract_stat_percent_char)."""
+    bonuses = {}
+    if not text:
+        return bonuses
+    ja_map = {'射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken', '回避値': 'Reaction', '防御力': 'Defense'}
+    ja_one = '(射撃値|格闘値|覚醒値|回避値|防御力)'
+    for m in re.finditer(r'自身の' + ja_one + r'と' + ja_one + r'が(\d+)%上昇', text):
+        p = int(m.group(3))
+        for gi in (1, 2):
+            k = ja_map.get(m.group(gi))
+            if k:
+                bonuses[k] = bonuses.get(k, 0) + p
+    for m in re.finditer(r'自身の' + ja_one + r'が(\d+)%上昇', text):
+        p = int(m.group(2))
+        k = ja_map.get(m.group(1))
+        if k:
+            bonuses[k] = bonuses.get(k, 0) + p
+    zh_map = {'射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken'}
+    mc = re.search(r'自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%', text)
+    if mc:
+        p = int(mc.group(3))
+        k0 = zh_map.get(mc.group(1))
+        if k0:
+            bonuses[k0] = bonuses.get(k0, 0) + p
+        rest = mc.group(2) or ''
+        for mm in re.finditer(r'及(射擊值|格鬥值|覺醒值)', rest):
+            kk = zh_map.get(mm.group(1))
+            if kk:
+                bonuses[kk] = bonuses.get(kk, 0) + p
+    for mm in re.finditer(r'自身射擊值提升(\d+)%', text):
+        bonuses['Ranged'] = bonuses.get('Ranged', 0) + int(mm.group(1))
+    for mm in re.finditer(r'自身格鬥值提升(\d+)%', text):
+        bonuses['Melee'] = bonuses.get('Melee', 0) + int(mm.group(1))
+    for mm in re.finditer(r'自身覺醒值提升(\d+)%', text):
+        bonuses['Awaken'] = bonuses.get('Awaken', 0) + int(mm.group(1))
+    return bonuses
+
+
 def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     bonuses = {}; tl = text.lower()
     for kw in ['when piloting','when supporting','when executing','if vigor']:
@@ -3384,6 +3474,9 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
             else:
                 n = s.title()
                 bonuses[n] = bonuses.get(n, 0) + p
+    else:
+        for k, v in _extract_stat_percent_char_cjk(text).items():
+            bonuses[k] = bonuses.get(k, 0) + v
     return bonuses
 
 def create_unit_info_map(m):
@@ -6325,10 +6418,18 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
 
 def _npc_map_unit_line_is_squad_wide(line):
     """Squad / all-units MS stat % lines apply to every deployed NPC on the map stage."""
-    low = (line or '').lower()
+    if not line:
+        return False
+    low = line.lower()
     if 'squad' in low:
         return True
     if re.search(r'\ball\s+units\b', low):
+        return True
+    if any(x in line for x in (
+        '自部隊', '部隊全', '全機', '己方', '我方全', '所屬部隊', '所属部队',
+        '味方全', '味方の全', '同じ部隊', '同部隊', '全ユニット', '全機体',
+        '自身所屬部隊',
+    )):
         return True
     return False
 
@@ -9698,7 +9799,7 @@ def get_stage(stage_id):
         ld = get_lang_data(lc); est = eternal_stage_map.get(stage_id)
         if not est: return jsonify({'error': f'Stage {stage_id} not found'}), 404
         vis = eternal_stage_content_visible(stage_id, est)
-        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}"
+        ck = f"stage_{stage_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_np2"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
