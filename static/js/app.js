@@ -5737,6 +5737,12 @@ const scaled=C(baseLv*(1+(traitDistPow+traitScaling)/100));
 const sspFlat=_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0;
 return scaled+sspFlat;
 }
+/** DC weapon header PWR: raw level table power + SSP flat in SSP mode only — excludes trait % scaling (that affects damage via _dcComputedWeaponPowerForLevel). */
+function _dcWpnSheetFlatPower(wpn,lvIdx){
+const lv=(wpn.levels&&wpn.levels[lvIdx])||{};
+const base=lv.power|0;
+return base+(_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0);
+}
 function _dcBestLevelIndexForWeapon(wpn){
 if(!wpn||!wpn.levels||!wpn.levels.length)return 0;
 let bestPow=-1,bestJ=0,bestRaw=-1;
@@ -5793,8 +5799,8 @@ const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${eff
 const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
 const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
-const dcWpnFlatPow=(ld.power|0)+(_dcDcIncludeSspWeaponEffects()?(cw.ssp_power_bonus|0):0);
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val">${fmtN(dcWpnFlatPow)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+const sheetPow=_dcWpnSheetFlatPower(cw,S.dc.wpnLv);
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${fmtN(sheetPow)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;

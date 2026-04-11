@@ -29,7 +29,10 @@ except ImportError:
 
 app = Flask(__name__)
 
-# Bust cache when static/js/app.js changes (content-addressed tag, computed at import).
+# Bust cache when static/js/app.js changes (content-addressed tag from mtime+size).
+# IMPORTANT: compute at HTML render time, not only at process import — otherwise Flask
+# keeps serving the same ?v= after app.js edits until the server restarts, and browsers
+# keep an old cached bundle (users never see DC / weapon UI fixes).
 def _app_js_bundle_version_tag():
     p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js', 'app.js')
     try:
@@ -37,9 +40,6 @@ def _app_js_bundle_version_tag():
         return hashlib.sha256(f'{st.st_mtime_ns}:{st.st_size}'.encode()).hexdigest()[:16]
     except OSError:
         return '0'
-
-
-APP_JS_VERSION = _app_js_bundle_version_tag()
 
 # Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
 INDEX_HTML_CACHE_CONTROL = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
@@ -7208,7 +7208,7 @@ def _serve_index():
         'index.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
-        app_js_version=APP_JS_VERSION,
+        app_js_version=_app_js_bundle_version_tag(),
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
