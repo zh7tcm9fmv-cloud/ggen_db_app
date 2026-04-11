@@ -2069,8 +2069,8 @@ return ud.weapons.filter(w=>w.weapon_type!=='3'&&(!w.is_ssp_weapon||um==='ssp'))
 }
 /** From API: per-level enemy DEF % down on this attack (base + optional Supercharged-only line). */
 function _dcWeaponEnemyDefDebuffEffective(wpn,wpnLvIdx){
-if(!wpn||!wpn.levels)return 0;
-const lv=wpn.levels[wpnLvIdx]||{};
+if(!wpn)return 0;
+const lv=_dcWeaponLevelRow(wpn,wpnLvIdx);
 let b=parseInt(lv.enemy_def_debuff_base_pct,10);
 let sp=parseInt(lv.enemy_def_debuff_supercharged_pct,10);
 if(Number.isNaN(b))b=0;
@@ -2089,7 +2089,7 @@ return Math.min(100,manual+wp);
 }
 function _dcGetAutoWeaponPowerDisplay(){
 const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
-const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn||!wpn.levels||!wpn.levels.length)return null;
+const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 return _dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
@@ -2756,8 +2756,10 @@ o.atkP=_dcAtkManualPackFromSlot(sl);
 }else{
 o.u=sl.atkUnit;
 o.c=sl.atkChar;
-if(sl.wpnIdx!==0)o.wi=sl.wpnIdx;
-if(sl.wpnLv!==0)o.wl=sl.wpnLv;
+if(sl.atkUnitData&&!sl.atkUnitData._manual){
+const _pbPack=_dcPickBestWeaponIndices(sl.atkUnitData);
+if(sl.wpnIdx!==_pbPack.wpnIdx||sl.wpnLv!==_pbPack.wpnLv){o.wi=sl.wpnIdx;o.wl=sl.wpnLv}
+}
 }
 if(sl.lbTier!==3)o.lb=sl.lbTier;
 if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;
@@ -2850,8 +2852,16 @@ slot.atkUnitData=ur;slot.atkCharData=cr;
 slot._unitIsSD=String(ur.body_type||'')==='3';
 slot._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
 if(o.wi!==undefined){const n=parseInt(o.wi,10);if(!Number.isNaN(n)&&n>=0)slot.wpnIdx=n}else slot.wpnIdx=0;
-if(o.wl!==undefined){const n=parseInt(o.wl,10);if(!Number.isNaN(n)&&n>=0)slot.wpnLv=n}else slot.wpnLv=0;
+if(o.wl!==undefined){const n=parseInt(o.wl,10);if(!Number.isNaN(n)&&n>=0)slot.wpnLv=n}
+else if(o.wi!==undefined){
+const _wpUn=_dcNonMapWeapons(ur);
+const _wUn=_wpUn[slot.wpnIdx];
+slot.wpnLv=_wUn?_dcDefaultWpnLvIndex(_wUn):0;
+}else slot.wpnLv=0;
 if(o.wi===undefined&&o.wl===undefined){const _pb=_dcPickBestWeaponIndices(ur);slot.wpnIdx=_pb.wpnIdx;slot.wpnLv=_pb.wpnLv}
+const _wpFix=_dcNonMapWeapons(ur);
+if(_wpFix.length&&((slot.wpnIdx|0)<0||(slot.wpnIdx|0)>=_wpFix.length)){const _pb2=_dcPickBestWeaponIndices(ur);slot.wpnIdx=_pb2.wpnIdx;slot.wpnLv=_pb2.wpnLv}
+else{const _cwFix=_wpFix[slot.wpnIdx|0];if(_cwFix&&_cwFix.levels&&_cwFix.levels.length&&(slot.wpnLv|0)>=_cwFix.levels.length)slot.wpnLv=_cwFix.levels.length-1}
 if(o.lb!==undefined){const n=parseInt(o.lb,10);if(!Number.isNaN(n)&&n>=0)slot.lbTier=n}
 }
 const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
@@ -5669,7 +5679,7 @@ else traits.distCoreMax=(traits.distCoreMax|0)+x;
 }
 function _dcParseWeaponTraits(wpn,lvIdx){
 const traits={distPowerMax:0,hpPowerMax:0,mpPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false,powTraitHitSet:null};
-if(!wpn||!wpn.levels)return traits;
+if(!wpn)return traits;
 const hit=new Set();
 const noteHit=(raw)=>{if(raw!=null&&raw!=='')hit.add(String(raw).trim())};
 const includeSsp=_dcDcIncludeSspWeaponEffects();
@@ -5677,11 +5687,13 @@ const zh=_dcIsZhCalcLang();
 const isJa=(S.lang||'EN').toUpperCase()==='JA';
 const allTraits=[];
 const idx=lvIdx!==undefined&&lvIdx>=0?lvIdx:-1;
+if(wpn.levels&&wpn.levels.length){
 if(idx>=0&&wpn.levels[idx]&&(wpn.levels[idx].traits||[]).length){
 (wpn.levels[idx].traits||[]).forEach(t=>allTraits.push(t));
 }else{
 wpn.levels.forEach(lv=>(lv.traits||[]).forEach(t=>allTraits.push(t)));
 }
+}else{(wpn.traits||[]).forEach(t=>allTraits.push(t));}
 if(includeSsp)(wpn.ssp_traits||[]).forEach(t=>allTraits.push(t));
 _dcMergeBaseWeaponTraitsForSsp(wpn,idx,allTraits);
 let sspCoreBonus=0;
@@ -5725,12 +5737,22 @@ _dcApplySspCorePowBonus(traits,sspCoreBonus,wpn);
 traits.powTraitHitSet=hit;
 return traits;
 }
+/** Level row for DC (clamped index), or top-level weapon stats when API has no per-level array. */
+function _dcWeaponLevelRow(wpn,lvIdx){
+if(!wpn)return{power:0,accuracy:0,critical:0,en:0,traits:[]};
+if(wpn.levels&&wpn.levels.length){
+const j=Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1);
+return wpn.levels[j]||{power:0,accuracy:0,critical:0,en:0,traits:[]};
+}
+return{power:wpn.power|0,en:(wpn.en_cost|wpn.en)|0,accuracy:wpn.accuracy|0,critical:wpn.critical|0,ammo:wpn.ammo|0,traits:wpn.traits||[]};
+}
 /** Matches calculateDamage() and unit detail SSP row: ceil(baseLv * (1 + trait% / 100)) + SSP flat power bonus when DC unit mode is SSP (same order as renderWeaponsDynamic: scale then add ssp_power_bonus). */
 function _dcComputedWeaponPowerForLevel(wpn,lvIdx){
 const C=Math.ceil;
-const lvData=(wpn.levels&&wpn.levels[lvIdx])||{power:0};
+const lvData=_dcWeaponLevelRow(wpn,lvIdx);
 const baseLv=lvData.power||0;
-const wt=_dcParseWeaponTraits(wpn,lvIdx);
+const traitLv=(wpn&&wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1):0;
+const wt=_dcParseWeaponTraits(wpn,traitLv);
 const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
 const traitScaling=(wt.hpPowerMax||0)+(wt.mpPowerMax||0);
 const scaled=C(baseLv*(1+(traitDistPow+traitScaling)/100));
@@ -5739,7 +5761,7 @@ return scaled+sspFlat;
 }
 /** DC weapon header PWR: raw level table power + SSP flat in SSP mode only — excludes trait % scaling (that affects damage via _dcComputedWeaponPowerForLevel). */
 function _dcWpnSheetFlatPower(wpn,lvIdx){
-const lv=(wpn.levels&&wpn.levels[lvIdx])||{};
+const lv=_dcWeaponLevelRow(wpn,lvIdx);
 const base=lv.power|0;
 return base+(_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0);
 }
@@ -5760,7 +5782,7 @@ const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length)return{wpnIdx:0,wpnLv:0};
 let bestPow=-1,bestI=0,bestJ=0,bestRaw=-1;
 wpns.forEach((w,i)=>{
-if(!w.levels||!w.levels.length)return;
+if(w.levels&&w.levels.length){
 w.levels.forEach((lv,j)=>{
 const p=_dcComputedWeaponPowerForLevel(w,j);
 const raw=lv.power||0;
@@ -5768,6 +5790,13 @@ if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&j>bestJ)))){
 bestPow=p;bestI=i;bestJ=j;bestRaw=raw;
 }
 });
+}else{
+const p=_dcComputedWeaponPowerForLevel(w,0);
+const raw=w.power|0;
+if(p>bestPow||(p===bestPow&&(raw>bestRaw||(raw===bestRaw&&i>bestI)))){
+bestPow=p;bestI=i;bestJ=0;bestRaw=raw;
+}
+}
 });
 return{wpnIdx:bestI,wpnLv:bestJ};
 }
@@ -5781,7 +5810,10 @@ if(ud&&ud._manual){wa.innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};_dcRe
 if(!ud||!ud.weapons||!ud.weapons.length){wa.innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};_dcRefreshFinalWpnPowPlaceholder();return}
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length){wa.innerHTML='';_dcRefreshFinalWpnPowPlaceholder();return}
-if(S.dc.wpnIdx>=wpns.length)S.dc.wpnIdx=0;
+if(S.dc.wpnIdx<0||S.dc.wpnIdx>=wpns.length){
+const b=_dcPickBestWeaponIndices(ud);
+S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv;
+}
 let h=`<div class="dc-section-label">${t('dc_weapon')}</div><select class="dc-wpn-select" onchange="setDcWeapon(this.selectedIndex)">`;
 wpns.forEach((w,i)=>h+=`<option value="${i}"${i===S.dc.wpnIdx?' selected':''}>${esc(w.name)}</option>`);
 h+=`</select>`;
@@ -5827,6 +5859,46 @@ if((ld.traits&&ld.traits.length)||(_dcDcIncludeSspWeaponEffects()&&(cw.ssp_trait
 h+=`<div style="font-weight:700;color:var(--text-secondary);margin:8px 0 2px">${esc(t('dc_wpn_trait_lines'))}</div>`;
 trLines(ld.traits,false);
 if(_dcDcIncludeSspWeaponEffects())trLines(cw.ssp_traits,true);
+}
+h+=`</div>`;
+}
+}else if(cw){
+S.dc.wpnLv=0;
+const ld=_dcWeaponLevelRow(cw,0);
+const effR=_dcGetEffectiveRange(cw);
+const rangeChanged=effR.max_range!==cw.max_range;
+const rangeStr=rangeChanged?`${effR.min_range}-<span style="color:#4ade80">${effR.max_range}</span>`:`${effR.min_range}-${effR.max_range}`;
+const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
+const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
+const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
+const sheetPow=_dcWpnSheetFlatPower(cw,0);
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${fmtN(sheetPow)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+const wt=_dcParseWeaponTraits(cw,0);
+S.dc._wpnTraits=wt;
+S.dc._wpnCritDmgUp=wt.critDmgUp|0;
+const distBase=wt.distPowerMax|0;
+const effDistMax=Math.min(100,distBase+(wt.distCoreMax|0));
+S.dc._wpnTraitDistPow=effDistMax;
+const powHit=wt.powTraitHitSet;
+const hasPowScaling=effDistMax>0||(wt.hpPowerMax|0)>0||(wt.mpPowerMax|0)>0;
+if(hasPowScaling||wt.absoluteHit||wt.dmgReductionNull||(ld.traits&&ld.traits.length)||((cw.ssp_traits||[]).length)){
+h+=`<div style="margin-top:8px;font-size:11px;line-height:1.55">`;
+if(wt.absoluteHit)h+=`<div style="color:#4ade80">✓ Absolute Hit</div>`;
+if(wt.dmgReductionNull)h+=`<div style="color:#4ade80">✓ Attribute Damage Reduction Null</div>`;
+if(hasPowScaling){
+h+=`<div style="font-weight:700;color:var(--text-secondary);margin:4px 0 2px">${esc(t('dc_wpn_trait_effects'))}</div>`;
+if(distBase)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_dist'))}: +${distBase}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+const coreExtra2=Math.max(0,effDistMax-distBase);
+if(coreExtra2)h+=`<div style="color:#c084fc">${esc(t('dc_wpn_trait_custom_core'))}: +${coreExtra2}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.hpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_hp'))}: +${wt.hpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: +${wt.mpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if((cw.ssp_traits||[]).length&&!_dcDcIncludeSspWeaponEffects())h+=`<div style="color:#eab308;margin-top:4px">${esc(t('dc_wpn_trait_ssp_hint'))}</div>`;
+}
+const trLines2=(arr,prefix)=>{(arr||[]).forEach(tr=>{const s=String(tr||'').trim();if(!s)return;const hi=powHit&&powHit.has(s);const cls=hi?'dc-wpn-trait-line dc-wpn-trait-line--pow':'dc-wpn-trait-line';const pre=prefix?`<span style="display:inline-block;margin-right:6px;padding:0 5px;border-radius:3px;background:rgba(192,132,252,.25);font-size:9px;font-weight:800;color:#e9d5ff">SSP</span>`:'';h+=`<div class="${cls}">${pre}${esc(s)}</div>`;});};
+if((ld.traits&&ld.traits.length)||(_dcDcIncludeSspWeaponEffects()&&(cw.ssp_traits||[]).length)){
+h+=`<div style="font-weight:700;color:var(--text-secondary);margin:8px 0 2px">${esc(t('dc_wpn_trait_lines'))}</div>`;
+trLines2(ld.traits,false);
+if(_dcDcIncludeSspWeaponEffects())trLines2(cw.ssp_traits,true);
 }
 h+=`</div>`;
 }
@@ -6794,7 +6866,7 @@ const atkCharStats=_dcGetCharStats();
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
-const lvData=(wpn.levels&&wpn.levels[S.dc.wpnLv])||{power:0,accuracy:0,critical:0};
+const lvData=_dcWeaponLevelRow(wpn,S.dc.wpnLv);
 
 const uMod=_dcGetModifiedAttackerUnitStats(atkUnitStats);
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
@@ -6818,7 +6890,8 @@ unitDef=_dcApplyDefDebuffToUnitDef(unitDef,defDebuffPct);
 
 const rawWpnPower=lvData.power;
 const computedWpnPow=_dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
-const wtTraits=_dcParseWeaponTraits(wpn,S.dc.wpnLv);
+const traitLvCalc=(wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,S.dc.wpnLv|0),wpn.levels.length-1):0;
+const wtTraits=_dcParseWeaponTraits(wpn,traitLvCalc);
 const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
 const traitHpPow=wtTraits.hpPowerMax|0;
 const traitMpPow=wtTraits.mpPowerMax|0;
