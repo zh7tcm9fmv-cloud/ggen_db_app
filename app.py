@@ -282,6 +282,7 @@ UI_LABELS = {
         'restriction_recover_mp': 'Recovers {} MP when used.',
         'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Sortie Group {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
+        'restriction_applies_characters': 'Applies to Characters',
         'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Ground', 'terrain_amphibious': 'Amphibious', 'terrain_unknown': 'Unknown',
         'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions', 'none': 'None',
         'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
@@ -296,6 +297,7 @@ UI_LABELS = {
         'restriction_recover_mp': '使用時恢復{}MP。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出擊群組 {}',
         'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
+        'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
@@ -310,6 +312,7 @@ UI_LABELS = {
         'restriction_recover_mp': '使用時、{}MP回復する。',
         'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出撃グループ {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
+        'restriction_applies_characters': 'キャラクターに適用',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '不明',
         'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件', 'none': 'なし',
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
@@ -6370,7 +6373,6 @@ def resolve_sortie_restriction_set(set_id, lc):
     ld = get_lang_data(lc); llk = ld.get('lineage_lookup', {}); snm = ld.get('series_name_map', {}); rows = []
     for sc in stage_sortie_set_content_map.get(set_id, []):
         tt = sc.get('target_type_index', '0'); gid = sc.get('group_id', '0')
-        at = get_ui_label(lc, 'restriction_applies_unit') if tt == '1' else get_ui_label(lc, 'restriction_applies_both')
         rn = []
         for gc in stage_sortie_group_content_map.get(gid, []):
             rt = gc.get('restriction_type_index', '0'); tid = gc.get('target_id', '0')
@@ -6380,6 +6382,12 @@ def resolve_sortie_restriction_set(set_id, lc):
                 for k, v in src.items():
                     if k.endswith(tid): name = v; break
             if name and name not in rn: rn.append(name)
+        if tt == '1':
+            at = get_ui_label(lc, 'restriction_applies_unit')
+        elif len(rn) >= 2:
+            at = get_ui_label(lc, 'restriction_applies_characters')
+        else:
+            at = get_ui_label(lc, 'restriction_applies_both')
         rows.append({'target_type_index': tt, 'applies_to': at, 'restriction_names': rn})
     return rows
 
