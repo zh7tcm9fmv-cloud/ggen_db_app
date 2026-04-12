@@ -6371,7 +6371,12 @@ def resolve_stage_name_from_lang_m_stage(ld, stage_name_lang_id, stage_id):
 def resolve_sortie_restriction_set(set_id, lc):
     if not set_id or set_id == '0': return []
     ld = get_lang_data(lc); llk = ld.get('lineage_lookup', {}); snm = ld.get('series_name_map', {}); rows = []
-    for sc in stage_sortie_set_content_map.get(set_id, []):
+    sc_list = stage_sortie_set_content_map.get(set_id, [])
+    total_tag_entries = 0
+    for sc in sc_list:
+        gid0 = sc.get('group_id', '0')
+        total_tag_entries += len(stage_sortie_group_content_map.get(gid0, []))
+    for sc in sc_list:
         tt = sc.get('target_type_index', '0'); gid = sc.get('group_id', '0')
         rn = []
         for gc in stage_sortie_group_content_map.get(gid, []):
@@ -6384,10 +6389,10 @@ def resolve_sortie_restriction_set(set_id, lc):
             if name and name not in rn: rn.append(name)
         if tt == '1':
             at = get_ui_label(lc, 'restriction_applies_unit')
-        elif len(rn) >= 2:
-            at = get_ui_label(lc, 'restriction_applies_characters')
-        else:
+        elif total_tag_entries <= 1:
             at = get_ui_label(lc, 'restriction_applies_both')
+        else:
+            at = get_ui_label(lc, 'restriction_applies_characters')
         rows.append({'target_type_index': tt, 'applies_to': at, 'restriction_names': rn})
     return rows
 
