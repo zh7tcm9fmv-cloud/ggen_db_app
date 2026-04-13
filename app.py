@@ -1190,19 +1190,17 @@ def _enemy_def_debuff_pct_from_single_trait_line(line):
 
 def _enemy_def_pct_from_custom_core_effect_value_blob(blob):
     """
-    Custom Core weapon lines: explicit DEF Down, or EN 'Maximum Up' / JA·TW 最大値(提升|上昇) phrasing
-    from m_weapon_trait descriptions (on-attack enemy DEF reduction for those effects).
+    SSP [Custom Core Effect] lines only: enemy DEF reduction bundled with Weapon Effect Value Up.
+    Do not treat 'Maximum Up' / 最大値上昇 (weapon effect cap buff) as DEF debuff — only explicit DEF Down / 防御力減少.
     """
     if not blob:
         return 0
     best = 0
     patterns = (
         (r'Weapon Effect Value Up\s*\(\s*&\s*DEF Down\s*(\d+)\s*%\s*\)', re.I),
-        (r'Weapon Effect Value Up\s*\(\s*&\s*Maximum Up\s*(\d+)\s*%\s*\)', re.I),
         (r'武装効果の効果値UP（さらに防御力(\d+)%減少）', 0),
-        (r'武装効果の効果値UP（さらに最大値(\d+)%上昇）', 0),
         (r'武裝效果的效果值UP（且防禦力減少(\d+)%）', 0),
-        (r'武裝效果的效果值UP（且最大值提升(\d+)%）', 0),
+        (r'武装效果的效果值UP（且防御力减少(\d+)%）', 0),
     )
     for pat, flags in patterns:
         for m in re.finditer(pat, blob, flags):
