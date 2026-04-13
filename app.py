@@ -504,9 +504,6 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 SERIES_ID_08TH_MS_TEAM = '130'
 # m_series Id=2300 — "After War Gundam X" (SeriesSetId …02300). series:dx / series:12300 resolve here (all locales).
 SERIES_ID_AFTER_WAR_GUNDAM_X = '2300'
-# m_series Id=3700 — "Mobile Suit Gundam 00" (logo series_3700). Plain q=00 matches this series (JA names lack ASCII 00; TW/HK use "00" + CJK with no separator).
-SERIES_ID_MOBILE_SUIT_GUNDAM_00 = '3700'
-
 # Appended to unit list search text (all q_scope values, including name_id) for names that lack English
 # substring tokens (e.g. "god" → Burning Gundam).
 UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
@@ -516,6 +513,8 @@ UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
 
 # A search box query that is only the token "dx" (DX ≡ Double X) returns exactly these roster rows; locale-agnostic.
 DOUBLE_X_DX_TOKEN_UNIT_IDS = frozenset({'1230003800', '1230003850', '1230005300'})
+# Query "00" only: these unit rows only (by id), not every title in m_series 3700 — keeps browse aligned with name/id intent.
+UNIT_SEARCH_SHORTHAND_00_UNIT_IDS = frozenset({'1370006200', '1370005700', '1370005900', '1370005950'})
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -7141,48 +7140,12 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     return _search_substring_in_haystack(t, haystack_lower)
 
 
-def _gundam_00_shorthand_matches_entity(ser_list, browse_lc, raw_series_set_id):
-    """True when browse query is only '00' and entity belongs to m_series Id 3700 (Mobile Suit Gundam 00).
-
-    Prefer resolved ser_list; if empty, fall back to raw series-set id + ser_set_map (unit_ser_map / char_ser_map).
-    """
-    if ser_list:
-        if any(
-            normalize_id(x.get('id')) == SERIES_ID_MOBILE_SUIT_GUNDAM_00
-            for x in ser_list
-            if x and x.get('id')
-        ):
-            return True
-    if raw_series_set_id is None:
-        return False
-    nset = normalize_id(raw_series_set_id)
-    if not nset or nset == '0':
-        return False
-    tried = set()
-    for lc_try in (browse_lc, DEFAULT_LANG, 'EN', 'JA', 'TW', 'HK'):
-        if not lc_try or lc_try in tried:
-            continue
-        tried.add(lc_try)
-        ld = get_lang_data(lc_try)
-        if not ld:
-            continue
-        ssm = ld.get('ser_set_map') or {}
-        for sid in ssm.get(nset, []):
-            if normalize_id(sid) == SERIES_ID_MOBILE_SUIT_GUNDAM_00:
-                return True
-    return False
-
-
-def search_row_matches_query(
-    sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False, browse_lc=None, raw_series_set_id=None,
-):
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
     series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match.
     ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters.
     entity_id: when set and search_query_matches_entity_id(sq, entity_id), skip positive haystack matching so ID-only / ID-targeted searches still find NPC-only rows.
-    primary: browse Core scope — stricter ASCII token matching (word-start) on name/tag/series haystack.
-    browse_lc: locale for Gundam 00 shorthand ser_set_map lookup.
-    raw_series_set_id: unit_ser_map / char_ser_map value for Gundam 00 shorthand when ser_list is empty."""
+    primary: browse Core scope — stricter ASCII token matching (word-start) on name/tag/series haystack."""
     if not sq or not str(sq).strip():
         return True
     pq = parse_search_query(sq)
@@ -7200,7 +7163,8 @@ def search_row_matches_query(
             and not pq['negative']
             and not pq['series']
             and not (pq.get('series_ids') or [])
-            and _gundam_00_shorthand_matches_entity(ser_list, browse_lc, raw_series_set_id)
+            and eid_n
+            and eid_n in UNIT_SEARCH_SHORTHAND_00_UNIT_IDS
         ):
             pass
         else:
@@ -8185,16 +8149,7 @@ def character_passes_browse_pool_filters(
                 + ' '
                 + ' '.join(search_chunks)
             ).strip().lower()
-        if not search_row_matches_query(
-            sq,
-            ss,
-            ser_names_lower,
-            ser_list,
-            entity_id=cid,
-            primary=(q_scope in ('primary', 'name_id')),
-            browse_lc=lc,
-            raw_series_set_id=ld.get('char_ser_map', {}).get(cid, ''),
-        ):
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
             return False
     return True
 
@@ -8361,16 +8316,7 @@ def unit_passes_browse_pool_filters(
                 + ' '.join(search_chunks)
             ).strip()
         ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
-        if not search_row_matches_query(
-            sq,
-            ss,
-            ser_names_lower,
-            ser_list,
-            entity_id=uid,
-            primary=(q_scope in ('primary', 'name_id')),
-            browse_lc=lc,
-            raw_series_set_id=unit_ser_map.get(uid, ''),
-        ):
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
             return False
     return True
 
@@ -9075,16 +9021,7 @@ def list_characters():
                     + ' '
                     + ' '.join(search_chunks)
                 ).strip().lower()
-            if not search_row_matches_query(
-                sq,
-                ss,
-                ser_names_lower,
-                ser_list,
-                entity_id=cid,
-                primary=(q_scope in ('primary', 'name_id')),
-                browse_lc=lc,
-                raw_series_set_id=ld.get('char_ser_map', {}).get(cid, ''),
-            ):
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
         has_sp_char = int(str(ri)) <= 4
@@ -9281,16 +9218,7 @@ def list_units():
                     + ' '.join(search_chunks)
                 ).strip()
             ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
-            if not search_row_matches_query(
-                sq,
-                ss,
-                ser_names_lower,
-                ser_list,
-                entity_id=uid,
-                primary=(q_scope in ('primary', 'name_id')),
-                browse_lc=lc,
-                raw_series_set_id=unit_ser_map.get(uid, ''),
-            ):
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
         wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
         if wmap is not None and uid in wmap:
