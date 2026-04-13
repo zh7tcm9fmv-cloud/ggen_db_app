@@ -2277,10 +2277,11 @@ _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
+renderDcAtkUnit();
+S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
+renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
 function toggleDcAttackerSlot(){
@@ -2290,17 +2291,18 @@ _dcWriteAttackerToDc(S.dc.atkSlots[S.dc.atkSlotIndex]);
 _dcSyncAttackerDomFromDc();
 _dcRefreshAtkSlotUi();
 _dcAnimateAttackerPanelShuffle();
-renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
+renderDcAtkUnit();
+S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
+renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
 onDcParamChange();
 }
 
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -3029,6 +3031,7 @@ if(sl){
 if(sl._dmgIncreasePacked!=null){const el=document.getElementById('dcDmgIncrease');if(el)el.value=String(sl._dmgIncreasePacked);S.dc.dmgIncrease=sl._dmgIncreasePacked;delete sl._dmgIncreasePacked}
 if(sl._critDmgUpPacked!=null){const el=document.getElementById('dcCritDmgUp');if(el)el.value=String(sl._critDmgUpPacked);S.dc.critDmgUp=sl._critDmgUpPacked;delete sl._critDmgUpPacked}
 }
+S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
 }
 onDcParamChange();
 if(!isMultiSlotUrl){
@@ -4973,7 +4976,6 @@ const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;
 S.dc.wpnLv=_bw.wpnLv;
 _dcDetectVigorCondAbilities(d);
-_dcAutoSetVigor();
 if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcSquadCondInputCap(S.dc.atkCharData,S.dc.atkUnitData);
 else S.dc.squadCondPct=0;
 renderDcAtkUnit();
@@ -5166,7 +5168,8 @@ const vis=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
 const visIds=new Set(vis.map(s=>String(s.id)));
 if(S.dc._activeSkills)Object.keys(S.dc._activeSkills).forEach(k=>{if(!visIds.has(k))delete S.dc._activeSkills[k]});
 }
-renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+renderDcAtkUnit();renderDcAtkChar();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -5185,8 +5188,8 @@ function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();
 function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcMasterLeagueBuff(){setDcMasterLeagueBuff(!S.dc.masterLeagueBuff)}
 function toggleDcGrandOffensiveBuff(){setDcGrandOffensiveBuff(!S.dc.grandOffensiveBuff)}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;renderDcAtkUnit();renderDcAtkChar();const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
-function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
+function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -5260,7 +5263,7 @@ sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top
 area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
-_dcRecalcPilotBonuses();
+_dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 }
 
@@ -5409,12 +5412,24 @@ return;
 const togId=`dcPilotBonusChk_${i}`;
 const checked=!it.cond;
 const rowOff=!!it.cond;
-h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></label>`;
+h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses(true)"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></label>`;
 });
 h+=`</div>`;
 area.innerHTML+=h;
 }
-function _dcRecalcPilotBonuses(){
+/** fullRefresh: recompute Damage Dealt Up / Crit Dmg Up from pilot toggles, skills, and current weapon crit trait. Otherwise only swap the weapon crit trait portion of Crit Dmg Up so manual fields persist when changing weapon/form on the same unit. */
+function _dcRecalcPilotBonuses(fullRefresh){
+const wCrit=S.dc._wpnCritDmgUp|0;
+if(!fullRefresh){
+const ci=document.getElementById('dcCritDmgUp');
+const prevN=S.dc._integratedWpnCritDmgUp|0;
+const cur=parseInt(ci?.value,10)||0;
+const newV=Math.max(0,cur-prevN+wCrit);
+if(ci)ci.value=String(newV);
+S.dc._integratedWpnCritDmgUp=wCrit;
+onDcParamChange();
+return;
+}
 const b=S.dc._pilotBonuses||{items:[]};
 let dmgDealt=0,critDmg=0;
 b.items.forEach((it,i)=>{
@@ -5442,9 +5457,9 @@ dmgDealt+=skB.dmgDealt;
 /** Vigor dmg % is only in calculateDamage (vigorDmgBonusPct); adding DC_MP here double-counts. */
 const di=document.getElementById('dcDmgIncrease');
 const ci=document.getElementById('dcCritDmgUp');
-const wCrit=S.dc._wpnCritDmgUp|0;
 if(di)di.value=dmgDealt;
 if(ci)ci.value=critDmg+wCrit;
+S.dc._integratedWpnCritDmgUp=wCrit;
 onDcParamChange();
 }
 function _dcRenderPilotSkills(area,cd){
@@ -5475,6 +5490,7 @@ if(!S.dc._activeSkills)S.dc._activeSkills={};
 if(chk&&chk.checked){S.dc._activeSkills[skillId]=true}else{delete S.dc._activeSkills[skillId]}
 renderDcAtkUnit();
 renderDcAtkChar();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 }
 /** When pilot SP stat mode is on, active skills use SpCharacterSkillId text (e.g. Melee Boost Lv3 +15%) instead of the normal row. */
 function _dcResolveSkillForDcMode(sk){
@@ -6214,7 +6230,7 @@ const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
 S.dc._wpnTraitDistPow=effD>0?effD:0;
 S.dc._wpnTraitHpPow=0;
 renderDcWeaponArea();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
 }
 function setDcWpnLv(lv){
@@ -6228,7 +6244,7 @@ S.dc._wpnTraitDistPow=effD>0?effD:0;
 S.dc._wpnTraitHpPow=0;
 }
 renderDcWeaponArea();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
 }
 function setDcMp(lv){
@@ -6241,7 +6257,7 @@ document.querySelectorAll('#dcMpBtns .dc-ctrl-btn').forEach(b=>b.classList.toggl
 const newKey=_dcGetUnitStatKey();
 if(S.dc.atkUnitData&&(newKey!==prevKey||!!S.dc.unitCondPassive!==prevUcp))renderDcAtkUnit();
 if(S.dc.atkUnitData)renderDcWeaponArea();
-if(S.dc.atkCharData)_dcRecalcPilotBonuses();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
 }
 function setDcDefend(v){
@@ -6292,7 +6308,7 @@ function _dcRefreshAtkPanelsAfterMods(){
 if(!S.dc.atkUnitData){onDcParamChange();return}
 renderDcAtkUnit();
 if(S.dc.atkCharData)renderDcAtkChar();
-else onDcParamChange();
+onDcParamChange();
 }
 
 let _dcPickerDebounce=null;
@@ -6458,7 +6474,8 @@ else S.dc.squadCondPct=0;
 renderDcAtkUnit();renderDcAtkChar();
 renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
-onDcParamChange();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+else onDcParamChange();
 }catch(e){}
 }
 
@@ -7127,7 +7144,6 @@ return`<div class="dc-result-multi-col"><div class="dc-result-multi-head">${head
 area.innerHTML=`<div class="dc-result-box">${inner}
 <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
 <button type="button" class="dc-ctrl-btn" onclick="toggleDcBattleStats(true)" style="font-size:12px;padding:6px 14px">Battle Stats</button>
-<button type="button" class="dc-ctrl-btn" onclick="copyDcResultText()" style="font-size:12px;padding:6px 14px">📋 Copy Results</button>
 <button type="button" class="dc-ctrl-btn" onclick="shareDcLink()" style="font-size:12px;padding:6px 14px">🔗 Share Link</button>
 </div>
 <div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
@@ -7256,7 +7272,7 @@ h+=_dcFormatBattleStatsSupporters(sl.supporters||[]);
 h+='</div>';
 });
 h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
-body.innerHTML=h;
+body.innerHTML=h+`<div class="dc-battle-stats-footer"><button type="button" class="dc-ctrl-btn dc-battle-stats-copy-btn" onclick="copyDcResultText()">📋 Copy Results</button><div id="dcBattleStatsCopyMsg" class="dc-battle-stats-copy-msg" aria-live="polite"></div></div>`;
 }
 function _dcBuildShareUrl(){
 onDcParamChange();
@@ -7265,6 +7281,25 @@ const packed=_dcPackShareState();
 const json=JSON.stringify(packed);
 const b64=_dcB64UrlEncode(json);
 return`${location.origin}${location.pathname}?tab=DS&dc=${encodeURIComponent(b64)}`;
+}
+function _dcWeaponDisplayNameForSlot(ud,wpnIdx){
+const wpns=ud?_dcNonMapWeapons(ud):[];
+const w=wpns[wpnIdx|0];
+return w?(w.name||'—'):'—';
+}
+function _dcCopyLinesDamageFormulas(rr){
+if(!rr)return[];
+const supLbl=rr.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg');
+return['',
+'Damage formulas (this calculator):',
+'  Normal damage = max(0, ceil(battleDamage × (1 + totalNormalMultPct/100) × defendMult))',
+'  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
+`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
+`  → Normal damage = ${fmtN(rr.normalDmg)}`,
+`  ${supLbl} = max(0, ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult × ((vigorCritMultPct+100)/100)))`,
+'  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
+`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%`,
+`  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
 function copyDcResultText(){
 const r=S.dc._lastResult;if(!r)return;
@@ -7275,14 +7310,16 @@ const multi=S.dc._lastMultiResults;
 const lines=[`⚔ GGen Damage Simulator Result`,`Target: ${nName}`];
 if(multi&&multi.length>1){
 multi.forEach(m=>{
-const rr=m.result,ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
+const rr=m.result,ud=m.slot.atkUnitData,cd=m.slot.atkCharData,sl=m.slot;
 const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
+const wNm=_dcWeaponDisplayNameForSlot(ud,sl.wpnIdx);
 const npcHp=Math.max(0,rr.npcHp|0);
 const hpRemN=Math.max(0,npcHp-rr.normalDmg);
 const hpRemC=Math.max(0,npcHp-rr.critDmg);
 const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
 const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 lines.push(`--- Attacker ${m.idx+1}: ${uName} + ${cName}`);
+lines.push(`Weapon: ${wNm} (power ${fmtN(rr.weaponPower)})`);
 lines.push(`Normal Damage: ${fmtN(rr.normalDmg)}`);
 lines.push(`${rr.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')}: ${fmtN(rr.critDmg)}`);
 lines.push(`Hit Rate: ${rr.hitRate}%`);
@@ -7294,16 +7331,19 @@ if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.ad
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${rr.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`${t('dc_vigor_prefix')}: ${_dcVigorLabel(m.slot.mpLevel||'medium')}, Terrain: ${m.slot.terrainMode||'normal'}`);
+_dcCopyLinesDamageFormulas(rr).forEach(x=>lines.push(x));
 });
 }else{
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
 const uName=ud?ud.name:'?';const cName=cd?cd.name:'?';
+const wNm=_dcWeaponDisplayNameForSlot(ud,S.dc.wpnIdx);
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
 const pctN=npcHp>0?Math.min(100,(hpRemN/npcHp)*100):0;
 const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 lines.push(`Attacker: ${uName} + ${cName}`);
+lines.push(`Weapon: ${wNm} (power ${fmtN(r.weaponPower)})`);
 lines.push(`Normal Damage: ${fmtN(r.normalDmg)}`);
 lines.push(`${r.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')}: ${fmtN(r.critDmg)}`);
 lines.push(`Hit Rate: ${r.hitRate}%`);
@@ -7315,9 +7355,14 @@ if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.adva
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${r.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
+_dcCopyLinesDamageFormulas(r).forEach(x=>lines.push(x));
 }
 navigator.clipboard.writeText(lines.join('\n')).then(()=>{
-const m=document.getElementById('dcShareMsg');if(m){m.textContent='Copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
+const ov=document.getElementById('dcBattleStatsOverlay');
+let m=null;
+try{if(ov&&window.getComputedStyle(ov).display!=='none')m=document.getElementById('dcBattleStatsCopyMsg')}catch(_){}
+if(!m)m=document.getElementById('dcShareMsg');
+if(m){m.textContent='Copied to clipboard!';setTimeout(()=>{if(m.textContent==='Copied to clipboard!')m.textContent=''},2000)}
 });
 }
 function shareDcLink(){
