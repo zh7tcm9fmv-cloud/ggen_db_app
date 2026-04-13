@@ -12,6 +12,9 @@
  * Defender: Psycho Gundam, 40% DEF debuff → UnDef 15044
  *
  * Expected: normalDmg = 244907
+ *
+ * Unit-stat slice: FLOOR(FLOOR(atk/10)−FLOOR(def/10)) except when total DEF debuff% === 20
+ * (on-attack −20% weapons), then CEIL((atk/10)−(def/10)) — matches app.js calculateDamage.
  */
 const F = Math.floor;
 const C = Math.ceil;
@@ -40,8 +43,13 @@ function calcNormal({
   const wp = combatWpnPow(weaponPowerNominal, defDebuffPct, hasFinalWeaponOverride);
   const terrainCorrection = 1 - terrainPct / 100;
   const characterStatRatio = MX(0, charAtk - charDef) / 5000;
-  const unitDiffRaw = F(unitAtk / 10) - F(unitDefAfterDebuff / 10);
-  const unitStatRatio = MX(0, F(unitDiffRaw)) / 5000;
+  let unitStatRatio;
+  if ((defDebuffPct | 0) === 20) {
+    unitStatRatio = MX(0, C(unitAtk / 10 - unitDefAfterDebuff / 10)) / 5000;
+  } else {
+    const unitDiffRaw = F(unitAtk / 10) - F(unitDefAfterDebuff / 10);
+    unitStatRatio = MX(0, F(unitDiffRaw)) / 5000;
+  }
   const charSigmoid = 1 / (EXP((250 * (charDef - charAtk)) / 100000) + 1);
   const unitSigmoid = 1 / (EXP((25 * (unitDefAfterDebuff - unitAtk)) / 100000) + 1);
   const baseDamage = C(

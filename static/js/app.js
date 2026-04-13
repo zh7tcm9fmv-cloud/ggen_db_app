@@ -5037,20 +5037,21 @@ const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
 const atkShowPreTurn=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct,uEff.unitAtkExSquadBase);
 const atkShow=atkShowPreTurn;
-const advAtkFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitAtkExSquadBase)||0)*(advAtkPct|0)/100):0;
-const advDefFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,Number(uEff.unitDefExSquadBase)||0)*(advAtkPct|0)/100):0;
+const advOmitFlat=_dcAdvantageOmitGrowthFlatForDefNpc(S.dc.defNpc);
+const advAtkFlat=(advAtkPct|0)>0&&!advOmitFlat?Math.floor(Math.max(0,Number(uEff.unitAtkExSquadBase)||0)*(advAtkPct|0)/100):0;
+const advDefFlat=(advAtkPct|0)>0&&!advOmitFlat?Math.floor(Math.max(0,Number(uEff.unitDefExSquadBase)||0)*(advAtkPct|0)/100):0;
 const defShowAdv=_dcApplyUnitTurnBuffDefToMsDef(defShow+advDefFlat,ud);
 const unitTurnAtkOn=S.dc.unitTurnBuffAtk&&(utb.atkPct|0)>0;
 const unitTurnDefOn=S.dc.unitTurnBuffDef&&(utb.defPct|0)>0;
 const pairActive=(atkAfterPair!==atkS||defShow!==defS);
 const counterActive=(atkAfterCounter!==atkAfterPair);
-const advantageTagActive=(advAtkPct|0)>0&&advAtkFlat>0;
+const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&(advAtkFlat>0||advOmitFlat);
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
 const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="MS ATK: floor(base×(100+all ATK % including EX)/100)+option flat+supporter flat. This line is the delta from EX squad % only in that single floor.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'';
 const atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
-const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`:'';
+const atkAdvTitle=advantageTagActive?(advOmitFlat?` (Advantage vs Psycommu: MS ATK matches in-game; growth-line flat not added again)`:` (+${advAtkFlat} MS Attack: ${advAtkPct}% of growth line; in-game adds flat, not +${advAtkPct}% on total)`):'';
 const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>`;
 const defPairBuff=defShow!==defS;
 const spDefCls=(hDef||defPairBuff||advDefFlat>0||unitTurnDefOn||sheetBuffOn)?'dc-stat-val--buffed':'';
@@ -5126,7 +5127,7 @@ const unitTurnAtkOn=!!(S.dc.unitTurnBuffAtk&&(utb.atkPct|0)>0);
 const leaderOn=(uEff.leaderPct|0)>0;
 const pairOn=atkAfterPair!==atkS;
 const counterOn=atkAfterCounter!==atkAfterPair;
-const advOn=(advAtkPct|0)>0&&atkMid!==atkAfterCounter;
+const advOn=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&(_dcAdvantageOmitGrowthFlatForDefNpc(S.dc.defNpc)||atkMid!==atkAfterCounter);
 const sheetBuffMlGo=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
 const keepBuff=cpAtkBuff||sheetBuffMlGo||leaderOn||pairOn||counterOn||advOn||unitTurnAtkOn;
 if(keepBuff)main.classList.add('dc-stat-val--buffed');else main.classList.remove('dc-stat-val--buffed');
@@ -6612,6 +6613,12 @@ if(npc.unit)addArr(npc.unit.tags);
 if(npc.character)addArr(npc.character.tags);
 return out;
 }
+/** Defender has Psycommu tag — auto-enable Advantage vs these targets and omit duplicate growth-line ATK/DEF flat (sheet MS ATK already matches in-game). */
+function _dcNpcDefHasPsycommuTag(npc){
+if(!npc)return false;
+for(const t of _dcNpcTagTokenSet(npc)){if(t.includes('psycommu'))return true}
+return false;
+}
 function _dcCollectTargetTagRequirementNames(detail){
 const names=[];
 const pushC=(arr)=>{(arr||[]).forEach(c=>{if(c&&c.name)names.push(c.name)})};
@@ -6671,9 +6678,8 @@ const m=String(ab.name||'').match(/Advantage:\s*(.+?)\s+LV\s*\d/i);
 if(!m)return'';
 return m[1].trim();
 }
-function _dcAdvantageTagAtkPctFromAbilities(ud,npc){
+function _dcAdvantageTagAtkPctCore(ud,npc){
 if(!ud||ud._manual||!npc)return 0;
-if(S.dc.applyAdvantageEnemyTag===false)return 0;
 const defTags=_dcNpcTagTokenSet(npc);
 if(!defTags.size)return 0;
 let total=0;
@@ -6695,10 +6701,25 @@ if(_dcTagRequirementMatches(req,defTags))total+=pct;
 }
 return Math.min(100,total);
 }
+function _dcAdvantageTagAtkPctFromAbilities(ud,npc){
+if(S.dc.applyAdvantageEnemyTag===false)return 0;
+return _dcAdvantageTagAtkPctCore(ud,npc);
+}
+function _dcAdvantageOmitGrowthFlatForDefNpc(npc){
+return _dcNpcDefHasPsycommuTag(npc);
+}
+function _dcApplyAutoAdvantageForPsycommuDefender(){
+const ud=S.dc.atkUnitData,npc=S.dc.defNpc;
+if(!ud||ud._manual||!npc||!_dcUnitHasEnemyTagAdvantageAbility(ud))return;
+if(!_dcNpcDefHasPsycommuTag(npc))return;
+if(_dcAdvantageTagAtkPctCore(ud,npc)<=0)return;
+S.dc.applyAdvantageEnemyTag=true;
+}
 /** In-game Advantage: … adds floor(X% × growth MS Attack), not +X% on total MS Attack (see unit stat sheet). */
 function _dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advPct,rawGrowthAtk){
 const F=Math.floor,p=advPct|0;
 if(p<=0)return unitAtk;
+if(_dcAdvantageOmitGrowthFlatForDefNpc(S.dc.defNpc))return F(Math.max(0,Number(unitAtk)||0));
 const ua=F(Math.max(0,Number(unitAtk)||0));
 const rg=F(Math.max(0,Number(rawGrowthAtk)||0));
 return ua+F(rg*p/100);
@@ -6776,6 +6797,7 @@ return;
 }
 w.style.display='';
 cb.disabled=false;
+_dcApplyAutoAdvantageForPsycommuDefender();
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
 /** Green +lines under MS HP/ATK/DEF/MOB: % bucket (matches single floor in damage math), then flats. ATK % line excludes EX squad % (shown separately). */
@@ -6939,8 +6961,14 @@ let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
 
 const characterStatRatio=MX(0,charAtk-charDef)/5000;
+/** Unit slice: default FLOOR each tenth then subtract (matches Qubeley vs Psycho @ 40% DEF down). For 20% on-attack DEF down weapons, use CEIL on (UnAtk/10 − UnDef/10) per sheet / Patulia checks. */
+let unitStatRatio;
+if((defDebuffPct|0)===20){
+unitStatRatio=MX(0,C((unitAtk/10)-(unitDef/10)))/5000;
+}else{
 const unitDiffRaw=F(unitAtk/10)-F(unitDef/10);
-const unitStatRatio=MX(0,F(unitDiffRaw))/5000;
+unitStatRatio=MX(0,F(unitDiffRaw))/5000;
+}
 const charSigmoid=1/(EXP(250*(charDef-charAtk)/100000)+1);
 const unitSigmoid=1/(EXP(25*(unitDef-unitAtk)/100000)+1);
 const baseDamage=C((characterStatRatio+unitStatRatio+charSigmoid+unitSigmoid)*combatWeaponPower);
@@ -6989,7 +7017,7 @@ return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
-traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,advantageGrowthFlatOmitted:!!_dcAdvantageOmitGrowthFlatForDefNpc(npc),userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
 }
@@ -7241,7 +7269,7 @@ _dcCopyLinesWeaponTraitBonus(rr).forEach(x=>lines.push(x));
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
-if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
+if((rr.advantageTagAtkPct|0)>0)lines.push(rr.advantageGrowthFlatOmitted?`Advantage (enemy tag): active; growth-line flat omitted vs Psycommu-tagged defender (sheet MS ATK matches in-game).`:`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${rr.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`${t('dc_vigor_prefix')}: ${_dcVigorLabel(m.slot.mpLevel||'medium')}, Terrain: ${m.slot.terrainMode||'normal'}`);
@@ -7262,7 +7290,7 @@ _dcCopyLinesWeaponTraitBonus(r).forEach(x=>lines.push(x));
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
-if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
+if((r.advantageTagAtkPct|0)>0)lines.push(r.advantageGrowthFlatOmitted?`Advantage (enemy tag): active; growth-line flat omitted vs Psycommu-tagged defender (sheet MS ATK matches in-game).`:`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × growth MS Attack) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${r.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
