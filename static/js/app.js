@@ -2159,7 +2159,7 @@ _vigorCondThreshold:null,
 _activeSkills:{},
 mpLevel:'medium',
 terrainMode:'normal',terrain:0,
-finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,squadCondPct:0,atkCounterOwnAtk:false,applyAdvantageEnemyTag:true,
+finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,exSquadAtkPctExplicitZero:false,squadCondPct:0,atkCounterOwnAtk:false,applyAdvantageEnemyTag:true,
 unitTurnBuffAtk:false,unitTurnBuffDef:false,masterLeagueBuff:false,grandOffensiveBuff:false
 }));
 }
@@ -2178,7 +2178,7 @@ _vigorCondThreshold:S.dc._vigorCondThreshold||null,
 _activeSkills:S.dc._activeSkills||{},
 mpLevel:S.dc.mpLevel||'medium',
 terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
-finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
+finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,exSquadAtkPctExplicitZero:!!S.dc.exSquadAtkPctExplicitZero,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
 unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff
@@ -2203,7 +2203,7 @@ S.dc._vigorCondThreshold=slot._vigorCondThreshold;
 S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
 S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
 S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
-S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
+S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
@@ -2220,7 +2220,7 @@ function _dcSyncAttackerDomFromDc(){
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value=S.dc.finalWpnPow?String(S.dc.finalWpnPow):'';
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=String(S.dc.dmgIncrease||0);
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=String(S.dc.critDmgUp||0);
-const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=String(Math.min(20,Math.max(0,S.dc.exSquadAtkPct|0)));
+const exa=document.getElementById('dcExSquadAtkPct');if(exa){const x=S.dc.exSquadAtkPct|0;if(x>0)exa.value=String(Math.min(20,x));else if(S.dc.exSquadAtkPctExplicitZero&&_scIsQubeleyExCombo(S.dc.atkCharData,S.dc.atkUnitData))exa.value='0';else exa.value=''}
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa)acoa.checked=!!S.dc.atkCounterOwnAtk;
@@ -2300,14 +2300,14 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
 const fwp=document.getElementById('dcFinalWpnPow');if(fwp)fwp.value='';
 const di=document.getElementById('dcDmgIncrease');if(di)di.value=0;
 const cu=document.getElementById('dcCritDmgUp');if(cu)cu.value=0;
-const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value=0;
+const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value='';
 const sqc=document.getElementById('dcSquadCondPct');if(sqc)sqc.value=0;
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa){acoa.checked=false}
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=true;
@@ -2769,7 +2769,7 @@ if((sl.terrainMode||'normal')!=='normal')o.t=sl.terrainMode;
 if(sl.finalWpnPow)o.fwp=sl.finalWpnPow;
 if(sl.dmgIncrease)o.di=sl.dmgIncrease;
 if(sl.critDmgUp)o.cu=sl.critDmgUp;
-if(sl.exSquadAtkPct)o.exa=sl.exSquadAtkPct;
+if((sl.exSquadAtkPct|0)>0)o.exa=sl.exSquadAtkPct;else if(sl.exSquadAtkPctExplicitZero)o.exa=0;
 if(_dcSlotShouldPackSquadCond(sl))o.sqc=sl.squadCondPct|0;
 if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
 if(sl._wpnTraitHpPow)o.th=sl._wpnTraitHpPow;
@@ -2874,7 +2874,7 @@ else{slot.terrainMode='normal';slot.terrain=0}
 if(o.fwp!==undefined){const n=parseInt(o.fwp,10);if(Number.isFinite(n))slot.finalWpnPow=n}
 if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n)){slot.dmgIncrease=n;slot._dmgIncreasePacked=n}}
 if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critDmgUp=n;slot._critDmgUpPacked=n}}
-if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n))slot.exSquadAtkPct=Math.min(20,Math.max(0,n))}
+if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n)){slot.exSquadAtkPct=Math.min(20,Math.max(0,n));slot.exSquadAtkPctExplicitZero=(n===0)}}else slot.exSquadAtkPctExplicitZero=false;
 if(o.sqc!==undefined){const n=parseInt(o.sqc,10);if(Number.isFinite(n))slot.squadCondPct=Math.max(0,n);else slot.squadCondPct=0}
 else if(!o.atkM)slot._dcSquadCondShareMissing=1;
 if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitDistPow=n}
@@ -4925,16 +4925,39 @@ if(String(inp.value)!==String(cur))inp.value=String(cur);
 function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.dc);}
 function _dcEffectiveExSquadAtkPctFromCtx(ctx){
 const c=ctx||{};
-return _dcCharHasExSquadSynergyAbility(c.atkCharData,c.atkUnitData)?Math.min(20,Math.max(0,c.exSquadAtkPct|0)):0;
+if(!_dcCharHasExSquadSynergyAbility(c.atkCharData,c.atkUnitData))return 0;
+const el=typeof document!=='undefined'?document.getElementById('dcExSquadAtkPct'):null;
+if(!el){
+if(c.exSquadAtkPctExplicitZero)return 0;
+return _scIsQubeleyExCombo(c.atkCharData,c.atkUnitData)?20:Math.min(20,Math.max(0,c.exSquadAtkPct|0));
+}
+const rawStr=String(el.value).trim();
+if(rawStr==='0')return 0;
+if(rawStr!==''){
+const raw=parseInt(rawStr,10);
+return Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0;
+}
+return _scIsQubeleyExCombo(c.atkCharData,c.atkUnitData)?20:Math.min(20,Math.max(0,c.exSquadAtkPct|0));
 }
 function _dcUpdateExSquadAtkGroupVisibility(){
 const wrap=document.getElementById('dcExSquadAtkWrap');
 if(!wrap)return;
 const inp=document.getElementById('dcExSquadAtkPct');
 const cd=S.dc.atkCharData;
-const show=!!(cd&&!cd._manual&&_dcCharHasExSquadSynergyAbility(cd,S.dc.atkUnitData));
-if(show)wrap.style.removeProperty('display');
-else{wrap.style.display='none';S.dc.exSquadAtkPct=0;if(inp)inp.value='0';}
+const ud=S.dc.atkUnitData;
+const show=!!(cd&&!cd._manual&&_dcCharHasExSquadSynergyAbility(cd,ud));
+if(show){
+wrap.style.removeProperty('display');
+if(inp){
+const t=String(inp.value).trim();
+if(t===''&&_scIsQubeleyExCombo(cd,ud)){inp.value='20';S.dc.exSquadAtkPct=20;S.dc.exSquadAtkPctExplicitZero=false}
+}
+}else{
+wrap.style.display='none';
+S.dc.exSquadAtkPct=0;
+S.dc.exSquadAtkPctExplicitZero=false;
+if(inp)inp.value='';
+}
 }
 async function dcSwapAtkTransformUnit(){
 const u=S.dc.atkUnitData;
@@ -6237,7 +6260,7 @@ const fwpRaw=fwpEl&&String(fwpEl.value).trim()!==''?parseInt(fwpEl.value,10):NaN
 S.dc.finalWpnPow=Number.isFinite(fwpRaw)&&fwpRaw>0?fwpRaw:0;
 S.dc.dmgIncrease=parseInt(document.getElementById('dcDmgIncrease')?.value)||0;
 S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp')?.value)||0;
-{let v=0;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData,S.dc.atkUnitData)){const raw=parseInt(document.getElementById('dcExSquadAtkPct')?.value,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}S.dc.exSquadAtkPct=v;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value)!==String(S.dc.exSquadAtkPct))el.value=String(S.dc.exSquadAtkPct)}
+{let v=0;let exZ=false;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData,S.dc.atkUnitData)){const el=document.getElementById('dcExSquadAtkPct');const rawStr=el?String(el.value).trim():'';if(rawStr==='0'){v=0;exZ=true}else if(rawStr!==''){const raw=parseInt(rawStr,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}else if(_scIsQubeleyExCombo(S.dc.atkCharData,S.dc.atkUnitData))v=20;else v=0}S.dc.exSquadAtkPct=v;S.dc.exSquadAtkPctExplicitZero=exZ;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value).trim()===''&&v>0)el.value=String(v)}
 const _prevScEffAtk=S.dc.squadCondAtkPct|0,_prevScEffDef=S.dc.squadCondDefPct|0;
 if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData)){const el=document.getElementById('dcSquadCondPct');if(el){const raw=parseInt(el.value,10);S.dc.squadCondPct=Number.isFinite(raw)?Math.max(0,raw):0}}else S.dc.squadCondPct=0;
 _dcSyncSquadCondEffectiveFromState();
