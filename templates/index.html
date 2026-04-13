@@ -1217,6 +1217,25 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .lineage-filter-panel,.series-filter-panel{left:0;right:0;width:auto;max-width:calc(100vw - 24px);transform:none}
   .skill-filter-panel{max-width:calc(100vw - 24px)}
   #unitTerrainFilterPanel{max-width:min(calc(100vw - 24px),640px)}
+  /* Weapon debuff panel: absolute + wide min-width extends past viewport when body is overflow-x:hidden — pin to viewport like other large menus */
+  #unitWeaponDebuffFilterPanel{
+    position:fixed;
+    left:max(8px, env(safe-area-inset-left, 0px));
+    right:max(8px, env(safe-area-inset-right, 0px));
+    top:50%;
+    transform:translateY(-50%);
+    width:auto;
+    min-width:0!important;
+    max-width:none!important;
+    max-height:min(88vh, 620px);
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    z-index:250;
+    box-shadow:0 12px 40px rgba(0,0,0,.6);
+    border-radius:var(--radius-md);
+  }
+  .unit-debuff-grid-row{grid-template-columns:1fr;gap:8px}
   .unit-terrain-item{grid-template-columns:auto minmax(0,1fr) 28px;column-gap:7px;padding:8px 9px;font-size:12px}
   .unit-terrain-lv-wrap{width:28px}
 
