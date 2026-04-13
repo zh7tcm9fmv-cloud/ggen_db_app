@@ -6646,8 +6646,38 @@ def _npc_map_unit_line_is_squad_wide(line):
     return False
 
 
+def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc):
+    """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets."""
+    if not abilities:
+        return
+    keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+    per_npc.setdefault(nid, {k: 0 for k in keys})
+    row = per_npc[nid]
+    for ab in abilities:
+        for d in ab.get('details', []) or []:
+            txt = d.get('text', '') if isinstance(d, dict) else str(d)
+            if not txt or _char_trait_text_is_support_defense_action(txt):
+                continue
+            lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
+            for line in lines:
+                if _char_trait_line_is_squad_unit_effect(line, ab):
+                    continue
+                if _is_conditional_stat_text(line):
+                    continue
+                b = _extract_stat_percent_unit(line, skip_conditional=False)
+                if not b:
+                    continue
+                tgt = squad if _npc_map_unit_line_is_squad_wide(line) else row
+                for s, pct in b.items():
+                    if s in tgt:
+                        tgt[s] = tgt.get(s, 0) + pct
+
+
 def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
-    """Per eternal map stage: squad-wide % from all NPCs' unit abilities + each NPC's own non-squad lines.
+    """Per eternal map stage: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
+
+    Pilot character passives that buff squad MS stats (e.g. \"Increase squad ATK and DEF by 50%\") are included;
+    previously only unit abilities were parsed here.
 
     Multi-line trait text must be split; a single detail blob with a conditional tail must not zero out
     unconditional stat lines (e.g. \"Increase DEF by 15%.\\nWhen ...\").
@@ -6660,25 +6690,14 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
         nu = map_npc_unit_lookup.get(nid, [])
         if not nu:
             continue
-        per_npc.setdefault(nid, {k: 0 for k in keys})
-        for ab in resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')):
-            for d in ab.get('details', []) or []:
-                txt = d.get('text', '') if isinstance(d, dict) else str(d)
-                if not txt or _char_trait_text_is_support_defense_action(txt):
-                    continue
-                lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
-                for line in lines:
-                    if _char_trait_line_is_squad_unit_effect(line, ab):
-                        continue
-                    if _is_conditional_stat_text(line):
-                        continue
-                    b = _extract_stat_percent_unit(line, skip_conditional=False)
-                    if not b:
-                        continue
-                    tgt = squad if _npc_map_unit_line_is_squad_wide(line) else per_npc[nid]
-                    for s, pct in b.items():
-                        if s in tgt:
-                            tgt[s] = tgt.get(s, 0) + pct
+        _merge_map_npc_unit_stat_pct_from_abilities(
+            resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
+            nid, squad, per_npc)
+        nc = map_npc_character_lookup.get(nid, [])
+        if nc:
+            _merge_map_npc_unit_stat_pct_from_abilities(
+                resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
+                nid, squad, per_npc)
     return squad, per_npc
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
