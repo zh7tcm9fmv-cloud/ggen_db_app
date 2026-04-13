@@ -62,16 +62,22 @@ function calcNormal({
   return { normalDmg, battleDamage, baseDamage, combatWeaponPower: wp };
 }
 
-function defAfterDebuff(totalDef, pct) {
-  const u = totalDef;
-  const p = pct;
-  return MX(0, u - F((u * p) / 100));
+/** Matches app.js _dcApplyEnemyDefDebuffToDefenderUnitDef: debuff % applies to (total − bonus) only. */
+function defAfterEnemyDebuff(totalDef, bonusDefense, pct) {
+  const u = totalDef | 0;
+  const bon = MX(0, bonusDefense | 0);
+  const base = MX(0, u - bon);
+  const p = MX(0, Math.min(100, parseInt(pct, 10) || 0));
+  if (p <= 0 || u <= 0) return u;
+  const reduc = base > 0 ? F((base * p) / 100) : 0;
+  return MX(0, u - reduc);
 }
 
 const TARGET = 244907;
 const defTotal = 25072;
+const defBonusDefense = 0; /* Psycho scenario: no split; same as legacy total×p% */
 const defDebuffPct = 40;
-const unitDef = defAfterDebuff(defTotal, defDebuffPct);
+const unitDef = defAfterEnemyDebuff(defTotal, defBonusDefense, defDebuffPct);
 
 const scenario = {
   unitAtk: 23475,

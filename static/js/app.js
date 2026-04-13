@@ -5972,13 +5972,16 @@ for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.select
 renderDcDefStats();onDcParamChange();
 }
 
-/** DEF debuff: DEF − floor(DEF × p / 100). Matches in-game unit sheet (e.g. 40% on 25072 → 15044). Note: floor(DEF×(100−p)/100) can be 1 lower (15043) for the same inputs. */
-function _dcApplyDefDebuffToUnitDef(unitDef,pct){
-const F=Math.floor,MX=Math.max;
-const u=Number(unitDef)||0;
-const p=Math.max(0,Math.min(100,parseInt(pct,10)||0));
-if(p<=0||u<=0)return MX(0,u);
-return MX(0,u-F((u*p)/100));
+/** Weapon / manual “enemy DEF % down on this attack”: subtract floor(baseDef×p/100) from the defender’s **total** MS DEF, where baseDef is pre–map/team bonus (NPC) or pre–trait-bonus slice (database: stats total − bonus_amounts). In-game does not apply p% to buffed total — doing so inflated damage. */
+function _dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,pct){
+const F=Math.floor,MX=Math.max,MN=Math.min;
+const t=MX(0,Number(defUnit&&defUnit.stats_raw&&defUnit.stats_raw.Defense)||0);
+const bon=MX(0,Number(defUnit&&defUnit.bonus_amounts&&defUnit.bonus_amounts.Defense)||0);
+const base=MX(0,t-bon);
+const p=MX(0,MN(100,parseInt(pct,10)||0));
+if(p<=0||t<=0)return t;
+const reduc=base>0?F((base*p)/100):0;
+return MX(0,t-reduc);
 }
 /** Not shown in UI: when DEF debuff > 35%, combat uses nominal weapon power + 1 (only if not using final power override). Aligns preview vs sim for heavy debuffs. */
 function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
@@ -6043,7 +6046,7 @@ const defDeb=Math.min(100,manualDeb+wDeb);
 let defCardEternal='';
 if(defDeb>0){
 const defBefore=defTotal;
-const defAfter=_dcApplyDefDebuffToUnitDef(defBefore,defDeb);
+const defAfter=_dcApplyEnemyDefDebuffToDefenderUnitDef(u,defDeb);
 const defBonHtml=defBon>0?`<div class="stat-card-bonus" style="font-size:12px;color:var(--accent-green);margin-top:2px;">(+${fmtN(defBon)})</div>`:'';
 const debSub=(manualDeb>0&&wDeb>0)?`<span style="font-size:9px;color:var(--text-muted);display:block;margin-top:4px;line-height:1.25">${manualDeb}% field + ${wDeb}% weapon</span>`:'';
 defCardEternal=`<div class="stat-card has-cond-bonus"><div class="stat-card-label">${esc(tStat('Defense'))}</div><div class="stat-card-value has-bonus-val" style="display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:100%"><span>${fmtN(defBefore)}</span>${defBonHtml}<span style="color:#f87171;font-weight:800;font-size:15px">→ ${fmtN(defAfter)}</span><span style="font-size:10px;color:#f87171;font-weight:600">(${defDeb}% DEF debuff)</span>${debSub}</div></div>`;
@@ -6911,7 +6914,7 @@ let unitDef=defRaw;
 let charDef=defChar?(defChar.stats_raw?.Defense||0):0;
 let defDebuffPct=_dcManualPlusWeaponDefDebuffPct(wpn,S.dc.wpnLv);
 if(defDebuffPct>0){
-unitDef=_dcApplyDefDebuffToUnitDef(unitDef,defDebuffPct);
+unitDef=_dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,defDebuffPct);
 }
 
 const rawWpnPower=lvData.power;
@@ -7155,7 +7158,7 @@ if(!npc)return'';
 const u=npc.unit,ch=npc.character;
 const uDefRaw=u?(u.stats_raw?.Defense||0):0;
 const deb=r.defDebuffPct|0;
-const uDefEff=deb>0?_dcApplyDefDebuffToUnitDef(uDefRaw,deb):uDefRaw;
+const uDefEff=deb>0?_dcApplyEnemyDefDebuffToDefenderUnitDef(u,deb):uDefRaw;
 const cDef=ch?(ch.stats_raw?.Defense||0):0;
 const hp=u?(u.stats_raw?.HP||0):0;
 let h='<div class="dc-battle-stats-section"><h3>Defender</h3>';
