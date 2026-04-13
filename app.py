@@ -503,6 +503,8 @@ SERIES_ID_MOBILE_SUIT_GUNDAM = '10'
 SERIES_ID_08TH_MS_TEAM = '130'
 # m_series Id=2300 — "After War Gundam X" (SeriesSetId …02300). series:dx / series:12300 resolve here (all locales).
 SERIES_ID_AFTER_WAR_GUNDAM_X = '2300'
+# m_series Id=3700 — "Mobile Suit Gundam 00" (logo series_3700). Plain q=00 matches this series (JA names lack ASCII 00; TW/HK use "00" + CJK with no separator).
+SERIES_ID_MOBILE_SUIT_GUNDAM_00 = '3700'
 
 # Appended to unit list search text (all q_scope values, including name_id) for names that lack English
 # substring tokens (e.g. "god" → Burning Gundam).
@@ -7079,6 +7081,14 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
             return True
         return _search_substring_in_haystack(t, haystack_lower)
     if primary:
+        # All-digit tokens shorter than 4 characters: not adjacent to other ASCII digits (avoids matching inside ids).
+        # Use digit boundaries, not \\w boundaries, so "00鋼彈" / "00高達" (TW/HK) still match.
+        # Longer digit runs still use prefix/substring behavior below (id fragments; see search_query_matches_entity_id).
+        if t.isdigit() and len(t) < 4:
+            try:
+                return bool(re.search(r'(?<![0-9])' + re.escape(t) + r'(?![0-9])', haystack_lower, re.I))
+            except re.error:
+                return False
         if len(t) <= 2:
             try:
                 ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
@@ -7146,6 +7156,20 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
         if _search_query_is_dx_token_only(pq):
             if not eid_n or eid_n not in DOUBLE_X_DX_TOKEN_UNIT_IDS:
                 return False
+        elif (
+            len(pq['positive']) == 1
+            and pq['positive'][0] == '00'
+            and not pq['negative']
+            and not pq['series']
+            and not (pq.get('series_ids') or [])
+            and ser_list
+            and any(
+                normalize_id(x.get('id')) == SERIES_ID_MOBILE_SUIT_GUNDAM_00
+                for x in ser_list
+                if x and x.get('id')
+            )
+        ):
+            pass
         else:
             for p in pq['positive']:
                 for sub in _positive_segment_subterms(p):
