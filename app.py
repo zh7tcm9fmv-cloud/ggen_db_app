@@ -9563,7 +9563,8 @@ def _build_option_part_details(item, lc, ld, variant_tag_id=''):
         cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
         cond_tags = _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id)
         cond_line = _option_part_condition_line_from_tags(cond_tags, lc)
-        if cond_line and (
+        suppress_condition_line = normalize_id(opid) in ('400012', '400069')
+        if (not suppress_condition_line) and cond_line and (
             (not _option_part_conditional_phrase_likely_present(desc))
             or _option_part_desc_uses_placeholder_tag_phrase(desc)
         ):
