@@ -452,7 +452,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');loadCharacters(1)}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');loadUnits(1)}else loadSupporters(1)}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab);if(tab==='stages')syncStageSourceToolbar()}syncMainTabQueryParam(tab);}
+function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='calculator'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab);if(tab==='stages')syncStageSourceToolbar()}syncMainTabShortPath(tab);}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -680,6 +680,7 @@ let _detailPrefetchHoverTimer=null;
 let _detailPrefetchIntentWired=false;
 function syncHistoryToBrowsePath(path){try{const tail=(location.search||'')+(location.hash||'');history.replaceState(history.state||{},'',path+tail)}catch(_){}}
 const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
+const MAIN_TAB_PATH_SHORT={stages:'/st',calculator:'/cal',team_builder:'/tb',modifications:'/op'};
 function syncMainTabQueryParam(tab){
 try{
 const u=new URL(location.href);
@@ -687,6 +688,10 @@ const code=MAIN_TAB_URL_SHORT[tab];
 if(code)u.searchParams.set('tab',code);else u.searchParams.delete('tab');
 history.replaceState(history.state||{},'',u.pathname+u.search+u.hash);
 }catch(_){}
+}
+function syncMainTabShortPath(tab){
+const p=MAIN_TAB_PATH_SHORT[tab]||'/';
+syncHistoryToBrowsePath(p);
 }
 function urlTabParamBlocksBrowseShortPath(te){
 if(te==null||te==='')return false;
@@ -706,6 +711,8 @@ try{window.scrollTo(0,0)}catch(_){}
 return
 }
 if(raw==='ER'||raw==='stages'){switchTab('stages');return}
+if(raw==='DS'||raw==='calculator'){switchTab('calculator');return}
+if(raw==='TB'||raw==='team_builder'){switchTab('team_builder');return}
 if(raw==='op'||raw==='OP'||raw==='modifications'){
 if(/^\/op\/[^/]+$/.test(path)){
 const parsed=parseBrowseShortPath(location.pathname);
@@ -732,6 +739,10 @@ const raw=(pathname||'').replace(/\/$/,'');
 if(!raw||raw==='/')return null;
 const seg=raw.split('/').filter(Boolean);
 if(seg.length===1&&seg[0]==='new')return{kind:'latest_release'};
+if(seg.length===1&&seg[0]==='st')return{kind:'main_tab',tab:'stages'};
+if(seg.length===1&&seg[0]==='cal')return{kind:'main_tab',tab:'calculator'};
+if(seg.length===1&&seg[0]==='tb')return{kind:'main_tab',tab:'team_builder'};
+if(seg.length===1&&seg[0]==='op')return{kind:'main_tab',tab:'modifications'};
 if(seg.length!==2)return null;
 const a=seg[0],b=seg[1];
 let id;
@@ -748,6 +759,7 @@ function applyBrowseShortPathOnLoad(){
 const parsed=parseBrowseShortPath(location.pathname);
 if(!parsed)return false;
 if(parsed.kind==='latest_release'){switchTab('latest_release');tryLoadLatestRelease();return true}
+if(parsed.kind==='main_tab'){switchTab(parsed.tab);return true}
 if(parsed.kind==='option_part'){switchTab('modifications');openDetail('option_part',parsed.id,{skipHistoryReplace:true});try{window.scrollTo(0,0)}catch(_){}return true}
 if(parsed.kind==='detail'){const t=parsed.type,id=parsed.id;if(t==='unit')switchTab('units');else if(t==='character')switchTab('characters');else if(t==='supporter')switchTab('supporters');else if(t==='stage')switchTab('stages');openDetail(t,id,{skipHistoryReplace:true});return true}
 return false;
