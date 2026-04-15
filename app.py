@@ -9445,19 +9445,30 @@ def list_option_parts():
                 if dlid: desc = ltm.get(dlid, ''); (desc and details_list.append(desc.strip()))
             details = ' '.join(details_list) if details_list else ''
             lineage_ids = option_parts_lineage_map.get(opid, [])
-            tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
-            tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
-            tags_join = ', '.join(t['name'] for t in tags)
-            tags_str = ' '.join(t['name'] for t in tags)
-            if sq:
-                searchable = f"{name} {details} {tags_str}".lower()
-                tag_blob = [tags_str.lower()] if tags_str else []
-                if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid): continue
+            base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+            base_tags = merge_option_part_tags_with_series(base_tags, item.get('SeriesId') or item.get('seriesId'), ld)
+            variant_ids = _option_part_variant_tag_ids(opid)
+            if not variant_ids:
+                variant_ids = ['']
             if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
                 continue
             res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
             icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
-            rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join})
+            for vid in variant_ids:
+                tags = list(base_tags)
+                vnorm = normalize_id(vid)
+                if vnorm:
+                    vname = (ld.get('lineage_lookup', {}) or {}).get(vnorm, '')
+                    if vname and not any(normalize_id(t.get('id')) == vnorm for t in tags):
+                        tags.append({'id': vnorm, 'name': vname, 'type': 'unit', 'source': 'variant'})
+                tags_join = ', '.join(t['name'] for t in tags)
+                tags_str = ' '.join(t['name'] for t in tags)
+                if sq:
+                    searchable = f"{name} {details} {tags_str}".lower()
+                    tag_blob = [tags_str.lower()] if tags_str else []
+                    if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
+                        continue
+                rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -9517,18 +9528,26 @@ def _option_part_condition_line_from_tags(tags, lc):
     return f"When equipped to a Unit possessing: {', '.join(names)}."
 
 
-def _apply_option_part_condition_overrides(opid, active_cid, cond_tags, lc, lineage_lookup):
+def _option_part_variant_tag_ids(opid):
+    oid = normalize_id(opid)
+    # Requested: duplicate 400012 into two rows/variants by tag.
+    if oid == '400012':
+        return ['1006', '1005']  # Rival, Protagonist
+    return []
+
+
+def _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id):
     out = list(cond_tags or [])
-    # Requested content fix: option part 400012 should also include Protagonist (1005)
-    # as the second-tag condition output.
-    if normalize_id(opid) == '400012' and normalize_id(active_cid) == '1000121':
-        pname = lineage_lookup.get('1005', '')
-        if pname:
-            out = [{'id': '1005', 'name': pname, 'type': 'unit', 'source': 'override'}]
+    oid = normalize_id(opid)
+    vcid = normalize_id(active_cid)
+    vtag = normalize_id(variant_tag_id)
+    # Variant only applies to 400012 second trait condition.
+    if oid == '400012' and vcid == '1000121' and vtag in ('1005', '1006'):
+        out = [t for t in out if normalize_id((t or {}).get('id')) == vtag]
     return out
 
 
-def _build_option_part_details(item, lc, ld):
+def _build_option_part_details(item, lc, ld, variant_tag_id=''):
     ltm = ld.get('lang_text_map', {})
     llk = ld.get('lineage_lookup', {})
     snm = ld.get('series_name_map', {})
@@ -9545,7 +9564,7 @@ def _build_option_part_details(item, lc, ld):
         lines.append(desc)
         active_cid = tdata.get('active_cond_id', '0')
         cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
-        cond_tags = _apply_option_part_condition_overrides(opid, active_cid, cond_tags, lc, llk)
+        cond_tags = _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id)
         cond_line = _option_part_condition_line_from_tags(cond_tags, lc)
         if cond_line and (
             (not _option_part_conditional_phrase_likely_present(desc))
@@ -9635,7 +9654,7 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
     return out
 
 
-def _option_part_detail_row(item, lc):
+def _option_part_detail_row(item, lc, variant_tag_id=''):
     """Single option part JSON (same shape as list rows) for detail API."""
     if not isinstance(item, dict):
         return None
@@ -9649,10 +9668,15 @@ def _option_part_detail_row(item, lc):
     name = op_text_map.get(name_lid, '') if name_lid else ''
     if not name:
         name = f'Option Part {opid}'
-    details = _build_option_part_details(item, lc, ld)
+    details = _build_option_part_details(item, lc, ld, variant_tag_id)
     lineage_ids = option_parts_lineage_map.get(opid, [])
     tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
     tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
+    vtag = normalize_id(variant_tag_id)
+    if vtag != '0':
+        vname = (ld.get('lineage_lookup', {}) or {}).get(vtag, '')
+        if vname and not any(normalize_id(t.get('id')) == vtag for t in tags):
+            tags.append({'id': vtag, 'name': vname, 'type': 'unit', 'source': 'variant'})
     tags_join = ', '.join(t['name'] for t in tags)
     res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
     icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
@@ -9667,7 +9691,9 @@ def _option_part_detail_row(item, lc):
         'rarity_icon': RARITY_ICON_MAP.get(ri, ''),
         'thum': icon,
         'tags': tags,
+        'condition_tags': [t for t in tags if normalize_id((t or {}).get('id')) in ('1005', '1006')],
         'tags_join': tags_join,
+        'variant_tag_id': vtag if vtag != '0' else '',
         'acquisition_method_label': _option_part_acquisition_label(lc),
         'acquisition_methods': acquisition_methods,
         'lang': lc,
@@ -9678,10 +9704,11 @@ def _option_part_detail_row(item, lc):
 def get_option_part(option_part_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        variant_tag_id = normalize_id(request.args.get('variant_tag', '0'))
         item = _find_option_part_master_item(option_part_id)
         if not item:
             return jsonify({'error': 'Not found'}), 404
-        row = _option_part_detail_row(item, lc)
+        row = _option_part_detail_row(item, lc, variant_tag_id=variant_tag_id)
         if not row:
             return jsonify({'error': 'Not found'}), 404
         return jsonify(convert_image_urls(row))
