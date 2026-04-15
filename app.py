@@ -9710,6 +9710,9 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
     icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
     acquisition_methods = _build_option_part_acquisition_methods(opid, lc, ld, details)
+    # OP fix: all Haro option parts use this acquisition method label.
+    if 'haro' in (name or '').lower():
+        acquisition_methods = ['Limited Time Special Character Request']
     return {
         'id': opid,
         'name': name,
