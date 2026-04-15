@@ -9494,6 +9494,18 @@ def _option_part_conditional_phrase_likely_present(text):
     return any(h in blob for h in hints)
 
 
+def _option_part_desc_uses_placeholder_tag_phrase(text):
+    blob = (text or '').lower()
+    if not blob:
+        return False
+    return (
+        'specified tag' in blob
+        or 'specified tags' in blob
+        or ('指定' in (text or '') and 'タグ' in (text or ''))
+        or ('指定' in (text or '') and '標籤' in (text or ''))
+    )
+
+
 def _option_part_condition_line_from_tags(tags, lc):
     names = [str(t.get('name') or '').strip() for t in (tags or []) if str(t.get('name') or '').strip()]
     if not names:
@@ -9505,10 +9517,22 @@ def _option_part_condition_line_from_tags(tags, lc):
     return f"When equipped to a Unit possessing: {', '.join(names)}."
 
 
+def _apply_option_part_condition_overrides(opid, active_cid, cond_tags, lc, lineage_lookup):
+    out = list(cond_tags or [])
+    # Requested content fix: option part 400012 should also include Protagonist (1005)
+    # as the second-tag condition output.
+    if normalize_id(opid) == '400012' and normalize_id(active_cid) == '1000121':
+        pname = lineage_lookup.get('1005', '')
+        if pname:
+            out = [{'id': '1005', 'name': pname, 'type': 'unit', 'source': 'override'}]
+    return out
+
+
 def _build_option_part_details(item, lc, ld):
     ltm = ld.get('lang_text_map', {})
     llk = ld.get('lineage_lookup', {})
     snm = ld.get('series_name_map', {})
+    opid = normalize_id(item.get('Id') or item.get('id'))
     trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
     trait_ids = trait_set_traits_map.get(trait_set_id, [])
     lines = []
@@ -9521,8 +9545,12 @@ def _build_option_part_details(item, lc, ld):
         lines.append(desc)
         active_cid = tdata.get('active_cond_id', '0')
         cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
+        cond_tags = _apply_option_part_condition_overrides(opid, active_cid, cond_tags, lc, llk)
         cond_line = _option_part_condition_line_from_tags(cond_tags, lc)
-        if cond_line and not _option_part_conditional_phrase_likely_present(desc):
+        if cond_line and (
+            (not _option_part_conditional_phrase_likely_present(desc))
+            or _option_part_desc_uses_placeholder_tag_phrase(desc)
+        ):
             lines.append(cond_line)
     return '\n'.join(lines).strip()
 
@@ -9583,7 +9611,7 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
         tid = normalize_id(row.get('TargetId') or row.get('targetId'))
         if typ == '3':
             st_name = _find_eternal_stage_name(tid, ld)
-            methods.append(f'Clear stage "{st_name}" reward' if st_name else 'Eternal Road')
+            methods.append(f'Clear Eternal Road Expert Stage "{st_name}" reward' if st_name else 'Eternal Road')
         elif typ == '14':
             methods.append('G-Shop')
         elif typ == '19':
