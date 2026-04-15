@@ -4628,6 +4628,7 @@ supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_ski
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
 map_event_score_attack_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage.json"))
+tower_event_stage_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage.json"))
 stage_master_data = load_json(os.path.join(BASE_DIR, "m_stage.json"))
 stage_sortie_set_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_content.json"))
 stage_sortie_group_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_group_content.json"))
@@ -4657,6 +4658,7 @@ ssp_weap_enhance_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core
 ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_weapon_effect.json"))
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
+option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
 schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
 schedule_start_ms_by_id = {}
 for _sit in extract_data_list(schedule_master_data):
@@ -5205,6 +5207,7 @@ for lang_code, paths in LANG_PATHS.items():
     supporter_text = load_json(os.path.join(lang_dir, "m_supporter.json")); supporter_leader_text = load_json(os.path.join(lang_dir, "m_supporter_leader_skill_content.json"))
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
     stage_lang_text = load_json(os.path.join(lang_dir, "m_eternal_road_stage.json")); stage_battle_condition_text_lang = load_json(os.path.join(lang_dir, "m_stage_battle_condition_text.json"))
+    tower_stage_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
@@ -5218,6 +5221,7 @@ for lang_code, paths in LANG_PATHS.items():
     supp_leader_tm = create_lang_text_map(supporter_leader_text) if supporter_leader_text else {}
     supp_active_tm = create_lang_text_map(supporter_active_text) if supporter_active_text else {}
     stage_text_map = create_lang_text_map(stage_lang_text) if stage_lang_text else {}
+    tower_stage_text_map = create_lang_text_map(tower_stage_lang_text) if tower_stage_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
     for item in extract_data_list(stage_battle_condition_text_lang):
@@ -5310,7 +5314,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_stage_text_map': tower_stage_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 # Filled by _build_browse_list_performance_caches() after stat helpers are defined.
@@ -9478,6 +9482,131 @@ def _find_option_part_master_item(op_id_raw):
     return None
 
 
+def _option_part_conditional_phrase_likely_present(text):
+    blob = (text or '').lower()
+    if not blob:
+        return False
+    hints = (
+        ' when ', ' if ', '[condition',
+        'when equipped',
+        '當', '装备', '裝備', '時', '条件',
+    )
+    return any(h in blob for h in hints)
+
+
+def _option_part_condition_line_from_tags(tags, lc):
+    names = [str(t.get('name') or '').strip() for t in (tags or []) if str(t.get('name') or '').strip()]
+    if not names:
+        return ''
+    if lc in ('TW', 'HK'):
+        return f"裝備於擁有以下標籤的機體時：{', '.join(names)}"
+    if lc in ('JA', 'JP'):
+        return f"以下タグを持つユニット装備時：{', '.join(names)}"
+    return f"When equipped to a Unit possessing: {', '.join(names)}."
+
+
+def _build_option_part_details(item, lc, ld):
+    ltm = ld.get('lang_text_map', {})
+    llk = ld.get('lineage_lookup', {})
+    snm = ld.get('series_name_map', {})
+    trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+    trait_ids = trait_set_traits_map.get(trait_set_id, [])
+    lines = []
+    for tid in trait_ids:
+        tdata = trait_data_map.get(tid, {})
+        dlid = tdata.get('desc_lang_id', '')
+        desc = (ltm.get(dlid, '') or '').strip() if dlid else ''
+        if not desc:
+            continue
+        lines.append(desc)
+        active_cid = tdata.get('active_cond_id', '0')
+        cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
+        cond_line = _option_part_condition_line_from_tags(cond_tags, lc)
+        if cond_line and not _option_part_conditional_phrase_likely_present(desc):
+            lines.append(cond_line)
+    return '\n'.join(lines).strip()
+
+
+def _find_tower_event_stage_name(target_id, ld):
+    tid = normalize_id(target_id)
+    ttm = ld.get('tower_stage_text_map', {}) or {}
+    for row in extract_data_list(tower_event_stage_data or []):
+        if not isinstance(row, dict):
+            continue
+        rid = normalize_id(row.get('Id') or row.get('id'))
+        if rid != tid:
+            continue
+        nlid = normalize_id(row.get('StageNameLanguageId') or row.get('stageNameLanguageId'))
+        return (ttm.get(nlid, '') or '').strip()
+    return ''
+
+
+def _find_eternal_stage_name(target_id, ld):
+    sid = normalize_id(target_id)
+    est = eternal_stage_map.get(sid, {})
+    nlid = normalize_id(est.get('stage_name_lang_id') if isinstance(est, dict) else '0')
+    return (ld.get('stage_text_map', {}) or {}).get(nlid, '').strip()
+
+
+def _extract_fierce_enemy_name(detail_text, lc):
+    txt = str(detail_text or '').strip()
+    if not txt:
+        return ''
+    if lc in ('TW', 'HK'):
+        m = re.search(r'裝備於(.+?)時', txt)
+        return m.group(1).strip() if m else ''
+    if lc in ('JA', 'JP'):
+        m = re.search(r'(.+?)に装備時', txt)
+        return m.group(1).strip() if m else ''
+    m = re.search(r'when equipped to\s+(.+?)(?:\.|$)', txt, flags=re.IGNORECASE)
+    return m.group(1).strip() if m else ''
+
+
+def _option_part_acquisition_label(lc):
+    if lc in ('TW', 'HK'):
+        return '獲取方式'
+    if lc in ('JA', 'JP'):
+        return '入手方法'
+    return 'Acquisition method'
+
+
+def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
+    methods = []
+    oid = normalize_id(opid)
+    for row in extract_data_list(option_parts_acquisition_method_data or []):
+        if not isinstance(row, dict):
+            continue
+        rid = normalize_id(row.get('OptionPartsId') or row.get('optionPartsId'))
+        if rid != oid:
+            continue
+        typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
+        tid = normalize_id(row.get('TargetId') or row.get('targetId'))
+        if typ == '3':
+            st_name = _find_eternal_stage_name(tid, ld)
+            methods.append(f'Clear stage "{st_name}" reward' if st_name else 'Eternal Road')
+        elif typ == '14':
+            methods.append('G-Shop')
+        elif typ == '19':
+            methods.append('Story Event Reward')
+        elif typ == '21':
+            st_name = _find_tower_event_stage_name(tid, ld)
+            methods.append(f'Clear Stage "{st_name}"' if st_name else 'Tower Event')
+        elif typ == '22':
+            enemy_name = _extract_fierce_enemy_name(detail_text, lc)
+            if enemy_name:
+                methods.append(f'Clear Stage "Fierce Enemy Assault Vs. {enemy_name} (Challenge) Level 8"')
+            else:
+                methods.append('Fierce Enemy Assault (Challenge) Level 8')
+    # Keep stable order while deduplicating.
+    seen = set()
+    out = []
+    for m in methods:
+        if m not in seen:
+            seen.add(m)
+            out.append(m)
+    return out
+
+
 def _option_part_detail_row(item, lc):
     """Single option part JSON (same shape as list rows) for detail API."""
     if not isinstance(item, dict):
@@ -9487,29 +9616,19 @@ def _option_part_detail_row(item, lc):
         return None
     ld = get_lang_data(lc)
     op_text_map = ld.get('op_text_map', {})
-    ltm = ld.get('lang_text_map', {})
     ri = str(item.get('RarityTypeIndex') or 1)
     name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
     name = op_text_map.get(name_lid, '') if name_lid else ''
     if not name:
         name = f'Option Part {opid}'
-    trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
-    trait_ids = trait_set_traits_map.get(trait_set_id, [])
-    details_list = []
-    for tid in trait_ids:
-        tdata = trait_data_map.get(tid, {})
-        dlid = tdata.get('desc_lang_id', '')
-        if dlid:
-            desc = ltm.get(dlid, '')
-            if desc:
-                details_list.append(desc.strip())
-    details = ' '.join(details_list) if details_list else ''
+    details = _build_option_part_details(item, lc, ld)
     lineage_ids = option_parts_lineage_map.get(opid, [])
     tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
     tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
     tags_join = ', '.join(t['name'] for t in tags)
     res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
     icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
+    acquisition_methods = _build_option_part_acquisition_methods(opid, lc, ld, details)
     return {
         'id': opid,
         'name': name,
@@ -9521,6 +9640,8 @@ def _option_part_detail_row(item, lc):
         'thum': icon,
         'tags': tags,
         'tags_join': tags_join,
+        'acquisition_method_label': _option_part_acquisition_label(lc),
+        'acquisition_methods': acquisition_methods,
         'lang': lc,
     }
 
