@@ -9529,10 +9529,7 @@ def _option_part_condition_line_from_tags(tags, lc):
 
 
 def _option_part_variant_tag_ids(opid):
-    oid = normalize_id(opid)
-    # Requested: duplicate 400012 into two rows/variants by tag.
-    if oid == '400012':
-        return ['1006', '1005']  # Rival, Protagonist
+    # No synthetic duplicates by default.
     return []
 
 
@@ -9574,6 +9571,30 @@ def _build_option_part_details(item, lc, ld, variant_tag_id=''):
     return '\n'.join(lines).strip()
 
 
+def _collect_option_part_condition_tags(item, lc, ld, variant_tag_id=''):
+    llk = ld.get('lineage_lookup', {})
+    snm = ld.get('series_name_map', {})
+    opid = normalize_id(item.get('Id') or item.get('id'))
+    trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+    trait_ids = trait_set_traits_map.get(trait_set_id, [])
+    out = []
+    seen = set()
+    for tid in trait_ids:
+        tdata = trait_data_map.get(tid, {})
+        active_cid = tdata.get('active_cond_id', '0')
+        cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
+        cond_tags = _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id)
+        for tg in cond_tags:
+            if not isinstance(tg, dict):
+                continue
+            k = (normalize_id(tg.get('id')), str(tg.get('name') or '').strip())
+            if (k[0] == '0' and not k[1]) or k in seen:
+                continue
+            seen.add(k)
+            out.append({'id': normalize_id(tg.get('id')), 'name': str(tg.get('name') or '').strip(), 'type': tg.get('type') or 'unit', 'source': tg.get('source') or 'condition'})
+    return out
+
+
 def _find_tower_event_stage_name(target_id, ld):
     tid = normalize_id(target_id)
     ttm = ld.get('tower_stage_text_map', {}) or {}
@@ -9605,8 +9626,14 @@ def _extract_fierce_enemy_name(detail_text, lc):
     if lc in ('JA', 'JP'):
         m = re.search(r'(.+?)に装備時', txt)
         return m.group(1).strip() if m else ''
-    m = re.search(r'when equipped to\s+(.+?)(?:\.|$)', txt, flags=re.IGNORECASE)
-    return m.group(1).strip() if m else ''
+    for line in txt.splitlines():
+        if 'when equipped to' not in line.lower():
+            continue
+        name = re.sub(r'^.*when equipped to\s+', '', line, flags=re.IGNORECASE).strip()
+        name = name.rstrip('.').strip()
+        if name:
+            return name
+    return ''
 
 
 def _option_part_acquisition_label(lc):
@@ -9672,6 +9699,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     lineage_ids = option_parts_lineage_map.get(opid, [])
     tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
     tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
+    condition_tags = _collect_option_part_condition_tags(item, lc, ld, variant_tag_id)
     vtag = normalize_id(variant_tag_id)
     if vtag != '0':
         vname = (ld.get('lineage_lookup', {}) or {}).get(vtag, '')
@@ -9691,7 +9719,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
         'rarity_icon': RARITY_ICON_MAP.get(ri, ''),
         'thum': icon,
         'tags': tags,
-        'condition_tags': [t for t in tags if normalize_id((t or {}).get('id')) in ('1005', '1006')],
+        'condition_tags': condition_tags,
         'tags_join': tags_join,
         'variant_tag_id': vtag if vtag != '0' else '',
         'acquisition_method_label': _option_part_acquisition_label(lc),
