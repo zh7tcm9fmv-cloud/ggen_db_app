@@ -3267,6 +3267,15 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 60400002,
+    "DefaultCharacterId": 1604000300,
+    "SortOrder": 60400002,
+    "SeriesId": 6040,
+    "DescriptionLanguageId": 100200001604000300,
+    "ScheduleId": 2604309901,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 70010001,
     "DefaultCharacterId": 1700000100,
     "SortOrder": 70010001,

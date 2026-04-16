@@ -70,5 +70,29 @@
     "MapEventBuffTargetTypeIndex": 1,
     "TargetId": 1082,
     "MapEventPanelTraitRuleSetId": 24000101001
+  },
+  {
+    "Id": 24000201,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 3700,
+    "MapEventPanelTraitRuleSetId": 24000201001
+  },
+  {
+    "Id": 24000202,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1132,
+    "MapEventPanelTraitRuleSetId": 24000201001
+  },
+  {
+    "Id": 24000203,
+    "MapEventBuffTargetTypeIndex": 2,
+    "TargetId": 5010,
+    "MapEventPanelTraitRuleSetId": 24000201001
+  },
+  {
+    "Id": 24000204,
+    "MapEventBuffTargetTypeIndex": 1,
+    "TargetId": 1133,
+    "MapEventPanelTraitRuleSetId": 24000201001
   }
 ]

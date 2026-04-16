@@ -200,6 +200,10 @@
     "value": "Char's Zaku I"
   },
   {
+    "id": 110100001003000200,
+    "value": "Char's Zaku II (THE ORIGIN)"
+  },
+  {
     "id": 110100001003000250,
     "value": "Char's Zaku II (THE ORIGIN) (EX)"
   },
@@ -1130,6 +1134,50 @@
   {
     "id": 110100001085000310,
     "value": "Xeku Eins"
+  },
+  {
+    "id": 110100001085000450,
+    "value": "Ex-S Gundam (EX)"
+  },
+  {
+    "id": 110100001085000910,
+    "value": "FAZZ"
+  },
+  {
+    "id": 110100001085001010,
+    "value": "Gundam Mk-V"
+  },
+  {
+    "id": 110100001085001110,
+    "value": "Xeku Zwei"
+  },
+  {
+    "id": 110100001085001210,
+    "value": "Z'od-iacok"
+  },
+  {
+    "id": 110100001085001310,
+    "value": "Zeta Plus C1"
+  },
+  {
+    "id": 110100001085001410,
+    "value": "Zeta Plus C1 [Waverider]"
+  },
+  {
+    "id": 110100001085001710,
+    "value": "Nouvelle GM III"
+  },
+  {
+    "id": 110100001085001810,
+    "value": "Nero"
+  },
+  {
+    "id": 110100001085001910,
+    "value": "Gaza E"
+  },
+  {
+    "id": 110100001085002010,
+    "value": "Gaza E [MA Form]"
   },
   {
     "id": 110100001095000100,
@@ -3144,6 +3192,10 @@
     "value": "Gundam Astray Blue Frame"
   },
   {
+    "id": 110100001305000300,
+    "value": "Gundam Astray Gold Frame Amatsu Mina"
+  },
+  {
     "id": 110100001305000350,
     "value": "Gundam Astray Gold Frame Amatsu Mina (EX)"
   },
@@ -3609,6 +3661,14 @@
   },
   {
     "id": 110100001370000300,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110100001370000360,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110100001370000370,
     "value": "Gundam Dynames"
   },
   {
@@ -5088,6 +5148,10 @@
     "value": "Gundam Pharact (Season 2)"
   },
   {
+    "id": 110100001501002450,
+    "value": "Gundam Pharact (Season 2) (EX)"
+  },
+  {
     "id": 110100001501002500,
     "value": "Michaelis (Season 2)"
   },
@@ -6200,6 +6264,10 @@
     "value": "The result of a desire for the perfection of a humanoid mobile weapon equipped with a compact fusion reactor, the previously developed MS-04 Bugu ultimately proved too expensive to mass produce.\nOwing to these circumstances, the mobile suit was redesigned for mass production and combat deployment, becoming the MS-05 Zaku I."
   },
   {
+    "id": 110200001003000200,
+    "value": "The improved version of the MS-06F Zaku II piloted by Char Aznable at the Battle of Loum.\nThis commander type mobile suit is painted Char's signature red, and its head is adorned with a decorative horn.\nDespite the associated risks, Char arranged for its limiter to be removed, allowing him to utilize the unit's thrust capabilities to their fullest."
+  },
+  {
     "id": 110200001003000250,
     "value": "The improved version of the MS-06F Zaku II piloted by Char Aznable at the Battle of Loum.\nThis commander type mobile suit is painted Char's signature red, and its head is adorned with a decorative horn.\nDespite the associated risks, Char arranged for its limiter to be removed, allowing him to utilize the unit's thrust capabilities to their fullest."
   },
@@ -6974,6 +7042,50 @@
   {
     "id": 110200001085000300,
     "value": "The first machine developed by the Federation Forces at the asteroid base Pezun as part of the X series, a plan for the creation of next-generation general-purpose mobile suits.\nAs an MS, it used orthodox technologies to check its total balance and clearances from every angle, giving it well-balanced performance as well as good handling and operation.\nHowever, its greatest feature is the ability to use a wide variety of options such as weapons and search units, thanks to its high-output generator.\nIts basic forms are the \"first armament\" with handheld beam weapons, the \"second armament\" for long-range attack, and the \"third armament\" equipped with projectile weapons.\nBy selecting the right parts, it can adapt to any role and match the performance of a specialized MS.\nThis unit represents the third armament, equipped with handheld projectile weapons.\nIt was used mainly by the rebellious New Desides, formerly a Federation training corps."
+  },
+  {
+    "id": 110200001085000450,
+    "value": "A heavily armed form of the Federation Forces prototype transformable mobile suit S Gundam, equipped with a set of enhancement parts.\nThe extra parts on its chest include an I-Field generator that nullifies beam weapons, and it also has quasi-psycommu remote weapons called reflector incoms that use I-Fields to redirect the beams fired by its own beam smartgun.\nThis machine is superior to the S Gundam in all respects.\nAdditionally, it can change into a G-Cruiser form that has enough thruster output to escape the atmosphere, as well as land and take off from the lunar surface.\nThis allows it to operate as a long-range mobile armor.\nAlthough the Ex-S Gundam weighs over 160 tons, its increased thrust and many stabilators give it excellent mobility."
+  },
+  {
+    "id": 110200001085000900,
+    "value": "A prototype machine created as part of the AEUG's Project Zeta to test and evaluate the full armor system developed for the transformable mobile suit ZZ Gundam.\nBecause this machine was meant only to test performance in Full Armor form, it omitted the docking and separation mechanisms of the ZZ Gundam.\nThe high mega cannons in its head and abdomen were also dummies used only to check the machine's balance.\nHowever, thanks to the many missiles housed in its extra chest and arm armor in addition to the double beam rifle on its right arm, this machine was a support MS with overwhelming firepower as well as heavy armor. Its main weapon, the hyper mega cannon, was one of the most devastating weapons that could be carried by a single MS.\nAlthough this was an evaluation testbed, it still had high performance, and so a few units were produced and assigned to the Federation's elite Task Force Alpha.\nHowever, the quality of its armor materials was one rank below the actual Full Armor ZZ Gundam, and its extra armor was fixed in place and could not be detached."
+  },
+  {
+    "id": 110200001085001000,
+    "value": "A mobile suit equipped with a quasi-Psycommu system, developed by the Federation Forces' Augusta Laboratory as a smaller and cheaper version of the transformable Newtype mobile armor Psycho Gundam.\nThough it carries the Gundam name, very little of this machine's appearance or design concept resembles previous Gundam types.\nThat said, its unique form achieved a level of modularity unprecedented in a Federation MS, allowing for easier maintenance and replacement of the quasi-Psycommu system.\nIts shoulders contain distinctive quasi-Psycommu remote weapons known as Incoms, which can be used by normal pilots rather than just Newtypes or Cyber-Newtypes.\nThis lets it perform all-range attacks that target enemies from different angles.\nThough this machine was being developed by the Titans, they collapsed prior to its rollout, and development was then taken over by the regular Federation Forces.\nIt subsequently fell into the hands of the rebellious New Desides, formerly a Federation training corps.\nOf the three prototype units, one was given to Axis after the end of the Gryphios War, becoming the basis for the Doven Wolf."
+  },
+  {
+    "id": 110200001085001100,
+    "value": "This machine was developed by the Federation Forces at the asteroid base Pezun as a successor to the general-purpose, mass-produced mobile suit Xeku Eins.\nThe goal was to create the ultimate combination of mobility and heavy armaments.\nA focus on high output and large size made it much larger than a normal MS, with a form that was hard to describe as humanoid.\nIn fact, this machine should probably have been developed as a mobile armor.\nDespite its full weight of over a hundred and fifty tons, its thruster output and many attitude control verniers gave it surprisingly high mobility and maneuverability.\nAlso, like the Xeku Eins, it could carry an abundance of optional equipment on its hardpoints to adapt to various roles.\nThis machine was used by the rebellious New Desides, formerly a Federation training corps, and fought in battles such as the one at the lunar city of Ayers."
+  },
+  {
+    "id": 110200001085001200,
+    "value": "A massive mobile armor measuring over two hundred meters in length, developed by the Neo Zeon forces as a low-orbital supremacy weapon for use in the invasion of Earth.\nThe machine itself functions as a huge mega particle cannon, with destructive power surpassing that of any other beam weapon apart from the Colony Laser.\nThanks to its incredible performance, it can rush to any point in low Earth orbit to destroy enemies with its enormous beam cannon, or separate into two \"Zoon\" units armed with wired beam claws that contain large mega particle cannons.\nIn the latter form, it can even engage in melee combat.\nHowever, it proved impossible to fix the problems in the cooling system that could result in an energy capacitor overload during sustained use of the large mega particle cannon.\nOnce its docking and separation features, the deflection and focusing of its main cannon, and atmospheric maneuvering had all been fully tested, the machine was slated to be decommissioned.\nInstead, however, it was handed over to the rebellious New Desides."
+  },
+  {
+    "id": 110200001085001300,
+    "value": "A further redesign of the transformable mobile suit Zeta Plus A1, which was developed to provide the AEUG support organization Karaba with higher-performance machines and increased air power.\nThis version was redesigned yet again for space combat, with life support and cooling systems for use in the vacuum, improved engines and propellant storage, and four small thermonuclear jet engines installed between its wing binders and tail stabilator.\nThis gave it efficient flight performance in space.\nThe machine was also armed with a high-output beam smartgun and powerful beam cannons on its thighs.\nFor a transformable MS, it was extremely easy to produce, and several units were assigned to the Federation's elite Task Force Alpha."
+  },
+  {
+    "id": 110200001085001400,
+    "value": "-"
+  },
+  {
+    "id": 110200001085001700,
+    "value": "An upgraded version of the general-purpose, mass-produced mobile suit GM that was developed by the Federation Forces during the One Year War.\nFollowing the original GM produced at the end of the war, and the minor changes that went into the GM II, this was a newly designed mainline mass production type.\nLike the Federation's general-purpose, mass-produced GM III, this machine actively incorporated new technologies, such as a backpack identical to that of the Gundam Mk-II, while retaining its original ease of production.\nThis gave it better mobility and maneuverability than previous mass-produced MSs, and its armaments also included optional weapons, such as shoulder missile pods and large missile launchers on its waist.\nThe major differences from the standard GM III were an increased ammunition supply for its Vulcans, a newly designed head with enhanced sensors, and a total of four chest ducts. As a result, this machine was even better than the GM III."
+  },
+  {
+    "id": 110200001085001800,
+    "value": "A mass-produced mobile suit of the GM series, based on the so-called Anaheim Gundams that were developed by Anaheim Electronics Co. and given codenames using Greek letters.\nThis simplified machine was created from the upper body of the Lambda Gundam and the lower body of the Iota Gundam, making it a relatively high-class mass production type.\nIt boasted performance surpassing that of previous mainline MSs, and could carry binders on its shoulders, making it extensible and versatile.\nIt was produced in small numbers and assigned to the Federation's elite Task Force Alpha."
+  },
+  {
+    "id": 110200001085001900,
+    "value": "A transformable mobile suit based on the Gaza C developed independently by Axis.\nThanks to its emphasis on cruising ability in MA form, it can also function as an SFS (Sub-Flight System).\nThis machine was assigned to vessels like the super-heavy battleship Gwadan at the end of the Gryphios War, but because its parts were not as compatible as the rest of the Gaza series, only a small number were produced."
+  },
+  {
+    "id": 110200001085002000,
+    "value": "-"
   },
   {
     "id": 110200001095000100,
@@ -8780,6 +8892,10 @@
     "value": "One of the Gundam Astray series of prototype Mobile Suits developed by Morgenroete Inc.(an Orb Company) utilizing misappropriated GAT-X series data. \nThey never adopted Phase Shift Armor, but by utilizing a foam metal for the armor and cutting back considerably on armor bulk, the Blue Frame came out much lighter, giving it an incredible level of agility. \nIt also enabled the use of Beam Weapons that never made it to full adoption by ZAFT Mobile Suits at the time. This is the third of the Gundam Astrays, intended to be used for testing modular options. Its on-board OS contains data pertaining to add-on parts. \nIt was built in the neutral colony Heliopolis, but when the colony was destroyed in a battle between ZAFT's Creuset Team and the Earth Alliance's forces, it was recovered by Lowe Guele of the Junk Guild. Later, it was transferred to the ownership of Gai Murakumo, leader of the mercenary band Serpent Tail, who put it to great use in his battles against the Earth Alliance and ZAFT.\""
   },
   {
+    "id": 110200001305000300,
+    "value": "The overhauled Gundam Astray Gold Frame Amatsu.\nThe Gundam Astray Gold Frame Amatsu was moderately damaged in battle against the Red Frame and Blue Frame,after which it received an overhaul at Ame-no-Mihashira,an Orb union space station.\nIn addition to the Totsuka-no-Tsurugi models of solid swords stored in its torso, it had a close combat claw called the Tsumuha-no-Tachi installed on its left arm,among other extra armaments intended to shore it up in melee combat.\nIt encountered the Regenerate Gundam on a test run,leading to a fight where it got its legs destroyed.\nAfter that, it had armor added to the fronts of its legs, and its feet were swapped out for high-heeled feet.\nThe name Mina comes from the name of its pilot,Rondo Mina Sahaku."
+  },
+  {
     "id": 110200001305000350,
     "value": "The overhauled Gundam Astray Gold Frame Amatsu.\nThe Gundam Astray Gold Frame Amatsu was moderately damaged in battle against the Red Frame and Blue Frame,after which it received an overhaul at Ame-no-Mihashira,an Orb union space station.\nIn addition to the Totsuka-no-Tsurugi models of solid swords stored in its torso, it had a close combat claw called the Tsumuha-no-Tachi installed on its left arm,among other extra armaments intended to shore it up in melee combat.\nIt encountered the Regenerate Gundam on a test run,leading to a fight where it got its legs destroyed.\nAfter that, it had armor added to the fronts of its legs, and its feet were swapped out for high-heeled feet.\nThe name Mina comes from the name of its pilot,Rondo Mina Sahaku."
   },
@@ -9217,6 +9333,14 @@
   },
   {
     "id": 110200001370000300,
+    "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
+  },
+  {
+    "id": 110200001370000360,
+    "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
+  },
+  {
+    "id": 110200001370000370,
     "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
   },
   {
@@ -10456,6 +10580,10 @@
     "value": "Its twin beam calivers can also be combined into a beam musket for even greater firepower.\nIt made an appearance in the Rumble Ring."
   },
   {
+    "id": 110200001501002450,
+    "value": "Its twin beam calivers can also be combined into a beam musket for even greater firepower.\nIt made an appearance in the Rumble Ring."
+  },
+  {
     "id": 110200001501002500,
     "value": "Equipped with additional weaponry: the Javelin Bracer, a large lance integrated with a retractable dagger, on its left arm; the Drill Javelin, a wired projectile; and the Strike Brace, which has a built-in beam machine gun.\nIt fought against Guel in Episode 20."
   },
@@ -11596,6 +11724,10 @@
     "value": "Char's Zaku I"
   },
   {
+    "id": 110300001003000200,
+    "value": "Char's Zaku II (THE ORIGIN)"
+  },
+  {
     "id": 110300001003000250,
     "value": "Char's Zaku II (THE ORIGIN) (EX)"
   },
@@ -12526,6 +12658,50 @@
   {
     "id": 110300001085000310,
     "value": "Xeku Eins"
+  },
+  {
+    "id": 110300001085000450,
+    "value": "Ex-S Gundam (EX)"
+  },
+  {
+    "id": 110300001085000910,
+    "value": "FAZZ"
+  },
+  {
+    "id": 110300001085001010,
+    "value": "Gundam Mk-V"
+  },
+  {
+    "id": 110300001085001110,
+    "value": "Xeku Zwei"
+  },
+  {
+    "id": 110300001085001210,
+    "value": "Z'od-iacok"
+  },
+  {
+    "id": 110300001085001310,
+    "value": "Zeta Plus C1"
+  },
+  {
+    "id": 110300001085001410,
+    "value": "Zeta Plus C1 [Waverider]"
+  },
+  {
+    "id": 110300001085001710,
+    "value": "Nouvelle GM III"
+  },
+  {
+    "id": 110300001085001810,
+    "value": "Nero"
+  },
+  {
+    "id": 110300001085001910,
+    "value": "Gaza E"
+  },
+  {
+    "id": 110300001085002010,
+    "value": "Gaza E [MA Form]"
   },
   {
     "id": 110300001095000100,
@@ -14540,6 +14716,10 @@
     "value": "Gundam Astray Blue Frame"
   },
   {
+    "id": 110300001305000300,
+    "value": "Gundam Astray Gold Frame Amatsu Mina"
+  },
+  {
     "id": 110300001305000350,
     "value": "Gundam Astray Gold Frame Amatsu Mina (EX)"
   },
@@ -15005,6 +15185,14 @@
   },
   {
     "id": 110300001370000300,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110300001370000360,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110300001370000370,
     "value": "Gundam Dynames"
   },
   {
@@ -16484,6 +16672,10 @@
     "value": "Gundam Pharact (Season 2)"
   },
   {
+    "id": 110300001501002450,
+    "value": "Gundam Pharact (Season 2) (EX)"
+  },
+  {
     "id": 110300001501002500,
     "value": "Michaelis (Season 2)"
   },
@@ -17640,6 +17832,10 @@
     "value": "Char's Zaku I"
   },
   {
+    "id": 110400001003000200,
+    "value": "Char's Zaku II (THE ORIGIN)"
+  },
+  {
     "id": 110400001003000250,
     "value": "Char's Zaku II (THE ORIGIN) (EX)"
   },
@@ -18570,6 +18766,50 @@
   {
     "id": 110400001085000310,
     "value": "Xeku Eins"
+  },
+  {
+    "id": 110400001085000450,
+    "value": "Ex-S Gundam (EX)"
+  },
+  {
+    "id": 110400001085000910,
+    "value": "FAZZ"
+  },
+  {
+    "id": 110400001085001010,
+    "value": "Gundam Mk-V"
+  },
+  {
+    "id": 110400001085001110,
+    "value": "Xeku Zwei"
+  },
+  {
+    "id": 110400001085001210,
+    "value": "Z'od-iacok"
+  },
+  {
+    "id": 110400001085001310,
+    "value": "Zeta Plus C1"
+  },
+  {
+    "id": 110400001085001410,
+    "value": "Zeta Plus C1 [Waverider]"
+  },
+  {
+    "id": 110400001085001710,
+    "value": "Nouvelle GM III"
+  },
+  {
+    "id": 110400001085001810,
+    "value": "Nero"
+  },
+  {
+    "id": 110400001085001910,
+    "value": "Gaza E"
+  },
+  {
+    "id": 110400001085002010,
+    "value": "Gaza E [MA Form]"
   },
   {
     "id": 110400001095000100,
@@ -20584,6 +20824,10 @@
     "value": "Gundam Astray Blue Frame"
   },
   {
+    "id": 110400001305000300,
+    "value": "Gundam Astray Gold Frame Amatsu Mina"
+  },
+  {
     "id": 110400001305000350,
     "value": "Gundam Astray Gold Frame Amatsu Mina (EX)"
   },
@@ -21049,6 +21293,14 @@
   },
   {
     "id": 110400001370000300,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110400001370000360,
+    "value": "Gundam Dynames"
+  },
+  {
+    "id": 110400001370000370,
     "value": "Gundam Dynames"
   },
   {
@@ -22526,6 +22778,10 @@
   {
     "id": 110400001501002400,
     "value": "Gundam Pharact (Season 2)"
+  },
+  {
+    "id": 110400001501002450,
+    "value": "Gundam Pharact (Season 2) (EX)"
   },
   {
     "id": 110400001501002500,

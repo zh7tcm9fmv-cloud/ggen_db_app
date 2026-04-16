@@ -120,6 +120,18 @@
     "value": "Secret Battles"
   },
   {
+    "id": 170700000000150201,
+    "value": "Challenge Main Stages"
+  },
+  {
+    "id": 170700000000150202,
+    "value": "How to Advance Through the Challenge Main Stages: 1"
+  },
+  {
+    "id": 170700000000150203,
+    "value": "How to Advance Through the Challenge Main Stages: 2"
+  },
+  {
     "id": 170700000000160101,
     "value": "Upgrade Stages"
   },
@@ -226,6 +238,10 @@
   {
     "id": 170700000000290202,
     "value": "Home Screen Animation"
+  },
+  {
+    "id": 170700000000290401,
+    "value": "Battle Map"
   },
   {
     "id": 170700000000300001,

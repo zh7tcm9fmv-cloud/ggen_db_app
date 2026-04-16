@@ -1298,5 +1298,83 @@
     "IsShown": true,
     "BalloonTextLanguageId": 220400002603600601,
     "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430010101,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 300,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430010102,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 3000,
+    "OnceRollCount": 10,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 220400002504100101,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430010104,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 1,
+    "TargetId": 191100000001,
+    "RequiredCurrencyCount": 1,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": false,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430030201,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 300,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430030202,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 3000,
+    "OnceRollCount": 10,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 220400002504100101,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260430050101,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 1,
+    "TargetId": 191100000009,
+    "RequiredCurrencyCount": 1,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
   }
 ]

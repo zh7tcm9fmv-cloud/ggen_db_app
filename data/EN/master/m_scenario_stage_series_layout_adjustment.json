@@ -20,6 +20,11 @@
     "BromideScalePercent": 90
   },
   {
+    "ScenarioStageSeriesId": 3000,
+    "LogoOffsetX": -30,
+    "BromideScalePercent": 100
+  },
+  {
     "ScenarioStageSeriesId": 4300,
     "LogoOffsetX": 0,
     "BromideScalePercent": 109

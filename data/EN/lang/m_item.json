@@ -412,6 +412,10 @@
     "value": "SR Char's Zaku I Limit Break Material"
   },
   {
+    "id": 150100171003000200,
+    "value": "SSR Char's Zaku II (THE ORIGIN) Limit Break Material"
+  },
+  {
     "id": 150100171003000250,
     "value": "UR Char's Zaku II (The Origin) (EX) Limit Break Material"
   },
@@ -1222,6 +1226,42 @@
   {
     "id": 150100171085000310,
     "value": "SSR Xeku Eins Limit Break Material"
+  },
+  {
+    "id": 150100171085000450,
+    "value": "UR Ex-S Gundam (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171085000910,
+    "value": "SSR FAZZ Limit Break Material"
+  },
+  {
+    "id": 150100171085001010,
+    "value": "SSR Gundam Mk-V Limit Break Material"
+  },
+  {
+    "id": 150100171085001110,
+    "value": "SSR Xeku Zwei Limit Break Material"
+  },
+  {
+    "id": 150100171085001210,
+    "value": "SSR Z'od-iacok Limit Break Material"
+  },
+  {
+    "id": 150100171085001310,
+    "value": "SR Zeta Plus C1 Limit Break Material"
+  },
+  {
+    "id": 150100171085001710,
+    "value": "SR Nouvelle GM III Limit Break Material"
+  },
+  {
+    "id": 150100171085001810,
+    "value": "R Nero Limit Break Material"
+  },
+  {
+    "id": 150100171085001910,
+    "value": "R Gaza E Limit Break Material"
   },
   {
     "id": 150100171095000100,
@@ -2784,6 +2824,10 @@
     "value": "R Gundam Astray Blue Frame Limit Break Material"
   },
   {
+    "id": 150100171305000300,
+    "value": "SSR Gundam Astray Gold Frame Amatsu Mina Limit Break Material"
+  },
+  {
     "id": 150100171305000350,
     "value": "UR Gundam Astray Gold Frame Amatsu Mina (EX) Limit Break Material"
   },
@@ -3122,6 +3166,14 @@
   {
     "id": 150100171370000300,
     "value": "SR Gundam Dynames Limit Break Material"
+  },
+  {
+    "id": 150100171370000360,
+    "value": "SR Gundam Dynames Limit Break Material"
+  },
+  {
+    "id": 150100171370000370,
+    "value": "SSR Gundam Dynames Limit Break Material"
   },
   {
     "id": 150100171370000500,
@@ -4276,6 +4328,10 @@
     "value": "SSR Gundam Pharact (Season 2) Limit Break Material"
   },
   {
+    "id": 150100171501002450,
+    "value": "UR Gundam Pharact (Season 2) (EX) Limit Break Material"
+  },
+  {
     "id": 150100171501002500,
     "value": "SSR Michaelis (Season 2) Limit Break Material"
   },
@@ -5156,6 +5212,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (AGE)"
   },
   {
+    "id": 150100191100000009,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (4/16/2026 JST)"
+  },
+  {
     "id": 150100191200000001,
     "value": "SR or Higher Guaranteed Unit Assembly Ticket"
   },
@@ -5360,12 +5420,24 @@
     "value": "PP Pack"
   },
   {
+    "id": 150100230000240021,
+    "value": "Inspection Medal"
+  },
+  {
+    "id": 150100230000240022,
+    "value": "PP Pack"
+  },
+  {
     "id": 150100240000000001,
     "value": "Custom Core Learning Material R"
   },
   {
     "id": 150100240000000002,
     "value": "Custom Core Learning Parts N"
+  },
+  {
+    "id": 150100240000010000,
+    "value": "Mobile Suit Gundam SP Conversion Chips"
   },
   {
     "id": 150100240000010010,
@@ -5392,6 +5464,10 @@
     "value": "Mobile Suit Gundam HATHAWAY Series SP Conversion Chips"
   },
   {
+    "id": 150100240000013000,
+    "value": "Mobile Suit Gundam SEED SP Conversion Chips"
+  },
+  {
     "id": 150100240000013300,
     "value": "Mobile Suit Gundam SEED Destiny Series SP Conversion Chips"
   },
@@ -5408,6 +5484,10 @@
     "value": "Mobile Suit Gundam the Witch from Mercury Series SP Conversion Chips"
   },
   {
+    "id": 150100240000020000,
+    "value": "Mobile Suit Gundam Series SP Conversion Badge"
+  },
+  {
     "id": 150100240000020090,
     "value": "Mobile Suit Gundam MS IGLOO Series SP Conversion Badge"
   },
@@ -5420,12 +5500,60 @@
     "value": "ZAFT-Tag SP Conversion Chips"
   },
   {
+    "id": 150100240000023000,
+    "value": "Mobile Suit Gundam SEED Series SP Conversion Badge"
+  },
+  {
+    "id": 150100241003000200,
+    "value": "Char's Zaku II (THE ORIGIN) SP Conversion Chips"
+  },
+  {
+    "id": 150100241305000300,
+    "value": "Gundam Astray Gold Frame Amatsu Mina SP Conversion Chips"
+  },
+  {
     "id": 150100250000021002,
     "value": "Alternative Series-Tag SP Conversion Badge"
   },
   {
+    "id": 150100251001003000,
+    "value": "Ramba Ral SP Conversion Badge"
+  },
+  {
+    "id": 150100251300002502,
+    "value": "Andrew Waldfeld SP Conversion Badge"
+  },
+  {
     "id": 150100260099000106,
     "value": "The Sorcery of Nymph Circe Special Stage Ticket"
+  },
+  {
+    "id": 150100270001001008,
+    "value": "Jaburo Area"
+  },
+  {
+    "id": 150100270001001013,
+    "value": "A Baoa Qu Area"
+  },
+  {
+    "id": 150100270001300008,
+    "value": "Sea (Isle)"
+  },
+  {
+    "id": 150100270001300017,
+    "value": "Jachin Due Area"
+  },
+  {
+    "id": 150100280126043001,
+    "value": "1st Anniv. Home Screen Animation"
+  },
+  {
+    "id": 150100280200100001,
+    "value": "Mobile Suit Gundam Challenge"
+  },
+  {
+    "id": 150100280230000001,
+    "value": "Mobile Suit Gundam SEED Challenge"
   },
   {
     "id": 150100990000000001,
@@ -5850,6 +5978,10 @@
   {
     "id": 150200171003000110,
     "value": "An item used to perform Limit Break on SR Char's Zaku I"
+  },
+  {
+    "id": 150200171003000200,
+    "value": "An item used to perform Limit Break on SSR Char's Zaku II (THE ORIGIN)"
   },
   {
     "id": 150200171003000250,
@@ -6662,6 +6794,42 @@
   {
     "id": 150200171085000310,
     "value": "An item used to perform Limit Break on SSR Xeku Eins"
+  },
+  {
+    "id": 150200171085000450,
+    "value": "An item used to perform Limit Break on UR Ex-S Gundam (EX)"
+  },
+  {
+    "id": 150200171085000910,
+    "value": "An item used to perform Limit Break on SSR FAZZ"
+  },
+  {
+    "id": 150200171085001010,
+    "value": "An item used to perform Limit Break on SSR Gundam Mk-V"
+  },
+  {
+    "id": 150200171085001110,
+    "value": "An item used to perform Limit Break on SSR Xeku Zwei"
+  },
+  {
+    "id": 150200171085001210,
+    "value": "An item used to perform Limit Break on SSR Z'od-iacok"
+  },
+  {
+    "id": 150200171085001310,
+    "value": "An item used to perform Limit Break on SR Zeta Plus C1"
+  },
+  {
+    "id": 150200171085001710,
+    "value": "An item used to perform Limit Break on SR Nouvelle GM III"
+  },
+  {
+    "id": 150200171085001810,
+    "value": "An item used to perform Limit Break on R Nero"
+  },
+  {
+    "id": 150200171085001910,
+    "value": "An item used to perform Limit Break on R Gaza E"
   },
   {
     "id": 150200171095000100,
@@ -8224,6 +8392,10 @@
     "value": "An item used to perform Limit Break on R Gundam Astray Blue Frame"
   },
   {
+    "id": 150200171305000300,
+    "value": "An item used to perform Limit Break on SSR Gundam Astray Gold Frame Amatsu Mina"
+  },
+  {
     "id": 150200171305000350,
     "value": "An item used to perform Limit Break on UR Gundam Astray Gold Frame Amatsu Mina (EX)"
   },
@@ -8562,6 +8734,14 @@
   {
     "id": 150200171370000300,
     "value": "An item used to perform Limit Break on SR Gundam Dynames"
+  },
+  {
+    "id": 150200171370000360,
+    "value": "An item used to perform Limit Break on SR Gundam Dynames"
+  },
+  {
+    "id": 150200171370000370,
+    "value": "An item used to perform Limit Break on SSR Gundam Dynames"
   },
   {
     "id": 150200171370000500,
@@ -9716,6 +9896,10 @@
     "value": "An item used to perform Limit Break on SSR Gundam Pharact (Season 2)"
   },
   {
+    "id": 150200171501002450,
+    "value": "An item used to perform Limit Break on UR Gundam Pharact (Season 2) (EX)"
+  },
+  {
     "id": 150200171501002500,
     "value": "An item used to perform Limit Break on SSR Michaelis (Season 2)"
   },
@@ -10565,7 +10749,7 @@
   },
   {
     "id": 150200191100000001,
-    "value": "A ticket that lets you use the Premium Unit Assembly."
+    "value": "A ticket that lets you use any Premium Unit Assembly."
   },
   {
     "id": 150200191100000002,
@@ -10594,6 +10778,10 @@
   {
     "id": 150200191100000008,
     "value": "A ticket that lets you use the Featured Unit Assembly (AGE)."
+  },
+  {
+    "id": 150200191100000009,
+    "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Ex-S Gundam (EX) and Gundam Pharact (Season 2) (EX)."
   },
   {
     "id": 150200191200000001,
@@ -10800,12 +10988,24 @@
     "value": "An item that restores PP used in the Grand Offensive.\n<color=#e03f42>*This item cannot be carried over to the next Grand Offensive event.</color>"
   },
   {
+    "id": 150200230000240021,
+    "value": "A medal available in the Grand Offensive.\nCan be used in the Inspection Shop."
+  },
+  {
+    "id": 150200230000240022,
+    "value": "An item that restores PP used in the Grand Offensive.\n<color=#e03f42>*This item cannot be carried over to the next Grand Offensive event.</color>"
+  },
+  {
     "id": 150200240000000001,
     "value": "An item that grants Learning Pts when used on Custom Cores. It can be used in place of Development Materials."
   },
   {
     "id": 150200240000000002,
     "value": "An item that grants Learning Pts when used on Custom Cores. It can be used in place of Weapon Upgrade Parts."
+  },
+  {
+    "id": 150200240000010000,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200240000010010,
@@ -10832,6 +11032,10 @@
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000013000,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000013300,
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -10848,6 +11052,10 @@
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000020000,
+    "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000020090,
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -10860,12 +11068,60 @@
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000023000,
+    "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200241003000200,
+    "value": "Usable on Char's Zaku II (THE ORIGIN)  (SSR/ Support / Mobile Suit Gundam).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200241305000300,
+    "value": "Usable on Gundam Astray Gold Frame Amatsu Mina (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200250000021002,
     "value": "Usable on non-UR characters bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200251001003000,
+    "value": "Usable on Ramba Ral (SSR/ Support / Mobile Suit Gundam).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200251300002502,
+    "value": "Usable on Andrew Waldfeld (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200260099000106,
     "value": "Ticket required for attempting the Mobile Suit Gundam HATHAWAY The Sorcery of Nymph Circe special stage."
+  },
+  {
+    "id": 150200270001001008,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001001013,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001300008,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001300017,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200280126043001,
+    "value": "A special Home screen animation celebrating the first anniversary."
+  },
+  {
+    "id": 150200280200100001,
+    "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
+  },
+  {
+    "id": 150200280230000001,
+    "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
   },
   {
     "id": 150200990000000001,

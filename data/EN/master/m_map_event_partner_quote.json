@@ -286,5 +286,212 @@
     "MapEventPanelConditionTypeIndex": 0,
     "MinCount": 0,
     "MaxCount": 0
+  },
+  {
+    "Id": 240002010101,
+    "MapEventPartnerQuoteTimingTypeIndex": 1,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020101,
+    "MapEventPanelConditionTypeIndex": 0,
+    "MinCount": 0,
+    "MaxCount": 0
+  },
+  {
+    "Id": 240002020101,
+    "MapEventPartnerQuoteTimingTypeIndex": 2,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020201,
+    "MapEventPanelConditionTypeIndex": 0,
+    "MinCount": 0,
+    "MaxCount": 0
+  },
+  {
+    "Id": 240002030101,
+    "MapEventPartnerQuoteTimingTypeIndex": 3,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020301,
+    "MapEventPanelConditionTypeIndex": 0,
+    "MinCount": 0,
+    "MaxCount": 0
+  },
+  {
+    "Id": 240002040101,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020401,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 33
+  },
+  {
+    "Id": 240002040201,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020402,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002040301,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020403,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002040401,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020404,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002040501,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020405,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002040601,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020406,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002040701,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020407,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002040801,
+    "MapEventPartnerQuoteTimingTypeIndex": 4,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020408,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 66,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002040901,
+    "MapEventPartnerQuoteTimingTypeIndex": 7,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020409,
+    "MapEventPanelConditionTypeIndex": 0,
+    "MinCount": 0,
+    "MaxCount": 0
+  },
+  {
+    "Id": 240002041001,
+    "MapEventPartnerQuoteTimingTypeIndex": 6,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020410,
+    "MapEventPanelConditionTypeIndex": 0,
+    "MinCount": 0,
+    "MaxCount": 0
+  },
+  {
+    "Id": 240002050101,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020501,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 33
+  },
+  {
+    "Id": 240002050201,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020502,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002050301,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020503,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002050401,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020504,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 66,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002050501,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020505,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002050601,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020506,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 66,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002050701,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020507,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 33,
+    "MaxCount": 100
+  },
+  {
+    "Id": 240002050801,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020508,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002050901,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020509,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 66
+  },
+  {
+    "Id": 240002051001,
+    "MapEventPartnerQuoteTimingTypeIndex": 5,
+    "PartnerId": 24000201,
+    "MapEventPartnerQuoteSetId": 2400020510,
+    "MapEventPanelConditionTypeIndex": 2,
+    "MinCount": 0,
+    "MaxCount": 33
   }
 ]

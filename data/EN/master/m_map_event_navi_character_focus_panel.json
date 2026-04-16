@@ -3,5 +3,10 @@
     "FocusConditionClearPanelId": 2400010107,
     "MapEventNaviCharacterFocusPanelQuoteTypeIndex": 1,
     "FocusPanelId": 2400010127
+  },
+  {
+    "FocusConditionClearPanelId": 2400020110,
+    "MapEventNaviCharacterFocusPanelQuoteTypeIndex": 1,
+    "FocusPanelId": 2400020127
   }
 ]

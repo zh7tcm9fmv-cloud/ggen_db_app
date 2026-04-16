@@ -8228,6 +8228,270 @@
     "value": "Get the 1st Anniversary wallpaper!"
   },
   {
+    "id": 180100260430011101,
+    "value": "Assign Home Screen Music"
+  },
+  {
+    "id": 180100260430011102,
+    "value": "Set a Battle Map Style from the Home Screen Unit menu."
+  },
+  {
+    "id": 180100260430011103,
+    "value": "Use 500 AP."
+  },
+  {
+    "id": 180100260430011104,
+    "value": "Clear Eternal Road on NORMAL difficulty or higher 1 time. (Incl. clearing stage again)"
+  },
+  {
+    "id": 180100260430011105,
+    "value": "Clear Eternal Road stages on HARD difficulty or higher 1 time (Incl. clearing stage again)"
+  },
+  {
+    "id": 180100260430011106,
+    "value": "Clear 1 Challenge Main Stage stage(s)."
+  },
+  {
+    "id": 180100260430011107,
+    "value": "Clear 2 Challenge Main Stage stage(s)."
+  },
+  {
+    "id": 180100260430011108,
+    "value": "Clear 3 Challenge Main Stage stage(s)."
+  },
+  {
+    "id": 180100260430011109,
+    "value": "Clear 5 Challenge Main Stage stage(s)."
+  },
+  {
+    "id": 180100260430100101,
+    "value": "Clear a stage from \"Grand Offensive\" 3 time(s)."
+  },
+  {
+    "id": 180100260430100102,
+    "value": "Clear a stage from \"Grand Offensive\" 5 time(s)."
+  },
+  {
+    "id": 180100260430100103,
+    "value": "Clear a stage from \"Grand Offensive\" 10 time(s)."
+  },
+  {
+    "id": 180100260430100104,
+    "value": "Clear a stage from \"Grand Offensive\" 20 time(s)."
+  },
+  {
+    "id": 180100260430100105,
+    "value": "Clear a stage from \"Grand Offensive\" 30 time(s)."
+  },
+  {
+    "id": 180100260430100106,
+    "value": "Clear a stage from \"Grand Offensive\" 40 time(s)."
+  },
+  {
+    "id": 180100260430100107,
+    "value": "Clear a stage from \"Grand Offensive\" 50 time(s)."
+  },
+  {
+    "id": 180100260430100108,
+    "value": "Clear a stage from \"Grand Offensive\" 60 time(s)."
+  },
+  {
+    "id": 180100260430100109,
+    "value": "Clear a stage from \"Grand Offensive\" 70 time(s)."
+  },
+  {
+    "id": 180100260430100110,
+    "value": "Clear a stage from \"Grand Offensive\" 80 time(s)."
+  },
+  {
+    "id": 180100260430100111,
+    "value": "Clear a stage from \"Grand Offensive\" 90 time(s)."
+  },
+  {
+    "id": 180100260430100112,
+    "value": "Clear a stage from \"Grand Offensive\" 100 time(s)."
+  },
+  {
+    "id": 180100260430100201,
+    "value": "Acquire a total of 1000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100202,
+    "value": "Acquire a total of 2000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100203,
+    "value": "Acquire a total of 4000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100204,
+    "value": "Acquire a total of 6000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100205,
+    "value": "Acquire a total of 8000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100206,
+    "value": "Acquire a total of 10000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100207,
+    "value": "Acquire a total of 15000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100208,
+    "value": "Acquire a total of 20000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100209,
+    "value": "Acquire a total of 25000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100210,
+    "value": "Acquire a total of 30000 Inspection Medals."
+  },
+  {
+    "id": 180100260430100401,
+    "value": "Get a score of 10000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100402,
+    "value": "Get a score of 20000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100403,
+    "value": "Get a score of 40000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100404,
+    "value": "Get a score of 60000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100405,
+    "value": "Get a score of 80000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100406,
+    "value": "Get a score of 100000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100407,
+    "value": "Get a score of 110000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100408,
+    "value": "Get a score of 120000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100409,
+    "value": "Get a score of 130000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100410,
+    "value": "Get a score of 140000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100411,
+    "value": "Get a score of 150000 or more in Score Attack mode!"
+  },
+  {
+    "id": 180100260430100501,
+    "value": "Achieve a Grand Offensive achievement level of 25% or more."
+  },
+  {
+    "id": 180100260430100502,
+    "value": "Achieve a Grand Offensive achievement level of 50% or more."
+  },
+  {
+    "id": 180100260430100503,
+    "value": "Achieve a Grand Offensive achievement level of 75% or more."
+  },
+  {
+    "id": 180100260430100601,
+    "value": "Achieve a Grand Offensive achievement level of 100% or more."
+  },
+  {
+    "id": 180100300010200101,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 1 with only units with the EFSF (U.C.) tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200102,
+    "value": ""
+  },
+  {
+    "id": 180100300010200201,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 1 with only units with the Red tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200301,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 2 with only units with the Zeon tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200401,
+    "value": ""
+  },
+  {
+    "id": 180100300010200402,
+    "value": ""
+  },
+  {
+    "id": 180100300010200501,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 3 with only units with the Mobile Armor tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200601,
+    "value": ""
+  },
+  {
+    "id": 180100300010200701,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam SEED HARD STAGE 1 with only units with the Rival tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200802,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam SEED HARD STAGE 1 with only units with the White tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010200901,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam SEED HARD STAGE 2 with only units with the O.M.N.I.  tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010201101,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam SEED HARD STAGE 3 with only units with the Protagonist tag. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010300201,
+    "value": ""
+  },
+  {
+    "id": 180100300010300301,
+    "value": ""
+  },
+  {
+    "id": 180100300010300401,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 2 with only units from the Mobile Suit Gundam Thunderbolt series. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010300501,
+    "value": ""
+  },
+  {
+    "id": 180100300010300601,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 3 with only units from the Mobile Suit Gundam 0083: Stardust Memory series. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010301001,
+    "value": "Clear Challenge Main Stage Mobile Suit Gundam SEED HARD STAGE 2 with only units from the Mobile Suit Gundam SEED Astray series. (incl. Secret Battle)"
+  },
+  {
+    "id": 180100300010400601,
+    "value": ""
+  },
+  {
+    "id": 180100300010401201,
+    "value": "Clear Main Stage CHALLENGE Mobile Suit Gundam SEED HARD STAGE 3 within 2 turn(s)."
+  },
+  {
     "id": 180101251050011101,
     "value": "Clear stage 17 of the \"Mobile Suit Gundam Wing\" series."
   },

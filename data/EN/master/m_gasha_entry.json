@@ -1298,5 +1298,83 @@
     "ActiveControlTypeIndex": 1,
     "DisplayScheduleId": 2603601705,
     "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430010101,
+    "GashaId": 2604300101,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 2,
+    "GashaEntryDetailId": 260430010101,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430010102,
+    "GashaId": 2604300101,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 3,
+    "GashaEntryDetailId": 260430010102,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430010104,
+    "GashaId": 2604300101,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260430010104,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430030201,
+    "GashaId": 2604300302,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260430030201,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430030202,
+    "GashaId": 2604300302,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260430030202,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 260430050101,
+    "GashaId": 2604300501,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 260430050101,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
   }
 ]

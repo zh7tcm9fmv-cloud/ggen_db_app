@@ -26,5 +26,40 @@
     "GrowthLevel": 15,
     "MapEventPanelMissionId": 251210110011,
     "GrowthIsSpecialize": false
+  },
+  {
+    "Id": 2400020110,
+    "MapEventPartnerId": 24000201,
+    "GrowthLevel": 10,
+    "MapEventPanelMissionId": 260430110009,
+    "GrowthIsSpecialize": false
+  },
+  {
+    "Id": 2400020119,
+    "MapEventPartnerId": 24000201,
+    "GrowthLevel": 10,
+    "MapEventPanelMissionId": 260430110010,
+    "GrowthIsSpecialize": false
+  },
+  {
+    "Id": 2400020204,
+    "MapEventPartnerId": 24000201,
+    "GrowthLevel": 10,
+    "MapEventPanelMissionId": 260430110011,
+    "GrowthIsSpecialize": false
+  },
+  {
+    "Id": 2400020216,
+    "MapEventPartnerId": 24000201,
+    "GrowthLevel": 10,
+    "MapEventPanelMissionId": 260430110012,
+    "GrowthIsSpecialize": false
+  },
+  {
+    "Id": 2400020235,
+    "MapEventPartnerId": 24000201,
+    "GrowthLevel": 10,
+    "MapEventPanelMissionId": 260430110013,
+    "GrowthIsSpecialize": true
   }
 ]

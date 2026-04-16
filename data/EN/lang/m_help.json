@@ -304,6 +304,10 @@
     "value": "History Stage"
   },
   {
+    "id": 170200000001091071,
+    "value": "Challenge Main Stages"
+  },
+  {
     "id": 170200000001101011,
     "value": "Upgrade Stages"
   },
@@ -433,7 +437,7 @@
   },
   {
     "id": 170300000001001121,
-    "value": "You can change the units, backgrounds, and other elements displayed on the home screen.\n\nUp to five home units can be set based on the style.\nFor each style, you can set up to five units.\n\nDifferent styles are unlocked based on the number of units registered in the database.\n\nIf multiple units are set, you can switch the displayed unit by tapping on it on the Home screen.\n\nHome screen animations can be obtained through limit breaking and developing specific UR units."
+    "value": "From the Home Screen Unit menu, you can change the units, backgrounds, and music featured on the Home screen.\n\nSet units, backgrounds, and other elements to any of the ten slots to feature them on the Home screen.\n\nDifferent styles are unlocked based on the number of units registered in the database.\nDepending on the style, options such as the number of units that can be assigned will vary.\n\nHome screen animation is a style that lets you set a single animation as the background, and\nyou can obtain them through limit breaking and developing specific UR units.\n\nBattle map is another style that lets you freely position units on a battle background, and\nadditional battle maps can be obtained as rewards, such as by clearing Challenge Main Stages."
   },
   {
     "id": 170300000001011011,
@@ -690,6 +694,10 @@
   {
     "id": 170300000001091061,
     "value": "In History Stages, you can play through past Story Events.\n\nGameplay differs slightly from when the event was originally held, but you can still experience the same story and receive rewards."
+  },
+  {
+    "id": 170300000001091071,
+    "value": "Challenge Main Stages allow you to attempt higher-difficulty versions of the series' Main Stages.\nThe enemies you face are stronger, and all your squad formations are restricted according to the series.\n\nBy advancing through the Challenge Main Stages, you can acquire units, characters, and rare items."
   },
   {
     "id": 170300000001101011,

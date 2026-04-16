@@ -8,5 +8,15 @@
     "CharacterUpgradeGroupId": 24000102,
     "UpgradeStep": 2,
     "CharacterId": 1300001902
+  },
+  {
+    "CharacterUpgradeGroupId": 24000202,
+    "UpgradeStep": 1,
+    "CharacterId": 1370000201
+  },
+  {
+    "CharacterUpgradeGroupId": 24000202,
+    "UpgradeStep": 2,
+    "CharacterId": 1370000202
   }
 ]

@@ -480,6 +480,14 @@
     "value": "Tenacious"
   },
   {
+    "id": 110600000000007001,
+    "value": "SSR and Below"
+  },
+  {
+    "id": 110600000000007002,
+    "value": "Ultimate"
+  },
+  {
     "id": 110700000000001001,
     "value": "U.C. Series"
   },
@@ -958,5 +966,13 @@
   {
     "id": 110700000000001133,
     "value": "Tenacious"
+  },
+  {
+    "id": 110700000000007001,
+    "value": "SSR and Below"
+  },
+  {
+    "id": 110700000000007002,
+    "value": "Ultimate"
   }
 ]

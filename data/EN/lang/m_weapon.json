@@ -672,6 +672,26 @@
     "value": "Machine Gun (Mobile Suit) SSP"
   },
   {
+    "id": 120100100300020001,
+    "value": "Kick"
+  },
+  {
+    "id": 120100100300020002,
+    "value": "Drum Magazine Machine Gun (Mobile Suit)"
+  },
+  {
+    "id": 120100100300020003,
+    "value": "MS Bazooka Type A2"
+  },
+  {
+    "id": 120100100300020004,
+    "value": "MS Anti-Ship Rifle"
+  },
+  {
+    "id": 120100100300020090,
+    "value": "MS Anti-Ship Rifle SSP"
+  },
+  {
     "id": 120100100300025001,
     "value": "Kick"
   },
@@ -4246,6 +4266,174 @@
   {
     "id": 120100108500031090,
     "value": "Machine Gun SSP"
+  },
+  {
+    "id": 120100108500045001,
+    "value": "Alice"
+  },
+  {
+    "id": 120100108500045002,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100108500045003,
+    "value": "Reflector Incom"
+  },
+  {
+    "id": 120100108500045004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100108500045005,
+    "value": "Alice EX"
+  },
+  {
+    "id": 120100108500091001,
+    "value": "Double Beam Rifle"
+  },
+  {
+    "id": 120100108500091002,
+    "value": "Chest Missile Pod"
+  },
+  {
+    "id": 120100108500091003,
+    "value": "Hyper Mega Cannon"
+  },
+  {
+    "id": 120100108500091004,
+    "value": "Hyper Mega Cannon"
+  },
+  {
+    "id": 120100108500091090,
+    "value": "Double Beam Rifle SSP"
+  },
+  {
+    "id": 120100108500101001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100108500101002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100108500101003,
+    "value": "Incom"
+  },
+  {
+    "id": 120100108500101004,
+    "value": "Incom"
+  },
+  {
+    "id": 120100108500101090,
+    "value": "Incom SSP"
+  },
+  {
+    "id": 120100108500111001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100108500111002,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100108500111003,
+    "value": "Missile Pod"
+  },
+  {
+    "id": 120100108500111004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100108500111090,
+    "value": "Beam Smartgun SSP"
+  },
+  {
+    "id": 120100108500121001,
+    "value": "Wired Beam Claw"
+  },
+  {
+    "id": 120100108500121002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100108500121003,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100108500121004,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100108500121090,
+    "value": "Large Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100108500131001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100108500131002,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100108500131003,
+    "value": "Thigh Beam Cannon"
+  },
+  {
+    "id": 120100108500131090,
+    "value": "Thigh Beam Cannon SSP"
+  },
+  {
+    "id": 120100108500141001,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100108500141090,
+    "value": "Thigh Beam Cannon SSP"
+  },
+  {
+    "id": 120100108500171001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100108500171002,
+    "value": "Large Missile Launcher"
+  },
+  {
+    "id": 120100108500171090,
+    "value": "Large Missile Launcher SSP"
+  },
+  {
+    "id": 120100108500181001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100108500181002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100108500181090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100108500191001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100108500191002,
+    "value": "Shoulder Beam Cannon"
+  },
+  {
+    "id": 120100108500191090,
+    "value": "Shoulder Beam Cannon SSP"
+  },
+  {
+    "id": 120100108500201001,
+    "value": "Shoulder Beam Cannon"
+  },
+  {
+    "id": 120100108500201090,
+    "value": "Shoulder Beam Cannon SSP"
   },
   {
     "id": 120100109500010001,
@@ -11672,6 +11860,34 @@
     "value": "Beam Rifle SSP"
   },
   {
+    "id": 120100130500030001,
+    "value": "Okitsu-no-Kagami"
+  },
+  {
+    "id": 120100130500030002,
+    "value": "Totsuka-no-Tsurugi"
+  },
+  {
+    "id": 120100130500030003,
+    "value": "75mm Anti-Air Automatic Vulcan Turret System \"Igelstellung\""
+  },
+  {
+    "id": 120100130500030004,
+    "value": "Maga-no-Shirahoko"
+  },
+  {
+    "id": 120100130500030005,
+    "value": "Offensive Shield System \"Triceros\""
+  },
+  {
+    "id": 120100130500030006,
+    "value": "Maga-no-Ikutachi"
+  },
+  {
+    "id": 120100130500030090,
+    "value": "Maga-no-Shirahoko SSP"
+  },
+  {
     "id": 120100130500035001,
     "value": "Okitsu-no-Kagami"
   },
@@ -13613,6 +13829,58 @@
   },
   {
     "id": 120100137000030090,
+    "value": "GN Sniper Rifle SSP"
+  },
+  {
+    "id": 120100137000036001,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000036002,
+    "value": "GN Sniper Rifle"
+  },
+  {
+    "id": 120100137000036003,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000036004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000036005,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100137000036006,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000037001,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000037002,
+    "value": "GN Sniper Rifle"
+  },
+  {
+    "id": 120100137000037003,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000037004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000037005,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100137000037006,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100137000037090,
     "value": "GN Sniper Rifle SSP"
   },
   {
@@ -18830,6 +19098,26 @@
   {
     "id": 120100150100240090,
     "value": "Beam Musket SSP"
+  },
+  {
+    "id": 120100150100245001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100150100245002,
+    "value": "Beam Calivers"
+  },
+  {
+    "id": 120100150100245003,
+    "value": "Beam Musket"
+  },
+  {
+    "id": 120100150100245004,
+    "value": "Beam Musket EX"
+  },
+  {
+    "id": 120100150100245005,
+    "value": "Beam Musket"
   },
   {
     "id": 120100150100250001,

@@ -92,6 +92,18 @@
     "value": "On some stages, secret battles will be unlocked upon fulfilling certain conditions.\nYou may then earn special rewards by clearing said secret battles."
   },
   {
+    "id": 170800000000150201,
+    "value": "You can play high-difficulty versions of the Main Stages.\nBy completing the Main Stages for a series, you can unlock its Challenge Main Stages."
+  },
+  {
+    "id": 170800000000150202,
+    "value": "The enemies in the Challenge Main Stages are significantly stronger than those in the Main Stages.\nAdditionally, since your squads are further restricted by series, be sure to develop and upgrade the units you'll need before attempting these stages."
+  },
+  {
+    "id": 170800000000150203,
+    "value": "Advancing through the Challenge Main Stages lets you obtain units and characters that will help you clear additional Challenge Main Stages and Eternal Road."
+  },
+  {
     "id": 170800000000160101,
     "value": "A stage type where you can earn Capital and any type of upgrade materials, which can\nonly be played a limited number of times per day."
   },
@@ -194,6 +206,10 @@
   {
     "id": 170800000000290202,
     "value": "Some UR units have special unlockable home screen animations.\nAdd flavor to your home screen by obtaining animations through limit breaking or development!"
+  },
+  {
+    "id": 170800000000290401,
+    "value": "You can mix and match units with battle maps to decorate your Home screen.\nTurn your Home screen into a virtual diorama by recreating legendary scenes!"
   },
   {
     "id": 170800000000300001,
@@ -509,11 +525,11 @@
   },
   {
     "id": 170800000000921102,
-    "value": "Squadmates are units that sortie alongside you in the Grand Offensive.\nAs you press the offensive, you can upgrade them, including their rarity, level, and limit break level."
+    "value": "Squadmates are units that sortie alongside you in the Grand Offensive.\nAs you press the offensive, you can upgrade them, including their rarity, level, and limit break level, as well as perform SP conversion on them."
   },
   {
     "id": 170800000000921103,
-    "value": "At the Enhancement Base, you can upgrade your Squadmates' level, weapon level, and limit break level.\nUpgrade your Squadmates to gain an advantage, whether in Score Attack or capturing spaces."
+    "value": "At the Enhancement Base, you can upgrade your Squadmates' level, weapon level, and limit break level, as well as perform SP conversion on them.\nUpgrade your Squadmates to gain an advantage, whether in the Score Attack or in completing zones."
   },
   {
     "id": 170800000000921104,
@@ -525,11 +541,11 @@
   },
   {
     "id": 170800000000921106,
-    "value": "In the Grand Offensive, you can use special points called PP to facilitate capturing spaces.\nSince spaces with different effects are scattered across the map, plan your route accordingly."
+    "value": "In the Grand Offensive, you can use special points called PP to facilitate your event progress.\nSince zones with different effects are scattered across the map, plan your route accordingly."
   },
   {
     "id": 170800000000921107,
-    "value": "There are eight different types of spaces throughout the map.\nHalf of them trigger battles, while the other half assist the offensive."
+    "value": "There are eight different types of zones throughout the map.\nHalf of them trigger battles, while the other half assist the offensive."
   },
   {
     "id": 170800000000921108,
@@ -549,7 +565,7 @@
   },
   {
     "id": 170800000000921112,
-    "value": "When you max out a Squadmate unit's rarity, level, weapon level, and limit break level,\nthey receive a maximum upgrade bonus, increasing their stats by 1.5x (excluding EN and MOV)."
+    "value": "When you max out a Squadmate unit's rarity, level, weapon level, and limit break level, as well as perform SP conversion on them,\nthey receive a maximum upgrade bonus, enhancing certain weapon effects and stats (excluding EN and MOV)."
   },
   {
     "id": 170800000000921113,

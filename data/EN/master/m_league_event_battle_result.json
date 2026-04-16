@@ -41,7 +41,7 @@
   },
   {
     "Id": 300010006,
-    "LeagueEventBattleResultSetId": 300010006,
+    "LeagueEventBattleResultSetId": 300010005,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_10",
     "VoiceResourceId": "vc_masterleague_0001_btl_0202",
     "QuoteLanguageId": 250400000300010008,
@@ -57,7 +57,7 @@
   },
   {
     "Id": 300010008,
-    "LeagueEventBattleResultSetId": 300010008,
+    "LeagueEventBattleResultSetId": 300010007,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0408",
     "QuoteLanguageId": 250400000300010011,
@@ -73,7 +73,7 @@
   },
   {
     "Id": 300010010,
-    "LeagueEventBattleResultSetId": 300010010,
+    "LeagueEventBattleResultSetId": 300010009,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0406",
     "QuoteLanguageId": 250400000300010014,
@@ -89,7 +89,7 @@
   },
   {
     "Id": 300010012,
-    "LeagueEventBattleResultSetId": 300010012,
+    "LeagueEventBattleResultSetId": 300010011,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_05",
     "VoiceResourceId": "vc_masterleague_0001_btl_0304",
     "QuoteLanguageId": 250400000300010017,
@@ -97,7 +97,7 @@
   },
   {
     "Id": 300010013,
-    "LeagueEventBattleResultSetId": 300010013,
+    "LeagueEventBattleResultSetId": 300010011,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0407",
     "QuoteLanguageId": 250400000300010018,
@@ -105,7 +105,7 @@
   },
   {
     "Id": 300010014,
-    "LeagueEventBattleResultSetId": 300010014,
+    "LeagueEventBattleResultSetId": 300010011,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0403",
     "QuoteLanguageId": 250400000300010019,
@@ -137,7 +137,7 @@
   },
   {
     "Id": 300010018,
-    "LeagueEventBattleResultSetId": 300010018,
+    "LeagueEventBattleResultSetId": 300010016,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_05",
     "VoiceResourceId": "vc_masterleague_0001_btl_0305",
     "QuoteLanguageId": 250400000300010025,
@@ -145,7 +145,7 @@
   },
   {
     "Id": 300010019,
-    "LeagueEventBattleResultSetId": 300010019,
+    "LeagueEventBattleResultSetId": 300010016,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0401",
     "QuoteLanguageId": 250400000300010026,
@@ -153,7 +153,7 @@
   },
   {
     "Id": 300010020,
-    "LeagueEventBattleResultSetId": 300010020,
+    "LeagueEventBattleResultSetId": 300010016,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0402",
     "QuoteLanguageId": 250400000300010027,
@@ -161,7 +161,7 @@
   },
   {
     "Id": 300010021,
-    "LeagueEventBattleResultSetId": 300010021,
+    "LeagueEventBattleResultSetId": 300010016,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0405",
     "QuoteLanguageId": 250400000300010028,
@@ -177,7 +177,7 @@
   },
   {
     "Id": 300010023,
-    "LeagueEventBattleResultSetId": 300010023,
+    "LeagueEventBattleResultSetId": 300010022,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_10",
     "VoiceResourceId": "vc_masterleague_0001_btl_0208",
     "QuoteLanguageId": 250400000300010031,
@@ -185,7 +185,7 @@
   },
   {
     "Id": 300010024,
-    "LeagueEventBattleResultSetId": 300010024,
+    "LeagueEventBattleResultSetId": 300010022,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_05",
     "VoiceResourceId": "vc_masterleague_0001_btl_0301",
     "QuoteLanguageId": 250400000300010032,
@@ -193,7 +193,7 @@
   },
   {
     "Id": 300010025,
-    "LeagueEventBattleResultSetId": 300010025,
+    "LeagueEventBattleResultSetId": 300010022,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_05",
     "VoiceResourceId": "vc_masterleague_0001_btl_0307",
     "QuoteLanguageId": 250400000300010033,
@@ -201,7 +201,7 @@
   },
   {
     "Id": 300010026,
-    "LeagueEventBattleResultSetId": 300010026,
+    "LeagueEventBattleResultSetId": 300010022,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0404",
     "QuoteLanguageId": 250400000300010034,
@@ -209,7 +209,7 @@
   },
   {
     "Id": 300010027,
-    "LeagueEventBattleResultSetId": 300010027,
+    "LeagueEventBattleResultSetId": 300010022,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0409",
     "QuoteLanguageId": 250400000300010035,
@@ -225,7 +225,7 @@
   },
   {
     "Id": 300010029,
-    "LeagueEventBattleResultSetId": 300010029,
+    "LeagueEventBattleResultSetId": 300010028,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_05",
     "VoiceResourceId": "vc_masterleague_0001_btl_0303",
     "QuoteLanguageId": 250400000300010038,
@@ -233,7 +233,7 @@
   },
   {
     "Id": 300010030,
-    "LeagueEventBattleResultSetId": 300010030,
+    "LeagueEventBattleResultSetId": 300010028,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_09",
     "VoiceResourceId": "vc_masterleague_0001_btl_0410",
     "QuoteLanguageId": 250400000300010039,
@@ -241,7 +241,7 @@
   },
   {
     "Id": 300010031,
-    "LeagueEventBattleResultSetId": 300010031,
+    "LeagueEventBattleResultSetId": 300010028,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_07",
     "VoiceResourceId": "vc_masterleague_0001_btl_0502",
     "QuoteLanguageId": 250400000300010040,
@@ -249,7 +249,7 @@
   },
   {
     "Id": 300010032,
-    "LeagueEventBattleResultSetId": 300010032,
+    "LeagueEventBattleResultSetId": 300010028,
     "BromideResourceId": "ml_battle_result_cutin_bromide_300010_07",
     "VoiceResourceId": "vc_masterleague_0001_btl_0507",
     "QuoteLanguageId": 250400000300010041,

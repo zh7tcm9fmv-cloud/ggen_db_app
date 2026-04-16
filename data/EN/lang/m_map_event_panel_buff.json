@@ -134,5 +134,29 @@
   {
     "id": 280100002400010007,
     "value": "Increase Max HP, DEF and MOB by 8%."
+  },
+  {
+    "id": 280100002400020001,
+    "value": "Increase ATK by 10%"
+  },
+  {
+    "id": 280100002400020002,
+    "value": "Increase DEF by 10%"
+  },
+  {
+    "id": 280100002400020003,
+    "value": "Increase Max HP by 10%."
+  },
+  {
+    "id": 280100002400020004,
+    "value": "Increase Critical Rate by 10%."
+  },
+  {
+    "id": 280100002400020005,
+    "value": "Increase ATK by 8% and Critical Rate by 8%."
+  },
+  {
+    "id": 280100002400020006,
+    "value": "Increase Max HP by 8% and DEF by 8%."
   }
 ]

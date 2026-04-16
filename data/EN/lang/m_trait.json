@@ -2500,6 +2500,14 @@
     "value": ""
   },
   {
+    "id": 141200000101320101,
+    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 5%."
+  },
+  {
+    "id": 141200000101320102,
+    "value": "When damage taken is 3000 or less, there is no effect."
+  },
+  {
     "id": 141200000101320201,
     "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 10%."
   },
@@ -2746,6 +2754,14 @@
   {
     "id": 141200000101500202,
     "value": ""
+  },
+  {
+    "id": 141200000101510201,
+    "value": "When the piloting character has an Awaken of less than 900,\nincrease piloting character's Awaken to 900."
+  },
+  {
+    "id": 141200000101510202,
+    "value": "When Vigor is Max or higher,\nincrease ATK by 10%."
   },
   {
     "id": 141200000101520101,
@@ -7948,8 +7964,36 @@
     "value": "When piloting Tallgeese III (EX), if Vigor is Supercharged or higher, \nThe max range of Beam Weapon is increased by 1."
   },
   {
+    "id": 141200000202460101,
+    "value": "When piloting Ex-S Gundam (EX), \nchance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been destroyed."
+  },
+  {
+    "id": 141200000202460102,
+    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202460103,
+    "value": ""
+  },
+  {
     "id": 141200000202470101,
     "value": "Restore own HP 5% at the start of every turn.\nwhen piloting units with specified tags."
+  },
+  {
+    "id": 141200000202480101,
+    "value": "Support Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202480102,
+    "value": "When piloting Gundam Pharact (Season 2) (EX) and HP falls to 50% or below,\nrestores own HP by 50% (once only)."
+  },
+  {
+    "id": 141200000202490101,
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time"
+  },
+  {
+    "id": 141200000202500101,
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
   },
   {
     "id": 141200000300010101,
@@ -10442,6 +10486,10 @@
   {
     "id": 141200000320390901,
     "value": "The higher your MP is, the greater Weapon Power increases (up to 9%)."
+  },
+  {
+    "id": 141200000350100101,
+    "value": "Damage Taken from Special Weapons Up {0}%"
   },
   {
     "id": 141200000400010101,
@@ -13620,6 +13668,30 @@
     "value": ""
   },
   {
+    "id": 141200000406420101,
+    "value": "Increase DEF by 12%."
+  },
+  {
+    "id": 141200000406430101,
+    "value": "Increase Mobility by 8%."
+  },
+  {
+    "id": 141200000406440101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406450101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406460101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406470101,
+    "value": "Increase Max EN by 8%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -14890,6 +14962,14 @@
   {
     "id": 141200000511140101,
     "value": "Prioritize attacking the enemy with the highest HP."
+  },
+  {
+    "id": 141200000511160101,
+    "value": "Decrease enemy squad ATK by 50%."
+  },
+  {
+    "id": 141200000511160102,
+    "value": "Decrease enemy squad DEF by 50%."
   },
   {
     "id": 141200000511360101,
@@ -16745,7 +16825,7 @@
   },
   {
     "id": 141200000611480101,
-    "value": "Increased DEF by 100%\nfor squad units piloted by 【$キャラクター名】"
+    "value": "Increased DEF by 100%\nfor squad units piloted by Heero Yuy (EW)."
   },
   {
     "id": 141200000611490101,
