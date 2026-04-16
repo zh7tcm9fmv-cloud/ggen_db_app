@@ -634,5 +634,9 @@
   {
     "ConfigTypeIndex": 423,
     "Value": "5"
+  },
+  {
+    "ConfigTypeIndex": 424,
+    "Value": "99"
   }
 ]
