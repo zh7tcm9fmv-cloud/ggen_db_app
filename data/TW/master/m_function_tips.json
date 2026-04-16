@@ -30,6 +30,11 @@
     "FunctionTipsDetailSetId": 1501
   },
   {
+    "Id": 1502,
+    "FunctionTypeIndex": 55,
+    "FunctionTipsDetailSetId": 1502
+  },
+  {
     "Id": 1601,
     "FunctionTypeIndex": 7,
     "FunctionTipsDetailSetId": 1601
@@ -108,6 +113,11 @@
     "Id": 2902,
     "FunctionTypeIndex": 35,
     "FunctionTipsDetailSetId": 2902
+  },
+  {
+    "Id": 2904,
+    "FunctionTypeIndex": 56,
+    "FunctionTipsDetailSetId": 2904
   },
   {
     "Id": 3001,

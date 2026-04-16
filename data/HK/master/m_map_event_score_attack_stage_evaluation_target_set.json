@@ -58,5 +58,25 @@
     "MapEventScoreAttackStageEvaluationTargetSetId": 3,
     "TargetTypeIndex": 4,
     "MapEventScoreAttackScoreEvaluationStandardSetId": 34
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 4,
+    "TargetTypeIndex": 1,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 41
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 4,
+    "TargetTypeIndex": 2,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 42
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 4,
+    "TargetTypeIndex": 3,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 43
+  },
+  {
+    "MapEventScoreAttackStageEvaluationTargetSetId": 4,
+    "TargetTypeIndex": 4,
+    "MapEventScoreAttackScoreEvaluationStandardSetId": 44
   }
 ]

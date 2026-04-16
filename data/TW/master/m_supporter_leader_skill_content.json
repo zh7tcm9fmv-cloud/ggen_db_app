@@ -1624,6 +1624,34 @@
     "SortOrder": 1
   },
   {
+    "SupporterLeaderSkillContentSetId": 137000066000,
+    "SupporterLeaderSkillTraitSetId": 100150,
+    "DescriptionLanguageId": 160700000000100150,
+    "TraitConditionSetId": 1000498,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000066001,
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "DescriptionLanguageId": 160700000000100180,
+    "TraitConditionSetId": 1000498,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000066002,
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "DescriptionLanguageId": 160700000000100200,
+    "TraitConditionSetId": 1000498,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000066003,
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "DescriptionLanguageId": 160700000000100220,
+    "TraitConditionSetId": 1000498,
+    "SortOrder": 1
+  },
+  {
     "SupporterLeaderSkillContentSetId": 140000015000,
     "SupporterLeaderSkillTraitSetId": 100250,
     "DescriptionLanguageId": 160700000000100250,
@@ -1929,6 +1957,34 @@
     "SupporterLeaderSkillTraitSetId": 100260,
     "DescriptionLanguageId": 160700000000100260,
     "TraitConditionSetId": 1000133,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 150100045000,
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "DescriptionLanguageId": 160700000000100250,
+    "TraitConditionSetId": 1000522,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 150100045001,
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "DescriptionLanguageId": 160700000000100300,
+    "TraitConditionSetId": 1000522,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 150100045002,
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "DescriptionLanguageId": 160700000000100330,
+    "TraitConditionSetId": 1000522,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 150100045003,
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "DescriptionLanguageId": 160700000000100360,
+    "TraitConditionSetId": 1000522,
     "SortOrder": 1
   },
   {

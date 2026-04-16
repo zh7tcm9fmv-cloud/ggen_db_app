@@ -148,5 +148,45 @@
     "MapEventPanelTraitSetId": 2400017,
     "MapEventBuffTraitTypeIndex": 21,
     "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400021,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400022,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400023,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400024,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 10
+  },
+  {
+    "MapEventPanelTraitSetId": 2400025,
+    "MapEventBuffTraitTypeIndex": 3,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400025,
+    "MapEventBuffTraitTypeIndex": 27,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400026,
+    "MapEventBuffTraitTypeIndex": 5,
+    "TraitValue": 8
+  },
+  {
+    "MapEventPanelTraitSetId": 2400026,
+    "MapEventBuffTraitTypeIndex": 21,
+    "TraitValue": 8
   }
 ]

@@ -8,5 +8,15 @@
     "UnitUpgradeGroupId": 24000101,
     "UpgradeStep": 2,
     "UnitId": 1300000970
+  },
+  {
+    "UnitUpgradeGroupId": 24000201,
+    "UpgradeStep": 1,
+    "UnitId": 1370000360
+  },
+  {
+    "UnitUpgradeGroupId": 24000201,
+    "UpgradeStep": 2,
+    "UnitId": 1370000370
   }
 ]

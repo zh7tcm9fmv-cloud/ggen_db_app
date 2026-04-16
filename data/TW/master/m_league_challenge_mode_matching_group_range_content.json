@@ -304,5 +304,143 @@
     "LeagueChallengeModeMatchingGroupRangeSetId": 600,
     "LeagueMatchingGroupRangeId": 2010,
     "SortOrder": 8
+  },
+  {
+    "Id": 701,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3000,
+    "SortOrder": 1
+  },
+  {
+    "Id": 702,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3001,
+    "SortOrder": 2
+  },
+  {
+    "Id": 703,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3002,
+    "SortOrder": 3
+  },
+  {
+    "Id": 704,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3003,
+    "SortOrder": 4
+  },
+  {
+    "Id": 705,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3004,
+    "SortOrder": 5
+  },
+  {
+    "Id": 706,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3005,
+    "SortOrder": 6
+  },
+  {
+    "Id": 707,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3006,
+    "SortOrder": 7
+  },
+  {
+    "Id": 708,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3007,
+    "SortOrder": 8
+  },
+  {
+    "Id": 709,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700,
+    "LeagueMatchingGroupRangeId": 3008,
+    "SortOrder": 9
+  },
+  {
+    "Id": 801,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3001,
+    "SortOrder": 1
+  },
+  {
+    "Id": 802,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3002,
+    "SortOrder": 2
+  },
+  {
+    "Id": 803,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3003,
+    "SortOrder": 3
+  },
+  {
+    "Id": 804,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3004,
+    "SortOrder": 4
+  },
+  {
+    "Id": 805,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3005,
+    "SortOrder": 5
+  },
+  {
+    "Id": 806,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3006,
+    "SortOrder": 6
+  },
+  {
+    "Id": 807,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3007,
+    "SortOrder": 7
+  },
+  {
+    "Id": 808,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800,
+    "LeagueMatchingGroupRangeId": 3008,
+    "SortOrder": 8
+  },
+  {
+    "Id": 901,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3003,
+    "SortOrder": 1
+  },
+  {
+    "Id": 902,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3004,
+    "SortOrder": 2
+  },
+  {
+    "Id": 903,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3005,
+    "SortOrder": 3
+  },
+  {
+    "Id": 904,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3006,
+    "SortOrder": 4
+  },
+  {
+    "Id": 905,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3007,
+    "SortOrder": 5
+  },
+  {
+    "Id": 906,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900,
+    "LeagueMatchingGroupRangeId": 3008,
+    "SortOrder": 6
   }
 ]

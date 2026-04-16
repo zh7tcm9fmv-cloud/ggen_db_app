@@ -916,5 +916,311 @@
     "DamageUpRatePercent": 0,
     "StageNameLanguageId": 130100000091010313,
     "Rank": 9
+  },
+  {
+    "Id": 2400020102,
+    "MapEventPanelId": 2400020102,
+    "StageId": 91020101,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020101,
+    "Rank": 1
+  },
+  {
+    "Id": 2400020109,
+    "MapEventPanelId": 2400020109,
+    "StageId": 91020102,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020102,
+    "Rank": 1
+  },
+  {
+    "Id": 2400020111,
+    "MapEventPanelId": 2400020111,
+    "StageId": 91020103,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020103,
+    "Rank": 2
+  },
+  {
+    "Id": 2400020114,
+    "MapEventPanelId": 2400020114,
+    "StageId": 91020104,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020104,
+    "Rank": 2
+  },
+  {
+    "Id": 2400020116,
+    "MapEventPanelId": 2400020116,
+    "StageId": 91020105,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020105,
+    "Rank": 3
+  },
+  {
+    "Id": 2400020123,
+    "MapEventPanelId": 2400020123,
+    "StageId": 91020106,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020106,
+    "Rank": 4
+  },
+  {
+    "Id": 2400020124,
+    "MapEventPanelId": 2400020124,
+    "StageId": 91020107,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020107,
+    "Rank": 4
+  },
+  {
+    "Id": 2400020126,
+    "MapEventPanelId": 2400020126,
+    "StageId": 91020108,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020108,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020127,
+    "MapEventPanelId": 2400020127,
+    "StageId": 91020109,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020109,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020128,
+    "MapEventPanelId": 2400020128,
+    "StageId": 91020110,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020110,
+    "Rank": 8
+  },
+  {
+    "Id": 2400020205,
+    "MapEventPanelId": 2400020205,
+    "StageId": 91020201,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020201,
+    "Rank": 3
+  },
+  {
+    "Id": 2400020206,
+    "MapEventPanelId": 2400020206,
+    "StageId": 91020202,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020202,
+    "Rank": 3
+  },
+  {
+    "Id": 2400020207,
+    "MapEventPanelId": 2400020207,
+    "StageId": 91020203,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020203,
+    "Rank": 4
+  },
+  {
+    "Id": 2400020215,
+    "MapEventPanelId": 2400020215,
+    "StageId": 91020204,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020204,
+    "Rank": 4
+  },
+  {
+    "Id": 2400020217,
+    "MapEventPanelId": 2400020217,
+    "StageId": 91020205,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020205,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020218,
+    "MapEventPanelId": 2400020218,
+    "StageId": 91020206,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020206,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020225,
+    "MapEventPanelId": 2400020225,
+    "StageId": 91020207,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020207,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020226,
+    "MapEventPanelId": 2400020226,
+    "StageId": 91020208,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020208,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020228,
+    "MapEventPanelId": 2400020228,
+    "StageId": 91020209,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020209,
+    "Rank": 7
+  },
+  {
+    "Id": 2400020230,
+    "MapEventPanelId": 2400020230,
+    "StageId": 91020210,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020210,
+    "Rank": 8
+  },
+  {
+    "Id": 2400020231,
+    "MapEventPanelId": 2400020231,
+    "StageId": 91020211,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020211,
+    "Rank": 10
+  },
+  {
+    "Id": 2400020305,
+    "MapEventPanelId": 2400020305,
+    "StageId": 91020301,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020301,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020306,
+    "MapEventPanelId": 2400020306,
+    "StageId": 91020302,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020302,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020307,
+    "MapEventPanelId": 2400020307,
+    "StageId": 91020303,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020303,
+    "Rank": 5
+  },
+  {
+    "Id": 2400020311,
+    "MapEventPanelId": 2400020311,
+    "StageId": 91020304,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020304,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020312,
+    "MapEventPanelId": 2400020312,
+    "StageId": 91020305,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020305,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020314,
+    "MapEventPanelId": 2400020314,
+    "StageId": 91020306,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020306,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020315,
+    "MapEventPanelId": 2400020315,
+    "StageId": 91020307,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020307,
+    "Rank": 6
+  },
+  {
+    "Id": 2400020321,
+    "MapEventPanelId": 2400020321,
+    "StageId": 91020308,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020308,
+    "Rank": 7
+  },
+  {
+    "Id": 2400020324,
+    "MapEventPanelId": 2400020324,
+    "StageId": 91020309,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020309,
+    "Rank": 7
+  },
+  {
+    "Id": 2400020325,
+    "MapEventPanelId": 2400020325,
+    "StageId": 91020310,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020310,
+    "Rank": 7
+  },
+  {
+    "Id": 2400020329,
+    "MapEventPanelId": 2400020329,
+    "StageId": 91020311,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020311,
+    "Rank": 9
+  },
+  {
+    "Id": 2400020330,
+    "MapEventPanelId": 2400020330,
+    "StageId": 91020312,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020312,
+    "Rank": 9
+  },
+  {
+    "Id": 2400020331,
+    "MapEventPanelId": 2400020331,
+    "StageId": 91020313,
+    "BuffTargetTagSetId": 0,
+    "DamageUpRatePercent": 0,
+    "StageNameLanguageId": 130100000091020313,
+    "Rank": 8
   }
 ]

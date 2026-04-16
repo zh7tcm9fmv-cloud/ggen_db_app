@@ -840,6 +840,21 @@
     "AssetDownloadTimingTypeIndex": 3
   },
   {
+    "Id": 1370000660,
+    "NameLanguageId": 160100001370000660,
+    "DescriptionLanguageId": 0,
+    "SortNameLanguageId": 160300001370000660,
+    "RarityIndex": 4,
+    "MaxHpAdditionValue": 2250,
+    "MaxAttackAdditionValue": 225,
+    "ResourceId": "g3700s00600",
+    "LimitBreakItemId": 0,
+    "SupporterAcquisitionRouteTypeIndex": 2,
+    "GashaObtainedWordLanguageId": 0,
+    "ScheduleId": 2604309901,
+    "AssetDownloadTimingTypeIndex": 1
+  },
+  {
     "Id": 1400000150,
     "NameLanguageId": 160100001400000150,
     "DescriptionLanguageId": 0,
@@ -987,6 +1002,21 @@
     "SupporterAcquisitionRouteTypeIndex": 1,
     "GashaObtainedWordLanguageId": 0,
     "ScheduleId": 0,
+    "AssetDownloadTimingTypeIndex": 3
+  },
+  {
+    "Id": 1501000450,
+    "NameLanguageId": 160100001501000450,
+    "DescriptionLanguageId": 0,
+    "SortNameLanguageId": 160300001501000450,
+    "RarityIndex": 5,
+    "MaxHpAdditionValue": 2500,
+    "MaxAttackAdditionValue": 250,
+    "ResourceId": "g5010s00400",
+    "LimitBreakItemId": 0,
+    "SupporterAcquisitionRouteTypeIndex": 1,
+    "GashaObtainedWordLanguageId": 160800001501000450,
+    "ScheduleId": 2604309901,
     "AssetDownloadTimingTypeIndex": 3
   },
   {

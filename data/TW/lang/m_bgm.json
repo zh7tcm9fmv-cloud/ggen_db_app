@@ -68,8 +68,60 @@
     "value": "強尼‧萊汀專用戰鬥BGM"
   },
   {
+    "id": 300100000100909001,
+    "value": "Turning Point"
+  },
+  {
+    "id": 300100000100909002,
+    "value": "Shinshutsusu!"
+  },
+  {
+    "id": 300100000100909003,
+    "value": "Kennin-Fubatsu"
+  },
+  {
+    "id": 300100000100909004,
+    "value": "Kido-Sen"
+  },
+  {
+    "id": 300100000100909005,
+    "value": "Sora no Tamoto"
+  },
+  {
+    "id": 300100000100909006,
+    "value": "Yumewadachi"
+  },
+  {
+    "id": 300100000101209001,
+    "value": "Sajin"
+  },
+  {
+    "id": 300100000101209002,
+    "value": "Riku no Ohja"
+  },
+  {
+    "id": 300100000101209003,
+    "value": "Juryoku no Okite"
+  },
+  {
     "id": 300100000101309001,
     "value": "Arashi no Naka de Kagayaite"
+  },
+  {
+    "id": 300100000101709001,
+    "value": "Kaku no Sora"
+  },
+  {
+    "id": 300100000101709002,
+    "value": "Cyclops-Tai"
+  },
+  {
+    "id": 300100000101709003,
+    "value": "Niji wo Otte"
+  },
+  {
+    "id": 300100000101709004,
+    "value": "Itsuka Sora ni Todoite"
   },
   {
     "id": 300100000102100001,
@@ -172,6 +224,10 @@
     "value": "THE WINNER"
   },
   {
+    "id": 300100000106009009,
+    "value": "MEN OF DESTINY"
+  },
+  {
     "id": 300100000108009001,
     "value": "Kantaisen"
   },
@@ -252,12 +308,136 @@
     "value": "BEYOND THE TIME ～Over the Moebius skies～"
   },
   {
+    "id": 300100000111009002,
+    "value": "MAIN TITLE"
+  },
+  {
+    "id": 300100000111009003,
+    "value": "NEO ZION"
+  },
+  {
+    "id": 300100000111009004,
+    "value": "SALLY"
+  },
+  {
+    "id": 300100000111009005,
+    "value": "SWAN"
+  },
+  {
+    "id": 300100000111009006,
+    "value": "ν GUNDAM"
+  },
+  {
+    "id": 300100000111009007,
+    "value": "SACRIFICE"
+  },
+  {
     "id": 300100000112509001,
     "value": "RE:I AM"
   },
   {
+    "id": 300100000112509002,
+    "value": "ryuusei no namida"
+  },
+  {
+    "id": 300100000112509003,
+    "value": "Everlasting"
+  },
+  {
+    "id": 300100000112509004,
+    "value": "merry-go-round"
+  },
+  {
+    "id": 300100000112509005,
+    "value": "B-Bird"
+  },
+  {
+    "id": 300100000112509006,
+    "value": "BROKEN MIRROR"
+  },
+  {
+    "id": 300100000112509007,
+    "value": "StarRingChild (Movie ver.)"
+  },
+  {
+    "id": 300100000112509008,
+    "value": "UNICORN"
+  },
+  {
+    "id": 300100000112509009,
+    "value": "FULL-FRONTAL"
+  },
+  {
+    "id": 300100000112509010,
+    "value": "MOBILE SUIT"
+  },
+  {
+    "id": 300100000112509011,
+    "value": "RX-0"
+  },
+  {
+    "id": 300100000112509012,
+    "value": "LAPLACE"
+  },
+  {
+    "id": 300100000112509013,
+    "value": "AUDREY"
+  },
+  {
+    "id": 300100000112509014,
+    "value": "[SYMPHONIC SUITE \"UC2012\" ] 1ST MOV. :BANSHEE"
+  },
+  {
+    "id": 300100000112509015,
+    "value": "[SYMPHONIC SUITE \"UC2012\" ] 2ND MOV. :PSYCHO-FIELD"
+  },
+  {
+    "id": 300100000112509016,
+    "value": "[SYMPHONIC-MOBILE SUITE \"UC\"] 5thMob. :UXO-→RX0"
+  },
+  {
+    "id": 300100000112609001,
+    "value": "Into the Sky"
+  },
+  {
     "id": 300100000114409001,
     "value": "Vigilante"
+  },
+  {
+    "id": 300100000115009001,
+    "value": "Senkou"
+  },
+  {
+    "id": 300100000115009002,
+    "value": "Ξ"
+  },
+  {
+    "id": 300100000115009003,
+    "value": "MNE"
+  },
+  {
+    "id": 300100000115009004,
+    "value": "car5p3 / PENELOPE"
+  },
+  {
+    "id": 300100000115009005,
+    "value": "TRACER"
+  },
+  {
+    "id": 300100000115009006,
+    "value": "Möbius"
+  },
+  {
+    "id": 300100000115009007,
+    "value": "83UeI"
+  },
+  {
+    "id": 300100000115009008,
+    "value": "CC···12yl"
+  },
+  {
+    "id": 300100000116209001,
+    "value": "Kimi wo Mitsumete -The time I'm seeing you-"
   },
   {
     "id": 300100000116600001,
@@ -784,6 +964,26 @@
     "value": "The Blessing"
   },
   {
+    "id": 300100000150109010,
+    "value": "Quiet Zero"
+  },
+  {
+    "id": 300100000150109011,
+    "value": "Get Ready for the Duel"
+  },
+  {
+    "id": 300100000150109012,
+    "value": "Weapons Should Only Exist to Kill People"
+  },
+  {
+    "id": 300100000150109013,
+    "value": "Fix Release"
+  },
+  {
+    "id": 300100000150109014,
+    "value": "slash"
+  },
+  {
     "id": 300100000160409001,
     "value": "Nibunnoichi"
   },
@@ -810,6 +1010,10 @@
   {
     "id": 300100000170509001,
     "value": "Daikessen -Theme/Ending1/Ending2"
+  },
+  {
+    "id": 300100000172509001,
+    "value": "Removes"
   },
   {
     "id": 300100000176400001,

@@ -5,7 +5,7 @@
     "DestinationTypeIndex": 1,
     "DestinationId": 2504100101,
     "SortOrder": 1001,
-    "ResourceId": "gasha_2504100101",
+    "ResourceId": "gasha_2604300102",
     "ScheduleId": 9999990001,
     "BannerResourceTypeIndex": 0
   },
@@ -437,6 +437,26 @@
     "SortOrder": 1001,
     "ResourceId": "gasha_2603600501",
     "ScheduleId": 2603601703,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2604300101,
+    "TransitionId": 28002604300101,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2604300101,
+    "SortOrder": 1001,
+    "ResourceId": "gasha_2604300101",
+    "ScheduleId": 9999990001,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2604300302,
+    "TransitionId": 28002604300302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2604300302,
+    "SortOrder": 1002,
+    "ResourceId": "gasha_2604300302",
+    "ScheduleId": 2604301701,
     "BannerResourceTypeIndex": 0
   }
 ]

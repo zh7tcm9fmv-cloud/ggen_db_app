@@ -3,5 +3,10 @@
     "MapEventPartnerSetId": 24000101,
     "MapEventPartnerId": 24000101,
     "StatusBuffPercent": 50
+  },
+  {
+    "MapEventPartnerSetId": 24000201,
+    "MapEventPartnerId": 24000201,
+    "StatusBuffPercent": 50
   }
 ]

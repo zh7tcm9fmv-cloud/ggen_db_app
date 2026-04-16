@@ -80,6 +80,46 @@
     "MessageLanguageId": 100811304000100011
   },
   {
+    "MapEventPanelBuffCharacterMessageSetId": 1137000010101,
+    "SortOrder": 1,
+    "MessageLanguageId": 101611370000101011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1137000010101,
+    "SortOrder": 2,
+    "MessageLanguageId": 101611370000101012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1137000040201,
+    "SortOrder": 1,
+    "MessageLanguageId": 101611370000402011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1137000040201,
+    "SortOrder": 2,
+    "MessageLanguageId": 101611370000402012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1150100040101,
+    "SortOrder": 1,
+    "MessageLanguageId": 101611501000401011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1150100040101,
+    "SortOrder": 2,
+    "MessageLanguageId": 101611501000401012
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1150100050101,
+    "SortOrder": 1,
+    "MessageLanguageId": 101611501000501011
+  },
+  {
+    "MapEventPanelBuffCharacterMessageSetId": 1150100050101,
+    "SortOrder": 2,
+    "MessageLanguageId": 101611501000501012
+  },
+  {
     "MapEventPanelBuffCharacterMessageSetId": 1185000040001,
     "SortOrder": 1,
     "MessageLanguageId": 100811850000400011

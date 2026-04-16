@@ -144,6 +144,24 @@
     "TitleLanguageId": 170700000000150106
   },
   {
+    "FunctionTipsDetailSetId": 1502,
+    "FunctionTipsDetailId": 150201,
+    "SortOrder": 1,
+    "TitleLanguageId": 170700000000150201
+  },
+  {
+    "FunctionTipsDetailSetId": 1502,
+    "FunctionTipsDetailId": 150202,
+    "SortOrder": 2,
+    "TitleLanguageId": 170700000000150202
+  },
+  {
+    "FunctionTipsDetailSetId": 1502,
+    "FunctionTipsDetailId": 150203,
+    "SortOrder": 3,
+    "TitleLanguageId": 170700000000150203
+  },
+  {
     "FunctionTipsDetailSetId": 1601,
     "FunctionTipsDetailId": 160101,
     "SortOrder": 1,
@@ -322,6 +340,12 @@
     "FunctionTipsDetailId": 290202,
     "SortOrder": 3,
     "TitleLanguageId": 170700000000290202
+  },
+  {
+    "FunctionTipsDetailSetId": 2904,
+    "FunctionTipsDetailId": 290401,
+    "SortOrder": 1,
+    "TitleLanguageId": 170700000000290401
   },
   {
     "FunctionTipsDetailSetId": 3001,

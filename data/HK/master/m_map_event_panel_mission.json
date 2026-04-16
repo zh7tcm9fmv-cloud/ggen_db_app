@@ -75,5 +75,96 @@
     "TargetProgressCount": 1,
     "DescriptionLanguageId": 180100251210110011,
     "TransitionId": 39000000003000
+  },
+  {
+    "Id": 260430110001,
+    "GameEventConditionId": 260430110001,
+    "TargetProgressCount": 5000,
+    "DescriptionLanguageId": 180100260430110001,
+    "TransitionId": 0
+  },
+  {
+    "Id": 260430110002,
+    "GameEventConditionId": 260430110002,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110002,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110003,
+    "GameEventConditionId": 260430110003,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110003,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110004,
+    "GameEventConditionId": 260430110004,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110004,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110005,
+    "GameEventConditionId": 260430110005,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110005,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110006,
+    "GameEventConditionId": 260430110006,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110006,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110007,
+    "GameEventConditionId": 260430110007,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110007,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110008,
+    "GameEventConditionId": 260430110008,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110008,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110009,
+    "GameEventConditionId": 260430110009,
+    "TargetProgressCount": 3000,
+    "DescriptionLanguageId": 180100260430110009,
+    "TransitionId": 0
+  },
+  {
+    "Id": 260430110010,
+    "GameEventConditionId": 260430110010,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110010,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110011,
+    "GameEventConditionId": 260430110011,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110011,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110012,
+    "GameEventConditionId": 260430110012,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110012,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 260430110013,
+    "GameEventConditionId": 260430110013,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180100260430110013,
+    "TransitionId": 39000000003700
   }
 ]

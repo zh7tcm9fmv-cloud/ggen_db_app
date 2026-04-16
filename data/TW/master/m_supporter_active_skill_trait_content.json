@@ -300,6 +300,11 @@
     "TraitConditionSetId": 1000001
   },
   {
+    "Id": 1370000660,
+    "SupporterActiveSkillTraitId": 1370000660,
+    "TraitConditionSetId": 0
+  },
+  {
     "Id": 1400000150,
     "SupporterActiveSkillTraitId": 1400000150,
     "TraitConditionSetId": 0
@@ -347,6 +352,11 @@
   {
     "Id": 1501000250,
     "SupporterActiveSkillTraitId": 1501000250,
+    "TraitConditionSetId": 0
+  },
+  {
+    "Id": 1501000450,
+    "SupporterActiveSkillTraitId": 1501000450,
     "TraitConditionSetId": 0
   },
   {

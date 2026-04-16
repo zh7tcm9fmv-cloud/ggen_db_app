@@ -222,5 +222,250 @@
     "FacialExpressionTypeIndex": 1,
     "QuoteLanguageId": 340100240001051001,
     "Unknown_Col_4": ""
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020101,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002010101,
+    "Unknown_Col_4": "vc_strategy_partner_02_0001"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020101,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002010102,
+    "Unknown_Col_4": "vc_strategy_partner_02_0002"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020201,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002020101,
+    "Unknown_Col_4": "vc_strategy_partner_02_0004"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020201,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002020102,
+    "Unknown_Col_4": "vc_strategy_partner_02_0005"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020301,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002030101,
+    "Unknown_Col_4": "vc_strategy_partner_02_0006"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020301,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002030102,
+    "Unknown_Col_4": "vc_strategy_partner_02_0007"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020401,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040101,
+    "Unknown_Col_4": "vc_strategy_partner_02_0008"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020401,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040102,
+    "Unknown_Col_4": "vc_strategy_partner_02_0009"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020402,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040201,
+    "Unknown_Col_4": "vc_strategy_partner_02_0010"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020402,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040202,
+    "Unknown_Col_4": "vc_strategy_partner_02_0011"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020403,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040301,
+    "Unknown_Col_4": "vc_strategy_partner_02_0012"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020403,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040302,
+    "Unknown_Col_4": "vc_strategy_partner_02_0013"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020404,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040401,
+    "Unknown_Col_4": "vc_strategy_partner_02_0015"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020404,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040402,
+    "Unknown_Col_4": "vc_strategy_partner_02_0016"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020405,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040501,
+    "Unknown_Col_4": "vc_strategy_partner_02_0014"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020406,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040601,
+    "Unknown_Col_4": "vc_strategy_partner_02_0017"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020406,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040602,
+    "Unknown_Col_4": "vc_strategy_partner_02_0018"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020407,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040701,
+    "Unknown_Col_4": "vc_strategy_partner_02_0019"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020407,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040702,
+    "Unknown_Col_4": "vc_strategy_partner_02_0020"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020408,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040801,
+    "Unknown_Col_4": "vc_strategy_partner_02_0021"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020408,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040802,
+    "Unknown_Col_4": "vc_strategy_partner_02_0022"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020409,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040901,
+    "Unknown_Col_4": "vc_strategy_partner_02_0023"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020409,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002040902,
+    "Unknown_Col_4": "vc_strategy_partner_02_0024"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020410,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002041001,
+    "Unknown_Col_4": "vc_strategy_partner_02_0025"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020410,
+    "SortOrder": 2,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002041002,
+    "Unknown_Col_4": "vc_strategy_partner_02_0026"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020501,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050101,
+    "Unknown_Col_4": "vc_strategy_partner_02_0028"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020502,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050201,
+    "Unknown_Col_4": "vc_strategy_partner_02_0033"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020503,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050301,
+    "Unknown_Col_4": "vc_strategy_partner_02_0030"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020504,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 1,
+    "QuoteLanguageId": 340100240002050401,
+    "Unknown_Col_4": "vc_strategy_partner_02_0035"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020505,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 1,
+    "QuoteLanguageId": 340100240002050501,
+    "Unknown_Col_4": "vc_strategy_partner_02_0032"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020506,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050601,
+    "Unknown_Col_4": "vc_strategy_partner_02_0036"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020507,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 1,
+    "QuoteLanguageId": 340100240002050701,
+    "Unknown_Col_4": "vc_strategy_partner_02_0034"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020508,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050801,
+    "Unknown_Col_4": "vc_strategy_partner_02_0029"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020509,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 2,
+    "QuoteLanguageId": 340100240002050901,
+    "Unknown_Col_4": "vc_strategy_partner_02_0031"
+  },
+  {
+    "MapEventPartnerQuoteSetId": 2400020510,
+    "SortOrder": 1,
+    "FacialExpressionTypeIndex": 1,
+    "QuoteLanguageId": 340100240002051001,
+    "Unknown_Col_4": "vc_strategy_partner_02_0027"
   }
 ]

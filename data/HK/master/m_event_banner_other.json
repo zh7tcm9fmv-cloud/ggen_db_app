@@ -12,5 +12,12 @@
     "RewardId": 0,
     "ResourceId": "el_banner_250110011",
     "DescriptionLanguageId": 221000000000000002
+  },
+  {
+    "Id": 3,
+    "EventBannerOtherTypeIndex": 3,
+    "RewardId": 0,
+    "ResourceId": "mc_banner_3000100001",
+    "DescriptionLanguageId": 221000000000000002
   }
 ]

@@ -313,5 +313,320 @@
     "DirectionIndex": 1,
     "UnitStandbyTypeIndex": 0,
     "MapNpcAiPresetId": 0
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020101,
+    "X": 12,
+    "Y": 3,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020102,
+    "X": 7,
+    "Y": 10,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020103,
+    "X": 14,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020104,
+    "X": 8,
+    "Y": 18,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020105,
+    "X": 4,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020106,
+    "X": 8,
+    "Y": 18,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020107,
+    "X": 8,
+    "Y": 10,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020108,
+    "X": 15,
+    "Y": 9,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020109,
+    "X": 10,
+    "Y": 17,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020110,
+    "X": 2,
+    "Y": 5,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020201,
+    "X": 10,
+    "Y": 8,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020202,
+    "X": 10,
+    "Y": 13,
+    "DirectionIndex": 2,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020203,
+    "X": 6,
+    "Y": 12,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020204,
+    "X": 12,
+    "Y": 18,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020205,
+    "X": 12,
+    "Y": 17,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020206,
+    "X": 8,
+    "Y": 11,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020207,
+    "X": 24,
+    "Y": 10,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020208,
+    "X": 6,
+    "Y": 10,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020209,
+    "X": 18,
+    "Y": 25,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020210,
+    "X": 12,
+    "Y": 21,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020211,
+    "X": 3,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020301,
+    "X": 13,
+    "Y": 1,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020302,
+    "X": 10,
+    "Y": 5,
+    "DirectionIndex": 2,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020303,
+    "X": 12,
+    "Y": 12,
+    "DirectionIndex": 2,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020304,
+    "X": 16,
+    "Y": 8,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020305,
+    "X": 4,
+    "Y": 15,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020306,
+    "X": 5,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020307,
+    "X": 2,
+    "Y": 25,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020308,
+    "X": 13,
+    "Y": 9,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 1,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020309,
+    "X": 10,
+    "Y": 12,
+    "DirectionIndex": 4,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020310,
+    "X": 14,
+    "Y": 17,
+    "DirectionIndex": 2,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020311,
+    "X": 21,
+    "Y": 22,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020312,
+    "X": 20,
+    "Y": 5,
+    "DirectionIndex": 3,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020313,
+    "X": 12,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
+  },
+  {
+    "MapEventPartnerId": 24000201,
+    "StageId": 91020314,
+    "X": 12,
+    "Y": 11,
+    "DirectionIndex": 1,
+    "UnitStandbyTypeIndex": 0,
+    "MapNpcAiPresetId": 1
   }
 ]
