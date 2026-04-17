@@ -7375,8 +7375,7 @@ let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
-const critPreVigor=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult));
-let critDmg=MX(0,C(critPreVigor*((critCorrectionPct+100)/100)));
+let critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
@@ -7636,7 +7635,7 @@ return['',
 '  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
 `  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-`  ${supLbl} = max(0, ceil(ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult) × ((vigorCritMultPct+100)/100)))`,
+`  ${supLbl} = max(0, ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult × ((vigorCritMultPct+100)/100)))`,
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
 `  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
