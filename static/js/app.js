@@ -7309,12 +7309,16 @@ let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 const defUnit=npc.unit;const defChar=npc.character;
 const us=_dcDefNpcUnitMapStatsPair(defUnit).stats;
 const cs=defChar&&defChar.stats_raw||{};
-let unitDef=Math.max(0,Number(us.Defense)||0);
+const defMsDefensePair=Math.max(0,Number(us.Defense)||0);
+const defMsStatsRawDefense=Math.max(0,Number(defUnit&&defUnit.stats_raw&&defUnit.stats_raw.Defense)||0);
+const defMsBonusDefense=Math.max(0,Number(defUnit&&defUnit.bonus_amounts&&defUnit.bonus_amounts.Defense)||0);
+let unitDef=defMsDefensePair;
 let charDef=Math.max(0,Number(cs.Defense)||0);
 let defDebuffPct=_dcManualPlusWeaponDefDebuffPct(wpn,S.dc.wpnLv);
 if(defDebuffPct>0){
 unitDef=_dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,defDebuffPct,unitDef);
 }
+const defDebuffFlatSubtract=defMsDefensePair-unitDef;
 
 const rawWpnPower=lvData.power;
 const computedWpnPow=_dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
@@ -7391,10 +7395,11 @@ const accDownPct=0,mobDownPct=0;
 const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 const exSquadAtkPct=_dcEffectiveExSquadAtkPct();
 const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPct|0;
-return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
+return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,defendMult,isExWeapon,
+defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
@@ -7642,6 +7647,18 @@ return['',
 `  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, critPreVigor=${fmtN(rr.critPreVigor)}`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
+function _dcCopyLinesBattleDamageDiagnostics(rr){
+if(!rr)return[];
+return['',
+'Battle damage inputs (defender + weapon nominal; use to diff two targets):',
+`  MS DEF from map-stats pair (pre-debuff): ${fmtN(rr.defMsDefensePair|0)}`,
+`  stats_raw Defense (sheet total) / bonus slice: ${fmtN(rr.defMsStatsRawDefense|0)} / ${fmtN(rr.defMsBonusDefense|0)}`,
+`  DEF debuff % (field+weapon): ${rr.defDebuffPct|0}%; flat subtract from pair DEF: ${fmtN(rr.defDebuffFlatSubtract|0)} → MS DEF used: ${fmtN(rr.unitDef|0)}`,
+`  Pilot DEF (stats_raw): ${fmtN(rr.charDef|0)}`,
+`  Attacker MS ATK (final): ${fmtN(rr.unitAtk|0)}; Advantage tag %: ${rr.advantageTagAtkPct|0}`,
+`  combatWeaponPower (incl. nominal +1 if heavy debuff): ${fmtN(rr.combatWeaponPower|0)} (display power ${fmtN(rr.weaponPower|0)})`,
+`  baseDamage: ${fmtN(rr.baseDamage)}, damageCorrection: ${fmtN(rr.damageCorrection)}, terrainCorr: ${rr.terrainCorrection}, battleDamage: ${fmtN(rr.battleDamage)}`];
+}
 function copyDcResultText(){
 const r=S.dc._lastResult;if(!r)return;
 const npc=S.dc.defNpc;
@@ -7672,6 +7689,7 @@ if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.ad
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${rr.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(`${t('dc_vigor_prefix')}: ${_dcVigorLabel(m.slot.mpLevel||'medium')}, Terrain: ${m.slot.terrainMode||'normal'}`);
+_dcCopyLinesBattleDamageDiagnostics(rr).forEach(x=>lines.push(x));
 _dcCopyLinesDamageFormulas(rr).forEach(x=>lines.push(x));
 });
 }else{
@@ -7696,6 +7714,7 @@ if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.adva
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${r.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
 lines.push(vigor);
+_dcCopyLinesBattleDamageDiagnostics(r).forEach(x=>lines.push(x));
 _dcCopyLinesDamageFormulas(r).forEach(x=>lines.push(x));
 }
 navigator.clipboard.writeText(lines.join('\n')).then(()=>{
