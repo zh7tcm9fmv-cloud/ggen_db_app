@@ -203,7 +203,7 @@ return`<button type="button" class="dc-stage-hit${active?' is-active':''}${lk}" 
 }
 
 const T={EN:{tab_char:'Characters',tab_unit:'Units',tab_supporter:'Supporters',tab_stage:'Stages',stage_source_group_aria:'Stage categories',stage_source_eternal:'Eternal Road',stage_source_score:'Map Event Score Attack Stages',dc_def_preset_mode:'Preset (ER Stages, Score Attack Stages)',dc_def_preset_target_label:'Preset Target (ER Stages, Score Attack Stages)',dc_stage_search_ph:'Search ER & Score Attack stages…',dc_stage_list_aria:'ER and Score Attack stages',dc_score_attack_preset:'Score #{n}',search_char:'Search name or ID — …',search_unit:'Search name or ID — …',search_supporter:'Search name, series, tags — …',search_stage:'Stage ID or name — , or ; = ALL terms',search_series_click:'View characters & units in this series',search_hint_html:'<div class="search-hint-inner"><strong>Characters &amp; units (default)</strong> — Free text matches <strong>display name</strong> and <strong>entity ID</strong> only (not series, tags, or abilities). Supporters still use name / series / tags.<br><strong>Match all terms</strong> — Separate with commas or semicolons; every segment must match.<br><strong>Exclude</strong> — Put <code>-</code> in front of a term to hide any result that still contains that text.<br><strong>Series</strong> — <code>series:name</code> still filters by series title.<br><strong>Wider search (API)</strong> — Use query param <code>q_scope=primary</code> (adds tags, series names, alias tokens) or <code>q_scope=full</code> (adds ability/skill/weapon text too).<br><strong>Tip</strong> — <code>series:msg</code> matches only the original <em>Mobile Suit Gundam</em> (1979).</div>',search_recall:'Quick search',whats_new_title:"What's new",whats_new_btn:"What's new",whats_new_empty:'No data update notes yet. Changes since the last baseline appear automatically after a master import; run python scripts/refresh_whats_new_snapshot.py when you publish to reset the baseline. Optional notes go in data/whats_new.json.',whats_new_date:'Date:',whats_new_changes:'Changes:',whats_new_added:'Added:',whats_new_close:'Close',whats_new_kind_unit_abilities:'Unit abilities',whats_new_kind_unit_weapons:'Weapons',whats_new_kind_char_abilities:'Character abilities',whats_new_slot:'Slot',whats_new_before:'Before',whats_new_after:'After',whats_new_tab_pending:'Since last baseline',whats_new_tab_manual:'Notes',whats_new_tab_empty:'No changes in this section.',whats_new_select_period:'Period:',whats_new_manual_note:'Note',whats_new_label_new_unit:'New unit:',whats_new_label_new_char:'New character:',whats_new_label_new_mod:'New option part:',whats_new_label_new_supporter:'New supporter:',search_spotlight_title:'Search',search_spotlight_close:'Close',search_spotlight_foot:'Esc · tap outside · ✕ to close',search_spotlight_empty:'No quick matches',per_page:'/page',view_grid:'Grid view',view_table:'Table view',count_char:'characters',count_unit:'units',count_supporter:'supporters',count_stage:'stages',tab_mod:'Modifications',tab_latest:'Latest Release',latest_gasha_title:'Latest Information:',lr_type_unit:'Unit',lr_type_char:'Character',lr_type_supp:'Supporter',lr_empty:'No scheduled gacha releases found.',lr_empty_recent:'No releases in the last 3 months (JST).',lr_load_more:'Load all releases',lr_lock_title:'Latest Release',lr_lock_hint:'Enter the password to preview lineup before the start time.',lr_unlock_btn:'Unlock',lr_section_locked:'This release has not started yet. Enter the password to preview the lineup.',lr_pw_wrong:'Incorrect password.',er_stage_lock_hint:'Enter the password to view full stage details (map, NPCs, restrictions).',er_stage_unlock_btn:'Unlock',er_stage_pw_wrong:'Incorrect password.',er_stage_locked_badge:'Locked',er_stage_lock_wait:'This stage unlocks automatically when its release time is reached.',er_stage_redacted_row:'Undisclosed',er_stage_redacted_title:'Undisclosed stage',search_mod:'Name, details, tags — , or ; = ALL terms',count_mod:'modifications',mod_filter_effect:'Effect',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'ATK ↑',mod_filter_effect_def:'DEF ↑',mod_filter_effect_mob:'Mobility ↑',mod_filter_effect_other:'Other (ACC, EVA, Crit, …)',empty_mod:'No modifications found',col_details:'Details',empty_char:'No characters found',empty_unit:'No units found',empty_supporter:'No supporters found',empty_stage:'No stages found',col_name:'Name',col_rarity:'Rarity',col_role:'Role',col_series_tag:'Series/Tag',col_boost:'Boost',col_ranged:'Ranged',col_melee:'Melee',col_awaken:'Awaken',col_defense:'Defense',col_reaction:'Reaction',char_list_stat_tooltip:'Total with always-on passives (no EX / conditional). Cyan = higher than base growth.',char_list_stat_base_hint:'Base growth: {n}',char_grid_stat_ranged:'RNG',char_grid_stat_melee:'MEL',char_grid_stat_awaken:'AWK',char_grid_stat_defense:'DEF',char_grid_stat_reaction:'REA',col_hp:'HP',col_en:'EN',col_atk:'ATK',col_def:'DEF',col_mob:'MOB',col_mov:'MOV',col_stage_diff:'Difficulty',col_stage_no:'No.',col_stage_cp:'Recommended CP',col_stage_terrain:'Terrain',sec_stats:'Stats',sec_terrain:'Terrain',sec_abilities:'Abilities',sec_skills:'Skills',sec_leader_skill:'Leader Skill',sec_active_skills:'Support Skills',sec_weapons:'Weapons',sec_weapon_list:'Weapon List',sec_mechanism:'Mechanisms',sec_sortie_restrictions:'Sortie Restrictions',sec_stage_map:'Stage Map',sec_npc_details:'NPC Details',stage_npc_friendly_tab:'Friendly NPCs',stage_npc_enemy_tab:'Enemy units',wp_weapon:'Weapon',wp_type:'Type',wp_range:'Range',wp_power:'Power',wp_en:'EN',wp_acc:'Acc',wp_crit:'Crit',wp_ammo:'Ammo',stat_ranged:'Ranged',stat_melee:'Melee',stat_awaken:'Awaken',stat_defense:'Defense',stat_reaction:'Reaction',stat_hp:'HP',stat_en:'EN',stat_attack:'Attack',stat_mobility:'Mobility',stat_move:'Move',terrain_space:'Space',terrain_atmo:'Atmospheric',terrain_ground:'Ground',terrain_sea:'Sea',terrain_underwater:'Underwater',unit_filter_weapon_debuff:'All Weapon Effects',unit_filter_weapon_debuff_all:'All Weapon Effects',unit_filter_weapon_debuff_multi:'{n} weapon effects',unit_filter_mechanism:'Mechanism',unit_filter_mechanism_all:'All Mechanisms',unit_filter_mechanism_multi:'{n} mechanisms',unit_filter_mechanism_tt:'Multiple mechanisms: match all (AND). 2×2 matches units with OccupiedAreaId 2 in master data (large footprint), same as unit detail.',unit_filter_wb_atk_dn:'Inflict Attack Down',unit_filter_wb_def_dn:'Inflict Defense Down',unit_filter_wb_enemy_def_atk:'Reduce enemy DEF (this attack)',unit_filter_wb_mob_dn:'Inflict Mobility Down',unit_filter_wb_acc_dn:'Inflict Accuracy Down',unit_filter_wb_eva_dn:'Inflict Evasion Down',unit_filter_wb_dmg_phys:'Inflict Physical Damage Up',unit_filter_wb_dmg_beam:'Inflict Beam Damage Up',unit_filter_wb_dmg_spec:'Inflict Special Damage Up',unit_filter_wb_wp_phys:'Inflict Physical Weapon Power Down',unit_filter_wb_wp_beam:'Inflict Beam Weapon Power Down',unit_filter_wb_wp_spec:'Inflict Special Weapon Power Down',unit_filter_wb_range_beam:'Inflict Beam Weapon Range Down',unit_filter_wb_range_phys:'Inflict Physical Weapon Range Down',unit_filter_wb_range_all:'Inflict All Weapon Range Down',unit_filter_wb_mp_1:'Inflict MP −1',unit_filter_wb_mp_2:'Inflict MP −2',unit_filter_wb_mp_3:'Inflict MP −3',unit_filter_wb_preemptive:'Preemptive Strike',unit_filter_wb_map_weapon:'MAP weapon',role_attack:'Attack',role_defense:'Defense',role_support:'Support',role_all:'All Roles',rarity_all:'All Rarities',rarity_none_selected:'None selected',role_filter_attack:'Attack Only',role_filter_defense:'Defense Only',role_filter_support:'Support Only',conditional_passive:'Conditional Passive',conditional_passive_abbr:'CP',char_data:'Character Data',unit_data:'Unit Data',unit_transform_title:'Open alternate form',rec_char_shortcut:'Character',rec_unit_shortcut:'Unit',limited_label:'Limited',rarity_exclude_limited:'Exclude limited',supp_data:'Supporter Data',stage_data:'Stage Data',view_effect_range:'View Effect Range',map_legend_use:'Point of Use',map_legend_sel:'Point of Selection',map_legend_range:'Range',map_legend_effect:'Effect Range',map_effect_theme_dark:'Dark / contrast map: outlines + inverted empty tiles',map_effect_theme_light:'Light map — original tiles (default)',view_stage_map:'View Stage Map',hide_stage_map:'Hide Stage Map',supply_type:'Supply Type:',hp_support:'HP Support',atk_support:'Attack Support',tag_or:' or ',tag_results_unit:'Units with Tag:',tag_results_char:'Characters with Tag:',tag_tab_affinity:'Affinity',tag_results_affinity:'Affinity with Tag:',series_results_unit:'Units in series:',series_results_char:'Characters in series:',char_with_skill:'Character with skill:',char_with_ability:'Character with ability:',unit_with_ability:'Unit with ability:',sortie_group:'Sortie Group',applies_to:'Applies To',recommended_cp:'Recommended CP',terrain:'Terrain',victory_conditions:'Victory Conditions',defeat_conditions:'Defeat Conditions',none:'None',npc_unit:'NPC Unit',npc_character:'NPC Character',npc_unit_abilities:'Unit Abilities',npc_unit_weapons:'Unit Weapons',npc_character_abilities:'Character Abilities',npc_character_skills:'Character Skills',difficulty_normal:'Normal',difficulty_hard:'Hard',difficulty_expert:'Expert',filter_diff_all:'All Difficulties',filter_diff_normal:'Normal',filter_diff_hard:'Hard',filter_diff_expert:'Expert',filter_source:'Source',filter_source_all:'All',browse_filters_clear:'Clear',filter_source_assembly:'Units from Unit Assembly',filter_source_development:'Development Unit',filter_source_other:'Other',filter_source_assembly_char:'Unit Assembly Characters',filter_source_development_char:'Scout/Story Character',list_filter_lineage:'Tags / Lineage',list_filter_lineage_multi:'{n} tags',list_filter_series:'Series',list_filter_series_multi:'{n} series',list_filter_skill:'Skills',list_filter_ability:'Abilities',list_filter_all_skills:'All Skills',list_filter_all_abilities:'All Abilities',list_filter_ability_char:'Ability',list_filter_all_abilities_char:'All Abilities',list_filter_search_placeholder:'Search filter…',series_filter_all_brand:'Mobile Suit Gundam',ally:'Ally',enemy:'Enemy',cmp_compare:'Compare',cmp_unit_compare:'Unit Comparison',cmp_char_compare:'Character Comparison',cmp_stats:'Stats Comparison',cmp_radar:'Radar Chart',cmp_terrain:'Terrain',cmp_weapons:'Weapons',cmp_reset:'Reset Comparison',cmp_remove:'Remove',cmp_add_unit:'+ Add Unit',cmp_add_char:'+ Add Character',cmp_search_unit:'Search units...',cmp_search_char:'Search characters...',cmp_type_to_search:'Type to search...',cmp_clear:'Clear',cmp_selected:'selected',cmp_abilities:'Abilities',cmp_skills:'Skills',cmp_lb:'Limit Break',dc_title:'Damage Simulator',dc_atk_label:'YOUR UNIT (Attacker)',dc_def_label:'NPC TARGET (Defender)',dc_atk_params_section:'Attacker Parameters',dc_def_params_section:'Defender Parameters',dc_panel_attacker_heading:'ATTACKER',dc_panel_defender_heading:'DEFENDER (Target)',dc_pick_unit:'Select Unit',dc_defender_status:'Defender status',dc_def_stats_map_note:'Totals include map bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_def_char_stats_note:'Totals include passive ability bonuses (same as stage detail). Green (+n) is the bonus portion.',dc_pick_char:'Select Character',dc_change:'Change',dc_select_npc:'-- Select NPC --',dc_distance:'Distance',dc_range_check:'Range Check',dc_terrain:'Terrain %',dc_mp_level:'MP Level',dc_vigor_prefix:'Vigor',dc_vigor_medium:'Normal',dc_vigor_high:'High',dc_vigor_max:'Max',dc_vigor_super:'Supercharged',dc_vigor_dmg_bonus_sub:'+{pct}% from {label} vigor (included in line above and in damage)',dc_defend:'Defend Action',dc_shield:'Shield',dc_on:'On',dc_off:'Off',dc_normal_dmg:'Normal Damage',dc_crit_dmg:'Critical Damage',dc_super_crit_dmg:'Super Critical Damage',dc_hp_remaining_super_crit:'HP Remaining (Super Crit)',dc_final_dmg:'Final Damage',dc_crit_final_dmg:'Critical Final Damage',dc_hp_remaining:'HP Remaining',dc_hit_rate:'Hit Rate',dc_hp_remaining_normal:'HP Remaining (Normal)',dc_hp_remaining_crit:'HP Remaining (Crit)',dc_in_range:'In Range',dc_out_range:'Out of Range',dc_select_both:'Select attacker and defender to calculate damage',dc_unit_stats:'Unit Stats',dc_char_stats:'Character Stats',dc_weapon:'Weapon',dc_wpn_level:'Weapon Lv',dc_lb_tier:'LB Tier',dc_power:'PWR',dc_range:'Range',dc_accuracy:'ACC',dc_critical:'CRIT',dc_en_cost:'EN',supp_level:'Level',supp_lb_tier:'LB Tier',supp_formula:'Formula',tab_team_builder:'Team Builder',tb_front:'Front',tb_rear:'Rear',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_formation:'Formation',tb_rearrange:'Rearrange',tb_batch:'Batch Form',tb_stats_hint:'Modified MS stats use Normal vigor baseline (fixed). No defender or vigor UI. Option parts, supporter, Master League, and pilot pair bonus apply.',tb_pick_supp:'Tap to select supporter',tb_empty_stats:'Select a unit slot.',tb_squad_fill:'{n} / 10 units',tb_saved_formations:'Saved formations',tb_save:'Save',tb_load:'Load',tb_rearrange_banner:'Tap two slots to swap',tb_linked_move:'Move unit and pilot together',tb_cancel:'Cancel',tb_confirm:'Confirm',tb_batch_title:'Batch Form',tb_apply:'Apply',tb_master_league:'Master League Buff',tb_op_count:'OP ×{n}'},
-TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'關卡',stage_source_group_aria:'關卡類別',stage_source_eternal:'永恆之路',stage_source_score:'Map Event Score Attack Stages',dc_def_preset_mode:'預設（永恆之路、Score Attack）',dc_def_preset_target_label:'預設目標（永恆之路、Score Attack）',dc_stage_search_ph:'搜尋永恆之路與 Score Attack 關卡…',dc_stage_list_aria:'永恆之路與 Score Attack 關卡',dc_score_attack_preset:'Score #{n}',search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_supporter:'搜尋：名稱／系列／標籤',search_stage:'用關卡ID或名稱搜尋...',search_series_click:'檢視此系列的角色與機體',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>（不含系列、標籤、能力）。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依作品系列篩選。<br><strong>擴大搜尋（API）</strong> — <code>q_scope=primary</code> 可納入標籤、系列名、別名；<code>q_scope=full</code> 另含能力／技能／武裝文字。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士鋼彈》。</div>',search_recall:'快速搜尋',whats_new_title:'更新資訊',whats_new_btn:'更新資訊',whats_new_empty:'尚無更新說明。匯入新主資料後會自動與基準檔比對；發布後可執行 python scripts/refresh_whats_new_snapshot.py 重設基準。可選內容放在 data/whats_new.json。',whats_new_date:'日期：',whats_new_changes:'變更：',whats_new_added:'新增：',whats_new_close:'關閉',whats_new_kind_unit_abilities:'機體能力',whats_new_kind_unit_weapons:'武裝',whats_new_kind_char_abilities:'角色能力',whats_new_slot:'欄位',whats_new_before:'變更前',whats_new_after:'變更後',whats_new_tab_pending:'自上次基準',whats_new_tab_manual:'備註',whats_new_tab_empty:'此區段無變更。',whats_new_select_period:'期間：',whats_new_manual_note:'備註',whats_new_label_new_unit:'新機體：',whats_new_label_new_char:'新角色：',whats_new_label_new_mod:'新改造零件：',whats_new_label_new_supporter:'新支援人員：',search_spotlight_title:'搜尋',search_spotlight_close:'關閉',search_spotlight_foot:'Esc · 點背景或 ✕ 關閉',search_spotlight_empty:'沒有符合的項目',per_page:'/頁',view_grid:'格狀檢視',view_table:'表格檢視',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',er_stage_lock_hint:'請輸入密碼以檢視完整關卡內容（地圖、NPC、出擊限制等）。',er_stage_unlock_btn:'解鎖',er_stage_pw_wrong:'密碼錯誤。',er_stage_locked_badge:'鎖定',er_stage_lock_wait:'此關卡將在正式開放時間到達後自動解鎖。',er_stage_redacted_row:'未公開',er_stage_redacted_title:'未公開關卡',search_mod:'搜尋：名稱/效果/標籤（逗號或；＝需全部符合）',count_mod:'改造零件',mod_filter_effect:'效果類型',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'攻擊 ↑',mod_filter_effect_def:'防禦 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'其他（命中／迴避等）',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',stage_npc_friendly_tab:'友方 NPC',stage_npc_enemy_tab:'敵方單位',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'全部武裝效果',unit_filter_weapon_debuff_all:'全部武裝效果',unit_filter_weapon_debuff_multi:'{n} 項武裝效果',unit_filter_mechanism:'機制',unit_filter_mechanism_all:'全部機制',unit_filter_mechanism_multi:'{n} 項機制',unit_filter_mechanism_tt:'多選機制：須同時符合（AND）。2×2 對應主資料 OccupiedAreaId=2（大型佔格），與機體詳情相同。',unit_filter_wb_atk_dn:'攻擊力減少',unit_filter_wb_def_dn:'防禦力減少',unit_filter_wb_mob_dn:'機動力減少',unit_filter_wb_acc_dn:'命中率減少',unit_filter_wb_eva_dn:'閃避率減少',unit_filter_wb_dmg_phys:'物理損傷提升',unit_filter_wb_dmg_beam:'光束損傷提升',unit_filter_wb_dmg_spec:'特殊損傷提升',unit_filter_wb_wp_phys:'物理武裝威力減少',unit_filter_wb_wp_beam:'光束武裝威力減少',unit_filter_wb_wp_spec:'特殊武裝威力減少',unit_filter_wb_range_beam:'光束武裝射程減少',unit_filter_wb_range_phys:'物理武裝射程減少',unit_filter_wb_range_all:'全武裝射程減少',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先發攻擊',unit_filter_wb_map_weapon:'MAP武裝',role_attack:'攻擊型',role_defense:'耐久型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅耐久型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',conditional_passive_abbr:'CP',char_data:'角色資料',unit_data:'機體資料',unit_transform_title:'切換形態',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',limited_label:'限定',rarity_exclude_limited:'不含限定',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',map_effect_theme_dark:'深色／高對比：框線＋空格圖塊反相',map_effect_theme_light:'淺色地圖：原始圖塊（預設）',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',tag_tab_affinity:'契合度',tag_results_affinity:'契合度（標籤）：',series_results_unit:'此系列的機體：',series_results_char:'此系列的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',filter_source:'取得來源',filter_source_all:'全部',browse_filters_clear:'清除',filter_source_assembly:'機體補給獲得單位',filter_source_development:'開發機體',filter_source_other:'其他',filter_source_assembly_char:'機體補給獲得角色',filter_source_development_char:'招募／劇情角色',list_filter_lineage:'標籤／系譜',list_filter_lineage_multi:'{n} 個標籤',list_filter_series:'作品系列',list_filter_series_multi:'{n} 個系列',list_filter_skill:'技能',list_filter_ability:'能力',list_filter_all_skills:'全部技能',list_filter_all_abilities:'全部能力',list_filter_ability_char:'能力',list_filter_all_abilities_char:'全部能力',list_filter_search_placeholder:'搜尋…',series_filter_all_brand:'機動戰士鋼彈',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害模擬器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_atk_params_section:'攻擊方參數',dc_def_params_section:'防禦方參數',dc_panel_attacker_heading:'攻擊方',dc_panel_defender_heading:'防禦方（目標）',dc_pick_unit:'選擇機體',dc_defender_status:'防禦方狀態',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_vigor_prefix:'戰意',dc_vigor_medium:'一般',dc_vigor_high:'強勢',dc_vigor_max:'超強勢',dc_vigor_super:'超一擊',dc_vigor_dmg_bonus_sub:'+{pct}% 來自「{label}」戰意（已併入上方與傷害）',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_super_crit_dmg:'超級暴擊傷害',dc_hp_remaining_super_crit:'剩餘 HP（超暴擊）',dc_final_dmg:'最終傷害',dc_crit_final_dmg:'暴擊最終傷害',dc_hp_remaining:'剩餘HP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'剩餘 HP（一般）',dc_hp_remaining_crit:'剩餘 HP（暴擊）',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式',tab_team_builder:'隊伍編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_formation:'編隊',tb_rearrange:'調整站位',tb_batch:'批次編成',tb_stats_hint:'機體能力為固定「普通」鬥氣基準，不含防禦方與鬥氣介面。改造零件、支援、大師聯賽加成與駕駛員搭檔加成仍會套用。',tb_pick_supp:'點選以選擇支援',tb_empty_stats:'請選擇有機體的欄位。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'已存編隊',tb_save:'儲存',tb_load:'讀取',tb_rearrange_banner:'點兩個欄位交換',tb_linked_move:'機體與駕駛員一起移動',tb_cancel:'取消',tb_confirm:'確定',tb_batch_title:'批次編成',tb_apply:'套用',tb_master_league:'大師聯賽加成',tb_op_count:'OP ×{n}'}};T.HK=Object.assign({},T.TW,{search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_series_click:'查看此系列的角色與機體',search_stage:'以關卡 ID 或名稱搜尋...',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依系列篩選。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士高達》。</div>',series_filter_all_brand:'機動戰士高達',latest_gasha_title:'最新資訊：',lr_empty:'沒有扭蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有扭蛋排程。',lr_load_more:'載入全部扭蛋',lr_lock_hint:'請輸入密碼以在開始前預覽此扭蛋陣容。',lr_section_locked:'此扭蛋尚未開始。請輸入密碼以預覽角色／機體列表。'});
+TW:{tab_char:'角色',tab_unit:'機體',tab_supporter:'支援人員',tab_stage:'關卡',stage_source_group_aria:'關卡類別',stage_source_eternal:'永恆之路',stage_source_score:'Map Event Score Attack Stages',dc_def_preset_mode:'預設（永恆之路、Score Attack）',dc_def_preset_target_label:'預設目標（永恆之路、Score Attack）',dc_stage_search_ph:'搜尋永恆之路與 Score Attack 關卡…',dc_stage_list_aria:'永恆之路與 Score Attack 關卡',dc_score_attack_preset:'Score #{n}',search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_supporter:'搜尋：名稱／系列／標籤',search_stage:'用關卡ID或名稱搜尋...',search_series_click:'檢視此系列的角色與機體',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>（不含系列、標籤、能力）。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 在關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依作品系列篩選。<br><strong>擴大搜尋（API）</strong> — <code>q_scope=primary</code> 可納入標籤、系列名、別名；<code>q_scope=full</code> 另含能力／技能／武裝文字。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士鋼彈》。</div>',search_recall:'快速搜尋',whats_new_title:'更新資訊',whats_new_btn:'更新資訊',whats_new_empty:'尚無更新說明。匯入新主資料後會自動與基準檔比對；發布後可執行 python scripts/refresh_whats_new_snapshot.py 重設基準。可選內容放在 data/whats_new.json。',whats_new_date:'日期：',whats_new_changes:'變更：',whats_new_added:'新增：',whats_new_close:'關閉',whats_new_kind_unit_abilities:'機體能力',whats_new_kind_unit_weapons:'武裝',whats_new_kind_char_abilities:'角色能力',whats_new_slot:'欄位',whats_new_before:'變更前',whats_new_after:'變更後',whats_new_tab_pending:'自上次基準',whats_new_tab_manual:'備註',whats_new_tab_empty:'此區段無變更。',whats_new_select_period:'期間：',whats_new_manual_note:'備註',whats_new_label_new_unit:'新機體：',whats_new_label_new_char:'新角色：',whats_new_label_new_mod:'新改造零件：',whats_new_label_new_supporter:'新支援人員：',search_spotlight_title:'搜尋',search_spotlight_close:'關閉',search_spotlight_foot:'Esc · 點背景或 ✕ 關閉',search_spotlight_empty:'沒有符合的項目',per_page:'/頁',view_grid:'格狀檢視',view_table:'表格檢視',count_char:'位角色',count_unit:'台機體',count_supporter:'名支援人員',count_stage:'個關卡',tab_mod:'改造零件',tab_latest:'最新登場',latest_gasha_title:'最新資訊：',lr_type_unit:'機體',lr_type_char:'角色',lr_type_supp:'支援人員',lr_empty:'沒有轉蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有轉蛋排程。',lr_load_more:'載入全部轉蛋',lr_lock_title:'最新登場',lr_lock_hint:'請輸入密碼以在開始前預覽此轉蛋陣容。',lr_unlock_btn:'解鎖',lr_section_locked:'此轉蛋尚未開始。請輸入密碼以預覽角色／機體列表。',lr_pw_wrong:'密碼錯誤。',er_stage_lock_hint:'請輸入密碼以檢視完整關卡內容（地圖、NPC、出擊限制等）。',er_stage_unlock_btn:'解鎖',er_stage_pw_wrong:'密碼錯誤。',er_stage_locked_badge:'鎖定',er_stage_lock_wait:'此關卡將在正式開放時間到達後自動解鎖。',er_stage_redacted_row:'未公開',er_stage_redacted_title:'未公開關卡',search_mod:'搜尋：名稱/效果/標籤（逗號或；＝需全部符合）',count_mod:'改造零件',mod_filter_effect:'效果類型',mod_filter_effect_hp:'Max HP ↑',mod_filter_effect_en:'Max EN ↑',mod_filter_effect_atk:'攻擊 ↑',mod_filter_effect_def:'防禦 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'其他（命中／迴避等）',empty_mod:'未找到改造零件',col_details:'效果',empty_char:'未找到角色',empty_unit:'未找到機體',empty_supporter:'未找到支援人員',empty_stage:'未找到關卡',col_name:'名稱',col_rarity:'稀有度',col_role:'類型',col_series_tag:'系列/標籤',col_boost:'加成',col_ranged:'射擊',col_melee:'格鬥',col_awaken:'覺醒',col_defense:'守備',col_reaction:'反應',char_list_stat_tooltip:'含常駐被動加成（不含EX／條件式）。亮色表示高於成長值。',char_list_stat_base_hint:'成長值: {n}',col_hp:'HP',col_en:'EN',col_atk:'攻擊',col_def:'防禦',col_mob:'機動',col_mov:'移動',col_stage_diff:'難度',col_stage_no:'編號',col_stage_cp:'推薦戰力',col_stage_terrain:'地形',sec_stats:'能力值',sec_terrain:'地形適性',sec_abilities:'能力',sec_skills:'技能',sec_leader_skill:'隊長技能',sec_active_skills:'支援人員技能',sec_weapons:'武裝',sec_weapon_list:'武裝列表',sec_mechanism:'機制',sec_sortie_restrictions:'出擊限制',sec_stage_map:'關卡地圖',sec_npc_details:'NPC資料',stage_npc_friendly_tab:'友方 NPC',stage_npc_enemy_tab:'敵方單位',wp_weapon:'武裝',wp_type:'類型',wp_range:'射程',wp_power:'威力',wp_en:'EN',wp_acc:'命中',wp_crit:'暴擊',wp_ammo:'彈數',stat_ranged:'射擊',stat_melee:'格鬥',stat_awaken:'覺醒',stat_defense:'守備',stat_reaction:'反應',stat_hp:'HP',stat_en:'EN',stat_attack:'攻擊',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'全部武裝效果',unit_filter_weapon_debuff_all:'全部武裝效果',unit_filter_weapon_debuff_multi:'{n} 項武裝效果',unit_filter_mechanism:'機制',unit_filter_mechanism_all:'全部機制',unit_filter_mechanism_multi:'{n} 項機制',unit_filter_mechanism_tt:'多選機制：須同時符合（AND）。2×2 對應主資料 OccupiedAreaId=2（大型佔格），與機體詳情相同。',unit_filter_wb_atk_dn:'攻擊力減少',unit_filter_wb_def_dn:'防禦力減少',unit_filter_wb_mob_dn:'機動力減少',unit_filter_wb_acc_dn:'命中率減少',unit_filter_wb_eva_dn:'閃避率減少',unit_filter_wb_dmg_phys:'物理損傷提升',unit_filter_wb_dmg_beam:'光束損傷提升',unit_filter_wb_dmg_spec:'特殊損傷提升',unit_filter_wb_wp_phys:'物理武裝威力減少',unit_filter_wb_wp_beam:'光束武裝威力減少',unit_filter_wb_wp_spec:'特殊武裝威力減少',unit_filter_wb_range_beam:'光束武裝射程減少',unit_filter_wb_range_phys:'物理武裝射程減少',unit_filter_wb_range_all:'全武裝射程減少',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先發攻擊',unit_filter_wb_map_weapon:'MAP武裝',role_attack:'攻擊型',role_defense:'耐久型',role_support:'支援型',role_all:'全部類型',rarity_all:'全部稀有度',rarity_none_selected:'未選擇',role_filter_attack:'僅攻擊型',role_filter_defense:'僅耐久型',role_filter_support:'僅支援型',conditional_passive:'條件式被動',conditional_passive_abbr:'CP',char_data:'角色資料',unit_data:'機體資料',unit_transform_title:'切換形態',rec_char_shortcut:'角色',rec_unit_shortcut:'機體',limited_label:'限定',rarity_exclude_limited:'不含限定',supp_data:'支援人員資料',stage_data:'關卡資料',view_effect_range:'視圖效果範圍',map_legend_use:'使用位置',map_legend_sel:'選擇位置',map_legend_range:'射程',map_legend_effect:'效果範圍',map_effect_theme_dark:'深色／高對比：框線＋空格圖塊反相',map_effect_theme_light:'淺色地圖：原始圖塊（預設）',view_stage_map:'查看地圖',hide_stage_map:'隱藏地圖',supply_type:'補給類型:',hp_support:'HP輔助',atk_support:'攻擊輔助',tag_or:' 或 ',tag_results_unit:'含標籤的機體：',tag_results_char:'含標籤的角色：',tag_tab_affinity:'契合度',tag_results_affinity:'契合度（標籤）：',series_results_unit:'此系列的機體：',series_results_char:'此系列的角色：',char_with_skill:'擁有此技能的角色：',char_with_ability:'擁有此能力的角色：',unit_with_ability:'擁有此能力的機體：',sortie_group:'出擊群組',applies_to:'適用對象',recommended_cp:'推薦戰力',terrain:'地形',victory_conditions:'勝利條件',defeat_conditions:'敗北條件',none:'無',npc_unit:'NPC機體',npc_character:'NPC角色',npc_unit_abilities:'機體能力',npc_unit_weapons:'機體武裝',npc_character_abilities:'角色能力',npc_character_skills:'角色技能',difficulty_normal:'普通',difficulty_hard:'困難',difficulty_expert:'專家',filter_diff_all:'全部難度',filter_diff_normal:'普通',filter_diff_hard:'困難',filter_diff_expert:'專家',filter_source:'取得來源',filter_source_all:'全部',browse_filters_clear:'重置',filter_source_assembly:'機體補給獲得單位',filter_source_development:'開發機體',filter_source_other:'其他',filter_source_assembly_char:'機體補給獲得角色',filter_source_development_char:'招募／劇情角色',list_filter_lineage:'標籤／系譜',list_filter_lineage_multi:'{n} 個標籤',list_filter_series:'作品系列',list_filter_series_multi:'{n} 個系列',list_filter_skill:'技能',list_filter_ability:'能力',list_filter_all_skills:'全部技能',list_filter_all_abilities:'全部能力',list_filter_ability_char:'能力',list_filter_all_abilities_char:'全部能力',list_filter_search_placeholder:'搜尋…',series_filter_all_brand:'機動戰士鋼彈',ally:'我方',enemy:'敵方',cmp_compare:'比較',cmp_unit_compare:'機體比較',cmp_char_compare:'角色比較',cmp_stats:'能力值比較',cmp_radar:'雷達圖',cmp_terrain:'地形適性',cmp_weapons:'武裝比較',cmp_reset:'重置比較',cmp_remove:'移除',cmp_add_unit:'+ 新增機體',cmp_add_char:'+ 新增角色',cmp_search_unit:'搜尋機體...',cmp_search_char:'搜尋角色...',cmp_type_to_search:'輸入以搜尋...',cmp_clear:'清除',cmp_selected:'已選擇',cmp_abilities:'能力',cmp_skills:'技能',cmp_lb:'極限突破',dc_title:'傷害模擬器',dc_atk_label:'我方機體（攻擊方）',dc_def_label:'NPC目標（防禦方）',dc_atk_params_section:'攻擊方參數',dc_def_params_section:'防禦方參數',dc_panel_attacker_heading:'攻擊方',dc_panel_defender_heading:'防禦方（目標）',dc_pick_unit:'選擇機體',dc_defender_status:'防禦方狀態',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_pick_char:'選擇角色',dc_change:'更換',dc_select_npc:'-- 選擇NPC --',dc_distance:'距離',dc_range_check:'射程確認',dc_terrain:'地形 %',dc_mp_level:'MP等級',dc_vigor_prefix:'戰意',dc_vigor_medium:'一般',dc_vigor_high:'強勢',dc_vigor_max:'超強勢',dc_vigor_super:'超一擊',dc_vigor_dmg_bonus_sub:'+{pct}% 來自「{label}」戰意（已併入上方與傷害）',dc_defend:'防禦動作',dc_shield:'盾牌',dc_on:'開',dc_off:'關',dc_normal_dmg:'普通傷害',dc_crit_dmg:'暴擊傷害',dc_super_crit_dmg:'超級暴擊傷害',dc_hp_remaining_super_crit:'剩餘 HP（超暴擊）',dc_final_dmg:'最終傷害',dc_crit_final_dmg:'暴擊最終傷害',dc_hp_remaining:'剩餘HP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'剩餘 HP（一般）',dc_hp_remaining_crit:'剩餘 HP（暴擊）',dc_in_range:'射程內',dc_out_range:'射程外',dc_select_both:'請選擇攻擊方和防禦方以計算傷害',dc_unit_stats:'機體能力值',dc_char_stats:'角色能力值',dc_weapon:'武器',dc_wpn_level:'武器等級',dc_lb_tier:'LB階級',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'暴擊',dc_en_cost:'EN',supp_level:'等級',supp_lb_tier:'LB階級',supp_formula:'公式',tab_team_builder:'隊伍編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_formation:'編隊',tb_rearrange:'調整站位',tb_batch:'批次編成',tb_stats_hint:'機體能力為固定「普通」鬥氣基準，不含防禦方與鬥氣介面。改造零件、支援、大師聯賽加成與駕駛員搭檔加成仍會套用。',tb_pick_supp:'點選以選擇支援',tb_empty_stats:'請選擇有機體的欄位。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'已存編隊',tb_save:'儲存',tb_load:'讀取',tb_rearrange_banner:'點兩個欄位交換',tb_linked_move:'機體與駕駛員一起移動',tb_cancel:'取消',tb_confirm:'確定',tb_batch_title:'批次編成',tb_apply:'套用',tb_master_league:'大師聯賽加成',tb_op_count:'OP ×{n}'}};T.HK=Object.assign({},T.TW,{search_char:'搜尋：名稱或 ID',search_unit:'搜尋：名稱或 ID',search_series_click:'查看此系列的角色與機體',search_stage:'以關卡 ID 或名稱搜尋...',search_hint_html:'<div class="search-hint-inner"><strong>角色／機體（預設）</strong> — 關鍵字僅比對<strong>顯示名稱</strong>與<strong>ID</strong>。支援人員仍可用名稱／系列／標籤。<br><strong>全部符合</strong> — 以逗號或分號分隔，每一段都要符合。<br><strong>排除</strong> — 關鍵字前加 <code>-</code> 可隱藏仍含該字的結果。<br><strong>系列</strong> — <code>series:關鍵字</code> 仍可依系列篩選。<br><strong>提示</strong> — <code>series:msg</code> 只對應初代《機動戰士高達》。</div>',series_filter_all_brand:'機動戰士高達',latest_gasha_title:'最新資訊：',lr_empty:'沒有扭蛋排程資料。',lr_empty_recent:'最近三個月（日本時間）內沒有扭蛋排程。',lr_load_more:'載入全部扭蛋',lr_lock_hint:'請輸入密碼以在開始前預覽此扭蛋陣容。',lr_section_locked:'此扭蛋尚未開始。請輸入密碼以預覽角色／機體列表。'});
 const STAT_NAME_MAP={EN:{},TW:{'Ranged':'射擊','Melee':'格鬥','Awaken':'覺醒','Defense':'守備','Reaction':'反應','HP':'HP','EN':'EN','Attack':'攻擊','Mobility':'機動','Move':'移動'}};
 STAT_NAME_MAP.HK=Object.assign({},STAT_NAME_MAP.TW);
 const TERRAIN_NAME_MAP={EN:{},TW:{'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'}};
@@ -2325,7 +2325,7 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.atkCounterOwnAtk=false;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc._dcAutoFitGen=0;
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -2998,6 +2998,7 @@ return o?_dcLoadSlotFromPackedObj(o):Promise.resolve(null);
 const slots=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(loaded[i]||_dcCreateEmptyAttackerSlot());
 S.dc.atkSlots=slots;
+_dcDedupeSsrOptionPartsAcrossDcSlots();
 for(let si=0;si<DC_ATK_SLOT_COUNT;si++){
 const sl=S.dc.atkSlots[si];
 if(!sl||!sl.atkUnitData||!sl._dcNeedAutoMp)continue;
@@ -3751,6 +3752,125 @@ if(x>y)return 1;
 if(x<y)return -1;
 }
 return 0;
+}
+function _dcOptionPartRowIsSsr(row){return row&&String(row.rarity||'').toUpperCase()==='SSR'}
+function _dcCollectUsedSsrDcOptionPartIds(exceptSlotIdx){
+const u=new Set();
+if(!S.dc||!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))return u;
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+if(exceptSlotIdx!=null&&i===exceptSlotIdx)continue;
+const sl=S.dc.atkSlots[i];
+(sl&&sl.optionParts||[]).forEach(p=>{if(p&&p.id&&_tbOptionPartIsSsr(p))u.add(String(p.id))});
+}
+return u;
+}
+function _dcDcOptionPartSsrDeniedForSlot(optionId,slotIdx){
+return _dcCollectUsedSsrDcOptionPartIds(slotIdx).has(String(optionId));
+}
+function _dcStatTotalsForAutoRank(sl,optionParts,supporterObj){
+const ud=sl&&sl.unitData;
+if(!ud)return null;
+const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
+const statKey=_tbGetUnitStatKey(ud,sl);
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const stats=td?td[statKey]||td.stats_no_cond:[];
+let supporters=[];
+if(supporterObj&&!supporterObj.error)supporters=[supporterObj];
+const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
+const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
+let fatk=f.unitAtk,fdef=f.unitDefVal;
+const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
+fatk=prf.unitAtk;fdef=prf.unitDefVal;
+fdef=_tbApplyUnitTurnBuffDefToMsDef(fdef,ud,!!sl.unitTurnBuffDef);
+return{hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove};
+}
+function _dcRankOptionForAutoFill(sl,row,supForSlot){
+const rk=_tbUnitRoleKind(sl.unitData);
+const b=_dcParseOptionPartBonuses(row.details||'');
+const part={id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[]};
+const z=_dcStatTotalsForAutoRank(sl,[],supForSlot);
+const w=_dcStatTotalsForAutoRank(sl,[part],supForSlot);
+const dAtk=z&&w?w.atk-z.atk:0;
+const dHp=z&&w?w.hp-z.hp:0;
+const dDef=z&&w?w.def-z.def:0;
+const atk12=b.Attack.pct===12;
+const hp12=b.HP.pct===12;
+const def12=b.Defense.pct===12;
+const rid=parseInt(String(row.id),10)||0;
+const rb=_tbRarityRankOption(row);
+if(rk==='def'){
+if(hp12)return[4,dHp,dDef,dAtk,rb,rid];
+if(def12)return[3,dDef,dHp,dAtk,rb,rid];
+return[2,dHp+dDef,dDef,dHp,rb,rid];
+}
+if(rk==='sup'){
+if(atk12)return[4,dAtk,0,0,rb,rid];
+return[2,dAtk,0,0,rb,rid];
+}
+if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
+return[2,dAtk,dHp+dDef,dDef,rb,rid];
+}
+function _dcDedupeSsrOptionPartsAcrossDcSlots(){
+if(!S.dc||!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))return;
+const seen=new Set();
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=S.dc.atkSlots[i];
+if(!sl||!sl.optionParts||!sl.optionParts.length)continue;
+const p=sl.optionParts[0];
+if(!p||!p.id)continue;
+if(!_tbOptionPartIsSsr(p))continue;
+const k=String(p.id);
+if(seen.has(k))sl.optionParts=[];
+else seen.add(k);
+}
+}
+async function dcAutoFitOptionPartAndSupporter(fitGen){
+if(typeof S==='undefined'||!S.dc)return;
+if(S.dc._dcAutoFitBusy)return;
+const ud=S.dc.atkUnitData;
+if(!ud||ud._manual||!S.dc.atkUnit||!S.dc.atkChar||!S.dc.atkCharData||S.dc.atkCharData._manual)return;
+S.dc._dcAutoFitBusy=true;
+try{
+const slotIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+const sl={unitData:ud,charData:S.dc.atkCharData,unitId:S.dc.atkUnit,charId:S.dc.atkChar,lbTier:S.dc.lbTier,charCondPassive:!!S.dc.charCondPassive,unitCondPassive:!!S.dc.unitCondPassive,unitStatMode:S.dc.unitStatMode||'normal',unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,optionParts:[]};
+const cq=_dcForSupporterContextQuery();
+const supRows=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery());
+let bestSup=null,bestAtk=-1;
+const chunk=14;
+for(let i=0;i<supRows.length;i+=chunk){
+if(fitGen!=null&&fitGen!==(S.dc._dcAutoFitGen|0))return;
+const batch=supRows.slice(i,i+chunk);
+const resolved=await Promise.all(batch.map(async row=>{
+try{const d=await fetch(`/api/supporter/${encodeURIComponent(row.id)}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
+return(!d||d.error)?null:d;
+}catch(_){return null}
+}));
+for(let j=0;j<resolved.length;j++){
+const d=resolved[j];
+if(!d)continue;
+const atk=(_dcStatTotalsForAutoRank(sl,[],d)||{}).atk|0;
+if(atk>bestAtk){bestAtk=atk;bestSup=d}
+}
+}
+if(bestSup){bestSup._dcLevel=100;bestSup._dcLbTier=3;S.dc.supporters=[bestSup]}
+else S.dc.supporters=[];
+const supFor=S.dc.supporters[0]||null;
+const uid=String(S.dc.atkUnit);
+const opRows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(uid));
+const used=_dcCollectUsedSsrDcOptionPartIds(slotIdx);
+let bestOp=null,bestR=null;
+for(let k=0;k<opRows.length;k++){
+if(fitGen!=null&&fitGen!==(S.dc._dcAutoFitGen|0))return;
+const row=opRows[k];
+const id=String(row.id);
+if(used.has(id))continue;
+const ra=_dcRankOptionForAutoFill(sl,row,supFor);
+if(!bestR||_tbCompareRankAuto(ra,bestR)>0){bestR=ra;bestOp=row}
+}
+if(bestOp)S.dc.optionParts=[{id:bestOp.id,name:bestOp.name,details:bestOp.details||'',thum:bestOp.thum||'',tags:bestOp.tags||[]}];
+else S.dc.optionParts=[];
+}catch(_){}
+finally{S.dc._dcAutoFitBusy=false}
 }
 function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
@@ -5001,11 +5121,26 @@ S.dc.wpnLv=_bw.wpnLv;
 _dcDetectVigorCondAbilities(d);
 if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcSquadCondInputCap(S.dc.atkCharData,S.dc.atkUnitData);
 else S.dc.squadCondPct=0;
+S.dc.optionParts=[];S.dc.supporters=[];
 renderDcAtkUnit();
 renderDcAtkChar();
 renderDcWeaponArea();
+renderDcOptionParts();
+renderDcSupporters();
 _dcUpdateAdvantageEnemyTagUi();
 onDcParamChange();
+S.dc._dcAutoFitGen=(S.dc._dcAutoFitGen|0)+1;
+const _dcAfGenTf=S.dc._dcAutoFitGen;
+void dcAutoFitOptionPartAndSupporter(_dcAfGenTf).then(()=>{
+if(_dcAfGenTf!==(S.dc._dcAutoFitGen|0))return;
+renderDcAtkUnit();
+if(S.dc.atkCharData)renderDcAtkChar();
+renderDcOptionParts();
+renderDcSupporters();
+_dcSnapActiveAttackerToSlot();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+else onDcParamChange();
+});
 }catch(_){}
 }
 function renderDcAtkUnit(){
@@ -5254,7 +5389,7 @@ area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class=
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
-const r0=_dcPilotSkillAdjustedStat(stats,'Ranged',skPct.Ranged||0),m0=_dcPilotSkillAdjustedStat(stats,'Melee',skPct.Melee||0),a0=_dcPilotSkillAdjustedStat(stats,'Awaken',skPct.Awaken||0);
+const r0=_dcPilotSkillAdjustedStat(stats,'Ranged',skPct.Ranged||0),m0=_dcPilotSkillAdjustedStat(stats,'Melee',skPct.Melee||0),a0=_dcPilotAwakenAdjustedForDc(stats,skPct.Awaken||0);
 const defPctSk=skB.defPct||0;
 const d0=defPctSk?_dcPilotSkillAdjustedStat(stats,'Defense',defPctSk):_dcFindStat(stats,'Defense'),re0=_dcFindStat(stats,'Reaction');
 const r=r0,m=m0,a=a0,d=d0,re=re0;
@@ -5324,6 +5459,34 @@ if(um==='ssp'&&ab.ssp_replacement)return ab.ssp_replacement;
 return ab;
 }
 
+/** MS ability: pilot Awaken below 900 is raised to 900; active Awaken% skills still use growth base (see _dcPilotAwakenAdjustedForDc). */
+function _dcUnitAbilityTextIsAwakenFloor900(txt){
+const s=String(txt||'').replace(/\r\n/g,'\n').replace(/\n/g,' ');
+if(/Awaken\s+of\s+less\s+than\s+900/i.test(s)&&/Awaken\s+to\s+900/i.test(s))return true;
+if(/覺醒值未滿\s*900/.test(s)&&/提升至\s*900/.test(s))return true;
+if(/覚醒値が\s*900\s*未満/.test(s)&&/900/.test(s)&&/上昇|向上|する/.test(s))return true;
+return false;
+}
+function _dcResolvedUnitAbilityGrantsAwakenFloor900(resolved){
+if(!resolved)return false;
+const aid=String(resolved.id||'');
+if(aid==='1015102')return true;
+for(let i=0;i<(resolved.details||[]).length;i++){
+const ln=resolved.details[i];
+const t=(ln&&ln.text)||'';
+if(_dcUnitAbilityTextIsAwakenFloor900(t))return true;
+}
+return false;
+}
+function _dcUnitGrantsPilotAwakenFloor900(ud){
+if(!ud||ud._manual||!Array.isArray(ud.abilities))return false;
+for(let i=0;i<ud.abilities.length;i++){
+const r=_dcResolveUnitAbilityForMode(ud.abilities[i]);
+if(_dcResolvedUnitAbilityGrantsAwakenFloor900(r))return true;
+}
+return false;
+}
+
 /** Match API condition_groups: each group is AND; within a group every condition must match (unit tags, series, etc.). */
 function _dcUnitMeetsAbilityConditionGroups(ud,condGroups){
 if(!condGroups||!condGroups.length)return true;
@@ -5352,6 +5515,7 @@ function parseFromResolved(resolved,src){
 if(!resolved)return;
 const dispName=resolved.display_name||resolved.name||'';
 const lines=(resolved.details||[]);
+let awakenFloorAdded=false;
 lines.forEach((ln,li)=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
@@ -5378,6 +5542,14 @@ if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Dam
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%/);
 if(m){const v=parseInt(m[m.length-1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,locked:true,src})}
+if(src==='unit'&&!awakenFloorAdded&&_dcUnitAbilityTextIsAwakenFloor900(txt)){
+awakenFloorAdded=true;
+const st=_dcGetCharStats();
+const entAw=_dcFindStatEntry(st,'Awaken');
+const pt=entAw?Math.round(Number(entAw.total)||0):9999;
+const applies=!isUnmet&&pt<900;
+b.items.push({label:'Pilot Awaken minimum 900 (MS ability)',key:'awakenFloor900',cond:!applies,autoMet:applies,name:dispName,src:'unit',locked:true,abilityHasCond:hasCond,alwaysActive:applies});
+}
 });
 }
 if(cd&&cd.abilities){
@@ -5415,7 +5587,8 @@ if(!b.items.length)return;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">`;
 b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Conditional)</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
-const inclTag=it.key==='atkPct'&&!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:(it.key==='atkPct'&&it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Not in stats — tags unmet)</span>`:'');
+let inclTag=it.key==='atkPct'&&!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:(it.key==='atkPct'&&it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Not in stats — tags unmet)</span>`:'');
+if(it.key==='awakenFloor900')inclTag=!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Pilot Awaken ≥ 900)</span>`;
 const alwaysTag=it.alwaysActive?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Always active)</span>`:'';
 const spTag=` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(SP pilot stats)</span>`;
 if(it.key==='atkPct'||it.locked){
@@ -5590,6 +5763,19 @@ if(p<=0)return Math.round(Number(ent.total)||0);
 const base=Math.max(0,Number(ent.base)||0);
 const passiveTotal=Math.round(Number(ent.total)||0);
 return passiveTotal+F(base*p/100);
+}
+/** When an MS sets pilot Awaken to 900 if below 900, use 900 + floor(base×skill%) instead of passiveTotal + floor(base×skill%). */
+function _dcPilotAwakenAdjustedForDc(stats,skPctAwaken){
+const F=Math.floor;
+const ud=S.dc.atkUnitData;
+const p=Math.max(0,Number(skPctAwaken)||0);
+const ent=_dcFindStatEntry(stats,'Awaken');
+if(!ent)return _dcPilotSkillAdjustedStat(stats,'Awaken',p);
+if(!_dcUnitGrantsPilotAwakenFloor900(ud))return _dcPilotSkillAdjustedStat(stats,'Awaken',p);
+const base=Math.max(0,Number(ent.base)||0);
+const passiveTotal=Math.round(Number(ent.total)||0);
+if(passiveTotal>=900)return _dcPilotSkillAdjustedStat(stats,'Awaken',p);
+return 900+(p>0?F(base*p/100):0);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
@@ -6220,28 +6406,32 @@ const hit=(d.rows||[]).find(x=>String(x.id)===String(id));
 if(hit)row=hit;
 }catch(e){}
 }
-if(row){S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||'',thum:row.thum||'',tags:row.tags||[]}];renderDcOptionParts();_dcRefreshAtkPanelsAfterMods()}
+if(row){
+const _opSlot=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+if(_dcOptionPartRowIsSsr(row)&&_dcDcOptionPartSsrDeniedForSlot(row.id,_opSlot))return;
+S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||'',thum:row.thum||'',tags:row.tags||[]}];renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()
+}
 }
 async function selectDcSupporter(id){
 try{
 const cq=_dcForSupporterContextQuery();
 const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
-if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters=[rd];renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}
+if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters=[rd];renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 }catch(e){}
 }
 async function updateDcSupporterLv(idx,val){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=Math.min(100,Math.max(1,parseInt(val)||100));
 const lb=s._dcLbTier!==undefined?s._dcLbTier:3;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 async function updateDcSupporterLb(idx,tier){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=s._dcLevel||100;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
-function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcRefreshAtkPanelsAfterMods()}
-function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcRefreshAtkPanelsAfterMods()}
+function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
+function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcWeapon(idx){
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];
@@ -6354,7 +6544,9 @@ if(type==='option_parts'&&!S.dc.atkUnit){body.innerHTML='<div style="padding:20p
 if(type==='supporter'&&!S.dc.atkUnit){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
 try{
 if(type==='option_parts'){
-S._dcPickerFullCache=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+_dcOptionPartUnitQuery());
+const _opAll=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+_dcOptionPartUnitQuery());
+const _opSi=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+S._dcPickerFullCache=_opAll.filter(r=>!_dcOptionPartRowIsSsr(r)||!_dcDcOptionPartSsrDeniedForSlot(r.id,_opSi));
 }else{
 S._dcPickerFullCache=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery());
 }
@@ -6499,6 +6691,19 @@ renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
+S.dc._dcAutoFitGen=(S.dc._dcAutoFitGen|0)+1;
+const _dcAfGen=S.dc._dcAutoFitGen;
+void dcAutoFitOptionPartAndSupporter(_dcAfGen).then(()=>{
+if(_dcAfGen!==(S.dc._dcAutoFitGen|0))return;
+renderDcAtkUnit();
+if(S.dc.atkCharData)renderDcAtkChar();
+renderDcOptionParts();
+renderDcSupporters();
+_dcSnapActiveAttackerToSlot();
+_dcSyncAtkModeUiFromState();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+else onDcParamChange();
+});
 }catch(e){}
 }
 
@@ -6557,7 +6762,7 @@ function _dcGetCharAtkStatWithSkills(charStats,wpn){
 const sk=_dcGetActiveSkillStatPct();
 const atkTypes=_dcWeaponAtkStatKeys(wpn);
 const unique=[...new Set(atkTypes)];
-const val=(k)=>_dcPilotSkillAdjustedStat(charStats,k,sk[k]||0);
+const val=(k)=>k==='Awaken'?_dcPilotAwakenAdjustedForDc(charStats,sk[k]||0):_dcPilotSkillAdjustedStat(charStats,k,sk[k]||0);
 if(unique.length===1)return val(unique[0]);
 return Math.max(...unique.map(val));
 }
