@@ -7375,7 +7375,8 @@ let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
 
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
-let critDmg=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult*((critCorrectionPct+100)/100)));
+const critPreVigor=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult));
+let critDmg=MX(0,C(critPreVigor*((critCorrectionPct+100)/100)));
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
@@ -7393,7 +7394,7 @@ const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPc
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
-damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,defendMult,isExWeapon,
+damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,defendMult,isExWeapon,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
@@ -7560,11 +7561,12 @@ return`<div class="dc-bs-item"><strong>${esc(s.name||'—')}</strong>${flatLine}
 function _dcRenderBattleStatsDefender(npc,r){
 if(!npc)return'';
 const u=npc.unit,ch=npc.character;
-const uDefRaw=u?(u.stats_raw?.Defense||0):0;
+const us=u?_dcDefNpcUnitMapStatsPair(u).stats:{};
+const uDefRaw=u?(us.Defense||0):0;
 const deb=r.defDebuffPct|0;
-const uDefEff=deb>0?_dcApplyEnemyDefDebuffToDefenderUnitDef(u,deb):uDefRaw;
+const uDefEff=deb>0?_dcApplyEnemyDefDebuffToDefenderUnitDef(u,deb,uDefRaw):uDefRaw;
 const cDef=ch?(ch.stats_raw?.Defense||0):0;
-const hp=u?(u.stats_raw?.HP||0):0;
+const hp=u?(us.HP||0):0;
 let h='<div class="dc-battle-stats-section"><h3>Defender</h3>';
 h+=_dcBattleStatsRow('Unit DEF',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
 h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
@@ -7635,9 +7637,9 @@ return['',
 '  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
 `  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-`  ${supLbl} = max(0, ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult × ((vigorCritMultPct+100)/100)))`,
+`  ${supLbl} = max(0, ceil(ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult) × ((vigorCritMultPct+100)/100)))`,
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
-`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%`,
+`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, critPreVigor=${fmtN(rr.critPreVigor)}`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
 function copyDcResultText(){
