@@ -6650,8 +6650,12 @@ def _npc_map_unit_line_is_squad_wide(line):
     return False
 
 
-def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc):
-    """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets."""
+def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, squad_by_source):
+    """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets.
+
+    Squad-wide lines increment the stage-wide ``squad`` total and ``squad_by_source[nid]`` (authorship)
+    so each NPC can apply only its own squad-tagged passives when excluding other units' squad buffs.
+    """
     if not abilities:
         return
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
@@ -6671,14 +6675,23 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc):
                 b = _extract_stat_percent_unit(line, skip_conditional=False)
                 if not b:
                     continue
-                tgt = squad if _npc_map_unit_line_is_squad_wide(line) else row
-                for s, pct in b.items():
-                    if s in tgt:
-                        tgt[s] = tgt.get(s, 0) + pct
+                if _npc_map_unit_line_is_squad_wide(line):
+                    src_row = squad_by_source.setdefault(nid, {k: 0 for k in keys})
+                    for s, pct in b.items():
+                        if s in squad:
+                            squad[s] = squad.get(s, 0) + pct
+                            src_row[s] = src_row.get(s, 0) + pct
+                else:
+                    for s, pct in b.items():
+                        if s in row:
+                            row[s] = row.get(s, 0) + pct
 
 
 def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
     """Per eternal map stage: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
+
+    Returns (squad_total, per_npc_self_rows, squad_by_source) where squad_by_source[nid] is the squad-wide %
+    parsed from that NPC's abilities only (for excluding other units' squad buffs per defender).
 
     Pilot character passives that buff squad MS stats (e.g. \"Increase squad ATK and DEF by 50%\") are included;
     previously only unit abilities were parsed here.
@@ -6689,6 +6702,7 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
     squad = {k: 0 for k in keys}
     per_npc = {}
+    squad_by_source = {}
     for npc in npc_entries:
         nid = npc['id']
         nu = map_npc_unit_lookup.get(nid, [])
@@ -6696,13 +6710,13 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
             continue
         _merge_map_npc_unit_stat_pct_from_abilities(
             resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
-            nid, squad, per_npc)
+            nid, squad, per_npc, squad_by_source)
         nc = map_npc_character_lookup.get(nid, [])
         if nc:
             _merge_map_npc_unit_stat_pct_from_abilities(
                 resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
-                nid, squad, per_npc)
-    return squad, per_npc
+                nid, squad, per_npc, squad_by_source)
+    return squad, per_npc, squad_by_source  # squad_by_source[nid] = squad-wide % authored by that NPC only
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
     final, ba = {}, {}
@@ -10451,21 +10465,29 @@ def get_stage(stage_id):
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
-            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
+            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb, squad_by_source_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
             for npc in nt:
                 nid = npc['id']; nu = map_npc_unit_lookup.get(nid, []); nc = map_npc_character_lookup.get(nid, [])
                 ue = nu[0] if nu else None; ce = nc[0] if nc else None
                 dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
                 if ue:
                     uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc, ue.get('unit_id', '0'))
-                    self_row = self_tb.get(nid, {'HP': 0, 'EN': 0, 'Attack': 0, 'Defense': 0, 'Mobility': 0, 'Move': 0})
-                    tb_merged = {k: squad_tb.get(k, 0) + self_row.get(k, 0) for k in ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']}
+                    stat_keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+                    z = {k: 0 for k in stat_keys}
+                    sr0 = self_tb.get(nid) or z
+                    self_row = {k: sr0.get(k, 0) for k in stat_keys}
+                    own_squad_row = {k: (squad_by_source_tb.get(nid) or z).get(k, 0) for k in stat_keys}
+                    tb_on = {k: squad_tb.get(k, 0) + self_row.get(k, 0) for k in stat_keys}
+                    tb_off = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) for k in stat_keys}
                     base_stats = {'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}
-                    fst, tba = apply_team_bonus_to_unit_stats(base_stats, tb_merged)
-                    _, tba_squad = apply_team_bonus_to_unit_stats(base_stats, squad_tb)
-                    upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
+                    fst_on, tba_on = apply_team_bonus_to_unit_stats(base_stats, tb_on)
+                    fst_off, tba_off = apply_team_bonus_to_unit_stats(base_stats, tb_off)
+                    upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_on, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
-                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids')); up['bonus_amounts'] = tba; up['bonus_amounts_squad'] = tba_squad
+                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids'))
+                    up['bonus_amounts'] = tba_on
+                    up['stats_raw_npc_squad_allies_off'] = fst_off
+                    up['bonus_amounts_npc_squad_allies_off'] = tba_off
                     dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
                 if ce:
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
