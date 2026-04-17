@@ -353,5 +353,15 @@
     "Id": 82,
     "GeneralTutorialTypeIndex": 2,
     "TargetId": 9003
+  },
+  {
+    "Id": 83,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 1502
+  },
+  {
+    "Id": 84,
+    "GeneralTutorialTypeIndex": 2,
+    "TargetId": 2904
   }
 ]

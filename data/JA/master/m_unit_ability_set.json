@@ -105,6 +105,21 @@
     "AbilityId": 1000101
   },
   {
+    "UnitId": 1003000200,
+    "SortOrder": 1,
+    "AbilityId": 1000502
+  },
+  {
+    "UnitId": 1003000200,
+    "SortOrder": 2,
+    "AbilityId": 1005202
+  },
+  {
+    "UnitId": 1003000200,
+    "SortOrder": 3,
+    "AbilityId": 1000501
+  },
+  {
     "UnitId": 1003000250,
     "SortOrder": 1,
     "AbilityId": 1000303
@@ -1393,6 +1408,96 @@
     "UnitId": 1085000310,
     "SortOrder": 2,
     "AbilityId": 1000501
+  },
+  {
+    "UnitId": 1085000450,
+    "SortOrder": 1,
+    "AbilityId": 1000303
+  },
+  {
+    "UnitId": 1085000450,
+    "SortOrder": 2,
+    "AbilityId": 1015102
+  },
+  {
+    "UnitId": 1085000450,
+    "SortOrder": 3,
+    "AbilityId": 1002103
+  },
+  {
+    "UnitId": 1085000910,
+    "SortOrder": 1,
+    "AbilityId": 1000202
+  },
+  {
+    "UnitId": 1085000910,
+    "SortOrder": 2,
+    "AbilityId": 1002002
+  },
+  {
+    "UnitId": 1085000910,
+    "SortOrder": 3,
+    "AbilityId": 1000401
+  },
+  {
+    "UnitId": 1085001010,
+    "SortOrder": 1,
+    "AbilityId": 1000302
+  },
+  {
+    "UnitId": 1085001010,
+    "SortOrder": 2,
+    "AbilityId": 1000101
+  },
+  {
+    "UnitId": 1085001010,
+    "SortOrder": 3,
+    "AbilityId": 1000902
+  },
+  {
+    "UnitId": 1085001110,
+    "SortOrder": 1,
+    "AbilityId": 1000502
+  },
+  {
+    "UnitId": 1085001110,
+    "SortOrder": 2,
+    "AbilityId": 1000201
+  },
+  {
+    "UnitId": 1085001110,
+    "SortOrder": 3,
+    "AbilityId": 1000401
+  },
+  {
+    "UnitId": 1085001210,
+    "SortOrder": 1,
+    "AbilityId": 1000302
+  },
+  {
+    "UnitId": 1085001210,
+    "SortOrder": 2,
+    "AbilityId": 1002102
+  },
+  {
+    "UnitId": 1085001210,
+    "SortOrder": 3,
+    "AbilityId": 1001702
+  },
+  {
+    "UnitId": 1085001310,
+    "SortOrder": 1,
+    "AbilityId": 1000201
+  },
+  {
+    "UnitId": 1085001410,
+    "SortOrder": 1,
+    "AbilityId": 1000201
+  },
+  {
+    "UnitId": 1085001710,
+    "SortOrder": 1,
+    "AbilityId": 1000401
   },
   {
     "UnitId": 1095000100,
@@ -4335,6 +4440,21 @@
     "AbilityId": 1002602
   },
   {
+    "UnitId": 1305000300,
+    "SortOrder": 1,
+    "AbilityId": 1000202
+  },
+  {
+    "UnitId": 1305000300,
+    "SortOrder": 2,
+    "AbilityId": 1005502
+  },
+  {
+    "UnitId": 1305000300,
+    "SortOrder": 3,
+    "AbilityId": 1000101
+  },
+  {
     "UnitId": 1305000350,
     "SortOrder": 1,
     "AbilityId": 1000403
@@ -5313,6 +5433,31 @@
     "UnitId": 1370000300,
     "SortOrder": 3,
     "AbilityId": 1013202
+  },
+  {
+    "UnitId": 1370000360,
+    "SortOrder": 1,
+    "AbilityId": 1000501
+  },
+  {
+    "UnitId": 1370000360,
+    "SortOrder": 2,
+    "AbilityId": 1013201
+  },
+  {
+    "UnitId": 1370000370,
+    "SortOrder": 1,
+    "AbilityId": 1000502
+  },
+  {
+    "UnitId": 1370000370,
+    "SortOrder": 2,
+    "AbilityId": 1013203
+  },
+  {
+    "UnitId": 1370000370,
+    "SortOrder": 3,
+    "AbilityId": 1011502
   },
   {
     "UnitId": 1370000500,
@@ -7923,6 +8068,21 @@
     "UnitId": 1501002400,
     "SortOrder": 3,
     "AbilityId": 1000701
+  },
+  {
+    "UnitId": 1501002450,
+    "SortOrder": 1,
+    "AbilityId": 1000503
+  },
+  {
+    "UnitId": 1501002450,
+    "SortOrder": 2,
+    "AbilityId": 1000101
+  },
+  {
+    "UnitId": 1501002450,
+    "SortOrder": 3,
+    "AbilityId": 1010701
   },
   {
     "UnitId": 1501002500,

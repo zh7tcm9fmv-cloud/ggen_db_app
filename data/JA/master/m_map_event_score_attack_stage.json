@@ -25,5 +25,14 @@
     "MapEventScoreAttackStageEvaluationTargetSetId": 3,
     "BossMapNpcId": 910100301402000001,
     "StageNameLanguageId": 130100000091010314
+  },
+  {
+    "Id": 91020314,
+    "StageId": 91020314,
+    "MapEventId": 240002,
+    "MapEventScoreAttackRewardId": 240002,
+    "MapEventScoreAttackStageEvaluationTargetSetId": 4,
+    "BossMapNpcId": 910200301402000023,
+    "StageNameLanguageId": 130100000091020314
   }
 ]

@@ -645,6 +645,10 @@
   },
   {
     "ConfigTypeIndex": 423,
-    "Value": "5"
+    "Value": "10"
+  },
+  {
+    "ConfigTypeIndex": 424,
+    "Value": "99"
   }
 ]

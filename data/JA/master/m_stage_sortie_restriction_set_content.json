@@ -460,5 +460,29 @@
     "SortieRestrictionTargetTypeIndex": 1,
     "IsAnd": false,
     "StageSortieRestrictionSetGroupId": 900010
+  },
+  {
+    "StageSortieRestrictionSetId": 900011,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900011
+  },
+  {
+    "StageSortieRestrictionSetId": 900012,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900012
+  },
+  {
+    "StageSortieRestrictionSetId": 900013,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900013
+  },
+  {
+    "StageSortieRestrictionSetId": 900014,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 900014
   }
 ]

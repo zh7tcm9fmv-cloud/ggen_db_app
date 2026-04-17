@@ -30,5 +30,13 @@
     "AttackBuffRatePercent": 50,
     "DefenseBuffRatePercent": 50,
     "MobilityBuffRatePercent": 50
+  },
+  {
+    "Id": 300004,
+    "HpBuffRatePercent": 100,
+    "EnBuffRatePercent": 100,
+    "AttackBuffRatePercent": 100,
+    "DefenseBuffRatePercent": 100,
+    "MobilityBuffRatePercent": 100
   }
 ]

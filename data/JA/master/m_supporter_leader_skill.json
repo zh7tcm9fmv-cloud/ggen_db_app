@@ -2016,6 +2016,42 @@
     "IsUsingMaxTraitValue": false
   },
   {
+    "Id": 137000066000,
+    "SupporterLeaderSkillContentSetId": 137000066000,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100150,
+    "ResourceId": "0",
+    "RarityIndex": 4,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 137000066001,
+    "SupporterLeaderSkillContentSetId": 137000066001,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100180,
+    "ResourceId": "0",
+    "RarityIndex": 4,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 137000066002,
+    "SupporterLeaderSkillContentSetId": 137000066002,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100200,
+    "ResourceId": "0",
+    "RarityIndex": 4,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 137000066003,
+    "SupporterLeaderSkillContentSetId": 137000066003,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100220,
+    "ResourceId": "0",
+    "RarityIndex": 4,
+    "IsUsingMaxTraitValue": false
+  },
+  {
     "Id": 140000015000,
     "SupporterLeaderSkillContentSetId": 140000015000,
     "NameLanguageId": 0,
@@ -2373,6 +2409,42 @@
     "DescriptionLanguageId": 160700000000100260,
     "ResourceId": "0",
     "RarityIndex": 4,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 150100045000,
+    "SupporterLeaderSkillContentSetId": 150100045000,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100250,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 150100045001,
+    "SupporterLeaderSkillContentSetId": 150100045001,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100300,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 150100045002,
+    "SupporterLeaderSkillContentSetId": 150100045002,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100330,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 150100045003,
+    "SupporterLeaderSkillContentSetId": 150100045003,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100360,
+    "ResourceId": "0",
+    "RarityIndex": 5,
     "IsUsingMaxTraitValue": false
   },
   {

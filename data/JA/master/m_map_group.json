@@ -980,6 +980,41 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 910200100802000000,
+    "MapStageId": 910200100802000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 910200201102000000,
+    "MapStageId": 910200201102000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 910200301102000000,
+    "MapStageId": 910200301102000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 910200301302000000,
+    "MapStageId": 910200301302000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 910200301402000000,
+    "MapStageId": 910200301402000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 990000100102000001,
     "MapStageId": 990000100102000000,
     "GroupNumber": 1,

@@ -43,5 +43,10 @@
     "UserRecordTypeIndex": 75,
     "SortOrder": 9,
     "NameLanguageId": 240400000000000010
+  },
+  {
+    "UserRecordTypeIndex": 76,
+    "SortOrder": 10,
+    "NameLanguageId": 240400000000000011
   }
 ]

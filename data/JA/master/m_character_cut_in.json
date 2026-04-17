@@ -28386,6 +28386,78 @@
     "OverrideCutInMilliseconds": 0
   },
   {
+    "Id": 1604000300001,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0001",
+    "QuoteLanguageId": 100701604000300001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300002,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0001",
+    "QuoteLanguageId": 100701604000300002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300003,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0002",
+    "QuoteLanguageId": 100701604000300003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300004,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0002",
+    "QuoteLanguageId": 100701604000300004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300005,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0003",
+    "QuoteLanguageId": 100701604000300005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300006,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0003",
+    "QuoteLanguageId": 100701604000300006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300007,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0004",
+    "QuoteLanguageId": 100701604000300007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1604000300008,
+    "CharacterCutInSetId": 1604000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g6040c00300_0004",
+    "QuoteLanguageId": 100701604000300008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
     "Id": 1700000100001,
     "CharacterCutInSetId": 1700000100,
     "PlayTimingTypeIndex": 1,

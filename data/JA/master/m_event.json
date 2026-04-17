@@ -481,6 +481,19 @@
     "EventTopDisplayPriority": 25121001
   },
   {
+    "Id": 240002,
+    "EventTypeIndex": 4,
+    "ResourceId": "me_banner_240002",
+    "ScheduleId": 2604303002,
+    "ChallengeScheduleId": 2604303001,
+    "EventBonusSetId": 0,
+    "PickupRewardSetId": 36240002000000,
+    "TitleLanguageId": 250100000000240002,
+    "PointItemId": 230000240021,
+    "ShopId": 14240002,
+    "EventTopDisplayPriority": 26043001
+  },
+  {
     "Id": 300001,
     "EventTypeIndex": 6,
     "ResourceId": "0",
@@ -632,6 +645,19 @@
     "EventBonusSetId": 0,
     "PickupRewardSetId": 0,
     "TitleLanguageId": 250100000000300012,
+    "PointItemId": 220000000001,
+    "ShopId": 13000001,
+    "EventTopDisplayPriority": 0
+  },
+  {
+    "Id": 300013,
+    "EventTypeIndex": 6,
+    "ResourceId": "0",
+    "ScheduleId": 2604501501,
+    "ChallengeScheduleId": 2604501502,
+    "EventBonusSetId": 0,
+    "PickupRewardSetId": 0,
+    "TitleLanguageId": 250100000000300013,
     "PointItemId": 220000000001,
     "ShopId": 13000001,
     "EventTopDisplayPriority": 0

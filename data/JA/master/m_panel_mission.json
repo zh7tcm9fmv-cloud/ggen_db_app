@@ -334,5 +334,13 @@
     "PanelMissionGroupId": 260360011,
     "RewardSetId": 17002603600113,
     "BackgroundImageResourceId": "pm_lbg_2603600111"
+  },
+  {
+    "Id": 2604300111,
+    "Level": 1,
+    "PanelCompleteRewardResourceId": "",
+    "PanelMissionGroupId": 260430011,
+    "RewardSetId": 17002604300111,
+    "BackgroundImageResourceId": "pm_lbg_2604300111"
   }
 ]

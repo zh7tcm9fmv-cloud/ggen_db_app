@@ -4,5 +4,11 @@
     "EnhancementConditionMapEventPanelId": 2400010126,
     "UnitGrowthUpgradeStep": 1,
     "CharacterGrowthUpgradeStep": 1
+  },
+  {
+    "MapEventPartnerUpgradeSetId": 24000201,
+    "EnhancementConditionMapEventPanelId": 2400020126,
+    "UnitGrowthUpgradeStep": 1,
+    "CharacterGrowthUpgradeStep": 1
   }
 ]

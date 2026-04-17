@@ -15,7 +15,8 @@
     "LeagueChallengeModeMatchingGroupId": 0,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300002,
@@ -33,7 +34,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300003,
@@ -51,7 +53,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300004,
@@ -69,7 +72,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300005,
@@ -87,7 +91,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300006,
@@ -105,7 +110,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300007,
@@ -123,7 +129,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300008,
@@ -141,7 +148,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300009,
@@ -159,7 +167,8 @@
     "LeagueChallengeModeMatchingGroupId": 1,
     "MotifId": 0,
     "MotifTypeIndex": 0,
-    "RankingTopPercentileDisplayScoreThreshold": 0
+    "RankingTopPercentileDisplayScoreThreshold": 0,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300010,
@@ -177,7 +186,8 @@
     "LeagueChallengeModeMatchingGroupId": 2,
     "MotifId": 300010,
     "MotifTypeIndex": 2,
-    "RankingTopPercentileDisplayScoreThreshold": 200000
+    "RankingTopPercentileDisplayScoreThreshold": 200000,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300011,
@@ -195,7 +205,8 @@
     "LeagueChallengeModeMatchingGroupId": 2,
     "MotifId": 300011,
     "MotifTypeIndex": 2,
-    "RankingTopPercentileDisplayScoreThreshold": 200000
+    "RankingTopPercentileDisplayScoreThreshold": 200000,
+    "Unknown_Col_16": false
   },
   {
     "EventId": 300012,
@@ -211,8 +222,28 @@
     "LeagueStageInitialPositionGroupSetId": 1,
     "LeagueChallengeModeEntryScoreThreshold": 150000,
     "LeagueChallengeModeMatchingGroupId": 2,
+    "MotifId": 300012,
+    "MotifTypeIndex": 2,
+    "RankingTopPercentileDisplayScoreThreshold": 200000,
+    "Unknown_Col_16": false
+  },
+  {
+    "EventId": 300013,
+    "LeagueRankGroupId": 3,
+    "LeagueSeasonRewardGroupId": 13,
+    "LeagueBuffTargetSetId": 300013,
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueMatchingGroupId": 1,
+    "BuffId": 300004,
+    "SeasonStartAnimationColorTypeIndex": 1,
+    "StageId": 90600101,
+    "LimitTurnCount": 5,
+    "LeagueStageInitialPositionGroupSetId": 1,
+    "LeagueChallengeModeEntryScoreThreshold": 150000,
+    "LeagueChallengeModeMatchingGroupId": 3,
     "MotifId": 300010,
     "MotifTypeIndex": 2,
-    "RankingTopPercentileDisplayScoreThreshold": 200000
+    "RankingTopPercentileDisplayScoreThreshold": 200000,
+    "Unknown_Col_16": false
   }
 ]

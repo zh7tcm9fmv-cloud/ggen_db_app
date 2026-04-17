@@ -2266,5 +2266,59 @@
     "PanelNumber": 9,
     "MissionId": 260360011309,
     "TransitionId": 15000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 1,
+    "MissionId": 260430011101,
+    "TransitionId": 30000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 2,
+    "MissionId": 260430011102,
+    "TransitionId": 30000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 3,
+    "MissionId": 260430011103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 4,
+    "MissionId": 260430011104,
+    "TransitionId": 14000090500005
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 5,
+    "MissionId": 260430011105,
+    "TransitionId": 14000090510001
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 6,
+    "MissionId": 260430011106,
+    "TransitionId": 55000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 7,
+    "MissionId": 260430011107,
+    "TransitionId": 55000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 8,
+    "MissionId": 260430011108,
+    "TransitionId": 55000000000000
+  },
+  {
+    "PanelMissionId": 2604300111,
+    "PanelNumber": 9,
+    "MissionId": 260430011109,
+    "TransitionId": 55000000000000
   }
 ]

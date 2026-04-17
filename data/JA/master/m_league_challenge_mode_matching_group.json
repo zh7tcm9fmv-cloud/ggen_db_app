@@ -48,5 +48,30 @@
     "Id": 2,
     "SlotNumber": 5,
     "LeagueChallengeModeMatchingGroupRangeSetId": 400
+  },
+  {
+    "Id": 3,
+    "SlotNumber": 1,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700
+  },
+  {
+    "Id": 3,
+    "SlotNumber": 2,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800
+  },
+  {
+    "Id": 3,
+    "SlotNumber": 3,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 900
+  },
+  {
+    "Id": 3,
+    "SlotNumber": 4,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 800
+  },
+  {
+    "Id": 3,
+    "SlotNumber": 5,
+    "LeagueChallengeModeMatchingGroupRangeSetId": 700
   }
 ]

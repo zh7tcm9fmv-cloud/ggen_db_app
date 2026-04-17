@@ -43,5 +43,20 @@
     "TutorialPartnerResourceId": "map_event_tutorial_tips_240001",
     "TutorialBossResourceId": "map_event_tutorial_tips_boss_240001",
     "Unknown_Col_12": ""
+  },
+  {
+    "Id": 240002,
+    "EventId": 240002,
+    "DailyStageSkipLimit": 0,
+    "ThumbnailCharacterId": 0,
+    "EventLogoResourceId": "map_event_logo_240002",
+    "DescriptionResourceId": "0",
+    "BackgroundResourceId": "0",
+    "BromideResourceId": "0",
+    "MapEventPpConfigId": 1,
+    "MapEventPartnerSetId": 24000201,
+    "TutorialPartnerResourceId": "map_event_tutorial_tips_240002",
+    "TutorialBossResourceId": "map_event_tutorial_tips_boss_240002",
+    "Unknown_Col_12": "vc_strategy_partner_02"
   }
 ]

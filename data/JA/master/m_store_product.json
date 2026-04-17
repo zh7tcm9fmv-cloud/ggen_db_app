@@ -987,6 +987,34 @@
     "IsSubscription": false
   },
   {
+    "ProductGroupId": 226036008,
+    "StoreTypeIndex": 1,
+    "ProductId": "dz",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226036008,
+    "StoreTypeIndex": 2,
+    "ProductId": "dz",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226036008,
+    "StoreTypeIndex": 3,
+    "ProductId": "dz",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226036008,
+    "StoreTypeIndex": 4,
+    "ProductId": "dz",
+    "JpyPrice": 5000,
+    "IsSubscription": false
+  },
+  {
     "ProductGroupId": 226036009,
     "StoreTypeIndex": 3,
     "ProductId": "dx",
@@ -1012,6 +1040,20 @@
     "StoreTypeIndex": 4,
     "ProductId": "dy",
     "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226043001,
+    "StoreTypeIndex": 1,
+    "ProductId": "ea",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226043002,
+    "StoreTypeIndex": 2,
+    "ProductId": "ea",
+    "JpyPrice": 3800,
     "IsSubscription": false
   },
   {
