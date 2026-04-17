@@ -6738,11 +6738,13 @@ if(unique.length===1)return _dcFindStat(charStats,unique[0]);
 return Math.max(...unique.map(s=>_dcFindStat(charStats,s)));
 }
 /** Parse one skill description for Ranged/Melee/Awaken % (and ATK% to all three). Pair/triple lines do not short-circuit ATK% or extra single-stat sentences in the same text.
- * EN data often uses "by25%" (no space); JA/HK/TW use 自身射擊值提升25%（1回合） etc. */
-function _dcParseSkillDescAtkPct(desc){
+ * EN data often uses "by25%" (no space); JA/HK/TW use 自身射擊值提升25%（1回合） etc.
+ * optMeta: optional { id, name } for Awaken Boost fallback (LV in name / trait id 200170[1-5]01) when description text is missing in some locales. */
+function _dcParseSkillDescAtkPct(desc,optMeta){
 const out={Ranged:0,Melee:0,Awaken:0};
-if(!desc||!String(desc).trim())return out;
-const s=String(desc);
+const raw=[desc,optMeta&&optMeta.name||'',optMeta&&optMeta.id!=null?String(optMeta.id):''].filter(Boolean).join('\n');
+if(!raw.trim())return out;
+const s=String(raw);
 const pairRe=/Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s*(\d+)%/gi;
 let mp;
 while((mp=pairRe.exec(s))!==null){const p=parseInt(mp[3],10)||0;out[mp[1]]+=p;out[mp[2]]+=p;}
@@ -6765,7 +6767,26 @@ while((zm=zre.exec(rest))!==null){const kk=zhMap[zm[1]];if(kk)out[kk]+=p;}
 }else{
 const mR=s.match(/自身射擊值提升(\d+)%/);if(mR)out.Ranged+=parseInt(mR[1],10)||0;
 const mM=s.match(/自身格鬥值提升(\d+)%/);if(mM)out.Melee+=parseInt(mM[1],10)||0;
-const mA=s.match(/自身覺醒值提升(\d+)%/);if(mA)out.Awaken+=parseInt(mA[1],10)||0;
+const mA=s.match(/自身[覚覺]醒值提升(\d+)%/);if(mA)out.Awaken+=parseInt(mA[1],10)||0;
+}
+const jaMap={射撃値:'Ranged',格闘値:'Melee',覚醒値:'Awaken'};
+const jaPilot=/自身の(射撃値|格闘値|覚醒値)が(\d+)(?:%|％)上昇/g;
+let jm;
+while((jm=jaPilot.exec(s))!==null){const kk=jaMap[jm[1]];if(kk)out[kk]+=parseInt(jm[2],10)||0;}
+if(out.Awaken===0){
+const lvFrom=(txt)=>{
+let m=txt.match(/覚醒ブースト\s*LV\.?\s*(\d+)/i);if(m)return parseInt(m[1],10)||0;
+m=txt.match(/Awaken\s+Boost\s*LV\.?\s*(\d+)/i);if(m)return parseInt(m[1],10)||0;
+m=txt.match(/覺醒值增幅\s*LV\.?\s*(\d+)/i);if(m)return parseInt(m[1],10)||0;
+return 0;
+};
+let lv=lvFrom(s);
+if(lv>=1&&lv<=5)out.Awaken=lv*5;
+}
+if(out.Awaken===0&&optMeta&&optMeta.id!=null){
+const sid=String(optMeta.id);
+const idM=sid.match(/^200170([1-5])01$/);
+if(idM){const lv=parseInt(idM[1],10);if(lv>=1&&lv<=5)out.Awaken=lv*5;}
 }
 return out;
 }
@@ -6777,7 +6798,7 @@ if(!S.dc._activeSkills[sk.id])return;
 const rsk=_dcResolveSkillForDcMode(sk);
 const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
 const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
-const add=_dcParseSkillDescAtkPct(desc);
+const add=_dcParseSkillDescAtkPct(desc,{id:sk.id,name:rsk.name||sk.name||''});
 out.Ranged+=add.Ranged;out.Melee+=add.Melee;out.Awaken+=add.Awaken;
 });
 return out;
