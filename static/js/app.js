@@ -6296,11 +6296,12 @@ if(tot<=0)return 0;
 const reduc=base>0?F((base*p)/100):0;
 return MX(0,tot-reduc);
 }
-/** Not shown in UI: when DEF debuff > 35%, combat uses nominal weapon power + 1 (only if not using final power override). Aligns preview vs sim for heavy debuffs. */
+/** qub +1: when enabled, DEF debuff > 35% uses nominal weapon power + 1 (unless final power override). Disabled pending re-audit; set `DC_QUB_PLUS_ONE` true to restore. */
+const DC_QUB_PLUS_ONE=false;
 function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
 const n=Number(nominalPow)||0;
 const p=parseInt(defDebuffPct,10)||0;
-if(hasFinalOverride||p<=35)return n;
+if(hasFinalOverride||p<=35||!DC_QUB_PLUS_ONE)return n;
 return n+1;
 }
 function _dcDefEternalStatCard(statKey,val,bonus){
@@ -7330,6 +7331,7 @@ const traitMpPow=wtTraits.mpPowerMax|0;
 const finalOverride=S.dc.finalWpnPow||0;
 const finalWpnPowOverride=finalOverride>0;
 const weaponPower=finalOverride>0?finalOverride:computedWpnPow;
+const qubPlusOneApplied=DC_QUB_PLUS_ONE&&defDebuffPct>35&&!finalWpnPowOverride;
 const combatWeaponPower=_dcCombatWeaponPowerNominal(weaponPower,defDebuffPct,finalOverride>0);
 
 const dist=_dcDefaultWeaponDistance(wpn);
@@ -7399,7 +7401,7 @@ return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,defendMult,isExWeapon,
-defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,
+defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
@@ -7656,7 +7658,7 @@ return['',
 `  DEF debuff % (field+weapon): ${rr.defDebuffPct|0}%; flat subtract from pair DEF: ${fmtN(rr.defDebuffFlatSubtract|0)} → MS DEF used: ${fmtN(rr.unitDef|0)}`,
 `  Pilot DEF (stats_raw): ${fmtN(rr.charDef|0)}`,
 `  Attacker MS ATK (final): ${fmtN(rr.unitAtk|0)}; Advantage tag %: ${rr.advantageTagAtkPct|0}`,
-`  combatWeaponPower (incl. nominal +1 if heavy debuff): ${fmtN(rr.combatWeaponPower|0)} (display power ${fmtN(rr.weaponPower|0)})`,
+`  combatWeaponPower: ${fmtN(rr.combatWeaponPower|0)} (display ${fmtN(rr.weaponPower|0)}; qub +1: ${rr.qubPlusOneApplied?'applied':'off — set DC_QUB_PLUS_ONE in app.js'})`,
 `  baseDamage: ${fmtN(rr.baseDamage)}, damageCorrection: ${fmtN(rr.damageCorrection)}, terrainCorr: ${rr.terrainCorrection}, battleDamage: ${fmtN(rr.battleDamage)}`];
 }
 function copyDcResultText(){
