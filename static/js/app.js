@@ -6367,10 +6367,11 @@ ${lsHtml}
 <div style="font-size:11px;color:var(--accent-cyan);margin-top:2px">HP+${fmtN(s.hp_support||0)} ATK+${fmtN(s.atk_support||0)}</div>
 </div>`;
 }
-async function _dcFetchAllListRows(base,extra){
+async function _dcFetchAllListRows(base,extra,listQ){
+const qv=listQ!==undefined&&listQ!==null?String(listQ):'';
 const rows=[];let page=1;let totalPages=1;
 do{
-const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=100&sort=rarity&dir=desc&q=&${extra}`);
+const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent(qv)}&${extra}`);
 const d=await r.json();
 rows.push(...(d.rows||[]));
 totalPages=d.total_pages||1;
@@ -6574,14 +6575,35 @@ else _dcDoPickerSearch();
 },100);
 }
 function _dcFilterDcPickerClientSide(){
-const q=String(document.getElementById('dcPickerSearch').value||'').trim().toLowerCase();
+const qRaw=String(document.getElementById('dcPickerSearch').value||'').trim();
 const pool=S._dcPickerFullCache||[];
+const t=S._dcPickerType;
+if(t==='supporter'&&qRaw){
+void _dcSupporterPickerSearch(qRaw);
+return;
+}
+_dcPickerSearchGen++;
+const q=qRaw.toLowerCase();
 let rows=!q?pool:pool.filter(r=>{
 const hay=[r.name,r.details,r.boost,(r.tags||[]).map(tg=>tg.name||'').join(' ')].filter(Boolean).join(' ').toLowerCase();
 return hay.includes(q);
 });
 S._dcPickerCache=rows;
 renderDcPickerList();
+}
+async function _dcSupporterPickerSearch(qRaw){
+const myGen=++_dcPickerSearchGen;
+const body=document.getElementById('dcPickerBody');
+if(body)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
+try{
+const rows=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery(),qRaw);
+if(myGen!==_dcPickerSearchGen)return;
+S._dcPickerCache=rows;
+renderDcPickerList();
+}catch(e){
+if(myGen!==_dcPickerSearchGen)return;
+if(body)body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>';
+}
 }
 async function _dcDoPickerSearch(){
 const q=document.getElementById('dcPickerSearch').value.trim();

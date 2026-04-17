@@ -9811,24 +9811,6 @@ def list_supporters():
             if lineage_filter is not None:
                 if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
                     continue
-            if uids:
-                if not id_seek:
-                    applies_any = False
-                    for i, uid in enumerate(uids):
-                        cid = cids[i] if i < len(cids) else None
-                        if supporter_leader_applies_to_unit(sid, uid, ld, lc, cid):
-                            applies_any = True
-                            break
-                    if not applies_any:
-                        continue
-            elif for_unit and not id_seek and not supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char):
-                continue
-            if rarity_filter is not None:
-                if not rarity_filter:
-                    continue
-                letter = RARITY_MAP.get(str(ri), 'N')
-                if not row_matches_rarity_filter(rarity_filter, letter, lim):
-                    continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
                 if ls.get('tier') != 3: continue
@@ -9840,10 +9822,31 @@ def list_supporters():
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
             sts = ", ".join([t['name'] for t in all_tags]); cb = "\n".join(descs)
-            if sq:
-                searchable = f"{name} {sts}".lower().strip()
-                ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
-                if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid): continue
+            searchable_lower = f"{name} {sts}".lower().strip()
+            ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
+            sq_matches = search_row_matches_query(sq, searchable_lower, ser_names_lower, entity_id=sid) if sq else True
+            if uids:
+                if not id_seek:
+                    applies_any = False
+                    for i, uid in enumerate(uids):
+                        cid = cids[i] if i < len(cids) else None
+                        if supporter_leader_applies_to_unit(sid, uid, ld, lc, cid):
+                            applies_any = True
+                            break
+                    if not applies_any and not (sq and sq_matches):
+                        continue
+            elif for_unit and not id_seek:
+                applies = supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char)
+                if not applies and not (sq and sq_matches):
+                    continue
+            if rarity_filter is not None:
+                if not rarity_filter:
+                    continue
+                letter = RARITY_MAP.get(str(ri), 'N')
+                if not row_matches_rarity_filter(rarity_filter, letter, lim):
+                    continue
+            if sq and not sq_matches:
+                continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
             aic = ''
             ask = supporter_active_map.get(sid, [])
