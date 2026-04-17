@@ -10460,10 +10460,12 @@ def get_stage(stage_id):
                     uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc, ue.get('unit_id', '0'))
                     self_row = self_tb.get(nid, {'HP': 0, 'EN': 0, 'Attack': 0, 'Defense': 0, 'Mobility': 0, 'Move': 0})
                     tb_merged = {k: squad_tb.get(k, 0) + self_row.get(k, 0) for k in ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']}
-                    fst, tba = apply_team_bonus_to_unit_stats({'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}, tb_merged)
+                    base_stats = {'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}
+                    fst, tba = apply_team_bonus_to_unit_stats(base_stats, tb_merged)
+                    _, tba_squad = apply_team_bonus_to_unit_stats(base_stats, squad_tb)
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
-                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids')); up['bonus_amounts'] = tba
+                    up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids')); up['bonus_amounts'] = tba; up['bonus_amounts_squad'] = tba_squad
                     dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
                 if ce:
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
