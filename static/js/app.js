@@ -5694,7 +5694,7 @@ if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(?:物理武裝|光束武裝|特殊�
 if(!m&&_dcIsZhCalcLang())m=txt.match(/對敵方造成的損傷提升(\d+)%/);
 if(m){
 const v=parseInt(m[1],10);
-const attackRoleBlock=src==='char'&&!_dcCharIsAttackRole(cd);
+const attackRoleBlock=src==='char'&&!_dcCharIsAttackRole(cd)&&!hasCond;
 const effectiveUnmet=isUnmet||attackRoleBlock;
 b.dmgDealt+=effectiveUnmet?0:v;
 b.items.push({label:`Damage Dealt +${v}%`,val:v,key:'dmgDealt',cond:effectiveUnmet,autoMet:hasCond&&condMet&&!attackRoleBlock,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!effectiveUnmet&&!spCharGate,locked:attackRoleBlock,attackRoleOnly:attackRoleBlock})
@@ -6408,6 +6408,14 @@ return MX(0,tot-reduc);
 }
 /** qub +1: when enabled, DEF debuff > 35% uses nominal weapon power + 1 (unless final power override). Disabled pending re-audit; set `DC_QUB_PLUS_ONE` true to restore. */
 const DC_QUB_PLUS_ONE=false;
+/** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
+const DC_SHEET_UNIT_STAT_RATIO=true;
+/** Match observed in-game super crit (3 repros vs Throne Zwei): scaledCrit = ceil(battleDamage×N/100 + combatWeaponPower/K), K = DC_SCR_K0 + DC_SCR_KN×N + DC_SCR_KW×W (N = totalCritMult%, W = combat weapon power). Final vigor: round if frac(raw)<DC_SUPER_CRIT_FRAC_THRESHOLD else ceil. Set false for pure Firered sheet (no W/K term). */
+const DC_SUPER_CRIT_IN_GAME=true;
+const DC_SCR_K0=480.1754029692472;
+const DC_SCR_KN=-0.8987879109225874;
+const DC_SCR_KW=-0.02338635560268649;
+const DC_SUPER_CRIT_FRAC_THRESHOLD=0.15;
 function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
 const n=Number(nominalPow)||0;
 const p=parseInt(defDebuffPct,10)||0;
@@ -7326,9 +7334,9 @@ cb.disabled=false;
 _dcApplyAutoAdvantageForPsycommuDefender();
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
-/** Green +lines under MS HP/ATK/DEF/MOB: % bucket (matches single floor in damage math), then flats. ATK % line excludes EX squad % (shown separately). */
+/** Green +lines under MS HP/ATK/DEF/MOB: % bucket (matches ROUNDUP slices in damage math), then flats. ATK % line excludes EX squad % (shown separately). */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
-const F=Math.floor;
+const F=Math.floor,C=Math.ceil;
 const c=ctx||{};
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
@@ -7357,24 +7365,24 @@ let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
 function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
-const coreHp=F(hpBase*(100+pHp)/100);
-const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
+const coreHp=C(hpBase*(100+pHp)/100);
+const pctHp=C(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
-const coreDef=F(defBase*(100+pDef)/100);
-const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
+const coreDef=C(defBase*(100+pDef)/100);
+const pctDef=C(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
 const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'OP+','Option part flat Defense');
-const coreMob=F(mobBase*(100+pMob)/100);
-const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
+const coreMob=C(mobBase*(100+pMob)/100);
+const pctMob=C(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
 const mobHtml=L(pctMob,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'OP+','Option part flat Mobility');
-const coreAtk=F(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
+const coreAtk=C(atkBase*(100+pAtk)/100);
+const pctAtkNoEx=C(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
 const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
-const F=Math.floor;
+const F=Math.floor,C=Math.ceil;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
@@ -7403,24 +7411,24 @@ const pDef=_dcStatPassivePctFromEntry(defEnt);
 const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
-let unitHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
-let unitDefVal=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
-let unitMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
+let unitHp=C(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
+let unitDefVal=C(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
+let unitMob=C(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
 const mlMovePct=(c.masterLeagueBuff&&c.masterLeagueBuffMove!==false)?mlPct:0;
-let unitMove=F(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
+let unitMove=C(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-const unitAtkExSquadBase=F(atkBase*(100+pAtk+sheetBuffPct)/100);
-const unitDefExSquadBase=F(defBase*(100+pDef+sheetBuffPct)/100);
-const unitAtkGrowthAfterOptions=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
+const unitAtkExSquadBase=C(atkBase*(100+pAtk+sheetBuffPct)/100);
+const unitDefExSquadBase=C(defBase*(100+pDef+sheetBuffPct)/100);
+const unitAtkGrowthAfterOptions=C(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
 const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
 const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0);
-let unitAtk=F(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
+let unitAtk=C(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
-if((exSq|0)>0)deltaExAtk=F(atkBase*(100+sumAtkPctNoEx+exSq)/100)-F(atkBase*(100+sumAtkPctNoEx)/100);
+if((exSq|0)>0)deltaExAtk=C(atkBase*(100+sumAtkPctNoEx+exSq)/100)-C(atkBase*(100+sumAtkPctNoEx)/100);
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase};
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
@@ -7494,9 +7502,9 @@ let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
 
 const characterStatRatio=MX(0,charAtk-charDef)/5000;
-/** Unit slice: default FLOOR each tenth then subtract (matches Qubeley vs Psycho @ 40% DEF down). For 20% on-attack DEF down weapons, use CEIL on (UnAtk/10 − UnDef/10) per sheet / Patulia checks. */
+/** Unit slice: Firered RoundUp((UnAtk/10)−(UnDef/10))/5000 when DC_SHEET_UNIT_STAT_RATIO; else floor each tenth (legacy). */
 let unitStatRatio;
-if((defDebuffPct|0)===20){
+if(DC_SHEET_UNIT_STAT_RATIO||(defDebuffPct|0)===20){
 unitStatRatio=MX(0,C((unitAtk/10)-(unitDef/10)))/5000;
 }else{
 const unitDiffRaw=F(unitAtk/10)-F(unitDef/10);
@@ -7527,12 +7535,31 @@ const isExWeapon=!!wpn.is_ex;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 
 const totalNormalMultPct=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
-let normalDmg=MX(0,C(battleDamage*(1+totalNormalMultPct/100)*defendMult));
+const scaledNormal=C(totalNormalMultPct*battleDamage/100);
+const combinedNormal=(battleDamage+scaledNormal)*defendMult;
+let normalDmg=MX(0,C(combinedNormal));
 
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
-const critPreVigor=MX(0,C(battleDamage*(1+totalCritMultPct/100)*defendMult));
-let critDmg=MX(0,C(critPreVigor*((critCorrectionPct+100)/100)));
+let scaledCrit;
+if(DC_SUPER_CRIT_IN_GAME){
+const kDiv=DC_SCR_K0+DC_SCR_KN*totalCritMultPct+DC_SCR_KW*combatWeaponPower;
+const kSafe=MX(1,kDiv);
+scaledCrit=C(totalCritMultPct*battleDamage/100+combatWeaponPower/kSafe);
+}else{
+scaledCrit=C(totalCritMultPct*battleDamage/100);
+}
+const combinedCrit=(battleDamage+scaledCrit)*defendMult;
+const critPreVigor=MX(0,combinedCrit);
+const critVigorMult=(critCorrectionPct+100)/100;
+const critRaw=critPreVigor*critVigorMult;
+let critDmg;
+if(DC_SUPER_CRIT_IN_GAME){
+const critFrac=critRaw-Math.floor(critRaw);
+critDmg=MX(0,critFrac<DC_SUPER_CRIT_FRAC_THRESHOLD?Math.round(critRaw):C(critRaw-1e-9));
+}else{
+critDmg=MX(0,C(critRaw-1e-9));
+}
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
@@ -7550,7 +7577,7 @@ const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPc
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
-damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,defendMult,isExWeapon,
+damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,scaledNormal,scaledCrit,defendMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
@@ -7790,20 +7817,23 @@ function _dcCopyLinesDamageFormulas(rr){
 if(!rr)return[];
 const supLbl=rr.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg');
 return['',
-'Damage formulas (this calculator):',
-'  Normal damage = max(0, ceil(battleDamage × (1 + totalNormalMultPct/100) × defendMult))',
+'Damage formulas (Firered sheet order):',
+'  scaledNormal = ceil(totalNormalMultPct × battleDamage / 100)',
+'  combinedNormal = (battleDamage + scaledNormal) × defendMult',
+'  Normal damage = max(0, ceil(combinedNormal))',
 '  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
-`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
+`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-`  ${supLbl} = max(0, ceil(ceil(battleDamage × (1 + totalCritMultPct/100) × defendMult) × ((vigorCritMultPct+100)/100)))`,
+(DC_SUPER_CRIT_IN_GAME?`  scaledCrit = ceil(battleDamage × totalCritMultPct/100 + combatWeaponPower / K), K = ${DC_SCR_K0}+(${DC_SCR_KN})×N+(${DC_SCR_KW})×W`:'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100)')+'; combinedCrit = (battleDamage + scaledCrit) × defendMult',
+(DC_SUPER_CRIT_IN_GAME?`  ${supLbl} = fractional vigor: round(combined×vigorMult) if frac < ${DC_SUPER_CRIT_FRAC_THRESHOLD}, else ceil`:`  ${supLbl} = max(0, ceil(combinedCrit × (vigorCritMultPct+100) / 100))`),
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
-`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, critPreVigor=${fmtN(rr.critPreVigor)}`,
+`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, combatWeaponPower=${fmtN(rr.combatWeaponPower|0)}, scaledCrit=${fmtN(rr.scaledCrit)}, combinedCrit=${fmtN(rr.critPreVigor)}`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
 function _dcCopyLinesBattleDamageDiagnostics(rr){
 if(!rr)return[];
 return['',
-'Battle damage inputs (defender + weapon nominal; use to diff two targets):',
+`Battle damage inputs (defender + weapon nominal; unitStatRatio: ${DC_SHEET_UNIT_STAT_RATIO?'Firered RoundUp((UnAtk/10)−(UnDef/10))':'legacy floor tenths'}):`,
 `  MS DEF from map-stats pair (pre-debuff): ${fmtN(rr.defMsDefensePair|0)}`,
 `  stats_raw Defense (sheet total) / bonus slice: ${fmtN(rr.defMsStatsRawDefense|0)} / ${fmtN(rr.defMsBonusDefense|0)}`,
 `  DEF debuff % (field+weapon): ${rr.defDebuffPct|0}%; flat subtract from pair DEF: ${fmtN(rr.defDebuffFlatSubtract|0)} → MS DEF used: ${fmtN(rr.unitDef|0)}`,
