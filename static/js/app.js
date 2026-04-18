@@ -6410,12 +6410,6 @@ return MX(0,tot-reduc);
 const DC_QUB_PLUS_ONE=false;
 /** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
 const DC_SHEET_UNIT_STAT_RATIO=true;
-/** Match observed in-game super crit (3 repros vs Throne Zwei): scaledCrit = ceil(battleDamage×N/100 + combatWeaponPower/K), K = DC_SCR_K0 + DC_SCR_KN×N + DC_SCR_KW×W (N = totalCritMult%, W = combat weapon power). Final vigor: round if frac(raw)<DC_SUPER_CRIT_FRAC_THRESHOLD else ceil. Set false for pure Firered sheet (no W/K term). */
-const DC_SUPER_CRIT_IN_GAME=true;
-const DC_SCR_K0=480.1754029692472;
-const DC_SCR_KN=-0.8987879109225874;
-const DC_SCR_KW=-0.02338635560268649;
-const DC_SUPER_CRIT_FRAC_THRESHOLD=0.15;
 function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
 const n=Number(nominalPow)||0;
 const p=parseInt(defDebuffPct,10)||0;
@@ -7541,25 +7535,10 @@ let normalDmg=MX(0,C(combinedNormal));
 
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
-let scaledCrit;
-if(DC_SUPER_CRIT_IN_GAME){
-const kDiv=DC_SCR_K0+DC_SCR_KN*totalCritMultPct+DC_SCR_KW*combatWeaponPower;
-const kSafe=MX(1,kDiv);
-scaledCrit=C(totalCritMultPct*battleDamage/100+combatWeaponPower/kSafe);
-}else{
-scaledCrit=C(totalCritMultPct*battleDamage/100);
-}
+const scaledCrit=C(totalCritMultPct*battleDamage/100);
 const combinedCrit=(battleDamage+scaledCrit)*defendMult;
 const critPreVigor=MX(0,combinedCrit);
-const critVigorMult=(critCorrectionPct+100)/100;
-const critRaw=critPreVigor*critVigorMult;
-let critDmg;
-if(DC_SUPER_CRIT_IN_GAME){
-const critFrac=critRaw-Math.floor(critRaw);
-critDmg=MX(0,critFrac<DC_SUPER_CRIT_FRAC_THRESHOLD?Math.round(critRaw):C(critRaw-1e-9));
-}else{
-critDmg=MX(0,C(critRaw-1e-9));
-}
+let critDmg=MX(0,C(critPreVigor*(critCorrectionPct+100)/100-1e-9));
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
@@ -7824,10 +7803,10 @@ return['',
 '  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
 `  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-(DC_SUPER_CRIT_IN_GAME?`  scaledCrit = ceil(battleDamage × totalCritMultPct/100 + combatWeaponPower / K), K = ${DC_SCR_K0}+(${DC_SCR_KN})×N+(${DC_SCR_KW})×W`:'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100)')+'; combinedCrit = (battleDamage + scaledCrit) × defendMult',
-(DC_SUPER_CRIT_IN_GAME?`  ${supLbl} = fractional vigor: round(combined×vigorMult) if frac < ${DC_SUPER_CRIT_FRAC_THRESHOLD}, else ceil`:`  ${supLbl} = max(0, ceil(combinedCrit × (vigorCritMultPct+100) / 100))`),
+'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); combinedCrit = (battleDamage + scaledCrit) × defendMult',
+`  ${supLbl} = max(0, ceil(combinedCrit × (vigorCritMultPct+100) / 100))`,
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
-`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, combatWeaponPower=${fmtN(rr.combatWeaponPower|0)}, scaledCrit=${fmtN(rr.scaledCrit)}, combinedCrit=${fmtN(rr.critPreVigor)}`,
+`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, scaledCrit=${fmtN(rr.scaledCrit)}, combinedCrit=${fmtN(rr.critPreVigor)}`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
 function _dcCopyLinesBattleDamageDiagnostics(rr){

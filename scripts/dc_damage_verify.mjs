@@ -19,11 +19,6 @@ const EXP = Math.exp;
 
 /** Must match static/js/app.js */
 const DC_SHEET_UNIT_STAT_RATIO = true;
-const DC_SUPER_CRIT_IN_GAME = true;
-const DC_SCR_K0 = 480.1754029692472;
-const DC_SCR_KN = -0.8987879109225874;
-const DC_SCR_KW = -0.02338635560268649;
-const DC_SUPER_CRIT_FRAC_THRESHOLD = 0.15;
 
 function combatWpnPow(nominalPow, defDebuffPct, hasFinalOverride) {
   const n = Number(nominalPow) || 0;
@@ -71,24 +66,11 @@ function calcNormal({
   return { normalDmg, battleDamage, baseDamage, combatWeaponPower: wp, scaledNormal };
 }
 
-/** Firered sheet only (no combatWeaponPower / in-game term). */
-function calcSuperCritSheet(battleDamage, totalCritMultPct, vigorCritPct, defendMult = 1) {
+/** Firered: scaledCrit + combinedCrit + ceil(vigor). */
+function calcSuperCrit(battleDamage, totalCritMultPct, vigorCritPct, defendMult = 1) {
   const scaledCrit = C((totalCritMultPct * battleDamage) / 100);
   const combinedCrit = (battleDamage + scaledCrit) * defendMult;
   return MX(0, C((combinedCrit * (100 + vigorCritPct)) / 100 - 1e-9));
-}
-
-/** Mirrors app.js DC_SUPER_CRIT_IN_GAME path (W = combat weapon power). */
-function calcSuperCritInGame(battleDamage, totalCritMultPct, combatWeaponPower, vigorCritPct, defendMult = 1) {
-  const kDiv = DC_SCR_K0 + DC_SCR_KN * totalCritMultPct + DC_SCR_KW * combatWeaponPower;
-  const kSafe = MX(1, kDiv);
-  const scaledCrit = C((totalCritMultPct * battleDamage) / 100 + combatWeaponPower / kSafe);
-  const combinedCrit = (battleDamage + scaledCrit) * defendMult;
-  const critRaw = combinedCrit * ((100 + vigorCritPct) / 100);
-  const critFrac = critRaw - Math.floor(critRaw);
-  const out =
-    critFrac < DC_SUPER_CRIT_FRAC_THRESHOLD ? Math.round(critRaw) : C(critRaw - 1e-9);
-  return MX(0, out);
 }
 
 /** Matches app.js _dcApplyEnemyDefDebuffToDefenderUnitDef: debuff % applies to (total − bonus) only. */
@@ -136,42 +118,43 @@ if (sheetSteps !== intCeilMult) {
   process.exitCode = 1;
 }
 
-console.log('\nSuper crit in-game (Throne Zwei repro; DC_SUPER_CRIT_IN_GAME):');
-const inGameSuper = [
-  { battleDamage: 320720, totalCritMultPct: 205, W: 9126, vigorCritPct: 30, want: 1271799 },
-  { battleDamage: 356367, totalCritMultPct: 125, W: 7863, vigorCritPct: 30, want: 1042430 },
-  { battleDamage: 309849, totalCritMultPct: 195, W: 7200, vigorCritPct: 30, want: 1188341 },
-];
-if (DC_SUPER_CRIT_IN_GAME) {
-  const normalExpected = [978196, 801826, 914055];
-  for (let i = 0; i < inGameSuper.length; i++) {
-    const c = inGameSuper[i];
-    const sn = C((c.totalCritMultPct * c.battleDamage) / 100);
-    const normalD = C(c.battleDamage + sn);
-    const ne = normalExpected[i];
-    if (normalD !== ne) {
-      console.error(`  FAIL normal for case ${i + 1}: got ${normalD} want ${ne}`);
-      process.exitCode = 1;
-    }
-    const got = calcSuperCritInGame(c.battleDamage, c.totalCritMultPct, c.W, c.vigorCritPct, 1);
-    console.log(
-      `  BD=${c.battleDamage} W=${c.W} normal=${normalD} → superCrit ${got} (want ${c.want}) ${got === c.want ? '✓' : '✗'}`
-    );
-    if (got !== c.want) process.exitCode = 1;
-  }
+console.log('\nUnicorn vs Throne Zwei (in-game: super = ceil(combinedNormal×1.3), same pool as normal):');
+const throneUnicorn = {
+  battleDamage: 320751,
+  totalCritMultPct: 205,
+  vigorCritPct: 30,
+  wantNormal: 978291,
+  wantSuper: 1271779,
+};
+{
+  const sn = C((throneUnicorn.totalCritMultPct * throneUnicorn.battleDamage) / 100);
+  const normalD = C(throneUnicorn.battleDamage + sn);
+  const gotSuper = calcSuperCrit(
+    throneUnicorn.battleDamage,
+    throneUnicorn.totalCritMultPct,
+    throneUnicorn.vigorCritPct,
+    1
+  );
+  const okN = normalD === throneUnicorn.wantNormal;
+  const okS = gotSuper === throneUnicorn.wantSuper;
+  console.log(
+    `  BD=${throneUnicorn.battleDamage} normal=${normalD} (want ${throneUnicorn.wantNormal}) ${okN ? '✓' : '✗'}; super=${gotSuper} (want ${throneUnicorn.wantSuper}) ${okS ? '✓' : '✗'}`
+  );
+  if (!okN || !okS) process.exitCode = 1;
 }
 
-console.log('\nSuper crit (pure Firered sheet, no W/K term):');
+console.log('\nSuper crit (Firered sheet, sample battleDamage values):');
 const sheetSuperCases = [
   { battleDamage: 320720, totalCritMultPct: 205, vigorCritPct: 30, want: 1271655 },
   { battleDamage: 356367, totalCritMultPct: 125, vigorCritPct: 30, want: 1042374 },
   { battleDamage: 309849, totalCritMultPct: 195, vigorCritPct: 30, want: 1188272 },
 ];
 for (const c of sheetSuperCases) {
-  const got = calcSuperCritSheet(c.battleDamage, c.totalCritMultPct, c.vigorCritPct, 1);
+  const got = calcSuperCrit(c.battleDamage, c.totalCritMultPct, c.vigorCritPct, 1);
   console.log(
     `  battleDamage=${c.battleDamage} → superCrit ${got} (want ${c.want}) ${got === c.want ? '✓' : '✗'}`
   );
+  if (got !== c.want) process.exitCode = 1;
 }
 
 console.log('\nDefend / shield (sheet: combined fractional before vigor RoundUp):');
@@ -202,7 +185,7 @@ const defendCases = [
 ];
 for (const c of defendCases) {
   if (c.totalCritMultPct != null) {
-    const got = calcSuperCritSheet(c.battleDamage, c.totalCritMultPct, c.vigorCritPct, c.defendMult);
+    const got = calcSuperCrit(c.battleDamage, c.totalCritMultPct, c.vigorCritPct, c.defendMult);
     console.log(`  ${c.name}: superCrit ${got} (want ${c.want}) ${got === c.want ? '✓' : '✗'}`);
     if (got !== c.want) process.exitCode = 1;
   } else {
