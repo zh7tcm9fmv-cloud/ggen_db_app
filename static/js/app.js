@@ -6410,6 +6410,9 @@ return MX(0,tot-reduc);
 const DC_QUB_PLUS_ONE=false;
 /** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
 const DC_SHEET_UNIT_STAT_RATIO=true;
+/** In-game super for some totalCritMult=125% hits (e.g. Exia vs Throne) matches ceil((combined−trim)×1.3) with trim=floor(max(0,B−W)/1181), only when ⑧ is high enough; avoids changing older BD rows that still use trim=0. */
+const DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE=356500;
+const DC_CRIT125_TRIM_DIV=1181;
 function _dcCombatWeaponPowerNominal(nominalPow,defDebuffPct,hasFinalOverride){
 const n=Number(nominalPow)||0;
 const p=parseInt(defDebuffPct,10)||0;
@@ -7536,7 +7539,11 @@ let normalDmg=MX(0,C(combinedNormal));
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 const scaledCrit=C(totalCritMultPct*battleDamage/100);
-const combinedCrit=(battleDamage+scaledCrit)*defendMult;
+let crit125Trim=0;
+if((totalCritMultPct|0)===125&&defendMult===1&&(battleDamage|0)>=DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE&&(combatWeaponPower|0)>0){
+crit125Trim=F(MX(0,battleDamage-combatWeaponPower)/DC_CRIT125_TRIM_DIV);
+}
+const combinedCrit=MX(0,(battleDamage+scaledCrit)*defendMult-crit125Trim);
 const critPreVigor=MX(0,combinedCrit);
 let critDmg=MX(0,C(critPreVigor*(critCorrectionPct+100)/100-1e-9));
 
@@ -7556,7 +7563,7 @@ const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPc
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
-damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,scaledNormal,scaledCrit,defendMult,isExWeapon,
+damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
@@ -7803,10 +7810,11 @@ return['',
 '  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
 `  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); combinedCrit = (battleDamage + scaledCrit) × defendMult',
+'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); crit125Trim = (totalCritMult=125% ∧ defendMult=1 ∧ ⑧≥threshold ∧ W>0) ? floor(max(0,⑧−combatWeaponPower)/1181) : 0',
+'  combinedCrit = max(0, (battleDamage + scaledCrit) × defendMult − crit125Trim)',
 `  ${supLbl} = max(0, ceil(combinedCrit × (vigorCritMultPct+100) / 100))`,
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
-`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, scaledCrit=${fmtN(rr.scaledCrit)}, combinedCrit=${fmtN(rr.critPreVigor)}`,
+`  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, scaledCrit=${fmtN(rr.scaledCrit)}, crit125Trim=${fmtN(rr.crit125Trim|0)}, combinedCrit=${fmtN(rr.critPreVigor)}`,
 `  → ${supLbl} = ${fmtN(rr.critDmg)}`];
 }
 function _dcCopyLinesBattleDamageDiagnostics(rr){

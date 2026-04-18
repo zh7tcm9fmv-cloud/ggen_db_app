@@ -19,6 +19,8 @@ const EXP = Math.exp;
 
 /** Must match static/js/app.js */
 const DC_SHEET_UNIT_STAT_RATIO = true;
+const DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE = 356500;
+const DC_CRIT125_TRIM_DIV = 1181;
 
 function combatWpnPow(nominalPow, defDebuffPct, hasFinalOverride) {
   const n = Number(nominalPow) || 0;
@@ -66,10 +68,25 @@ function calcNormal({
   return { normalDmg, battleDamage, baseDamage, combatWeaponPower: wp, scaledNormal };
 }
 
-/** Firered: scaledCrit + combinedCrit + ceil(vigor). */
-function calcSuperCrit(battleDamage, totalCritMultPct, vigorCritPct, defendMult = 1) {
+/** Firered: scaledCrit + combinedCrit (minus crit125Trim when N=125 & BD≥threshold) + ceil(vigor). */
+function calcSuperCrit(
+  battleDamage,
+  totalCritMultPct,
+  vigorCritPct,
+  defendMult = 1,
+  combatWeaponPower = 0
+) {
   const scaledCrit = C((totalCritMultPct * battleDamage) / 100);
-  const combinedCrit = (battleDamage + scaledCrit) * defendMult;
+  let crit125Trim = 0;
+  if (
+    (totalCritMultPct | 0) === 125 &&
+    defendMult === 1 &&
+    (battleDamage | 0) >= DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE &&
+    (combatWeaponPower | 0) > 0
+  ) {
+    crit125Trim = F(MX(0, battleDamage - combatWeaponPower) / DC_CRIT125_TRIM_DIV);
+  }
+  const combinedCrit = MX(0, (battleDamage + scaledCrit) * defendMult - crit125Trim);
   return MX(0, C((combinedCrit * (100 + vigorCritPct)) / 100 - 1e-9));
 }
 
@@ -147,10 +164,24 @@ console.log('\nSuper crit (Firered sheet, sample battleDamage values):');
 const sheetSuperCases = [
   { battleDamage: 320720, totalCritMultPct: 205, vigorCritPct: 30, want: 1271655 },
   { battleDamage: 356367, totalCritMultPct: 125, vigorCritPct: 30, want: 1042374 },
+  {
+    battleDamage: 356517,
+    totalCritMultPct: 125,
+    vigorCritPct: 30,
+    combatWeaponPower: 7863,
+    want: 1042430,
+    note: 'Exia vs Throne (trim only when ⑧≥356500 and W>0)',
+  },
   { battleDamage: 309849, totalCritMultPct: 195, vigorCritPct: 30, want: 1188272 },
 ];
 for (const c of sheetSuperCases) {
-  const got = calcSuperCrit(c.battleDamage, c.totalCritMultPct, c.vigorCritPct, 1);
+  const got = calcSuperCrit(
+    c.battleDamage,
+    c.totalCritMultPct,
+    c.vigorCritPct,
+    1,
+    c.combatWeaponPower ?? 0
+  );
   console.log(
     `  battleDamage=${c.battleDamage} → superCrit ${got} (want ${c.want}) ${got === c.want ? '✓' : '✗'}`
   );
