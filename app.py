@@ -7306,9 +7306,16 @@ def privacy_policy_page():
     return r
 
 
+# Same destination as Support/Feedback in static/js/app.js (SUPPORT_FEEDBACK_BASE_URL).
+FEEDBACK_FORM_URL = (
+    'https://docs.google.com/forms/d/e/1FAIpQLScGcQn662SpeZzGXJ4-TFTSlTaItvQv1A_EJruZgH1uid5nJw/'
+    'viewform?usp=send_form'
+)
+
+
 @app.route('/contact')
 def contact_page():
-    r = make_response(render_template('contact.html'))
+    r = make_response(render_template('contact.html', feedback_form_url=FEEDBACK_FORM_URL))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
 

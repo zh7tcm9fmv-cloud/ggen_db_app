@@ -2,14 +2,6 @@
 {% block title %}Contact — GGen Database{% endblock %}
 {% block content %}
 <h1>Contact us</h1>
-<p>We do not publish a support inbox on this page. To send questions, bug reports, or suggestions, please use the in-app <strong>Feedback</strong> entry point on the main GGen Database site.</p>
-
-<h2>Where to find it</h2>
-<ol>
-  <li>Open <a href="/">GGen Database</a> and go to any browse tab that shows a long list (for example <strong>Characters</strong>, <strong>Units</strong>, <strong>Supporters</strong>, <strong>Stages</strong>, or <strong>Modifications</strong>).</li>
-  <li>Scroll to the <strong>bottom</strong> of that list, where the pagination row appears.</li>
-  <li>On the right side of that row, next to “What’s new”, press the <strong>Support/Feedback</strong> button (contact-style icon). That is the same control as the <strong>Feedback</strong> shortcut in the pagination footer—it opens our feedback flow in a new tab.</li>
-</ol>
-<p>If you are reporting a calculator or data issue, include steps, language, and screenshots when possible so we can reproduce it.</p>
-<p class="muted">For general information about the project, see <a href="/about">About</a>. For data practices, see <a href="/privacy-policy">Privacy Policy</a>.</p>
+<p><a href="{{ feedback_form_url }}" target="_blank" rel="noopener noreferrer">Feedback form</a> — same link as the Support/Feedback button in the app.</p>
+<p class="muted"><a href="/about">About</a> · <a href="/privacy-policy">Privacy Policy</a></p>
 {% endblock %}
