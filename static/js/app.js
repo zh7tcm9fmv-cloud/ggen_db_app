@@ -7372,21 +7372,21 @@ const opAt=opPct.Attack||0;
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
+function L(n,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)}</div>`}
 const coreHp=F(hpBase*(100+pHp)/100);
 const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
-const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
+const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 const coreDef=F(defBase*(100+pDef)/100);
 const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
-const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'OP+','Option part flat Defense');
+const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
 const coreMob=F(mobBase*(100+pMob)/100);
 const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
-const mobHtml=L(pctMob,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'OP+','Option part flat Mobility');
+const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
 const coreAtk=F(atkBase*(100+pAtk)/100);
 const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
-const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
+const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** opts.forDamage: true → ceil % buckets (Firered damage ⑧); false/omit → floor (database / unit panel). */
