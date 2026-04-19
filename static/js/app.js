@@ -5327,12 +5327,20 @@ const supCntActive=(atkAfterSupCnt!==atkAfterCounter);
 const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="MS ATK: floor(base×(100+all ATK % including EX)/100)+option flat+supporter flat. This line is the delta from EX squad % only in that single floor.">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (panel uses floor; damage ⑧ may use ceil on MS ATK).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||supCntActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'';
 let atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 if(supCntActive){atkMainTitle=(atkMainTitle?atkMainTitle+'; ':'')+'Support Attack/Counter +% MS ATK (pilot)'}
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of raw LB Attack base; flat add, not +${advAtkPct}% on total MS ATK)`:'';
-const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>`;
+const atkBonusInline=Math.max(0,atkShow-(uEff.atkDbCorePassive|0));
+const atkInlineBonusHtml=`<span id="dcAtkUnitAtkInlineBonus" class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">${atkBonusInline>0?`(+${fmtN(atkBonusInline)})`:''}</span>`;
+const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>${atkInlineBonusHtml}`;
+const hpBonusIn=Math.max(0,hpS-(uEff.hpDbCorePassive|0));
+const hpInlineBonus=hpBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(hpBonusIn)})</span>`:'';
+const defBonusIn=Math.max(0,defShowAdv-(uEff.defDbCorePassive|0));
+const defInlineBonus=defBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(defBonusIn)})</span>`:'';
+const mobBonusIn=Math.max(0,mobS-(uEff.mobDbCorePassive|0));
+const mobInlineBonus=mobBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(mobBonusIn)})</span>`:'';
 const defPairBuff=defShow!==defS;
 const spDefCls=(hDef||defPairBuff||advDefFlat>0||unitTurnDefOn||sheetBuffOn)?'dc-stat-val--buffed':'';
 const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
@@ -5348,11 +5356,11 @@ if((utb.atkPct|0)>0||(utb.defPct|0)>0){
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
 if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)"><span>MS ATK +${utb.atkPct}% (1 turn)</span></label>`;
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
-unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) is added into the same floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML%)/100) bucket as the other MS Attack % lines. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
+unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) stacks in the same % bucket as other MS Attack lines; the panel uses <strong>floor</strong> on that bucket to match the database, while damage ⑧ may use <strong>ceil</strong> on MS ATK. MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
 }
 const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
 const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
 }
@@ -5373,6 +5381,9 @@ const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const advGrAtk=uEff.advantageFlatGrowthAtk|0;
 const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplySupportCounterAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair)),advAtkPct,advGrAtk);
 const atkDisp=atkMid;
+const atkBonusRe=Math.max(0,atkDisp-(uEff.atkDbCorePassive|0));
+const bonusEl=document.getElementById('dcAtkUnitAtkInlineBonus');
+if(bonusEl)bonusEl.textContent=atkBonusRe>0?`(+${fmtN(atkBonusRe)})`:'';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=stats;
 if(ud.has_cond_stats&&td){
@@ -7331,9 +7342,9 @@ cb.disabled=false;
 _dcApplyAutoAdvantageForPsycommuDefender();
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
-/** Green +lines under MS HP/ATK/DEF/MOB: % bucket (matches ROUNDUP slices in damage math), then flats. ATK % line excludes EX squad % (shown separately). */
+/** Green +lines under MS HP/ATK/DEF/MOB: % bucket uses floor to match database stat display; damage calc uses ceil separately via forDamage. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
-const F=Math.floor,C=Math.ceil;
+const F=Math.floor;
 const c=ctx||{};
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
@@ -7362,24 +7373,27 @@ let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
 function L(n,short,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)} · ${esc(short)}</div>`}
-const coreHp=C(hpBase*(100+pHp)/100);
-const pctHp=C(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
+const coreHp=F(hpBase*(100+pHp)/100);
+const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'OP+','Option part flat HP')+L(hpSupport|0,'Supp. HP','Supporter HP support');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
-const coreDef=C(defBase*(100+pDef)/100);
-const pctDef=C(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
+const coreDef=F(defBase*(100+pDef)/100);
+const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
 const defHtml=L(pctDef,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'OP+','Option part flat Defense');
-const coreMob=C(mobBase*(100+pMob)/100);
-const pctMob=C(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
+const coreMob=F(mobBase*(100+pMob)/100);
+const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
 const mobHtml=L(pctMob,'% buffs','Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'OP+','Option part flat Mobility');
-const coreAtk=C(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=C(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
+const coreAtk=F(atkBase*(100+pAtk)/100);
+const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
 const atkHtml=L(pctAtkNoEx,'% buffs','Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is the line below)')+L(opFlat.Attack|0,'OP+','Option part flat Attack')+L(atkSupport|0,'Supp. ATK','Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
+/** opts.forDamage: true → ceil % buckets (Firered damage ⑧); false/omit → floor (database / unit panel). */
+function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,opts){
 const F=Math.floor,C=Math.ceil;
+const forDamage=!!(opts&&opts.forDamage);
+const R=forDamage?C:F;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
@@ -7408,25 +7422,29 @@ const pDef=_dcStatPassivePctFromEntry(defEnt);
 const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
-let unitHp=C(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
-let unitDefVal=C(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
-let unitMob=C(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
+let unitHp=R(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
+let unitDefVal=R(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
+let unitMob=R(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
 const mlMovePct=(c.masterLeagueBuff&&c.masterLeagueBuffMove!==false)?mlPct:0;
-let unitMove=C(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
+let unitMove=R(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-const unitAtkExSquadBase=C(atkBase*(100+pAtk+sheetBuffPct)/100);
-const unitDefExSquadBase=C(defBase*(100+pDef+sheetBuffPct)/100);
-const unitAtkGrowthAfterOptions=C(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
+const unitAtkExSquadBase=R(atkBase*(100+pAtk+sheetBuffPct)/100);
+const unitDefExSquadBase=R(defBase*(100+pDef+sheetBuffPct)/100);
+const unitAtkGrowthAfterOptions=R(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
 const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
 const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0);
-let unitAtk=C(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
+let unitAtk=R(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
-if((exSq|0)>0)deltaExAtk=C(atkBase*(100+sumAtkPctNoEx+exSq)/100)-C(atkBase*(100+sumAtkPctNoEx)/100);
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase};
+if((exSq|0)>0)deltaExAtk=R(atkBase*(100+sumAtkPctNoEx+exSq)/100)-R(atkBase*(100+sumAtkPctNoEx)/100);
+const hpDbCorePassive=F(hpBase*(100+pHp)/100);
+const defDbCorePassive=F(defBase*(100+pDef)/100);
+const mobDbCorePassive=F(mobBase*(100+pMob)/100);
+const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
 function _dcPilotAtkStatLabelForWeapon(wpn){
@@ -7450,7 +7468,7 @@ if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 const lvData=_dcWeaponLevelRow(wpn,S.dc.wpnLv);
 
-const uMod=_dcGetModifiedAttackerUnitStats(atkUnitStats);
+const uMod=_dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,{forDamage:true});
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
 const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
