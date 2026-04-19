@@ -7291,6 +7291,28 @@ def _serve_index():
 def index(): 
     return _serve_index()
 
+
+@app.route('/about')
+def about_page():
+    r = make_response(render_template('about.html'))
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
+@app.route('/privacy-policy')
+def privacy_policy_page():
+    r = make_response(render_template('privacy.html'))
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
+@app.route('/contact')
+def contact_page():
+    r = make_response(render_template('contact.html'))
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
 _LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
 
 @app.route('/api/languages')

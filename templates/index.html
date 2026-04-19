@@ -450,6 +450,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-map-high-vis .map-cell-pou-moving img{filter:brightness(1.12) contrast(1.12) drop-shadow(0 0 2px rgba(0,0,0,.8))}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px}.map-cell{width:var(--cell);height:var(--cell);position:relative;background:#172033;border:1px solid rgba(255,255,255,.05)}.map-cell.enemy{background:#3a1820}.map-cell.ally{background:#172033}.map-cell.ally-guest{background:#1a2e1f}.map-cell.large-fill{background:#3a1820}.map-cell.large-fill.ally{background:#172033}.map-cell.large-fill.ally-guest{background:#1a2e1f}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
+.site-footer-links{text-align:center;padding:12px 16px 28px;margin:0 auto;margin-top:auto;max-width:1600px;font-size:12px;color:var(--text-muted);line-height:1.5;flex-shrink:0}
+.site-footer-links nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 10px}
+.site-footer-links a{color:var(--text-secondary);text-decoration:none;font-weight:600}
+.site-footer-links a:hover{color:var(--accent-cyan);text-decoration:underline}
+.site-footer-links .site-footer-sep{opacity:0.45;user-select:none}
 .footer-logo-wrap{position:relative;display:flex;flex-direction:column;align-items:center;max-width:120px}
 .footer-logo{height:80px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:brightness(0.95) contrast(1.1)}
 .footer-logo-m{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:400;font-style:italic;letter-spacing:1.5px;color:rgba(212,175,55,0.5);text-shadow:0 0 8px rgba(212,175,55,0.3);pointer-events:none}
@@ -1976,6 +1981,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
 </main>
+<footer class="site-footer-links" role="contentinfo">
+<nav aria-label="Site information">
+<a href="/about">About</a>
+<span class="site-footer-sep" aria-hidden="true">·</span>
+<a href="/privacy-policy">Privacy Policy</a>
+<span class="site-footer-sep" aria-hidden="true">·</span>
+<a href="/contact">Contact</a>
+</nav>
+</footer>
 <button type="button" id="searchRecallFab" class="search-recall-fab" onclick="recallSearchBar()" title="" aria-label="Search">🔍</button>
 <div id="searchSpotlightOverlay" class="search-spotlight-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="searchSpotlightTitle">
 <div class="search-spotlight-backdrop" onclick="closeSearchSpotlight()" aria-hidden="true"></div>
