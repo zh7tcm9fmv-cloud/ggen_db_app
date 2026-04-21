@@ -10,28 +10,24 @@ const UI = {
   EN: {
     page_title: 'Game News',
     nav_home: '← GGen Database',
-    open_official: 'Open on official site',
     iframe_title: 'SD Gundam G Generation ETERNAL — update information',
     close: 'Close',
   },
   TW: {
     page_title: '遊戲公告',
     nav_home: '← GGen 資料庫',
-    open_official: '在官方網站開啟',
     iframe_title: 'SD鋼彈 G世代 永恆 — 更新資訊',
     close: '關閉',
   },
   HK: {
     page_title: '遊戲公告',
     nav_home: '← GGen 資料庫',
-    open_official: '在官方網站開啟',
     iframe_title: 'SD高達 G世代 永恆 — 更新資訊',
     close: '關閉',
   },
   JP: {
     page_title: 'ゲームニュース',
     nav_home: '← GGen Database',
-    open_official: '公式サイトで開く',
     iframe_title: 'SDガンダム ジージェネ エターナル — 更新情報',
     close: '閉じる',
   },
@@ -144,11 +140,6 @@ function applyGameNewsUi() {
   document.title = `${u.page_title} — GGen Database`;
   const navEl = document.getElementById('gameNewsNavHome');
   if (navEl) navEl.textContent = u.nav_home;
-  const openEl = document.getElementById('gameNewsOpenOfficial');
-  if (openEl) {
-    openEl.textContent = u.open_official;
-    openEl.href = gameNewsUrlForLang(lang);
-  }
   const ifr = document.getElementById('gameNewsFrame');
   if (ifr) {
     ifr.title = u.iframe_title;

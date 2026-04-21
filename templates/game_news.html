@@ -59,10 +59,8 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .game-news-stage::before{content:'';position:absolute;inset:0;background-image:url('{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/Background/obg_shop_top.webp{% else %}/static/images/Background/obg_shop_top.webp{% endif %}');background-size:cover;background-position:center top;background-repeat:no-repeat;transform:scale(1.02)}
 .game-news-stage::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.82) 0%,rgba(10,14,23,.92) 45%,rgba(10,14,23,.96) 100%)}
 .game-news-stage-inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-height:0;padding:clamp(14px,2.5vw,22px)}
-.game-news-toolbar{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 16px;margin-bottom:14px}
+.game-news-toolbar{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;gap:12px 16px;margin-bottom:14px}
 .game-news-toolbar h1{font-size:clamp(1.25rem,2.5vw,1.65rem);font-weight:800;color:var(--accent-gold);letter-spacing:.02em;margin:0}
-.game-news-open-link{font-size:13px;font-weight:700;color:var(--accent-cyan);text-decoration:none;border:1px solid rgba(0,212,255,.45);padding:6px 12px;border-radius:var(--radius-sm);background:rgba(0,40,80,.25);transition:var(--transition)}
-.game-news-open-link:hover{background:rgba(0,212,255,.12);border-color:var(--accent-cyan)}
 .game-news-frame-wrap{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-color);background:var(--bg-secondary);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
 .game-news-frame-wrap iframe{flex:1 1 auto;width:100%;min-height:min(72vh,920px);border:none;display:block;background:#0d1321}
 @media(min-width:900px){
@@ -123,7 +121,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="game-news-stage-inner">
 <div class="game-news-toolbar">
 <h1 id="gameNewsPageTitle">Game News</h1>
-<a id="gameNewsOpenOfficial" class="game-news-open-link" href="https://web.gl.eternal.channel.or.jp/en/information/update.html" target="_blank" rel="noopener noreferrer">Open on official site</a>
 </div>
 <div class="game-news-frame-wrap">
 <iframe id="gameNewsFrame" title="SD Gundam G Generation ETERNAL — update information" src="about:blank" referrerpolicy="no-referrer-when-downgrade"></iframe>
