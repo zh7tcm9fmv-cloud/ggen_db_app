@@ -20,10 +20,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/A-OTF-ShinGoPr6-DeBold.otf{% else %}https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/font/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:800;font-style:normal}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-modal:#141c2e;--border-color:#2a3654;--text-primary:#e8eaf0;--text-secondary:#8896b3;--text-muted:#5a6a8a;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--shadow-lg:0 8px 30px rgba(0,0,0,0.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;color-scheme:dark}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%;height:100%}
 html.page-scroll-lock{overflow:hidden!important;height:100%;overscroll-behavior:none}
 html.page-scroll-lock body{overflow:hidden!important}
-body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100%;min-height:100dvh;height:100%;display:flex;flex-direction:column}
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:0 1px 0 rgba(0,0,0,.4)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -49,8 +49,8 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .lang-option{padding:8px 18px;cursor:pointer;font-size:16px;font-weight:600;transition:var(--transition);white-space:nowrap}
 .lang-option:hover{background:#1f2a42;color:var(--accent-cyan)}
 .lang-option.selected{color:var(--accent-cyan)}
-.nav-tabs{display:flex;gap:0;max-width:1600px;margin:0 auto;padding:0 24px;flex-wrap:wrap;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.15)}
-.nav-tab{padding:12px 28px;background:none;border:none;color:var(--text-secondary);font-size:18px;font-weight:600;cursor:pointer;position:relative;transition:var(--transition);letter-spacing:0.3px;text-decoration:none;display:inline-block}
+.nav-tabs{display:flex;gap:0;max-width:1600px;margin:0 auto;padding:0 24px;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.15)}
+.nav-tab{padding:12px 28px;background:none;border:none;color:var(--text-secondary);font-size:18px;font-weight:600;cursor:pointer;position:relative;transition:var(--transition);letter-spacing:0.3px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;line-height:1.2}
 .nav-tab:hover{color:var(--text-primary)}
 .nav-tab.active{color:var(--accent-cyan);cursor:default}
 .main-content{max-width:1600px;margin:0 auto;padding:20px 24px 40px;flex:1;min-width:0;width:100%;min-height:0;display:flex;flex-direction:column}
@@ -58,16 +58,25 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .game-news-stage{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(74,144,217,.35);box-shadow:var(--shadow-lg);flex:1;min-height:0;display:flex;flex-direction:column}
 .game-news-stage::before{content:'';position:absolute;inset:0;background-image:url('{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/Background/obg_shop_top.webp{% else %}/static/images/Background/obg_shop_top.webp{% endif %}');background-size:cover;background-position:center top;background-repeat:no-repeat;transform:scale(1.02)}
 .game-news-stage::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.82) 0%,rgba(10,14,23,.92) 45%,rgba(10,14,23,.96) 100%)}
-.game-news-stage-inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-height:min(70vh,1200px);padding:clamp(14px,2.5vw,22px);height:100%}
+.game-news-stage-inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-height:0;padding:clamp(14px,2.5vw,22px)}
 .game-news-toolbar{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 16px;margin-bottom:14px}
 .game-news-toolbar h1{font-size:clamp(1.25rem,2.5vw,1.65rem);font-weight:800;color:var(--accent-gold);letter-spacing:.02em;margin:0}
 .game-news-open-link{font-size:13px;font-weight:700;color:var(--accent-cyan);text-decoration:none;border:1px solid rgba(0,212,255,.45);padding:6px 12px;border-radius:var(--radius-sm);background:rgba(0,40,80,.25);transition:var(--transition)}
 .game-news-open-link:hover{background:rgba(0,212,255,.12);border-color:var(--accent-cyan)}
 .game-news-frame-wrap{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-color);background:var(--bg-secondary);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
-.game-news-frame-wrap iframe{flex:1 1 auto;width:100%;min-height:min(70vh,900px);border:none;display:block;background:#0d1321}
+.game-news-frame-wrap iframe{flex:1 1 auto;width:100%;min-height:min(72vh,920px);border:none;display:block;background:#0d1321}
 @media(min-width:900px){
-  .game-news-stage-inner{min-height:calc(100dvh - 200px)}
-  .game-news-frame-wrap iframe{min-height:calc(100dvh - 280px);height:calc(100dvh - 280px);max-height:none}
+  .game-news-main{min-height:0;flex:1 1 auto}
+  .game-news-stage{min-height:calc(100dvh - 88px)}
+  .game-news-stage-inner{flex:1;min-height:calc(100dvh - 180px)}
+  .game-news-toolbar{margin-bottom:10px;flex-shrink:0}
+  .game-news-frame-wrap{flex:1 1 auto;min-height:calc(100dvh - 240px)}
+  .game-news-frame-wrap iframe{min-height:calc(100dvh - 240px);height:calc(100dvh - 240px);max-height:none}
+}
+@media(min-width:1200px){
+  .game-news-stage-inner{min-height:calc(100dvh - 160px)}
+  .game-news-frame-wrap{min-height:calc(100dvh - 200px)}
+  .game-news-frame-wrap iframe{min-height:calc(100dvh - 200px);height:calc(100dvh - 200px)}
 }
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
 .whats-new-overlay.active{display:flex}

@@ -1,5 +1,8 @@
 const LANG_STORAGE_KEY = 'ggen_lang';
-const GAME_NEWS_BASE = 'https://web.gl.eternal.channel.or.jp';
+/** Global / EN / TW / HK official site host */
+const GAME_NEWS_BASE_GL = 'https://web.gl.eternal.channel.or.jp';
+/** Japan locale host (official JP site) */
+const GAME_NEWS_BASE_JP = 'https://web.jp.eternal.channel.or.jp';
 
 const S = { lang: 'EN', languages: [] };
 
@@ -80,8 +83,11 @@ function gameNewsUrlForLang(lang) {
   let seg = 'en';
   if (k === 'TW') seg = 'tw';
   else if (k === 'HK') seg = 'hk';
-  else if (k === 'JP' || k === 'JA') seg = 'ja';
-  return `${GAME_NEWS_BASE}/${seg}/information/update.html`;
+  else if (k === 'JP' || k === 'JA') {
+    return `${GAME_NEWS_BASE_JP}/ja/information/update.html`;
+  }
+  const base = GAME_NEWS_BASE_GL;
+  return `${base}/${seg}/information/update.html`;
 }
 
 let _scrollLock = 0;
