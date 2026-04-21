@@ -1,92 +1,92 @@
 [
-  [
-    1001008,
-    1,
-    270001001008,
-    2604303203,
-    101,
-    370100000001001008,
-    "hbm_map_bg_0006_01"
-  ],
-  [
-    1001013,
-    1,
-    270001001013,
-    2604303204,
-    102,
-    370100000001001013,
-    "hbm_map_bg_0025_01"
-  ],
-  [
-    1095017,
-    0,
-    0,
-    2604303202,
-    3,
-    370100000001095017,
-    "hbm_map_bg_0008_03"
-  ],
-  [
-    1300006,
-    0,
-    0,
-    2604303202,
-    1,
-    370100000001300006,
-    "hbm_map_bg_0010_02"
-  ],
-  [
-    1300008,
-    1,
-    270001300008,
-    2604303205,
-    30001,
-    370100000001300008,
-    "hbm_map_bg_0020_01"
-  ],
-  [
-    1300017,
-    1,
-    270001300017,
-    2604303206,
-    30002,
-    370100000001300017,
-    "hbm_map_bg_0057_01"
-  ],
-  [
-    1330012,
-    0,
-    0,
-    2604303202,
-    5,
-    370100000001330012,
-    "hbm_map_bg_0130_01"
-  ],
-  [
-    1901001,
-    0,
-    0,
-    2604303202,
-    2,
-    370100000001901001,
-    "hbm_map_bg_0156_01"
-  ],
-  [
-    1999903,
-    0,
-    0,
-    2604303202,
-    6,
-    370100000001999903,
-    "hbm_map_bg_0002_04"
-  ],
-  [
-    1999907,
-    0,
-    0,
-    2604303202,
-    4,
-    370100000001999907,
-    "hbm_map_bg_0039_01"
-  ]
+  {
+    "MapId": 1001008,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001001008,
+    "ScheduleId": 2604303203,
+    "SortOrder": 101,
+    "NameLanguageId": 370100000001001008,
+    "ThumbnailResourceId": "hbm_map_bg_0006_01"
+  },
+  {
+    "MapId": 1001013,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001001013,
+    "ScheduleId": 2604303204,
+    "SortOrder": 102,
+    "NameLanguageId": 370100000001001013,
+    "ThumbnailResourceId": "hbm_map_bg_0025_01"
+  },
+  {
+    "MapId": 1095017,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 3,
+    "NameLanguageId": 370100000001095017,
+    "ThumbnailResourceId": "hbm_map_bg_0008_03"
+  },
+  {
+    "MapId": 1300006,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 1,
+    "NameLanguageId": 370100000001300006,
+    "ThumbnailResourceId": "hbm_map_bg_0010_02"
+  },
+  {
+    "MapId": 1300008,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001300008,
+    "ScheduleId": 2604303205,
+    "SortOrder": 30001,
+    "NameLanguageId": 370100000001300008,
+    "ThumbnailResourceId": "hbm_map_bg_0020_01"
+  },
+  {
+    "MapId": 1300017,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001300017,
+    "ScheduleId": 2604303206,
+    "SortOrder": 30002,
+    "NameLanguageId": 370100000001300017,
+    "ThumbnailResourceId": "hbm_map_bg_0057_01"
+  },
+  {
+    "MapId": 1330012,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 5,
+    "NameLanguageId": 370100000001330012,
+    "ThumbnailResourceId": "hbm_map_bg_0130_01"
+  },
+  {
+    "MapId": 1901001,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 2,
+    "NameLanguageId": 370100000001901001,
+    "ThumbnailResourceId": "hbm_map_bg_0156_01"
+  },
+  {
+    "MapId": 1999903,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 6,
+    "NameLanguageId": 370100000001999903,
+    "ThumbnailResourceId": "hbm_map_bg_0002_04"
+  },
+  {
+    "MapId": 1999907,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetId": 0,
+    "ScheduleId": 2604303202,
+    "SortOrder": 4,
+    "NameLanguageId": 370100000001999907,
+    "ThumbnailResourceId": "hbm_map_bg_0039_01"
+  }
 ]

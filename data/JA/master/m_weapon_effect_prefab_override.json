@@ -1,10 +1,10 @@
 [
-  [
-    80061,
-    "ef_mpd_0025_01_eternalhit_oo"
-  ],
-  [
-    80062,
-    "ef_mpd_0025_01_eternalhit_wing"
-  ]
+  {
+    "WeaponEffectPrefabPairSetId": 80061,
+    "FinalHitEffectId": "ef_mpd_0025_01_eternalhit_oo"
+  },
+  {
+    "WeaponEffectPrefabPairSetId": 80062,
+    "FinalHitEffectId": "ef_mpd_0025_01_eternalhit_wing"
+  }
 ]

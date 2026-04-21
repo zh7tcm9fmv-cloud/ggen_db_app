@@ -1,12 +1,12 @@
 [
-  [
-    137000595000,
-    141300137000595000,
-    141400137000595000,
-    "trait_11430103",
-    "ef_mpc_0091_05_unitskill",
-    "ef_mpc_0091_05_unitskill_loop",
-    1,
-    1
-  ]
+  {
+    "Id": 137000595000,
+    "NameLanguageId": 141300137000595000,
+    "DescriptionLanguageId": 141400137000595000,
+    "ResourceId": "trait_11430103",
+    "StartEffectResourceId": "ef_mpc_0091_05_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_05_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1
+  }
 ]

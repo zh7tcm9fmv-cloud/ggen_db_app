@@ -1,8 +1,8 @@
 [
-  [
-    24000201,
-    1370000370,
-    1,
-    2400020001
-  ]
+  {
+    "MapEventPartnerId": 24000201,
+    "MainUnitId": 1370000370,
+    "MapEventPartnerUnitCompleteUnlockTypeIndex": 1,
+    "TargetId": 2400020001
+  }
 ]

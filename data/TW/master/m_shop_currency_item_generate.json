@@ -1,62 +1,62 @@
 [
-  [
-    10000001,
-    0,
-    2
-  ],
-  [
-    11000001,
-    0,
-    3
-  ],
-  [
-    12000001,
-    0,
-    4
-  ],
-  [
-    13000001,
-    220000000001,
-    1
-  ],
-  [
-    13000001,
-    220000000002,
-    1
-  ],
-  [
-    14210001,
-    222100010001,
-    1
-  ],
-  [
-    14210002,
-    230000210021,
-    1
-  ],
-  [
-    14240001,
-    230000240011,
-    1
-  ],
-  [
-    14240002,
-    230000240021,
-    1
-  ],
-  [
-    14240002,
-    230000240021,
-    8
-  ],
-  [
-    15000001,
-    0,
-    7
-  ],
-  [
-    90000001,
-    0,
-    4
-  ]
+  {
+    "ShopId": 10000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 2
+  },
+  {
+    "ShopId": 11000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 3
+  },
+  {
+    "ShopId": 12000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 4
+  },
+  {
+    "ShopId": 13000001,
+    "ItemId": 220000000001,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 13000001,
+    "ItemId": 220000000002,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 14210001,
+    "ItemId": 222100010001,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 14210002,
+    "ItemId": 230000210021,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 14240001,
+    "ItemId": 230000240011,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 14240002,
+    "ItemId": 230000240021,
+    "CurrencyTypeIndex": 1
+  },
+  {
+    "ShopId": 14240002,
+    "ItemId": 230000240021,
+    "CurrencyTypeIndex": 8
+  },
+  {
+    "ShopId": 15000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 7
+  },
+  {
+    "ShopId": 90000001,
+    "ItemId": 0,
+    "CurrencyTypeIndex": 4
+  }
 ]

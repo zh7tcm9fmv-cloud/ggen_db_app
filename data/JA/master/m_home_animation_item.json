@@ -1,23 +1,23 @@
 [
-  [
-    280126043001,
-    "sha_a_280126043001",
-    "sha_i_280126043001",
-    1,
-    2604303207
-  ],
-  [
-    280200100001,
-    "sha_a_280200100001",
-    "sha_i_280200100001",
-    101,
-    2604303204
-  ],
-  [
-    280230000001,
-    "sha_a_280230000001",
-    "sha_i_280230000001",
-    30001,
-    2604303206
-  ]
+  {
+    "ItemId": 280126043001,
+    "MovieResourceId": "sha_a_280126043001",
+    "ThumbnailResourceId": "sha_i_280126043001",
+    "SortOrder": 1,
+    "ForcedDisplayScheduleId": 2604303207
+  },
+  {
+    "ItemId": 280200100001,
+    "MovieResourceId": "sha_a_280200100001",
+    "ThumbnailResourceId": "sha_i_280200100001",
+    "SortOrder": 101,
+    "ForcedDisplayScheduleId": 2604303204
+  },
+  {
+    "ItemId": 280230000001,
+    "MovieResourceId": "sha_a_280230000001",
+    "ThumbnailResourceId": "sha_i_280230000001",
+    "SortOrder": 30001,
+    "ForcedDisplayScheduleId": 2604303206
+  }
 ]

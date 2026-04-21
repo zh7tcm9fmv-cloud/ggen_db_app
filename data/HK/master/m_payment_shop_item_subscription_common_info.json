@@ -1,65 +1,65 @@
 [
-  [
-    100000001,
-    6,
-    1,
-    193100000000000006,
-    1,
-    0,
-    193400000000000006
-  ],
-  [
-    100000002,
-    8,
-    2,
-    193100000000000008,
-    1,
-    0,
-    193400000000000008
-  ],
-  [
-    100000004,
-    1,
-    4,
-    193100000000000001,
-    1,
-    0,
-    193400000000000001
-  ],
-  [
-    100000005,
-    2,
-    5,
-    193100000000000002,
-    1,
-    0,
-    193400000000000002
-  ],
-  [
-    100000006,
-    3,
-    6,
-    193100000000000003,
-    1,
-    0,
-    193400000000000003
-  ],
-  [
-    100000007,
-    4,
-    7,
-    193100000000000004,
-    1,
-    0,
-    193400000000000004
-  ],
-  [
-    100000008,
-    5,
-    8,
-    193100000000000005,
-    1,
-    0,
-    193400000000000005
-  ]
+  {
+    "Id": 100000001,
+    "SubscriptionCommonDescriptionTypeIndex": 6,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 193100000000000006,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000006
+  },
+  {
+    "Id": 100000002,
+    "SubscriptionCommonDescriptionTypeIndex": 8,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 193100000000000008,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000008
+  },
+  {
+    "Id": 100000004,
+    "SubscriptionCommonDescriptionTypeIndex": 1,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 193100000000000001,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000001
+  },
+  {
+    "Id": 100000005,
+    "SubscriptionCommonDescriptionTypeIndex": 2,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 193100000000000002,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000002
+  },
+  {
+    "Id": 100000006,
+    "SubscriptionCommonDescriptionTypeIndex": 3,
+    "SortOrder": 6,
+    "DescriptionLanguageId": 193100000000000003,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000003
+  },
+  {
+    "Id": 100000007,
+    "SubscriptionCommonDescriptionTypeIndex": 4,
+    "SortOrder": 7,
+    "DescriptionLanguageId": 193100000000000004,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000004
+  },
+  {
+    "Id": 100000008,
+    "SubscriptionCommonDescriptionTypeIndex": 5,
+    "SortOrder": 8,
+    "DescriptionLanguageId": 193100000000000005,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000005
+  }
 ]

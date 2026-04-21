@@ -1,26 +1,26 @@
 [
-  [
-    10,
-    10,
-    2604301801,
-    10,
-    43000000100000,
-    41001000000001,
-    0,
-    0,
-    "g0010u03000",
-    100000
-  ],
-  [
-    3000,
-    3000,
-    2604301801,
-    3000,
-    43000030000000,
-    41300000000001,
-    0,
-    0,
-    "g3000u04600",
-    130000
-  ]
+  {
+    "Id": 10,
+    "MainStageSeriesId": 10,
+    "ScheduleId": 2604301801,
+    "ReleaseConditionCompleteMainStageSeriesId": 10,
+    "SeriesClearRewardSetId": 43000000100000,
+    "CompleteRewardSetId": 41001000000001,
+    "SeriesGroupFormationStageStatusBuffId": 0,
+    "FreeGroupFormationStageStatusBuffId": 0,
+    "BromideResourceId": "g0010u03000",
+    "RecommendedCombatPower": 100000
+  },
+  {
+    "Id": 3000,
+    "MainStageSeriesId": 3000,
+    "ScheduleId": 2604301801,
+    "ReleaseConditionCompleteMainStageSeriesId": 3000,
+    "SeriesClearRewardSetId": 43000030000000,
+    "CompleteRewardSetId": 41300000000001,
+    "SeriesGroupFormationStageStatusBuffId": 0,
+    "FreeGroupFormationStageStatusBuffId": 0,
+    "BromideResourceId": "g3000u04600",
+    "RecommendedCombatPower": 130000
+  }
 ]

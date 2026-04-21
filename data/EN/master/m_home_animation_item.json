@@ -4,20 +4,20 @@
     "MovieResourceId": "sha_a_280126043001",
     "ThumbnailResourceId": "sha_i_280126043001",
     "SortOrder": 1,
-    "Unknown_Col_4": 2604303207
+    "ForcedDisplayScheduleId": 2604303207
   },
   {
     "ItemId": 280200100001,
     "MovieResourceId": "sha_a_280200100001",
     "ThumbnailResourceId": "sha_i_280200100001",
     "SortOrder": 101,
-    "Unknown_Col_4": 2604303204
+    "ForcedDisplayScheduleId": 2604303204
   },
   {
     "ItemId": 280230000001,
     "MovieResourceId": "sha_a_280230000001",
     "ThumbnailResourceId": "sha_i_280230000001",
     "SortOrder": 30001,
-    "Unknown_Col_4": 2604303206
+    "ForcedDisplayScheduleId": 2604303206
   }
 ]

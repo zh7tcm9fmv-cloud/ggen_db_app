@@ -1,12 +1,12 @@
 [
-  [
-    10,
-    0,
-    100
-  ],
-  [
-    3000,
-    -30,
-    100
-  ]
+  {
+    "MainStageSeriesChallengeId": 10,
+    "LogoOffsetX": 0,
+    "BromideScalePercent": 100
+  },
+  {
+    "MainStageSeriesChallengeId": 3000,
+    "LogoOffsetX": -30,
+    "BromideScalePercent": 100
+  }
 ]

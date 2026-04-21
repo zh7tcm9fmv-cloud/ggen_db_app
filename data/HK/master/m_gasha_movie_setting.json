@@ -7,9 +7,9 @@
     "ShouldUseSpecialAssaultButton": true,
     "ShouldPlayCutInMovie": false,
     "FallContainerMovieResourceId": "c03_1",
-    "Unknown_Col_7": "",
-    "Unknown_Col_8": "",
-    "Unknown_Col_9": 0
+    "BonusCutInMovieResourceId": "",
+    "BonusSpecialMovieResourceId": "",
+    "BonusGashaContainerDestroyAnimationTypeIndex": 0
   },
   {
     "Id": 1000000002,
@@ -19,8 +19,8 @@
     "ShouldUseSpecialAssaultButton": true,
     "ShouldPlayCutInMovie": false,
     "FallContainerMovieResourceId": "c03_1",
-    "Unknown_Col_7": "c02_2_cutin_newtype_lastshooting_voice_only",
-    "Unknown_Col_8": "c04_1_lastshooting",
-    "Unknown_Col_9": 2
+    "BonusCutInMovieResourceId": "c02_2_cutin_newtype_lastshooting_voice_only",
+    "BonusSpecialMovieResourceId": "c04_1_lastshooting",
+    "BonusGashaContainerDestroyAnimationTypeIndex": 2
   }
 ]

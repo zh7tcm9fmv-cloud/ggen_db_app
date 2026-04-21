@@ -7,7 +7,7 @@
     "CharacterId": 1001001801,
     "DescriptionLanguageId": 290200907001010201,
     "HighlightDescriptionLanguageId": 290300907001010201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700102,
@@ -17,7 +17,7 @@
     "CharacterId": 1330000600,
     "DescriptionLanguageId": 290200907001020201,
     "HighlightDescriptionLanguageId": 290300907001020201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700103,
@@ -27,7 +27,7 @@
     "CharacterId": 1370003200,
     "DescriptionLanguageId": 290200907001030201,
     "HighlightDescriptionLanguageId": 290300907001030201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700104,
@@ -37,7 +37,7 @@
     "CharacterId": 1080002900,
     "DescriptionLanguageId": 290200907001040101,
     "HighlightDescriptionLanguageId": 290300907001040101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700104,
@@ -47,7 +47,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001040201,
     "HighlightDescriptionLanguageId": 290300907001040201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700105,
@@ -57,7 +57,7 @@
     "CharacterId": 2095000300,
     "DescriptionLanguageId": 290200907001050201,
     "HighlightDescriptionLanguageId": 290300907001050201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700105,
@@ -67,7 +67,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001050202,
     "HighlightDescriptionLanguageId": 290300907001050202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700106,
@@ -77,7 +77,7 @@
     "CharacterId": 1430002601,
     "DescriptionLanguageId": 290200907001060101,
     "HighlightDescriptionLanguageId": 290300907001060101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700106,
@@ -87,7 +87,7 @@
     "CharacterId": 1430000200,
     "DescriptionLanguageId": 290200907001060201,
     "HighlightDescriptionLanguageId": 290300907001060201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700106,
@@ -97,7 +97,7 @@
     "CharacterId": 1430001900,
     "DescriptionLanguageId": 290200907001060202,
     "HighlightDescriptionLanguageId": 290300907001060202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700106,
@@ -107,7 +107,7 @@
     "CharacterId": 1430002702,
     "DescriptionLanguageId": 290200907001060203,
     "HighlightDescriptionLanguageId": 290300907001060203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700106,
@@ -117,7 +117,7 @@
     "CharacterId": 1430003101,
     "DescriptionLanguageId": 290200907001060204,
     "HighlightDescriptionLanguageId": 290300907001060204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700107,
@@ -127,7 +127,7 @@
     "CharacterId": 1007000200,
     "DescriptionLanguageId": 290200907001070101,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700107,
@@ -137,7 +137,7 @@
     "CharacterId": 1007000100,
     "DescriptionLanguageId": 290200907001070201,
     "HighlightDescriptionLanguageId": 290300907001070201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700107,
@@ -147,7 +147,7 @@
     "CharacterId": 2001000200,
     "DescriptionLanguageId": 290200907001070202,
     "HighlightDescriptionLanguageId": 290300907001070202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700107,
@@ -157,7 +157,7 @@
     "CharacterId": 2080000300,
     "DescriptionLanguageId": 290200907001070203,
     "HighlightDescriptionLanguageId": 290300907001070203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700108,
@@ -167,7 +167,7 @@
     "CharacterId": 1001000700,
     "DescriptionLanguageId": 290200907001080201,
     "HighlightDescriptionLanguageId": 290300907001080201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700108,
@@ -177,7 +177,7 @@
     "CharacterId": 2001000900,
     "DescriptionLanguageId": 290200907001080202,
     "HighlightDescriptionLanguageId": 290300907001080202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700108,
@@ -187,7 +187,7 @@
     "CharacterId": 1330001100,
     "DescriptionLanguageId": 290200907001080203,
     "HighlightDescriptionLanguageId": 290300907001080203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700108,
@@ -197,7 +197,7 @@
     "CharacterId": 1001004100,
     "DescriptionLanguageId": 290200907001080204,
     "HighlightDescriptionLanguageId": 290300907001080204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700108,
@@ -207,7 +207,7 @@
     "CharacterId": 1001003900,
     "DescriptionLanguageId": 290200907001080205,
     "HighlightDescriptionLanguageId": 290300907001080205,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700109,
@@ -217,7 +217,7 @@
     "CharacterId": 1501000101,
     "DescriptionLanguageId": 290200907001090101,
     "HighlightDescriptionLanguageId": 290300907001090101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700109,
@@ -227,7 +227,7 @@
     "CharacterId": 1501000500,
     "DescriptionLanguageId": 290200907001090201,
     "HighlightDescriptionLanguageId": 290300907001090201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700109,
@@ -237,7 +237,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001090202,
     "HighlightDescriptionLanguageId": 290300907001090202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700109,
@@ -247,7 +247,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001090203,
     "HighlightDescriptionLanguageId": 290300907001090203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700110,
@@ -257,7 +257,7 @@
     "CharacterId": 1210000100,
     "DescriptionLanguageId": 290200907001100101,
     "HighlightDescriptionLanguageId": 290300907001100101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700110,
@@ -267,7 +267,7 @@
     "CharacterId": 2210000300,
     "DescriptionLanguageId": 290200907001100201,
     "HighlightDescriptionLanguageId": 290300907001100201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700110,
@@ -277,7 +277,7 @@
     "CharacterId": 2001000100,
     "DescriptionLanguageId": 290200907001100202,
     "HighlightDescriptionLanguageId": 290300907001100202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700110,
@@ -287,7 +287,7 @@
     "CharacterId": 1210000300,
     "DescriptionLanguageId": 290200907001100203,
     "HighlightDescriptionLanguageId": 290300907001100203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -297,7 +297,7 @@
     "CharacterId": 1300000101,
     "DescriptionLanguageId": 290200907001110101,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -307,7 +307,7 @@
     "CharacterId": 1300001701,
     "DescriptionLanguageId": 290200907001110102,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -317,7 +317,7 @@
     "CharacterId": 1300000101,
     "DescriptionLanguageId": 290200907001110103,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -327,7 +327,7 @@
     "CharacterId": 1300001801,
     "DescriptionLanguageId": 290200907001110201,
     "HighlightDescriptionLanguageId": 290300907001110201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -337,7 +337,7 @@
     "CharacterId": 1300003203,
     "DescriptionLanguageId": 290200907001110202,
     "HighlightDescriptionLanguageId": 290300907001110202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -347,7 +347,7 @@
     "CharacterId": 1300003401,
     "DescriptionLanguageId": 290200907001110203,
     "HighlightDescriptionLanguageId": 290300907001110203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -357,7 +357,7 @@
     "CharacterId": 2300000010,
     "DescriptionLanguageId": 290200907001110204,
     "HighlightDescriptionLanguageId": 290300907001110204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700111,
@@ -367,7 +367,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001110205,
     "HighlightDescriptionLanguageId": 290300907001110205,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700112,
@@ -377,7 +377,7 @@
     "CharacterId": 1330001602,
     "DescriptionLanguageId": 290200907001120101,
     "HighlightDescriptionLanguageId": 290300907001120101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700112,
@@ -387,7 +387,7 @@
     "CharacterId": 2330000200,
     "DescriptionLanguageId": 290200907001120201,
     "HighlightDescriptionLanguageId": 290300907001120201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700112,
@@ -397,7 +397,7 @@
     "CharacterId": 2370000301,
     "DescriptionLanguageId": 290200907001120202,
     "HighlightDescriptionLanguageId": 290300907001120202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700113,
@@ -407,7 +407,7 @@
     "CharacterId": 1001001801,
     "DescriptionLanguageId": 290200907001130101,
     "HighlightDescriptionLanguageId": 290300907001130101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700113,
@@ -417,7 +417,7 @@
     "CharacterId": 2001000100,
     "DescriptionLanguageId": 290200907001130201,
     "HighlightDescriptionLanguageId": 290300907001130201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700113,
@@ -427,7 +427,7 @@
     "CharacterId": 2001000100,
     "DescriptionLanguageId": 290200907001130202,
     "HighlightDescriptionLanguageId": 290300907001130202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700113,
@@ -437,7 +437,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001130203,
     "HighlightDescriptionLanguageId": 290300907001130203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700113,
@@ -447,7 +447,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001130204,
     "HighlightDescriptionLanguageId": 290300907001130204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -457,7 +457,7 @@
     "CharacterId": 1200001200,
     "DescriptionLanguageId": 290200907001140101,
     "HighlightDescriptionLanguageId": 290300907001140101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -467,7 +467,7 @@
     "CharacterId": 1200003300,
     "DescriptionLanguageId": 290200907001140102,
     "HighlightDescriptionLanguageId": 290300907001140102,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -477,7 +477,7 @@
     "CharacterId": 1200000100,
     "DescriptionLanguageId": 290200907001140201,
     "HighlightDescriptionLanguageId": 290300907001140201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -487,7 +487,7 @@
     "CharacterId": 1200000600,
     "DescriptionLanguageId": 290200907001140202,
     "HighlightDescriptionLanguageId": 290300907001140202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -497,7 +497,7 @@
     "CharacterId": 2200000100,
     "DescriptionLanguageId": 290200907001140203,
     "HighlightDescriptionLanguageId": 290300907001140203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -507,7 +507,7 @@
     "CharacterId": 2200000100,
     "DescriptionLanguageId": 290200907001140204,
     "HighlightDescriptionLanguageId": 290300907001140204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700114,
@@ -517,7 +517,7 @@
     "CharacterId": 2200000100,
     "DescriptionLanguageId": 290200907001140205,
     "HighlightDescriptionLanguageId": 290300907001140205,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700115,
@@ -527,7 +527,7 @@
     "CharacterId": 1210000100,
     "DescriptionLanguageId": 290200907001150201,
     "HighlightDescriptionLanguageId": 290300907001150201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700115,
@@ -537,7 +537,7 @@
     "CharacterId": 1110000700,
     "DescriptionLanguageId": 290200907001150202,
     "HighlightDescriptionLanguageId": 290300907001150202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700115,
@@ -547,7 +547,7 @@
     "CharacterId": 1001004700,
     "DescriptionLanguageId": 290200907001150203,
     "HighlightDescriptionLanguageId": 290300907001150203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700115,
@@ -557,7 +557,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001150204,
     "HighlightDescriptionLanguageId": 290300907001150204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700115,
@@ -567,7 +567,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001150205,
     "HighlightDescriptionLanguageId": 290300907001150205,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700116,
@@ -577,7 +577,7 @@
     "CharacterId": 1230000100,
     "DescriptionLanguageId": 290200907001160101,
     "HighlightDescriptionLanguageId": 290300907001160101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700116,
@@ -587,7 +587,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001160201,
     "HighlightDescriptionLanguageId": 290300907001160201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700116,
@@ -597,7 +597,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001160202,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700117,
@@ -607,7 +607,7 @@
     "CharacterId": 1850000100,
     "DescriptionLanguageId": 290200907001170101,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700117,
@@ -617,7 +617,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001170201,
     "HighlightDescriptionLanguageId": 290300907001170201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700117,
@@ -627,7 +627,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001170202,
     "HighlightDescriptionLanguageId": 290300907001170202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700117,
@@ -637,7 +637,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001170203,
     "HighlightDescriptionLanguageId": 290300907001170203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700118,
@@ -647,7 +647,7 @@
     "CharacterId": 1080003601,
     "DescriptionLanguageId": 290200907001180101,
     "HighlightDescriptionLanguageId": 290300907001180101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700118,
@@ -657,7 +657,7 @@
     "CharacterId": 1125000500,
     "DescriptionLanguageId": 290200907001180201,
     "HighlightDescriptionLanguageId": 290300907001180201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700118,
@@ -667,7 +667,7 @@
     "CharacterId": 1110000101,
     "DescriptionLanguageId": 290200907001180202,
     "HighlightDescriptionLanguageId": 290300907001180202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700118,
@@ -677,7 +677,7 @@
     "CharacterId": 1080001900,
     "DescriptionLanguageId": 290200907001180203,
     "HighlightDescriptionLanguageId": 290300907001180203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700118,
@@ -687,7 +687,7 @@
     "CharacterId": 1080002900,
     "DescriptionLanguageId": 290200907001180204,
     "HighlightDescriptionLanguageId": 290300907001180204,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700119,
@@ -697,7 +697,7 @@
     "CharacterId": 1501000101,
     "DescriptionLanguageId": 290200907001190101,
     "HighlightDescriptionLanguageId": 290300907001190101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700119,
@@ -707,7 +707,7 @@
     "CharacterId": 1501000200,
     "DescriptionLanguageId": 290200907001190201,
     "HighlightDescriptionLanguageId": 290300907001190201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700119,
@@ -717,7 +717,7 @@
     "CharacterId": 1501000500,
     "DescriptionLanguageId": 290200907001190202,
     "HighlightDescriptionLanguageId": 290300907001190202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700119,
@@ -727,7 +727,7 @@
     "CharacterId": 1501000300,
     "DescriptionLanguageId": 290200907001190203,
     "HighlightDescriptionLanguageId": 290300907001190203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700120,
@@ -737,7 +737,7 @@
     "CharacterId": 1370002600,
     "DescriptionLanguageId": 290200907001200101,
     "HighlightDescriptionLanguageId": 290300907001200101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700120,
@@ -747,7 +747,7 @@
     "CharacterId": 1370000400,
     "DescriptionLanguageId": 290200907001200201,
     "HighlightDescriptionLanguageId": 290300907001200201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700120,
@@ -757,7 +757,7 @@
     "CharacterId": 1370001900,
     "DescriptionLanguageId": 290200907001200202,
     "HighlightDescriptionLanguageId": 290300907001200202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700201,
@@ -767,7 +767,7 @@
     "CharacterId": 1110000300,
     "DescriptionLanguageId": 290200907002010201,
     "HighlightDescriptionLanguageId": 290300907002010201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700202,
@@ -777,7 +777,7 @@
     "CharacterId": 1300000300,
     "DescriptionLanguageId": 290200907002020201,
     "HighlightDescriptionLanguageId": 290300907002020201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700203,
@@ -787,7 +787,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002030201,
     "HighlightDescriptionLanguageId": 290300907002030201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700204,
@@ -797,7 +797,7 @@
     "CharacterId": 1200003300,
     "DescriptionLanguageId": 290200907002040201,
     "HighlightDescriptionLanguageId": 290300907002040201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700204,
@@ -807,7 +807,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002040202,
     "HighlightDescriptionLanguageId": 290300907002040202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700205,
@@ -817,7 +817,7 @@
     "CharacterId": 1125001100,
     "DescriptionLanguageId": 290200907002050201,
     "HighlightDescriptionLanguageId": 290300907002050201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700206,
@@ -827,7 +827,7 @@
     "CharacterId": 1330001900,
     "DescriptionLanguageId": 290200907002060201,
     "HighlightDescriptionLanguageId": 290300907002060201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700206,
@@ -837,7 +837,7 @@
     "CharacterId": 1330000300,
     "DescriptionLanguageId": 290200907002060202,
     "HighlightDescriptionLanguageId": 290300907002060202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700206,
@@ -847,7 +847,7 @@
     "CharacterId": 1330000600,
     "DescriptionLanguageId": 290200907002060203,
     "HighlightDescriptionLanguageId": 290300907002060203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700207,
@@ -857,7 +857,7 @@
     "CharacterId": 2001000200,
     "DescriptionLanguageId": 290200907002070201,
     "HighlightDescriptionLanguageId": 290300907002070201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700207,
@@ -867,7 +867,7 @@
     "CharacterId": 1095001800,
     "DescriptionLanguageId": 290200907002070202,
     "HighlightDescriptionLanguageId": 290300907002070202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700207,
@@ -877,7 +877,7 @@
     "CharacterId": 1095003200,
     "DescriptionLanguageId": 290200907002070203,
     "HighlightDescriptionLanguageId": 290300907002070203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700207,
@@ -887,7 +887,7 @@
     "CharacterId": 2095000100,
     "DescriptionLanguageId": 290200907002070204,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700208,
@@ -897,7 +897,7 @@
     "CharacterId": 1001004700,
     "DescriptionLanguageId": 290200907002080201,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700208,
@@ -907,7 +907,7 @@
     "CharacterId": 1060000100,
     "DescriptionLanguageId": 290200907002080202,
     "HighlightDescriptionLanguageId": 290300907002080202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -917,7 +917,7 @@
     "CharacterId": 1430005800,
     "DescriptionLanguageId": 290200907002090101,
     "HighlightDescriptionLanguageId": 290300907002090101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -927,7 +927,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002090201,
     "HighlightDescriptionLanguageId": 290300907002090201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -937,7 +937,7 @@
     "CharacterId": 1330001400,
     "DescriptionLanguageId": 290200907002090202,
     "HighlightDescriptionLanguageId": 290300907002090202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -947,7 +947,7 @@
     "CharacterId": 1001001801,
     "DescriptionLanguageId": 290200907002090203,
     "HighlightDescriptionLanguageId": 290300907002090203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -957,7 +957,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002090204,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700209,
@@ -967,7 +967,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002090205,
     "HighlightDescriptionLanguageId": 290300907002090205,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700210,
@@ -977,7 +977,7 @@
     "CharacterId": 1125000102,
     "DescriptionLanguageId": 290200907002100101,
     "HighlightDescriptionLanguageId": 290300907002100101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700210,
@@ -987,7 +987,7 @@
     "CharacterId": 1125000301,
     "DescriptionLanguageId": 290200907002100201,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700210,
@@ -997,7 +997,7 @@
     "CharacterId": 1125002700,
     "DescriptionLanguageId": 290200907002100202,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700210,
@@ -1007,7 +1007,7 @@
     "CharacterId": 1125000800,
     "DescriptionLanguageId": 290200907002100203,
     "HighlightDescriptionLanguageId": 290300907002100203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700211,
@@ -1017,7 +1017,7 @@
     "CharacterId": 1001001801,
     "DescriptionLanguageId": 290200907002110101,
     "HighlightDescriptionLanguageId": 290300907002110101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700211,
@@ -1027,7 +1027,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907002110201,
     "HighlightDescriptionLanguageId": 290300907002110201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700211,
@@ -1037,7 +1037,7 @@
     "CharacterId": 1125001600,
     "DescriptionLanguageId": 290200907002110202,
     "HighlightDescriptionLanguageId": 290300907002110202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700211,
@@ -1047,7 +1047,7 @@
     "CharacterId": 2095000100,
     "DescriptionLanguageId": 290200907002110203,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700212,
@@ -1057,7 +1057,7 @@
     "CharacterId": 1150000101,
     "DescriptionLanguageId": 290200907002120101,
     "HighlightDescriptionLanguageId": 290300907002120101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700212,
@@ -1067,7 +1067,7 @@
     "CharacterId": 1150000201,
     "DescriptionLanguageId": 290200907002120102,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700212,
@@ -1077,7 +1077,7 @@
     "CharacterId": 1430000502,
     "DescriptionLanguageId": 290200907002120201,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700213,
@@ -1087,7 +1087,7 @@
     "CharacterId": 1200000902,
     "DescriptionLanguageId": 290200907002130101,
     "HighlightDescriptionLanguageId": 290300907002130101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700213,
@@ -1097,7 +1097,7 @@
     "CharacterId": 1200001200,
     "DescriptionLanguageId": 290200907002130201,
     "HighlightDescriptionLanguageId": 290300907002130201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700213,
@@ -1107,7 +1107,7 @@
     "CharacterId": 1200002500,
     "DescriptionLanguageId": 290200907002130202,
     "HighlightDescriptionLanguageId": 290300907002130202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700214,
@@ -1117,7 +1117,7 @@
     "CharacterId": 1230000101,
     "DescriptionLanguageId": 290200907002140101,
     "HighlightDescriptionLanguageId": 290300907002140101,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700214,
@@ -1127,7 +1127,7 @@
     "CharacterId": 1230000200,
     "DescriptionLanguageId": 290200907002140201,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700214,
@@ -1137,7 +1137,7 @@
     "CharacterId": 1230001301,
     "DescriptionLanguageId": 290200907002140202,
     "HighlightDescriptionLanguageId": 290300907002140202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700214,
@@ -1147,7 +1147,7 @@
     "CharacterId": 1230001401,
     "DescriptionLanguageId": 290200907002140203,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700215,
@@ -1157,7 +1157,7 @@
     "CharacterId": 1200000103,
     "DescriptionLanguageId": 290200907002150101,
     "HighlightDescriptionLanguageId": 0,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700215,
@@ -1167,7 +1167,7 @@
     "CharacterId": 1330001402,
     "DescriptionLanguageId": 290200907002150201,
     "HighlightDescriptionLanguageId": 290300907002150201,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700215,
@@ -1177,7 +1177,7 @@
     "CharacterId": 1022000100,
     "DescriptionLanguageId": 290200907002150202,
     "HighlightDescriptionLanguageId": 290300907002150202,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   },
   {
     "StageId": 90700215,
@@ -1187,6 +1187,6 @@
     "CharacterId": 1080003601,
     "DescriptionLanguageId": 290200907002150203,
     "HighlightDescriptionLanguageId": 290300907002150203,
-    "Unknown_Col_7": 0
+    "BattleSideTypeIndex": 0
   }
 ]

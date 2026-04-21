@@ -16,7 +16,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300002,
@@ -35,7 +35,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300003,
@@ -54,7 +54,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300004,
@@ -73,7 +73,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300005,
@@ -92,7 +92,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300006,
@@ -111,7 +111,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300007,
@@ -130,7 +130,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300008,
@@ -149,7 +149,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300009,
@@ -168,7 +168,7 @@
     "MotifId": 0,
     "MotifTypeIndex": 0,
     "RankingTopPercentileDisplayScoreThreshold": 0,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300010,
@@ -187,7 +187,7 @@
     "MotifId": 300010,
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300011,
@@ -206,7 +206,7 @@
     "MotifId": 300011,
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300012,
@@ -225,7 +225,7 @@
     "MotifId": 300012,
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   },
   {
     "EventId": 300013,
@@ -244,6 +244,6 @@
     "MotifId": 300010,
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
-    "Unknown_Col_16": false
+    "IsSkipShopReset": false
   }
 ]
