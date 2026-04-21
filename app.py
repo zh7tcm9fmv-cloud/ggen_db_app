@@ -7320,6 +7320,17 @@ def contact_page():
     return r
 
 
+@app.route('/game-news')
+def game_news_page():
+    r = make_response(render_template(
+        'game_news.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
 _LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
 
 @app.route('/api/languages')
