@@ -140,6 +140,16 @@
     "ThumbnailResourceId": "thum_anime_top_1250_01"
   },
   {
+    "Id": 1440,
+    "AnimeStreamingSeriesGroupId": 1440,
+    "NameLanguageId": 320100000000001440,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_1440_01",
+    "SortOrder": 9001440,
+    "ScheduleId": 2604402802,
+    "ThumbnailResourceId": "thum_anime_top_1440_01"
+  },
+  {
     "Id": 1500,
     "AnimeStreamingSeriesGroupId": 1500,
     "NameLanguageId": 320100000000001500,
@@ -398,6 +408,16 @@
     "SortOrder": 9102000,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_2000_01"
+  },
+  {
+    "Id": 12300,
+    "AnimeStreamingSeriesGroupId": 2300,
+    "NameLanguageId": 320100000000002300,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_2300_01",
+    "SortOrder": 8902300,
+    "ScheduleId": 2604402801,
+    "ThumbnailResourceId": "thum_anime_top_2300_01"
   },
   {
     "Id": 14300,

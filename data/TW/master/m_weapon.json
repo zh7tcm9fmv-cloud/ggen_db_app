@@ -82652,7 +82652,7 @@
     "WeaponLevelUpMaterialSetId": 10021,
     "WeaponEffectPrefabPairSetId": 270006,
     "ExShortWeaponEffectPrefabPairSetId": 0,
-    "IsFullAnimation": false,
+    "IsFullAnimation": true,
     "MapWeaponDescriptionLanguageId": 0,
     "MapWeaponRangeTypeIndex": 0,
     "MapWeaponTraitCategoryTypeIndex": 0,

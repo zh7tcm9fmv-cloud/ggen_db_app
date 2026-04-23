@@ -1815,7 +1815,7 @@
     "Id": 290141,
     "WeaponEffectPrefabPairSetId": 290141,
     "WeaponEffectId": "ef_mpa_0023_005_beamcaliver",
-    "DamagedEffectId": "ef_mpd_0023_005_beamcaliver"
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
     "Id": 290142,
