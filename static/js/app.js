@@ -261,7 +261,7 @@ function applyLang(){updateListViewToggleLabels();document.getElementById('navCh
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
 const RARITY_LIST_KEYS=['UR','SSR','SR','R','N'];
 const RARITY_FILTER_ICONS={ULT:'/static/images/UI/UI_Common_Icon_ULT.webp',UR:'/static/images/Rarity/UI_Common_RarityIcon_UR.webp',SSR:'/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',SR:'/static/images/Rarity/UI_Common_RarityIcon_SR.webp',R:'/static/images/Rarity/UI_Common_RarityIcon_R.webp',N:'/static/images/Rarity/UI_Common_RarityIcon_N.webp'};
-const ROLE_FILTER_ICONS={'1':'/static/images/UI/UI_Common_TypeIcon_Attack_M.webp','2':'/static/images/UI/UI_Common_TypeIcon_Defense_M.webp','3':'/static/images/UI/UI_Common_TypeIcon_Support_M.webp'};
+const ROLE_FILTER_ICONS={'1':'/static/images/WeaponIcon/UI_Common_TypeIcon_Melee_S.webp','2':'/static/images/UI/UI_Common_TypeIcon_Defense_M.webp','3':'/static/images/UI/UI_Common_TypeIcon_Support_M.webp'};
 const SOURCE_FILTER_UI_ICONS={assembly:'/static/images/UI/UI_Common_Icon_Source_Gasha.webp',development:'/static/images/UI/UI_Common_BtnIcon_Map.webp',other:'/static/images/UI/UI_Common_Icon_Source_Event.webp'};
 const UNIT_TERRAIN_FILTER_ITEMS=[['Space',2],['Space',3],['Atmospheric',2],['Atmospheric',3],['Ground',2],['Ground',3],['Sea',2],['Sea',3],['Underwater',2],['Underwater',3]];
 const UNIT_TERRAIN_TYPE_ICONS={Space:'/static/images/Terrain/UI_Common_TerrainIcon_Space.webp',Atmospheric:'/static/images/Terrain/UI_Common_TerrainIcon_Sky.webp',Ground:'/static/images/Terrain/UI_Common_TerrainIcon_Ground.webp',Sea:'/static/images/Terrain/UI_Common_TerrainIcon_Aquatic.webp',Underwater:'/static/images/Terrain/UI_Common_TerrainIcon_Underwater.webp'};
@@ -2065,7 +2065,7 @@ if(aid&&L[aid])return `<span class="dc-wpn-attr-pill">${esc('<'+L[aid]+'>')}</sp
 const k=_dcWeaponAttributeKeys(wpn)[0]||'special';
 return `<span class="dc-wpn-attr-pill">${esc('<'+(DC_WPN_ELEM_LABEL[k]||'Special')+'>')}</span>`;
 }
-const DC_WPN_ATK_TYPE_ICON_FALLBACK={Ranged:'/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp',Melee:'/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp',Awaken:'/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp',Attack:'/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'};
+const DC_WPN_ATK_TYPE_ICON_FALLBACK={Ranged:'/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp',Melee:'/static/images/WeaponIcon/UI_Common_TypeIcon_Melee_S.webp',Awaken:'/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp',Attack:'/static/images/WeaponIcon/UI_Common_TypeIcon_Attack_S.webp'};
 function _dcWeaponAttackTypeIconsHtml(wpn){
 const ats=wpn.attack_types||[];
 if(!ats.length)return '';
