@@ -16,12 +16,30 @@
   a:hover { text-decoration: underline; }
   .back { margin-top: 2.5rem; font-size: 0.95rem; }
   .muted { color: #94a3b8; font-size: 0.875rem; margin-top: 2rem; }
+  .site-footer-links { text-align: center; margin-top: 2rem; padding: 1.25rem 0 0; border-top: 1px solid rgba(148,163,184,.2); font-size: 12px; color: #94a3b8; line-height: 1.5; flex-shrink: 0; }
+  .site-footer-links nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 10px; }
+  .site-footer-links a { color: #38bdf8; text-decoration: none; font-weight: 600; }
+  .site-footer-links a:hover { text-decoration: underline; }
+  .site-footer-links .site-footer-sep { opacity: 0.45; user-select: none; }
+  .site-footer-disclaimer { display: block; margin: 10px auto 0; max-width: 42rem; padding: 0 8px; font-size: 10px; line-height: 1.45; color: #64748b; }
 </style>
 </head>
 <body>
 <div class="wrap">
 {% block content %}{% endblock %}
 <p class="back"><a href="/">← Back to GGen Database</a></p>
+<footer class="site-footer-links" role="contentinfo">
+<nav aria-label="Site information">
+<a href="/about">About</a>
+<span class="site-footer-sep" aria-hidden="true">·</span>
+<a href="/game-news">Game News</a>
+<span class="site-footer-sep" aria-hidden="true">·</span>
+<a href="/privacy-policy">Privacy Policy</a>
+<span class="site-footer-sep" aria-hidden="true">·</span>
+<a href="/contact">Contact</a>
+</nav>
+<p class="site-footer-disclaimer">This site is not affiliated with Bandai Namco Entertainment Inc. All game content, images, and materials are trademarks and copyrights of Bandai Namco Entertainment Inc. and its licensors.</p>
+</footer>
 </div>
 </body>
 </html>
