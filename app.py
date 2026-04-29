@@ -4661,6 +4661,7 @@ option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lin
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
 schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
 schedule_start_ms_by_id = {}
+schedule_end_ms_by_id = {}
 for _sit in extract_data_list(schedule_master_data):
     if not isinstance(_sit, dict):
         continue
@@ -4671,6 +4672,10 @@ for _sit in extract_data_list(schedule_master_data):
         schedule_start_ms_by_id[_sid] = int(_sit.get('StartDatetime') or 0)
     except (TypeError, ValueError):
         schedule_start_ms_by_id[_sid] = 0
+    try:
+        schedule_end_ms_by_id[_sid] = int(_sit.get('EndDatetime') or 0)
+    except (TypeError, ValueError):
+        schedule_end_ms_by_id[_sid] = 0
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_data_map = create_trait_data_map(trait_logic_data)
@@ -10275,6 +10280,273 @@ def api_latest_release():
         result['watermark'] = wm
     set_cached_response(ck, result)
     return jsonify(convert_image_urls(result))
+
+
+def format_banner_duration_ms(delta_ms):
+    """Human-readable duration from a non-negative millisecond delta."""
+    if delta_ms is None:
+        return ''
+    try:
+        dms = int(delta_ms)
+    except (TypeError, ValueError):
+        return ''
+    if dms < 0:
+        return ''
+    sec = dms // 1000
+    days, sec = divmod(sec, 86400)
+    hours, sec = divmod(sec, 3600)
+    minutes, sec = divmod(sec, 60)
+    parts = []
+    if days:
+        parts.append(f'{days}d')
+    if hours:
+        parts.append(f'{hours}h')
+    if minutes and not days and not hours:
+        parts.append(f'{minutes}m')
+    if not parts:
+        parts.append(f'{sec}s' if sec else '0s')
+    return ' '.join(parts)
+
+
+def _banner_timeline_image_suffix(lc):
+    return {'EN': 'en', 'TW': 'tw', 'HK': 'hk', 'JA': 'ja', 'JP': 'ja'}.get(lc, 'en')
+
+
+def _banner_timeline_unit_item(uid, ld):
+    uid = normalize_id(uid)
+    info = unit_info_map.get(uid)
+    if not info:
+        return None
+    if uid not in unit_list_playable_ids:
+        return None
+    if info.get('role', '0') == '0':
+        return None
+    _muid = normalize_id(info.get('main_unit_id', uid))
+    if _muid == '0':
+        _muid = uid
+    if uid != _muid:
+        return None
+    lid = ld['unit_id_map'].get(uid, '')
+    name = ld['unit_text_map'].get(lid, '') if lid else ''
+    if not name:
+        return None
+    ri = info.get('rarity', '1')
+    acq = info.get('acquisition_route', '0')
+    ai = ACQUISITION_ROUTE_ICONS.get(acq, '')
+    si = [ai] if ai else []
+    role_id = info.get('role', '0')
+    thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+    return {
+        'type': 'unit', 'id': uid, 'name': name, 'thum': thum or '',
+        'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+        'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+        'acquisition_icon': ai or '', 'special_icons': si,
+        'is_ultimate': bool(info.get('is_ultimate', False)),
+    }
+
+
+def _banner_timeline_char_item(cid, ld):
+    cid = normalize_id(cid)
+    if cid not in char_info_map or cid not in char_list_playable_ids:
+        return None
+    info = char_info_map.get(cid, {})
+    if info.get('role', '0') == '0':
+        return None
+    lid = ld['char_id_map'].get(cid, '')
+    name = ld['char_text_map'].get(lid, '') if lid else ''
+    if not name:
+        return None
+    ri = info.get('rarity', '1')
+    acq = info.get('acquisition_route', '0')
+    acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+    role_id = info.get('role', '0')
+    thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+    return {
+        'type': 'character', 'id': cid, 'name': name, 'thum': thum or '',
+        'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+        'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+        'acquisition_icon': acq_icon or '',
+    }
+
+
+@app.route('/api/banner_timeline')
+def api_banner_timeline():
+    """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    ck = f'banner_tl_v1_{lc}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify(convert_image_urls(cached))
+
+    ld = get_lang_data(lc)
+    lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG)
+    base = lp.get('base')
+    lang_dir = lp.get('lang')
+    if not base or not os.path.isdir(base):
+        out = {'banners': []}
+        set_cached_response(ck, out)
+        return jsonify(convert_image_urls(out))
+
+    def _master_file(name):
+        p = os.path.join(base, name)
+        if os.path.isfile(p):
+            return p
+        alt = os.path.join(app_dir, 'data', lc, 'master', name)
+        if os.path.isfile(alt):
+            return alt
+        return p
+
+    gasha_lang = load_json(os.path.join(lang_dir, 'm_gasha.json')) if lang_dir and os.path.isfile(os.path.join(lang_dir, 'm_gasha.json')) else None
+    if not gasha_lang and os.path.isfile(os.path.join(app_dir, 'data', lc, 'lang', 'm_gasha.json')):
+        gasha_lang = load_json(os.path.join(app_dir, 'data', lc, 'lang', 'm_gasha.json'))
+    gasha_name_map = create_lang_text_map(gasha_lang) if gasha_lang else {}
+
+    m_gasha = load_json(_master_file('m_gasha.json'))
+    m_appeal = load_json(_master_file('m_appeal_banner.json'))
+    m_pickup = load_json(_master_file('m_gasha_pickup.json'))
+    m_content = load_json(_master_file('m_gasha_content_detail.json'))
+    m_bonus = load_json(_master_file('m_gasha_content_detail_unit_bonus_character.json'))
+
+    appeal_by_id = {}
+    for row in extract_data_list(m_appeal):
+        if not isinstance(row, dict):
+            continue
+        bid = normalize_id(row.get('Id') or row.get('id'))
+        if bid != '0':
+            appeal_by_id[bid] = row
+
+    pickup_by_gasha = {}
+    for row in extract_data_list(m_pickup):
+        if not isinstance(row, dict):
+            continue
+        gid = normalize_id(row.get('GashaId') or row.get('gashaId'))
+        if gid == '0':
+            continue
+        pickup_by_gasha.setdefault(gid, []).append(row)
+    for _gid in pickup_by_gasha:
+        pickup_by_gasha[_gid].sort(key=lambda x: safe_int(x.get('SortOrder') or x.get('sortOrder'), 0))
+
+    content_by_id = {}
+    for row in extract_data_list(m_content):
+        if not isinstance(row, dict):
+            continue
+        cid = normalize_id(row.get('Id') or row.get('id'))
+        if cid != '0':
+            content_by_id[cid] = row
+
+    bonus_by_detail = {}
+    for row in extract_data_list(m_bonus):
+        if not isinstance(row, dict):
+            continue
+        dcid = normalize_id(row.get('GashaContentDetailId') or row.get('gashaContentDetailId'))
+        ch = normalize_id(row.get('CharacterId') or row.get('characterId'))
+        if dcid == '0' or ch == '0':
+            continue
+        bonus_by_detail.setdefault(dcid, []).append(ch)
+
+    suffix = _banner_timeline_image_suffix(lc)
+    special_sched = normalize_id('9999990001')
+    rows_out = []
+
+    for gx in extract_data_list(m_gasha):
+        if not isinstance(gx, dict):
+            continue
+        if gx.get('IsShown') is False:
+            continue
+        gasha_id = normalize_id(gx.get('Id') or gx.get('id'))
+        if gasha_id == '0':
+            continue
+        name_lid = normalize_id(gx.get('NameLanguageId') or gx.get('nameLanguageId') or '0')
+        name = gasha_name_map.get(name_lid, '') if name_lid != '0' else ''
+        abid = normalize_id(gx.get('AppealBannerId') or gx.get('appealBannerId') or '0')
+        appeal = appeal_by_id.get(abid) if abid != '0' else None
+        resource_id = str((appeal or {}).get('ResourceId') or (appeal or {}).get('resourceId') or '').strip()
+        banner_url = ''
+        if resource_id:
+            banner_url = f'/static/images/Gasha/{resource_id}_{suffix}.webp'
+
+        gs = safe_int(gx.get('ScheduleId') or gx.get('scheduleId'), 0)
+        sched = normalize_id(gs) if gs != 0 else '0'
+        if sched == '0' and appeal:
+            gs2 = safe_int(appeal.get('ScheduleId') or appeal.get('scheduleId'), 0)
+            if gs2 != 0:
+                sched = normalize_id(gs2)
+
+        start_label = '-'
+        end_label = '-'
+        duration_label = '-'
+        start_ms = None
+        end_ms = None
+
+        if sched == special_sched:
+            pass
+        elif sched != '0':
+            sm = schedule_start_ms_by_id.get(sched, 0)
+            em = schedule_end_ms_by_id.get(sched, 0)
+            if sm > 0:
+                start_ms = sm
+                start_label = format_start_datetime_jst(sm) or '-'
+            if em > 0:
+                end_ms = em
+                end_label = format_start_datetime_jst(em) or '-'
+            if sm > 0 and em > 0 and em >= sm:
+                duration_label = format_banner_duration_ms(em - sm)
+            elif sm > 0 and (em <= 0 or em < sm):
+                duration_label = ''
+
+        pickups = pickup_by_gasha.get(gasha_id, [])
+        seen_u_set = set()
+        featured_units = []
+        seen_ch_set = set()
+        featured_chars = []
+
+        for pu in pickups:
+            dcid = normalize_id(pu.get('GashaContentDetailId') or pu.get('gashaContentDetailId'))
+            cdrow = content_by_id.get(dcid) if dcid != '0' else None
+
+            if dcid != '0':
+                for cid in bonus_by_detail.get(dcid, []):
+                    if cid in seen_ch_set:
+                        continue
+                    ch_it = _banner_timeline_char_item(cid, ld)
+                    if ch_it:
+                        featured_chars.append(ch_it)
+                        seen_ch_set.add(cid)
+
+            if cdrow:
+                rut = normalize_id(cdrow.get('RewardTargetId') or cdrow.get('rewardTargetId') or '0')
+                if rut != '0' and rut != 'None' and rut in unit_info_map:
+                    ui = _banner_timeline_unit_item(rut, ld)
+                    if ui and rut not in seen_u_set:
+                        featured_units.append(ui)
+                        seen_u_set.add(rut)
+
+        row = {
+            'gasha_id': gasha_id,
+            'name': name or f'Gasha {gasha_id}',
+            'banner_url': banner_url,
+            'schedule_id': sched,
+            'start_ms': start_ms,
+            'end_ms': end_ms,
+            'start_label': start_label,
+            'end_label': end_label,
+            'duration_label': duration_label,
+            'featured_units': featured_units,
+            'featured_chars': featured_chars,
+        }
+        rows_out.append(row)
+
+    def _sort_key(r):
+        sm = r.get('start_ms')
+        if sm is None or sm <= 0:
+            return (1, 0)
+        return (0, -int(sm))
+
+    rows_out.sort(key=_sort_key)
+    out = {'banners': rows_out}
+    set_cached_response(ck, out)
+    return jsonify(convert_image_urls(out))
+
 
 @app.route('/api/supporter/<supporter_id>')
 def get_supporter(supporter_id):

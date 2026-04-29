@@ -161,6 +161,27 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-characters::before,#panel-supporters::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_022_office.webp{% else %}/static/images/Background/obg_022_office.webp{% endif %}')}
 #panel-units::before,#panel-stages::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_011_garage.webp{% else %}/static/images/Background/obg_011_garage.webp{% endif %}')}
 #panel-latest_release::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
+#panel-banner_timeline::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
+.bt-wrap{max-width:100%;width:100%;margin:0;padding:4px 0 28px;position:relative;z-index:1}
+.bt-toolbar{margin-bottom:16px}
+.bt-root{min-height:120px}
+.bt-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-md)}
+.bt-banner-cell{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:200px}
+.bt-banner-thumb{max-width:min(340px,48vw);width:100%;border-radius:var(--radius-sm);overflow:hidden;background:rgba(0,0,0,.25);border:1px solid var(--border-color)}
+.bt-banner-thumb img{display:block;width:100%;height:auto;vertical-align:top}
+.bt-banner-title{font-size:15px;font-weight:800;color:var(--text-primary);line-height:1.3;text-align:left;max-width:360px}
+.bt-strip{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:flex-start;max-width:520px}
+.bt-date-cell{font-size:13px;line-height:1.45;color:var(--text-secondary);white-space:nowrap}
+.bt-empty{padding:48px 20px;text-align:center;color:var(--text-muted)}
+.bt-timeline-shell{overflow-x:auto;overflow-y:visible;padding:8px 0 24px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.bt-timeline-rail{display:flex;flex-direction:row;gap:20px;padding:8px 4px 20px;width:max-content}
+.bt-tl-card{flex:0 0 min(340px,calc(100vw - 48px));max-width:min(380px,calc(100vw - 40px));background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);scroll-snap-align:start;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 18px rgba(0,0,0,.2);opacity:0;transform:translateY(16px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.85,.25,1),border-color .2s ease}
+.bt-tl-card.bt-tl-card--visible{opacity:1;transform:translateY(0)}
+.bt-tl-card:hover{border-color:rgba(0,212,255,.35)}
+.bt-tl-dates{font-size:12px;line-height:1.5;color:var(--text-secondary)}
+.bt-tl-dur{font-size:12px;color:var(--accent-gold);font-weight:700}
+.bt-tl-sub{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase;margin:0}.bt-tl-sub--pad{margin-top:8px}
+@media (prefers-reduced-motion:reduce){.bt-tl-card,.bt-tl-card.bt-tl-card--visible{opacity:1;transform:none;transition:none}}
 .lr-root{max-width:100%;width:100%;margin:0;padding:4px 0 24px;position:relative;z-index:1;text-align:left}
 .lr-page-title{font-size:17px;font-weight:800;color:var(--accent-gold);margin-bottom:22px;letter-spacing:.02em;text-align:left}
 .lr-section{margin-bottom:32px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
@@ -1680,6 +1701,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button class="nav-tab" data-tab="calculator" id="navCalcTab" onclick="switchTab('calculator')">Damage Simulator</button>
 <button class="nav-tab" data-tab="team_builder" id="navTbTab" onclick="switchTab('team_builder')">Team Builder</button>
 <button class="nav-tab" data-tab="latest_release" id="navLatestTab" onclick="switchTab('latest_release')">Latest Release</button>
+<button class="nav-tab" data-tab="banner_timeline" id="navBannerTimelineTab" onclick="switchTab('banner_timeline')">Banner Timeline</button>
 <a class="nav-tab" href="/game-news" id="navGameNewsTab">Game News</a>
 </div>
 </header>
@@ -1974,6 +1996,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
+<div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div class="list-toolbar bt-toolbar"><div class="list-toolbar-left"><div class="list-view-toggle" role="group" aria-label="View"><button type="button" class="view-toggle-btn active" id="btViewTableBtn" onclick="setBannerTimelineView('table')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg></button><button type="button" class="view-toggle-btn" id="btViewTimelineBtn" onclick="setBannerTimelineView('timeline')"><svg class="view-toggle-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="4" width="4" height="10" rx="1"/><rect x="7" y="2" width="4" height="14" rx="1"/><rect x="13" y="6" width="4" height="10" rx="1"/></svg></button></div></div></div><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
 <nav aria-label="Site information">
