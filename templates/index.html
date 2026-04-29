@@ -1353,27 +1353,68 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .sp-toggle-btn img{height:20px}
   .list-cond-btn{height:30px;min-width:36px;font-size:10px;padding:3px 6px}
 
-  /* --- Filter dropdowns: viewport-centered sheet + scroll (Clear / full list reachable on phone) --- */
+  /* --- Filter dropdowns: top-aligned viewport sheet + scroll — no transform so sticky Clear works; safe-area so footer is not clipped --- */
   .list-toolbar .rarity-filter-panel,
   .list-toolbar .role-filter-panel,
+  .list-toolbar .source-filter-panel,
   .list-toolbar .skill-filter-panel{
     position:fixed;
     left:max(8px,env(safe-area-inset-left,0px));
     right:max(8px,env(safe-area-inset-right,0px));
-    top:50%;
-    transform:translateY(-50%);
+    top:max(8px, env(safe-area-inset-top, 0px));
     bottom:auto;
+    transform:none;
     width:auto;
     min-width:0!important;
     max-width:none!important;
-    max-height:min(88vh,calc(100dvh - 24px));
-    max-height:min(88vh,calc(100vh - 24px));
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    max-height:min(92vh, calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
+    max-height:min(92vh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
     overflow-x:hidden;
     overflow-y:auto;
+    padding-bottom:max(12px, env(safe-area-inset-bottom, 0px));
     -webkit-overflow-scrolling:touch;
     z-index:250;
     box-shadow:0 12px 40px rgba(0,0,0,.65);
     border-radius:var(--radius-md)
+  }
+  .list-toolbar .rarity-filter-panel .filter-panel-clear-wrap,
+  .list-toolbar .role-filter-panel .filter-panel-clear-wrap,
+  .list-toolbar .source-filter-panel .filter-panel-clear-wrap,
+  .list-toolbar .skill-filter-panel .filter-panel-clear-wrap{
+    flex-shrink:0;
+    align-self:stretch;
+    position:sticky;
+    bottom:0;
+    padding-bottom:max(10px,calc(8px + env(safe-area-inset-bottom,0px)));
+    z-index:4
+  }
+  .list-toolbar .role-filter-panel .role-filter-row-label{
+    flex-wrap:wrap;
+    white-space:normal;
+    gap:10px;
+    align-items:flex-start;
+    line-height:1.35
+  }
+  .list-toolbar .rarity-filter-panel .rarity-filter-row,
+  .list-toolbar .rarity-filter-panel .role-filter-row,
+  .list-toolbar .role-filter-panel .role-filter-row,
+  .list-toolbar .source-filter-panel .rarity-filter-row{
+    align-items:flex-start;
+    min-height:48px;
+    padding-top:11px;
+    padding-bottom:11px;
+    box-sizing:border-box
+  }
+  .list-toolbar .source-filter-panel .role-filter-row-label,
+  .list-toolbar .source-filter-panel .source-filter-row-label{
+    align-items:flex-start;
+    gap:10px;
+    white-space:normal;
+    line-height:1.35
   }
   .list-toolbar .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse),
   .list-toolbar .skill-filter-panel:has(.skill-filter-grid-browse){
@@ -1393,13 +1434,19 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
     position:fixed;
     left:max(8px, env(safe-area-inset-left, 0px));
     right:max(8px, env(safe-area-inset-right, 0px));
-    top:50%;
-    transform:translateY(-50%);
+    top:max(8px, env(safe-area-inset-top, 0px));
+    bottom:auto;
+    transform:none;
     width:auto;
     min-width:0!important;
     max-width:none!important;
-    max-height:min(88vh,calc(100dvh - 24px));
-    max-height:min(88vh,calc(100vh - 24px));
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    max-height:min(92vh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
+    max-height:min(92vh, calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
+    padding-bottom:max(12px, env(safe-area-inset-bottom, 0px));
     overflow-y:auto;
     overflow-x:hidden;
     -webkit-overflow-scrolling:touch;
