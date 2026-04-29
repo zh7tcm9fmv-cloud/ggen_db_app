@@ -170,6 +170,9 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-banner_timeline .bt-table-wrap thead th{color:var(--text-secondary);cursor:default;top:0!important;text-transform:none;letter-spacing:0;font-size:14px;line-height:1.25;font-weight:700;-webkit-user-select:none;user-select:none;white-space:normal}
 #panel-banner_timeline .bt-table-wrap thead th:hover{color:var(--text-secondary)!important}
 #panel-banner_timeline .bt-table-wrap table.data-table thead th:not(.sort-active){cursor:default}
+#panel-banner_timeline .bt-th-banner.bt-th-sortable{cursor:pointer;-webkit-user-select:none;user-select:none;text-decoration:none}
+#panel-banner_timeline .bt-th-banner.bt-th-sortable:hover{color:var(--accent-cyan)!important}
+#panel-banner_timeline .bt-sort-ind{font-size:11px;color:var(--accent-gold);margin-left:2px;font-weight:800}
 .bt-table thead .bt-th-combo{font-weight:700;padding:12px 8px;line-height:1.35;text-align:left}
 #panel-banner_timeline table.data-table.bt-table{table-layout:fixed;width:100%;min-width:520px}
 #panel-banner_timeline .bt-table .bt-th-banner{width:32%;min-width:180px}
@@ -238,6 +241,30 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(92px,min(126px,24vw),136px)!important;max-width:min(136px,42vw)!important;min-height:92px!important}
 @media (max-width:640px){ #panel-banner_timeline table.data-table.bt-table{min-width:520px}}
 @media (prefers-reduced-motion:reduce){.bt-vtl-card .bt-vtl-body{opacity:1;transform:none;transition:none}}
+.bt-timeline-shell.bt-ig-shell{overflow:visible;padding:10px 0 32px;width:100%;max-width:960px;margin:0 auto;position:relative;touch-action:auto}
+.bt-ig-spine-line{position:absolute;left:50%;top:10px;bottom:20px;width:5px;margin-left:-2.5px;border-radius:999px;background:linear-gradient(180deg,rgba(96,106,126,.55),rgba(0,212,255,.42),rgba(201,169,98,.48));box-shadow:0 0 22px rgba(0,212,255,.16);z-index:0;pointer-events:none}
+.bt-ig-list{position:relative;z-index:1}
+.bt-ig-monthlabel{font-size:15px;font-weight:800;color:var(--accent-cyan);margin:22px 0 18px;text-align:center;letter-spacing:.03em;padding:0 10px;line-height:1.35;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.bt-ig-step{display:grid;grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr);gap:12px 10px;align-items:start;margin-bottom:26px}
+.bt-ig-zone--blank{min-height:12px}
+.bt-ig-zone--card{min-width:0}
+.bt-ig-rail-slot{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px}
+.bt-ig-node{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;border:3px solid var(--bg-secondary);box-shadow:0 0 0 2px rgba(0,212,255,.32),0 6px 16px rgba(0,0,0,.38);z-index:2;transition:transform .15s ease,box-shadow .2s ease}
+.bt-ig-node:hover{transform:scale(1.06);box-shadow:0 0 0 3px rgba(0,212,255,.42),0 8px 20px rgba(0,212,255,.15)}
+.bt-ig-num{font-size:8.5px;font-weight:900;color:#fff;letter-spacing:0;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.85);pointer-events:none}
+.bt-ig-node--pal-0{background:linear-gradient(145deg,#ff6b9d,#ff8eab)}
+.bt-ig-node--pal-1{background:linear-gradient(145deg,#e8c036,#ffc857)}
+.bt-ig-node--pal-2{background:linear-gradient(145deg,#56d8ff,#2eb5ff)}
+.bt-ig-node--pal-3{background:linear-gradient(145deg,#ff6b5c,#ff9578)}
+.bt-ig-node--pal-4{background:linear-gradient(145deg,#de5dff,#b84dff)}
+.bt-ig-node--pal-5{background:linear-gradient(145deg,#a78bfa,#7c5cf0)}
+.bt-ig-node--pal-6{background:linear-gradient(145deg,#54d38c,#2eb870)}
+.bt-ig-card-skin .bt-vtl-body{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.85,.25,1),border-color .2s ease}
+.bt-ig-step.bt-vtl-card--visible .bt-ig-card-skin .bt-vtl-body{opacity:1;transform:translateY(0)}
+#panel-banner_timeline .bt-ig-shell .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;margin:0;max-width:100%!important;width:100%!important}
+#panel-banner_timeline .bt-ig-shell .bt-strip .lr-card{width:clamp(92px,min(126px,24vw),136px)!important;max-width:min(136px,42vw)!important;min-height:92px!important}
+@media (max-width:700px){.bt-ig-step{grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr);gap:8px}.bt-ig-node{width:22px;height:22px}.bt-ig-num{font-size:7.5px}}
+@media (prefers-reduced-motion:reduce){.bt-ig-step .bt-ig-card-skin .bt-vtl-body{opacity:1;transform:none;transition:none}}
 .lr-root{max-width:100%;width:100%;margin:0;padding:4px 0 24px;position:relative;z-index:1;text-align:left}
 .lr-page-title{font-size:17px;font-weight:800;color:var(--accent-gold);margin-bottom:22px;letter-spacing:.02em;text-align:left}
 .lr-section{margin-bottom:32px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
