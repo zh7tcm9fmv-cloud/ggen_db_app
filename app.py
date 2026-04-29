@@ -10362,6 +10362,7 @@ def _banner_timeline_unit_item(uid, ld):
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': ai or '', 'special_icons': si,
         'is_ultimate': bool(info.get('is_ultimate', False)),
+        'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
     }
 
 
@@ -10386,6 +10387,7 @@ def _banner_timeline_char_item(cid, ld):
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': acq_icon or '',
+        'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS,
     }
 
 
@@ -10406,6 +10408,7 @@ def _banner_timeline_supporter_item(sid, ld):
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': '', 'acquisition_icon': '',
         'special_icons': [], 'is_ultimate': False,
+        'is_limited_time': sid in LIMITED_TIME_SUPPORTER_IDS,
     }
 
 
@@ -10413,7 +10416,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v4_{lc}'
+    ck = f'banner_tl_v5_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
