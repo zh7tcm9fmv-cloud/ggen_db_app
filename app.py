@@ -10394,11 +10394,31 @@ def _banner_timeline_char_item(cid, ld):
     }
 
 
+def _banner_timeline_supporter_item(sid, ld):
+    """Pickup row GashaContentDetailId starting with '2' rewards a supporter via RewardTargetId."""
+    sid = normalize_id(sid)
+    if sid not in supporter_info_map:
+        return None
+    info = supporter_info_map.get(sid, {}) or {}
+    lid = ld.get('supporter_id_map', {}).get(sid, '') if ld else ''
+    name = (ld.get('supporter_text_map', {}) or {}).get(lid, '') if lid else ''
+    if not name:
+        return None
+    ri = info.get('rarity', '1')
+    thum = find_supporter_portrait(info.get('resource_id'), sid)
+    return {
+        'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
+        'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+        'role_icon': '', 'acquisition_icon': '',
+        'special_icons': [], 'is_ultimate': False,
+    }
+
+
 @app.route('/api/banner_timeline')
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v3_{lc}'
+    ck = f'banner_tl_v4_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -10531,12 +10551,15 @@ def api_banner_timeline():
         featured_units = []
         seen_ch_set = set()
         featured_chars = []
+        seen_sp_set = set()
+        featured_supporters = []
 
         for pu in pickups:
             dcid = normalize_id(pu.get('GashaContentDetailId') or pu.get('gashaContentDetailId'))
             cdrow = content_by_id.get(dcid) if dcid != '0' else None
+            detail_is_supporter = dcid != '0' and str(dcid).startswith('2')
 
-            if dcid != '0':
+            if dcid != '0' and not detail_is_supporter:
                 for cid in bonus_by_detail.get(dcid, []):
                     if cid in seen_ch_set:
                         continue
@@ -10544,6 +10567,15 @@ def api_banner_timeline():
                     if ch_it:
                         featured_chars.append(ch_it)
                         seen_ch_set.add(cid)
+
+            if detail_is_supporter and cdrow:
+                rst = normalize_id(cdrow.get('RewardTargetId') or cdrow.get('rewardTargetId') or '0')
+                if rst != '0' and rst != 'None' and rst not in seen_sp_set:
+                    sp_it = _banner_timeline_supporter_item(rst, ld)
+                    if sp_it:
+                        featured_supporters.append(sp_it)
+                        seen_sp_set.add(rst)
+                continue
 
             if cdrow:
                 rut = normalize_id(cdrow.get('RewardTargetId') or cdrow.get('rewardTargetId') or '0')
@@ -10565,6 +10597,7 @@ def api_banner_timeline():
             'duration_label': duration_label,
             'featured_units': featured_units,
             'featured_chars': featured_chars,
+            'featured_supporters': featured_supporters,
         }
         rows_out.append(row)
 
