@@ -2515,15 +2515,10 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
         if u == 'POWER':
             return 'Power'
         return None
+    # Generic "Increases Accuracy/Critical/Power by N%" applies to weapon sheet display when parsed from unit
+    # passives (e.g. Increased ACC LV) — additive with base ACC/CRIT/Power % in UI; do not exclude bare wording.
     sn = r"(?:ACC|Accuracy|Critical|CRIT|Crit\.?|Power)"
     m = re.search(fr'Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%', tl, re.IGNORECASE)
-    if m:
-        # Bare "Increases Accuracy by 5%" (e.g. Increased ACC LV) is a unit/pilot modifier in combat — not a
-        # per-weapon sheet bonus. Scope to own/squad/weapon/slot wording so weapon cards stay weapon-specific.
-        if not re.search(
-                r'\b(?:own|squad|weapon|weapons|ranged|melee|shooting|physical|beam|special|sword)\b',
-                tl, re.IGNORECASE):
-            m = None
     if m:
         pct = int(m.group(3))
         n1 = _normw(m.group(1))
