@@ -439,6 +439,19 @@ def format_start_datetime_jst(ms):
     except Exception:
         return ''
 
+def _jst_year_from_epoch_ms(ms):
+    """Calendar year in Asia/Tokyo for epoch milliseconds (banner schedule semantics)."""
+    if ms is None or ms <= 0:
+        return None
+    try:
+        if ZoneInfo is not None:
+            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
+        else:
+            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
+        return int(dt.year)
+    except Exception:
+        return None
+
 def normalize_id(value, default='0', debug_context=None):
     if value is None or value == '' or value == 'None': return default
     try:
@@ -7297,6 +7310,11 @@ def index():
     return _serve_index()
 
 
+@app.route('/tl')
+def banner_timeline_page():
+    return _serve_index()
+
+
 @app.route('/about')
 def about_page():
     r = make_response(render_template('about.html'))
@@ -10373,7 +10391,7 @@ def _banner_timeline_char_item(cid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v2_{lc}'
+    ck = f'banner_tl_v3_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -10494,7 +10512,10 @@ def api_banner_timeline():
                 end_ms = em
                 end_label = format_start_datetime_jst(em) or '-'
             if sm > 0 and em > 0 and em >= sm:
-                duration_label = format_banner_duration_ms(em - sm)
+                if _jst_year_from_epoch_ms(em) == 2099:
+                    duration_label = '-'
+                else:
+                    duration_label = format_banner_duration_ms(em - sm)
             elif sm > 0 and (em <= 0 or em < sm):
                 duration_label = ''
 
