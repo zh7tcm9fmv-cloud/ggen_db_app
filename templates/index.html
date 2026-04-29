@@ -1353,11 +1353,11 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .sp-toggle-btn img{height:20px}
   .list-cond-btn{height:30px;min-width:36px;font-size:10px;padding:3px 6px}
 
-  /* --- Filter dropdowns: top-aligned viewport sheet + scroll — no transform so sticky Clear works; safe-area so footer is not clipped --- */
-  .list-toolbar .rarity-filter-panel,
-  .list-toolbar .role-filter-panel,
-  .list-toolbar .source-filter-panel,
-  .list-toolbar .skill-filter-panel{
+  /* --- Filter dropdowns: top-aligned viewport sheet + scroll — :not([hidden]) so display:flex cannot override native [hidden] (otherwise closed menus block the page) --- */
+  .list-toolbar .rarity-filter-panel:not([hidden]),
+  .list-toolbar .role-filter-panel:not([hidden]),
+  .list-toolbar .source-filter-panel:not([hidden]),
+  .list-toolbar .skill-filter-panel:not([hidden]){
     position:fixed;
     left:max(8px,env(safe-area-inset-left,0px));
     right:max(8px,env(safe-area-inset-right,0px));
@@ -1416,8 +1416,8 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
     white-space:normal;
     line-height:1.35
   }
-  .list-toolbar .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse),
-  .list-toolbar .skill-filter-panel:has(.skill-filter-grid-browse){
+  .list-toolbar .skill-filter-panel:not([hidden]):has(.filter-panel-scroll-inner .skill-filter-grid-browse),
+  .list-toolbar .skill-filter-panel:not([hidden]):has(.skill-filter-grid-browse){
     overflow-x:hidden;
     overflow-y:auto!important;
     overflow:hidden auto!important
@@ -1430,7 +1430,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .skill-filter-panel{max-width:calc(100vw - 24px)}
   #unitTerrainFilterPanel{max-width:min(calc(100vw - 24px),640px)}
   /* Weapon debuff panel: absolute + wide min-width extends past viewport when body is overflow-x:hidden — pin to viewport like other large menus */
-  #unitWeaponDebuffFilterPanel{
+  #unitWeaponDebuffFilterPanel:not([hidden]){
     position:fixed;
     left:max(8px, env(safe-area-inset-left, 0px));
     right:max(8px, env(safe-area-inset-right, 0px));
