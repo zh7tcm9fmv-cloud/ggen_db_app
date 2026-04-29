@@ -10373,7 +10373,7 @@ def _banner_timeline_char_item(cid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v1_{lc}'
+    ck = f'banner_tl_v2_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -10479,7 +10479,11 @@ def api_banner_timeline():
         end_ms = None
 
         if sched == special_sched:
-            pass
+            start_label = '-'
+            end_label = '-'
+            duration_label = '-'
+            start_ms = None
+            end_ms = None
         elif sched != '0':
             sm = schedule_start_ms_by_id.get(sched, 0)
             em = schedule_end_ms_by_id.get(sched, 0)
