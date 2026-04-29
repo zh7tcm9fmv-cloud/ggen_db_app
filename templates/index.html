@@ -166,6 +166,7 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-toolbar{margin-bottom:16px}
 .bt-root{min-height:120px}
 .bt-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-md);max-height:min(78vh,calc(100vh - 220px));position:relative;background:var(--bg-secondary)}
+#panel-banner_timeline .bt-table-wrap{max-height:none;overflow:visible;-webkit-overflow-scrolling:auto}
 #panel-banner_timeline .bt-table-wrap thead th{color:var(--text-secondary);cursor:default;top:0!important;text-transform:none;letter-spacing:0;font-size:14px;line-height:1.25;font-weight:700;-webkit-user-select:none;user-select:none;white-space:normal}
 #panel-banner_timeline .bt-table-wrap thead th:hover{color:var(--text-secondary)!important}
 #panel-banner_timeline .bt-table-wrap table.data-table thead th:not(.sort-active){cursor:default}
@@ -183,7 +184,7 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-banner-sched-v{font-size:12px;color:var(--text-secondary);word-break:break-word}
 .bt-strip-empty{color:var(--text-muted)}
 #panel-banner_timeline .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;width:100%!important;margin:0;padding:0;max-width:100%!important}
-#panel-banner_timeline .bt-strip .lr-card{flex:0 0 auto!important;display:flex!important;margin:0!important;width:clamp(88px,min(118px,24vw),128px)!important;max-width:min(128px,42vw)!important;min-height:88px!important;padding:7px 5px!important;box-sizing:border-box!important}
+#panel-banner_timeline .bt-strip .lr-card{flex:0 0 auto!important;display:flex!important;margin:0!important;width:clamp(96px,min(132px,26vw),140px)!important;max-width:min(140px,44vw)!important;min-height:96px!important;padding:7px 5px!important;box-sizing:border-box!important}
 #panel-banner_timeline .bt-strip .lr-card .lr-card-name{font-size:11px!important;line-height:1.2!important;-webkit-line-clamp:2}
 .bt-banner-cell{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0;vertical-align:top}
 .bt-banner-thumb{max-width:min(260px,min(52vw,100%));width:100%;border-radius:var(--radius-sm);overflow:hidden;background:rgba(0,0,0,.25);border:1px solid var(--border-color)}
@@ -191,6 +192,7 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-banner-title{font-size:15px;font-weight:800;color:var(--text-primary);line-height:1.28;text-align:left;max-width:min(520px,100%);word-break:break-word}
 .bt-strip{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:flex-start;max-width:520px}
 #panel-banner_timeline .bt-table td,#panel-banner_timeline .bt-table thead th{vertical-align:top}
+#panel-banner_timeline table.data-table.bt-table tbody td{border-bottom:none}
 .bt-date-cell{font-size:clamp(11px,.85rem,13px);line-height:1.4;color:var(--text-secondary);vertical-align:top;padding-top:10px!important}
 .bt-date-cell--sched{white-space:normal;word-break:break-word;hyphens:auto}
 .bt-date-cell--dur{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
@@ -198,6 +200,8 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-timeline-shell.bt-vtl-flow{overflow:visible;padding:6px 0 18px;width:100%;touch-action:auto;position:relative;max-width:1100px;margin:0 auto}
 .bt-vtl-flow::before{display:none}
 .bt-vtl-monthlabel{font-size:13px;font-weight:800;color:var(--accent-cyan);margin:14px 0 12px;padding:0 0 6px 2px;border-bottom:1px solid rgba(255,255,255,.1);letter-spacing:.02em}
+.bt-vtl-solo-wrap{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr);gap:10px 6px;align-items:start;margin-bottom:14px}
+.bt-vtl-solo-wrap .bt-vtl-card--solo{grid-column:1;max-width:100%;margin:0}
 .bt-vtl-pair{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr);gap:10px 6px;align-items:stretch;margin-bottom:12px}
 .bt-vtl-spine-gutter{border-radius:999px;background:linear-gradient(180deg,rgba(0,212,255,.45),rgba(201,169,98,.42));width:100%;max-width:8px;margin:0 auto;min-height:80px;height:100%;align-self:stretch}
 .bt-vtl-slot{min-width:0;display:flex;flex-direction:column}
@@ -208,7 +212,8 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-vtl-card--east .bt-vtl-body{order:-1;text-align:left}
 .bt-vtl-card--west{flex-direction:row;justify-content:flex-start;text-align:left}
 .bt-vtl-card--solo{max-width:640px;margin:0 auto 14px;padding-bottom:0!important}
-.bt-vtl-marker{flex:0 0 22px;width:22px;margin-top:4px;position:relative;z-index:1;cursor:help;touch-action:manipulation}
+.bt-vtl-solo-wrap .bt-vtl-card--solo{margin-bottom:0}
+.bt-vtl-marker{flex:0 0 22px;width:22px;min-height:22px;align-self:flex-start;flex-shrink:0;margin-top:4px;position:relative;z-index:1;cursor:help;touch-action:manipulation}
 .bt-vtl-card--solo .bt-vtl-marker{margin-top:8px;margin-right:6px}
 .bt-vtl-card--east .bt-vtl-marker{margin-left:10px;margin-top:8px}
 .bt-vtl-card--west .bt-vtl-marker{margin-right:10px;margin-top:8px}
@@ -230,7 +235,7 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .bt-vtl-sub{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase}
 .bt-vtl-strip-wrap{min-width:0}
 #panel-banner_timeline .bt-vtl-flow .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;margin:0;max-width:100%!important;width:100%!important}
-#panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(80px,min(108px,22vw),120px)!important;max-width:min(120px,40vw)!important;min-height:82px!important}
+#panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(92px,min(126px,24vw),136px)!important;max-width:min(136px,42vw)!important;min-height:92px!important}
 @media (max-width:640px){ #panel-banner_timeline table.data-table.bt-table{min-width:520px}}
 @media (prefers-reduced-motion:reduce){.bt-vtl-card .bt-vtl-body{opacity:1;transform:none;transition:none}}
 .lr-root{max-width:100%;width:100%;margin:0;padding:4px 0 24px;position:relative;z-index:1;text-align:left}
@@ -1752,7 +1757,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button class="nav-tab" data-tab="calculator" id="navCalcTab" onclick="switchTab('calculator')">Damage Simulator</button>
 <button class="nav-tab" data-tab="team_builder" id="navTbTab" onclick="switchTab('team_builder')">Team Builder</button>
 <button class="nav-tab" data-tab="latest_release" id="navLatestTab" onclick="switchTab('latest_release')">Latest Release</button>
-<button class="nav-tab" data-tab="banner_timeline" id="navBannerTimelineTab" onclick="switchTab('banner_timeline')">Banner Timeline</button>
+<a class="nav-tab" href="/tl" data-tab="banner_timeline" id="navBannerTimelineTab" role="tab" onclick="event.preventDefault();switchTab('banner_timeline')">Banner Timeline</a>
 <a class="nav-tab" href="/game-news" id="navGameNewsTab">Game News</a>
 </div>
 </header>
