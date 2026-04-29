@@ -7099,10 +7099,10 @@ def _search_substring_in_haystack(t, haystack_lower):
 
 def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     """Match a search token against haystack (already lowercased).
-    Full: len<=2 ASCII uses whole-word boundaries; len>2 pure-digit tokens use substring (id fragments);
+    Full: len<=2 ASCII uses whole-word boundaries (except len==1 A–z uses word-start prefix); len>2 pure-digit tokens use substring (id fragments);
     len>2 otherwise uses word-start (prefix-friendly) so e.g. 'wing' does not match inside 'throwing'.
     Hyphenated compounds (e.g. 'zero-g') do not match the prefix token alone ('zero').
-    Primary: ASCII tokens use word-start (or whole-word for length <=2) so e.g. 'wing' does not match inside 'swing'.
+    Primary: ASCII len==1 letters use word-start prefix; ASCII len==2 stays whole-word; len>=3 word-start so e.g. 'wing' does not match inside 'swing'.
     Fallbacks: folded substring (hyphen/space insensitive); then plain substring (len>=2) so e.g. 'dx' matches
     localized names like 鋼彈dx on name_id (Unicode \\w blocked whole-word match before)."""
     if not term:
@@ -7127,7 +7127,11 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
                 return False
         if len(t) <= 2:
             try:
-                ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+                # Single-letter A–z: prefix at word/start (matches "unicorn" for "u"), not standalone "u" only.
+                if len(t) == 1 and t.isalpha():
+                    ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
+                else:
+                    ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
             except re.error:
                 ok = t in haystack_lower
         else:
@@ -7145,7 +7149,10 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
         return _search_substring_in_haystack(t, haystack_lower)
     if len(t) <= 2:
         try:
-            ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
+            if len(t) == 1 and t.isalpha():
+                ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?!-)', haystack_lower, re.I))
+            else:
+                ok = bool(re.search(r'(?<![\w])' + re.escape(t) + r'(?![\w])', haystack_lower, re.I))
         except re.error:
             ok = t in haystack_lower
         if ok:
