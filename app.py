@@ -940,6 +940,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'dmg_phys', 'dmg_beam', 'dmg_spec',
     'wp_phys', 'wp_beam', 'wp_spec',
     'range_beam', 'range_phys', 'range_all',
+    'range_6',
     'mp_1', 'mp_2', 'mp_3',
     'preemptive',
     'map_weapon',
@@ -1276,7 +1277,8 @@ def enrich_weapon_levels_with_enemy_def_debuff(levels, ssp_trait_lines):
     return out
 
 
-def collect_unit_weapon_debuff_keys(uid, ld, lc):
+def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc):
+    """Weapon debuff categories from trait / effect text (+ map_weapon); excludes numeric range tiers."""
     acc = set()
     for line in iter_unit_weapon_trait_texts(uid, ld, lc):
         acc |= set(classify_unit_weapon_trait_debuff_keys(line))
@@ -1289,13 +1291,68 @@ def collect_unit_weapon_debuff_keys(uid, ld, lc):
             break
     return frozenset(acc)
 
-def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None):
+
+def unit_has_non_map_weapon_max_range_ge(uid, ld, lc, stat_mode='normal', need_max=6):
+    """True if any grid (non-MAP) weapon has max_range + SSP range bonus ≥ need_max under stat_mode."""
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    uid = normalize_id(uid)
+    wtm = ld.get('weapon_trait_map', {}) or {}
+    wcm = ld.get('weapon_capability_map', {}) or {}
+    wtdm = ld.get('weapon_trait_detail_map', {}) or {}
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        if not wid or wid == '0':
+            continue
+        wm = weapon_info_map.get(wid, {})
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc, unit_id=uid,
+        )
+        rx = int(ws.get('range_max', 0) or 0)
+        bonus = 0
+        if sm == 'ssp':
+            mwid = normalize_id(wm.get('main_weapon_id', '0') or '0')
+            for cid in (wid, mwid):
+                if not cid or cid == '0':
+                    continue
+                enh_list = unit_ssp_weapon_enhance_map.get(cid)
+                if not enh_list:
+                    continue
+                for enh in enh_list:
+                    if str(enh.get('type')) == '4':
+                        bonus += int(enh.get('value', 0) or 0)
+                break
+        if rx + bonus >= int(need_max):
+            return True
+    return False
+
+
+def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal'):
+    """Tiered max-range filter; range_6 includes SSP Custom Core range (type 4) when listing with stat_mode=ssp."""
+    if unit_has_non_map_weapon_max_range_ge(uid, ld, lc, stat_mode=stat_mode, need_max=6):
+        return frozenset({'range_6'})
+    return frozenset()
+
+
+def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal'):
+    acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc))
+    acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode))
+    return frozenset(acc)
+
+
+def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat_mode='normal'):
     if want_filter is None:
         return True
     if _memo is None:
         _memo = {}
     if uid not in _memo:
-        _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
+        _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode)
     have = _memo[uid]
     for k in want_filter:
         if k not in have:
@@ -5509,7 +5566,9 @@ def _precompute_weapon_debuff_keys_present_by_lang():
             continue
         acc = set()
         for uid in unit_info_map:
-            acc |= set(collect_unit_weapon_debuff_keys(uid, ld, lc))
+            acc |= set(collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc))
+            for sm in ('normal', 'sp', 'ssp'):
+                acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld, lc, sm))
         out[lc] = frozenset(acc)
     return out
 
@@ -6958,7 +7017,7 @@ def _build_browse_list_performance_caches():
         d2 = {}
         for uid in unit_info_map:
             try:
-                d2[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc)
+                d2[uid] = collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc)
             except Exception:
                 d2[uid] = frozenset()
         wd[lc] = d2
@@ -8402,7 +8461,7 @@ def unit_passes_browse_pool_filters(
         if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
             return False
     if apply_weapon_debuff and weapon_debuff_filter:
-        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter):
+        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _memo=None, stat_mode=stat_mode):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -9361,13 +9420,15 @@ def list_units():
                 continue
         wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
         if wmap is not None and uid in wmap:
-            dk = wmap[uid]
+            trait_dk = wmap[uid]
         else:
-            dk = collect_unit_weapon_debuff_keys(uid, ld, lc)
+            trait_dk = collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc)
+        range_dk = collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode)
+        dk = frozenset(set(trait_dk) | set(range_dk))
         _debuff_memo[uid] = dk
         _debuff_keys_union |= set(dk)
         if weapon_debuff_filter:
-            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo):
+            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode):
                 continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, collect_unit_mechanism_mids(info, uid)))
         if mechanism_filter:
