@@ -1465,7 +1465,7 @@ def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
 def trait_condition_item_field_vectors(item):
     """Single m_trait_condition row -> tag/series/role lists (AND within this row)."""
     if not isinstance(item, dict):
-        return [], [], [], [], []
+        return [], [], [], [], [], []
     ut, gt, ser, ct, tp = [], [], [], [], []
     for key in ['UnitTags', 'unitTags']:
         val = str(item.get(key) or '')
@@ -1488,6 +1488,14 @@ def trait_condition_item_field_vectors(item):
                 v = v.strip()
                 if v and v != '0' and v not in ct:
                     ct.append(v)
+    char_series = []
+    for key in ['CharacterSeries', 'characterSeries']:
+        val = str(item.get(key) or '')
+        if val and val != '0':
+            for v in val.split(','):
+                v = v.strip()
+                if v and v != '0' and v not in char_series:
+                    char_series.append(v)
     for key in ['UnitSeries', 'unitSeries']:
         val = str(item.get(key) or '')
         if val and val != '0':
@@ -1502,13 +1510,14 @@ def trait_condition_item_field_vectors(item):
                 v = v.strip()
                 if v and v != '0' and v not in tp:
                     tp.append(v)
-    return ut, gt, ser, ct, tp
+    return ut, gt, ser, ct, tp, char_series
 
 
-def trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id=None):
+def trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id=None, character_series=None):
     """AND across non-empty fields on one trait-condition row."""
     uid = normalize_id(uid)
-    if not any([ut, gt, tp, ser, ct]):
+    character_series = list(character_series) if character_series else []
+    if not any([ut, gt, tp, ser, ct, character_series]):
         return True
     ok = True
     if ut:
@@ -1527,6 +1536,18 @@ def trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id
             for sid in ld.get('ser_set_map', {}).get(sset, []):
                 unit_sids.add(normalize_id(sid))
         ok = ok and any(normalize_id(s) in unit_sids for s in ser)
+    if character_series:
+        if not char_id or str(char_id).strip() in ('', '0'):
+            ok = ok and False
+        else:
+            cmap = ld.get('char_ser_map', {})
+            cid = normalize_id(char_id)
+            char_ss = normalize_id(str(cmap.get(cid, '') or '0'))
+            char_sids = set()
+            if char_ss and char_ss != '0':
+                for sid in ld.get('ser_set_map', {}).get(char_ss, []) or []:
+                    char_sids.add(normalize_id(sid))
+            ok = ok and bool(char_sids) and any(normalize_id(s) in char_sids for s in character_series)
     if ct and char_id and str(char_id).strip() not in ('', '0'):
         cid = normalize_id(char_id)
         cls = char_lin_map.get(cid, [])
@@ -1549,10 +1570,10 @@ def trait_condition_matches_unit(cond_id, uid, ld, lc, char_id=None):
         return trait_condition_vectors_match_unit(
             raw.get('unit_tags') or [], raw.get('group_tags') or [],
             raw.get('series') or [], raw.get('types') or [], raw.get('char_tags') or [],
-            uid, ld, lc, char_id)
+            uid, ld, lc, char_id, raw.get('character_series') or [])
     for item in rows:
-        ut, gt, ser, ct, tp = trait_condition_item_field_vectors(item)
-        if trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id):
+        ut, gt, ser, ct, tp, cser = trait_condition_item_field_vectors(item)
+        if trait_condition_vectors_match_unit(ut, gt, ser, tp, ct, uid, ld, lc, char_id, cser):
             return True
     return False
 
@@ -3070,7 +3091,7 @@ def create_trait_condition_raw_map(d, key_field=None):
         else:
             sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
-        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': [], 'target_types': []}
+        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': []}
         for key in ['UnitTags', 'unitTags']:
             val = str(item.get(key) or '')
             if val and val != '0':
@@ -3083,6 +3104,12 @@ def create_trait_condition_raw_map(d, key_field=None):
                 for v in val.split(','):
                     v = v.strip()
                     if v and v != '0' and v not in raw[sid]['char_tags']: raw[sid]['char_tags'].append(v)
+        for key in ['CharacterSeries', 'characterSeries']:
+            val = str(item.get(key) or '')
+            if val and val != '0':
+                for v in val.split(','):
+                    v = v.strip()
+                    if v and v != '0' and v not in raw[sid]['character_series']: raw[sid]['character_series'].append(v)
         for key in ['GroupTags', 'groupTags', 'GroupTag', 'groupTag']:
             val = str(item.get(key) or '')
             if val and val != '0':
@@ -3116,8 +3143,8 @@ def merge_trait_condition_raw_maps(*maps):
             continue
         for sid, row in mp.items():
             if sid not in out:
-                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'types': [], 'target_types': []}
-            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'types', 'target_types']:
+                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': []}
+            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'character_series', 'types', 'target_types']:
                 vals = row.get(k, []) if isinstance(row, dict) else []
                 for v in vals:
                     if v and v not in out[sid][k]:
@@ -3143,6 +3170,7 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
                     if k.endswith(p) or k == tid: return v
         return n
     for t in raw.get('unit_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'unit', 'unit_tags'))
+    for s in raw.get('character_series') or []: n = fn(s, series_name_map); (n and at(s, n, 'series', 'character_series'))
     for t in raw.get('char_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'character', 'char_tags'))
     for t in raw.get('group_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'group', 'group_tags'))
     for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series', 'series'))
@@ -4470,6 +4498,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             'condition_groups': condition_groups,
             'condition_nums': cond_nums,
             'active_conditions': list(active_conds),
+            'target_conditions': list(target_conds),
             'boost_conditions': list(boost_conds),
         })
     # Map [Condition N] placeholders to active-condition rows in order.
@@ -4494,6 +4523,19 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             used_active_pool.add(pi)
             return list(p.get('conditions') or [])
         return []
+    def collect_forward_placeholder_targets(from_idx):
+        """Sibling traits often carry TargetConditionSetId on effect rows while the prose lives on another row with dummy target (common dump pattern)."""
+        out = []; seen_sig = set()
+        for j in range(from_idx + 1, len(trait_info)):
+            tj = trait_info[j]
+            if (tj.get('display_text') or '').strip():
+                break
+            for c in (tj.get('target_conditions') or []):
+                sig = (str(c.get('id') or ''), str(c.get('name') or ''), str(c.get('type') or ''))
+                if sig in seen_sig:
+                    continue
+                seen_sig.add(sig); out.append(c)
+        return out
     carry_boost_for_next = []
     def _looks_conditional_text(info_row):
         txt = (str(info_row.get('en_text') or '') + ' ' + str(info_row.get('display_text') or '')).lower()
@@ -4514,8 +4556,21 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_used = False
         is_conditional_line = _looks_conditional_text(info)
         if nums:
+            forward_tgt = []
+            if 2 in nums and not (info.get('target_conditions') or []):
+                forward_tgt = collect_forward_placeholder_targets(idx)
+            forward_used = False
             for n in nums:
-                conds_for_n = take_active_for_line(idx)
+                conds_for_n = []
+                if (
+                    isinstance(n, int) and n >= 2 and forward_tgt
+                    and not forward_used
+                    and not (info.get('target_conditions') or [])
+                ):
+                    conds_for_n = list(forward_tgt)
+                    forward_used = True
+                if not conds_for_n:
+                    conds_for_n = take_active_for_line(idx)
                 if (not conds_for_n) and boost_conds and (not boost_used):
                     conds_for_n = list(boost_conds)
                     boost_used = True
