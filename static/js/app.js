@@ -224,13 +224,13 @@ const ROLE_LABELS={EN:{'':'All Roles','1':'Attack Only','2':'Defense Only','3':'
 ROLE_LABELS.HK=Object.assign({},ROLE_LABELS.TW);
 const JP_CORE_LABELS={tab_char:'キャラクター',tab_unit:'ユニット',tag_tab_affinity:'アフィニティ',tag_results_affinity:'アフィニティ（タグ）:',tab_supporter:'サポーター',tab_stage:'ステージ',stage_source_group_aria:'ステージの種類',stage_source_eternal:'エターナルロード',stage_source_score:'マップイベントスコアアタックステージ',dc_def_preset_mode:'プリセット（ER・スコアアタック）',dc_def_preset_target_label:'プリセット対象（ER・スコアアタック）',dc_stage_search_ph:'ER／スコアアタックのステージを検索…',dc_stage_list_aria:'ERとスコアアタックのステージ',dc_score_attack_preset:'スコア #{n}',tab_mod:'改造パーツ',tab_latest:'最新登場',tab_game_news:'ゲームニュース',search_char:'名前またはIDで検索',search_unit:'名前またはIDで検索',search_supporter:'名前 / シリーズ / タグで検索',search_stage:'ステージIDまたは名前で検索…',search_mod:'検索: 名前 / 効果 / タグ',search_series_click:'このシリーズのキャラクターとユニットを見る',search_recall:'クイック検索',search_hint_html:'<div class="search-hint-inner"><strong>キャラ／ユニット（既定）</strong> — キーワードは<strong>表示名</strong>と<strong>ID</strong>のみにマッチ（シリーズ・タグ・アビリティの文言は含みません）。サポーターは従来どおり名前／シリーズ／タグ。<br><strong>すべて一致</strong> — カンマまたはセミコロン区切りで各語句が一致。<br><strong>除外</strong> — 語句の前に <code>-</code> でその語を含む行を除外。<br><strong>シリーズ</strong> — <code>series:キーワード</code> はシリーズ名での絞り込みとして有効。<br><strong>拡張（API）</strong> — <code>q_scope=primary</code> でタグ・シリーズ名・別名、<code>q_scope=full</code> でアビリティ／スキル／武装テキストも対象。<br><strong>ヒント</strong> — <code>series:msg</code> は初代『機動戦士ガンダム』のみ。</div>',whats_new_title:'最新情報',whats_new_btn:'最新情報',whats_new_empty:'更新内容はまだありません。',whats_new_date:'日付:',whats_new_changes:'変更:',whats_new_added:'追加:',whats_new_close:'閉じる',search_spotlight_title:'検索',search_spotlight_close:'閉じる',search_spotlight_empty:'一致する項目がありません',per_page:'/ページ',view_grid:'グリッド表示',view_table:'テーブル表示',count_char:'人',count_unit:'機',count_supporter:'人',count_stage:'ステージ',count_mod:'件',lr_type_unit:'ユニット',lr_type_char:'キャラクター',lr_type_supp:'サポーター',lr_empty:'ガシャ予定はありません。',lr_empty_recent:'直近3か月の登場予定はありません。',lr_load_more:'すべて表示',lr_lock_title:'最新登場',lr_lock_hint:'開始前プレビューにはパスワードを入力してください。',lr_unlock_btn:'解除',lr_section_locked:'このガシャはまだ開始前です。パスワードを入力してラインナップを表示します。',lr_pw_wrong:'パスワードが違います。',er_stage_lock_hint:'パスワードを入力するとステージの詳細（マップ・NPC・出撃制限など）を表示します。',er_stage_unlock_btn:'解除',er_stage_pw_wrong:'パスワードが違います。',er_stage_locked_badge:'ロック',er_stage_lock_wait:'開催開始時刻になると自動で解放されます。',er_stage_redacted_row:'非公開',er_stage_redacted_title:'非公開ステージ',mod_filter_effect:'効果',mod_filter_effect_atk:'攻撃 ↑',mod_filter_effect_def:'防御 ↑',mod_filter_effect_mob:'機動 ↑',mod_filter_effect_other:'その他 (命中 / 回避 / 会心 ...)',empty_mod:'改造パーツが見つかりません',empty_char:'キャラクターが見つかりません',empty_unit:'ユニットが見つかりません',empty_supporter:'サポーターが見つかりません',empty_stage:'ステージが見つかりません',col_name:'名前',col_rarity:'レアリティ',col_role:'タイプ',col_series_tag:'シリーズ / タグ',col_boost:'補正',col_ranged:'射撃',col_melee:'格闘',col_awaken:'覚醒',col_defense:'守備',col_reaction:'反応',col_atk:'攻撃',col_def:'防御',col_mob:'機動',col_mov:'移動',col_stage_diff:'難易度',col_stage_no:'No.',col_stage_cp:'推奨戦力',col_stage_terrain:'地形',col_details:'詳細',sec_stats:'ステータス',sec_terrain:'地形適性',sec_abilities:'アビリティ',sec_skills:'スキル',sec_leader_skill:'リーダースキル',sec_active_skills:'サポートスキル',sec_weapons:'武装',sec_weapon_list:'武装一覧',sec_mechanism:'ギミック',sec_sortie_restrictions:'出撃制限',sec_stage_map:'ステージマップ',sec_npc_details:'NPC情報',stage_npc_friendly_tab:'味方NPC',stage_npc_enemy_tab:'敵ユニット',wp_weapon:'武装',wp_type:'タイプ',wp_range:'射程',wp_power:'威力',wp_acc:'命中',wp_crit:'会心',wp_ammo:'弾数',role_attack:'攻撃型',role_defense:'耐久型',role_support:'支援型',role_all:'全タイプ',rarity_all:'全レアリティ',rarity_none_selected:'未選択',role_filter_attack:'攻撃型のみ',role_filter_defense:'耐久型のみ',role_filter_support:'支援型のみ',conditional_passive:'条件付きパッシブ',conditional_passive_abbr:'CP',char_data:'キャラクターデータ',unit_data:'ユニットデータ',unit_transform_title:'形態を切り替え',rec_char_shortcut:'キャラ',rec_unit_shortcut:'ユニット',limited_label:'限定',rarity_exclude_limited:'限定を除く',supp_data:'サポーターデータ',stage_data:'ステージデータ',view_effect_range:'効果範囲を表示',map_legend_use:'使用位置',map_legend_sel:'選択位置',map_legend_range:'射程',map_legend_effect:'効果範囲',map_effect_theme_dark:'ダーク／高コントラスト：枠線＋空マスを反転',map_effect_theme_light:'ライト：元のマップタイル（既定）',view_stage_map:'マップ表示',hide_stage_map:'マップ非表示',supply_type:'補給タイプ:',hp_support:'HP支援',atk_support:'攻撃支援',tag_or:' または ',tag_results_unit:'タグ一致ユニット:',tag_results_char:'タグ一致キャラクター:',series_results_unit:'シリーズ内ユニット:',series_results_char:'シリーズ内キャラクター:',char_with_skill:'このスキルを持つキャラクター:',char_with_ability:'このアビリティを持つキャラクター:',unit_with_ability:'このアビリティを持つユニット:',sortie_group:'出撃グループ',applies_to:'適用対象',recommended_cp:'推奨戦力',terrain:'地形',victory_conditions:'勝利条件',defeat_conditions:'敗北条件',none:'なし',npc_unit:'NPCユニット',npc_character:'NPCキャラクター',npc_unit_abilities:'ユニットアビリティ',npc_unit_weapons:'ユニット武装',npc_character_abilities:'キャラクターアビリティ',npc_character_skills:'キャラクタースキル',difficulty_normal:'通常',difficulty_hard:'ハード',difficulty_expert:'エキスパート',filter_diff_all:'全難易度',filter_diff_normal:'通常',filter_diff_hard:'ハード',filter_diff_expert:'エキスパート',filter_source:'入手元',filter_source_all:'すべて',browse_filters_clear:'クリア',filter_source_assembly:'ユニット補給',filter_source_development:'開発ユニット',filter_source_other:'その他',filter_source_assembly_char:'ユニット補給キャラ',filter_source_development_char:'スカウト / ストーリー',list_filter_lineage:'タグ / 系譜',list_filter_lineage_multi:'{n}件のタグ',list_filter_series:'シリーズ',list_filter_series_multi:'シリーズ {n}件',list_filter_skill:'スキル',list_filter_ability:'アビリティ',list_filter_all_skills:'すべてのスキル',list_filter_all_abilities:'すべてのアビリティ',list_filter_ability_char:'アビリティ',list_filter_all_abilities_char:'すべてのアビリティ',list_filter_search_placeholder:'フィルター検索…',series_filter_all_brand:'機動戦士ガンダム',ally:'味方',enemy:'敵',cmp_compare:'比較',cmp_unit_compare:'ユニット比較',cmp_char_compare:'キャラクター比較',cmp_stats:'ステータス比較',cmp_radar:'レーダーチャート',cmp_terrain:'地形適性',cmp_weapons:'武装比較',cmp_reset:'比較をリセット',cmp_remove:'削除',cmp_add_unit:'+ ユニット追加',cmp_add_char:'+ キャラ追加',cmp_search_unit:'ユニット検索...',cmp_search_char:'キャラ検索...',cmp_type_to_search:'入力して検索...',cmp_clear:'クリア',cmp_selected:'選択中',cmp_abilities:'アビリティ',cmp_skills:'スキル',cmp_lb:'限界突破',dc_title:'ダメージシミュレーター',dc_atk_label:'自ユニット (攻撃側)',dc_def_label:'NPC目標 (防御側)',dc_atk_params_section:'攻撃側パラメータ',dc_def_params_section:'防御側パラメータ',dc_panel_attacker_heading:'攻撃側',dc_panel_defender_heading:'防御側（ターゲット）',dc_pick_unit:'ユニット選択',dc_defender_status:'防御側ステータス',dc_def_stats_map_note:'数値はマップ／チームボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_def_char_stats_note:'数値はパッシブ能力のボーナス込み（ステージ詳細と同じ）。緑の (+n) が加算分です。',dc_pick_char:'キャラ選択',dc_change:'変更',dc_select_npc:'-- NPCを選択 --',dc_distance:'距離',dc_range_check:'射程判定',dc_terrain:'地形 %',dc_mp_level:'MPレベル',dc_vigor_prefix:'テンション',dc_vigor_medium:'通常',dc_vigor_high:'強勢',dc_vigor_max:'超強勢',dc_vigor_super:'超一撃',dc_vigor_dmg_bonus_sub:'+{pct}%（{label}・上記およびダメージに含む）',dc_defend:'防御行動',dc_shield:'シールド',dc_on:'ON',dc_off:'OFF',dc_normal_dmg:'通常ダメージ',dc_crit_dmg:'会心ダメージ',dc_super_crit_dmg:'超会心ダメージ',dc_hp_remaining_super_crit:'残りHP（超会心）',dc_final_dmg:'最終ダメージ',dc_crit_final_dmg:'会心時最終ダメージ',dc_hp_remaining:'残りHP',dc_hit_rate:'命中率',dc_hp_remaining_normal:'残りHP（通常）',dc_hp_remaining_crit:'残りHP（会心）',dc_in_range:'射程内',dc_out_range:'射程外',dc_select_both:'攻撃側と防御側を選択してください',dc_unit_stats:'ユニットステータス',dc_char_stats:'キャラステータス',dc_weapon:'武器',dc_wpn_level:'武器Lv',dc_lb_tier:'LB段階',dc_power:'威力',dc_range:'射程',dc_accuracy:'命中',dc_critical:'会心',dc_en_cost:'EN',supp_level:'レベル',supp_lb_tier:'LB段階',supp_formula:'式',tab_team_builder:'チーム編成',tb_front:'前衛',tb_rear:'後衛',tb_squad1:'小隊1',tb_squad2:'小隊2',tb_formation:'編成',tb_rearrange:'配置変更',tb_batch:'一括編成',tb_stats_hint:'MSステータスは「通常」MP基準（固定）。防御側・MP UIなし。改造パーツ・サポーター・マスターリーグ・搭乗ペア補正は反映。',tb_pick_supp:'タップでサポーター選択',tb_empty_stats:'ユニットがいるスロットを選んでください。',tb_squad_fill:'{n} / 10 機',tb_saved_formations:'保存した編成',tb_save:'保存',tb_load:'読込',tb_rearrange_banner:'2つのスロットをタップして入替',tb_linked_move:'機体とパイロットを一緒に移動',tb_cancel:'キャンセル',tb_confirm:'確定',tb_batch_title:'一括編成',tb_apply:'適用',tb_master_league:'マスターリーグ補正',tb_op_count:'OP×{n}'};
 T.JA=Object.assign({},T.EN,JP_CORE_LABELS);Object.assign(T.JA,{tab_banner_timeline:'ボディサプライ',bt_view_table:'表',bt_view_timeline:'タイムライン',bt_scroll_top:'ページ上部へ',bt_col_banner:'ボディサプライ',bt_col_featured:'ピックアップ',bt_col_units:'ピックアップ機体',bt_col_chars:'ピックアップキャラ',bt_col_supporters:'ピックアップサポーター',bt_col_start:'開始（JST）',bt_col_end:'終了（JST）',bt_col_duration:'期間',bt_empty:'データがありません。',bt_sort_start_hint:'クリックで開始日で並べ替え（▼ 新しい順 · ▲ 古い順）。'});Object.assign(T.JA,{whats_new_kind_unit_abilities:'ユニットアビリティ',whats_new_kind_unit_weapons:'武装',whats_new_kind_char_abilities:'キャラクターアビリティ',whats_new_slot:'枠',whats_new_before:'変更前',whats_new_after:'変更後',whats_new_tab_pending:'前回基準以降',whats_new_tab_manual:'メモ',whats_new_tab_empty:'この項目に変更はありません。',whats_new_select_period:'期間:',whats_new_manual_note:'メモ',whats_new_label_new_unit:'新規ユニット:',whats_new_label_new_char:'新規キャラクター:',whats_new_label_new_mod:'新規改造パーツ:',whats_new_label_new_supporter:'新規サポーター:',search_spotlight_foot:'Esc・外側クリック・✕ で閉じる',latest_gasha_title:'最新情報:',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',char_list_stat_tooltip:'常時パッシブ込みの合計値 (EX / 条件付きは除く)。シアンは基礎成長値より高い値です。',char_list_stat_base_hint:'基礎成長: {n}',char_grid_stat_ranged:'射',char_grid_stat_melee:'格',char_grid_stat_awaken:'覚',char_grid_stat_defense:'守',char_grid_stat_reaction:'反',col_hp:'HP',col_en:'EN',wp_en:'EN',stat_ranged:'射撃',stat_melee:'格闘',stat_awaken:'覚醒',stat_defense:'守備',stat_reaction:'反応',stat_hp:'HP',stat_en:'EN',stat_attack:'攻撃',stat_mobility:'機動',stat_move:'移動',terrain_space:'宇宙',terrain_atmo:'空中',terrain_ground:'地上',terrain_sea:'水上',terrain_underwater:'水中',unit_filter_weapon_debuff:'武装効果（一覧）',unit_filter_weapon_debuff_all:'すべての武装効果',unit_filter_weapon_debuff_multi:'武装効果 {n}種',unit_filter_mechanism:'ギミック',unit_filter_mechanism_all:'すべてのギミック',unit_filter_mechanism_multi:'ギミック {n}種',unit_filter_mechanism_tt:'複数ギミック: すべて一致（AND）。2×2はマスタのOccupiedAreaId=2（大型占有）のユニットに一致。詳細ページと同じ。',unit_filter_wb_atk_dn:'攻撃力ダウン',unit_filter_wb_def_dn:'防御力ダウン',unit_filter_wb_enemy_def_atk:'攻撃時の敵防御力低下',unit_filter_wb_mob_dn:'機動力ダウン',unit_filter_wb_acc_dn:'命中率ダウン',unit_filter_wb_eva_dn:'回避率ダウン',unit_filter_wb_dmg_phys:'物理ダメージ上昇',unit_filter_wb_dmg_beam:'ビームダメージ上昇',unit_filter_wb_dmg_spec:'特殊ダメージ上昇',unit_filter_wb_wp_phys:'物理武装威力ダウン',unit_filter_wb_wp_beam:'ビーム武装威力ダウン',unit_filter_wb_wp_spec:'特殊武装威力ダウン',unit_filter_wb_range_beam:'ビーム武装射程ダウン',unit_filter_wb_range_phys:'物理武装射程ダウン',unit_filter_wb_range_all:'全武装射程ダウン',unit_filter_wb_mp_1:'MP減少1',unit_filter_wb_mp_2:'MP減少2',unit_filter_wb_mp_3:'MP減少3',unit_filter_wb_preemptive:'先発攻撃',unit_filter_wb_map_weapon:'MAP武装',});T.JP=T.JA;T.EN.support_feedback_btn='Feedback';T.TW.support_feedback_btn='回饋';T.JA.support_feedback_btn='フィードバック';T.JP.support_feedback_btn='フィードバック';T.EN.npc_unlock_prompt='Enter NPC view password';T.EN.npc_unlock_wrong='Incorrect password.';T.TW.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.TW.npc_unlock_wrong='密碼錯誤。';T.JA.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JA.npc_unlock_wrong='パスワードが違います。';T.JP.npc_unlock_prompt='NPC閲覧パスワードを入力してください';T.JP.npc_unlock_wrong='パスワードが違います。';T.EN.jp_mode_unlock_prompt='Enter JP mode password';T.EN.jp_mode_unlock_wrong='Incorrect password.';T.TW.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.TW.jp_mode_unlock_wrong='密碼錯誤。';T.JA.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JA.jp_mode_unlock_wrong='パスワードが違います。';T.JP.jp_mode_unlock_prompt='JPモードのパスワードを入力してください';T.JP.jp_mode_unlock_wrong='パスワードが違います。';T.TW.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.unit_filter_wb_enemy_def_atk='攻擊時敵方防禦力減少（當次）';T.HK.support_feedback_btn='意見回饋';T.HK.npc_unlock_prompt='請輸入 NPC 檢視密碼';T.HK.npc_unlock_wrong='密碼錯誤。';T.HK.jp_mode_unlock_prompt='請輸入 JP 模式密碼';T.HK.jp_mode_unlock_wrong='密碼錯誤。';T.EN.support_kofi_btn='Support on Ko-fi';T.TW.support_kofi_btn='在 Ko-fi 支持';T.HK.support_kofi_btn='在 Ko-fi 支持';T.JA.support_kofi_btn='Ko-fiで支援';T.JP.support_kofi_btn='Ko-fiで支援';T.EN.support_alipayhk_btn='Support on AlipayHK';T.TW.support_alipayhk_btn='以 AlipayHK 支持';T.HK.support_alipayhk_btn='以 AlipayHK 支持';T.JA.support_alipayhk_btn='AlipayHKで支援';T.JP.support_alipayhk_btn='AlipayHKで支援';T.EN.support_alipayhk_modal_title='AlipayHK';T.TW.support_alipayhk_modal_title='AlipayHK';T.HK.support_alipayhk_modal_title='AlipayHK';T.JA.support_alipayhk_modal_title='AlipayHK';T.JP.support_alipayhk_modal_title='AlipayHK';T.EN.support_alipayhk_modal_hint='Scan the QR code with AlipayHK to pay HK$50.00.';T.TW.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.HK.support_alipayhk_modal_hint='請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。';T.JA.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';T.JP.support_alipayhk_modal_hint='AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。';
-Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_buff_section:'Squad buff',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',dc_squad_cond_manual_tip:'No auto binding for this pilot+unit pair: enter a % to model squad bonuses (ATK-only, max 100%).',dc_def_npc_squad_buff:'NPC squad buff',dc_def_npc_squad_buff_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',
+Object.assign(T.EN,{tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_buff_section:'Squad buff',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',dc_squad_cond_manual_tip:'No auto binding for this pilot+unit pair: enter a % to model squad bonuses (ATK-only, max 100%).',dc_squad_cond_flat_ad_chk:'Apply +%n%% MS ATK & DEF',dc_squad_cond_flat_ad_tip:'Flat MS ATK/DEF % in the same bucket as Squad conditions — on when this unit meets the passive receiver tags (e.g. NT-D).',dc_def_npc_squad_buff:'NPC squad buff',dc_def_npc_squad_buff_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',
 dc_def_npc_map_bonuses:'NPC squad buff',dc_def_npc_map_bonuses_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',tb_stats_hint_squad:' Squad tag passives (ATK stack or ATK+DEF) are applied from your formation when tags match.',dc_wpn_trait_effects:'Weapon power from effects',dc_wpn_trait_dist:'Distance scaling',dc_wpn_trait_custom_core:'Custom Core (SSP)',dc_wpn_trait_hp:'HP scaling',dc_wpn_trait_mp:'MP / battle-start scaling',dc_wpn_trait_max_applied:'max, applied automatically in damage',dc_wpn_trait_ssp_hint:'Turn on SSP (unit mode) to apply Custom Core weapon effect lines.',dc_wpn_trait_lines:'Trait:',dc_wpn_trait_override_note:'Final weapon power override is on; breakdown below is the auto trait math (not used for damage).'});
-Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋機體無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',
+Object.assign(T.TW,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋機體無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 機體攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',
 dc_def_npc_map_bonuses:'NPC 小隊加成',dc_def_npc_map_bonuses_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_max_applied:'已套用上限（傷害計算）',dc_wpn_trait_ssp_hint:'請在上方將機體模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（傷害計算未使用）。'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋機體無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'改造零件',tb_op_swap:'更換改造零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此機體的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換機體',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的改造零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（機體與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於機體面板數值（HP、攻擊、防禦、機動），計算順序與改造與隊長技能相同；不含 EN 與移動。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／機體被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋機體無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 機體攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',
 dc_def_npc_map_bonuses:'NPC 小隊加成',dc_def_npc_map_bonuses_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此機體與其駕駛員自己的被動保留（含此機體上的「小隊」敘述）。影響 HP、EN、攻擊、防禦、機動、移動的顯示與傷害／命中。駕駛員面板仍僅依該駕駛員被動。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊堆疊或攻擊+防禦）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_max_applied:'已套用上限（傷害計算）',dc_wpn_trait_ssp_hint:'請在上方將機體模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（傷害計算未使用）。'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。',dc_squad_buff_section:'分隊補正',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',dc_squad_cond_manual_tip:'自動判定できない組み合わせ：分隊補正を手動で入力（攻撃のみ、最大100%）。',dc_def_npc_squad_buff:'NPC分隊バフ',dc_def_npc_squad_buff_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃・防御・機動・移動の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃・防御・機動）に適用されます（OP・リーダー等と同じ計算順）。EN・移動には適用されません。',dc_squad_buff_section:'分隊補正',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',dc_squad_cond_manual_tip:'自動判定できない組み合わせ：分隊補正を手動で入力（攻撃のみ、最大100%）。',dc_squad_cond_flat_ad_chk:'ユニット攻撃・防御 +%n%%',dc_squad_cond_flat_ad_tip:'「分隊条件」と同じ枠での扁平補正。受動の付与標準（NT-D など）を満たす機体のみ。',dc_def_npc_squad_buff:'NPC分隊バフ',dc_def_npc_squad_buff_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃・防御・機動・移動の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',
 dc_def_npc_map_bonuses:'NPC分隊バフ',dc_def_npc_map_bonuses_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃・防御・機動・移動の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',tb_stats_hint_squad:' タグが一致する分隊被動（攻撃の積み上げまたは攻防）は編成から自動反映されます。',dc_wpn_trait_effects:'武装威力（効果による加算）',dc_wpn_trait_dist:'距離による加算',dc_wpn_trait_custom_core:'カスタムコア（SSP）',dc_wpn_trait_hp:'残りHPによる加算',dc_wpn_trait_mp:'MP／戦闘開始時による加算',dc_wpn_trait_max_applied:'上限まで自動反映（ダメージ計算）',dc_wpn_trait_ssp_hint:'カスタムコアの武装効果を反映するには、上の機体モードをSSPにしてください。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'最終武装威力を上書き中です。以下は自動計算の特効内訳（ダメージには反映されません）。'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'守備','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃','Mobility':'機動','Move':'移動'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
@@ -2243,7 +2243,7 @@ function _dcWriteAttackerToDc(slot){
 if(!slot)return;
 if(slot._dcSquadCondShareMissing&&slot.atkCharData&&slot.atkUnitData){
 slot._dcSquadCondShareMissing=0;
-if(_dcCharShouldShowSquadCondUi(slot.atkCharData,slot.atkUnitData))slot.squadCondPct=_dcSquadCondInputCap(slot.atkCharData,slot.atkUnitData);
+if(_dcCharShouldShowSquadCondUi(slot.atkCharData,slot.atkUnitData))slot.squadCondPct=_dcDefaultSquadCondPctForCdUd(slot.atkCharData,slot.atkUnitData);
 }
 S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
@@ -3540,6 +3540,11 @@ return Object.assign({},d,{leader_skills:ls});
 }
 const TB_PLUS_EX_SQUAD_UNIT_ID='1095002550';
 const TB_QUBELEY_ZZ_PILOT_ID='1095001801';
+/** Phenex (unit 1144000550): unique squad passive — each deployed copy whose pilot satisfies condition 1 grants +5% ATK & +5% DEF (sheet) to units with this passive’s receiver tag (condition 2, e.g. NT-D); stacks once per Phenex MS in the squad (max five slots ⇒ 25% each). Pilot IDs that currently satisfy condition 1 in roster data: 1144000100, 1144000102, 1144000101, 1144000500 — so typical max stacks today are four (20%); game updates may raise this toward the five-slot cap. */
+const PHENEX_STACK_UNIT_ID='1144000550';
+const PHENEX_SQUAD_FLAT_AD_PER_STACK_PCT=5;
+const PHENEX_SQUAD_FLAT_AD_MAX_STACKS=5;
+const PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT=PHENEX_SQUAD_FLAT_AD_PER_STACK_PCT*PHENEX_SQUAD_FLAT_AD_MAX_STACKS;
 /** All five slots; each MS with Neo Zeon counts once (4% each, cap 20%), including the piloted Qubeley when it bears that tag. */
 function _tbNeoZeonUnitCountInSquad(side){
 const squ=S.tb.squads[side|0];
@@ -3629,9 +3634,15 @@ m=t.match(/自身攻擊力提升(\d+)%（最高(\d+)%）/);
 if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
 m=t.match(/increases ATK and DEF by (\d+)%/i);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
+m=t.match(/(?:also\s+)?(?:grant|grants)\s+\+(\d+)%\s+ATK\s+and\s+DEF/i);
+if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
+m=t.match(/\+(\d+)%\s+ATK\s+and\s+DEF/i);
+if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/gain increased ATK and DEF (\d+)%/i);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/攻撃力と防御力(\d+)%アップ/);
+if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
+m=t.match(/攻擊力與防禦力提升(\d+)/);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/攻擊力、防禦力提升(\d+)%/);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
@@ -3722,17 +3733,71 @@ if(u2&&!u2._manual&&_dcUnitMeetsAbilityConditionGroups(u2,[group]))n++;
 }
 return n;
 }
-function _tbComputeSquadConditionSheetPcts(sl,side){
+/** Phenex unique ability: cross-slot aura from 1144000550; stacking capped PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT in team builder. */
+function _tbPhenexUniqueEligibleCarrierCountForReceiver(slRecv,side){
+const squ=S.tb.squads[side|0];
+if(!squ)return 0;
+const udR=slRecv&&slRecv.unitData;
+const cdR=slRecv&&slRecv.charData;
+if(!udR||udR._manual)return 0;
+let n=0;
+for(let i=0;i<5;i++){
+const car=squ.slots[i];
+const udC=car&&car.unitData;
+const cdC=car&&car.charData;
+if(!udC||udC._manual||String(udC.id)!==PHENEX_STACK_UNIT_ID)continue;
+const ok=_tbWithSlotDcStatModes(car,()=>{
+const b=_scFindSquadConditionBinding(cdC,udC);
+if(!b||b.kind!=='flat_ad'||b.flatPerUnit)return false;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))return false;
+return _dcSquadRecvGroupMet(udR,cdR,b.recvGroup);
+});
+if(ok)n++;
+}
+return n;
+}
+function _tbCarrierFlatAdAuraSheetPct(slCarrier,slReceiver,side){
+const cdC=slCarrier.charData;
+const udC=slCarrier.unitData;
+const udR=slReceiver.unitData;
+const z={atk:0,def:0};
+if(!udC||udC._manual||!udR||udR._manual)return z;
+if(_scIsQubeleyExCombo(cdC,udC))return z;
+return _tbWithSlotDcStatModes(slCarrier,()=>{
+const b=_scFindSquadConditionBinding(cdC,udC);
+if(!b||b.kind!=='flat_ad'||b.flatPerUnit)return z;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))return z;
+const cdR=slReceiver.charData;
+if(!_dcSquadRecvGroupMet(udR,cdR,b.recvGroup))return z;
+const p=b.flatPct|0;
+return{atk:p,def:p};
+});
+}
+function _tbComputeExternalFlatAdSquadPctForSlot(sl,side){
+const ud=sl&&sl.unitData;
+if(!ud||ud._manual)return{atk:0,def:0};
+const squ=S.tb.squads[side|0];
+if(!squ)return{atk:0,def:0};
+let atk=0,def=0;
+for(let i=0;i<5;i++){
+const car=squ.slots[i];
+if(!car||car===sl)continue;
+const patch=_tbCarrierFlatAdAuraSheetPct(car,sl,side);
+atk+=patch.atk|0;def+=patch.def|0;
+}
+return{atk,def};
+}
+function _tbLocalSquadConditionSheetPcts(sl,side){
 const cd=sl.charData,ud=sl.unitData;
 const z={atk:0,def:0};
 if(!ud||ud._manual||_scIsQubeleyExCombo(cd,ud))return z;
 return _tbWithSlotDcStatModes(sl,()=>{
 const b=_scFindSquadConditionBinding(cd,ud);
 if(!b)return z;
-if(b.pilotGroups&&b.pilotGroups.length&&!_dcUnitMeetsAbilityConditionGroups(ud,b.pilotGroups))return z;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups))return z;
 if(b.kind==='flat_ad'){
 const rg=b.recvGroup;
-if(rg&&((rg.conditions||[]).length)&&!_dcUnitMeetsAbilityConditionGroups(ud,[rg]))return z;
+if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return z;
 if(b.flatPerUnit){
 if(!rg||!((rg.conditions||[]).length))return z;
 const n=_tbCountSquadUnitsMatchingGroup(side,rg);
@@ -3748,6 +3813,17 @@ return{atk:Math.min(b.max|0,(b.perUnit|0)*n),def:0};
 }
 return z;
 });
+}
+function _tbComputeSquadConditionSheetPcts(sl,side){
+const loc=_tbLocalSquadConditionSheetPcts(sl,side);
+const ext=_tbComputeExternalFlatAdSquadPctForSlot(sl,side);
+let atk=(loc.atk|0)+(ext.atk|0),def=(loc.def|0)+(ext.def|0);
+const phenN=_tbPhenexUniqueEligibleCarrierCountForReceiver(sl,side);
+if(phenN>0&&atk===def){
+atk=Math.min(PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT,atk);
+def=Math.min(PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT,def);
+}
+return{atk,def};
 }
 function _tbUnitAllowsSpSsp(ud){
 if(!ud||ud._manual)return false;
@@ -5083,12 +5159,25 @@ if(!cd||cd._manual||!ud||ud._manual)return false;
 if(_scIsQubeleyExCombo(cd,ud))return false;
 const b=_scFindSquadConditionBinding(cd,ud);
 if(!b)return false;
-if(b.pilotGroups&&b.pilotGroups.length&&!_dcUnitMeetsAbilityConditionGroups(ud,b.pilotGroups))return false;
-if(b.kind==='flat_ad'){
-const rg=b.recvGroup;
-if(rg&&((rg.conditions||[]).length)&&!_dcUnitMeetsAbilityConditionGroups(ud,[rg]))return false;
-}
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups))return false;
 return true;
+}
+function _dcSquadRecvGroupMet(ud,cd,rg){
+if(!rg)return true;
+const conds=rg.conditions||[];
+if(!conds.length)return true;
+return _dcAbilityCondContextMeetsGroups(ud,cd,[rg]);
+}
+/** Phenex unique squad flat ATK+DEF (see PHENEX_* constants); null if this pair is not that binding. */
+function _dcPhenexUniqueSquadFlatAdBinding(cd,ud){
+const b=_scFindSquadConditionBinding(cd,ud);
+if(!b||b.kind!=='flat_ad'||b.flatPerUnit)return null;
+if(!ud||ud._manual||String(ud.id)!==PHENEX_STACK_UNIT_ID)return null;
+return b;
+}
+function _dcSquadFlatAdSingleBinding(cd,ud){
+const b=_scFindSquadConditionBinding(cd,ud);
+return b&&b.kind==='flat_ad'&&!b.flatPerUnit?b:null;
 }
 function _dcSlotShouldPackSquadCond(sl){
 if(!sl||!sl.atkUnit||!sl.atkChar||sl.atkUnit==='__manual__'||sl.atkChar==='__manual__')return false;
@@ -5097,7 +5186,19 @@ return!!(sl.atkCharData&&!sl.atkCharData._manual&&sl.atkUnitData&&!sl.atkUnitDat
 function _dcSquadCondInputCap(cd,ud){
 const b=_scFindSquadConditionBinding(cd,ud);
 if(!b)return 0;
+if(_dcPhenexUniqueSquadFlatAdBinding(cd,ud))return PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT;
 return(b.inputCap!=null?b.inputCap:(b.kind==='flat_ad'?b.flatPct:b.max))|0;
+}
+function _dcDefaultSquadCondPctForCdUd(cd,ud){
+if(!_dcCharShouldShowSquadCondUi(cd,ud))return 0;
+const b=_scFindSquadConditionBinding(cd,ud);
+if(b&&b.kind==='flat_ad'){
+const rg=b.recvGroup;
+if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return 0;
+}
+const phen=_dcPhenexUniqueSquadFlatAdBinding(cd,ud);
+if(phen)return phen.flatPct|0;
+return _dcSquadCondInputCap(cd,ud);
 }
 function _dcSyncSquadCondEffectiveFromState(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
@@ -5107,10 +5208,10 @@ if(!ud||ud._manual||!cd||cd._manual||_scIsQubeleyExCombo(cd,ud))return;
 const raw=Math.max(0,S.dc.squadCondPct|0);
 const b=_scFindSquadConditionBinding(cd,ud);
 if(b){
-if(b.pilotGroups&&b.pilotGroups.length&&!_dcUnitMeetsAbilityConditionGroups(ud,b.pilotGroups))return;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups))return;
 if(b.kind==='flat_ad'){
 const rg=b.recvGroup;
-if(rg&&((rg.conditions||[]).length)&&!_dcUnitMeetsAbilityConditionGroups(ud,[rg]))return;
+if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return;
 }
 const cap=_dcSquadCondInputCap(cd,ud);
 const v=Math.min(Math.max(0,cap),raw);
@@ -5159,11 +5260,15 @@ const wrap=document.getElementById('dcSquadCondWrap');
 const inp=document.getElementById('dcSquadCondPct');
 const tip=document.getElementById('dcSquadCondTip');
 const rg=document.getElementById('dcSquadCondRange');
+const flatW=document.getElementById('dcSquadCondFlatAdWrap');
+const flatLb=document.getElementById('dcSquadCondFlatAdLbl');
+const flatCb=document.getElementById('dcSquadCondFlatAdApply');
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!wrap||!inp){return}
 const showPair=!!(ud&&cd&&!ud._manual&&!cd._manual);
 if(!showPair){
 wrap.style.display='none';
+if(flatW)flatW.style.display='none';
 if(tip)tip.textContent=t('dc_squad_cond_label');
 return;
 }
@@ -5186,6 +5291,11 @@ const v=S.dc.squadCondPct|0;
 const disp=v>0?String(v):'';
 if(String(inp.value)!==disp)inp.value=disp;
 }
+if(flatW&&flatLb&&flatCb){
+const bf=qual?_dcSquadFlatAdSingleBinding(cd,ud):null;
+flatW.style.display=bf?'':'none';
+if(bf){flatLb.textContent=t('dc_squad_cond_flat_ad_chk').replace('%n',String(bf.flatPct|0));flatLb.title=t('dc_squad_cond_flat_ad_tip');flatCb.checked=(S.dc.squadCondPct|0)>0}
+}else if(flatW)flatW.style.display='none';
 _dcUpdateDefNpcMapBonusesToggleUi();
 }
 function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.dc);}
@@ -5239,7 +5349,7 @@ const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;
 S.dc.wpnLv=_bw.wpnLv;
 _dcDetectVigorCondAbilities(d);
-if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcSquadCondInputCap(S.dc.atkCharData,S.dc.atkUnitData);
+if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
 else S.dc.squadCondPct=0;
 S.dc.optionParts=[];S.dc.supporters=[];
 renderDcAtkUnit();
@@ -5628,25 +5738,32 @@ if(_dcResolvedUnitAbilityGrantsAwakenFloor900(r))return true;
 return false;
 }
 
-/** Match API condition_groups: each group is AND; within a group every condition must match (unit tags, series, etc.). */
-function _dcUnitMeetsAbilityConditionGroups(ud,condGroups){
+/** Match API condition_groups: pilot-scoped checks use cd (series, char tags); MS-scoped use ud (unit_tags, unit series). See unit 1144000550 / ability 1015401 (character_series + char_tags / unit_tags recv). */
+function _dcAbilityCondContextMeetsGroups(ud,cd,condGroups){
 if(!condGroups||!condGroups.length)return true;
-if(!ud)return false;
-const tagIds=new Set((ud.tags||[]).map(t=>String(t.id)));
-const seriesIds=new Set((ud.series||[]).map(s=>String(s.id)));
+const ut=new Set((ud&&ud.tags||[]).map(t=>String(t&&t.id)));
+const usr=new Set((ud&&ud.series||[]).map(s=>String(s&&s.id)));
+const ct=new Set((cd&&cd.tags||[]).map(t=>String(t&&t.id)));
+const csr=new Set((cd&&cd.series||[]).map(s=>String(s&&s.id)));
 return condGroups.every(grp=>{
 const conds=grp.conditions||[];
 if(!conds.length)return true;
 return conds.every(c=>{
-const id=String(c.id);
+const id=String(c&&c.id);
 const src=String(c.source||'');
-if(src==='unit_tags'||c.type==='unit')return tagIds.has(id);
-if(src==='series'||c.type==='series')return seriesIds.has(id);
-if(src==='group_tags')return tagIds.has(id);
-if(src==='char_tags')return tagIds.has(id);
+const typ=String(c.type||'');
+if(src==='character_series')return !!(cd&&csr.has(id));
+if(src==='char_tags'||typ==='character')return !!(cd&&ct.has(id));
+if(src==='unit_tags'||src==='group_tags')return !!(ud&&ut.has(id));
+if(typ==='unit')return !!(ud&&ut.has(id));
+if(typ==='series'&&src)return src==='character_series'?!!(cd&&csr.has(id)):!!(ud&&usr.has(id));
+if(src==='series'||typ==='series')return !!(ud&&usr.has(id));
 return false;
 });
 });
+}
+function _dcUnitMeetsAbilityConditionGroups(ud,condGroups){
+return _dcAbilityCondContextMeetsGroups(ud,null,condGroups);
 }
 function _dcCharIsAttackRole(cd){return String(cd&&cd.role_id||'')==='1'}
 function _dcCharIsSupportRole(cd){return String(cd&&cd.role_id||'')==='3'}
@@ -5723,7 +5840,7 @@ const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
 let condMet=false;
-if(hasCond)condMet=_dcUnitMeetsAbilityConditionGroups(ud,condGroups);
+if(hasCond)condMet=_dcAbilityCondContextMeetsGroups(ud,cd,condGroups);
 const isUnmet=hasCond&&!condMet;
 const spCharGate=src==='char'&&_dcPilotAbilitySpCharGateContext(resolved,li,txt);
 let m;
@@ -6003,7 +6120,7 @@ if(!m)return;
 const v=parseInt(m[1],10);
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
-const condMet=!hasCond||_dcUnitMeetsAbilityConditionGroups(ud,condGroups);
+const condMet=!hasCond||_dcAbilityCondContextMeetsGroups(ud,cd,condGroups);
 if(condMet)totalMp+=v;
 });
 });
@@ -6705,6 +6822,21 @@ document.getElementById('dcShieldOff').classList.toggle('active',!v);
 document.getElementById('dcShieldOn').classList.toggle('active',v);
 onDcParamChange();
 }
+function toggleDcSquadCondFlatAdApply(){
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+const bf=_dcCharShouldShowSquadCondUi(cd,ud)&&_dcSquadFlatAdSingleBinding(cd,ud);
+const cb=document.getElementById('dcSquadCondFlatAdApply');
+const inp=document.getElementById('dcSquadCondPct');
+if(!bf||!cb||!inp)return;
+const cap=_dcSquadCondInputCap(cd,ud);
+
+
+if(cb.checked){
+const phen=_dcPhenexUniqueSquadFlatAdBinding(cd,ud);
+const v=phen?(phen.flatPct|0):Math.max(0,cap|0);
+inp.value=String(v);S.dc.squadCondPct=v;}else{S.dc.squadCondPct=0;inp.value='0'}
+onDcParamChange();
+}
 function setDcSupportCounterAtk(v){
 S.dc.supportCounterAtk=!!v;
 const off=document.getElementById('dcAtkSupportCounterOff');
@@ -6722,7 +6854,18 @@ S.dc.critDmgUp=parseInt(document.getElementById('dcCritDmgUp')?.value)||0;
 {let v=0;let exZ=false;if(_dcCharHasExSquadSynergyAbility(S.dc.atkCharData,S.dc.atkUnitData)){const el=document.getElementById('dcExSquadAtkPct');const rawStr=el?String(el.value).trim():'';if(rawStr==='0'){v=0;exZ=true}else if(rawStr!==''){const raw=parseInt(rawStr,10);v=Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0}else if(_scIsQubeleyExCombo(S.dc.atkCharData,S.dc.atkUnitData))v=20;else v=0}S.dc.exSquadAtkPct=v;S.dc.exSquadAtkPctExplicitZero=exZ;const el=document.getElementById('dcExSquadAtkPct');if(el&&String(el.value).trim()===''&&v>0)el.value=String(v)}
 const _prevScEffAtk=S.dc.squadCondAtkPct|0,_prevScEffDef=S.dc.squadCondDefPct|0;
 {const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;const el=document.getElementById('dcSquadCondPct');
-if(ud&&!ud._manual&&cd&&!cd._manual&&el){const rawStr=String(el.value).trim();if(rawStr==='')S.dc.squadCondPct=0;else{const raw=parseInt(rawStr,10);S.dc.squadCondPct=Number.isFinite(raw)?Math.max(0,raw):0}}else S.dc.squadCondPct=0}
+const bfBind=_dcCharShouldShowSquadCondUi(cd,ud)&&_dcSquadFlatAdSingleBinding(cd,ud);
+const flatCb=document.getElementById('dcSquadCondFlatAdApply');
+
+
+if(ud&&!ud._manual&&cd&&!cd._manual&&el){
+let rawPct=0;const rawStr=String(el.value).trim();
+
+
+if(rawStr!==''){const rx=parseInt(rawStr,10);if(Number.isFinite(rx))rawPct=Math.max(0,rx)}
+if(bfBind&&flatCb&&!flatCb.checked)rawPct=0;
+S.dc.squadCondPct=rawPct;
+}else S.dc.squadCondPct=0}
 _dcSyncSquadCondEffectiveFromState();
 {const c=document.getElementById('dcDefNpcMapBonusesOn');if(c)S.dc.defNpcMapBonusesOn=!!c.checked}
 const _sqPanelChg=_prevScEffAtk!==(S.dc.squadCondAtkPct|0)||_prevScEffDef!==(S.dc.squadCondDefPct|0);
@@ -6938,7 +7081,7 @@ S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.charCondPassi
 S.dc.supporters=[];
 }
 _dcAutoSetVigor();
-if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcSquadCondInputCap(S.dc.atkCharData,S.dc.atkUnitData);
+if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
 else S.dc.squadCondPct=0;
 renderDcAtkUnit();renderDcAtkChar();
 renderDcOptionParts();renderDcSupporters();
