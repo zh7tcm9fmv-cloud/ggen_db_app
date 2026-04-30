@@ -1865,20 +1865,14 @@ def _is_official_ex_slot_umbrella_title(ab_name):
 
 
 def is_ex_character_ability_rename(ab_name):
-    """Replace long tag-style titles with short EX slot label. Never replace official umbrella names from master."""
+    """Rename only true EX-slot *wording* from master (see EX_ABILITY_PATTERNS), not conditioned-trait prefixes.
+
+    m_trait_set_detail names like \"(Tag conditions) Support Attack LV 1\" are full in-game titles; they must stay
+    verbatim. The old \"(tag conditions) substring\" shortcut incorrectly collapsed those to ``EX ability``.
+    """
     if _is_official_ex_slot_umbrella_title(ab_name):
         return False
-    if is_ex_ability(ab_name):
-        return True
-    raw = ab_name or ''
-    low = raw.lower()
-    if '(tag conditions)' in low:
-        return True
-    if '標籤條件' in raw or '标签条件' in raw:
-        return True
-    if 'タグ条件' in raw:
-        return True
-    return False
+    return bool(ab_name and is_ex_ability(ab_name))
 
 
 def ability_details_imply_ex_piloting_ex_unit(details):
