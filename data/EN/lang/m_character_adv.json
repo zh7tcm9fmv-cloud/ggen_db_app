@@ -1,9 +1,5 @@
 [
   {
-    "id": 100200001370000202,
-    "value": "One of Celestial Being's Gundam Meisters.\nAn expert marksman capable of sniping an orbital target from the ground, Lockon is the Meister of Gundam Dynames, which resides aboard the Ptolemaios.\nTerrorists killed his parents 10 years ago, causing him to have a strong hatred of terrorism. This eventually led to him becoming a member of Celestial Being, which seeks to eliminate conflict.\nA cheerful and caring young man, he frequently helps support the other members of Celestial Being as something of a big brother figure, particularly the oft-troubled Setsuna F. Seiei.\nLockon Stratos is just his codename within Celestial Being; his real name is Neil Dylandy."
-  },
-  {
     "id": 100400001001000100,
     "value": "Amuro Ray"
   },
@@ -1218,6 +1214,42 @@
   {
     "id": 100400001144000100,
     "value": "Jona Basta"
+  },
+  {
+    "id": 100400001144000101,
+    "value": "Jona Basta"
+  },
+  {
+    "id": 100400001144000102,
+    "value": "Jona Basta"
+  },
+  {
+    "id": 100400001144000200,
+    "value": "Zoltan Akkanen"
+  },
+  {
+    "id": 100400001144000201,
+    "value": "Zoltan Akkanen"
+  },
+  {
+    "id": 100400001144000300,
+    "value": "Ellic Yugo"
+  },
+  {
+    "id": 100400001144000301,
+    "value": "Ellic Yugo"
+  },
+  {
+    "id": 100400001144000400,
+    "value": "Iago Haakana"
+  },
+  {
+    "id": 100400001144000500,
+    "value": "Mysterious Pilot"
+  },
+  {
+    "id": 100400001144000600,
+    "value": "Michele Luio"
   },
   {
     "id": 100400001150000100,
@@ -2481,6 +2513,10 @@
   },
   {
     "id": 100400001370000201,
+    "value": "Lockon Stratos"
+  },
+  {
+    "id": 100400001370000202,
     "value": "Lockon Stratos"
   },
   {
@@ -4148,6 +4184,10 @@
     "value": "Koo Sea"
   },
   {
+    "id": 100400001850003600,
+    "value": "Aplodia"
+  },
+  {
     "id": 100400002001000001,
     "value": "Zenna Zabi"
   },
@@ -4502,6 +4542,42 @@
   {
     "id": 100400002125000500,
     "value": "Londo Bell Soldier"
+  },
+  {
+    "id": 100400002144000001,
+    "value": "Abayev"
+  },
+  {
+    "id": 100400002144000003,
+    "value": "Fransson"
+  },
+  {
+    "id": 100400002144000004,
+    "value": "Brick Teclato"
+  },
+  {
+    "id": 100400002144000005,
+    "value": "Michele & Rita"
+  },
+  {
+    "id": 100400002144000100,
+    "value": "Republic of Zeon Soldier"
+  },
+  {
+    "id": 100400002144000200,
+    "value": "Neo Zeon Soldier"
+  },
+  {
+    "id": 100400002144000300,
+    "value": "Michele Luio"
+  },
+  {
+    "id": 100400002144000400,
+    "value": "Rita Bernal"
+  },
+  {
+    "id": 100400002144000600,
+    "value": "Shezarr Team Member"
   },
   {
     "id": 100400002150000001,
@@ -5598,5 +5674,9 @@
   {
     "id": 100400002999000200,
     "value": "-"
+  },
+  {
+    "id": 100400002999000300,
+    "value": "???"
   }
 ]

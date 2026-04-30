@@ -1057,6 +1057,20 @@
     "IsSubscription": false
   },
   {
+    "ProductGroupId": 226045001,
+    "StoreTypeIndex": 1,
+    "ProductId": "eb",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226045001,
+    "StoreTypeIndex": 2,
+    "ProductId": "eb",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
     "ProductGroupId": 325041001,
     "StoreTypeIndex": 2,
     "ProductId": "gpp_a",

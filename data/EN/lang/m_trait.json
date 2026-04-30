@@ -1872,6 +1872,18 @@
     "value": "When taking damage from a special weapon,\nreduce enemy awaken by 30%."
   },
   {
+    "id": 141200000100850201,
+    "value": "Increase Mobility by 7%."
+  },
+  {
+    "id": 141200000100850202,
+    "value": "When the enemy attacks with a beam ranged weapon,\nreduce damage taken by 20%."
+  },
+  {
+    "id": 141200000100850203,
+    "value": "When taking damage from a special weapon,\nreduce enemy awaken by 40%."
+  },
+  {
     "id": 141200000100850301,
     "value": "Increase Mobility by 10%."
   },
@@ -2010,6 +2022,10 @@
   {
     "id": 141200000100930201,
     "value": "When the enemy attacks with  ranged weapons,\nReduce damage taken by 20%."
+  },
+  {
+    "id": 141200000100930301,
+    "value": "When the enemy attacks with  ranged weapons,\nReduce damage taken by 30%."
   },
   {
     "id": 141200000100940201,
@@ -2653,7 +2669,7 @@
   },
   {
     "id": 141200000101420101,
-    "value": "Increase ATK by 2% (up to 10%)\nfor each Unit bearing the above tag in the same squad."
+    "value": "For each unit in the same squad with specified tags,\nincrease ATK by 2% (up to 10%)."
   },
   {
     "id": 141200000101430101,
@@ -2804,6 +2820,66 @@
     "value": "When Vigor is Supercharged or higher,\nincrease ATK by 25%."
   },
   {
+    "id": 141200000101540101,
+    "value": "When piloting character is from the [Condition 1] series and has a specified tag:\nIncrease own MOV by 1.\nAlso grant +5% ATK and DEF (permanent)\nto all units in the same squad with the [Condition 2] tag."
+  },
+  {
+    "id": 141200000101540102,
+    "value": ""
+  },
+  {
+    "id": 141200000101540103,
+    "value": ""
+  },
+  {
+    "id": 141200000101540104,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000101540105,
+    "value": "Increase DEF by 5%."
+  },
+  {
+    "id": 141200000101550101,
+    "value": "Increase DEF by 5%."
+  },
+  {
+    "id": 141200000101550102,
+    "value": "Increases Accuracy by 5%."
+  },
+  {
+    "id": 141200000101550201,
+    "value": "Increase DEF by 10%."
+  },
+  {
+    "id": 141200000101550202,
+    "value": "Increases Accuracy by 5%."
+  },
+  {
+    "id": 141200000101550301,
+    "value": "Increase DEF by 15%."
+  },
+  {
+    "id": 141200000101550302,
+    "value": "Increases Accuracy by 5%."
+  },
+  {
+    "id": 141200000101550401,
+    "value": "Increase DEF by 20%."
+  },
+  {
+    "id": 141200000101550402,
+    "value": "Increases Accuracy by 5%."
+  },
+  {
+    "id": 141200000101550501,
+    "value": "Increase DEF by 25%."
+  },
+  {
+    "id": 141200000101550502,
+    "value": "Increases Accuracy by 5%."
+  },
+  {
     "id": 141200000200010101,
     "value": "Increase Melee by 5%."
   },
@@ -2825,23 +2901,23 @@
   },
   {
     "id": 141200000200020101,
-    "value": "Increase Range by 5%."
+    "value": "Increase Ranged by 5%."
   },
   {
     "id": 141200000200020201,
-    "value": "Increase Range by 10%."
+    "value": "Increase Ranged by 10%."
   },
   {
     "id": 141200000200020301,
-    "value": "Increase Range by 15%."
+    "value": "Increase Ranged by 15%."
   },
   {
     "id": 141200000200020401,
-    "value": "Increase Range by 20%."
+    "value": "Increase Ranged by 20%."
   },
   {
     "id": 141200000200020501,
-    "value": "Increase Range by 25%."
+    "value": "Increase Ranged by 25%."
   },
   {
     "id": 141200000200030101,
@@ -6821,7 +6897,7 @@
   },
   {
     "id": 141200000201390102,
-    "value": "When piloting Force Impulse Gundam (EX), if HP falls below 50%,\nrestores own HP by 50% (once only)."
+    "value": "When piloting Force Impulse Gundam (EX) and HP falls to 50% or below,\nrestores own HP by 50% (once only)."
   },
   {
     "id": 141200000201410101,
@@ -7041,11 +7117,11 @@
   },
   {
     "id": 141200000201600102,
-    "value": "When piloting units with specified tags,\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000201600103,
-    "value": "When piloting Full Armor ZZ Gundam (EX), if HP falls below 50%,\nRestore Hp by 50% (once only)."
+    "value": "When piloting Full Armor ZZ Gundam (EX) \nand HP falls to 50% or below,\nrestore HP by 50% (once only)."
   },
   {
     "id": 141200000201610101,
@@ -7077,7 +7153,7 @@
   },
   {
     "id": 141200000201670101,
-    "value": "If HP falls to 0% when piloting Zeong (EX),\nrestores own HP by 5% 1 time(s)."
+    "value": "When piloting Zeong (EX) and HP falls to 0% or below,\nrestores own HP by 5% (once only)."
   },
   {
     "id": 141200000201670102,
@@ -7085,7 +7161,7 @@
   },
   {
     "id": 141200000201670103,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201670104,
@@ -7665,7 +7741,7 @@
   },
   {
     "id": 141200000202230104,
-    "value": "When piloting Gundam Astray Gold Frame Amatsu Mina (EX),\nin your squad with specified tags\ngain increased ATK and DEF 5% (permanent).\n\nReduce damage taken by 15%\nwhen piloting units with specified tags."
+    "value": "When piloting Gundam Astray Gold Frame Amatsu Mina (EX),\nunits in the same squad with specified tags\ngain increased ATK and DEF 5% (permanent).\n\nWhen piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000202230105,
@@ -7994,6 +8070,50 @@
   {
     "id": 141200000202500101,
     "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202510101,
+    "value": "When piloting units with specified tags,\nsupport Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202520401,
+    "value": "Increase own Ranged and Awaken by 20%."
+  },
+  {
+    "id": 141200000202520402,
+    "value": ""
+  },
+  {
+    "id": 141200000202530101,
+    "value": "When piloting units with specified tags,\nincrease Awaken by 25%,"
+  },
+  {
+    "id": 141200000202530102,
+    "value": "increase damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202530103,
+    "value": ""
+  },
+  {
+    "id": 141200000202540101,
+    "value": "Support Attack/Counter +1 time(s)."
+  },
+  {
+    "id": 141200000202540102,
+    "value": "When piloting Halphas Gundam (EX),  \nweapons gain the “Reduce MP by 1 on hit (enemy)” effect."
+  },
+  {
+    "id": 141200000202540103,
+    "value": "When piloting Halphas Gundam (EX) and Vigor is Supercharged or higher, \nBeam Weapon max range is increased by 1."
+  },
+  {
+    "id": 141200000202540104,
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202590101,
+    "value": "When piloting units from specified series,\nChance Step +1 time"
   },
   {
     "id": 141200000300010101,
@@ -13692,6 +13812,66 @@
     "value": "Increase Max EN by 8%."
   },
   {
+    "id": 141200000406480101,
+    "value": "Increase DEF by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406480102,
+    "value": ""
+  },
+  {
+    "id": 141200000406490101,
+    "value": "Increase Max HP by 2000."
+  },
+  {
+    "id": 141200000406500101,
+    "value": "Increase Mobility by 8%."
+  },
+  {
+    "id": 141200000406510101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406520101,
+    "value": "Increase DEF by 200."
+  },
+  {
+    "id": 141200000406530101,
+    "value": "Increase ATK by 200."
+  },
+  {
+    "id": 141200000406540101,
+    "value": "Increase Mobility by 200."
+  },
+  {
+    "id": 141200000406550101,
+    "value": "Increase ATK by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406550102,
+    "value": ""
+  },
+  {
+    "id": 141200000406560101,
+    "value": "Increase ATK by 12%."
+  },
+  {
+    "id": 141200000406570101,
+    "value": "Increase Max HP by 5%."
+  },
+  {
+    "id": 141200000406570102,
+    "value": "Increase Max HP by 2%.\nwhen equipped to Gromlin."
+  },
+  {
+    "id": 141200000406580101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406580102,
+    "value": "Increase ATK by 2%.\nwhen equipped to Gromlin."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -14209,7 +14389,7 @@
   },
   {
     "id": 141200000510510101,
-    "value": "Decrease DEF by 5%\neach time you take damage from an enemy."
+    "value": "For each enemy attack made against it, reduce DEF by 5%"
   },
   {
     "id": 141200000510520101,
@@ -14317,7 +14497,7 @@
   },
   {
     "id": 141200000510580101,
-    "value": "Decrease DEF by 10%\neach time you take damage from an enemy."
+    "value": "For each enemy attack made against it, reduce DEF by 10%"
   },
   {
     "id": 141200000510590101,
@@ -14557,11 +14737,11 @@
   },
   {
     "id": 141200000510680101,
-    "value": "Increase ATK by 10% (up to 100%)\neach time you take damage from an enemy."
+    "value": "For each enemy attack made against it, reduce ATK by 10% (up to 100%)."
   },
   {
     "id": 141200000510680301,
-    "value": "Increase ATK each time\nyou take damage from an enemy."
+    "value": "For each enemy attack made against it, increase ATK."
   },
   {
     "id": 141200000510680302,
@@ -14585,123 +14765,123 @@
   },
   {
     "id": 141200000510730101,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 5% (up to 50%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 5%\nat the end of battle (up to 50%)."
   },
   {
     "id": 141200000510730201,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 10% (up to 100%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 10%\nat the end of battle (up to 100%)."
   },
   {
     "id": 141200000510730301,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 15% (up to 150%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 15%\nat the end of battle (up to 150%)."
   },
   {
     "id": 141200000510730401,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 20% (up to 200%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 20%\nat the end of battle (up to 200%)."
   },
   {
     "id": 141200000510730501,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 25% (up to 250%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 25%\nat the end of battle (up to 250%)."
   },
   {
     "id": 141200000510730601,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 30% (up to 300%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 30%\nat the end of battle (up to 300%)."
   },
   {
     "id": 141200000510730701,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 35% (up to 350%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 35%\nat the end of battle (up to 350%)."
   },
   {
     "id": 141200000510730801,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 40% (up to 400%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 40%\nat the end of battle (up to 400%)."
   },
   {
     "id": 141200000510730901,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 45% (up to 450%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 45%\nat the end of battle (up to 450%)."
   },
   {
     "id": 141200000510731001,
-    "value": "If this unit takes damage during combat,\nincrease own ATK by 50% (up to 500%) at the end of combat."
+    "value": "If attacked during battle, increase own ATK by 50%\nat the end of battle (up to 500%)."
   },
   {
     "id": 141200000510740101,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 5% (up to 50%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 5%\nat the end of battle (up to 50%)."
   },
   {
     "id": 141200000510740201,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 10% (up to 100%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 10%\nat the end of battle (up to 100%)."
   },
   {
     "id": 141200000510740301,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 15% (up to 150%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 15%\nat the end of battle (up to 150%)."
   },
   {
     "id": 141200000510740401,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 20% (up to 200%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 20%\nat the end of battle (up to 200%)."
   },
   {
     "id": 141200000510740501,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 25% (up to 250%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 25%\nat the end of battle (up to 250%)."
   },
   {
     "id": 141200000510740601,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 30% (up to 300%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 30%\nat the end of battle (up to 300%)."
   },
   {
     "id": 141200000510740701,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 35% (up to 350%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 35%\nat the end of battle (up to 350%)."
   },
   {
     "id": 141200000510740801,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 40% (up to 400%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 40%\nat the end of battle (up to 400%)."
   },
   {
     "id": 141200000510740901,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 45% (up to 450%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 45%\nat the end of battle (up to 450%)."
   },
   {
     "id": 141200000510741001,
-    "value": "If this unit takes damage during combat,\nincrease own DEF by 50% (up to 500%) at the end of combat."
+    "value": "If attacked during battle, increase own DEF by 50%\nat the end of battle (up to 500%)."
   },
   {
     "id": 141200000510750101,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 5% (up to 50%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 5%\nat the end of battle (up to 50%)."
   },
   {
     "id": 141200000510750201,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 10% (up to 100%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 10%\nat the end of battle (up to 100%)."
   },
   {
     "id": 141200000510750301,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 15% (up to 150%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 15%\nat the end of battle (up to 150%)."
   },
   {
     "id": 141200000510750401,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 20% (up to 200%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 20%\nat the end of battle (up to 200%)."
   },
   {
     "id": 141200000510750501,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 25% (up to 250%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 25%\nat the end of battle (up to 250%)."
   },
   {
     "id": 141200000510750601,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 30% (up to 300%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 30%\nat the end of battle (up to 300%)."
   },
   {
     "id": 141200000510750701,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 35% (up to 350%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 35%\nat the end of battle (up to 350%)."
   },
   {
     "id": 141200000510750801,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 40% (up to 400%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 40%\nat the end of battle (up to 400%)."
   },
   {
     "id": 141200000510750901,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 45% (up to 450%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 45%\nat the end of battle (up to 450%)."
   },
   {
     "id": 141200000510751001,
-    "value": "If this unit takes damage during combat,\nincrease own MOB by 50% (up to 500%) at the end of combat."
+    "value": "If attacked during battle, increase own MOB by 50%\nat the end of battle (up to 500%)."
   },
   {
     "id": 141200000510760101,
@@ -14785,23 +14965,23 @@
   },
   {
     "id": 141200000510780150,
-    "value": "If this unit deals damage during combat, \nincrease own ATK at the end of combat."
+    "value": "For each attack it makes, increase ATK at the end of the battle."
   },
   {
     "id": 141200000510780250,
-    "value": "If this unit deals damage during combat, \nincrease own ATK at the end of combat."
+    "value": "For each attack it makes, increase ATK at the end of the battle."
   },
   {
     "id": 141200000510780350,
-    "value": "If this unit deals damage during combat, \nincrease own ATK at the end of combat."
+    "value": "For each attack it makes, increase ATK at the end of the battle."
   },
   {
     "id": 141200000510781150,
-    "value": "If this unit deals damage during combat, \nincrease own ATK at the end of combat."
+    "value": "For each attack it makes, increase ATK at the end of the battle."
   },
   {
     "id": 141200000510790101,
-    "value": "Increase ATK by 10%."
+    "value": "Increase ATK by {0}%."
   },
   {
     "id": 141200000510790201,
@@ -14813,7 +14993,7 @@
   },
   {
     "id": 141200000510791101,
-    "value": "Increase ATK by 5%."
+    "value": "Increase ATK by {0}%."
   },
   {
     "id": 141200000510830101,
@@ -14970,6 +15150,18 @@
   {
     "id": 141200000511160102,
     "value": "Decrease enemy squad DEF by 50%."
+  },
+  {
+    "id": 141200000511180101,
+    "value": "When HP is 25% or below,\nincrease own ATK, DEF, and MOB by 100%."
+  },
+  {
+    "id": 141200000511180102,
+    "value": ""
+  },
+  {
+    "id": 141200000511180103,
+    "value": ""
   },
   {
     "id": 141200000511360101,
@@ -16841,7 +17033,7 @@
   },
   {
     "id": 141200000611520101,
-    "value": "Force your squad's Heero Yuy (EW)\nto activate Chance Step 1 time."
+    "value": "Force your squad's Heero Yuy (Endless Waltz Ver.) to activate all Chance Steps, and get 1 Guaranteed Chance Step."
   },
   {
     "id": 141200000611530101,
@@ -16896,6 +17088,10 @@
     "value": "When executing a Support Attack/Counter during battle, \nincrease DEF by 300%."
   },
   {
+    "id": 141200000611630101,
+    "value": "When Vigor is Super High or higher,\nThe max range of Melee Weapon is increased by 3."
+  },
+  {
     "id": 141200000611660101,
     "value": "At the beginning of the turn, restore MAP Weapon ammo by 1."
   },
@@ -16930,6 +17126,34 @@
   {
     "id": 141200000611680105,
     "value": ""
+  },
+  {
+    "id": 141200000611700101,
+    "value": "When Vigor is Supercharged or higher,\nImprove decrease DEF weapon effects by 90% additively."
+  },
+  {
+    "id": 141200000611720101,
+    "value": "When Vigor is Supercharged or higher,\nReduce weapons EN consumption by 99%."
+  },
+  {
+    "id": 141200000611760101,
+    "value": "Support Attack/Counter +10 time(s)"
+  },
+  {
+    "id": 141200000611770101,
+    "value": "When Haro in your squad is destroyed:\nDown own DEF by 30% [1 turn(s)] "
+  },
+  {
+    "id": 141200000611770111,
+    "value": "DEF Down 30% [1 turn(s)] "
+  },
+  {
+    "id": 141200000611770201,
+    "value": "When Psycho Haro in your squad is destroyed:\nThe max range of own Beam Weapon is decrease by 1 [1 turn(s)] "
+  },
+  {
+    "id": 141200000611770211,
+    "value": "The max range of Beam Weapon is decrease by 1 [1 turn(s)] "
   },
   {
     "id": 141200000699000101,

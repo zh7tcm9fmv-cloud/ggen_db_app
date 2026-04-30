@@ -798,10 +798,22 @@
     "TitleLanguageId": 170700000000910004
   },
   {
+    "FunctionTipsDetailSetId": 9101,
+    "FunctionTipsDetailId": 910005,
+    "SortOrder": 5,
+    "TitleLanguageId": 170700000000910005
+  },
+  {
     "FunctionTipsDetailSetId": 9102,
     "FunctionTipsDetailId": 910004,
     "SortOrder": 1,
     "TitleLanguageId": 170700000000910004
+  },
+  {
+    "FunctionTipsDetailSetId": 9102,
+    "FunctionTipsDetailId": 910005,
+    "SortOrder": 2,
+    "TitleLanguageId": 170700000000910005
   },
   {
     "FunctionTipsDetailSetId": 9201,

@@ -1444,6 +1444,30 @@
     "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Wing Endless Waltz)"
   },
   {
+    "id": 270100000000200284,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000200285,
+    "value": "Add-On Armor R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000200286,
+    "value": "Reinforced Armor R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000200287,
+    "value": "Limiter OFF R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000200288,
+    "value": "Booster Parts R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000200289,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Narrative)"
+  },
+  {
     "id": 270100000000300001,
     "value": "Add-On Armor SR (Mobile Suit Gundam SEED Astray)"
   },
@@ -2280,6 +2304,18 @@
     "value": "Energy Tank SR（Mobile Suit Gundam the Witch from Mercury）"
   },
   {
+    "id": 270100000000300215,
+    "value": "Booster Parts SR (Psycommu)"
+  },
+  {
+    "id": 270100000000300216,
+    "value": "Limiter OFF SR (Psycommu)"
+  },
+  {
+    "id": 270100000000300217,
+    "value": "Add-On Armor SR (Fierce Enemy Assault)"
+  },
+  {
     "id": 270100000000400001,
     "value": "Limiter OFF SSR (U.C. Series)"
   },
@@ -2586,5 +2622,13 @@
   {
     "id": 270100000000400079,
     "value": "Reinforced Armor SSR (Mobile Suit Gundam 00)"
+  },
+  {
+    "id": 270100000000400080,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 270100000000400081,
+    "value": "Limiter OFF SSR (Fierce Enemy Assault)"
   }
 ]

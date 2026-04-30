@@ -840,6 +840,174 @@
     "value": "6: Development Requests"
   },
   {
+    "id": 100901114400010101,
+    "value": "1: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010102,
+    "value": "1: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010103,
+    "value": "2: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010104,
+    "value": "2: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010105,
+    "value": "3: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010106,
+    "value": "3: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010107,
+    "value": "4: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010108,
+    "value": "4: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010109,
+    "value": "5: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010110,
+    "value": "5: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010111,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901114400010112,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400010113,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901114400010114,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901114400020101,
+    "value": "1: Development Requests"
+  },
+  {
+    "id": 100901114400020102,
+    "value": "1: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020103,
+    "value": "2: Development Requests"
+  },
+  {
+    "id": 100901114400020104,
+    "value": "2: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020105,
+    "value": "3: Development Requests"
+  },
+  {
+    "id": 100901114400020106,
+    "value": "3: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020107,
+    "value": "4: Development Requests"
+  },
+  {
+    "id": 100901114400020108,
+    "value": "4: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020109,
+    "value": "5: Development Requests"
+  },
+  {
+    "id": 100901114400020110,
+    "value": "5: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020111,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901114400020112,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400020113,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901114400020114,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901114400060001,
+    "value": "1: Sortie Requests"
+  },
+  {
+    "id": 100901114400060002,
+    "value": "1: Raise Funds"
+  },
+  {
+    "id": 100901114400060003,
+    "value": "2: Sortie Requests"
+  },
+  {
+    "id": 100901114400060004,
+    "value": "2: Raise Funds"
+  },
+  {
+    "id": 100901114400060005,
+    "value": "3: Sortie Requests"
+  },
+  {
+    "id": 100901114400060006,
+    "value": "3: Raise Funds"
+  },
+  {
+    "id": 100901114400060007,
+    "value": "4: Sortie Requests"
+  },
+  {
+    "id": 100901114400060008,
+    "value": "4: Raise Funds"
+  },
+  {
+    "id": 100901114400060009,
+    "value": "5: Sortie Requests"
+  },
+  {
+    "id": 100901114400060010,
+    "value": "5: Raise Funds"
+  },
+  {
+    "id": 100901114400060011,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901114400060012,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901114400060013,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901114400060014,
+    "value": "6: Development Requests"
+  },
+  {
     "id": 100901115000050001,
     "value": "1: Sortie Requests"
   },
@@ -2820,6 +2988,66 @@
     "value": "5: Special Request from Audrey"
   },
   {
+    "id": 100902114400010101,
+    "value": "1: Special Request from Jona"
+  },
+  {
+    "id": 100902114400010102,
+    "value": "2: Special Request from Jona"
+  },
+  {
+    "id": 100902114400010103,
+    "value": "3: Special Request from Jona"
+  },
+  {
+    "id": 100902114400010104,
+    "value": "4: Special Request from Jona"
+  },
+  {
+    "id": 100902114400010105,
+    "value": "5: Special Request from Jona"
+  },
+  {
+    "id": 100902114400020101,
+    "value": "1: Special Request from Zoltan"
+  },
+  {
+    "id": 100902114400020102,
+    "value": "2: Special Request from Zoltan"
+  },
+  {
+    "id": 100902114400020103,
+    "value": "3: Special Request from Zoltan"
+  },
+  {
+    "id": 100902114400020104,
+    "value": "4: Special Request from Zoltan"
+  },
+  {
+    "id": 100902114400020105,
+    "value": "5: Special Request from Zoltan"
+  },
+  {
+    "id": 100902114400060001,
+    "value": "1: Special Request from Michele"
+  },
+  {
+    "id": 100902114400060002,
+    "value": "2: Special Request from Michele"
+  },
+  {
+    "id": 100902114400060003,
+    "value": "3: Special Request from Michele"
+  },
+  {
+    "id": 100902114400060004,
+    "value": "4: Special Request from Michele"
+  },
+  {
+    "id": 100902114400060005,
+    "value": "5: Special Request from Michele"
+  },
+  {
     "id": 100902115000050001,
     "value": "1: Special Request from Gigi"
   },
@@ -4314,6 +4542,174 @@
   {
     "id": 101301112500200115,
     "value": "Develop units from the \"Mobile Suit Gundam Unicorn\" series 3 times."
+  },
+  {
+    "id": 101301114400010101,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 1 time."
+  },
+  {
+    "id": 101301114400010102,
+    "value": "Transfer \"[N] Jegan Type-D Escort Type.\""
+  },
+  {
+    "id": 101301114400010103,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 2 times."
+  },
+  {
+    "id": 101301114400010104,
+    "value": "Transfer \"[R] Jesta (Shezarr Type Team B & C).\""
+  },
+  {
+    "id": 101301114400010105,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 3 times."
+  },
+  {
+    "id": 101301114400010106,
+    "value": "Transfer \"[R] Dijeh (Narrative).\""
+  },
+  {
+    "id": 101301114400010107,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 4 times."
+  },
+  {
+    "id": 101301114400010108,
+    "value": "Transfer \"[SR] Jesta (Shezarr Type).\""
+  },
+  {
+    "id": 101301114400010109,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 5 times."
+  },
+  {
+    "id": 101301114400010110,
+    "value": "Transfer \"[SR] Narrative Gundam.\""
+  },
+  {
+    "id": 101301114400010111,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 5 times."
+  },
+  {
+    "id": 101301114400010112,
+    "value": "Transfer \"[SR] ReZEL Type C (GR).\""
+  },
+  {
+    "id": 101301114400010113,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301114400010114,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 3 times."
+  },
+  {
+    "id": 101301114400020101,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 1 time."
+  },
+  {
+    "id": 101301114400020102,
+    "value": "Transfer \"[N] Jegan Type-D Escort Type.\""
+  },
+  {
+    "id": 101301114400020103,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 2 times."
+  },
+  {
+    "id": 101301114400020104,
+    "value": "Transfer \"[R] Jesta (Shezarr Type Team B & C).\""
+  },
+  {
+    "id": 101301114400020105,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 3 times."
+  },
+  {
+    "id": 101301114400020106,
+    "value": "Transfer \"[SR] Gustav Karl (Narrative).\""
+  },
+  {
+    "id": 101301114400020107,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 4 times."
+  },
+  {
+    "id": 101301114400020108,
+    "value": "Transfer \"[SR] ReZEL Type C (GR).\""
+  },
+  {
+    "id": 101301114400020109,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 5 times."
+  },
+  {
+    "id": 101301114400020110,
+    "value": "Transfer \"[SR] Narrative Gundam.\""
+  },
+  {
+    "id": 101301114400020111,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 5 times."
+  },
+  {
+    "id": 101301114400020112,
+    "value": "Transfer \"[SR] Silver Bullet Suppressor.\""
+  },
+  {
+    "id": 101301114400020113,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301114400020114,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 3 times."
+  },
+  {
+    "id": 101301114400060001,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Narrative\" 1 time."
+  },
+  {
+    "id": 101301114400060002,
+    "value": "Transfer 1000 Capital."
+  },
+  {
+    "id": 101301114400060003,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Narrative\" 2 times."
+  },
+  {
+    "id": 101301114400060004,
+    "value": "Transfer 1500 Capital."
+  },
+  {
+    "id": 101301114400060005,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Narrative\" 3 times."
+  },
+  {
+    "id": 101301114400060006,
+    "value": "Transfer 2000 Capital."
+  },
+  {
+    "id": 101301114400060007,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Narrative\" 4 times."
+  },
+  {
+    "id": 101301114400060008,
+    "value": "Transfer 3000 Capital."
+  },
+  {
+    "id": 101301114400060009,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Narrative\" 5 times."
+  },
+  {
+    "id": 101301114400060010,
+    "value": "Transfer 4000 Capital."
+  },
+  {
+    "id": 101301114400060011,
+    "value": "Upgrade a unit from the \"Mobile Suit Gundam Narrative\" series 5 times."
+  },
+  {
+    "id": 101301114400060012,
+    "value": "Transfer \"[SR] Narrative Gundam C-Packs.\""
+  },
+  {
+    "id": 101301114400060013,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301114400060014,
+    "value": "Develop units from the \"Mobile Suit Gundam Narrative\" series 3 times."
   },
   {
     "id": 101301115000050001,
@@ -6294,6 +6690,66 @@
   {
     "id": 101302112500200105,
     "value": "Transfer \"[SSR] Kshatriya Repaired.\""
+  },
+  {
+    "id": 101302114400010101,
+    "value": "Transfer \"[R] Dijeh (Narrative).\""
+  },
+  {
+    "id": 101302114400010102,
+    "value": "Transfer \"[R] Jesta (Shezarr Type Team B & C).\""
+  },
+  {
+    "id": 101302114400010103,
+    "value": "Transfer \"[SR] Gustav Karl (Narrative).\""
+  },
+  {
+    "id": 101302114400010104,
+    "value": "Transfer \"[SR] Narrative Gundam.\""
+  },
+  {
+    "id": 101302114400010105,
+    "value": "Transfer \"[SSR] Narrative Gundam A-Packs.\""
+  },
+  {
+    "id": 101302114400020101,
+    "value": "Transfer \"[R] Jegan Type A2 (GR).\""
+  },
+  {
+    "id": 101302114400020102,
+    "value": "Transfer \"[SR] Gustav Karl (Narrative).\""
+  },
+  {
+    "id": 101302114400020103,
+    "value": "Transfer \"[SR] Silver Bullet Suppressor.\""
+  },
+  {
+    "id": 101302114400020104,
+    "value": "Transfer \"[SR] Narrative Gundam C-Packs.\""
+  },
+  {
+    "id": 101302114400020105,
+    "value": "Transfer \"[SSR] Sinanju Stein.\""
+  },
+  {
+    "id": 101302114400060001,
+    "value": "Transfer \"[R] Jegan Type A2 (GR).\""
+  },
+  {
+    "id": 101302114400060002,
+    "value": "Transfer \"[R] Dijeh (Narrative).\""
+  },
+  {
+    "id": 101302114400060003,
+    "value": "Transfer \"[SR] Gustav Karl (Narrative).\""
+  },
+  {
+    "id": 101302114400060004,
+    "value": "Transfer \"[SR] Narrative Gundam.\""
+  },
+  {
+    "id": 101302114400060005,
+    "value": "Transfer \"[SSR] Narrative Gundam B-Packs.\""
   },
   {
     "id": 101302115000050001,

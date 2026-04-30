@@ -689,7 +689,7 @@
   },
   {
     "id": 140600000130140301,
-    "value": "Characters piloting squad units within range\nIncrease MP by 5."
+    "value": "Increase MP of allies within range by 5."
   },
   {
     "id": 140600000130140401,
@@ -865,7 +865,7 @@
   },
   {
     "id": 140600000320210201,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 12% [1turn]."
+    "value": "Increase damage allies within range deal to enemies by 12% [1 turn(s)]."
   },
   {
     "id": 140600000320210301,

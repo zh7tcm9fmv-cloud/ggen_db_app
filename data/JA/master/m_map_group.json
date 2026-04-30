@@ -203,6 +203,13 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 144000600102000001,
+    "MapStageId": 144000600102000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 210000800202000024,
     "MapStageId": 210000800202000000,
     "GroupNumber": 0,

@@ -112,6 +112,14 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001144000150,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 160400001144000260,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001150000150,
     "value": "HP Restoration"
   },
@@ -412,6 +420,14 @@
     "value": "Squad units within range\nRestore EN by 50%."
   },
   {
+    "id": 160500001144000150,
+    "value": "Squad Units\nRestore HP by 40%."
+  },
+  {
+    "id": 160500001144000260,
+    "value": "Squad units within range\nRestore EN by 30%."
+  },
+  {
     "id": 160500001150000150,
     "value": "Squad units within range\nRestore HP by 40%."
   },
@@ -710,6 +726,10 @@
   {
     "id": 160900001125000450,
     "value": "If the same mistakes are about to be repeated,\nthen this is what I must do!"
+  },
+  {
+    "id": 160900001144000150,
+    "value": "Gimme a gun and I'll pull the trigger!"
   },
   {
     "id": 160900001150000150,

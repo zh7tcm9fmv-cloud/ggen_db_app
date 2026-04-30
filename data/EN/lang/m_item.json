@@ -1824,8 +1824,80 @@
     "value": "SR Krake Zulu Limit Break Material"
   },
   {
+    "id": 150100171144000100,
+    "value": "SSR Narrative Gundam A-Packs Limit Break Material"
+  },
+  {
     "id": 150100171144000150,
     "value": "UR Narrative Gundam A-Packs (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171144000200,
+    "value": "SSR Narrative Gundam B-Packs Limit Break Material"
+  },
+  {
+    "id": 150100171144000300,
+    "value": "SR Narrative Gundam C-Packs Limit Break Material"
+  },
+  {
+    "id": 150100171144000400,
+    "value": "SSR Unicorn Gundam 03 Phenex (Unicorn Mode) Limit Break Material"
+  },
+  {
+    "id": 150100171144000500,
+    "value": "SSR Unicorn Gundam 03 Phenex (Destroy Mode) Limit Break Material"
+  },
+  {
+    "id": 150100171144000550,
+    "value": "UR Unicorn Gundam 03 Phenex (Destroy Mode) (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171144000700,
+    "value": "SSR Sinanju Stein Limit Break Material"
+  },
+  {
+    "id": 150100171144000800,
+    "value": "SR Jesta (Shezarr Type) Limit Break Material"
+  },
+  {
+    "id": 150100171144000900,
+    "value": "R Jesta (Shezarr Type Team B & C) Limit Break Material"
+  },
+  {
+    "id": 150100171144001000,
+    "value": "SSR II Neo Zeong Limit Break Material"
+  },
+  {
+    "id": 150100171144001110,
+    "value": "SSR Geara Zulu (Ellic) Limit Break Material"
+  },
+  {
+    "id": 150100171144001200,
+    "value": "SR Silver Bullet Suppressor Limit Break Material"
+  },
+  {
+    "id": 150100171144001300,
+    "value": "R Dijeh (Narrative) Limit Break Material"
+  },
+  {
+    "id": 150100171144001400,
+    "value": "SR Gustav Karl (Narrative) Limit Break Material"
+  },
+  {
+    "id": 150100171144001600,
+    "value": "N Jegan Type-D Escort Type Limit Break Material"
+  },
+  {
+    "id": 150100171144001700,
+    "value": "SR Narrative Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171144001800,
+    "value": "SR ReZEL Type C (GR) Limit Break Material"
+  },
+  {
+    "id": 150100171144001900,
+    "value": "R Jegan Type A2 (GR) Limit Break Material"
   },
   {
     "id": 150100171150000100,
@@ -4504,6 +4576,10 @@
     "value": "SSR Halphas Gundam Limit Break Material"
   },
   {
+    "id": 150100171850000650,
+    "value": "UR Halphas Gundam (EX) Limit Break Material"
+  },
+  {
     "id": 150100171850001210,
     "value": "SSR Haro Limit Break Material"
   },
@@ -4538,6 +4614,10 @@
   {
     "id": 150100171850002510,
     "value": "SSR Gundam Ez8 Heavy Armed Custom Limit Break Material"
+  },
+  {
+    "id": 150100171850002800,
+    "value": "SSR Gromlin Limit Break Material"
   },
   {
     "id": 150100171850002910,
@@ -4590,6 +4670,10 @@
   {
     "id": 150100180000001250,
     "value": "Development Material (UC)"
+  },
+  {
+    "id": 150100180000001440,
+    "value": "Development Material (NT)"
   },
   {
     "id": 150100180000001500,
@@ -4810,6 +4894,30 @@
   {
     "id": 150100181125005500,
     "value": "Kshatriya Repaired Technical Journal"
+  },
+  {
+    "id": 150100181144000100,
+    "value": "Narrative Gundam A-Packs's Technical Journal"
+  },
+  {
+    "id": 150100181144000200,
+    "value": "Narrative Gundam B-Packs's Technical Journal"
+  },
+  {
+    "id": 150100181144000400,
+    "value": "Unicorn Gundam 03 Phenex (Unicorn Mode)'s Technical Journal"
+  },
+  {
+    "id": 150100181144000500,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode)'s Technical Journal"
+  },
+  {
+    "id": 150100181144000700,
+    "value": "Sinanju Stein's Technical Journal"
+  },
+  {
+    "id": 150100181144001000,
+    "value": "II Neo Zeong's Technical Journal"
   },
   {
     "id": 150100181150000100,
@@ -7392,8 +7500,80 @@
     "value": "An item used to perform Limit Break on SR Krake Zulu"
   },
   {
+    "id": 150200171144000100,
+    "value": "An item used to perform Limit Break on SSR Narrative Gundam A-Packs"
+  },
+  {
     "id": 150200171144000150,
     "value": "An item used to perform Limit Break on UR Narrative Gundam A-Packs (EX)"
+  },
+  {
+    "id": 150200171144000200,
+    "value": "An item used to perform Limit Break on SSR Narrative Gundam B-Packs"
+  },
+  {
+    "id": 150200171144000300,
+    "value": "An item used to perform Limit Break on SR Narrative Gundam C-Packs"
+  },
+  {
+    "id": 150200171144000400,
+    "value": "An item used to perform Limit Break on SSR Unicorn Gundam 03 Phenex (Unicorn Mode)"
+  },
+  {
+    "id": 150200171144000500,
+    "value": "An item used to perform Limit Break on SSR Unicorn Gundam 03 Phenex (Destroy Mode)"
+  },
+  {
+    "id": 150200171144000550,
+    "value": "An item used to perform Limit Break on UR Unicorn Gundam 03 Phenex (Destroy Mode) (EX)"
+  },
+  {
+    "id": 150200171144000700,
+    "value": "An item used to perform Limit Break on SSR Sinanju Stein"
+  },
+  {
+    "id": 150200171144000800,
+    "value": "An item used to perform Limit Break on SR Jesta (Shezarr Type)"
+  },
+  {
+    "id": 150200171144000900,
+    "value": "An item used to perform Limit Break on R Jesta (Shezarr Type Team B & C)"
+  },
+  {
+    "id": 150200171144001000,
+    "value": "An item used to perform Limit Break on SSR II Neo Zeong"
+  },
+  {
+    "id": 150200171144001110,
+    "value": "An item used to perform Limit Break on SSR Geara Zulu (Ellic)"
+  },
+  {
+    "id": 150200171144001200,
+    "value": "An item used to perform Limit Break on SR Silver Bullet Suppressor"
+  },
+  {
+    "id": 150200171144001300,
+    "value": "An item used to perform Limit Break on R Dijeh (Narrative)"
+  },
+  {
+    "id": 150200171144001400,
+    "value": "An item used to perform Limit Break on SR Gustav Karl (Narrative)"
+  },
+  {
+    "id": 150200171144001600,
+    "value": "An item used to perform Limit Break on N Jegan Type-D Escort Type"
+  },
+  {
+    "id": 150200171144001700,
+    "value": "An item used to perform Limit Break on SR Narrative Gundam"
+  },
+  {
+    "id": 150200171144001800,
+    "value": "An item used to perform Limit Break on SR ReZEL Type C (GR)"
+  },
+  {
+    "id": 150200171144001900,
+    "value": "An item used to perform Limit Break on R Jegan Type A2 (GR)"
   },
   {
     "id": 150200171150000100,
@@ -10072,6 +10252,10 @@
     "value": "An item used to perform Limit Break on SSR Halphas Gundam"
   },
   {
+    "id": 150200171850000650,
+    "value": "An item used to perform Limit Break on UR Halphas Gundam (EX)"
+  },
+  {
     "id": 150200171850001210,
     "value": "An item used to perform Limit Break on SSR Haro"
   },
@@ -10106,6 +10290,10 @@
   {
     "id": 150200171850002510,
     "value": "An item used to perform Limit Break on SSR Gundam Ez8 Heavy Armed Custom"
+  },
+  {
+    "id": 150200171850002800,
+    "value": "An item used to perform Limit Break on SSR Gromlin"
   },
   {
     "id": 150200171850002910,
@@ -10158,6 +10346,10 @@
   {
     "id": 150200180000001250,
     "value": "Material required for developing units that appear in the Development Diagram of [Mobile Suit Gundam Unicorn]."
+  },
+  {
+    "id": 150200180000001440,
+    "value": "Material required for developing units that appear in the Development Diagram of [Mobile Suit Gundam Narrative]."
   },
   {
     "id": 150200180000001500,
@@ -10378,6 +10570,30 @@
   {
     "id": 150200181125005500,
     "value": "Material required to develop Kshatriya Repaired appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144000100,
+    "value": "Material required to develop Narrative Gundam A-Packs appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144000200,
+    "value": "Material required to develop Narrative Gundam B-Packs appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144000400,
+    "value": "Material required to develop Unicorn Gundam 03 Phenex (Unicorn Mode) appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144000500,
+    "value": "Material required to develop Unicorn Gundam 03 Phenex (Destroy Mode) appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144000700,
+    "value": "Material required to develop Sinanju Stein appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181144001000,
+    "value": "Material required to develop II Neo Zeong appearing in the Development Diagram."
   },
   {
     "id": 150200181150000100,

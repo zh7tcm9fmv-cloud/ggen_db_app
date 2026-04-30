@@ -4332,6 +4332,78 @@
     "UnitId": 0
   },
   {
+    "Id": 200284,
+    "ResourceId": "op_000000029",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406480100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200284,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 200285,
+    "ResourceId": "op_000000001",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406490101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200285,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 200286,
+    "ResourceId": "op_000000002",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406520101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200286,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 200287,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406530101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200287,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 200288,
+    "ResourceId": "op_000000005",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406540101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200288,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 200289,
+    "ResourceId": "op_000000028",
+    "RarityTypeIndex": 2,
+    "TraitSetId": 406550100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000200289,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
     "Id": 300001,
     "ResourceId": "op_000000001",
     "RarityTypeIndex": 3,
@@ -6840,6 +6912,42 @@
     "UnitId": 0
   },
   {
+    "Id": 300215,
+    "ResourceId": "op_000000005",
+    "RarityTypeIndex": 3,
+    "TraitSetId": 406500101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000300215,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 300216,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 3,
+    "TraitSetId": 406510101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000300216,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 300217,
+    "ResourceId": "op_000000001",
+    "RarityTypeIndex": 3,
+    "TraitSetId": 406570100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000300217,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
     "Id": 400001,
     "ResourceId": "op_000000004",
     "RarityTypeIndex": 4,
@@ -7760,6 +7868,30 @@
     "SortNameLanguageId": 270100000000400079,
     "SearchWordGroupId": 0,
     "SeriesId": 3700,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 400080,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 406560101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400080,
+    "SearchWordGroupId": 0,
+    "SeriesId": 1440,
+    "SortOrder": 0,
+    "UnitId": 0
+  },
+  {
+    "Id": 400081,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 406580100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400081,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
     "SortOrder": 0,
     "UnitId": 0
   }

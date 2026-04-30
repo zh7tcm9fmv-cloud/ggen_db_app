@@ -2004,6 +2004,70 @@
     "value": "All of your units are destroyed."
   },
   {
+    "id": 130300001440010301,
+    "value": "Destroy third force ???."
+  },
+  {
+    "id": 130300001440010304,
+    "value": "All of your units destroyed.\nGuest force Jona Basta destroyed."
+  },
+  {
+    "id": 130300001440020301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300001440020304,
+    "value": "All of your units destroyed.\nGuest force Jona Basta destroyed."
+  },
+  {
+    "id": 130300001440030401,
+    "value": "Defeat Zoltan Akkanen."
+  },
+  {
+    "id": 130300001440030404,
+    "value": "All of your units are destroyed.\nJona Basta and Guest force destroyed."
+  },
+  {
+    "id": 130300001440040301,
+    "value": "Defeat Zoltan Akkanen."
+  },
+  {
+    "id": 130300001440040302,
+    "value": "Defeat Zoltan Akkanen."
+  },
+  {
+    "id": 130300001440040304,
+    "value": "All of your units destroyed.\nGuest force Jona Basta destroyed."
+  },
+  {
+    "id": 130300001440040305,
+    "value": "All of your units destroyed.\nGuest force Jona Basta destroyed."
+  },
+  {
+    "id": 130300001440050101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300001440050103,
+    "value": "Destroy all enemies within 2 turns."
+  },
+  {
+    "id": 130300001440050104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300001440060101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300001440060103,
+    "value": "Destroy all enemies within 2 turns."
+  },
+  {
+    "id": 130300001440060104,
+    "value": "All of your units are destroyed."
+  },
+  {
     "id": 130300001500010501,
     "value": "Destroy all enemy units."
   },
@@ -5824,6 +5888,14 @@
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020001801,
+    "value": "Defeat Gromlin."
+  },
+  {
+    "id": 130300009020001804,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -5945,6 +6017,14 @@
   },
   {
     "id": 130300009021001704,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021001801,
+    "value": "Defeat Gromlin."
+  },
+  {
+    "id": 130300009021001804,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
@@ -6077,6 +6157,14 @@
   },
   {
     "id": 130300009022001704,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022001801,
+    "value": "Defeat Gromlin."
+  },
+  {
+    "id": 130300009022001804,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
@@ -6221,6 +6309,14 @@
   },
   {
     "id": 130300009023001704,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023001801,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300009023001804,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
@@ -7072,6 +7168,14 @@
     "value": "All of your units are destroyed.\nLimit: 3 turns."
   },
   {
+    "id": 130300009050002801,
+    "value": "Guest force Jona Basta reaches the target area."
+  },
+  {
+    "id": 130300009050002804,
+    "value": "Defeat ???. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
+  },
+  {
     "id": 130300009051000101,
     "value": "Destroy all enemy units."
   },
@@ -7336,6 +7440,14 @@
     "value": "All of your units are destroyed.\nHaro and Guest force destroyed. / Limit: 3 turns."
   },
   {
+    "id": 130300009051003601,
+    "value": "Defeat Zoltan Akkanen."
+  },
+  {
+    "id": 130300009051003604,
+    "value": "Guest force Jona Basta is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
+  },
+  {
     "id": 130300009052000101,
     "value": "Destroy all enemy units."
   },
@@ -7558,6 +7670,22 @@
   {
     "id": 130300009052002704,
     "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052002801,
+    "value": "Defeat Zoltan Akkanen."
+  },
+  {
+    "id": 130300009052002802,
+    "value": "Guest force Jona Basta reaches the target area."
+  },
+  {
+    "id": 130300009052002804,
+    "value": "Guest force Jona Basta is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
+  },
+  {
+    "id": 130300009052002805,
+    "value": "Defeat ???. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
   },
   {
     "id": 130300009070010101,

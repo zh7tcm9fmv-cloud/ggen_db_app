@@ -2008,6 +2008,10 @@
     "value": "Clear EXPERT No.23: Mobile Suit Gundam 00 with only development units/other units."
   },
   {
+    "id": 180100200010002401,
+    "value": "Clear EXPERT No.25: Mobile Suit Gundam Narrative with only development units/other units."
+  },
+  {
     "id": 180100200010002501,
     "value": "Clear EXPERT No.24: Gundam/Gundam Pilot with only units with the Protagonist tag."
   },
@@ -2104,6 +2108,10 @@
     "value": "Clear EXPERT No.23: Mobile Suit Gundam 00 with 10 surviving units."
   },
   {
+    "id": 180100200010102401,
+    "value": "Clear EXPERT No.25: Mobile Suit Gundam Narrative with 10 surviving units."
+  },
+  {
     "id": 180100200010102501,
     "value": "Clear EXPERT No.24: Gundam/Gundam Pilot with only units with the Rival tag."
   },
@@ -2142,6 +2150,10 @@
   {
     "id": 180100200010202301,
     "value": "Clear EXPERT No.23: Mobile Suit Gundam 00 with only units with the Celestial Being tag."
+  },
+  {
+    "id": 180100200010202401,
+    "value": "Clear EXPERT No.25: Mobile Suit Gundam Narrative with only units with the NT-D tag."
   },
   {
     "id": 180100200010202501,
@@ -8412,6 +8424,230 @@
     "value": "Achieve a Grand Offensive achievement level of 100% or more."
   },
   {
+    "id": 180100260450011101,
+    "value": "Clear stage 1 of the \"Mobile Suit Gundam Narrative\" series."
+  },
+  {
+    "id": 180100260450011102,
+    "value": "Develop R units from the \"Mobile Suit Gundam Narrative\" series 1 time."
+  },
+  {
+    "id": 180100260450011103,
+    "value": "Use 500 AP."
+  },
+  {
+    "id": 180100260450011104,
+    "value": "Clear any Main Stage 10 times."
+  },
+  {
+    "id": 180100260450011105,
+    "value": "Clear any event stage 5 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260450011106,
+    "value": "Develop 5 units."
+  },
+  {
+    "id": 180100260450011107,
+    "value": "Upgrade 5 weapons."
+  },
+  {
+    "id": 180100260450011108,
+    "value": "Complete a character request 5 times."
+  },
+  {
+    "id": 180100260450011109,
+    "value": "Raise any unit's level to 20 or higher."
+  },
+  {
+    "id": 180100260450011201,
+    "value": "Clear stage 4 of the \"Mobile Suit Gundam Narrative\" series."
+  },
+  {
+    "id": 180100260450011202,
+    "value": "Develop SR units from the \"Mobile Suit Gundam Narrative\" series 1 time."
+  },
+  {
+    "id": 180100260450011203,
+    "value": "Use 1,000 AP."
+  },
+  {
+    "id": 180100260450011204,
+    "value": "Clear any Main Stage 20 times."
+  },
+  {
+    "id": 180100260450011205,
+    "value": "Clear any event stage 10 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260450011206,
+    "value": "Develop 10 units."
+  },
+  {
+    "id": 180100260450011207,
+    "value": "Upgrade 10 weapons."
+  },
+  {
+    "id": 180100260450011208,
+    "value": "Complete a character request 10 times."
+  },
+  {
+    "id": 180100260450011209,
+    "value": "Raise any unit's level to 40 or higher."
+  },
+  {
+    "id": 180100260450011301,
+    "value": "Clear Hard stage 2 of the \"Mobile Suit Gundam Narrative\" series."
+  },
+  {
+    "id": 180100260450011302,
+    "value": "Develop SSR units from the \"Mobile Suit Gundam Narrative\" series 1 time."
+  },
+  {
+    "id": 180100260450011303,
+    "value": "Use 1,500 AP."
+  },
+  {
+    "id": 180100260450011304,
+    "value": "Clear any Main Stage 30 times."
+  },
+  {
+    "id": 180100260450011305,
+    "value": "Clear any event stage 20 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260450011306,
+    "value": "Develop 15 units."
+  },
+  {
+    "id": 180100260450011307,
+    "value": "Upgrade 15 weapons."
+  },
+  {
+    "id": 180100260450011308,
+    "value": "Raise any unit's Limit Break to 3 or higher."
+  },
+  {
+    "id": 180100260450011309,
+    "value": "Get all Development Diagrams from series \"Mobile Suit Gundam Narrative\" to one hundred percent."
+  },
+  {
+    "id": 180100260450020001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Narrative.\""
+  },
+  {
+    "id": 180100260450020002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam Narrative\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 180100260450041101,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on NORMAL difficulty or higher 1 time(s)."
+  },
+  {
+    "id": 180100260450041102,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on NORMAL difficulty or higher 3 time(s)."
+  },
+  {
+    "id": 180100260450041103,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on NORMAL difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260450041201,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on HARD difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260450041301,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260450041302,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260450041303,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 20 time(s)."
+  },
+  {
+    "id": 180100260450041304,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 25 time(s)."
+  },
+  {
+    "id": 180100260450041305,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 30 time(s)."
+  },
+  {
+    "id": 180100260450041306,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 35 time(s)."
+  },
+  {
+    "id": 180100260450041307,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 40 time(s)."
+  },
+  {
+    "id": 180100260450041401,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on NORMAL difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260450041501,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on HARD difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260450041601,
+    "value": "Clear the Fierce Enemy Assault: \"Gromlin\" stage on EXPERT difficulty or higher 15 time(s)."
+  },
+  {
+    "id": 180100260450080001,
+    "value": "Reach Request Rank 2 for Jona Basta."
+  },
+  {
+    "id": 180100260450080002,
+    "value": "Reach Request Rank 3 for Jona Basta."
+  },
+  {
+    "id": 180100260450080003,
+    "value": "Reach Request Rank 4 for Jona Basta."
+  },
+  {
+    "id": 180100260450080004,
+    "value": "Reach Request Rank 5 for Jona Basta."
+  },
+  {
+    "id": 180100260450080005,
+    "value": "Reach Request Rank 2 for Zoltan Akkanen."
+  },
+  {
+    "id": 180100260450080006,
+    "value": "Reach Request Rank 3 for Zoltan Akkanen."
+  },
+  {
+    "id": 180100260450080007,
+    "value": "Reach Request Rank 4 for Zoltan Akkanen."
+  },
+  {
+    "id": 180100260450080008,
+    "value": "Reach Request Rank 5 for Zoltan Akkanen."
+  },
+  {
+    "id": 180100260450080009,
+    "value": "Reach Request Rank 2 for Michele Luio."
+  },
+  {
+    "id": 180100260450080010,
+    "value": "Reach Request Rank 3 for Michele Luio."
+  },
+  {
+    "id": 180100260450080011,
+    "value": "Reach Request Rank 4 for Michele Luio."
+  },
+  {
+    "id": 180100260450080012,
+    "value": "Reach Request Rank 5 for Michele Luio."
+  },
+  {
+    "id": 180100260450090001,
+    "value": "Get all Development Diagrams from series \"Mobile Suit Gundam Narrative\" to one hundred percent."
+  },
+  {
     "id": 180100300010200101,
     "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 1 with only units with the EFSF (U.C.) tag. (incl. Secret Battle)"
   },
@@ -8733,6 +8969,18 @@
   },
   {
     "id": 180102603600800016,
+    "value": ""
+  },
+  {
+    "id": 180102604500800010,
+    "value": ""
+  },
+  {
+    "id": 180102604500800011,
+    "value": ""
+  },
+  {
+    "id": 180102604500800012,
     "value": ""
   }
 ]

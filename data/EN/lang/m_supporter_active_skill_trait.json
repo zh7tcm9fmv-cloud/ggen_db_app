@@ -112,6 +112,14 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001144000150,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 160400001144000260,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001150000150,
     "value": "HP Restoration"
   },
@@ -414,6 +422,14 @@
   {
     "id": 160500001125000450,
     "value": "Squad units within range\nRestore EN by 50%."
+  },
+  {
+    "id": 160500001144000150,
+    "value": "Squad Units\nRestore HP by 40%."
+  },
+  {
+    "id": 160500001144000260,
+    "value": "Squad units within range\nRestore EN by 30%."
   },
   {
     "id": 160500001150000150,

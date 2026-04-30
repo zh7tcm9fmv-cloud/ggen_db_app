@@ -1,5 +1,15 @@
 [
   {
+    "Id": 114400055000,
+    "NameLanguageId": 141300114400055000,
+    "DescriptionLanguageId": 141400114400055000,
+    "ResourceId": "trait_11470103",
+    "StartEffectResourceId": "ef_mpc_0092_01_unitaura_phenex",
+    "ActiveEffectResourceId": "ef_mpc_0092_01_unitaura_phenex_loop",
+    "Duration": 1,
+    "UsageLimit": 1
+  },
+  {
     "Id": 137000595000,
     "NameLanguageId": 141300137000595000,
     "DescriptionLanguageId": 141400137000595000,

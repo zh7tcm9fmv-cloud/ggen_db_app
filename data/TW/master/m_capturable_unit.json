@@ -2392,6 +2392,58 @@
     "Weight": 1
   },
   {
+    "Id": 1440030401,
+    "StageId": 14400304,
+    "MainUnitId": 1144001800,
+    "IsStageSelectPickupCaptureUnit": true,
+    "IsSecretBattlePickupCaptureUnit": false,
+    "DefaultCaptureRatePermil": 16,
+    "LeaderKilledCaptureRatePermil": 16,
+    "Level": 55,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0,
+    "Weight": 1
+  },
+  {
+    "Id": 1440050101,
+    "StageId": 14400501,
+    "MainUnitId": 1144001900,
+    "IsStageSelectPickupCaptureUnit": true,
+    "IsSecretBattlePickupCaptureUnit": false,
+    "DefaultCaptureRatePermil": 16,
+    "LeaderKilledCaptureRatePermil": 16,
+    "Level": 50,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0,
+    "Weight": 1
+  },
+  {
+    "Id": 1440050102,
+    "StageId": 14400501,
+    "MainUnitId": 1144001700,
+    "IsStageSelectPickupCaptureUnit": false,
+    "IsSecretBattlePickupCaptureUnit": false,
+    "DefaultCaptureRatePermil": 100,
+    "LeaderKilledCaptureRatePermil": 100,
+    "Level": 55,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0,
+    "Weight": 1
+  },
+  {
+    "Id": 1440060101,
+    "StageId": 14400601,
+    "MainUnitId": 1144000900,
+    "IsStageSelectPickupCaptureUnit": false,
+    "IsSecretBattlePickupCaptureUnit": false,
+    "DefaultCaptureRatePermil": 25,
+    "LeaderKilledCaptureRatePermil": 25,
+    "Level": 50,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0,
+    "Weight": 1
+  },
+  {
     "Id": 1500030401,
     "StageId": 15000304,
     "MainUnitId": 1150001000,

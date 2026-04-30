@@ -1110,6 +1110,36 @@
     "BattleAnimeBackgroundId": 200
   },
   {
+    "Id": 1144002,
+    "Width": 24,
+    "Height": 25,
+    "BackgroundAsset": "map_bg_0274_01",
+    "SubmergedEffectAsset": "",
+    "SplashEffectAsset": "",
+    "GroundTerrainTypeEffectAsset": "",
+    "AtmosphericTerrainTypeEffectAsset": "",
+    "SurfaceTerrainTypeEffectAsset": "",
+    "UnderwaterTerrainTypeEffectAsset": "",
+    "SpaceTerrainTypeEffectAsset": "",
+    "AllTerrainTypeEffectAsset": "",
+    "BattleAnimeBackgroundId": 210
+  },
+  {
+    "Id": 1144003,
+    "Width": 24,
+    "Height": 25,
+    "BackgroundAsset": "map_bg_0275_01",
+    "SubmergedEffectAsset": "",
+    "SplashEffectAsset": "",
+    "GroundTerrainTypeEffectAsset": "",
+    "AtmosphericTerrainTypeEffectAsset": "",
+    "SurfaceTerrainTypeEffectAsset": "",
+    "UnderwaterTerrainTypeEffectAsset": "",
+    "SpaceTerrainTypeEffectAsset": "",
+    "AllTerrainTypeEffectAsset": "",
+    "BattleAnimeBackgroundId": 200
+  },
+  {
     "Id": 1150001,
     "Width": 20,
     "Height": 20,

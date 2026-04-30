@@ -485,7 +485,11 @@
   },
   {
     "id": 170800000000910004,
-    "value": "These are new difficulty in battles where all enemy stats (EN excluded) are gradually increased.\nThe victory conditions are changed to \"Destroy all enemy units,\" and clearing a stage unlocks the next level."
+    "value": "A battle with a new difficulty, where all enemy stats (EN excluded) gradually increase.\nThe victory conditions are changed to \"Destroy all enemy units.\""
+  },
+  {
+    "id": 170800000000910005,
+    "value": "Clear the highest unit of the group at each level to unlock the next group.\nUnlock a group with a fierce enemy to unlock the group at that difficulty for all fierce enemies."
   },
   {
     "id": 170800000000920001,

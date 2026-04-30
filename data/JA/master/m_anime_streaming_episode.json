@@ -312,6 +312,30 @@
     "ScheduleId": 2512302801
   },
   {
+    "Id": 3200001,
+    "AnimeStreamingSeriesId": 320,
+    "NameLanguageId": 320200000003200001,
+    "PlaybackSeconds": 4169,
+    "SortOrder": 1,
+    "ShortDescriptionLanguageId": 320300000003200001,
+    "LongDescriptionLanguageId": 320400000003200001,
+    "SmallThumbnailResourceId": "thum_anime_ep_l_0320_01",
+    "LargeThumbnailResourceId": "thum_anime_ep_l_0320_01",
+    "ScheduleId": 2604502801
+  },
+  {
+    "Id": 3300001,
+    "AnimeStreamingSeriesId": 330,
+    "NameLanguageId": 320200000003300001,
+    "PlaybackSeconds": 5383,
+    "SortOrder": 1,
+    "ShortDescriptionLanguageId": 320300000003300001,
+    "LongDescriptionLanguageId": 320400000003300001,
+    "SmallThumbnailResourceId": "thum_anime_ep_l_0330_01",
+    "LargeThumbnailResourceId": "thum_anime_ep_l_0330_01",
+    "ScheduleId": 2604502801
+  },
+  {
     "Id": 6000001,
     "AnimeStreamingSeriesId": 600,
     "NameLanguageId": 320200000006000001,

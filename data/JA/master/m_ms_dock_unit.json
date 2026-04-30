@@ -170,6 +170,26 @@
     "ScheduleId": 2509609901
   },
   {
+    "Id": 1144000300,
+    "ResourceId": "g1440u00300",
+    "NameLanguageId": 110100001144000300,
+    "ProfileLanguageId": 110200001144000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1440,
+    "ModelNumber": "RX-9/C",
+    "ScheduleId": 2604509901
+  },
+  {
+    "Id": 1144000500,
+    "ResourceId": "g1440u00500",
+    "NameLanguageId": 110100001144000500,
+    "ProfileLanguageId": 110200001144000500,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1440,
+    "ModelNumber": "RX-0",
+    "ScheduleId": 2604509901
+  },
+  {
     "Id": 1150000100,
     "ResourceId": "g1500u00100",
     "NameLanguageId": 110100001150000100,

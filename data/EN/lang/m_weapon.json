@@ -7056,6 +7056,30 @@
     "value": "Wired Shield Unit SSP"
   },
   {
+    "id": 120100114400010001,
+    "value": "Large Beam Saber"
+  },
+  {
+    "id": 120100114400010002,
+    "value": "5-Tube Medium Missile Pod"
+  },
+  {
+    "id": 120100114400010003,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100114400010004,
+    "value": "High Mega Cannon"
+  },
+  {
+    "id": 120100114400010005,
+    "value": "High Mega Cannon"
+  },
+  {
+    "id": 120100114400010090,
+    "value": "High Mega Cannon SSP"
+  },
+  {
     "id": 120100114400015001,
     "value": "Large Beam Saber"
   },
@@ -7078,6 +7102,318 @@
   {
     "id": 120100114400015006,
     "value": "High Mega Cannon"
+  },
+  {
+    "id": 120100114400020001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400020002,
+    "value": "Quadruple Missile Launcher"
+  },
+  {
+    "id": 120100114400020003,
+    "value": "Wired Remote Weapon System"
+  },
+  {
+    "id": 120100114400020004,
+    "value": "NT-D System"
+  },
+  {
+    "id": 120100114400020005,
+    "value": "Psycho Capture"
+  },
+  {
+    "id": 120100114400020090,
+    "value": "NT-D System SSP"
+  },
+  {
+    "id": 120100114400030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400030002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400030090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100114400040001,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400040002,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100114400040003,
+    "value": "Armed Armor DE"
+  },
+  {
+    "id": 120100114400040080,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400040090,
+    "value": "Armed Armor DE SSP"
+  },
+  {
+    "id": 120100114400050001,
+    "value": "Beam Tonfa"
+  },
+  {
+    "id": 120100114400050002,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100114400050003,
+    "value": "Armed Armor DE"
+  },
+  {
+    "id": 120100114400050004,
+    "value": "Psycho-Frame Attack"
+  },
+  {
+    "id": 120100114400050090,
+    "value": "Armed Armor DE SSP"
+  },
+  {
+    "id": 120100114400055001,
+    "value": "Beam Tonfa"
+  },
+  {
+    "id": 120100114400055002,
+    "value": "Mega Cannon"
+  },
+  {
+    "id": 120100114400055003,
+    "value": "Armed Armor DE"
+  },
+  {
+    "id": 120100114400055004,
+    "value": "NT-D System EX"
+  },
+  {
+    "id": 120100114400055005,
+    "value": "Beam Tonfa"
+  },
+  {
+    "id": 120100114400070001,
+    "value": "Beam Axe"
+  },
+  {
+    "id": 120100114400070002,
+    "value": "High Beam Rifle"
+  },
+  {
+    "id": 120100114400070003,
+    "value": "Bazooka"
+  },
+  {
+    "id": 120100114400070090,
+    "value": "High Beam Rifle SSP"
+  },
+  {
+    "id": 120100114400080001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400080002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400080090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100114400090001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400090002,
+    "value": "Mega Beam Launcher"
+  },
+  {
+    "id": 120100114400090003,
+    "value": "Capture Gun"
+  },
+  {
+    "id": 120100114400090090,
+    "value": "Mega Beam Launcher SSP"
+  },
+  {
+    "id": 120100114400100001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100114400100002,
+    "value": "Bazooka"
+  },
+  {
+    "id": 120100114400100003,
+    "value": "Omnidirectional Arm Beam Cannon"
+  },
+  {
+    "id": 120100114400100004,
+    "value": "Omnidirectional Arm Beam Cannon"
+  },
+  {
+    "id": 120100114400100090,
+    "value": "Bazooka SSP"
+  },
+  {
+    "id": 120100114400110001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100114400110002,
+    "value": "Compact Beam Machine Gun"
+  },
+  {
+    "id": 120100114400111001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100114400111002,
+    "value": "Compact Beam Machine Gun"
+  },
+  {
+    "id": 120100114400111090,
+    "value": "Compact Beam Machine Gun SSP"
+  },
+  {
+    "id": 120100114400120001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400120002,
+    "value": "Beam Magnum"
+  },
+  {
+    "id": 120100114400120090,
+    "value": "Beam Magnum SSP"
+  },
+  {
+    "id": 120100114400130001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100114400130002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400130090,
+    "value": "Beam Naginata SSP"
+  },
+  {
+    "id": 120100114400140001,
+    "value": "Grenade Launcher"
+  },
+  {
+    "id": 120100114400140002,
+    "value": "90mm Short Machine Gun"
+  },
+  {
+    "id": 120100114400140090,
+    "value": "Grenade Launcher SSP"
+  },
+  {
+    "id": 120100114400160001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400160002,
+    "value": "90mm Short Machine Gun"
+  },
+  {
+    "id": 120100114400160090,
+    "value": "90mm Short Machine Gun SSP"
+  },
+  {
+    "id": 120100114400170001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400170002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100114400170090,
+    "value": "Beam Saber SSP"
+  },
+  {
+    "id": 120100114400180001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400180002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100114400180090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100114400190001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400190002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400190090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100114400200001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400200002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400200003,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400200004,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400200101,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400200102,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400200103,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400200104,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400200201,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100114400200202,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100114400200203,
+    "value": "Psycho-Field"
+  },
+  {
+    "id": 120100114400200204,
+    "value": "Psycho-Field"
   },
   {
     "id": 120100115000010001,
@@ -20132,6 +20468,26 @@
     "value": "Cross Mega Beam Cannon SSP"
   },
   {
+    "id": 120100185000065001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100185000065002,
+    "value": "Cross Mega Beam Cannon"
+  },
+  {
+    "id": 120100185000065003,
+    "value": "Feather Funnel"
+  },
+  {
+    "id": 120100185000065004,
+    "value": "Burning Flare EX"
+  },
+  {
+    "id": 120100185000065005,
+    "value": "Feather Funnel"
+  },
+  {
     "id": 120100185000121001,
     "value": "Haro Tackle"
   },
@@ -20294,6 +20650,30 @@
   {
     "id": 120100185000251090,
     "value": "Salamis Cannon SSP"
+  },
+  {
+    "id": 120100185000280001,
+    "value": "Wired Anchor Leg"
+  },
+  {
+    "id": 120100185000280002,
+    "value": "Diffuse Mega Beam Cannon"
+  },
+  {
+    "id": 120100185000280003,
+    "value": "Wired Head Beam"
+  },
+  {
+    "id": 120100185000280004,
+    "value": "Variable Mega Launcher"
+  },
+  {
+    "id": 120100185000280005,
+    "value": "Variable Mega Launcher"
+  },
+  {
+    "id": 120100185000280090,
+    "value": "Variable Mega Launcher SSP"
   },
   {
     "id": 120100185000291001,

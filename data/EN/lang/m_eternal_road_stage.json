@@ -84,6 +84,10 @@
     "value": "Land/Soldier"
   },
   {
+    "id": 130100000090500028,
+    "value": "Mobile Suit Gundam Narrative"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -204,6 +208,10 @@
     "value": "G GENERATION Series"
   },
   {
+    "id": 130100000090510036,
+    "value": "Mobile Suit Gundam Narrative"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -294,5 +302,9 @@
   {
     "id": 130100000090520027,
     "value": "Gundam/Gundam Pilot"
+  },
+  {
+    "id": 130100000090520028,
+    "value": "Mobile Suit Gundam Narrative"
   }
 ]

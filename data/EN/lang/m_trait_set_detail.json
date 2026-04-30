@@ -1381,11 +1381,11 @@
   },
   {
     "id": 140100000100780100,
-    "value": "Increased Max EN & EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery & Increased Max EN (Single Unit) LV 1"
   },
   {
     "id": 140100000100780200,
-    "value": "Increased Max EN & EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery & Increased Max EN (Single Unit) LV 2"
   },
   {
     "id": 140100000100790100,
@@ -1413,19 +1413,19 @@
   },
   {
     "id": 140100000100810100,
-    "value": "Increased MOB & EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery & Increased MOB (Single Unit) LV 1"
   },
   {
     "id": 140100000100810200,
-    "value": "Increased MOB & EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery & Increased MOB (Single Unit) LV 2"
   },
   {
     "id": 140100000100810300,
-    "value": "Increased MOB & EN Recovery (Single Unit) LV 3"
+    "value": "EN Recovery & Increased MOB (Single Unit) LV 3"
   },
   {
     "id": 140100000100810400,
-    "value": "Increased MOB & EN Recovery (Single Unit) LV 4"
+    "value": "EN Recovery & Increased MOB (Single Unit) LV 4"
   },
   {
     "id": 140100000100820201,
@@ -1478,6 +1478,10 @@
   {
     "id": 140100000100850100,
     "value": "NT-D LV 1"
+  },
+  {
+    "id": 140100000100850200,
+    "value": "NT-D LV 2"
   },
   {
     "id": 140100000100850300,
@@ -1558,6 +1562,10 @@
   {
     "id": 140100000100930201,
     "value": "Ranged Weapon Damage Reduction LV 2"
+  },
+  {
+    "id": 140100000100930301,
+    "value": "Ranged Weapon Damage Reduction LV 3"
   },
   {
     "id": 140100000100940200,
@@ -2002,6 +2010,38 @@
   {
     "id": 140100000101520500,
     "value": "(Regular & Vigor Conditions) Increased ATK  LV 5"
+  },
+  {
+    "id": 140100000101540100,
+    "value": "Capability: Newtype & Mobile Suit Gundam Narrative LV 1"
+  },
+  {
+    "id": 140100000101540104,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000101540105,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000101550100,
+    "value": "Increase DEF & ACC LV 1"
+  },
+  {
+    "id": 140100000101550200,
+    "value": "Increase DEF & ACC LV 2"
+  },
+  {
+    "id": 140100000101550300,
+    "value": "Increase DEF & ACC LV 3"
+  },
+  {
+    "id": 140100000101550400,
+    "value": "Increase DEF & ACC LV 4"
+  },
+  {
+    "id": 140100000101550500,
+    "value": "Increase DEF & ACC LV 5"
   },
   {
     "id": 140100000200010101,
@@ -4769,7 +4809,7 @@
   },
   {
     "id": 140100000202320101,
-    "value": "(Series conditions) Support Defend LV 1"
+    "value": "(Cnd: Series) Support Defense LV 1"
   },
   {
     "id": 140100000202330101,
@@ -4894,6 +4934,26 @@
   {
     "id": 140100000202500101,
     "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000202510101,
+    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000202520400,
+    "value": "Increased Ranged & Awaken LV 4"
+  },
+  {
+    "id": 140100000202530100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202540100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202590101,
+    "value": "(Series conditions) Chance Step Increase LV 1"
   },
   {
     "id": 140100000300010101,
@@ -10036,6 +10096,50 @@
     "value": "Energy Tank SR（Mobile Suit Gundam the Witch from Mercury）"
   },
   {
+    "id": 140100000406480100,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406490101,
+    "value": "Add-On Armor R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406500101,
+    "value": "Booster Parts SR (Psycommu)"
+  },
+  {
+    "id": 140100000406510101,
+    "value": "Limiter OFF SR (Psycommu)"
+  },
+  {
+    "id": 140100000406520101,
+    "value": "Reinforced Armor R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406530101,
+    "value": "Limiter OFF R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406540101,
+    "value": "Booster Parts R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406550100,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406560101,
+    "value": "Limiter OFF SSR (Mobile Suit Gundam Narrative)"
+  },
+  {
+    "id": 140100000406570100,
+    "value": "Add-On Armor SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406580100,
+    "value": "Limiter OFF SSR (Fierce Enemy Assault)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -11242,6 +11346,10 @@
   {
     "id": 140100000511160100,
     "value": "Decreased ATK & DEF (All Units)"
+  },
+  {
+    "id": 140100000511180100,
+    "value": "(HP conditions) Increased ATK, DEF & MOB "
   },
   {
     "id": 140100000530010100,
@@ -12824,6 +12932,10 @@
     "value": "(Battle conditions) Increased DEF"
   },
   {
+    "id": 140100000611630101,
+    "value": "(Vigor conditions) Melee Weapons Max Range Up"
+  },
+  {
     "id": 140100000611660101,
     "value": "Restore MAP Weapon Ammo"
   },
@@ -12834,6 +12946,34 @@
   {
     "id": 140100000611680101,
     "value": "Supercharged EX"
+  },
+  {
+    "id": 140100000611700101,
+    "value": "(Vigor conditions) Improve Decrease DEF Effect"
+  },
+  {
+    "id": 140100000611720101,
+    "value": "(Vigor conditions)Reduced Weapon EN Consumption"
+  },
+  {
+    "id": 140100000611760101,
+    "value": "Support Attack / Counter Support "
+  },
+  {
+    "id": 140100000611770100,
+    "value": "(Defeat Conditions) DEF Down [1 turn(s)] "
+  },
+  {
+    "id": 140100000611770111,
+    "value": "(Defeat Conditions) DEF Down [1 turn(s)] "
+  },
+  {
+    "id": 140100000611770200,
+    "value": "(Defeat Conditions) Beam Weapons Max Range Down [1 turn(s)] "
+  },
+  {
+    "id": 140100000611770211,
+    "value": "(Defeat Conditions) Beam Weapons Max Range Down [1 turn(s)] "
   },
   {
     "id": 140100000699000101,

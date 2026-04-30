@@ -55,6 +55,16 @@
     "TargetId": 1002
   },
   {
+    "StageSortieRestrictionSetGroupId": 100001,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 1250
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 110001,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 1440
+  },
+  {
     "StageSortieRestrictionSetGroupId": 120001,
     "SortieRestrictionTypeIndex": 1,
     "TargetId": 10
@@ -143,6 +153,11 @@
     "StageSortieRestrictionSetGroupId": 120018,
     "SortieRestrictionTypeIndex": 1,
     "TargetId": 2190
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 120019,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 1440
   },
   {
     "StageSortieRestrictionSetGroupId": 130001,

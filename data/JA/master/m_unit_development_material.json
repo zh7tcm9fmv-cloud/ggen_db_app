@@ -780,6 +780,106 @@
     "ConsumeCount": 10
   },
   {
+    "DevelopMaterialSetId": 1144000100,
+    "ItemId": 180000001440,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1144000100,
+    "ItemId": 181144000100,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144000200,
+    "ItemId": 180000001440,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1144000200,
+    "ItemId": 181144000200,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144000300,
+    "ItemId": 180000001440,
+    "ConsumeCount": 12
+  },
+  {
+    "DevelopMaterialSetId": 1144000400,
+    "ItemId": 180000001440,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1144000400,
+    "ItemId": 181144000400,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144000500,
+    "ItemId": 181144000500,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144000700,
+    "ItemId": 180000001440,
+    "ConsumeCount": 15
+  },
+  {
+    "DevelopMaterialSetId": 1144000700,
+    "ItemId": 181144000700,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144000800,
+    "ItemId": 180000001440,
+    "ConsumeCount": 5
+  },
+  {
+    "DevelopMaterialSetId": 1144001000,
+    "ItemId": 181144001000,
+    "ConsumeCount": 3
+  },
+  {
+    "DevelopMaterialSetId": 1144001200,
+    "ItemId": 180000001440,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1144001400,
+    "ItemId": 180000001440,
+    "ConsumeCount": 8
+  },
+  {
+    "DevelopMaterialSetId": 1144001700,
+    "ItemId": 180000001440,
+    "ConsumeCount": 10
+  },
+  {
+    "DevelopMaterialSetId": 1144001800,
+    "ItemId": 180000001440,
+    "ConsumeCount": 5
+  },
+  {
+    "DevelopMaterialSetId": 1144002001,
+    "ItemId": 180000001440,
+    "ConsumeCount": 50
+  },
+  {
+    "DevelopMaterialSetId": 1144002001,
+    "ItemId": 189900000001,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1144002002,
+    "ItemId": 180000001440,
+    "ConsumeCount": 100
+  },
+  {
+    "DevelopMaterialSetId": 1144002002,
+    "ItemId": 189900000002,
+    "ConsumeCount": 100
+  },
+  {
     "DevelopMaterialSetId": 1150000100,
     "ItemId": 181150000100,
     "ConsumeCount": 3

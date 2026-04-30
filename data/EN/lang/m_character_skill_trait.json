@@ -677,7 +677,7 @@
   },
   {
     "id": 140600000130140301,
-    "value": "Characters piloting squad units within range\nIncrease MP by 5."
+    "value": "Increase MP of allies within range by 5."
   },
   {
     "id": 140600000130140401,
@@ -941,11 +941,11 @@
   },
   {
     "id": 141400000270130401,
-    "value": "Increases Accuracy by 35% [1 turn]."
+    "value": "Increases Accuracy by 30% [1 turn]."
   },
   {
     "id": 141400000270130402,
-    "value": "Increase Evasion by 35% [1 turn]."
+    "value": "Increase Evasion by 30% [1 turn]."
   },
   {
     "id": 141400000270130501,

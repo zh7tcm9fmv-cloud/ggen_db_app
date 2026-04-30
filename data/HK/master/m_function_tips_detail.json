@@ -625,6 +625,11 @@
     "ImageResourceId": "tips_910004"
   },
   {
+    "Id": 910005,
+    "ContentLanguageId": 170800000000910005,
+    "ImageResourceId": "tips_910005"
+  },
+  {
     "Id": 920101,
     "ContentLanguageId": 170800000000920001,
     "ImageResourceId": "tips_920001"

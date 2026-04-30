@@ -1824,6 +1824,30 @@
     "DamagedEffectId": "ef_mpd_0002_005_beamcanon_mercury"
   },
   {
+    "Id": 290143,
+    "WeaponEffectPrefabPairSetId": 290143,
+    "WeaponEffectId": "ef_mpa_0023_000_twinaadeshot",
+    "DamagedEffectId": "ef_mpd_0023_000_twinaadeshot"
+  },
+  {
+    "Id": 290144,
+    "WeaponEffectPrefabPairSetId": 290144,
+    "WeaponEffectId": "ef_mpa_0023_000_psychofield",
+    "DamagedEffectId": "ef_mpd_0023_000_psychofield"
+  },
+  {
+    "Id": 290145,
+    "WeaponEffectPrefabPairSetId": 290145,
+    "WeaponEffectId": "ef_mpa_0023_002_halphasmegabeam",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 290146,
+    "WeaponEffectPrefabPairSetId": 290146,
+    "WeaponEffectId": "ef_mpa_0023_002_beamshot",
+    "DamagedEffectId": "ef_mpd_0023_002_beamshot"
+  },
+  {
     "Id": 290147,
     "WeaponEffectPrefabPairSetId": 290147,
     "WeaponEffectId": "ef_mpa_0023_007_beammusket",
@@ -1930,6 +1954,12 @@
     "WeaponEffectPrefabPairSetId": 310044,
     "WeaponEffectId": "ef_mpa_0029_006_funnelspreadbeam_age",
     "DamagedEffectId": "ef_mpd_0029_006_funnelspreadbeam_age"
+  },
+  {
+    "Id": 310046,
+    "WeaponEffectPrefabPairSetId": 310046,
+    "WeaponEffectId": "ef_mpa_0029_000_funnelbeam_aade",
+    "DamagedEffectId": "ef_mpd_0023_000_aadeshot"
   },
   {
     "Id": 320006,
@@ -2676,6 +2706,12 @@
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
+    "Id": 340050,
+    "WeaponEffectPrefabPairSetId": 340050,
+    "WeaponEffectId": "ef_mpa_0024_000_funnel_phenex",
+    "DamagedEffectId": "ef_mpd_0023_000_aadeshot"
+  },
+  {
     "Id": 350001,
     "WeaponEffectPrefabPairSetId": 350001,
     "WeaponEffectId": "ef_mpa_0025_002_funnel_newtypeusegmjuggler",
@@ -2886,6 +2922,12 @@
     "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
   },
   {
+    "Id": 350036,
+    "WeaponEffectPrefabPairSetId": 350036,
+    "WeaponEffectId": "ef_mpa_0025_002_funnel_narrative_b",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
     "Id": 360001,
     "WeaponEffectPrefabPairSetId": 360001,
     "WeaponEffectId": "ef_mpa_0026_002_funnel_phenix",
@@ -2949,6 +2991,12 @@
     "Id": 370009,
     "WeaponEffectPrefabPairSetId": 370009,
     "WeaponEffectId": "ef_mpa_0027_006_funnel_zodiac",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
+    "Id": 370010,
+    "WeaponEffectPrefabPairSetId": 370010,
+    "WeaponEffectId": "ef_mpa_0027_000_funnel_phenex",
     "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
@@ -3076,6 +3124,12 @@
     "WeaponEffectPrefabPairSetId": 470010,
     "WeaponEffectId": "ef_mpa_0037_002_twinbeamrifle_gn",
     "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle"
+  },
+  {
+    "Id": 490006,
+    "WeaponEffectPrefabPairSetId": 490006,
+    "WeaponEffectId": "ef_mpa_0039_006_twinbeambuster",
+    "DamagedEffectId": "ef_mpd_0039_006_twinbeambuster"
   },
   {
     "Id": 900001,
@@ -3237,6 +3291,18 @@
     "Id": 900039,
     "WeaponEffectPrefabPairSetId": 900039,
     "WeaponEffectId": "ef_mpw_027_01_net",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900042,
+    "WeaponEffectPrefabPairSetId": 900042,
+    "WeaponEffectId": "ef_mpw_028_01_psychocapture",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900043,
+    "WeaponEffectPrefabPairSetId": 900043,
+    "WeaponEffectId": "ef_mpw_028_02_psychocapture",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -3873,6 +3939,36 @@
     "Id": 900173,
     "WeaponEffectPrefabPairSetId": 900173,
     "WeaponEffectId": "ef_mpw_080_09_funnel_mkv",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900174,
+    "WeaponEffectPrefabPairSetId": 900174,
+    "WeaponEffectId": "ef_mpw_061_05_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900175,
+    "WeaponEffectPrefabPairSetId": 900175,
+    "WeaponEffectId": "ef_mpw_090_04_sweepbeamsaber",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900176,
+    "WeaponEffectPrefabPairSetId": 900176,
+    "WeaponEffectId": "ef_mpw_011_02_llneozeong",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900177,
+    "WeaponEffectPrefabPairSetId": 900177,
+    "WeaponEffectId": "ef_mpw_080_10_funnel_halphas",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900178,
+    "WeaponEffectPrefabPairSetId": 900178,
+    "WeaponEffectId": "ef_mpw_093_06_fourlinetwinmegabeam",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -7378,6 +7474,150 @@
     "WeaponEffectPrefabPairSetId": 80064,
     "WeaponEffectId": "ef_mpa_1000_000_se_pharact",
     "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006501,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_trailvernier_phenex",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006502,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_phenex_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_phenex_ex1"
+  },
+  {
+    "Id": 8006503,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_phenex_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_phenex_ex2"
+  },
+  {
+    "Id": 8006504,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_phenex",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_phenex"
+  },
+  {
+    "Id": 8006505,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_knuckle_phenex",
+    "DamagedEffectId": "ef_mpd_1000_000_knuckle_phenex"
+  },
+  {
+    "Id": 8006506,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_phenex",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006507,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_knucklehit_phenex",
+    "DamagedEffectId": "ef_mpd_1000_000_knucklehit_phenex"
+  },
+  {
+    "Id": 8006508,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_funnelhit_phenex_ex01",
+    "DamagedEffectId": "ef_mpd_1000_000_funnelhit_phenex_ex01"
+  },
+  {
+    "Id": 8006509,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_funnelhit_phenex_ex02",
+    "DamagedEffectId": "ef_mpd_1000_000_funnelhit_phenex_ex02"
+  },
+  {
+    "Id": 8006510,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_phenex",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006511,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_se_phenex",
+    "DamagedEffectId": "ef_mpd_1000_000_se_phenex"
+  },
+  {
+    "Id": 8006512,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_feather_phenex",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006513,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_psychofield",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006514,
+    "WeaponEffectPrefabPairSetId": 80065,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006601,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_002_funnel_halphas_ex1",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 8006602,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_002_funnel_halphas_ex2",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 8006603,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_002_beamsaber_halphas",
+    "DamagedEffectId": "ef_mpd_1000_002_beamsaber_halphas"
+  },
+  {
+    "Id": 8006604,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_000_funnelhit_halphas",
+    "DamagedEffectId": "ef_mpd_1000_000_funnelhit_halphas"
+  },
+  {
+    "Id": 8006605,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_004_beamsaber_halphas",
+    "DamagedEffectId": "ef_mpd_1000_004_beamsaber_halphas"
+  },
+  {
+    "Id": 8006606,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_000_spark_halphas",
+    "DamagedEffectId": "ef_mpd_1000_000_spark_halphas"
+  },
+  {
+    "Id": 8006607,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_000_fire_halphas_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_fire_halphas"
+  },
+  {
+    "Id": 8006608,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_000_fire_halphas_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_fire_halphas"
+  },
+  {
+    "Id": 8006609,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_002_beambuster_halphas",
+    "DamagedEffectId": "ef_mpd_1000_002_beambuster_halphas"
+  },
+  {
+    "Id": 8006610,
+    "WeaponEffectPrefabPairSetId": 80066,
+    "WeaponEffectId": "ef_mpa_1000_002_funnelbeam_halphas",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
     "Id": 99999990,

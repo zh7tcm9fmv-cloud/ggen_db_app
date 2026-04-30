@@ -868,6 +868,83 @@
     "NpcGroupName": "neo_zeon_8"
   },
   {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 144000600102000001,
+    "MapNpcId": 144000600102000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
     "MapGroupId": 210000800202000024,
     "MapNpcId": 210000800202000001,
     "GroupUnitTypeIndex": 3,

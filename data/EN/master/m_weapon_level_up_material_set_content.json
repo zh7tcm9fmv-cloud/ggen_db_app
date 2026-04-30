@@ -410,7 +410,7 @@
   {
     "WeaponLevelUpMaterialSetId": 10026,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 2
   },
   {
@@ -422,7 +422,7 @@
   {
     "WeaponLevelUpMaterialSetId": 10026,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000002,
     "RequiredCount": 2
   },
   {
@@ -434,7 +434,7 @@
   {
     "WeaponLevelUpMaterialSetId": 10026,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000003,
     "RequiredCount": 3
   },
   {
@@ -446,7 +446,7 @@
   {
     "WeaponLevelUpMaterialSetId": 10026,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000004,
     "RequiredCount": 3
   },
   {
@@ -914,49 +914,49 @@
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 2
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161400000001,
+    "ItemId": 161300000001,
     "RequiredCount": 2
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000001,
     "RequiredCount": 2
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161400000002,
+    "ItemId": 161300000001,
     "RequiredCount": 2
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161400000003,
+    "ItemId": 161300000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 10044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161400000004,
+    "ItemId": 161300000001,
     "RequiredCount": 3
   },
   {
@@ -1586,7 +1586,7 @@
   {
     "WeaponLevelUpMaterialSetId": 20026,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 3
   },
   {
@@ -1598,7 +1598,7 @@
   {
     "WeaponLevelUpMaterialSetId": 20026,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000002,
     "RequiredCount": 3
   },
   {
@@ -1610,7 +1610,7 @@
   {
     "WeaponLevelUpMaterialSetId": 20026,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000003,
     "RequiredCount": 5
   },
   {
@@ -1622,7 +1622,7 @@
   {
     "WeaponLevelUpMaterialSetId": 20026,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000004,
     "RequiredCount": 5
   },
   {
@@ -2090,49 +2090,49 @@
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161400000001,
+    "ItemId": 161300000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161400000002,
+    "ItemId": 161300000001,
     "RequiredCount": 3
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161400000003,
+    "ItemId": 161300000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 20044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161400000004,
+    "ItemId": 161300000001,
     "RequiredCount": 5
   },
   {
@@ -3266,49 +3266,49 @@
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161400000001,
+    "ItemId": 161300000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161400000002,
+    "ItemId": 161300000001,
     "RequiredCount": 5
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000001,
     "RequiredCount": 8
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161400000003,
+    "ItemId": 161300000001,
     "RequiredCount": 8
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000001,
     "RequiredCount": 8
   },
   {
     "WeaponLevelUpMaterialSetId": 30044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161400000004,
+    "ItemId": 161300000001,
     "RequiredCount": 8
   },
   {
@@ -4514,49 +4514,49 @@
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161000000001,
+    "ItemId": 161100000001,
     "RequiredCount": 6
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 1,
-    "ItemId": 161400000001,
+    "ItemId": 161300000001,
     "RequiredCount": 6
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161000000002,
+    "ItemId": 161100000001,
     "RequiredCount": 6
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 2,
-    "ItemId": 161400000002,
+    "ItemId": 161300000001,
     "RequiredCount": 6
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161000000003,
+    "ItemId": 161100000001,
     "RequiredCount": 10
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 3,
-    "ItemId": 161400000003,
+    "ItemId": 161300000001,
     "RequiredCount": 10
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161000000004,
+    "ItemId": 161100000001,
     "RequiredCount": 10
   },
   {
     "WeaponLevelUpMaterialSetId": 40044,
     "CurrentWeaponLevel": 4,
-    "ItemId": 161400000004,
+    "ItemId": 161300000001,
     "RequiredCount": 10
   },
   {

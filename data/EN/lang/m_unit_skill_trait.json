@@ -1,11 +1,27 @@
 [
   {
+    "id": 141500114400055011,
+    "value": "Zero EN"
+  },
+  {
+    "id": 141500114400055012,
+    "value": "Strike and Move"
+  },
+  {
     "id": 141500137000595011,
     "value": "Increased ATK"
   },
   {
     "id": 141500137000595012,
     "value": "Increased DEF"
+  },
+  {
+    "id": 141600114400055011,
+    "value": "Can use own weapon once without consuming EN."
+  },
+  {
+    "id": 141600114400055012,
+    "value": "Can move once more after attacking. (Excluding MAP Weapons.)"
   },
   {
     "id": 141600137000595011,

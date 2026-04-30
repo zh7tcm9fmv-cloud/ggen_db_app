@@ -1,5 +1,27 @@
 [
   {
+    "Id": 114400055011,
+    "UnitSkillId": 114400055000,
+    "NameLanguageId": 141500114400055011,
+    "DescriptionLanguageId": 141600114400055011,
+    "ResourceId": "trait_10870501",
+    "TraitTypeIndex": 5,
+    "TraitValue": 1,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false
+  },
+  {
+    "Id": 114400055012,
+    "UnitSkillId": 114400055000,
+    "NameLanguageId": 141500114400055012,
+    "DescriptionLanguageId": 141600114400055012,
+    "ResourceId": "trait_10270101",
+    "TraitTypeIndex": 4,
+    "TraitValue": 1,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false
+  },
+  {
     "Id": 137000595011,
     "UnitSkillId": 137000595000,
     "NameLanguageId": 141500137000595011,

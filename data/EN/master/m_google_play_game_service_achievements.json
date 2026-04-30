@@ -178,5 +178,15 @@
     "Id": 260360090002,
     "DevelopmentAchievementId": "CgkIlJmS2aQOEAIQKg",
     "ProductionAchievementId": "CgkIgK2VmqYPEAIQJg"
+  },
+  {
+    "Id": 260450020002,
+    "DevelopmentAchievementId": "CgkIlJmS2aQOEAIQLg",
+    "ProductionAchievementId": "CgkIgK2VmqYPEAIQJw"
+  },
+  {
+    "Id": 260450090001,
+    "DevelopmentAchievementId": "CgkIlJmS2aQOEAIQLw",
+    "ProductionAchievementId": "CgkIgK2VmqYPEAIQKA"
   }
 ]

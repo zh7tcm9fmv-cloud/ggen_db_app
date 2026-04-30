@@ -70,6 +70,26 @@
     "ThumbnailResourceId": "thum_anime_top_0170_01"
   },
   {
+    "Id": 320,
+    "AnimeStreamingSeriesGroupId": 320,
+    "NameLanguageId": 320100000000000320,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0320_01",
+    "SortOrder": 8800320,
+    "ScheduleId": 2604502801,
+    "ThumbnailResourceId": "thum_anime_top_0320_01"
+  },
+  {
+    "Id": 330,
+    "AnimeStreamingSeriesGroupId": 330,
+    "NameLanguageId": 320100000000000330,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_0330_01",
+    "SortOrder": 8800330,
+    "ScheduleId": 2604502801,
+    "ThumbnailResourceId": "thum_anime_top_0330_01"
+  },
+  {
     "Id": 600,
     "AnimeStreamingSeriesGroupId": 600,
     "NameLanguageId": 320100000000000600,

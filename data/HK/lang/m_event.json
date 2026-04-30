@@ -80,10 +80,6 @@
     "value": "SPECIAL STAGE"
   },
   {
-    "id": 250100000000220007,
-    "value": "SPECIAL STAGE"
-  },
-  {
     "id": 250100000000230001,
     "value": "SPECIAL STAGE"
   },
@@ -146,5 +142,9 @@
   {
     "id": 250100000000300013,
     "value": "SEASON 11.5"
+  },
+  {
+    "id": 250100000000300014,
+    "value": "SEASON 12"
   }
 ]

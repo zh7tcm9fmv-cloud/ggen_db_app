@@ -456,9 +456,9 @@
     "NameLanguageId": 200100000000001440,
     "DescriptionLanguageId": 200200000000001440,
     "ResourceId": "series_1440",
-    "SortOrder": 11400,
+    "SortOrder": 320,
     "ScheduleId": 0,
-    "ScenarioStageSeriesId": 0,
+    "ScenarioStageSeriesId": 1440,
     "FilterNameLanguageId": 200300000000001440
   },
   {
@@ -469,7 +469,7 @@
     "ResourceId": "series_1500",
     "SortOrder": 325,
     "ScheduleId": 2511409901,
-    "ScenarioStageSeriesId": 0,
+    "ScenarioStageSeriesId": 1500,
     "FilterNameLanguageId": 200300000000001500
   },
   {
@@ -579,7 +579,7 @@
     "ResourceId": "series_2190",
     "SortOrder": 520,
     "ScheduleId": 2506109901,
-    "ScenarioStageSeriesId": 0,
+    "ScenarioStageSeriesId": 2190,
     "FilterNameLanguageId": 200300000000002190
   },
   {

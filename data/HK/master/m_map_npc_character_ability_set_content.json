@@ -1510,6 +1510,36 @@
     "AbilityId": 6101902
   },
   {
+    "MapNpcCharacterAbilitySetId": 11440011144000101,
+    "SortOrder": 1,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 11440021144000101,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 11440021144000401,
+    "SortOrder": 1,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 11440041144000101,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 11440041144000101,
+    "SortOrder": 2,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 11440041144000101,
+    "SortOrder": 3,
+    "AbilityId": 5104402
+  },
+  {
     "MapNpcCharacterAbilitySetId": 12000181200000101,
     "SortOrder": 1,
     "AbilityId": 2002402
@@ -5080,6 +5110,171 @@
     "AbilityId": 6101801
   },
   {
+    "MapNpcCharacterAbilitySetId": 21440012144000501,
+    "SortOrder": 1,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440021144000201,
+    "SortOrder": 1,
+    "AbilityId": 2002301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440021144000201,
+    "SortOrder": 2,
+    "AbilityId": 6102301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440021144000301,
+    "SortOrder": 1,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440031144000201,
+    "SortOrder": 1,
+    "AbilityId": 2002301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440031144000201,
+    "SortOrder": 2,
+    "AbilityId": 6102301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440031144000201,
+    "SortOrder": 3,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440032125000401,
+    "SortOrder": 1,
+    "AbilityId": 6101801
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440041144000201,
+    "SortOrder": 1,
+    "AbilityId": 2002301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440041144000201,
+    "SortOrder": 2,
+    "AbilityId": 5104402
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000101,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000101,
+    "SortOrder": 2,
+    "AbilityId": 5104402
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000102,
+    "SortOrder": 1,
+    "AbilityId": 6102301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000102,
+    "SortOrder": 2,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000102,
+    "SortOrder": 3,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000201,
+    "SortOrder": 1,
+    "AbilityId": 2002301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000201,
+    "SortOrder": 2,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000201,
+    "SortOrder": 3,
+    "AbilityId": 5104402
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000202,
+    "SortOrder": 1,
+    "AbilityId": 2002301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000202,
+    "SortOrder": 2,
+    "AbilityId": 6102301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000202,
+    "SortOrder": 3,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440051144000301,
+    "SortOrder": 1,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440052144000101,
+    "SortOrder": 1,
+    "AbilityId": 6101801
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061017000801,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000101,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000102,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000102,
+    "SortOrder": 2,
+    "AbilityId": 5110403
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000102,
+    "SortOrder": 3,
+    "AbilityId": 6116301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000401,
+    "SortOrder": 1,
+    "AbilityId": 6103501
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000501,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000501,
+    "SortOrder": 2,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440061144000501,
+    "SortOrder": 3,
+    "AbilityId": 6102604
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 21440062125000301,
+    "SortOrder": 1,
+    "AbilityId": 6101801
+  },
+  {
     "MapNpcCharacterAbilitySetId": 21500011150000301,
     "SortOrder": 1,
     "AbilityId": 2001405
@@ -8450,6 +8645,21 @@
     "AbilityId": 6108601
   },
   {
+    "MapNpcCharacterAbilitySetId": 29020002999000108,
+    "SortOrder": 1,
+    "AbilityId": 6117701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29020002999000108,
+    "SortOrder": 2,
+    "AbilityId": 6117702
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29020002999000108,
+    "SortOrder": 3,
+    "AbilityId": 6102301
+  },
+  {
     "MapNpcCharacterAbilitySetId": 29020022080001001,
     "SortOrder": 1,
     "AbilityId": 6101801
@@ -10253,6 +10463,16 @@
     "MapNpcCharacterAbilitySetId": 29050271709000101,
     "SortOrder": 1,
     "AbilityId": 6114101
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29050281144000101,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29050281144000501,
+    "SortOrder": 1,
+    "AbilityId": 2010301
   },
   {
     "MapNpcCharacterAbilitySetId": 29051001001000401,
@@ -13123,6 +13343,51 @@
     "MapNpcCharacterAbilitySetId": 29052271501000101,
     "SortOrder": 2,
     "AbilityId": 6116804
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000101,
+    "SortOrder": 1,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000102,
+    "SortOrder": 1,
+    "AbilityId": 6117201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000102,
+    "SortOrder": 2,
+    "AbilityId": 2010301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000201,
+    "SortOrder": 1,
+    "AbilityId": 2002302
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000202,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000202,
+    "SortOrder": 2,
+    "AbilityId": 2002302
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000501,
+    "SortOrder": 1,
+    "AbilityId": 6102101
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000501,
+    "SortOrder": 2,
+    "AbilityId": 6117001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29052281144000501,
+    "SortOrder": 3,
+    "AbilityId": 2010301
   },
   {
     "MapNpcCharacterAbilitySetId": 29060011001000100,

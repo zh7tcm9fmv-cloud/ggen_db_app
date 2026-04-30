@@ -1936,8 +1936,96 @@
     "value": "Krake Zulu"
   },
   {
+    "id": 110100001144000100,
+    "value": "Narrative Gundam A-Packs"
+  },
+  {
     "id": 110100001144000150,
     "value": "Narrative Gundam A-Packs (EX)"
+  },
+  {
+    "id": 110100001144000200,
+    "value": "Narrative Gundam B-Packs"
+  },
+  {
+    "id": 110100001144000300,
+    "value": "Narrative Gundam C-Packs"
+  },
+  {
+    "id": 110100001144000400,
+    "value": "Unicorn Gundam 03 Phenex (Unicorn Mode)"
+  },
+  {
+    "id": 110100001144000500,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode)"
+  },
+  {
+    "id": 110100001144000550,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode) (EX)"
+  },
+  {
+    "id": 110100001144000700,
+    "value": "Sinanju Stein"
+  },
+  {
+    "id": 110100001144000800,
+    "value": "Jesta (Shezarr Type)"
+  },
+  {
+    "id": 110100001144000900,
+    "value": "Jesta (Shezarr Type Team B & C)"
+  },
+  {
+    "id": 110100001144001000,
+    "value": "II Neo Zeong"
+  },
+  {
+    "id": 110100001144001100,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110100001144001110,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110100001144001200,
+    "value": "Silver Bullet Suppressor"
+  },
+  {
+    "id": 110100001144001300,
+    "value": "Dijeh (Narrative)"
+  },
+  {
+    "id": 110100001144001400,
+    "value": "Gustav Karl (Narrative)"
+  },
+  {
+    "id": 110100001144001600,
+    "value": "Jegan Type-D Escort Type"
+  },
+  {
+    "id": 110100001144001700,
+    "value": "Narrative Gundam"
+  },
+  {
+    "id": 110100001144001800,
+    "value": "ReZEL Type C (GR)"
+  },
+  {
+    "id": 110100001144001900,
+    "value": "Jegan Type A2 (GR)"
+  },
+  {
+    "id": 110100001144002000,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110100001144002001,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110100001144002002,
+    "value": "Narrative Gundam C-Packs (Awakened)"
   },
   {
     "id": 110100001150000100,
@@ -5460,6 +5548,10 @@
     "value": "Halphas Gundam"
   },
   {
+    "id": 110100001850000650,
+    "value": "Halphas Gundam (EX)"
+  },
+  {
     "id": 110100001850001210,
     "value": "Haro"
   },
@@ -5498,6 +5590,10 @@
   {
     "id": 110100001850002510,
     "value": "Gundam Ez8 Heavy Armed Custom"
+  },
+  {
+    "id": 110100001850002800,
+    "value": "Gromlin"
   },
   {
     "id": 110100001850002910,
@@ -5786,6 +5882,10 @@
   {
     "id": 110100002125000500,
     "value": "Garuda"
+  },
+  {
+    "id": 110100002144000100,
+    "value": "Damascus"
   },
   {
     "id": 110100002200000100,
@@ -7776,8 +7876,92 @@
     "value": "A prototype mobile suit developed by the Neo Zeon remnant faction known as the Sleeves.\nIts design concept was to recreate the high mobility psycommu system testbed developed by the Principality of Zeon during the One Year War, but with U.C.0096 technological advancements.\nUsing Angelo Sauper's Geara Zulu as a base, drastic alterations have been made.\nAttached to its shoulders are massive arms with built-in mega particle cannons, which can be used as wire-guided remote weapons.\nThe legs have also been switched out for hefty thruster units, and propellant boosters for long-range cruising, bigger than the machine itself, can be mounted on its back."
   },
   {
+    "id": 110200001144000100,
+    "value": "The Narrative Gundam, fitted with equipment allowing for high mobility.\nDuring its development, an emphasis was placed on upgrading its legs, and it can achieve an explosive acceleration by aiming all of its large boosters backward.\nIn addition, it operated on the front lines of the Phoenix Hunt mission and comes equipped with the Psycho Capture, a composite special weapon designed to capture the Phenex."
+  },
+  {
     "id": 110200001144000150,
     "value": "The Narrative Gundam, fitted with equipment allowing for high mobility.\nDuring its development, an emphasis was placed on upgrading its legs, and it can achieve an explosive acceleration by aiming all of its large boosters backward.\nIn addition, it operated on the front lines of the Phoenix Hunt mission and comes equipped with the Psycho Capture, a composite special weapon designed to capture the Phenex."
+  },
+  {
+    "id": 110200001144000200,
+    "value": "The Narrative Gundam equipped with a backpack mounted on its back that features twin wired remote weapon systems.\nThe backpack and wired remote weapon systems are connected to the mobile suit by a cable and operated via wired control.\nBoth of its arms are equipped with small shields with built-in missiles."
+  },
+  {
+    "id": 110200001144000300,
+    "value": "The Narrative Gundam fitted with the Psycho-Frame collected by Luio & Co. for the purpose of luring out the Phenex after the battle in the College Colony Metis.\nDue to being a hastily assembled mobile suit that incorporates minimally processed Psycho-Frame from the RX-0 series, it has an unconventional design that uses Psycho-Frame as external armor.\nAlthough its weapons were not part of the original equipment plan, they are referred to as C-Packs for convenience."
+  },
+  {
+    "id": 110200001144000400,
+    "value": "The golden third unit of the Unicorn Gundam, created using construction data from the white first unit and the black second unit, and based on a full Psycho-Frame that was delivered early for testing purposes.\nIt went missing in U.C. 0095 after an incident in which it ran wild."
+  },
+  {
+    "id": 110200001144000500,
+    "value": "The third RX-0 mobile suit, independently created by the Earth Federation Forces based on a full Psycho-Frame that was delivered early by Anaheim Electronics Co.\nThis turn of events has been attributed to the General Staff's desire to exclude the Vist Foundation from involvement in the UC Project.\nIt was completed in U.C. 0095, but ran wild during an evaluation, sinking the mother ship overseeing its testing before disappearing.\nIt reemerged in the Earth Sphere in U.C. 0097, prompting an operation to capture it known as Phoenix Hunt.\nWhile its specs match those of other RX-0 mobile suits, it boasts enhanced mobility and firepower thanks to the Armed Armor DE, special equipment designed to boost performance by harnessing Psycho-Frame resonance.\nDespite its fuel supply having run dry, it remains operational as it wanders amongst the stars. It remains a mobile suit shrouded in mystery."
+  },
+  {
+    "id": 110200001144000550,
+    "value": "The third RX-0 mobile suit, independently created by the Earth Federation Forces based on a full Psycho-Frame that was delivered early by Anaheim Electronics Co.\nThis turn of events has been attributed to the General Staff's desire to exclude the Vist Foundation from involvement in the UC Project.\nIt was completed in U.C. 0095, but ran wild during an evaluation, sinking the mother ship overseeing its testing before disappearing.\nIt reemerged in the Earth Sphere in U.C. 0097, prompting an operation to capture it known as Phoenix Hunt.\nWhile its specs match those of other RX-0 mobile suits, it boasts enhanced mobility and firepower thanks to the Armed Armor DE, special equipment designed to boost performance by harnessing Psycho-Frame resonance.\nDespite its fuel supply having run dry, it remains operational as it wanders amongst the stars. It remains a mobile suit shrouded in mystery."
+  },
+  {
+    "id": 110200001144000700,
+    "value": "A prototype mobile suit developed under the UC Project as a test machine for the strength and responsiveness of the Psycho-Frame.\nIts development code is Stein 01.\nReportedly, it was stolen during transport aboard the Earth Federation Space Force Clop-class cruiser Unkai."
+  },
+  {
+    "id": 110200001144000800,
+    "value": "A special operations Jesta deployed to the Shezarr Team for carrying out the Phoenix Hunt. Tasked with pursuing the Phenex, Team A employs this unit equipped with a high-mobility optional configuration.\nLike the Jegan Type D, the Jesta expands its operational capabilities with the modular approach afforded by optional equipment. In the Shezarr Team's standard configuration, special sensor units are mounted on the head to improve its search and tracking capabilities.\nFurthermore, Team A leverages its superior mobility to overtake the target, while Team B maintains long-range suppressive fire to restrict the target's movement.\nAnd finally, Team C secures the target with the capture gun. The squad is therefore divided into three role-specialized teams, each team outfitted with equipment suited to its operational duties.\nTeam A's unit is equipped with the same backpack used by the Stark Jegan and can optionally mount large detachable propellant tanks and a booster unit on the waist to close in on high-speed flying targets."
+  },
+  {
+    "id": 110200001144000900,
+    "value": "A mobile suit developed for special operations by Anaheim Electronics Co.\nDuring the Phoenix Hunt operation, every Jesta deployed by the Shezarr Team was equipped with a scope-type sensor enhancement unit on its head.\nThe Phoenix Hunt operation was conducted by a squad composed of six Jestas divided evenly into three specialized teams: A Team, which was upgraded with a high-mobility backpack; B Team, which was equipped with a tripod-mounted mega beam launcher for sniping; and C Team, which rode on the Base Jabber Type 89 and carried a capture gun for retrieval."
+  },
+  {
+    "id": 110200001144001000,
+    "value": "The Neo Zeong, developed exclusively for Full Frontal.\nThe II Neo Zeong was created using spare parts from the original mobile armor's development phase.\nTo enhance rigidity, a new frame was added to the front of the shoulder weapon bay, and the front hatch of the weapon bay was removed.\nThe newly added frame was then painted red, giving the mobile armor striking accents.\nIts weapons include wired guiding functions incorporated into the arms, enabling maneuvers reminiscent of the Zeong."
+  },
+  {
+    "id": 110200001144001100,
+    "value": "The Geara Zulu, equipped with an armored backpack and close-combat weaponry.\nIt is also equipped with a beam naginata and a Compact Beam Machine Gun—a shortened version of the standard beam machine gun.\nThe head has been fitted with a blade antenna, signifying it as a commander variant."
+  },
+  {
+    "id": 110200001144001200,
+    "value": "A mobile suit modified from the Silver Bullet stored in the Magallanica.\nThe high extensibility of that mobile suit made it an ideal candidate as a testbed.\nModifications were primarily made to the arms and backpack to accommodate the use of a beam magnum, but additional specification changes to the head and legs were also explored."
+  },
+  {
+    "id": 110200001144001300,
+    "value": "A prototype ground combat mobile suit based on the Rick Dias.\nIts significant changes from the U.C. 0087 iteration include a redesigned structure enabling the use of standardized E-packs and the replacement of its original beam rifle with the model used by the Jegan and the ReZEL.\nIn addition, the captain's unit features a dedicated searchlight mounted on the left shoulder. Operated by Luio & Co. and piloted by Jona."
+  },
+  {
+    "id": 110200001144001400,
+    "value": "A general-purpose mass-produced mobile suit developed as a next-generation machine for the Federation Forces.\nIt was developed on a lineage separate from the RGM-89 Jegan and features both heavy armament and reinforced armor.\nDeployed to escort Martha, it is armed with the same improved 90mm short machine gun used by the Jegan Type-D Escort Type."
+  },
+  {
+    "id": 110200001144001600,
+    "value": "A variant of the RGM-89D Jegan Type-D.\nThe standard issue 60mm Vulcan gun was removed, and the head was redesigned.\nLike the RGM-89De Jegan (ECOAS Type), the chest armor was also upgraded.\nIts main weapon is the 90mm short machine gun."
+  },
+  {
+    "id": 110200001144001700,
+    "value": "A mobile suit made by Anaheim Electronics and piloted by the main character, Jona Basta.\nIt was developed as the Psycho-Frame test model for the RX-93 Nu Gundam.\nBecause it was intended mainly as a testbed for data collection, there are many areas that have not been equipped with armor, leaving the frame structure exposed.\nCreated as a testbed, the base machine is armed only with head Vulcans, and during the Phoenix Hunt operation, it uses a variety of interchangeable armament provided by Luio & Co."
+  },
+  {
+    "id": 110200001144001800,
+    "value": "The ReZEL is part of the Refined Gundam Zeta series, created in an attempt to mass-produce the transformable Zeta Gundam, which was highly valued for its performance in the Gryps Conflict.\nThis variation, known as the Type C, is modified for use by commanders.\nTo improve performance, the standard type's thrust limiters have been removed, and the whole machine has been tuned for greater reliability, bringing out the true capabilities of the ReZEL.\nThis specialized version was assigned to the General Revil, and painted in distinctive colors."
+  },
+  {
+    "id": 110200001144001900,
+    "value": "A variation of the Federation Forces main mass-produced mobile suit, the Jegan, with some minor changes.\nBased on the earliest type, it was remodeled in an attempt to improve its overall performance.\nTo enhance the machine's propulsion systems, sub-thrusters were added to the backpack, and thrusters were added to each leg.\nDefensive changes included the addition of a large shield, and the machine's total specs were increased.\nThis specialized version was assigned to the General Revil, and painted in distinctive colors."
+  },
+  {
+    "id": 110200001144002000,
+    "value": "An equipment variation for the Psycho-Frame test model developed by Anaheim Electronics prior to the Nu Gundam.\nAs a test model for the Psycho-Frame that was never intended to see combat, the Narrative Gundam was hastily outfitted with Psycho-Frame armor to capture the Unicorn Gundam 03 Phenex (Unicorn Mode), the third RX-0 mobile suit independently assembled by the Earth Federation Forces, in the Phoenix Hunt.\nOriginally dismissed as \"useless\" for its underwhelming specs, the Narrative Gundam demonstrated its flexibility by leveraging the high scalability typical of test machines that can retrofit various optional equipment.\nThe machine achieved a drastic performance boost through the Psycho-Package, which installed Psycho-Frames throughout its body with minimal processing.\nDuring its final battle with II Neo Zeong, it resonated with Psycho-Frames scattered throughout space alongside the Unicorn Gundam 03 Phenex (Unicorn Mode), ultimately generating a Psycho-Field."
+  },
+  {
+    "id": 110200001144002001,
+    "value": "-"
+  },
+  {
+    "id": 110200001144002002,
+    "value": "-"
   },
   {
     "id": 110200001150000100,
@@ -8169,7 +8353,7 @@
   },
   {
     "id": 110200001210002000,
-    "value": "A Taurus model belonging to the Preventers.\nThis is Lucrezia Noin's personal Taurus that she has used since her time in the Sanc Kingdom.\nAfter the rise of the Earth Sphere United Nation, with the entire world militarily disarmed, it became one of the scant few Mobile Suits left to oppose the Mariemaia Army's uprising.\nIt fought alongside Zechs Merquise's Tallgeese III and attacked the Mariemaia Army's stronghold in Brussels, going head to head against squadron after squadron of Serpents."
+    "value": "The command version of the Aries belonging to Commander Lucrezia Noin.\nIts most distinguishing feature compared to other Aries is its dark green hue.\nThis Mobile Suit has been Lucrezia's most cherished since her days as an instructor and was piloted by her during the OZ's coup d'etat."
   },
   {
     "id": 110200001210002100,
@@ -10873,7 +11057,11 @@
   },
   {
     "id": 110200001850000600,
-    "value": "An unknown airframe that has a design resembling the Phoenix Gundam.\nIt has abilities that greatly exceed those shown by normal MS, and it is equipped with the power to fly in the atmosphere.\nIt also has the ability to battle in the sky.\nThe battling side of the model evokes the phoenix as well, and it is equipped with a beam saber and feather funnels just like the other Gundam.\nHowever, the power of its Cross Mega Beam Cannon and Burning Flare are specially equipped to conceal its clearly overwhelming power compared to the Phoenix.\nThis has led some to believe it is the bases for the design of the Phoenix Gundam, but their relation remains unclear.\nMoreover, the “Halphas” it is named after was thought to be one of the 72 demons in the Ars Goetia, an earl of Hell in Roman demonology who was referred to as “The Black Phoenix Devil that Brings War.”"
+    "value": "An unknown airframe that has a design resembling the Phoenix Gundam.\nIt has abilities that greatly exceed those shown by normal MS, and it is equipped with the power to fly in the atmosphere.\nIt also has the ability to battle in the sky.\nThe battling side of the model evokes the Phoenix Gundam as well, and it is equipped with a beam saber and feather funnels just like the other Gundam.\nHowever, the power of its Cross Mega Beam Cannon and Burning Flare are specially equipped to conceal its clearly overwhelming power compared to the Phoenix Gundam.\nThis has led some to believe it is the bases for the design of the Phoenix Gundam, but their relation remains unclear.\nMoreover, the “Halphas” it is named after was thought to be one of the 72 demons in the Ars Goetia, an earl of Hell in Roman demonology who was referred to as “The Black Phoenix Devil that Brings War.”"
+  },
+  {
+    "id": 110200001850000650,
+    "value": "An unknown airframe that has a design resembling the Phoenix Gundam.\nIt has abilities that greatly exceed those shown by normal MS, and it is equipped with the power to fly in the atmosphere.\nIt also has the ability to battle in the sky.\nThe battling side of the model evokes the Phoenix Gundam as well, and it is equipped with a beam saber and feather funnels just like the other Gundam.\nHowever, the power of its Cross Mega Beam Cannon and Burning Flare are specially equipped to conceal its clearly overwhelming power compared to the Phoenix Gundam.\nThis has led some to believe it is the bases for the design of the Phoenix Gundam, but their relation remains unclear.\nMoreover, the “Halphas” it is named after was thought to be one of the 72 demons in the Ars Goetia, an earl of Hell in Roman demonology who was referred to as “The Black Phoenix Devil that Brings War.”"
   },
   {
     "id": 110200001850001200,
@@ -10914,6 +11102,10 @@
   {
     "id": 110200001850002500,
     "value": "A custom mobile suit deployed by the Federation Forces.\nCreated as a \"What if...?\" unit for a video game, it was modified from the Ez8 piloted by Shiro Amada for space with an emphasis on firepower.\nIt is equipped with two large-caliber beam cannons on its back repurposed from the main batteries of a Salamis-class cruiser, boasting firepower comparable to a warship."
+  },
+  {
+    "id": 110200001850002800,
+    "value": "A heavy mobile armor mainly designed for anti-ship combat that was proposed toward the end of the One Year War for use in the decisive battle.\nIts underside is equipped with legs that serve as movable thrusters, granting it decent mobility for a mobile armor of its size.\nAdditionally, it can also transform into cruiser mode, granting it high maneuverability."
   },
   {
     "id": 110200001850002900,
@@ -11202,6 +11394,10 @@
   {
     "id": 110200002125000500,
     "value": "-"
+  },
+  {
+    "id": 110200002144000100,
+    "value": "A Clop-class space cruiser that was the Shezarr Team's mothership during Operation Phoenix Hunt.\nIts expanded hangar bay sets it apart from other ships in the same class, featuring an auxiliary lower hangar and an enlarged upper hangar.\nAbayev served as its captain."
   },
   {
     "id": 110200002200000100,
@@ -13460,8 +13656,96 @@
     "value": "Krake Zulu"
   },
   {
+    "id": 110300001144000100,
+    "value": "Narrative Gundam A-Packs"
+  },
+  {
     "id": 110300001144000150,
     "value": "Narrative Gundam A-Packs (EX)"
+  },
+  {
+    "id": 110300001144000200,
+    "value": "Narrative Gundam B-Packs"
+  },
+  {
+    "id": 110300001144000300,
+    "value": "Narrative Gundam C-Packs"
+  },
+  {
+    "id": 110300001144000400,
+    "value": "Unicorn Gundam 03 Phenex (Unicorn Mode)"
+  },
+  {
+    "id": 110300001144000500,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode)"
+  },
+  {
+    "id": 110300001144000550,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode) (EX)"
+  },
+  {
+    "id": 110300001144000700,
+    "value": "Sinanju Stein"
+  },
+  {
+    "id": 110300001144000800,
+    "value": "Jesta (Shezarr Type)"
+  },
+  {
+    "id": 110300001144000900,
+    "value": "Jesta Shezarr Type Team B & C"
+  },
+  {
+    "id": 110300001144001000,
+    "value": "II Neo Zeong"
+  },
+  {
+    "id": 110300001144001100,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110300001144001110,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110300001144001200,
+    "value": "Silver Bullet Suppressor"
+  },
+  {
+    "id": 110300001144001300,
+    "value": "Dijeh (Narrative)"
+  },
+  {
+    "id": 110300001144001400,
+    "value": "Gustav Karl (Narrative)"
+  },
+  {
+    "id": 110300001144001600,
+    "value": "Jegan Type-D Escort Type"
+  },
+  {
+    "id": 110300001144001700,
+    "value": "Narrative Gundam"
+  },
+  {
+    "id": 110300001144001800,
+    "value": "ReZEL Type C (GR)"
+  },
+  {
+    "id": 110300001144001900,
+    "value": "Jegan Type A2 (GR)"
+  },
+  {
+    "id": 110300001144002000,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110300001144002001,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110300001144002002,
+    "value": "Narrative Gundam C-Packs (Awakened)"
   },
   {
     "id": 110300001150000100,
@@ -16984,6 +17268,10 @@
     "value": "Halphas Gundam"
   },
   {
+    "id": 110300001850000650,
+    "value": "Halphas Gundam (EX)"
+  },
+  {
     "id": 110300001850001210,
     "value": "Haro"
   },
@@ -17022,6 +17310,10 @@
   {
     "id": 110300001850002510,
     "value": "Gundam Ez8 Heavy Armed Custom"
+  },
+  {
+    "id": 110300001850002800,
+    "value": "Gromlin"
   },
   {
     "id": 110300001850002910,
@@ -17310,6 +17602,10 @@
   {
     "id": 110300002125000500,
     "value": "Garuda"
+  },
+  {
+    "id": 110300002144000100,
+    "value": "Damascus"
   },
   {
     "id": 110300002200000100,
@@ -19568,8 +19864,96 @@
     "value": "Krake Zulu"
   },
   {
+    "id": 110400001144000100,
+    "value": "Narrative Gundam A-Packs"
+  },
+  {
     "id": 110400001144000150,
     "value": "Narrative Gundam A-Packs (EX)"
+  },
+  {
+    "id": 110400001144000200,
+    "value": "Narrative Gundam B-Packs"
+  },
+  {
+    "id": 110400001144000300,
+    "value": "Narrative Gundam C-Packs"
+  },
+  {
+    "id": 110400001144000400,
+    "value": "Unicorn Gundam 03 Phenex (Unicorn Mode)"
+  },
+  {
+    "id": 110400001144000500,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode)"
+  },
+  {
+    "id": 110400001144000550,
+    "value": "Unicorn Gundam 03 Phenex (Destroy Mode) (EX)"
+  },
+  {
+    "id": 110400001144000700,
+    "value": "Sinanju Stein"
+  },
+  {
+    "id": 110400001144000800,
+    "value": "Jesta (Shezarr Type)"
+  },
+  {
+    "id": 110400001144000900,
+    "value": "Jesta (Shezarr Type Team B & C)"
+  },
+  {
+    "id": 110400001144001000,
+    "value": "II Neo Zeong"
+  },
+  {
+    "id": 110400001144001100,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110400001144001110,
+    "value": "Geara Zulu (Ellic)"
+  },
+  {
+    "id": 110400001144001200,
+    "value": "Silver Bullet Suppressor"
+  },
+  {
+    "id": 110400001144001300,
+    "value": "Dijeh (Narrative)"
+  },
+  {
+    "id": 110400001144001400,
+    "value": "Gustav Karl (Narrative)"
+  },
+  {
+    "id": 110400001144001600,
+    "value": "Jegan Type-D Escort Type"
+  },
+  {
+    "id": 110400001144001700,
+    "value": "Narrative Gundam"
+  },
+  {
+    "id": 110400001144001800,
+    "value": "ReZEL Type C (GR)"
+  },
+  {
+    "id": 110400001144001900,
+    "value": "Jegan Type A2 (GR)"
+  },
+  {
+    "id": 110400001144002000,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110400001144002001,
+    "value": "Narrative Gundam C-Packs (Awakened)"
+  },
+  {
+    "id": 110400001144002002,
+    "value": "Narrative Gundam C-Packs (Awakened)"
   },
   {
     "id": 110400001150000100,
@@ -23092,6 +23476,10 @@
     "value": "Halphas Gundam"
   },
   {
+    "id": 110400001850000650,
+    "value": "Halphas Gundam (EX)"
+  },
+  {
     "id": 110400001850001210,
     "value": "Haro"
   },
@@ -23130,6 +23518,10 @@
   {
     "id": 110400001850002510,
     "value": "Gundam Ez8 Heavy Armed Custom"
+  },
+  {
+    "id": 110400001850002800,
+    "value": "Gromlin"
   },
   {
     "id": 110400001850002910,
@@ -23418,6 +23810,10 @@
   {
     "id": 110400002125000500,
     "value": "Garuda"
+  },
+  {
+    "id": 110400002144000100,
+    "value": "Damascus"
   },
   {
     "id": 110400002200000100,

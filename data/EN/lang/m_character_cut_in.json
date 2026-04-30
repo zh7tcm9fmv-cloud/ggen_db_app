@@ -4736,6 +4736,134 @@
     "value": "Weak!"
   },
   {
+    "id": 100701144000201001,
+    "value": "C'mon!"
+  },
+  {
+    "id": 100701144000201002,
+    "value": "C'mon!"
+  },
+  {
+    "id": 100701144000201003,
+    "value": "You're dead!"
+  },
+  {
+    "id": 100701144000201004,
+    "value": "You're dead!"
+  },
+  {
+    "id": 100701144000201005,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701144000201006,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701144000201007,
+    "value": "I'll give the world a fresh start!"
+  },
+  {
+    "id": 100701144000201008,
+    "value": "I'll give the world a fresh start!"
+  },
+  {
+    "id": 100701144000300001,
+    "value": "Go down!"
+  },
+  {
+    "id": 100701144000300002,
+    "value": "Go down!"
+  },
+  {
+    "id": 100701144000300003,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701144000300004,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701144000300005,
+    "value": "Those moves won't save you!"
+  },
+  {
+    "id": 100701144000300006,
+    "value": "Those moves won't save you!"
+  },
+  {
+    "id": 100701144000300007,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701144000300008,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701144000400001,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701144000400002,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701144000400003,
+    "value": "There!"
+  },
+  {
+    "id": 100701144000400004,
+    "value": "There!"
+  },
+  {
+    "id": 100701144000400005,
+    "value": "Gragh!"
+  },
+  {
+    "id": 100701144000400006,
+    "value": "Gragh!"
+  },
+  {
+    "id": 100701144000400007,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701144000400008,
+    "value": "This is it!"
+  },
+  {
+    "id": 100701144000500001,
+    "value": "This is it."
+  },
+  {
+    "id": 100701144000500002,
+    "value": "This is it."
+  },
+  {
+    "id": 100701144000500003,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701144000500004,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701144000500005,
+    "value": "Aghhh!"
+  },
+  {
+    "id": 100701144000500006,
+    "value": "Aghhh!"
+  },
+  {
+    "id": 100701144000500007,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 100701144000500008,
+    "value": "How do you like this?!"
+  },
+  {
     "id": 100701150000100001,
     "value": "You're through!"
   },
@@ -14162,6 +14290,46 @@
   {
     "id": 100701850003300006,
     "value": "Take this!"
+  },
+  {
+    "id": 100701850003600001,
+    "value": "Go to sleep..."
+  },
+  {
+    "id": 100701850003600002,
+    "value": "Go to sleep..."
+  },
+  {
+    "id": 100701850003600003,
+    "value": "It’s getting quiet..."
+  },
+  {
+    "id": 100701850003600004,
+    "value": "It’s getting quiet..."
+  },
+  {
+    "id": 100701850003600005,
+    "value": "Be calm..."
+  },
+  {
+    "id": 100701850003600006,
+    "value": "Be calm..."
+  },
+  {
+    "id": 100701850003600007,
+    "value": "Salvation...!"
+  },
+  {
+    "id": 100701850003600008,
+    "value": "Salvation...!"
+  },
+  {
+    "id": 100701850003600009,
+    "value": "Be at peace..."
+  },
+  {
+    "id": 100701850003600010,
+    "value": "Be at peace..."
   },
   {
     "id": 100701850003900001,

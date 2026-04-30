@@ -2025,6 +2025,96 @@
     "AfterWeaponId": 113300150090
   },
   {
+    "Id": 114400010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400010090
+  },
+  {
+    "Id": 114400020001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400020090
+  },
+  {
+    "Id": 114400030001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400030090
+  },
+  {
+    "Id": 114400040001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400040090
+  },
+  {
+    "Id": 114400040002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400040080
+  },
+  {
+    "Id": 114400050001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400050090
+  },
+  {
+    "Id": 114400070001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400070090
+  },
+  {
+    "Id": 114400080001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400080090
+  },
+  {
+    "Id": 114400090001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400090090
+  },
+  {
+    "Id": 114400100001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400100090
+  },
+  {
+    "Id": 114400111001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400111090
+  },
+  {
+    "Id": 114400120001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400120090
+  },
+  {
+    "Id": 114400130001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400130090
+  },
+  {
+    "Id": 114400140001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400140090
+  },
+  {
+    "Id": 114400160001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400160090
+  },
+  {
+    "Id": 114400170001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400170090
+  },
+  {
+    "Id": 114400180001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400180090
+  },
+  {
+    "Id": 114400190001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 114400190090
+  },
+  {
     "Id": 115000010001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 115000010090
@@ -5578,6 +5668,11 @@
     "Id": 185000251001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 185000251090
+  },
+  {
+    "Id": 185000280001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000280090
   },
   {
     "Id": 185000291001,

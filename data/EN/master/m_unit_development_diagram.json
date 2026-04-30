@@ -154,6 +154,28 @@
     "ReleaseConditionDevelopmentDiagramId": 112501
   },
   {
+    "Id": 114401,
+    "UnitDevelopmentSeriesId": 1440,
+    "BackgroundResourceId": "ui_developtree_tabbanner_01",
+    "LogoResourceId": "series_1440",
+    "NameLanguageId": 210100000000144001,
+    "ScheduleId": 2604501801,
+    "SortOrder": 1,
+    "IsUltimateDevelopmentDiagram": false,
+    "ReleaseConditionDevelopmentDiagramId": 0
+  },
+  {
+    "Id": 114402,
+    "UnitDevelopmentSeriesId": 1440,
+    "BackgroundResourceId": "ui_developtree_tabbanner_05",
+    "LogoResourceId": "",
+    "NameLanguageId": 210100000000144002,
+    "ScheduleId": 2604501801,
+    "SortOrder": 2,
+    "IsUltimateDevelopmentDiagram": true,
+    "ReleaseConditionDevelopmentDiagramId": 114401
+  },
+  {
     "Id": 120001,
     "UnitDevelopmentSeriesId": 2000,
     "BackgroundResourceId": "ui_developtree_tabbanner_01",
