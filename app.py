@@ -6342,7 +6342,9 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
         sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
     lb_data = []
     for mult in [1.0, 1.2, 1.3, 1.4]:
-        cm = 1.0 if info.get('is_ultimate', False) else mult
+        _is_ult = bool(info.get('is_ultimate', False))
+        cm_base = 1.0 if _is_ult else mult
+        cm_sp = mult if (has_sp and _is_ult) else cm_base
         lb_fs, lb_fsp, lb_fssp = {}, {}, {}
         if raw:
             for s in ['HP', 'EN', 'Attack', 'Defense', 'Mobility']:
@@ -6350,13 +6352,13 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
                 sb2v, sm2v = ssp_bonus.get(s, (0, 0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
                 scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
-                lb_fs[s] = math.floor(gs * cm); lb_fsp[s] = math.floor(gsp * cm); lb_fssp[s] = math.floor((gsp + scb) * cm)
+                lb_fs[s] = math.floor(gs * cm_base); lb_fsp[s] = math.floor(gsp * cm_sp); lb_fssp[s] = math.floor((gsp + scb) * cm_sp)
             mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
             lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
             lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
             lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
         else:
-            lb_fs = {s: math.floor(fs.get(s, 0) * cm / 1.4) for s in UNIT_STAT_ORDER}
+            lb_fs = {s: math.floor(fs.get(s, 0) * cm_base / 1.4) for s in UNIT_STAT_ORDER}
             lb_fsp = dict(lb_fs)
             lb_fssp = dict(lb_fs)
         snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
@@ -11281,7 +11283,9 @@ def get_unit(unit_id):
         }
         lb_data = []
         for mult in [1.0, 1.2, 1.3, 1.4]:
-            cm = 1.0 if info.get('is_ultimate', False) else mult
+            _is_ult = bool(info.get('is_ultimate', False))
+            cm_base = 1.0 if _is_ult else mult
+            cm_sp = mult if (has_sp and _is_ult) else cm_base
             lb_fs, lb_fsp, lb_fssp = {}, {}, {}
             if raw:
                 for s in ['HP','EN','Attack','Defense','Mobility']:
@@ -11289,13 +11293,13 @@ def get_unit(unit_id):
                     gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
                     sb2v, sm2v = ssp_bonus.get(s, (0,0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
                     scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
-                    lb_fs[s] = math.floor(gs * cm); lb_fsp[s] = math.floor(gsp * cm); lb_fssp[s] = math.floor((gsp + scb) * cm)
+                    lb_fs[s] = math.floor(gs * cm_base); lb_fsp[s] = math.floor(gsp * cm_sp); lb_fssp[s] = math.floor((gsp + scb) * cm_sp)
                 mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
                 lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
                 lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
                 lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
             else:
-                lb_fs = {s: math.floor(fs.get(s,0) * cm / 1.4) for s in UNIT_STAT_ORDER}
+                lb_fs = {s: math.floor(fs.get(s,0) * cm_base / 1.4) for s in UNIT_STAT_ORDER}
                 lb_fsp = dict(lb_fs)
                 lb_fssp = dict(lb_fs)
             snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
