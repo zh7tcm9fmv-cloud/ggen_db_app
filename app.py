@@ -785,8 +785,42 @@ def entity_matches_source_category(acq_route, role_id, sf):
     return True
 
 
+def normalize_filter_combine_op(raw, default):
+    """browse filter combine mode: 'and' | 'or'. Invalid / missing uses default."""
+    s = (raw or '').strip().lower()
+    if s == 'or':
+        return 'or'
+    if s == 'and':
+        return 'and'
+    d = (default or 'and').strip().lower()
+    return d if d in ('and', 'or') else 'and'
+
+
+def browse_combo_from_character_args(args):
+    if not isinstance(args, dict):
+        args = {}
+    return {
+        'lineage_combine': normalize_filter_combine_op(args.get('lineage_op'), 'and'),
+        'series_combine': normalize_filter_combine_op(args.get('series_op'), 'or'),
+        'skill_combine': normalize_filter_combine_op(args.get('skill_op'), 'and'),
+        'trait_combine': normalize_filter_combine_op(args.get('ability_op'), 'and'),
+    }
+
+
+def browse_combo_from_unit_args(args):
+    if not isinstance(args, dict):
+        args = {}
+    return {
+        'lineage_combine': normalize_filter_combine_op(args.get('lineage_op'), 'and'),
+        'series_combine': normalize_filter_combine_op(args.get('series_op'), 'or'),
+        'ability_combine': normalize_filter_combine_op(args.get('ability_op'), 'and'),
+        'terrain_combine': normalize_filter_combine_op(args.get('terrain_op'), 'and'),
+        'weapon_debuff_combine': normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'),
+    }
+
+
 def parse_list_lineage_filter(val):
-    """Optional lineage/tag id(s); None = no filter. Comma-separated = OR (any tag). Keep string form for ids."""
+    """Optional lineage/tag id(s); None = no filter. Multiple ids matched per lineage_op (UI: AND/OR). Keep string vs frozenset."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -1346,7 +1380,7 @@ def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal'):
     return frozenset(acc)
 
 
-def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat_mode='normal'):
+def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat_mode='normal', combine='and'):
     if want_filter is None:
         return True
     if _memo is None:
@@ -1354,6 +1388,8 @@ def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat
     if uid not in _memo:
         _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode)
     have = _memo[uid]
+    if combine == 'or':
+        return any(k in have for k in want_filter)
     for k in want_filter:
         if k not in have:
             return False
@@ -1383,18 +1419,20 @@ def _entity_matches_one_lineage(lin_map, eid, want_lid):
     return False
 
 
-def entity_matches_lineage(lin_map, eid, want_lid):
-    """want_lid: None | str | frozenset of str — AND semantics for multiple tags (entity must match every selected tag)."""
+def entity_matches_lineage(lin_map, eid, want_lid, combine='and'):
+    """combine 'and': every selected tag · 'or': any selected tag (multi-id only)."""
     if want_lid is None:
         return True
     if isinstance(want_lid, (frozenset, set, list, tuple)):
         if not want_lid:
             return True
+        if combine == 'or':
+            return any(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
         return all(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
     return _entity_matches_one_lineage(lin_map, eid, want_lid)
 
 
-def entity_matches_series(ser_set_id, want_series_id, lc):
+def entity_matches_series(ser_set_id, want_series_id, lc, combine='or'):
     if want_series_id is None:
         return True
     resolved = resolve_series(ser_set_id or '', lc)
@@ -1407,6 +1445,8 @@ def entity_matches_series(ser_set_id, want_series_id, lc):
         if not want_ids:
             return True
         entity_ids = {normalize_id(s.get('id', '')) for s in resolved if s.get('id')}
+        if combine == 'and':
+            return want_ids.issubset(entity_ids)
         return not entity_ids.isdisjoint(want_ids)
     ws = normalize_id(want_series_id)
     for s in resolved:
@@ -1505,8 +1545,8 @@ def supporter_leader_tag_ids(sid, ld, lang_code):
     return out
 
 
-def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
-    """AND semantics for multiple selected tags (same as entity_matches_lineage)."""
+def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code, combine='and'):
+    """combine 'and' / 'or' for multi-tag selection (leader skill tag resolution)."""
     if want_lid is None:
         return True
     if isinstance(want_lid, (frozenset, set, list, tuple)):
@@ -1516,6 +1556,8 @@ def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code):
     else:
         wants = (want_lid,)
     tag_ids = supporter_leader_tag_ids(sid, ld, lang_code)
+    if combine == 'or':
+        return any(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
     return all(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
 
 
@@ -2023,10 +2065,12 @@ def unit_mechanism_filter_cache_fragment(expr):
     return ('m' + '__'.join(sorted(expr)))[:220]
 
 
-def unit_matches_mechanism_filter(info, want_filter, uid=None):
+def unit_matches_mechanism_filter(info, want_filter, uid=None, combine='and'):
     if not want_filter:
         return True
     have = collect_unit_mechanism_mids(info, uid)
+    if combine == 'or':
+        return not have.isdisjoint(want_filter)
     return want_filter.issubset(have)
 
 
@@ -8020,7 +8064,7 @@ def _char_has_skill_id(cid, skill_id):
     return False
 
 
-def entity_matches_char_skills(cid, want_lid):
+def entity_matches_char_skills(cid, want_lid, top_combine='and'):
     """Skill filter — same structure as ability filter (parse_list_ability_filter / browse checkboxes).
 
     Comma-separated = AND across groups; pipe within one value = OR (e.g. Lv.1|Lv.2|Lv.3 merged row).
@@ -8034,7 +8078,9 @@ def entity_matches_char_skills(cid, want_lid):
     if isinstance(want_lid, (list, tuple)):
         if not want_lid:
             return True
-        return all(entity_matches_char_skills(cid, w) for w in want_lid)
+        if top_combine == 'or':
+            return any(entity_matches_char_skills(cid, w, 'and') for w in want_lid)
+        return all(entity_matches_char_skills(cid, w, 'and') for w in want_lid)
     return _char_has_skill_id(cid, want_lid)
 
 
@@ -8060,8 +8106,8 @@ def _char_has_ability_id(cid, ability_id):
     return False
 
 
-def entity_matches_char_abilities(cid, want_lid):
-    """Ability filter with AND across selections, OR within grouped selections."""
+def entity_matches_char_abilities(cid, want_lid, top_combine='and'):
+    """Ability filter — top_combine OR flips comma-separated groups to match-any."""
     if want_lid is None:
         return True
     if isinstance(want_lid, (set, frozenset)):
@@ -8071,7 +8117,9 @@ def entity_matches_char_abilities(cid, want_lid):
     if isinstance(want_lid, (list, tuple)):
         if not want_lid:
             return True
-        return all(entity_matches_char_abilities(cid, w) for w in want_lid)
+        if top_combine == 'or':
+            return any(entity_matches_char_abilities(cid, w, 'and') for w in want_lid)
+        return all(entity_matches_char_abilities(cid, w, 'and') for w in want_lid)
     return _char_has_ability_id(cid, want_lid)
 
 
@@ -8092,7 +8140,7 @@ def _unit_has_ability_id(uid, ab_id):
     return False
 
 
-def entity_matches_unit_abilities_filter(uid, want_lid):
+def entity_matches_unit_abilities_filter(uid, want_lid, top_combine='and'):
     if want_lid is None:
         return True
     if isinstance(want_lid, (set, frozenset)):
@@ -8102,7 +8150,9 @@ def entity_matches_unit_abilities_filter(uid, want_lid):
     if isinstance(want_lid, (list, tuple)):
         if not want_lid:
             return True
-        return all(entity_matches_unit_abilities_filter(uid, w) for w in want_lid)
+        if top_combine == 'or':
+            return any(entity_matches_unit_abilities_filter(uid, w, 'and') for w in want_lid)
+        return all(entity_matches_unit_abilities_filter(uid, w, 'and') for w in want_lid)
     return _unit_has_ability_id(uid, want_lid)
 
 
@@ -8209,6 +8259,7 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('q', '').strip().lower(),
             args.get('rarity', '').strip(),
             args.get('lineage_id', '').strip(),
+            normalize_filter_combine_op(args.get('lineage_op'), 'and'),
         ])
     else:
         parts = [
@@ -8218,15 +8269,22 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('rarity', '').strip(),
             args.get('source', '').strip(),
             args.get('lineage_id', '').strip(),
+            normalize_filter_combine_op(args.get('lineage_op'), 'and'),
             args.get('series_id', '').strip(),
+            normalize_filter_combine_op(args.get('series_op'), 'or'),
             args.get('skill_id', '').strip(),
+            normalize_filter_combine_op(args.get('skill_op'), 'and'),
             args.get('ability_id', '').strip(),
+            normalize_filter_combine_op(args.get('ability_op'), 'and'),
         ]
         if ent == 'units':
             parts.append(args.get('terrain', '').strip())
             parts.append(args.get('stat_mode', '').strip().lower())
+            parts.append(normalize_filter_combine_op(args.get('terrain_op'), 'and'))
             parts.append(args.get('weapon_debuff', '').strip())
+            parts.append(normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'))
             parts.append(args.get('mechanism', '').strip())
+            parts.append(normalize_filter_combine_op(args.get('mechanism_op'), 'and'))
         raw = '|'.join(parts)
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
@@ -8268,6 +8326,7 @@ def character_passes_browse_pool_filters(
     cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
     lineage_filter, series_filter, skill_filter, ability_filter=None,
     *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_skill=True, apply_ability=True,
+    lineage_combine='and', series_combine='or', skill_combine='and', trait_combine='and',
 ):
     """list_characters inclusion with optional lineage/series/skill/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -8295,16 +8354,16 @@ def character_passes_browse_pool_filters(
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
+        if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter, lineage_combine):
             return False
     if apply_series and series_filter is not None:
-        if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc):
+        if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, series_combine):
             return False
     if apply_skill and skill_filter is not None:
-        if not id_seek and not entity_matches_char_skills(cid, skill_filter):
+        if not id_seek and not entity_matches_char_skills(cid, skill_filter, skill_combine):
             return False
     if apply_ability and ability_filter is not None:
-        if not id_seek and not entity_matches_char_abilities(cid, ability_filter):
+        if not id_seek and not entity_matches_char_abilities(cid, ability_filter, trait_combine):
             return False
     lid = ld['char_id_map'].get(cid, '')
     name = ld['char_text_map'].get(lid, '') if lid else ''
@@ -8390,11 +8449,12 @@ def _unit_terrain_levels_for_mode(uid, info, stat_mode='normal'):
     return levels
 
 
-def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal'):
+def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal', combine='and'):
     if want_filter is None:
         return True
     levels = _unit_terrain_levels_for_mode(uid, info, stat_mode)
-    for item in want_filter:
+
+    def _item_ok(item):
         if len(item) == 3:
             name, lv, ge = item
         else:
@@ -8403,11 +8463,12 @@ def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal'):
         got = _terrain_tier_norm(levels.get(name, 1))
         req = _terrain_tier_norm(lv)
         if ge:
-            if got < req:
-                return False
-        elif got != req:
-            return False
-    return True
+            return got >= req
+        return got == req
+
+    if combine == 'or':
+        return any(_item_ok(item) for item in want_filter)
+    return all(_item_ok(item) for item in want_filter)
 
 
 def unit_passes_browse_pool_filters(
@@ -8415,6 +8476,7 @@ def unit_passes_browse_pool_filters(
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
     weapon_debuff_filter=None,
     *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
+    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and',
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -8451,19 +8513,19 @@ def unit_passes_browse_pool_filters(
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
     if apply_terrain and terrain_filter is not None:
-        if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode):
+        if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode, terrain_combine):
             return False
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
+        if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
             return False
     if apply_series and series_filter is not None:
-        if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+        if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, series_combine):
             return False
     if apply_ability and ability_filter is not None:
-        if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
+        if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
             return False
     if apply_weapon_debuff and weapon_debuff_filter:
-        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _memo=None, stat_mode=stat_mode):
+        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _memo=None, stat_mode=stat_mode, combine=weapon_debuff_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -8532,11 +8594,13 @@ def lineages_for_character_browse_filtered(ld, lc, args):
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_ability_filter(args.get('skill_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    _cbc = browse_combo_from_character_args(args)
     short_ids = set()
     for cid, info in char_info_map.items():
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, skill_filter, ability_filter, q_scope=_qsc, apply_lineage=False, apply_series=True, apply_skill=True,
+            **_cbc,
         ):
             continue
         for lid in char_lin_map.get(cid, []) or []:
@@ -8557,6 +8621,7 @@ def series_for_character_browse_filtered(ld, lc, args):
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_ability_filter(args.get('skill_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    _cbc = browse_combo_from_character_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     cmap = ld.get('char_ser_map', {})
@@ -8566,6 +8631,7 @@ def series_for_character_browse_filtered(ld, lc, args):
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, skill_filter, ability_filter, q_scope=_qsc, apply_lineage=True, apply_series=False, apply_skill=True,
+            **_cbc,
         ):
             continue
         set_id = cmap.get(cid, '')
@@ -8604,6 +8670,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    _cbu = browse_combo_from_unit_args(args)
     short_ids = set()
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
@@ -8611,6 +8678,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
             weapon_debuff_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
+            **_cbu,
         ):
             continue
         for lid in unit_lin_map.get(uid, []) or []:
@@ -8635,6 +8703,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    _cbu = browse_combo_from_unit_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
     seen = set()
@@ -8645,6 +8714,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
             weapon_debuff_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
+            **_cbu,
         ):
             continue
         set_id = unit_ser_map.get(uid, '')
@@ -8668,7 +8738,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     return out
 
 
-def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, lineage_filter, *, apply_lineage=True):
+def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, lineage_filter, *, apply_lineage=True, lineage_combine='and'):
     """Same inclusion as list_supporters with optional lineage filter step."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
         return False
@@ -8681,7 +8751,7 @@ def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, l
     lim = nsid in LIMITED_TIME_SUPPORTER_IDS
     id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
+        if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine):
             return False
     if rarity_filter is not None:
         if not rarity_filter:
@@ -8725,12 +8795,13 @@ def lineages_for_supporter_browse_filtered(ld, lc, args):
     sq = args.get('q', '').strip().lower()
     rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    _slc = normalize_filter_combine_op(args.get('lineage_op'), 'and')
     llk = ld.get('lineage_lookup', {})
     ll = ld.get('lineage_list', [])
     snm = ld.get('series_name_map', {})
     by_id = {}
     for supp_id, info in supporter_info_map.items():
-        if not supporter_passes_browse_pool_filters(supp_id, info, ld, lc, sq, rarity_filter, lineage_filter, apply_lineage=False):
+        if not supporter_passes_browse_pool_filters(supp_id, info, ld, lc, sq, rarity_filter, lineage_filter, apply_lineage=False, lineage_combine=_slc):
             continue
         lsr = supporter_leader_map.get(supp_id, [])
         for ls in lsr:
@@ -8780,6 +8851,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_ability_filter(args.get('skill_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    _cbc = browse_combo_from_character_args(args)
     seen = {}
     for sk in extract_data_list(char_skill):
         cid = normalize_id(sk.get('CharacterId', ''))
@@ -8791,6 +8863,7 @@ def skills_for_character_browse_filtered(ld, lc, args):
         if not character_passes_browse_pool_filters(
             cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, skill_filter, ability_filter, q_scope=_qsc, apply_skill=False,
+            **_cbc,
         ):
             continue
         for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
@@ -8875,6 +8948,7 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     series_filter = parse_list_series_filter(args.get('series_id', '').strip())
     skill_filter = parse_list_ability_filter(args.get('skill_id', '').strip())
     ability_filter = parse_list_ability_filter(args.get('ability_id', '').strip())
+    _cbc = browse_combo_from_character_args(args)
     ldc = get_calc_lang_data()
     seen = {}
     passed_cids = set()
@@ -8894,8 +8968,9 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                 continue
             if not character_passes_browse_pool_filters(
                 cid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
-                lineage_filter, series_filter, skill_filter,
+                lineage_filter, series_filter, skill_filter, ability_filter,
                 q_scope=_qsc, apply_ability=False,
+                **_cbc,
             ):
                 failed_cids.add(cid)
                 continue
@@ -8988,6 +9063,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    _cbu = browse_combo_from_unit_args(args)
     ldc = get_calc_lang_data()
     seen = {}
     for uid in unit_list_playable_ids:
@@ -8999,6 +9075,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
             weapon_debuff_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
+            **_cbu,
         ):
             continue
         ua = unit_abil_map.get(uid, []) or []
@@ -9134,12 +9211,13 @@ def list_characters():
     skill_filter = parse_list_ability_filter(skill_arg)
     ability_arg = request.args.get('ability_id', '').strip()
     ability_filter = parse_list_ability_filter(ability_arg)
+    _cbc = browse_combo_from_character_args(dict(request.args))
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     skill_ck = ability_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -9169,16 +9247,16 @@ def list_characters():
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if lineage_filter is not None:
-            if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter):
+            if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter, _cbc['lineage_combine']):
                 continue
         if series_filter is not None:
-            if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc):
+            if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, _cbc['series_combine']):
                 continue
         if skill_filter is not None:
-            if not id_seek and not entity_matches_char_skills(cid, skill_filter):
+            if not id_seek and not entity_matches_char_skills(cid, skill_filter, _cbc['skill_combine']):
                 continue
         if ability_filter is not None:
-            if not id_seek and not entity_matches_char_abilities(cid, ability_filter):
+            if not id_seek and not entity_matches_char_abilities(cid, ability_filter, _cbc['trait_combine']):
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
@@ -9302,6 +9380,8 @@ def list_units():
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
     mechanism_arg = request.args.get('mechanism', '').strip()
     mechanism_filter = parse_unit_mechanism_filter(mechanism_arg)
+    mechanism_combine = normalize_filter_combine_op(request.args.get('mechanism_op'), 'and')
+    _cbu = browse_combo_from_unit_args(dict(request.args))
     lineage_ck = lineage_filter_cache_fragment(lineage_filter)
     series_ck = series_filter_cache_fragment(series_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
@@ -9316,7 +9396,7 @@ def list_units():
     _pp_cap = 600 if tb_boost else 100
     pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
-    ck = f"ul40_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul40_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -9357,16 +9437,16 @@ def list_units():
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if terrain_filter is not None:
-            if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode):
+            if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode, _cbu['terrain_combine']):
                 continue
         if lineage_filter is not None:
-            if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter):
+            if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
                 continue
         if series_filter is not None:
-            if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+            if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, _cbu['series_combine']):
                 continue
         if ability_filter is not None:
-            if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter):
+            if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
                 continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
@@ -9430,11 +9510,11 @@ def list_units():
         _debuff_memo[uid] = dk
         _debuff_keys_union |= set(dk)
         if weapon_debuff_filter:
-            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode):
+            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
                 continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, collect_unit_mechanism_mids(info, uid)))
         if mechanism_filter:
-            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid):
+            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
                 continue
         ue = UNIT_BROWSE_LIST_ROW_CACHE.get(uid)
         if ue:
@@ -9958,6 +10038,7 @@ def list_supporters():
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
         lineage_arg = request.args.get('lineage_id', '').strip()
         lineage_filter = parse_list_lineage_filter(lineage_arg)
+        lineage_combine_supp = normalize_filter_combine_op(request.args.get('lineage_op'), 'and')
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
         uids = []
         cids = []
@@ -9996,7 +10077,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -10009,7 +10090,7 @@ def list_supporters():
             lim = nsid in LIMITED_TIME_SUPPORTER_IDS
             id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
             if lineage_filter is not None:
-                if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc):
+                if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
