@@ -1109,6 +1109,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         'damage taken from beam' in sl
         or '遭光束武裝攻擊時' in s
+        or '遭鐳射武裝攻擊時' in s
         or 'ビーム武装による被ダメージ' in s
     ):
         keys.add('dmg_beam')
@@ -1137,6 +1138,10 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or '光束武裝POWER下降' in s
         or '光束武裝power減少' in sl
         or '光束武裝POWER減少' in s
+        or '鐳射武裝power下降' in sl
+        or '鐳射武裝POWER下降' in s
+        or '鐳射武裝power減少' in sl
+        or '鐳射武裝POWER減少' in s
     ):
         keys.add('wp_beam')
     if (
@@ -1153,6 +1158,8 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         '光束武裝最大射程' in s
         or '光束武裝的最大射程' in s
+        or '鐳射武裝最大射程' in s
+        or '鐳射武裝的最大射程' in s
         or 'ビーム武装最大射程' in s
         or 'beam weapons max range down' in sl
         or ('max range of beam' in sl and 'decrease' in sl)
@@ -1306,6 +1313,14 @@ def enrich_weapon_levels_with_enemy_def_debuff(levels, ssp_trait_lines):
     return out
 
 
+def _lang_data_for_weapon_debuff_filter(ld_request, lc_request):
+    """Use EN trait/capability text for debuff filter matching so TW/HK/JP match EN results."""
+    ld_en = LANG_DATA.get('EN')
+    if ld_en:
+        return ld_en, 'EN'
+    return ld_request, lc_request
+
+
 def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc):
     """Weapon debuff categories from trait / effect text (+ map_weapon); excludes numeric range tiers."""
     acc = set()
@@ -1370,8 +1385,9 @@ def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal'):
 
 
 def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal'):
-    acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc))
-    acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode))
+    ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
+    acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_f, lc_f))
+    acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld_f, lc_f, stat_mode))
     return frozenset(acc)
 
 
@@ -5597,8 +5613,20 @@ CHANCE_STEP_EX_ABILITY_IDS, CHANCE_STEP_EX_ICON = _precompute_chance_step_ex_dat
 print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
 
 def _precompute_weapon_debuff_keys_present_by_lang():
-    """Which debuff filter keys appear on at least one unit (weapon traits), per UI language."""
+    """Which debuff filter keys appear on at least one unit (weapon traits); EN baseline duplicated per locale."""
     out = {}
+    ld_en = LANG_DATA.get('EN')
+    if ld_en:
+        acc = set()
+        for uid in unit_info_map:
+            acc |= set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_en, 'EN'))
+            for sm in ('normal', 'sp', 'ssp'):
+                acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld_en, 'EN', sm))
+        fs = frozenset(acc)
+        for lc in ('EN', 'TW', 'HK', 'JA'):
+            if LANG_DATA.get(lc):
+                out[lc] = fs
+        return out
     for lc in ('EN', 'TW', 'HK', 'JA'):
         ld = LANG_DATA.get(lc)
         if not ld:
@@ -7077,14 +7105,25 @@ def _build_browse_list_performance_caches():
         unit_cache[uid] = {'nc': fs_nc, 'lb': lb}
     mids = {uid: collect_unit_mechanism_mids(info, uid) for uid, info in unit_info_map.items()}
     wd = {}
-    for lc, ld in LANG_DATA.items():
+    ld_en = LANG_DATA.get('EN')
+    if ld_en:
         d2 = {}
         for uid in unit_info_map:
             try:
-                d2[uid] = collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc)
+                d2[uid] = collect_unit_weapon_trait_only_debuff_keys(uid, ld_en, 'EN')
             except Exception:
                 d2[uid] = frozenset()
-        wd[lc] = d2
+        for lc in LANG_DATA.keys():
+            wd[lc] = d2
+    else:
+        for lc, ld in LANG_DATA.items():
+            d2 = {}
+            for uid in unit_info_map:
+                try:
+                    d2[uid] = collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc)
+                except Exception:
+                    d2[uid] = frozenset()
+            wd[lc] = d2
     CHAR_BROWSE_LIST_ROW_CACHE = char_cache
     UNIT_BROWSE_LIST_ROW_CACHE = unit_cache
     UNIT_MECHANISM_MIDS_CACHE = mids
@@ -9517,12 +9556,13 @@ def list_units():
             ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
+        _ld_f, _lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
         wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
         if wmap is not None and uid in wmap:
             trait_dk = wmap[uid]
         else:
-            trait_dk = collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc)
-        range_dk = collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode)
+            trait_dk = collect_unit_weapon_trait_only_debuff_keys(uid, _ld_f, _lc_f)
+        range_dk = collect_unit_weapon_range_debuff_keys(uid, _ld_f, _lc_f, stat_mode)
         dk = frozenset(set(trait_dk) | set(range_dk))
         _debuff_memo[uid] = dk
         if weapon_debuff_filter:
