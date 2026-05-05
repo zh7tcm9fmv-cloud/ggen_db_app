@@ -973,9 +973,9 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'atk_dn', 'def_dn', 'mob_dn', 'acc_dn', 'eva_dn',
     'dmg_phys', 'dmg_beam', 'dmg_spec',
     'wp_phys', 'wp_beam', 'wp_spec',
-    'range_beam', 'range_phys', 'range_all',
+    'range_beam', 'range_phys',
     'range_6',
-    'mp_1', 'mp_2', 'mp_3',
+    'mp_1',
     'preemptive',
     'map_weapon',
     'enemy_def_atk',
@@ -1054,10 +1054,6 @@ def classify_unit_weapon_trait_debuff_keys(line):
 
     if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in sl or re.search(r'mp減少1(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
         keys.add('mp_1')
-    if re.search(r'decrease\s+mp\s+by\s+2\.?', sl) or 'mpが2減少' in sl or re.search(r'mp減少2(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*2\b', sl) or re.search(r'mp減少\s*lv\s*2\b', sl):
-        keys.add('mp_2')
-    if re.search(r'decrease\s+mp\s+by\s+3\.?', sl) or 'mpが3減少' in sl or re.search(r'mp減少3(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*3\b', sl) or re.search(r'mp減少\s*lv\s*3\b', sl):
-        keys.add('mp_3')
 
     if (
         re.search(r'decreased\s+atk\b', sl)
@@ -1172,16 +1168,6 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or '物理武装の最大射程' in s
     ):
         keys.add('range_phys')
-    elif (
-        ('weapons max range down' in sl and 'beam weapons max range' not in sl and 'physical weapons max range' not in sl)
-        or (('武装最大射程ダウン' in s or '武裝最大射程降低' in s) and 'ビーム武装' not in s and '物理武装' not in s and '光束' not in s and '物理武裝' not in s)
-        or (
-            'the max range of weapon is decrease' in sl
-            or '武装の最大射程が' in s
-            or ('武裝的最大射程減少' in s and '光束武裝' not in s and '物理武裝' not in s)
-        )
-    ):
-        keys.add('range_all')
 
     # Preemptive Strike (often on SSP weapon lines; EN / JA+TW data use mixed phrasing)
     if _trait_text_indicates_preemptive_strike(s):
@@ -9595,7 +9581,7 @@ def list_units():
         for urow in pr:
             _uid = urow['id']
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
-    # Full filter catalog for every UI language (union of detected keys can omit rare ones like eva_dn / mp_2).
+    # Full weapon-debuff filter catalog exposed to the UI (keys omitted here are not used in-game yet).
     _wbp = sorted(UNIT_WEAPON_DEBUFF_FILTER_KEYS)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows}
