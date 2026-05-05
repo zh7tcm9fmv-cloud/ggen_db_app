@@ -1184,15 +1184,24 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('range_all')
 
     # Preemptive Strike (often on SSP weapon lines; EN / JA+TW data use mixed phrasing)
-    if (
+    if _trait_text_indicates_preemptive_strike(s):
+        keys.add('preemptive')
+
+    return frozenset(keys)
+
+
+def _trait_text_indicates_preemptive_strike(text):
+    """True if trait line names the preemptive-strike weapon effect (EN / JA / zh-Hant / zh-Hans)."""
+    if not text:
+        return False
+    s = str(text).strip()
+    sl = s.lower()
+    return (
         'preemptive strike' in sl
         or '先發攻擊' in s
         or '先发攻击' in s
         or '先制' in s
-    ):
-        keys.add('preemptive')
-
-    return frozenset(keys)
+    )
 
 
 def _strip_custom_core_trait_prefix_for_dc(text):
@@ -6753,15 +6762,38 @@ def eval_icon_color(tl, wt):
     if wt == '3': return 'map'
     if not tl: return 'green'
     hp, hd = False, False
+    # Weak/debuff "yellow" classification — keep in sync across EN / JA / zh-Hant (TW, HK).
+    # EN uses "Decreased ATK"; JA uses shinjitai 防御・回避 (not TW 防禦・迴避); zh uses 減少/下降/賦予.
+    stat_down_re = re.compile(
+        r'防禦|防御|攻擊|攻撃|機動|命中|迴避|回避|(?<![a-z])(atk|def|mob|acc|eva)(?![a-z])',
+        re.I,
+    )
+    en_stat_down_re = re.compile(
+        r'\b(?:decrease|decreases|decreasing|decreased|reduce|reduces|reducing|reduced)\s+(atk|def|mob|acc|eva)\b',
+        re.I,
+    )
     for tr in tl:
-        trl = tr.lower()
-        if 'the max range of' in trl or '最大射程' in trl: hp = True; continue
-        if re.search(r'(decrease|reduce)s?\s+target', trl) or 'inflict' in trl: hd = True
-        elif re.search(r'(降低|減少|下降|賦予)', trl):
-            if '敵' in trl: hd = True
-            elif not ('自身' in trl or '我方' in trl) and re.search(r'防禦|機動|攻擊|命中|迴避|en|hp', trl): hd = True
-            elif '賦予' in trl: hd = True
-    if hp: return 'purple'
+        trl = (tr or '').lower()
+        tro = tr or ''
+        if 'the max range of' in trl or '最大射程' in tro:
+            hp = True
+            continue
+        if re.search(r'(decrease|reduce)s?\s+target', trl) or 'inflict' in trl:
+            hd = True
+        elif en_stat_down_re.search(trl):
+            hd = True
+        elif re.search(r'(降低|減少|下降|賦予)', tro):
+            if '敵' in tro:
+                hd = True
+            elif (
+                not ('自身' in tro or '我方' in tro or '味方' in tro)
+                and stat_down_re.search(tro)
+            ):
+                hd = True
+            elif '賦予' in tro:
+                hd = True
+    if hp:
+        return 'purple'
     return 'yellow' if hd else 'orange'
 
 def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
@@ -6803,7 +6835,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
                 lev['ammo'] = oa
         min_r = ws.get('range_min', 0) if w.get('range_min') is None else safe_int(w.get('range_min'), 0)
         max_r = ws.get('range_max', 0) if w.get('range_max') is None else safe_int(w.get('range_max'), 0)
-        lv5t = levels[4]['traits'] if len(levels) > 4 else (levels[-1].get('traits', []) if levels else []); ip = any('preemptive strike' in tr.lower() or '先制' in tr.lower() for tr in lv5t); icc = eval_icon_color(lv5t, wt)
+        lv5t = levels[4]['traits'] if len(levels) > 4 else (levels[-1].get('traits', []) if levels else []); ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t); icc = eval_icon_color(lv5t, wt)
         weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
@@ -11468,7 +11500,7 @@ def get_unit(unit_id):
             levels_raw = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
             levels = enrich_weapon_levels_with_enemy_def_debuff(levels_raw, sat)
             lv5t = trl
-            ip = any('preemptive strike' in (tr or '').lower() or '先制' in (tr or '') for tr in lv5t + sat)
+            ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t + sat)
             icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
             isw = wid.endswith('90') or wid.endswith('80')
             siu = ''
