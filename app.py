@@ -970,7 +970,7 @@ def unit_terrain_filter_cache_fragment(expr):
 
 
 UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
-    'atk_dn', 'def_dn', 'mob_dn', 'acc_dn', 'eva_dn',
+    'atk_dn', 'def_dn', 'mob_dn', 'acc_dn',
     'dmg_phys', 'dmg_beam', 'dmg_spec',
     'wp_phys', 'wp_beam', 'wp_spec',
     'range_beam', 'range_phys',
@@ -1088,15 +1088,6 @@ def classify_unit_weapon_trait_debuff_keys(line):
         or re.search(r'命中率.*減少', s)
     ):
         keys.add('acc_dn')
-    if (
-        re.search(r'decreased\s+eva\b', sl)
-        or re.search(r'\beva\s+down\b', sl)
-        or '回避率減少' in s
-        or '閃避率減少' in s
-        or re.search(r'回避率.*減少', s)
-        or re.search(r'閃避率.*減少', s)
-    ):
-        keys.add('eva_dn')
 
     # "Damage taken from X up" *inflicted on the enemy* — not weapon stat lines like TW 物理損傷提升LV1 / JA 物理被ダメージアップLV1
     # (those raise *your* damage output; the same words are reused and must not match this filter).
