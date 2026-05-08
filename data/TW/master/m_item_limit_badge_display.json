@@ -1,5 +1,9 @@
 [
   {
+    "ItemTypeIndex": 15,
+    "BadgeDisplayStartDayCount": 10
+  },
+  {
     "ItemTypeIndex": 30,
     "BadgeDisplayStartDayCount": 3
   }

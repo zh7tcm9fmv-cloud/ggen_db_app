@@ -40,6 +40,10 @@
     "value": "00 Raiser Final Battle Type (EX)\nSpecial Stage"
   },
   {
+    "id": 130100000099000112,
+    "value": "Gogg Day"
+  },
+  {
     "id": 310200000099000101,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   },
@@ -78,5 +82,9 @@
   {
     "id": 310200000099000110,
     "value": "A special stage that can only be attempted during the event."
+  },
+  {
+    "id": 310200000099000112,
+    "value": "May 9th is Gogg Day!\nA special stage that can only be attempted during the event."
   }
 ]

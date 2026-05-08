@@ -14505,6 +14505,11 @@
     "AbilityId": 6103705
   },
   {
+    "MapNpcCharacterAbilitySetId": 29900011001000103,
+    "SortOrder": 1,
+    "AbilityId": 2001802
+  },
+  {
     "MapNpcCharacterAbilitySetId": 29900011001000401,
     "SortOrder": 1,
     "AbilityId": 2001802
@@ -14513,6 +14518,21 @@
     "MapNpcCharacterAbilitySetId": 29900011001000401,
     "SortOrder": 2,
     "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000402,
+    "SortOrder": 1,
+    "AbilityId": 2001802
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000402,
+    "SortOrder": 2,
+    "AbilityId": 2004701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000601,
+    "SortOrder": 1,
+    "AbilityId": 2004701
   },
   {
     "MapNpcCharacterAbilitySetId": 29900011001001801,

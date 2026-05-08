@@ -65144,6 +65144,23 @@
     "ActionTimingTargetValue": 0
   },
   {
+    "Id": 511190101,
+    "TraitTypeIndex": 9,
+    "TraitValue": 590,
+    "DescriptionLanguageId": 141200000511190101,
+    "ActionTimingTypeIndex": 1,
+    "Limit": 0,
+    "ActiveConditionSetId": 0,
+    "TargetConditionSetId": 1000001,
+    "ValueSourceConditionSetId": 0,
+    "TargetWeaponConditionId": 0,
+    "UseBattleAnimation": false,
+    "BattlePowerValueRatePercent": 0,
+    "TraitBoostConditionSetId": 0,
+    "TargetTraitDuplicationGroupId": "",
+    "ActionTimingTargetValue": 0
+  },
+  {
     "Id": 530010101,
     "TraitTypeIndex": 7,
     "TraitValue": 50,

@@ -1050,6 +1050,27 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 990000101202000057,
+    "MapStageId": 990000101202000000,
+    "GroupNumber": 0,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 990000101202000058,
+    "MapStageId": 990000101202000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 990000101202000059,
+    "MapStageId": 990000101202000000,
+    "GroupNumber": 2,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 2200070020200000001,
     "MapStageId": 22000700202000000,
     "GroupNumber": 1,

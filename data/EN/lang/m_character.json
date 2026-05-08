@@ -140,6 +140,10 @@
     "value": "Garma Zabi"
   },
   {
+    "id": 100100001001005100,
+    "value": "Corka Lasa"
+  },
+  {
     "id": 100100001003000100,
     "value": "Char Aznable (THE ORIGIN)"
   },
@@ -3978,6 +3982,10 @@
   {
     "id": 100200001001005000,
     "value": "Fourth son of of Degwin Sodo Zabi, the sovereign of the Principality of Zeon. He was the commander of Zeon's Earth Occupation Force and was Very popular among the citizens.\nBecause of his good upbringing, he had an honest personality and was revered by the people as a kind and sincere prince.\nHe disliked that his family helped him get his position, and was always looking for chances to prove himself.\nThe ace pilot Char Aznable, the \"Red Comet,\" was an academy friend of his, and he takes over Char's pursuit of the Federation Forces warship White Base."
+  },
+  {
+    "id": 100200001001005100,
+    "value": "-"
   },
   {
     "id": 100200001003000100,
@@ -7820,6 +7828,10 @@
     "value": "Garma Zabi"
   },
   {
+    "id": 100300001001005100,
+    "value": "Corka Lasa"
+  },
+  {
     "id": 100300001003000100,
     "value": "Char Aznable (THE ORIGIN)"
   },
@@ -11658,6 +11670,10 @@
   {
     "id": 100400001001005000,
     "value": "Garma Zabi"
+  },
+  {
+    "id": 100400001001005100,
+    "value": "Corka Lasa"
   },
   {
     "id": 100400001003000100,
@@ -17642,6 +17658,10 @@
   {
     "id": 101400001001005000,
     "value": "Katsuji Mori"
+  },
+  {
+    "id": 101400001001005100,
+    "value": "-"
   },
   {
     "id": 101400001003000100,
