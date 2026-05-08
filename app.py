@@ -6592,10 +6592,11 @@ def resolve_special_event_stage_name(ld, stage_name_lang_id, stage_id):
     return f"Unknown ({sid})"
 
 def special_event_stage_thumb_url(thumbnail_resource_id):
+    """m_special_event_stage.ThumbnailResourceId → WebP under images/Stages/Sp_stage_thum (CDN via convert_image_urls)."""
     rid = str(thumbnail_resource_id or '').strip()
     if not rid or rid == '0':
         return ''
-    return f'/static/images/UI/{rid}.webp'
+    return f'/static/images/Stages/Sp_stage_thum/{rid}.webp'
 
 def resolve_sortie_restriction_set(set_id, lc):
     if not set_id or set_id == '0': return []
