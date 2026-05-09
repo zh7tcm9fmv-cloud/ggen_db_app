@@ -7505,6 +7505,22 @@ def _list_row_id_tiebreak(r):
         return (0, int(s))
     return (1, s.lower())
 
+def list_rows_stat_bounds(rows, sort_by):
+    """Min/max for a numeric list sort column (used by ranking bar)."""
+    if not rows or sort_by not in LIST_STAT_SORT_PRIMARY:
+        return None
+    nums = []
+    for r in rows:
+        v = r.get(sort_by)
+        try:
+            nums.append(float(v if v is not None else 0))
+        except (TypeError, ValueError):
+            nums.append(0.0)
+    if not nums:
+        return None
+    return {'key': sort_by, 'min': min(nums), 'max': max(nums)}
+
+
 def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
     if sort_by not in valid_sorts: sort_by = default_sort
     if sort_by in LIST_STAT_SORT_PRIMARY and sort_by in valid_sorts:
@@ -9305,7 +9321,9 @@ def list_characters():
     skill_ck = ability_filter_cache_fragment(skill_filter)
     ability_ck = ability_filter_cache_fragment(ability_filter)
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
-    ck = f"cl31_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
+    sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
+    ck = f"cl32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -9411,6 +9429,7 @@ def list_characters():
         row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
+    stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds else None
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
     if grid_skills:
@@ -9419,7 +9438,7 @@ def list_characters():
             _ri = row.get('rarity_id', '1')
             _hsp = int(str(_ri)) <= 4
             row['grid_skills'] = collect_character_grid_skills(_cid, ld, use_sp=bool(sp_list and _hsp))
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 
@@ -9484,7 +9503,9 @@ def list_units():
     _pp_cap = 600 if tb_boost else 100
     pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
-    ck = f"ul40_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
+    sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
+    ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -9646,6 +9667,7 @@ def list_units():
             rows.sort(key=_tb_rarity_name_key)
     else:
         rows = sort_rows(rows, sb, sd, {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'})
+    stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds_u else None
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
     if grid_skills_u:
@@ -9655,7 +9677,7 @@ def list_units():
     # Full weapon-debuff filter catalog exposed to the UI (keys omitted here are not used in-game yet).
     _wbp = sorted(UNIT_WEAPON_DEBUFF_FILTER_KEYS)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
@@ -11239,7 +11261,9 @@ def get_stage(stage_id):
 @app.route('/api/character/<char_id>')
 def get_character(char_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"c_{char_id}_{lc}_r10_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
+        ck = f"c_{char_id}_{lc}_r11_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -11338,6 +11362,10 @@ def get_character(char_id):
         else:
             has_conditional_passive = has_ex_stats
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        if view_ranking:
+            result['abilities'] = []
+            result['skills'] = []
+            result['view_ranking'] = True
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
@@ -11345,7 +11373,13 @@ def get_character(char_id):
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); ck = f"u_{unit_id}_{lc}_ssp11_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
+        stat_mode_arg = request.args.get('stat_mode', 'normal').strip().lower()
+        if stat_mode_arg not in ('normal', 'sp', 'ssp'):
+            stat_mode_arg = 'normal'
+        cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+        ck = f"u_{unit_id}_{lc}_ssp13_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
@@ -11549,7 +11583,20 @@ def get_unit(unit_id):
                 sspnc.append({'name': s, 'total': sspst + sspbb, 'bonus': sspbb, 'base': sspst, 'passive_pct': sspb.get(s, 0)})
                 sspwc.append({'name': s, 'total': sspst + sspcb, 'bonus': sspcb, 'base': sspst, 'passive_pct': sspb.get(s, 0) + sspc.get(s, 0)})
             lb_data.append({'stats_no_cond': snc, 'stats_with_cond': swc, 'sp_stats_no_cond': spnc, 'sp_stats_with_cond': spwc, 'ssp_stats_no_cond': sspnc, 'ssp_stats_with_cond': sspwc})
-        stats = lb_data[3]['stats_no_cond'] if lb_data else [{'name': s, 'total': fs.get(s, 0), 'bonus': 0} for s in UNIT_STAT_ORDER]
+        entry_max = lb_data[3] if len(lb_data) > 3 else (lb_data[-1] if lb_data else None)
+        if view_ranking and entry_max:
+            fsm_rank = _unit_lb_row_to_api(entry_max, stat_mode_arg, cond_for_ranking)
+            def _rank_unit_row_from_fsm(fsm_map):
+                row = []
+                for disp, fk in [('HP', 'HP'), ('EN', 'EN'), ('Attack', 'ATK'), ('Defense', 'DEF'), ('Mobility', 'MOB'), ('Move', 'MOV')]:
+                    v = int(fsm_map.get(fk, 0))
+                    row.append({'name': disp, 'total': v, 'bonus': 0, 'base': v, 'passive_pct': 0})
+                return row
+            stats = _rank_unit_row_from_fsm(fsm_rank)
+            _dup_lb = {'stats_no_cond': stats, 'stats_with_cond': stats, 'sp_stats_no_cond': stats, 'sp_stats_with_cond': stats, 'ssp_stats_no_cond': stats, 'ssp_stats_with_cond': stats}
+            lb_data = [_dup_lb, _dup_lb, _dup_lb, _dup_lb]
+        else:
+            stats = lb_data[3]['stats_no_cond'] if lb_data else [{'name': s, 'total': fs.get(s, 0), 'bonus': 0} for s in UNIT_STAT_ORDER]
         portrait = find_portrait(info.get('resource_ids', []), unit_id, 'images/unit_portraits', f'unit_{unit_id}')
         thum = find_list_thumb(info.get('resource_ids', []), unit_id, 'images/unit_portraits')
         ubr = info.get('bromide_resource_id', '') or (info.get('resource_ids', [''])[0] if info.get('resource_ids') else '')
@@ -11571,60 +11618,61 @@ def get_unit(unit_id):
             return f"/static/images/Terrain/{TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[1])}"
         terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,1)), TERRAIN_SYMBOLS['1']), 'level': terr_ssp_levels.get(tn,1), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
-        for wp in unit_weapon_map.get(unit_id, []):
-            wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
-            ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
-            at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
-            ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
-            ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
-            if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
-                at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
-            pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
-            am = ws['ammo'] if wt == '3' else 0
-            trl = ws.get('traits', [])
-            ssp_power, ssp_ammo, ssp_range = 0, 0, 0
-            mwid = wm.get('main_weapon_id', '0')
-            for cid in [wid, mwid]:
-                if cid and cid != '0' and cid in unit_ssp_weapon_enhance_map:
-                    for enh in unit_ssp_weapon_enhance_map[cid]:
-                        if enh['type'] == '1': ssp_power += enh['value']
-                        elif enh['type'] == '3': ssp_ammo += enh['value']
-                        elif enh['type'] == '4': ssp_range += enh['value']
-                    break
-            if wt != '3':
-                ssp_ammo = 0
-            sat = []
-            ccl = "[Custom Core Effect] " if lc == 'EN' else "[Custom Core效果] "
-            for cid in [wid, mwid]:
-                if cid and cid != '0' and cid in unit_ssp_weapon_effect_map:
-                    for tid in unit_ssp_weapon_effect_map[cid]:
-                        tt2 = ld.get('weapon_trait_detail_map', {}).get(tid, '')
-                        if tt2:
-                            ft = ccl + tt2
-                            if ft not in sat: sat.append(ft)
-                    break
-            levels_raw = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
-            levels = enrich_weapon_levels_with_enemy_def_debuff(levels_raw, sat)
-            lv5t = trl
-            ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t + sat)
-            icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
-            isw = wid.endswith('90') or wid.endswith('80')
-            siu = ''
-            if isw:
-                siu = ''
-                _ssp_cands = [ubr] + list(info.get('resource_ids') or [])
-                for _c in _ssp_cands:
-                    _s = str(_c).strip() if _c is not None else ''
-                    if not _s or _s == '0':
-                        continue
-                    _tf = find_trait_icon(_s)
-                    if _tf:
-                        siu = f"/static/images/Trait/{_tf}"
+        if not view_ranking:
+            for wp in unit_weapon_map.get(unit_id, []):
+                wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
+                ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
+                at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
+                ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
+                ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+                if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
+                    at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
+                pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
+                am = ws['ammo'] if wt == '3' else 0
+                trl = ws.get('traits', [])
+                ssp_power, ssp_ammo, ssp_range = 0, 0, 0
+                mwid = wm.get('main_weapon_id', '0')
+                for cid in [wid, mwid]:
+                    if cid and cid != '0' and cid in unit_ssp_weapon_enhance_map:
+                        for enh in unit_ssp_weapon_enhance_map[cid]:
+                            if enh['type'] == '1': ssp_power += enh['value']
+                            elif enh['type'] == '3': ssp_ammo += enh['value']
+                            elif enh['type'] == '4': ssp_range += enh['value']
                         break
-                if not siu:
-                    siu = portrait or ''
-            weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
-        weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
+                if wt != '3':
+                    ssp_ammo = 0
+                sat = []
+                ccl = "[Custom Core Effect] " if lc == 'EN' else "[Custom Core效果] "
+                for cid in [wid, mwid]:
+                    if cid and cid != '0' and cid in unit_ssp_weapon_effect_map:
+                        for tid in unit_ssp_weapon_effect_map[cid]:
+                            tt2 = ld.get('weapon_trait_detail_map', {}).get(tid, '')
+                            if tt2:
+                                ft = ccl + tt2
+                                if ft not in sat: sat.append(ft)
+                        break
+                levels_raw = ws.get('levels') or [{'level':i,'power':ws.get('power',0),'en':ws.get('en',0),'accuracy':ws.get('accuracy',0),'critical':ws.get('critical',0),'ammo':ws.get('ammo',0),'traits':ws.get('traits',[])} for i in range(1,6)]
+                levels = enrich_weapon_levels_with_enemy_def_debuff(levels_raw, sat)
+                lv5t = trl
+                ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t + sat)
+                icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
+                isw = wid.endswith('90') or wid.endswith('80')
+                siu = ''
+                if isw:
+                    siu = ''
+                    _ssp_cands = [ubr] + list(info.get('resource_ids') or [])
+                    for _c in _ssp_cands:
+                        _s = str(_c).strip() if _c is not None else ''
+                        if not _s or _s == '0':
+                            continue
+                        _tf = find_trait_icon(_s)
+                        if _tf:
+                            siu = f"/static/images/Trait/{_tf}"
+                            break
+                    if not siu:
+                        siu = portrait or ''
+                weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+            weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
         acq = info.get('acquisition_route','0'); ai2 = ACQUISITION_ROUTE_ICONS.get(acq, '')
@@ -11635,33 +11683,50 @@ def get_unit(unit_id):
         if _unit_has_sd_mechanism(info, unit_id) and '3' not in mids:
             mids.append('3')
         mechs = []
-        if il:
-            mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
-        rec_cid = normalize_id(info.get('recommend_character_id') or '0')
-        if rec_cid == '0':
-            rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
-        recommend_character = None
-        if rec_cid != '0' and rec_cid in char_info_map:
-            cinfo = char_info_map[rec_cid]
-            if not entity_hidden_by_lr_schedule_lock(cinfo.get('schedule_id', '0')):
-                cri = cinfo.get('rarity', '1')
-                crrole = cinfo.get('role', '0')
-                clid = ld.get('char_id_map', {}).get(rec_cid, '')
-                cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
-                if not cname:
-                    cname = f'Unknown ({rec_cid})'
-                cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
-                recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
-        mm = ld.get('mechanism_map', {})
-        for mid in mids:
-            if mid == '2x2': continue
-            for rmm in mm.get(mid, []):
-                if rmm.get('id') == mid:
-                    icf = find_mechanism_icon(rmm.get('resource_id', ''))
-                    mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
-                    break
+        if not view_ranking:
+            if il:
+                mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
+            rec_cid = normalize_id(info.get('recommend_character_id') or '0')
+            if rec_cid == '0':
+                rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
+            recommend_character = None
+            if rec_cid != '0' and rec_cid in char_info_map:
+                cinfo = char_info_map[rec_cid]
+                if not entity_hidden_by_lr_schedule_lock(cinfo.get('schedule_id', '0')):
+                    cri = cinfo.get('rarity', '1')
+                    crrole = cinfo.get('role', '0')
+                    clid = ld.get('char_id_map', {}).get(rec_cid, '')
+                    cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
+                    if not cname:
+                        cname = f'Unknown ({rec_cid})'
+                    cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
+                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
+            mm = ld.get('mechanism_map', {})
+            for mid in mids:
+                if mid == '2x2': continue
+                for rmm in mm.get(mid, []):
+                    if rmm.get('id') == mid:
+                        icf = find_mechanism_icon(rmm.get('resource_id', ''))
+                        mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
+                        break
+        else:
+            rec_cid = normalize_id(info.get('recommend_character_id') or '0')
+            if rec_cid == '0':
+                rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
+            recommend_character = None
+            if rec_cid != '0' and rec_cid in char_info_map:
+                cinfo = char_info_map[rec_cid]
+                if not entity_hidden_by_lr_schedule_lock(cinfo.get('schedule_id', '0')):
+                    cri = cinfo.get('rarity', '1')
+                    crrole = cinfo.get('role', '0')
+                    clid = ld.get('char_id_map', {}).get(rec_cid, '')
+                    cname = ld.get('char_text_map', {}).get(clid, '') if clid else ''
+                    if not cname:
+                        cname = f'Unknown ({rec_cid})'
+                    cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
+                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
-        skills = [resolve_unit_skill(row['unit_skill_id'], ld, row['sort']) for row in unit_skill_set_lookup.get(unit_id, [])]
+        skills = [] if view_ranking else [resolve_unit_skill(row['unit_skill_id'], ld, row['sort']) for row in unit_skill_set_lookup.get(unit_id, [])]
         _tpid = unit_transform_partner_map.get(unit_id)
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
@@ -11669,6 +11734,11 @@ def get_unit(unit_id):
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
         if _tpid:
             result['transform_partner_id'] = _tpid
+        if view_ranking:
+            result['abilities'] = []
+            result['weapon_passive_pct'] = {k: {'Accuracy': 0, 'Critical': 0, 'Power': 0} for k in ('sp', 'ssp', 'sp_cond', 'ssp_cond')}
+            result['ability_passive_crit_dmg_pct'] = {'no_cond': 0, 'cond_only': 0, 'ssp_no_cond': 0, 'ssp_cond_only': 0}
+            result['view_ranking'] = True
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
