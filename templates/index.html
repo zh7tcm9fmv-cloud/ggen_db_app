@@ -215,9 +215,9 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-matrix-val{font-size:13px;font-weight:800;color:#93c5fd;font-variant-numeric:tabular-nums}
 .ranking-list-inner--podium{display:block}
 .ranking-podium-board--dashboard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
-.ranking-dash-card{position:relative;border:1px solid rgba(255,255,255,.2);background-color:rgba(9,16,30,.86);background-position:center;background-repeat:no-repeat;background-size:cover;border-radius:10px;padding:10px 8px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-primary);cursor:pointer;min-height:140px;overflow:hidden}
+.ranking-dash-card{position:relative;border:1px solid rgba(255,255,255,.2);background-color:rgba(9,16,30,.86);background-position:center;background-repeat:no-repeat;background-size:cover;border-radius:10px;padding:10px 8px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-primary);cursor:pointer;min-height:140px;overflow:hidden;isolation:isolate}
 .ranking-dash-card::before{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(7,12,24,.5),rgba(7,12,24,.72));pointer-events:none}
-.ranking-dash-card::after{content:'';position:absolute;inset:-24% -18%;z-index:0;opacity:0;background:radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.46) 0%,rgba(255,240,180,.24) 24%,rgba(255,182,72,.12) 42%,rgba(0,0,0,0) 72%);mix-blend-mode:screen;pointer-events:none}
+.ranking-dash-card::after{content:'';position:absolute;inset:0;z-index:0;opacity:0;background:radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.46) 0%,rgba(255,240,180,.24) 24%,rgba(255,182,72,.12) 42%,rgba(0,0,0,0) 72%);mix-blend-mode:screen;pointer-events:none}
 .ranking-dash-card>*{position:relative;z-index:1}
 .ranking-dash-card:hover{border-color:rgba(0,212,255,.5)}
 .ranking-dash-badge{position:absolute;top:6px;left:6px;width:34px;height:34px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;border:2px solid rgba(255,255,255,.78);box-shadow:0 2px 10px rgba(0,0,0,.4)}
@@ -232,16 +232,16 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-dash-card.tier-4 .ranking-dash-badge{background:#3b82f6}
 .ranking-dash-card.tier-5 .ranking-dash-badge{background:#64748b}
 .ranking-dash-card.tier-1,.ranking-dash-card.tier-2,.ranking-dash-card.tier-3{min-height:176px}
-.ranking-dash-card.tier-1{transform:translateY(-8px);border-color:rgba(255,226,120,.95);box-shadow:0 0 0 1px rgba(255,240,173,.38) inset,0 16px 34px rgba(255,170,40,.48)}
-.ranking-dash-card.tier-2{transform:translateY(-4px);border-color:rgba(230,239,255,.92);box-shadow:0 0 0 1px rgba(241,246,255,.34) inset,0 14px 30px rgba(171,186,214,.42)}
+.ranking-dash-card.tier-1{transform:translateY(-4px);border-color:rgba(255,226,120,.95);box-shadow:0 0 0 1px rgba(255,240,173,.38) inset,0 16px 34px rgba(255,170,40,.48)}
+.ranking-dash-card.tier-2{transform:translateY(-2px);border-color:rgba(230,239,255,.92);box-shadow:0 0 0 1px rgba(241,246,255,.34) inset,0 14px 30px rgba(171,186,214,.42)}
 .ranking-dash-card.tier-3{transform:translateY(-1px);border-color:rgba(255,198,142,.92);box-shadow:0 0 0 1px rgba(255,218,184,.32) inset,0 12px 28px rgba(201,118,62,.38)}
 .ranking-dash-card.tier-1::after,.ranking-dash-card.tier-2::after,.ranking-dash-card.tier-3::after{opacity:1;animation:rankingDashLeak 2.6s ease-in-out infinite alternate}
 .ranking-dash-card.tier-1::after{background:radial-gradient(ellipse at 16% 8%,rgba(255,252,220,.9) 0%,rgba(255,229,122,.62) 23%,rgba(255,166,45,.34) 46%,rgba(0,0,0,0) 72%)}
 .ranking-dash-card.tier-2::after{background:radial-gradient(ellipse at 16% 8%,rgba(255,255,255,.88) 0%,rgba(232,241,255,.56) 23%,rgba(146,166,196,.34) 46%,rgba(0,0,0,0) 72%)}
 .ranking-dash-card.tier-3::after{background:radial-gradient(ellipse at 16% 8%,rgba(255,242,228,.88) 0%,rgba(255,198,140,.56) 23%,rgba(201,118,62,.34) 46%,rgba(0,0,0,0) 72%)}
-@keyframes rankingDashLeak{0%{transform:translate(-9%,-7%) rotate(-4deg)}100%{transform:translate(12%,7%) rotate(4deg)}}
+@keyframes rankingDashLeak{0%{transform:translate(-4%,-3%) rotate(-2deg)}100%{transform:translate(5%,3%) rotate(2deg)}}
 .ranking-dash-card.tier-1 .ranking-dash-thumb,.ranking-dash-card.tier-2 .ranking-dash-thumb,.ranking-dash-card.tier-3 .ranking-dash-thumb{margin-top:20px}
-.ranking-dash-card.tier-1 .ranking-dash-badge,.ranking-dash-card.tier-2 .ranking-dash-badge,.ranking-dash-card.tier-3 .ranking-dash-badge{top:4px;left:4px;width:46px;height:46px;border:none;border-radius:0;background-color:transparent;background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Home_Menu_Icon_Shop.webp{% else %}/static/images/UI/UI_Home_Menu_Icon_Shop.webp{% endif %}');background-repeat:no-repeat;background-size:contain;background-position:center;box-shadow:none;padding-top:0;font-size:14px;font-weight:1000;letter-spacing:.2px;line-height:1;-webkit-text-stroke:1px rgba(0,0,0,.9);paint-order:stroke fill;text-shadow:0 2px 6px rgba(0,0,0,.72),0 0 2px rgba(0,0,0,.9)}
+.ranking-dash-card.tier-1 .ranking-dash-badge,.ranking-dash-card.tier-2 .ranking-dash-badge,.ranking-dash-card.tier-3 .ranking-dash-badge{top:4px;left:4px;width:48px;height:48px;border:none;border-radius:0;background-color:transparent;background-image:radial-gradient(circle at 50% 48%,rgba(5,8,16,.68) 0%,rgba(5,8,16,.52) 44%,rgba(5,8,16,0) 72%),url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Home_Menu_Icon_Shop.webp{% else %}/static/images/UI/UI_Home_Menu_Icon_Shop.webp{% endif %}');background-repeat:no-repeat;background-size:contain,contain;background-position:center,center;box-shadow:none;padding-top:0;font-size:15px;font-weight:1000;letter-spacing:.15px;line-height:1;-webkit-text-stroke:1px rgba(0,0,0,.98);paint-order:stroke fill;text-shadow:0 2px 8px rgba(0,0,0,.88),0 0 4px rgba(0,0,0,.96)}
 .ranking-dash-card.tier-1 .ranking-dash-badge{color:#ffe08a}
 .ranking-dash-card.tier-2 .ranking-dash-badge{color:#edf2fb}
 .ranking-dash-card.tier-3 .ranking-dash-badge{color:#f7bf94}
@@ -261,7 +261,11 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-matrix-row{grid-template-columns:auto 1fr;gap:8px}
 .ranking-matrix-track{grid-column:1 / -1}
 .ranking-matrix-val{grid-column:1 / -1;justify-self:end}
-.ranking-podium-board--dashboard{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ranking-podium-board--dashboard{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ranking-dash-card{min-height:160px}
+.ranking-dash-card.tier-1,.ranking-dash-card.tier-2,.ranking-dash-card.tier-3{min-height:168px;transform:none}
+.ranking-dash-card.tier-1 .ranking-dash-thumb,.ranking-dash-card.tier-2 .ranking-dash-thumb,.ranking-dash-card.tier-3 .ranking-dash-thumb{margin-top:16px}
+.ranking-dash-card.tier-1 .ranking-dash-badge,.ranking-dash-card.tier-2 .ranking-dash-badge,.ranking-dash-card.tier-3 .ranking-dash-badge{width:42px;height:42px;font-size:13px}
 }
 #panel-latest_release::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
 #panel-banner_timeline::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
