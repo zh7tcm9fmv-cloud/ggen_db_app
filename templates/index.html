@@ -174,17 +174,20 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-mode-btn.active{background:var(--bg-card);color:var(--accent-cyan)}
 .ranking-sort-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;flex:1;min-width:0}
 .ranking-stat-pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ranking-tail-controls{display:inline-flex;align-items:center;gap:10px;margin-left:auto}
 .ranking-view-toggle{display:inline-flex;align-items:center;gap:4px;padding:3px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-secondary)}
 .ranking-view-btn{width:40px;height:34px;padding:0;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-secondary);cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;justify-content:center}
 .ranking-view-btn.active{background:rgba(255,149,0,.14);border-color:var(--accent-orange);color:var(--accent-orange)}
 .ranking-view-icon{width:20px;height:20px;display:block;object-fit:contain}
+.ranking-view-svg{width:20px;height:20px;display:block}
+.ranking-view-svg rect{fill:currentColor}
 .ranking-view-txt{display:none}
 .ranking-stat-pill{padding:6px 12px;border-radius:999px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .ranking-stat-pill:hover{color:var(--text-primary);border-color:rgba(0,212,255,.35)}
 .ranking-stat-pill.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,.08)}
 .ranking-dir-btn{min-width:42px;padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);font-size:15px;cursor:pointer;line-height:1}
 .ranking-dir-btn:hover{border-color:var(--accent-cyan)}
-.ranking-dir-icon{width:23px;height:23px;display:block;object-fit:contain}
+.ranking-dir-icon{width:29px;height:29px;display:block;object-fit:contain}
 .ranking-list-shell{position:relative;min-height:220px;z-index:1;margin-top:4px}
 #panel-ranking .list-toolbar-left--browse>.browse-toolbar-top-row{display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-width:0;flex:1 1 100%;width:100%;max-width:100%;box-sizing:border-box;justify-content:flex-start}
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading{flex:0 1 auto;min-width:0;max-width:100%}
@@ -2013,7 +2016,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="nav-tabs">
 <button class="nav-tab active" data-tab="characters" id="navCharTab" onclick="switchTab('characters')">Characters</button>
 <button class="nav-tab" data-tab="units" id="navUnitTab" onclick="switchTab('units')">Units</button>
-<button class="nav-tab" data-tab="ranking" id="navRankingTab" onclick="switchTab('ranking')"><img class="nav-tab-icon nav-tab-icon--ranking" width="22" height="22" alt="" loading="lazy" decoding="async" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Home_Campaign_Image_01.webp{% else %}/static/images/UI/UI_Home_Campaign_Image_01.webp{% endif %}"><span id="navRankingTabLabel"></span></button>
+<button class="nav-tab" data-tab="ranking" id="navRankingTab" onclick="switchTab('ranking')"><span id="navRankingTabLabel"></span></button>
 <button class="nav-tab" data-tab="supporters" id="navSuppTab" onclick="switchTab('supporters')">Supporters</button>
 <button class="nav-tab" data-tab="modifications" id="navModTab" onclick="switchTab('modifications')">Modifications</button>
 <button class="nav-tab" data-tab="stages" id="navStageTab" onclick="switchTab('stages')">Stages</button>
