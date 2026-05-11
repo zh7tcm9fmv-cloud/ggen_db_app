@@ -8301,4 +8301,53 @@ async function ensureDetailRankingStats(type,id){if((type!=='character'&&type!==
 async function loadRankingList(p=1){if(S.currentTab!=='ranking')return;p=1;const mode=S.ranking.mode;const vm=(S.ranking&&S.ranking.viewMode)||'list';const pp=(vm==='list'||vm==='podium')?20:((el=>el?parseInt(el.value,10)||50:50)(document.getElementById('rankPerPage')));if(mode==='characters')S.ranking.pageChar=p;else S.ranking.pageUnit=p;void warmDetailRankingIndex('character');void warmDetailRankingIndex('unit');const url=mode==='characters'?buildRankingCharactersListUrl(p,pp):buildRankingUnitsListUrl(p,pp);const load=document.getElementById('rankLoading');const host=document.getElementById('rankListInner');if(load)load.style.display='flex';if(host)host.innerHTML='';try{const r=await fetch(url);const d=await r.json();_rankingLastPayloadByMode[mode==='characters'?'characters':'units']=d;if(mode==='units'){applyWeaponDebuffPresentFromApi(d);applyMechanismPresentFromApi(d)}renderRankingList(d)}catch(e){if(load)load.style.display='none';if(host)host.innerHTML=`<div class="empty-state"><div class="empty-state-text">${esc(String(e))}</div></div>`}finally{void warmDetailRankingIndex('character');void warmDetailRankingIndex('unit')}}
 function rankingOrdinalLabel(n){n=Number(n)||0;const mod100=n%100;if(mod100>=11&&mod100<=13)return`${n}th`;switch(n%10){case 1:return`${n}st`;case 2:return`${n}nd`;case 3:return`${n}rd`;default:return`${n}th`}}
 
-function renderRankingList(d){const rows=d.rows||[];const sortKey=(d.sort||'');const host=document.getElementById('rankListInner');const empty=document.getElementById('rankEmpty');const load=document.getElementById('rankLoading');if(load)load.style.display='none';if(!host)return;const isChar=S.ranking.mode==='characters';const typ=isChar?'character':'unit';const thumbKind=isChar?'char':'unit';const vm=(S.ranking&&S.ranking.viewMode)||'list';const disp=rows.slice(0,20);if(vm==='podium'){host.classList.add('ranking-list-inner--podium');host.classList.remove('ranking-list-inner--matrix');host.innerHTML=disp.length?`<div class="ranking-podium-board ranking-podium-board--dashboard">${disp.map((row,idx)=>{const rank=idx+1;const badge=rankingOrdinalLabel(rank);const val=Number(row&&row[sortKey]||0);const id=escAttr(String(row&&row.id||''));const nm=esc(row&&row.name||'-');const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));const img=renderListThumb(row,thumbKind,81);const tier=rank===1?'tier-1':rank===2?'tier-2':rank===3?'tier-3':rank<=10?'tier-4':'tier-5';return`<button type="button" class="ranking-dash-card ${tier}" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)"><span class="ranking-dash-badge">${badge}</span><span class="ranking-dash-thumb">${img}</span><span class="ranking-dash-name">${nm}</span><span class="ranking-dash-val">${fmtN(val)}</span></button>`}).join('')}</div>`:`<div class="empty-state"><div class="empty-state-text">${esc(t('empty'))}</div></div>`;if(empty)empty.style.display='none';syncRankingViewModeUi();return}host.classList.remove('ranking-list-inner--podium');host.classList.add('ranking-list-inner--matrix');if(!rows.length){host.innerHTML='';if(empty){empty.style.display='block';empty.querySelector('.empty-state-text').textContent=S.ranking.mode==='characters'?t('empty_char'):t('empty_unit')}return}if(empty)empty.style.display='none';const vals=disp.map(r=>Number(r&&r[sortKey]||0));const mx=Math.max(1,...vals);host.innerHTML=disp.map((row,idx)=>{const rank=idx+1;const rankLabel=rankingOrdinalLabel(rank);const statVal=Number(row&&row[sortKey]||0);const norm=Math.max(0,Math.min(1,statVal/mx));const w=Math.max(22,norm*100);const name=esc(row&&row.name||'-');const id=escAttr(String(row&&row.id||''));const img=renderListThumb(row,thumbKind,42);const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));return`<button type="button" class="ranking-matrix-row" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)"><span class="ranking-matrix-track"><span class="ranking-matrix-dot">${rankLabel}</span><span class="ranking-matrix-fill" style="width:${w.toFixed(2)}%"></span></span><span class="ranking-matrix-end"><span class="ranking-matrix-thumb">${img}</span><span class="ranking-matrix-name">${name}</span><span class="ranking-matrix-val">${fmtN(statVal)}</span></span></button>`}).join('');syncRankingViewModeUi();const pg=document.querySelector('#panel-ranking .pagination-bar-wrap');if(pg)pg.style.display='none'}
+function renderRankingList(d){
+const rows=d.rows||[];
+const sortKey=(d.sort||'');
+const host=document.getElementById('rankListInner');
+const empty=document.getElementById('rankEmpty');
+const load=document.getElementById('rankLoading');
+if(load)load.style.display='none';
+if(!host)return;
+const isChar=S.ranking.mode==='characters';
+const typ=isChar?'character':'unit';
+const thumbKind=isChar?'char':'unit';
+const vm=(S.ranking&&S.ranking.viewMode)||'list';
+const disp=rows.slice(0,20);
+if(vm==='podium'){
+host.classList.add('ranking-list-inner--podium');
+host.classList.remove('ranking-list-inner--matrix');
+host.innerHTML=disp.length?`<div class="ranking-podium-board ranking-podium-board--dashboard">${disp.map((row,idx)=>{const rank=idx+1;const badge=rankingOrdinalLabel(rank);const val=Number(row&&row[sortKey]||0);const id=escAttr(String(row&&row.id||''));const nm=esc(row&&row.name||'-');const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));const img=renderListThumb(row,thumbKind,81);const tier=rank===1?'tier-1':rank===2?'tier-2':rank===3?'tier-3':rank<=10?'tier-4':'tier-5';return`<button type="button" class="ranking-dash-card ${tier}" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)"><span class="ranking-dash-badge">${badge}</span><span class="ranking-dash-thumb">${img}</span><span class="ranking-dash-name">${nm}</span><span class="ranking-dash-val">${fmtN(val)}</span></button>`}).join('')}</div>`:`<div class="empty-state"><div class="empty-state-text">${esc(t('empty'))}</div></div>`;
+if(empty)empty.style.display='none';
+syncRankingViewModeUi();
+return
+}
+host.classList.remove('ranking-list-inner--podium');
+host.classList.add('ranking-list-inner--matrix');
+if(!rows.length){
+host.innerHTML='';
+if(empty){
+empty.style.display='block';
+empty.querySelector('.empty-state-text').textContent=S.ranking.mode==='characters'?t('empty_char'):t('empty_unit')
+}
+return
+}
+if(empty)empty.style.display='none';
+const vals=disp.map(r=>Number(r&&r[sortKey]||0));
+const mx=Math.max(1,...vals);
+host.innerHTML=disp.map((row,idx)=>{
+const rank=idx+1;
+const rankLabel=rankingOrdinalLabel(rank);
+const statVal=Number(row&&row[sortKey]||0);
+const norm=Math.max(0,Math.min(1,statVal/mx));
+const w=Math.max(22,norm*100);
+const name=esc(row&&row.name||'-');
+const id=escAttr(String(row&&row.id||''));
+const img=renderListThumb(row,thumbKind,42);
+const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));
+return`<button type="button" class="ranking-matrix-row" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)"><span class="ranking-matrix-start"><span class="ranking-matrix-thumb">${img}</span><span class="ranking-matrix-name">${name}</span></span><span class="ranking-matrix-track"><span class="ranking-matrix-fill" style="width:${w.toFixed(2)}%"></span></span><span class="ranking-matrix-end"><span class="ranking-matrix-dot">${rankLabel}</span><span class="ranking-matrix-val">${fmtN(statVal)}</span></span></button>`
+}).join('');
+syncRankingViewModeUi();
+const pg=document.querySelector('#panel-ranking .pagination-bar-wrap');
+if(pg)pg.style.display='none'
+}
