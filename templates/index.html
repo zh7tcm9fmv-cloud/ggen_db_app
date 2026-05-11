@@ -198,7 +198,7 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-ranking #rankingCharToolbarHost .browse-toolbar-leading .filter-input-wrap--organic,
 #panel-ranking #rankingUnitToolbarHost .browse-toolbar-leading .filter-input-wrap--organic{display:none!important}
 .ranking-list-inner{display:flex;flex-direction:column;gap:8px}
-.ranking-list-inner--matrix{gap:4px}
+.ranking-list-inner--matrix{gap:2px}
 .ranking-row{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;text-align:left;padding:10px 14px;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-primary);cursor:pointer;transition:var(--transition)}
 .ranking-row:hover{border-color:rgba(0,212,255,.45);box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .ranking-rank-num{font-weight:800;color:var(--accent-gold);min-width:2.6em;font-variant-numeric:tabular-nums}
@@ -208,15 +208,15 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-stat-val{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px}
 .ranking-bar-track{display:block;width:min(128px,28vw);height:6px;border-radius:3px;background:var(--bg-secondary);overflow:hidden}
 .ranking-bar-fill{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,rgba(0,212,255,.25),var(--accent-cyan));min-width:2px}
-.ranking-matrix-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;padding:6px 8px;border:1px solid rgba(148,163,184,.3);border-radius:8px;background:rgba(14,22,38,.72);color:var(--text-primary);cursor:pointer}
-.ranking-matrix-row:hover{border-color:rgba(0,212,255,.45)}
-.ranking-matrix-track{position:relative;height:28px;border-radius:999px;background:rgba(84,102,140,.22);overflow:hidden}
-.ranking-matrix-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#a78bfa,#22d3ee)}
-.ranking-matrix-dot{position:absolute;left:4px;top:50%;transform:translateY(-50%);height:20px;min-width:42px;padding:0 8px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;background:rgba(15,23,42,.9);border:1px solid #7dd3fc;color:#e0f2fe;box-shadow:0 1px 6px rgba(0,0,0,.35);font-variant-numeric:tabular-nums}
-.ranking-matrix-end{display:inline-flex;align-items:center;gap:6px;justify-self:end;min-width:0}
+.ranking-matrix-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;padding:3px 0;border:none;border-radius:0;background:transparent;color:var(--text-primary);cursor:pointer}
+.ranking-matrix-row:hover .ranking-matrix-track{box-shadow:0 0 0 1px rgba(34,211,238,.35),0 0 16px rgba(34,211,238,.16)}
+.ranking-matrix-track{position:relative;height:26px;border-radius:6px;background:rgba(84,102,140,.14);overflow:hidden}
+.ranking-matrix-fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,rgba(167,139,250,.86),rgba(34,211,238,.95))}
+.ranking-matrix-dot{position:absolute;left:4px;top:50%;transform:translateY(-50%);height:18px;min-width:40px;padding:0 8px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;background:rgba(2,6,23,.84);border:1px solid rgba(125,211,252,.6);color:#e0f2fe;box-shadow:none;font-variant-numeric:tabular-nums}
+.ranking-matrix-end{display:inline-flex;align-items:center;gap:6px;justify-self:end;min-width:0;padding-right:2px}
 .ranking-matrix-thumb{display:flex;align-items:center}
-.ranking-matrix-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(220px,36vw);text-align:left}
-.ranking-matrix-val{font-size:13px;font-weight:800;color:#93c5fd;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ranking-matrix-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(220px,36vw);text-align:left;color:#dbeafe}
+.ranking-matrix-val{font-size:13px;font-weight:800;color:#67e8f9;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ranking-list-inner--podium{display:block}
 .ranking-podium-board--dashboard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .ranking-dash-card{position:relative;border:1px solid rgba(255,255,255,.2);background-color:rgba(9,16,30,.86);background-position:center;background-repeat:no-repeat;background-size:cover;border-radius:10px;padding:10px 8px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-primary);cursor:pointer;min-height:140px;overflow:hidden;isolation:isolate}
@@ -2407,7 +2407,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 <p class="site-footer-disclaimer">This site is not affiliated with Bandai Namco Entertainment Inc. All game content, images, and materials are trademarks and copyrights of Bandai Namco Entertainment Inc. and its licensors.</p>
 </footer>
-<button type="button" id="searchRecallFab" class="search-recall-fab" onclick="recallSearchBar()" title="" aria-label="Search">🔍</button>
 <button type="button" id="bannerTimelineScrollTopFab" class="banner-timeline-scroll-top-fab" onclick="scrollBannerTimelineToTop()" title="Back to top" aria-label="Back to top" hidden><img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Battle_Button_Skill_Base.webp{% else %}/static/images/UI/UI_Battle_Button_Skill_Base.webp{% endif %}" alt="" aria-hidden="true" class="banner-timeline-scroll-top-fab-ic" width="30" height="30" decoding="async" loading="lazy"></button>
 <div id="searchSpotlightOverlay" class="search-spotlight-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="searchSpotlightTitle">
 <div class="search-spotlight-backdrop" onclick="closeSearchSpotlight()" aria-hidden="true"></div>
