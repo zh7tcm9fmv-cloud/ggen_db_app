@@ -8455,6 +8455,11 @@ applyRankingCompareVisuals()
 function renderRankingList(d){
 const rows=d.rows||[];
 const sortKey=(d.sort||'');
+const dir=String(d&&d.dir||(((S.ranking&&S.ranking.mode)==='characters')?S.ranking.dirChar:S.ranking.dirUnit)||'desc').toLowerCase()==='asc'?'asc':'desc';
+const page=Math.max(1,Number(d&&d.page)||1);
+const perPage=Math.max(1,Number(d&&d.per_page)||rows.length||20);
+const total=Math.max(rows.length,Number(d&&d.total)||0);
+const rankAt=(idx)=>{const abs=(page-1)*perPage+idx;const rk=dir==='desc'?(total-abs):(abs+1);return Math.max(1,rk)};
 const host=document.getElementById('rankListInner');
 const empty=document.getElementById('rankEmpty');
 const load=document.getElementById('rankLoading');
@@ -8469,7 +8474,7 @@ const disp=rows.slice(0,20);
 if(vm==='podium'){
 host.classList.add('ranking-list-inner--podium');
 host.classList.remove('ranking-list-inner--matrix');
-host.innerHTML=disp.length?`<div class="ranking-podium-board ranking-podium-board--dashboard">${disp.map((row,idx)=>{const rank=idx+1;const badge=rankingOrdinalLabel(rank);const val=Number(row&&row[sortKey]||0);const id=escAttr(String(row&&row.id||''));const nm=esc(row&&row.name||'-');const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));const img=renderListThumb(row,thumbKind,81);const tier=rank===1?'tier-1':rank===2?'tier-2':rank===3?'tier-3':rank<=10?'tier-4':'tier-5';const prevVal=idx>0?Number(disp[idx-1]&&disp[idx-1][sortKey]||0):0;const pctVsPrev=idx>0&&prevVal?((val-prevVal)/Math.abs(prevVal))*100:null;const pctHtml=S.ranking.showPercentDiff&&pctVsPrev!=null?`<span class="ranking-dash-diff ${pctVsPrev>=0?'is-pos':'is-neg'}">${rankingPctText(pctVsPrev)}</span>`:'';return`<button type="button" class="ranking-dash-card ${tier}" data-detail-type="${typ}" data-detail-id="${id}" data-rank-value="${val}" data-detail-opts="${o}" onclick="onRankingVisualItemClick(this,event)"><span class="ranking-dash-badge">${badge}</span><span class="ranking-dash-thumb">${img}</span><span class="ranking-dash-name">${nm}</span>${pctHtml}<span class="ranking-dash-val">${fmtN(val)}</span></button>`}).join('')}</div>`:`<div class="empty-state"><div class="empty-state-text">${esc(t('empty'))}</div></div>`;
+host.innerHTML=disp.length?`<div class="ranking-podium-board ranking-podium-board--dashboard">${disp.map((row,idx)=>{const rank=rankAt(idx);const badge=rankingOrdinalLabel(rank);const val=Number(row&&row[sortKey]||0);const id=escAttr(String(row&&row.id||''));const nm=esc(row&&row.name||'-');const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));const img=renderListThumb(row,thumbKind,81);const tier=rank===1?'tier-1':rank===2?'tier-2':rank===3?'tier-3':rank<=10?'tier-4':'tier-5';const prevVal=idx>0?Number(disp[idx-1]&&disp[idx-1][sortKey]||0):0;const pctVsPrev=idx>0&&prevVal?((val-prevVal)/Math.abs(prevVal))*100:null;const pctHtml=S.ranking.showPercentDiff&&pctVsPrev!=null?`<span class="ranking-dash-diff ${pctVsPrev>=0?'is-pos':'is-neg'}">${rankingPctText(pctVsPrev)}</span>`:'';return`<button type="button" class="ranking-dash-card ${tier}" data-detail-type="${typ}" data-detail-id="${id}" data-rank-value="${val}" data-detail-opts="${o}" onclick="onRankingVisualItemClick(this,event)"><span class="ranking-dash-badge">${badge}</span><span class="ranking-dash-thumb">${img}</span><span class="ranking-dash-name">${nm}</span>${pctHtml}<span class="ranking-dash-val">${fmtN(val)}</span></button>`}).join('')}</div>`:`<div class="empty-state"><div class="empty-state-text">${esc(t('empty'))}</div></div>`;
 if(empty)empty.style.display='none';
 syncRankingViewModeUi();
 applyRankingCompareVisuals();
@@ -8491,7 +8496,7 @@ const showPct=!!S.ranking.showPercentDiff;
 const vals=disp.map(r=>Number(r&&r[sortKey]||0));
 const mx=Math.max(1,...vals);
 host.innerHTML=disp.map((row,idx)=>{
-const rank=idx+1;
+const rank=rankAt(idx);
 const rankLabel=rankingOrdinalLabel(rank);
 const statVal=Number(row&&row[sortKey]||0);
 const prevVal=idx>0?Number(disp[idx-1]&&disp[idx-1][sortKey]||0):0;
