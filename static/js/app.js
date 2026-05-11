@@ -1068,16 +1068,18 @@ return`<div class="modal-top-label">${esc(t('tab_mod'))}</div><div class="modal-
 }
 function ensureDetailRankingToggleDom(type){
 const d=S.currentDetailData;
-const host=document.querySelector('#detailInner .detail-header .detail-title-area');
+const wrap=document.getElementById('detailStatsWrapper');
+if(!wrap)return;
+const host=wrap.parentElement;
 if(!host)return;
-const exists=document.querySelector('#detailInner .detail-rank-toggle-btn');
+const exists=host.querySelector('.detail-rank-toggle-btn');
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))){
 if(exists)exists.remove();
 return
 }
 const html=renderDetailRankingToggle(d,type);
 if(exists){exists.outerHTML=html;return}
-host.insertAdjacentHTML('beforeend',html);
+host.insertAdjacentHTML('afterbegin',html);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function applyDetailRankingInline(type){const d=S.currentDetailData;if(!d||!d.ranking_available||!S.detailRankingOverlay||(type!=='character'&&type!=='unit'))return;const rows=detailStatRowsForCurrentState(d,type);const cards=Array.from(document.querySelectorAll('#detailStatsWrapper .stat-card'));if(!cards.length)return;const ck=detailRankingCacheKey(type,d.id);if(!_detailRankingStatsCache.has(ck)&&!_detailRankingStatsInflight.has(ck))void ensureDetailRankingStats(type,d.id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(d.id))updateDetailDynamicSections(type)}).catch(()=>{});cards.forEach((c,i)=>{const s=rows[i];if(!s)return;const old=c.querySelector('.stat-inline-rank');if(old)old.remove();if(type==='unit'&&s.name==='Move')return;const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;let html='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')html=`<span class="stat-inline-rank-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-inline-rank-total">${tt}</span>`;else html=`<span class="stat-inline-rank-main">${fmtN(rk)}位 /</span><span class="stat-inline-rank-total">${fmtN(tt)}</span>`}c.insertAdjacentHTML('beforeend',`<div class="stat-inline-rank ${loading?'is-loading':''}">${html}</div>`)});}
