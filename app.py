@@ -1005,8 +1005,11 @@ def unit_weapon_debuff_filter_cache_fragment(expr):
         return 'w0'
     return ('w' + '__'.join(expr))[:220]
 
-def iter_unit_weapon_trait_texts(uid, ld, lang_code):
+def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
     """Resolved weapon trait / SSP weapon effect lines (same coverage as collect_unit_weapons_search_text)."""
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
     for wp in unit_weapon_map.get(uid, []):
         wid = wp['id']
         wm = weapon_info_map.get(wid, {})
@@ -1022,14 +1025,16 @@ def iter_unit_weapon_trait_texts(uid, ld, lang_code):
             for tr in lv.get('traits', []) or []:
                 if tr:
                     yield str(tr)
-        mwid = wm.get('main_weapon_id', '0')
-        for cid2 in [wid, mwid]:
-            if cid2 and cid2 != '0' and cid2 in unit_ssp_weapon_effect_map:
-                for tid in unit_ssp_weapon_effect_map[cid2]:
-                    tt2 = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
-                    if tt2:
-                        yield str(tt2)
-                break
+        # SSP custom-core weapon effect lines apply only when stat_mode=ssp.
+        if sm == 'ssp':
+            mwid = wm.get('main_weapon_id', '0')
+            for cid2 in [wid, mwid]:
+                if cid2 and cid2 != '0' and cid2 in unit_ssp_weapon_effect_map:
+                    for tid in unit_ssp_weapon_effect_map[cid2]:
+                        tt2 = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
+                        if tt2:
+                            yield str(tt2)
+                    break
 
 def classify_unit_weapon_trait_debuff_keys(line):
     """Map one trait text line to debuff filter keys (language-mixed patterns)."""
@@ -1312,10 +1317,10 @@ def _lang_data_for_weapon_debuff_filter(ld_request, lc_request):
     return ld_request, lc_request
 
 
-def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc):
+def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc, stat_mode='normal'):
     """Weapon debuff categories from trait / effect text (+ map_weapon); excludes numeric range tiers."""
     acc = set()
-    for line in iter_unit_weapon_trait_texts(uid, ld, lc):
+    for line in iter_unit_weapon_trait_texts(uid, ld, lc, stat_mode=stat_mode):
         acc |= set(classify_unit_weapon_trait_debuff_keys(line))
     for wp in unit_weapon_map.get(uid, []):
         wid = wp['id']
@@ -1377,7 +1382,7 @@ def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal'):
 
 def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal'):
     ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
-    acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_f, lc_f))
+    acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_f, lc_f, stat_mode=stat_mode))
     acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld_f, lc_f, stat_mode))
     return frozenset(acc)
 
