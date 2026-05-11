@@ -8363,19 +8363,38 @@ const y1=(br.top-hr.top)+br.height*0.5;
 const vBase=Number(baseRow.getAttribute('data-rank-value')||0);
 let paths='';
 let labels='';
-targetRows.forEach((tr,i)=>{
+const sortedTargets=targetRows.slice().sort((a,b)=>{
+const ay=a.getBoundingClientRect().top,by=b.getBoundingClientRect().top;
+return ay-by
+});
+const n=sortedTargets.length;
+const slotStep=n<=3?12:(n<=5?10:8);
+const slots=sortedTargets.map((_,i)=>i-(n-1)/2);
+const usedLabelBoxes=[];
+sortedTargets.forEach((tr,i)=>{
 const rr=tr.getBoundingClientRect();
 const x2=Math.max(12,(rr.left-hr.left)+rr.width*0.68);
 const y2=(rr.top-hr.top)+rr.height*0.5;
-const spread=(i-((targetRows.length-1)/2))*12;
-const cx=((x1+x2)/2)+Math.sign(y2-y1)*8;
-const cy=((y1+y2)/2)+spread;
+const slot=slots[i];
+const absSlot=Math.abs(slot);
+const dy=y2-y1;
+const fan=slot*slotStep;
+const bendBase=Math.min(48,Math.max(14,Math.abs(dy)*0.2));
+const c1x=x1+42+absSlot*9;
+const c1y=y1+fan*0.75;
+const c2x=Math.max(x1+28,x2-42-absSlot*8);
+const c2y=y2-fan*0.58;
 const v2=Number(tr.getAttribute('data-rank-value')||0);
 const pct=vBase?((v2-vBase)/Math.abs(vBase))*100:0;
 const cls=pct>=0?'is-pos':'is-neg';
 const pid=`cmpPath${i}`;
-paths+=`<path id="${pid}" class="ranking-compare-path ${cls}" d="M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}"></path>`;
-labels+=`<div class="ranking-compare-label ${cls}" style="left:${((x1+x2)/2).toFixed(1)}px;top:${((y1+y2)/2-12+spread*0.15).toFixed(1)}px">${rankingPctText(pct)}</div>`
+paths+=`<path id="${pid}" class="ranking-compare-path ${cls}" d="M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}"></path>`;
+let lx=x1+(x2-x1)*0.56+fan*0.32;
+let ly=y1+dy*0.56+fan*0.52;
+const lw=62,lh=22;
+for(let k=0;k<usedLabelBoxes.length;k++){const b=usedLabelBoxes[k];const overlap=Math.abs(lx-b.x)<(lw+b.w)*0.5&&Math.abs(ly-b.y)<(lh+b.h)*0.5;if(overlap)ly+=(slot>=0?1:-1)*(lh+6)}
+usedLabelBoxes.push({x:lx,y:ly,w:lw,h:lh});
+labels+=`<div class="ranking-compare-label ${cls}" style="left:${lx.toFixed(1)}px;top:${ly.toFixed(1)}px">${rankingPctText(pct)}</div>`
 });
 svg.innerHTML=paths;
 if(labelsWrap)labelsWrap.innerHTML=labels;
