@@ -195,6 +195,8 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading .filter-input-wrap--organic .filter-input--organic{width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box;field-sizing:fixed}
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading .filter-input-wrap--organic:focus-within{z-index:55;transform:translateZ(0)}
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading .filter-input-wrap--organic:focus-within .filter-input--organic{box-shadow:0 0 0 1px rgba(0,212,255,.35),0 12px 40px rgba(0,0,0,.5),0 0 48px rgba(0,212,255,.12);background:linear-gradient(180deg,rgba(14,20,36,.98),rgba(10,14,26,.96));border-color:rgba(0,212,255,.45)}
+#panel-ranking #rankingCharToolbarHost .browse-toolbar-leading .filter-input-wrap--organic,
+#panel-ranking #rankingUnitToolbarHost .browse-toolbar-leading .filter-input-wrap--organic{display:none!important}
 .ranking-list-inner{display:flex;flex-direction:column;gap:8px}
 .ranking-row{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;text-align:left;padding:10px 14px;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-primary);cursor:pointer;transition:var(--transition)}
 .ranking-row:hover{border-color:rgba(0,212,255,.45);box-shadow:0 4px 16px rgba(0,0,0,.25)}
@@ -257,11 +259,11 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-dash-val{font-size:14px;font-weight:900;color:#93c5fd;font-variant-numeric:tabular-nums}
 @media(max-width:768px){
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading .filter-input-wrap--organic .filter-input--organic{width:100%!important;min-width:0;max-width:none!important}
-.ranking-top-controls{flex-direction:row;align-items:center;gap:6px 8px;margin:0 0 8px}
-.ranking-mode-toggle{align-self:center;flex:0 0 auto}
-.ranking-sort-row{flex:1 1 auto;min-width:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px}
-.ranking-tail-controls{order:1;width:auto;margin-left:auto;justify-content:flex-end}
-.ranking-stat-pills{order:2;flex:1 1 100%;width:100%;justify-content:flex-start}
+.ranking-top-controls{display:grid;grid-template-columns:auto 1fr;align-items:start;column-gap:8px;row-gap:4px;margin:0 0 8px}
+.ranking-mode-toggle{grid-column:1;grid-row:1;align-self:center;justify-self:start;flex:0 0 auto}
+.ranking-sort-row{grid-column:2;grid-row:1;min-width:0;display:grid;grid-template-columns:1fr;grid-template-areas:'tail' 'pills';row-gap:6px;align-items:start}
+.ranking-tail-controls{grid-area:tail;width:auto;margin-left:0;justify-content:flex-end;justify-self:end}
+.ranking-stat-pills{grid-area:pills;width:100%;justify-content:flex-start}
 .ranking-row{flex-wrap:wrap}
 .ranking-row-stat{width:100%;align-items:stretch;min-width:0}
 .ranking-bar-track{width:100%}
