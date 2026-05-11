@@ -293,7 +293,7 @@ const _rankingPodiumCache=new Map();
 function ensureRankingTopControlEnhancements(){const row=document.querySelector('#panel-ranking .ranking-sort-row');if(!row)return;const dirBtn=document.getElementById('rankingDirBtn');if(!row.querySelector('.ranking-view-toggle')){const h=`<div class="ranking-view-toggle" role="group" aria-label="Ranking view mode"><button type="button" class="ranking-view-btn" data-ranking-view="list" onclick="setRankingViewMode('list')" title="List"><img class="ranking-view-icon" src="${imgUrl('/static/images/UI/UI_Common_BtnIcon_Sort_Nega.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ranking-view-txt">List</span></button><button type="button" class="ranking-view-btn" data-ranking-view="podium" onclick="setRankingViewMode('podium')" title="Podium Chart"><img class="ranking-view-icon" src="${imgUrl('/static/images/UI/UI_Common_BtnIcon_Sort_Posi.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ranking-view-txt">Podium</span></button></div>`;if(dirBtn)dirBtn.insertAdjacentHTML('beforebegin',h);else row.insertAdjacentHTML('beforeend',h)}}
 function syncRankingViewModeUi(){ensureRankingTopControlEnhancements();const vm=(S.ranking&&S.ranking.viewMode)||'list';document.querySelectorAll('.ranking-view-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingView===vm));document.querySelectorAll('.ranking-exp-switch').forEach(b=>{if(b.dataset.expKey==='pct')b.classList.toggle('active',!!(S.ranking&&S.ranking.showPercentDiff));if(b.dataset.expKey==='cmp')b.classList.toggle('active',!!(S.ranking&&S.ranking.compareMode));const t=b.querySelector('.ranking-exp-switch-track');if(t)t.classList.toggle('active',b.classList.contains('active'))});const pg=document.querySelector('#panel-ranking .pagination-bar-wrap');if(pg)pg.style.display=vm==='podium'?'none':''}
 function setRankingViewMode(mode){if(mode!=='list'&&mode!=='podium')return;if(S.ranking.viewMode===mode)return;S.ranking.viewMode=mode;if(mode!=='list')clearRankingCompareSelections();syncRankingViewModeUi();const cur=S.ranking.mode==='characters'?'characters':'units';const payload=_rankingLastPayloadByMode[cur];if(payload)renderRankingList(payload);else void loadRankingList(mode==='podium'?1:(cur==='characters'?S.ranking.pageChar:S.ranking.pageUnit))}
-function ensureRankingExperimentalState(){if(!S.ranking)return;S.ranking.showPercentDiff=!!S.ranking.showPercentDiff;S.ranking.compareMode=!!S.ranking.compareMode;if(!Array.isArray(S.ranking.compareSelection))S.ranking.compareSelection=[]}
+function ensureRankingExperimentalState(){if(!S.ranking)return;S.ranking.showPercentDiff=!!S.ranking.showPercentDiff;S.ranking.compareMode=!!S.ranking.compareMode;if(S.ranking.compareBaseId==null)S.ranking.compareBaseId='';if(!Array.isArray(S.ranking.compareTargetIds))S.ranking.compareTargetIds=[]}
 function toggleRankingPercentDiffMode(){ensureRankingExperimentalState();S.ranking.showPercentDiff=!S.ranking.showPercentDiff;syncRankingViewModeUi();const cur=S.ranking.mode==='characters'?'characters':'units';const payload=_rankingLastPayloadByMode[cur];if(payload)renderRankingList(payload)}
 function toggleRankingCompareMode(){ensureRankingExperimentalState();S.ranking.compareMode=!S.ranking.compareMode;if(!S.ranking.compareMode)clearRankingCompareSelections();syncRankingViewModeUi();const cur=S.ranking.mode==='characters'?'characters':'units';const payload=_rankingLastPayloadByMode[cur];if(payload)renderRankingList(payload)}
 function rankingListUrlFor(mode,sortKey,page,perPage,dir){const p=Math.max(1,Number(page)||1),pp=Math.max(1,Number(perPage)||5),dv=(dir==='asc'?'asc':'desc');const base=mode==='characters'?buildRankingCharactersListUrl(p,pp):buildRankingUnitsListUrl(p,pp);const u=new URL(base,location.origin);u.searchParams.set('sort',String(sortKey||''));u.searchParams.set('dir',dv);u.searchParams.set('per_page',String(pp));u.searchParams.set('page',String(p));return u.pathname+u.search}
@@ -8283,7 +8283,7 @@ else if(document.getElementById('cmpOverlay').classList.contains('active')){clos
 };
 function renderRankingList(d){const rows=d.rows||[];const bounds=d.stat_bounds;const sortKey=(d.sort||'');const host=document.getElementById('rankListInner');const empty=document.getElementById('rankEmpty');const load=document.getElementById('rankLoading');if(load)load.style.display='none';if(!host)return;const isChar=S.ranking.mode==='characters';const typ=isChar?'character':'unit';const thumbKind=isChar?'char':'unit';const vm=(S.ranking&&S.ranking.viewMode)||'list';if(vm==='podium'){const topRows=rows.slice(0,15);const mk=(row,rank)=>{const val=Number(row&&row[sortKey]||0);const id=escAttr(String(row&&row.id||''));const n=esc(row&&row.name||'-');const img=renderListThumb(row,thumbKind,44);const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));const ped=rank===1?100:(rank===2?78:(rank===3?66:50));const cls=rank<=3?`is-r${rank}`:'is-rest';return`<button type="button" class="ranking-podium-col ${cls}" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)" title="${n}"><span class="ranking-podium-rank">#${rank}</span><span class="ranking-podium-rail"><span class="ranking-podium-fill" style="height:${ped}%"></span></span><span class="ranking-podium-thumb">${img}</span><span class="ranking-podium-val">${fmtN(val)}</span></button>`};const top=`<div class="ranking-pyramid-top">${topRows[1]?mk(topRows[1],2):''}${topRows[0]?mk(topRows[0],1):''}${topRows[2]?mk(topRows[2],3):''}</div>`;const rest=`<div class="ranking-pyramid-rest">${topRows.slice(3).map((r,i)=>mk(r,i+4)).join('')}</div>`;host.classList.add('ranking-list-inner--podium');host.innerHTML=topRows.length?`<div class="ranking-podium-board ranking-podium-board--pyramid">${top}${rest}</div>`:`<div class="empty-state"><div class="empty-state-text">${esc(t('empty'))}</div></div>`;if(empty)empty.style.display='none';syncRankingViewModeUi();return}host.classList.remove('ranking-list-inner--podium');if(!rows.length){host.innerHTML='';if(empty){empty.style.display='block';empty.querySelector('.empty-state-text').textContent=S.ranking.mode==='characters'?t('empty_char'):t('empty_unit')}return}if(empty)empty.style.display='none';host.innerHTML=rows.map((row,idx)=>{const rank=(d.page-1)*(d.per_page||50)+idx+1;const statVal=row[sortKey];const name=esc(row.name||'-');const id=escAttr(String(row.id||''));const img=renderListThumb(row,thumbKind,52);const bar=renderRankingRowBar(statVal,bounds);const o=encodeURIComponent(JSON.stringify(detailRecommendOptsForType(typ)));return`<button type="button" class="ranking-row" data-detail-type="${typ}" data-detail-id="${id}" data-detail-opts="${o}" onclick="openDetailFromRanking(this)"><span class="ranking-rank-num">#${rank}</span><span class="ranking-row-thumb">${img}</span><span class="ranking-row-name">${name}</span><span class="ranking-row-stat"><span class="ranking-stat-val">${fmtN(statVal)}</span>${bar}</span></button>`}).join('');syncRankingViewModeUi();renderPag('rank',d)}
 async function loadRankingList(p=1){if(S.currentTab!=='ranking')return;p=Number(p)||1;const mode=S.ranking.mode;const vm=(S.ranking&&S.ranking.viewMode)||'list';if(vm==='podium')p=1;const ppEl=document.getElementById('rankPerPage');const pp=ppEl?parseInt(ppEl.value,10)||50:50;if(mode==='characters')S.ranking.pageChar=p;else S.ranking.pageUnit=p;const url=mode==='characters'?buildRankingCharactersListUrl(p,pp):buildRankingUnitsListUrl(p,pp);const load=document.getElementById('rankLoading');const host=document.getElementById('rankListInner');if(load)load.style.display='flex';if(host)host.innerHTML='';try{const r=await fetch(url);const d=await r.json();_rankingLastPayloadByMode[mode==='characters'?'characters':'units']=d;if(mode==='units'){applyWeaponDebuffPresentFromApi(d);applyMechanismPresentFromApi(d)}renderRankingList(d)}catch(e){if(load)load.style.display='none';if(host)host.innerHTML=`<div class="empty-state"><div class="empty-state-text">${esc(String(e))}</div></div>`}}
-function ensureRankingTopControlEnhancements(){const row=document.querySelector('#panel-ranking .ranking-sort-row');if(!row)return;ensureRankingExperimentalState();const dirBtn=document.getElementById('rankingDirBtn');const listSvg=`<svg class="ranking-view-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg>`;const html=`<button type="button" class="ranking-view-btn" data-ranking-view="list" onclick="setRankingViewMode('list')" title="List">${listSvg}<span class="ranking-view-txt">List</span></button><button type="button" class="ranking-view-btn" data-ranking-view="podium" onclick="setRankingViewMode('podium')" title="Dashboard"><img class="ranking-view-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ranking-view-txt">Dashboard</span></button>`;const exp=`<div class="ranking-exp-switches"><button type="button" class="ranking-exp-switch${S.ranking.showPercentDiff?' active':''}" data-exp-key="pct" onclick="toggleRankingPercentDiffMode()" title="% diff between ranks"><span class="ranking-exp-switch-text">%</span><span class="ranking-exp-switch-track${S.ranking.showPercentDiff?' active':''}"><span class="ranking-exp-switch-thumb"></span></span></button><button type="button" class="ranking-exp-switch${S.ranking.compareMode?' active':''}" data-exp-key="cmp" onclick="toggleRankingCompareMode()" title="% compare mode"><span class="ranking-exp-switch-text">Cmp</span><span class="ranking-exp-switch-track${S.ranking.compareMode?' active':''}"><span class="ranking-exp-switch-thumb"></span></span></button></div>`;let tail=row.querySelector('.ranking-tail-controls');if(!tail){tail=document.createElement('div');tail.className='ranking-tail-controls';row.appendChild(tail)}let toggle=row.querySelector('.ranking-view-toggle');if(!toggle){toggle=document.createElement('div');toggle.className='ranking-view-toggle';toggle.setAttribute('role','group');toggle.setAttribute('aria-label','Ranking view mode')}toggle.innerHTML=html;if(toggle.parentElement!==tail)tail.appendChild(toggle);let ex=row.querySelector('.ranking-exp-controls');if(!ex){ex=document.createElement('div');ex.className='ranking-exp-controls'}ex.innerHTML=exp;if(ex.parentElement!==tail)tail.appendChild(ex);if(dirBtn&&dirBtn.parentElement!==tail)tail.appendChild(dirBtn)}
+function ensureRankingTopControlEnhancements(){const row=document.querySelector('#panel-ranking .ranking-sort-row');if(!row)return;ensureRankingExperimentalState();const dirBtn=document.getElementById('rankingDirBtn');const listSvg=`<svg class="ranking-view-svg" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3.5" width="14" height="2.5" rx="1"/><rect x="2" y="8" width="14" height="2.5" rx="1"/><rect x="2" y="12.5" width="14" height="2.5" rx="1"/></svg>`;const html=`<button type="button" class="ranking-view-btn" data-ranking-view="list" onclick="setRankingViewMode('list')" title="List">${listSvg}<span class="ranking-view-txt">List</span></button><button type="button" class="ranking-view-btn" data-ranking-view="podium" onclick="setRankingViewMode('podium')" title="Dashboard"><img class="ranking-view-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ranking-view-txt">Dashboard</span></button>`;const exp=`<div class="ranking-exp-switches"><button type="button" class="ranking-exp-switch${S.ranking.showPercentDiff?' active':''}" data-exp-key="pct" onclick="toggleRankingPercentDiffMode()" title="% diff between ranks"><span class="ranking-exp-switch-text">%</span><span class="ranking-exp-switch-track${S.ranking.showPercentDiff?' active':''}"><span class="ranking-exp-switch-thumb"></span></span></button><button type="button" class="ranking-exp-switch${S.ranking.compareMode?' active':''}" data-exp-key="cmp" onclick="toggleRankingCompareMode()" title="% compare mode"><span class="ranking-exp-switch-text">Vs</span><span class="ranking-exp-switch-track${S.ranking.compareMode?' active':''}"><span class="ranking-exp-switch-thumb"></span></span></button></div>`;let tail=row.querySelector('.ranking-tail-controls');if(!tail){tail=document.createElement('div');tail.className='ranking-tail-controls';row.appendChild(tail)}let toggle=row.querySelector('.ranking-view-toggle');if(!toggle){toggle=document.createElement('div');toggle.className='ranking-view-toggle';toggle.setAttribute('role','group');toggle.setAttribute('aria-label','Ranking view mode')}toggle.innerHTML=html;if(toggle.parentElement!==tail)tail.appendChild(toggle);let ex=row.querySelector('.ranking-exp-controls');if(!ex){ex=document.createElement('div');ex.className='ranking-exp-controls'}ex.innerHTML=exp;if(ex.parentElement!==tail)tail.appendChild(ex);if(dirBtn&&dirBtn.parentElement!==tail)tail.appendChild(dirBtn)}
 
 const _detailRankingIndexCache=new Map();
 const _detailRankingIndexInflight=new Map();
@@ -8304,9 +8304,111 @@ async function ensureDetailRankingStats(type,id){if((type!=='character'&&type!==
 async function loadRankingList(p=1){if(S.currentTab!=='ranking')return;p=1;const mode=S.ranking.mode;const vm=(S.ranking&&S.ranking.viewMode)||'list';const pp=(vm==='list'||vm==='podium')?20:((el=>el?parseInt(el.value,10)||50:50)(document.getElementById('rankPerPage')));if(mode==='characters')S.ranking.pageChar=p;else S.ranking.pageUnit=p;void warmDetailRankingIndex('character');void warmDetailRankingIndex('unit');const url=mode==='characters'?buildRankingCharactersListUrl(p,pp):buildRankingUnitsListUrl(p,pp);const load=document.getElementById('rankLoading');const host=document.getElementById('rankListInner');if(load)load.style.display='flex';if(host)host.innerHTML='';try{const r=await fetch(url);const d=await r.json();_rankingLastPayloadByMode[mode==='characters'?'characters':'units']=d;if(mode==='units'){applyWeaponDebuffPresentFromApi(d);applyMechanismPresentFromApi(d)}renderRankingList(d)}catch(e){if(load)load.style.display='none';if(host)host.innerHTML=`<div class="empty-state"><div class="empty-state-text">${esc(String(e))}</div></div>`}finally{void warmDetailRankingIndex('character');void warmDetailRankingIndex('unit')}}
 function rankingOrdinalLabel(n){n=Number(n)||0;const mod100=n%100;if(mod100>=11&&mod100<=13)return`${n}th`;switch(n%10){case 1:return`${n}st`;case 2:return`${n}nd`;case 3:return`${n}rd`;default:return`${n}th`}}
 function rankingPctText(v){const n=Number(v)||0;const abs=Math.abs(n);const dec=abs>=100?0:(abs>=10?1:2);return`${n>=0?'+':''}${n.toFixed(dec)}%`}
-function clearRankingCompareSelections(){ensureRankingExperimentalState();S.ranking.compareSelection=[];const host=document.getElementById('rankListInner');if(!host)return;host.classList.remove('ranking-matrix-compare-active');host.querySelectorAll('.ranking-matrix-row.is-compare-selected').forEach(el=>el.classList.remove('is-compare-selected'));const layer=host.querySelector('.ranking-compare-layer');if(layer)layer.classList.remove('active')}
-function applyRankingCompareVisuals(){const host=document.getElementById('rankListInner');if(!host)return;ensureRankingExperimentalState();const rows=Array.from(host.querySelectorAll('.ranking-matrix-row'));rows.forEach(r=>r.classList.remove('is-compare-selected'));const ids=(S.ranking.compareSelection||[]).map(String);if(!S.ranking.compareMode||((S.ranking&&S.ranking.viewMode)||'list')!=='list'||ids.length===0){host.classList.remove('ranking-matrix-compare-active');const l=host.querySelector('.ranking-compare-layer');if(l)l.classList.remove('active');return}const selRows=ids.map(id=>rows.find(r=>String(r.getAttribute('data-detail-id'))===id)).filter(Boolean);selRows.forEach(r=>r.classList.add('is-compare-selected'));const active=selRows.length===2;host.classList.toggle('ranking-matrix-compare-active',active);let layer=host.querySelector('.ranking-compare-layer');if(!layer){layer=document.createElement('div');layer.className='ranking-compare-layer';layer.innerHTML='<svg class="ranking-compare-svg"></svg><div class="ranking-compare-label"></div>';host.appendChild(layer)}if(!active){layer.classList.remove('active');return}const a=selRows[0],b=selRows[1];const hr=host.getBoundingClientRect(),ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();const x1=Math.max(12,(ar.left-hr.left)+ar.width*0.68),y1=(ar.top-hr.top)+ar.height*0.5,x2=Math.max(12,(br.left-hr.left)+br.width*0.68),y2=(br.top-hr.top)+br.height*0.5;const cx=(x1+x2)/2+Math.sign(y2-y1)*10,cy=(y1+y2)/2;const svg=layer.querySelector('.ranking-compare-svg');svg.setAttribute('viewBox',`0 0 ${host.clientWidth} ${host.clientHeight}`);svg.setAttribute('width',String(host.clientWidth));svg.setAttribute('height',String(host.clientHeight));const v1=Number(a.getAttribute('data-rank-value')||0),v2=Number(b.getAttribute('data-rank-value')||0);const pct=v1?((v2-v1)/Math.abs(v1))*100:0;const cls=pct>=0?'is-pos':'is-neg';svg.innerHTML=`<path class="ranking-compare-path ${cls}" d="M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}"></path>`;const p=svg.querySelector('.ranking-compare-path');if(p){const len=p.getTotalLength();p.style.strokeDasharray=`${len}`;p.style.strokeDashoffset=`${len}`;p.getBoundingClientRect();p.style.strokeDashoffset='0'}const lbl=layer.querySelector('.ranking-compare-label');lbl.className=`ranking-compare-label ${cls}`;lbl.textContent=rankingPctText(pct);lbl.style.left=`${((x1+x2)/2).toFixed(1)}px`;lbl.style.top=`${((y1+y2)/2-14).toFixed(1)}px`;layer.classList.add('active')}
-function onRankingMatrixRowClick(btn,ev){if(ev){ev.preventDefault();ev.stopPropagation()}ensureRankingExperimentalState();if(!S.ranking.compareMode||((S.ranking&&S.ranking.viewMode)||'list')!=='list'){openDetailFromRanking(btn);return}const id=String(btn.getAttribute('data-detail-id')||'');if(!id)return;let sel=(S.ranking.compareSelection||[]).map(String);if(sel.includes(id))sel=sel.filter(x=>x!==id);else if(sel.length>=2)sel=[sel[1],id];else sel.push(id);S.ranking.compareSelection=sel;applyRankingCompareVisuals()}
+function clearRankingCompareSelections(){
+ensureRankingExperimentalState();
+S.ranking.compareBaseId='';
+S.ranking.compareTargetIds=[];
+const host=document.getElementById('rankListInner');
+if(!host)return;
+host.classList.remove('ranking-matrix-compare-active');
+host.querySelectorAll('.ranking-matrix-row.is-compare-base,.ranking-matrix-row.is-compare-target').forEach(el=>el.classList.remove('is-compare-base','is-compare-target'));
+const layer=host.querySelector('.ranking-compare-layer');
+if(layer)layer.classList.remove('active');
+}
+function applyRankingCompareVisuals(){
+const host=document.getElementById('rankListInner');
+if(!host)return;
+ensureRankingExperimentalState();
+const rows=Array.from(host.querySelectorAll('.ranking-matrix-row'));
+rows.forEach(r=>r.classList.remove('is-compare-base','is-compare-target'));
+const isList=(S.ranking&&S.ranking.viewMode)==='list';
+const baseId=String(S.ranking.compareBaseId||'');
+if(!S.ranking.compareMode||!isList||!baseId){
+host.classList.remove('ranking-matrix-compare-active');
+const l=host.querySelector('.ranking-compare-layer');
+if(l)l.classList.remove('active');
+return
+}
+const baseRow=rows.find(r=>String(r.getAttribute('data-detail-id'))===baseId);
+if(!baseRow){
+clearRankingCompareSelections();
+return
+}
+baseRow.classList.add('is-compare-base');
+const targetRows=(Array.isArray(S.ranking.compareTargetIds)?S.ranking.compareTargetIds:[]).map(String).filter(id=>id&&id!==baseId).map(id=>rows.find(r=>String(r.getAttribute('data-detail-id'))===id)).filter(Boolean);
+targetRows.forEach(r=>r.classList.add('is-compare-target'));
+host.classList.toggle('ranking-matrix-compare-active',true);
+let layer=host.querySelector('.ranking-compare-layer');
+if(!layer){
+layer=document.createElement('div');
+layer.className='ranking-compare-layer';
+layer.innerHTML='<svg class="ranking-compare-svg"></svg><div class="ranking-compare-labels"></div>';
+host.appendChild(layer)
+}
+const svg=layer.querySelector('.ranking-compare-svg');
+const labelsWrap=layer.querySelector('.ranking-compare-labels');
+svg.setAttribute('viewBox',`0 0 ${host.clientWidth} ${host.clientHeight}`);
+svg.setAttribute('width',String(host.clientWidth));
+svg.setAttribute('height',String(host.clientHeight));
+if(!targetRows.length){
+svg.innerHTML='';
+if(labelsWrap)labelsWrap.innerHTML='';
+layer.classList.remove('active');
+return
+}
+const hr=host.getBoundingClientRect();
+const br=baseRow.getBoundingClientRect();
+const x1=Math.max(12,(br.left-hr.left)+br.width*0.68);
+const y1=(br.top-hr.top)+br.height*0.5;
+const vBase=Number(baseRow.getAttribute('data-rank-value')||0);
+let paths='';
+let labels='';
+targetRows.forEach((tr,i)=>{
+const rr=tr.getBoundingClientRect();
+const x2=Math.max(12,(rr.left-hr.left)+rr.width*0.68);
+const y2=(rr.top-hr.top)+rr.height*0.5;
+const spread=(i-((targetRows.length-1)/2))*12;
+const cx=((x1+x2)/2)+Math.sign(y2-y1)*8;
+const cy=((y1+y2)/2)+spread;
+const v2=Number(tr.getAttribute('data-rank-value')||0);
+const pct=vBase?((v2-vBase)/Math.abs(vBase))*100:0;
+const cls=pct>=0?'is-pos':'is-neg';
+const pid=`cmpPath${i}`;
+paths+=`<path id="${pid}" class="ranking-compare-path ${cls}" d="M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}"></path>`;
+labels+=`<div class="ranking-compare-label ${cls}" style="left:${((x1+x2)/2).toFixed(1)}px;top:${((y1+y2)/2-12+spread*0.15).toFixed(1)}px">${rankingPctText(pct)}</div>`
+});
+svg.innerHTML=paths;
+if(labelsWrap)labelsWrap.innerHTML=labels;
+svg.querySelectorAll('.ranking-compare-path').forEach(p=>{const len=p.getTotalLength();p.style.strokeDasharray=`${len}`;p.style.strokeDashoffset=`${len}`;p.getBoundingClientRect();p.style.strokeDashoffset='0'});
+layer.classList.add('active')
+}
+function onRankingMatrixRowClick(btn,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+ensureRankingExperimentalState();
+if(!S.ranking.compareMode||((S.ranking&&S.ranking.viewMode)||'list')!=='list'){openDetailFromRanking(btn);return}
+const id=String(btn.getAttribute('data-detail-id')||'');
+if(!id)return;
+let base=String(S.ranking.compareBaseId||'');
+let tgts=Array.isArray(S.ranking.compareTargetIds)?S.ranking.compareTargetIds.map(String):[];
+if(!base){
+S.ranking.compareBaseId=id;
+S.ranking.compareTargetIds=[];
+applyRankingCompareVisuals();
+return
+}
+if(id===base){
+S.ranking.compareMode=false;
+clearRankingCompareSelections();
+syncRankingViewModeUi();
+const cur=S.ranking.mode==='characters'?'characters':'units';
+const payload=_rankingLastPayloadByMode[cur];
+if(payload)renderRankingList(payload);
+return
+}
+if(tgts.includes(id))tgts=tgts.filter(x=>x!==id);else tgts.push(id);
+S.ranking.compareTargetIds=tgts.slice(0,8);
+applyRankingCompareVisuals()
+}
 
 function renderRankingList(d){
 const rows=d.rows||[];
