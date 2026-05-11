@@ -8459,7 +8459,7 @@ const dir=String(d&&d.dir||(((S.ranking&&S.ranking.mode)==='characters')?S.ranki
 const page=Math.max(1,Number(d&&d.page)||1);
 const perPage=Math.max(1,Number(d&&d.per_page)||rows.length||20);
 const total=Math.max(rows.length,Number(d&&d.total)||0);
-const rankAt=(idx)=>{const abs=(page-1)*perPage+idx;const rk=dir==='desc'?(total-abs):(abs+1);return Math.max(1,rk)};
+const rankAt=(idx)=>{const abs=(page-1)*perPage+idx;const rk=dir==='desc'?(abs+1):(total-abs);return Math.max(1,rk)};
 const host=document.getElementById('rankListInner');
 const empty=document.getElementById('rankEmpty');
 const load=document.getElementById('rankLoading');
