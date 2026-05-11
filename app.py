@@ -5104,7 +5104,7 @@ def coalesce_ability_resource_id(ab_id, trait_set_id=''):
 SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
 SDC_EXPLICIT_IDS = {'1501000103'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
-CHANCE_STEP_EX_FILTER_NAME = 'Chance Step EX'
+CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
 
 unit_ser_map = {}
