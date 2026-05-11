@@ -824,7 +824,7 @@ let _detailPrefetchHoverTimer=null;
 let _detailPrefetchIntentWired=false;
 function syncHistoryToBrowsePath(path){try{const tail=(location.search||'')+(location.hash||'');history.replaceState(history.state||{},'',path+tail)}catch(_){}}
 const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
-const MAIN_TAB_PATH_SHORT={latest_release:'/new',stages:'/st',calculator:'/cal',team_builder:'/tb',modifications:'/op',banner_timeline:'/tl',ranking:'/rk'};
+const MAIN_TAB_PATH_SHORT={characters:'/c',units:'/u',supporters:'/s',latest_release:'/new',stages:'/st',calculator:'/cal',team_builder:'/tb',modifications:'/op',banner_timeline:'/tl',ranking:'/rk'};
 function syncMainTabQueryParam(tab){
 try{
 const u=new URL(location.href);
@@ -883,6 +883,9 @@ const raw=(pathname||'').replace(/\/$/,'');
 if(!raw||raw==='/')return null;
 const seg=raw.split('/').filter(Boolean);
 if(seg.length===1&&seg[0]==='new')return{kind:'latest_release'};
+if(seg.length===1&&seg[0]==='c')return{kind:'main_tab',tab:'characters'};
+if(seg.length===1&&seg[0]==='u')return{kind:'main_tab',tab:'units'};
+if(seg.length===1&&seg[0]==='s')return{kind:'main_tab',tab:'supporters'};
 if(seg.length===1&&seg[0]==='tl')return{kind:'main_tab',tab:'banner_timeline'};
 if(seg.length===1&&seg[0]==='banners')return{kind:'main_tab',tab:'banner_timeline'};
 if(seg.length===1&&seg[0]==='st')return{kind:'main_tab',tab:'stages'};
