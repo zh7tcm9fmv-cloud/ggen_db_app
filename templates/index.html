@@ -257,11 +257,11 @@ a.nav-tab:visited{color:var(--text-secondary)}
 .ranking-dash-val{font-size:14px;font-weight:900;color:#93c5fd;font-variant-numeric:tabular-nums}
 @media(max-width:768px){
 #panel-ranking .browse-toolbar-top-row .browse-toolbar-leading .filter-input-wrap--organic .filter-input--organic{width:100%!important;min-width:0;max-width:none!important}
-.ranking-top-controls{flex-direction:column;align-items:stretch;gap:8px}
-.ranking-mode-toggle{align-self:flex-start}
-.ranking-sort-row{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:8px}
-.ranking-stat-pills{width:100%;justify-content:flex-start}
-.ranking-tail-controls{width:100%;margin-left:0;justify-content:flex-end}
+.ranking-top-controls{flex-direction:row;align-items:center;gap:6px 8px;margin:0 0 8px}
+.ranking-mode-toggle{align-self:center;flex:0 0 auto}
+.ranking-sort-row{flex:1 1 auto;min-width:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px}
+.ranking-tail-controls{order:1;width:auto;margin-left:auto;justify-content:flex-end}
+.ranking-stat-pills{order:2;flex:1 1 100%;width:100%;justify-content:flex-start}
 .ranking-row{flex-wrap:wrap}
 .ranking-row-stat{width:100%;align-items:stretch;min-width:0}
 .ranking-bar-track{width:100%}
