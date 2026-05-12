@@ -1105,11 +1105,11 @@ const r=25;
 const c=(Math.PI*2*r);
 const off=(c*(1-fillRatio));
 let rankText='',totalLine='';
-if(S.lang==='EN')rankText=`${rk}${ordinalSuffixEn(rk)}`;
-else rankText=`${fmtN(rk)}位`;
+if(S.lang==='EN')rankText=`${rk}`;
+else rankText=`${fmtN(rk)}`;
 totalLine=`/ ${fmtN(tt)}`;
 return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)}">
-<svg class="radial-svg" width="74" height="74" viewBox="0 0 74 74" aria-hidden="true">
+<svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
 <circle class="progress-fill" cx="37" cy="37" r="${r}"></circle>
 </svg>
