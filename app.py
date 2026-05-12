@@ -9104,9 +9104,9 @@ def abilities_for_character_browse(ld, lc):
     if CHANCE_STEP_EX_ABILITY_IDS:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
     if SUPPORT_DEF_X2_CHARACTER_IDS:
-        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistDeffence_S.webp'}
+        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
     if SUPPORT_ATK_X2_CHARACTER_IDS:
-        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistAtack_S.webp'}
+        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistAtack_S.webp'}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
@@ -9199,9 +9199,9 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     if chance_step_ex_present:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
     if support_def_x2_present:
-        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistDeffence_S.webp'}
+        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
     if support_atk_x2_present:
-        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistAtack_S.webp'}
+        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistAtack_S.webp'}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
