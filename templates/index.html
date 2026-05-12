@@ -1522,7 +1522,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .unit-debuff-item span{display:block;width:100%;white-space:normal;word-break:break-word;hyphens:auto;color:inherit;-webkit-text-fill-color:inherit}
 .unit-debuff-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
-#unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
+#unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#rankUnitWeaponRangeFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}
@@ -1753,6 +1753,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .list-toolbar #unitMechanismFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #rankUnitTerrainFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #rankUnitWeaponDebuffFilterPanel .filter-panel-clear-wrap,
+  .list-toolbar #rankUnitWeaponRangeFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #rankUnitMechanismFilterPanel .filter-panel-clear-wrap{
     flex-shrink:0;
     align-self:stretch;
@@ -1800,7 +1801,8 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   #unitTerrainFilterPanel,#rankUnitTerrainFilterPanel{max-width:min(calc(100vw - 24px),640px)}
   /* Weapon debuff panel: absolute + wide min-width extends past viewport when body is overflow-x:hidden — pin to viewport like other large menus */
   #unitWeaponDebuffFilterPanel:not([hidden]),
-  #rankUnitWeaponDebuffFilterPanel:not([hidden]){
+  #rankUnitWeaponDebuffFilterPanel:not([hidden]),
+  #rankUnitWeaponRangeFilterPanel:not([hidden]){
     position:fixed;
     left:max(8px, env(safe-area-inset-left, 0px));
     right:max(8px, env(safe-area-inset-right, 0px));
