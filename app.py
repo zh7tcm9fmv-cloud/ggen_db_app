@@ -5112,6 +5112,11 @@ SUPPORT_ATK_X2_FILTER_ID = 'support_atk_x2'
 SUPPORT_ATK_X2_FILTER_NAME = 'Support Attack x2'
 SUPPORT_DEF_PLUS_ONE_RE = re.compile(r'(support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d))', re.IGNORECASE)
 SUPPORT_ATK_PLUS_ONE_RE = re.compile(r'(support\s*attack\s*[/／]\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援攻擊\s*[/／]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援攻撃\s*[/／]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d))', re.IGNORECASE)
+CHANCE_STEP_PLUS_ONE_REGEXES = (
+    re.compile(r'chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)', re.IGNORECASE),
+    re.compile(r'チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)'),
+    re.compile(r'額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)'),
+)
 
 unit_ser_map = {}
 for item in extract_data_list(unit_master_data):
@@ -5684,6 +5689,70 @@ def _precompute_support_x2_character_sets():
 SUPPORT_DEF_X2_CHARACTER_IDS, SUPPORT_ATK_X2_CHARACTER_IDS = _precompute_support_x2_character_sets()
 print(f"Support Defense x2 characters: {len(SUPPORT_DEF_X2_CHARACTER_IDS)}")
 print(f"Support Attack x2 characters: {len(SUPPORT_ATK_X2_CHARACTER_IDS)}")
+
+
+def _request_flag_true(v):
+    s = str(v or '').strip().lower()
+    return s in ('1', 'true', 'yes', 'on')
+
+
+def _char_matches_special_x2_filter(cid, want, include_sp=False, include_conditional=False):
+    role_id = normalize_id((char_info_map.get(cid) or {}).get('role', '0'))
+    chance_by_family = {}
+    def_by_family = {}
+    atk_by_family = {}
+    ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
+    ldc = ld
+    for ab_row in extract_data_list(char_abil):
+        if normalize_id(ab_row.get('CharacterId', '')) != cid:
+            continue
+        keys = ('AbilityId',)
+        if include_sp:
+            keys = ('AbilityId', 'SpAbilityId', 'spAbilityId')
+        for key in keys:
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None'):
+                continue
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                    trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                    trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                    ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                )
+            except Exception:
+                continue
+            fam = (bab.get('name') or aid or '').strip().lower()
+            fam = re.sub(r'\s*(?:lv\.?|level)\s*\d+\s*$', '', fam, flags=re.IGNORECASE).strip() or aid
+            hit_ch = 0
+            hit_df = 0
+            hit_at = 0
+            for d in (bab.get('details') or []):
+                is_cond = isinstance(d, dict) and bool((d.get('conditions') or []))
+                if is_cond and not include_conditional:
+                    continue
+                t = (d.get('text', '') if isinstance(d, dict) else str(d)).strip()
+                if not t:
+                    continue
+                hit_ch += sum(len(rx.findall(t)) for rx in CHANCE_STEP_PLUS_ONE_REGEXES)
+                hit_df += len(SUPPORT_DEF_PLUS_ONE_RE.findall(t))
+                hit_at += len(SUPPORT_ATK_PLUS_ONE_RE.findall(t))
+            if hit_ch > 0:
+                chance_by_family[fam] = max(chance_by_family.get(fam, 0), hit_ch)
+            if hit_df > 0:
+                def_by_family[fam] = max(def_by_family.get(fam, 0), hit_df)
+            if hit_at > 0:
+                atk_by_family[fam] = max(atk_by_family.get(fam, 0), hit_at)
+    chance_hits = sum(chance_by_family.values())
+    def_hits = sum(def_by_family.values())
+    atk_hits = sum(atk_by_family.values())
+    if want == CHANCE_STEP_EX_FILTER_ID:
+        return chance_hits >= 1
+    if want == SUPPORT_DEF_X2_FILTER_ID:
+        return def_hits >= 2
+    if want == SUPPORT_ATK_X2_FILTER_ID:
+        return atk_hits >= 2
+    return False
 
 def _precompute_weapon_debuff_keys_present_by_lang():
     """Which debuff filter keys appear on at least one unit (weapon traits); EN baseline duplicated per locale."""
@@ -8254,12 +8323,11 @@ def _char_has_ability_id(cid, ability_id):
     want = normalize_id(ability_id)
     if not want:
         return False
+    if want in (CHANCE_STEP_EX_FILTER_ID, SUPPORT_DEF_X2_FILTER_ID, SUPPORT_ATK_X2_FILTER_ID):
+        include_sp = _request_flag_true(request.args.get('sp'))
+        include_conditional = _request_flag_true(request.args.get('cond'))
+        return _char_matches_special_x2_filter(cid, want, include_sp=include_sp, include_conditional=include_conditional)
     is_sdc = want in SDC_ABILITY_IDS
-    is_chance_step_ex = want == CHANCE_STEP_EX_FILTER_ID
-    if want == SUPPORT_DEF_X2_FILTER_ID:
-        return cid in SUPPORT_DEF_X2_CHARACTER_IDS
-    if want == SUPPORT_ATK_X2_FILTER_ID:
-        return cid in SUPPORT_ATK_X2_CHARACTER_IDS
     for ab_row in extract_data_list(char_abil):
         if normalize_id(ab_row.get('CharacterId', '')) != cid:
             continue
@@ -8268,8 +8336,6 @@ def _char_has_ability_id(cid, ability_id):
             if not aid:
                 continue
             if is_sdc and aid in SDC_ABILITY_IDS:
-                return True
-            if is_chance_step_ex and aid in CHANCE_STEP_EX_ABILITY_IDS:
                 return True
             if aid == want:
                 return True
