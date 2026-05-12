@@ -1096,33 +1096,30 @@ host.insertAdjacentHTML('afterbegin',html);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
-if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading"><div class="sir-loading">...</div></div>`;
+if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading"><div class="radial-loading">...</div></div>`;
 const rk=Math.max(1,Number(meta.rank)||1);
 const tt=Math.max(1,Number(meta.total)||1);
 const topPct=Math.max(1,Math.ceil((rk/tt)*100));
 const fillRatio=Math.max(.03,Math.min(1,(tt-rk+1)/tt));
-const r=17;
+const r=25;
 const c=(Math.PI*2*r);
 const off=(c*(1-fillRatio));
-let rankCore='',suffix='',totalLine='';
-if(S.lang==='EN'){
-rankCore=String(rk);
-suffix=ordinalSuffixEn(rk);
-totalLine=`of ${fmtN(tt)}`;
-}else{
-rankCore=fmtN(rk);
-suffix='位';
-totalLine=`/${fmtN(tt)}`;
-}
+let rankText='',totalLine='';
+if(S.lang==='EN')rankText=`${rk}${ordinalSuffixEn(rk)}`;
+else rankText=`${fmtN(rk)}位`;
+totalLine=`/ ${fmtN(tt)}`;
 return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)}">
-<svg class="sir-svg" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
-<circle class="sir-track" cx="26" cy="26" r="${r}"></circle>
-<circle class="sir-fill" cx="26" cy="26" r="${r}"></circle>
+<svg class="radial-svg" width="74" height="74" viewBox="0 0 74 74" aria-hidden="true">
+<circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
+<circle class="progress-fill" cx="37" cy="37" r="${r}"></circle>
 </svg>
-<div class="sir-center">
-<div class="sir-rankline"><span class="sir-rank">${rankCore}</span><span class="sir-suffix">${suffix}</span></div>
-<div class="sir-top">TOP ${topPct}%</div>
-<div class="sir-total">${totalLine}</div>
+<div class="inner-circle">
+<div class="rank-wrap">
+<div class="rank-label">RANK</div>
+<div class="rank-text">${rankText}</div>
+<div class="total">${totalLine}</div>
+<div class="percentile">TOP ${topPct}%</div>
+</div>
 </div>
 </div>`;
 }
