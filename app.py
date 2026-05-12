@@ -5106,6 +5106,12 @@ SDC_EXPLICIT_IDS = {'1501000103'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
 CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
+SUPPORT_DEF_X2_FILTER_ID = 'support_def_x2'
+SUPPORT_DEF_X2_FILTER_NAME = 'Support Defense x2'
+SUPPORT_ATK_X2_FILTER_ID = 'support_atk_x2'
+SUPPORT_ATK_X2_FILTER_NAME = 'Support Attack x2'
+SUPPORT_DEF_PLUS_ONE_RE = re.compile(r'(support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d))', re.IGNORECASE)
+SUPPORT_ATK_PLUS_ONE_RE = re.compile(r'(support\s*attack\s*[/／]\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援攻擊\s*[/／]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援攻撃\s*[/／]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d))', re.IGNORECASE)
 
 unit_ser_map = {}
 for item in extract_data_list(unit_master_data):
@@ -5627,6 +5633,57 @@ def _precompute_chance_step_ex_data():
 
 CHANCE_STEP_EX_ABILITY_IDS, CHANCE_STEP_EX_ICON = _precompute_chance_step_ex_data()
 print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
+
+
+def _precompute_support_x2_character_sets():
+    """Characters that effectively reach 2 support actions by role + '+1 time' ability lines."""
+    ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
+    ldc = ld
+    support_def_plus_cids = set()
+    support_atk_plus_cids = set()
+    seen_aids = set()
+    aid_flags = {}
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        role_id = normalize_id((char_info_map.get(cid) or {}).get('role', '0'))
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None'):
+                continue
+            if aid not in seen_aids:
+                seen_aids.add(aid)
+                has_def = False
+                has_atk = False
+                try:
+                    bab = build_ability_entry(
+                        aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                        trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                        trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                        ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                    )
+                    detail_blob = ' '.join(
+                        d.get('text', '') if isinstance(d, dict) else str(d)
+                        for d in (bab.get('details') or [])
+                    )
+                    has_def = bool(SUPPORT_DEF_PLUS_ONE_RE.search(detail_blob or ''))
+                    has_atk = bool(SUPPORT_ATK_PLUS_ONE_RE.search(detail_blob or ''))
+                except Exception:
+                    has_def = False
+                    has_atk = False
+                aid_flags[aid] = (has_def, has_atk)
+            has_def, has_atk = aid_flags.get(aid, (False, False))
+            if has_def and role_id == '2':
+                support_def_plus_cids.add(cid)
+            if has_atk and role_id == '3':
+                support_atk_plus_cids.add(cid)
+    return support_def_plus_cids, support_atk_plus_cids
+
+
+SUPPORT_DEF_X2_CHARACTER_IDS, SUPPORT_ATK_X2_CHARACTER_IDS = _precompute_support_x2_character_sets()
+print(f"Support Defense x2 characters: {len(SUPPORT_DEF_X2_CHARACTER_IDS)}")
+print(f"Support Attack x2 characters: {len(SUPPORT_ATK_X2_CHARACTER_IDS)}")
 
 def _precompute_weapon_debuff_keys_present_by_lang():
     """Which debuff filter keys appear on at least one unit (weapon traits); EN baseline duplicated per locale."""
@@ -8199,6 +8256,10 @@ def _char_has_ability_id(cid, ability_id):
         return False
     is_sdc = want in SDC_ABILITY_IDS
     is_chance_step_ex = want == CHANCE_STEP_EX_FILTER_ID
+    if want == SUPPORT_DEF_X2_FILTER_ID:
+        return cid in SUPPORT_DEF_X2_CHARACTER_IDS
+    if want == SUPPORT_ATK_X2_FILTER_ID:
+        return cid in SUPPORT_ATK_X2_CHARACTER_IDS
     for ab_row in extract_data_list(char_abil):
         if normalize_id(ab_row.get('CharacterId', '')) != cid:
             continue
@@ -9042,6 +9103,10 @@ def abilities_for_character_browse(ld, lc):
                 seen[aid] = {'name': n, 'icon': icon}
     if CHANCE_STEP_EX_ABILITY_IDS:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
+    if SUPPORT_DEF_X2_CHARACTER_IDS:
+        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistDeffence_S.webp'}
+    if SUPPORT_ATK_X2_CHARACTER_IDS:
+        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistAtack_S.webp'}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
@@ -9064,6 +9129,8 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     failed_cids = set()
     sdc_placed = False
     chance_step_ex_present = False
+    support_def_x2_present = False
+    support_atk_x2_present = False
     for ab_row in extract_data_list(char_abil):
         cid = normalize_id(ab_row.get('CharacterId', ''))
         if not cid or cid not in char_list_playable_ids:
@@ -9084,6 +9151,10 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                 failed_cids.add(cid)
                 continue
             passed_cids.add(cid)
+        if cid in SUPPORT_DEF_X2_CHARACTER_IDS:
+            support_def_x2_present = True
+        if cid in SUPPORT_ATK_X2_CHARACTER_IDS:
+            support_atk_x2_present = True
         for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
             aid = normalize_id(ab_row.get(key) or '')
             if not aid or aid in ('0', 'None') or aid in seen:
@@ -9127,6 +9198,10 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                 seen[aid] = {'name': n, 'icon': icon}
     if chance_step_ex_present:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': CHANCE_STEP_EX_FILTER_NAME, 'icon': CHANCE_STEP_EX_ICON}
+    if support_def_x2_present:
+        seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': SUPPORT_DEF_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistDeffence_S.webp'}
+    if support_atk_x2_present:
+        seen[SUPPORT_ATK_X2_FILTER_ID] = {'name': SUPPORT_ATK_X2_FILTER_NAME, 'icon': 'UI_Common_BattleIcon_AssistAtack_S.webp'}
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
