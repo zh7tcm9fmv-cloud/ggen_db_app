@@ -1099,7 +1099,7 @@ function renderDetailInlineRankRadial(meta){
 if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading"><div class="radial-loading">...</div></div>`;
 const rk=Math.max(1,Number(meta.rank)||1);
 const tt=Math.max(1,Number(meta.total)||1);
-const topPct=Math.max(1,Math.ceil((rk/tt)*100));
+const pct=Math.max(1,Math.min(100,Math.round((rk/tt)*100)));
 const fillRatio=Math.max(.03,Math.min(1,(tt-rk+1)/tt));
 const r=25;
 const c=(Math.PI*2*r);
@@ -1108,6 +1108,9 @@ let rankText='',totalLine='';
 if(S.lang==='EN')rankText=`${rk}`;
 else rankText=`${fmtN(rk)}`;
 totalLine=`/ ${fmtN(tt)}`;
+let pctText=`TOP ${pct}%`,pctCls='percentile-top';
+if(rk>tt*0.9){pctText=`BOTTOM ${Math.max(0,100-pct)}%`;pctCls='percentile-bottom'}
+else if(rk>Math.ceil(tt*0.1)){pctCls='percentile-mid'}
 return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)}">
 <svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
@@ -1118,7 +1121,7 @@ return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${of
 <div class="rank-label">RANK</div>
 <div class="rank-text">${rankText}</div>
 <div class="total">${totalLine}</div>
-<div class="percentile">TOP ${topPct}%</div>
+<div class="percentile ${pctCls}">${pctText}</div>
 </div>
 </div>
 </div>`;
