@@ -738,10 +738,14 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .percentile{color:var(--rank-tone,#67e8f9)}
 .total{color:#94a3b8;font-size:7px;font-weight:700;margin-top:1px}
 @keyframes fadeIn{to{opacity:1}}
-.pulse{animation:pulseRing 4s ease-in-out infinite}
-.pulse-strong{animation:pulseStrong 2.5s ease-in-out infinite}
-@keyframes pulseRing{0%,100%{filter:brightness(1) drop-shadow(0 0 18px currentColor)}50%{filter:brightness(1.12) drop-shadow(0 0 28px currentColor)}}
-@keyframes pulseStrong{0%,100%{filter:brightness(1) drop-shadow(0 0 25px currentColor)}50%{filter:brightness(1.25) drop-shadow(0 0 45px currentColor)}}
+.progress-fill.pulse{transform-box:fill-box;transform-origin:center;animation:ringPulse 4s ease-in-out infinite}
+.progress-fill.pulse-strong{transform-box:fill-box;transform-origin:center;animation:ringPulseStrong 2.5s ease-in-out infinite}
+.rank-text.pulse,.percentile.pulse{animation:textPulse 4s ease-in-out infinite}
+.rank-text.pulse-strong,.percentile.pulse-strong{animation:textPulseStrong 2.5s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{stroke-width:8;opacity:1}50%{stroke-width:9.6;opacity:.95}}
+@keyframes ringPulseStrong{0%,100%{stroke-width:8.2;opacity:1}50%{stroke-width:11;opacity:.92}}
+@keyframes textPulse{0%,100%{text-shadow:0 0 0 rgba(0,0,0,0)}50%{text-shadow:0 0 10px var(--rank-tone,#22d3ee)}}
+@keyframes textPulseStrong{0%,100%{text-shadow:0 0 0 rgba(0,0,0,0)}50%{text-shadow:0 0 14px var(--rank-tone,#fbbf24)}}
 .radial-loading{font-size:11px;font-weight:800;color:rgba(125,211,252,.9);letter-spacing:.06em}
 @media(max-width:768px){.stat-inline-rank{--rad-size:66px}.inner-circle{width:44px;height:44px}.rank-text{font-size:11px}.rank-label{font-size:5.5px}.percentile,.total{font-size:6.2px}}
 .detail-body{padding:24px 28px 28px;background:rgba(0,0,0,.15);overflow-x:hidden}.detail-section{margin-bottom:28px}.detail-body>div:last-child .detail-section:last-child{margin-bottom:0}
