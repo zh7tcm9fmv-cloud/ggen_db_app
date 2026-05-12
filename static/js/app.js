@@ -1111,24 +1111,25 @@ else rankText=`${fmtN(rk)}`;
 totalLine=`/ ${fmtN(tt)}`;
 let tone='#94a3b8';
 let pctText=`TOP ${pct}%`;
-let pulseCls='';
-if(rk===1){tone='#c026d3';pctText='Top 1';pulseCls='pulse-strong'}
-else if(rk<=20){tone='#22d3ee';pctText=`Top ${rk}`;if(rk<=10)pulseCls='pulse'}
+let pulseFillCls='',pulseTextCls='';
+if(rk===1){tone='#fbbf24';pctText='Top 1';pulseFillCls='pulse-strong';pulseTextCls='pulse-strong'}
+else if(rk<=20){tone='#22d3ee';pctText=`Top ${rk}`}
 else if(rk<=tt*0.05){tone='#34d399'}
 else if(rk<=tt*0.25){tone='#60a5fa'}
 else if(rk>tt*0.90){tone='#f87171';pctText=`BOTTOM ${Math.max(0,100-pct)}%`}
 else{tone='#a5b4fc'}
-return`<div class="stat-inline-rank ${pulseCls}" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
+if(rk<=10&&rk>1){pulseFillCls='pulse';pulseTextCls='pulse'}
+return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
 <svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
-<circle class="progress-fill" cx="37" cy="37" r="${r}"></circle>
+<circle class="progress-fill ${pulseFillCls}" cx="37" cy="37" r="${r}"></circle>
 </svg>
 <div class="inner-circle">
 <div class="rank-wrap">
 <div class="rank-label">RANK</div>
-<div class="rank-text">${rankText}</div>
+<div class="rank-text ${pulseTextCls}">${rankText}</div>
 <div class="total">${totalLine}</div>
-<div class="percentile">${pctText}</div>
+<div class="percentile ${pulseTextCls}">${pctText}</div>
 </div>
 </div>
 </div>`;
@@ -1138,7 +1139,7 @@ if(!root||!root.classList||root.classList.contains('is-loading'))return;
 const f=root.querySelector('.progress-fill');
 if(!f)return;
 f.style.strokeDashoffset='var(--sir-c)';
-setTimeout(()=>{if(root.isConnected)root.classList.add('radial-anim-ready')},100);
+setTimeout(()=>{if(root.isConnected)f.style.strokeDashoffset='var(--sir-o)'},100);
 }
 function applyDetailRankingInline(type){
 const d=S.currentDetailData;
