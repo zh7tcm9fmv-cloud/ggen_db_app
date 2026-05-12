@@ -167,14 +167,14 @@ a.nav-tab:visited{color:var(--text-secondary)}
 #panel-units::before,#panel-stages::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_011_garage.webp{% else %}/static/images/Background/obg_011_garage.webp{% endif %}')}
 #panel-ranking::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Home_Campaign_Image_01.webp{% else %}/static/images/UI/UI_Home_Campaign_Image_01.webp{% endif %}')}
 .nav-tab .nav-tab-icon{width:22px;height:22px;object-fit:contain;margin-right:8px;flex-shrink:0;vertical-align:middle;border-radius:4px}
-.ranking-top-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:0 0 14px;position:relative;z-index:1}
-.ranking-mode-toggle{display:inline-flex;border-radius:var(--radius-md);border:1px solid var(--border-color);overflow:hidden;background:var(--bg-secondary)}
+.ranking-top-controls{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0 0 12px;position:relative;z-index:1}
+.ranking-mode-toggle{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:520px;border-radius:var(--radius-md);border:1px solid var(--border-color);overflow:hidden;background:var(--bg-secondary)}
 .ranking-mode-btn{padding:9px 18px;border:none;background:transparent;color:var(--text-secondary);font-weight:700;font-size:15px;cursor:pointer;transition:var(--transition)}
 .ranking-mode-btn:hover{color:var(--text-primary)}
 .ranking-mode-btn.active{background:var(--bg-card);color:var(--accent-cyan)}
-.ranking-sort-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;flex:1;min-width:0}
+.ranking-sort-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:6px;min-width:0;width:100%}
 .ranking-stat-pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.ranking-tail-controls{display:inline-flex;align-items:center;gap:10px;margin-left:auto}
+.ranking-tail-controls{display:inline-flex;align-items:center;gap:10px;margin-left:0;justify-self:end}
 .ranking-view-toggle{display:inline-flex;align-items:center;gap:4px;padding:3px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-secondary)}
 .ranking-exp-controls{display:inline-flex;align-items:center}
 .ranking-exp-switches{display:inline-flex;gap:6px}
