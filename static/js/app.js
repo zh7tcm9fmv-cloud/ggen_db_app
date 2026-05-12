@@ -1108,10 +1108,16 @@ let rankText='',totalLine='';
 if(S.lang==='EN')rankText=`${rk}`;
 else rankText=`${fmtN(rk)}`;
 totalLine=`/ ${fmtN(tt)}`;
-let pctText=`TOP ${pct}%`,pctCls='percentile-top';
-if(rk>tt*0.9){pctText=`BOTTOM ${Math.max(0,100-pct)}%`;pctCls='percentile-bottom'}
-else if(rk>Math.ceil(tt*0.1)){pctCls='percentile-mid'}
-return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)}">
+let tone='#94a3b8';
+let pctText=`TOP ${pct}%`;
+if(rk===1){tone='#fbbf24';pctText='LEGENDARY #1'}
+else if(rk<=tt*0.01){tone='#fbbf24'}
+else if(rk<=tt*0.05){tone='#34d399'}
+else if(rk<=tt*0.10){tone='#22d3ee'}
+else if(rk<=tt*0.25){tone='#60a5fa'}
+else if(rk<=tt*0.50){tone='#a78bfa'}
+else if(rk>tt*0.90){tone='#f87171';pctText=`BOTTOM ${Math.max(0,100-pct)}%`}
+return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
 <svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
 <circle class="progress-fill" cx="37" cy="37" r="${r}"></circle>
@@ -1121,7 +1127,7 @@ return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${of
 <div class="rank-label">RANK</div>
 <div class="rank-text">${rankText}</div>
 <div class="total">${totalLine}</div>
-<div class="percentile ${pctCls}">${pctText}</div>
+<div class="percentile">${pctText}</div>
 </div>
 </div>
 </div>`;
