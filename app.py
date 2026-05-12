@@ -1450,7 +1450,20 @@ def unit_highest_damage_weapon_max_range(uid, ld, lc, stat_mode='normal'):
                     if str(enh.get('type')) == '4':
                         bonus += int(enh.get('value', 0) or 0)
                 break
-        p5 = ws.get('levels', {}).get(5, {}).get('power', ws.get('power', 0))
+        levels = ws.get('levels', [])
+        if isinstance(levels, dict):
+            p5 = (levels.get(5, {}) or {}).get('power', ws.get('power', 0))
+        elif isinstance(levels, list):
+            p5 = ws.get('power', 0)
+            for lv in levels:
+                if not isinstance(lv, dict):
+                    continue
+                try:
+                    p5 = max(int(p5 or 0), int(lv.get('power', 0) or 0))
+                except Exception:
+                    continue
+        else:
+            p5 = ws.get('power', 0)
         try:
             power = int(p5 or 0)
         except Exception:
