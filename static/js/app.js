@@ -1112,14 +1112,16 @@ totalLine=`/ ${fmtN(tt)}`;
 let tone='#94a3b8';
 let pctText=`TOP ${pct}%`;
 let pulseFillCls='',pulseTextCls='';
-if(rk===1){tone='#fbbf24';pctText='Top 1';pulseFillCls='pulse-strong';pulseTextCls='pulse-strong'}
+let leakCls='';
+if(rk===1){tone='#fbbf24';pctText='Top 1';leakCls='leak-shadow-strong'}
+else if(rk<=3){tone='#22d3ee';pctText=`Top ${rk}`;leakCls='leak-shadow'}
+else if(rk<=10){tone='#22d3ee';pctText=`Top ${rk}`;leakCls='leak-shadow-soft'}
 else if(rk<=20){tone='#22d3ee';pctText=`Top ${rk}`}
 else if(rk<=tt*0.05){tone='#34d399'}
 else if(rk<=tt*0.25){tone='#60a5fa'}
 else if(rk>tt*0.90){tone='#f87171';pctText=`BOTTOM ${Math.max(0,100-pct)}%`}
 else{tone='#a5b4fc'}
-if(rk<=10&&rk>1){pulseFillCls='pulse';pulseTextCls='pulse'}
-return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
+return`<div class="stat-inline-rank ${leakCls}" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
 <svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
 <circle class="progress-fill ${pulseFillCls}" cx="37" cy="37" r="${r}"></circle>
