@@ -1100,7 +1100,8 @@ if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading
 const rk=Math.max(1,Number(meta.rank)||1);
 const tt=Math.max(1,Number(meta.total)||1);
 const pct=Math.max(1,Math.min(100,Math.round((rk/tt)*100)));
-const fillRatio=Math.max(.03,Math.min(1,(tt-rk+1)/tt));
+const progressPercent=Math.max(5,95-((rk-1)/tt)*90);
+const fillRatio=Math.max(.05,Math.min(.95,progressPercent/100));
 const r=25;
 const c=(Math.PI*2*r);
 const off=(c*(1-fillRatio));
@@ -1110,14 +1111,14 @@ else rankText=`${fmtN(rk)}`;
 totalLine=`/ ${fmtN(tt)}`;
 let tone='#94a3b8';
 let pctText=`TOP ${pct}%`;
-if(rk===1){tone='#fbbf24';pctText='LEGENDARY #1'}
-else if(rk<=tt*0.01){tone='#fbbf24'}
+let pulseCls='';
+if(rk===1){tone='#c026d3';pctText='Top 1';pulseCls='pulse-strong'}
+else if(rk<=20){tone='#22d3ee';pctText=`Top ${rk}`;if(rk<=10)pulseCls='pulse'}
 else if(rk<=tt*0.05){tone='#34d399'}
-else if(rk<=tt*0.10){tone='#22d3ee'}
 else if(rk<=tt*0.25){tone='#60a5fa'}
-else if(rk<=tt*0.50){tone='#a78bfa'}
 else if(rk>tt*0.90){tone='#f87171';pctText=`BOTTOM ${Math.max(0,100-pct)}%`}
-return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
+else{tone='#a5b4fc'}
+return`<div class="stat-inline-rank ${pulseCls}" style="--sir-c:${c.toFixed(2)};--sir-o:${off.toFixed(2)};--rank-tone:${tone}">
 <svg class="radial-svg" viewBox="0 0 74 74" aria-hidden="true">
 <circle class="progress-circle" cx="37" cy="37" r="${r}"></circle>
 <circle class="progress-fill" cx="37" cy="37" r="${r}"></circle>
@@ -1131,6 +1132,13 @@ return`<div class="stat-inline-rank" style="--sir-c:${c.toFixed(2)};--sir-o:${of
 </div>
 </div>
 </div>`;
+}
+function kickDetailRankRadialAnimation(root){
+if(!root||!root.classList||root.classList.contains('is-loading'))return;
+const f=root.querySelector('.progress-fill');
+if(!f)return;
+f.style.strokeDashoffset='var(--sir-c)';
+setTimeout(()=>{if(root.isConnected)root.classList.add('radial-anim-ready')},100);
 }
 function applyDetailRankingInline(type){
 const d=S.currentDetailData;
@@ -1148,6 +1156,7 @@ if(old)old.remove();
 if(type==='unit'&&s.name==='Move')return;
 const meta=detailRankingMetaFor(type,d.id,s.name);
 c.insertAdjacentHTML('beforeend',renderDetailInlineRankRadial(meta));
+kickDetailRankRadialAnimation(c.querySelector('.stat-inline-rank'));
 });
 }
 function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive)}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(d.weapons,S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id)}}
