@@ -3517,7 +3517,7 @@ def create_trait_condition_raw_map(d, key_field=None):
         else:
             sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
         if sid == '0': continue
-        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': []}
+        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': [], 'unit_ids': [], 'character_ids': []}
         for key in ['UnitTags', 'unitTags']:
             val = str(item.get(key) or '')
             if val and val != '0':
@@ -3560,6 +3560,20 @@ def create_trait_condition_raw_map(d, key_field=None):
                 for v in val.split(','):
                     v = v.strip()
                     if v and v not in raw[sid]['target_types']: raw[sid]['target_types'].append(v)
+        for key in ['UnitIds', 'unitIds']:
+            val = str(item.get(key) or '')
+            if val and val != '0':
+                for v in val.split(','):
+                    v = normalize_id(v.strip())
+                    if v and v != '0' and v not in raw[sid]['unit_ids']:
+                        raw[sid]['unit_ids'].append(v)
+        for key in ['CharacterIds', 'characterIds']:
+            val = str(item.get(key) or '')
+            if val and val != '0':
+                for v in val.split(','):
+                    v = normalize_id(v.strip())
+                    if v and v != '0' and v not in raw[sid]['character_ids']:
+                        raw[sid]['character_ids'].append(v)
     return raw
 
 def merge_trait_condition_raw_maps(*maps):
@@ -3569,8 +3583,8 @@ def merge_trait_condition_raw_maps(*maps):
             continue
         for sid, row in mp.items():
             if sid not in out:
-                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': []}
-            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'character_series', 'types', 'target_types']:
+                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': [], 'unit_ids': [], 'character_ids': []}
+            for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'character_series', 'types', 'target_types', 'unit_ids', 'character_ids']:
                 vals = row.get(k, []) if isinstance(row, dict) else []
                 for v in vals:
                     if v and v not in out[sid][k]:
@@ -3602,6 +3616,36 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
     for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series', 'series'))
     rtm = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
     for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'unit_role', 'types'))
+    seen_pair = set()
+    ld = LANG_DATA.get(lang_code) or LANG_DATA.get(DEFAULT_LANG) or {}
+    utm, uim = ld.get('unit_text_map') or {}, ld.get('unit_id_map') or {}
+    ctm, cim = ld.get('char_text_map') or {}, ld.get('char_id_map') or {}
+    for uid in raw.get('unit_ids') or []:
+        uid = normalize_id(str(uid))
+        if not uid or uid == '0':
+            continue
+        pk = ('u', uid)
+        if pk in seen_pair:
+            continue
+        seen_pair.add(pk)
+        ulid = uim.get(uid, '')
+        nm = utm.get(ulid, '') if ulid else uid
+        if not nm:
+            nm = uid
+        res.append({'id': uid, 'name': nm, 'type': 'unit', 'source': 'unit_ids'})
+    for chid in raw.get('character_ids') or []:
+        chid = normalize_id(str(chid))
+        if not chid or chid == '0':
+            continue
+        pk = ('c', chid)
+        if pk in seen_pair:
+            continue
+        seen_pair.add(pk)
+        clid = cim.get(chid, '')
+        nm = ctm.get(clid, '') if clid else chid
+        if not nm:
+            nm = chid
+        res.append({'id': chid, 'name': nm, 'type': 'character', 'source': 'character_ids'})
     return res
 
 def create_char_info_map(m):
@@ -4904,8 +4948,17 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_cid = t_data.get('boost_cond_id', '0')
         active_conds = resolve_condition_tags(active_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         target_conds = resolve_condition_tags(target_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        io_alt_squad_tags = False
+        # TargetConditionSetId is sometimes a placeholder row; squad tag OR-scope may live in set 1000545 (e.g. trait 202570101).
+        if str(tid) == '202570101' and trait_text_implies_show_target_condition_tags(en_text, display_text):
+            alt_tgt = resolve_condition_tags('1000545', trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+            if alt_tgt:
+                target_conds = alt_tgt
+                io_alt_squad_tags = True
         _boost_map = trait_boost_condition_raw_map if 'trait_boost_condition_raw_map' in globals() else trait_condition_raw_map
         boost_conds = resolve_condition_tags(boost_cid, _boost_map, lineage_lookup, series_name_map, lang_code)
+        if io_alt_squad_tags:
+            boost_conds = []
         trait_conds = []
         # Display tags are sourced from active/boost conditions only.
         # TargetConditionSetId is often structural and can cause noisy tags,
@@ -4947,6 +5000,10 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             'target_conditions': list(target_conds),
             'boost_conditions': list(boost_conds),
         })
+    _preserved_target_tag_groups = []
+    for _inf in trait_info:
+        _preserved_target_tag_groups.append(
+            [g for g in (_inf.get('condition_groups') or []) if str(g.get('label') or '').strip().lower() == 'target tags'])
     # Map [Condition N] placeholders to active-condition rows in order.
     # This keeps lines like "...[Condition 1]...[Condition 2]..." grouped on
     # the same sentence while allowing later sentences to start at Condition 1 again.
@@ -5047,6 +5104,8 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             groups.append({'label': 'Condition 1', 'conditions': boost_conds})
         if groups:
             info['condition_groups'] = groups
+            for _ptg in _preserved_target_tag_groups[idx] or []:
+                info['condition_groups'].append(_ptg)
     details = []
     for i, info in enumerate(trait_info):
         display_text = info['display_text']; en_text = info['en_text']; conds = list(info['conditions']); cond_groups = list(info.get('condition_groups', []))

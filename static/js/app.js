@@ -5490,9 +5490,24 @@ if(!b)return 0;
 if(_dcPhenexUniqueSquadFlatAdBinding(cd,ud))return PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT;
 return(b.inputCap!=null?b.inputCap:(b.kind==='flat_ad'?b.flatPct:b.max))|0;
 }
+function _dcDcCountUnitsMatchingCountGroup(cg){
+if(!cg||!((cg.conditions||[]).length))return 0;
+if(typeof S==='undefined'||!S.dc||!S.dc.atkSlots)return 0;
+let n=0;
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=S.dc.atkSlots[i];
+const u2=sl&&sl.unitData;
+if(!u2||u2._manual)continue;
+if(_dcConditionGroupMatches(u2,null,cg))n++;
+}
+return n;
+}
 function _dcDefaultSquadCondPctForCdUd(cd,ud){
 if(!_dcCharShouldShowSquadCondUi(cd,ud))return 0;
 const b=_scFindSquadConditionBinding(cd,ud);
+if(b&&b.kind==='stack_atk'&&b.countGroup){
+return Math.min(b.max|0,(b.perUnit|0)*_dcDcCountUnitsMatchingCountGroup(b.countGroup));
+}
 if(b&&b.kind==='flat_ad'){
 const rg=b.recvGroup;
 if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return 0;
@@ -5513,6 +5528,13 @@ if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,
 if(b.kind==='flat_ad'){
 const rg=b.recvGroup;
 if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return;
+}
+if(b.kind==='stack_atk'&&b.countGroup){
+const n=_dcDcCountUnitsMatchingCountGroup(b.countGroup);
+const auto=Math.min(b.max|0,(b.perUnit|0)*n);
+S.dc.squadCondAtkPct=auto;
+S.dc.squadCondDefPct=0;
+return;
 }
 const cap=_dcSquadCondInputCap(cd,ud);
 const v=Math.min(Math.max(0,cap),raw);
@@ -6039,20 +6061,17 @@ if(_dcResolvedUnitAbilityGrantsAwakenFloor900(r))return true;
 return false;
 }
 
-/** Match API condition_groups: pilot-scoped checks use cd (series, char tags); MS-scoped use ud (unit_tags, unit series). See unit 1144000550 / ability 1015401 (character_series + char_tags / unit_tags recv). */
-function _dcAbilityCondContextMeetsGroups(ud,cd,condGroups){
-if(!condGroups||!condGroups.length)return true;
+/** Single condition from API (unit_tags OR across a group; AND across groups). */
+function _dcMatchOneCondition(c,ud,cd){
+const id=String(c&&c.id);
+const src=String(c.source||'');
+const typ=String(c.type||'');
 const ut=new Set((ud&&ud.tags||[]).map(t=>String(t&&t.id)));
 const usr=new Set((ud&&ud.series||[]).map(s=>String(s&&s.id)));
 const ct=new Set((cd&&cd.tags||[]).map(t=>String(t&&t.id)));
 const csr=new Set((cd&&cd.series||[]).map(s=>String(s&&s.id)));
-return condGroups.every(grp=>{
-const conds=grp.conditions||[];
-if(!conds.length)return true;
-return conds.every(c=>{
-const id=String(c&&c.id);
-const src=String(c.source||'');
-const typ=String(c.type||'');
+if(src==='unit_ids')return !!(ud&&String(ud.id)===id);
+if(src==='character_ids')return !!(cd&&String(cd.id)===id);
 if(src==='character_series')return !!(cd&&csr.has(id));
 if(src==='char_tags'||typ==='character')return !!(cd&&ct.has(id));
 if(src==='unit_tags'||src==='group_tags')return !!(ud&&ut.has(id));
@@ -6060,8 +6079,23 @@ if(typ==='unit')return !!(ud&&ut.has(id));
 if(typ==='series'&&src)return src==='character_series'?!!(cd&&csr.has(id)):!!(ud&&usr.has(id));
 if(src==='series'||typ==='series')return !!(ud&&usr.has(id));
 return false;
+}
+/** One group: multiple unit_tags / group_tags = OR (in-game); other sources AND together. */
+function _dcConditionGroupMatches(ud,cd,grp){
+const conds=grp.conditions||[];
+if(!conds.length)return true;
+const tagConds=conds.filter(c=>{
+const src=String(c&&c.source||'');
+return src==='unit_tags'||src==='group_tags';
 });
-});
+const other=conds.filter(c=>!tagConds.includes(c));
+const tagPart=!tagConds.length||tagConds.some(c=>_dcMatchOneCondition(c,ud,cd));
+const otherPart=!other.length||other.every(c=>_dcMatchOneCondition(c,ud,cd));
+return tagPart&&otherPart;
+}
+function _dcAbilityCondContextMeetsGroups(ud,cd,condGroups){
+if(!condGroups||!condGroups.length)return true;
+return condGroups.every(grp=>_dcConditionGroupMatches(ud,cd,grp));
 }
 function _dcUnitMeetsAbilityConditionGroups(ud,condGroups){
 return _dcAbilityCondContextMeetsGroups(ud,null,condGroups);
