@@ -324,7 +324,14 @@ UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 
 UNIT_ROLE_TYPE_LANG_MAP['HK'] = dict(UNIT_ROLE_TYPE_LANG_MAP['TW'])
 ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
 ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
-STAGE_TERRAIN_MAP = {'1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'}, '2': {'EN': 'Atmospheric', 'TW': '空中', 'JA': '空中'}, '3': {'EN': 'Ground', 'TW': '地上', 'JA': '地上'}, '5': {'EN': 'Amphibious', 'TW': '水陸', 'JA': '水陸'}}
+# Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types (EN: Space, Atmospheric, Land, Sea, Underwater).
+STAGE_TERRAIN_MAP = {
+    '1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'},
+    '2': {'EN': 'Atmospheric', 'TW': '空中', 'JA': '空中'},
+    '3': {'EN': 'Ground', 'TW': '地上', 'JA': '地上'},
+    '4': {'EN': 'Sea', 'TW': '水面', 'JA': '水上'},
+    '5': {'EN': 'Amphibious', 'TW': '水陸', 'JA': '水陸'},
+}
 for _tid in STAGE_TERRAIN_MAP:
     STAGE_TERRAIN_MAP[_tid]['HK'] = STAGE_TERRAIN_MAP[_tid]['TW']
 
