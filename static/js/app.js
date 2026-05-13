@@ -5704,7 +5704,7 @@ else onDcParamChange();
 function renderDcAtkUnit(){
 const area=document.getElementById('dcAtkUnitArea');
 const ud=S.dc.atkUnitData;
-if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility();return}
+if(!ud){area.innerHTML=`<button class="dc-pick-btn" onclick="openDcPicker('unit')">${t('dc_pick_unit')}</button>`;document.getElementById('dcAtkStatsArea').innerHTML='';document.getElementById('dcAtkWpnArea').innerHTML='';S.dc._wpnCritDmgUp=0;S.dc._wpnTraits={};S.dc._vigorCondThreshold=null;_dcUpdateAdvantageEnemyTagUi();_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility();_dcUpdateSupportCounterAtkUi();return}
 if(ud._manual){
 area.innerHTML=`<div class="dc-picked dc-picked--manual"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div style="font-size:10px;color:var(--text-muted)">Custom unit</div></div></div>`;
 document.getElementById('dcAtkStatsArea').innerHTML='';
@@ -5712,6 +5712,7 @@ renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
+_dcUpdateSupportCounterAtkUi();
 return;
 }
 _dcDetectVigorCondAbilities(ud);
@@ -5826,6 +5827,7 @@ const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();
+_dcUpdateSupportCounterAtkUi();
 }
 function _dcRefreshDcUnitAtkExOnly(){
 const main=document.getElementById('dcAtkUnitAtkMain');
@@ -6012,7 +6014,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter (toggle in Attacker Parameters when the attacker MS is Support-type).</div>`)}
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter. Use Attacker Parameters &rarr; <strong>Support Attack/Counter — MS ATK %</strong> (Off / On is interactive only when the attacker MS has Support role).</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -7829,21 +7831,35 @@ const lbl=document.getElementById('dcAtkSupportCounterLbl');
 if(!w||!off||!on)return;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 const pilotOk=!!(cd&&!cd._manual&&_dcCharIsSupportRole(cd));
+const rawPct=pilotOk?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
 const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
-const pct=(pilotOk&&unitOk)?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-S.dc._supportCounterAtkPct=pct;
-if(pct<=0||!pilotOk||!unitOk){
+S.dc._supportCounterAtkPct=rawPct>0?rawPct:0;
+if(!pilotOk||rawPct<=0){
 w.style.display='none';
+w.style.opacity='';
 S.dc.supportCounterAtk=false;
+S.dc._supportCounterAtkPct=0;
 off.classList.add('active');on.classList.remove('active');
 off.disabled=true;on.disabled=true;
 return;
 }
 w.style.display='';
+if(!unitOk){
+S.dc.supportCounterAtk=false;
+off.classList.add('active');on.classList.remove('active');
+off.disabled=true;on.disabled=true;
+w.style.opacity='0.65';
+if(lbl){
+lbl.textContent=`Support Attack/Counter — +${rawPct}% MS ATK`;
+lbl.title='This pilot gains MS ATK when executing Support Attack/Counter. Damage uses it only when the attacker MS has Support role. Choose a Support-type unit to enable Off/On.';
+}
+return;
+}
+w.style.opacity='';
 off.disabled=false;on.disabled=false;
 if(lbl){
-lbl.textContent=`When executing Support Attack/Counter — +${pct}% MS ATK`;
-lbl.title='Support-role pilot on a Support-type unit: optional % MS ATK while executing Support Attack/Counter. Parsed from the pilot ability line that mentions Support Attack/Counter. Turn On only when that situation applies in battle.';
+lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
+lbl.title='Optional % MS ATK while executing Support Attack/Counter. Parsed from pilot ability text mentioning Support Attack/Counter. Turn On only when that situation applies.';
 }
 const onv=!!S.dc.supportCounterAtk;
 off.classList.toggle('active',!onv);
