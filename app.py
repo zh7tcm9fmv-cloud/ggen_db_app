@@ -2850,7 +2850,7 @@ def _unit_enemy_specified_tags_clause_part(part):
     return 'when enemies' in low and 'specified tag' in low
 
 def _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_clause):
-    """After that clause, the next simultaneous ATK+DEF % line is combat-only — exclude from list/sheet stat totals."""
+    """When not handled by `_unit_enemy_tag_equal_atk_def_boost`: strip duplicate routing (legacy) or clear prev after strip."""
     if not prev_clause or not part_stats:
         return part_stats, False
     atk = part_stats.get('Attack')
@@ -2859,6 +2859,17 @@ def _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_clause):
         out = {k: v for k, v in part_stats.items() if k not in ('Attack', 'Defense')}
         return out, False
     return part_stats, prev_clause
+
+
+def _unit_enemy_tag_equal_atk_def_boost(part_stats, prev_enemy_tag_clause):
+    """True if this line is the equal ATK+DEF % bump that follows enemy specified-tags wording (battle condition).
+
+    Those lines must go into the conditional passive bucket (`spc` / `stats_with_cond`) so the UI shows a CP toggle."""
+    if not prev_enemy_tag_clause or not part_stats:
+        return False
+    atk = part_stats.get('Attack')
+    de = part_stats.get('Defense')
+    return atk is not None and de is not None and atk == de
 
 def _extract_stat_flat_move(text, skip_conditional=True):
     """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1' or 'by1')."""
@@ -6873,7 +6884,11 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
-                part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                enemy_adv_atk_def = _unit_enemy_tag_equal_atk_def_boost(part_stats, prev_enemy_tag_clause)
+                if enemy_adv_atk_def:
+                    prev_enemy_tag_clause = False
+                else:
+                    part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
                 if _unit_enemy_specified_tags_clause_part(part):
                     prev_enemy_tag_clause = True
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
@@ -6881,6 +6896,8 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     cond_prefix = True
                 is_cond = itc or cond_prefix
                 line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                if enemy_adv_atk_def:
+                    line_cond = True
                 if flat_move:
                     if inx: pass
                     elif line_cond: cd_move_flat[0] += flat_move
@@ -6966,7 +6983,11 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
-                part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                enemy_adv_atk_def = _unit_enemy_tag_equal_atk_def_boost(part_stats, prev_enemy_tag_clause)
+                if enemy_adv_atk_def:
+                    prev_enemy_tag_clause = False
+                else:
+                    part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
                 if _unit_enemy_specified_tags_clause_part(part):
                     prev_enemy_tag_clause = True
                 flat_move = _extract_stat_flat_move(part, skip_conditional=False)
@@ -6974,6 +6995,8 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                     cond_prefix = True
                 is_cond = itc or cond_prefix
                 line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                if enemy_adv_atk_def:
+                    line_cond = True
                 if flat_move:
                     if inx:
                         pass
@@ -12108,7 +12131,11 @@ def get_unit(unit_id):
                     if itc and _unit_vigor_normal_baseline_stat_line(part):
                         itc = False
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
-                    part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
+                    enemy_adv_atk_def = _unit_enemy_tag_equal_atk_def_boost(part_stats, prev_enemy_tag_clause)
+                    if enemy_adv_atk_def:
+                        prev_enemy_tag_clause = False
+                    else:
+                        part_stats, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(part_stats, prev_enemy_tag_clause)
                     if _unit_enemy_specified_tags_clause_part(part):
                         prev_enemy_tag_clause = True
                     wpn_stats = _extract_weapon_stat_percent_unit(part, skip_conditional=False)
@@ -12117,6 +12144,8 @@ def get_unit(unit_id):
                         cond_prefix = True
                     is_cond = itc or cond_prefix
                     line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                    if enemy_adv_atk_def:
+                        line_cond = True
                     if flat_move:
                         if inx:
                             pass
