@@ -5812,9 +5812,7 @@ const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: ATK/DEF bonus to this unit when the EX ability toggle is on.</div>':'';
 const cPct=_dcGetCounterOwnAtkPct();
 const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: +'+cPct+'% MS Attack when countering (see Own ATK when countering below).</div>':'';
-const _supP=S.dc.atkCharData&&!S.dc.atkCharData._manual?_dcParseMaxSupportCounterAtkPctFromChar(S.dc.atkCharData):0;
-const supCntNote=(_supP>0)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">Support-role pilot: +'+_supP+'% MS ATK when executing Support Attack/Counter (toggle in Attacker Parameters).</div>':'';
-const unitModNote=pairNote+counterNote+supCntNote;
+const unitModNote=pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 let unitTurnBuffHtml='';
 if((utb.atkPct|0)>0||(utb.defPct|0)>0){
@@ -6013,9 +6011,12 @@ sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top
 area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
+const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter (toggle in Attacker Parameters when the attacker MS is Support-type).</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
+_dcUpdateSupportCounterAtkUi();
 }
 
 /** True when ability text (line + neighbors + name) indicates the bonus applies only with pilot SP stats (Normal/SP toggle). */
