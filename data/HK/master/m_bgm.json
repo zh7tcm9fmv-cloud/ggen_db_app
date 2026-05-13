@@ -920,6 +920,66 @@
     "SortOrder": 1032000030
   },
   {
+    "Id": 103300001,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0001",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 103300002,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0002",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 103300003,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0003",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 103300004,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0004",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 103300005,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0005",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 103300006,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0330_0006",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
     "Id": 105500001,
     "NameLanguageId": 0,
     "ResourceId": "bgm_0550_0001",

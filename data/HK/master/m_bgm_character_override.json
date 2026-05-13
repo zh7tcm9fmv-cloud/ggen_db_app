@@ -203,6 +203,90 @@
     "IsBgmHighestPriority": true
   },
   {
+    "Id": 1031000102,
+    "CharacterId": 1031000102,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031000601,
+    "CharacterId": 1031000601,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300006,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031000900,
+    "CharacterId": 1031000900,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031001500,
+    "CharacterId": 1031001500,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031001700,
+    "CharacterId": 1031001700,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031001800,
+    "CharacterId": 1031001800,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031001900,
+    "CharacterId": 1031001900,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300002,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031002000,
+    "CharacterId": 1031002000,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300004,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031002100,
+    "CharacterId": 1031002100,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300003,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031002200,
+    "CharacterId": 1031002200,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031002300,
+    "CharacterId": 1031002300,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300001,
+    "IsBgmHighestPriority": true
+  },
+  {
+    "Id": 1031002500,
+    "CharacterId": 1031002500,
+    "ScheduleId": 2605209902,
+    "CharacterBgmId": 103300001,
+    "IsBgmHighestPriority": true
+  },
+  {
     "Id": 1144000100,
     "CharacterId": 1144000100,
     "ScheduleId": 2604509902,

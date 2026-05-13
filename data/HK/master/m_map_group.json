@@ -119,6 +119,13 @@
     "MapGroupTypeIndex": 0
   },
   {
+    "Id": 33000900102000001,
+    "MapStageId": 33000900102000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 95001300302000028,
     "MapStageId": 95001300302000000,
     "GroupNumber": 0,

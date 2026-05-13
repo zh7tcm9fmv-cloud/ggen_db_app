@@ -2410,13 +2410,88 @@ def collect_supercharged_ex_stat_tiers(ac, char_id):
     return [{'tier': t, 'label': _clean_supercharged_ex_tier_label(merged[t]['label']), 'ex_pct': dict(merged[t]['ex_pct'])} for t in sorted(merged.keys())]
 
 
-def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, char_id=None):
+def _strip_trailing_ex_markers_from_unit_title(name):
+    s = (name or '').strip()
+    if not s:
+        return ''
+    s = re.sub(r'\s*\(\s*EX\s*\)\s*$', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'（EX）\s*$', '', s)
+    return s.strip()
+
+
+def _unit_display_core_key(disp):
+    return _strip_trailing_ex_markers_from_unit_title(str(disp or '').strip()).lower()
+
+
+def _piloting_named_ex_fragment_from_trait_blob(txt):
+    """Return (ms_title_fragment or None, prefer_ex_variant) for piloting-a-specific-(EX)-MS clauses."""
+    if not txt or not isinstance(txt, str):
+        return None, False
+    t = txt.replace('\r', '')
+    m = re.search(r'when\s+piloting\s+(.+?)\s*\(\s*EX\s*\)', t, re.IGNORECASE | re.DOTALL)
+    if m:
+        frag = re.sub(r'\s+', ' ', m.group(1)).strip()
+        fl = frag.lower()
+        if fl.startswith('units') or (fl.startswith('unit ') and 'specified' in fl):
+            return None, False
+        if 'specified tags' in fl or 'specified series' in fl:
+            return None, False
+        return frag, True
+    ja_m = re.search(r'「([^」]+)」搭乗時', t)
+    if ja_m:
+        inner = _strip_trailing_ex_markers_from_unit_title(ja_m.group(1))
+        return (inner or None), True
+    return None, False
+
+
+def _resolve_unit_id_from_pilot_display_fragment(fragment, ldc, prefer_ex_variant=False):
+    """Match trait pilot clause to a unit using calc-lang display names (exact core title)."""
+    if not fragment or not isinstance(ldc, dict):
+        return None
+    frag_key = _unit_display_core_key(fragment)
+    if not frag_key:
+        return None
+    uim = ldc.get('unit_id_map') or {}
+    utm = ldc.get('unit_text_map') or {}
+    hits = []
+    for uid_raw, lid in uim.items():
+        uid = normalize_id(uid_raw)
+        if uid == '0':
+            continue
+        disp = utm.get(lid)
+        if not disp:
+            continue
+        if _unit_display_core_key(disp) == frag_key:
+            hits.append((uid, str(disp).strip()))
+    if not hits:
+        return None
+    if len(hits) == 1:
+        return hits[0][0]
+    if prefer_ex_variant:
+        for uid, disp in hits:
+            dl = disp.lower()
+            if '(ex)' in dl or '（ex）' in disp:
+                return uid
+    return hits[0][0]
+
+
+def _trait_blob_piloting_named_ex_unit_id(txt, ldc):
+    frag, prefer_ex = _piloting_named_ex_fragment_from_trait_blob(txt)
+    if not frag:
+        return None
+    return _resolve_unit_id_from_pilot_display_fragment(frag, ldc, prefer_ex_variant=prefer_ex)
+
+
+def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, pair_c_map, ex_map, pair_ex_map, carry_ref, char_id=None, ldc=None, trait_pair_unit_ids=None):
     """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
         return
     txt = (d2.get('text') or '').strip()
     if not txt:
         return
+    pair_uid = _trait_blob_piloting_named_ex_unit_id(txt, ldc) if ldc else None
+    if pair_uid and trait_pair_unit_ids is not None:
+        trait_pair_unit_ids.add(pair_uid)
     if _char_trait_text_is_support_defense_action(txt):
         carry_ref[0] = False
         return
@@ -2427,6 +2502,7 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
         lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
         if not lines:
             lines = [txt]
+        tgt_ex = pair_ex_map if pair_uid else ex_map
         for line in lines:
             if _char_trait_line_is_squad_unit_effect(line, bab):
                 continue
@@ -2434,7 +2510,7 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
             if not bonuses:
                 continue
             for s, p in bonuses.items():
-                ex_map[s] += p
+                tgt_ex[s] += p
         return
     lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
     if not lines:
@@ -2449,30 +2525,54 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, ex_map, carry_ref, cha
             if _is_conditional_stat_text(line) or _char_detail_is_conditional(d2, line):
                 carry_ref[0] = True
             continue
-        title_c = _char_trait_title_counts_as_conditional_bucket(bab)
-        is_cond = title_c or carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
-        tgt = c_map if is_cond else u_map
+        if pair_uid:
+            tgt = pair_c_map
+        else:
+            title_c = _char_trait_title_counts_as_conditional_bucket(bab)
+            is_cond = title_c or carry_ref[0] or _char_detail_is_conditional(d2, txt) or _is_conditional_stat_text(line)
+            tgt = c_map if is_cond else u_map
         for s, p in bonuses.items():
             tgt[s] += p
         carry_ref[0] = False
 
-def _accumulate_character_trait_percent_buckets(ac, char_id=None):
-    """Same rules as get_character: split unconditional / conditional non-EX / EX trait %."""
+
+def _accumulate_character_trait_percent_buckets(ac, char_id=None, ldc=None):
+    """Same rules as get_character: split unconditional / conditional non-EX / EX trait % (+ pair-gated pilot bonuses)."""
+    if ldc is None:
+        ldc = get_calc_lang_data() or {}
     spbn_u = {s: 0 for s in CHAR_STAT_ORDER}
     spbn_c = {s: 0 for s in CHAR_STAT_ORDER}
+    spbn_pair = {s: 0 for s in CHAR_STAT_ORDER}
     spen = {s: 0 for s in CHAR_STAT_ORDER}
+    spen_pair = {s: 0 for s in CHAR_STAT_ORDER}
     spbs_u = {s: 0 for s in CHAR_STAT_ORDER}
     spbs_c = {s: 0 for s in CHAR_STAT_ORDER}
+    spbs_pair = {s: 0 for s in CHAR_STAT_ORDER}
     spes = {s: 0 for s in CHAR_STAT_ORDER}
+    spes_pair = {s: 0 for s in CHAR_STAT_ORDER}
+    trait_pair_unit_ids = set()
     for bab in ac:
         carry = [False]
         for d2 in bab.get('details', []):
-            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spen, carry, char_id)
+            _add_char_trait_pct_to_buckets(bab, d2, spbn_u, spbn_c, spbn_pair, spen, spen_pair, carry, char_id, ldc, trait_pair_unit_ids)
         carry[0] = False
         sab = bab.get('sp_replacement', bab)
         for d2 in sab.get('details', []):
-            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spes, carry, char_id)
-    return spbn_u, spbn_c, spen, spbs_u, spbs_c, spes
+            _add_char_trait_pct_to_buckets(sab, d2, spbs_u, spbs_c, spbs_pair, spes, spes_pair, carry, char_id, ldc, trait_pair_unit_ids)
+    return spbn_u, spbn_c, spbn_pair, spen, spen_pair, spbs_u, spbs_c, spbs_pair, spes, spes_pair, trait_pair_unit_ids
+
+
+def _character_trait_pair_gate(char_id, trait_pair_unit_ids):
+    """Whether CP pair-gated trait bonuses apply: recommend unit visible and listed in manual ∪ trait-derived pilot-(EX) ids."""
+    rec = normalize_id(CHAR_RECOMMEND_UNIT_MAP.get(char_id, '0'))
+    if rec != '0':
+        ui = unit_info_map.get(rec)
+        if not ui or entity_hidden_by_lr_schedule_lock(ui.get('schedule_id', '0')):
+            rec = '0'
+    pu = _char_pair_conditional_unit_ids(char_id) | set(trait_pair_unit_ids or ())
+    ok = bool(pu) and rec != '0' and rec in pu
+    return ok, pu, rec
+
 
 def _unit_hp_threshold_active_at_assumed_full_hp(part):
     """
@@ -3147,6 +3247,93 @@ def create_name_lang_maps(master, text):
             val = item.get('value') or item.get('Value') or item.get('name') or item.get('Name') or item.get('text') or item.get('Text')
             if lid != '0' and val: text_map[lid] = val
     return id_map, text_map
+
+# Dict keys in LANG_DATA whose values are language-id → display string maps. TW/HK/JA bundles often ship
+# slightly behind EN after client updates; filling blanks from EN avoids empty titles in zh locales.
+_LANG_DISPLAY_FALLBACK_KEYS = (
+    'char_text_map', 'unit_text_map', 'supporter_text_map',
+    'series_name_map', 'lang_text_map', 'lineage_lookup',
+    'abil_name_map', 'abil_desc_map',
+    'supporter_leader_text_map', 'supporter_active_text_map',
+    'stage_text_map', 'tower_stage_text_map', 'special_event_stage_text_map',
+    'stage_master_text_map', 'stage_condition_text_map',
+    'weapon_text_map', 'op_text_map',
+)
+
+
+def _is_blank_lang_display_val(val):
+    if val is None:
+        return True
+    if isinstance(val, str):
+        return not val.strip()
+    return False
+
+
+def _merge_flat_lang_display_maps(dst_ld, en_ld):
+    for key in _LANG_DISPLAY_FALLBACK_KEYS:
+        dm = dst_ld.get(key)
+        sm = en_ld.get(key)
+        if not isinstance(dm, dict) or not isinstance(sm, dict):
+            continue
+        for lid, val in sm.items():
+            if _is_blank_lang_display_val(dm.get(lid)):
+                dm[lid] = val
+
+
+def _merge_skill_text_map_lang_fallback(dst_ld, en_ld):
+    dm = dst_ld.get('skill_text_map')
+    sm = en_ld.get('skill_text_map')
+    if not isinstance(dm, dict) or not isinstance(sm, dict):
+        return
+    for key, src_entries in sm.items():
+        if not isinstance(src_entries, list):
+            continue
+        cur = dm.get(key)
+        if not isinstance(cur, list) or len(cur) == 0:
+            dm[key] = [{'full_id': e.get('full_id'), 'text': e.get('text', '')} for e in src_entries if isinstance(e, dict)]
+            continue
+        have = {x.get('full_id') for x in cur if isinstance(x, dict)}
+        for e in src_entries:
+            if not isinstance(e, dict):
+                continue
+            fid = e.get('full_id')
+            if fid and fid not in have:
+                cur.append({'full_id': fid, 'text': e.get('text', '')})
+                have.add(fid)
+        cur.sort(key=lambda x: x.get('full_id', ''))
+
+
+def _merge_tuple_label_lists_from_en(dst_ld, en_ld, list_key):
+    """series_list / lineage_list: [(language_row_id, label), ...] used when suffix-matching ids."""
+    dl = dst_ld.get(list_key)
+    el = en_ld.get(list_key)
+    if not isinstance(dl, list) or not isinstance(el, list):
+        return
+    have_nonempty = set()
+    for item in dl:
+        if isinstance(item, (list, tuple)) and len(item) >= 2:
+            lid, val = item[0], item[1]
+            if not _is_blank_lang_display_val(val):
+                have_nonempty.add(str(lid))
+    for item in el:
+        if not isinstance(item, (list, tuple)) or len(item) < 2:
+            continue
+        lid, val = item[0], item[1]
+        ls = str(lid)
+        if ls not in have_nonempty and not _is_blank_lang_display_val(val):
+            dl.append((lid, val))
+            have_nonempty.add(ls)
+
+
+def apply_en_lang_data_fallback(dst_ld, en_ld):
+    """Fill blank localized strings using EN so zh/JA locales never show empty labels when EN has text."""
+    if not dst_ld or not en_ld or dst_ld is en_ld:
+        return
+    _merge_flat_lang_display_maps(dst_ld, en_ld)
+    _merge_skill_text_map_lang_fallback(dst_ld, en_ld)
+    _merge_tuple_label_lists_from_en(dst_ld, en_ld, 'series_list')
+    _merge_tuple_label_lists_from_en(dst_ld, en_ld, 'lineage_list')
+
 
 def create_lineage_list(d):
     lst = []
@@ -5658,6 +5845,8 @@ for lang_code, paths in LANG_PATHS.items():
                 if si != '0' and ri != '0': srm[si] = ri
     
     LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    if lang_code != DEFAULT_LANG:
+        apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
 
 # Filled by _build_browse_list_performance_caches() after stat helpers are defined.
@@ -7267,7 +7456,7 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn_u, _, _, _, _, _ = _accumulate_character_trait_percent_buckets(ac, char_id)
+    spbn_u = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)[0]
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
@@ -7321,11 +7510,12 @@ def compute_char_stat_totals_detail_style(char_id, ri, ldc, grown):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbn_u, spbn_c, spen, _, _, _ = _accumulate_character_trait_percent_buckets(ac, char_id)
+    spbn_u, spbn_c, spbn_pair, spen, spen_pair, _, _, _, _, _, trait_pair_unit_ids = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)
+    pair_ok, _, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
     totals = {}
     for s in CHAR_STAT_ORDER:
         bv = grown.get(s, 0)
-        pct = spbn_u[s] + spbn_c[s] + spen[s]
+        pct = spbn_u[s] + spbn_c[s] + spen[s] + ((spbn_pair[s] + spen_pair[s]) if pair_ok else 0)
         totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     return totals
 
@@ -7340,11 +7530,12 @@ def compute_char_stat_totals_sp_list_with_ex(char_id, ri, ldc, grown_sp):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    _, _, _, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac, char_id)
+    _, _, _, _, _, spbs_u, spbs_c, spbs_pair, spes, spes_pair, trait_pair_unit_ids = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)
+    pair_ok, _, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
     totals = {}
     for s in CHAR_STAT_ORDER:
         sbv = grown_sp.get(s, 0)
-        pct = spbs_u[s] + spbs_c[s] + spes[s]
+        pct = spbs_u[s] + spbs_c[s] + spes[s] + ((spbs_pair[s] + spes_pair[s]) if pair_ok else 0)
         totals[s] = sbv + math.floor(sbv * pct / 100) if sbv > 0 else 0
     return totals
 
@@ -7424,9 +7615,6 @@ def _build_browse_list_performance_caches():
     UNIT_MECHANISM_MIDS_CACHE = mids
     UNIT_WEAPON_DEBUFF_KEYS_CACHE = wd
     print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
-
-
-_build_browse_list_performance_caches()
 
 
 def calculate_npc_character_self_bonus_pct(abilities):
@@ -10591,6 +10779,9 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
     return latest_release_schedule_content_locked(sid, sm)
 
 
+_build_browse_list_performance_caches()
+
+
 def eternal_stage_before_mstage_schedule_release(stage_id):
     """True when now is before m_schedule.StartDatetime for this stage's m_stage.ScheduleId."""
     sid = normalize_id(stage_id)
@@ -11583,17 +11774,37 @@ def get_character(char_id):
             return bab
         abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
         ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        spbn_u, spbn_c, spen, spbs_u, spbs_c, spes = _accumulate_character_trait_percent_buckets(ac, char_id)
+        rec_uid_for_pair = CHAR_RECOMMEND_UNIT_MAP.get(char_id)
+        recommend_unit = None
+        if rec_uid_for_pair and rec_uid_for_pair in unit_info_map:
+            uinfo = unit_info_map[rec_uid_for_pair]
+            if not entity_hidden_by_lr_schedule_lock(uinfo.get('schedule_id', '0')):
+                uri = uinfo.get('rarity', '1')
+                urole = uinfo.get('role', '0')
+                ulid = ld.get('unit_id_map', {}).get(rec_uid_for_pair, '')
+                uname = ld.get('unit_text_map', {}).get(ulid, '') if ulid else ''
+                if not uname:
+                    uname = f'Unknown ({rec_uid_for_pair})'
+                uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid_for_pair, 'images/unit_portraits')
+                uacq = uinfo.get('acquisition_route', '0')
+                uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
+                recommend_unit = {'id': rec_uid_for_pair, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
+        spbn_u, spbn_c, spbn_pair, spen, spen_pair, spbs_u, spbs_c, spbs_pair, spes, spes_pair, trait_pair_unit_ids = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)
+        pair_ok, pair_units, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
         sne = []; swe = []; ssne = []; sswe = []
         for s in CHAR_STAT_ORDER:
             bv = grown.get(s, 0); bon = math.floor(bv * spbn_u[s] / 100) if bv > 0 else 0
             sne.append({'name': s, 'base': bv, 'total': bv + bon, 'bonus': bon, 'trait_pct': spbn_u[s]})
-            tb = math.floor(bv * (spbn_u[s] + spbn_c[s] + spen[s]) / 100) if bv > 0 else 0
-            swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb, 'trait_pct': spbn_u[s] + spbn_c[s] + spen[s]})
+            pair_pct_n = (spbn_pair[s] + spen_pair[s]) if pair_ok else 0
+            tb = math.floor(bv * (spbn_u[s] + spbn_c[s] + spen[s] + pair_pct_n) / 100) if bv > 0 else 0
+            tpct_n = spbn_u[s] + spbn_c[s] + spen[s] + pair_pct_n
+            swe.append({'name': s, 'base': bv, 'total': bv + tb, 'bonus': tb, 'trait_pct': tpct_n})
             sbv = grown_sp.get(s, 0); sbon = math.floor(sbv * spbs_u[s] / 100) if sbv > 0 else 0
             ssne.append({'name': s, 'base': sbv, 'total': sbv + sbon, 'bonus': sbon, 'trait_pct': spbs_u[s]})
-            stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s]) / 100) if sbv > 0 else 0
-            sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb, 'trait_pct': spbs_u[s] + spbs_c[s] + spes[s]})
+            pair_pct_s = (spbs_pair[s] + spes_pair[s]) if pair_ok else 0
+            stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s] + pair_pct_s) / 100) if sbv > 0 else 0
+            tpct_s = spbs_u[s] + spbs_c[s] + spes[s] + pair_pct_s
+            sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb, 'trait_pct': tpct_s})
         ex_supercharged_tiers = collect_supercharged_ex_stat_tiers(ac, char_id)
         ex_supercharged_tiers_payload = []
         if ex_supercharged_tiers:
@@ -11608,7 +11819,15 @@ def get_character(char_id):
             swe = ex_supercharged_tiers_payload[0]['stats']
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         # CP toggle when "on" state adds anything: conditional passives (e.g. Vigor) and/or EX-trait % (UR EX slot).
-        has_ex_stats = any(spbn_c[s] + spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spbs_c[s] + spes[s] > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
+        has_ex_stats = bool(ex_supercharged_tiers)
+        if not has_ex_stats:
+            for s in CHAR_STAT_ORDER:
+                if spbn_c[s] + spen[s] + ((spbn_pair[s] + spen_pair[s]) if pair_ok else 0) > 0:
+                    has_ex_stats = True
+                    break
+                if spbs_c[s] + spes[s] + ((spbs_pair[s] + spes_pair[s]) if pair_ok else 0) > 0:
+                    has_ex_stats = True
+                    break
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
         thum = find_list_thumb(info.get('resource_ids', []), char_id, 'images/portraits')
         acq = info.get('acquisition_route', '0'); acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
@@ -11630,29 +11849,11 @@ def get_character(char_id):
             if not sk.get('is_sp'):
                 if sk.get('replaced_by_sp_id'): sk['replaced_by_sp'] = True
                 elif sk['name'].strip().lower() in spn: sk['replaced_by_sp'] = True
-        rec_uid = CHAR_RECOMMEND_UNIT_MAP.get(char_id)
-        recommend_unit = None
-        if rec_uid and rec_uid in unit_info_map:
-            uinfo = unit_info_map[rec_uid]
-            if not entity_hidden_by_lr_schedule_lock(uinfo.get('schedule_id', '0')):
-                uri = uinfo.get('rarity', '1')
-                urole = uinfo.get('role', '0')
-                ulid = ld.get('unit_id_map', {}).get(rec_uid, '')
-                uname = ld.get('unit_text_map', {}).get(ulid, '') if ulid else ''
-                if not uname:
-                    uname = f'Unknown ({rec_uid})'
-                uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid, 'images/unit_portraits')
-                uacq = uinfo.get('acquisition_route', '0')
-                uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
-                recommend_unit = {'id': rec_uid, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
         pair_mod = CHAR_PAIR_UNIT_STAT_MOD_PCT.get(char_id)
         counter_atk_mod = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(char_id)
-        # CP toggle: pair-gated squad/MS buffs (see CHAR_PAIR_*) only count when recommend unit matches.
+        # pair_units / pair_ok computed above (manual CHAR_PAIR_* ∪ trait-derived pilot-(EX) gates).
         # Still show toggle for UR EX-slot % (spen/spes) when recommend does not match.
-        pair_units = _char_pair_conditional_unit_ids(char_id)
-        rec_id = normalize_id(recommend_unit['id']) if recommend_unit else '0'
-        pair_ok = bool(pair_units) and rec_id in pair_units
-        has_ex_slot_only = any(spen[s] > 0 for s in CHAR_STAT_ORDER) or any(spes[s] > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
+        has_ex_slot_only = any(spen[s] + (spen_pair[s] if pair_ok else 0) > 0 for s in CHAR_STAT_ORDER) or any(spes[s] + (spes_pair[s] if pair_ok else 0) > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
         if pair_units and not pair_ok:
             has_conditional_passive = has_ex_slot_only
         else:

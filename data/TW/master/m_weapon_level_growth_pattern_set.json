@@ -2865,6 +2865,51 @@
     "WeaponStatusChangePatternSetId": 63000201
   },
   {
+    "Id": 13007501,
+    "WeaponTraitChangePatternSetId": 3007501,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007502,
+    "WeaponTraitChangePatternSetId": 3007502,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007503,
+    "WeaponTraitChangePatternSetId": 3007503,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007504,
+    "WeaponTraitChangePatternSetId": 3007504,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007505,
+    "WeaponTraitChangePatternSetId": 3007505,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007506,
+    "WeaponTraitChangePatternSetId": 3007506,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007507,
+    "WeaponTraitChangePatternSetId": 3007507,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007508,
+    "WeaponTraitChangePatternSetId": 3007508,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13007509,
+    "WeaponTraitChangePatternSetId": 3007509,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
     "Id": 13007801,
     "WeaponTraitChangePatternSetId": 3007801,
     "WeaponStatusChangePatternSetId": 10000000
@@ -3093,6 +3138,16 @@
     "Id": 13008309,
     "WeaponTraitChangePatternSetId": 3007009,
     "WeaponStatusChangePatternSetId": 63000501
+  },
+  {
+    "Id": 13008501,
+    "WeaponTraitChangePatternSetId": 3008501,
+    "WeaponStatusChangePatternSetId": 10000000
+  },
+  {
+    "Id": 13008601,
+    "WeaponTraitChangePatternSetId": 3008601,
+    "WeaponStatusChangePatternSetId": 10000000
   },
   {
     "Id": 13100101,

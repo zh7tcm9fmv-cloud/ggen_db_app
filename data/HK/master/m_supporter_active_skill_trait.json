@@ -108,6 +108,18 @@
     "EffectResourceId": "ef_mps_0001_005_hprecovery_ur"
   },
   {
+    "Id": 1031000250,
+    "TraitTypeIndex": 3,
+    "Value": 40,
+    "DurationTurn": 0,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 160400001031000250,
+    "DescriptionLanguageId": 160500001031000250,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": true,
+    "EffectResourceId": "ef_mps_0001_005_hprecovery_ur"
+  },
+  {
     "Id": 1055000360,
     "TraitTypeIndex": 4,
     "Value": 30,

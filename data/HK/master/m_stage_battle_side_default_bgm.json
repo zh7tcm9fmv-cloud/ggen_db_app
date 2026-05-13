@@ -1744,5 +1744,77 @@
     "BattleSideAnotherEnemyBgmId": 114400001,
     "BattleSideSecretEnemyBgmId": 114400003,
     "BattleSideSecretAnotherEnemyBgmId": 114400003
+  },
+  {
+    "Id": 10195,
+    "BattleSideOwnBgmId": 114400002,
+    "BattleSideFriendBgmId": 114400002,
+    "BattleSideEnemyBgmId": 114400002,
+    "BattleSideAnotherEnemyBgmId": 114400002,
+    "BattleSideSecretEnemyBgmId": 114400002,
+    "BattleSideSecretAnotherEnemyBgmId": 114400002
+  },
+  {
+    "Id": 10196,
+    "BattleSideOwnBgmId": 103300001,
+    "BattleSideFriendBgmId": 103300001,
+    "BattleSideEnemyBgmId": 103300004,
+    "BattleSideAnotherEnemyBgmId": 103300004,
+    "BattleSideSecretEnemyBgmId": 103300004,
+    "BattleSideSecretAnotherEnemyBgmId": 103300004
+  },
+  {
+    "Id": 10197,
+    "BattleSideOwnBgmId": 103300001,
+    "BattleSideFriendBgmId": 103300001,
+    "BattleSideEnemyBgmId": 103300001,
+    "BattleSideAnotherEnemyBgmId": 103300001,
+    "BattleSideSecretEnemyBgmId": 103300001,
+    "BattleSideSecretAnotherEnemyBgmId": 103300001
+  },
+  {
+    "Id": 10198,
+    "BattleSideOwnBgmId": 103300006,
+    "BattleSideFriendBgmId": 103300006,
+    "BattleSideEnemyBgmId": 103300003,
+    "BattleSideAnotherEnemyBgmId": 103300003,
+    "BattleSideSecretEnemyBgmId": 103300003,
+    "BattleSideSecretAnotherEnemyBgmId": 103300003
+  },
+  {
+    "Id": 10199,
+    "BattleSideOwnBgmId": 103300001,
+    "BattleSideFriendBgmId": 103300001,
+    "BattleSideEnemyBgmId": 103300003,
+    "BattleSideAnotherEnemyBgmId": 103300003,
+    "BattleSideSecretEnemyBgmId": 103300003,
+    "BattleSideSecretAnotherEnemyBgmId": 103300003
+  },
+  {
+    "Id": 10200,
+    "BattleSideOwnBgmId": 103300006,
+    "BattleSideFriendBgmId": 103300006,
+    "BattleSideEnemyBgmId": 103300006,
+    "BattleSideAnotherEnemyBgmId": 103300006,
+    "BattleSideSecretEnemyBgmId": 103300006,
+    "BattleSideSecretAnotherEnemyBgmId": 103300006
+  },
+  {
+    "Id": 10201,
+    "BattleSideOwnBgmId": 103300004,
+    "BattleSideFriendBgmId": 103300004,
+    "BattleSideEnemyBgmId": 103300004,
+    "BattleSideAnotherEnemyBgmId": 103300004,
+    "BattleSideSecretEnemyBgmId": 103300004,
+    "BattleSideSecretAnotherEnemyBgmId": 103300004
+  },
+  {
+    "Id": 10202,
+    "BattleSideOwnBgmId": 103300003,
+    "BattleSideFriendBgmId": 103300003,
+    "BattleSideEnemyBgmId": 103300003,
+    "BattleSideAnotherEnemyBgmId": 103300003,
+    "BattleSideSecretEnemyBgmId": 103300003,
+    "BattleSideSecretAnotherEnemyBgmId": 103300003
   }
 ]

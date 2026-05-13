@@ -1883,5 +1883,30 @@
     "GashaId": 2604500301,
     "SortOrder": 10,
     "GashaContentDetailId": 21125000150
+  },
+  {
+    "GashaId": 2605200301,
+    "SortOrder": 1,
+    "GashaContentDetailId": 11031001250
+  },
+  {
+    "GashaId": 2605200301,
+    "SortOrder": 2,
+    "GashaContentDetailId": 11850001650
+  },
+  {
+    "GashaId": 2605200301,
+    "SortOrder": 3,
+    "GashaContentDetailId": 11031000150
+  },
+  {
+    "GashaId": 2605200301,
+    "SortOrder": 4,
+    "GashaContentDetailId": 11031000350
+  },
+  {
+    "GashaId": 2605200301,
+    "SortOrder": 5,
+    "GashaContentDetailId": 21031000250
   }
 ]
