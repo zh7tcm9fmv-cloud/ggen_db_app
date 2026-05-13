@@ -2665,11 +2665,31 @@ def _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part):
     return False
 
 
+_UNIT_BARE_UNCONDITIONAL_MS_STAT_PCT_LINE = re.compile(
+    r'^\s*Increases?\s+(?:own\s+)?(?:squad\s+)?(?:MS\s+)?'
+    r'(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)\s+by\s+\d+%\s*\.?\s*$',
+    re.IGNORECASE,
+)
+
+
+def _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
+    """One always-on 'Increase … by N%' sentence can share an ability with rows that have ActiveConditionSetId.
+
+    ep() sets hc=True when *any* detail carries structured tags, which incorrectly forced the bare line into the CP
+    bucket (e.g. Increased ATK & Advantage: Principality of Zeon — first line is global +5% ATK)."""
+    if is_cond or ability_cond:
+        return False
+    p = (part or '').strip()
+    return bool(_UNIT_BARE_UNCONDITIONAL_MS_STAT_PCT_LINE.match(p))
+
+
 def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad=None, detail_idx=None):
     """Structured trait tags set hc=True for the whole ability; vigor-normal baseline % must still use the unconditional bucket."""
     if _unit_vigor_normal_baseline_stat_line(part):
         return False
     if ad is not None and detail_idx is not None and _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part):
+        return False
+    if _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
         return False
     return bool(hc or ie or is_cond or ability_cond)
 
