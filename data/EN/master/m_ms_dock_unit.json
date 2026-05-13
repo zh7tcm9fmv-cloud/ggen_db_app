@@ -70,6 +70,16 @@
     "ScheduleId": 2507109901
   },
   {
+    "Id": 1031001200,
+    "ResourceId": "g0310u01200",
+    "NameLanguageId": 110100001031001200,
+    "ProfileLanguageId": 110200001031001200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 330,
+    "ModelNumber": "RX-78AL",
+    "ScheduleId": 2605209901
+  },
+  {
     "Id": 1060000100,
     "ResourceId": "g0600u00100",
     "NameLanguageId": 110100001060000100,

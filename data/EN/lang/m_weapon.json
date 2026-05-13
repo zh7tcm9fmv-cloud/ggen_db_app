@@ -2432,6 +2432,342 @@
     "value": "Big Gun SSP"
   },
   {
+    "id": 120100103100120001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100120002,
+    "value": "Assault Rifle"
+  },
+  {
+    "id": 120100103100120003,
+    "value": "Railgun"
+  },
+  {
+    "id": 120100103100120004,
+    "value": "Medusa's Arrow"
+  },
+  {
+    "id": 120100103100120080,
+    "value": "Medusa's Arrow"
+  },
+  {
+    "id": 120100103100120090,
+    "value": "Railgun SSP"
+  },
+  {
+    "id": 120100103100125001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100125002,
+    "value": "Assault Rifle"
+  },
+  {
+    "id": 120100103100125003,
+    "value": "Railgun"
+  },
+  {
+    "id": 120100103100125004,
+    "value": "Beam Saber EX"
+  },
+  {
+    "id": 120100103100125005,
+    "value": "Medusa's Arrow"
+  },
+  {
+    "id": 120100103100130001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100130002,
+    "value": "Needle Gun"
+  },
+  {
+    "id": 120100103100130003,
+    "value": "Expend All Ammunition"
+  },
+  {
+    "id": 120100103100130004,
+    "value": "Expend All Ammunition"
+  },
+  {
+    "id": 120100103100130090,
+    "value": "Needle Gun SSP"
+  },
+  {
+    "id": 120100103100140001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100140002,
+    "value": "Twin Beam Rifle"
+  },
+  {
+    "id": 120100103100140090,
+    "value": "Twin Beam Rifle SSP"
+  },
+  {
+    "id": 120100103100150001,
+    "value": "Beam Javelin"
+  },
+  {
+    "id": 120100103100150002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100103100150090,
+    "value": "Beam Javelin SSP"
+  },
+  {
+    "id": 120100103100160001,
+    "value": "Quadruple Bop Missile"
+  },
+  {
+    "id": 120100103100160002,
+    "value": "Low-Recoil Cannon"
+  },
+  {
+    "id": 120100103100160090,
+    "value": "Low-Recoil Cannon SSP"
+  },
+  {
+    "id": 120100103100170001,
+    "value": "Needle Gun"
+  },
+  {
+    "id": 120100103100170002,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100170090,
+    "value": "Needle Gun SSP"
+  },
+  {
+    "id": 120100103100180001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100180002,
+    "value": "Assault Rifle"
+  },
+  {
+    "id": 120100103100180003,
+    "value": "Missile Launcher"
+  },
+  {
+    "id": 120100103100180090,
+    "value": "Missile Launcher SSP"
+  },
+  {
+    "id": 120100103100190001,
+    "value": "Twin Missile Pod"
+  },
+  {
+    "id": 120100103100190090,
+    "value": "Twin Missile Pod SSP"
+  },
+  {
+    "id": 120100103100210001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100103100210002,
+    "value": "Arm-Mounted Vulcan Cannon"
+  },
+  {
+    "id": 120100103100210090,
+    "value": "Beam Saber SSP"
+  },
+  {
+    "id": 120100103100220001,
+    "value": "Assault"
+  },
+  {
+    "id": 120100103100220002,
+    "value": "Arm-Mounted Vulcan Cannon"
+  },
+  {
+    "id": 120100103100220003,
+    "value": "Rocket Launcher"
+  },
+  {
+    "id": 120100103100220090,
+    "value": "Rocket Launcher SSP"
+  },
+  {
+    "id": 120100103100230001,
+    "value": "Heat Blade"
+  },
+  {
+    "id": 120100103100230002,
+    "value": "Rocket Launcher"
+  },
+  {
+    "id": 120100103100230090,
+    "value": "Rocket Launcher SSP"
+  },
+  {
+    "id": 120100103100240001,
+    "value": "WCU (Zaku Machine Gun)"
+  },
+  {
+    "id": 120100103100240002,
+    "value": "WCU (Bayonet)"
+  },
+  {
+    "id": 120100103100240003,
+    "value": "WCU (TOW Missile)"
+  },
+  {
+    "id": 120100103100240090,
+    "value": "WCU (Bayonet) SSP"
+  },
+  {
+    "id": 120100103100250001,
+    "value": "WCU (Zaku Machine Gun)"
+  },
+  {
+    "id": 120100103100250002,
+    "value": "WCU (Flamethrower)"
+  },
+  {
+    "id": 120100103100250003,
+    "value": "Anti-MS Bola"
+  },
+  {
+    "id": 120100103100250090,
+    "value": "Anti-MS Bola SSP"
+  },
+  {
+    "id": 120100103100260001,
+    "value": "Iron Blade"
+  },
+  {
+    "id": 120100103100260002,
+    "value": "Spray Missile Launcher"
+  },
+  {
+    "id": 120100103100260003,
+    "value": "Missile Container"
+  },
+  {
+    "id": 120100103100260090,
+    "value": "Missile Container SSP"
+  },
+  {
+    "id": 120100103100270001,
+    "value": "Iron Nail"
+  },
+  {
+    "id": 120100103100270002,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100103100270090,
+    "value": "Iron Nail SSP"
+  },
+  {
+    "id": 120100103100280001,
+    "value": "Iron Nail"
+  },
+  {
+    "id": 120100103100280002,
+    "value": "Machine Gun"
+  },
+  {
+    "id": 120100103100280090,
+    "value": "Machine Gun SSP"
+  },
+  {
+    "id": 120100103100290001,
+    "value": "Grublo Claw"
+  },
+  {
+    "id": 120100103100290002,
+    "value": "Large Plasma Cannon"
+  },
+  {
+    "id": 120100103100290003,
+    "value": "Torpedo Launcher"
+  },
+  {
+    "id": 120100103100290090,
+    "value": "Large Plasma Cannon SSP"
+  },
+  {
+    "id": 120100103100300001,
+    "value": "Heat Hawk"
+  },
+  {
+    "id": 120100103100300002,
+    "value": "Dahle's Machine Gun"
+  },
+  {
+    "id": 120100103100300090,
+    "value": "Dahle's Machine Gun SSP"
+  },
+  {
+    "id": 120100103100310001,
+    "value": "Rocket Launcher"
+  },
+  {
+    "id": 120100103100310002,
+    "value": "Torpedo Drop"
+  },
+  {
+    "id": 120100103100310090,
+    "value": "Rocket Launcher SSP"
+  },
+  {
+    "id": 120100103100320001,
+    "value": "Heat Saber"
+  },
+  {
+    "id": 120100103100320002,
+    "value": "Zaku Machine Gun"
+  },
+  {
+    "id": 120100103100320003,
+    "value": "Giant Bazooka"
+  },
+  {
+    "id": 120100103100320090,
+    "value": "Giant Bazooka SSP"
+  },
+  {
+    "id": 120100103100330001,
+    "value": "Beam Spray Gun"
+  },
+  {
+    "id": 120100103100330090,
+    "value": "Beam Spray Gun SSP"
+  },
+  {
+    "id": 120100103100340001,
+    "value": "Assault Rifle"
+  },
+  {
+    "id": 120100103100340002,
+    "value": "Kick"
+  },
+  {
+    "id": 120100103100340090,
+    "value": "Assault Rifle SSP"
+  },
+  {
+    "id": 120100103100350001,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100103100350002,
+    "value": "Nose Missile"
+  },
+  {
+    "id": 120100103100350090,
+    "value": "Mega Particle Cannon SSP"
+  },
+  {
     "id": 120100104400041001,
     "value": "Gold Blade"
   },
@@ -15525,7 +15861,7 @@
   },
   {
     "id": 120100137000880003,
-    "value": "GN Shield Bit"
+    "value": "GN Rifle Bit"
   },
   {
     "id": 120100137000880004,
@@ -15541,7 +15877,7 @@
   },
   {
     "id": 120100137000880007,
-    "value": "GN Shield Bit"
+    "value": "GN Rifle Bit"
   },
   {
     "id": 120100137000880090,
@@ -20556,6 +20892,26 @@
     "value": "Large Mega Particle Cannon SSP"
   },
   {
+    "id": 120100185000165001,
+    "value": "Leg Heat Claw"
+  },
+  {
+    "id": 120100185000165002,
+    "value": "Diffuse Mega Particle Cannon"
+  },
+  {
+    "id": 120100185000165003,
+    "value": "Large Anti-Ship Missile"
+  },
+  {
+    "id": 120100185000165004,
+    "value": "Sieben Angriff"
+  },
+  {
+    "id": 120100185000165005,
+    "value": "Sieben Angriff EX"
+  },
+  {
     "id": 120100185000180001,
     "value": "Beam Gun"
   },
@@ -21069,6 +21425,22 @@
   },
   {
     "id": 120100203100020002,
+    "value": "Minovsky Particle Diffuser"
+  },
+  {
+    "id": 120100203100030001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100203100030002,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100203100030003,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100203100030004,
     "value": "Minovsky Particle Diffuser"
   },
   {

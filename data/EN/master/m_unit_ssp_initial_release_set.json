@@ -678,6 +678,120 @@
     "TargetId": 103100100001
   },
   {
+    "Id": 1031001400,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100140001
+  },
+  {
+    "Id": 1031001500,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100150001
+  },
+  {
+    "Id": 1031001600,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100160001
+  },
+  {
+    "Id": 1031001700,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100170001
+  },
+  {
+    "Id": 1031001800,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100180001
+  },
+  {
+    "Id": 1031001900,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100190001
+  },
+  {
+    "Id": 1031002100,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100210001
+  },
+  {
+    "Id": 1031002300,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100230001
+  },
+  {
+    "Id": 1031002400,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100240001
+  },
+  {
+    "Id": 1031002500,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100250001
+  },
+  {
+    "Id": 1031002600,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100260001
+  },
+  {
+    "Id": 1031002700,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100270001
+  },
+  {
+    "Id": 1031002800,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100280001
+  },
+  {
+    "Id": 1031003000,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100300001
+  },
+  {
+    "Id": 1031003100,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100310001
+  },
+  {
+    "Id": 1031003200,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100320001
+  },
+  {
+    "Id": 1031003300,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100330001
+  },
+  {
+    "Id": 1031003400,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100340001
+  },
+  {
+    "Id": 1031003500,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 103100350001
+  },
+  {
     "Id": 1055000260,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,

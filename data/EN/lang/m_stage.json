@@ -328,6 +328,70 @@
     "value": "VS. Gundam Full Armor (Thunderbolt) EXPERT"
   },
   {
+    "id": 130100000003300103,
+    "value": "Thunderbolt Operation"
+  },
+  {
+    "id": 130100000003300204,
+    "value": "Ambush"
+  },
+  {
+    "id": 130100000003300301,
+    "value": "Unexpected Engagement: 1"
+  },
+  {
+    "id": 130100000003300402,
+    "value": "Partner"
+  },
+  {
+    "id": 130100000003300504,
+    "value": "Bandit Flower"
+  },
+  {
+    "id": 130100000003300601,
+    "value": "Unexpected Engagement: 2"
+  },
+  {
+    "id": 130100000003300703,
+    "value": "South Seas Alliance"
+  },
+  {
+    "id": 130100000003300801,
+    "value": "Unexpected Engagement (Hard): 1"
+  },
+  {
+    "id": 130100000003300901,
+    "value": "Unexpected Engagement (Hard): 2"
+  },
+  {
+    "id": 130100000003301001,
+    "value": "Unexpected Engagement (Hard): 3"
+  },
+  {
+    "id": 130100000003305001,
+    "value": "VS. Acguy Recon Type NORMAL"
+  },
+  {
+    "id": 130100000003305002,
+    "value": "VS. Acguy Recon Type HARD"
+  },
+  {
+    "id": 130100000003305003,
+    "value": "VS. Acguy Recon Type EXPERT"
+  },
+  {
+    "id": 130100000003306001,
+    "value": "VS. Atlas Gundam NORMAL"
+  },
+  {
+    "id": 130100000003306002,
+    "value": "VS. Atlas Gundam HARD"
+  },
+  {
+    "id": 130100000003306003,
+    "value": "VS. Atlas Gundam EXPERT"
+  },
+  {
     "id": 130100000006015001,
     "value": "Vs. Neue Ziel (NORMAL)"
   },
@@ -1642,6 +1706,10 @@
   {
     "id": 130100000090520028,
     "value": "Mobile Suit Gundam Narrative"
+  },
+  {
+    "id": 130100000090520029,
+    "value": "Underwater Use"
   },
   {
     "id": 130100000090800103,

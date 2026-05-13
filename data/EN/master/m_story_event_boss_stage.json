@@ -288,6 +288,78 @@
     "StageNameLanguageId": 130100000003206003
   },
   {
+    "Id": 3305001,
+    "StoryEventId": 200012,
+    "StageId": 3305001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": false,
+    "BossMapNpcId": 33005000102000001,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000003305001
+  },
+  {
+    "Id": 3305002,
+    "StoryEventId": 200012,
+    "StageId": 3305002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": false,
+    "BossMapNpcId": 33005000202000001,
+    "ConsumeBossChallengePoint": 90,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000003305002
+  },
+  {
+    "Id": 3305003,
+    "StoryEventId": 200012,
+    "StageId": 3305003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": false,
+    "BossMapNpcId": 33005000302000001,
+    "ConsumeBossChallengePoint": 120,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000003305003
+  },
+  {
+    "Id": 3306001,
+    "StoryEventId": 200012,
+    "StageId": 3306001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": true,
+    "BossMapNpcId": 33006000102000001,
+    "ConsumeBossChallengePoint": 20,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000003306001
+  },
+  {
+    "Id": 3306002,
+    "StoryEventId": 200012,
+    "StageId": 3306002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": true,
+    "BossMapNpcId": 33006000202000001,
+    "ConsumeBossChallengePoint": 40,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000003306002
+  },
+  {
+    "Id": 3306003,
+    "StoryEventId": 200012,
+    "StageId": 3306003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": true,
+    "BossMapNpcId": 33006000302000001,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000003306003
+  },
+  {
     "Id": 6005001,
     "StoryEventId": 200003,
     "StageId": 6005001,

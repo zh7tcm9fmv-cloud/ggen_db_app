@@ -824,6 +824,102 @@
     "value": "N Zaku I (Thunderbolt) Limit Break Material"
   },
   {
+    "id": 150100171031001200,
+    "value": "SSR Atlas Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171031001250,
+    "value": "UR Atlas Gundam (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171031001300,
+    "value": "SSR Guncannon Aqua Limit Break Material"
+  },
+  {
+    "id": 150100171031001400,
+    "value": "R Gundam Head Limit Break Material"
+  },
+  {
+    "id": 150100171031001500,
+    "value": "SR Gundam Ground Type S Limit Break Material"
+  },
+  {
+    "id": 150100171031001600,
+    "value": "SR Guntank (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031001700,
+    "value": "SR GM Marine Type Limit Break Material"
+  },
+  {
+    "id": 150100171031001800,
+    "value": "SR GM Type C Ground Type (Corvette Booster) Limit Break Material"
+  },
+  {
+    "id": 150100171031001900,
+    "value": "N Ball Marine Type Limit Break Material"
+  },
+  {
+    "id": 150100171031002100,
+    "value": "R Acguy (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031002200,
+    "value": "SSR Acguy Recon Type Limit Break Material"
+  },
+  {
+    "id": 150100171031002300,
+    "value": "R Acguy Mobility Type Limit Break Material"
+  },
+  {
+    "id": 150100171031002400,
+    "value": "SR Acguy Firepower Type A Limit Break Material"
+  },
+  {
+    "id": 150100171031002500,
+    "value": "SR Acguy Firepower Type B Limit Break Material"
+  },
+  {
+    "id": 150100171031002600,
+    "value": "SR Acguy Heavy Firepower Type Limit Break Material"
+  },
+  {
+    "id": 150100171031002700,
+    "value": "SR Gogg (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031002800,
+    "value": "SR Z'Gok (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031002900,
+    "value": "SSR Grublo (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031003000,
+    "value": "R Dahle Limit Break Material"
+  },
+  {
+    "id": 150100171031003100,
+    "value": "R Dahle (Flotation Equipment) Limit Break Material"
+  },
+  {
+    "id": 150100171031003200,
+    "value": "SR Gouf (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031003300,
+    "value": "R GM Sky Limit Break Material"
+  },
+  {
+    "id": 150100171031003400,
+    "value": "R GM Type C Ground Type (Thunderbolt) Limit Break Material"
+  },
+  {
+    "id": 150100171031003500,
+    "value": "N G-Armor (Thunderbolt) Limit Break Material"
+  },
+  {
     "id": 150100171044000410,
     "value": "SSR Efreet Nacht Limit Break Material"
   },
@@ -4592,6 +4688,10 @@
     "value": "SR Big-Zam Mass Production Type Limit Break Material"
   },
   {
+    "id": 150100171850001650,
+    "value": "UR Great Zeong (EX) Limit Break Material"
+  },
+  {
     "id": 150100171850001800,
     "value": "SR Prototype Qubeley Limit Break Material"
   },
@@ -4650,6 +4750,10 @@
   {
     "id": 150100180000000320,
     "value": "Development Material (Mobile Suit Gundam Thunderbolt: December Sky)"
+  },
+  {
+    "id": 150100180000000330,
+    "value": "Development Material (Mobile Suit Gundam Thunderbolt: Bandit Flower)"
   },
   {
     "id": 150100180000000600,
@@ -4778,6 +4882,22 @@
   {
     "id": 150100181031000300,
     "value": "Psycho Zaku's Technical Journal"
+  },
+  {
+    "id": 150100181031001200,
+    "value": "Atlas Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181031001300,
+    "value": "Guncannon Aqua's Technical Journal"
+  },
+  {
+    "id": 150100181031002200,
+    "value": "Acguy Recon Type's Technical Journal"
+  },
+  {
+    "id": 150100181031002900,
+    "value": "Grublo (Thunderbolt)'s Technical Journal"
   },
   {
     "id": 150100181060000200,
@@ -5324,6 +5444,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (4/16/2026 JST)"
   },
   {
+    "id": 150100191100000010,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (Thunderbolt: Bandit Flower)"
+  },
+  {
     "id": 150100191200000001,
     "value": "SR or Higher Guaranteed Unit Assembly Ticket"
   },
@@ -5505,6 +5629,14 @@
   },
   {
     "id": 150100222000110002,
+    "value": "Unit Assembly Medal"
+  },
+  {
+    "id": 150100222000120001,
+    "value": "Boss Challenge Ticket"
+  },
+  {
+    "id": 150100222000120002,
     "value": "Unit Assembly Medal"
   },
   {
@@ -6502,6 +6634,102 @@
   {
     "id": 150200171031001000,
     "value": "An item used to perform Limit Break on N Zaku I (Thunderbolt)"
+  },
+  {
+    "id": 150200171031001200,
+    "value": "An item used to perform Limit Break on SSR Atlas Gundam"
+  },
+  {
+    "id": 150200171031001250,
+    "value": "An item used to perform Limit Break on UR Atlas Gundam (EX)"
+  },
+  {
+    "id": 150200171031001300,
+    "value": "An item used to perform Limit Break on SSR Guncannon Aqua"
+  },
+  {
+    "id": 150200171031001400,
+    "value": "An item used to perform Limit Break on R Gundam Head"
+  },
+  {
+    "id": 150200171031001500,
+    "value": "An item used to perform Limit Break on SR Gundam Ground Type S"
+  },
+  {
+    "id": 150200171031001600,
+    "value": "An item used to perform Limit Break on SR Guntank (Thunderbolt)"
+  },
+  {
+    "id": 150200171031001700,
+    "value": "An item used to perform Limit Break on SR GM Marine Type"
+  },
+  {
+    "id": 150200171031001800,
+    "value": "An item used to perform Limit Break on SR GM Type C Ground Type (Corvette Booster)"
+  },
+  {
+    "id": 150200171031001900,
+    "value": "An item used to perform Limit Break on N Ball Marine Type"
+  },
+  {
+    "id": 150200171031002100,
+    "value": "An item used to perform Limit Break on R Acguy (Thunderbolt)"
+  },
+  {
+    "id": 150200171031002200,
+    "value": "An item used to perform Limit Break on SSR Acguy Recon Type"
+  },
+  {
+    "id": 150200171031002300,
+    "value": "An item used to perform Limit Break on R Acguy Mobility Type"
+  },
+  {
+    "id": 150200171031002400,
+    "value": "An item used to perform Limit Break on SR Acguy Firepower Type A"
+  },
+  {
+    "id": 150200171031002500,
+    "value": "An item used to perform Limit Break on SR Acguy Firepower Type B"
+  },
+  {
+    "id": 150200171031002600,
+    "value": "An item used to perform Limit Break on SR Acguy Heavy Firepower Type"
+  },
+  {
+    "id": 150200171031002700,
+    "value": "An item used to perform Limit Break on SR Gogg (Thunderbolt)"
+  },
+  {
+    "id": 150200171031002800,
+    "value": "An item used to perform Limit Break on SR Z'Gok (Thunderbolt)"
+  },
+  {
+    "id": 150200171031002900,
+    "value": "An item used to perform Limit Break on SSR Grublo (Thunderbolt)"
+  },
+  {
+    "id": 150200171031003000,
+    "value": "An item used to perform Limit Break on R Dahle"
+  },
+  {
+    "id": 150200171031003100,
+    "value": "An item used to perform Limit Break on R Dahle (Flotation Equipment)"
+  },
+  {
+    "id": 150200171031003200,
+    "value": "An item used to perform Limit Break on SR Gouf (Thunderbolt)"
+  },
+  {
+    "id": 150200171031003300,
+    "value": "An item used to perform Limit Break on R GM Sky"
+  },
+  {
+    "id": 150200171031003400,
+    "value": "An item used to perform Limit Break on R GM Type C Ground Type (Thunderbolt)"
+  },
+  {
+    "id": 150200171031003500,
+    "value": "An item used to perform Limit Break on N G-Armor (Thunderbolt)"
   },
   {
     "id": 150200171044000410,
@@ -10272,6 +10500,10 @@
     "value": "An item used to perform Limit Break on SR Big-Zam Mass Production Type"
   },
   {
+    "id": 150200171850001650,
+    "value": "An item used to perform Limit Break on UR Great Zeong (EX)"
+  },
+  {
     "id": 150200171850001800,
     "value": "An item used to perform Limit Break on SR Prototype Qubeley"
   },
@@ -10330,6 +10562,10 @@
   {
     "id": 150200180000000320,
     "value": "Material required for developing units that appear on [Mobile Suit Gundam Thunderbolt: December Sky] diagram."
+  },
+  {
+    "id": 150200180000000330,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam Thunderbolt: Bandit Flower] diagram."
   },
   {
     "id": 150200180000000600,
@@ -10458,6 +10694,22 @@
   {
     "id": 150200181031000300,
     "value": "Material required to develop Psycho Zaku appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181031001200,
+    "value": "Material required to develop Atlas Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181031001300,
+    "value": "Material required to develop Guncannon Aqua appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181031002200,
+    "value": "Material required to develop Acguy Recon Type appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181031002900,
+    "value": "Material required to develop Grublo (Thunderbolt) appearing in the Development Diagram."
   },
   {
     "id": 150200181060000200,
@@ -11004,6 +11256,10 @@
     "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Ex-S Gundam (EX) and Gundam Pharact (Season 2) (EX)."
   },
   {
+    "id": 150200191100000010,
+    "value": "A ticket that lets you use the Featured Unit Assembly (Thunderbolt: Bandit Flower)."
+  },
+  {
     "id": 150200191200000001,
     "value": "A ticket that lets you use the SR or Higher Guaranteed Unit Assembly."
   },
@@ -11186,6 +11442,14 @@
   {
     "id": 150200222000110002,
     "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam: The 08th MS Team\".\nCan be used in the Medal Unit Assembly."
+  },
+  {
+    "id": 150200222000120001,
+    "value": "A ticket needed to challenge the boss in story event \"Mobile Suit Gundam Thunderbolt: Bandit Flower\"."
+  },
+  {
+    "id": 150200222000120002,
+    "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam Thunderbolt: Bandit Flower\".\nCan be used in the Medal Unit Assembly."
   },
   {
     "id": 150200222100010001,

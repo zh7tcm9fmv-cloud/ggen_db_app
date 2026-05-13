@@ -33,5 +33,12 @@
     "GroupId": "",
     "UnitTags": "1026",
     "UnitSeries": ""
+  },
+  {
+    "Id": 1000006,
+    "TraitBoostConditionSetId": 1000006,
+    "GroupId": "地上用 or 水中用を対象",
+    "UnitTags": "1114,1131",
+    "UnitSeries": ""
   }
 ]

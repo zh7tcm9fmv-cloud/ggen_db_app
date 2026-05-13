@@ -328,7 +328,19 @@
     "value": "Io Fleming"
   },
   {
+    "id": 100100001031000102,
+    "value": "Io Fleming"
+  },
+  {
+    "id": 100100001031000103,
+    "value": "Io Fleming"
+  },
+  {
     "id": 100100001031000300,
+    "value": "Claudia Peer"
+  },
+  {
+    "id": 100100001031000301,
     "value": "Claudia Peer"
   },
   {
@@ -341,6 +353,10 @@
   },
   {
     "id": 100100001031000602,
+    "value": "Daryl Lorenz"
+  },
+  {
+    "id": 100100001031000603,
     "value": "Daryl Lorenz"
   },
   {
@@ -358,6 +374,46 @@
   {
     "id": 100100001031001400,
     "value": "Burroughs"
+  },
+  {
+    "id": 100100001031001500,
+    "value": "Bianca Carlyle"
+  },
+  {
+    "id": 100100001031001600,
+    "value": "Alicia"
+  },
+  {
+    "id": 100100001031001700,
+    "value": "Billy Hickam"
+  },
+  {
+    "id": 100100001031001800,
+    "value": "Philippe Kaufmann"
+  },
+  {
+    "id": 100100001031001900,
+    "value": "Sebastian Morse"
+  },
+  {
+    "id": 100100001031002000,
+    "value": "Bull"
+  },
+  {
+    "id": 100100001031002100,
+    "value": "Chow Ming"
+  },
+  {
+    "id": 100100001031002200,
+    "value": "Orphe"
+  },
+  {
+    "id": 100100001031002300,
+    "value": "Dent"
+  },
+  {
+    "id": 100100001031002500,
+    "value": "Marcus"
   },
   {
     "id": 100100001055000100,
@@ -3236,6 +3292,10 @@
     "value": "Florence Kirishima"
   },
   {
+    "id": 100100001850001501,
+    "value": "Florence Kirishima"
+  },
+  {
     "id": 100100001850001600,
     "value": "Elfriede Schultz"
   },
@@ -3354,6 +3414,10 @@
   {
     "id": 100100002022000100,
     "value": "Earth Federation Soldier"
+  },
+  {
+    "id": 100100002031000100,
+    "value": "South Seas Alliance Soldier"
   },
   {
     "id": 100100002060000100,
@@ -4172,8 +4236,20 @@
     "value": "An ace pilot of the Federation Space Force's Moore Brotherhood mothership, the Beehive. He holds the rank of Ensign. \nBorn the son of the former head of Side 4, which was destroyed during the One Year War, he is a childhood friend of Beehive's acting captain Claudia and mechanic Cornelius. \nThe Beehive, tasked with wiping out the Zeon remnants hiding in Thunderbolt Sector, launched multiple assaults but were repelled each time, losing commanders one after another.\nEnsign Io, now the highest-ranking Mobile Suit pilot, is selected to pilot the Full Armor Gundam. He hates the idea of being tied down to his hometown or family lineage and has a fearless personality. \nA jazz enthusiast, Io plays music in his cockpit even in the thick of battle, his enemies dreading the thought of hearing it over contact communication in their destroyed mobile suits."
   },
   {
+    "id": 100200001031000102,
+    "value": "An EFF pilot who took part in the One Year War as a member of the Moore Brotherhood.\nToward the end of the war, he fought against the Living Dead Division in the Thunderbolt Sector aboard the Full Armor Gundam.\nAfter being defeated by Daryl Lorenz, who was piloting the Psycho Zaku, he was made a captive of the principality. In the confusion of the Battle of A Baoa Qu, he managed to escape, eventually surviving the One Year War.\nEight months after the war, he is exceptionally chosen as the pilot of the Atlas Gundam, taking up a post on the assault landing ship Spartan.\nHe meets Bianca Carlyle there, with whom he shares a passion for jazz, and the two grow closer during jam sessions.\nHowever, he cannot hide his shock upon finding Claudia Peer, who was supposed to have died in the South Seas Alliance, the destination of the operation.\nHe tries in vain to ask her about her motive, exasperated by the tricks that fate is playing on them."
+  },
+  {
+    "id": 100200001031000103,
+    "value": "An EFF pilot who took part in the One Year War as a member of the Moore Brotherhood.\nToward the end of the war, he fought against the Living Dead Division in the Thunderbolt Sector aboard the Full Armor Gundam.\nAfter being defeated by Daryl Lorenz, who was piloting the Psycho Zaku, he was made a captive of the principality. In the confusion of the Battle of A Baoa Qu, he managed to escape, eventually surviving the One Year War.\nEight months after the war, he is exceptionally chosen as the pilot of the Atlas Gundam, taking up a post on the assault landing ship Spartan.\nHe meets Bianca Carlyle there, with whom he shares a passion for jazz, and the two grow closer during jam sessions.\nHowever, he cannot hide his shock upon finding Claudia Peer, who was supposed to have died in the South Seas Alliance, the destination of the operation.\nHe tries in vain to ask her about her motive, exasperated by the tricks that fate is playing on them."
+  },
+  {
     "id": 100200001031000300,
     "value": "A female officer and acting captain of the Beehive. She holds the rank of Lieutenant Commander. Born on Moore, she is childhood friends with Io and Cornelius. When her former superior is killed in action, she takes command of the operation to retake Thunderbolt Sector. However, the pressure is too much for Claudia, and she resorts to drug abuse. Io criticizes her harshly for showing such weakness, but Cornelius provides earnest advice to help her recover. She is in a relationship with Io, but as the war continues to worsen, the cracks in their relationship do as well. Claudia's mental state spirals further when she discovers that the supplemental pilots sent along with their supplies are only young students."
+  },
+  {
+    "id": 100200001031000301,
+    "value": "A female officer, formerly an EFF lieutenant colonel and substitute captain of the Moore Brotherhood warship Beehive.\nShe had disappeared when the Beehive was shot down, but after the end of the One Year War, had become a garrison commander at the border of the South Seas Alliance.\nShe faces the Spartan that has advanced into SSA territory, but her destiny catches up to her when she reunites with Io, her childhood friend.\nKnown as a reverend in the South Seas Alliance, she not only holds the position of a border garrison commander, but also that of a religious figure."
   },
   {
     "id": 100200001031000600,
@@ -4188,6 +4264,10 @@
     "value": "A Zeon Mobile Suit pilot. He was ranked Sergeant Major and then later promoted to Ensign. After losing both legs in battle, he was assigned to the Living Dead Division's Dried Fish, and became the division's ace sniper.\nHe also assisted Professor Karla with her research on the Reuse P Device.\nMaking full use of the debris map of Thunderbolt Sector, he was able to accurately predict the trajectory of enemy units even while under under heavy radio interference due to Minovsky Particle density, achieving great success in battle.\nBefore long, Daryl was chosen to pilot the Psycho Zaku equipped with the Reuse P Device, and subsequently faces a life-and-death struggle against Io, the pilot of the Earth Federation Force's Full Armor Gundam.\nHe loves pop music and brings a radio into his cockpit to listen during battle."
   },
   {
+    "id": 100200001031000603,
+    "value": "A mobile suit pilot of the Principality of Zeon with the rank of ensign.\nHe is one of the survivors in the Living Dead Division, comprised of wounded soldiers, and he amputated his remaining right arm in order to pilot the Psycho Zaku equipped with the Reuse P Device, finally having his four limbs replaced with prostheses.\nAfter the ratification of the armistice between the Earth Federation Forces and the Republic of Zeon, he descends to Earth.\nAs a member of the Zeon remnants, he gathers intelligence on the South Seas Alliance, which is thought to have captured the Psycho Zaku.\nTo rescue a spy infiltrated in the headquarters of the SSA, he takes command of a team of Acguy mobile suits.\nAlthough he was praised as a hero of the One Year War among said team, certain members thereof distrusted him, feeling that his prowess was only thanks to the Psycho Zaku's high performance.\nIn the seafloor base of the Zeon remnants, he also provided care for Karla, who had regressed to infancy due to psychological trauma."
+  },
+  {
     "id": 100200001031000700,
     "value": "A female professor aboard the Dried Fish who works on prosthetics and is entrusted with providing prosthetic limbs to wounded soldiers. She was in love with Daryl's Mobile Suit team leader, Hoover. After Hoover was killed by Io from the Earth Federation, she asked Daryl to take revenge for her. She was forced to cooperate with the Reuse P Device research to save her father, who was a historian and political criminal imprisoned in the heart of Zeon."
   },
@@ -4197,11 +4277,51 @@
   },
   {
     "id": 100200001031000900,
-    "value": "A Mobile Suit pilot belonging to the Living Dead Division. He holds the rank of Sergeant Major and pilots a Rick Dom. He has prosthetic legs from the thighs down. He is an emotional and compassionate man who is both grateful and sorry for Daryl's decision to test the Reuse P Device. Many of his comrades have been lost in the battles against the Beehive."
+    "value": "A survivor of the Living Dead Division, like Daryl.\nHe holds the rank of Chief Petty Officer.\nDuring the One Year War, his Rick Dom was damaged, forcing him to temporarily withdraw from battle. However, he was able to call in reinforcements and led the Siren Mobile Fleet to the area, saving his division from annihilation.\nHe currently serves as an Acguy pilot with the remaining Principality of Zeon forces that have descended to Earth.\nHe is assigned to a platoon commanded by Daryl."
   },
   {
     "id": 100200001031001400,
     "value": "Captain of the Living Dead Division's mothership, the Dried Fish. He wears a hook prosthetic on his right hand. To counter the Full Armor Gundam deployed to the frontlines by the Moore Brotherhood, he decides to use the Psycho Zaku, a high-mobility Zaku II equipped with the Reuse P Device. For this purpose, he asks Daryl, a prospective pilot, to undergo further trials. He is also the one who named the Psycho Zaku."
+  },
+  {
+    "id": 100200001031001500,
+    "value": "A female pilot of the Earth Federation Forces with the rank of ensign.\nHer military record includes many battles from the One Year War and she is stationed on the assault landing ship Spartan as the pilot of the Guncannon Aqua.\nBefore joining the military, she was active as a professional musician, with great proficiency in jazz.\nShe became interested in Io Fleming, the two bonding over their love of jazz during jam sessions.\nWith a brave and manlike temperament, she possesses piloting skills on par with her audacious demeanor.\nUpon descending to Earth for the first time, she was quick to acclimatize, managing to destroy Philippe Kaufmann's Gogg during a battle on the ice against Zeon remnants.\nShe also saved Io Fleming as his Atlas Gundam was sinking into the ocean's depths. They then recognized each other as partners.\nIn the battle against the South Seas Alliance's border garrison, she kept supporting Io—all while reprimanding him—when he took risks in order to ask Claudia about her true intentions."
+  },
+  {
+    "id": 100200001031001600,
+    "value": "A chief petty officer of the Earth Federation Forces.\nShe pilots the Gundam Head boarded on the Spartan.\nShe is also a member of the Black Cat Team, led by Creed."
+  },
+  {
+    "id": 100200001031001700,
+    "value": "An ensign of the Principality of Zeon.\nHe pilots the Acguy.\nDuring the One Year War, his Newtype potential was uncovered. He then took part in combat aboard a mobile suit reserved for Newtypes."
+  },
+  {
+    "id": 100200001031001800,
+    "value": "A lieutenant commander in the Principality of Zeon Forces and leader of the Mad Angler Squadron's Kaufmann Team.\nAfter losing his young child in the One Year War, he begins a quest for revenge, continuing to fight even following ceasefire.\nA devout follower of the South Seas religious sect, his personal desire for vengeance takes precedence over his membership in the Zeon remnants as a motivation for going into battle.\nWhen the Spartan attempted to advance on the South Seas Alliance by way of the South Pole, he launched an assault in the Gogg and dealt significant damage to the Spartan's mobile suit squad."
+  },
+  {
+    "id": 100200001031001900,
+    "value": "A petty officer 1st class who descended to Earth in the remaining forces of the Principality of Zeon.\nHe pilots the Acguy and is part of the platoon led by Daryl.\nHe believes in Billy's Newtype powers."
+  },
+  {
+    "id": 100200001031002000,
+    "value": "A lieutenant junior grade of the Principality of Zeon.\nHe pilots the Grublo boarded on the Mad Angler."
+  },
+  {
+    "id": 100200001031002100,
+    "value": "A young disciple of the South Seas Alliance with the monastic rank of Master of Discipline.\nAs a member of the SSA border garrison, he pilots the Gouf.\nHe shows great respect toward the garrison commander Claudia, whom he calls Reverend. His desire to protect her sometimes pushes him to act recklessly.\nIn spite of his age, he is highly proficient as a mobile suit pilot and would do anything to help bring about the new world order sought by Levan Fu."
+  },
+  {
+    "id": 100200001031002200,
+    "value": "-"
+  },
+  {
+    "id": 100200001031002300,
+    "value": "-"
+  },
+  {
+    "id": 100200001031002500,
+    "value": "-"
   },
   {
     "id": 100200001055000100,
@@ -7080,6 +7200,10 @@
     "value": "She tries to act as a lady of nobility, but actually has a violent temper. She uses overly-polite language and an overbearing personality to get what she wants out of life.\nStay on her good side and she is a great ally, but get on her bad side and her true persona will be unleashed like a wild beast, out of control.\nRecently, she has had opportunities to meet genuine ladies of nobility. \nHowever, she has become even less tolerant of those who might call her a phony, attacking them without exception."
   },
   {
+    "id": 100200001850001501,
+    "value": "She tries to act as a lady of nobility, but actually has a violent temper. She uses overly-polite language and an overbearing personality to get what she wants out of life.\nStay on her good side and she is a great ally, but get on her bad side and her true persona will be unleashed like a wild beast, out of control.\nRecently, she has had opportunities to meet genuine ladies of nobility. \nHowever, she has become even less tolerant of those who might call her a phony, attacking them without exception."
+  },
+  {
     "id": 100200001850001600,
     "value": "A proud knight who remains honorable, especially during battle. She is an intelligent person who was trained in the art of sword-fighting by her beloved brother.\nHer talent now rivals even his, but he has fallen ill and she is now the head of the Shultz family. \nShe commits herself to her duties as a knight, determined not to tarnish the family name."
   },
@@ -7197,6 +7321,10 @@
   },
   {
     "id": 100200002022000100,
+    "value": "-"
+  },
+  {
+    "id": 100200002031000100,
     "value": "-"
   },
   {
@@ -8016,7 +8144,19 @@
     "value": "Io Fleming"
   },
   {
+    "id": 100300001031000102,
+    "value": "Io Fleming"
+  },
+  {
+    "id": 100300001031000103,
+    "value": "Io Fleming"
+  },
+  {
     "id": 100300001031000300,
+    "value": "Claudia Peer"
+  },
+  {
+    "id": 100300001031000301,
     "value": "Claudia Peer"
   },
   {
@@ -8029,6 +8169,10 @@
   },
   {
     "id": 100300001031000602,
+    "value": "Daryl Lorenz"
+  },
+  {
+    "id": 100300001031000603,
     "value": "Daryl Lorenz"
   },
   {
@@ -8046,6 +8190,46 @@
   {
     "id": 100300001031001400,
     "value": "Burroughs"
+  },
+  {
+    "id": 100300001031001500,
+    "value": "Bianca Carlyle"
+  },
+  {
+    "id": 100300001031001600,
+    "value": "Alicia"
+  },
+  {
+    "id": 100300001031001700,
+    "value": "Billy Hickam"
+  },
+  {
+    "id": 100300001031001800,
+    "value": "Philippe Kaufmann"
+  },
+  {
+    "id": 100300001031001900,
+    "value": "Sebastian Morse"
+  },
+  {
+    "id": 100300001031002000,
+    "value": "Bull"
+  },
+  {
+    "id": 100300001031002100,
+    "value": "Chow Ming"
+  },
+  {
+    "id": 100300001031002200,
+    "value": "Orphe"
+  },
+  {
+    "id": 100300001031002300,
+    "value": "Dent"
+  },
+  {
+    "id": 100300001031002500,
+    "value": "Marcus"
   },
   {
     "id": 100300001055000100,
@@ -10924,6 +11108,10 @@
     "value": "Florence Kirishima"
   },
   {
+    "id": 100300001850001501,
+    "value": "Florence Kirishima"
+  },
+  {
     "id": 100300001850001600,
     "value": "Elfriede Schultz"
   },
@@ -11042,6 +11230,10 @@
   {
     "id": 100300002022000100,
     "value": "Earth Federation Soldier"
+  },
+  {
+    "id": 100300002031000100,
+    "value": "South Seas Alliance Soldier"
   },
   {
     "id": 100300002060000100,
@@ -11860,7 +12052,19 @@
     "value": "Io Fleming"
   },
   {
+    "id": 100400001031000102,
+    "value": "Io Fleming"
+  },
+  {
+    "id": 100400001031000103,
+    "value": "Io Fleming"
+  },
+  {
     "id": 100400001031000300,
+    "value": "Claudia Peer"
+  },
+  {
+    "id": 100400001031000301,
     "value": "Claudia Peer"
   },
   {
@@ -11873,6 +12077,10 @@
   },
   {
     "id": 100400001031000602,
+    "value": "Daryl Lorenz"
+  },
+  {
+    "id": 100400001031000603,
     "value": "Daryl Lorenz"
   },
   {
@@ -11890,6 +12098,46 @@
   {
     "id": 100400001031001400,
     "value": "Burroughs"
+  },
+  {
+    "id": 100400001031001500,
+    "value": "Bianca Carlyle"
+  },
+  {
+    "id": 100400001031001600,
+    "value": "Alicia"
+  },
+  {
+    "id": 100400001031001700,
+    "value": "Billy Hickam"
+  },
+  {
+    "id": 100400001031001800,
+    "value": "Philippe Kaufmann"
+  },
+  {
+    "id": 100400001031001900,
+    "value": "Sebastian Morse"
+  },
+  {
+    "id": 100400001031002000,
+    "value": "Bull"
+  },
+  {
+    "id": 100400001031002100,
+    "value": "Chow Ming"
+  },
+  {
+    "id": 100400001031002200,
+    "value": "Orphe"
+  },
+  {
+    "id": 100400001031002300,
+    "value": "Dent"
+  },
+  {
+    "id": 100400001031002500,
+    "value": "Marcus"
   },
   {
     "id": 100400001055000100,
@@ -14768,6 +15016,10 @@
     "value": "Florence Kirishima"
   },
   {
+    "id": 100400001850001501,
+    "value": "Florence Kirishima"
+  },
+  {
     "id": 100400001850001600,
     "value": "Elfriede Schultz"
   },
@@ -14886,6 +15138,10 @@
   {
     "id": 100400002022000100,
     "value": "Earth Federation Soldier"
+  },
+  {
+    "id": 100400002031000100,
+    "value": "South Seas Alliance Soldier"
   },
   {
     "id": 100400002060000100,
@@ -15636,12 +15892,60 @@
     "value": "I messed up big time..."
   },
   {
+    "id": 101100001031000102,
+    "value": "Dammit. So much for flawless execution."
+  },
+  {
+    "id": 101100001031000103,
+    "value": "Dammit. So much for flawless execution."
+  },
+  {
+    "id": 101100001031000301,
+    "value": "Ah!"
+  },
+  {
     "id": 101100001031000601,
     "value": "Ngh...! Did I misjudge this?!"
   },
   {
     "id": 101100001031000602,
     "value": "Ngh...! Did I misjudge this?!"
+  },
+  {
+    "id": 101100001031000603,
+    "value": "Better retreat!"
+  },
+  {
+    "id": 101100001031000900,
+    "value": "Sorry, everyone..."
+  },
+  {
+    "id": 101100001031001500,
+    "value": "I can't go like this!"
+  },
+  {
+    "id": 101100001031001600,
+    "value": "EEK!!!"
+  },
+  {
+    "id": 101100001031001700,
+    "value": "Son of a—!"
+  },
+  {
+    "id": 101100001031001800,
+    "value": "I'm withdrawing!"
+  },
+  {
+    "id": 101100001031001900,
+    "value": "I'm sorry, Ensign..."
+  },
+  {
+    "id": 101100001031002000,
+    "value": "No, not me!"
+  },
+  {
+    "id": 101100001031002100,
+    "value": "No!\nThis isn't over!"
   },
   {
     "id": 101100001055000100,
@@ -17436,6 +17740,10 @@
     "value": "No! Not I! Not me!"
   },
   {
+    "id": 101100001850001501,
+    "value": "No! Not I! Not me!"
+  },
+  {
     "id": 101100001850001600,
     "value": "It is decided... A splendid effort, foe though you may be!"
   },
@@ -17848,8 +18156,20 @@
     "value": "Yuichi Nakamura"
   },
   {
+    "id": 101400001031000102,
+    "value": "Yuichi Nakamura"
+  },
+  {
+    "id": 101400001031000103,
+    "value": "Yuichi Nakamura"
+  },
+  {
     "id": 101400001031000300,
     "value": ""
+  },
+  {
+    "id": 101400001031000301,
+    "value": "Toa Yukinari"
   },
   {
     "id": 101400001031000600,
@@ -17864,6 +18184,10 @@
     "value": "Ryohei Kimura"
   },
   {
+    "id": 101400001031000603,
+    "value": "Ryohei Kimura"
+  },
+  {
     "id": 101400001031000700,
     "value": ""
   },
@@ -17873,11 +18197,51 @@
   },
   {
     "id": 101400001031000900,
-    "value": ""
+    "value": "Tsuyoshi Koyama"
   },
   {
     "id": 101400001031001400,
     "value": ""
+  },
+  {
+    "id": 101400001031001500,
+    "value": "Yurina Furukawa"
+  },
+  {
+    "id": 101400001031001600,
+    "value": "Kaori Ishihara"
+  },
+  {
+    "id": 101400001031001700,
+    "value": "Ryota Osaka"
+  },
+  {
+    "id": 101400001031001800,
+    "value": "Takaya Kuroda"
+  },
+  {
+    "id": 101400001031001900,
+    "value": "Yoji Ueda"
+  },
+  {
+    "id": 101400001031002000,
+    "value": "Kenichirou Matsuda"
+  },
+  {
+    "id": 101400001031002100,
+    "value": "Rie Takahashi"
+  },
+  {
+    "id": 101400001031002200,
+    "value": "-"
+  },
+  {
+    "id": 101400001031002300,
+    "value": "-"
+  },
+  {
+    "id": 101400001031002500,
+    "value": "-"
   },
   {
     "id": 101400001055000100,
@@ -20760,6 +21124,10 @@
     "value": "Satomi Arai"
   },
   {
+    "id": 101400001850001501,
+    "value": "Satomi Arai"
+  },
+  {
     "id": 101400001850001600,
     "value": "Atsuko Tanaka"
   },
@@ -20877,6 +21245,10 @@
   },
   {
     "id": 101400002022000100,
+    "value": "-"
+  },
+  {
+    "id": 101400002031000100,
     "value": "-"
   },
   {

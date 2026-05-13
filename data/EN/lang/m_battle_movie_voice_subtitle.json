@@ -3300,6 +3300,206 @@
     "value": "This power is exactly what I wanted!"
   },
   {
+    "id": 101000103100010201,
+    "value": "C'mon, you think that's gonna bait me?"
+  },
+  {
+    "id": 101000103100010202,
+    "value": "Out of my way! Die!"
+  },
+  {
+    "id": 101000103100010203,
+    "value": "Bring it! I'll make minced meat out of you!"
+  },
+  {
+    "id": 101000103100010204,
+    "value": "You're not even on my radar, punk."
+  },
+  {
+    "id": 101000103100010205,
+    "value": "Blow up, dammit!"
+  },
+  {
+    "id": 101000103100010206,
+    "value": "Say your prayers!"
+  },
+  {
+    "id": 101000103100010207,
+    "value": "Got you!"
+  },
+  {
+    "id": 101000103100010208,
+    "value": "Let it rip!"
+  },
+  {
+    "id": 101000103100010209,
+    "value": "You'll have to do better!"
+  },
+  {
+    "id": 101000103100010210,
+    "value": "You gotta be joking!"
+  },
+  {
+    "id": 101000103100010211,
+    "value": "Keep your dirty hands off me!"
+  },
+  {
+    "id": 101000103100010212,
+    "value": "Shit... I'm going down!"
+  },
+  {
+    "id": 101000103100010213,
+    "value": "Dammit. So much for flawless execution."
+  },
+  {
+    "id": 101000103100010214,
+    "value": "I can handle anything, even this magic!"
+  },
+  {
+    "id": 101000103100010215,
+    "value": "So I can use funnels, huh!"
+  },
+  {
+    "id": 101000103100010216,
+    "value": "I'll pound the beat of my Fangs into you!"
+  },
+  {
+    "id": 101000103100010217,
+    "value": "This fist of mine burns red!\nIts roar tells me to keep the beat!"
+  },
+  {
+    "id": 101000103100010218,
+    "value": "Erupting Burning Finger!"
+  },
+  {
+    "id": 101000103100010219,
+    "value": "Woo! This session's tight!"
+  },
+  {
+    "id": 101000103100010220,
+    "value": "Like I'd lose to this runt!"
+  },
+  {
+    "id": 101000103100010221,
+    "value": "Land or sea...\nThe Atlas Gundam brings it to you!"
+  },
+  {
+    "id": 101000103100010222,
+    "value": "It's lights out, buddy!"
+  },
+  {
+    "id": 101000103100010223,
+    "value": "I'll eliminate anyone in my way!"
+  },
+  {
+    "id": 101000103100010224,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100010225,
+    "value": "You're wide open!\nNow you're gonna pay!"
+  },
+  {
+    "id": 101000103100010226,
+    "value": "I'll show any hecklers the door!"
+  },
+  {
+    "id": 101000103100010227,
+    "value": "Time to show what separates this\nfrom your average mobile suit!"
+  },
+  {
+    "id": 101000103100010228,
+    "value": "I'll show any hecklers the door!"
+  },
+  {
+    "id": 101000103100030101,
+    "value": "I'll stop them in their tracks!"
+  },
+  {
+    "id": 101000103100030102,
+    "value": "Predictable."
+  },
+  {
+    "id": 101000103100030103,
+    "value": "How's this?"
+  },
+  {
+    "id": 101000103100030104,
+    "value": "Don't come and ruin my happiness!"
+  },
+  {
+    "id": 101000103100030105,
+    "value": "Here!"
+  },
+  {
+    "id": 101000103100030106,
+    "value": "How's that?"
+  },
+  {
+    "id": 101000103100030107,
+    "value": "Hyah!"
+  },
+  {
+    "id": 101000103100030108,
+    "value": "Down you go!"
+  },
+  {
+    "id": 101000103100030109,
+    "value": "Grgh!"
+  },
+  {
+    "id": 101000103100030110,
+    "value": "Not yet!"
+  },
+  {
+    "id": 101000103100030111,
+    "value": "Looks like I'll need to prepare."
+  },
+  {
+    "id": 101000103100030112,
+    "value": "Ah!"
+  },
+  {
+    "id": 101000103100030113,
+    "value": "Yes, High Priest."
+  },
+  {
+    "id": 101000103100030114,
+    "value": "I'll lead the way."
+  },
+  {
+    "id": 101000103100030115,
+    "value": "Rip everything to shreds!"
+  },
+  {
+    "id": 101000103100030116,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100030117,
+    "value": "To fulfill my calling...\nAaagh!"
+  },
+  {
+    "id": 101000103100030118,
+    "value": "To bring about the world we dream of..."
+  },
+  {
+    "id": 101000103100030119,
+    "value": "This is...the path I chose."
+  },
+  {
+    "id": 101000103100030120,
+    "value": "Now, do your thing."
+  },
+  {
+    "id": 101000103100030121,
+    "value": "Trans-Am..."
+  },
+  {
+    "id": 101000103100030122,
+    "value": "I can't move on until I cut ties with my past."
+  },
+  {
     "id": 101000103100060201,
     "value": "I'm gonna finish this right now!"
   },
@@ -3374,6 +3574,798 @@
   {
     "id": 101000103100060219,
     "value": "I'm Sergeant Major Daryl Lorenz,\nand I'll always be gunning for you!"
+  },
+  {
+    "id": 101000103100060301,
+    "value": "This much...I can handle!"
+  },
+  {
+    "id": 101000103100060302,
+    "value": "I swear...I'll bring you down!"
+  },
+  {
+    "id": 101000103100060303,
+    "value": "I see it! Over there!"
+  },
+  {
+    "id": 101000103100060304,
+    "value": "You let your guard down!"
+  },
+  {
+    "id": 101000103100060305,
+    "value": "Go down!"
+  },
+  {
+    "id": 101000103100060306,
+    "value": "Grahhh!"
+  },
+  {
+    "id": 101000103100060307,
+    "value": "Take this!"
+  },
+  {
+    "id": 101000103100060308,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 101000103100060309,
+    "value": "Ungh!"
+  },
+  {
+    "id": 101000103100060310,
+    "value": "Not here!"
+  },
+  {
+    "id": 101000103100060311,
+    "value": "Dammit! Gotta do something..."
+  },
+  {
+    "id": 101000103100060312,
+    "value": "Better retreat!"
+  },
+  {
+    "id": 101000103100060313,
+    "value": "I'll show you what I can do!"
+  },
+  {
+    "id": 101000103100060314,
+    "value": "That's one wild weapon."
+  },
+  {
+    "id": 101000103100060315,
+    "value": "Fangs! Go and bite them!"
+  },
+  {
+    "id": 101000103100060316,
+    "value": "This fist... It burns redder than the one I lost!\nAnd it roars louder, too!"
+  },
+  {
+    "id": 101000103100060317,
+    "value": "Erupting...Burning Finger!"
+  },
+  {
+    "id": 101000103100060318,
+    "value": "Heat End!"
+  },
+  {
+    "id": 101000103100060319,
+    "value": "With this...I've got a chance!"
+  },
+  {
+    "id": 101000103100060320,
+    "value": "Punch a hole in 'em!"
+  },
+  {
+    "id": 101000103100060321,
+    "value": "Can I control this?\nTrans-Am!"
+  },
+  {
+    "id": 101000103100060322,
+    "value": "I swear...I'll fulfill my mission!"
+  },
+  {
+    "id": 101000103100090001,
+    "value": "You bastard... Quit dodging!"
+  },
+  {
+    "id": 101000103100090002,
+    "value": "I'll take you down!"
+  },
+  {
+    "id": 101000103100090003,
+    "value": "Now where's the—aha!"
+  },
+  {
+    "id": 101000103100090004,
+    "value": "I'll take the rear!"
+  },
+  {
+    "id": 101000103100090005,
+    "value": "I've got it!"
+  },
+  {
+    "id": 101000103100090006,
+    "value": "Let's go!"
+  },
+  {
+    "id": 101000103100090007,
+    "value": "There!"
+  },
+  {
+    "id": 101000103100090008,
+    "value": "Time for the finish!"
+  },
+  {
+    "id": 101000103100090009,
+    "value": "Whoa!"
+  },
+  {
+    "id": 101000103100090010,
+    "value": "What the—?!"
+  },
+  {
+    "id": 101000103100090011,
+    "value": "Crap, where'd they go?!"
+  },
+  {
+    "id": 101000103100090012,
+    "value": "Sorry, everyone..."
+  },
+  {
+    "id": 101000103100090013,
+    "value": "A Newtype weapon, huh?"
+  },
+  {
+    "id": 101000103100090014,
+    "value": "Heh, guess I gotta use it."
+  },
+  {
+    "id": 101000103100090015,
+    "value": "C'mon! Fly, Fangs!"
+  },
+  {
+    "id": 101000103100090016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100090017,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000103100090018,
+    "value": "I've still got arms!"
+  },
+  {
+    "id": 101000103100090019,
+    "value": "Guess I don't know my own strength."
+  },
+  {
+    "id": 101000103100090020,
+    "value": "I don't really get it, but I'll handle it!"
+  },
+  {
+    "id": 101000103100090021,
+    "value": "Let's go! Trans-Am!"
+  },
+  {
+    "id": 101000103100090022,
+    "value": "Hey, I was with the Living Dead Division!"
+  },
+  {
+    "id": 101000103100150001,
+    "value": "I'll crush you to bits!"
+  },
+  {
+    "id": 101000103100150002,
+    "value": "You're wide open, I tell you!"
+  },
+  {
+    "id": 101000103100150003,
+    "value": "You're pushing your luck!"
+  },
+  {
+    "id": 101000103100150004,
+    "value": "You asked for it!"
+  },
+  {
+    "id": 101000103100150005,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 101000103100150006,
+    "value": "Damn it all!"
+  },
+  {
+    "id": 101000103100150007,
+    "value": "I'm not about to lose!"
+  },
+  {
+    "id": 101000103100150008,
+    "value": "You're dead!"
+  },
+  {
+    "id": 101000103100150009,
+    "value": "Ungh!"
+  },
+  {
+    "id": 101000103100150010,
+    "value": "Bastard!"
+  },
+  {
+    "id": 101000103100150011,
+    "value": "Like hell I'm dying here!"
+  },
+  {
+    "id": 101000103100150012,
+    "value": "I can't go like this!"
+  },
+  {
+    "id": 101000103100150013,
+    "value": "I see it—there!"
+  },
+  {
+    "id": 101000103100150014,
+    "value": "GO!!!"
+  },
+  {
+    "id": 101000103100150015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 101000103100150016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100150017,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000103100150018,
+    "value": "Heat End!"
+  },
+  {
+    "id": 101000103100150019,
+    "value": "This session was a blast."
+  },
+  {
+    "id": 101000103100150020,
+    "value": "I'm counting on you! Go!"
+  },
+  {
+    "id": 101000103100150021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100150022,
+    "value": "Time to let it rip!"
+  },
+  {
+    "id": 101000103100160001,
+    "value": "Stay calm... It's now!"
+  },
+  {
+    "id": 101000103100160002,
+    "value": "Watch me land this shot!"
+  },
+  {
+    "id": 101000103100160003,
+    "value": "Gotta take risks!"
+  },
+  {
+    "id": 101000103100160004,
+    "value": "I-I've got this!"
+  },
+  {
+    "id": 101000103100160005,
+    "value": "There!"
+  },
+  {
+    "id": 101000103100160006,
+    "value": "Hyah!"
+  },
+  {
+    "id": 101000103100160007,
+    "value": "I found you!"
+  },
+  {
+    "id": 101000103100160008,
+    "value": "Take this!"
+  },
+  {
+    "id": 101000103100160009,
+    "value": "Eek!"
+  },
+  {
+    "id": 101000103100160010,
+    "value": "Ah!"
+  },
+  {
+    "id": 101000103100160011,
+    "value": "I'm not going down—not here!"
+  },
+  {
+    "id": 101000103100160012,
+    "value": "EEK!!!"
+  },
+  {
+    "id": 101000103100160013,
+    "value": "I'm not sure I've got the hang of it, but still..."
+  },
+  {
+    "id": 101000103100160014,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 101000103100160015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 101000103100160016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100160017,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000103100160018,
+    "value": "Heat End!"
+  },
+  {
+    "id": 101000103100160019,
+    "value": "Phew! I did it!"
+  },
+  {
+    "id": 101000103100160020,
+    "value": "G-Get them!"
+  },
+  {
+    "id": 101000103100160021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100160022,
+    "value": "No matter what, I'll make it out alive!"
+  },
+  {
+    "id": 101000103100170001,
+    "value": "I'll show you!"
+  },
+  {
+    "id": 101000103100170002,
+    "value": "I've seen those moves before!"
+  },
+  {
+    "id": 101000103100170003,
+    "value": "Right here, right now!"
+  },
+  {
+    "id": 101000103100170004,
+    "value": "Right, I see it!"
+  },
+  {
+    "id": 101000103100170005,
+    "value": "Hyah!"
+  },
+  {
+    "id": 101000103100170006,
+    "value": "Eat this!"
+  },
+  {
+    "id": 101000103100170007,
+    "value": "Crash and burn!"
+  },
+  {
+    "id": 101000103100170008,
+    "value": "Aaagh!"
+  },
+  {
+    "id": 101000103100170009,
+    "value": "Ungh!"
+  },
+  {
+    "id": 101000103100170010,
+    "value": "Color me impressed!"
+  },
+  {
+    "id": 101000103100170011,
+    "value": "We're up against a Newtype?"
+  },
+  {
+    "id": 101000103100170012,
+    "value": "Son of a—!"
+  },
+  {
+    "id": 101000103100170013,
+    "value": "There!"
+  },
+  {
+    "id": 101000103100170014,
+    "value": "Funnels! Get going!"
+  },
+  {
+    "id": 101000103100170015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 101000103100170016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100170017,
+    "value": "Erupting Burning Finger!"
+  },
+  {
+    "id": 101000103100170018,
+    "value": "Here comes...Heat End!"
+  },
+  {
+    "id": 101000103100170019,
+    "value": "I can fight too, you know."
+  },
+  {
+    "id": 101000103100170020,
+    "value": "This sensation... What's going on?"
+  },
+  {
+    "id": 101000103100170021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100170022,
+    "value": "I see them... I see the enemy."
+  },
+  {
+    "id": 101000103100180001,
+    "value": "I'll give you a lesson in combat!"
+  },
+  {
+    "id": 101000103100180002,
+    "value": "I'm afraid I can't let you go."
+  },
+  {
+    "id": 101000103100180003,
+    "value": "I've got you now! There!"
+  },
+  {
+    "id": 101000103100180004,
+    "value": "Hit them all at once."
+  },
+  {
+    "id": 101000103100180005,
+    "value": "Aaagh!"
+  },
+  {
+    "id": 101000103100180006,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000103100180007,
+    "value": "Pathetic!"
+  },
+  {
+    "id": 101000103100180008,
+    "value": "I can't miss!"
+  },
+  {
+    "id": 101000103100180009,
+    "value": "Well done!"
+  },
+  {
+    "id": 101000103100180010,
+    "value": "What the—?!"
+  },
+  {
+    "id": 101000103100180011,
+    "value": "Don't you dare give in now!"
+  },
+  {
+    "id": 101000103100180012,
+    "value": "I'm withdrawing!"
+  },
+  {
+    "id": 101000103100180013,
+    "value": "Let me show you how it's done."
+  },
+  {
+    "id": 101000103100180014,
+    "value": "Funnels! There's your enemy!"
+  },
+  {
+    "id": 101000103100180015,
+    "value": "Fangs, cut a path open!"
+  },
+  {
+    "id": 101000103100180016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100180017,
+    "value": "Erupting Burning Finger!"
+  },
+  {
+    "id": 101000103100180018,
+    "value": "This is Heat End!"
+  },
+  {
+    "id": 101000103100180019,
+    "value": "My revenge is far from over."
+  },
+  {
+    "id": 101000103100180020,
+    "value": "Get them!"
+  },
+  {
+    "id": 101000103100180021,
+    "value": "Let me show you! Trans-Am!"
+  },
+  {
+    "id": 101000103100180022,
+    "value": "Time to reap what you've sown!"
+  },
+  {
+    "id": 101000103100190001,
+    "value": "Right, here I come!"
+  },
+  {
+    "id": 101000103100190002,
+    "value": "I won't miss! Take this!"
+  },
+  {
+    "id": 101000103100190003,
+    "value": "How's that for you?!"
+  },
+  {
+    "id": 101000103100190004,
+    "value": "Found you!"
+  },
+  {
+    "id": 101000103100190005,
+    "value": "Guess we're doing this!"
+  },
+  {
+    "id": 101000103100190006,
+    "value": "There!"
+  },
+  {
+    "id": 101000103100190007,
+    "value": "Go to hell!"
+  },
+  {
+    "id": 101000103100190008,
+    "value": "I'll make it count!"
+  },
+  {
+    "id": 101000103100190009,
+    "value": "Wahhh!"
+  },
+  {
+    "id": 101000103100190010,
+    "value": "You're kidding me!"
+  },
+  {
+    "id": 101000103100190011,
+    "value": "Dammit, regroup!"
+  },
+  {
+    "id": 101000103100190012,
+    "value": "I'm sorry, Ensign..."
+  },
+  {
+    "id": 101000103100190013,
+    "value": "Never thought I'd be acting like some Newtype."
+  },
+  {
+    "id": 101000103100190014,
+    "value": "Do I have what it takes to handle this thing?"
+  },
+  {
+    "id": 101000103100190015,
+    "value": "Fangs! Fly!"
+  },
+  {
+    "id": 101000103100190016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100190017,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000103100190018,
+    "value": "I'll follow you, Ensign Billy.\nTo the depths of hell."
+  },
+  {
+    "id": 101000103100190019,
+    "value": "It's gonna take more than that to finish me off!"
+  },
+  {
+    "id": 101000103100190020,
+    "value": "Get 'em!"
+  },
+  {
+    "id": 101000103100190021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100190022,
+    "value": "You don't need to be a Newtype to handle this!"
+  },
+  {
+    "id": 101000103100200001,
+    "value": "This one's mine!"
+  },
+  {
+    "id": 101000103100200002,
+    "value": "You're defenseless!"
+  },
+  {
+    "id": 101000103100200003,
+    "value": "Don't take this weapon lightly!"
+  },
+  {
+    "id": 101000103100200004,
+    "value": "I'll show you what fear is!"
+  },
+  {
+    "id": 101000103100200005,
+    "value": "Hyah!"
+  },
+  {
+    "id": 101000103100200006,
+    "value": "How 'bout this?!"
+  },
+  {
+    "id": 101000103100200007,
+    "value": "Just die!"
+  },
+  {
+    "id": 101000103100200008,
+    "value": "Fool!"
+  },
+  {
+    "id": 101000103100200009,
+    "value": "What?!"
+  },
+  {
+    "id": 101000103100200010,
+    "value": "Is that all?!"
+  },
+  {
+    "id": 101000103100200011,
+    "value": "I'm not licked yet!"
+  },
+  {
+    "id": 101000103100200012,
+    "value": "No, not me!"
+  },
+  {
+    "id": 101000103100200013,
+    "value": "I see it! That way!"
+  },
+  {
+    "id": 101000103100200014,
+    "value": "Give me any weapon! I'll handle it!"
+  },
+  {
+    "id": 101000103100200015,
+    "value": "Fangs! Tear the enemy apart!"
+  },
+  {
+    "id": 101000103100200016,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000103100200017,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000103100200018,
+    "value": "Hahaha! Heat End!"
+  },
+  {
+    "id": 101000103100200019,
+    "value": "Hahahah! How was that?!"
+  },
+  {
+    "id": 101000103100200020,
+    "value": "Go! The enemy's there!"
+  },
+  {
+    "id": 101000103100200021,
+    "value": "Grah! Trans-Am!"
+  },
+  {
+    "id": 101000103100200022,
+    "value": "This thing's still got an ace in the hole!"
+  },
+  {
+    "id": 101000103100210001,
+    "value": "I'll open a path!"
+  },
+  {
+    "id": 101000103100210002,
+    "value": "Witness the fruits of my training!"
+  },
+  {
+    "id": 101000103100210003,
+    "value": "There, you're wide open!"
+  },
+  {
+    "id": 101000103100210004,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 101000103100210005,
+    "value": "Yahhh!"
+  },
+  {
+    "id": 101000103100210006,
+    "value": "Hyah!"
+  },
+  {
+    "id": 101000103100210007,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 101000103100210008,
+    "value": "GO!"
+  },
+  {
+    "id": 101000103100210009,
+    "value": "Grgh!"
+  },
+  {
+    "id": 101000103100210010,
+    "value": "What?!"
+  },
+  {
+    "id": 101000103100210011,
+    "value": "N-Not yet!"
+  },
+  {
+    "id": 101000103100210012,
+    "value": "No!\nThis isn't over!"
+  },
+  {
+    "id": 101000103100210013,
+    "value": "I can hear the High Priest's voice!"
+  },
+  {
+    "id": 101000103100210014,
+    "value": "Be my hands and feet!"
+  },
+  {
+    "id": 101000103100210015,
+    "value": "Tear the enemy apart!"
+  },
+  {
+    "id": 101000103100210016,
+    "value": "This fist of mine burns red!\nIts roar tells me to fulfill my mission!"
+  },
+  {
+    "id": 101000103100210017,
+    "value": "For High Priest Levan Fu's noble cause!\nThat's why we fight!"
+  },
+  {
+    "id": 101000103100210018,
+    "value": "Now you're finished!"
+  },
+  {
+    "id": 101000103100210019,
+    "value": "Whew, I pulled it off!"
+  },
+  {
+    "id": 101000103100210020,
+    "value": "GO!"
+  },
+  {
+    "id": 101000103100210021,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000103100210022,
+    "value": "Now is the time to fulfill my purpose!"
   },
   {
     "id": 101000105500010001,
@@ -30238,6 +31230,50 @@
   {
     "id": 101000185000150014,
     "value": "Right... There!"
+  },
+  {
+    "id": 101000185000150015,
+    "value": "C'mon, funnels! Finish them off!"
+  },
+  {
+    "id": 101000185000150016,
+    "value": "GO!!! Fangs!!!"
+  },
+  {
+    "id": 101000185000150017,
+    "value": "I'll SMASH you...to bits! Trans-Am!"
+  },
+  {
+    "id": 101000185000150018,
+    "value": "You're going to pay for that! Sic them!"
+  },
+  {
+    "id": 101000185000150019,
+    "value": "This fist of mine burns red...\nIts roar tells me to destroy you!!!"
+  },
+  {
+    "id": 101000185000150020,
+    "value": "Burning Finger!!! You die now!"
+  },
+  {
+    "id": 101000185000150021,
+    "value": "Ohohohoho... This calls for...Heat End!"
+  },
+  {
+    "id": 101000185000150022,
+    "value": "Insolent fool... You're gonna regret the day\nyou crossed me, ya hear?!"
+  },
+  {
+    "id": 101000185000150023,
+    "value": "I'm gonna rip you apart next, ya hear?!\nAaagh?!"
+  },
+  {
+    "id": 101000185000150024,
+    "value": "Ohohoho! That'll learn ya! Don't thank me."
+  },
+  {
+    "id": 101000185000150025,
+    "value": "Ahahahah! Pray forgive me...or something!"
   },
   {
     "id": 101000185000160001,

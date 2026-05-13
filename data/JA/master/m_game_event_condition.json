@@ -456,6 +456,14 @@
     "TargetValue4": 0
   },
   {
+    "Id": 200010002601,
+    "GameEventConditionTypeIndex": 228,
+    "TargetValue1": 90520029,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
     "Id": 200010100101,
     "GameEventConditionTypeIndex": 229,
     "TargetValue1": 90520001,
@@ -652,6 +660,14 @@
     "GameEventConditionTypeIndex": 230,
     "TargetValue1": 90520027,
     "TargetValue2": 1006,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 200010102601,
+    "GameEventConditionTypeIndex": 229,
+    "TargetValue1": 90520029,
+    "TargetValue2": 10,
     "TargetValue3": 0,
     "TargetValue4": 0
   },
@@ -7595,6 +7611,62 @@
     "Id": 260450090001,
     "GameEventConditionTypeIndex": 123,
     "TargetValue1": 1440,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030101,
+    "GameEventConditionTypeIndex": 213,
+    "TargetValue1": 200012,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030201,
+    "GameEventConditionTypeIndex": 214,
+    "TargetValue1": 200012,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030301,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 1,
+    "TargetValue2": 200012,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030401,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 2,
+    "TargetValue2": 200012,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030501,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 3,
+    "TargetValue2": 200012,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030601,
+    "GameEventConditionTypeIndex": 213,
+    "TargetValue1": 200012,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260520030701,
+    "GameEventConditionTypeIndex": 110,
+    "TargetValue1": 3305003,
     "TargetValue2": 0,
     "TargetValue3": 0,
     "TargetValue4": 0

@@ -644,6 +644,110 @@
     "value": "Zaku I (Thunderbolt)"
   },
   {
+    "id": 110100001031001200,
+    "value": "Atlas Gundam"
+  },
+  {
+    "id": 110100001031001250,
+    "value": "Atlas Gundam (EX)"
+  },
+  {
+    "id": 110100001031001300,
+    "value": "Guncannon Aqua"
+  },
+  {
+    "id": 110100001031001400,
+    "value": "Gundam Head"
+  },
+  {
+    "id": 110100001031001500,
+    "value": "Gundam Ground Type S"
+  },
+  {
+    "id": 110100001031001600,
+    "value": "Guntank (Thunderbolt)"
+  },
+  {
+    "id": 110100001031001700,
+    "value": "GM Marine Type"
+  },
+  {
+    "id": 110100001031001800,
+    "value": "GM Type C Ground Type (Corvette Booster)"
+  },
+  {
+    "id": 110100001031001900,
+    "value": "Ball Marine Type"
+  },
+  {
+    "id": 110100001031002000,
+    "value": "Corvette Booster"
+  },
+  {
+    "id": 110100001031002100,
+    "value": "Acguy (Thunderbolt)"
+  },
+  {
+    "id": 110100001031002200,
+    "value": "Acguy Recon Type"
+  },
+  {
+    "id": 110100001031002300,
+    "value": "Acguy Mobility Type"
+  },
+  {
+    "id": 110100001031002400,
+    "value": "Acguy Firepower Type A"
+  },
+  {
+    "id": 110100001031002500,
+    "value": "Acguy Firepower Type B"
+  },
+  {
+    "id": 110100001031002600,
+    "value": "Acguy Heavy Firepower Type"
+  },
+  {
+    "id": 110100001031002700,
+    "value": "Gogg (Thunderbolt)"
+  },
+  {
+    "id": 110100001031002800,
+    "value": "Z'Gok (Thunderbolt)"
+  },
+  {
+    "id": 110100001031002900,
+    "value": "Grublo (Thunderbolt)"
+  },
+  {
+    "id": 110100001031003000,
+    "value": "Dahle"
+  },
+  {
+    "id": 110100001031003100,
+    "value": "Dahle (Flotation Equipment)"
+  },
+  {
+    "id": 110100001031003200,
+    "value": "Gouf (Thunderbolt)"
+  },
+  {
+    "id": 110100001031003300,
+    "value": "GM Sky"
+  },
+  {
+    "id": 110100001031003400,
+    "value": "GM Type C Ground Type (Thunderbolt)"
+  },
+  {
+    "id": 110100001031003500,
+    "value": "G-Armor (Thunderbolt)"
+  },
+  {
+    "id": 110100001031003600,
+    "value": "Dodai"
+  },
+  {
     "id": 110100001044000410,
     "value": "Efreet Nacht"
   },
@@ -5568,6 +5672,10 @@
     "value": "Big Zam Mass Production Type"
   },
   {
+    "id": 110100001850001650,
+    "value": "Great Zeong (EX)"
+  },
+  {
     "id": 110100001850001800,
     "value": "Prototype Qubeley"
   },
@@ -5770,6 +5878,10 @@
   {
     "id": 110100002031000200,
     "value": "Dried Fish"
+  },
+  {
+    "id": 110100002031000300,
+    "value": "Spartan"
   },
   {
     "id": 110100002060000100,
@@ -6706,6 +6818,110 @@
   {
     "id": 110200001031001000,
     "value": "Given the moniker \"Old Zaku,\" this was the first mobile suit ever developed by the Principality of Zeon for actual combat use.\nBy the end of the One Year War, it was still in service but lost its position as Zeon's primary mobile suit to its successor, the Zaku II.\nSergeant Major Daryl Lorenz also piloted a Zaku I to snipe down the Full Armor Gundam after it destroyed a Zaku II piloted by his friend.\nThe Zaku Is deployed to the Living Dead Division have their joints covered in sealing to protect them in shoal zones.\nIts backpack is equipped with a propellant tank for increased mobility and a sub-arm to hold firearms.\nThe left shoulder is armored with spike-like protrusions, while the right shoulder armor is removed and grips are attached.\nClaws located on the underside of its feet can be fixed to debris and other objects to serve as footholds.\nIts weapons are a Zaku machine gun, heat hawk, and crackers."
+  },
+  {
+    "id": 110200001031001200,
+    "value": "A prototype mobile suit deployed to the mobile suit squad of the EFF's Assault Landing Ship Spartan.\nPrepared by Captain Monica Humphrey for a top secret operation, it was developed through ample funding from the Moore Brotherhood.\nIt comes equipped with general-purpose support equipment called Sub Leg (a flight unit) for use under gravity, a stock of weapons including a railgun, and even has automatic data collection functionality during armed combat.\nRated for underwater operation, its design is intended to reduce water resistance through the use of ball joints that incorporate technology from aquatic mobile suits."
+  },
+  {
+    "id": 110200001031001250,
+    "value": "A prototype mobile suit deployed to the mobile suit squad of the EFF's Assault Landing Ship Spartan.\nPrepared by Captain Monica Humphrey for a top secret operation, it was developed through ample funding from the Moore Brotherhood.\nIt comes equipped with general-purpose support equipment called Sub Leg (a flight unit) for use under gravity, a stock of weapons including a railgun, and even has automatic data collection functionality during armed combat.\nRated for underwater operation, its design is intended to reduce water resistance through the use of ball joints that incorporate technology from aquatic mobile suits."
+  },
+  {
+    "id": 110200001031001300,
+    "value": "A mobile suit designed for underwater combat based on the Guncannon.\nIn addition to its satchel, the chest and knees are also outfitted with hydrojets capable of underwater operation.\nIts loadout swaps the cannon and beam rifle for a torpedo launcher and needle gun.\nTo better suit underwater combat, the red color scheme of the Guncannon was changed to blue."
+  },
+  {
+    "id": 110200001031001400,
+    "value": "A mobile suit created by retrofitting the GM, an Earth Federation Forces' mass production mobile suit, with a Gundam head.\nExploiting the psychological impact the Gundam had on the enemy, it was deployed against the Zeon forces in the Battle of A Baoa Qu as an intimidation tactic.\nIts large satchel is equipped with sub-arms capable of holding two shields.\nThe joints are covered in sealing to protect them from debris, and extra sensors are installed in the head for exploration.\nA beam saber is equipped on its rear latch.\nAdditional armaments include a twin beam rifle and an assault rifle."
+  },
+  {
+    "id": 110200001031001500,
+    "value": "A Gundam Ground Type assigned to the Spartan, from which it takes the \"S\" in its type designation.\nOnce a Gundam Head deployed in the Battle of A Baoa Qu, it was modified to specialize in ground combat.\nAlongside extra thrusters, its satchel is equipped with sub-arms capable of grasping shields and other equipment.\nIts loadout was entirely overhauled, and besides a beam rifle, includes a beam saber that doubles as a beam javelin.\nIt engaged with mobile suits from the South Seas Alliance's border garrison on the deck of the Spartan."
+  },
+  {
+    "id": 110200001031001600,
+    "value": "An Earth Federation Forces mobile suit.\nThe Black Cat Team unit that was fielded in the battle of A Baoa Qu utilizes a tandem-seat cockpit and four caterpillar tracks.\nCreed and Sonia serve as its pilots.\nIts loadout includes two Low-Recoil Cannon, a quadruple bop missile, and a 6-tube missile pod.\nAfter the One Year War, the Black Cat Team was assigned to the Spartan."
+  },
+  {
+    "id": 110200001031001700,
+    "value": "A mobile suit based on the GM Type C Ground Type and is modified for underwater use.\nHydrojets are added to provide propulsion underwater, installed at the shoulders, knees, and satchel.\nIts loadout is optimized for underwater combat and includes a needle gun that fires projectiles."
+  },
+  {
+    "id": 110200001031001800,
+    "value": "A GM Type C modified for ground combat. Some sources claim that after the One Year War, the Earth Federation Forces employed this mobile suit in conjunction with the Corvette Booster, a sub-flight system (SFS).\nThe GM Type C (GM Late Type) underwent performance enhancements toward the end of the war and continued to be produced thereafter. This ground-use variant is refitted with a large satchel to preserve jump performance under gravity, and the soles are enlarged to increase contact with the ground.\nWith a design that allows for additional equipment to be mounted on the shoulders and legs, it retains high versatility.\nDeveloped as an SFS, the Corvette Booster not only transports a mobile suit, but can also function as a flight unit when one is docked underneath.\nIn either of these docking modes, this mobile suit can be operated with flight and mid-air combat capabilities."
+  },
+  {
+    "id": 110200001031001900,
+    "value": "A mobile pod based on the space-use Ball, modified for underwater use.\nThe head is refitted with a missile pod, flotation equipment is installed on the underside, and a communications cable extends from the top part."
+  },
+  {
+    "id": 110200001031002000,
+    "value": "-"
+  },
+  {
+    "id": 110200001031002100,
+    "value": "A Principality of Zeon amphibious mobile suit.\nIt was the primary machine operated by Daryl Lorenz's platoon.\nAs a special favor from the mechanics, Daryl's unit was marked with a horned-skull emblem on the right part of its chest.\nNotably, the variants in Daryl's platoon are designed to be smaller than the standard Acguy.\nThe head and arm specifications feature exchangeable equipment, with sensor units available for the head and multiple optional weapons for the arms, including a flamethrower."
+  },
+  {
+    "id": 110200001031002200,
+    "value": "A variant of an amphibious mobile suit. Some sources claim that it was originally developed by the Principality of Zeon during the One Year War and subsequently modified and operated by a remnant organization after the conflict ended. Specifically, by survivors of Zeon's Living Dead Division.\nFollowing the war, when they were deployed in the Thunderbolt Sector, they joined forces with fellow remnants on Earth.\nIt is notably smaller than the standard Acguy, featuring an extensive redesign optimized for covert operations.\nEach section is designed with customization in mind, allowing for specialized equipment to be exchanged according to operational requirements. In addition to a sensor visor on the head and a sensor arm replacing the left limb, its standard loadout includes a mission pack with laser communication capability on the back.\nWhile its features are specialized in reconnaissance and command, it was also skillfully used by Daryl Lorenz to destroy enemy units."
+  },
+  {
+    "id": 110200001031002300,
+    "value": "A variant of the MSM-04 Acguy, designated Mobility Type. In standard platoon formation, it takes the vanguard position and is responsible for scouting ahead and escorting allies.\nAs it forgoes large optional equipment, this variant remains closest to the standard specifications of the MSM-04, arguably making the preservation of the original mobility its distinguishing feature.\nIts optional equipment prioritizes ally support, and both Units A and B carry shields.\nUnit A equips a tinbe shield, repurposed from a section of MSM-03 Gogg armor; Unit B equips a cross shield, named according to its shape.\nUnit A's loadout also includes a heat blade, repurposed from a heat hawk blade, as a close-combat weapon and a periscope mission pack on the back.\nUnit B, meanwhile, is equipped with a mission pack for spare magazines on the back.\nEssentially, both Units A and B of the Mobility Type are designed to fulfill a support role within the platoon."
+  },
+  {
+    "id": 110200001031002400,
+    "value": "A variant of an amphibious mobile suit. Some sources claim that it was originally developed by the Principality of Zeon during the One Year War and subsequently modified and operated by a remnant organization after the conflict ended.\nSpecifically, by survivors of Zeon's Living Dead Division. Following the war, when they were deployed in the Thunderbolt Sector, they joined forces with fellow remnants on Earth.\nIt is notably smaller than the standard Acguy, featuring an extensive redesign optimized for covert operations.\nEach section is designed with customization in mind, allowing for specialized equipment to be exchanged according to operational requirements. Its loadout includes a composite weapon unit that integrates various armaments, enabling it to fulfill its support role within the platoon by selecting weaponry best suited to the tactical situation.\nThe rearguard unit, which consists of a propulsion system and a mine dispersal device, enables it to support the squad during retreat."
+  },
+  {
+    "id": 110200001031002500,
+    "value": "A variant of the MSM-04 Acguy, designated Firepower Type. It fulfills the role of support and rearguard within the platoon.\nIts distinguishing features include one arm being refitted with a weapon cluster unit and its satchel being converted into a mine dispersal device, also referred to as the rearguard unit.\nIn standard platoon formation, it takes both rear flank positions and is responsible for supporting allies.\nThe weapon cluster unit on the chest is a composite weapon unit, and Units A and B each have custom configurations.\nUnit A's configuration consists of a Zaku machine gun, TOW missile launcher, and anti-MS bayonet; Unit B's configuration combines a Zaku machine gun with a flamethrower and an anti-MS bola.\nThe rearguard unit is a mine dispersal device equipped with a propulsion system. As its name would suggest, the armament is designed to buy time during retreat.\nBilly Hickam piloted Unit A while Sebastian Morse piloted Unit B on an espionage mission targeting the South Seas Alliance."
+  },
+  {
+    "id": 110200001031002600,
+    "value": "A variant of the MSM-04 Acguy, designated Heavy Firepower Type. Optimized for firepower, both arms are refitted with large weapon units.\nIt is designed to occupy the middle position of the standard formation and serve as the platoon's primary combat asset.\nThe distinctive, arm-mounted weapon units consist of a spray missile launcher for the right arm and a missile container on the left shoulder.\nBoth units can be jettisoned after being used, and a simple manipulator that deploys after detachment is installed in the right shoulder joint.\nFurthermore, since the left arm must support the container, it is refitted with a custom arm unit.\nIts loadout also includes an iron blade as a supplemental weapon, which is stored on the mission pack equipped on the back.\nLike the iron nails employed by amphibious mobile suits, the iron blade does not generate heat. While it is exceptionally sharp, it is not particularly durable.\nFisher Ness served as the pilot of the Heavy Firepower Type in Daryl's platoon."
+  },
+  {
+    "id": 110200001031002700,
+    "value": "The personal machine of Philippe Kaufmann, leader of the Kaufmann Team.\nDesigned to be larger than the Gogg deployed during the One Year War, the iron nails on both hands are large enough to crush a Ball.\nThe shin armor can unfold into a sled, allowing it to traverse snowy terrain with ease.\nIts loadout includes a pair of mega particle cannons installed in the abdomen and a Freeziard in the head."
+  },
+  {
+    "id": 110200001031002800,
+    "value": "The primary machine operated by the Kaufmann Team.\nIn contrast to the Z'Gok deployed during the One Year War, all four limbs utilize ball joints and the shoulders feature increased armor.\nThe legs were modified with combat in cold climates in mind, allowing it to hover across difficult terrain.\nBesides iron nails, its loadout includes a machine gun installed in the arms and missiles in the head."
+  },
+  {
+    "id": 110200001031002900,
+    "value": "A Principality of Zeon underwater mobile armor.\nThe retractable arms that deploy during combat can be stored during cruiser mode.\nIt was aboard Kaufmann's Mad Angler when the Spartan launched the Atlas, and it engaged Io's Atlas Gundam in the waters near Antarctica.\nIts loadout includes a large plasma cannon in the aperture, plasma cannons in both arms, and twenty-four torpedo launchers."
+  },
+  {
+    "id": 110200001031003000,
+    "value": "A mobile suit built by the South Seas Alliance by combining parts from machines scrapped after the One Year War, necessitated by the faction's limited financial resources.\nAs such, features characteristic of both the Federation and Zeon are evident throughout its construction.\nIn addition to a machine gun with a grenade launcher, its loadout includes a Zaku bazooka, heat hawk, and shield."
+  },
+  {
+    "id": 110200001031003100,
+    "value": "Essentially, a marine sub-flight system (SFS), or attachable boats for mobile suits.\nThe equipment is mounted on the shins of each leg, and the Dahle kneels when skimming the surface of the water.\nEach piece is equipped with two thrusters for a total of four, enabling the Dahle to travel over the waves faster than the Acguy can below.\nWhile neither piece stores any weaponry, it does not compromise the combat effectiveness of the Dahle, as the mobile suit retains full use of both hands.\nWithin the water-rich territory of the South Seas Alliance, it has proven indispensable."
+  },
+  {
+    "id": 110200001031003200,
+    "value": "A variant of the Gouf, modified and operated by the South Seas Alliance from mobile suits left behind on the battlefield by the Zeon forces.\nA pair of fans that function as a flight unit are mounted on its backpack.\nImproved maneuverability, including hovering and rapid ascent capabilities, enable it to engage in mid-air combat when operated in conjunction with the Dodai.\nIts loadout consists of a giant bazooka, Zaku machine gun, heat saber, shield, heat rod, and triple gatling cannon.\nIt was deployed to intercept the Spartan when the assault landing ship advanced into SSA-controlled territory."
+  },
+  {
+    "id": 110200001031003300,
+    "value": "A G-Armor variant fielded in the Battle of A Baoa Qu. It contained a RGM-79 GM instead of a Gundam.\nA number of structural issues are resolved by the redesign, including the exposure of the mobile suit it carries in the midsection.\nLikewise, the parts that store the mobile suit's arms are now covered. As a result of these and other adjustments, overall performance is improved.\nHowever, the nose section was damaged in its battle with the Psycommu High Mobility Zaku Test Type. It attempted to counterattack with the GM it contained, but that too was destroyed."
+  },
+  {
+    "id": 110200001031003400,
+    "value": "A GM Type C modified for ground combat.\nIts loadout consists of a long-range beam rifle, missile launcher, assault rifle, beam saber, and shield.\nIo piloted it as a replacement when his Atlas Gundam was undergoing repairs to confront a squad of Goufs and Dodais from the South Seas Alliance's border garrison.\nIn conjunction with the Corvette Booster piloted by Bianca, it engaged in an acrobatic mid-air battle."
+  },
+  {
+    "id": 110200001031003500,
+    "value": "A G-Armor variant equipped with large-caliber beam cannons on top of the A-Parts. It also boasts high performance as a fighter craft.\nIt can store a mobile suit without leaving it exposed, and even after losing the A-Parts, the mobile suit itself can maintain control."
+  },
+  {
+    "id": 110200001031003600,
+    "value": "-"
   },
   {
     "id": 110200001044000400,
@@ -11080,6 +11296,10 @@
     "value": "A mass-produced version of the prototype heavy mobile armor Big-Zam that was developed by the Principality of Zeon for anti-fortress combat.\nThis machine was specifically designed to attack the Federation Forces headquarters at Jaburo.\nIn order to address the Big-Zam's short running time and poor production characteristics, the anti-beam I-Field generator was eliminated, and its armor surface was given an anti-beam coating instead.\nThis reduced its defenses against beam attacks, but it still retained a large mega particle cannon powerful enough to destroy a warship with a single blast.\nBy the time this machine was finally ready for mass production, the Principality of Zeon's defeat was already decided, and the war ended before production could begin."
   },
   {
+    "id": 110200001850001650,
+    "value": "A successor to the Principality of Zeon's psycommu mobile suit Zeong.\nThis machine is one of a series designed to be the ultimate MS.\nIts all-range attack capabilities are further enhanced with the ability to separate into seven parts.\nIts head, chest, waist, arms, and legs can all be remotely guided via psycommu system control, enabling it to perform wireless all-range attacks.\nThe Minovsky craft systems in its shoulder binders also allow for operation within the atmosphere.\nThis gives it high performance worthy of the Zeong's successor.\nBecause the war ended while this machine's development plans were still being prepared, it was never actually built.\nHowever, its design data was passed on to Axis, where it became a foundation for next-generation machines."
+  },
+  {
     "id": 110200001850001800,
     "value": "Appeared in the PlayStation game SD Gundam G Generation F.\nA prototype unit developed on Axis as part of an effort to create a mobile suit version of the Elmeth.\nOwing to the limitations of contemporary technology, miniaturizing the Psycommu System proved difficult, and the mobile suit is enormous as a result."
   },
@@ -11281,6 +11501,10 @@
   },
   {
     "id": 110200002031000200,
+    "value": "-"
+  },
+  {
+    "id": 110200002031000300,
     "value": "-"
   },
   {
@@ -12362,6 +12586,110 @@
   {
     "id": 110300001031001000,
     "value": "Zaku I (Thunderbolt)"
+  },
+  {
+    "id": 110300001031001200,
+    "value": "Atlas Gundam"
+  },
+  {
+    "id": 110300001031001250,
+    "value": "Atlas Gundam (EX)"
+  },
+  {
+    "id": 110300001031001300,
+    "value": "Guncannon Aqua"
+  },
+  {
+    "id": 110300001031001400,
+    "value": "Gundam Head"
+  },
+  {
+    "id": 110300001031001500,
+    "value": "Gundam Ground Type S"
+  },
+  {
+    "id": 110300001031001600,
+    "value": "Guntank  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031001700,
+    "value": "GM Marine Type"
+  },
+  {
+    "id": 110300001031001800,
+    "value": "GM Type C Ground Type (Corvette Booster)"
+  },
+  {
+    "id": 110300001031001900,
+    "value": "Ball Marine Type"
+  },
+  {
+    "id": 110300001031002000,
+    "value": "Corvette Booster"
+  },
+  {
+    "id": 110300001031002100,
+    "value": "Acguy  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031002200,
+    "value": "Acguy Recon Type"
+  },
+  {
+    "id": 110300001031002300,
+    "value": "Acguy Mobility Type"
+  },
+  {
+    "id": 110300001031002400,
+    "value": "Acguy Firepower Type A"
+  },
+  {
+    "id": 110300001031002500,
+    "value": "Acguy Firepower Type B"
+  },
+  {
+    "id": 110300001031002600,
+    "value": "Acguy Heavy Firepower Type"
+  },
+  {
+    "id": 110300001031002700,
+    "value": "Gogg  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031002800,
+    "value": "Z'Gok  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031002900,
+    "value": "Grublo  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031003000,
+    "value": "Dahle"
+  },
+  {
+    "id": 110300001031003100,
+    "value": "Dahle (Flotation Equipment)"
+  },
+  {
+    "id": 110300001031003200,
+    "value": "Gouf  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031003300,
+    "value": "GM Sky"
+  },
+  {
+    "id": 110300001031003400,
+    "value": "GM Type C Ground Type  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031003500,
+    "value": "G-Armor  (Thunderbolt)"
+  },
+  {
+    "id": 110300001031003600,
+    "value": "Dodai"
   },
   {
     "id": 110300001044000410,
@@ -17288,6 +17616,10 @@
     "value": "Big Zam Mass Production Type"
   },
   {
+    "id": 110300001850001650,
+    "value": "Great Zeong (EX)"
+  },
+  {
     "id": 110300001850001800,
     "value": "Prototype Qubeley"
   },
@@ -17490,6 +17822,10 @@
   {
     "id": 110300002031000200,
     "value": "Dried Fish"
+  },
+  {
+    "id": 110300002031000300,
+    "value": "Spartan"
   },
   {
     "id": 110300002060000100,
@@ -18570,6 +18906,110 @@
   {
     "id": 110400001031001000,
     "value": "Zaku I (Thunderbolt)"
+  },
+  {
+    "id": 110400001031001200,
+    "value": "Atlas Gundam"
+  },
+  {
+    "id": 110400001031001250,
+    "value": "Atlas Gundam (EX)"
+  },
+  {
+    "id": 110400001031001300,
+    "value": "Guncannon Aqua"
+  },
+  {
+    "id": 110400001031001400,
+    "value": "Gundam Head"
+  },
+  {
+    "id": 110400001031001500,
+    "value": "Gundam Ground Type S"
+  },
+  {
+    "id": 110400001031001600,
+    "value": "Guntank (Thunderbolt)"
+  },
+  {
+    "id": 110400001031001700,
+    "value": "GM Marine Type"
+  },
+  {
+    "id": 110400001031001800,
+    "value": "GM Type C Ground Type (Corvette Booster)"
+  },
+  {
+    "id": 110400001031001900,
+    "value": "Ball Marine Type"
+  },
+  {
+    "id": 110400001031002000,
+    "value": "Corvette Booster"
+  },
+  {
+    "id": 110400001031002100,
+    "value": "Acguy (Thunderbolt)"
+  },
+  {
+    "id": 110400001031002200,
+    "value": "Acguy Recon Type"
+  },
+  {
+    "id": 110400001031002300,
+    "value": "Acguy Mobility Type"
+  },
+  {
+    "id": 110400001031002400,
+    "value": "Acguy Firepower Type A"
+  },
+  {
+    "id": 110400001031002500,
+    "value": "Acguy Firepower Type B"
+  },
+  {
+    "id": 110400001031002600,
+    "value": "Acguy Heavy Firepower Type"
+  },
+  {
+    "id": 110400001031002700,
+    "value": "Gogg (Thunderbolt)"
+  },
+  {
+    "id": 110400001031002800,
+    "value": "Z'Gok (Thunderbolt)"
+  },
+  {
+    "id": 110400001031002900,
+    "value": "Grublo (Thunderbolt)"
+  },
+  {
+    "id": 110400001031003000,
+    "value": "Dahle"
+  },
+  {
+    "id": 110400001031003100,
+    "value": "Dahle (Flotation Equipment)"
+  },
+  {
+    "id": 110400001031003200,
+    "value": "Gouf (Thunderbolt)"
+  },
+  {
+    "id": 110400001031003300,
+    "value": "GM Sky"
+  },
+  {
+    "id": 110400001031003400,
+    "value": "GM Type C Ground Type (Thunderbolt)"
+  },
+  {
+    "id": 110400001031003500,
+    "value": "G-Armor (Thunderbolt)"
+  },
+  {
+    "id": 110400001031003600,
+    "value": "Dodai"
   },
   {
     "id": 110400001044000410,
@@ -23496,6 +23936,10 @@
     "value": "Big Zam Mass Production Type"
   },
   {
+    "id": 110400001850001650,
+    "value": "Great Zeong (EX)"
+  },
+  {
     "id": 110400001850001800,
     "value": "Prototype Qubeley"
   },
@@ -23698,6 +24142,10 @@
   {
     "id": 110400002031000200,
     "value": "Dried Fish"
+  },
+  {
+    "id": 110400002031000300,
+    "value": "Spartan"
   },
   {
     "id": 110400002060000100,

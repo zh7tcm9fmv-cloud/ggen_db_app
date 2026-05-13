@@ -32,6 +32,10 @@
     "value": "Gundam Full Armor (Thunderbolt)"
   },
   {
+    "id": 110100001031001200,
+    "value": "Atlas Gundam"
+  },
+  {
     "id": 110100001060000100,
     "value": "Gundam GP01"
   },
@@ -234,6 +238,10 @@
   {
     "id": 110200001031000100,
     "value": "A federation forces Gundam-type mobile suit assigned to the moore brotherhood, an organization made up of former redidents of the destroyed side 4.\nIts design differs from the FA-78-1 version and includes an array of experimental systems and equipment.\nThis machine is equipped with extraordinarily heavy armament compared to other MS of the time.\nIts right arm bears a large twin beam rifle which employs an energy pack system.\nIn addition to a shield, the left arm carries five rocket launchers.\nFurthermore, the backpack holds missile pods and a large beam cannon, as well as six spare energy packs, and its sub-arms allow the machine to carry a total of four shields.\nThrusters and apogee motors are attached to the shoulders, legs, and elsewhere.\nCombined with the backpack's large rocket boosters, these give it thrust rivaling that of a high mobility type MS."
+  },
+  {
+    "id": 110200001031001200,
+    "value": "A prototype mobile suit deployed to the mobile suit squad of the EFF's Assault Landing Ship Spartan.\nPrepared by Captain Monica Humphrey for a top secret operation, it was developed through ample funding from the Moore Brotherhood.\nIt comes equipped with general-purpose support equipment called Sub Leg (a flight unit) for use under gravity, a stock of weapons including a railgun, and even has automatic data collection functionality during armed combat.\nRated for underwater operation, its design is intended to reduce water resistance through the use of ball joints that incorporate technology from aquatic mobile suits."
   },
   {
     "id": 110200001060000100,

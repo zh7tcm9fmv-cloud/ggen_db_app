@@ -168,6 +168,12 @@
     "DamagedEffectId": "ef_mpd_0002_006_beamcanon"
   },
   {
+    "Id": 110007,
+    "WeaponEffectPrefabPairSetId": 110007,
+    "WeaponEffectId": "ef_mpa_0002_007_beamcanon",
+    "DamagedEffectId": "ef_mpd_0002_007_beamcanon"
+  },
+  {
     "Id": 110012,
     "WeaponEffectPrefabPairSetId": 110012,
     "WeaponEffectId": "ef_mpa_0002_004_beamcanon_mercury",
@@ -1854,6 +1860,24 @@
     "DamagedEffectId": "ef_mpd_0002_007_beamcanon_mercury"
   },
   {
+    "Id": 290148,
+    "WeaponEffectPrefabPairSetId": 290148,
+    "WeaponEffectId": "ef_mpa_0023_010_railgun",
+    "DamagedEffectId": "ef_mpd_0023_010_railgun"
+  },
+  {
+    "Id": 290149,
+    "WeaponEffectPrefabPairSetId": 290149,
+    "WeaponEffectId": "ef_mpa_0023_000_megacannon",
+    "DamagedEffectId": "ef_mpd_0023_000_megacannon"
+  },
+  {
+    "Id": 290150,
+    "WeaponEffectPrefabPairSetId": 290150,
+    "WeaponEffectId": "ef_mpa_0023_000_missile_greatzeong",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -2940,6 +2964,12 @@
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
+    "Id": 360003,
+    "WeaponEffectPrefabPairSetId": 360003,
+    "WeaponEffectId": "ef_mpa_0026_006_funnel_greatzeong",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
     "Id": 370001,
     "WeaponEffectPrefabPairSetId": 370001,
     "WeaponEffectId": "ef_mpa_0027_000_funnel_mastergundam",
@@ -3970,6 +4000,24 @@
     "WeaponEffectPrefabPairSetId": 900178,
     "WeaponEffectId": "ef_mpw_093_06_fourlinetwinmegabeam",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900179,
+    "WeaponEffectPrefabPairSetId": 900179,
+    "WeaponEffectId": "ef_mpw_018_00_multipleburst_aqua",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900180,
+    "WeaponEffectPrefabPairSetId": 900180,
+    "WeaponEffectId": "ef_mpw_094_01_medusaarrow",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900185,
+    "WeaponEffectPrefabPairSetId": 900180,
+    "WeaponEffectId": "ef_mpa_094_01_medusaarrow",
+    "DamagedEffectId": "ef_mpd_094_01_medusaarrow"
   },
   {
     "Id": 8000009,
@@ -7618,6 +7666,156 @@
     "WeaponEffectPrefabPairSetId": 80066,
     "WeaponEffectId": "ef_mpa_1000_002_funnelbeam_halphas",
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 8006701,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_railgun_atlas",
+    "DamagedEffectId": "ef_mpd_1000_000_railgun_atlas"
+  },
+  {
+    "Id": 8006702,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_tackle_atlas",
+    "DamagedEffectId": "ef_mpd_1000_000_tackle_atlas"
+  },
+  {
+    "Id": 8006703,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_longbulcan_atlas",
+    "DamagedEffectId": "ef_mpd_1000_000_longbulcan_atlas"
+  },
+  {
+    "Id": 8006704,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_bazooka_atlas",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 8006705,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_rollingbulcan_atlas",
+    "DamagedEffectId": "ef_mpd_1000_000_rollingbulcan_atlas"
+  },
+  {
+    "Id": 8006706,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_atlas_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_atlas_ex1"
+  },
+  {
+    "Id": 8006707,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_atlas_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_atlas_ex2"
+  },
+  {
+    "Id": 8006708,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_atlas_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_atlas_ex2"
+  },
+  {
+    "Id": 8006709,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_0020_002_stab",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
+    "Id": 8006710,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_slashblow_atlas",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006711,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_atlas",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_atlas"
+  },
+  {
+    "Id": 8006712,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_atlas",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006713,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8006714,
+    "WeaponEffectPrefabPairSetId": 80067,
+    "WeaponEffectId": "ef_mpa_1000_000_trail_atlas",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006801,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_knuckleshot_greatzeong",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006802,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_knuckle_greatzeong",
+    "DamagedEffectId": "ef_mpd_1000_000_knuckle_greatzeong"
+  },
+  {
+    "Id": 8006803,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_blow_greatzeong_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_blow_greatzeong_ex1"
+  },
+  {
+    "Id": 8006804,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_blow_greatzeong_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_blow_greatzeong_ex2"
+  },
+  {
+    "Id": 8006805,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberpose_greatzeong",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006806,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_greatzeong_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_greatzeong_ex1"
+  },
+  {
+    "Id": 8006807,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_greatzeong_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_greatzeong_ex2"
+  },
+  {
+    "Id": 8006808,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_charge_greatzeong",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006809,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_beambuster_greatzeong",
+    "DamagedEffectId": "ef_mpd_1000_000_beambuster_greatzeong"
+  },
+  {
+    "Id": 8006810,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_greatzeong",
+    "DamagedEffectId": "ef_mpd_1000_000_missile_greatzeong"
+  },
+  {
+    "Id": 8006811,
+    "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
   },
   {
     "Id": 99999990,

@@ -13,7 +13,7 @@
   },
   {
     "id": 180100000000000002,
-    "value": "Upgrade 1 unit."
+    "value": "Use 1 Unit Upgrade Data."
   },
   {
     "id": 180100000000000003,
@@ -2016,6 +2016,10 @@
     "value": "Clear EXPERT No.24: Gundam/Gundam Pilot with only units with the Protagonist tag."
   },
   {
+    "id": 180100200010002601,
+    "value": "Clear EXPERT No.26: Underwater Use with only development units/other units."
+  },
+  {
     "id": 180100200010100101,
     "value": "Clear EXPERT No.1 U.C. Series with 10 surviving units."
   },
@@ -2116,6 +2120,10 @@
     "value": "Clear EXPERT No.24: Gundam/Gundam Pilot with only units with the Rival tag."
   },
   {
+    "id": 180100200010102601,
+    "value": "Clear EXPERT No.26: Underwater Use with 10 surviving units."
+  },
+  {
     "id": 180100200010200101,
     "value": "Clear EXPERT No.1 U.C. Series with only units with the Zeon tag."
   },
@@ -2173,11 +2181,11 @@
   },
   {
     "id": 180100250110011104,
-    "value": "Upgrade 1 unit."
+    "value": "Use 1 Unit Upgrade Data."
   },
   {
     "id": 180100250110011105,
-    "value": "Upgrade characters a total of 1 time."
+    "value": "Use 1 Character Upgrade Data."
   },
   {
     "id": 180100250110011106,
@@ -2277,7 +2285,7 @@
   },
   {
     "id": 180100250110011403,
-    "value": "Upgrade 1 supporter."
+    "value": "Use 1 Supporter Upgrade Data."
   },
   {
     "id": 180100250110011404,
@@ -8646,6 +8654,118 @@
   {
     "id": 180100260450090001,
     "value": "Get all Development Diagrams from series \"Mobile Suit Gundam Narrative\" to one hundred percent."
+  },
+  {
+    "id": 180100260520030001,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 1 time(s)."
+  },
+  {
+    "id": 180100260520030102,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 10 time(s)."
+  },
+  {
+    "id": 180100260520030201,
+    "value": "Reset the Medal Unit Assembly 1 time(s)."
+  },
+  {
+    "id": 180100260520030202,
+    "value": "Reset the Medal Unit Assembly 2 time(s)."
+  },
+  {
+    "id": 180100260520030203,
+    "value": "Reset the Medal Unit Assembly 3 time(s)."
+  },
+  {
+    "id": 180100260520030204,
+    "value": "Reset the Medal Unit Assembly 4 time(s)."
+  },
+  {
+    "id": 180100260520030205,
+    "value": "Reset the Medal Unit Assembly 5 time(s)."
+  },
+  {
+    "id": 180100260520030206,
+    "value": "Reset the Medal Unit Assembly 6 time(s)."
+  },
+  {
+    "id": 180100260520030301,
+    "value": "Clear a boss battle on NORMAL difficulty 1 time(s)."
+  },
+  {
+    "id": 180100260520030302,
+    "value": "Clear a boss battle on NORMAL difficulty 3 time(s)."
+  },
+  {
+    "id": 180100260520030303,
+    "value": "Clear a boss battle on NORMAL difficulty 5 time(s)."
+  },
+  {
+    "id": 180100260520030401,
+    "value": "Clear a boss battle on HARD difficulty 1 time(s)."
+  },
+  {
+    "id": 180100260520030402,
+    "value": "Clear a boss battle on HARD difficulty 3 time(s)."
+  },
+  {
+    "id": 180100260520030403,
+    "value": "Clear a boss battle on HARD difficulty 5 time(s)."
+  },
+  {
+    "id": 180100260520030501,
+    "value": "Clear a boss battle on EXPERT difficulty 1 time(s)."
+  },
+  {
+    "id": 180100260520030502,
+    "value": "Clear a boss battle on EXPERT difficulty 2 time(s)."
+  },
+  {
+    "id": 180100260520030503,
+    "value": "Clear a boss battle on EXPERT difficulty 3 time(s)."
+  },
+  {
+    "id": 180100260520030504,
+    "value": "Clear a boss battle on EXPERT difficulty 4 time(s)."
+  },
+  {
+    "id": 180100260520030505,
+    "value": "Clear a boss battle on EXPERT difficulty 5 time(s)."
+  },
+  {
+    "id": 180100260520030601,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 5 time(s)."
+  },
+  {
+    "id": 180100260520030602,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 10 time(s)."
+  },
+  {
+    "id": 180100260520030603,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 15 time(s)."
+  },
+  {
+    "id": 180100260520030604,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 20 time(s)."
+  },
+  {
+    "id": 180100260520030605,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 25 time(s)."
+  },
+  {
+    "id": 180100260520030606,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 30 time(s)."
+  },
+  {
+    "id": 180100260520030607,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 40 time(s)."
+  },
+  {
+    "id": 180100260520030608,
+    "value": "Clear a stage from series \"Mobile Suit Gundam Thunderbolt: Bandit Flower\" 50 time(s)."
+  },
+  {
+    "id": 180100260520030701,
+    "value": "Clear \"VS. Acguy Recon Type EXPERT\" from the story event \"Mobile Suit Gundam Thunderbolt: Bandit Flower\"."
   },
   {
     "id": 180100300010200101,

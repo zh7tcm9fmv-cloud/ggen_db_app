@@ -162,6 +162,12 @@
     "TransitionId": 10000000200011
   },
   {
+    "Id": 200012,
+    "EventId": 200012,
+    "Priority": 26052001,
+    "TransitionId": 10000000200012
+  },
+  {
     "Id": 210001,
     "EventId": 210001,
     "Priority": 25061001,

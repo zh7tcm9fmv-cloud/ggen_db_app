@@ -1380,6 +1380,282 @@
     "LotteryCount": 1
   },
   {
+    "Id": 300330010301,
+    "StageDropSetId": 3003300103,
+    "StageDropContentSetId": 300330010301,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330010302,
+    "StageDropSetId": 3003300103,
+    "StageDropContentSetId": 300330010302,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330010303,
+    "StageDropSetId": 3003300103,
+    "StageDropContentSetId": 300330010303,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330010304,
+    "StageDropSetId": 3003300103,
+    "StageDropContentSetId": 300330010304,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330020401,
+    "StageDropSetId": 3003300204,
+    "StageDropContentSetId": 300330020401,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330020402,
+    "StageDropSetId": 3003300204,
+    "StageDropContentSetId": 300330020402,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330020403,
+    "StageDropSetId": 3003300204,
+    "StageDropContentSetId": 300330020403,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330020404,
+    "StageDropSetId": 3003300204,
+    "StageDropContentSetId": 300330020404,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330030101,
+    "StageDropSetId": 3003300301,
+    "StageDropContentSetId": 300330030101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330030102,
+    "StageDropSetId": 3003300301,
+    "StageDropContentSetId": 300330030102,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330030103,
+    "StageDropSetId": 3003300301,
+    "StageDropContentSetId": 300330030103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330030104,
+    "StageDropSetId": 3003300301,
+    "StageDropContentSetId": 300330030104,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330040201,
+    "StageDropSetId": 3003300402,
+    "StageDropContentSetId": 300330040201,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330040202,
+    "StageDropSetId": 3003300402,
+    "StageDropContentSetId": 300330040202,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330040203,
+    "StageDropSetId": 3003300402,
+    "StageDropContentSetId": 300330040203,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330040204,
+    "StageDropSetId": 3003300402,
+    "StageDropContentSetId": 300330040204,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330050401,
+    "StageDropSetId": 3003300504,
+    "StageDropContentSetId": 300330050401,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330050402,
+    "StageDropSetId": 3003300504,
+    "StageDropContentSetId": 300330050402,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330050403,
+    "StageDropSetId": 3003300504,
+    "StageDropContentSetId": 300330050403,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330050404,
+    "StageDropSetId": 3003300504,
+    "StageDropContentSetId": 300330050404,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330060101,
+    "StageDropSetId": 3003300601,
+    "StageDropContentSetId": 300330060101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330060102,
+    "StageDropSetId": 3003300601,
+    "StageDropContentSetId": 300330060102,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330060103,
+    "StageDropSetId": 3003300601,
+    "StageDropContentSetId": 300330060103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330060104,
+    "StageDropSetId": 3003300601,
+    "StageDropContentSetId": 300330060104,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330070301,
+    "StageDropSetId": 3003300703,
+    "StageDropContentSetId": 300330070301,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330070302,
+    "StageDropSetId": 3003300703,
+    "StageDropContentSetId": 300330070302,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330070303,
+    "StageDropSetId": 3003300703,
+    "StageDropContentSetId": 300330070303,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330070304,
+    "StageDropSetId": 3003300703,
+    "StageDropContentSetId": 300330070304,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330080101,
+    "StageDropSetId": 3003300801,
+    "StageDropContentSetId": 300330080101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330080102,
+    "StageDropSetId": 3003300801,
+    "StageDropContentSetId": 300330080102,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330080103,
+    "StageDropSetId": 3003300801,
+    "StageDropContentSetId": 300330080103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330080104,
+    "StageDropSetId": 3003300801,
+    "StageDropContentSetId": 300330080104,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330090101,
+    "StageDropSetId": 3003300901,
+    "StageDropContentSetId": 300330090101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330090102,
+    "StageDropSetId": 3003300901,
+    "StageDropContentSetId": 300330090102,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330090103,
+    "StageDropSetId": 3003300901,
+    "StageDropContentSetId": 300330090103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330090104,
+    "StageDropSetId": 3003300901,
+    "StageDropContentSetId": 300330090104,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330100101,
+    "StageDropSetId": 3003301001,
+    "StageDropContentSetId": 300330100101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330100102,
+    "StageDropSetId": 3003301001,
+    "StageDropContentSetId": 300330100102,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330100103,
+    "StageDropSetId": 3003301001,
+    "StageDropContentSetId": 300330100103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330100104,
+    "StageDropSetId": 3003301001,
+    "StageDropContentSetId": 300330100104,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330500101,
+    "StageDropSetId": 3003305001,
+    "StageDropContentSetId": 300330500101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330500201,
+    "StageDropSetId": 3003305002,
+    "StageDropContentSetId": 300330500201,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330500301,
+    "StageDropSetId": 3003305003,
+    "StageDropContentSetId": 300330500301,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330600101,
+    "StageDropSetId": 3003306001,
+    "StageDropContentSetId": 300330600101,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330600201,
+    "StageDropSetId": 3003306002,
+    "StageDropContentSetId": 300330600201,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 300330600301,
+    "StageDropSetId": 3003306003,
+    "StageDropContentSetId": 300330600301,
+    "LotteryCount": 1
+  },
+  {
     "Id": 300600010301,
     "StageDropSetId": 3006000103,
     "StageDropContentSetId": 300600010301,
@@ -13431,36 +13707,6 @@
     "Id": 380320100104,
     "StageDropSetId": 3803201001,
     "StageDropContentSetId": 380320100104,
-    "LotteryCount": 1
-  },
-  {
-    "Id": 380320500201,
-    "StageDropSetId": 3803205002,
-    "StageDropContentSetId": 380320500201,
-    "LotteryCount": 1
-  },
-  {
-    "Id": 380320500301,
-    "StageDropSetId": 3803205003,
-    "StageDropContentSetId": 380320500301,
-    "LotteryCount": 1
-  },
-  {
-    "Id": 380320600101,
-    "StageDropSetId": 3803206001,
-    "StageDropContentSetId": 380320600101,
-    "LotteryCount": 1
-  },
-  {
-    "Id": 380320600201,
-    "StageDropSetId": 3803206002,
-    "StageDropContentSetId": 380320600201,
-    "LotteryCount": 1
-  },
-  {
-    "Id": 380320600301,
-    "StageDropSetId": 3803206003,
-    "StageDropContentSetId": 380320600301,
     "LotteryCount": 1
   },
   {

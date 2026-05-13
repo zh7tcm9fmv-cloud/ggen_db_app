@@ -2044,6 +2044,26 @@
     "value": "Increase DEF & ACC LV 5"
   },
   {
+    "id": 140100000101560100,
+    "value": "Increased ATK & Advantage: Principality of Zeon LV 1"
+  },
+  {
+    "id": 140100000101560200,
+    "value": "Increased ATK & Advantage: Principality of Zeon LV 2"
+  },
+  {
+    "id": 140100000101560300,
+    "value": "Increased ATK & Advantage: Principality of Zeon LV 3"
+  },
+  {
+    "id": 140100000101560400,
+    "value": "Increased ATK & Advantage: Principality of Zeon LV 4"
+  },
+  {
+    "id": 140100000101560500,
+    "value": "Increased ATK & Advantage: Principality of Zeon LV 5"
+  },
+  {
     "id": 140100000200010101,
     "value": "Increased Melee LV 1"
   },
@@ -4764,6 +4784,10 @@
     "value": "Increased Awaken & Reaction LV 3"
   },
   {
+    "id": 140100000202240400,
+    "value": "Increased Awaken & Reaction LV 4"
+  },
+  {
     "id": 140100000202250200,
     "value": "X-Rounder LV 2"
   },
@@ -4949,6 +4973,18 @@
   },
   {
     "id": 140100000202540100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202550101,
+    "value": "(Cnd: Series) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202570100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202580100,
     "value": "EX Character Ability"
   },
   {
@@ -5828,1624 +5864,1656 @@
     "value": "Piercing LV 9"
   },
   {
+    "id": 140100000300360101,
+    "value": "Immobilized"
+  },
+  {
+    "id": 140100000300370101,
+    "value": "MOV Down LV 1"
+  },
+  {
     "id": 140100000310010101,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 1"
   },
   {
     "id": 140100000310010201,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 2"
   },
   {
     "id": 140100000310010301,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 3"
   },
   {
     "id": 140100000310010401,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 4"
   },
   {
     "id": 140100000310010501,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 5"
   },
   {
     "id": 140100000310010601,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 6"
   },
   {
     "id": 140100000310010701,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 7"
   },
   {
     "id": 140100000310010801,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 8"
   },
   {
     "id": 140100000310010901,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 9"
   },
   {
     "id": 140100000310020101,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 1"
   },
   {
     "id": 140100000310020201,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 2"
   },
   {
     "id": 140100000310020301,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 3"
   },
   {
     "id": 140100000310020401,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 4"
   },
   {
     "id": 140100000310020501,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 5"
   },
   {
     "id": 140100000310020601,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 6"
   },
   {
     "id": 140100000310020701,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 7"
   },
   {
     "id": 140100000310020801,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 8"
   },
   {
     "id": 140100000310020901,
-    "value": "Decreased ATK [2 turn]"
+    "value": "Decreased ATK [2 turn] LV 9"
   },
   {
     "id": 140100000310040101,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 1"
   },
   {
     "id": 140100000310040201,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 2"
   },
   {
     "id": 140100000310040301,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 3"
   },
   {
     "id": 140100000310040401,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 4"
   },
   {
     "id": 140100000310040501,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 5"
   },
   {
     "id": 140100000310040601,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 6"
   },
   {
     "id": 140100000310040701,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 7"
   },
   {
     "id": 140100000310040801,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 8"
   },
   {
     "id": 140100000310040901,
-    "value": "Decreased DEF [1 turn]"
+    "value": "Decreased DEF [1 turn] LV 9"
   },
   {
     "id": 140100000310050101,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 1"
   },
   {
     "id": 140100000310050201,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 2"
   },
   {
     "id": 140100000310050301,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 3"
   },
   {
     "id": 140100000310050401,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 4"
   },
   {
     "id": 140100000310050501,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 5"
   },
   {
     "id": 140100000310050601,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 6"
   },
   {
     "id": 140100000310050701,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 7"
   },
   {
     "id": 140100000310050801,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 8"
   },
   {
     "id": 140100000310050901,
-    "value": "Decreased DEF [2 turn]"
+    "value": "Decreased DEF [2 turn] LV 9"
   },
   {
     "id": 140100000310070101,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 1"
   },
   {
     "id": 140100000310070201,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 2"
   },
   {
     "id": 140100000310070301,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 3"
   },
   {
     "id": 140100000310070401,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 4"
   },
   {
     "id": 140100000310070501,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 5"
   },
   {
     "id": 140100000310070601,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 6"
   },
   {
     "id": 140100000310070701,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 7"
   },
   {
     "id": 140100000310070801,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 8"
   },
   {
     "id": 140100000310070901,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 9"
   },
   {
     "id": 140100000310080101,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 1"
   },
   {
     "id": 140100000310080201,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 2"
   },
   {
     "id": 140100000310080301,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 3"
   },
   {
     "id": 140100000310080401,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 4"
   },
   {
     "id": 140100000310080501,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 5"
   },
   {
     "id": 140100000310080601,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 6"
   },
   {
     "id": 140100000310080701,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 7"
   },
   {
     "id": 140100000310080801,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 8"
   },
   {
     "id": 140100000310080901,
-    "value": "Decreased MOB [2 turn]"
+    "value": "Decreased MOB [2 turn] LV 9"
   },
   {
     "id": 140100000310100101,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 1"
   },
   {
     "id": 140100000310100201,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 2"
   },
   {
     "id": 140100000310100301,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 3"
   },
   {
     "id": 140100000310100401,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 4"
   },
   {
     "id": 140100000310100501,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 5"
   },
   {
     "id": 140100000310100601,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 6"
   },
   {
     "id": 140100000310100701,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 7"
   },
   {
     "id": 140100000310100801,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 8"
   },
   {
     "id": 140100000310100901,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 9"
   },
   {
     "id": 140100000310110101,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 1"
   },
   {
     "id": 140100000310110201,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 2"
   },
   {
     "id": 140100000310110301,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 3"
   },
   {
     "id": 140100000310110401,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 4"
   },
   {
     "id": 140100000310110501,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 5"
   },
   {
     "id": 140100000310110601,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 6"
   },
   {
     "id": 140100000310110701,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 7"
   },
   {
     "id": 140100000310110801,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 8"
   },
   {
     "id": 140100000310110901,
-    "value": "Decreased ACC [2 turn]"
+    "value": "Decreased ACC [2 turn] LV 9"
   },
   {
     "id": 140100000310130101,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 1"
   },
   {
     "id": 140100000310130201,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 2"
   },
   {
     "id": 140100000310130301,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 3"
   },
   {
     "id": 140100000310130401,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 4"
   },
   {
     "id": 140100000310130501,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 5"
   },
   {
     "id": 140100000310130601,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 6"
   },
   {
     "id": 140100000310130701,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 7"
   },
   {
     "id": 140100000310130801,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 8"
   },
   {
     "id": 140100000310130901,
-    "value": "Decreased EVA [1 turn]"
+    "value": "Decreased EVA [1 turn] LV 9"
   },
   {
     "id": 140100000310140101,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 1"
   },
   {
     "id": 140100000310140201,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 2"
   },
   {
     "id": 140100000310140301,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 3"
   },
   {
     "id": 140100000310140401,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 4"
   },
   {
     "id": 140100000310140501,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 5"
   },
   {
     "id": 140100000310140601,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 6"
   },
   {
     "id": 140100000310140701,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 7"
   },
   {
     "id": 140100000310140801,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 8"
   },
   {
     "id": 140100000310140901,
-    "value": "Decreased EVA [2 turn]"
+    "value": "Decreased EVA [2 turn] LV 9"
   },
   {
     "id": 140100000310160101,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 1"
   },
   {
     "id": 140100000310160201,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 2"
   },
   {
     "id": 140100000310160301,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 3"
   },
   {
     "id": 140100000310160401,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 4"
   },
   {
     "id": 140100000310160501,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 5"
   },
   {
     "id": 140100000310160601,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 6"
   },
   {
     "id": 140100000310160701,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 7"
   },
   {
     "id": 140100000310160801,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 8"
   },
   {
     "id": 140100000310160901,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 9"
   },
   {
     "id": 140100000310180101,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 1"
   },
   {
     "id": 140100000310180201,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 2"
   },
   {
     "id": 140100000310180301,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 3"
   },
   {
     "id": 140100000310180401,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 4"
   },
   {
     "id": 140100000310180501,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 5"
   },
   {
     "id": 140100000310180601,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 6"
   },
   {
     "id": 140100000310180701,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 7"
   },
   {
     "id": 140100000310180801,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 8"
   },
   {
     "id": 140100000310180901,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 9"
   },
   {
     "id": 140100000310200101,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 1"
   },
   {
     "id": 140100000310200201,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 2"
   },
   {
     "id": 140100000310200301,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 3"
   },
   {
     "id": 140100000310200401,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 4"
   },
   {
     "id": 140100000310200501,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 5"
   },
   {
     "id": 140100000310200601,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 6"
   },
   {
     "id": 140100000310200701,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 7"
   },
   {
     "id": 140100000310200801,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 8"
   },
   {
     "id": 140100000310200901,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 9"
   },
   {
     "id": 140100000310220101,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 1"
   },
   {
     "id": 140100000310220201,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 2"
   },
   {
     "id": 140100000310220301,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 3"
   },
   {
     "id": 140100000310220401,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 4"
   },
   {
     "id": 140100000310220501,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 5"
   },
   {
     "id": 140100000310220601,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 6"
   },
   {
     "id": 140100000310220701,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 7"
   },
   {
     "id": 140100000310220801,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 8"
   },
   {
     "id": 140100000310220901,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 9"
   },
   {
     "id": 140100000310240101,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 1"
   },
   {
     "id": 140100000310240201,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 2"
   },
   {
     "id": 140100000310240301,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 3"
   },
   {
     "id": 140100000310240401,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 4"
   },
   {
     "id": 140100000310240501,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 5"
   },
   {
     "id": 140100000310240601,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 6"
   },
   {
     "id": 140100000310240701,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 7"
   },
   {
     "id": 140100000310240801,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 8"
   },
   {
     "id": 140100000310240901,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 9"
   },
   {
     "id": 140100000310260101,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 1"
   },
   {
     "id": 140100000310260201,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 2"
   },
   {
     "id": 140100000310260301,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 3"
   },
   {
     "id": 140100000310260401,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 4"
   },
   {
     "id": 140100000310260501,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 5"
   },
   {
     "id": 140100000310260601,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 6"
   },
   {
     "id": 140100000310260701,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 7"
   },
   {
     "id": 140100000310260801,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 8"
   },
   {
     "id": 140100000310260901,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 9"
   },
   {
     "id": 140100000310280101,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 1"
   },
   {
     "id": 140100000310280201,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 2"
   },
   {
     "id": 140100000310280301,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 3"
   },
   {
     "id": 140100000310280401,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 4"
   },
   {
     "id": 140100000310280501,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 5"
   },
   {
     "id": 140100000310280601,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 6"
   },
   {
     "id": 140100000310280701,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 7"
   },
   {
     "id": 140100000310280801,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 8"
   },
   {
     "id": 140100000310280901,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 9"
   },
   {
     "id": 140100000310300101,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 1"
   },
   {
     "id": 140100000310300201,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 2"
   },
   {
     "id": 140100000310300301,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 3"
   },
   {
     "id": 140100000310300401,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 4"
   },
   {
     "id": 140100000310300501,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 5"
   },
   {
     "id": 140100000310300601,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 6"
   },
   {
     "id": 140100000310300701,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 7"
   },
   {
     "id": 140100000310300801,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 8"
   },
   {
     "id": 140100000310300901,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 9"
   },
   {
     "id": 140100000310320101,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310320201,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310320301,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310320401,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310320501,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310320601,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310320701,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310320801,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310320901,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000310340101,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310340201,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310340301,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310340401,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310340501,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310340601,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310340701,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310340801,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310340901,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000310360101,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310360201,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310360301,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310360401,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310360501,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310360601,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310360701,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310360801,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310360901,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000310380101,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 1"
   },
   {
     "id": 140100000310380201,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 2"
   },
   {
     "id": 140100000310380301,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 3"
   },
   {
     "id": 140100000310380401,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 4"
   },
   {
     "id": 140100000310380501,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 5"
   },
   {
     "id": 140100000310380601,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 6"
   },
   {
     "id": 140100000310380701,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 7"
   },
   {
     "id": 140100000310380801,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 8"
   },
   {
     "id": 140100000310380901,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 9"
   },
   {
     "id": 140100000310420100,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 1"
   },
   {
     "id": 140100000310420200,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 2"
   },
   {
     "id": 140100000310420300,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 3"
   },
   {
     "id": 140100000310420400,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 4"
   },
   {
     "id": 140100000310420500,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 5"
   },
   {
     "id": 140100000310420600,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 6"
   },
   {
     "id": 140100000310420700,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 7"
   },
   {
     "id": 140100000310420800,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 8"
   },
   {
     "id": 140100000310420900,
-    "value": "Decreased ATK [1 turn]"
+    "value": "Decreased ATK [1 turn] LV 9"
   },
   {
     "id": 140100000310430100,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 1"
   },
   {
     "id": 140100000310430200,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 2"
   },
   {
     "id": 140100000310430300,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 3"
   },
   {
     "id": 140100000310430400,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 4"
   },
   {
     "id": 140100000310430500,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 5"
   },
   {
     "id": 140100000310430600,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 6"
   },
   {
     "id": 140100000310430700,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 7"
   },
   {
     "id": 140100000310430800,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 8"
   },
   {
     "id": 140100000310430900,
-    "value": "Decreased MOB [1 turn]"
+    "value": "Decreased MOB [1 turn] LV 9"
   },
   {
     "id": 140100000310440100,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 1"
   },
   {
     "id": 140100000310440200,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 2"
   },
   {
     "id": 140100000310440300,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 3"
   },
   {
     "id": 140100000310440400,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 4"
   },
   {
     "id": 140100000310440500,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 5"
   },
   {
     "id": 140100000310440600,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 6"
   },
   {
     "id": 140100000310440700,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 7"
   },
   {
     "id": 140100000310440800,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 8"
   },
   {
     "id": 140100000310440900,
-    "value": "Decreased ACC [1 turn]"
+    "value": "Decreased ACC [1 turn] LV 9"
   },
   {
     "id": 140100000310450100,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310450200,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310450300,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310450400,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310450500,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310450600,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310450700,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310450800,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310450900,
-    "value": "Beam Weapon Power Down [1 turn]"
+    "value": "Beam Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000310460100,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310460200,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310460300,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310460400,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310460500,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310460600,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310460700,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310460800,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310460900,
-    "value": "Physical Weapon Power Down [1 turn]"
+    "value": "Physical Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000310470100,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000310470200,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000310470300,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000310470400,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000310470500,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000310470600,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000310470700,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000310470800,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000310470900,
-    "value": "Special Weapon Power Down [1 turn]"
+    "value": "Special Weapon Power Down [1 turn] LV 9"
+  },
+  {
+    "id": 140100000310480101,
+    "value": "Immobilized"
+  },
+  {
+    "id": 140100000310490101,
+    "value": "MOV Down LV 1"
+  },
+  {
+    "id": 140100000310490201,
+    "value": "MOV Down LV 2"
+  },
+  {
+    "id": 140100000310490301,
+    "value": "MOV Down LV 3"
+  },
+  {
+    "id": 140100000310490401,
+    "value": "MOV Down LV 4"
+  },
+  {
+    "id": 140100000310490501,
+    "value": "MOV Down LV 5"
   },
   {
     "id": 140100000320030101,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 1"
   },
   {
     "id": 140100000320030201,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 2"
   },
   {
     "id": 140100000320030301,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 3"
   },
   {
     "id": 140100000320030401,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 4"
   },
   {
     "id": 140100000320030501,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 5"
   },
   {
     "id": 140100000320030601,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 6"
   },
   {
     "id": 140100000320030701,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 7"
   },
   {
     "id": 140100000320030801,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 8"
   },
   {
     "id": 140100000320030901,
-    "value": "Decreased ATK"
+    "value": "Decreased ATK [1 turn] LV 9"
   },
   {
     "id": 140100000320060101,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 1"
   },
   {
     "id": 140100000320060201,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 2"
   },
   {
     "id": 140100000320060301,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 3"
   },
   {
     "id": 140100000320060401,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 4"
   },
   {
     "id": 140100000320060501,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 5"
   },
   {
     "id": 140100000320060601,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 6"
   },
   {
     "id": 140100000320060701,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 7"
   },
   {
     "id": 140100000320060801,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 8"
   },
   {
     "id": 140100000320060901,
-    "value": "Decreased DEF"
+    "value": "Decreased DEF [1 turn] LV 9"
   },
   {
     "id": 140100000320090101,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 1"
   },
   {
     "id": 140100000320090201,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 2"
   },
   {
     "id": 140100000320090301,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 3"
   },
   {
     "id": 140100000320090401,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 4"
   },
   {
     "id": 140100000320090501,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 5"
   },
   {
     "id": 140100000320090601,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 6"
   },
   {
     "id": 140100000320090701,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 7"
   },
   {
     "id": 140100000320090801,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 8"
   },
   {
     "id": 140100000320090901,
-    "value": "Decreased MOB"
+    "value": "Decreased MOB [1 turn] LV 9"
   },
   {
     "id": 140100000320120101,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 1"
   },
   {
     "id": 140100000320120201,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 2"
   },
   {
     "id": 140100000320120301,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 3"
   },
   {
     "id": 140100000320120401,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 4"
   },
   {
     "id": 140100000320120501,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 5"
   },
   {
     "id": 140100000320120601,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 6"
   },
   {
     "id": 140100000320120701,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 7"
   },
   {
     "id": 140100000320120801,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 8"
   },
   {
     "id": 140100000320120901,
-    "value": "Decreased ACC"
+    "value": "Decreased ACC [1 turn] LV 9"
   },
   {
     "id": 140100000320150101,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 1"
   },
   {
     "id": 140100000320150201,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 2"
   },
   {
     "id": 140100000320150301,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 3"
   },
   {
     "id": 140100000320150401,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 4"
   },
   {
     "id": 140100000320150501,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 5"
   },
   {
     "id": 140100000320150601,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 6"
   },
   {
     "id": 140100000320150701,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 7"
   },
   {
     "id": 140100000320150801,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 8"
   },
   {
     "id": 140100000320150901,
-    "value": "Decreased EVA"
+    "value": "Decreased EVA [1 turn] LV 9"
   },
   {
     "id": 140100000320170101,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 1"
   },
   {
     "id": 140100000320170201,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 2"
   },
   {
     "id": 140100000320170301,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 3"
   },
   {
     "id": 140100000320170401,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 4"
   },
   {
     "id": 140100000320170501,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 5"
   },
   {
     "id": 140100000320170601,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 6"
   },
   {
     "id": 140100000320170701,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 7"
   },
   {
     "id": 140100000320170801,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 8"
   },
   {
     "id": 140100000320170901,
-    "value": "Increased Critical Damage"
+    "value": "Increased Critical Damage LV 9"
   },
   {
     "id": 140100000320190101,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 1"
   },
   {
     "id": 140100000320190201,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 2"
   },
   {
     "id": 140100000320190301,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 3"
   },
   {
     "id": 140100000320190401,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 4"
   },
   {
     "id": 140100000320190501,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 5"
   },
   {
     "id": 140100000320190601,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 6"
   },
   {
     "id": 140100000320190701,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 7"
   },
   {
     "id": 140100000320190801,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 8"
   },
   {
     "id": 140100000320190901,
-    "value": "Increased Close Range Weapon Power"
+    "value": "Increased Close Range Weapon Power LV 9"
   },
   {
     "id": 140100000320210101,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 1"
   },
   {
     "id": 140100000320210201,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 2"
   },
   {
     "id": 140100000320210301,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 3"
   },
   {
     "id": 140100000320210401,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 4"
   },
   {
     "id": 140100000320210501,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 5"
   },
   {
     "id": 140100000320210601,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 6"
   },
   {
     "id": 140100000320210701,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 7"
   },
   {
     "id": 140100000320210801,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 8"
   },
   {
     "id": 140100000320210901,
-    "value": "Increased Long Range Weapon Power"
+    "value": "Increased Long Range Weapon Power LV 9"
   },
   {
     "id": 140100000320230101,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 1"
   },
   {
     "id": 140100000320230201,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 2"
   },
   {
     "id": 140100000320230301,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 3"
   },
   {
     "id": 140100000320230401,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 4"
   },
   {
     "id": 140100000320230501,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 5"
   },
   {
     "id": 140100000320230601,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 6"
   },
   {
     "id": 140100000320230701,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 7"
   },
   {
     "id": 140100000320230801,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 8"
   },
   {
     "id": 140100000320230901,
-    "value": "With More Remaining HP, Higher Weapon Power"
+    "value": "With More Remaining HP, Higher Weapon Power LV 9"
   },
   {
     "id": 140100000320250101,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 1"
   },
   {
     "id": 140100000320250201,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 2"
   },
   {
     "id": 140100000320250301,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 3"
   },
   {
     "id": 140100000320250401,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 4"
   },
   {
     "id": 140100000320250501,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 5"
   },
   {
     "id": 140100000320250601,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 6"
   },
   {
     "id": 140100000320250701,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 7"
   },
   {
     "id": 140100000320250801,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 8"
   },
   {
     "id": 140100000320250901,
-    "value": "Increased Physical Damage"
+    "value": "Increased Physical Damage [1 turn] LV 9"
   },
   {
     "id": 140100000320270101,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 1"
   },
   {
     "id": 140100000320270201,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 2"
   },
   {
     "id": 140100000320270301,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 3"
   },
   {
     "id": 140100000320270401,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 4"
   },
   {
     "id": 140100000320270501,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 5"
   },
   {
     "id": 140100000320270601,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 6"
   },
   {
     "id": 140100000320270701,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 7"
   },
   {
     "id": 140100000320270801,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 8"
   },
   {
     "id": 140100000320270901,
-    "value": "Increased Beam Damage"
+    "value": "Increased Beam Damage [1 turn] LV 9"
   },
   {
     "id": 140100000320290101,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 1"
   },
   {
     "id": 140100000320290201,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 2"
   },
   {
     "id": 140100000320290301,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 3"
   },
   {
     "id": 140100000320290401,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 4"
   },
   {
     "id": 140100000320290501,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 5"
   },
   {
     "id": 140100000320290601,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 6"
   },
   {
     "id": 140100000320290701,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 7"
   },
   {
     "id": 140100000320290801,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 8"
   },
   {
     "id": 140100000320290901,
-    "value": "Increased Special Damage"
+    "value": "Increased Special Damage [1 turn] LV 9"
   },
   {
     "id": 140100000320310101,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 1"
   },
   {
     "id": 140100000320310201,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 2"
   },
   {
     "id": 140100000320310301,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 3"
   },
   {
     "id": 140100000320310401,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 4"
   },
   {
     "id": 140100000320310501,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 5"
   },
   {
     "id": 140100000320310601,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 6"
   },
   {
     "id": 140100000320310701,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 7"
   },
   {
     "id": 140100000320310801,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 8"
   },
   {
     "id": 140100000320310901,
-    "value": "With Less Remaining HP, Higher Weapon Power"
+    "value": "With Less Remaining HP, Higher Weapon Power LV 9"
   },
   {
     "id": 140100000320330101,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000320330201,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000320330301,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000320330401,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000320330501,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000320330601,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000320330701,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000320330801,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000320330901,
-    "value": "Beam Weapon Power Down"
+    "value": "Beam Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000320350101,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000320350201,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000320350301,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000320350401,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000320350501,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000320350601,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000320350701,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000320350801,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000320350901,
-    "value": "Physical Weapon Power Down"
+    "value": "Physical Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000320370101,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 1"
   },
   {
     "id": 140100000320370201,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 2"
   },
   {
     "id": 140100000320370301,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 3"
   },
   {
     "id": 140100000320370401,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 4"
   },
   {
     "id": 140100000320370501,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 5"
   },
   {
     "id": 140100000320370601,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 6"
   },
   {
     "id": 140100000320370701,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 7"
   },
   {
     "id": 140100000320370801,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 8"
   },
   {
     "id": 140100000320370901,
-    "value": "Special Weapon Power Down"
+    "value": "Special Weapon Power Down [1 turn] LV 9"
   },
   {
     "id": 140100000320390101,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 1"
   },
   {
     "id": 140100000320390201,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 2"
   },
   {
     "id": 140100000320390301,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 3"
   },
   {
     "id": 140100000320390401,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 4"
   },
   {
     "id": 140100000320390501,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 5"
   },
   {
     "id": 140100000320390601,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 6"
   },
   {
     "id": 140100000320390701,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 7"
   },
   {
     "id": 140100000320390801,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 8"
   },
   {
     "id": 140100000320390901,
-    "value": "Scaling Weapon Power (High MP)"
+    "value": "Scaling Weapon Power (High MP) LV 9"
   },
   {
     "id": 140100000350100101,
@@ -10140,6 +10208,10 @@
     "value": "Limiter OFF SSR (Fierce Enemy Assault)"
   },
   {
+    "id": 140100000406590101,
+    "value": "Limiter OFF SSR (Underwater Use)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -11344,8 +11416,36 @@
     "value": "Action Pattern"
   },
   {
+    "id": 140100000511150101,
+    "value": "(Tag conditions)Increased DEF"
+  },
+  {
     "id": 140100000511160100,
     "value": "Decreased ATK & DEF (All Units)"
+  },
+  {
+    "id": 140100000511170150,
+    "value": "(Deals Damage Condition) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000511170151,
+    "value": "(Deals Damage Condition) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000511170152,
+    "value": "(Deals Damage Condition) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000511170153,
+    "value": "(Deals Damage Condition) Increased ATK LV 3"
+  },
+  {
+    "id": 140100000511170250,
+    "value": "(Deals Damage Condition) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000511170350,
+    "value": "(Deals Damage Condition) Increased ATK LV 3"
   },
   {
     "id": 140100000511180100,
@@ -11354,6 +11454,10 @@
   {
     "id": 140100000511190101,
     "value": "Nice work, Gogg! That was easy!"
+  },
+  {
+    "id": 140100000511200501,
+    "value": "Decreased DEF (All Units) LV 5"
   },
   {
     "id": 140100000530010100,
@@ -12696,6 +12800,10 @@
     "value": "Reinforcements"
   },
   {
+    "id": 140100000611160201,
+    "value": "Reinforcements"
+  },
+  {
     "id": 140100000611190101,
     "value": "(Unit conditions) Increased ATK"
   },
@@ -12952,8 +13060,16 @@
     "value": "Supercharged EX"
   },
   {
+    "id": 140100000611690101,
+    "value": "Increased DEF"
+  },
+  {
     "id": 140100000611700101,
     "value": "(Vigor conditions) Improve Decrease DEF Effect"
+  },
+  {
+    "id": 140100000611710101,
+    "value": "(Unit conditions) HP Restoration"
   },
   {
     "id": 140100000611720101,

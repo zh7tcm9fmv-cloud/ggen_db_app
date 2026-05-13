@@ -445,7 +445,7 @@
   },
   {
     "id": 170300000001011021,
-    "value": "Units have the following stats:\n\n- HP\nThe unit's durability. HP decreases when the unit is attacked by enemies, and the unit is destroyed once its HP reaches 0.\n\n- EN\nEN is consumed when weapons are used. Weapons cannot be used without EN.\n\n- ATK\nAffects the amount of damage dealt to enemy units.\n\n- DEF\nAffects the amount of damage taken from enemy units.\n\n- MOB\nAffects unit's Accuracy and Evasion.\n\n- MOV\nDetermines how far a unit can move."
+    "value": "Units have the following stats:\n\n- HP\nThe unit's durability. HP decreases when the unit is attacked by enemies, and the unit is destroyed once its HP reaches 0.\n\n- EN\nEN is consumed when weapons are used. Weapons cannot be used without EN.\n\n- ATK\nAffects the amount of damage dealt to enemy units.\n\n- DEF\nAffects the amount of damage taken from enemy units.\n\n- MOB\nAffects unit's Accuracy and Evasion.\n\n- MOV\nDetermines how far a unit can move.\n*A unit can move a minimum of 1 square even while affected by MOV reduction effects.\n When a unit is affected by both negative and positive MOV modififers, the sum of all modififers is used to determine its final MOV."
   },
   {
     "id": 170300000001011031,
@@ -645,7 +645,7 @@
   },
   {
     "id": 170300000001081031,
-    "value": "A Chance Step occurs during battle when an enemy unit is destroyed.\n\nWhen a Chance Step occurs, a unit that has destroyed another unit can perform an additional action.\nThere is a limited number of Bonus Actions during each phase, which depends on the abilities of the character on board."
+    "value": "A Chance Step occurs during battle when an enemy unit is destroyed.\n\nWhen a Chance Step occurs, a unit that has destroyed another unit can perform an additional action.\nThere is a limited number of Bonus Actions during each phase, which depends on the abilities of the character on board.\n\nIf a Chance Step would be activated, Chance Step activates before skill and ability effects that affect actions."
   },
   {
     "id": 170300000001081041,

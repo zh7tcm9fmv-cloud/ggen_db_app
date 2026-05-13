@@ -1428,8 +1428,72 @@
     "LineageId": 1105
   },
   {
+    "CharacterId": 1031000102,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1005
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1006
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1014
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031000102,
+    "LineageId": 1105
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1005
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1006
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1014
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031000103,
+    "LineageId": 1105
+  },
+  {
     "CharacterId": 1031000300,
     "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031000301,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031000301,
+    "LineageId": 1103
   },
   {
     "CharacterId": 1031000600,
@@ -1492,6 +1556,46 @@
     "LineageId": 1110
   },
   {
+    "CharacterId": 1031000603,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1005
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1006
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1104
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1106
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1109
+  },
+  {
+    "CharacterId": 1031000603,
+    "LineageId": 1110
+  },
+  {
     "CharacterId": 1031000700,
     "LineageId": 1101
   },
@@ -1501,11 +1605,159 @@
   },
   {
     "CharacterId": 1031000900,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031000900,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031000900,
     "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031000900,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031000900,
+    "LineageId": 1106
   },
   {
     "CharacterId": 1031001400,
     "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001500,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031001500,
+    "LineageId": 1014
+  },
+  {
+    "CharacterId": 1031001500,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001500,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031001600,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031001600,
+    "LineageId": 1014
+  },
+  {
+    "CharacterId": 1031001600,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001600,
+    "LineageId": 1105
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1106
+  },
+  {
+    "CharacterId": 1031001700,
+    "LineageId": 1109
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1104
+  },
+  {
+    "CharacterId": 1031001800,
+    "LineageId": 1106
+  },
+  {
+    "CharacterId": 1031001900,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031001900,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031001900,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031001900,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031001900,
+    "LineageId": 1106
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1015
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1101
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1103
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1106
+  },
+  {
+    "CharacterId": 1031002000,
+    "LineageId": 1107
+  },
+  {
+    "CharacterId": 1031002100,
+    "LineageId": 1001
+  },
+  {
+    "CharacterId": 1031002100,
+    "LineageId": 1106
   },
   {
     "CharacterId": 1055000100,
@@ -10397,6 +10649,10 @@
   },
   {
     "CharacterId": 1850001500,
+    "LineageId": 1056
+  },
+  {
+    "CharacterId": 1850001501,
     "LineageId": 1056
   },
   {
