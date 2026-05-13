@@ -4066,6 +4066,27 @@ def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
     return atk_pct
 
 
+def _extract_char_dossier_decrease_pct_en(text):
+    """EN lines like \"but decrease Defense by 25%\" paired with vigor / conditional buffs."""
+    bonuses = {}
+    if not text or not isinstance(text, str):
+        return bonuses
+    stat_alt = r'(?:Defense|Reaction|Awaken|Melee|Ranged)'
+    pat = re.compile(
+        rf'\b(?:but\s+|,\s*)?(?:decrease(?:s)?|reduce(?:s)?)\s+(?:own\s+)?({stat_alt}(?:\s+and\s+{stat_alt})*)\s+by\s*(\d+)%',
+        re.IGNORECASE)
+    canon = {'defense': 'Defense', 'reaction': 'Reaction', 'awaken': 'Awaken', 'melee': 'Melee', 'ranged': 'Ranged'}
+    for m in pat.finditer(text):
+        pct = int(m.group(2))
+        chunk = m.group(1)
+        parts = re.split(r'\s+and\s+', chunk, flags=re.IGNORECASE)
+        for raw in parts:
+            key = canon.get((raw or '').strip().lower())
+            if key:
+                bonuses[key] = bonuses.get(key, 0) - pct
+    return bonuses
+
+
 def _extract_stat_percent_char_cjk(text):
     """Pilot stat % for map NPCs / traits in JA and TW/HK (EN handled by extract_stat_percent_char)."""
     bonuses = {}
@@ -4157,6 +4178,8 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     else:
         for k, v in _extract_stat_percent_char_cjk(text).items():
             bonuses[k] = bonuses.get(k, 0) + v
+    for k, v in _extract_char_dossier_decrease_pct_en(text).items():
+        bonuses[k] = bonuses.get(k, 0) + v
     return bonuses
 
 def create_unit_info_map(m):
@@ -11941,10 +11964,10 @@ def get_character(char_id):
         has_ex_stats = bool(ex_supercharged_tiers)
         if not has_ex_stats:
             for s in CHAR_STAT_ORDER:
-                if spbn_c[s] + spen[s] + ((spbn_pair[s] + spen_pair[s]) if pair_ok else 0) > 0:
+                if spbn_c[s] + spen[s] + ((spbn_pair[s] + spen_pair[s]) if pair_ok else 0) != 0:
                     has_ex_stats = True
                     break
-                if spbs_c[s] + spes[s] + ((spbs_pair[s] + spes_pair[s]) if pair_ok else 0) > 0:
+                if spbs_c[s] + spes[s] + ((spbs_pair[s] + spes_pair[s]) if pair_ok else 0) != 0:
                     has_ex_stats = True
                     break
         portrait = find_portrait(info.get('resource_ids', []), char_id, 'images/portraits')
@@ -11972,7 +11995,7 @@ def get_character(char_id):
         counter_atk_mod = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(char_id)
         # pair_units / pair_ok computed above (manual CHAR_PAIR_* ∪ trait-derived pilot-(EX) gates).
         # Still show toggle for UR EX-slot % (spen/spes) when recommend does not match.
-        has_ex_slot_only = any(spen[s] + (spen_pair[s] if pair_ok else 0) > 0 for s in CHAR_STAT_ORDER) or any(spes[s] + (spes_pair[s] if pair_ok else 0) > 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
+        has_ex_slot_only = any(spen[s] + (spen_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or any(spes[s] + (spes_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
         if pair_units and not pair_ok:
             has_conditional_passive = has_ex_slot_only
         else:
