@@ -2306,9 +2306,32 @@ def _char_trait_text_is_support_defense_action(txt):
     return 'execut' in t
 
 _SHORT_PILOT_STAT_LINE_ONLY = re.compile(
-    r'^\s*Increase\s+(?:own\s+)?(?:Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF|Attack)\s+by\s+\d+%\s*\.?\s*$',
+    # Allow trailing clauses like "(up to 15%)" — still a single-line squad/stack ATK buff, not dossier pilot stats.
+    r'^\s*Increase\s+(?:own\s+)?(?:Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF|Attack)\s+by\s+\d+%(?:\s*\([^)]*\))*\s*\.?\s*$',
     re.IGNORECASE,
 )
+
+
+def _blob_has_squad_unit_stat_context(blob):
+    """True when trait text reads like buffing allied/squad units' MS stats.
+
+    Generic ATK/DEF there refer to unit combat stats, not pilot dossier Ranged/Melee/Defense."""
+    if not blob or not isinstance(blob, str):
+        return False
+    bl = blob.lower()
+    if 'same squad' in bl or 'units bearing' in bl:
+        return True
+    if 'for each unit' in bl:
+        return True
+    if ' for units' in bl and ('squad' in bl or 'tag' in bl):
+        return True
+    # JA/TW/HK: per-unit-in-squad wording; 攻撃力/攻擊力 lines are MS ATK, not pilot shooting/fighting stats.
+    if '同部隊' in blob or '部隊内' in blob:
+        return True
+    if '每有1架' in blob or 'ユニット1体につき' in blob:
+        return True
+    return False
+
 
 def _ability_has_squad_unit_stat_context(bab):
     """True when ability text describes buffing allied/squad units' MS stats (not the pilot's Ranged/Melee)."""
@@ -2320,12 +2343,8 @@ def _ability_has_squad_unit_stat_context(bab):
             parts.append(d2.get('text') or '')
         else:
             parts.append(str(d2))
-    blob = ' '.join(parts).lower()
-    if 'same squad' in blob or 'units bearing' in blob:
-        return True
-    if ' for units' in blob and ('squad' in blob or 'tag' in blob):
-        return True
-    return False
+    blob = ' '.join(parts)
+    return _blob_has_squad_unit_stat_context(blob)
 
 def _char_trait_line_is_squad_unit_effect(line, bab):
     """Stat lines that buff squad/allied units (or MS other than pilot stats) must not count toward pilot Ranged/Melee totals."""
@@ -4045,11 +4064,15 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
             if not s:
                 continue
             u = s.title().upper()
-            # In-game "ATK" is both pilot attack stats (Ranged + Melee), not Melee-only.
+            # Bare EN "ATK/Attack" often means combined pilot shooting/fighting on buff cards.
+            # Same trait blob must not treat squad/per-unit MS ATK as dossier Ranged/Melee (_blob_has_squad_unit_stat_context).
             if u in ("ATK", "ATTACK"):
                 ctx = full_detail_text if full_detail_text is not None else text
                 # Support Attack/Counter ATK% is not part of dossier pilot Ranged/Melee (in-combat only).
                 if _char_support_counter_atk_excluded_from_dossier_stats(ctx):
+                    continue
+                # Squad/per-allied-unit "ATK" is the MS attack stat; pilots have Ranged/Melee on the dossier, not ATK.
+                if _blob_has_squad_unit_stat_context(ctx):
                     continue
                 bonuses["Melee"] = bonuses.get("Melee", 0) + p
                 bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
