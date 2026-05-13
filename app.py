@@ -4968,15 +4968,21 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_cid = t_data.get('boost_cond_id', '0')
         active_conds = resolve_condition_tags(active_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
         target_conds = resolve_condition_tags(target_cid, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+        _boost_map = trait_boost_condition_raw_map if 'trait_boost_condition_raw_map' in globals() else trait_condition_raw_map
+        boost_conds = resolve_condition_tags(boost_cid, _boost_map, lineage_lookup, series_name_map, lang_code)
+        boost_conds_snap = list(boost_conds)
         io_alt_squad_tags = False
-        # TargetConditionSetId is sometimes a placeholder row; squad tag OR-scope may live in set 1000545 (e.g. trait 202570101).
+        # Io EX atlas passive (202570101): TraitConditionSetId 1000545 holds SameGroup tag scope while master
+        # TargetConditionSetId is usually a dummy row. Prefer 1000545; if absent from dump, reuse boost tags instead
+        # of emitting two merged "Condition 1" blobs (pill row + prose diverge from in-game).
         if str(tid) == '202570101' and trait_text_implies_show_target_condition_tags(en_text, display_text):
             alt_tgt = resolve_condition_tags('1000545', trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
             if alt_tgt:
                 target_conds = alt_tgt
                 io_alt_squad_tags = True
-        _boost_map = trait_boost_condition_raw_map if 'trait_boost_condition_raw_map' in globals() else trait_condition_raw_map
-        boost_conds = resolve_condition_tags(boost_cid, _boost_map, lineage_lookup, series_name_map, lang_code)
+            elif boost_conds_snap:
+                target_conds = list(boost_conds_snap)
+                io_alt_squad_tags = True
         if io_alt_squad_tags:
             boost_conds = []
         trait_conds = []
@@ -5119,9 +5125,11 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                     if not consumed:
                         _ = take_active_for_line(idx)
                     groups.append({'label': 'Condition 1', 'conditions': default_conds})
-        # Keep any unconsumed boost as generic Condition 1 on this same line.
+        # Unconsumed boost after pilot/active Condition 1 — use Condition 2 so detail merge never flattens both into one pill row.
         if boost_conds and (not boost_used) and (not carry_boost_for_next) and is_conditional_line:
-            groups.append({'label': 'Condition 1', 'conditions': boost_conds})
+            dup_c1 = any(str(g.get('label') or '').strip().lower() == 'condition 1' for g in groups)
+            b_lab = 'Condition 2' if dup_c1 else 'Condition 1'
+            groups.append({'label': b_lab, 'conditions': boost_conds})
         if groups:
             info['condition_groups'] = groups
             for _ptg in _preserved_target_tag_groups[idx] or []:
