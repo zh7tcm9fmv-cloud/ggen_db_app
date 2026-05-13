@@ -4972,17 +4972,19 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_conds = resolve_condition_tags(boost_cid, _boost_map, lineage_lookup, series_name_map, lang_code)
         boost_conds_snap = list(boost_conds)
         io_alt_squad_tags = False
-        # Io EX atlas passive (202570101): TraitConditionSetId 1000545 holds SameGroup tag scope while master
-        # TargetConditionSetId is usually a dummy row. Prefer 1000545; if absent from dump, reuse boost tags instead
-        # of emitting two merged "Condition 1" blobs (pill row + prose diverge from in-game).
+        # Io EX atlas passive (202570101): squad OR-scope is authored on TraitBoostConditionSetId 1000006
+        # (EN tag ids 1114+1131 → Underwater/Land; JP GroupId 「地上用 or 水中用」). SameGroup row 1000545 can
+        # still list 1115+1114 (Aerial/Underwater) from an older schema — prefer boost when present so UI
+        # matches in-game. Fall back to 1000545 only if boost resolves empty (partial master dump).
         if str(tid) == '202570101' and trait_text_implies_show_target_condition_tags(en_text, display_text):
-            alt_tgt = resolve_condition_tags('1000545', trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
-            if alt_tgt:
-                target_conds = alt_tgt
-                io_alt_squad_tags = True
-            elif boost_conds_snap:
+            if boost_conds_snap:
                 target_conds = list(boost_conds_snap)
                 io_alt_squad_tags = True
+            else:
+                alt_tgt = resolve_condition_tags('1000545', trait_condition_raw_map, lineage_lookup, series_name_map, lang_code)
+                if alt_tgt:
+                    target_conds = alt_tgt
+                    io_alt_squad_tags = True
         if io_alt_squad_tags:
             boost_conds = []
         trait_conds = []
