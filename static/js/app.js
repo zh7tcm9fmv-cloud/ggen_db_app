@@ -6014,7 +6014,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter. Use Attacker Parameters &rarr; <strong>Support Attack/Counter — MS ATK %</strong> (Off / On is interactive only when the attacker MS has Support role).</div>`)}
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter. Use Attacker Parameters &rarr; <strong>Support Attack/Counter — MS ATK %</strong> to model that action (pilot-dependent; independent of attacker MS category).</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -6174,7 +6174,7 @@ function _dcEffectiveSupportCounterAtkPct(){
 if(!S.dc.supportCounterAtk)return 0;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||cd._manual||!_dcCharIsSupportRole(cd))return 0;
-if(!ud||ud._manual||String(ud.role_id)!=='3')return 0;
+if(!ud||ud._manual)return 0;
 return Math.max(0,S.dc._supportCounterAtkPct|0);
 }
 function _dcApplySupportCounterAtkToUnitAtk(unitAtk){
@@ -7829,10 +7829,9 @@ const off=document.getElementById('dcAtkSupportCounterOff');
 const on=document.getElementById('dcAtkSupportCounterOn');
 const lbl=document.getElementById('dcAtkSupportCounterLbl');
 if(!w||!off||!on)return;
-const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+const cd=S.dc.atkCharData;
 const pilotOk=!!(cd&&!cd._manual&&_dcCharIsSupportRole(cd));
 const rawPct=pilotOk?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 S.dc._supportCounterAtkPct=rawPct>0?rawPct:0;
 if(!pilotOk||rawPct<=0){
 w.style.display='none';
@@ -7844,22 +7843,11 @@ off.disabled=true;on.disabled=true;
 return;
 }
 w.style.display='';
-if(!unitOk){
-S.dc.supportCounterAtk=false;
-off.classList.add('active');on.classList.remove('active');
-off.disabled=true;on.disabled=true;
-w.style.opacity='0.65';
-if(lbl){
-lbl.textContent=`Support Attack/Counter — +${rawPct}% MS ATK`;
-lbl.title='This pilot gains MS ATK when executing Support Attack/Counter. Damage uses it only when the attacker MS has Support role. Choose a Support-type unit to enable Off/On.';
-}
-return;
-}
 w.style.opacity='';
 off.disabled=false;on.disabled=false;
 if(lbl){
 lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
-lbl.title='Optional % MS ATK while executing Support Attack/Counter. Parsed from pilot ability text mentioning Support Attack/Counter. Turn On only when that situation applies.';
+lbl.title='Pilot passive: optional MS ATK % while executing Support Attack/Counter when that pilot participates. Turn On only when you are modelling that combat action.';
 }
 const onv=!!S.dc.supportCounterAtk;
 off.classList.toggle('active',!onv);
