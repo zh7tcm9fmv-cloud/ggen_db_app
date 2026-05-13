@@ -9916,7 +9916,13 @@ def browse_filters():
 @app.route('/api/characters')
 def list_characters():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-    pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
+    ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
+    if ranking_bulk:
+        # Detail "show ranking" warms a full sorted pool in one round-trip (avoids dozens of capped page fetches).
+        pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+    else:
+        pp = min(100, max(10, int(request.args.get('per_page', 50))))
+    sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
     scope_ck = browse_q_scope_cache_letter(q_scope)
@@ -9943,7 +9949,8 @@ def list_characters():
     grid_skills = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
-    ck = f"cl32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    rb_ck = 'rb1' if ranking_bulk else 'rb0'
+    ck = f"cl32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -10122,13 +10129,18 @@ def list_units():
     tb_boost = normalize_id(request.args.get('tb_boost_supporter', '').strip())
     if not tb_boost or tb_boost not in supporter_info_map:
         tb_boost = None
+    ranking_bulk_u = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
     # Team builder: boosted-only lists can exceed 100 rows (UR first); raise cap so SSR etc. are not truncated.
-    _pp_cap = 600 if tb_boost else 100
-    pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
+    if ranking_bulk_u:
+        pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+    else:
+        _pp_cap = 600 if tb_boost else 100
+        pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
-    ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
+    ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
