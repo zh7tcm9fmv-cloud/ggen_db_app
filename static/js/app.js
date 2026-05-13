@@ -5761,12 +5761,12 @@ if(ud.has_cond_stats&&td){
 const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
-function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
-function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?'dc-stat-val--buffed':''}
-function _uCpBonusHtml(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d<=0)return'';return`<div class="stat-card-bonus" style="color:var(--accent-green);margin-top:2px" title="Conditional passive — extra growth stat vs off (LB row; main number may include modifiers).">(+${fmtN(d)})</div>`}
+function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?' dc-stat-mini--cp':' dc-stat-mini--cp-penalty'}
+function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?'dc-stat-val--buffed':'dc-stat-val--penalized'}
+function _uCpBonusHtml(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (LB row; main number may include modifiers).';const tipDn='Conditional passive — stat change vs off (LB row; main number may include modifiers).';if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">(${fmtN(d)})</div>`}
 const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense'),hMob=_uCpValBuff('Mobility');
 const sheetBuffOn=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
-function _dcUnitMiniStatCls(cp){if(cp&&sheetBuffOn)return` class="${cp} dc-stat-val--buffed"`;if(cp)return` class="${cp}"`;if(sheetBuffOn)return` class="dc-stat-val--buffed"`;return''}
+function _dcUnitMiniStatCls(cp){const pen=cp==='dc-stat-val--penalized';if(cp&&sheetBuffOn&&!pen)return` class="${cp} dc-stat-val--buffed"`;if(cp)return` class="${cp}"`;if(sheetBuffOn)return` class="dc-stat-val--buffed"`;return''}
 const spHp=_dcUnitMiniStatCls(hHp),spAtk=hAtk?` class="${hAtk}"`:'',spMob=_dcUnitMiniStatCls(hMob);
 const exSq=_dcEffectiveExSquadAtkPct();
 const utb=_dcGetDetectedUnitTurnBuffPercents(ud);
@@ -5793,7 +5793,7 @@ const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
 const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (panel uses floor; damage ⑧ may use ceil on MS ATK).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
-const atkSpanClass=(exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||supCntActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'';
+const atkSpanClass=hAtk==='dc-stat-val--penalized'?'dc-stat-val--penalized':((exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||supCntActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'');
 let atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 if(supCntActive){atkMainTitle=(atkMainTitle?atkMainTitle+'; ':'')+'Support Attack/Counter +% MS ATK (pilot)'}
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of raw LB Attack base; flat add, not +${advAtkPct}% on total MS ATK)`:'';
@@ -5807,7 +5807,7 @@ const defInlineBonus=defBonusIn>0?`<span class="stat-card-bonus" style="display:
 const mobBonusIn=Math.max(0,mobS-(uEff.mobDbCorePassive|0));
 const mobInlineBonus=mobBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(mobBonusIn)})</span>`:'';
 const defPairBuff=defShow!==defS;
-const spDefCls=(hDef||defPairBuff||advDefFlat>0||unitTurnDefOn||sheetBuffOn)?'dc-stat-val--buffed':'';
+const spDefCls=hDef==='dc-stat-val--penalized'?'dc-stat-val--penalized':((hDef||defPairBuff||advDefFlat>0||unitTurnDefOn||sheetBuffOn)?'dc-stat-val--buffed':'');
 const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
 const pairNote=(S.dc.atkCharData&&S.dc.atkCharData.pair_unit_stat_mod&&S.dc.atkCharData.pair_unit_stat_mod[String(ud.id)]&&S.dc.charCondPassive)?'<div style="font-size:10px;color:var(--accent-cyan);margin-top:4px;line-height:1.35">EX ability: ATK/DEF bonus to this unit when the EX ability toggle is on.</div>':'';
 const cPct=_dcGetCounterOwnAtkPct();
@@ -5856,7 +5856,7 @@ const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
 const a=Math.round(_dcFindStat(statsNoCp,'Attack')||0),b=Math.round(_dcFindStat(stats,'Attack')||0);
-const cpAtkBuff=uCp&&a!==b;
+const cpAtkNeg=uCp&&b<a;
 main.textContent=fmtN(atkDisp);
 const cPct=_dcGetCounterOwnAtkPct();
 if(exSq>0){
@@ -5865,6 +5865,7 @@ sub.removeAttribute('aria-hidden');
 sub.className='stat-card-bonus';
 sub.title='floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
+main.classList.remove('dc-stat-val--penalized');
 main.classList.add('dc-stat-val--buffed');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
 }else if(cPct>0){
@@ -5873,6 +5874,7 @@ sub.removeAttribute('aria-hidden');
 sub.className='stat-card-bonus';
 sub.title='EX ability: MS Attack when countering';
 sub.textContent=`+${fmtN(atkMid-atkAfterPair)} · counter +${cPct}%`;
+main.classList.remove('dc-stat-val--penalized');
 main.classList.add('dc-stat-val--buffed');
 main.title='Includes own ATK when countering (unit)';
 }else{
@@ -5890,8 +5892,19 @@ const counterOn=atkAfterCounter!==atkAfterPair;
 const supOn=atkAfterSup!==atkAfterCounter;
 const advOn=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&atkMid!==atkAfterSup;
 const sheetBuffMlGo=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
-const keepBuff=cpAtkBuff||sheetBuffMlGo||leaderOn||pairOn||counterOn||supOn||advOn||unitTurnAtkOn;
-if(keepBuff)main.classList.add('dc-stat-val--buffed');else main.classList.remove('dc-stat-val--buffed');
+const otherBuff=sheetBuffMlGo||leaderOn||pairOn||counterOn||supOn||advOn||unitTurnAtkOn;
+const cpAtkPos=uCp&&b>a;
+const keepBuff=otherBuff||cpAtkPos;
+if(cpAtkNeg){
+main.classList.add('dc-stat-val--penalized');
+main.classList.remove('dc-stat-val--buffed');
+}else if(keepBuff){
+main.classList.add('dc-stat-val--buffed');
+main.classList.remove('dc-stat-val--penalized');
+}else{
+main.classList.remove('dc-stat-val--buffed');
+main.classList.remove('dc-stat-val--penalized');
+}
 }
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual){const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -5974,9 +5987,10 @@ const r=r0,m=m0,a=a0,d=d0,re=re0;
 const sa=document.getElementById('dcAtkStatsArea');
 const cMode=S.dc.charStatMode||'normal';
 const cCp=!!(_dcCharHasConditional(cd)&&S.dc.charCondPassive);
-function _cCpCell(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?' dc-stat-mini--cp':''}
+function _cCpCell(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?' dc-stat-mini--cp':' dc-stat-mini--cp-penalty'}
 function _skillCell(nm){if(nm==='Defense'&&defPctSk>0)return' dc-stat-mini--skill';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return' dc-stat-mini--skill';return''}
-function _cCpValBuff(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);return a!==b?'dc-stat-val--buffed':''}
+function _cCpValBuff(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?'dc-stat-val--buffed':'dc-stat-val--penalized'}
+function _cCpBonusHtml(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (pilot row; main number may include skills).';const tipDn='Conditional passive — stat change vs off (pilot row; main number may include skills).';if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">(${fmtN(d)})</div>`}
 function _skillValBuff(nm){if(nm==='Defense'&&defPctSk>0)return'dc-stat-val--buffed';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return'dc-stat-val--buffed';return''}
 function _charStatValCls(nm){const a=_cCpValBuff(nm),b=_skillValBuff(nm);return a&&b?a+' '+b:(a||b||'')}
 function _charStatValSpan(nm,val){const cls=_charStatValCls(nm);return`<span${cls?` class="${cls}"`:''}>${fmtN(val)}</span>`}
@@ -5995,7 +6009,7 @@ return`<div class="stat-card-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBas
 }
 const cVis=`stats-grid dc-atk-ers dc-stat-visual--${cMode} dc-stat-grid-5`;
 const bonLn=(nm,v)=>_dcCharPassiveBonusLine(nm,v);
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}"><div class="stat-card${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="stat-card-label">${t('col_ranged')}</div><div class="stat-card-value">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}</div></div><div class="stat-card${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="stat-card-label">${t('col_melee')}</div><div class="stat-card-value">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}</div></div><div class="stat-card${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="stat-card-label">${t('col_awaken')}</div><div class="stat-card-value">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}</div></div><div class="stat-card${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="stat-card-label">${t('col_defense')}</div><div class="stat-card-value">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}</div></div><div class="stat-card${_cCpCell('Reaction')}"><div class="stat-card-label">${t('col_reaction')}</div><div class="stat-card-value">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}"><div class="stat-card${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="stat-card-label">${t('col_ranged')}</div><div class="stat-card-value">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}${_cCpBonusHtml('Ranged')}</div></div><div class="stat-card${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="stat-card-label">${t('col_melee')}</div><div class="stat-card-value">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}${_cCpBonusHtml('Melee')}</div></div><div class="stat-card${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="stat-card-label">${t('col_awaken')}</div><div class="stat-card-value">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}${_cCpBonusHtml('Awaken')}</div></div><div class="stat-card${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="stat-card-label">${t('col_defense')}</div><div class="stat-card-value">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}${_cCpBonusHtml('Defense')}</div></div><div class="stat-card${_cCpCell('Reaction')}"><div class="stat-card-label">${t('col_reaction')}</div><div class="stat-card-value">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}${_cCpBonusHtml('Reaction')}</div></div></div>`;
 area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
