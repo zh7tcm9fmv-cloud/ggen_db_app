@@ -1205,7 +1205,7 @@ else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }
 let th='';
-if(hcf){const cplab=type==='unit'?_dcUnitConditionalToggleLabel(d):t('conditional_passive');th=`<div class="conditional-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-switch"></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
+if(hcf){const cplab=t('conditional_passive');th=`<div class="conditional-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-switch"></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
 let exRow='';
 if(type==='character'&&cp&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),d.ex_supercharged_tiers.length-1);exRow=`<div class="detail-ex-tier-row" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+d.ex_supercharged_tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`}
 const isRankingView=!!(d&&d.view_ranking&&(type==='character'||type==='unit'));
@@ -5446,13 +5446,9 @@ return 'stats'+sfx;
 function _dcGetUnitStatKey(){
 return _dcGetUnitStatKeyForCp(!!S.dc.unitCondPassive);
 }
-/** 00 Raiser (1370005950): in-game labels this slot Conditional Passive, not the generic EX-ability title. */
-function _dcUnitConditionalToggleLabel(ud){
-if(!ud||String(ud.id)!=='1370005950')return t('conditional_passive');
-const lc=String(S.lang||'EN').toUpperCase();
-if(lc==='TW'||lc==='HK')return'條件被動';
-if(lc==='JA'||lc==='JP')return'条件パッシブ';
-return'Conditional Passive';
+function _dcCpChipSpanHtml(active){
+const ac=active?' active':'';
+return`<span class="list-cond-toggle dc-dc-cp-chip${ac}"><span class="cp-word-pad"><span class="cp-wide"><span class="cp-wide-c" aria-hidden="true">C</span><span aria-hidden="true">P</span></span></span></span>`;
 }
 function _dcCharHasConditional(cd){if(!cd)return false;return cd.has_conditional_passive!=null?cd.has_conditional_passive:!!cd.has_ex_stats}
 function _dcGetCharStatsForCp(charCpOn){
@@ -5770,7 +5766,7 @@ let unitCpToggle='';
 if(ud.has_cond_stats){
 const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
-{const _cpL=_dcUnitConditionalToggleLabel(ud);unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-icon"><img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent='CP'"></span></div></div></div>`;}
+{const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -5996,7 +5992,7 @@ const changeBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" st
 let charCpToggle='';
 if(_dcCharHasConditional(cd)){
 const _cpl=t('conditional_passive');
-charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.charCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" onclick="toggleDcCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcCharCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label">${esc(_cpl)}</span></div></div></div>`;
+charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.charCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" aria-label="${escAttr(_cpl)}" onclick="toggleDcCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcCharCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.charCondPassive)}</span></div></div></div>`;
 }
 let charExTierRow='';
 if(_dcCharHasConditional(cd)&&S.dc.charCondPassive&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){

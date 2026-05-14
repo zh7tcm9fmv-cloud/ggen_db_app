@@ -1174,8 +1174,10 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-picked-controls{flex:1 1 140px;min-width:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px}
 .dc-dc-cond-toggle{margin:0!important;justify-content:flex-end}
 .dc-dc-cond-toggle .toggle-label{font-size:11px;font-weight:600;max-width:min(160px,28vw);text-align:right;line-height:1.25}
-.dc-dc-cond-toggle .toggle-label.toggle-label--cp-icon{display:inline-flex;align-items:center;justify-content:center;min-width:16px;max-width:none}
-.dc-dc-cond-toggle .toggle-label.toggle-label--cp-icon img{width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(168,85,247,.45))}
+.dc-dc-cond-toggle .toggle-label.toggle-label--cp-chip{display:inline-flex;align-items:center;justify-content:center;max-width:none;min-height:28px;line-height:1;margin:0;padding:0;background:transparent;border:none;pointer-events:none}
+.dc-dc-cond-toggle .toggle-label.toggle-label--cp-chip .list-cond-toggle.dc-dc-cp-chip{cursor:inherit;pointer-events:none;width:43px;height:28px;padding:2px;margin:0;flex-shrink:0}
+.dc-dc-cond-toggle .toggle-label.toggle-label--cp-chip .list-cond-toggle.dc-dc-cp-chip .cp-wide{font-size:15px;line-height:1;font-style:italic}
+.dc-dc-cond-toggle .toggle-clickable.active .toggle-label.toggle-label--cp-chip .list-cond-toggle.dc-dc-cp-chip{animation:cpWordBorderPulse 2.25s infinite ease-in-out}
 #panel-calculator .dc-picked-controls .toggle-label--cp-short{display:none}
 .dc-dc-cond-toggle .toggle-switch{width:38px;height:22px;border-radius:11px}
 .dc-dc-cond-toggle .toggle-switch::after{width:16px;height:16px;top:2px;left:2px}
