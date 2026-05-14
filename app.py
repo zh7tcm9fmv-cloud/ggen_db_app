@@ -3954,6 +3954,7 @@ def create_item_info_map(d):
             'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '').strip(),
             'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
             'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'rarity_id': normalize_id(item.get('RarityTypeIndex') or item.get('rarityTypeIndex'), '1'),
             'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
         }
     return lookup
@@ -7448,6 +7449,68 @@ def _resolve_reward_rows_from_set_id(reward_set_id):
         rows.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
     return rows
 
+_LB_MATERIAL_NAME_RE = re.compile(r"^\s*(UR|SSR|SR|R|N)\s+(.+?)\s+Limit\s+Break\s+Material\s*$", re.IGNORECASE)
+_LB_MATERIAL_ANY_RE = re.compile(r"^\s*(.+?)\s+Limit\s+Break\s+Material\s*$", re.IGNORECASE)
+_LB_FRAME_BY_RARITY = {
+    '5': {
+        'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_UR.webp',
+        'bottom_frame': '/static/images/UI/UI_Common_Tmb_Square_UR_Frame.webp',
+    },
+    '4': {
+        'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SSR.webp',
+        'bottom_frame': '/static/images/UI/UI_Common_Tmb_Square_SSR_Frame.webp',
+    },
+    '3': {
+        'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SR.webp',
+        'bottom_frame': '/static/images/UI/UI_Common_Tmb_Square_SR_Frame.webp',
+    },
+    '2': {
+        'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_R.webp',
+        'bottom_frame': '/static/images/UI/UI_Common_Tmb_Square_R_Frame.webp',
+    },
+    '1': {
+        'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_N.webp',
+        'bottom_frame': '/static/images/UI/UI_Common_Tmb_Square_None_Frame%20%236338.webp',
+    },
+}
+
+def _extract_limit_break_unit_name(item_name):
+    name = str(item_name or '').strip()
+    if not name:
+        return ''
+    m = _LB_MATERIAL_NAME_RE.match(name)
+    if m:
+        return str(m.group(2) or '').strip()
+    m = _LB_MATERIAL_ANY_RE.match(name)
+    if m:
+        return str(m.group(1) or '').strip()
+    return ''
+
+def _normalize_name_key(s):
+    return re.sub(r"\s+", " ", str(s or '').strip().lower())
+
+def _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity=''):
+    unit_name_key = _normalize_name_key(unit_name)
+    if not unit_name_key:
+        return ''
+    ld = get_lang_data(lc)
+    uim = ld.get('unit_id_map') or {}
+    utm = ld.get('unit_text_map') or {}
+    for uid, info in (unit_info_map or {}).items():
+        if expected_rarity and normalize_id(info.get('rarity', '0')) != expected_rarity:
+            continue
+        lid = uim.get(uid, '')
+        uname = str(utm.get(lid) or '').strip() if lid else ''
+        if _normalize_name_key(uname) != unit_name_key:
+            continue
+        thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        if thum:
+            return str(thum)
+    # Fallback without rarity filter if no exact rarity match.
+    if expected_rarity:
+        return _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity='')
+    return ''
+
 def _decorate_reward_rows(rows, lc):
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
@@ -7464,6 +7527,8 @@ def _decorate_reward_rows(rows, lc):
         reward_name = ''
         reward_icon = ''
         reward_desc = ''
+        lb_thumb = ''
+        lb_frames = None
         if rt == '10':
             reward_name = "Diamonds"
             reward_icon = "/static/images/UI/UI_Common_Icon_Diamond_M.webp"
@@ -7500,6 +7565,7 @@ def _decorate_reward_rows(rows, lc):
             item = item_info_map.get(tid, {})
             nlid = normalize_id(item.get('name_lang_id'))
             dlid = normalize_id(item.get('desc_lang_id'))
+            iri = normalize_id(item.get('rarity_id'), '1')
             if nlid != '0':
                 reward_name = str(item_text_map.get(nlid) or '').strip()
             if dlid != '0':
@@ -7509,6 +7575,11 @@ def _decorate_reward_rows(rows, lc):
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
                 reward_icon = f"/static/images/Item/{rid_item}.png"
+            lb_unit_name = _extract_limit_break_unit_name(reward_name)
+            lb_thumb = ''
+            if lb_unit_name and 'limit break material' in reward_name.lower():
+                lb_thumb = _find_unit_thumb_by_display_name(lb_unit_name, lc, iri)
+            lb_frames = _LB_FRAME_BY_RARITY.get(iri) if lb_thumb else None
         else:
             reward_name = f"Reward {rid}"
         out.append({
@@ -7519,13 +7590,17 @@ def _decorate_reward_rows(rows, lc):
             'description': reward_desc,
             'count': cnt,
             'icon': reward_icon,
-            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else '')),
-            'detail_id': (tid if rt in ('2', '8') else ''),
+            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ''))),
+            'detail_id': (tid if rt in ('2', '8', '30') else ''),
             'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else '')),
             'thumb': (reward_icon if rt in ('2', '8') else ''),
             'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else '')),
             'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else ''),
             'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else ''),
+            'lb_thumb_base': (lb_frames.get('base', '') if rt not in ('2', '8', '30') and lb_frames else ''),
+            'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '8', '30') and lb_frames else ''),
+            'lb_thumb_bottom_frame': (lb_frames.get('bottom_frame', '') if rt not in ('2', '8', '30') and lb_frames else ''),
+            'lb_thumb_unit': (lb_thumb if rt not in ('2', '8', '30') else ''),
         })
     return out
 
@@ -11147,6 +11222,33 @@ def get_option_part(option_part_id):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/profile_title/<profile_title_id>')
+def get_profile_title(profile_title_id):
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        pid = normalize_id(profile_title_id)
+        info = (profile_title_info_map or {}).get(pid)
+        if not info:
+            return jsonify({'error': 'Not found'}), 404
+        ld = get_lang_data(lc)
+        tmap = ld.get('profile_title_text_map') or {}
+        tlid = normalize_id(info.get('title_name_lang_id'))
+        name = str(tmap.get(tlid) or '').strip() if tlid and tlid != '0' else ''
+        if not name:
+            name = f"Profile Title {pid}"
+        brid = str(info.get('background_resource_id') or '').strip()
+        result = {
+            'id': pid,
+            'name': name,
+            'image': (f"/static/images/Item/{brid}.webp" if brid else ''),
+            'lang': lc,
+        }
+        return jsonify(convert_image_urls(result))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/supporters')
 def list_supporters():
     try:
@@ -12137,14 +12239,18 @@ def list_stages():
                 if not key:
                     continue
                 dup_groups.setdefault(key, []).append(row)
+            rerun_ids = set()
             for _, grp in dup_groups.items():
                 if len(grp) <= 1:
                     continue
                 rerun_row = max(grp, key=lambda x: safe_int(x.get('id'), 0))
+                rerun_ids.add(str(rerun_row.get('id') or ''))
                 nm = str(rerun_row.get('name') or '').strip()
                 if nm and 'rerun' not in nm.lower():
                     rerun_row['name'] = f"{nm} (Rerun)"
             for row in tower_rows:
+                if str(row.get('id') or '') in rerun_ids:
+                    continue
                 if sq:
                     searchable = f"{row.get('id')} {row.get('name')} {row.get('stage_number')} {row.get('tower_side')}".lower()
                     if not search_row_matches_query(sq, searchable, None, entity_id=row.get('id')):
