@@ -2520,7 +2520,7 @@ _vigorCondThreshold:null,
 _activeSkills:{},
 mpLevel:'medium',
 terrainMode:'normal',terrain:0,
-finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,exSquadAtkPctExplicitZero:false,squadCondPct:0,atkCounterOwnAtk:false,supportCounterAtk:false,_supportCounterAtkPct:0,applyAdvantageEnemyTag:true,
+finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,exSquadAtkPctExplicitZero:false,squadCondPct:0,atkCounterOwnAtk:false,supportCounterAtk:false,_supportCounterAtkPct:0,supportCntPairSnap:null,applyAdvantageEnemyTag:true,
 unitTurnBuffAtk:false,unitTurnBuffDef:false,masterLeagueBuff:false,grandOffensiveBuff:false
 }));
 }
@@ -2539,7 +2539,7 @@ _vigorCondThreshold:S.dc._vigorCondThreshold||null,
 _activeSkills:S.dc._activeSkills||{},
 mpLevel:S.dc.mpLevel||'medium',
 terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
-finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,exSquadAtkPctExplicitZero:!!S.dc.exSquadAtkPctExplicitZero,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,supportCounterAtk:!!S.dc.supportCounterAtk,_supportCounterAtkPct:S.dc._supportCounterAtkPct|0,applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
+finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,exSquadAtkPctExplicitZero:!!S.dc.exSquadAtkPctExplicitZero,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,supportCounterAtk:!!S.dc.supportCounterAtk,_supportCounterAtkPct:S.dc._supportCounterAtkPct|0,supportCntPairSnap:(function(){const m=S.dc._supportCntAtkPairSnapBySlot;if(!m)return null;const i=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);const v=m[i];return v?String(v):null})(),applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
 unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff
@@ -2564,7 +2564,7 @@ S.dc._vigorCondThreshold=slot._vigorCondThreshold;
 S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
 S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
 S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
-S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;S.dc._supportCounterAtkPct=slot._supportCounterAtkPct|0;S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
+S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;S.dc._supportCounterAtkPct=slot._supportCounterAtkPct|0;{const wi=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);if(!S.dc._supportCntAtkPairSnapBySlot)S.dc._supportCntAtkPairSnapBySlot={};const skProvided=slot&&Object.prototype.hasOwnProperty.call(slot,'supportCntPairSnap')&&slot.supportCntPairSnap!=null&&String(slot.supportCntPairSnap).trim()!=='';S.dc._supportCntAtkPairSnapBySlot[wi]=skProvided?String(slot.supportCntPairSnap):(_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null)}S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
@@ -2663,7 +2663,7 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc._dcAutoFitGen=0;
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -3253,6 +3253,7 @@ if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0)slot.
 if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else slot.dcSuperchargedExTier=0}
 if(o.acoa)slot.atkCounterOwnAtk=true;
 if(o.sac)slot.supportCounterAtk=true;
+slot.supportCntPairSnap=_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null;
 if(o.uta)slot.unitTurnBuffAtk=true;
 if(o.utd)slot.unitTurnBuffDef=true;
 if(o.mlb)slot.masterLeagueBuff=true;
@@ -6014,7 +6015,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter. Use Attacker Parameters &rarr; <strong>Support Attack/Counter — MS ATK %</strong> to model that action (pilot-dependent; independent of attacker MS category).</div>`)}
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -6170,11 +6171,18 @@ if(p>max)max=p;
 });
 return max;
 }
+function _dcSupportCntEligiblePairSnap(cd,ud){
+const pilotOk=!!(cd&&!cd._manual&&_dcCharIsSupportRole(cd));
+const rawPct=pilotOk?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
+const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
+if(!pilotOk||rawPct<=0||!unitOk)return '';
+return `${String(cd.id||'')}|${String(ud.id||'')}|${rawPct}`;
+}
 function _dcEffectiveSupportCounterAtkPct(){
 if(!S.dc.supportCounterAtk)return 0;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||cd._manual||!_dcCharIsSupportRole(cd))return 0;
-if(!ud||ud._manual)return 0;
+if(!ud||ud._manual||String(ud.role_id)!=='3')return 0;
 return Math.max(0,S.dc._supportCounterAtkPct|0);
 }
 function _dcApplySupportCounterAtkToUnitAtk(unitAtk){
@@ -7829,13 +7837,18 @@ const off=document.getElementById('dcAtkSupportCounterOff');
 const on=document.getElementById('dcAtkSupportCounterOn');
 const lbl=document.getElementById('dcAtkSupportCounterLbl');
 if(!w||!off||!on)return;
-const cd=S.dc.atkCharData;
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+const snapMap=S.dc._supportCntAtkPairSnapBySlot=S.dc._supportCntAtkPairSnapBySlot||{};
 const pilotOk=!!(cd&&!cd._manual&&_dcCharIsSupportRole(cd));
 const rawPct=pilotOk?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
 S.dc._supportCounterAtkPct=rawPct>0?rawPct:0;
+const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
+const cid=cd&&!cd._manual?String(cd.id||''):'';
 if(!pilotOk||rawPct<=0){
 w.style.display='none';
 w.style.opacity='';
+snapMap[si]=null;
 S.dc.supportCounterAtk=false;
 S.dc._supportCounterAtkPct=0;
 off.classList.add('active');on.classList.remove('active');
@@ -7843,11 +7856,27 @@ off.disabled=true;on.disabled=true;
 return;
 }
 w.style.display='';
+if(!unitOk){
+S.dc.supportCounterAtk=false;
+snapMap[si]=null;
+off.classList.add('active');on.classList.remove('active');
+off.disabled=true;on.disabled=true;
+w.style.opacity='0.55';
+if(lbl){
+lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
+lbl.title='This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).';
+}
+return;
+}
 w.style.opacity='';
+const kNow=`${cid}|${String(ud.id||'')}|${rawPct}`;
+const prev=snapMap[si]!=null?String(snapMap[si]):null;
+if(prev!==kNow)S.dc.supportCounterAtk=true;
+snapMap[si]=kNow;
 off.disabled=false;on.disabled=false;
 if(lbl){
 lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
-lbl.title='Pilot passive: optional MS ATK % while executing Support Attack/Counter when that pilot participates. Turn On only when you are modelling that combat action.';
+lbl.title='Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Auto-On when you pair with a Support-role unit; turn Off to compare without the bonus.';
 }
 const onv=!!S.dc.supportCounterAtk;
 off.classList.toggle('active',!onv);
