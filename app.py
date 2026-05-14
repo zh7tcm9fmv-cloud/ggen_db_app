@@ -3312,7 +3312,7 @@ _LANG_DISPLAY_FALLBACK_KEYS = (
     'series_name_map', 'lang_text_map', 'lineage_lookup',
     'abil_name_map', 'abil_desc_map',
     'supporter_leader_text_map', 'supporter_active_text_map',
-    'stage_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map',
+    'stage_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
     'stage_master_text_map', 'stage_condition_text_map',
     'weapon_text_map', 'op_text_map',
 )
@@ -3937,6 +3937,21 @@ def create_item_info_map(d):
             'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
             'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
             'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
+        }
+    return lookup
+
+def create_profile_title_info_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        pid = normalize_id(item.get('Id') or item.get('id'))
+        if pid == '0':
+            continue
+        lookup[pid] = {
+            'background_resource_id': str(item.get('BackgroundResourceId') or item.get('backgroundResourceId') or '').strip(),
+            'title_name_lang_id': normalize_id(item.get('TitleNameLanguageId') or item.get('titleNameLanguageId')),
+            'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId')),
         }
     return lookup
 
@@ -5389,6 +5404,7 @@ ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
+profile_title_data = load_json(os.path.join(BASE_DIR, "m_profile_title.json"))
 schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
 schedule_start_ms_by_id = {}
 schedule_end_ms_by_id = {}
@@ -5434,6 +5450,7 @@ tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_sta
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
 reward_map = create_reward_map(reward_data) if reward_data else {}
 item_info_map = create_item_info_map(item_data) if item_data else {}
+profile_title_info_map = create_profile_title_info_map(profile_title_data) if profile_title_data else {}
 reward_set_rewards_map = {}
 for _rid, _rrow in (reward_map or {}).items():
     _sid = str(_rid)[:-2] if len(str(_rid)) > 2 else ''
@@ -5442,6 +5459,17 @@ for _rid, _rrow in (reward_map or {}).items():
     reward_set_rewards_map.setdefault(_sid, []).append(dict(_rrow, reward_id=_rid))
 for _sid, _arr in list(reward_set_rewards_map.items()):
     _arr.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
+option_part_reward_info_map = {}
+for _op in extract_data_list(option_parts_data):
+    if not isinstance(_op, dict):
+        continue
+    _oid = normalize_id(_op.get('Id') or _op.get('id'))
+    if _oid == '0':
+        continue
+    option_part_reward_info_map[_oid] = {
+        'resource_id': str(_op.get('ResourceId') or _op.get('resourceId') or '').strip(),
+        'name_lang_id': normalize_id(_op.get('SortNameLanguageId') or _op.get('sortNameLanguageId')),
+    }
 stage_sortie_set_content_map = create_stage_sortie_set_content_map(stage_sortie_set_content_data) if stage_sortie_set_content_data else {}
 stage_sortie_group_content_map = create_stage_sortie_group_content_map(stage_sortie_group_content_data) if stage_sortie_group_content_data else {}
 stage_condition_map = create_stage_condition_map(stage_battle_condition_text_base_data) if stage_battle_condition_text_base_data else {}
@@ -6021,6 +6049,7 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage.json"))
     special_event_stage_lang_text = load_json(os.path.join(lang_dir, "m_special_event_stage.json"))
     item_lang_text = load_json(os.path.join(lang_dir, "m_item.json"))
+    profile_title_lang_text = load_json(os.path.join(lang_dir, "m_profile_title.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
@@ -6039,6 +6068,7 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_text_map = create_lang_text_map(tower_stage_lang_text) if tower_stage_lang_text else {}
     special_event_stage_text_map = create_lang_text_map(special_event_stage_lang_text) if special_event_stage_lang_text else {}
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
+    profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
     for item in extract_data_list(stage_battle_condition_text_lang):
@@ -6131,7 +6161,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -7403,6 +7433,8 @@ def resolve_tower_appeal_rewards(stage_id, lc):
         return []
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
+    profile_title_text_map = ld.get('profile_title_text_map') or {}
+    op_text_map = ld.get('op_text_map') or {}
     out = []
     for row in rows:
         rid = normalize_id(row.get('reward_id'))
@@ -7414,7 +7446,34 @@ def resolve_tower_appeal_rewards(stage_id, lc):
         reward_name = ''
         reward_icon = ''
         reward_desc = ''
-        if tid != '0':
+        if rt == '10':
+            reward_name = "Diamonds"
+            reward_icon = "/static/images/UI/UI_Common_Icon_Diamond_M.webp"
+        elif rt == '2':
+            c = get_npc_character_display(tid, {}, lc)
+            reward_name = str(c.get('name') or f"Character {tid}")
+            reward_icon = str(c.get('portrait') or '')
+        elif rt == '30':
+            pinfo = profile_title_info_map.get(tid, {})
+            tlid = normalize_id(pinfo.get('title_name_lang_id')) if isinstance(pinfo, dict) else '0'
+            if tlid != '0':
+                reward_name = str(profile_title_text_map.get(tlid) or '').strip()
+            if not reward_name:
+                reward_name = f"Profile Title {tid}"
+            brid = str(pinfo.get('background_resource_id') or '').strip() if isinstance(pinfo, dict) else ''
+            if brid:
+                reward_icon = f"/static/images/ProfileTitle/{brid}.webp"
+        elif rt == '8':
+            opinfo = option_part_reward_info_map.get(tid, {})
+            nlid = normalize_id(opinfo.get('name_lang_id')) if isinstance(opinfo, dict) else '0'
+            if nlid != '0':
+                reward_name = str(op_text_map.get(nlid) or '').strip()
+            if not reward_name:
+                reward_name = f"Option Part {tid}"
+            orid = str(opinfo.get('resource_id') or '').strip() if isinstance(opinfo, dict) else ''
+            if orid:
+                reward_icon = f"/static/images/Option-Part (Modification)/Sprite/{orid}.webp"
+        elif tid != '0':
             item = item_info_map.get(tid, {})
             nlid = normalize_id(item.get('name_lang_id'))
             dlid = normalize_id(item.get('desc_lang_id'))
@@ -7427,9 +7486,6 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
                 reward_icon = f"/static/images/Item/{rid_item}.png"
-        elif rt == '10':
-            reward_name = "Diamonds"
-            reward_icon = "/static/images/UI/UI_Common_Icon_Diamond_M.webp"
         else:
             reward_name = f"Reward {rid}"
         out.append({
