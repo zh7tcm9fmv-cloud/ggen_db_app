@@ -2588,6 +2588,58 @@ S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
 _dcSyncSquadCondEffectiveFromState();
 if(S.dc.atkCharData)S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
 }
+function _dcCritDmgUpFromWeapon(ud,wpnIdx,wpnLv){
+if(!ud||ud._manual||!ud.weapons)return 0;
+const wpns=_dcNonMapWeapons(ud);
+if(!wpns.length)return 0;
+const i=Math.min(Math.max(0,wpnIdx|0),wpns.length-1);
+const w=wpns[i];
+if(!w)return 0;
+const lv=w.levels&&w.levels.length?Math.min(Math.max(0,wpnLv|0),w.levels.length-1):0;
+return _dcParseWeaponTraits(w,lv).critDmgUp|0;
+}
+/** Recompute Damage Dealt Up / Crit Dmg Up the same way as _dcRecalcPilotBonuses(true) would for a freshly-rendered pilot row: toggle passives use default on unless marked conditional (it.cond). Does not read DOM pilot bonus checkboxes — required when calculateDamage runs for an off-screen attacker slot (share links, multi-column compare). Caller must have run _dcWriteAttackerToDc(slot) so S.dc.atkUnitData matches the slot. */
+function _dcDerivePilotDmgCritForSlotContext(slot,wCrit){
+if(slot.atkCharData&&slot.atkCharData._manual)return{dmgIncrease:S.dc.dmgIncrease|0,critDmgUp:S.dc.critDmgUp|0};
+const cd=slot.atkCharData;
+if(!cd)return{dmgIncrease:0,critDmgUp:wCrit|0};
+const saveChar=S.dc.charStatMode,savePS=S.dc._pilotSkills,saveAS=S.dc._activeSkills,savePB=S.dc._pilotBonuses;
+try{
+S.dc.charStatMode=slot.charStatMode||'normal';
+S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(cd)||[];
+S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
+S.dc._pilotBonuses=_dcParsePilotAbilBonuses(cd);
+const b=S.dc._pilotBonuses||{items:[]};
+let dmgDealt=0,critDmg=0;
+b.items.forEach(it=>{
+if(it.key==='atkPct')return;
+if(it.spCharGate){
+if(it.cond)return;
+if((S.dc.charStatMode||'normal')!=='sp')return;
+if(it.key==='dmgDealt')dmgDealt+=it.val;
+if(it.key==='critDmg')critDmg+=it.val;
+return;
+}
+if(it.alwaysActive){
+if(it.key==='dmgDealt')dmgDealt+=it.val;
+if(it.key==='critDmg')critDmg+=it.val;
+return;
+}
+if(!it.cond){
+if(it.key==='dmgDealt')dmgDealt+=it.val;
+if(it.key==='critDmg')critDmg+=it.val;
+}
+});
+const skB=_dcGetActiveSkillBonuses();
+dmgDealt+=skB.dmgDealt;
+return{dmgIncrease:dmgDealt|0,critDmgUp:(critDmg+(wCrit|0))|0};
+}finally{
+S.dc.charStatMode=saveChar;
+S.dc._pilotSkills=savePS;
+S.dc._activeSkills=saveAS;
+S.dc._pilotBonuses=savePB;
+}
+}
 function _dcSnapActiveAttackerToSlot(){
 if(!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))S.dc.atkSlots=Array.from({length:DC_ATK_SLOT_COUNT},()=>_dcCreateEmptyAttackerSlot());
 while(S.dc.atkSlots.length<DC_ATK_SLOT_COUNT)S.dc.atkSlots.push(_dcCreateEmptyAttackerSlot());
@@ -2639,8 +2691,23 @@ _dcRefreshAtkSlotUi();
 function _dcCalculateDamageWithSlot(slotIdx){
 const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
 const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
+const activeSi=S.dc.atkSlotIndex|0;
 const backup=_dcReadAttackerFromDc();
 _dcWriteAttackerToDc(slot,slotIdx);
+const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
+S.dc._wpnCritDmgUp=wc;
+if(!(slot.atkCharData&&slot.atkCharData._manual)&&slotIdx!==activeSi){
+const d=_dcDerivePilotDmgCritForSlotContext(slot,wc);
+const diStored=slot.dmgIncrease|0;
+if(diStored>0){
+S.dc.dmgIncrease=diStored;
+S.dc.critDmgUp=slot.critDmgUp|0;
+}else{
+S.dc.dmgIncrease=d.dmgIncrease;
+S.dc.critDmgUp=d.critDmgUp;
+}
+}
+S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
 let r=null;
 try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
 _dcWriteAttackerToDc(backup);
