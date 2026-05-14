@@ -3835,8 +3835,26 @@ def create_map_event_score_attack_stage_map(score_data, stage_master):
             'boss_map_npc_id': boss,
             'stage_name_lang_id': snlid,
             'score_attack_row_id': normalize_id(item.get('Id') or item.get('id')),
+            'score_attack_reward_id': normalize_id(item.get('MapEventScoreAttackRewardId') or item.get('mapEventScoreAttackRewardId')),
             'list_seq': seq,
         }
+    return lookup
+
+def create_map_event_score_attack_reward_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        rid = normalize_id(item.get('MapEventScoreAttackRewardId') or item.get('mapEventScoreAttackRewardId'))
+        rsid = normalize_id(item.get('RewardSetId') or item.get('rewardSetId'))
+        if rid == '0' or rsid == '0':
+            continue
+        lookup.setdefault(rid, []).append({
+            'score': safe_int(item.get('Score') or item.get('score'), 0),
+            'reward_set_id': rsid,
+        })
+    for rid, arr in list(lookup.items()):
+        arr.sort(key=lambda x: safe_int(x.get('score'), 0))
     return lookup
 
 def create_special_event_stage_map(d):
@@ -5367,6 +5385,7 @@ supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_ski
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
 map_event_score_attack_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage.json"))
+map_event_score_attack_reward_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_reward.json"))
 special_event_stage_data = load_json(os.path.join(BASE_DIR, "m_special_event_stage.json"))
 tower_event_data = load_json(os.path.join(BASE_DIR, "m_tower_event.json"))
 tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_group.json"))
@@ -5444,6 +5463,7 @@ supporter_active_map = create_supporter_active_skill_map(supporter_active_data) 
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
 eternal_stage_map = create_eternal_stage_map(eternal_stage_data) if eternal_stage_data else {}
 map_event_score_attack_stage_map = create_map_event_score_attack_stage_map(map_event_score_attack_stage_data, stage_master_data) if map_event_score_attack_stage_data else {}
+map_event_score_attack_reward_map = create_map_event_score_attack_reward_map(map_event_score_attack_reward_data) if map_event_score_attack_reward_data else {}
 special_event_stage_map = create_special_event_stage_map(special_event_stage_data) if special_event_stage_data else {}
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
@@ -7414,24 +7434,21 @@ def classify_tower_side(stage_name, group_name='', group_resource_id=''):
         return 'E'
     return 'ALL'
 
-def resolve_tower_appeal_rewards(stage_id, lc):
-    sid = normalize_id(stage_id)
-    tes = (tower_event_stage_map or {}).get(sid, {})
-    if not isinstance(tes, dict):
+def _resolve_reward_rows_from_set_id(reward_set_id):
+    rsid = normalize_id(reward_set_id)
+    if rsid == '0':
         return []
-    reward_set_id = normalize_id(tes.get('first_clear_reward_set_id'))
-    if reward_set_id == '0':
-        return []
-    rows = list(reward_set_rewards_map.get(reward_set_id, []))
+    rows = list(reward_set_rewards_map.get(rsid, []))
     if not rows:
         rows = []
         for rid, r in (reward_map or {}).items():
-            rs = str(reward_set_id)
+            rs = str(rsid)
             if str(rid).startswith(rs):
                 rows.append(dict(r, reward_id=rid))
         rows.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
-    if not rows:
-        return []
+    return rows
+
+def _decorate_reward_rows(rows, lc):
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
     profile_title_text_map = ld.get('profile_title_text_map') or {}
@@ -7511,6 +7528,33 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else ''),
         })
     return out
+
+def resolve_tower_appeal_rewards(stage_id, lc):
+    sid = normalize_id(stage_id)
+    tes = (tower_event_stage_map or {}).get(sid, {})
+    if not isinstance(tes, dict):
+        return []
+    reward_set_id = normalize_id(tes.get('first_clear_reward_set_id'))
+    return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
+
+def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_id='0'):
+    sid = normalize_id(stage_id)
+    cat = str(category or 'eternal')
+    if cat == 'tower_stage':
+        return resolve_tower_appeal_rewards(sid, lc)
+    if cat == 'score_attack':
+        rid = normalize_id(score_attack_reward_id)
+        out = []
+        for row in (map_event_score_attack_reward_map.get(rid, []) if rid != '0' else []):
+            score = safe_int(row.get('score'), 0)
+            set_id = normalize_id(row.get('reward_set_id'))
+            for rew in _decorate_reward_rows(_resolve_reward_rows_from_set_id(set_id), lc):
+                if score > 0:
+                    rew['description'] = (f"Score {score}" if not rew.get('description') else f"Score {score} - {rew.get('description')}")
+                out.append(rew)
+        return out
+    reward_set_id = normalize_id(f"20{sid}0000")
+    return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
 
 def special_event_stage_thumb_url(thumbnail_resource_id):
     """m_special_event_stage.ThumbnailResourceId → PNG path under images/Stages/Sp_stage_thum.
@@ -12187,6 +12231,7 @@ def get_stage(stage_id):
                 'stage_name_lang_id': sas.get('stage_name_lang_id', '0'),
                 'display_unit_id': duid_syn,
                 'stage_difficulty_type_index': safe_int(mmeta.get('stage_difficulty_type_index'), 1),
+                'score_attack_reward_id': sas.get('score_attack_reward_id', '0'),
             }
             vis = True
         elif is_special_event_stage:
@@ -12212,7 +12257,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np7"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np8"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -12324,7 +12369,13 @@ def get_stage(stage_id):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
             pad = 2; w = max(w, max_x + 1 + pad); h = max(h, max_y + 1 + pad)
             md = build_map_grid(w, h, uom)
-        tower_rewards = resolve_tower_appeal_rewards(stage_id, lc) if is_tower_event_stage else []
+        stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
+        stage_rewards = resolve_stage_rewards(
+            stage_id,
+            lc,
+            category=stage_cat,
+            score_attack_reward_id=est.get('score_attack_reward_id', '0'),
+        )
         tower_side = 'ALL'
         if is_tower_event_stage:
             _gid = normalize_id(tes.get('tower_event_stage_group_id', '0'))
@@ -12332,7 +12383,7 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
-        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal'))), 'stage_master_id': stage_master_id, 'tower_rewards': tower_rewards, 'tower_side': tower_side}
+        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': stage_cat, 'stage_master_id': stage_master_id, 'stage_rewards': stage_rewards, 'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
