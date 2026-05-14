@@ -161,6 +161,8 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .nav-tab{padding:12px 28px;background:none;border:none;color:var(--text-secondary);font-size:18px;font-weight:600;cursor:pointer;position:relative;transition:var(--transition);letter-spacing:0.3px;text-decoration:none!important;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;line-height:1.2}
 a.nav-tab:any-link{color:var(--text-secondary)}
 a.nav-tab:visited{color:var(--text-secondary)}
+a.nav-tab.active:any-link,a.nav-tab.active:visited{color:var(--accent-cyan)}
+a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color:var(--text-primary)}
 .nav-tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent-cyan);border-radius:2px;transition:width 0.3s ease}
 .nav-tab:hover{color:var(--text-primary)}.nav-tab:hover::after{width:60%}.nav-tab.active{color:var(--accent-cyan)}.nav-tab.active::after{width:80%}
 .main-content{max-width:1600px;margin:0 auto;padding:20px 24px 40px;flex:1;min-width:0;width:100%}
