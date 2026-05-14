@@ -3418,13 +3418,17 @@ const slots=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(loaded[i]||_dcCreateEmptyAttackerSlot());
 S.dc.atkSlots=slots;
 _dcDedupeSsrOptionPartsAcrossDcSlots();
+{const _prevIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 for(let si=0;si<DC_ATK_SLOT_COUNT;si++){
 const sl=S.dc.atkSlots[si];
 if(!sl||!sl.atkUnitData||!sl._dcNeedAutoMp)continue;
+S.dc.atkSlotIndex=si;
 _dcWriteAttackerToDc(sl);
 _dcAutoSetVigor();
 sl.mpLevel=S.dc.mpLevel;
 delete sl._dcNeedAutoMp;
+}
+S.dc.atkSlotIndex=_prevIdx;
 }
 const asRaw=parseInt(obj.a||'0',10);
 const ai=Number.isNaN(asRaw)?0:Math.min(Math.max(asRaw,0),DC_ATK_SLOT_COUNT-1);
@@ -3453,11 +3457,13 @@ _dcSyncAtkModeUiFromState();
 async function _dcCheckUrlParams(){
 const p=new URLSearchParams(location.search);
 const _t=p.get('tab');
-if(_t!=='calculator'&&_t!=='DS')return;
+const _path=(location.pathname||'').replace(/\/+$/,'');
+const _hasShare=!!(p.get('d')||p.get('dc'));
+if(_t!=='calculator'&&_t!=='DS'&&_path!=='/cal'&&!_hasShare)return;
 initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
 let isMultiSlotUrl=false;
-const dcRaw=p.get('dc');
+const dcRaw=p.get('d')||p.get('dc');
 if(dcRaw){
 try{
 const obj=await _dcDecodeSharePayload(dcRaw);
@@ -8671,9 +8677,8 @@ _dcSnapActiveAttackerToSlot();
 const packed=_dcPackShareState();
 const b64=await _dcEncodeSharePayload(packed);
 if(!b64)return'';
-const u=new URL(location.origin+location.pathname);
-u.searchParams.set('tab','DS');
-u.searchParams.set('dc',b64);
+const u=new URL(location.origin+'/cal');
+u.searchParams.set('d',b64);
 return u.toString();
 }
 function _dcWeaponDisplayNameForSlot(ud,wpnIdx){
