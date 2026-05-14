@@ -136,7 +136,11 @@ function applyGameNewsUi() {
   const titleEl = document.getElementById('gameNewsPageTitle');
   if (titleEl) titleEl.textContent = u.page_title;
   const navCur = document.getElementById('gameNewsNavCurrent');
-  if (navCur) navCur.textContent = u.page_title;
+  if (navCur) {
+    const lbl = navCur.querySelector('.nav-tab-label');
+    if (lbl) lbl.textContent = u.page_title;
+    else navCur.textContent = u.page_title;
+  }
   document.title = `${u.page_title} — GGen Database`;
   const navEl = document.getElementById('gameNewsNavHome');
   if (navEl) {
