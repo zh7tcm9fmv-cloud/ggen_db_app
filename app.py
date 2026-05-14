@@ -11989,17 +11989,20 @@ def list_stages():
                     'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
                     'content_locked': False, 'stage_category': 'tower_stage', 'tower_side': side,
                 })
-            dup_count = {}
+            dup_groups = {}
             for row in tower_rows:
                 key = str(row.get('name') or '').strip().lower()
                 if not key:
                     continue
-                dup_count[key] = dup_count.get(key, 0) + 1
+                dup_groups.setdefault(key, []).append(row)
+            for _, grp in dup_groups.items():
+                if len(grp) <= 1:
+                    continue
+                rerun_row = max(grp, key=lambda x: safe_int(x.get('id'), 0))
+                nm = str(rerun_row.get('name') or '').strip()
+                if nm and 'rerun' not in nm.lower():
+                    rerun_row['name'] = f"{nm} (Rerun)"
             for row in tower_rows:
-                nm = str(row.get('name') or '').strip()
-                key = nm.lower()
-                if nm and dup_count.get(key, 0) > 1:
-                    row['name'] = f"{nm} [{row.get('id')}]"
                 if sq:
                     searchable = f"{row.get('id')} {row.get('name')} {row.get('stage_number')} {row.get('tower_side')}".lower()
                     if not search_row_matches_query(sq, searchable, None, entity_id=row.get('id')):
@@ -12135,9 +12138,9 @@ def get_stage(stage_id):
                 group_id=tes.get('tower_event_stage_group_id', '0'),
                 floor_count=est.get('stage_number', 0),
             )
-            _dup = 0
             _nm_key = str(sname or '').strip().lower()
             if _nm_key:
+                _dup_ids = []
                 for _tid, _tes in (tower_event_stage_map or {}).items():
                     _name = resolve_tower_event_stage_name(
                         ld,
@@ -12147,9 +12150,10 @@ def get_stage(stage_id):
                         floor_count=safe_int(_tes.get('floor_count'), 0),
                     )
                     if str(_name or '').strip().lower() == _nm_key:
-                        _dup += 1
-                if _dup > 1:
-                    sname = f"{sname} [{stage_id}]"
+                        _dup_ids.append(safe_int(_tid, 0))
+                if len(_dup_ids) > 1 and safe_int(stage_id, 0) == max(_dup_ids):
+                    if 'rerun' not in sname.lower():
+                        sname = f"{sname} (Rerun)"
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         if is_score_attack or is_special_event_stage or is_tower_event_stage:
