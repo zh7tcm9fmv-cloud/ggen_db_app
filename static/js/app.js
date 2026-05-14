@@ -2839,7 +2839,7 @@ return u8;
 async function _dcEncodeSharePayload(obj){
 const json=JSON.stringify(obj);
 const bytes=new TextEncoder().encode(json);
-if(typeof CompressionStream!=='undefined'){
+if(typeof CompressionStream!=='undefined'&&typeof DecompressionStream!=='undefined'){
 try{
 const cs=new CompressionStream('deflate');
 const blob=new Blob([bytes]).stream().pipeThrough(cs);
@@ -3463,10 +3463,13 @@ if(_t!=='calculator'&&_t!=='DS'&&_path!=='/cal'&&!_hasShare)return;
 initDmgCalc();switchTab('calculator');
 await renderDcStageDropdown();
 let isMultiSlotUrl=false;
-const dcRaw=p.get('d')||p.get('dc');
-if(dcRaw){
+const dRaw=p.get('d');
+const dcRaw=p.get('dc');
+if(dRaw||dcRaw){
+let obj=null;
 try{
-const obj=await _dcDecodeSharePayload(dcRaw);
+if(dRaw)obj=await _dcDecodeSharePayload(dRaw);
+if((!obj||obj.v!==1)&&dcRaw&&dcRaw!==dRaw)obj=await _dcDecodeSharePayload(dcRaw);
 if(obj&&obj.v===1){
 await _dcApplyPackedShareState(obj);
 isMultiSlotUrl=true;
