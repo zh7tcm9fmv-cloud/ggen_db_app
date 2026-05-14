@@ -7453,6 +7453,10 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             c = get_npc_character_display(tid, {}, lc)
             reward_name = str(c.get('name') or f"Character {tid}")
             reward_icon = str(c.get('portrait') or '')
+            cinfo = char_info_map.get(tid, {})
+            cri = normalize_id(cinfo.get('rarity', '1'))
+            crole = normalize_id(cinfo.get('role', '0'))
+            cacq = normalize_id(cinfo.get('acquisition_route', '0'))
         elif rt == '30':
             pinfo = profile_title_info_map.get(tid, {})
             tlid = normalize_id(pinfo.get('title_name_lang_id')) if isinstance(pinfo, dict) else '0'
@@ -7496,6 +7500,13 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             'description': reward_desc,
             'count': cnt,
             'icon': reward_icon,
+            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else '')),
+            'detail_id': (tid if rt in ('2', '8') else ''),
+            'thumb_type': ('char' if rt == '2' else ''),
+            'thumb': (reward_icon if rt == '2' else ''),
+            'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else ''),
+            'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else ''),
+            'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else ''),
         })
     return out
 
