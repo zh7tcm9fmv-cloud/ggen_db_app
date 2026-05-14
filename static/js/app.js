@@ -2487,8 +2487,8 @@ if(effEl){
 if(vigPct>0||user>0){
 effEl.style.display='';
 effEl.removeAttribute('aria-hidden');
-effEl.textContent=`Effective ⑨ total: ${total}% (${user}% in field${vigPct>0?` + ${vigPct}% vigor`:''}) — same value used in damage.`;
-effEl.title='Damage Dealt Up % field plus vigor bonus share one pool; they are not applied twice.';
+effEl.textContent=`Effective ⑨ total: ${total}% (${user}% passive${vigPct>0?` + ${vigPct}% vigor`:''}) — same value used in damage.`;
+effEl.title='Damage Dealt Up % passive plus vigor bonus share one pool; they are not applied twice.';
 }else{
 effEl.style.display='none';effEl.textContent='';effEl.setAttribute('aria-hidden','true');
 }
@@ -2663,7 +2663,7 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -5736,7 +5736,7 @@ let unitCpToggle='';
 if(ud.has_cond_stats){
 const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
-{const _cpL=_dcUnitConditionalToggleLabel(ud),_cpS=t('conditional_passive_abbr');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-long">${esc(_cpL)}</span><span class="toggle-label toggle-label--cp-short">${esc(_cpS)}</span></div></div></div>`;}
+{const _cpL=_dcUnitConditionalToggleLabel(ud);unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-switch"></span><span class="toggle-label toggle-label--cp-icon"><img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent='CP'"></span></div></div></div>`;}
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -8171,7 +8171,7 @@ const finalHitRate=MN(100,MX(10,rawHit));
 return{finalHitRate,mobDiff,reaDiff,mobCorrection,baseHit,rawHit};
 }
 
-function _dcHtmlDcResultDamageBlock(r){
+function _dcHtmlDcResultDamageBlock(r,compareMeta){
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
@@ -8180,7 +8180,8 @@ const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 const sup=!!r.isSuperVigor;
 const critLbl=sup?t('dc_super_crit_dmg'):t('dc_crit_dmg');
 const hpCritLbl=sup?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit');
-return`<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
+const cmpLine=compareMeta?`<div class="dc-result-compare-line"><span>#${compareMeta.baseIdx+1} -> #${compareMeta.idx+1}</span><span>N ${_dcFmtPctDelta(compareMeta.normalPct)} | C ${_dcFmtPctDelta(compareMeta.critPct)}</span></div>`:'';
+return`${cmpLine}<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label">${t('dc_normal_dmg')}</div><div class="dc-result-val normal">${fmtN(r.normalDmg)}${_dcCompareDiffBadge(compareMeta?compareMeta.normalPct:null)}</div></div><div class="dc-result-item"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit">${fmtN(r.critDmg)}${_dcCompareDiffBadge(compareMeta?compareMeta.critPct:null)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
 <div class="dc-result-hp dc-result-hp--compact">
 <div class="dc-hp-mini dc-hp-mini--normal">
 <div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val"><span class="dc-hp-mini-fraction">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span>${npcHp>0?`<span class="dc-hp-mini-pct">${pctN.toFixed(1)}%</span>`:''}</span></div>
@@ -8193,9 +8194,62 @@ return`<div class="dc-result-row"><div class="dc-result-item"><div class="dc-res
 </div>`;
 }
 
+function _dcPctDelta(cur,base){
+const c=Number(cur),b=Number(base);
+if(!Number.isFinite(c)||!Number.isFinite(b)||b===0)return null;
+return((c-b)/Math.abs(b))*100;
+}
+function _dcFmtPctDelta(v){
+if(v==null||!Number.isFinite(v))return'--';
+const a=Math.abs(v);
+const d=a>=100?0:(a>=10?1:2);
+return`${v>=0?'+':''}${v.toFixed(d)}%`;
+}
+function _dcSyncMultiPctCompareUi(canCompare){
+const btn=document.getElementById('dcMultiPctCompareBtn');
+if(!btn)return;
+if(!canCompare)S.dc.multiPctCompare=false;
+const on=!!S.dc.multiPctCompare&&!!canCompare;
+btn.disabled=!canCompare;
+btn.classList.toggle('active',on);
+const tr=btn.querySelector('.ranking-exp-switch-track');
+if(tr)tr.classList.toggle('active',on);
+btn.title=canCompare?'% compare between attackers':'Add at least 2 attackers to compare';
+}
+function toggleDcMultiPctCompareMode(){
+if(!S.dc._lastMultiResults||S.dc._lastMultiResults.length<2)return;
+S.dc.multiPctCompare=!S.dc.multiPctCompare;
+renderDcResult();
+const ov=document.getElementById('dcBattleStatsOverlay');
+if(ov&&window.getComputedStyle(ov).display!=='none')_dcRenderBattleStatsPanel();
+}
+function _dcBuildDamageCompareMeta(res,baseRes,idx,baseIdx,enabled){
+if(!enabled||!res||!baseRes||idx===baseIdx)return null;
+const n=_dcPctDelta(res.normalDmg,baseRes.normalDmg);
+const c=_dcPctDelta(res.critDmg,baseRes.critDmg);
+return{baseIdx,idx,normalPct:n,critPct:c};
+}
+function _dcCompareDiffBadge(pct){
+if(pct==null||!Number.isFinite(pct))return'';
+const cls=pct>=0?'dc-result-compare-diff--pos':'dc-result-compare-diff--neg';
+return`<div class="dc-result-compare-diff ${cls}">${_dcFmtPctDelta(pct)}</div>`;
+}
+function _dcBattleStatsDeltaBadge(cur,base){
+const pct=_dcPctDelta(cur,base);
+if(pct==null||!Number.isFinite(pct)||Math.abs(pct)<0.01)return'';
+const cls=pct>=0?'dc-bs-delta--pos':'dc-bs-delta--neg';
+return`<span class="dc-bs-delta ${cls}">${_dcFmtPctDelta(pct)}</span>`;
+}
+function _dcBattleStatsDeltaRowClass(cur,base){
+const pct=_dcPctDelta(cur,base);
+if(pct==null||!Number.isFinite(pct)||Math.abs(pct)<0.01)return'';
+return pct>=0?'dc-battle-stats-row--diff-pos':'dc-battle-stats-row--diff-neg';
+}
+
 function renderDcResult(){
 const area=document.getElementById('dcResultArea');
 if(!S.dc.defNpc){
+_dcSyncMultiPctCompareUi(false);
 area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">Select: NPC Target</div></div>`;return}
 const multi=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
@@ -8206,6 +8260,7 @@ try{rr=_dcCalculateDamageWithSlot(i)}catch(e){console.error('calculateDamage err
 if(rr)multi.push({idx:i,slot:sl,result:rr});
 }
 if(!multi.length){
+_dcSyncMultiPctCompareUi(false);
 const missing=[];
 if(!S.dc.atkUnitData)missing.push('Attacker Unit');
 if(!S.dc.atkCharData)missing.push('Attacker Character');
@@ -8215,16 +8270,21 @@ const msg=missing.length?'Select: '+missing.join(', '):'Set up at least one atta
 area.innerHTML=`<div class="dc-result-box"><div style="color:var(--text-muted);font-size:13px">${msg}</div></div>`;return}
 const activeI=S.dc.atkSlotIndex|0;
 const primary=multi.find(m=>m.idx===activeI)||multi[0];
+const compareEnabled=!!S.dc.multiPctCompare&&multi.length>1;
+_dcSyncMultiPctCompareUi(multi.length>1);
 S.dc._lastResult=primary.result;
 S.dc._lastMultiResults=multi;
 let inner='';
 if(multi.length===1){
-inner=_dcHtmlDcResultDamageBlock(multi[0].result);
+inner=_dcHtmlDcResultDamageBlock(multi[0].result,null);
 }else{
 inner=`<div class="dc-result-multi-grid">`+multi.map(m=>{
 const ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
-const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}`;
-return`<div class="dc-result-multi-col"><div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result)}</div>`;
+const cmp=_dcBuildDamageCompareMeta(m.result,primary.result,m.idx,primary.idx,compareEnabled);
+const isBase=m.idx===primary.idx;
+const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}${isBase?`<span class="dc-result-compare-badge">Base</span>`:''}`;
+const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${cmp?' is-compare-target':''}`;
+return`<div class="${cls}"><div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result,cmp)}</div>`;
 }).join('')+`</div>`;
 }
 area.innerHTML=`<div class="dc-result-box">${inner}
@@ -8243,7 +8303,9 @@ ov.style.display=on?'flex':'none';
 if(on)_dcRenderBattleStatsPanel();
 }
 function _dcBattleStatsRow(lab,val){
-return`<div class="dc-battle-stats-row"><span>${esc(lab)}</span><span>${val}</span></div>`;
+let rowClass='';
+if(arguments.length>=3&&arguments[2])rowClass=` ${arguments[2]}`;
+return`<div class="dc-battle-stats-row${rowClass}"><span>${esc(lab)}</span><span>${val}</span></div>`;
 }
 function _dcHasWeaponTraitBonus(r){
 if(!r)return false;
@@ -8330,6 +8392,7 @@ const multi=S.dc._lastMultiResults;
 if(!multi||!multi.length){body.innerHTML='<div style="color:var(--text-muted)">Calculate damage first (attacker + defender).</div>';return}
 const activeIdx=S.dc.atkSlotIndex|0;
 const r0=(multi.find(m=>m.idx===activeIdx)||multi[0]).result;
+const compareEnabled=!!S.dc.multiPctCompare&&multi.length>1;
 let h='';
 multi.forEach(m=>{
 const r=m.result,sl=m.slot,ud=sl.atkUnitData,cd=sl.atkCharData;
@@ -8340,17 +8403,22 @@ const atkLab=_dcPilotAtkStatLabelForWeapon(wpn);
 const mpL=_dcNormMpLevel(sl.mpLevel||'medium');
 const vigLbl=_dcVigorLabel(mpL);
 const dmgPool=(r.userDmgIncreasePct|0)+(r.vigorDmgBonusPct|0);
+const baseDmgPool=(r0.userDmgIncreasePct|0)+(r0.vigorDmgBonusPct|0);
 const isAct=m.idx===activeIdx;
 h+=`<div class="dc-battle-stats-section"${isAct?' style="padding:10px;border-radius:8px;border:1px solid rgba(56,189,248,.35)"':''}><h3>Attacker ${m.idx+1}${isAct?' · active':''}</h3>`;
+if(compareEnabled&&!isAct){
+const nd=_dcPctDelta(r.normalDmg,r0.normalDmg),cdp=_dcPctDelta(r.critDmg,r0.critDmg);
+h+=_dcBattleStatsRow('Damage delta vs active',`Normal ${_dcFmtPctDelta(nd)} · ${r.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')} ${_dcFmtPctDelta(cdp)}`);
+}
 h+=_dcBattleStatsRow('Unit',esc(ud?.name||'—'));
 h+=_dcBattleStatsRow('Pilot',esc(cd?.name||'—'));
-h+=_dcBattleStatsRow('MS ATK',fmtN(r.unitAtk));
+h+=_dcBattleStatsRow('MS ATK',fmtN(r.unitAtk)+_dcBattleStatsDeltaBadge(r.unitAtk,r0.unitAtk),_dcBattleStatsDeltaRowClass(r.unitAtk,r0.unitAtk));
 if((r.supportCounterAtkPctApplied|0)>0)h+=_dcBattleStatsRow('Support Attack/Counter MS ATK',`+${r.supportCounterAtkPctApplied|0}% applied`);
-h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk));
+h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk)+_dcBattleStatsDeltaBadge(r.charAtk,r0.charAtk),_dcBattleStatsDeltaRowClass(r.charAtk,r0.charAtk));
 h+=_dcBattleStatsRow('Weapon',wName);
-h+=_dcBattleStatsRow('Weapon Power',fmtN(r.weaponPower));
+h+=_dcBattleStatsRow('Weapon Power',fmtN(r.weaponPower)+_dcBattleStatsDeltaBadge(r.weaponPower,r0.weaponPower),_dcBattleStatsDeltaRowClass(r.weaponPower,r0.weaponPower));
 h=_dcAppendWeaponTraitBattleStats(h,r);
-h+=_dcBattleStatsRow('Damage Dealt % Total',`${dmgPool}% (${r.userDmgIncreasePct|0}% field + ${r.vigorDmgBonusPct|0}% vigor)`);
+h+=_dcBattleStatsRow('Damage Dealt % Total',`${dmgPool}% (${r.userDmgIncreasePct|0}% passive + ${r.vigorDmgBonusPct|0}% vigor)`+_dcBattleStatsDeltaBadge(dmgPool,baseDmgPool),_dcBattleStatsDeltaRowClass(dmgPool,baseDmgPool));
 h+=_dcBattleStatsRow('Crit rate (weapon %)',String(r.critical)+'%');
 h+=_dcBattleStatsRow('Vigor state',esc(vigLbl));
 h+=_dcBattleStatsRow('Master League (attacker)',sl.masterLeagueBuff?'On (+50% unit sheet; not EN/Move; pilot unchanged)':'Off');
@@ -8383,8 +8451,8 @@ return['',
 '  scaledNormal = ceil(totalNormalMultPct × battleDamage / 100)',
 '  combinedNormal = (battleDamage + scaledNormal) × defendMult',
 '  Normal damage = max(0, ceil(combinedNormal))',
-'  totalNormalMultPct = (field Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
-`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (field ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
+'  totalNormalMultPct = (passive Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
+`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (passive ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
 '  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); crit125Trim = (totalCritMult=125% ∧ defendMult=1 ∧ ⑧≥threshold ∧ W>0) ? floor(max(0,⑧−combatWeaponPower)/1181) : 0',
 '  combinedCrit = max(0, (battleDamage + scaledCrit) × defendMult − crit125Trim)',
