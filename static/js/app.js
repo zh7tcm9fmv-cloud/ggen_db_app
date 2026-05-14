@@ -3833,6 +3833,27 @@ if(d>0)return` <span class="tb-stat-plus">(+${fmtN(d)})</span>`;
 if(d<0)return` <span class="tb-stat-minus">(-${fmtN(Math.abs(d))})</span>`;
 return'';
 }
+function _tbSlotTerrainState(sl){
+initTeamBuilder();
+if(!sl||!sl.unitData)return{known:false,blocked:false,movePenalty:false,symbol:'',level:0};
+const ud=sl.unitData;
+const useSsp=(sl.unitStatMode==='ssp')&&Array.isArray(ud.terrain_ssp)&&ud.terrain_ssp.length;
+const terrArr=useSsp?ud.terrain_ssp:ud.terrain;
+if(!Array.isArray(terrArr)||!terrArr.length)return{known:false,blocked:false,movePenalty:false,symbol:'',level:0};
+const terrName=S.tb.terrainType||'Space';
+const row=terrArr.find(x=>x&&String(x.name||'')===terrName);
+if(!row)return{known:true,blocked:true,movePenalty:false,symbol:'-',level:0};
+const sym=String(row.symbol||'').trim();
+const lvl=parseInt(row.level,10);
+const lv=Number.isFinite(lvl)?lvl:0;
+const blocked=(sym==='-'||sym==='×'||lv<=0);
+const movePenalty=!blocked&&(/[△▲▵▴]/.test(sym)||/\btri/i.test(sym)||lv===1);
+return{known:true,blocked,movePenalty,symbol:sym||'-',level:lv};
+}
+function _tbApplyTerrainMovePenalty(v){
+const n=Math.max(0,Math.round(Number(v)||0));
+return Math.max(0,Math.floor(n*0.5));
+}
 function _tbApplyUnitTurnBuffDefToMsDef(unitDef,ud,turnBuffOn){
 const F=Math.floor;
 if(!ud||ud._manual||!turnBuffOn)return unitDef;
@@ -4317,6 +4338,7 @@ finally{S.dc._dcAutoFitBusy=false}
 function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
 const ud=sl.unitData;
+const terrState=_tbSlotTerrainState(sl);
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
 const statKey=_tbGetUnitStatKey(ud,sl);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
@@ -4341,7 +4363,10 @@ let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
 fatk=prf.unitAtk;fdef=prf.unitDefVal;
 fdef=_tbApplyUnitTurnBuffDefToMsDef(fdef,ud,!!sl.unitTurnBuffDef);
-return{ud,hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove,dHp:f.unitHp-b.unitHp,dAtk:fatk-batk,dDef:fdef-bdef,dMob:f.unitMob-b.unitMob,dMov:f.unitMove-b.unitMove};
+const fullMovRaw=Math.max(0,Math.round(Number(f.unitMove)||0));
+let movShown=fullMovRaw;
+if(terrState.movePenalty)movShown=_tbApplyTerrainMovePenalty(fullMovRaw);
+return{ud,hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:movShown,dHp:f.unitHp-b.unitHp,dAtk:fatk-batk,dDef:fdef-bdef,dMob:f.unitMob-b.unitMob,dMov:movShown-Math.max(0,Math.round(Number(b.unitMove)||0)),blocked:!!terrState.blocked,terrainSymbol:terrState.symbol||'-'};
 }
 function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Space';return'&terrain='+encodeURIComponent(tt+':2+')}
 function tbFillTerrainSelects(){
@@ -4679,8 +4704,14 @@ const key=_tbKey(side,col);
 const sl=squ.slots[col];
 const sel=S.tb.selectedKey===key;
 let cls='tb-slot'+(sel?' is-sel':'');
+const terrState=(sl&&sl.unitData)?_tbSlotTerrainState(sl):null;
+if(terrState&&terrState.blocked)cls+=' tb-slot--terrain-blocked';
+else if(terrState&&terrState.movePenalty)cls+=' tb-slot--terrain-penalty';
 if(S.tb.rearrange&&S.tb.rearrange.pendingKey===key)cls+=' is-rearrange-pending';
-h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}" onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotStatModeHtml(key,sl)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
+let terrTip='';
+if(terrState&&terrState.blocked)terrTip=` title="${escAttr('Cannot deploy on '+tTerrain(S.tb.terrainType||'Space'))}"`;
+else if(terrState&&terrState.movePenalty)terrTip=` title="${escAttr('Move -50% on '+tTerrain(S.tb.terrainType||'Space'))}"`;
+h+=`<div class="tb-slot-col" data-tb-key="${key}"><div class="${cls}" data-tb-key="${key}"${terrTip} onclick="tbSlotClick(${key})" oncontextmenu="tbSlotContextMenu(${key},event);return false;">${_tbLongCardHtml(sl,key)}</div>${_tbSlotLbOutsideHtml(sl,key)}${_tbSlotStatModeHtml(key,sl)}${_tbSlotOpOutsideHtml(key,sl)}</div>`;
 }
 return h;
 }
@@ -4876,6 +4907,9 @@ return`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" oncli
 const st=_tbBuildSlotStatEff(sl,si,supByKey[key]);
 if(!st){
 return`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name tb-stats-unit-name--empty">—</div></div>`;
+}
+if(st.blocked){
+return`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name">${esc(st.ud.name||'')}</div><div class="tb-stats-unit-warn">Cannot deploy on ${esc(tTerrain(S.tb.terrainType||'Space'))} (${esc(st.terrainSymbol||'-')})</div></div>`;
 }
 return`<div class="${cls}" data-tb-key="${key}" role="button" tabindex="0" onclick="tbSlotClick(${key})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tbSlotClick(${key})}"><div class="tb-stats-unit-name">${esc(st.ud.name||'')}</div><div class="tb-stats-unit-rows">${mkRow(t('col_hp'),st.hp,st.dHp)}${mkRow(t('col_atk'),st.atk,st.dAtk)}${mkRow(t('col_def'),st.def,st.dDef)}${mkRow(t('col_mob'),st.mob,st.dMob)}${mkRow(t('col_mov'),st.mov,st.dMov)}</div></div>`;
 }
