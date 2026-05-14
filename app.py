@@ -3904,6 +3904,8 @@ def create_tower_event_stage_map(d):
             'floor_count': safe_int(item.get('FloorCount') or item.get('floorCount'), 0),
             'tower_event_stage_type_index': safe_int(item.get('TowerEventStageTypeIndex') or item.get('towerEventStageTypeIndex'), 0),
             'floor_bromide_unit_id': normalize_id(item.get('FloorBromideUnitId') or item.get('floorBromideUnitId')),
+            'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
+            'every_first_clear_reward_set_id': normalize_id(item.get('EveryFirstClearRewardSetId') or item.get('everyFirstClearRewardSetId')),
         }
     return lookup
 
@@ -3933,6 +3935,7 @@ def create_item_info_map(d):
         lookup[iid] = {
             'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '').strip(),
             'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
             'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
         }
     return lookup
@@ -5431,6 +5434,14 @@ tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_sta
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
 reward_map = create_reward_map(reward_data) if reward_data else {}
 item_info_map = create_item_info_map(item_data) if item_data else {}
+reward_set_rewards_map = {}
+for _rid, _rrow in (reward_map or {}).items():
+    _sid = str(_rid)[:-2] if len(str(_rid)) > 2 else ''
+    if not _sid:
+        continue
+    reward_set_rewards_map.setdefault(_sid, []).append(dict(_rrow, reward_id=_rid))
+for _sid, _arr in list(reward_set_rewards_map.items()):
+    _arr.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
 stage_sortie_set_content_map = create_stage_sortie_set_content_map(stage_sortie_set_content_data) if stage_sortie_set_content_data else {}
 stage_sortie_group_content_map = create_stage_sortie_group_content_map(stage_sortie_group_content_data) if stage_sortie_group_content_data else {}
 stage_condition_map = create_stage_condition_map(stage_battle_condition_text_base_data) if stage_battle_condition_text_base_data else {}
@@ -7374,7 +7385,20 @@ def classify_tower_side(stage_name, group_name='', group_resource_id=''):
 
 def resolve_tower_appeal_rewards(stage_id, lc):
     sid = normalize_id(stage_id)
-    rows = tower_event_stage_appeal_reward_map.get(sid, []) or []
+    tes = (tower_event_stage_map or {}).get(sid, {})
+    if not isinstance(tes, dict):
+        return []
+    reward_set_id = normalize_id(tes.get('first_clear_reward_set_id'))
+    if reward_set_id == '0':
+        return []
+    rows = list(reward_set_rewards_map.get(reward_set_id, []))
+    if not rows:
+        rows = []
+        for rid, r in (reward_map or {}).items():
+            rs = str(reward_set_id)
+            if str(rid).startswith(rs):
+                rows.append(dict(r, reward_id=rid))
+        rows.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
     if not rows:
         return []
     ld = get_lang_data(lc)
@@ -7384,24 +7408,28 @@ def resolve_tower_appeal_rewards(stage_id, lc):
         rid = normalize_id(row.get('reward_id'))
         if rid == '0':
             continue
-        r = reward_map.get(rid, {})
-        rt = normalize_id(r.get('reward_type_index'))
-        tid = normalize_id(r.get('target_id'))
-        cnt = max(0, safe_int(r.get('count'), 0))
+        rt = normalize_id(row.get('reward_type_index'))
+        tid = normalize_id(row.get('target_id'))
+        cnt = max(0, safe_int(row.get('count'), 0))
         reward_name = ''
         reward_icon = ''
-        if rt in ('1', '30'):
+        reward_desc = ''
+        if tid != '0':
             item = item_info_map.get(tid, {})
             nlid = normalize_id(item.get('name_lang_id'))
+            dlid = normalize_id(item.get('desc_lang_id'))
             if nlid != '0':
                 reward_name = str(item_text_map.get(nlid) or '').strip()
+            if dlid != '0':
+                reward_desc = str(item_text_map.get(dlid) or '').strip()
             if not reward_name:
                 reward_name = f"Item {tid}"
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
                 reward_icon = f"/static/images/Item/{rid_item}.png"
         elif rt == '10':
-            reward_name = "Capital"
+            reward_name = "Diamonds"
+            reward_icon = "/static/images/UI/UI_Common_Icon_Diamond_M.webp"
         else:
             reward_name = f"Reward {rid}"
         out.append({
@@ -7409,6 +7437,7 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             'reward_type_index': rt,
             'target_id': tid,
             'name': reward_name,
+            'description': reward_desc,
             'count': cnt,
             'icon': reward_icon,
         })
