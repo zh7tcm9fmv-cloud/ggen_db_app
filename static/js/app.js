@@ -2562,7 +2562,7 @@ masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff
 }));
 }
-function _dcWriteAttackerToDc(slot){
+function _dcWriteAttackerToDc(slot,supportSnapSlotIdx){
 if(!slot)return;
 if(slot._dcSquadCondShareMissing&&slot.atkCharData&&slot.atkUnitData){
 slot._dcSquadCondShareMissing=0;
@@ -2581,7 +2581,7 @@ S.dc._vigorCondThreshold=slot._vigorCondThreshold;
 S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
 S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
 S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
-S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;S.dc._supportCounterAtkPct=slot._supportCounterAtkPct|0;{const wi=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);if(!S.dc._supportCntAtkPairSnapBySlot)S.dc._supportCntAtkPairSnapBySlot={};const skProvided=slot&&Object.prototype.hasOwnProperty.call(slot,'supportCntPairSnap')&&slot.supportCntPairSnap!=null&&String(slot.supportCntPairSnap).trim()!=='';S.dc._supportCntAtkPairSnapBySlot[wi]=skProvided?String(slot.supportCntPairSnap):(_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null)}S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
+S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;S.dc._supportCounterAtkPct=slot._supportCounterAtkPct|0;{const wi=supportSnapSlotIdx!==undefined&&supportSnapSlotIdx!==null?Math.min(Math.max(supportSnapSlotIdx|0,0),DC_ATK_SLOT_COUNT-1):Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);if(!S.dc._supportCntAtkPairSnapBySlot)S.dc._supportCntAtkPairSnapBySlot={};const skProvided=slot&&Object.prototype.hasOwnProperty.call(slot,'supportCntPairSnap')&&slot.supportCntPairSnap!=null&&String(slot.supportCntPairSnap).trim()!=='';S.dc._supportCntAtkPairSnapBySlot[wi]=skProvided?String(slot.supportCntPairSnap):(_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null)}S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
@@ -2640,7 +2640,7 @@ function _dcCalculateDamageWithSlot(slotIdx){
 const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
 const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
 const backup=_dcReadAttackerFromDc();
-_dcWriteAttackerToDc(slot);
+_dcWriteAttackerToDc(slot,slotIdx);
 let r=null;
 try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
 _dcWriteAttackerToDc(backup);
@@ -5615,7 +5615,7 @@ if(typeof S==='undefined'||!S.dc||!S.dc.atkSlots)return 0;
 let n=0;
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
 const sl=S.dc.atkSlots[i];
-const u2=sl&&sl.unitData;
+const u2=sl&&(sl.atkUnitData||sl.unitData);
 if(!u2||u2._manual)continue;
 if(_dcConditionGroupMatches(u2,null,cg))n++;
 }
