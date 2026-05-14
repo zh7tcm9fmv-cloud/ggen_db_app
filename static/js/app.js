@@ -2691,12 +2691,11 @@ _dcRefreshAtkSlotUi();
 function _dcCalculateDamageWithSlot(slotIdx){
 const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
 const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
-const activeSi=S.dc.atkSlotIndex|0;
 const backup=_dcReadAttackerFromDc();
 _dcWriteAttackerToDc(slot,slotIdx);
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
 S.dc._wpnCritDmgUp=wc;
-if(!(slot.atkCharData&&slot.atkCharData._manual)&&slotIdx!==activeSi){
+if(!(slot.atkCharData&&slot.atkCharData._manual)){
 const d=_dcDerivePilotDmgCritForSlotContext(slot,wc);
 S.dc.dmgIncrease=d.dmgIncrease;
 S.dc.critDmgUp=d.critDmgUp;
