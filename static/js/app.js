@@ -2822,6 +2822,63 @@ const bytes=new Uint8Array(bin.length);
 for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
 return new TextDecoder().decode(bytes);
 }
+function _dcU8ToB64Url(u8){
+let bin='';
+for(let i=0;i<u8.length;i++)bin+=String.fromCharCode(u8[i]);
+return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function _dcB64UrlToU8(s){
+if(!s)return new Uint8Array(0);
+let pad=String(s).replace(/-/g,'+').replace(/_/g,'/');
+while(pad.length%4)pad+='=';
+const bin=atob(pad);
+const u8=new Uint8Array(bin.length);
+for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+return u8;
+}
+async function _dcEncodeSharePayload(obj){
+const json=JSON.stringify(obj);
+const bytes=new TextEncoder().encode(json);
+if(typeof CompressionStream!=='undefined'){
+try{
+const cs=new CompressionStream('deflate');
+const blob=new Blob([bytes]).stream().pipeThrough(cs);
+const comp=new Uint8Array(await new Response(blob).arrayBuffer());
+if(comp.length+1<bytes.length){
+const out=new Uint8Array(1+comp.length);
+out[0]=1; // deflate payload
+out.set(comp,1);
+return _dcU8ToB64Url(out);
+}
+}catch(_){}
+}
+const out=new Uint8Array(1+bytes.length);
+out[0]=2; // plain json payload
+out.set(bytes,1);
+return _dcU8ToB64Url(out);
+}
+async function _dcDecodeSharePayload(raw){
+const u8=_dcB64UrlToU8(raw);
+if(!u8.length)return null;
+if(u8[0]===0x7b){ // legacy v1 json without header
+try{return JSON.parse(new TextDecoder().decode(u8))}catch(_){return null}
+}
+const kind=u8[0],body=u8.slice(1);
+if(kind===1){
+try{
+if(typeof DecompressionStream==='undefined')return null;
+const ds=new DecompressionStream('deflate');
+const stream=new Blob([body]).stream().pipeThrough(ds);
+const out=await new Response(stream).arrayBuffer();
+return JSON.parse(new TextDecoder().decode(out));
+}catch(_){return null}
+}
+if(kind===2){
+try{return JSON.parse(new TextDecoder().decode(body))}catch(_){return null}
+}
+// Final backward fallback for older links.
+try{return JSON.parse(_dcB64UrlDecode(raw))}catch(_){return null}
+}
 function _dcManualDefNpcFromDefC(c){
 const num=(k,def)=>{const x=parseInt(c[k],10);return Number.isFinite(x)?x:def};
 return{npc_id:'__manual__',_manual:true,unit:{name:String(c.un||'Custom unit'),portrait:'',thum:'',stats_raw:{HP:num('uHP',0),Attack:num('uATK',0),Defense:num('uDEF',0),Mobility:num('uMOB',0)},bonus_amounts:{}},character:{name:String(c.cn||'Custom pilot'),portrait:'',thum:'',stats_raw:{Ranged:num('cRNG',0),Melee:num('cMEL',0),Awaken:num('cAWK',0),Defense:num('cDEF',0),Reaction:num('cREA',0)},bonus_amounts:{}}};
@@ -3127,7 +3184,7 @@ return{un:u?u.name:'',cn:c?c.name:'',uHP:fg('HP'),uATK:fg('Attack'),uDEF:fg('Def
 function _dcPackShareState(){
 onDcParamChange();
 _dcSnapActiveAttackerToSlot();
-const slots=S.dc.atkSlots||[];
+const slots=(S.dc.atkSlots||[]).map(sl=>sl?JSON.parse(JSON.stringify(sl)):null);
 const slotArr=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
 const sl=slots[i];
@@ -3403,7 +3460,7 @@ let isMultiSlotUrl=false;
 const dcRaw=p.get('dc');
 if(dcRaw){
 try{
-const obj=JSON.parse(_dcB64UrlDecode(dcRaw));
+const obj=await _dcDecodeSharePayload(dcRaw);
 if(obj&&obj.v===1){
 await _dcApplyPackedShareState(obj);
 isMultiSlotUrl=true;
@@ -8608,13 +8665,16 @@ h+='</div>';
 h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
 body.innerHTML=h+`<div class="dc-battle-stats-footer"><button type="button" class="dc-ctrl-btn dc-battle-stats-copy-btn" onclick="copyDcResultText()">📋 Copy Results</button><div id="dcBattleStatsCopyMsg" class="dc-battle-stats-copy-msg" aria-live="polite"></div></div>`;
 }
-function _dcBuildShareUrl(){
+async function _dcBuildShareUrl(){
 onDcParamChange();
 _dcSnapActiveAttackerToSlot();
 const packed=_dcPackShareState();
-const json=JSON.stringify(packed);
-const b64=_dcB64UrlEncode(json);
-return`${location.origin}${location.pathname}?tab=DS&dc=${encodeURIComponent(b64)}`;
+const b64=await _dcEncodeSharePayload(packed);
+if(!b64)return'';
+const u=new URL(location.origin+location.pathname);
+u.searchParams.set('tab','DS');
+u.searchParams.set('dc',b64);
+return u.toString();
 }
 function _dcWeaponDisplayNameForSlot(ud,wpnIdx){
 const wpns=ud?_dcNonMapWeapons(ud):[];
@@ -8719,10 +8779,13 @@ if(!m)m=document.getElementById('dcShareMsg');
 if(m){m.textContent='Copied to clipboard!';setTimeout(()=>{if(m.textContent==='Copied to clipboard!')m.textContent=''},2000)}
 });
 }
-function shareDcLink(){
-const url=_dcBuildShareUrl();
+async function shareDcLink(){
+const url=await _dcBuildShareUrl();
+if(!url)return;
 navigator.clipboard.writeText(url).then(()=>{
 const m=document.getElementById('dcShareMsg');if(m){m.textContent='Link copied to clipboard!';setTimeout(()=>m.textContent='',2000)}
+}).catch(()=>{
+const m=document.getElementById('dcShareMsg');if(m){m.textContent='Failed to copy link';setTimeout(()=>m.textContent='',2000)}
 });
 }
 

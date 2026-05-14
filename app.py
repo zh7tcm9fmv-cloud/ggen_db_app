@@ -7451,6 +7451,9 @@ def _resolve_reward_rows_from_set_id(reward_set_id):
 
 _LB_MATERIAL_NAME_RE = re.compile(r"^\s*(UR|SSR|SR|R|N)\s+(.+?)\s+Limit\s+Break\s+Material\s*$", re.IGNORECASE)
 _LB_MATERIAL_ANY_RE = re.compile(r"^\s*(.+?)\s+Limit\s+Break\s+Material\s*$", re.IGNORECASE)
+_LB_MATERIAL_ZH_RE = re.compile(r"^\s*(?:UR|SSR|SR|R|N)\s*(.+?)突破界限材料\s*$")
+_LB_MATERIAL_JA_RE = re.compile(r"^\s*(.+?)限界突破素材(?:UR|SSR|SR|R|N)?\s*$")
+_LB_RARITY_PREFIX_TAIL_RE = re.compile(r"^\s*(?:UR|SSR|SR|R|N)\s+", re.IGNORECASE)
 _LB_FRAME_BY_RARITY = {
     '5': {
         'base': '/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_UR.webp',
@@ -7474,7 +7477,15 @@ _LB_FRAME_BY_RARITY = {
     },
 }
 
+def _is_limit_break_material_item_name(item_name):
+    n = str(item_name or '')
+    if not n.strip():
+        return False
+    nl = n.lower()
+    return ('limit break material' in nl) or ('突破界限材料' in n) or ('限界突破素材' in n)
+
 def _extract_limit_break_unit_name(item_name):
+    """Parse unit display name from localized Limit Break Material item titles."""
     name = str(item_name or '').strip()
     if not name:
         return ''
@@ -7483,14 +7494,33 @@ def _extract_limit_break_unit_name(item_name):
         return str(m.group(2) or '').strip()
     m = _LB_MATERIAL_ANY_RE.match(name)
     if m:
+        core = str(m.group(1) or '').strip()
+        core = _LB_RARITY_PREFIX_TAIL_RE.sub('', core).strip()
+        return core
+    m = _LB_MATERIAL_ZH_RE.match(name)
+    if m:
+        return str(m.group(1) or '').strip()
+    m = _LB_MATERIAL_JA_RE.match(name)
+    if m:
         return str(m.group(1) or '').strip()
     return ''
 
 def _normalize_name_key(s):
     return re.sub(r"\s+", " ", str(s or '').strip().lower())
 
-def _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity=''):
-    unit_name_key = _normalize_name_key(unit_name)
+def _locale_chain_for_lb_thumb(lc):
+    """Prefer requested locale, then fall back across bundles so matching survives EN-only naming quirks."""
+    lc0 = validate_lang_code(lc)
+    chain = []
+    for code in (lc0, DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA'):
+        if code in LANG_DATA and code not in chain:
+            chain.append(code)
+    for code in LANG_DATA.keys():
+        if code not in chain:
+            chain.append(code)
+    return chain
+
+def _find_unit_thumb_by_display_name_in_locale(unit_name_key, lc, expected_rarity=''):
     if not unit_name_key:
         return ''
     ld = get_lang_data(lc)
@@ -7506,9 +7536,18 @@ def _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity=''):
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         if thum:
             return str(thum)
-    # Fallback without rarity filter if no exact rarity match.
     if expected_rarity:
-        return _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity='')
+        return _find_unit_thumb_by_display_name_in_locale(unit_name_key, lc, expected_rarity='')
+    return ''
+
+def _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity=''):
+    unit_name_key = _normalize_name_key(unit_name)
+    if not unit_name_key:
+        return ''
+    for try_lc in _locale_chain_for_lb_thumb(lc):
+        thum = _find_unit_thumb_by_display_name_in_locale(unit_name_key, try_lc, expected_rarity)
+        if thum:
+            return thum
     return ''
 
 def _decorate_reward_rows(rows, lc):
@@ -7575,10 +7614,11 @@ def _decorate_reward_rows(rows, lc):
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
                 reward_icon = f"/static/images/Item/{rid_item}.png"
-            lb_unit_name = _extract_limit_break_unit_name(reward_name)
             lb_thumb = ''
-            if lb_unit_name and 'limit break material' in reward_name.lower():
-                lb_thumb = _find_unit_thumb_by_display_name(lb_unit_name, lc, iri)
+            if _is_limit_break_material_item_name(reward_name):
+                lb_unit_name = _extract_limit_break_unit_name(reward_name)
+                if lb_unit_name:
+                    lb_thumb = _find_unit_thumb_by_display_name(lb_unit_name, lc, iri)
             lb_frames = _LB_FRAME_BY_RARITY.get(iri) if lb_thumb else None
         else:
             reward_name = f"Reward {rid}"
