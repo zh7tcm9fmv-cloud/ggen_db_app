@@ -5469,6 +5469,7 @@ for _op in extract_data_list(option_parts_data):
     option_part_reward_info_map[_oid] = {
         'resource_id': str(_op.get('ResourceId') or _op.get('resourceId') or '').strip(),
         'name_lang_id': normalize_id(_op.get('SortNameLanguageId') or _op.get('sortNameLanguageId')),
+        'rarity_id': normalize_id(_op.get('RarityTypeIndex') or _op.get('rarityTypeIndex'), '1'),
     }
 stage_sortie_set_content_map = create_stage_sortie_set_content_map(stage_sortie_set_content_data) if stage_sortie_set_content_data else {}
 stage_sortie_group_content_map = create_stage_sortie_group_content_map(stage_sortie_group_content_data) if stage_sortie_group_content_data else {}
@@ -7466,10 +7467,11 @@ def resolve_tower_appeal_rewards(stage_id, lc):
                 reward_name = f"Profile Title {tid}"
             brid = str(pinfo.get('background_resource_id') or '').strip() if isinstance(pinfo, dict) else ''
             if brid:
-                reward_icon = f"/static/images/ProfileTitle/{brid}.webp"
+                reward_icon = f"/static/images/Item/{brid}.webp"
         elif rt == '8':
             opinfo = option_part_reward_info_map.get(tid, {})
             nlid = normalize_id(opinfo.get('name_lang_id')) if isinstance(opinfo, dict) else '0'
+            ori = normalize_id(opinfo.get('rarity_id')) if isinstance(opinfo, dict) else '1'
             if nlid != '0':
                 reward_name = str(op_text_map.get(nlid) or '').strip()
             if not reward_name:
@@ -7502,9 +7504,9 @@ def resolve_tower_appeal_rewards(stage_id, lc):
             'icon': reward_icon,
             'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else '')),
             'detail_id': (tid if rt in ('2', '8') else ''),
-            'thumb_type': ('char' if rt == '2' else ''),
-            'thumb': (reward_icon if rt == '2' else ''),
-            'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else ''),
+            'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else '')),
+            'thumb': (reward_icon if rt in ('2', '8') else ''),
+            'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else '')),
             'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else ''),
             'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else ''),
         })
