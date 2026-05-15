@@ -4188,13 +4188,9 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
         # 1=unit weapon, 3=unit ability, 4=character ability, 7=unit stats, 10=unit MOV stat
         if typ == 7 and up:
             up['strategy_hint_stats_icon'] = url
-            if targetless:
-                _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
         if typ == 10 and up:
             up['strategy_hint_move_icon'] = url
-            if targetless:
-                _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
 
         matched = False
@@ -4292,6 +4288,8 @@ def create_map_npc_unit_weapon_set_lookup(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('MapNpcUnitWeaponSetId') or item.get('mapNpcUnitWeaponSetId'))
         if sid == '0': continue
+        oer = item.get('OverrideEffectRange') or item.get('overrideEffectRange') or ''
+        osr = item.get('OverrideShootingRange') or item.get('overrideShootingRange') or ''
         lk.setdefault(sid, []).append({
             'weapon_id': normalize_id(item.get('WeaponId') or item.get('weaponId')),
             'power': safe_int(item.get('Power'), 0), 'en': safe_int(item.get('En'), 0),
@@ -4299,6 +4297,8 @@ def create_map_npc_unit_weapon_set_lookup(d):
             'range_min': safe_int(item.get('RangeMin'), 0), 'range_max': safe_int(item.get('RangeMax'), 0),
             'trait_set_id': normalize_id(item.get('MapNpcWeaponTraitSetId') or item.get('mapNpcWeaponTraitSetId') or '0'),
             'override_ammo': safe_int(item.get('OverrideAmmoCapacity'), 0),
+            'override_effect_range': str(oer).strip() if oer else '',
+            'override_shooting_range': str(osr).strip() if osr else '',
             'sort_order': safe_int(item.get('SortOrder'), 0),
         })
     for k in lk: lk[k].sort(key=lambda x: x['sort_order'])
@@ -4330,6 +4330,14 @@ def _weapon_trait_detail_lookup_text(wtdm, tid):
         if k == tid or (len(tid) >= 6 and str(k).endswith(tid)):
             return str(v or '')
     return ''
+
+
+def _parse_map_weapon_override_coords(raw):
+    """Parse ``(dx,dy),(dx,dy),…`` from m_map_npc_unit_weapon_set_content OverrideEffectRange / OverrideShootingRange."""
+    if not raw or not isinstance(raw, str):
+        return []
+    return [{'x': int(m.group(1)), 'y': int(m.group(2))} for m in re.finditer(r'\(\s*(-?\d+)\s*,\s*(-?\d+)\s*\)', raw)]
+
 
 def _apply_map_npc_weapon_row_stats(levels, row, base_levels):
     """Apply m_map_npc_unit_weapon_set_content Power/En/Hit/Crit per level (Lv5 matches row; lower levels follow growth curve)."""
@@ -7509,7 +7517,8 @@ def resolve_series(ser_set_id, lc):
     return sd
 
 def resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='group'):
-    """Map LineageId values (e.g. from m_option_parts_lineage) to display names via lang m_lineage (lineage_lookup)."""
+    """Map LineageId list to tag dicts. Order matches master link tables (m_unit_lineage / m_character_lineage
+    iteration order), same as in-game tag strip — not alphabetical."""
     if not lineage_ids:
         return []
     llk = ld.get('lineage_lookup', {}); ll = ld.get('lineage_list', []); tags = []; sn = set()
@@ -7527,7 +7536,7 @@ def resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='group'):
                     if val not in sn:
                         tags.append({'id': fid, 'name': val, 'type': tt}); sn.add(val)
                     break
-    return sorted(tags, key=lambda x: x['name'])
+    return tags
 
 def resolve_series_id_to_tag(series_id_raw, ld):
     """Resolve direct SeriesId (e.g. m_option_parts.SeriesId) to a tag dict for browse/search UI."""
@@ -7557,14 +7566,14 @@ def merge_option_part_tags_with_series(lineage_tags, series_id_raw, ld):
     tags = list(lineage_tags)
     ser = resolve_series_id_to_tag(series_id_raw, ld)
     if not ser:
-        return sorted(tags, key=lambda x: x['name'])
+        return tags
     sid = ser['id']
     if any(t.get('type') == 'series' and normalize_id(t.get('id')) == sid for t in tags):
-        return sorted(tags, key=lambda x: x['name'])
+        return tags
     if any(t.get('name') == ser['name'] for t in tags):
-        return sorted(tags, key=lambda x: x['name'])
+        return tags
     tags.append(ser)
-    return sorted(tags, key=lambda x: x['name'])
+    return tags
 
 def resolve_tags(lin_map, eid, lc, tt='group'):
     ld = get_lang_data(lc)
@@ -8250,20 +8259,19 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
             at = [{'is_supply': True, 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'label': 'MP'}]
         base_levels = ws.get('levels') or []
         if base_levels:
-            levels = [{**lv, 'traits': list(lv.get('traits') or [])} for lv in base_levels]
+            levels = [{**lv, 'traits': []} for lv in base_levels]
         else:
-            levels = [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if str(wt) == '3' else 0, 'traits': list(ws.get('traits', []) or [])} for i in range(1, 6)]
+            levels = [{'level': i, 'power': ws.get('power', 0), 'en': ws.get('en', 0), 'accuracy': ws.get('accuracy', 0), 'critical': ws.get('critical', 0), 'ammo': ws.get('ammo', 0) if str(wt) == '3' else 0, 'traits': []} for i in range(1, 6)]
             base_levels = levels
         tsid = (w.get('trait_set_id') or '0') or '0'
+        tlines = []
         if tsid != '0' and map_npc_weapon_trait_set_lookup:
-            tlines = []
             for tid in map_npc_weapon_trait_set_lookup.get(tsid, []):
                 tx = _weapon_trait_detail_lookup_text(wtdm, tid)
                 if tx and tx not in tlines:
                     tlines.append(tx)
-            if tlines:
-                for lev in levels:
-                    lev['traits'] = list(tlines)
+        for lev in levels:
+            lev['traits'] = list(tlines)
         _apply_map_npc_weapon_row_stats(levels, w, base_levels)
         oa = safe_int(w.get('override_ammo'), 0) if w.get('override_ammo') is not None else 0
         if str(wt) == '3' and oa > 0:
@@ -8272,7 +8280,14 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         min_r = ws.get('range_min', 0) if w.get('range_min') is None else safe_int(w.get('range_min'), 0)
         max_r = ws.get('range_max', 0) if w.get('range_max') is None else safe_int(w.get('range_max'), 0)
         lv5t = levels[4]['traits'] if len(levels) > 4 else (levels[-1].get('traits', []) if levels else []); ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t); icc = eval_icon_color(lv5t, wt)
-        weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': [], 'shooting_coords': [], 'is_dash': False, 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
+        oer = (w.get('override_effect_range') or '').strip()
+        osr = (w.get('override_shooting_range') or '').strip()
+        mc = _parse_map_weapon_override_coords(oer) if oer else [dict(c) for c in (ws.get('map_coords') or [])]
+        sc = _parse_map_weapon_override_coords(osr) if osr else [dict(c) for c in (ws.get('shooting_coords') or [])]
+        is_dash = bool(ws.get('is_dash', False))
+        if oer and not osr:
+            is_dash = False
+        weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
@@ -12714,7 +12729,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np11"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np13"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -12865,7 +12880,7 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r11_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r12_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
@@ -12991,7 +13006,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp13_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp14_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
