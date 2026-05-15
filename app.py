@@ -4044,7 +4044,15 @@ def create_map_npc_lookup(d):
         msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
         if nid == '0': continue
         bst = normalize_id(item.get('BattleSideTypeIndex') or item.get('battleSideTypeIndex') or '2')
-        entry = {'id': nid, 'map_stage_id': msid, 'x': safe_int(item.get('X'), 0), 'y': safe_int(item.get('Y'), 0), 'battle_side_type': bst, 'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower()}
+        entry = {
+            'id': nid,
+            'map_stage_id': msid,
+            'x': safe_int(item.get('X'), 0),
+            'y': safe_int(item.get('Y'), 0),
+            'battle_side_type': bst,
+            'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
+            'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
+        }
         lk[nid] = entry
         if msid != '0': bms.setdefault(msid, []).append(entry)
     return lk, bms
@@ -4173,17 +4181,41 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
                     return True
             return False
 
+        def _assign_unit_modifier(prefer_move=False):
+            if not up:
+                return False
+            mods = up.get('modifiers') or []
+            if not isinstance(mods, list) or not mods:
+                return False
+            if prefer_move:
+                for md in mods:
+                    if not isinstance(md, dict):
+                        continue
+                    for line in (md.get('details') or []):
+                        if _extract_stat_flat_move(line, skip_conditional=False) != 0:
+                            md['strategy_hint_icon'] = url
+                            return True
+            for md in mods:
+                if isinstance(md, dict):
+                    md['strategy_hint_icon'] = url
+                    return True
+            return False
+
         targetless = tgt in ('0', '', None)
 
         # User-defined semantic mapping:
         # 1=unit weapon, 3=unit ability, 4=character ability, 7=unit stats, 10=unit MOV stat
         if typ == 7 and up:
             up['strategy_hint_stats_icon'] = url
+            if _assign_unit_modifier(prefer_move=False):
+                continue
             if targetless:
                 _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
         if typ == 10 and up:
             up['strategy_hint_move_icon'] = url
+            if _assign_unit_modifier(prefer_move=True):
+                continue
             if targetless:
                 _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
@@ -4237,6 +4269,25 @@ def create_map_npc_unit_lookup(d):
         if nid == '0': continue
         lk.setdefault(nid, []).append({'number': safe_int(item.get('Number'), 0), 'unit_id': normalize_id(item.get('UnitId') or item.get('unitId')), 'level': safe_int(item.get('Level'), 0), 'hp': safe_int(item.get('Hp'), 0), 'en': safe_int(item.get('En'), 0), 'attack': safe_int(item.get('Attack'), 0), 'defense': safe_int(item.get('Defense'), 0), 'mobility': safe_int(item.get('Mobility'), 0), 'movement': safe_int(item.get('Movement'), 0), 'ability_set_id': normalize_id(item.get('MapNpcUnitAbilitySetId') or item.get('mapNpcUnitAbilitySetId')), 'weapon_set_id': normalize_id(item.get('MapNpcUnitWeaponSetId') or item.get('mapNpcUnitWeaponSetId'))})
     for k in lk: lk[k].sort(key=lambda x: x['number'])
+    return lk
+
+
+def create_map_npc_buff_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        bid = normalize_id(item.get('Id') or item.get('id') or item.get('MapNpcBuffId') or item.get('mapNpcBuffId'))
+        if bid == '0':
+            continue
+        lk[bid] = {
+            'id': bid,
+            'range_min': safe_int(item.get('RangeMin'), 0),
+            'range_max': safe_int(item.get('RangeMax'), 0),
+            'trait_set_id': normalize_id(item.get('TraitSetId') or item.get('traitSetId')),
+            'buff_type_index': safe_int(item.get('BuffTypeIndex') or item.get('buffTypeIndex'), 0),
+            'target_types': str(item.get('TargetTypes') or item.get('targetTypes') or '').strip(),
+        }
     return lk
 
 def create_map_npc_character_lookup(d):
@@ -5581,6 +5632,7 @@ stage_battle_condition_text_base_data = load_json(os.path.join(BASE_DIR, "m_stag
 map_stage_data = load_json(os.path.join(BASE_DIR, "m_map_stage.json"))
 map_master_data = load_json(os.path.join(BASE_DIR, "m_map.json"))
 map_npc_data = load_json(os.path.join(BASE_DIR, "m_map_npc.json"))
+map_npc_buff_data = load_json(os.path.join(BASE_DIR, "m_map_npc_buff.json"))
 map_npc_unit_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit.json"))
 map_npc_character_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character.json"))
 map_npc_unit_ability_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_ability_set_content.json"))
@@ -5679,6 +5731,7 @@ map_stage_lookup = create_map_stage_lookup(map_stage_data) if map_stage_data els
 map_stage_meta_by_stage_id = create_map_stage_meta_by_stage_id(map_stage_data) if map_stage_data else {}
 map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data else {}
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
+map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
 map_npc_strategy_hint_by_npc, map_npc_ids_with_strategy_hint = create_map_npc_strategy_hint_maps(
     load_json(os.path.join(BASE_DIR, "m_map_npc_strategy_hint.json")),
 )
@@ -8064,6 +8117,49 @@ def resolve_npc_character_skills(ssid, lc):
     if not ssid or ssid == '0': return []
     ld = get_lang_data(lc)
     return [resolve_char_skill(e['id'], ld, i + 1, False) for i, e in enumerate(map_npc_character_skill_set_lookup.get(ssid, []))]
+
+
+def resolve_npc_modifiers(buff_id, lc):
+    bid = normalize_id(buff_id)
+    if not bid or bid == '0':
+        return []
+    row = map_npc_buff_lookup.get(bid)
+    if not row:
+        return []
+    ld = get_lang_data(lc)
+    ltm = ld.get('lang_text_map', {}) or {}
+    trait_set_id = normalize_id(row.get('trait_set_id'))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    trait_ids = trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, []))
+    details = []
+    for tid in trait_ids:
+        t_data = trait_data_map.get(tid, {})
+        dlid = normalize_id(t_data.get('desc_lang_id'))
+        if dlid and dlid != '0':
+            tx = str(ltm.get(dlid, '') or '').strip()
+            if tx and tx not in details:
+                details.append(tx)
+    rng_min = safe_int(row.get('range_min'), 0)
+    rng_max = safe_int(row.get('range_max'), 0)
+    target_types = str(row.get('target_types') or '').strip()
+    if rng_max > 0:
+        if rng_min > 0 and rng_max >= rng_min:
+            details.append(f'Range: {rng_min}-{rng_max}')
+        elif rng_min > 0:
+            details.append(f'Range: {rng_min}')
+    if target_types:
+        details.append(f'Target: {target_types}')
+    if not details:
+        details = ['-']
+    return [{
+        'id': bid,
+        'name': f'Modifier {bid}',
+        'details': details,
+        'icon': '',
+        'has_icon': False,
+        'buff_type_index': safe_int(row.get('buff_type_index'), 0),
+    }]
+
 
 def eval_icon_color(tl, wt):
     if wt == '2': return 'ex'
@@ -12586,7 +12682,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np10"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np11"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -12667,6 +12763,7 @@ def get_stage(stage_id):
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_on, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
                     up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids'))
+                    up['modifiers'] = resolve_npc_modifiers(npc.get('map_npc_buff_id', '0'), lc)
                     up['bonus_amounts'] = tba_on
                     up['stats_raw_npc_squad_allies_off'] = fst_off
                     up['bonus_amounts_npc_squad_allies_off'] = tba_off
