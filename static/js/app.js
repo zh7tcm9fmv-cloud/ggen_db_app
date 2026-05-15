@@ -8344,7 +8344,7 @@ const finalHitRate=MN(100,MX(10,rawHit));
 return{finalHitRate,mobDiff,reaDiff,mobCorrection,baseHit,rawHit};
 }
 
-function _dcHtmlDcResultDamageBlock(r){
+function _dcHtmlDcResultDamageBlock(r,dmgDeltas){
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
@@ -8353,7 +8353,14 @@ const pctC=npcHp>0?Math.min(100,(hpRemC/npcHp)*100):0;
 const sup=!!r.isSuperVigor;
 const critLbl=sup?t('dc_super_crit_dmg'):t('dc_crit_dmg');
 const hpCritLbl=sup?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit');
-return`<div class="dc-result-row"><div class="dc-result-item"><div class="dc-result-label dc-dmg-anch-n-lbl">${t('dc_normal_dmg')}</div><div class="dc-result-val normal dc-dmg-anch-n">${fmtN(r.normalDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit dc-dmg-anch-c">${fmtN(r.critDmg)}</div></div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
+const dn=dmgDeltas&&dmgDeltas.n,dc=dmgDeltas&&dmgDeltas.c;
+const showN=dn!=null&&Number.isFinite(dn);
+const showC=dc!=null&&Number.isFinite(dc);
+const clsN=showN?_dcDmgCompareItemPulseClass(dn):'';
+const clsC=showC?_dcDmgCompareItemPulseClass(dc):'';
+const deltaN=showN?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dn)}">${esc(_dcFmtPctDelta(dn))}</div>`:'';
+const deltaC=showC?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dc)}">${esc(_dcFmtPctDelta(dc))}</div>`:'';
+return`<div class="dc-result-row"><div class="dc-result-item${clsN}"><div class="dc-result-label dc-dmg-anch-n-lbl">${t('dc_normal_dmg')}</div><div class="dc-result-val normal dc-dmg-anch-n">${fmtN(r.normalDmg)}</div>${deltaN}</div><div class="dc-result-item${clsC}"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit dc-dmg-anch-c">${fmtN(r.critDmg)}</div>${deltaC}</div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
 <div class="dc-result-hp dc-result-hp--compact">
 <div class="dc-hp-mini dc-hp-mini--normal">
 <div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val"><span class="dc-hp-mini-fraction">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span>${npcHp>0?`<span class="dc-hp-mini-pct">${pctN.toFixed(1)}%</span>`:''}</span></div>
@@ -8376,6 +8383,16 @@ if(v==null||!Number.isFinite(v))return'--';
 const a=Math.abs(v);
 const d=a>=100?0:(a>=10?1:2);
 return`${v>=0?'+':''}${v.toFixed(d)}%`;
+}
+function _dcDmgCompareItemPulseClass(pct){
+if(pct==null||!Number.isFinite(pct))return'';
+if(Math.abs(pct)<0.01)return' dc-result-item--cmp dc-result-item--cmp-neu';
+return pct>=0?' dc-result-item--cmp dc-result-item--cmp-pos':' dc-result-item--cmp dc-result-item--cmp-neg';
+}
+function _dcDmgCompareDeltaToneClass(pct){
+if(pct==null||!Number.isFinite(pct))return'';
+if(Math.abs(pct)<0.01)return'is-neu';
+return pct>=0?'is-pos':'is-neg';
 }
 function _dcSyncMultiPctCompareUi(canCompare){
 const btn=document.getElementById('dcMultiPctCompareBtn');
@@ -8401,129 +8418,11 @@ const n=_dcPctDelta(res.normalDmg,baseRes.normalDmg);
 const c=_dcPctDelta(res.critDmg,baseRes.critDmg);
 return{baseIdx,idx,normalPct:n,critPct:c};
 }
-function _dcCompareArcLabelText(pct){
-if(pct==null||!Number.isFinite(pct))return'--';
-return rankingPctText(pct);
-}
-function _dcCompareArcPctClass(pct){
-if(pct==null||!Number.isFinite(pct))return'is-neutral';
-return pct>=0?'is-pos':'is-neg';
-}
 function _dcDetachDcMultiCompareObserver(){
 const area=document.getElementById('dcResultArea');
 if(!area||!area._dcMultiCompareDetach)return;
 try{area._dcMultiCompareDetach()}catch(_){}
 area._dcMultiCompareDetach=null;
-}
-function _dcScheduleDcMultiCompareArcs(){
-requestAnimationFrame(()=>{requestAnimationFrame(()=>{_dcDrawDcMultiCompareArcs()})});
-}
-function _dcDrawDcMultiCompareArcs(){
-const canvas=document.querySelector('#dcResultArea .dc-result-multi-compare-canvas');
-const layer=canvas&&canvas.querySelector('.ranking-compare-layer');
-if(!canvas||!layer)return;
-const multi=S.dc._lastMultiResults||[];
-const compareOn=!!S.dc.multiPctCompare&&multi.length>1;
-if(!compareOn||multi.length<2){
-layer.classList.remove('active');
-const svg=layer.querySelector('.ranking-compare-svg');
-const lw=layer.querySelector('.ranking-compare-labels');
-if(svg)svg.innerHTML='';
-if(lw)lw.innerHTML='';
-return
-}
-const grid=canvas.querySelector('.dc-result-multi-grid');
-const cols=grid?Array.from(grid.querySelectorAll('.dc-result-multi-col')):[];
-if(cols.length<2){
-layer.classList.remove('active');
-return
-}
-const baseCol=cols.find(c=>c.classList.contains('is-compare-base'))||cols[0];
-const nb=baseCol.querySelector('.dc-dmg-anch-n-lbl');
-const cb=baseCol.querySelector('.dc-dmg-anch-c');
-if(!nb||!cb){
-layer.classList.remove('active');
-return
-}
-const targets=cols.filter(c=>c!==baseCol);
-if(!targets.length){
-layer.classList.remove('active');
-return
-}
-const activeI=S.dc.atkSlotIndex|0;
-const primary=multi.find(m=>m.idx===activeI)||multi[0];
-const baseSlot=Number(baseCol.getAttribute('data-dc-slot'));
-const baseEnt=multi.find(m=>m.idx===baseSlot)||primary;
-const br=canvas.getBoundingClientRect();
-const bnr=nb.getBoundingClientRect();
-const bcr=cb.getBoundingClientRect();
-const x1n=bnr.left-br.left+bnr.width*0.5;
-const y1n=bnr.top-br.top+bnr.height*0.5;
-const x1c=bcr.left-br.left+bcr.width*0.5;
-const y1c=bcr.top-br.top+bcr.height*0.88;
-const baseCx=bnr.left+bnr.width*0.5;
-const sortedTargets=targets.map(c=>{
-const nx=c.querySelector('.dc-dmg-anch-n-lbl');
-return nx?{c,cx:nx.getBoundingClientRect()}:null;
-}).filter(Boolean).sort((a,b)=>a.cx.left+a.cx.width*0.5-baseCx-(b.cx.left+b.cx.width*0.5-baseCx));
-const nTar=sortedTargets.length;
-const slotStep=nTar<=3?10:(nTar<=5?8:6);
-const slots=sortedTargets.map((_,i)=>i-(nTar-1)/2);
-let paths='',labels='',pathId=0;
-const used=[];
-const pushAvoid=(lx,ly,w,h,dy)=>{
-for(let guard=0;guard<14;guard++){
-let bumped=false;
-for(let k=0;k<used.length;k++){const u=used[k];if(Math.abs(lx-u.x)<(w+u.w)*0.5&&Math.abs(ly-u.y)<(h+u.h)*0.52){ly+=(dy>=0?1:-1)*(h+10);bumped=true;break}}
-if(!bumped)break;
-}
-used.push({x:lx,y:ly,w,h});
-return ly};
-sortedTargets.forEach(({c},ti)=>{
-const slot=slots[ti];
-const fan=slot*slotStep;
-const otherSlot=Number(c.getAttribute('data-dc-slot'));
-const ent=multi.find(m=>m.idx===otherSlot);
-if(!ent)return;
-const meta=_dcBuildDamageCompareMeta(ent.result,baseEnt.result,ent.idx,baseEnt.idx,true);
-const n2=c.querySelector('.dc-dmg-anch-n-lbl');
-const c2=c.querySelector('.dc-dmg-anch-c');
-if(!n2||!c2||!meta)return;
-const rn2=n2.getBoundingClientRect(),rc2=c2.getBoundingClientRect();
-const x2n=rn2.left-br.left+rn2.width*0.5,y2n=rn2.top-br.top+rn2.height*0.5;
-const x2c=rc2.left-br.left+rc2.width*0.5,y2c=rc2.top-br.top+rc2.height*0.88;
-const dx=x2n-x1n;
-const bendUp=Math.min(118,Math.max(56,Math.abs(dx)*0.44))+Math.abs(fan)*0.72;
-let c1x=x1n+dx*0.38+fan*0.62,c1y=y1n-bendUp;
-let c2x=x1n+dx*0.62+fan*0.42,c2y=y2n-bendUp-Math.abs(fan)*0.28;
-let pid=`dcdArcN${pathId++}`;
-const clN=_dcCompareArcPctClass(meta.normalPct);
-paths+=`<path id="${pid}" class="ranking-compare-path ${clN}" d="M ${x1n.toFixed(1)} ${y1n.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${x2n.toFixed(1)} ${y2n.toFixed(1)}"></path>`;
-let lxn=x1n+dx*0.52+fan*8;
-let lyn=Math.min(y1n,y2n)-bendUp*0.5+Math.abs(dx)*0.02+fan*2.8;
-lyn=pushAvoid(lxn,lyn,64,22,fan||1);
-labels+=`<div class="ranking-compare-label ${clN}" style="left:${lxn.toFixed(1)}px;top:${lyn.toFixed(1)}px">${esc(_dcCompareArcLabelText(meta.normalPct))}</div>`;
-const dxC=x2c-x1c;
-const bendDn=Math.min(108,Math.max(52,Math.abs(dxC)*0.42))+Math.abs(fan)*0.68;
-let cc1x=x1c+dxC*0.4+fan*0.55,cc1y=y1c+bendDn;
-let cc2x=x1c+dxC*0.62+fan*0.35,cc2y=y2c+bendDn+Math.abs(fan)*0.24;
-pid=`dcdArcC${pathId++}`;
-const clC=_dcCompareArcPctClass(meta.critPct);
-paths+=`<path id="${pid}" class="ranking-compare-path ${clC}" d="M ${x1c.toFixed(1)} ${y1c.toFixed(1)} C ${cc1x.toFixed(1)} ${cc1y.toFixed(1)}, ${cc2x.toFixed(1)} ${cc2y.toFixed(1)}, ${x2c.toFixed(1)} ${y2c.toFixed(1)}"></path>`;
-let lxc=x1c+dxC*0.5+fan*4;
-let lyc=Math.max(y1c,y2c)+bendDn*0.58+fan*(-2);
-lyc=pushAvoid(lxc,lyc,64,22,-(fan||1));
-labels+=`<div class="ranking-compare-label ${clC}" style="left:${lxc.toFixed(1)}px;top:${lyc.toFixed(1)}px">${esc(_dcCompareArcLabelText(meta.critPct))}</div>`});
-const svg=layer.querySelector('.ranking-compare-svg');
-const labelsWrap=layer.querySelector('.ranking-compare-labels');
-if(!svg||!labelsWrap)return;
-svg.setAttribute('viewBox',`0 0 ${Math.max(1,canvas.clientWidth)} ${Math.max(1,canvas.clientHeight)}`);
-svg.setAttribute('width',String(Math.max(1,canvas.clientWidth)));
-svg.setAttribute('height',String(Math.max(1,canvas.clientHeight)));
-svg.innerHTML=paths;
-labelsWrap.innerHTML=labels;
-svg.querySelectorAll('.ranking-compare-path').forEach(p=>{try{const len=p.getTotalLength();p.style.strokeDasharray=`${len}`;p.style.strokeDashoffset=`${len}`;p.getBoundingClientRect();p.style.strokeDashoffset='0'}catch(_){}});
-layer.classList.add('active');
 }
 function _dcBattleStatsDeltaBadge(cur,base){
 const pct=_dcPctDelta(cur,base);
@@ -8571,15 +8470,17 @@ let inner='';
 if(multi.length===1){
 inner=_dcHtmlDcResultDamageBlock(multi[0].result);
 }else{
-const layerHtml=compareEnabled?'<div class="ranking-compare-layer" aria-hidden="true"><svg class="ranking-compare-svg"></svg><div class="ranking-compare-labels"></div></div>':'';
+const _dcBaseCapIcon=`<svg class="dc-result-base-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg>`;
 inner='<div class="dc-result-multi-compare-canvas"><div class="dc-result-multi-grid'+(compareEnabled?' dc-result-multi-grid--pct-compare':'')+'">'+multi.map(m=>{
 const ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
-const cmp=_dcBuildDamageCompareMeta(m.result,primary.result,m.idx,primary.idx,compareEnabled);
 const isBase=m.idx===primary.idx;
-const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}${isBase?`<span class="dc-result-compare-badge">Base</span>`:''}`;
-const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${cmp?' is-compare-target':''}`;
-return`<div class="${cls}" data-dc-slot="${m.idx}"><div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result)}</div>`;
-}).join('')+'</div>'+layerHtml+'</div>';
+const meta=compareEnabled&&!isBase?_dcBuildDamageCompareMeta(m.result,primary.result,m.idx,primary.idx,true):null;
+const dmgDeltas=meta?{n:meta.normalPct,c:meta.critPct}:null;
+const baseCap=compareEnabled&&isBase?`<div class="dc-result-multi-base-cap" role="img" aria-label="Base comparison">${_dcBaseCapIcon}<span class="dc-result-base-text">Base</span></div>`:'';
+const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}`;
+const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${dmgDeltas?' is-compare-target':''}`;
+return`<div class="${cls}" data-dc-slot="${m.idx}">${baseCap}<div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result,dmgDeltas)}</div>`;
+}).join('')+'</div></div>';
 }
 _dcDetachDcMultiCompareObserver();
 area.innerHTML=`<div class="dc-result-box">${inner}
@@ -8589,15 +8490,6 @@ area.innerHTML=`<div class="dc-result-box">${inner}
 </div>
 <div id="dcShareMsg" style="text-align:center;font-size:11px;color:#22c55e;margin-top:6px"></div>
 </div>`;
-if(multi.length>1&&compareEnabled){
-const canv=area.querySelector('.dc-result-multi-compare-canvas');
-if(canv){
-const ro=new ResizeObserver(()=>_dcScheduleDcMultiCompareArcs());
-ro.observe(canv);
-area._dcMultiCompareDetach=()=>{try{ro.disconnect()}catch(_){}};
-_dcScheduleDcMultiCompareArcs();
-}
-}
 }
 function toggleDcBattleStats(show){
 const ov=document.getElementById('dcBattleStatsOverlay');
