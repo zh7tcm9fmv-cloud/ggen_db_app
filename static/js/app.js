@@ -858,7 +858,25 @@ const _warmedDetailImgUrls=new Set();
 const WARMED_DETAIL_IMG_MAX=800;
 let _detailPrefetchHoverTimer=null;
 let _detailPrefetchIntentWired=false;
-function syncHistoryToBrowsePath(path){try{const tail=(location.search||'')+(location.hash||'');history.replaceState(history.state||{},'',path+tail)}catch(_){}}
+function _browseHistoryQueryTailForPath(path){
+try{
+const pathOnly=String(path||'').split('#')[0];
+const qMark=pathOnly.indexOf('?');
+const pathnameRaw=qMark>=0?pathOnly.slice(0,qMark):pathOnly;
+const pathname=(pathnameRaw||'/').replace(/\/+$/,'')||'/';
+const u=new URL(location.href);
+const sp=u.searchParams;
+if(pathname!=='/cal'){sp.delete('d');sp.delete('dc')}
+if(pathname!=='/tb'){sp.delete('team')}
+const parsed=parseBrowseShortPath(pathname);
+if(parsed||pathname==='/')sp.delete('tab');
+const qs=sp.toString();
+return (qs?'?'+qs:'')+(location.hash||'')
+}catch(_){
+return (location.search||'')+(location.hash||'')
+}
+}
+function syncHistoryToBrowsePath(path){try{const tail=_browseHistoryQueryTailForPath(path);history.replaceState(history.state||{},'',path+tail)}catch(_){}}
 const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
 const MAIN_TAB_PATH_SHORT={characters:'/c',units:'/u',supporters:'/s',latest_release:'/new',stages:'/st',calculator:'/cal',team_builder:'/tb',modifications:'/op',banner_timeline:'/tl',ranking:'/rk'};
 function syncMainTabQueryParam(tab){
