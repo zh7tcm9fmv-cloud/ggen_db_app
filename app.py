@@ -7927,15 +7927,15 @@ def build_ally_positions(msid):
     return allies
 
 def resolve_npc_unit_abilities(asid, lc, unit_id='0'):
-    """MapNpcUnitAbilitySetId -> m_map_npc_unit_ability_set_content; if 0, use m_unit_ability_set for UnitId (map NPCs often omit explicit set when kit matches the MS)."""
+    """MapNpcUnitAbilitySetId -> m_map_npc_unit_ability_set_content only.
+
+    IMPORTANT: Stage NPC detail must reflect NPC-set data, not regular unit DB kits.
+    When set id is 0 (or missing), return no NPC unit abilities.
+    """
     ld = get_lang_data(lc); asid_n = normalize_id(asid) if asid else '0'
-    if asid_n and asid_n != '0':
-        entries = list(map_npc_unit_ability_set_lookup.get(asid_n, []))
-        return [build_ability_entry(e['id'], ld.get('abil_name_map', {}), abil_link_map, trait_set_traits_map, trait_data_map, ld.get('lang_text_map', {}), ld.get('lang_text_map', {}), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), ability_resource_map, ld.get('abil_desc_map', {}), sort_order=e.get('sort', 0), lang_code=lc) for e in entries]
-    uid = normalize_id(unit_id)
-    if uid == '0':
+    if not asid_n or asid_n == '0':
         return []
-    entries = [{'id': x['id'], 'sort': x['sort']} for x in unit_abil_map.get(uid, [])]
+    entries = list(map_npc_unit_ability_set_lookup.get(asid_n, []))
     return [build_ability_entry(e['id'], ld.get('abil_name_map', {}), abil_link_map, trait_set_traits_map, trait_data_map, ld.get('lang_text_map', {}), ld.get('lang_text_map', {}), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), ability_resource_map, ld.get('abil_desc_map', {}), sort_order=e.get('sort', 0), lang_code=lc) for e in entries]
 
 def resolve_npc_character_abilities(asid, lc):
@@ -8108,10 +8108,10 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
     ld = get_lang_data(lc); wtdm = ld.get('weapon_trait_detail_map', {}) or {}; weapons = []
     wsid_n = normalize_id(wsid)
     rows = list(map_npc_unit_weapon_set_lookup.get(wsid_n, []))
-    if not rows and wsid_n == '0':
-        uid_n = normalize_id(uid)
-        if uid_n != '0':
-            rows = [{'weapon_id': x['id'], 'power': None, 'en': None, 'hit_rate': None, 'critical_rate': None, 'range_min': None, 'range_max': None, 'trait_set_id': '0', 'override_ammo': 0, 'sort_order': x.get('sort', 0)} for x in unit_weapon_map.get(uid_n, [])]
+    # IMPORTANT: Stage NPC detail should only use map NPC weapon sets.
+    # If MapNpcUnitWeaponSetId is 0/missing, do not fall back to regular unit weapon DB.
+    if not rows:
+        return []
     for w in rows:
         wid = w.get('weapon_id', '0'); wm = weapon_info_map.get(wid, {}); wn = ld.get('weapon_text_map', {}).get(wm.get('name_lang_id', '0'), 'Unknown')
         ai = wm.get('attribute', '0'); wt = wm.get('weapon_type', '1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label': 'Unknown', 'icon': ''})
@@ -12586,7 +12586,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np9"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np10"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
