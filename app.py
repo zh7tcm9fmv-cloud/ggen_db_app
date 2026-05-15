@@ -4049,6 +4049,85 @@ def create_map_npc_lookup(d):
         if msid != '0': bms.setdefault(msid, []).append(entry)
     return lk, bms
 
+def create_map_npc_strategy_hint_maps(hint_data):
+    by_npc = {}
+    npc_ids = set()
+    for item in extract_data_list(hint_data):
+        if not isinstance(item, dict):
+            continue
+        npc_id = normalize_id(item.get('MapNpcId') or item.get('mapNpcId'))
+        if npc_id == '0':
+            continue
+        npc_ids.add(npc_id)
+        typ = safe_int(item.get('StrategyHintTypeIndex') or item.get('strategyHintTypeIndex'), 0)
+        tgt = normalize_id(item.get('StrategyHintTargetValue') or item.get('strategyHintTargetValue'), '0')
+        rid = str(item.get('AttentionResourceId') or item.get('attentionResourceId') or '').strip()
+        by_npc.setdefault(npc_id, []).append({'type': typ, 'target': tgt, 'resource_id': rid})
+    return by_npc, npc_ids
+
+
+def strategy_hint_attention_url(resource_id):
+    rid = (resource_id or '').strip()
+    if not rid:
+        return ''
+    return f'/static/images/UI/Sprite/{rid}.webp'
+
+
+def _ability_matches_strategy_target(ab, tgt):
+    if not ab or tgt in ('0', '', None):
+        return False
+    if normalize_id(ab.get('id')) == tgt:
+        return True
+    for k in ('ssp_replacement', 'sp_replacement'):
+        sub = ab.get(k)
+        if isinstance(sub, dict) and normalize_id(sub.get('id')) == tgt:
+            return True
+    return False
+
+
+def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
+    if not hints:
+        return
+    for h in hints:
+        url = strategy_hint_attention_url(h.get('resource_id'))
+        if not url:
+            continue
+        tgt = h.get('target')
+        typ = h.get('type')
+        if tgt in ('0', '', None):
+            continue
+        if typ == 1 and up:
+            for ab in (up.get('abilities') or []):
+                if _ability_matches_strategy_target(ab, tgt):
+                    ab['strategy_hint_icon'] = url
+            continue
+        if typ == 3 and up:
+            for w in (up.get('weapons') or []):
+                if normalize_id(w.get('id')) == tgt:
+                    w['strategy_hint_icon'] = url
+            continue
+        if typ == 4 and cp:
+            for sk in (cp.get('skills') or []):
+                if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
+                    sk['strategy_hint_icon'] = url
+            continue
+        matched = False
+        if up:
+            for ab in (up.get('abilities') or []):
+                if _ability_matches_strategy_target(ab, tgt):
+                    ab['strategy_hint_icon'] = url
+                    matched = True
+            if not matched:
+                for w in (up.get('weapons') or []):
+                    if normalize_id(w.get('id')) == tgt:
+                        w['strategy_hint_icon'] = url
+                        matched = True
+        if not matched and cp:
+            for sk in (cp.get('skills') or []):
+                if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
+                    sk['strategy_hint_icon'] = url
+
+
 def create_map_npc_unit_lookup(d):
     lk = {}
     for item in extract_data_list(d):
@@ -5499,6 +5578,9 @@ map_stage_lookup = create_map_stage_lookup(map_stage_data) if map_stage_data els
 map_stage_meta_by_stage_id = create_map_stage_meta_by_stage_id(map_stage_data) if map_stage_data else {}
 map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data else {}
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
+map_npc_strategy_hint_by_npc, map_npc_ids_with_strategy_hint = create_map_npc_strategy_hint_maps(
+    load_json(os.path.join(BASE_DIR, "m_map_npc_strategy_hint.json")),
+)
 map_npc_unit_lookup = create_map_npc_unit_lookup(map_npc_unit_data) if map_npc_unit_data else {}
 map_npc_character_lookup = create_map_npc_character_lookup(map_npc_character_data) if map_npc_character_data else {}
 map_npc_unit_ability_set_lookup = create_simple_set_to_ids_map(map_npc_unit_ability_set_content_data, 'MapNpcUnitAbilitySetId', 'AbilityId') if map_npc_unit_ability_set_content_data else {}
@@ -12496,17 +12578,31 @@ def get_stage(stage_id):
                         bp = calculate_npc_character_self_bonus_pct(cabs)
                         boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
                         cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
-                is_ally = npc.get('battle_side_type', '2') == '1'
-                side = 'ally' if is_ally else 'enemy'
-                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_ally else None
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally}
+                apply_map_npc_strategy_hints(
+                    nid, up, cp,
+                    map_npc_strategy_hint_by_npc.get(normalize_id(nid), []),
+                )
+                bst = normalize_id(npc.get('battle_side_type', '2'), '2')
+                is_guest = bst == '1'
+                is_friendly_force = bst == '4'
+                if is_guest:
+                    side = 'guest'
+                elif is_friendly_force:
+                    side = 'friendly'
+                else:
+                    side = 'enemy'
+                guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_guest else None
+                friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
+                nid_norm = normalize_id(nid)
+                has_h = nid_norm in map_npc_ids_with_strategy_hint
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'has_strategy_hint': has_h}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
                         me['unit_id'] = umap_uid
                 me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
                 me['npc_detail_index'] = len(nd)
-                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_ally, 'unit': up, 'character': cp})
+                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.webp', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             max_x = max_y = 0
