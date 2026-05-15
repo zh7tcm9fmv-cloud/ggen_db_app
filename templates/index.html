@@ -872,10 +872,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .weapon-map-high-vis.weapon-map-grid-wrap{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;max-width:100%}
 .weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin .map-cell-marker-shell,
 .weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin .map-pou-2x2-marker{z-index:6}
-.weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin .map-cell-marker-shell>img:not(.map-cell-step-marker){max-width:min(46px,calc(var(--map-cell,24px)*1.3))!important;max-height:min(46px,calc(var(--map-cell,24px)*1.3))!important;filter:brightness(1.75) contrast(1.12) saturate(1.08) drop-shadow(0 0 2px #fff) drop-shadow(0 0 10px rgba(56,189,248,.95)) drop-shadow(0 0 4px rgba(0,0,0,.9))!important}
+.weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin .map-cell-marker-shell>img:not(.map-cell-step-marker){max-width:min(32px,calc(var(--map-cell,24px)*0.92))!important;max-height:min(32px,calc(var(--map-cell,24px)*0.92))!important;filter:brightness(1.75) contrast(1.12) saturate(1.08) drop-shadow(0 0 2px #fff) drop-shadow(0 0 10px rgba(56,189,248,.95)) drop-shadow(0 0 4px rgba(0,0,0,.9))!important}
+.weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin>.weapon-map-cell-tile{max-width:min(32px,calc(var(--map-cell,24px)*0.92))!important;max-height:min(32px,calc(var(--map-cell,24px)*0.92))!important;width:auto!important;height:auto!important;box-sizing:border-box!important}
 .weapon-map-high-vis .weapon-map-grid .map-cell--pou-origin .map-pou-2x2-marker img{filter:brightness(1.65) contrast(1.12) drop-shadow(0 0 2px #fff) drop-shadow(0 0 10px rgba(56,189,248,.92)) drop-shadow(0 0 4px rgba(0,0,0,.85))!important}
 .weapon-map-high-vis .weapon-map-grid .map-cell.map-cell--pou-origin::after{content:'';position:absolute;left:50%;bottom:18%;transform:translateX(-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid rgba(255,255,255,.97);filter:drop-shadow(0 0 4px #0ea5e9) drop-shadow(0 0 8px rgba(56,189,248,.9));z-index:5;pointer-events:none;opacity:.98}
-.weapon-map-high-vis .weapon-map-grid .map-cell.map-cell--pou-2x2-anchor.map-cell--pou-origin::after{bottom:8%;transform:translate(-50%,0) scale(1.15)}
+.weapon-map-high-vis .weapon-map-grid .map-cell.map-cell--pou-2x2-anchor.map-cell--pou-origin::after{display:none}
 .weapon-map-high-vis .weapon-map-grid .map-cell{border-radius:3px;background:rgba(15,23,42,.5)}
 .weapon-map-high-vis .weapon-map-grid .map-cell--posi{background:rgba(14,165,233,.28);box-shadow:inset 0 0 0 2px rgba(56,189,248,.95)}
 .weapon-map-high-vis .weapon-map-grid .map-cell--nega{background:rgba(244,63,94,.22);box-shadow:inset 0 0 0 2px rgba(251,113,133,.92)}

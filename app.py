@@ -824,6 +824,7 @@ def browse_combo_from_unit_args(args):
         'terrain_combine': normalize_filter_combine_op(args.get('terrain_op'), 'and'),
         'weapon_debuff_combine': normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'),
         'weapon_range_combine': normalize_filter_combine_op(args.get('weapon_range_op'), 'and'),
+        'weapon_range_non_map_combine': normalize_filter_combine_op(args.get('weapon_range_non_map_op'), 'and'),
     }
 
 
@@ -1015,7 +1016,7 @@ def unit_weapon_debuff_filter_cache_fragment(expr):
 
 
 def parse_unit_weapon_range_filter(val):
-    """Comma-separated highest weapon range values (1..6)."""
+    """Comma-separated target max-range tier values (1..6) for filters."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -1050,6 +1051,73 @@ def unit_weapon_range_filter_cache_fragment(expr):
     if not xs:
         return 'wr0'
     return ('wr' + '__'.join(xs))[:220]
+
+
+def unit_weapon_range_non_map_filter_cache_fragment(expr):
+    if expr is None:
+        return 'wrnm0'
+    xs = []
+    for x in expr:
+        try:
+            xs.append(str(int(x)))
+        except Exception:
+            continue
+    if not xs:
+        return 'wrnm0'
+    return ('wrnm' + '__'.join(xs))[:220]
+
+
+def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
+    """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX type + SSP id suffix) or 'non_map' (all grid weapons)."""
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    uid = normalize_id(uid)
+    wtm = ld.get('weapon_trait_map', {}) or {}
+    wcm = ld.get('weapon_capability_map', {}) or {}
+    wtdm = ld.get('weapon_trait_detail_map', {}) or {}
+    best = 0
+    any_eligible = False
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        if not wid or wid == '0':
+            continue
+        wm = weapon_info_map.get(wid, {})
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        if subset == 'ssp_ex':
+            if wt != '2' and not (wid.endswith('90') or wid.endswith('80')):
+                continue
+        elif subset != 'non_map':
+            continue
+        any_eligible = True
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc, unit_id=uid,
+        )
+        rx = int(ws.get('range_max', 0) or 0)
+        bonus = 0
+        if sm == 'ssp':
+            mwid = normalize_id(wm.get('main_weapon_id', '0') or '0')
+            for cid in (wid, mwid):
+                if not cid or cid == '0':
+                    continue
+                enh_list = unit_ssp_weapon_enhance_map.get(cid)
+                if not enh_list:
+                    continue
+                for enh in enh_list:
+                    if str(enh.get('type')) == '4':
+                        bonus += int(enh.get('value', 0) or 0)
+                break
+        eff = max(0, rx + bonus)
+        if eff > best:
+            best = eff
+    if not any_eligible:
+        return None
+    return int(best)
+
 
 def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
     """Resolved weapon trait / SSP weapon effect lines (same coverage as collect_unit_weapons_search_text)."""
@@ -1485,7 +1553,20 @@ def unit_highest_damage_weapon_max_range(uid, ld, lc, stat_mode='normal'):
 def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and'):
     if want_filter is None:
         return True
-    got = unit_highest_damage_weapon_max_range(uid, ld, lc, stat_mode)
+    got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, 'ssp_ex')
+    if got is None:
+        return False
+    if combine == 'or':
+        return any(got == int(x) for x in want_filter)
+    return all(got == int(x) for x in want_filter)
+
+
+def unit_matches_weapon_range_non_map_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and'):
+    if want_filter is None:
+        return True
+    got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, 'non_map')
+    if got is None:
+        return False
     if combine == 'or':
         return any(got == int(x) for x in want_filter)
     return all(got == int(x) for x in want_filter)
@@ -9795,6 +9876,8 @@ def browse_filters_pool_signature(args, entity=None):
             parts.append(normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'))
             parts.append(args.get('weapon_range', '').strip())
             parts.append(normalize_filter_combine_op(args.get('weapon_range_op'), 'and'))
+            parts.append(args.get('weapon_range_non_map', '').strip())
+            parts.append(normalize_filter_combine_op(args.get('weapon_range_non_map_op'), 'and'))
             parts.append(args.get('mechanism', '').strip())
             parts.append(normalize_filter_combine_op(args.get('mechanism_op'), 'and'))
         raw = '|'.join(parts)
@@ -9988,8 +10071,8 @@ def unit_passes_browse_pool_filters(
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
     weapon_debuff_filter=None,
     *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
-    weapon_range_filter=None, apply_weapon_range=True,
-    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', weapon_range_combine='and',
+    weapon_range_filter=None, apply_weapon_range=True, weapon_range_non_map_filter=None, apply_weapon_range_non_map=True,
+    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', weapon_range_combine='and', weapon_range_non_map_combine='and',
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -10042,6 +10125,9 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_weapon_range and weapon_range_filter is not None:
         if not id_seek and not unit_matches_weapon_range_filter(uid, ld, lc, weapon_range_filter, stat_mode=stat_mode, combine=weapon_range_combine):
+            return False
+    if apply_weapon_range_non_map and weapon_range_non_map_filter is not None:
+        if not id_seek and not unit_matches_weapon_range_non_map_filter(uid, ld, lc, weapon_range_non_map_filter, stat_mode=stat_mode, combine=weapon_range_non_map_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -10187,13 +10273,14 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
+    weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     _cbu = browse_combo_from_unit_args(args)
     short_ids = set()
     for uid, info in unit_info_map.items():
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter,
+            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
             **_cbu,
         ):
@@ -10221,6 +10308,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
+    weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     _cbu = browse_combo_from_unit_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
@@ -10230,7 +10318,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter,
+            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
             **_cbu,
         ):
@@ -10598,6 +10686,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
+    weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     _cbu = browse_combo_from_unit_args(args)
     ldc = get_calc_lang_data()
     seen = {}
@@ -10608,7 +10697,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter,
+            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
             **_cbu,
         ):
@@ -10925,6 +11014,8 @@ def list_units():
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
     weapon_range_arg = request.args.get('weapon_range', '').strip()
     weapon_range_filter = parse_unit_weapon_range_filter(weapon_range_arg)
+    weapon_range_non_map_arg = request.args.get('weapon_range_non_map', '').strip()
+    weapon_range_non_map_filter = parse_unit_weapon_range_filter(weapon_range_non_map_arg)
     mechanism_arg = request.args.get('mechanism', '').strip()
     mechanism_filter = parse_unit_mechanism_filter(mechanism_arg)
     mechanism_combine = normalize_filter_combine_op(request.args.get('mechanism_op'), 'and')
@@ -10935,6 +11026,7 @@ def list_units():
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
     weapon_range_ck = unit_weapon_range_filter_cache_fragment(weapon_range_filter)
+    weapon_range_non_map_ck = unit_weapon_range_non_map_filter_cache_fragment(weapon_range_non_map_filter)
     mechanism_ck = unit_mechanism_filter_cache_fragment(mechanism_filter)
     grid_skills_u = request.args.get('grid_skills', '').strip().lower() in ('1', 'true', 'yes')
     tb_boost = normalize_id(request.args.get('tb_boost_supporter', '').strip())
@@ -10951,7 +11043,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -11069,6 +11161,9 @@ def list_units():
         if weapon_range_filter is not None:
             if not id_seek and not unit_matches_weapon_range_filter(uid, ld, lc, weapon_range_filter, stat_mode, combine=_cbu['weapon_range_combine']):
                 continue
+        if weapon_range_non_map_filter is not None:
+            if not id_seek and not unit_matches_weapon_range_non_map_filter(uid, ld, lc, weapon_range_non_map_filter, stat_mode, combine=_cbu['weapon_range_non_map_combine']):
+                continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, collect_unit_mechanism_mids(info, uid)))
         if mechanism_filter:
             if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
@@ -11126,7 +11221,7 @@ def list_units():
     # Full weapon-debuff filter catalog exposed to the UI (keys omitted here are not used in-game yet).
     _wbp = sorted(UNIT_WEAPON_DEBUFF_FILTER_KEYS)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
