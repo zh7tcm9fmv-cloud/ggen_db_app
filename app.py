@@ -4125,13 +4125,18 @@ def create_map_npc_lookup(d):
         msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
         if nid == '0': continue
         bst = normalize_id(item.get('BattleSideTypeIndex') or item.get('battleSideTypeIndex') or '2')
+        _iip = item.get('IsInitiallyPlaced')
+        if _iip is None:
+            _iip = item.get('isInitiallyPlaced')
+        # Missing flag means "starts on map" in client data; only explicit false marks reinforcements.
+        _placed = True if _iip is None else bool(_iip)
         entry = {
             'id': nid,
             'map_stage_id': msid,
             'x': safe_int(item.get('X'), 0),
             'y': safe_int(item.get('Y'), 0),
             'battle_side_type': bst,
-            'is_initially_placed': bool(item.get('IsInitiallyPlaced')),
+            'is_initially_placed': _placed,
             'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
             'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
         }
