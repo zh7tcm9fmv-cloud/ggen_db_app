@@ -1476,8 +1476,8 @@ if(hcp){const cpDelta=s.total-b.total;eb=`<div class="stat-card-bonus stat-card-
 else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}
 const cardHi=hcb?'has-cond-bonus':hcp?'has-cond-penalty':'';
 const valHi=hcb?'has-bonus-val':hcp?'has-penalty-val':'';
-const labelHint=(type==='unit'&&s.name==='Move'&&mvHint)?`<img class="strategy-hint-badge" src="${mvHint}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
-if(!isRankingView||(type==='unit'&&s.name==='Move'))return`<div class="stat-card ${cardHi}"><div class="stat-card-label" style="position:relative;padding-left:${labelHint?'22px':'0'};">${labelHint}${esc(tStat(s.name,type))}</div><div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${eb}</div>`;
+const moveStatHint=(type==='unit'&&s.name==='Move'&&mvHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${mvHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
+if(!isRankingView||(type==='unit'&&s.name==='Move'))return`<div class="stat-card ${cardHi}"><div class="stat-card-label">${esc(tStat(s.name,type))}</div><div class="stat-card-value-row">${moveStatHint?`<div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${moveStatHint}`:`<div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>`}</div>${eb}</div>`;
 const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;const w=loading?62:detailRankingBarWidth(meta);const splitPos=!loading;let posHtml='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')posHtml=`<span class="stat-rank-pos-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-rank-pos-total">${tt}</span>`;else posHtml=`<span class="stat-rank-pos-main">${fmtN(rk)}位 /</span><span class="stat-rank-pos-total">${fmtN(tt)}</span>`}
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${fmtN(s.total)}</div>${eb}</div>`
 }).join('');
@@ -1872,7 +1872,11 @@ function renderMapGrid(weapon,unitData){
   mapSpan=Math.max(fc,fr);
   const mapUid=unitData?String(unitData.main_unit_id||unitData.id||'').trim():'';
   const MAP_TRIM_LEFT_ONE_COL={1370004800:1,1009000300:1,1009000310:1};
-  if(MAP_TRIM_LEFT_ONE_COL[mapUid]&&fc>aw&&fc-1>=aw){fmnx+=1;fc-=1}
+  if(MAP_TRIM_LEFT_ONE_COL[mapUid]&&fc>aw&&fc-1>=aw){
+    const nfmnx=fmnx+1,nfc=fc-1,fxMax=nfmnx+nfc-1;
+    const footOk=fpOcc.every(p=>p.x>=nfmnx&&p.x<=fxMax&&p.y>=fmny&&p.y<=fmxy);
+    if(footOk){fmnx=nfmnx;fc=nfc}
+  }
   mapSpan=Math.max(fc,fr)
 
   const mapHighVisInit=weaponMapGridHighVisPreferred();
@@ -1887,8 +1891,9 @@ function renderMapGrid(weapon,unitData){
   const mapUsePosi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
   const mapUseNega=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Nega.webp');
   const mapUseMovingWebp=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Moving.webp');
+  const mapMkErr=' onerror="gameImageUrlFallback(this)"';
   const mapSelMarker=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_SelectMarker_Nega.webp');
-  const mapSelHtml=`<span class="map-sel-crosshair" aria-hidden="true"><img class="map-sel-marker-img" src="${mapSelMarker}" alt=""></span>`;
+  const mapSelHtml=`<span class="map-sel-crosshair" aria-hidden="true"><img class="map-sel-marker-img" src="${mapSelMarker}" alt=""${mapMkErr}></span>`;
   const step=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_StepMarker.webp');
   const themeTip=mapHighVisInit?t('map_effect_theme_light'):t('map_effect_theme_dark');
   const mapTileCls=(src)=>{const s=String(src);if(s.includes('Block_Posi'))return'map-cell--posi';if(s.includes('Block_Nega'))return'map-cell--nega';if(s.includes('Block_Moving'))return'map-cell--moving';return'map-cell--normal'};
@@ -1923,32 +1928,32 @@ function renderMapGrid(weapon,unitData){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
           if(mapSinglePou&&imrk){
             pouAnchorCls=' map-cell--pou-2x2-anchor';
-            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"></span>`
+            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"${mapMkErr}></span>`
           }else if(imrk){
-            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseMovingWebp}\" alt=\"\"></span>`
+            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseMovingWebp}\" alt=\"\"${mapMkErr}></span>`
           }
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.webp');
-          if(iem)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseMovingWebp}\" alt=\"\"></span>`
+          if(iem)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseMovingWebp}\" alt=\"\"${mapMkErr}></span>`
         }else if(ie||isp){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.webp')
         }
 
         // Dash path step markers: center column, or both columns for 2×2 dual-line MAP.
         if(isp&&!iocc&&!ieb&&(mapDashDualWide?(cx===0||cx===1):cx===0)){
-          oh=`<span class=\"map-cell-marker-shell map-cell-marker-shell--step\" aria-hidden=\"true\"><img class=\"map-cell-step-marker\" src=\"${step}\" alt=\"\"></span>`
+          oh=`<span class=\"map-cell-marker-shell map-cell-marker-shell--step\" aria-hidden=\"true\"><img class=\"map-cell-step-marker\" src=\"${step}\" alt=\"\"${mapMkErr}></span>`
         }
       }else if(t2){
         if(its){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.webp');
-          mh=iocc?`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"></span>`+mapSelHtml:mapSelHtml
+          mh=iocc?`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"${mapMkErr}></span>`+mapSelHtml:mapSelHtml
         }else if(iocc){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
           if(mapSinglePou&&imrk){
             pouAnchorCls=' map-cell--pou-2x2-anchor';
-            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"></span>`
+            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"${mapMkErr}></span>`
           }else if(imrk){
-            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"></span>`
+            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseNega}\" alt=\"\"${mapMkErr}></span>`
           }
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.webp')
@@ -1960,9 +1965,9 @@ function renderMapGrid(weapon,unitData){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
           if(mapSinglePou&&imrk){
             pouAnchorCls=' map-cell--pou-2x2-anchor';
-            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"></span>`
+            mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"${mapMkErr}></span>`
           }else if(imrk){
-            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${isLarge?mapUseMovingWebp:(pouWraps?mapUsePosi:mapUseMovingWebp)}\" alt=\"\"></span>`
+            mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${isLarge?mapUseMovingWebp:(pouWraps?mapUsePosi:mapUseMovingWebp)}\" alt=\"\"${mapMkErr}></span>`
           }
         }else if(ie){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.webp')
