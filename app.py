@@ -8130,13 +8130,30 @@ def _normalize_modifier_detail_line(line):
     return s
 
 
-def resolve_npc_modifiers(buff_id, lc):
+# ============================================================
+# TEMP HOTFIX (REMOVE AFTER ROOT-CAUSE IS FOUND)
+# Stage 90500027 has four NPC rows (unit 1009000200) that have
+# in-game MOV modifier behavior but no MapNpcBuffId linkage in
+# current exported master tables. Keep this scoped and explicit.
+# ============================================================
+NPC_MODIFIER_FALLBACKS = {
+    '905000002702000009': [{'id': 'fb_mov5_905000002702000009', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
+    '905000002702000010': [{'id': 'fb_mov5_905000002702000010', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
+    '905000002702000011': [{'id': 'fb_mov5_905000002702000011', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
+    '905000002702000012': [{'id': 'fb_mov5_905000002702000012', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
+}
+# END TEMP HOTFIX
+
+
+def resolve_npc_modifiers(buff_id, lc, npc_id='0'):
+    nid = normalize_id(npc_id)
+    fallback_rows = NPC_MODIFIER_FALLBACKS.get(nid, [])
     bid = normalize_id(buff_id)
     if not bid or bid == '0':
-        return []
+        return [dict(x) for x in fallback_rows]
     row = map_npc_buff_lookup.get(bid)
     if not row:
-        return []
+        return [dict(x) for x in fallback_rows]
     ld = get_lang_data(lc)
     ltm = ld.get('lang_text_map', {}) or {}
     trait_set_id = normalize_id(row.get('trait_set_id'))
@@ -12778,7 +12795,7 @@ def get_stage(stage_id):
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_on, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
                     up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids'))
-                    up['modifiers'] = resolve_npc_modifiers(npc.get('map_npc_buff_id', '0'), lc)
+                    up['modifiers'] = resolve_npc_modifiers(npc.get('map_npc_buff_id', '0'), lc, nid)
                     up['bonus_amounts'] = tba_on
                     up['stats_raw_npc_squad_allies_off'] = fst_off
                     up['bonus_amounts_npc_squad_allies_off'] = tba_off
