@@ -4050,6 +4050,7 @@ def create_map_npc_lookup(d):
             'x': safe_int(item.get('X'), 0),
             'y': safe_int(item.get('Y'), 0),
             'battle_side_type': bst,
+            'is_initially_placed': bool(item.get('IsInitiallyPlaced')),
             'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
             'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
         }
@@ -4181,41 +4182,17 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
                     return True
             return False
 
-        def _assign_unit_modifier(prefer_move=False):
-            if not up:
-                return False
-            mods = up.get('modifiers') or []
-            if not isinstance(mods, list) or not mods:
-                return False
-            if prefer_move:
-                for md in mods:
-                    if not isinstance(md, dict):
-                        continue
-                    for line in (md.get('details') or []):
-                        if _extract_stat_flat_move(line, skip_conditional=False) != 0:
-                            md['strategy_hint_icon'] = url
-                            return True
-            for md in mods:
-                if isinstance(md, dict):
-                    md['strategy_hint_icon'] = url
-                    return True
-            return False
-
         targetless = tgt in ('0', '', None)
 
         # User-defined semantic mapping:
         # 1=unit weapon, 3=unit ability, 4=character ability, 7=unit stats, 10=unit MOV stat
         if typ == 7 and up:
             up['strategy_hint_stats_icon'] = url
-            if _assign_unit_modifier(prefer_move=False):
-                continue
             if targetless:
                 _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
         if typ == 10 and up:
             up['strategy_hint_move_icon'] = url
-            if _assign_unit_modifier(prefer_move=True):
-                continue
             if targetless:
                 _assign_first_unit_ability() or _assign_first_unit_weapon()
             continue
@@ -8119,6 +8096,40 @@ def resolve_npc_character_skills(ssid, lc):
     return [resolve_char_skill(e['id'], ld, i + 1, False) for i, e in enumerate(map_npc_character_skill_set_lookup.get(ssid, []))]
 
 
+def _npc_modifier_display_name(detail_line, buff_type_index=0):
+    s = str(detail_line or '').strip()
+    if not s:
+        return 'Modifier'
+    low = s.lower()
+    is_down = bool(re.search(r'\b(decrease|decreased|reduce|reduced|lower)\b', low)) or ('降低' in s) or ('減少' in s) or ('下降' in s)
+    prefix = 'Decreased' if is_down else 'Increased'
+    if _extract_stat_flat_move(s, skip_conditional=False) != 0 or re.search(r'\b(mov|move|movement)\b', low) or any(k in s for k in ('移動', '機動力')):
+        return f'{prefix} MOV'
+    if re.search(r'(?<![a-z])atk(?![a-z])|\battack\b', low) or ('攻擊' in s) or ('攻撃' in s):
+        return f'{prefix} ATK'
+    if re.search(r'(?<![a-z])def(?![a-z])|\bdefen[cs]e\b', low) or ('防禦' in s) or ('防御' in s):
+        return f'{prefix} DEF'
+    if re.search(r'(?<![a-z])mob(?![a-z])|\bmobility\b', low) or ('機動' in s):
+        return f'{prefix} MOB'
+    if re.search(r'(?<![a-z])hp(?![a-z])|\bhp\b', low):
+        return f'{prefix} HP'
+    if re.search(r'(?<![a-z])en(?![a-z])|\ben\b', low):
+        return f'{prefix} EN'
+    if safe_int(buff_type_index, 0) == 3 and not is_down:
+        return 'Increased MOV'
+    return 'Modifier'
+
+
+def _normalize_modifier_detail_line(line):
+    s = str(line or '').strip()
+    if not s:
+        return ''
+    s = re.sub(r'\bmovement\b', 'MOV', s, flags=re.I)
+    s = re.sub(r'\bmove\b', 'MOV', s, flags=re.I)
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+
 def resolve_npc_modifiers(buff_id, lc):
     bid = normalize_id(buff_id)
     if not bid or bid == '0':
@@ -8142,19 +8153,23 @@ def resolve_npc_modifiers(buff_id, lc):
     rng_min = safe_int(row.get('range_min'), 0)
     rng_max = safe_int(row.get('range_max'), 0)
     target_types = str(row.get('target_types') or '').strip()
-    if rng_max > 0:
-        if rng_min > 0 and rng_max >= rng_min:
-            details.append(f'Range: {rng_min}-{rng_max}')
-        elif rng_min > 0:
-            details.append(f'Range: {rng_min}')
-    if target_types:
-        details.append(f'Target: {target_types}')
-    if not details:
-        details = ['-']
+    clean_details = []
+    for line in details:
+        ln = _normalize_modifier_detail_line(line)
+        if ln and ln not in clean_details:
+            clean_details.append(ln)
+    if not clean_details:
+        if rng_max > 0 and rng_min > 0:
+            clean_details = [f'Range: {rng_min}-{rng_max}']
+        elif target_types:
+            clean_details = [f'Target: {target_types}']
+        else:
+            clean_details = ['-']
+    display_name = _npc_modifier_display_name(clean_details[0], row.get('buff_type_index'))
     return [{
         'id': bid,
-        'name': f'Modifier {bid}',
-        'details': details,
+        'name': display_name,
+        'details': clean_details,
         'icon': '',
         'has_icon': False,
         'buff_type_index': safe_int(row.get('buff_type_index'), 0),
@@ -12793,14 +12808,14 @@ def get_stage(stage_id):
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
                 nid_norm = normalize_id(nid)
                 has_h = nid_norm in map_npc_ids_with_strategy_hint
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'has_strategy_hint': has_h}
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
                         me['unit_id'] = umap_uid
                 me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
                 me['npc_detail_index'] = len(nd)
-                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'unit': up, 'character': cp})
+                uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.webp', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             max_x = max_y = 0
