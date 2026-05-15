@@ -1492,7 +1492,7 @@ else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');e
 const cardHi=hcb?'has-cond-bonus':hcp?'has-cond-penalty':'';
 const valHi=hcb?'has-bonus-val':hcp?'has-penalty-val':'';
 const moveStatHint=(type==='unit'&&s.name==='Move'&&mvHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${mvHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
-if(!isRankingView||(type==='unit'&&s.name==='Move'))return`<div class="stat-card ${cardHi}"><div class="stat-card-label">${esc(tStat(s.name,type))}</div><div class="stat-card-value-row">${moveStatHint?`<div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${moveStatHint}`:`<div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>`}</div>${eb}</div>`;
+if(!isRankingView||(type==='unit'&&s.name==='Move'))return`<div class="stat-card ${cardHi}"><div class="stat-card-label">${esc(tStat(s.name,type))}</div><div class="stat-card-value-row"><div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${moveStatHint}</div>${eb}</div>`;
 const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;const w=loading?62:detailRankingBarWidth(meta);const splitPos=!loading;let posHtml='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')posHtml=`<span class="stat-rank-pos-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-rank-pos-total">${tt}</span>`;else posHtml=`<span class="stat-rank-pos-main">${fmtN(rk)}位 /</span><span class="stat-rank-pos-total">${fmtN(tt)}</span>`}
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${fmtN(s.total)}</div>${eb}</div>`
 }).join('');
@@ -1501,20 +1501,26 @@ return`${th}${exRow}<div class="${gridCls}">${body}</div>`
 function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c)S.charSuperchargedExTier=0;invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType)}
 function setCharSuperchargedExTier(i){const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(!arr||!arr.length)return;const n=arr.length;S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));updateDetailDynamicSections('character')}
 function renderStageRestrictions(d){if(!d.sortie_groups||!d.sortie_groups.length)return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div>${d.sortie_groups.map(g=>`<div class="stage-restriction-block"><div class="stage-restriction-group-title">${t('sortie_group')} ${g.group_no}</div>${(g.restrictions||[]).map(r=>`<div class="stage-restriction-row"><div class="stage-restriction-applies">${esc(r.applies_to||'-')}</div><div class="stage-tags-wrap">${(r.restriction_names||[]).length?(r.restriction_names||[]).map(n=>createTagHtml({id:'',name:n,type:'group'})).join(''):`<span style="color:var(--text-muted)">${t('none')}</span>`}</div></div>`).join('')}</div>`).join('')}</div>`}
+function stageMapHasReinforcementEnemies(md){
+  const units=(md&&md.units)||[];
+  return units.some(u=>{if(String(u.side||'').toLowerCase()!=='enemy')return false;return u.is_initially_placed===false})
+}
 function renderStageMapSection(d){
   const md=d.map_data||{};
   if(md.width<=0||md.height<=0)return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;
   const zp=Math.round((S.stageMapZoom||1)*100);
   const af=!!S.stageMapAutoFit;
+  const hasReinf=stageMapHasReinforcementEnemies(md);
+  if(!hasReinf&&S.stageMapReinforcementOnly)S.stageMapReinforcementOnly=false;
   const ro=!!S.stageMapReinforcementOnly;
-  const controls=S.stageMapExpanded?`<div class="stage-map-controls">
-    <div class="stage-map-controls-row stage-map-controls-row--reinf">
+  const reinfRow=hasReinf?`<div class="stage-map-controls-row stage-map-controls-row--reinf">
       <label class="stage-map-reinf-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="Reinforcement" onchange="setStageMapReinforcementOnly(this.checked)">
         <span class="stage-map-reinf-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">Reinforcement</span>
       </label>
-    </div>
+    </div>`:'';
+  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${reinfRow}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
         <div class="stage-map-viewport-quick">
