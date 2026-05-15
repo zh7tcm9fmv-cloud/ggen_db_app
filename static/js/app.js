@@ -1323,7 +1323,7 @@ return`<div class="detail-back-strip"><button type="button" class="detail-back-b
 }
 function renderRecommendUnitCard(d){const ctx=d&&d.detail_npc_context;if(ctx&&ctx.unit&&ctx.unit.id){const u=ctx.unit;const row={rarity:u.rarity||'N',thum:u.portrait||'',role_icon:u.role_icon||'',acquisition_icon:''};const thumb=renderListThumb(row,'unit',96);const nm=String(u.name||`Unit ${u.id}`);return`<div class="detail-rec-link-card" role="button" tabindex="0" onclick="openNpcCounterpartDetail('unit')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNpcCounterpartDetail('unit')}"><div class="detail-rec-link-label">${t('rec_unit_shortcut')}</div><div class="detail-rec-link-thumb-wrap">${thumb}</div><div class="detail-rec-link-name">${esc(nm)}</div></div>`}const ru=d.recommend_unit;if(!ru||!ru.id)return'';const row={rarity:ru.rarity,thum:ru.thum,role_icon:ru.role_icon,acquisition_icon:ru.acquisition_icon||''};const thumb=renderListThumb(row,'unit',96);const rk=d&&d.ranking_context?'1':'0';return`<div class="detail-rec-link-card" role="link" tabindex="0" data-detail-type="unit" data-detail-id="${escAttr(String(ru.id))}" onclick="openDetailFromRecommend('unit','${ru.id}',${rk})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetailFromRecommend('unit','${ru.id}',${rk})}"><div class="detail-rec-link-label">${t('rec_unit_shortcut')}</div><div class="detail-rec-link-thumb-wrap">${thumb}</div><div class="detail-rec-link-name">${esc(ru.name)}</div></div>`}
 function renderLimitedTimeBanner(d,kind){if(!d||!d.is_limited_time)return'';const cls=kind==='unit'?'detail-limited-banner--unit':'detail-limited-banner--character';const label=t('limited_label');return`<div class="detail-limited-banner-wrap"><div class="detail-limited-banner ${cls}" role="img" aria-label="${esc(label)}"><span class="detail-limited-banner-inner">${esc(label)}</span></div></div>`}
-function renderDetailRankingToggle(d,type){if(!(d&&d.ranking_available&&(type==='character'||type==='unit')))return'';const on=!!S.detailRankingOverlay;const ttl=on?'Hide ranking':'Show ranking';return`<button type="button" class="detail-rank-toggle-btn${on?' active':''}" title="${escAttr(ttl)}" aria-label="${escAttr(ttl)}" onclick="toggleDetailRankingOverlay()"><img class="detail-rank-toggle-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`}
+function renderDetailRankingToggle(d,type){if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))||d.detail_npc_context)return'';const on=!!S.detailRankingOverlay;const ttl=on?'Hide ranking':'Show ranking';return`<button type="button" class="detail-rank-toggle-btn${on?' active':''}" title="${escAttr(ttl)}" aria-label="${escAttr(ttl)}" onclick="toggleDetailRankingOverlay()"><img class="detail-rank-toggle-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`}
 function toggleDetailRankingOverlay(){if(!S.currentDetailData||!(S.currentDetailType==='character'||S.currentDetailType==='unit')||!S.currentDetailData.ranking_available)return;S.detailRankingOverlay=!S.detailRankingOverlay;const b=document.querySelector('.detail-rank-toggle-btn');if(b)b.classList.toggle('active',!!S.detailRankingOverlay);updateDetailDynamicSections(S.currentDetailType)}
 function charRoleIsDefense(role){const r=String(role||'').toLowerCase();return r==='defense'||r.includes('defense')}
 function charRoleIsSupport(role){const r=String(role||'').toLowerCase();return r==='support'||r.includes('support')}
@@ -1364,7 +1364,7 @@ if(!wrap)return;
 const host=wrap.parentElement;
 if(!host)return;
 const exists=host.querySelector('.detail-rank-toggle-btn');
-if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))){
+if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){
 if(exists)exists.remove();
 return
 }
@@ -1493,10 +1493,6 @@ function renderStageMapSection(d){
   const af=!!S.stageMapAutoFit;
   const ro=!!S.stageMapReinforcementOnly;
   const controls=S.stageMapExpanded?`<div class="stage-map-controls">
-    <div class="stage-map-controls-row stage-map-controls-row--nav">
-      <button type="button" class="toggle-map-btn stage-map-nav-btn" onclick="fitStageMapToUnits(true)"><span>Fit</span></button>
-      <button type="button" class="toggle-map-btn stage-map-nav-btn" onclick="centerStageMapToUnits()"><span>Center</span></button>
-    </div>
     <div class="stage-map-controls-row stage-map-controls-row--reinf">
       <label class="stage-map-reinf-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="Reinforcement" onchange="setStageMapReinforcementOnly(this.checked)">
@@ -1506,6 +1502,10 @@ function renderStageMapSection(d){
     </div>
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
+        <div class="stage-map-viewport-quick">
+          <button type="button" class="toggle-map-btn stage-map-viewport-cmd" onclick="fitStageMapToUnits(true)"><span>Fit</span></button>
+          <button type="button" class="toggle-map-btn stage-map-viewport-cmd" onclick="centerStageMapToUnits()"><span>Center</span></button>
+        </div>
         <label class="stage-map-viewport-af"><input type="checkbox" ${af?'checked':''} onchange="setStageMapAutoFit(this.checked)"><span>Auto-fit</span></label>
         <div class="stage-map-viewport-zoom">
           <span class="stage-map-viewport-zoom-label">Zoom</span>
@@ -1604,9 +1604,10 @@ function toggleStageMap(){
 }
 function setStageMapReinforcementOnly(on){
   S.stageMapReinforcementOnly=!!on;
-  if(S.currentDetailType==='stage'){
-    document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
-    if(S.stageMapExpanded&&S.stageMapAutoFit)setTimeout(()=>fitStageMapToUnits(true),80)
+  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
+    const gridWrap=document.getElementById('stageMapGridWrap');
+    const md=S.currentDetailData&&S.currentDetailData.map_data;
+    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
   }
 }
 
@@ -1859,9 +1860,10 @@ function renderMapGrid(weapon,unitData){
   let fmny=mny-py,fmxy=mxy+py,fr=fmxy-fmny+1;
 
   let uxMin=mnx,uxMax=mxx,uyMin=mny,uyMax=mxy;
-  if(fc>19){
-    if(aw<=19){
-      fc=19;
+  const MAP_GRID_CAP=25;
+  if(fc>MAP_GRID_CAP){
+    if(aw<=MAP_GRID_CAP){
+      fc=MAP_GRID_CAP;
       hpad=fc-aw;
       padL=Math.ceil(hpad/2);padR=Math.floor(hpad/2);
       fmnx=mnx-padL;fmxx=mxx+padR;
@@ -1871,14 +1873,14 @@ function renderMapGrid(weapon,unitData){
       fmxx=mxx;
     }
   }
-  if(fr>19){let df=fr-19;let cb=Math.ceil(df/2),ct=Math.floor(df/2);cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
+  if(fr>MAP_GRID_CAP){let df=fr-MAP_GRID_CAP;let cb=Math.ceil(df/2),ct=Math.floor(df/2);cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=MAP_GRID_CAP}
 
   let mapSpan=Math.max(fc,fr);
   if(mapSpan<=12)py=Math.max(Math.floor(ah2/2),2);
   else if(mapSpan<=16)py=Math.max(Math.floor(ah2*0.42),2);
   else py=Math.max(Math.floor(ah2/3),1);
   fmny=mny-py;fmxy=mxy+py;fr=fmxy-fmny+1;
-  if(fr>19){let df=fr-19;let cb=Math.ceil(df/2),ct=Math.floor(df/2);cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=19}
+  if(fr>MAP_GRID_CAP){let df=fr-MAP_GRID_CAP;let cb=Math.ceil(df/2),ct=Math.floor(df/2);cb=Math.min(cb,Math.max(0,uyMin-fmny));ct=Math.min(ct,Math.max(0,fmxy-uyMax));fmny+=cb;fmxy-=ct;fr=MAP_GRID_CAP}
   mapSpan=Math.max(fc,fr);
   const mapUid=unitData?String(unitData.main_unit_id||unitData.id||'').trim():'';
   const MAP_TRIM_LEFT_ONE_COL={1370004800:1,1009000300:1,1009000310:1};
@@ -1887,6 +1889,12 @@ function renderMapGrid(weapon,unitData){
     const footOk=fpOcc.every(p=>p.x>=nfmnx&&p.x<=fxMax&&p.y>=fmny&&p.y<=fmxy);
     if(footOk){fmnx=nfmnx;fc=nfc}
   }
+  fpOcc.forEach(p=>{
+    if(p.x<fmnx){fc+=fmnx-p.x;fmnx=p.x}
+    if(p.x>fmxx){fc+=p.x-fmxx;fmxx=p.x}
+    if(p.y<fmny){fr+=fmny-p.y;fmny=p.y}
+    if(p.y>fmxy){fr+=p.y-fmxy;fmxy=p.y}
+  });
   mapSpan=Math.max(fc,fr)
 
   const mapHighVisInit=weaponMapGridHighVisPreferred();
@@ -1894,7 +1902,8 @@ function renderMapGrid(weapon,unitData){
   if(mapSpan<=9)mapCell=30;
   else if(mapSpan<=12)mapCell=26;
   else if(mapSpan<=15)mapCell=22;
-  else mapCell=20
+  else if(mapSpan<=22)mapCell=20;
+  else mapCell=18
   if(mapHighVisInit)mapCell=Math.min(44,Math.round(mapCell*1.24))
   const pouCard=[[-1,0],[1,0],[0,-1],[0,1]];
   const pouWraps=t1?pouCard.every(([wx,wy])=>ec.some(e=>e.x===wx&&e.y===wy)):(t2&&pouCard.every(([wx,wy])=>ec.some(e=>e.x+sx===wx&&e.y+sy===wy)));
