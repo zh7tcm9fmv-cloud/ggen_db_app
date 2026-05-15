@@ -4070,17 +4070,24 @@ def strategy_hint_attention_url(resource_id):
     rid = (resource_id or '').strip()
     if not rid:
         return ''
+    if rid.lower().endswith('.webp'):
+        rid = rid[:-5]
     return game_image_public_url(f'/static/images/UI/Sprite/{rid}.webp')
 
 
-def _ability_matches_strategy_target(ab, tgt):
-    if not ab or tgt in ('0', '', None):
+def _assign_strategy_hint_to_ability_row(ab, url, tgt):
+    """Set strategy_hint_icon on the row and/or SP/SSP replacement when target id matches (in-game sprites: strategy_hint_0000 … strategy_hint_0006)."""
+    if not ab or not isinstance(ab, dict) or not url:
         return False
-    if normalize_id(ab.get('id')) == tgt:
+    tid = normalize_id(ab.get('id'))
+    if tid == tgt:
+        ab['strategy_hint_icon'] = url
         return True
     for k in ('ssp_replacement', 'sp_replacement'):
         sub = ab.get(k)
         if isinstance(sub, dict) and normalize_id(sub.get('id')) == tgt:
+            ab['strategy_hint_icon'] = url
+            sub['strategy_hint_icon'] = url
             return True
     return False
 
@@ -4094,29 +4101,69 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
             continue
         tgt = h.get('target')
         typ = h.get('type')
+
+        def _assign_icon_to_ability_row(ab):
+            if not isinstance(ab, dict):
+                return False
+            ab['strategy_hint_icon'] = url
+            for k in ('ssp_replacement', 'sp_replacement'):
+                sub = ab.get(k)
+                if isinstance(sub, dict):
+                    sub['strategy_hint_icon'] = url
+            return True
+
+        def _assign_first_for_targetless():
+            ordered = []
+            # Preferred family first, then generic fallback.
+            if typ == 1:
+                ordered.extend([(up, 'abilities'), (up, 'weapons'), (cp, 'abilities'), (cp, 'skills')])
+            elif typ == 3:
+                ordered.extend([(up, 'weapons'), (up, 'abilities'), (cp, 'abilities'), (cp, 'skills')])
+            elif typ == 4:
+                ordered.extend([(cp, 'skills'), (cp, 'abilities'), (up, 'abilities'), (up, 'weapons')])
+            else:
+                ordered.extend([(up, 'abilities'), (up, 'weapons'), (cp, 'abilities'), (cp, 'skills')])
+            for owner, key in ordered:
+                if not owner:
+                    continue
+                for row in (owner.get(key) or []):
+                    if not isinstance(row, dict):
+                        continue
+                    if key in ('abilities',):
+                        if _assign_icon_to_ability_row(row):
+                            return True
+                    else:
+                        row['strategy_hint_icon'] = url
+                        return True
+            return False
+
         if tgt in ('0', '', None):
+            _assign_first_for_targetless()
             continue
+
+        matched = False
+        # Preferred family by hint type first.
         if typ == 1 and up:
             for ab in (up.get('abilities') or []):
-                if _ability_matches_strategy_target(ab, tgt):
-                    ab['strategy_hint_icon'] = url
-            continue
-        if typ == 3 and up:
+                if _assign_strategy_hint_to_ability_row(ab, url, tgt):
+                    matched = True
+        elif typ == 3 and up:
             for w in (up.get('weapons') or []):
                 if normalize_id(w.get('id')) == tgt:
                     w['strategy_hint_icon'] = url
-            continue
-        if typ == 4 and cp:
+                    matched = True
+        elif typ == 4 and cp:
             for sk in (cp.get('skills') or []):
                 if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
                     sk['strategy_hint_icon'] = url
-            continue
-        matched = False
-        if up:
-            for ab in (up.get('abilities') or []):
-                if _ability_matches_strategy_target(ab, tgt):
-                    ab['strategy_hint_icon'] = url
                     matched = True
+
+        # Fallback: data has some cross-family targets (e.g. type 3 pointing to an ability id).
+        if up:
+            if not matched:
+                for ab in (up.get('abilities') or []):
+                    if _assign_strategy_hint_to_ability_row(ab, url, tgt):
+                        matched = True
             if not matched:
                 for w in (up.get('weapons') or []):
                     if normalize_id(w.get('id')) == tgt:
@@ -4124,13 +4171,15 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
                         matched = True
         if not matched and cp:
             for ab in (cp.get('abilities') or []):
-                if _ability_matches_strategy_target(ab, tgt):
-                    ab['strategy_hint_icon'] = url
+                if _assign_strategy_hint_to_ability_row(ab, url, tgt):
                     matched = True
             if not matched:
                 for sk in (cp.get('skills') or []):
                     if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
                         sk['strategy_hint_icon'] = url
+                        matched = True
+        if not matched:
+            _assign_first_for_targetless()
 
 
 def create_map_npc_unit_lookup(d):
