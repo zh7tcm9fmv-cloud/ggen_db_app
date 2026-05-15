@@ -38,6 +38,30 @@ function imgUrlWebp(path) {
     const u = imgUrl(path);
     return u.replace(/\.(png|jpg|jpeg)(\?|$)/i, '.webp$2');
 }
+/** CDN → alternate format → app /static/images when remote game assets 404. */
+function gameImageUrlFallback(el) {
+    if (!el) return;
+    if (el.dataset.ggImgDead === '1') return;
+    const step = Number(el.dataset.ggImgStep || 0);
+    el.dataset.ggImgStep = String(step + 1);
+    const cur = String(el.currentSrc || el.src || '');
+    if (step === 0 && /\.webp(\?|#|$)/i.test(cur)) {
+        el.src = cur.replace(/\.webp/gi, '.png');
+        return;
+    }
+    if (step === 1 && IMAGE_CDN && cur.indexOf(IMAGE_CDN) === 0) {
+        try {
+            const u = new URL(cur);
+            const i = u.pathname.indexOf('/images/');
+            if (i >= 0) {
+                el.src = '/static/images/' + u.pathname.slice(i + '/images/'.length);
+                return;
+            }
+        } catch (_) {}
+    }
+    el.dataset.ggImgDead = '1';
+    el.style.display = 'none';
+}
 function isRasterWebpCandidate(path) {
     if (!path) return false;
     const p = String(path).split(/[?#]/)[0].toLowerCase();
@@ -59,13 +83,19 @@ function pictureRasterHtml(path, opts) {
     const decAttr = o.decoding === false || o.decoding === '' ? '' : ` decoding="${escAttr(o.decoding || 'async')}"`;
     const fpAttr = (loadAttr.indexOf('lazy') !== -1) ? ' fetchpriority="low"' : '';
     if (!isRasterWebpCandidate(path)) {
-        const onerrAttr = o.onerror ? ` onerror="${o.onerror}"` : '';
+        let onerrAttr = '';
+        if (o.onerror) onerrAttr = ` onerror="${o.onerror}"`;
+        else if (/\.webp$/i.test(String(path).split(/[?#]/)[0])) {
+            onerrAttr = ' onerror="gameImageUrlFallback(this)"';
+        }
         return `<img class="${cls}" src="${escAttr(pngSrc)}" alt="${escAttr(alt)}"${loadAttr}${decAttr}${fpAttr}${onerrAttr}${extra}>`.trim();
     }
     const webpSrc = imgUrlWebp(path);
-    let onerrJs = `this.onerror=null;this.src=${JSON.stringify(pngSrc)}`;
+    let onerrJs;
     if (o.onerror) {
-        onerrJs += `;this.onerror=function(){${o.onerror}}`;
+        onerrJs = `this.onerror=null;this.src=${JSON.stringify(pngSrc)};this.onerror=function(){${o.onerror}}`;
+    } else {
+        onerrJs = `this.onerror=null;this.src=${JSON.stringify(pngSrc)};this.onerror=function(){this.onerror=null;gameImageUrlFallback(this)}`;
     }
     const onerrAttr = ` onerror="${escAttr(onerrJs)}"`;
     return `<img class="${cls}" src="${escAttr(webpSrc)}" alt="${escAttr(alt)}"${loadAttr}${decAttr}${fpAttr}${onerrAttr}${extra}>`.trim();
@@ -1135,6 +1165,10 @@ d.has_sp=hasSspKit;
 d.ranking_available=false;
 d.has_cond_stats=!!(_npcAbilityListHasConditionalDetails(ab));
 d.mechanisms=[];
+for(const k of ['strategy_hint_move_icon','strategy_hint_stats_icon','strategy_hint_icon']){
+const v=emb&&emb[k];
+if(v!=null&&v!=='')d[k]=v;
+}
 return d;
 }
 return d;
@@ -1701,7 +1735,7 @@ const hint=String(hintUrl||'').trim();
 const hintSrc=hint?imgUrlWebp(imgUrlPreferCdn(hint)):'';
 const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--pulse"><img src="${hintSrc}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=''"></span>`:'';
 const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
-const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
+const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
 return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${inner}</button>`}
 function renderStageNpcCompactTile(n,idx){const u=n.unit,ch=n.character;const lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;const uid=u&&u.id,chid=ch&&ch.id;const npcKey=n.npc_id;const uHint=firstNpcStrategyHintIconFromUnit(u);const cHint=firstNpcStrategyHintIconFromCharacter(ch);return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb(u&&u.portrait,lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb(ch&&ch.portrait,lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div></div>`}
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
@@ -1847,6 +1881,7 @@ function renderMapGrid(weapon,unitData){
   else if(mapSpan<=12)mapCell=26;
   else if(mapSpan<=15)mapCell=22;
   else mapCell=20
+  if(mapHighVisInit)mapCell=Math.min(44,Math.round(mapCell*1.24))
   const pouCard=[[-1,0],[1,0],[0,-1],[0,1]];
   const pouWraps=t1?pouCard.every(([wx,wy])=>ec.some(e=>e.x===wx&&e.y===wy)):(t2&&pouCard.every(([wx,wy])=>ec.some(e=>e.x+sx===wx&&e.y+sy===wy)));
   const mapUsePosi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_UnitMarker_Posi.webp');
@@ -1935,7 +1970,8 @@ function renderMapGrid(weapon,unitData){
       }
 
       const cellRaise=(t2&&its)?'isolation:isolate;z-index:8;':'';
-      html+=`<div class=\"map-cell ${mapTileCls(bi)}${pouAnchorCls}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;--map-cell:${mapCell}px;${cellRaise}\"><img class=\"weapon-map-cell-tile\" src=\"${bi}\" alt=\"\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
+      const pouOriginCls=(mh&&(mh.indexOf('map-cell-marker-shell')>=0||mh.indexOf('map-pou-2x2-marker')>=0))?' map-cell--pou-origin':'';
+      html+=`<div class=\"map-cell ${mapTileCls(bi)}${pouAnchorCls}${pouOriginCls}\" style=\"width:${mapCell}px;height:${mapCell}px;position:relative;--map-cell:${mapCell}px;${cellRaise}\"><img class=\"weapon-map-cell-tile\" src=\"${bi}\" alt=\"\" onerror=\"this.style.display='none'\">${oh}${mh}</div>`
     }
   }
 
