@@ -4123,9 +4123,14 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
                         w['strategy_hint_icon'] = url
                         matched = True
         if not matched and cp:
-            for sk in (cp.get('skills') or []):
-                if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
-                    sk['strategy_hint_icon'] = url
+            for ab in (cp.get('abilities') or []):
+                if _ability_matches_strategy_target(ab, tgt):
+                    ab['strategy_hint_icon'] = url
+                    matched = True
+            if not matched:
+                for sk in (cp.get('skills') or []):
+                    if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
+                        sk['strategy_hint_icon'] = url
 
 
 def create_map_npc_unit_lookup(d):
