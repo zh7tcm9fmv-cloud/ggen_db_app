@@ -1631,6 +1631,9 @@ function focusStageMap(){const c=document.getElementById('stageMapGridWrap');if(
 function switchStageNpcTab(btn){if(!btn)return;const idx=parseInt(btn.getAttribute('data-tab-idx'),10)||0;const root=btn.closest('[data-stage-npc-group]');if(!root)return;const tabs=root.querySelectorAll('.stage-npc-tab-btn');const panels=root.querySelectorAll('.stage-npc-tab-panel');tabs.forEach((b,i)=>{b.classList.toggle('active',i===idx);b.setAttribute('aria-selected',String(i===idx))});panels.forEach((p,i)=>{p.classList.toggle('hidden',i!==idx)})}
 function firstNpcStrategyHintIconFromUnit(u){
 if(!u||typeof u!=='object')return'';
+if(u.strategy_hint_stats_icon)return String(u.strategy_hint_stats_icon);
+if(u.strategy_hint_move_icon)return String(u.strategy_hint_move_icon);
+if(u.strategy_hint_icon)return String(u.strategy_hint_icon);
 for(let i=0;i<(u.abilities||[]).length;i++){const ab=u.abilities[i];if(ab&&ab.strategy_hint_icon)return String(ab.strategy_hint_icon)}
 for(let j=0;j<(u.weapons||[]).length;j++){const w=u.weapons[j];if(w&&w.strategy_hint_icon)return String(w.strategy_hint_icon)}
 return'';
@@ -1649,7 +1652,7 @@ const oc=has?` onclick="event.stopPropagation();openStageNpcEntityDetail('${escJ
 const hint=String(hintUrl||'').trim();
 const hintSrc=hint?imgUrlWebp(imgUrlPreferCdn(hint)):'';
 const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--pulse"><img src="${hintSrc}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=''"></span>`:'';
-const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint':'');
+const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
 const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
 return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${inner}</button>`}
 function renderStageNpcCompactTile(n,idx){const u=n.unit,ch=n.character;const lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;const uid=u&&u.id,chid=ch&&ch.id;const npcKey=n.npc_id;const uHint=firstNpcStrategyHintIconFromUnit(u);const cHint=firstNpcStrategyHintIconFromCharacter(ch);return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb(u&&u.portrait,lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb(ch&&ch.portrait,lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div></div>`}
