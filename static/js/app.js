@@ -1492,20 +1492,27 @@ function renderStageMapSection(d){
   const zp=Math.round((S.stageMapZoom||1)*100);
   const af=!!S.stageMapAutoFit;
   const ro=!!S.stageMapReinforcementOnly;
-  const controls=S.stageMapExpanded?`<div class="stage-map-controls" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">
-    <button class="toggle-map-btn" onclick="fitStageMapToUnits(true)"><span>Fit</span></button>
-    <button class="toggle-map-btn" onclick="centerStageMapToUnits()"><span>Center</span></button>
-    <div class="toggle-clickable stage-map-reinforcement-toggle ${ro?'active':''}" role="switch" tabindex="0" aria-checked="${ro?'true':'false'}" onclick="toggleStageMapReinforcement()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStageMapReinforcement()}"><span class="toggle-switch"></span><span class="toggle-label">Reinforcement</span></div>
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:12px;">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-        <input type="checkbox" ${af?'checked':''} onchange="setStageMapAutoFit(this.checked)" style="width:16px;height:16px;accent-color:var(--accent-cyan);">
-        <span style="font-size:12px;color:var(--text-secondary);font-weight:800;">Auto-fit</span>
+  const controls=S.stageMapExpanded?`<div class="stage-map-controls">
+    <div class="stage-map-controls-row stage-map-controls-row--nav">
+      <button type="button" class="toggle-map-btn stage-map-nav-btn" onclick="fitStageMapToUnits(true)"><span>Fit</span></button>
+      <button type="button" class="toggle-map-btn stage-map-nav-btn" onclick="centerStageMapToUnits()"><span>Center</span></button>
+    </div>
+    <div class="stage-map-controls-row stage-map-controls-row--reinf">
+      <label class="stage-map-reinf-toggle">
+        <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="Reinforcement" onchange="setStageMapReinforcementOnly(this.checked)">
+        <span class="stage-map-reinf-slider" aria-hidden="true"></span>
+        <span class="stage-map-reinf-text">Reinforcement</span>
       </label>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:12px;">
-      <div style="font-size:12px;color:var(--text-muted);font-weight:700;letter-spacing:.3px;">Zoom</div>
-      <input type="range" min="40" max="140" value="${zp}" oninput="setStageMapZoom(this.value/100,true)" ${af?'disabled':''} style="width:180px;${af?'opacity:.55;cursor:not-allowed;':''}">
-      <div style="min-width:46px;text-align:right;font-size:12px;color:var(--text-secondary);font-weight:800;">${zp}%</div>
+    <div class="stage-map-controls-row stage-map-controls-row--viewport">
+      <div class="stage-map-viewport-card">
+        <label class="stage-map-viewport-af"><input type="checkbox" ${af?'checked':''} onchange="setStageMapAutoFit(this.checked)"><span>Auto-fit</span></label>
+        <div class="stage-map-viewport-zoom">
+          <span class="stage-map-viewport-zoom-label">Zoom</span>
+          <input type="range" min="40" max="140" value="${zp}" oninput="setStageMapZoom(this.value/100,true)" ${af?'disabled':''} aria-label="Stage map zoom">
+          <span class="stage-map-viewport-zoom-pct">${zp}%</span>
+        </div>
+      </div>
     </div>
   </div>`:'';
 return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
@@ -1595,8 +1602,8 @@ function toggleStageMap(){
   document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
   if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100)
 }
-function toggleStageMapReinforcement(){
-  S.stageMapReinforcementOnly=!S.stageMapReinforcementOnly;
+function setStageMapReinforcementOnly(on){
+  S.stageMapReinforcementOnly=!!on;
   if(S.currentDetailType==='stage'){
     document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
     if(S.stageMapExpanded&&S.stageMapAutoFit)setTimeout(()=>fitStageMapToUnits(true),80)
@@ -1785,7 +1792,10 @@ function renderWeaponTraitItemHtml(tr){const raw=String(tr??'');const lines=raw.
 function renderWeaponsDynamic(w,isSsp,unitData){if(!w||!w.length)return'';const isNpcDetail=!!(unitData&&unitData.detail_npc_context);let h=`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-list">`;w.forEach(x=>{if(x.is_ssp_weapon&&!isSsp)return;const wpPct=unitData&&unitData.weapon_passive_pct;const baseM=isSsp&&wpPct&&wpPct.ssp?wpPct.ssp:(wpPct&&wpPct.sp)||{};const condM=isSsp&&wpPct&&wpPct.ssp_cond?wpPct.ssp_cond:(wpPct&&wpPct.sp_cond)||{};const accPct=(baseM.Accuracy||0)+(S.conditionalPassiveActive?(condM.Accuracy||0):0);const critPct=(baseM.Critical||0)+(S.conditionalPassiveActive?(condM.Critical||0):0);const powPct=(baseM.Power||0)+(S.conditionalPassiveActive?(condM.Power||0):0);let lv=isNpcDetail?5:(S.currentWeaponLevels[x.id]||5);let ld;if(x.levels&&x.levels.length){ld=x.levels.find(l=>l.level===lv)||x.levels[4]||x.levels[0];}else{ld={power:x.power||0,en:x.en_cost||x.en||0,accuracy:x.accuracy||0,critical:x.critical||0,ammo:x.ammo||0,traits:x.traits||[]};}const accB=ld.accuracy||0,critB=ld.critical||0,powB=ld.power||0;const accD=Math.max(0,Math.round(accB+accPct)),critD=Math.max(0,Math.round(critB+critPct));const isWpnMap=x.weapon_type==='3'||x.is_map;let pp=Math.floor(powB*(1+powPct/100))+(isSsp?(x.ssp_power_bonus||0):0),pa=isWpnMap?(ld.ammo+(isSsp?(x.ssp_ammo_bonus||0):0)):0,pr=x.max_range+(isSsp?(x.ssp_range_bonus||0):0);let pt=[...(ld.traits||[])];if(isSsp&&x.ssp_traits&&x.ssp_traits.length>0)pt=[...pt,...x.ssp_traits];let rc=isSsp?x.ssp_icon_color:x.icon_color;let he=isSsp&&!x.is_ssp_weapon&&((x.ssp_power_bonus>0)||(isWpnMap&&(x.ssp_ammo_bonus>0))||(x.ssp_range_bonus>0)||(isSsp&&x.ssp_traits&&x.ssp_traits.length>0));const powPsv=Math.floor(powB*(1+powPct/100))>powB;let pc=(isSsp&&x.ssp_power_bonus>0)?'ssp-highlight-val':(powPsv?'weapon-acc-boost':'highlight'),rac=!isWpnMap&&(isSsp&&x.ssp_range_bonus>0)?'ssp-highlight-val':'',ac2=(isWpnMap&&isSsp&&x.ssp_ammo_bonus>0)?'ssp-highlight-val':'';const accCls=accD>accB?'weapon-acc-boost':'',critCls=critD>critB?'weapon-acc-boost':'';let sp2=x.is_ssp_weapon&&x.weapon_type!=='3';let lb=isNpcDetail?'':`<div class="weapon-level-selector">${[1,2,3,4,5].map(l=>`<button class="w-lv-btn ${lv===l?'active':''}" onclick="switchWeaponLevel('${x.id}',${l})">Lv ${l}</button>`).join('')}</div>`;const stratHintW=x.strategy_hint_icon?`<img class="strategy-hint-badge strategy-hint-badge--weapon" src="${imgUrlWebp(imgUrlPreferCdn(x.strategy_hint_icon))}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';h+=`<div class="weapon-card"><div class="weapon-card-header"><div class="weapon-header-left"><div class="weapon-icon-wrap${(x.is_ssp_weapon||rc==='map'||rc==='ex')?' weapon-icon-wrap-no-vivid':''}">${stratHintW}${sp2?`<img class="ssp-weapon-portrait" src="${imgUrl(x.ssp_icon)}" alt="" onerror="this.style.display='none'">`:`${(rc==='ex'||rc==='map'||!rc)?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'weapon-icon-fallback\\'>MAP</div>'">`:`<div class="weapon-icon-mask color-${rc}" style="-webkit-mask-image:url('${imgUrl(x.icon)}');mask-image:url('${imgUrl(x.icon)}');"></div>`}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}`}${x.is_ssp_weapon?`<img class="ssp-weapon-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:(he?`<img class="ssp-enhance-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:'')}${x.is_preemptive?`<img class="preemptive-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_PreemptiveAttack.webp')}" alt="" onerror="this.style.display='none'">`:''}</div><div class="weapon-name-area"><div class="weapon-name-text">${esc(x.name)}</div><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>at.is_supply?`<span style="font-size:12px;color:var(--accent-cyan);font-weight:600;display:flex;align-items:center;gap:4px;">${t('supply_type')} <img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}"> MP</span>`:`<img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}" title="${at.label}">`).join('')}</div></div></div><div class="weapon-header-trail">${x.attribute?`<div class="weapon-attribute-set">${esc('<'+x.attribute+'>')}</div>`:'<div class="weapon-attribute-set" aria-hidden="true"></div>'}${lb}</div></div><div class="weapon-card-stats"><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_range')}</div><div class="weapon-stat-value ${rac}">${isWpnMap?'MAP':x.min_range+'-'+pr}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_power')}</div><div class="weapon-stat-value ${pc}">${fmtN(pp)}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_en')}</div><div class="weapon-stat-value">${ld.en}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_acc')}</div><div class="weapon-stat-value ${accCls}">${accD}%</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_crit')}</div><div class="weapon-stat-value ${critCls}">${critD}%</div></div>${pa>0?`<div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_ammo')}</div><div class="weapon-stat-value ${ac2}">${pa}</div></div>`:''}</div>${(pt.length)||(x.usage_restrictions&&x.usage_restrictions.length)||x.is_map?`<div class="weapon-card-body">${pt.length?`<div>${renderWeaponTraitItemHtml(pt.filter(tr=>String(tr??'').trim()).join('\n'))}</div>`:''}${x.usage_restrictions&&x.usage_restrictions.length?`<div class="weapon-restrictions-list">${x.usage_restrictions.map(r=>`<div class="weapon-restriction-item">${esc(r)}</div>`).join('')}</div>`:''}${x.is_map?`<button class="toggle-map-btn" onclick="event.stopPropagation();toggleMapGrid('${x.id}')"><span>${t('view_effect_range')}</span></button><div id="map-${x.id}" class="map-grid-container">${renderMapGrid(x,unitData)}</div>`:''}</div>`:''}</div>`});h+=`</div></div>`;return h}
 function renderMapGrid(weapon,unitData){
   // map_coords / shooting_coords from API. is_large → 2×2 nega tiles; map_single_pou → one Posi icon spanning 2×2 at (0,0) (Big Zam). Non-directional 2×2 uses UnitMarker_Moving per tile.
-  let ec=weapon.map_coords||[],sc=weapon.shooting_coords||[],hs=sc.length>0;
+  const _mxy=(c)=>{if(!c||typeof c!=='object')return null;const x=Number(c.x),y=Number(c.y);if(!Number.isFinite(x)||!Number.isFinite(y))return null;return{x,y}};
+  let ec=(weapon.map_coords||[]).map(_mxy).filter(Boolean);
+  let sc=(weapon.shooting_coords||[]).map(_mxy).filter(Boolean);
+  let hs=sc.length>0;
   if(!ec.length)return'<div style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:8px;">No data.</div>';
 
   const isLarge=!!(unitData&&unitData.is_large);
@@ -1793,7 +1803,7 @@ function renderMapGrid(weapon,unitData){
   const fpOcc=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
   const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:0}]:fpOcc;
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
-  const dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords:null;
+  const dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
 
   let t1=false,t2=false,t3=false;
   if(!hs)t1=true;
