@@ -4070,7 +4070,7 @@ def strategy_hint_attention_url(resource_id):
     rid = (resource_id or '').strip()
     if not rid:
         return ''
-    return f'/static/images/UI/Sprite/{rid}.webp'
+    return game_image_public_url(f'/static/images/UI/Sprite/{rid}.webp')
 
 
 def _ability_matches_strategy_target(ab, tgt):
