@@ -8470,13 +8470,12 @@ let inner='';
 if(multi.length===1){
 inner=_dcHtmlDcResultDamageBlock(multi[0].result);
 }else{
-const _dcBaseCapIcon=`<svg class="dc-result-base-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg>`;
 inner='<div class="dc-result-multi-compare-canvas"><div class="dc-result-multi-grid'+(compareEnabled?' dc-result-multi-grid--pct-compare':'')+'">'+multi.map(m=>{
 const ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
 const isBase=m.idx===primary.idx;
 const meta=compareEnabled&&!isBase?_dcBuildDamageCompareMeta(m.result,primary.result,m.idx,primary.idx,true):null;
 const dmgDeltas=meta?{n:meta.normalPct,c:meta.critPct}:null;
-const baseCap=compareEnabled&&isBase?`<div class="dc-result-multi-base-cap" role="img" aria-label="Base comparison">${_dcBaseCapIcon}<span class="dc-result-base-text">Base</span></div>`:'';
+const baseCap=compareEnabled&&isBase?`<div class="dc-result-multi-base-cap"><span class="dc-result-base-text">Base</span></div>`:'';
 const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}`;
 const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${dmgDeltas?' is-compare-target':''}`;
 return`<div class="${cls}" data-dc-slot="${m.idx}">${baseCap}<div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result,dmgDeltas)}</div>`;
