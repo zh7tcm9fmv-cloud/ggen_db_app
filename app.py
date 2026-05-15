@@ -4072,7 +4072,9 @@ def strategy_hint_attention_url(resource_id):
         return ''
     if rid.lower().endswith('.webp'):
         rid = rid[:-5]
-    return game_image_public_url(f'/static/images/UI/Sprite/{rid}.webp')
+    # Key unit hint icons are stored under images/Key Unit/* in this dataset.
+    # Keep URL WebP and CDN-compatible via game_image_public_url.
+    return game_image_public_url(f'/static/images/Key%20Unit/{rid}.webp')
 
 
 def _assign_strategy_hint_to_ability_row(ab, url, tgt):
@@ -12584,7 +12586,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np8"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np9"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
