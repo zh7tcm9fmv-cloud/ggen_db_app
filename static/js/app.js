@@ -1440,14 +1440,65 @@ if(includeChar)push(_npcDetailEntityAbilityDetailStrings(ctx.character));
 if(includeUnit)push(_npcDetailEntityAbilityDetailStrings(ctx.unit));
 return out;
 }
+function _npcNameNorm(s){return String(s||'').toLowerCase().replace(/\([^)]*\)/g,' ').replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]+/g,' ').trim().replace(/\s+/g,' ')}
+function _npcTargetsCurrentByText(tx,d){
+const t=_npcNameNorm(tx);
+if(!t)return false;
+const names=[];
+if(d&&d.name)names.push(_npcNameNorm(d.name));
+const ctx=d&&d.detail_npc_context||{};
+if(ctx&&ctx.character&&ctx.character.name)names.push(_npcNameNorm(ctx.character.name));
+for(let i=0;i<names.length;i++){
+const n=names[i];
+if(!n||n.length<3)continue;
+if(t.includes(n))return true;
+const base=n.split(' ').slice(0,2).join(' ').trim();
+if(base&&base.length>=3&&t.includes(base))return true;
+}
+return false;
+}
+function _npcChanceTextAppliesToCurrent(tx,d){
+const s=String(tx||'');
+const hasTargetSignal=/(?:your\s+squad|squad['’]s|activate\s+all\s+chance\s+steps|guaranteed\s+chance\s+step)/i.test(s);
+if(!hasTargetSignal)return true;
+return _npcTargetsCurrentByText(s,d);
+}
+function getNpcStageSquadChanceStepBonus(d){
+const ret=d&&d.detail_return;
+const st=ret&&ret.type==='stage'&&ret.payload?ret.payload:null;
+if(!st||!Array.isArray(st.npc_details))return 0;
+const selfCharId=String(((d&&d.detail_npc_context&&d.detail_npc_context.character)||d||{}).id||'');
+let sum=0;
+st.npc_details.forEach(row=>{
+const ch=row&&row.character||null;
+if(!ch)return;
+if(selfCharId&&String(ch.id||'')===selfCharId)return;
+const texts=_npcDetailEntityAbilityDetailStrings(ch);
+texts.forEach(tx=>{
+if(!_npcTargetsCurrentByText(tx,d))return;
+let m;
+const reGuaranteed=/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/ig;
+while((m=reGuaranteed.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
+const reForce=/Force\s+activate\s+Chance\s+Step\s+(\d+)\s*time\(s\)/ig;
+while((m=reForce.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
+});
+});
+return Math.max(0,sum);
+}
 function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
 function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,true,true);const tx=parts.join('\n');
 const defPatterns=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
 const atkPatterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
 const chancePatterns=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi];
-const defSum=_npcRegexCaptureSum(tx,defPatterns),atkSum=_npcRegexCaptureSum(tx,atkPatterns),chanceForce=_npcRegexCaptureSum(tx,chancePatterns);
-const allChanceStepBoost=/activate\s+all\s+Chance\s+Step(?:s)?/i.test(tx);
-const chanceCount=Math.max(1,allChanceStepBoost?5:(1+chanceForce));return{chanceCount,supportDefCount:defSum,supportAtkCount:atkSum}}
+const defSum=_npcRegexCaptureSum(tx,defPatterns),atkSum=_npcRegexCaptureSum(tx,atkPatterns);
+let chanceForce=0,allChanceStepBoost=false;
+parts.forEach(p=>{
+if(!_npcChanceTextAppliesToCurrent(p,d))return;
+chanceForce+=_npcRegexCaptureSum(String(p||''),chancePatterns);
+if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(String(p||'')))allChanceStepBoost=true;
+});
+const squadBonus=getNpcStageSquadChanceStepBonus(d);
+const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceForce+squadBonus)));return{chanceCount,supportDefCount:defSum,supportAtkCount:atkSum}}
 function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,true,true,true).join('\n');
 const accPatterns=[/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/gi,/自身の命中率が(\d+)%上昇/g,/自身の命中率と回避率が(\d+)%上昇/g,/自身命中率提升(\d+)%/g,/自身命中率及閃避率提升(\d+)%/g];
 return _npcRegexCaptureSum(tx,accPatterns)}
