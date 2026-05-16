@@ -8741,14 +8741,43 @@ def calculate_npc_character_self_bonus_pct(abilities):
 def get_large_unit_cells(x, y):
     return [{'x': x, 'y': y}, {'x': x + 1, 'y': y}, {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1}]
 
+
+def get_warship_3x2_cells(x, y):
+    """Warship footprint for OccupiedAreaId 3: width 2 (x), height 3 (y)."""
+    return [
+        {'x': x, 'y': y}, {'x': x + 1, 'y': y},
+        {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1},
+        {'x': x, 'y': y + 2}, {'x': x + 1, 'y': y + 2},
+    ]
+
+
+def get_map_npc_unit_footprint_cells(npc_id, x, y):
+    """Map NPC footprint from m_unit OccupiedAreaId (warship id-prefix '2' + area 3 => 2x3)."""
+    nid_norm = normalize_id(npc_id)
+    nu = map_npc_unit_lookup.get(nid_norm) or []
+    if not nu:
+        return [{'x': x, 'y': y}]
+    uid = normalize_id((nu[0] or {}).get('unit_id', '0'), '0')
+    if uid == '0':
+        return [{'x': x, 'y': y}]
+    info = unit_info_map.get(uid, {})
+    occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
+    if occupied_area_id == 2:
+        return get_large_unit_cells(x, y)
+    if occupied_area_id == 3 and uid.startswith('2'):
+        return get_warship_3x2_cells(x, y)
+    return [{'x': x, 'y': y}]
+
+
 def is_large_map_npc(npc_id, npc_entry=None):
+    npc_id = normalize_id(npc_id)
     if npc_entry is None: npc_entry = map_npc_lookup.get(npc_id, {})
     if str(npc_id) == '905200000102000002': return False
     if str(npc_id) == '905100000102000002': return False
     if str(npc_id) == '1095003400': return False
     nu = map_npc_unit_lookup.get(npc_id, [])
     if not nu: return False
-    uid = nu[0].get('unit_id', '0')
+    uid = normalize_id(nu[0].get('unit_id', '0'), '0')
     if uid == '905200000102000002': return False
     if uid == '905100000102000002': return False
     if uid == '1095003400': return False
@@ -8756,10 +8785,12 @@ def is_large_map_npc(npc_id, npc_entry=None):
     return safe_int(ui.get('occupied_area_id'), 1) == 2
 
 def get_npc_unit_display(uid, usr, lc):
+    uid = normalize_id(uid, '0')
     ld = get_lang_data(lc); info = unit_info_map.get(uid, {}); lid = ld.get('unit_id_map', {}).get(uid, '')
     un = ld.get('unit_text_map', {}).get(lid, f"Unknown ({uid})") if lid else f"Unknown ({uid})"
     p = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits')
-    return {'id': uid, 'name': un, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': ROLE_MAP.get(info.get('role', '0'), 'NPC'), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
+    oaid = safe_int(info.get('occupied_area_id'), 1)
+    return {'id': uid, 'name': un, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': ROLE_MAP.get(info.get('role', '0'), 'NPC'), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
 
 def get_npc_character_display(cid, csr, lc):
     ld = get_lang_data(lc); info = char_info_map.get(cid, {}); lid = ld.get('char_id_map', {}).get(cid, '')
@@ -12971,7 +13002,9 @@ def get_stage(stage_id):
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
             uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb, squad_by_source_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
             for npc in nt:
-                nid = npc['id']; nu = map_npc_unit_lookup.get(nid, []); nc = map_npc_character_lookup.get(nid, [])
+                nid = npc['id']; nid_norm = normalize_id(nid)
+                nu = map_npc_unit_lookup.get(nid_norm, []) or []
+                nc = map_npc_character_lookup.get(nid_norm, []) or map_npc_character_lookup.get(nid, [])
                 ue = nu[0] if nu else None; ce = nc[0] if nc else None
                 dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
                 if ue:
@@ -13017,14 +13050,14 @@ def get_stage(stage_id):
                     side = 'enemy'
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_guest else None
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
-                nid_norm = normalize_id(nid)
                 has_h = nid_norm in map_npc_ids_with_strategy_hint
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
                         me['unit_id'] = umap_uid
-                me['cells'] = get_large_unit_cells(npc.get('x', 0), npc.get('y', 0)) if il else [{'x': npc.get('x', 0), 'y': npc.get('y', 0)}]
+                        me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
+                me['cells'] = get_map_npc_unit_footprint_cells(nid, npc.get('x', 0), npc.get('y', 0))
                 me['npc_detail_index'] = len(nd)
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
