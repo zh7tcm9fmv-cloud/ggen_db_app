@@ -3604,6 +3604,22 @@ def create_trait_set_to_traits_map(d):
     for k in lookup: lookup[k].sort(key=lambda x: x['sort']); lookup[k] = [x['trait_id'] for x in lookup[k]]
     return lookup
 
+
+def create_trait_set_detail_resource_lookup(d):
+    """TraitSetId -> ResourceId (e.g. trait_*) from master m_trait_set_detail for passive art."""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        tsid = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+        rid = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+        if not rid or rid.lower() == 'none' or rid == '0':
+            continue
+        if tsid != '0':
+            lookup.setdefault(tsid, rid)
+    return lookup
+
+
 def create_trait_data_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -5670,6 +5686,7 @@ trait_boost_cond_data = load_json(os.path.join(BASE_DIR, "m_trait_boost_conditio
 trait_logic_data = load_json(os.path.join(BASE_DIR, "m_trait.json"))
 ability_master = load_json(os.path.join(BASE_DIR, "m_ability.json"))
 trait_set_data = load_json(os.path.join(BASE_DIR, "m_trait_set.json"))
+trait_set_detail_master = load_json(os.path.join(BASE_DIR, "m_trait_set_detail.json"))
 char_master = load_json(os.path.join(BASE_DIR, "m_character.json"))
 char_abil = load_json(os.path.join(BASE_DIR, "m_character_ability_set.json"))
 char_skill = load_json(os.path.join(BASE_DIR, "m_character_skill_set.json"))
@@ -5754,6 +5771,7 @@ for _sit in extract_data_list(schedule_master_data):
         schedule_end_ms_by_id[_sid] = 0
 
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
+trait_set_detail_resource_lookup = create_trait_set_detail_resource_lookup(trait_set_detail_master) if trait_set_detail_master else {}
 trait_data_map = create_trait_data_map(trait_logic_data)
 trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
 trait_condition_rows_by_set_id = {}
@@ -8285,12 +8303,23 @@ def resolve_npc_modifiers(buff_id, lc, npc_id='0'):
         else:
             clean_details = ['-']
     display_name = _npc_modifier_display_name(clean_details[0], row.get('buff_type_index'))
+    res_id = ''
+    if trait_set_id and trait_set_id != '0':
+        res_id = coalesce_ability_resource_id('0', trait_set_id)
+        if not res_id:
+            res_id = (
+                trait_set_detail_resource_lookup.get(trait_set_id)
+                or trait_set_detail_resource_lookup.get(lookup_id)
+                or ''
+            )
+    icon_file = find_trait_icon(res_id) if res_id else None
+    icon_url = f"/static/images/Trait/{icon_file}" if icon_file else ''
     return [{
         'id': bid,
         'name': display_name,
         'details': clean_details,
-        'icon': '',
-        'has_icon': False,
+        'icon': icon_url,
+        'has_icon': bool(icon_url),
         'buff_type_index': safe_int(row.get('buff_type_index'), 0),
     }]
 
