@@ -1625,11 +1625,11 @@ function renderStageMapGrid(md){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       const ck=`${x}_${y}`;
-      const isEnemyStack=u&&String(u.side||'').toLowerCase()==='enemy'&&enemyStackKeys.has(ck);
+      const isStackedEnemyTile=enemyStackKeys.has(ck);
+      const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}${u.has_strategy_hint?' npc-strategy-hint-pulse':''}`:'';
-      if(isEnemyStack)cls+=' map-cell--enemy-stack';
-      if(reinfLayerShown)cls+=' map-cell--enemy-reinf-layer';
+      if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
       const di=u?.npc_detail_index;
       const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
@@ -1637,8 +1637,8 @@ function renderStageMapGrid(md){
       const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
       const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
-      if(isEnemyStack)cellTitle+=` — ${t('stage_map_stack_tt')}`;
-      if(reinfLayerShown&&!isEnemyStack)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
+      if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
+      if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='enemy'?t('enemy'):t('ally');
