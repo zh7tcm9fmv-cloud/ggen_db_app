@@ -8026,6 +8026,7 @@ def resolve_sortie_restriction_set(set_id, lc):
     for sc in sc_list:
         tt = sc.get('target_type_index', '0'); gid = sc.get('group_id', '0')
         rn = []
+        restriction_items = []
         for gc in stage_sortie_group_content_map.get(gid, []):
             rt = gc.get('restriction_type_index', '0'); tid = gc.get('target_id', '0')
             src = llk if rt == '2' else (snm if rt == '1' else {})
@@ -8033,14 +8034,25 @@ def resolve_sortie_restriction_set(set_id, lc):
             if not name:
                 for k, v in src.items():
                     if k.endswith(tid): name = v; break
-            if name and name not in rn: rn.append(name)
+            if not name or name in rn:
+                continue
+            rn.append(name)
+            entry = {'name': name, 'restriction_type_index': rt}
+            if rt == '1':
+                sid = normalize_id(tid)
+                if sid != '0':
+                    entry['series_id'] = sid
+                    icn = series_id_to_icon.get(sid, '') or find_series_icon(sid)
+                    if icn:
+                        entry['icon'] = icn
+            restriction_items.append(entry)
         if tt == '1':
             at = get_ui_label(lc, 'restriction_applies_unit')
         elif total_tag_entries <= 1:
             at = get_ui_label(lc, 'restriction_applies_both')
         else:
             at = get_ui_label(lc, 'restriction_applies_characters')
-        rows.append({'target_type_index': tt, 'applies_to': at, 'restriction_names': rn})
+        rows.append({'target_type_index': tt, 'applies_to': at, 'restriction_names': rn, 'restriction_items': restriction_items})
     return rows
 
 def resolve_stage_conditions(sid, lc):
@@ -8312,8 +8324,18 @@ def resolve_npc_modifiers(buff_id, lc, npc_id='0'):
                 or trait_set_detail_resource_lookup.get(lookup_id)
                 or ''
             )
+    if not res_id and trait_ids:
+        for tid in trait_ids:
+            hit = coalesce_ability_resource_id(tid, '')
+            if hit:
+                res_id = hit
+                break
     icon_file = find_trait_icon(res_id) if res_id else None
     icon_url = f"/static/images/Trait/{icon_file}" if icon_file else ''
+    if not icon_url and res_id:
+        rid_low = str(res_id).strip().lower()
+        if rid_low.startswith('trait_') and re.match(r'^trait_[a-z0-9_-]+$', rid_low):
+            icon_url = f"/static/images/Trait/{rid_low}.webp"
     return [{
         'id': bid,
         'name': display_name,

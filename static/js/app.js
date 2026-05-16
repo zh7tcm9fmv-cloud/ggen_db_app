@@ -62,6 +62,21 @@ function gameImageUrlFallback(el) {
     el.dataset.ggImgDead = '1';
     el.style.display = 'none';
 }
+/** WebP→PNG→/static CDN mirror (via gameImageUrlFallback), then replace only this `.ability-icon` with ★ placeholder (preserve strategy-hint sibling). */
+function abilityIconImgOnError(el){
+    if (!el) return;
+    if (String(el.dataset.ggAbiIconDead || '') === '1') return;
+    gameImageUrlFallback(el);
+    if (String(el.dataset.ggImgDead || '') !== '1') return;
+    el.dataset.ggAbiIconDead = '1';
+    if (String(el.tagName || '').toLowerCase() !== 'img' || !el.classList || !el.classList.contains('ability-icon')) return;
+    try {
+        const ph = document.createElement('div');
+        ph.className = 'ability-icon-placeholder';
+        ph.textContent = '★';
+        el.replaceWith(ph);
+    } catch (_) {}
+}
 function isRasterWebpCandidate(path) {
     if (!path) return false;
     const p = String(path).split(/[?#]/)[0].toLowerCase();
@@ -1503,7 +1518,26 @@ return`${th}${exRow}<div class="${gridCls}">${body}</div>`
 }
 function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c)S.charSuperchargedExTier=0;invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType)}
 function setCharSuperchargedExTier(i){const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(!arr||!arr.length)return;const n=arr.length;S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));updateDetailDynamicSections('character')}
-function renderStageRestrictions(d){if(!d.sortie_groups||!d.sortie_groups.length)return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div>${d.sortie_groups.map(g=>`<div class="stage-restriction-block"><div class="stage-restriction-group-title">${t('sortie_group')} ${g.group_no}</div>${(g.restrictions||[]).map(r=>`<div class="stage-restriction-row"><div class="stage-restriction-applies">${esc(r.applies_to||'-')}</div><div class="stage-tags-wrap">${(r.restriction_names||[]).length?(r.restriction_names||[]).map(n=>createTagHtml({id:'',name:n,type:'group'})).join(''):`<span style="color:var(--text-muted)">${t('none')}</span>`}</div></div>`).join('')}</div>`).join('')}</div>`}
+function renderStageRestrictionItem(it){
+const o=it&&typeof it==='object'?it:{};
+const name=String(o.name||'').trim();
+if(!name)return'';
+const rt=String(o.restriction_type_index||'');
+const sidRaw=o.series_id!=null?String(o.series_id).trim():'';
+const sid=sidRaw&&sidRaw!=='0'?sidRaw:'';
+const iconRaw=o.icon!=null?String(o.icon).trim():'';
+const tip=escAttr(t('search_series_click'));
+if(rt==='1'&&sid){
+const oc=`event.stopPropagation();openSeriesModal('${escJs(sid)}','units','${escJs(name)}')`;
+if(iconRaw){
+const src=imgUrlWebp(imgUrlPreferCdn(iconRaw));
+return`<button type="button" class="series-icon-hitbox stage-sortie-series-hitbox" onclick="${oc}" title="${tip}" aria-label="${escAttr(name)}"><img class="series-icon-img stage-sortie-series-logo" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(name)}</span></button>`;
+}
+return createTagHtml({id:sid,name,type:'series'},{preferredTarget:'units'});
+}
+return createTagHtml({id:'',name,type:'group'});
+}
+function renderStageRestrictions(d){if(!d.sortie_groups||!d.sortie_groups.length)return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div>${d.sortie_groups.map(g=>`<div class="stage-restriction-block"><div class="stage-restriction-group-title">${t('sortie_group')} ${g.group_no}</div>${(g.restrictions||[]).map(r=>{const items=Array.isArray(r.restriction_items)?r.restriction_items.filter(x=>x&&typeof x==='object'):[];const chips=items.length?items.map(renderStageRestrictionItem).join(''):((r.restriction_names||[]).length?(r.restriction_names||[]).map(n=>createTagHtml({id:'',name:n,type:'group'})).join(''):'');return`<div class="stage-restriction-row"><div class="stage-restriction-applies">${esc(r.applies_to||'-')}</div><div class="stage-tags-wrap">${chips||`<span style="color:var(--text-muted)">${t('none')}</span>`}</div></div>`}).join('')}</div>`).join('')}</div>`}
 function _stageMapEnemyIsReinforcementSpawn(u){
   if(!u)return false;
   if(String(u.side||'').toLowerCase()!=='enemy')return false;
@@ -1814,7 +1848,7 @@ function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}return`<div class="tag-composite" onclick="event.stopPropagation();${onClick}" title="Click to view"><div class="tag-part-icon">${li?`<img class="tag-icon-fg" src="${imgUrl(li)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</div><div class="tag-part-value">${esc(tn)}</div></div>`}
 function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row" style="margin-top:12px;">${tags.map(createTagHtml).join('')}</div>`}
 function renderHeaderTerrain(ter,showSsp,hasTerrainEnhancements){if(!ter||!ter.length)return'';const rowCls='header-terrain-row';const showSspIcon=showSsp&&hasTerrainEnhancements;return`<div class="${rowCls}">${showSspIcon?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:18px;object-fit:contain;opacity:.95;filter:drop-shadow(0 1px 2px rgba(0,0,0,.9));margin-right:4px;" onerror="this.style.display='none'">`:''}${ter.map(x=>{let dim=x.level<2;const enh=x.ssp_enhanced?' ssp-enhanced':'';return`<div class="header-terrain-item ${dim?'dimmer-terrain':''}${enh}">${x.type_icon?`<img class="header-terrain-type-icon" src="${imgUrl(x.type_icon)}" alt="${x.name}">`:''}${x.level_icon?`<img class="header-terrain-level-icon" src="${imgUrl(x.level_icon)}" alt="${x.symbol}">`:`<span>${x.symbol}</span>`}</div>`}).join('')}</div>`}
-function renderAbilIcon(ab,srcRow){const base=srcRow||ab;const hintUrl=(ab&&ab.strategy_hint_icon)||(base&&base.strategy_hint_icon);const hintSrc=hintUrl?imgUrlWebp(imgUrlPreferCdn(hintUrl)):'';const hintHtml=hintSrc?`<img class="strategy-hint-badge" src="${hintSrc}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';if(!ab||!ab.icon)return hintHtml+'<div class="ability-icon-placeholder">★</div>';const rawIcon=String(ab.icon);const abiSrc=/^https?:\/\//i.test(rawIcon)?imgUrlWebp(rawIcon):imgUrlWebp(imgUrlPreferCdn(rawIcon));let h=`<img class="ability-icon" src="${abiSrc}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML='<div class=\\'ability-icon-placeholder\\'>★</div>'">`;if(ab.frame_overlay&&ab.is_ex){const fo=String(ab.frame_overlay);const foSrc=/^https?:\/\//i.test(fo)?imgUrlWebp(fo):imgUrlWebp(imgUrlPreferCdn(fo));h+=`<img class="ability-frame-overlay" src="${foSrc}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`}return hintHtml+h}
+function renderAbilIcon(ab,srcRow){const base=srcRow||ab;const hintUrl=(ab&&ab.strategy_hint_icon)||(base&&base.strategy_hint_icon);const hintSrc=hintUrl?imgUrlWebp(imgUrlPreferCdn(hintUrl)):'';const hintHtml=hintSrc?`<img class="strategy-hint-badge" src="${hintSrc}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';if(!ab||!ab.icon)return hintHtml+'<div class="ability-icon-placeholder">★</div>';const rawIcon=String(ab.icon);const abiSrc=/^https?:\/\//i.test(rawIcon)?imgUrlWebp(rawIcon):imgUrlWebp(imgUrlPreferCdn(rawIcon));let h=`<img class="ability-icon" src="${abiSrc}" alt="" loading="lazy" decoding="async" onerror="abilityIconImgOnError(this);return false;">`;if(ab.frame_overlay&&ab.is_ex){const fo=String(ab.frame_overlay);const foSrc=/^https?:\/\//i.test(fo)?imgUrlWebp(fo):imgUrlWebp(imgUrlPreferCdn(fo));h+=`<img class="ability-frame-overlay" src="${foSrc}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`}return hintHtml+h}
 function isUnknownAbilityName(n){const s=String(n||'').trim();return s==='Unknown'||/^Unknown\s*\(/i.test(s)}
 function abilityConditionLabel(label){const lc=(S.lang||'EN').toUpperCase();const k=String(label||'').trim();if(k==='Condition 1')return(lc==='TW'||lc==='HK')?'[條件 1]':(lc==='JA'||lc==='JP')?'[条件 1]':'[Condition 1]';if(k==='Condition 2')return(lc==='TW'||lc==='HK')?'[條件 2]':(lc==='JA'||lc==='JP')?'[条件 2]':'[Condition 2]';if(k==='Boost Target')return(lc==='TW'||lc==='HK')?'[加成目標]':(lc==='JA'||lc==='JP')?'[強化対象]':'[Boost Target]';return k?`[${k}]`:''}
 function _conditionLabelSortKey(label){const s=String(label||'').trim();const m=s.match(/^Condition\s+(\d+)$/i);if(m)return parseInt(m[1],10)||999;return s==='Boost Target'?998:999}
