@@ -9347,6 +9347,7 @@ if(tgts.includes(id))tgts=tgts.filter(x=>x!==id);else tgts.push(id);
 S.ranking.compareTargetIds=tgts.slice(0,8);
 applyRankingCompareVisuals()
 }
+}
 
 function renderRankingList(d){
 const rows=d.rows||[];
@@ -9410,5 +9411,4 @@ syncRankingViewModeUi();
 const pg=document.querySelector('#panel-ranking .pagination-bar-wrap');
 if(pg)pg.style.display='none';
 applyRankingCompareVisuals()
-}
 }
