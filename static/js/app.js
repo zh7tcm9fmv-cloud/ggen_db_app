@@ -1847,6 +1847,19 @@ if(Number.isFinite(oa)&&oa===3&&uid.startsWith('2')&&n<6)u.cells=[mk(0,0),mk(1,0
 else if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
 });
 }
+function _stageMapGridGapPx(){return 2}
+function _stageMapFootprintBBox(u,mapW,mapH){
+if(!u)return null;
+const cells=u.cells&&u.cells.length?u.cells:[{x:u.x,y:u.y}];
+let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;
+cells.forEach(c=>{
+const cx=Number(c.x)+1,cy=Number(c.y)+1;
+if(cx<1||cy<1||cx>mapW||cy>mapH)return;
+if(cx<mnx)mnx=cx;if(cx>mxx)mxx=cx;if(cy<mny)mny=cy;if(cy>mxy)mxy=cy;
+});
+if(mnx===Infinity)return null;
+return{mnx,mxx,mny,mxy,fpw:mxx-mnx+1,fph:mxy-mny+1}
+}
 function renderStageMapGrid(md){
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
@@ -1873,6 +1886,7 @@ function renderStageMapGrid(md){
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
   const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
   const cellPx=Math.round(50*z);
+  const gapPx=_stageMapGridGapPx();
   let html=`<div class="map-grid" style="--cell:${cellPx}px;grid-template-columns:repeat(${vw},var(--cell));">`;
   for(let y=win.maxY;y>=win.minY;y--){
     for(let x=win.minX;x<=win.maxX;x++){
@@ -1903,7 +1917,17 @@ function renderStageMapGrid(md){
         const dir=String(u.direction||'0');
         const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
         const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${u.is_large?'large':''} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}">${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        const bbox=_stageMapFootprintBBox(u,w,h);
+        const multiFp=bbox&&(bbox.fpw>1||bbox.fph>1);
+        const stride=cellPx+gapPx;
+        const dx=bbox?(bbox.mnx-x)*stride:0;
+        const dy=bbox?(y-bbox.mxy)*stride:0;
+        const fw=bbox?bbox.fpw*cellPx+(bbox.fpw-1)*gapPx:null;
+        const fh=bbox?bbox.fph*cellPx+(bbox.fph-1)*gapPx:null;
+        const fpStyle=multiFp?` style="left:${2+dx}px;top:${2+dy}px;width:${fw}px;height:${fh}px;inset:auto;"`:'';
+        const fpCls=multiFp?' map-unit-dot--footprint':'';
+        const largeCls=u.is_large&&!multiFp?'large':'';
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
       }
       html+=`</div>`
     }
