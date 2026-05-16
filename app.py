@@ -12629,6 +12629,8 @@ def list_stages():
         if tower_side not in ('ALL', 'E', 'W'):
             tower_side = 'ALL'
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage'): cat = 'eternal'
+        if cat != 'eternal':
+            df = 'all'
         ck = f"stages9_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
@@ -12645,7 +12647,6 @@ def list_stages():
                 mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
-                if df != 'all' and df != '' and diff['code'] != df: continue
                 portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id'))
                 rows.append({
                     '_sn_sort': (grp, pri, safe_int(sid, 0)),
@@ -12666,7 +12667,6 @@ def list_stages():
                 mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
-                if df != 'all' and df != '' and diff['code'] != df: continue
                 boss_id = sas.get('boss_map_npc_id', '0')
                 nu = map_npc_unit_lookup.get(boss_id, []) if map_npc_unit_lookup else []
                 duid = nu[0].get('unit_id', '0') if nu else '0'
@@ -12705,7 +12705,6 @@ def list_stages():
                 mmeta = map_stage_meta_by_stage_id.get(stid, {}) if map_stage_meta_by_stage_id else {}
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
-                if df != 'all' and df != '' and diff['code'] != df: continue
                 duid = normalize_id(tes.get('floor_bromide_unit_id'))
                 portrait = ''
                 if duid != '0':
