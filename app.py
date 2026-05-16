@@ -8267,12 +8267,19 @@ def _normalize_modifier_detail_line(line):
 # Stage 90500027 has four NPC rows (unit 1009000200) that have
 # in-game MOV modifier behavior but no MapNpcBuffId linkage in
 # current exported master tables. Keep this scoped and explicit.
+# Icon mirrors trait_10270100 (CDN/local WebP — same ResourceId umbrella as MOV UI art).
 # ============================================================
+_NPC_FB_MOV_TRAIT_IC = find_trait_icon('trait_10270100')
+NPC_MODIFIER_FALLBACK_MOV_ICON = (
+    f"/static/images/Trait/{_NPC_FB_MOV_TRAIT_IC}"
+    if _NPC_FB_MOV_TRAIT_IC
+    else '/static/images/Trait/trait_10270100.webp'
+)
 NPC_MODIFIER_FALLBACKS = {
-    '905000002702000009': [{'id': 'fb_mov5_905000002702000009', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
-    '905000002702000010': [{'id': 'fb_mov5_905000002702000010', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
-    '905000002702000011': [{'id': 'fb_mov5_905000002702000011', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
-    '905000002702000012': [{'id': 'fb_mov5_905000002702000012', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': '', 'has_icon': False, 'buff_type_index': 3}],
+    '905000002702000009': [{'id': 'fb_mov5_905000002702000009', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': NPC_MODIFIER_FALLBACK_MOV_ICON, 'has_icon': True, 'buff_type_index': 3}],
+    '905000002702000010': [{'id': 'fb_mov5_905000002702000010', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': NPC_MODIFIER_FALLBACK_MOV_ICON, 'has_icon': True, 'buff_type_index': 3}],
+    '905000002702000011': [{'id': 'fb_mov5_905000002702000011', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': NPC_MODIFIER_FALLBACK_MOV_ICON, 'has_icon': True, 'buff_type_index': 3}],
+    '905000002702000012': [{'id': 'fb_mov5_905000002702000012', 'name': 'Increase MOV', 'details': ['Increase MOV by 5.'], 'icon': NPC_MODIFIER_FALLBACK_MOV_ICON, 'has_icon': True, 'buff_type_index': 3}],
 }
 # END TEMP HOTFIX
 
