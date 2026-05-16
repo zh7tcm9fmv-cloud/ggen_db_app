@@ -1538,17 +1538,28 @@ return createTagHtml({id:sid,name,type:'series'},{preferredTarget:'units'});
 return createTagHtml({id:'',name,type:'group'});
 }
 function renderStageRestrictions(d){if(!d.sortie_groups||!d.sortie_groups.length)return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;return`<div class="detail-section"><div class="section-title">${t('sec_sortie_restrictions')}</div>${d.sortie_groups.map(g=>`<div class="stage-restriction-block"><div class="stage-restriction-group-title">${t('sortie_group')} ${g.group_no}</div>${(g.restrictions||[]).map(r=>{const items=Array.isArray(r.restriction_items)?r.restriction_items.filter(x=>x&&typeof x==='object'):[];const chips=items.length?items.map(renderStageRestrictionItem).join(''):((r.restriction_names||[]).length?(r.restriction_names||[]).map(n=>createTagHtml({id:'',name:n,type:'group'})).join(''):'');return`<div class="stage-restriction-row"><div class="stage-restriction-applies">${esc(r.applies_to||'-')}</div><div class="stage-tags-wrap">${chips||`<span style="color:var(--text-muted)">${t('none')}</span>`}</div></div>`}).join('')}</div>`).join('')}</div>`}
-function _stageMapEnemyIsReinforcementSpawn(u){
+function _stageMapEnemyMarkedAsOffMapInitially(u){
   if(!u)return false;
-  if(String(u.side||'').toLowerCase()!=='enemy')return false;
   const v=u.is_initially_placed;
   if(v===false||v===0||v==='0')return true;
   if(typeof v==='string'&&String(v).toLowerCase()==='false')return true;
   return false;
 }
+function _stageMapAnyEnemyInitiallyOnField(units){
+  return(units||[]).some(u=>String(u.side||'').toLowerCase()==='enemy'&&!_stageMapEnemyMarkedAsOffMapInitially(u));
+}
+/** True when data marks this enemy as off-map reinforcement *and* the stage anchors at least one on-field enemy — otherwise isolated "all false" dumps show everyone. */
+function _stageMapEnemyIsReinforcementSpawn(u, allUnits){
+  if(!u)return false;
+  if(String(u.side||'').toLowerCase()!=='enemy')return false;
+  if(!_stageMapEnemyMarkedAsOffMapInitially(u))return false;
+  const pool=allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units;
+  if(!_stageMapAnyEnemyInitiallyOnField(pool))return false;
+  return true;
+}
 function stageMapHasReinforcementEnemies(md){
   const arr=(md&&md.units)||[];
-  return arr.some(u=>_stageMapEnemyIsReinforcementSpawn(u))
+  return arr.some(u=>_stageMapEnemyIsReinforcementSpawn(u, arr))
 }
 function _stageMapForEachEnemyCell(u,fn){
   if(!u||String(u.side||'').toLowerCase()!=='enemy')return;
@@ -1563,7 +1574,7 @@ function _stageMapEnemyStackKeys(allUnits){
   (allUnits||[]).forEach(u=>{
     _stageMapForEachEnemyCell(u,k=>{
       if(!by[k])by[k]={ini:false,reinf:false};
-      if(_stageMapEnemyIsReinforcementSpawn(u))by[k].reinf=true;
+      if(_stageMapEnemyIsReinforcementSpawn(u, allUnits))by[k].reinf=true;
       else by[k].ini=true;
     })
   });
@@ -1606,7 +1617,7 @@ return`<div class="detail-section"><div class="section-title">${t('sec_stage_map
 }
 
 function _stageMapViewWindow(md){
-  const w=md.width||0,h=md.height||0,units=(md.units||[]).filter(_stageMapUnitVisible);
+  const pool=md.units||[],w=md.width||0,h=md.height||0,units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   if(!w||!h||!units.length)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
   units.forEach(un=>{
@@ -1625,15 +1636,15 @@ function _stageMapViewWindow(md){
     maxY:Math.min(h,mxY+pad),
   }
 }
-function _stageMapUnitVisible(u){
+function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
 const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
 if(S.stageMapReinforcementOnly)return true;
-return!_stageMapEnemyIsReinforcementSpawn(u)
+return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
 function renderStageMapGrid(md){
-  const w=md.width||24,h=md.height||28,units=(md.units||[]).filter(_stageMapUnitVisible),occ={};
+  const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
   units.forEach(u=>{
     if(u.cells&&u.cells.length){
@@ -1664,7 +1675,7 @@ function renderStageMapGrid(md){
       const ck=`${x}_${y}`;
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
-      const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u);
+      const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}${u.has_strategy_hint?' npc-strategy-hint-pulse':''}`:'';
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
@@ -1711,7 +1722,7 @@ function setStageMapReinforcementOnly(on){
 
 function _stageMapBounds(){
   const md=S.currentDetailData?.map_data||{};
-  const units=(md.units||[]).filter(_stageMapUnitVisible);
+  const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   if(!units.length)return null;
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
   units.forEach(un=>{
