@@ -818,7 +818,48 @@ function scheduleBrowseListReload(tab,page){const pg=page!=null&&Number.isFinite
 function debounceLoad(tab){clearTimeout(S.ft);S._ftTab=tab;S.ft=setTimeout(()=>{S.ft=null;const tb=S._ftTab;S._ftTab=null;if(tb==='characters'){cancelBrowseListReloadTimer('characters');loadCharacters(1)}else if(tb==='units'){cancelBrowseListReloadTimer('units');loadUnits(1)}else if(tb==='supporters'){cancelBrowseListReloadTimer('supporters');loadSupporters(1)}else if(tb==='stages'){cancelBrowseListReloadTimer('stages');loadStages(1)}else if(tb==='modifications'){cancelBrowseListReloadTimer('modifications');loadModifications(1)}},300)}
 function isLikelyIdQuery(q){return/^\d{4,}$/.test(String(q||'').trim())}
 async function maybeUnlockNpcView(q,data){if(!isLikelyIdQuery(q))return false;const total=(data&&typeof data.total==='number')?data.total:0;if(total>0)return false;try{const st=await fetch('/api/npc_view/status',{credentials:'same-origin'}).then(r=>r.json());if(!st||!st.password_required||st.unlocked)return false;const pw=window.prompt(t('npc_unlock_prompt'));if(!pw)return false;const res=await fetch('/api/npc_view/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!res.ok){alert(t('npc_unlock_wrong'));return false}return true}catch(_){return false}}
-function renderListThumb(row,type,size,opts){const o=opts||{};const r=row.rarity||'N';const ld=size?'eager':'lazy';const npcNeutral=o.npcDetailThumb&&(type==='unit'||type==='char');let base=type==='supp'?(SUPPORTER_BASE_MAP[r]||SUPPORTER_BASE_MAP['N']):(RARITY_BASE_MAP[r]||RARITY_BASE_MAP['N']);let frame=type==='supp'?null:(RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP['N']);if(npcNeutral){base=RARITY_BASE_MAP['N'];frame=null}const ph=type==='char'?'👤':type==='unit'?'🤖':'🎧';const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";let portrait='';if(row.thum){portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">${ph}</div>`;let icons='';if(!o.pickerThumb&&type!=='supp'){if(npcNeutral){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_TypeIcon_None_S.webp',{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}else{if(row.role_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.role_icon,{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}if(type==='unit'&&(row.is_ultimate===true||row.is_ultimate===1)){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_Icon_ULT.webp',{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'ULT',lazy:false})}</span>`}if(row.acquisition_icon){icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`}}const hz=frame?' list-thumb-has-frame':'';const pk=o.pickerThumb?' list-thumb-composite--picker':'';const sz=size?` style="width:${size}px;height:${size}px"`:'';const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';return`<div class="list-thumb-composite${pk}${hz}"${sz}>${frame?`<div class="list-thumb-back">${baseEl}</div><div class="list-thumb-portrait-wrap">${portrait}</div>${frameEl}`:`${baseEl}<div class="list-thumb-portrait-wrap">${portrait}</div>`}${iconsWrap}</div>`}
+function renderListThumb(row,type,size,opts){
+const o=opts||{};
+const r=row.rarity||'N';
+const ld=size?'eager':'lazy';
+const npcNeutral=o.npcDetailThumb&&(type==='unit'||type==='char');
+let base=type==='supp'?(SUPPORTER_BASE_MAP[r]||SUPPORTER_BASE_MAP['N']):(RARITY_BASE_MAP[r]||RARITY_BASE_MAP['N']);
+let frame=type==='supp'?null:(RARITY_FRAME_MAP[r]||RARITY_FRAME_MAP['N']);
+if(npcNeutral){
+base=RARITY_BASE_MAP['N'];
+frame=null;
+}
+const ph=type==='char'?'👤':type==='unit'?'🤖':'🎧';
+const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";
+let portrait='';
+if(row.thum){
+portrait=pictureRasterHtml(row.thum,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false});
+}
+portrait+=`<div class="list-thumb-placeholder" style="display:${row.thum?'none':'flex'}">${ph}</div>`;
+let icons='';
+if(!o.pickerThumb&&type!=='supp'){
+if(npcNeutral){
+icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_TypeIcon_None_S.webp',{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`;
+}else{
+if(row.role_icon){
+icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.role_icon,{cls:'list-thumb-role-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`;
+}
+if(type==='unit'&&(row.is_ultimate===true||row.is_ultimate===1)){
+icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml('/static/images/UI/UI_Common_Icon_ULT.webp',{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'ULT',lazy:false})}</span>`;
+}
+if(row.acquisition_icon){
+icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`;
+}
+}
+}
+const hz=frame?' list-thumb-has-frame':'';
+const pk=o.pickerThumb?' list-thumb-composite--picker':'';
+const sz=size?` style="width:${size}px;height:${size}px"`:'';
+const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});
+const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';
+const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';
+return`<div class="list-thumb-composite${pk}${hz}"${sz}>${frame?`<div class="list-thumb-back">${baseEl}</div><div class="list-thumb-portrait-wrap">${portrait}</div>${frameEl}`:`${baseEl}<div class="list-thumb-portrait-wrap">${portrait}</div>`}${iconsWrap}</div>`;
+}
 function renderTbSupporterPortraitOnly(s,size){
 const sz=size||96;
 const src=(s&&s.portrait)||(s&&s.thum)||'';
@@ -9347,7 +9388,6 @@ return
 if(tgts.includes(id))tgts=tgts.filter(x=>x!==id);else tgts.push(id);
 S.ranking.compareTargetIds=tgts.slice(0,8);
 applyRankingCompareVisuals()
-}
 }
 
 function renderRankingList(d){
