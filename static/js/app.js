@@ -1671,7 +1671,9 @@ function renderStageMapGrid(md){
       const di=u?.npc_detail_index;
       const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
       const canMapClick=!!(o&&u&&(hasDetail||u.unit_id||u.npc_id));
-      const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+      const stackCellAttr=isStackedEnemyTile&&canMapClick?` data-npc-map-stack-cell="1"`:'';
+      const reinfUnitAttr=reinfLayerShown&&canMapClick?` data-npc-map-reinf-unit="1"`:'';
+      const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}${stackCellAttr}${reinfUnitAttr}`:'';
       const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
@@ -2119,10 +2121,20 @@ if(!el)return;
 const outer=el.closest('details.stage-npc-group');
 if(outer&&!outer.open)outer.open=true;
 }
-function _flashNpcCard(el){
+const NPC_CARD_FLASH_MS_DEFAULT = 4800;
+const NPC_CARD_FLASH_MS_STACK_REINF = 5600;
+function _flashNpcCard(el, variant){
 if(!el)return;
+const purple = variant === 'stackReinf';
 el.classList.add('npc-card-highlight');
-setTimeout(()=>el.classList.remove('npc-card-highlight'),1200);
+if (purple) el.classList.add('npc-card-highlight--stack-reinf');
+const ms = purple ? NPC_CARD_FLASH_MS_STACK_REINF : NPC_CARD_FLASH_MS_DEFAULT;
+window.setTimeout(() => {
+try {
+el.classList.remove('npc-card-highlight');
+el.classList.remove('npc-card-highlight--stack-reinf');
+} catch (_) {}
+}, ms);
 }
 function findNpcDetailCardByNpcId(nid){
 const raw=String(nid!=null?nid:'').trim();
@@ -2136,37 +2148,48 @@ if(String(n.getAttribute('data-npc-id')||'').trim()===raw)return n;
 }
 return null;
 }
-function scrollToNpcDetailByNpcId(nid){
+function scrollToNpcDetailByNpcId(nid, flashVariant){
 const el=findNpcDetailCardByNpcId(nid);
 if(!el)return false;
 _ensureNpcCardVisible(el);
-setTimeout(()=>{try{el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}_flashNpcCard(el)},0);
+window.setTimeout(()=>{
+try {
+el.scrollIntoView({behavior: 'smooth', block: 'start'});
+} catch (_) {}
+_flashNpcCard(el, flashVariant);
+}, 0);
 return true;
 }
 function scrollToNpc(id){scrollToNpcDetailByNpcId(id)}
-function scrollToNpcDetail(idx){
+function scrollToNpcDetail(idx, flashVariant){
 try{
 const el=document.getElementById('npc-detail-'+String(idx));
 if(!el)return false;
 _ensureNpcCardVisible(el);
-setTimeout(()=>{try{el.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}_flashNpcCard(el)},0);
+window.setTimeout(()=>{
+try {
+el.scrollIntoView({behavior: 'smooth', block: 'start'});
+} catch (_) {}
+_flashNpcCard(el, flashVariant);
+}, 0);
 return true;
 }catch(e){return false}
 }
-function onStageMapUnitClick(detailIdx,ev,unitId,npcId){
+function onStageMapUnitClick(detailIdx, ev, unitId, npcId, flashVariant){
 if(ev)ev.stopPropagation();
+const fv = flashVariant === 'stackReinf' ? 'stackReinf' : undefined;
 const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';
 if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
 const i=parseInt(detailIdx,10);
 if(!Number.isNaN(i)){
-if(scrollToNpcDetail(i))return;
-if(scrollToNpcDetail(i-1))return;
-if(scrollToNpcDetail(i+1))return;
-if(scrollToNpcDetail(i+2))return;
-if(scrollToNpcDetail(i-2))return;
+if(scrollToNpcDetail(i, fv))return;
+if(scrollToNpcDetail(i-1, fv))return;
+if(scrollToNpcDetail(i+1, fv))return;
+if(scrollToNpcDetail(i+2, fv))return;
+if(scrollToNpcDetail(i-2, fv))return;
 }
 }
-if(nid&&scrollToNpcDetailByNpcId(nid))return;
+if(nid&&scrollToNpcDetailByNpcId(nid, fv))return;
 }
 function wireStageMapNpcClicks(){
 const dm=document.getElementById('detailModal');
@@ -2184,7 +2207,10 @@ if(!Number.isNaN(n))detailIdx=n;
 }
 const npcId=String(cell.getAttribute('data-npc-map-npc-id')||'').trim();
 const unitId=String(cell.getAttribute('data-npc-map-unit-id')||'').trim();
-onStageMapUnitClick(detailIdx,e,unitId,npcId);
+const stackCell=cell.getAttribute('data-npc-map-stack-cell')==='1';
+const reinfUnit=cell.getAttribute('data-npc-map-reinf-unit')==='1';
+const flashVariant=(stackCell&&reinfUnit)?'stackReinf':undefined;
+onStageMapUnitClick(detailIdx,e,unitId,npcId,flashVariant);
 });
 }
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
