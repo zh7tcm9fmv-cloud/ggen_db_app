@@ -8802,8 +8802,11 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                 continue
             lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
             prev_enemy_tag_clause = False
+            carry_cond = False
             for line in lines:
                 if _char_trait_line_is_squad_unit_effect(line, ab):
+                    if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
+                        carry_cond = True
                     continue
                 itc = _is_conditional_stat_text(line)
                 b = _extract_stat_percent_unit(line, skip_conditional=False)
@@ -8816,10 +8819,17 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                 if _unit_enemy_specified_tags_clause_part(line):
                     prev_enemy_tag_clause = True
                 if enemy_adv_atk_def:
+                    carry_cond = False
                     continue
                 if itc:
+                    carry_cond = True
                     continue
                 if not b:
+                    if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
+                        carry_cond = True
+                    continue
+                if carry_cond or _char_detail_is_conditional(d, line):
+                    carry_cond = False
                     continue
                 if _npc_map_unit_line_is_squad_wide(line):
                     src_row = squad_by_source.setdefault(nid, {k: 0 for k in keys})
@@ -8831,10 +8841,14 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                     for s, pct in b.items():
                         if s in row:
                             row[s] = row.get(s, 0) + pct
+                carry_cond = False
 
 
 def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
-    """Per eternal map stage: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
+    """Per stage with m_map_npc placement: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
+
+    ``get_stage`` uses this path for Eternal, Tower (via ``stage_master_id``), Score Attack, and Special Event —
+    identical rules everywhere; fixes validated on one eternal stage (e.g. 90520021) apply to all.
 
     Returns (squad_total, per_npc_self_rows, squad_by_source, pilot_char_ms_pct) where
     squad_by_source[nid] is the squad-wide % parsed from that NPC's abilities only, and pilot_char_ms_pct
@@ -13367,6 +13381,7 @@ def get_stage(stage_id):
             if gid != '0': sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
         md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
+        # NPC dossier/unit % merge: single code path for every stage category below — no stage-id branches here.
         mse = map_stage_lookup.get(stage_master_id)
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
@@ -13444,7 +13459,7 @@ def get_stage(stage_id):
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
             mw, mh = safe_int(mi.get('width'), 0), safe_int(mi.get('height'), 0)
-            # Eternal 90520021 only: clamp to official m_map size (drops phantom padded rows/cols).
+            # 90520021 only: viewport clamp — unrelated to NPC stat parsing (same as every other stage).
             # Other stages keep legacy padding past content so we do not change their viewport.
             if normalize_id(stage_id) == '90520021':
                 if mw > 0:
