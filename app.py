@@ -2414,12 +2414,31 @@ _SHORT_PILOT_STAT_LINE_ONLY = re.compile(
 )
 
 
+def _trait_detail_blob_is_named_pilot_squad_ms(txt):
+    """EN/JA/TW/HK: MS stat % applies to squad units piloted by named pilots — never dossier self (nor DEF→pilot Defense)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    t = txt.replace('\r', '')
+    tl = t.lower()
+    if re.search(r'for\s+squad\s+units\s+piloted\s+by\b', tl):
+        return True
+    if '搭乗するユニットを対象' in t:
+        return True
+    if '搭乘的單位為對象' in t or '所搭乘的單位為對象' in t:
+        return True
+    if '所搭乘的单位为对象' in t:
+        return True
+    return False
+
+
 def _blob_has_squad_unit_stat_context(blob):
     """True when trait text reads like buffing allied/squad units' MS stats.
 
     Generic ATK/DEF there refer to unit combat stats, not pilot dossier Ranged/Melee/Defense."""
     if not blob or not isinstance(blob, str):
         return False
+    if _trait_detail_blob_is_named_pilot_squad_ms(blob):
+        return True
     bl = blob.lower()
     if 'same squad' in bl or 'units bearing' in bl:
         return True
@@ -2453,6 +2472,9 @@ def _char_trait_line_is_squad_unit_effect(line, bab):
     if not line or not isinstance(line, str):
         return False
     tl = line.lower()
+    # EN: "... for squad units piloted by …" — not contiguous with ' for units' check below.
+    if 'squad units piloted' in tl or ('piloted by' in tl and 'squad' in tl):
+        return True
     if 'same squad' in tl or 'units bearing' in tl:
         return True
     if ' for units' in tl or ' allied units' in tl:
@@ -8584,19 +8606,7 @@ _NPC_MAP_MS_STAT_KEYS = ('HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move')
 
 
 def _npc_map_trait_detail_is_pilot_named_squad_ms(txt):
-    if not txt:
-        return False
-    t = txt.replace('\r', '')
-    tl = t.lower()
-    if re.search(r'for\s+squad\s+units\s+piloted\s+by\b', tl):
-        return True
-    if '搭乗するユニットを対象' in t:
-        return True
-    if '搭乘的單位為對象' in t or '所搭乘的單位為對象' in t:
-        return True
-    if '所搭乘的单位为对象' in t:
-        return True
-    return False
+    return _trait_detail_blob_is_named_pilot_squad_ms(txt)
 
 
 def _npc_map_is_cjk_pilot_squad_bracket_context(txt):
@@ -9069,6 +9079,8 @@ def calculate_npc_character_self_bonus_pct(abilities):
         for d in sab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
+                continue
+            if _trait_detail_blob_is_named_pilot_squad_ms(txt):
                 continue
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
                 if _char_trait_line_is_squad_unit_effect(line, sab):
