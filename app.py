@@ -9082,14 +9082,31 @@ def calculate_npc_character_self_bonus_pct(abilities):
                 continue
             if _trait_detail_blob_is_named_pilot_squad_ms(txt):
                 continue
+            carry_cond = False
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
                 if _char_trait_line_is_squad_unit_effect(line, sab):
+                    if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
+                        carry_cond = True
                     continue
                 if _is_conditional_stat_text(line):
+                    carry_cond = True
                     continue
-                for s, p in extract_stat_percent_char(line, txt, char_id=None).items():
+                bonuses = extract_stat_percent_char(line, txt, char_id=None)
+                if not bonuses:
+                    if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
+                        carry_cond = True
+                    continue
+                if (
+                    carry_cond
+                    or _char_trait_title_counts_as_conditional_bucket(sab)
+                    or _char_detail_is_conditional(d, line)
+                ):
+                    carry_cond = False
+                    continue
+                for s, p in bonuses.items():
                     if s in bp:
                         bp[s] = bp.get(s, 0) + p
+                carry_cond = False
     return bp
 
 def get_large_unit_cells(x, y):
