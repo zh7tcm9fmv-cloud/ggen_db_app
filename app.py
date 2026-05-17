@@ -4628,7 +4628,10 @@ def calc_growth_char(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
 def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
-    """Support Attack/Counter ATK% lines are combat-only; do not add to dossier pilot Ranged/Melee % totals."""
+    """Support Attack/Counter-themed ability text with non-squad MS ATK% — combat situational; omit from dossier pilot ATK shorthand.
+
+    Excludes wording like \"Increase own ATK …\" / MS ATK bundled with SA/C traits. Pure \"Increase squad ATK …\"
+    (no intervening squad token before ATK when using the canonical pattern) stays eligible for map-NPC merges."""
     if not full_text or not isinstance(full_text, str):
         return False
     tl = full_text.lower()
@@ -4641,7 +4644,8 @@ def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
     )
     if not support_ctx:
         return False
-    atk_pct = bool(re.search(r'increases?\s+atk\b', tl))
+    # Exclude non-squad MS ATK boosts only (Increase squad ATK uses \"squad\" before atk).
+    atk_pct = bool(re.search(r'increases?\s+(?!squad\s)(?:own\s+|ms\s+)?(?:atk|attack)\b', tl))
     atk_pct = atk_pct or '攻擊力' in full_text or '攻击力' in full_text or '攻撃力' in full_text
     return atk_pct
 
@@ -8778,6 +8782,20 @@ def _map_stage_deployed_character_ids(npc_entries):
     return ids
 
 
+def _npc_map_own_ms_attack_line_in_sa_counter_blob(line, trait_blob_full):
+    """SA/C-themed trait blob: omit non-squad MS ATK %% lines from static map merges (Combat-only own/MS atk).
+
+    Leaves \"Increase squad ATK …\" lines untouched even in the same multi-line blob as Support Attack/Counter."""
+    if not trait_blob_full or not line:
+        return False
+    if 'support attack/counter' not in trait_blob_full.lower():
+        return False
+    if _is_conditional_stat_text(line):
+        return False
+    ll = (line or '').lower()
+    return bool(re.search(r'increases?\s+(?!squad\s)(?:own\s+|ms\s+)?(?:atk|attack)\b', ll))
+
+
 def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, squad_by_source, pilot_tgt_by_char, ldc, stage_char_ids):
     """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets.
 
@@ -8829,6 +8847,14 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                         carry_cond = True
                     continue
                 if carry_cond or _char_detail_is_conditional(d, line):
+                    carry_cond = False
+                    continue
+                # Pilot traits: bundled SA/C + \"Increase own ATK …\" must not inflate static tile ATK %
+                # (still apply \"Increase squad ATK …\" lines in the same blob).
+                if isinstance(b, dict) and 'Attack' in b and _npc_map_own_ms_attack_line_in_sa_counter_blob(line, txt):
+                    b = dict(b)
+                    b.pop('Attack', None)
+                if not b:
                     carry_cond = False
                     continue
                 if _npc_map_unit_line_is_squad_wide(line):
