@@ -4122,6 +4122,41 @@ def create_stage_condition_map(d):
     for k in lookup: lookup[k].sort(key=lambda x: x['sort_order'])
     return lookup
 
+
+def create_map_stage_reach_pin_areas_map(area_data):
+    """Victory pin tiles from m_map_area (TargetAreaTypeIndex == 2). XY use the same 0-based grid as MapNpc X/Y."""
+    out = {}
+    for item in extract_data_list(area_data):
+        if not isinstance(item, dict):
+            continue
+        msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
+        if msid == '0':
+            continue
+        if safe_int(item.get('TargetAreaTypeIndex') or item.get('targetAreaTypeIndex'), 0) != 2:
+            continue
+        out.setdefault(msid, []).append({
+            'x': safe_int(item.get('CoordX'), 0),
+            'y': safe_int(item.get('CoordY'), 0),
+            'w': max(1, safe_int(item.get('CoordW'), 1)),
+            'h': max(1, safe_int(item.get('CoordH'), 1)),
+        })
+    return out
+
+
+def victory_lines_include_reach_target_area(lines):
+    if not lines:
+        return False
+    for raw in lines:
+        line = str(raw or '')
+        low = line.lower()
+        if 'reach' in low and 'target' in low and 'area' in low:
+            return True
+        if '\u76ee\u6a19' in line or '\u76ee\u6807' in line:
+            if '\u30a8\u30ea\u30a2' in line or '\u533a\u57df' in line or '\u5340\u57df' in line:
+                return True
+    return False
+
+
 def create_map_stage_lookup(d):
     lk = {}
     for item in extract_data_list(d):
@@ -4162,6 +4197,7 @@ def create_map_npc_lookup(d):
             'is_initially_placed': _placed,
             'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
             'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
+            'aura_effect_resource_id': str(item.get('AuraEffectResourceId') or item.get('auraEffectResourceId') or '').strip(),
         }
         lk[nid] = entry
         if msid != '0': bms.setdefault(msid, []).append(entry)
@@ -5728,6 +5764,7 @@ map_stage_data = load_json(os.path.join(BASE_DIR, "m_map_stage.json"))
 map_master_data = load_json(os.path.join(BASE_DIR, "m_map.json"))
 map_npc_data = load_json(os.path.join(BASE_DIR, "m_map_npc.json"))
 map_npc_buff_data = load_json(os.path.join(BASE_DIR, "m_map_npc_buff.json"))
+map_area_data = load_json(os.path.join(BASE_DIR, "m_map_area.json"))
 map_npc_unit_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit.json"))
 map_npc_character_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character.json"))
 map_npc_unit_ability_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_ability_set_content.json"))
@@ -5827,6 +5864,7 @@ map_stage_lookup = create_map_stage_lookup(map_stage_data) if map_stage_data els
 map_stage_meta_by_stage_id = create_map_stage_meta_by_stage_id(map_stage_data) if map_stage_data else {}
 map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data else {}
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
+map_stage_reach_pin_areas_by_map_stage = create_map_stage_reach_pin_areas_map(map_area_data) if map_area_data else {}
 map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
 map_npc_strategy_hint_by_npc, map_npc_ids_with_strategy_hint = create_map_npc_strategy_hint_maps(
     load_json(os.path.join(BASE_DIR, "m_map_npc_strategy_hint.json")),
@@ -12995,7 +13033,7 @@ def get_stage(stage_id):
             gid = sm.get(gk, '0')
             if gid != '0': sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
-        md = {'width': 0, 'height': 0, 'units': []}; nd = []
+        md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
         mse = map_stage_lookup.get(stage_master_id)
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
@@ -13051,7 +13089,13 @@ def get_stage(stage_id):
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_guest else None
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
                 has_h = nid_norm in map_npc_ids_with_strategy_hint
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
+                hm_icon = ''
+                if has_h:
+                    for hh in map_npc_strategy_hint_by_npc.get(nid_norm, []) or []:
+                        hm_icon = strategy_hint_attention_url(hh.get('resource_id'))
+                        if hm_icon:
+                            break
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'strategy_hint_map_icon': hm_icon}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
@@ -13068,6 +13112,10 @@ def get_stage(stage_id):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
             pad = 2; w = max(w, max_x + 1 + pad); h = max(h, max_y + 1 + pad)
             md = build_map_grid(w, h, uom)
+            rtp = []
+            if victory_lines_include_reach_target_area(vc):
+                rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
+            md['reach_target_areas'] = rtp
         stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
         stage_rewards = resolve_stage_rewards(
             stage_id,

@@ -1809,11 +1809,26 @@ function renderStageMapSection(d){
 return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
 }
 
+function _stageMapHitReachTargetCell(md,x,y){
+const ar=(md&&Array.isArray(md.reach_target_areas))?md.reach_target_areas:[];
+for(let i=0;i<ar.length;i++){const a=ar[i];const bx=Number(a.x)+1,by=Number(a.y)+1;const ww=Math.max(1,Number(a.w)||1),hh=Math.max(1,Number(a.h)||1);
+if(x>=bx&&x<bx+ww&&y>=by&&y<by+hh)return true
+}
+return false
+}
+function _stageMapExtentsFromReachTargets(md){const ar=(md&&Array.isArray(md.reach_target_areas))?md.reach_target_areas:[];
+let mnX=999,mxX=-1,mnY=999,mxY=-1;
+for(let i=0;i<ar.length;i++){const a=ar[i];const bx=Number(a.x)+1,by=Number(a.y)+1;const ww=Math.max(1,Number(a.w)||1),hh=Math.max(1,Number(a.h)||1);
+mnX=Math.min(mnX,bx);mxX=Math.max(mxX,bx+ww-1);mnY=Math.min(mnY,by);mxY=Math.max(mxY,by+hh-1);
+}
+return(mnX===999)?null:{mnX,mxX,mnY,mxY}
+}
+function _stageMapMergeExtents(a,b){if(!a)return b;if(!b)return a;return{mnX:Math.min(a.mnX,b.mnX),mxX:Math.max(a.mxX,b.mxX),mnY:Math.min(a.mnY,b.mnY),mxY:Math.max(a.mxY,b.mxY)}}
 function _stageMapViewWindow(md){
   if(!md)return {minX:1,maxX:1,minY:1,maxY:1};
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],w=md.width||0,h=md.height||0,units=pool.filter(u=>_stageMapUnitVisible(u,pool));
-  if(!w||!h||!units.length)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
+  if(!w||!h)return {minX:1,maxX:1,minY:1,maxY:1};
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
   units.forEach(un=>{
     const cls=un.cells||[{x:un.x,y:un.y}];
@@ -1822,13 +1837,17 @@ function _stageMapViewWindow(md){
       if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy
     })
   });
-  if(mnX===999)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
+  let ext=null;
+  if(mnX!==999)ext={mnX,mxX,mnY,mxY};
+  const rt=_stageMapExtentsFromReachTargets(md);
+  const merged=_stageMapMergeExtents(ext,rt);
+  if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
   const pad=2;
   return {
-    minX:Math.max(1,mnX-pad),
-    maxX:Math.min(w,mxX+pad),
-    minY:Math.max(1,mnY-pad),
-    maxY:Math.min(h,mxY+pad),
+    minX:Math.max(1,merged.mnX-pad),
+    maxX:Math.min(w,merged.mxX+pad),
+    minY:Math.max(1,merged.mnY-pad),
+    maxY:Math.min(h,merged.mxY+pad),
   }
 }
 function _stageMapUnitVisible(u, allUnits){
@@ -1900,7 +1919,7 @@ function renderStageMapGrid(md){
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
-      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}${u.has_strategy_hint?' npc-strategy-hint-pulse':''}`:'';
+      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}`:'';
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
       const di=u?.npc_detail_index;
@@ -1933,7 +1952,11 @@ function renderStageMapGrid(md){
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
         html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        const hintIc=u&&String(u.strategy_hint_map_icon||'').trim()?String(u.strategy_hint_map_icon).trim():''
+        const hintSrc=hintIc?imgUrlPreferCdn(hintIc):''
+        if(hintSrc&&o.origin)html+=`<img class="map-stage-strategy-hint-icon" src="${hintSrc}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       }
+      if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`
     }
   }
@@ -1958,7 +1981,6 @@ function _stageMapBounds(){
   const md=S.currentDetailData?.map_data||{};
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
-  if(!units.length)return null;
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
   units.forEach(un=>{
     const cls=un.cells||[{x:un.x,y:un.y}];
@@ -1967,8 +1989,9 @@ function _stageMapBounds(){
       if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy
     })
   });
-  if(mnX===999)return null;
-  return {mnX,mxX,mnY,mxY}
+  let ext=null;
+  if(mnX!==999)ext={mnX,mxX,mnY,mxY};
+  return _stageMapMergeExtents(ext,_stageMapExtentsFromReachTargets(md))
 }
 
 function setStageMapZoom(z,fromSlider){
@@ -2061,7 +2084,34 @@ if(S.currentDetailType==='stage'&&S.stageMapExpanded&&S.stageMapAutoFit){
 fitStageMapToUnits(false)
 }
 });
-function focusStageMap(){const c=document.getElementById('stageMapGridWrap');if(!c)return;const md=S.currentDetailData?.map_data||{};_normalizeStageMapUnitFootprints(md.units||[],md.width||0,md.height||0);const units=md.units||[];const mh=md.height||28;if(!units.length){c.scrollLeft=0;c.scrollTop=0;return}let mnX=999,mxX=-1,mnY=999,mxY=-1;units.forEach(un=>{const cls=un.cells||[{x:un.x,y:un.y}];cls.forEach(cl=>{const cx=Number(cl.x)+1,cy=Number(cl.y)+1;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy})});if(mnX===999){c.scrollLeft=0;c.scrollTop=0;return}const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));const cell=Math.round(50*z)+2;const gridPad=15;const contPad=20;const centerX=(mnX+mxX)/2;const centerY=(mnY+mxY)/2;const xPx=contPad+gridPad+(centerX-1)*cell+cell/2;const yPx=contPad+gridPad+((mh-centerY))*cell+cell/2;let targetLeft=xPx-c.clientWidth/2;let targetTop=yPx-c.clientHeight/2;const maxLeft=Math.max(0,c.scrollWidth-c.clientWidth);const maxTop=Math.max(0,c.scrollHeight-c.clientHeight);c.scrollLeft=Math.max(0,Math.min(maxLeft,targetLeft));c.scrollTop=Math.max(0,Math.min(maxTop,targetTop))}
+function focusStageMap(){
+const c=document.getElementById('stageMapGridWrap');if(!c)return;
+const md=S.currentDetailData?.map_data||{};
+_normalizeStageMapUnitFootprints(md.units||[],md.width||0,md.height||0);
+const mh=md.height||28;
+let mnX=999,mxX=-1,mnY=999,mxY=-1;
+(md.units||[]).forEach(un=>{
+const cls=un.cells||[{x:un.x,y:un.y}];
+cls.forEach(cl=>{const cx=Number(cl.x)+1,cy=Number(cl.y)+1;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy})});
+let ext=null;
+if(mnX!==999)ext={mnX,mxX,mnY,mxY};
+const merged=_stageMapMergeExtents(ext,_stageMapExtentsFromReachTargets(md));
+if(!merged){c.scrollLeft=0;c.scrollTop=0;return}
+const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
+const cell=Math.round(50*z)+2;
+const gridPad=15;
+const contPad=20;
+const centerX=(merged.mnX+merged.mxX)/2;
+const centerY=(merged.mnY+merged.mxY)/2;
+const xPx=contPad+gridPad+(centerX-1)*cell+cell/2;
+const yPx=contPad+gridPad+((mh-centerY))*cell+cell/2;
+let targetLeft=xPx-c.clientWidth/2;
+let targetTop=yPx-c.clientHeight/2;
+const maxLeft=Math.max(0,c.scrollWidth-c.clientWidth);
+const maxTop=Math.max(0,c.scrollHeight-c.clientHeight);
+c.scrollLeft=Math.max(0,Math.min(maxLeft,targetLeft));
+c.scrollTop=Math.max(0,Math.min(maxTop,targetTop))
+}
 function switchStageNpcTab(btn){if(!btn)return;const idx=parseInt(btn.getAttribute('data-tab-idx'),10)||0;const root=btn.closest('[data-stage-npc-group]');if(!root)return;const tabs=root.querySelectorAll('.stage-npc-tab-btn');const panels=root.querySelectorAll('.stage-npc-tab-panel');tabs.forEach((b,i)=>{b.classList.toggle('active',i===idx);b.setAttribute('aria-selected',String(i===idx))});panels.forEach((p,i)=>{p.classList.toggle('hidden',i!==idx)})}
 function firstNpcStrategyHintIconFromUnit(u){
 if(!u||typeof u!=='object')return'';
