@@ -4391,6 +4391,54 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
                 _assign_first_char_ability() or _assign_first_char_skill()
 
 
+def _truthy_asset_str(val):
+    return bool(val and str(val).strip())
+
+
+def _ability_row_has_strategy_hint_sprite(ab):
+    if not isinstance(ab, dict):
+        return False
+    if _truthy_asset_str(ab.get('strategy_hint_icon')):
+        return True
+    for k in ('ssp_replacement', 'sp_replacement'):
+        sub = ab.get(k)
+        if isinstance(sub, dict) and _truthy_asset_str(sub.get('strategy_hint_icon')):
+            return True
+    return False
+
+
+def npc_payload_has_strategy_hint_attention(up, cp):
+    """True when Forces-list compact thumbnails would show a strategy-hint badge (same scan as JS firstNpcStrategyHint*)."""
+    if up:
+        if _truthy_asset_str(up.get('strategy_hint_move_icon')):
+            return True
+        if _truthy_asset_str(up.get('strategy_hint_stats_icon')):
+            return True
+        if _truthy_asset_str(up.get('strategy_hint_icon')):
+            return True
+        for ab in (up.get('abilities') or []):
+            if _ability_row_has_strategy_hint_sprite(ab):
+                return True
+        for w in (up.get('weapons') or []):
+            if isinstance(w, dict) and _truthy_asset_str(w.get('strategy_hint_icon')):
+                return True
+    if cp:
+        for ab in (cp.get('abilities') or []):
+            if _ability_row_has_strategy_hint_sprite(ab):
+                return True
+        for sk in (cp.get('skills') or []):
+            if isinstance(sk, dict) and _truthy_asset_str(sk.get('strategy_hint_icon')):
+                return True
+    return False
+
+
+def npc_map_pulse_strategy_hint(up, cp, hint_rows_from_master):
+    """Minimap pulse: master rows marked for this NPC, or any hint sprite actually surfaced on payloads (all stage categories)."""
+    if hint_rows_from_master:
+        return True
+    return npc_payload_has_strategy_hint_attention(up, cp)
+
+
 def create_map_npc_unit_lookup(d):
     lk = {}
     for item in extract_data_list(d):
@@ -5878,7 +5926,7 @@ map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
 map_stage_reach_pin_areas_by_map_stage = create_map_stage_reach_pin_areas_map(map_area_data) if map_area_data else {}
 map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
-map_npc_strategy_hint_by_npc, map_npc_ids_with_strategy_hint = create_map_npc_strategy_hint_maps(
+map_npc_strategy_hint_by_npc, _ = create_map_npc_strategy_hint_maps(
     load_json(os.path.join(BASE_DIR, "m_map_npc_strategy_hint.json")),
 )
 map_npc_unit_lookup = create_map_npc_unit_lookup(map_npc_unit_data) if map_npc_unit_data else {}
@@ -7744,11 +7792,18 @@ def resolve_stage_terrain_name(ti, lc='EN'):
     data = STAGE_TERRAIN_MAP.get(str(ti or '0'))
     return data.get(lc, data.get('EN', 'Unknown')) if data else get_ui_label(lc, 'terrain_unknown')
 
+# Eternal Road (9050/9051/9052): always show English difficulty names in every locale.
+ETERNAL_STAGE_DIFFICULTY_LABELS_EN = {'normal': 'Normal', 'hard': 'Hard', 'expert': 'Expert'}
+
+
 def get_stage_difficulty(sid, lc='EN'):
     s = str(sid)
-    if s.startswith('9050'): return {'code': 'normal', 'name': get_ui_label(lc, 'difficulty_normal')}
-    if s.startswith('9051'): return {'code': 'hard', 'name': get_ui_label(lc, 'difficulty_hard')}
-    if s.startswith('9052'): return {'code': 'expert', 'name': get_ui_label(lc, 'difficulty_expert')}
+    if s.startswith('9050'):
+        return {'code': 'normal', 'name': ETERNAL_STAGE_DIFFICULTY_LABELS_EN['normal']}
+    if s.startswith('9051'):
+        return {'code': 'hard', 'name': ETERNAL_STAGE_DIFFICULTY_LABELS_EN['hard']}
+    if s.startswith('9052'):
+        return {'code': 'expert', 'name': ETERNAL_STAGE_DIFFICULTY_LABELS_EN['expert']}
     return {'code': 'unknown', 'name': 'Unknown'}
 
 def get_stage_difficulty_by_type_index(dti, lc='EN'):
@@ -8497,6 +8552,14 @@ def _npc_map_unit_line_is_squad_wide(line):
     if not line:
         return False
     low = line.lower()
+    if re.search(r'for\s+squad\s+units\s+piloted\s+by\b', low):
+        return False
+    if '搭乗するユニットを対象' in line:
+        return False
+    if '搭乘的單位為對象' in line or '所搭乘的單位為對象' in line:
+        return False
+    if '所搭乘的单位为对象' in line:
+        return False
     if 'squad' in low:
         return True
     if re.search(r'\ball\s+units\b', low):
@@ -8510,7 +8573,195 @@ def _npc_map_unit_line_is_squad_wide(line):
     return False
 
 
-def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, squad_by_source):
+_NPC_MAP_MS_STAT_KEYS = ('HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move')
+
+
+def _npc_map_trait_detail_is_pilot_named_squad_ms(txt):
+    if not txt:
+        return False
+    t = txt.replace('\r', '')
+    tl = t.lower()
+    if re.search(r'for\s+squad\s+units\s+piloted\s+by\b', tl):
+        return True
+    if '搭乗するユニットを対象' in t:
+        return True
+    if '搭乘的單位為對象' in t or '所搭乘的單位為對象' in t:
+        return True
+    if '所搭乘的单位为对象' in t:
+        return True
+    return False
+
+
+def _npc_map_is_cjk_pilot_squad_bracket_context(txt):
+    if not txt:
+        return False
+    if '「' not in txt:
+        return False
+    if not (
+        ('自部隊の' in txt)
+        or ('以自身所屬部隊的' in txt)
+        or ('自身所屬部隊的' in txt)
+    ):
+        return False
+    return (
+        ('搭乗するユニットを対象' in txt)
+        or ('搭乘' in txt)
+    )
+
+
+def _npc_map_en_pilot_clause_display_names(txt):
+    if not txt:
+        return []
+    m = re.search(r'for\s+squad\s+units\s+piloted\s+by\s*(.+)', txt.replace('\r', '\n'), re.I | re.DOTALL)
+    if not m:
+        return []
+    clause = (m.group(1) or '').strip().rstrip('.').strip()
+    clause = re.sub(r',\s*and\s+', ', ', clause, flags=re.I)
+    return [x.strip().strip(',').strip() for x in clause.split(',') if x.strip()]
+
+
+def _npc_map_extract_bracket_pilot_labels_trait(txt):
+    if not txt:
+        return []
+    return [x.strip().strip(',').strip() for x in re.findall(r'「([^」]+)」', txt) if x.strip()]
+
+
+def _char_trait_display_match_key(disp):
+    """Normalize pilot label / roster character name for tolerant matching."""
+    if not disp:
+        return ''
+    s = _strip_trailing_ex_markers_from_unit_title(str(disp).strip())
+    s = re.sub(r'\s+', ' ', s)
+    if not s:
+        return ''
+    s = s.casefold()
+    return s.replace('\u30fb', '\u00b7').replace('\u2027', '\u00b7')
+
+
+def _npc_map_pilot_label_match_keys(label):
+    raw = (label or '').strip().strip(',').strip()
+    if not raw:
+        return []
+    keys = [_char_trait_display_match_key(raw)]
+    base = re.sub(r'\([^)]*\)\s*$', '', raw).strip()
+    if base and base != raw:
+        keys.append(_char_trait_display_match_key(base))
+    out = []
+    seen = set()
+    for k in keys:
+        if k and k not in seen:
+            seen.add(k)
+            out.append(k)
+    return out
+
+
+def _npc_map_resolve_pilot_labels_to_char_ids(labels, ldc, stage_char_ids=None):
+    if not labels or not isinstance(ldc, dict):
+        return []
+    cim = ldc.get('char_id_map') or {}
+    ctm = ldc.get('char_text_map') or {}
+    out = []
+    seen = set()
+    restrict = stage_char_ids if stage_char_ids is not None else None
+    for lab in labels:
+        want_keys = _npc_map_pilot_label_match_keys(lab)
+        if not want_keys:
+            continue
+        hits = []
+        for cid_raw, lid in cim.items():
+            cid = normalize_id(cid_raw)
+            if cid == '0':
+                continue
+            disp = ctm.get(lid, '')
+            if not disp:
+                continue
+            dk = _char_trait_display_match_key(disp)
+            if any(dk == wk for wk in want_keys):
+                hits.append(cid)
+        hits.sort()
+        if restrict is not None:
+            on_stage = [h for h in hits if h in restrict]
+            if on_stage:
+                hits = on_stage
+        for cid in hits:
+            if cid not in seen:
+                seen.add(cid)
+                out.append(cid)
+    return out
+
+
+def _npc_map_extract_ms_stat_pct_from_pilot_squad_trait_blob(txt):
+    """Parse MS stat % from full trait detail (EN one-liner or JA/TW/HK multi-line)."""
+    if not txt:
+        return {}
+    flat = re.sub(r'\s+', ' ', txt.replace('\r', '\n').replace('\u3000', ' '))
+    allow = set(_NPC_MAP_MS_STAT_KEYS)
+    b = dict(_extract_stat_percent_unit(txt, skip_conditional=False))
+    if b:
+        return {k: v for k, v in b.items() if k in allow}
+    ja_map = {'最大HP': 'HP', '最大EN': 'EN', '攻撃力': 'Attack', '防御力': 'Defense', '機動力': 'Mobility', '移動力': 'Move'}
+    mj = re.search(r'(最大HP|最大EN|攻撃力|防御力|機動力|移動力)が\s*(\d+)%上昇', flat)
+    if mj:
+        k = ja_map.get(mj.group(1))
+        if k:
+            return {k: int(mj.group(2))}
+    tw_map = {'最大HP': 'HP', '最大EN': 'EN', '攻擊力': 'Attack', '防禦力': 'Defense', '機動力': 'Mobility', '移動力': 'Move'}
+    mt = re.search(r'(最大HP|最大EN|攻擊力|防禦力|機動力|移動力)(提升|減少)\s*(\d+)%', flat)
+    if mt:
+        k = tw_map.get(mt.group(1))
+        if k:
+            v = int(mt.group(3))
+            if mt.group(2) == '減少':
+                v = -v
+            return {k: v}
+    return {}
+
+
+def _npc_map_try_apply_pilot_named_squad_ms_from_detail(txt, keys, pilot_tgt_by_char, ldc, stage_char_ids):
+    """When detail names specific pilots, apply MS % only to those character IDs (not whole stage squad)."""
+    if not txt or not isinstance(txt, str) or not ldc:
+        return False
+    if not _npc_map_trait_detail_is_pilot_named_squad_ms(txt):
+        return False
+    tl = txt.lower()
+    labels = []
+    if re.search(r'for\s+squad\s+units\s+piloted\s+by\b', tl):
+        labels = _npc_map_en_pilot_clause_display_names(txt)
+    elif _npc_map_is_cjk_pilot_squad_bracket_context(txt):
+        labels = _npc_map_extract_bracket_pilot_labels_trait(txt)
+    bonus = _npc_map_extract_ms_stat_pct_from_pilot_squad_trait_blob(txt)
+    if not bonus or not labels:
+        return True
+    cids = _npc_map_resolve_pilot_labels_to_char_ids(labels, ldc, stage_char_ids)
+    if not cids:
+        return True
+    for cid in cids:
+        row = pilot_tgt_by_char.setdefault(cid, {k: 0 for k in keys})
+        for s, pct in bonus.items():
+            if s in row:
+                row[s] = row.get(s, 0) + pct
+    return True
+
+
+def _map_stage_deployed_character_ids(npc_entries):
+    ids = set()
+    if not npc_entries:
+        return ids
+    for npc in npc_entries:
+        nid = npc.get('id')
+        if not nid:
+            continue
+        nid_n = normalize_id(nid)
+        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
+        if not nc:
+            continue
+        cid = normalize_id(nc[0].get('character_id', '0'))
+        if cid != '0':
+            ids.add(cid)
+    return ids
+
+
+def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, squad_by_source, pilot_tgt_by_char, ldc, stage_char_ids):
     """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets.
 
     Squad-wide lines increment the stage-wide ``squad`` total and ``squad_by_source[nid]`` (authorship)
@@ -8525,6 +8776,8 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
         for d in ab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
+                continue
+            if _npc_map_try_apply_pilot_named_squad_ms_from_detail(txt, keys, pilot_tgt_by_char, ldc, stage_char_ids):
                 continue
             lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
             for line in lines:
@@ -8550,8 +8803,9 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
 def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
     """Per eternal map stage: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
 
-    Returns (squad_total, per_npc_self_rows, squad_by_source) where squad_by_source[nid] is the squad-wide %
-    parsed from that NPC's abilities only (for excluding other units' squad buffs per defender).
+    Returns (squad_total, per_npc_self_rows, squad_by_source, pilot_char_ms_pct) where
+    squad_by_source[nid] is the squad-wide % parsed from that NPC's abilities only, and pilot_char_ms_pct
+    sums MS % keyed by normalized pilot CharacterId for \"squad units piloted by …\" style passives.
 
     Pilot character passives that buff squad MS stats (e.g. \"Increase squad ATK and DEF by 50%\") are included;
     previously only unit abilities were parsed here.
@@ -8563,20 +8817,24 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
     squad = {k: 0 for k in keys}
     per_npc = {}
     squad_by_source = {}
+    pilot_char_ms_pct = {}
+    ld = get_lang_data(lc) or {}
+    stage_cids = _map_stage_deployed_character_ids(npc_entries)
     for npc in npc_entries:
         nid = npc['id']
-        nu = map_npc_unit_lookup.get(nid, [])
+        nid_n = normalize_id(nid)
+        nu = map_npc_unit_lookup.get(nid_n, []) or map_npc_unit_lookup.get(nid, [])
         if not nu:
             continue
         _merge_map_npc_unit_stat_pct_from_abilities(
             resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
-            nid, squad, per_npc, squad_by_source)
-        nc = map_npc_character_lookup.get(nid, [])
+            nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids)
+        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
         if nc:
             _merge_map_npc_unit_stat_pct_from_abilities(
                 resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
-                nid, squad, per_npc, squad_by_source)
-    return squad, per_npc, squad_by_source  # squad_by_source[nid] = squad-wide % authored by that NPC only
+                nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids)
+    return squad, per_npc, squad_by_source, pilot_char_ms_pct  # squad_by_source[nid] = squad-wide % authored by that NPC only
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
     final, ba = {}, {}
@@ -13050,7 +13308,7 @@ def get_stage(stage_id):
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
-            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb, squad_by_source_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
+            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
             for npc in nt:
                 nid = npc['id']; nid_norm = normalize_id(nid)
                 nu = map_npc_unit_lookup.get(nid_norm, []) or []
@@ -13064,8 +13322,14 @@ def get_stage(stage_id):
                     sr0 = self_tb.get(nid) or z
                     self_row = {k: sr0.get(k, 0) for k in stat_keys}
                     own_squad_row = {k: (squad_by_source_tb.get(nid) or z).get(k, 0) for k in stat_keys}
-                    tb_on = {k: squad_tb.get(k, 0) + self_row.get(k, 0) for k in stat_keys}
-                    tb_off = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) for k in stat_keys}
+                    cid_pc = normalize_id(ce.get('character_id', '0')) if ce else '0'
+                    pilot_row = pilot_char_ms_pct_tb.get(cid_pc) if cid_pc != '0' else None
+                    if pilot_row:
+                        pilot_row = {k: pilot_row.get(k, 0) for k in stat_keys}
+                    else:
+                        pilot_row = z
+                    tb_on = {k: squad_tb.get(k, 0) + self_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
+                    tb_off = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
                     base_stats = {'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}
                     fst_on, tba_on = apply_team_bonus_to_unit_stats(base_stats, tb_on)
                     fst_off, tba_off = apply_team_bonus_to_unit_stats(base_stats, tb_off)
@@ -13085,10 +13349,8 @@ def get_stage(stage_id):
                         bp = calculate_npc_character_self_bonus_pct(cabs)
                         boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
                         cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
-                apply_map_npc_strategy_hints(
-                    nid, up, cp,
-                    map_npc_strategy_hint_by_npc.get(normalize_id(nid), []),
-                )
+                strategy_hint_entries = map_npc_strategy_hint_by_npc.get(nid_norm, []) or []
+                apply_map_npc_strategy_hints(nid, up, cp, strategy_hint_entries)
                 bst = normalize_id(npc.get('battle_side_type', '2'), '2')
                 is_guest = bst == '1'
                 is_friendly_force = bst == '4'
@@ -13100,7 +13362,7 @@ def get_stage(stage_id):
                     side = 'enemy'
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_guest else None
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
-                has_h = nid_norm in map_npc_ids_with_strategy_hint
+                has_h = npc_map_pulse_strategy_hint(up, cp, strategy_hint_entries)
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
