@@ -2371,6 +2371,13 @@ def ability_name_implies_unit_stat_conditional_bucket(ad):
     low = name.lower()
     if 'unconditional' in low:
         return False
+    # "(Character conditions) …" is a roster/category label in EN, not a CP-gated passive bucket.
+    # Its title contains "conditions", which must not trip the generic substring gate below — that
+    # skipped entire abilities in map-NPC stat merge (dropping pilot-named squad MS ATK/DEF, etc.).
+    if re.search(r'[\(\uff08]\s*character\s+conditions?\s*[\)\uff09]', low):
+        return False
+    if '（キャラクター条件）' in name or '（角色條件）' in name or '（角色条件）' in name:
+        return False
     if 'condition' in low or 'conditional' in low:
         return True
     if re.search(r'(?<![a-z])when(?![a-z])', low):
@@ -9046,20 +9053,31 @@ def _build_browse_list_performance_caches():
 
 
 def calculate_npc_character_self_bonus_pct(abilities):
+    """Unconditional non-EX pilot-stat % from map-NPC character abilities (SP kit when present).
+
+    m_map_npc_character stores base pilot stats; same as guest/friendly NPCs, enemy pilots still get
+    always-on passives (e.g. Newtype Awaken/Reaction %) merged for display and damage sim."""
     bp = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
-    if not abilities: return bp
+    if not abilities:
+        return bp
     for ab in abilities:
-        for d in (ab.get('details', []) if isinstance(ab, dict) else []):
+        if not isinstance(ab, dict):
+            continue
+        sab = ab.get('sp_replacement') or ab
+        if sab.get('is_ex', False):
+            continue
+        for d in sab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
                 continue
             for line in [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]:
-                if _char_trait_line_is_squad_unit_effect(line, ab):
+                if _char_trait_line_is_squad_unit_effect(line, sab):
                     continue
                 if _is_conditional_stat_text(line):
                     continue
                 for s, p in extract_stat_percent_char(line, txt, char_id=None).items():
-                    if s in bp: bp[s] = bp.get(s, 0) + p
+                    if s in bp:
+                        bp[s] = bp.get(s, 0) + p
     return bp
 
 def get_large_unit_cells(x, y):
@@ -13362,15 +13380,11 @@ def get_stage(stage_id):
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
                     cabs = resolve_npc_character_abilities(ce.get('ability_set_id', '0'), lc); csks = resolve_npc_character_skills(ce.get('skill_set_id', '0'), lc)
                     cp['abilities'] = cabs if cabs else [get_ui_label(lc, 'none')]; cp['skills'] = csks if csks else [get_ui_label(lc, 'none')]
-                    # Enemy map pilots: dossier totals are authored in m_map_npc_character — do not re-apply roster trait % here.
                     if cabs:
-                        if bst_side_ty != '2':
-                            bp = calculate_npc_character_self_bonus_pct(cabs)
-                            boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
-                            cp['stats_raw'] = boosted
-                            cp['bonus_amounts'] = bonus_amounts
-                        else:
-                            cp['bonus_amounts'] = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
+                        bp = calculate_npc_character_self_bonus_pct(cabs)
+                        boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
+                        cp['stats_raw'] = boosted
+                        cp['bonus_amounts'] = bonus_amounts
                 strategy_hint_entries = map_npc_strategy_hint_by_npc.get(nid_norm, []) or []
                 apply_map_npc_strategy_hints(nid, up, cp, strategy_hint_entries)
                 bst = bst_side_ty
