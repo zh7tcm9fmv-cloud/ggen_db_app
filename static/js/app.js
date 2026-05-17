@@ -1548,12 +1548,8 @@ if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(ps))allChanceStepBoost=true;
 });
 const squadBonus=getNpcStageSquadChanceStepBonus(d);
 const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceAdd+squadBonus)));
-const ch=d&&d.detail_npc_context&&d.detail_npc_context.character;
-const role=(ch&&ch.role)||d.role;
-const hasBaseDef=charRoleIsDefense(role);
-const hasBaseAtk=charRoleIsSupport(role);
-const supportDefCount=Math.max(0,Math.min(2,Math.max(hasBaseDef?1:0,defAdd)));
-const supportAtkCount=Math.max(0,Math.min(2,Math.max(hasBaseAtk?1:0,atkAdd)));
+const supportDefCount=Math.max(0,Math.min(2,defAdd));
+const supportAtkCount=Math.max(0,Math.min(2,atkAdd));
 return{chanceCount,supportDefCount,supportAtkCount}}
 function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,true,true,true).join('\n');
 const accPatterns=[/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/gi,/自身の命中率が(\d+)%上昇/g,/自身の命中率と回避率が(\d+)%上昇/g,/自身命中率提升(\d+)%/g,/自身命中率及閃避率提升(\d+)%/g];
