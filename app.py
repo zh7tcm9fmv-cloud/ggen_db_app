@@ -8773,6 +8773,10 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
     per_npc.setdefault(nid, {k: 0 for k in keys})
     row = per_npc[nid]
     for ab in abilities:
+        # Match unit dossier routing: gated kits (vigor/tag/battle wording in title + conditional bodies)
+        # must not dump % into unconditional map-NPC aggregates.
+        if ability_name_implies_unit_stat_conditional_bucket(ab):
+            continue
         for d in ab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
@@ -8780,12 +8784,24 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
             if _npc_map_try_apply_pilot_named_squad_ms_from_detail(txt, keys, pilot_tgt_by_char, ldc, stage_char_ids):
                 continue
             lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
+            prev_enemy_tag_clause = False
             for line in lines:
                 if _char_trait_line_is_squad_unit_effect(line, ab):
                     continue
-                if _is_conditional_stat_text(line):
-                    continue
+                itc = _is_conditional_stat_text(line)
                 b = _extract_stat_percent_unit(line, skip_conditional=False)
+                # Battle-only enemy-tag ATK/DEF boosts (following "when enemies match … tags").
+                enemy_adv_atk_def = _unit_enemy_tag_equal_atk_def_boost(b, prev_enemy_tag_clause)
+                if enemy_adv_atk_def:
+                    prev_enemy_tag_clause = False
+                else:
+                    b, prev_enemy_tag_clause = _strip_enemy_tag_advantage_atk_def_if_following(b, prev_enemy_tag_clause)
+                if _unit_enemy_specified_tags_clause_part(line):
+                    prev_enemy_tag_clause = True
+                if enemy_adv_atk_def:
+                    continue
+                if itc:
+                    continue
                 if not b:
                     continue
                 if _npc_map_unit_line_is_squad_wide(line):
@@ -13314,6 +13330,7 @@ def get_stage(stage_id):
                 nu = map_npc_unit_lookup.get(nid_norm, []) or []
                 nc = map_npc_character_lookup.get(nid_norm, []) or map_npc_character_lookup.get(nid, [])
                 ue = nu[0] if nu else None; ce = nc[0] if nc else None
+                bst_side_ty = normalize_id(npc.get('battle_side_type', '2'), '2')
                 dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
                 if ue:
                     uabs = resolve_npc_unit_abilities(ue.get('ability_set_id', '0'), lc, ue.get('unit_id', '0'))
@@ -13345,13 +13362,18 @@ def get_stage(stage_id):
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
                     cabs = resolve_npc_character_abilities(ce.get('ability_set_id', '0'), lc); csks = resolve_npc_character_skills(ce.get('skill_set_id', '0'), lc)
                     cp['abilities'] = cabs if cabs else [get_ui_label(lc, 'none')]; cp['skills'] = csks if csks else [get_ui_label(lc, 'none')]
+                    # Enemy map pilots: dossier totals are authored in m_map_npc_character — do not re-apply roster trait % here.
                     if cabs:
-                        bp = calculate_npc_character_self_bonus_pct(cabs)
-                        boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
-                        cp['stats_raw'] = boosted; cp['bonus_amounts'] = bonus_amounts
+                        if bst_side_ty != '2':
+                            bp = calculate_npc_character_self_bonus_pct(cabs)
+                            boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
+                            cp['stats_raw'] = boosted
+                            cp['bonus_amounts'] = bonus_amounts
+                        else:
+                            cp['bonus_amounts'] = {k: 0 for k in ['Ranged', 'Melee', 'Defense', 'Reaction', 'Awaken']}
                 strategy_hint_entries = map_npc_strategy_hint_by_npc.get(nid_norm, []) or []
                 apply_map_npc_strategy_hints(nid, up, cp, strategy_hint_entries)
-                bst = normalize_id(npc.get('battle_side_type', '2'), '2')
+                bst = bst_side_ty
                 is_guest = bst == '1'
                 is_friendly_force = bst == '4'
                 if is_guest:
