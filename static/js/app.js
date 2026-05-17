@@ -1919,6 +1919,7 @@ function renderStageMapGrid(md){
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
+      const reachCls=_stageMapHitReachTargetCell(md,x,y)?' map-cell--reach-target':'';
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}`:'';
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
@@ -1932,7 +1933,7 @@ function renderStageMapGrid(md){
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
-      html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
+      html+=`<div class="map-cell ${cls}${clickCls}${originCls}${reachCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='enemy'?t('enemy'):t('ally');
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
@@ -1951,10 +1952,8 @@ function renderStageMapGrid(md){
         const fpStyle=multiFp?` style="left:${2+dx}px;top:${2+dy}px;width:${fw}px;height:${fh}px;inset:auto;"`:'';
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
-        const hintIc=u&&String(u.strategy_hint_map_icon||'').trim()?String(u.strategy_hint_map_icon).trim():''
-        const hintSrc=hintIc?imgUrlPreferCdn(hintIc):''
-        if(hintSrc&&o.origin)html+=`<img class="map-stage-strategy-hint-icon" src="${hintSrc}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
+        const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
       }
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`

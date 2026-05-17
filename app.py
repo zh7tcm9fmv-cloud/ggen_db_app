@@ -13089,13 +13089,7 @@ def get_stage(stage_id):
                 guest_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_GuestArmy.webp' if is_guest else None
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
                 has_h = nid_norm in map_npc_ids_with_strategy_hint
-                hm_icon = ''
-                if has_h:
-                    for hh in map_npc_strategy_hint_by_npc.get(nid_norm, []) or []:
-                        hm_icon = strategy_hint_attention_url(hh.get('resource_id'))
-                        if hm_icon:
-                            break
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'strategy_hint_map_icon': hm_icon}
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
@@ -13110,7 +13104,12 @@ def get_stage(stage_id):
             for u in uom:
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
-            pad = 2; w = max(w, max_x + 1 + pad); h = max(h, max_y + 1 + pad)
+            # Match in-game: never expand past m_map Width/Height (extra rows/cols were empty #172033 tiles).
+            mw, mh = safe_int(mi.get('width'), 0), safe_int(mi.get('height'), 0)
+            if mw > 0:
+                w = mw
+            if mh > 0:
+                h = mh
             md = build_map_grid(w, h, uom)
             rtp = []
             if victory_lines_include_reach_target_area(vc):
