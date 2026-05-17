@@ -4123,8 +4123,20 @@ def create_stage_condition_map(d):
     return lookup
 
 
+def _map_area_row_is_reach_target_pin(row):
+    """m_map_area: type 2 is the documented reach/objective marker; GTower (& some maps) reuse type 1 for a tight 1x1 objective tile."""
+    ta = safe_int(row.get('TargetAreaTypeIndex') or row.get('targetAreaTypeIndex'), 0)
+    if ta == 2:
+        return True
+    if ta != 1:
+        return False
+    ww = max(1, safe_int(row.get('CoordW'), 1))
+    hh = max(1, safe_int(row.get('CoordH'), 1))
+    return (ww * hh) <= 2
+
+
 def create_map_stage_reach_pin_areas_map(area_data):
-    """Victory pin tiles from m_map_area (TargetAreaTypeIndex == 2). XY use the same 0-based grid as MapNpc X/Y."""
+    """Victory pin tiles from m_map_area. XY uses the same 0-based grid as MapNpc X/Y."""
     out = {}
     for item in extract_data_list(area_data):
         if not isinstance(item, dict):
@@ -4132,7 +4144,7 @@ def create_map_stage_reach_pin_areas_map(area_data):
         msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
         if msid == '0':
             continue
-        if safe_int(item.get('TargetAreaTypeIndex') or item.get('targetAreaTypeIndex'), 0) != 2:
+        if not _map_area_row_is_reach_target_pin(item):
             continue
         out.setdefault(msid, []).append({
             'x': safe_int(item.get('CoordX'), 0),

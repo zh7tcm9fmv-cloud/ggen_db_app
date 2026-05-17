@@ -1824,13 +1824,28 @@ mnX=Math.min(mnX,bx);mxX=Math.max(mxX,bx+ww-1);mnY=Math.min(mnY,by);mxY=Math.max
 return(mnX===999)?null:{mnX,mxX,mnY,mxY}
 }
 function _stageMapMergeExtents(a,b){if(!a)return b;if(!b)return a;return{mnX:Math.min(a.mnX,b.mnX),mxX:Math.max(a.mxX,b.mxX),mnY:Math.min(a.mnY,b.mnY),mxY:Math.max(a.mxY,b.mxY)}}
+function _stageMapCellShowsUnitOrReach(md,occ,x,y){
+  return!!(occ&&occ[`${x}_${y}`])||_stageMapHitReachTargetCell(md,x,y)
+}
+function _stageMapTrimViewportEmptyMargins(md,win,occ){
+  if(!_stageMapExtentsFromReachTargets(md)&&(!occ||Object.keys(occ).length===0))return win;
+  let {minX,maxX,minY,maxY}=win;
+  const converge=36;
+  for(let q=0;q<converge;q++){
+    const bx=maxX,lx=minX,by=maxY,ty=minY;
+    let colUsed=x=>{for(let y=ty;y<=by;y++)if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;return false};
+    let rowUsed=y=>{for(let x=lx;x<=bx;x++)if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;return false};
+    if(maxX>minX&&!colUsed(maxX))maxX--;else if(maxX>minX&&!colUsed(minX))minX++;else if(maxY>minY&&!rowUsed(maxY))maxY--;else if(maxY>minY&&!rowUsed(minY))minY++;else break
+  }
+  return{minX,maxX,minY,maxY}
+}
 function _stageMapViewWindow(md){
   if(!md)return {minX:1,maxX:1,minY:1,maxY:1};
-  _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
-  const pool=md.units||[],w=md.width||0,h=md.height||0,units=pool.filter(u=>_stageMapUnitVisible(u,pool));
+  const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   if(!w||!h)return {minX:1,maxX:1,minY:1,maxY:1};
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
-  units.forEach(un=>{
+  const pool0=md.units||[];
+  pool0.filter(un=>_stageMapUnitVisible(un,pool0)).forEach(un=>{
     const cls=un.cells||[{x:un.x,y:un.y}];
     cls.forEach(cl=>{
       const cx=Number(cl.x)+1,cy=Number(cl.y)+1;
@@ -1841,14 +1856,16 @@ function _stageMapViewWindow(md){
   if(mnX!==999)ext={mnX,mxX,mnY,mxY};
   const rt=_stageMapExtentsFromReachTargets(md);
   const merged=_stageMapMergeExtents(ext,rt);
-  if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
-  const pad=2;
-  return {
+  const pad=1;
+  let raw;
+  if(merged)raw={
     minX:Math.max(1,merged.mnX-pad),
     maxX:Math.min(w,merged.mxX+pad),
     minY:Math.max(1,merged.mnY-pad),
     maxY:Math.min(h,merged.mxY+pad),
-  }
+  };
+  else raw={minX:1,maxX:w,minY:1,maxY:h};
+  return _stageMapTrimViewportEmptyMargins(md,raw,occ)
 }
 function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
@@ -1856,6 +1873,29 @@ const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
+}
+function _stageMapBuildOccupancyMap(md){
+  _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
+  const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
+  units.forEach(u=>{
+    if(u.cells&&u.cells.length){
+      let oc=null;
+      u.cells.forEach(c=>{
+        const cx=Number(c.x)+1,cy=Number(c.y)+1;
+        if(cx<1||cy<1||cx>w||cy>h)return;
+        if(!oc)oc={x:cx,y:cy};
+        else{if(cy>oc.y||(cy===oc.y&&cx<oc.x))oc={x:cx,y:cy}}
+      });
+      u.cells.forEach(c=>{
+        const cx=Number(c.x)+1,cy=Number(c.y)+1;
+        if(cx>=1&&cy>=1&&cx<=w&&cy<=h)occ[`${cx}_${cy}`]={unit:u,origin:!!(oc&&cx===oc.x&&cy===oc.y)}
+      });
+    }else{
+      const x=Number(u.x||0)+1,y=Number(u.y||0)+1;
+      if(x>=1&&y>=1&&x<=w&&y<=h)occ[`${x}_${y}`]={unit:u,origin:true}
+    }
+  });
+  return {occ,w,h};
 }
 function _normalizeStageMapUnitFootprints(units,_w,_h){
 if(!Array.isArray(units))return;
@@ -1885,27 +1925,9 @@ if(mnx===Infinity)return null;
 return{mnx,mxx,mny,mxy,fpw:mxx-mnx+1,fph:mxy-mny+1}
 }
 function renderStageMapGrid(md){
-  _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
-  const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
+  const {occ,w,h}=_stageMapBuildOccupancyMap(md);
+  const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
-  units.forEach(u=>{
-    if(u.cells&&u.cells.length){
-      let oc=null;
-      u.cells.forEach(c=>{
-        const cx=Number(c.x)+1,cy=Number(c.y)+1;
-        if(cx<1||cy<1||cx>w||cy>h)return;
-        if(!oc)oc={x:cx,y:cy};
-        else{if(cy>oc.y||(cy===oc.y&&cx<oc.x))oc={x:cx,y:cy}}
-      });
-      u.cells.forEach(c=>{
-        const cx=Number(c.x)+1,cy=Number(c.y)+1;
-        if(cx>=1&&cy>=1&&cx<=w&&cy<=h)occ[`${cx}_${cy}`]={unit:u,origin:!!(oc&&cx===oc.x&&cy===oc.y)}
-      })
-    }else{
-      const x=Number(u.x||0)+1,y=Number(u.y||0)+1;
-      if(x>=1&&y>=1&&x<=w&&y<=h)occ[`${x}_${y}`]={unit:u,origin:true}
-    }
-  });
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
   const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
@@ -1919,7 +1941,6 @@ function renderStageMapGrid(md){
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
-      const reachCls=_stageMapHitReachTargetCell(md,x,y)?' map-cell--reach-target':'';
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}`:'';
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
@@ -1933,7 +1954,7 @@ function renderStageMapGrid(md){
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
-      html+=`<div class="map-cell ${cls}${clickCls}${originCls}${reachCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
+      html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='enemy'?t('enemy'):t('ally');
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
