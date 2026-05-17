@@ -1533,19 +1533,28 @@ while((m=reForce.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
 return Math.max(0,sum);
 }
 function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
-function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,true,true);const tx=parts.join('\n');
+function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,true,true);
 const defPatterns=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
 const atkPatterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
 const chancePatterns=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi];
-const defSum=_npcRegexCaptureSum(tx,defPatterns),atkSum=_npcRegexCaptureSum(tx,atkPatterns);
-let chanceForce=0,allChanceStepBoost=false;
+let chanceAdd=0,defAdd=0,atkAdd=0,allChanceStepBoost=false;
 parts.forEach(p=>{
+const ps=String(p||'');
+defAdd+=Math.max(_npcRegexCaptureSum(ps,defPatterns),_countCharActionPlusOne(ps,'def'));
+atkAdd+=Math.max(_npcRegexCaptureSum(ps,atkPatterns),_countCharActionPlusOne(ps,'atk'));
 if(!_npcChanceTextAppliesToCurrent(p,d))return;
-chanceForce+=_npcRegexCaptureSum(String(p||''),chancePatterns);
-if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(String(p||'')))allChanceStepBoost=true;
+chanceAdd+=Math.max(_npcRegexCaptureSum(ps,chancePatterns),_countCharActionPlusOne(ps,'chance'));
+if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(ps))allChanceStepBoost=true;
 });
 const squadBonus=getNpcStageSquadChanceStepBonus(d);
-const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceForce+squadBonus)));return{chanceCount,supportDefCount:defSum,supportAtkCount:atkSum}}
+const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceAdd+squadBonus)));
+const ch=d&&d.detail_npc_context&&d.detail_npc_context.character;
+const role=(ch&&ch.role)||d.role;
+const hasBaseDef=charRoleIsDefense(role);
+const hasBaseAtk=charRoleIsSupport(role);
+const supportDefCount=Math.max(0,Math.min(2,Math.max(hasBaseDef?1:0,defAdd)));
+const supportAtkCount=Math.max(0,Math.min(2,Math.max(hasBaseAtk?1:0,atkAdd)));
+return{chanceCount,supportDefCount,supportAtkCount}}
 function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,true,true,true).join('\n');
 const accPatterns=[/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/gi,/自身の命中率が(\d+)%上昇/g,/自身の命中率と回避率が(\d+)%上昇/g,/自身命中率提升(\d+)%/g,/自身命中率及閃避率提升(\d+)%/g];
 return _npcRegexCaptureSum(tx,accPatterns)}
