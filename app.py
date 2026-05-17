@@ -13116,12 +13116,18 @@ def get_stage(stage_id):
             for u in uom:
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
-            # Match in-game: never expand past m_map Width/Height (extra rows/cols were empty #172033 tiles).
             mw, mh = safe_int(mi.get('width'), 0), safe_int(mi.get('height'), 0)
-            if mw > 0:
-                w = mw
-            if mh > 0:
-                h = mh
+            # Eternal 90520021 only: clamp to official m_map size (drops phantom padded rows/cols).
+            # Other stages keep legacy padding past content so we do not change their viewport.
+            if normalize_id(stage_id) == '90520021':
+                if mw > 0:
+                    w = mw
+                if mh > 0:
+                    h = mh
+            else:
+                pad = 2
+                w = max(w, max_x + 1 + pad)
+                h = max(h, max_y + 1 + pad)
             md = build_map_grid(w, h, uom)
             rtp = []
             if victory_lines_include_reach_target_area(vc):

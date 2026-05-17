@@ -1839,7 +1839,34 @@ function _stageMapTrimViewportEmptyMargins(md,win,occ){
   }
   return{minX,maxX,minY,maxY}
 }
-function _stageMapViewWindow(md){
+function _stage905MapViewportTuned(){return S.currentDetailType==='stage'&&String(S.currentDetailData&&S.currentDetailData.id||'')==='90520021'}
+function _stageMapViewWindowClassic(md){
+  if(!md)return {minX:1,maxX:1,minY:1,maxY:1};
+  _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
+  const pool=md.units||[],w=md.width||0,h=md.height||0,units=pool.filter(u=>_stageMapUnitVisible(u,pool));
+  if(!w||!h)return {minX:1,maxX:1,minY:1,maxY:1};
+  let mnX=999,mxX=-1,mnY=999,mxY=-1;
+  units.forEach(un=>{
+    const cls=un.cells||[{x:un.x,y:un.y}];
+    cls.forEach(cl=>{
+      const cx=Number(cl.x)+1,cy=Number(cl.y)+1;
+      if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy
+    })
+  });
+  let ext=null;
+  if(mnX!==999)ext={mnX,mxX,mnY,mxY};
+  const rt=_stageMapExtentsFromReachTargets(md);
+  const merged=_stageMapMergeExtents(ext,rt);
+  if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
+  const pad=2;
+  return {
+    minX:Math.max(1,merged.mnX-pad),
+    maxX:Math.min(w,merged.mxX+pad),
+    minY:Math.max(1,merged.mnY-pad),
+    maxY:Math.min(h,merged.mxY+pad),
+  }
+}
+function _stageMapViewWindow905(md){
   if(!md)return {minX:1,maxX:1,minY:1,maxY:1};
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   if(!w||!h)return {minX:1,maxX:1,minY:1,maxY:1};
@@ -1866,6 +1893,9 @@ function _stageMapViewWindow(md){
   };
   else raw={minX:1,maxX:w,minY:1,maxY:h};
   return _stageMapTrimViewportEmptyMargins(md,raw,occ)
+}
+function _stageMapViewWindow(md){
+return _stage905MapViewportTuned()?_stageMapViewWindow905(md):_stageMapViewWindowClassic(md)
 }
 function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
@@ -2439,16 +2469,20 @@ if(outer&&!outer.open)outer.open=true;
 }
 const NPC_CARD_FLASH_MS_DEFAULT = 4800;
 const NPC_CARD_FLASH_MS_STACK_REINF = 5600;
+const NPC_CARD_FLASH_MS_FROM_STAGE_MAP = 15200;
 function _flashNpcCard(el, variant){
 if(!el)return;
 const purple = variant === 'stackReinf';
+const fromMap=!purple&&variant==='mapJump';
 el.classList.add('npc-card-highlight');
-if (purple) el.classList.add('npc-card-highlight--stack-reinf');
-const ms = purple ? NPC_CARD_FLASH_MS_STACK_REINF : NPC_CARD_FLASH_MS_DEFAULT;
+if(purple)el.classList.add('npc-card-highlight--stack-reinf');
+else if(fromMap)el.classList.add('npc-card-highlight--from-stage-map');
+const ms = purple ? NPC_CARD_FLASH_MS_STACK_REINF : fromMap ? NPC_CARD_FLASH_MS_FROM_STAGE_MAP : NPC_CARD_FLASH_MS_DEFAULT;
 window.setTimeout(() => {
 try {
 el.classList.remove('npc-card-highlight');
 el.classList.remove('npc-card-highlight--stack-reinf');
+el.classList.remove('npc-card-highlight--from-stage-map');
 } catch (_) {}
 }, ms);
 }
@@ -2493,7 +2527,7 @@ return true;
 }
 function onStageMapUnitClick(detailIdx, ev, unitId, npcId, flashVariant){
 if(ev)ev.stopPropagation();
-const fv = flashVariant === 'stackReinf' ? 'stackReinf' : undefined;
+const fv = flashVariant === 'stackReinf' ? 'stackReinf' : 'mapJump';
 const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';
 if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
 const i=parseInt(detailIdx,10);
