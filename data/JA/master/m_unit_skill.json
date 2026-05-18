@@ -7,7 +7,11 @@
     "StartEffectResourceId": "ef_mpc_0092_01_unitaura_phenex",
     "ActiveEffectResourceId": "ef_mpc_0092_01_unitaura_phenex_loop",
     "Duration": 1,
-    "UsageLimit": 1
+    "UsageLimit": 1,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0,
+    "Unknown_Col_10": 0,
+    "Unknown_Col_11": 0
   },
   {
     "Id": 137000595000,
@@ -17,6 +21,10 @@
     "StartEffectResourceId": "ef_mpc_0091_05_unitskill",
     "ActiveEffectResourceId": "ef_mpc_0091_05_unitskill_loop",
     "Duration": 1,
-    "UsageLimit": 1
+    "UsageLimit": 1,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0,
+    "Unknown_Col_10": 0,
+    "Unknown_Col_11": 0
   }
 ]

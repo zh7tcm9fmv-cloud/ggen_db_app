@@ -1821,7 +1821,7 @@
     "Id": 290141,
     "WeaponEffectPrefabPairSetId": 290141,
     "WeaponEffectId": "ef_mpa_0023_005_beamcaliver",
-    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+    "DamagedEffectId": "ef_mpd_0023_005_beamcaliver"
   },
   {
     "Id": 290142,
@@ -1876,6 +1876,12 @@
     "WeaponEffectPrefabPairSetId": 290150,
     "WeaponEffectId": "ef_mpa_0023_000_missile_greatzeong",
     "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 290151,
+    "WeaponEffectPrefabPairSetId": 290151,
+    "WeaponEffectId": "ef_mpa_0023_004_beammusket",
+    "DamagedEffectId": "ef_mpd_0002_004_beamcanon_mercury"
   },
   {
     "Id": 310001,

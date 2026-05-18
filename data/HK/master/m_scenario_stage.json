@@ -13,7 +13,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100202,
@@ -29,7 +30,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100303,
@@ -45,7 +47,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100402,
@@ -61,7 +64,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100502,
@@ -77,7 +81,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100603,
@@ -93,7 +98,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100703,
@@ -109,7 +115,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100802,
@@ -125,7 +132,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 100902,
@@ -141,7 +149,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101003,
@@ -157,7 +166,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 100902,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101103,
@@ -173,7 +183,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101203,
@@ -189,7 +200,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101303,
@@ -205,7 +217,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101402,
@@ -221,7 +234,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101501,
@@ -237,7 +251,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101601,
@@ -253,7 +268,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 101701,
@@ -269,7 +285,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900103,
@@ -285,7 +302,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900203,
@@ -301,7 +319,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900303,
@@ -317,7 +336,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900403,
@@ -333,7 +353,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900503,
@@ -349,7 +370,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900603,
@@ -365,7 +387,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900702,
@@ -381,7 +404,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900801,
@@ -397,7 +421,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 900901,
@@ -413,7 +438,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901001,
@@ -429,7 +455,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 900901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901101,
@@ -445,7 +472,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 901001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901201,
@@ -461,7 +489,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 901101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901301,
@@ -477,7 +506,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 901201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901401,
@@ -493,7 +523,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 901301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 901501,
@@ -509,7 +540,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 901401,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300103,
@@ -525,7 +557,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300203,
@@ -541,7 +574,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300303,
@@ -557,7 +591,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300403,
@@ -573,7 +608,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300502,
@@ -589,7 +625,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300603,
@@ -605,7 +642,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300704,
@@ -621,7 +659,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300804,
@@ -637,7 +676,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1300901,
@@ -653,7 +693,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300804,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1301001,
@@ -669,7 +710,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1300901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1301101,
@@ -685,7 +727,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1301001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700103,
@@ -701,7 +744,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700203,
@@ -717,7 +761,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700301,
@@ -733,7 +778,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700403,
@@ -749,7 +795,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700501,
@@ -765,7 +812,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700603,
@@ -781,7 +829,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700701,
@@ -797,7 +846,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700801,
@@ -813,7 +863,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 1700901,
@@ -829,7 +880,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 1700801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200103,
@@ -845,7 +897,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200204,
@@ -861,7 +914,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200304,
@@ -877,7 +931,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200404,
@@ -893,7 +948,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200503,
@@ -909,7 +965,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200603,
@@ -925,7 +982,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200702,
@@ -941,7 +999,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200801,
@@ -957,7 +1016,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2200901,
@@ -973,7 +1033,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 2201001,
@@ -989,7 +1050,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 2200901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200103,
@@ -1005,7 +1067,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200201,
@@ -1021,7 +1084,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200303,
@@ -1037,7 +1101,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200402,
@@ -1053,7 +1118,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200501,
@@ -1069,7 +1135,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200603,
@@ -1085,7 +1152,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200702,
@@ -1101,7 +1169,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200801,
@@ -1117,7 +1186,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3200901,
@@ -1133,7 +1203,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3201001,
@@ -1149,7 +1220,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3200901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300103,
@@ -1165,7 +1237,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300204,
@@ -1181,7 +1254,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300301,
@@ -1197,7 +1271,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300402,
@@ -1213,7 +1288,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300504,
@@ -1229,7 +1305,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300601,
@@ -1245,7 +1322,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300703,
@@ -1261,7 +1339,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300801,
@@ -1277,7 +1356,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3300901,
@@ -1293,7 +1373,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 3301001,
@@ -1309,7 +1390,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 3300901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000103,
@@ -1325,7 +1407,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000203,
@@ -1341,7 +1424,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000301,
@@ -1357,7 +1441,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000403,
@@ -1373,7 +1458,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000502,
@@ -1389,7 +1475,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000601,
@@ -1405,7 +1492,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000703,
@@ -1421,7 +1509,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000801,
@@ -1437,7 +1526,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6000901,
@@ -1453,7 +1543,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6001001,
@@ -1469,7 +1560,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6000901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010103,
@@ -1485,7 +1577,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6001001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010203,
@@ -1501,7 +1594,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010303,
@@ -1517,7 +1611,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010402,
@@ -1533,7 +1628,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010503,
@@ -1549,7 +1645,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010602,
@@ -1565,7 +1662,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010702,
@@ -1581,7 +1679,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010802,
@@ -1597,7 +1696,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6010904,
@@ -1613,7 +1713,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6011003,
@@ -1629,7 +1730,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6010904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6011103,
@@ -1645,7 +1747,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6011003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6011201,
@@ -1661,7 +1764,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6011103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6011301,
@@ -1677,7 +1781,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6011201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 6011401,
@@ -1693,7 +1798,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 6011301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100103,
@@ -1709,7 +1815,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100204,
@@ -1725,7 +1832,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100303,
@@ -1741,7 +1849,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100402,
@@ -1757,7 +1866,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100503,
@@ -1773,7 +1883,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100603,
@@ -1789,7 +1900,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100703,
@@ -1805,7 +1917,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100802,
@@ -1821,7 +1934,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8100902,
@@ -1837,7 +1951,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101002,
@@ -1853,7 +1968,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8100902,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101105,
@@ -1869,7 +1985,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101202,
@@ -1885,7 +2002,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101302,
@@ -1901,7 +2019,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101402,
@@ -1917,7 +2036,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101302,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101502,
@@ -1933,7 +2053,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101601,
@@ -1949,7 +2070,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101701,
@@ -1965,7 +2087,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 8101801,
@@ -1981,7 +2104,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500105,
@@ -1997,7 +2121,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500204,
@@ -2013,7 +2138,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500303,
@@ -2029,7 +2155,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500403,
@@ -2045,7 +2172,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500503,
@@ -2061,7 +2189,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500603,
@@ -2077,7 +2206,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500703,
@@ -2093,7 +2223,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500802,
@@ -2109,7 +2240,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9500903,
@@ -2125,7 +2257,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501002,
@@ -2141,7 +2274,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9500903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501103,
@@ -2157,7 +2291,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501203,
@@ -2173,7 +2308,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501303,
@@ -2189,7 +2325,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501403,
@@ -2205,7 +2342,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501502,
@@ -2221,7 +2359,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501602,
@@ -2237,7 +2376,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501703,
@@ -2253,7 +2393,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501803,
@@ -2269,7 +2410,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9501901,
@@ -2285,7 +2427,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9502001,
@@ -2301,7 +2444,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 9502101,
@@ -2317,7 +2461,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9502001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000103,
@@ -2333,7 +2478,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000202,
@@ -2349,7 +2495,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000304,
@@ -2365,7 +2512,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000402,
@@ -2381,7 +2529,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000502,
@@ -2397,7 +2546,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000601,
@@ -2413,7 +2563,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000701,
@@ -2429,7 +2580,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 11000801,
@@ -2445,7 +2597,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500104,
@@ -2461,7 +2614,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500203,
@@ -2477,7 +2631,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500104,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500304,
@@ -2493,7 +2648,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500404,
@@ -2509,7 +2665,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500504,
@@ -2525,7 +2682,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500604,
@@ -2541,7 +2699,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500703,
@@ -2557,7 +2716,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500803,
@@ -2573,7 +2733,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12500904,
@@ -2589,7 +2750,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12501004,
@@ -2605,7 +2767,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12500904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12501101,
@@ -2621,7 +2784,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12501004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12501201,
@@ -2637,7 +2801,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12501101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12501301,
@@ -2653,7 +2818,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12501201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 12501401,
@@ -2669,7 +2835,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12501301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400103,
@@ -2685,7 +2852,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 12501004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400203,
@@ -2701,7 +2869,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 14400103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400304,
@@ -2717,7 +2886,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 14400203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400403,
@@ -2733,7 +2903,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 14400304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400501,
@@ -2749,7 +2920,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 14400403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 14400601,
@@ -2765,7 +2937,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 14400501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 15000105,
@@ -2781,7 +2954,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 15000202,
@@ -2797,7 +2971,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 15000105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 15000304,
@@ -2813,7 +2988,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 15000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 15000401,
@@ -2829,7 +3005,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 15000304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000104,
@@ -2845,7 +3022,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000203,
@@ -2861,7 +3039,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000104,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000303,
@@ -2877,7 +3056,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000403,
@@ -2893,7 +3073,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000503,
@@ -2909,7 +3090,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000603,
@@ -2925,7 +3107,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000703,
@@ -2941,7 +3124,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000803,
@@ -2957,7 +3141,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20000904,
@@ -2973,7 +3158,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001002,
@@ -2989,7 +3175,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20000904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001101,
@@ -3005,7 +3192,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001204,
@@ -3021,7 +3209,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001303,
@@ -3037,7 +3226,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001402,
@@ -3053,7 +3243,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001502,
@@ -3069,7 +3260,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001603,
@@ -3085,7 +3277,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001703,
@@ -3101,7 +3294,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001802,
@@ -3117,7 +3311,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20001901,
@@ -3133,7 +3328,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 20002001,
@@ -3149,7 +3345,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 20001901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000103,
@@ -3165,7 +3362,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 8101502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000203,
@@ -3181,7 +3379,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000302,
@@ -3197,7 +3396,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000403,
@@ -3213,7 +3413,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000302,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000502,
@@ -3229,7 +3430,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000602,
@@ -3245,7 +3447,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000703,
@@ -3261,7 +3464,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000802,
@@ -3277,7 +3481,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21000903,
@@ -3293,7 +3498,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001004,
@@ -3309,7 +3515,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21000903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001102,
@@ -3325,7 +3532,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001204,
@@ -3341,7 +3549,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001102,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001303,
@@ -3357,7 +3566,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001405,
@@ -3373,7 +3583,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001504,
@@ -3389,7 +3600,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001405,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001602,
@@ -3405,7 +3617,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001702,
@@ -3421,7 +3634,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001801,
@@ -3437,7 +3651,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21001901,
@@ -3453,7 +3668,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21002001,
@@ -3469,7 +3685,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900103,
@@ -3485,7 +3702,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21001702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900202,
@@ -3501,7 +3719,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900303,
@@ -3517,7 +3736,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900402,
@@ -3533,7 +3753,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900502,
@@ -3549,7 +3770,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900601,
@@ -3565,7 +3787,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900701,
@@ -3581,7 +3804,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 21900801,
@@ -3597,7 +3821,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 21900701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000104,
@@ -3613,7 +3838,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000202,
@@ -3629,7 +3855,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000104,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000303,
@@ -3645,7 +3872,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000403,
@@ -3661,7 +3889,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000503,
@@ -3677,7 +3906,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000603,
@@ -3693,7 +3923,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000702,
@@ -3709,7 +3940,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000802,
@@ -3725,7 +3957,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23000901,
@@ -3741,7 +3974,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001003,
@@ -3757,7 +3991,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23000802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_10"
+    "AdvVoiceResourceId": "vc_adv_2300_10",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001103,
@@ -3773,7 +4008,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_11"
+    "AdvVoiceResourceId": "vc_adv_2300_11",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001203,
@@ -3789,7 +4025,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_12"
+    "AdvVoiceResourceId": "vc_adv_2300_12",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001303,
@@ -3805,7 +4042,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_13"
+    "AdvVoiceResourceId": "vc_adv_2300_13",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001403,
@@ -3821,7 +4059,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_14"
+    "AdvVoiceResourceId": "vc_adv_2300_14",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001503,
@@ -3837,7 +4076,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_15"
+    "AdvVoiceResourceId": "vc_adv_2300_15",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001602,
@@ -3853,7 +4093,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_16"
+    "AdvVoiceResourceId": "vc_adv_2300_16",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001702,
@@ -3869,7 +4110,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_17"
+    "AdvVoiceResourceId": "vc_adv_2300_17",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001804,
@@ -3885,7 +4127,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_18"
+    "AdvVoiceResourceId": "vc_adv_2300_18",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23001903,
@@ -3901,7 +4144,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001804,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_2300_19"
+    "AdvVoiceResourceId": "vc_adv_2300_19",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23002001,
@@ -3917,7 +4161,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23001903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23002101,
@@ -3933,7 +4178,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23002001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 23002201,
@@ -3949,7 +4195,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 23002101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000103,
@@ -3965,7 +4212,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 101402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000202,
@@ -3981,7 +4229,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000303,
@@ -3997,7 +4246,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000403,
@@ -4013,7 +4263,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000503,
@@ -4029,7 +4280,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000603,
@@ -4045,7 +4297,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000703,
@@ -4061,7 +4314,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000802,
@@ -4077,7 +4331,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30000904,
@@ -4093,7 +4348,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001003,
@@ -4109,7 +4365,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30000904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001103,
@@ -4125,7 +4382,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001203,
@@ -4141,7 +4399,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001304,
@@ -4157,7 +4416,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001403,
@@ -4173,7 +4433,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001503,
@@ -4189,7 +4450,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001604,
@@ -4205,7 +4467,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001704,
@@ -4221,7 +4484,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001801,
@@ -4237,7 +4501,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30001901,
@@ -4253,7 +4518,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30002001,
@@ -4269,7 +4535,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30001901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500103,
@@ -4285,7 +4552,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500202,
@@ -4301,7 +4569,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500303,
@@ -4317,7 +4586,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500404,
@@ -4333,7 +4603,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500502,
@@ -4349,7 +4620,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500604,
@@ -4365,7 +4637,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500704,
@@ -4381,7 +4654,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500801,
@@ -4397,7 +4671,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30500901,
@@ -4413,7 +4688,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30501001,
@@ -4429,7 +4705,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30500901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800103,
@@ -4445,7 +4722,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800204,
@@ -4461,7 +4739,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800304,
@@ -4477,7 +4756,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800403,
@@ -4493,7 +4773,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800504,
@@ -4509,7 +4790,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800604,
@@ -4525,7 +4807,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800704,
@@ -4541,7 +4824,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800801,
@@ -4557,7 +4841,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30800901,
@@ -4573,7 +4858,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 30801001,
@@ -4589,7 +4875,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 30800901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000101,
@@ -4605,7 +4892,8 @@
     "MovieLength": "5:30",
     "ReleaseConditionScenarioStageId": 30001704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000201,
@@ -4621,7 +4909,8 @@
     "MovieLength": "3:10",
     "ReleaseConditionScenarioStageId": 31000101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000301,
@@ -4637,7 +4926,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31000201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000401,
@@ -4653,7 +4943,8 @@
     "MovieLength": "4:10",
     "ReleaseConditionScenarioStageId": 31000301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000501,
@@ -4669,7 +4960,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31000401,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000601,
@@ -4685,7 +4977,8 @@
     "MovieLength": "2:50",
     "ReleaseConditionScenarioStageId": 31000501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000701,
@@ -4701,7 +4994,8 @@
     "MovieLength": "3:40",
     "ReleaseConditionScenarioStageId": 31000601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000801,
@@ -4717,7 +5011,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31000701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31000901,
@@ -4733,7 +5028,8 @@
     "MovieLength": "3:30",
     "ReleaseConditionScenarioStageId": 31000801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001001,
@@ -4749,7 +5045,8 @@
     "MovieLength": "1:40",
     "ReleaseConditionScenarioStageId": 31000901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001101,
@@ -4765,7 +5062,8 @@
     "MovieLength": "1:50",
     "ReleaseConditionScenarioStageId": 31001001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001201,
@@ -4781,7 +5079,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001301,
@@ -4797,7 +5096,8 @@
     "MovieLength": "0:40",
     "ReleaseConditionScenarioStageId": 31001201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001401,
@@ -4813,7 +5113,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001501,
@@ -4829,7 +5130,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001401,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001601,
@@ -4845,7 +5147,8 @@
     "MovieLength": "0:50",
     "ReleaseConditionScenarioStageId": 31001501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001701,
@@ -4861,7 +5164,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001801,
@@ -4877,7 +5181,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31001901,
@@ -4893,7 +5198,8 @@
     "MovieLength": "1:10",
     "ReleaseConditionScenarioStageId": 31001801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 31002001,
@@ -4909,7 +5215,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000104,
@@ -4925,7 +5232,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 31001901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000202,
@@ -4941,7 +5249,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000104,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000304,
@@ -4957,7 +5266,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000403,
@@ -4973,7 +5283,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000503,
@@ -4989,7 +5300,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000603,
@@ -5005,7 +5317,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000703,
@@ -5021,7 +5334,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000803,
@@ -5037,7 +5351,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33000903,
@@ -5053,7 +5368,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001004,
@@ -5069,7 +5385,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33000903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001103,
@@ -5085,7 +5402,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001204,
@@ -5101,7 +5419,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001303,
@@ -5117,7 +5436,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001404,
@@ -5133,7 +5453,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001501,
@@ -5149,7 +5470,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001603,
@@ -5165,7 +5487,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001703,
@@ -5181,7 +5504,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001803,
@@ -5197,7 +5521,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33001904,
@@ -5213,7 +5538,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002003,
@@ -5229,7 +5555,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33001904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002103,
@@ -5245,7 +5572,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33002003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002202,
@@ -5261,7 +5589,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33002103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002303,
@@ -5277,7 +5606,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33002202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002401,
@@ -5293,7 +5623,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33002303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 33002501,
@@ -5309,7 +5640,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 33002401,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000103,
@@ -5325,7 +5657,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000204,
@@ -5341,7 +5674,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000303,
@@ -5357,7 +5691,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000403,
@@ -5373,7 +5708,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000503,
@@ -5389,7 +5725,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000603,
@@ -5405,7 +5742,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000703,
@@ -5421,7 +5759,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000804,
@@ -5437,7 +5776,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37000903,
@@ -5453,7 +5793,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000804,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001003,
@@ -5469,7 +5810,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37000903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001102,
@@ -5485,7 +5827,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001201,
@@ -5501,7 +5844,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001102,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001303,
@@ -5517,7 +5861,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001102,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_13"
+    "AdvVoiceResourceId": "vc_adv_3700_13",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001403,
@@ -5533,7 +5878,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_14"
+    "AdvVoiceResourceId": "vc_adv_3700_14",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001502,
@@ -5549,7 +5895,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_15"
+    "AdvVoiceResourceId": "vc_adv_3700_15",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001603,
@@ -5565,7 +5912,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_16"
+    "AdvVoiceResourceId": "vc_adv_3700_16",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001703,
@@ -5581,7 +5929,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_17"
+    "AdvVoiceResourceId": "vc_adv_3700_17",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001803,
@@ -5597,7 +5946,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001703,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_18"
+    "AdvVoiceResourceId": "vc_adv_3700_18",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37001904,
@@ -5613,7 +5963,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_19"
+    "AdvVoiceResourceId": "vc_adv_3700_19",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002002,
@@ -5629,7 +5980,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37001904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_20"
+    "AdvVoiceResourceId": "vc_adv_3700_20",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002103,
@@ -5645,7 +5997,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_21"
+    "AdvVoiceResourceId": "vc_adv_3700_21",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002203,
@@ -5661,7 +6014,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_22"
+    "AdvVoiceResourceId": "vc_adv_3700_22",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002303,
@@ -5677,7 +6031,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_23"
+    "AdvVoiceResourceId": "vc_adv_3700_23",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002404,
@@ -5693,7 +6048,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_24"
+    "AdvVoiceResourceId": "vc_adv_3700_24",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002502,
@@ -5709,7 +6065,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_3700_25"
+    "AdvVoiceResourceId": "vc_adv_3700_25",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002601,
@@ -5725,7 +6082,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002701,
@@ -5741,7 +6099,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002801,
@@ -5757,7 +6116,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002701,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 37002901,
@@ -5773,7 +6133,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 37002801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000104,
@@ -5789,7 +6150,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 11000502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000203,
@@ -5805,7 +6167,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000104,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000303,
@@ -5821,7 +6184,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000403,
@@ -5837,7 +6201,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000504,
@@ -5853,7 +6218,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000602,
@@ -5869,7 +6235,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000704,
@@ -5885,7 +6252,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000803,
@@ -5901,7 +6269,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40000903,
@@ -5917,7 +6286,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001004,
@@ -5933,7 +6303,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40000903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001102,
@@ -5949,7 +6320,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001204,
@@ -5965,7 +6337,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001102,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001304,
@@ -5981,7 +6354,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001402,
@@ -5997,7 +6371,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40001502,
@@ -6013,7 +6388,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40005001,
@@ -6029,7 +6405,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40001502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40005101,
@@ -6045,7 +6422,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40005001,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40005201,
@@ -6061,7 +6439,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40005101,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 40005301,
@@ -6077,7 +6456,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 40005201,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000105,
@@ -6093,7 +6473,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000202,
@@ -6109,7 +6490,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000303,
@@ -6125,7 +6507,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000403,
@@ -6141,7 +6524,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000503,
@@ -6157,7 +6541,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000602,
@@ -6173,7 +6558,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000704,
@@ -6189,7 +6575,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000602,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000802,
@@ -6205,7 +6592,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43000903,
@@ -6221,7 +6609,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000802,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001003,
@@ -6237,7 +6626,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43000903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001103,
@@ -6253,7 +6643,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001003,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001203,
@@ -6269,7 +6660,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001302,
@@ -6285,7 +6677,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001401,
@@ -6301,7 +6694,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001302,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001503,
@@ -6317,7 +6711,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001302,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001603,
@@ -6333,7 +6728,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001503,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001704,
@@ -6349,7 +6745,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001603,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001803,
@@ -6365,7 +6762,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001704,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43001903,
@@ -6381,7 +6779,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002002,
@@ -6397,7 +6796,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43001903,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002103,
@@ -6413,7 +6813,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002002,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002202,
@@ -6429,7 +6830,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002303,
@@ -6445,7 +6847,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002202,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002402,
@@ -6461,7 +6864,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002501,
@@ -6477,7 +6881,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43003203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002601,
@@ -6493,7 +6898,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002704,
@@ -6509,7 +6915,8 @@
     "MovieLength": "3:03",
     "ReleaseConditionScenarioStageId": 43002402,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_27"
+    "AdvVoiceResourceId": "vc_adv_4300_27",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002803,
@@ -6525,7 +6932,8 @@
     "MovieLength": "1:35",
     "ReleaseConditionScenarioStageId": 43002704,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_29"
+    "AdvVoiceResourceId": "vc_adv_4300_29",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43002903,
@@ -6541,7 +6949,8 @@
     "MovieLength": "5:45",
     "ReleaseConditionScenarioStageId": 43002803,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_30"
+    "AdvVoiceResourceId": "vc_adv_4300_30",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43003004,
@@ -6557,7 +6966,8 @@
     "MovieLength": "3:23",
     "ReleaseConditionScenarioStageId": 43002903,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_28"
+    "AdvVoiceResourceId": "vc_adv_4300_28",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43003103,
@@ -6573,7 +6983,8 @@
     "MovieLength": "2:07",
     "ReleaseConditionScenarioStageId": 43003004,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_31"
+    "AdvVoiceResourceId": "vc_adv_4300_31",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43003203,
@@ -6589,7 +7000,8 @@
     "MovieLength": "1:53",
     "ReleaseConditionScenarioStageId": 43003103,
     "IsSideStory": true,
-    "AdvVoiceResourceId": "vc_adv_4300_32"
+    "AdvVoiceResourceId": "vc_adv_4300_32",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43003301,
@@ -6605,7 +7017,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43002601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43003401,
@@ -6621,7 +7034,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43003301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100105,
@@ -6637,7 +7051,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100205,
@@ -6653,7 +7068,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100304,
@@ -6669,7 +7085,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100205,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100403,
@@ -6685,7 +7102,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100304,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100504,
@@ -6701,7 +7119,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100403,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100604,
@@ -6717,7 +7136,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100705,
@@ -6733,7 +7153,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100801,
@@ -6749,7 +7170,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100705,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43100901,
@@ -6765,7 +7187,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 43101001,
@@ -6781,7 +7204,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 43100901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100105,
@@ -6797,7 +7221,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 9501803,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100204,
@@ -6813,7 +7238,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100303,
@@ -6829,7 +7255,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100204,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100404,
@@ -6845,7 +7272,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100303,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100504,
@@ -6861,7 +7289,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100404,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100604,
@@ -6877,7 +7306,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100504,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100705,
@@ -6893,7 +7323,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100604,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100801,
@@ -6909,7 +7340,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100705,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50100904,
@@ -6925,7 +7357,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100705,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_09"
+    "AdvVoiceResourceId": "vc_adv_5010_09",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101004,
@@ -6941,7 +7374,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50100904,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_10"
+    "AdvVoiceResourceId": "vc_adv_5010_10",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101105,
@@ -6957,7 +7391,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101004,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_11"
+    "AdvVoiceResourceId": "vc_adv_5010_11",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101203,
@@ -6973,7 +7408,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101105,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_12"
+    "AdvVoiceResourceId": "vc_adv_5010_12",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101305,
@@ -6989,7 +7425,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_13"
+    "AdvVoiceResourceId": "vc_adv_5010_13",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101402,
@@ -7005,7 +7442,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101305,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_5010_14"
+    "AdvVoiceResourceId": "vc_adv_5010_14",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101501,
@@ -7021,7 +7459,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 50101601,
@@ -7037,7 +7476,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 50101501,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500102,
@@ -7053,7 +7493,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500203,
@@ -7069,7 +7510,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500102,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500301,
@@ -7085,7 +7527,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500203,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500402,
@@ -7101,7 +7544,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500301,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500502,
@@ -7117,7 +7561,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500402,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500601,
@@ -7133,7 +7578,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500502,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500702,
@@ -7149,7 +7595,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500601,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500801,
@@ -7165,7 +7612,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500702,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70500901,
@@ -7181,7 +7629,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500801,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 70501001,
@@ -7197,7 +7646,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 70500901,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800103,
@@ -7213,7 +7663,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800107,
@@ -7229,7 +7680,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800103,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_02"
+    "AdvVoiceResourceId": "vc_adv_9080_02",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800111,
@@ -7245,7 +7697,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800107,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_03"
+    "AdvVoiceResourceId": "vc_adv_9080_03",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800116,
@@ -7261,7 +7714,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800111,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_04"
+    "AdvVoiceResourceId": "vc_adv_9080_04",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800119,
@@ -7277,7 +7731,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800116,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_05"
+    "AdvVoiceResourceId": "vc_adv_9080_05",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800124,
@@ -7293,7 +7748,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800119,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_06"
+    "AdvVoiceResourceId": "vc_adv_9080_06",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800129,
@@ -7309,7 +7765,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800124,
     "IsSideStory": false,
-    "AdvVoiceResourceId": "vc_adv_9080_07"
+    "AdvVoiceResourceId": "vc_adv_9080_07",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800131,
@@ -7325,7 +7782,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800129,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800132,
@@ -7341,7 +7799,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800131,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 90800133,
@@ -7357,7 +7816,8 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 90800132,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   },
   {
     "Id": 99990101,
@@ -7373,6 +7833,7 @@
     "MovieLength": "",
     "ReleaseConditionScenarioStageId": 0,
     "IsSideStory": false,
-    "AdvVoiceResourceId": ""
+    "AdvVoiceResourceId": "",
+    "Unknown_Col_14": 0
   }
 ]

@@ -8,7 +8,8 @@
     "TraitTypeIndex": 5,
     "TraitValue": 1,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 114400055012,
@@ -19,7 +20,8 @@
     "TraitTypeIndex": 4,
     "TraitValue": 1,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 137000595011,
@@ -30,7 +32,8 @@
     "TraitTypeIndex": 2,
     "TraitValue": 25,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 137000595012,
@@ -41,6 +44,7 @@
     "TraitTypeIndex": 3,
     "TraitValue": 15,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_9": 0
   }
 ]
