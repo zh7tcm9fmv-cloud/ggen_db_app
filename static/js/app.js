@@ -1484,9 +1484,12 @@ function _countCharActionPlusOne(txt,kind){const s=String(txt||'');const pick=(a
 /** EN/JA/TW: sum explicit "Support Attack/Counter +N" (any N); plus legacy +1-only matches from _countCharActionPlusOne. */
 function _supportAtkCounterNumericAddsFromText(tx){let sum=0;const s=String(tx||'');const patterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
 function _supportAtkBonusFromAbilityDetailText(tx){return Math.max(_countCharActionPlusOne(tx,'atk'),_supportAtkCounterNumericAddsFromText(tx))}
+const SUPPORT_DEF_NUMERIC_PATTERNS=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*time/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
+function _supportDefNumericAddsFromText(tx){let best=0;const s=String(tx||'');for(let pi=0;pi<SUPPORT_DEF_NUMERIC_PATTERNS.length;pi++){const re=SUPPORT_DEF_NUMERIC_PATTERNS[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))best=Math.max(best,v)}}return best}
+function _supportDefBonusFromAbilityDetailText(tx){return Math.max(_countCharActionPlusOne(tx,'def'),_supportDefNumericAddsFromText(tx))}
 function _charAbilityRowsForCurrentState(d){let rows=(d&&Array.isArray(d.abilities)?d.abilities:[]).slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));return rows}
 function _charAbilityTextBlocks(d){const rows=_charAbilityRowsForCurrentState(d);const out=[];const push=(txt,isCond)=>{const t=String(txt||'').trim();if(!t)return;out.push({text:t,conditional:!!isCond})};rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba&&ba.sp_replacement)ab=ba.sp_replacement;const ds=Array.isArray(ab&&ab.details)?ab.details:[];ds.forEach(detail=>{if(typeof detail==='string'){push(detail,false);return}if(!detail||typeof detail!=='object'){push(String(detail||''),false);return}const raw0=String(detail.text||'').trim();const raw=normalizeAbilityDetailTextForSplit(raw0);if(!raw)return;let groups=splitAbilityTextIntoBlocks(raw);const validCg=abilityValidConditionGroupsSorted(detail);const hasCond=validCg.length>0||((Array.isArray(detail.conditions)&&detail.conditions.length>0));if(validCg.length>=2&&groups.length===1){const g0=groups[0]||'';const sub=g0.split(/\.\s+(?=When\s+Vigor\b|\b(?:Increase|Increases)\b)/i).map(x=>x.trim()).filter(x=>x.length);if(sub.length>=2&&sub.length===validCg.length)groups=sub}const useParallel=validCg.length>=2&&validCg.length===groups.length;if(useParallel){groups.forEach(g=>push(g,true));return}const condIdx=blockIndexForConditions(groups,hasCond);groups.forEach((g,i)=>push(g,hasCond&&i===condIdx))})});return out}
-function getCharacterChanceSupportState(d){const blocks=_charAbilityTextBlocks(d);let chanceUn=0,chanceCond=0,defUn=0,defCond=0,atkUn=0,atkCond=0;blocks.forEach(b=>{const tx=String(b&&b.text||'');const c=_countCharActionPlusOne(tx,'chance'),df=_countCharActionPlusOne(tx,'def'),ak=_supportAtkBonusFromAbilityDetailText(tx);if(b.conditional){chanceCond+=c;defCond+=df;atkCond+=ak}else{chanceUn+=c;defUn+=df;atkUn+=ak}});const condOn=!!S.conditionalPassiveActive;const chanceBonus=chanceUn+(condOn?chanceCond:0);const defBonus=defUn+(condOn?defCond:0);const atkBonus=atkUn+(condOn?atkCond:0);const hasBaseDef=charRoleIsDefense(d&&d.role);const hasBaseAtk=charRoleIsSupport(d&&d.role);const chanceCount=Math.max(1,Math.min(2,1+(chanceBonus>0?1:0)));const supportDefCount=Math.max(0,Math.min(2,Math.max(hasBaseDef?1:0,defBonus)));const supportAtkCount=Math.max(0,Math.min(5,Math.max(hasBaseAtk?1:0,atkBonus)));return{chanceCount,supportDefCount,supportAtkCount}}
+function getCharacterChanceSupportState(d){const blocks=_charAbilityTextBlocks(d);let chanceUn=0,chanceCond=0,defUn=0,defCond=0,atkUn=0,atkCond=0;blocks.forEach(b=>{const tx=String(b&&b.text||'');const c=_countCharActionPlusOne(tx,'chance'),df=_supportDefBonusFromAbilityDetailText(tx),ak=_supportAtkBonusFromAbilityDetailText(tx);if(b.conditional){chanceCond+=c;defCond+=df;atkCond+=ak}else{chanceUn+=c;defUn+=df;atkUn+=ak}});const condOn=!!S.conditionalPassiveActive;const chanceBonus=chanceUn+(condOn?chanceCond:0);const defBonus=defUn+(condOn?defCond:0);const atkBonus=atkUn+(condOn?atkCond:0);const hasBaseDef=charRoleIsDefense(d&&d.role);const hasBaseAtk=charRoleIsSupport(d&&d.role);const chanceCount=Math.max(1,Math.min(2,1+(chanceBonus>0?1:0)));const supportDefCount=Math.max(0,Math.min(5,Math.max(hasBaseDef?1:0,defBonus)));const supportAtkCount=Math.max(0,Math.min(5,Math.max(hasBaseAtk?1:0,atkBonus)));return{chanceCount,supportDefCount,supportAtkCount}}
 function _npcDetailEntityAbilityDetailStrings(ent){if(!ent||!Array.isArray(ent.abilities))return[];let rows=ent.abilities.slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));const out=[];rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba.sp_replacement)ab=ba.sp_replacement;const ds=Array.isArray(ab.details)?ab.details:[];ds.forEach(det=>{const raw0=typeof det==='string'?det:String(det&&det.text||'');const raw=String(raw0).trim();if(!raw)return;out.push(raw)})});return out}
 function _npcContextAbilityDetailStrings(d,includeSelf,includeChar,includeUnit){
 const uniq=new Set();
@@ -1545,13 +1548,12 @@ return Math.max(0,sum);
 }
 function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
 function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,true,true);
-const defPatterns=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
 const atkPatterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
 const chancePatterns=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi];
 let chanceAdd=0,defAdd=0,atkAdd=0,allChanceStepBoost=false;
 parts.forEach(p=>{
 const ps=String(p||'');
-defAdd+=Math.max(_npcRegexCaptureSum(ps,defPatterns),_countCharActionPlusOne(ps,'def'));
+defAdd+=_supportDefBonusFromAbilityDetailText(ps);
 atkAdd+=Math.max(_npcRegexCaptureSum(ps,atkPatterns),_supportAtkBonusFromAbilityDetailText(ps));
 if(!_npcChanceTextAppliesToCurrent(p,d))return;
 chanceAdd+=Math.max(_npcRegexCaptureSum(ps,chancePatterns),_countCharActionPlusOne(ps,'chance'));
@@ -1559,9 +1561,10 @@ if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(ps))allChanceStepBoost=true;
 });
 const squadBonus=getNpcStageSquadChanceStepBonus(d);
 const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceAdd+squadBonus)));
-const supportDefCount=Math.max(0,Math.min(2,defAdd));
+const hasBaseDefNpc=charRoleIsDefense(d&&d.role);
+const supportDefCount=Math.max(0,Math.min(5,Math.max(hasBaseDefNpc?1:0,defAdd)));
 const hasBaseAtkNpc=charRoleIsSupport(d&&d.role);
-const supportAtkCount=Math.max(0,Math.min(5,(hasBaseAtkNpc?1:0)+atkAdd));
+const supportAtkCount=Math.max(0,Math.min(5,Math.max(hasBaseAtkNpc?1:0,atkAdd)));
 return{chanceCount,supportDefCount,supportAtkCount}}
 function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,true,true,true).join('\n');
 const accPatterns=[/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/gi,/自身の命中率が(\d+)%上昇/g,/自身の命中率と回避率が(\d+)%上昇/g,/自身命中率提升(\d+)%/g,/自身命中率及閃避率提升(\d+)%/g];
