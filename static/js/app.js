@@ -1304,7 +1304,7 @@ const wp=d.weapons||[];
 const hasSspKit=!!(ab.some(a=>a&&a.ssp_only)||wp.some(w=>w&&(w.is_ssp_weapon||w.ssp_icon)));
 d.has_sp=hasSspKit;
 d.ranking_available=false;
-d.has_cond_stats=!!(_npcAbilityListHasConditionalDetails(ab));
+d.has_cond_stats=_npcEmbedHasUnitConditionCondStats(emb)||!!(_npcAbilityListHasConditionalDetails(ab));
 d.mechanisms=[];
 for(const k of ['strategy_hint_move_icon','strategy_hint_stats_icon','strategy_hint_icon']){
 const v=emb&&emb[k];
@@ -1398,7 +1398,7 @@ document.body.addEventListener('focusin',onDetailPrefetchIntentEvent,true);
 }
 function syncUnitListDetailHighlight(){const id=S.listSelectedUnitId;const sid=id==null||id===''?'':String(id);document.querySelectorAll('[data-detail-type="unit"][data-detail-id]').forEach(el=>{el.classList.toggle('list-detail-active',!!sid&&String(el.getAttribute('data-detail-id'))===sid)})}
 function openUnitDetailFromTransform(uid){openDetail('unit',String(uid),{preserveUnitSpSsp:true})}
-async function openDetail(type,id,opts){opts=opts||{};if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');mc.className='modal-content';mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':(type==='profile_title'?'stage-detail':'stage-detail')))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{if(type==='supporter'){S.currentSupporterLevel=100;S.currentSupporterLbTier=3}const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}S.conditionalPassiveActive=!!S.listUnitCond}}S.currentDetailData=d;S.currentDetailType=type;if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id))updateDetailDynamicSections(type)}).catch(()=>{})}}if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}}catch(e){console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
+async function openDetail(type,id,opts){opts=opts||{};if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');mc.className='modal-content';mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':(type==='profile_title'?'stage-detail':'stage-detail')))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{if(type==='supporter'){S.currentSupporterLevel=100;S.currentSupporterLbTier=3}const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp)S.conditionalPassiveActive=!!S.listUnitCond}}if(_pcp)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;S.currentDetailData=d;S.currentDetailType=type;if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id))updateDetailDynamicSections(type)}).catch(()=>{})}}if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}}catch(e){console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
 function closeModal(){if(/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(location.pathname)){if(S.currentTab==='ranking')syncHistoryToBrowsePath('/rk');else syncHistoryToBrowsePath('/')}document.getElementById('detailModal').classList.remove('active');document.body.classList.remove('detail-modal-open');releaseBackgroundScrollLock();document.getElementById('modalContent').className='modal-content';S.currentDetailData=null;S.currentDetailType=null;S.conditionalPassiveActive=false;S.charSuperchargedExTier=0;S.spActive=false;S.sspActive=false;S.stageMapExpanded=false;S.stageMapReinforcementOnly=false}
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 function _resolveStageNpcRow(npcId){
@@ -1498,7 +1498,38 @@ if(!d)return[];
 if(Array.isArray(d.unit_condition_target_unit_ids)&&d.unit_condition_target_unit_ids.length){
 return d.unit_condition_target_unit_ids.map(x=>String(x).trim()).filter(Boolean);
 }
+const ctx=d.detail_npc_context;
+const ch=ctx&&ctx.character;
+if(ch&&Array.isArray(ch.unit_condition_target_unit_ids)&&ch.unit_condition_target_unit_ids.length){
+return ch.unit_condition_target_unit_ids.map(x=>String(x).trim()).filter(Boolean);
+}
 return [];
+}
+function isCurrentDetailUnitConditionCpTarget(){
+if(!S.conditionalPassiveActive||S.currentDetailType!=='unit')return false;
+const d=S.currentDetailData;
+if(!d||d.unit_condition_cp_target)return true;
+const ids=new Set(getActiveNpcUnitConditionHighlightIds());
+return ids.has(String(d.id));
+}
+function _npcEmbedHasUnitConditionCondStats(emb){
+if(!emb||!emb.stats_raw||!emb.stats_raw_with_cond)return false;
+const keys=['HP','EN','Attack','Defense','Mobility','Move'];
+return keys.some(k=>Math.round(Number(emb.stats_raw_with_cond[k])||0)!==Math.round(Number(emb.stats_raw[k])||0));
+}
+function _npcUnitCondStatPreviewHtml(u){
+if(!u||!u.stats_raw)return'';
+const raw=u.stats_raw,cond=u.stats_raw_with_cond||raw;
+const preview=[];
+['Attack','Defense','HP'].forEach(name=>{
+const base=Math.round(Number(raw[name])||0);
+const tot=Math.round(Number(cond[name])||0);
+if(tot<=base)return;
+preview.push({name,base,tot,delta:tot-base});
+});
+if(!preview.length)return'';
+const rows=preview.map(p=>`<div class="npc-unit-cond-target-stat"><span class="npc-unit-cond-target-stat-label">${esc(tStat(p.name,'unit'))}</span><span class="npc-unit-cond-target-stat-base">${fmtN(p.base)}</span><span class="npc-unit-cond-target-stat-arrow">→</span><span class="npc-unit-cond-target-stat-cond">${fmtN(p.tot)}</span><span class="npc-unit-cond-target-stat-delta">+${fmtN(p.delta)}</span></div>`).join('');
+return`<div class="npc-unit-cond-target-stats">${rows}</div>`;
 }
 function _stagePayloadForNpcHighlights(){
 if(S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)return S.currentDetailData;
@@ -1520,6 +1551,15 @@ const hit=_resolveStageNpcRowByUnitId(unitId);
 if(!hit||!hit.row||!hit.row.unit||!hit.row.unit.id)return;
 openStageNpcEntityDetail('unit',String(hit.row.unit.id),String(hit.row.npc_id));
 }
+function openStageNpcUnitCondTarget(unitId,npcId){
+const uid=String(unitId!=null?unitId:'').trim();
+const nid=String(npcId!=null?npcId:'').trim();
+if(!uid||!nid)return;
+const hit=_resolveStageNpcRow(nid);
+const emb=hit&&hit.row&&hit.row.unit;
+if(!emb||String(emb.id)!==uid)return;
+openDetail('unit',uid,{stageNpcEmbed:emb,stageNpcKey:nid,stageNpcContext:{npc_id:nid,unit:_cloneDetailJson(hit.row.unit||null),character:_cloneDetailJson(hit.row.character||null)},returnStageSnapshot:_cloneDetailJson(hit.stage),preserveConditionalPassive:true,unitConditionCpTarget:true});
+}
 function renderNpcUnitConditionTargetsRow(d){
 if(!d||!S.conditionalPassiveActive)return'';
 const ids=getActiveNpcUnitConditionHighlightIds();
@@ -1532,8 +1572,9 @@ const nm=u&&u.name?String(u.name):`Unit ${uid}`;
 const row={rarity:(u&&u.rarity)||'N',thum:(u&&u.portrait)||'',role_icon:(u&&u.role_icon)||'',acquisition_icon:''};
 const thumb=renderListThumb(row,'unit',72,{npcDetailThumb:true});
 const npcId=hit&&hit.row&&hit.row.npc_id!=null?String(hit.row.npc_id):'';
-const click=npcId?`onclick="openStageNpcEntityDetail('unit','${escJs(String(uid))}','${escJs(npcId)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStageNpcEntityDetail('unit','${escJs(String(uid))}','${escJs(npcId)}')}"`:'';
-cards+=`<div class="detail-rec-link-card detail-rec-link-card--unit-cond-target" role="button" tabindex="0" ${click}><div class="detail-rec-link-label">${esc(t('npc_unit_cond_target_short'))}</div>${thumb}<div class="detail-rec-link-name">${esc(nm)}</div></div>`;
+const statsHtml=_npcUnitCondStatPreviewHtml(u);
+const click=npcId?`onclick="openStageNpcUnitCondTarget('${escJs(String(uid))}','${escJs(npcId)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStageNpcUnitCondTarget('${escJs(String(uid))}','${escJs(npcId)}')}"`:'';
+cards+=`<div class="detail-rec-link-card detail-rec-link-card--unit-cond-target" role="button" tabindex="0" ${click}><div class="detail-rec-link-label">${esc(t('npc_unit_cond_target_short'))}</div>${thumb}<div class="detail-rec-link-name">${esc(nm)}</div>${statsHtml}</div>`;
 });
 return`<div class="npc-unit-cond-targets-section"><div class="npc-unit-cond-targets-label">${esc(t('npc_unit_cond_targets'))}</div><div class="npc-unit-cond-targets-row">${cards}</div></div>`;
 }
@@ -1786,12 +1827,13 @@ if(isRankingView){const ck=detailRankingCacheKey(type,d.id);if(!_detailRankingSt
 const gridCls=isRankingView?'stats-grid stats-grid--ranking-list':'stats-grid';
 const mvHint=(type==='unit'&&d&&d.strategy_hint_move_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_move_icon)):'';
 const statsHint=(type==='unit'&&d&&d.strategy_hint_stats_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_stats_icon)):'';
+const ucGold=type==='unit'&&isCurrentDetailUnitConditionCpTarget();
 const body=sr.map((s,i)=>{
 const b=bs[i];const hcb=cp&&s.total>b.total;const hcp=cp&&s.total<b.total;let eb='';
 if(hcp){const cpDelta=s.total-b.total;eb=`<div class="stat-card-bonus stat-card-penalty">(${fmtN(cpDelta)})</div>`}
 else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}
-const cardHi=hcb?'has-cond-bonus':hcp?'has-cond-penalty':'';
-const valHi=hcb?'has-bonus-val':hcp?'has-penalty-val':'';
+const cardHi=hcb?(ucGold?'has-cond-bonus--gold':'has-cond-bonus'):hcp?'has-cond-penalty':'';
+const valHi=hcb?(ucGold?'has-bonus-val--gold':'has-bonus-val'):hcp?'has-penalty-val':'';
 const atkStatHint=(type==='unit'&&s.name==='Attack'&&statsHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${statsHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
 const moveStatHint=(type==='unit'&&s.name==='Move'&&mvHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${mvHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
 const useSimpleStatCard=!isRankingView||(type==='unit'&&(s.name==='Move'||(s.name==='Attack'&&statsHint)));
