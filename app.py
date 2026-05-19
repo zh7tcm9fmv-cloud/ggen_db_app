@@ -13708,25 +13708,28 @@ def get_stage(stage_id):
                     self_row_c = {k: (self_tb_c.get(nid) or z).get(k, 0) for k in stat_keys}
                     upuid_norm = normalize_id(ue.get('unit_id', '0'))
                     unit_cond_row = unit_cond_pct_by_uid.get(upuid_norm, z)
-                    tb_on = {k: squad_tb.get(k, 0) + self_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
+                    tb_stage_squad = {k: squad_tb.get(k, 0) + self_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
                     tb_cond_delta = {
                         k: squad_tb_c.get(k, 0) + self_row_c.get(k, 0) + pilot_row_c.get(k, 0) + unit_cond_row.get(k, 0)
                         for k in stat_keys}
-                    tb_with_cond = {k: tb_on.get(k, 0) + tb_cond_delta.get(k, 0) for k in stat_keys}
-                    tb_off = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
+                    tb_map = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
+                    tb_with_cond = {k: tb_map.get(k, 0) + tb_cond_delta.get(k, 0) for k in stat_keys}
                     base_stats = {'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}
-                    fst_on, tba_on = apply_team_bonus_to_unit_stats(base_stats, tb_on)
+                    fst_map, tba_map = apply_team_bonus_to_unit_stats(base_stats, tb_map)
+                    fst_stage_squad, tba_stage_squad = apply_team_bonus_to_unit_stats(base_stats, tb_stage_squad)
                     fst_cond, tba_cond = apply_team_bonus_to_unit_stats(base_stats, tb_with_cond)
-                    fst_off, tba_off = apply_team_bonus_to_unit_stats(base_stats, tb_off)
-                    upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_on, lc); up['abilities'] = uabs
+                    upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_map, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
                     up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids'))
                     up['modifiers'] = resolve_npc_modifiers(npc.get('map_npc_buff_id', '0'), lc, nid)
-                    up['bonus_amounts'] = tba_on
+                    up['bonus_amounts'] = tba_map
                     up['stats_raw_with_cond'] = fst_cond
                     up['bonus_amounts_with_cond'] = tba_cond
-                    up['stats_raw_npc_squad_allies_off'] = fst_off
-                    up['bonus_amounts_npc_squad_allies_off'] = tba_off
+                    up['stats_raw_npc_stage_squad_allies'] = fst_stage_squad
+                    up['bonus_amounts_npc_stage_squad_allies'] = tba_stage_squad
+                    # Legacy keys: same as map-default (exclude other NPCs' squad-wide passives).
+                    up['stats_raw_npc_squad_allies_off'] = fst_map
+                    up['bonus_amounts_npc_squad_allies_off'] = tba_map
                     dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
                 if ce:
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)

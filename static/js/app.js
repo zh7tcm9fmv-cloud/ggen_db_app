@@ -3646,7 +3646,7 @@ onDcParamChange();
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=false;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -4413,7 +4413,7 @@ if(D.dtph!==undefined){const el=document.getElementById('dcDtuPhysical');if(el)e
 if(D.dts!==undefined){const el=document.getElementById('dcDtuSpecial');if(el)el.value=String(D.dts)}
 if(D.def===1)setDcDefend(true);
 if(D.sh===1)setDcShield(true);
-if(D.nmb===0)S.dc.defNpcMapBonusesOn=false;else S.dc.defNpcMapBonusesOn=true;
+if(D.nmb===0)S.dc.defNpcMapBonusesOn=false;else if(D.nmb===1)S.dc.defNpcMapBonusesOn=true;
 const _dmbEl=document.getElementById('dcDefNpcMapBonusesOn');if(_dmbEl)_dmbEl.checked=S.dc.defNpcMapBonusesOn!==false;
 _dcUpdateDefNpcMapBonusesToggleUi();
 const _asl=S.dc.atkSlots[S.dc.atkSlotIndex|0];
@@ -6634,13 +6634,14 @@ S.dc.squadCondAtkPct=v;
 S.dc.squadCondDefPct=0;
 }
 function _dcDefNpcMapBonusesEnabled(){return S.dc.defNpcMapBonusesOn!==false;}
-/** Map NPC unit: full MS stats for damage panel — on = stage totals; off = exclude other NPCs' squad-wide % only (server snapshots). */
+/** Map NPC unit: default stats match in-game map tiles (own + pilot + this NPC's squad lines only).
+ *  Toggle on adds other map NPCs' squad-wide / all-units passives (stage-wide stack). */
 function _dcDefNpcUnitMapStatsPair(u){
-const onS=u&&u.stats_raw||{},onB=u&&u.bonus_amounts||{};
-const offS=u&&u.stats_raw_npc_squad_allies_off,offB=u&&u.bonus_amounts_npc_squad_allies_off;
-const hasOff=offS&&offB&&typeof offS==='object'&&typeof offB==='object';
-if(_dcDefNpcMapBonusesEnabled()||!hasOff)return{stats:onS,bonuses:onB};
-return{stats:offS,bonuses:offB};
+const mapS=u&&u.stats_raw||{},mapB=u&&u.bonus_amounts||{};
+const stageS=u&&u.stats_raw_npc_stage_squad_allies,stageB=u&&u.bonus_amounts_npc_stage_squad_allies;
+const hasStage=stageS&&stageB&&typeof stageS==='object'&&typeof stageB==='object';
+if(_dcDefNpcMapBonusesEnabled()&&hasStage)return{stats:stageS,bonuses:stageB};
+return{stats:mapS,bonuses:mapB};
 }
 function _dcUpdateAtkSquadBuffSectionVisibility(){
 const sec=document.getElementById('dcAtkSquadBuffSection');
