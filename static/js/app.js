@@ -1644,54 +1644,38 @@ const hasTargetSignal=/(?:your\s+squad|squad['’]s|activate\s+all\s+chance\s+st
 if(!hasTargetSignal)return true;
 return _npcTargetsCurrentByText(s,d);
 }
-function getNpcStageSquadChanceStepBonus(d){
-const ret=d&&d.detail_return;
-const st=ret&&ret.type==='stage'&&ret.payload?ret.payload:null;
-if(!st||!Array.isArray(st.npc_details))return 0;
-const selfCharId=String(((d&&d.detail_npc_context&&d.detail_npc_context.character)||d||{}).id||'');
-let sum=0;
-st.npc_details.forEach(row=>{
-const ch=row&&row.character||null;
-if(!ch)return;
-if(selfCharId&&String(ch.id||'')===selfCharId)return;
-const texts=_npcDetailEntityAbilityDetailStrings(ch);
-texts.forEach(tx=>{
-if(!_npcTargetsCurrentByText(tx,d))return;
-let m;
-const reGuaranteed=/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/ig;
-while((m=reGuaranteed.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
-const reForce=/Force\s+activate\s+Chance\s+Step\s+(\d+)\s*time\(s\)/ig;
-while((m=reForce.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
-});
-});
-return Math.max(0,sum);
-}
 function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
+function _npcRegexCaptureMaxAcrossPatterns(tx,patterns){let best=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))best=Math.max(best,v)}}return best}
 const NPC_SUPPORT_STAT_DEFAULT_CAP=5;
 const NPC_SUPPORT_ATK_EXPLICIT_PATTERNS=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
 const NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi,/Chance\s+Step\s*[+＋]\s*(\d+)\s*time/gi,/Chance\s+Step\s*[+＋]\s*(\d+)/gi,/額外行動\s*[+＋]\s*(\d+)/g,/チャンスステップ\s*[+＋]\s*(\d+)/g];
 const NPC_SUPPORT_LV_TITLE_PATTERNS={atk:[/Support\s+Attack\s*(?:\/\s*Counter)?\s*(?:Support\s+)?LV\s*(\d+)/gi,/支援攻[撃擊](?:\s*[／/]\s*反[擊撃])?\s*(?:Support\s+)?LV\s*(\d+)/gi],def:[/Support\s+Defense\s+LV\s*(\d+)/gi,/支援防[禦御]\s*LV\s*(\d+)/gi],chance:[/Chance\s+Step\s+Increase\s+LV\s*(\d+)/gi,/チャンスステップ(?:強化|増加)?\s*LV\s*(\d+)/gi,/額外行動\s*LV\s*(\d+)/gi]};
+function _npcChanceBonusFromAbilityText(tx){return Math.max(_npcRegexCaptureMaxAcrossPatterns(tx,NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS),_countCharActionPlusOne(tx,'chance'))}
+function _npcAtkBonusFromAbilityText(tx){return Math.max(_npcRegexCaptureMaxAcrossPatterns(tx,NPC_SUPPORT_ATK_EXPLICIT_PATTERNS),_supportAtkBonusFromAbilityDetailText(tx))}
 function _npcDetailEntityAbilityNameAndDetailStrings(ent){if(!ent||!Array.isArray(ent.abilities))return[];let rows=ent.abilities.slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));const out=[];rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba.sp_replacement)ab=ba.sp_replacement;if(ab&&ab.name){const nm=String(ab.name).trim();if(nm)out.push(nm)}const ds=Array.isArray(ab.details)?ab.details:[];ds.forEach(det=>{const raw0=typeof det==='string'?det:String(det&&det.text||'');const raw=String(raw0).trim();if(!raw)return;out.push(raw)})});return out}
+function _npcAbilityCombinedTexts(ent){if(!ent||!Array.isArray(ent.abilities))return[];let rows=ent.abilities.slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));const out=[];rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba.sp_replacement)ab=ba.sp_replacement;const chunks=[];if(ab&&ab.name){const nm=String(ab.name).trim();if(nm)chunks.push(nm)}const ds=Array.isArray(ab.details)?ab.details:[];ds.forEach(det=>{const raw0=typeof det==='string'?det:String(det&&det.text||'');const raw=String(raw0).trim();if(raw)chunks.push(raw)});if(chunks.length)out.push(chunks.join('\n'))});return out}
 function _npcContextAbilityTextsForSupport(d,includeSelf,includeChar,includeUnit){const uniq=new Set();const out=[];const push=(arr)=>{(arr||[]).forEach(x=>{const t=String(x||'').trim();if(!t||uniq.has(t))return;uniq.add(t);out.push(t)})};if(includeSelf)push(_npcDetailEntityAbilityNameAndDetailStrings(d));const ctx=d&&d.detail_npc_context||{};if(includeChar)push(_npcDetailEntityAbilityNameAndDetailStrings(ctx.character));if(includeUnit)push(_npcDetailEntityAbilityNameAndDetailStrings(ctx.unit));return out}
-function _npcMaxExplicitFromTexts(texts,patterns){let max=0;(texts||[]).forEach(tx=>{max=Math.max(max,_npcRegexCaptureSum(String(tx||''),patterns))});return max}
+function _npcMaxExplicitFromTexts(texts,patterns,useMaxAcrossPatterns){
+const capture=useMaxAcrossPatterns?_npcRegexCaptureMaxAcrossPatterns:_npcRegexCaptureSum;
+let max=0;(texts||[]).forEach(tx=>{max=Math.max(max,capture(String(tx||''),patterns))});return max}
 function _npcMaxSupportLvFromTexts(texts,kind){const pats=NPC_SUPPORT_LV_TITLE_PATTERNS[kind]||[];let max=0;(texts||[]).forEach(tx=>{const s=String(tx||'');for(let pi=0;pi<pats.length;pi++){const re=pats[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))max=Math.max(max,v)}}});return max}
-function _npcExplicitSupportStatMax(texts,kind,explicitPatterns){return Math.max(_npcMaxExplicitFromTexts(texts,explicitPatterns),_npcMaxSupportLvFromTexts(texts,kind))}
-function _npcApplySupportStatCap(computed,explicitMax){const ex=Number(explicitMax)||0,c=Math.max(0,Number(computed)||0);if(ex>NPC_SUPPORT_STAT_DEFAULT_CAP)return Math.max(c,ex);return Math.min(NPC_SUPPORT_STAT_DEFAULT_CAP,c)}
-function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityTextsForSupport(d,true,false,false);
+function _npcExplicitSupportStatMax(texts,kind,explicitPatterns){return Math.max(_npcMaxExplicitFromTexts(texts,explicitPatterns,true),_npcMaxSupportLvFromTexts(texts,kind))}
+function _npcApplySupportStatCap(computed,explicitMax){const ex=Number(explicitMax)||0,c=Math.max(0,Number(computed)||0);if(ex>NPC_SUPPORT_STAT_DEFAULT_CAP)return Math.max(c,ex);return c}
+function getNpcCharacterChanceSupportState(d){const combined=_npcAbilityCombinedTexts(d);
 let chanceAdd=0,defAdd=0,atkAdd=0,allChanceStepBoost=false;
-parts.forEach(p=>{
-const ps=String(p||'');
+const chanceTexts=[];
+combined.forEach(ps=>{
 defAdd+=_supportDefBonusFromAbilityDetailText(ps);
-atkAdd+=Math.max(_npcRegexCaptureSum(ps,NPC_SUPPORT_ATK_EXPLICIT_PATTERNS),_supportAtkBonusFromAbilityDetailText(ps));
-if(!_npcChanceTextAppliesToCurrent(p,d))return;
-chanceAdd+=Math.max(_npcRegexCaptureSum(ps,NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS),_countCharActionPlusOne(ps,'chance'));
+atkAdd+=_npcAtkBonusFromAbilityText(ps);
+if(!_npcChanceTextAppliesToCurrent(ps,d))return;
+chanceTexts.push(ps);
+chanceAdd+=_npcChanceBonusFromAbilityText(ps);
 if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(ps))allChanceStepBoost=true;
 });
-const squadBonus=getNpcStageSquadChanceStepBonus(d);
-const atkExplicit=_npcExplicitSupportStatMax(parts,'atk',NPC_SUPPORT_ATK_EXPLICIT_PATTERNS);
-const defExplicit=_npcExplicitSupportStatMax(parts,'def',SUPPORT_DEF_NUMERIC_PATTERNS);
-const chanceExplicit=_npcExplicitSupportStatMax(parts,'chance',NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS);
-let chanceRaw=1+chanceAdd+squadBonus;
+const atkExplicit=_npcExplicitSupportStatMax(combined,'atk',NPC_SUPPORT_ATK_EXPLICIT_PATTERNS);
+const defExplicit=_npcExplicitSupportStatMax(combined,'def',SUPPORT_DEF_NUMERIC_PATTERNS);
+const chanceExplicit=_npcExplicitSupportStatMax(chanceTexts,'chance',NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS);
+let chanceRaw=1+chanceAdd;
 if(allChanceStepBoost)chanceRaw=Math.max(chanceRaw,NPC_SUPPORT_STAT_DEFAULT_CAP);
 const chanceCount=Math.max(1,_npcApplySupportStatCap(chanceRaw,chanceExplicit));
 const supportDefCount=_npcApplySupportStatCap(defAdd,defExplicit);
