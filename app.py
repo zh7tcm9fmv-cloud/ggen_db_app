@@ -2321,6 +2321,7 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '(battle conditions)', '(tag conditions)', '(series conditions)',
         '(hp conditions)', '(vigor conditions)', '(no. of battles conditions)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
+        '(unit conditions)', '(unit condition)',
     )
     if any(m in low for m in en_markers):
         return True
@@ -2329,10 +2330,23 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '（系列條件）', '（系列条件）', '（戰鬥次數條件）', '（战斗次数条件）',
         '（體力條件）', '（体力条件）', '（氣勢條件）', '（气势条件）',
         '（支援時', '（選擇閃避開始戰鬥時）',
+        '（機體條件）', '（机体条件）',
     )
     if any(m in name for m in cjk_markers):
         return True
-    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', '支援時')):
+    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', '支援時', '機体条件')):
+        return True
+    return False
+
+
+def _ability_title_is_unit_conditions(name):
+    """Stage traits like \"(Unit conditions) Increased ATK\" — gated until the unit condition is met in battle."""
+    if not name:
+        return False
+    low = (name or '').lower()
+    if '(unit conditions)' in low or '(unit condition)' in low:
+        return True
+    if '（機體條件）' in name or '（机体条件）' in name:
         return True
     return False
 
@@ -2345,6 +2359,8 @@ def _char_trait_title_counts_as_conditional_bucket(bab):
     if not bab or not isinstance(bab, dict):
         return False
     name = bab.get('name') or ''
+    if _ability_title_is_unit_conditions(name):
+        return True
     if not trait_title_implies_conditional_stat_bonuses(name):
         return False
     for d2 in bab.get('details', []) or []:
@@ -2377,6 +2393,8 @@ def ability_name_implies_unit_stat_conditional_bucket(ad):
     name = (ad.get('name') or '').strip()
     if not name:
         return False
+    if _ability_title_is_unit_conditions(name):
+        return True
     if trait_title_implies_conditional_stat_bonuses(name):
         return True
     low = name.lower()
@@ -4245,6 +4263,7 @@ def create_map_npc_lookup(d):
             'map_stage_id': msid,
             'x': safe_int(item.get('X'), 0),
             'y': safe_int(item.get('Y'), 0),
+            'direction': normalize_id(item.get('DirectionTypeIndex') or item.get('directionTypeIndex'), '1'),
             'battle_side_type': bst,
             'is_initially_placed': _placed,
             'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
@@ -9210,7 +9229,7 @@ def get_large_unit_cells(x, y):
 
 
 def get_warship_3x2_cells(x, y):
-    """Warship footprint for OccupiedAreaId 3: width 2 (x), height 3 (y)."""
+    """Warship footprint for OccupiedAreaId 3 facing up/down: width 2 (x), height 3 (y)."""
     return [
         {'x': x, 'y': y}, {'x': x + 1, 'y': y},
         {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1},
@@ -9218,8 +9237,24 @@ def get_warship_3x2_cells(x, y):
     ]
 
 
-def get_map_npc_unit_footprint_cells(npc_id, x, y):
-    """Map NPC footprint from m_unit OccupiedAreaId (warship id-prefix '2' + area 3 => 2x3)."""
+def get_warship_2x3_cells(x, y):
+    """Warship footprint for OccupiedAreaId 3 facing left/right: width 3 (x), height 2 (y)."""
+    return [
+        {'x': x, 'y': y}, {'x': x + 1, 'y': y}, {'x': x + 2, 'y': y},
+        {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1}, {'x': x + 2, 'y': y + 1},
+    ]
+
+
+def get_warship_footprint_cells(x, y, direction):
+    """Orient warship rectangle from DirectionTypeIndex (3/4 = horizontal 3×2, else vertical 2×3)."""
+    d = str(direction or '1')
+    if d in ('3', '4'):
+        return get_warship_2x3_cells(x, y)
+    return get_warship_3x2_cells(x, y)
+
+
+def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
+    """Map NPC footprint from m_unit OccupiedAreaId (warship id-prefix '2' + area 3 => oriented 2×3 / 3×2)."""
     nid_norm = normalize_id(npc_id)
     nu = map_npc_unit_lookup.get(nid_norm) or []
     if not nu:
@@ -9232,7 +9267,10 @@ def get_map_npc_unit_footprint_cells(npc_id, x, y):
     if occupied_area_id == 2:
         return get_large_unit_cells(x, y)
     if occupied_area_id == 3 and uid.startswith('2'):
-        return get_warship_3x2_cells(x, y)
+        if direction is None:
+            npc_entry = map_npc_lookup.get(nid_norm, {})
+            direction = npc_entry.get('direction', '1')
+        return get_warship_footprint_cells(x, y, direction)
     return [{'x': x, 'y': y}]
 
 
@@ -13531,7 +13569,8 @@ def get_stage(stage_id):
                     if umap_uid != '0':
                         me['unit_id'] = umap_uid
                         me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
-                me['cells'] = get_map_npc_unit_footprint_cells(nid, npc.get('x', 0), npc.get('y', 0))
+                me['cells'] = get_map_npc_unit_footprint_cells(
+                    nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'))
                 me['npc_detail_index'] = len(nd)
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):

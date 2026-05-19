@@ -1249,6 +1249,7 @@ for(let i=0;i<abilities.length;i++){
 const ba=abilities[i];
 if(!ba||typeof ba!=='object')continue;
 const ab=(S.spActive&&ba.sp_replacement)?ba.sp_replacement:ba;
+if(_npcAbilityTitleIsUnitConditions(ab.name))return true;
 const ds=Array.isArray(ab&&ab.details)?ab.details:[];
 for(let j=0;j<ds.length;j++){
 const det=ds[j];
@@ -1484,7 +1485,8 @@ function _countCharActionPlusOne(txt,kind){const s=String(txt||'');const pick=(a
 /** EN/JA/TW: sum explicit "Support Attack/Counter +N" (any N); plus legacy +1-only matches from _countCharActionPlusOne. */
 function _supportAtkCounterNumericAddsFromText(tx){let sum=0;const s=String(tx||'');const patterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
 function _supportAtkBonusFromAbilityDetailText(tx){return Math.max(_countCharActionPlusOne(tx,'atk'),_supportAtkCounterNumericAddsFromText(tx))}
-const SUPPORT_DEF_NUMERIC_PATTERNS=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*time/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
+const SUPPORT_DEF_NUMERIC_PATTERNS=[/Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*time/gi,/Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*times?/gi,/「支援防御」[+\uFF0B]\s*(\d+)回/g,/「支援防禦」[+\uFF0B]\s*(\d+)次/g];
+function _npcAbilityTitleIsUnitConditions(name){const low=String(name||'').toLowerCase();return low.includes('(unit conditions)')||low.includes('(unit condition)')||String(name||'').includes('（機體條件）')||String(name||'').includes('（机体条件）')}
 function _supportDefNumericAddsFromText(tx){let best=0;const s=String(tx||'');for(let pi=0;pi<SUPPORT_DEF_NUMERIC_PATTERNS.length;pi++){const re=SUPPORT_DEF_NUMERIC_PATTERNS[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))best=Math.max(best,v)}}return best}
 function _supportDefBonusFromAbilityDetailText(tx){return Math.max(_countCharActionPlusOne(tx,'def'),_supportDefNumericAddsFromText(tx))}
 function _charAbilityRowsForCurrentState(d){let rows=(d&&Array.isArray(d.abilities)?d.abilities:[]).slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));return rows}
@@ -1547,7 +1549,7 @@ while((m=reForce.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}
 return Math.max(0,sum);
 }
 function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
-function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,true,true);
+function getNpcCharacterChanceSupportState(d){const parts=_npcContextAbilityDetailStrings(d,true,false,false);
 const atkPatterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
 const chancePatterns=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi];
 let chanceAdd=0,defAdd=0,atkAdd=0,allChanceStepBoost=false;
@@ -1561,12 +1563,10 @@ if(/activate\s+all\s+Chance\s+Step(?:s)?/i.test(ps))allChanceStepBoost=true;
 });
 const squadBonus=getNpcStageSquadChanceStepBonus(d);
 const chanceCount=Math.max(1,Math.min(5,allChanceStepBoost?5:(1+chanceAdd+squadBonus)));
-const hasBaseDefNpc=charRoleIsDefense(d&&d.role);
-const supportDefCount=Math.max(0,Math.min(5,Math.max(hasBaseDefNpc?1:0,defAdd)));
-const hasBaseAtkNpc=charRoleIsSupport(d&&d.role);
-const supportAtkCount=Math.max(0,Math.min(5,Math.max(hasBaseAtkNpc?1:0,atkAdd)));
+const supportDefCount=Math.max(0,Math.min(5,defAdd));
+const supportAtkCount=Math.max(0,Math.min(5,atkAdd));
 return{chanceCount,supportDefCount,supportAtkCount}}
-function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,true,true,true).join('\n');
+function getNpcPilotAccuracyPctBonusFromContext(unitData){const tx=_npcContextAbilityDetailStrings(unitData,false,true,false).join('\n');
 const accPatterns=[/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%/gi,/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/gi,/自身の命中率が(\d+)%上昇/g,/自身の命中率と回避率が(\d+)%上昇/g,/自身命中率提升(\d+)%/g,/自身命中率及閃避率提升(\d+)%/g];
 return _npcRegexCaptureSum(tx,accPatterns)}
 function characterHasConditionalChanceOrSupportAbility(d){const blocks=_charAbilityTextBlocks(d);return blocks.some(b=>b&&b.conditional&&(_countCharActionPlusOne(b.text,'chance')>0||_countCharActionPlusOne(b.text,'def')>0||_supportAtkBonusFromAbilityDetailText(b.text)>0))}
