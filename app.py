@@ -8989,14 +8989,33 @@ def _npc_map_own_ms_attack_line_in_sa_counter_blob(line, trait_blob_full):
     return bool(re.search(r'increases?\s+(?!squad\s)(?:own\s+|ms\s+)?(?:atk|attack)\b', ll))
 
 
+def _npc_map_skip_pilot_dossier_stat_line(line, ab, from_character):
+    """Pilot map abilities: 'Increase Defense by 15%' is dossier Defense, not MS DEF on the unit panel."""
+    if not from_character or not line:
+        return False
+    if _char_trait_line_is_squad_unit_effect(line, ab):
+        return False
+    if _npc_map_unit_line_is_squad_wide(line):
+        return False
+    if _trait_detail_blob_is_named_pilot_squad_ms(line):
+        return False
+    s = (line or '').strip()
+    return bool(re.match(
+        r'Increases?\s+(?:own\s+)?(?:Melee|Ranged|Range|Defense|Reaction|Awaken)\s+by\s+\d+%',
+        s, re.IGNORECASE))
+
+
 def _merge_map_npc_unit_stat_pct_from_abilities(
         abilities, nid, squad, per_npc, squad_by_source, pilot_tgt_by_char, ldc, stage_char_ids,
-        merge_mode='unconditional'):
+        merge_mode='unconditional', from_character=False):
     """Add MS stat % lines from unit or character abilities into squad / per-NPC buckets.
 
     ``merge_mode``:
     - ``unconditional`` (default): omit title-gated / Supercharged EX kits (map tile default).
     - ``conditional_title_gated``: only those gated kits — summed with unconditional for CP-on display.
+
+    ``from_character``: when True, omit pilot dossier lines (Melee/Ranged/Defense/Reaction/Awaken) that
+    must not apply to the deployed unit's MS stat tile (e.g. Increased Defense LV 3 on map pilots).
 
     Squad-wide lines increment the stage-wide ``squad`` total and ``squad_by_source[nid]`` (authorship)
     so each NPC can apply only its own squad-tagged passives when excluding other units' squad buffs.
@@ -9028,6 +9047,8 @@ def _merge_map_npc_unit_stat_pct_from_abilities(
             prev_enemy_tag_clause = False
             carry_cond = False
             for line in lines:
+                if _npc_map_skip_pilot_dossier_stat_line(line, ab, from_character):
+                    continue
                 if _char_trait_line_is_squad_unit_effect(line, ab):
                     if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
                         carry_cond = True
@@ -9113,13 +9134,13 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc, merge_mode='unconditio
         _merge_map_npc_unit_stat_pct_from_abilities(
             resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
             nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids,
-            merge_mode=merge_mode)
+            merge_mode=merge_mode, from_character=False)
         nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
         if nc:
             _merge_map_npc_unit_stat_pct_from_abilities(
                 resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
                 nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids,
-                merge_mode=merge_mode)
+                merge_mode=merge_mode, from_character=True)
     return squad, per_npc, squad_by_source, pilot_char_ms_pct  # squad_by_source[nid] = squad-wide % authored by that NPC only
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
