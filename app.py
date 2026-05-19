@@ -8812,6 +8812,132 @@ def _map_stage_deployed_character_ids(npc_entries):
     return ids
 
 
+def _map_stage_deployed_unit_ids(npc_entries):
+    ids = set()
+    if not npc_entries:
+        return ids
+    for npc in npc_entries:
+        nid = npc.get('id')
+        if not nid:
+            continue
+        nid_n = normalize_id(nid)
+        nu = map_npc_unit_lookup.get(nid_n, []) or map_npc_unit_lookup.get(nid, [])
+        if not nu:
+            continue
+        uid = normalize_id(nu[0].get('unit_id', '0'))
+        if uid != '0':
+            ids.add(uid)
+    return ids
+
+
+def _unit_condition_target_fragment_from_line(line):
+    """Extract named MS from \"Increase ATK … for post-escape Justice Gundam.\" style lines."""
+    if not line or not isinstance(line, str):
+        return ''
+    s = line.strip().rstrip('.')
+    m = re.search(r'\bfor\s+(.+)$', s, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'「([^」]+)」(?:に|を)?対象', s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'对(?:象)?[「「]?([^」」]+)[」」]?', s)
+    if m:
+        return m.group(1).strip()
+    return ''
+
+
+def _resolve_unit_ids_on_stage_from_fragment(fragment, ldc, stage_unit_ids):
+    """Match a trait unit-name clause to UnitIds deployed on this map stage."""
+    if not fragment or not isinstance(ldc, dict) or not stage_unit_ids:
+        return []
+    frag_key = _unit_display_core_key(fragment)
+    if not frag_key:
+        return []
+    uim = ldc.get('unit_id_map') or {}
+    utm = ldc.get('unit_text_map') or {}
+    out = []
+    seen = set()
+    restrict = stage_unit_ids if stage_unit_ids is not None else None
+    for uid_raw in (restrict if restrict is not None else uim.keys()):
+        uid = normalize_id(uid_raw)
+        if uid == '0':
+            continue
+        lid = uim.get(uid) or uim.get(uid_raw)
+        disp = utm.get(lid, '') if lid else ''
+        if not disp:
+            continue
+        dk = _unit_display_core_key(disp)
+        if not dk:
+            continue
+        if dk == frag_key or frag_key.endswith(dk) or dk in frag_key:
+            if uid not in seen:
+                seen.add(uid)
+                out.append(uid)
+    return out
+
+
+def accumulate_npc_unit_condition_pct_by_unit(npc_entries, lc):
+    """MS stat % from \"(Unit conditions)\" pilot traits keyed by target UnitId on this stage."""
+    keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
+    unit_pct = {}
+    ld = get_lang_data(lc) or {}
+    stage_uids = _map_stage_deployed_unit_ids(npc_entries)
+    for npc in npc_entries:
+        nid_n = normalize_id(npc.get('id'))
+        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(npc.get('id'), [])
+        if not nc:
+            continue
+        cabs = resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc)
+        for ab in cabs:
+            if not _ability_title_is_unit_conditions(ab.get('name', '')):
+                continue
+            for d in ab.get('details', []) or []:
+                txt = d.get('text', '') if isinstance(d, dict) else str(d)
+                if not txt:
+                    continue
+                lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
+                for line in lines:
+                    frag = _unit_condition_target_fragment_from_line(line)
+                    if not frag:
+                        continue
+                    bonus = _extract_stat_percent_unit(line, skip_conditional=False)
+                    if not bonus:
+                        continue
+                    for uid in _resolve_unit_ids_on_stage_from_fragment(frag, ld, stage_uids):
+                        row = unit_pct.setdefault(uid, {k: 0 for k in keys})
+                        for s, pct in bonus.items():
+                            if s in row:
+                                row[s] = row.get(s, 0) + pct
+    return unit_pct
+
+
+def resolve_npc_character_unit_condition_targets(cabs, lc, stage_unit_ids):
+    """UnitIds on this stage buffed by this pilot's (Unit conditions) traits (for CP highlight)."""
+    if not cabs:
+        return []
+    ld = get_lang_data(lc) or {}
+    out = []
+    seen = set()
+    for ab in cabs:
+        if not _ability_title_is_unit_conditions(ab.get('name', '')):
+            continue
+        for d in ab.get('details', []) or []:
+            txt = d.get('text', '') if isinstance(d, dict) else str(d)
+            if not txt:
+                continue
+            lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()] or [txt]
+            for line in lines:
+                frag = _unit_condition_target_fragment_from_line(line)
+                if not frag:
+                    continue
+                for uid in _resolve_unit_ids_on_stage_from_fragment(frag, ld, stage_unit_ids):
+                    if uid not in seen:
+                        seen.add(uid)
+                        out.append(uid)
+    return out
+
+
 def _npc_map_ability_requires_supercharged_vigor(ab):
     """Map-NPC tile stats omit MS % from Supercharged EX kits — active only when Vigor is Supercharged.
 
@@ -8863,27 +8989,35 @@ def _npc_map_own_ms_attack_line_in_sa_counter_blob(line, trait_blob_full):
     return bool(re.search(r'increases?\s+(?!squad\s)(?:own\s+|ms\s+)?(?:atk|attack)\b', ll))
 
 
-def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, squad_by_source, pilot_tgt_by_char, ldc, stage_char_ids):
-    """Add unconditional MS stat % lines from unit or character abilities into squad / per-NPC buckets.
+def _merge_map_npc_unit_stat_pct_from_abilities(
+        abilities, nid, squad, per_npc, squad_by_source, pilot_tgt_by_char, ldc, stage_char_ids,
+        merge_mode='unconditional'):
+    """Add MS stat % lines from unit or character abilities into squad / per-NPC buckets.
+
+    ``merge_mode``:
+    - ``unconditional`` (default): omit title-gated / Supercharged EX kits (map tile default).
+    - ``conditional_title_gated``: only those gated kits — summed with unconditional for CP-on display.
 
     Squad-wide lines increment the stage-wide ``squad`` total and ``squad_by_source[nid]`` (authorship)
     so each NPC can apply only its own squad-tagged passives when excluding other units' squad buffs.
-
-    Supercharged EX / \"When own Vigor is Supercharged\" kits are omitted — map enemies do not show
-    those MS % on the tile panel until Vigor is Supercharged in battle.
     """
     if not abilities:
         return
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
     per_npc.setdefault(nid, {k: 0 for k in keys})
     row = per_npc[nid]
+    title_gated_only = merge_mode == 'conditional_title_gated'
     for ab in abilities:
-        # Match unit dossier routing: gated kits (vigor/tag/battle wording in title + conditional bodies)
-        # must not dump % into unconditional map-NPC aggregates.
-        if ability_name_implies_unit_stat_conditional_bucket(ab):
+        is_title_gated = ability_name_implies_unit_stat_conditional_bucket(ab)
+        is_supercharged = _npc_map_ability_requires_supercharged_vigor(ab)
+        if _ability_title_is_unit_conditions(ab.get('name', '')):
             continue
-        if _npc_map_ability_requires_supercharged_vigor(ab):
-            continue
+        if title_gated_only:
+            if not is_title_gated and not is_supercharged:
+                continue
+        else:
+            if is_title_gated or is_supercharged:
+                continue
         for d in ab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
@@ -8945,7 +9079,7 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                 carry_cond = False
 
 
-def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
+def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc, merge_mode='unconditional'):
     """Per stage with m_map_npc placement: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
 
     ``get_stage`` uses this path for Eternal, Tower (via ``stage_master_id``), Score Attack, and Special Event —
@@ -8960,7 +9094,9 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
 
     Multi-line trait text must be split; a single detail blob with a conditional tail must not zero out
     unconditional stat lines (e.g. \"Increase DEF by 15%.\\nWhen ...\").
-    """
+
+    ``merge_mode='conditional_title_gated'`` parses only CP / unit-condition / Supercharged EX title kits.
+  """
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
     squad = {k: 0 for k in keys}
     per_npc = {}
@@ -8976,12 +9112,14 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc):
             continue
         _merge_map_npc_unit_stat_pct_from_abilities(
             resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
-            nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids)
+            nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids,
+            merge_mode=merge_mode)
         nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
         if nc:
             _merge_map_npc_unit_stat_pct_from_abilities(
                 resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
-                nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids)
+                nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids,
+                merge_mode=merge_mode)
     return squad, per_npc, squad_by_source, pilot_char_ms_pct  # squad_by_source[nid] = squad-wide % authored by that NPC only
 
 def apply_team_bonus_to_unit_stats(stats, bonus):
@@ -9177,8 +9315,11 @@ def _build_browse_list_performance_caches():
     print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
 
 
-def calculate_npc_character_self_bonus_pct(abilities):
-    """Unconditional non-EX pilot-stat % from map-NPC character abilities (SP kit when present).
+def calculate_npc_character_self_bonus_pct(abilities, include_conditional_title_gated=False):
+    """Non-EX pilot-stat % from map-NPC character abilities (SP kit when present).
+
+    Default omits title-gated traits (unit conditions, battle conditions, Supercharged EX, etc.) so the
+    Conditional Passive toggle can add them via ``include_conditional_title_gated=True``.
 
     m_map_npc_character stores base pilot stats; same as guest/friendly NPCs, enemy pilots still get
     always-on passives (e.g. Newtype Awaken/Reaction %) merged for display and damage sim."""
@@ -9191,6 +9332,7 @@ def calculate_npc_character_self_bonus_pct(abilities):
         sab = ab.get('sp_replacement') or ab
         if sab.get('is_ex', False):
             continue
+        title_gated = _char_trait_title_counts_as_conditional_bucket(sab)
         for d in sab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
             if not txt or _char_trait_text_is_support_defense_action(txt):
@@ -9211,9 +9353,14 @@ def calculate_npc_character_self_bonus_pct(abilities):
                     if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
                         carry_cond = True
                     continue
-                if (
+                if _ability_title_is_unit_conditions(sab.get('name', '')):
+                    carry_cond = False
+                    continue
+                if include_conditional_title_gated and title_gated:
+                    pass
+                elif (
                     carry_cond
-                    or _char_trait_title_counts_as_conditional_bucket(sab)
+                    or title_gated
                     or _char_detail_is_conditional(d, line)
                 ):
                     carry_cond = False
@@ -13506,7 +13653,12 @@ def get_stage(stage_id):
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
-            uom = []; nt = map_npc_by_map_stage.get(msid, []); squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
+            uom = []; nt = map_npc_by_map_stage.get(msid, [])
+            squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
+            squad_tb_c, self_tb_c, _, pilot_char_ms_pct_tb_c = accumulate_npc_map_unit_stat_bonuses(
+                nt, lc, merge_mode='conditional_title_gated')
+            unit_cond_pct_by_uid = accumulate_npc_unit_condition_pct_by_unit(nt, lc)
+            stage_unit_ids = _map_stage_deployed_unit_ids(nt)
             for npc in nt:
                 nid = npc['id']; nid_norm = normalize_id(nid)
                 nu = map_npc_unit_lookup.get(nid_norm, []) or []
@@ -13527,16 +13679,31 @@ def get_stage(stage_id):
                         pilot_row = {k: pilot_row.get(k, 0) for k in stat_keys}
                     else:
                         pilot_row = z
+                    pilot_row_c = pilot_char_ms_pct_tb_c.get(cid_pc) if cid_pc != '0' else None
+                    if pilot_row_c:
+                        pilot_row_c = {k: pilot_row_c.get(k, 0) for k in stat_keys}
+                    else:
+                        pilot_row_c = z
+                    self_row_c = {k: (self_tb_c.get(nid) or z).get(k, 0) for k in stat_keys}
+                    upuid_norm = normalize_id(ue.get('unit_id', '0'))
+                    unit_cond_row = unit_cond_pct_by_uid.get(upuid_norm, z)
                     tb_on = {k: squad_tb.get(k, 0) + self_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
+                    tb_cond_delta = {
+                        k: squad_tb_c.get(k, 0) + self_row_c.get(k, 0) + pilot_row_c.get(k, 0) + unit_cond_row.get(k, 0)
+                        for k in stat_keys}
+                    tb_with_cond = {k: tb_on.get(k, 0) + tb_cond_delta.get(k, 0) for k in stat_keys}
                     tb_off = {k: self_row.get(k, 0) + own_squad_row.get(k, 0) + pilot_row.get(k, 0) for k in stat_keys}
                     base_stats = {'HP': ue.get('hp', 0), 'EN': ue.get('en', 0), 'Attack': ue.get('attack', 0), 'Defense': ue.get('defense', 0), 'Mobility': ue.get('mobility', 0), 'Move': ue.get('movement', 0)}
                     fst_on, tba_on = apply_team_bonus_to_unit_stats(base_stats, tb_on)
+                    fst_cond, tba_cond = apply_team_bonus_to_unit_stats(base_stats, tb_with_cond)
                     fst_off, tba_off = apply_team_bonus_to_unit_stats(base_stats, tb_off)
                     upuid = ue.get('unit_id', '0'); up = get_npc_unit_display(upuid, fst_on, lc); up['abilities'] = uabs
                     upui = unit_info_map.get(upuid, {}); upubr = upui.get('bromide_resource_id', '') or (upui.get('resource_ids', [''])[0] if upui.get('resource_ids') else '')
                     up['weapons'] = resolve_npc_unit_weapons(ue.get('weapon_set_id', '0'), upuid, upubr, lc, upui.get('resource_ids'))
                     up['modifiers'] = resolve_npc_modifiers(npc.get('map_npc_buff_id', '0'), lc, nid)
                     up['bonus_amounts'] = tba_on
+                    up['stats_raw_with_cond'] = fst_cond
+                    up['bonus_amounts_with_cond'] = tba_cond
                     up['stats_raw_npc_squad_allies_off'] = fst_off
                     up['bonus_amounts_npc_squad_allies_off'] = tba_off
                     dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
@@ -13545,10 +13712,17 @@ def get_stage(stage_id):
                     cabs = resolve_npc_character_abilities(ce.get('ability_set_id', '0'), lc); csks = resolve_npc_character_skills(ce.get('skill_set_id', '0'), lc)
                     cp['abilities'] = cabs if cabs else [get_ui_label(lc, 'none')]; cp['skills'] = csks if csks else [get_ui_label(lc, 'none')]
                     if cabs:
+                        raw_pilot = {
+                            'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0),
+                            'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0),
+                            'Awaken': ce.get('awaken', 0),
+                        }
                         bp = calculate_npc_character_self_bonus_pct(cabs)
-                        boosted, bonus_amounts = apply_bonus_to_char_stats(cp.get('stats_raw', {}), bp)
+                        boosted, bonus_amounts = apply_bonus_to_char_stats(raw_pilot, bp)
                         cp['stats_raw'] = boosted
                         cp['bonus_amounts'] = bonus_amounts
+                        cp['unit_condition_target_unit_ids'] = resolve_npc_character_unit_condition_targets(
+                            cabs, lc, stage_unit_ids)
                 strategy_hint_entries = map_npc_strategy_hint_by_npc.get(nid_norm, []) or []
                 apply_map_npc_strategy_hints(nid, up, cp, strategy_hint_entries)
                 bst = bst_side_ty

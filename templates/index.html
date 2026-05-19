@@ -942,9 +942,17 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .npc-card-highlight{box-shadow:0 0 0 2px rgba(0,212,255,.78),0 0 22px rgba(0,212,255,.4);border-radius:var(--radius-lg);animation:npc-card-highlight-pulse-cyan 1.15s ease-in-out 4}
 .npc-card-highlight.npc-card-highlight--from-stage-map{animation:npc-card-highlight-pulse-cyan 1.15s ease-in-out 12}
 .npc-card-highlight.npc-card-highlight--stack-reinf{box-shadow:0 0 0 2px rgba(216,180,254,.94),0 0 26px rgba(192,132,252,.62),0 0 46px rgba(168,85,247,.48);animation:npc-card-highlight-pulse-purple 1.15s ease-in-out 4}
+.npc-card-highlight.npc-card-highlight--unit-cond-cp{box-shadow:0 0 0 2px rgba(250,204,21,.95),0 0 24px rgba(234,179,8,.5);animation:npc-card-highlight-pulse-gold 1.15s ease-in-out 6}
+.detail-rec-link-card--unit-cond-target{box-shadow:0 0 0 2px rgba(250,204,21,.92),0 0 18px rgba(234,179,8,.42)}
+.npc-unit-cond-targets-section{margin:10px 0 4px;padding:10px 12px;border-radius:var(--radius-md);border:1px solid rgba(250,204,21,.35);background:rgba(234,179,8,.08)}
+.npc-unit-cond-targets-label{font-size:12px;font-weight:700;color:#facc15;margin-bottom:8px}
+.npc-unit-cond-targets-row{display:flex;flex-wrap:wrap;gap:10px}
+.map-cell.map-cell--unit-cond-cp-target{box-shadow:inset 0 0 0 2px rgba(250,204,21,.95),0 0 12px rgba(234,179,8,.4)}
+.map-cell.enemy.map-cell--unit-cond-cp-target{background:linear-gradient(145deg,#fef9c3 0%,#fde047 38%,#eab308 72%,#ca8a04 100%);border-color:rgba(253,224,71,.92)}
+@keyframes npc-card-highlight-pulse-gold{0%,100%{box-shadow:0 0 0 2px rgba(250,204,21,.88),0 0 20px rgba(234,179,8,.38)}50%{box-shadow:0 0 0 4px rgba(253,224,71,.98),0 0 36px rgba(250,204,21,.58)}}
 @keyframes npc-card-highlight-pulse-cyan{0%,100%{box-shadow:0 0 0 2px rgba(0,212,255,.7),0 0 18px rgba(0,212,255,.32)}50%{box-shadow:0 0 0 4px rgba(34,211,238,.88),0 0 38px rgba(56,189,248,.52)}}
 @keyframes npc-card-highlight-pulse-purple{0%,100%{box-shadow:0 0 0 2px rgba(216,180,254,.88),0 0 22px rgba(168,85,247,.42)}50%{box-shadow:0 0 0 4px rgba(233,213,255,.95),0 0 42px rgba(192,132,252,.72),0 0 52px rgba(139,92,246,.42)}}
-@media (prefers-reduced-motion:reduce){.npc-card-highlight,.npc-card-highlight.npc-card-highlight--stack-reinf,.npc-card-highlight.npc-card-highlight--from-stage-map{animation:none}}
+@media (prefers-reduced-motion:reduce){.npc-card-highlight,.npc-card-highlight.npc-card-highlight--stack-reinf,.npc-card-highlight.npc-card-highlight--from-stage-map,.npc-card-highlight.npc-card-highlight--unit-cond-cp{animation:none}}
 .npc-card .detail-title-area{min-width:0;max-width:100%;overflow:visible;box-sizing:border-box}
 .npc-card .stats-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,112px),1fr));gap:10px}
 .npc-card .stat-card-value{font-size:clamp(13px,2.2vw + 0.35rem,20px);overflow:visible;max-width:none}
