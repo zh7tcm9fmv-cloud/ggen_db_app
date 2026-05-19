@@ -1324,14 +1324,25 @@ def _strip_custom_core_trait_prefix_for_dc(text):
     return s
 
 
-def _trait_line_is_vigor_supercharged_gate(line_lower, line_orig):
-    if 'vigor is supercharged' in line_lower and 'higher' in line_lower:
+def _trait_line_is_vigor_supercharged_preamble(line_lower, line_orig):
+    """True when a line opens a Supercharged-Vigor–gated effect block (EN/JA/TW/HK)."""
+    if not line_lower:
+        return False
+    if 'vigor is supercharged' in line_lower and (
+        'higher' in line_lower or line_lower.strip().startswith('when')
+    ):
         return True
-    if 'テンションが' in line_orig and '超一撃' in line_orig and '以上' in line_orig:
+    if 'テンションが' in line_orig and '超一撃' in line_orig:
         return True
-    if '戰意為' in line_orig and '超一擊' in line_orig and '以上' in line_orig:
+    if '戰意為' in line_orig and '超一擊' in line_orig:
+        return True
+    if '气势为' in line_orig and '超一击' in line_orig:
         return True
     return False
+
+
+def _trait_line_is_vigor_supercharged_gate(line_lower, line_orig):
+    return _trait_line_is_vigor_supercharged_preamble(line_lower, line_orig)
 
 
 def _enemy_def_debuff_pct_from_single_trait_line(line):
@@ -8782,6 +8793,43 @@ def _map_stage_deployed_character_ids(npc_entries):
     return ids
 
 
+def _npc_map_ability_requires_supercharged_vigor(ab):
+    """Map-NPC tile stats omit MS % from Supercharged EX kits — active only when Vigor is Supercharged.
+
+    Master data often splits the kit across detail rows (preamble in detail 0, \"Increase own ATK …\"
+    in a later row), so per-detail carry_cond is not enough."""
+    if not ab or not isinstance(ab, dict):
+        return False
+    low_name = (ab.get('name') or '').strip().lower()
+    if 'supercharged ex' in low_name or '超一撃ex' in low_name or '超一擊ex' in low_name:
+        return True
+    for d in ab.get('details', []) or []:
+        txt = (d.get('text') or '') if isinstance(d, dict) else str(d)
+        if not txt:
+            continue
+        for line in re.split(r'\r?\n+', txt):
+            line = (line or '').strip()
+            if not line:
+                continue
+            if _trait_line_is_vigor_supercharged_preamble(line.lower(), line):
+                return True
+    return False
+
+
+def _npc_map_line_implies_following_conditional(line):
+    """Multi-line traits: preamble like \"From turn 3 upon the start of battle,\" gates the next stat line."""
+    if not line:
+        return False
+    ll = line.lower().strip().rstrip(',')
+    if re.search(r'\bfrom\s+turn\s+\d+\b', ll):
+        return True
+    if '戦闘開始' in line and 'ターン' in line:
+        return True
+    if '戰鬥開始' in line and '回合' in line:
+        return True
+    return False
+
+
 def _npc_map_own_ms_attack_line_in_sa_counter_blob(line, trait_blob_full):
     """SA/C-themed trait blob: omit non-squad MS ATK %% lines from static map merges (Combat-only own/MS atk).
 
@@ -8801,6 +8849,9 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
 
     Squad-wide lines increment the stage-wide ``squad`` total and ``squad_by_source[nid]`` (authorship)
     so each NPC can apply only its own squad-tagged passives when excluding other units' squad buffs.
+
+    Supercharged EX / \"When own Vigor is Supercharged\" kits are omitted — map enemies do not show
+    those MS % on the tile panel until Vigor is Supercharged in battle.
     """
     if not abilities:
         return
@@ -8811,6 +8862,8 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
         # Match unit dossier routing: gated kits (vigor/tag/battle wording in title + conditional bodies)
         # must not dump % into unconditional map-NPC aggregates.
         if ability_name_implies_unit_stat_conditional_bucket(ab):
+            continue
+        if _npc_map_ability_requires_supercharged_vigor(ab):
             continue
         for d in ab.get('details', []) or []:
             txt = d.get('text', '') if isinstance(d, dict) else str(d)
@@ -8825,6 +8878,9 @@ def _merge_map_npc_unit_stat_pct_from_abilities(abilities, nid, squad, per_npc, 
                 if _char_trait_line_is_squad_unit_effect(line, ab):
                     if _is_conditional_stat_text(line) or _char_detail_is_conditional(d, line):
                         carry_cond = True
+                    continue
+                if _npc_map_line_implies_following_conditional(line):
+                    carry_cond = True
                     continue
                 itc = _is_conditional_stat_text(line)
                 b = _extract_stat_percent_unit(line, skip_conditional=False)
