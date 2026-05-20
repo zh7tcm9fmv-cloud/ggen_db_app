@@ -13351,12 +13351,26 @@ def _banner_pool_votes_github_path():
     return (os.environ.get('GGEN_BANNER_VOTES_GITHUB_PATH') or 'data/published/banner_pool_votes.json').strip().lstrip('/')
 
 
+def _banner_pool_votes_github_branch():
+    """
+    Branch used for Railway vote snapshots (not main).
+    Keeps auto-commits off your development branch so git push does not need constant merges.
+    """
+    explicit = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_BRANCH') or '').strip()
+    if explicit:
+        return explicit
+    if _banner_pool_votes_on_railway() and (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip():
+        return 'banner-votes-data'
+    return (os.environ.get('GITHUB_REF_NAME') or os.environ.get('RAILWAY_GIT_BRANCH') or 'main').strip() or 'main'
+
+
 def _banner_pool_votes_github_config():
     token = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip()
     repo = _banner_pool_votes_github_repo()
     path = _banner_pool_votes_github_path()
     if token and repo and '/' in repo:
-        return token, repo, path
+        branch = _banner_pool_votes_github_branch_safe(_banner_pool_votes_github_branch())
+        return token, repo, path, branch
     return None
 
 
@@ -13367,7 +13381,7 @@ def _banner_pool_votes_import_url():
     repo = _banner_pool_votes_github_repo()
     if not repo or '/' not in repo:
         return ''
-    branch = (os.environ.get('GITHUB_REF_NAME') or os.environ.get('RAILWAY_GIT_BRANCH') or 'main').strip() or 'main'
+    branch = _banner_pool_votes_github_branch()
     path = _banner_pool_votes_github_path()
     return f'https://raw.githubusercontent.com/{repo}/{branch}/{path}'
 
@@ -13378,21 +13392,34 @@ def _banner_pool_votes_on_railway():
 
 def _banner_pool_votes_sync_mode():
     """
-    When to push vote totals to GitHub (never on every user tap by default).
-    - off: never auto-push
-    - shutdown: once when the process stops (Railway deploy/restart) — default on Railway
-    - vote: push after each vote (legacy; floods GitHub commits)
+    GitHub auto-push for votes (shutdown = once per deploy/restart, not per user tap).
+    - off: no Railway/GitHub API writes
+    - shutdown: default on Railway when GGEN_BANNER_VOTES_GITHUB_TOKEN is set
+    - vote: after each vote (not recommended)
     """
     raw = (os.environ.get('GGEN_BANNER_VOTES_SYNC_MODE') or '').strip().lower()
     if raw in ('off', 'none', 'false', '0', 'never'):
         return 'off'
     if raw in ('vote', 'each', 'always', 'every'):
         return 'vote'
-    if raw in ('shutdown', 'deploy', 'exit', 'stop'):
+    if raw in ('shutdown', 'deploy', 'exit', 'stop', 'on', 'true', '1'):
         return 'shutdown'
     if _banner_pool_votes_on_railway() and _banner_pool_votes_github_config():
         return 'shutdown'
     return 'off'
+
+
+def _banner_pool_votes_use_github_api():
+    if not _banner_pool_votes_github_config():
+        return False
+    return _banner_pool_votes_sync_mode() != 'off'
+
+
+def _banner_pool_votes_github_branch_safe(branch):
+    """Never snapshot votes onto main from Railway — prevents git pull merge spam."""
+    if _banner_pool_votes_on_railway() and (branch or 'main') == 'main':
+        return 'banner-votes-data'
+    return branch or 'main'
 
 
 def _banner_pool_votes_bundled_snapshot():
@@ -13440,8 +13467,8 @@ def _banner_pool_votes_fetch_github():
     cfg = _banner_pool_votes_github_config()
     if not cfg:
         return None
-    token, repo, path = cfg
-    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
+    token, repo, path, branch = cfg
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/vnd.github+json',
@@ -13467,7 +13494,7 @@ def _banner_pool_votes_push_github(data, *, retries=2):
     cfg = _banner_pool_votes_github_config()
     if not cfg:
         return False
-    token, repo, path = cfg
+    token, repo, path, branch = cfg
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
     payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
     headers = {
@@ -13485,6 +13512,7 @@ def _banner_pool_votes_push_github(data, *, retries=2):
             body = {
                 'message': 'chore: snapshot banner pool votes before deploy',
                 'content': base64.b64encode(payload).decode('ascii'),
+                'branch': branch,
             }
             if _BANNER_VOTES_GITHUB_SHA:
                 body['sha'] = _BANNER_VOTES_GITHUB_SHA
@@ -13510,7 +13538,7 @@ def _banner_pool_votes_push_github(data, *, retries=2):
 
 
 def _banner_pool_votes_remote_fetch(*, prefer_github=True):
-    data = _banner_pool_votes_fetch_github() if prefer_github and _banner_pool_votes_github_config() else None
+    data = _banner_pool_votes_fetch_github() if prefer_github and _banner_pool_votes_use_github_api() else None
     if _banner_pool_votes_has_data(data):
         return data
     url = _banner_pool_votes_import_url()
@@ -13621,14 +13649,13 @@ def _banner_pool_votes_after_save(data):
 def _banner_pool_votes_storage_warning():
     if not _banner_pool_votes_on_railway():
         return
-    if _banner_pool_votes_github_config():
-        return
     if (os.environ.get('GGEN_BANNER_VOTES_PATH') or '').strip():
         return
+    if _banner_pool_votes_sync_mode() != 'off':
+        return
     print(
-        'banner_pool_votes: WARNING — Railway free tier has no persistent disk. '
-        'Set GGEN_BANNER_VOTES_GITHUB_TOKEN in Railway variables or votes reset on every deploy. '
-        'See data/persistent/README.md'
+        'banner_pool_votes: Railway has no persistent disk. Set GGEN_BANNER_VOTES_GITHUB_TOKEN '
+        'and sync_mode=shutdown (default) so votes save to branch banner-votes-data, not main.'
     )
 
 
@@ -13731,6 +13758,7 @@ print(
     f'path={BANNER_POOL_VOTES_FILE}',
     f'published={_PUBLISHED_BANNER_POOL_VOTES_FILE}',
     f'github={"on" if _cfg else "off"}',
+    f'github_branch={_cfg[3] if _cfg else "-"}',
     f'sync_mode={_banner_pool_votes_sync_mode()}',
     f'import_url={"set" if _banner_pool_votes_import_url() else "off"}',
     f'railway={"yes" if _banner_pool_votes_on_railway() else "no"}',

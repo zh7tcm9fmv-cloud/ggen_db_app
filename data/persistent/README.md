@@ -1,55 +1,70 @@
 # Banner vote persistence
 
-Community totals are in `banner_pool_votes.json`. On **Railway free tier**, the app disk is wiped on each deploy.
+## Keep sync ON without Vim merge hell
 
-## GitHub sync (default on Railway)
+Railway can save votes to GitHub **without touching your `main` branch**.
 
-Votes are **not** pushed to GitHub on every user tap. That flooded the deploy queue with `chore: sync banner pool votes` commits.
+| Where | What gets updated |
+|-------|-------------------|
+| **`main`** | Only **you** (normal `git push` from your PC) |
+| **`banner-votes-data`** | Railway (one snapshot when the old container stops) |
 
-**Default behaviour** (`GGEN_BANNER_VOTES_SYNC_MODE=shutdown`, automatic on Railway when a GitHub token is set):
+That way `git push origin main` does not need to merge Railway’s `chore:` commits.
 
-| When | What happens |
-|------|----------------|
-| User votes | Fast local file only |
-| Railway stops the old container (deploy/restart) | **One** snapshot commit to `data/published/banner_pool_votes.json` |
-| New container starts | Loads that file from git + GitHub |
-
-Railway variables:
+## Railway variables
 
 | Variable | Value |
 |----------|--------|
 | `GGEN_BANNER_VOTES_GITHUB_TOKEN` | PAT with **Contents: read and write** |
-| `GGEN_BANNER_VOTES_GITHUB_REPO` | `zh7tcm9fmv-cloud/ggen_db_app` (optional if `GITHUB_REPOSITORY` is set) |
+| `GGEN_BANNER_VOTES_SYNC_MODE` | `shutdown` or `on` (default when token is set) |
+| `GGEN_BANNER_VOTES_GITHUB_REPO` | `zh7tcm9fmv-cloud/ggen_db_app` (optional) |
+| `GGEN_BANNER_VOTES_GITHUB_BRANCH` | `banner-votes-data` (optional — **default on Railway**) |
 
-Optional:
+Do **not** set the branch to `main`.
 
-| Variable | Values |
-|----------|--------|
-| `GGEN_BANNER_VOTES_SYNC_MODE` | `shutdown` (default on Railway), `off`, `vote` (not recommended) |
+After deploy, logs should show:
 
-Logs after deploy should show: `sync_mode=shutdown`
+```
+github_branch=banner-votes-data
+sync_mode=shutdown
+```
 
-### Before you deploy code changes
+## Your PC — normal git (no merge from votes)
 
-1. Let the **current** Railway instance run until the deploy starts (so shutdown can snapshot votes), **or**
-2. Manually commit `data/published/banner_pool_votes.json` if you have a recent copy.
+```powershell
+git add .
+git commit -m "your update"
+git push origin main
+```
 
-If the process is killed without a graceful stop, the last window of votes may be lost.
+You should **not** need `git pull` first just because users voted.
 
-### Turn off GitHub sync entirely
+### One-time cleanup (old vote commits already on `main`)
 
-`GGEN_BANNER_VOTES_SYNC_MODE=off`
+If GitHub `main` still has old `chore: sync` commits, fix once:
 
-Then commit `data/published/banner_pool_votes.json` yourself before each deploy.
+```powershell
+git pull origin main --no-edit
+git push origin main
+```
 
----
+(`Esc` → `:wq` → `Enter` if Vim appears **one last time**.)
 
-## Railway Pro volumes (optional)
+### Optional: never get a merge commit on pull
 
-Mount `/data` and set `GGEN_BANNER_VOTES_PATH=/data/banner_pool_votes.json`. GitHub snapshot on shutdown is still useful as backup.
+```powershell
+git config --global pull.rebase true
+```
 
----
+Then `git pull` rebases instead of opening Vim for a merge message. Use this for any repo you work on alone on `main`.
 
-## Manual reset only
+## How votes survive deploy
 
-Edit or delete `data/published/banner_pool_votes.json` in GitHub only when you intend to clear community totals.
+1. Users vote → saved on the running container.
+2. You push code → Railway redeploys.
+3. Old container stops → **one** push to **`banner-votes-data`** on GitHub.
+4. New container starts → loads votes from that branch (and the copy in git).
+
+## Turn sync off
+
+`GGEN_BANNER_VOTES_SYNC_MODE=off` — then commit `data/published/banner_pool_votes.json` yourself before deploy, or use `scripts/snapshot_banner_votes.ps1`.
