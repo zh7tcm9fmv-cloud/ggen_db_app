@@ -13295,8 +13295,10 @@ def api_banner_timeline():
 
 _LEGACY_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
 _DEFAULT_PERSISTENT_VOTES_DIR = os.path.join(app_dir, 'data', 'persistent')
+_PUBLISHED_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'published', 'banner_pool_votes.json')
 _BANNER_VOTES_GITHUB_SHA = None
 _BANNER_VOTES_LAST_REMOTE_PULL = 0.0
+_BANNER_VOTES_GITHUB_PUSH_LOCK = threading.Lock()
 
 
 def _path_is_writable_dir(path):
@@ -13335,17 +13337,50 @@ def _resolve_banner_pool_votes_file():
     return candidates[-1]
 
 
+def _banner_pool_votes_github_repo():
+    return (os.environ.get('GGEN_BANNER_VOTES_GITHUB_REPO') or os.environ.get('GITHUB_REPOSITORY') or '').strip()
+
+
+def _banner_pool_votes_github_path():
+    return (os.environ.get('GGEN_BANNER_VOTES_GITHUB_PATH') or 'data/published/banner_pool_votes.json').strip().lstrip('/')
+
+
 def _banner_pool_votes_github_config():
     token = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip()
-    repo = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_REPO') or os.environ.get('GITHUB_REPOSITORY') or '').strip()
-    path = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_PATH') or 'data/persistent/banner_pool_votes.json').strip().lstrip('/')
+    repo = _banner_pool_votes_github_repo()
+    path = _banner_pool_votes_github_path()
     if token and repo and '/' in repo:
         return token, repo, path
     return None
 
 
 def _banner_pool_votes_import_url():
-    return (os.environ.get('GGEN_BANNER_VOTES_IMPORT_URL') or '').strip()
+    explicit = (os.environ.get('GGEN_BANNER_VOTES_IMPORT_URL') or '').strip()
+    if explicit:
+        return explicit
+    repo = _banner_pool_votes_github_repo()
+    if not repo or '/' not in repo:
+        return ''
+    branch = (os.environ.get('GITHUB_REF_NAME') or os.environ.get('RAILWAY_GIT_BRANCH') or 'main').strip() or 'main'
+    path = _banner_pool_votes_github_path()
+    return f'https://raw.githubusercontent.com/{repo}/{branch}/{path}'
+
+
+def _banner_pool_votes_on_railway():
+    return bool(os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID'))
+
+
+def _banner_pool_votes_bundled_snapshot():
+    data = load_json(_PUBLISHED_BANNER_POOL_VOTES_FILE)
+    return data if isinstance(data, dict) else None
+
+
+def _banner_pool_votes_merge_snapshots(*snaps):
+    best = {}
+    for snap in snaps:
+        if isinstance(snap, dict):
+            best = _banner_pool_votes_pick_richer(best, snap)
+    return best
 
 
 def _banner_pool_votes_vote_count(data):
@@ -13402,7 +13437,7 @@ def _banner_pool_votes_fetch_github():
         return None
 
 
-def _banner_pool_votes_push_github(data):
+def _banner_pool_votes_push_github(data, *, retries=2):
     global _BANNER_VOTES_GITHUB_SHA
     cfg = _banner_pool_votes_github_config()
     if not cfg:
@@ -13410,28 +13445,43 @@ def _banner_pool_votes_push_github(data):
     token, repo, path = cfg
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
     payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
-    body = {
-        'message': 'chore: sync banner pool votes',
-        'content': base64.b64encode(payload).decode('ascii'),
-    }
-    if _BANNER_VOTES_GITHUB_SHA:
-        body['sha'] = _BANNER_VOTES_GITHUB_SHA
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/vnd.github+json',
         'Content-Type': 'application/json',
         'X-GitHub-Api-Version': '2022-11-28',
     }
-    try:
-        req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-        with urlopen(req, timeout=30) as resp:
-            meta = json.loads(resp.read().decode('utf-8'))
-        if isinstance(meta, dict) and meta.get('content', {}).get('sha'):
-            _BANNER_VOTES_GITHUB_SHA = meta['content']['sha']
-        return True
-    except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
-        print(f'banner_pool_votes: GitHub push failed: {e}')
-        return False
+    with _BANNER_VOTES_GITHUB_PUSH_LOCK:
+        for attempt in range(retries + 1):
+            if attempt and not _BANNER_VOTES_GITHUB_SHA:
+                fresh = _banner_pool_votes_fetch_github()
+                if fresh is None and attempt < retries:
+                    continue
+            body = {
+                'message': 'chore: sync banner pool votes',
+                'content': base64.b64encode(payload).decode('ascii'),
+            }
+            if _BANNER_VOTES_GITHUB_SHA:
+                body['sha'] = _BANNER_VOTES_GITHUB_SHA
+            try:
+                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
+                with urlopen(req, timeout=30) as resp:
+                    meta = json.loads(resp.read().decode('utf-8'))
+                content = meta.get('content') if isinstance(meta, dict) else None
+                if isinstance(content, dict) and content.get('sha'):
+                    _BANNER_VOTES_GITHUB_SHA = content['sha']
+                return True
+            except HTTPError as e:
+                if e.code == 409 and attempt < retries:
+                    _BANNER_VOTES_GITHUB_SHA = None
+                    _banner_pool_votes_fetch_github()
+                    continue
+                print(f'banner_pool_votes: GitHub push failed: {e}')
+                return False
+            except (URLError, OSError, json.JSONDecodeError) as e:
+                print(f'banner_pool_votes: GitHub push failed: {e}')
+                return False
+    return False
 
 
 def _banner_pool_votes_remote_fetch():
@@ -13450,20 +13500,29 @@ def _banner_pool_votes_remote_fetch():
 
 
 def _banner_pool_votes_hydrate_from_remote(*, force=False):
-    """Pull remote vote snapshot when local file is missing or has fewer totals."""
+    """Merge GitHub / raw URL / bundled repo snapshot into the local cache file."""
     global _BANNER_VOTES_LAST_REMOTE_PULL
     if not force and (time.time() - _BANNER_VOTES_LAST_REMOTE_PULL) < 8.0:
         return
-    if not _banner_pool_votes_github_config() and not _banner_pool_votes_import_url():
-        return
-    remote = _banner_pool_votes_remote_fetch()
     _BANNER_VOTES_LAST_REMOTE_PULL = time.time()
-    if not _banner_pool_votes_has_data(remote):
-        return
     local = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(local, dict):
         local = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
-    merged = _banner_pool_votes_pick_richer(local, remote)
+    remote = _banner_pool_votes_remote_fetch()
+    raw_snap = None
+    import_url = _banner_pool_votes_import_url()
+    if import_url:
+        try:
+            raw_snap = _banner_pool_votes_fetch_url(import_url)
+        except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
+            print(f'banner_pool_votes: import URL fetch failed: {e}')
+    merged = _banner_pool_votes_merge_snapshots(
+        local,
+        load_json(BANNER_POOL_VOTES_BACKUP_FILE),
+        _banner_pool_votes_bundled_snapshot(),
+        remote,
+        raw_snap,
+    )
     if _banner_pool_votes_vote_count(merged) <= _banner_pool_votes_vote_count(local or {}):
         return
     try:
@@ -13473,21 +13532,40 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
             json.dump(merged, f, ensure_ascii=False, indent=2)
             f.write('\n')
         os.replace(tmp, BANNER_POOL_VOTES_FILE)
-        print(f'banner_pool_votes: hydrated from remote ({_banner_pool_votes_vote_count(merged)} votes)')
+        print(f'banner_pool_votes: hydrated ({_banner_pool_votes_vote_count(merged)} vote count)')
     except OSError as e:
         print(f'banner_pool_votes: hydrate write failed: {e}')
 
 
-def _banner_pool_votes_push_remote_async(data):
+def _banner_pool_votes_sync_after_save(data):
     if not _banner_pool_votes_has_data(data):
         return
     if not _banner_pool_votes_github_config():
+        return
+    if _banner_pool_votes_on_railway():
+        ok = _banner_pool_votes_push_github(data)
+        if not ok:
+            print('banner_pool_votes: WARNING GitHub sync failed — vote saved locally only until next successful sync')
         return
 
     def _run():
         _banner_pool_votes_push_github(data)
 
     threading.Thread(target=_run, daemon=True).start()
+
+
+def _banner_pool_votes_storage_warning():
+    if not _banner_pool_votes_on_railway():
+        return
+    if _banner_pool_votes_github_config():
+        return
+    if (os.environ.get('GGEN_BANNER_VOTES_PATH') or '').strip():
+        return
+    print(
+        'banner_pool_votes: WARNING — Railway free tier has no persistent disk. '
+        'Set GGEN_BANNER_VOTES_GITHUB_TOKEN in Railway variables or votes reset on every deploy. '
+        'See data/persistent/README.md'
+    )
 
 
 BANNER_POOL_VOTES_FILE = _resolve_banner_pool_votes_file()
@@ -13581,12 +13659,15 @@ def _banner_pool_votes_migrate():
 
 _banner_pool_votes_migrate()
 _banner_pool_votes_hydrate_from_remote(force=True)
+_banner_pool_votes_storage_warning()
 _cfg = _banner_pool_votes_github_config()
 print(
     'banner_pool_votes:',
     f'path={BANNER_POOL_VOTES_FILE}',
+    f'published={_PUBLISHED_BANNER_POOL_VOTES_FILE}',
     f'github_sync={"on" if _cfg else "off"}',
-    f'railway={"yes" if os.environ.get("RAILWAY_ENVIRONMENT") else "no"}',
+    f'import_url={"set" if _banner_pool_votes_import_url() else "off"}',
+    f'railway={"yes" if _banner_pool_votes_on_railway() else "no"}',
 )
 
 
@@ -13643,6 +13724,7 @@ def _banner_pool_votes_load():
     data = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
         data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    data = _banner_pool_votes_merge_snapshots(data, _banner_pool_votes_bundled_snapshot())
     if not isinstance(data, dict):
         data = {}
     if not isinstance(data.get('totals'), dict):
@@ -13682,7 +13764,7 @@ def _banner_pool_votes_save(data, *, allow_clear=False):
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write('\n')
     os.replace(tmp, BANNER_POOL_VOTES_FILE)
-    _banner_pool_votes_push_remote_async(data)
+    _banner_pool_votes_sync_after_save(data)
 
 
 def _bt_vote_choice_valid(choice):

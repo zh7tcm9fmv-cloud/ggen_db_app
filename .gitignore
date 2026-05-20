@@ -12,3 +12,7 @@ data/persistent/*
 !data/persistent/.gitkeep
 !data/persistent/README.md
 !data/persistent/banner_pool_votes.json.example
+
+# Published vote snapshot (committed; synced to GitHub on Railway — survives free-tier deploys)
+!data/published/
+!data/published/banner_pool_votes.json
