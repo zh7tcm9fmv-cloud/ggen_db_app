@@ -13,6 +13,7 @@ except ImportError:
 
 from flask import Flask, render_template, jsonify, request, make_response, session
 from werkzeug.exceptions import NotFound
+from werkzeug.middleware.proxy_fix import ProxyFix
 import json
 import shutil
 import re
@@ -36,6 +37,8 @@ except ImportError:
     ZoneInfo = None  # pragma: no cover
 
 app = Flask(__name__)
+# Trust Railway / CDN client IP headers (required for IP-based vote ballots).
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # Bust cache when static/js/app.js changes (content-addressed tag from mtime+size).
 # IMPORTANT: compute at HTML render time, not only at process import — otherwise Flask
@@ -13978,6 +13981,7 @@ def api_banner_timeline_votes():
 
 @app.route('/api/banner_timeline/vote', methods=['POST'])
 def api_banner_timeline_vote():
+    # Ballots are keyed by server-side IP hash only; client_id in the body is ignored.
     body = request.get_json(silent=True) or {}
     gasha_id = normalize_id(body.get('gasha_id') or body.get('gashaId') or '0')
     voter_id = _bt_vote_voter_id()
