@@ -13335,22 +13335,59 @@ def _bt_vote_banner_enabled(gasha_id):
     return True
 
 
+BANNER_POOL_VOTES_BACKUP_FILE = BANNER_POOL_VOTES_FILE + '.bak'
+
+
+def _banner_pool_votes_has_data(data):
+    if not isinstance(data, dict):
+        return False
+    for g_tot in (data.get('totals') or {}).values():
+        if isinstance(g_tot, dict) and any(int(v or 0) > 0 for v in g_tot.values()):
+            return True
+    return bool(data.get('ballots'))
+
+
+def _banner_pool_votes_try_restore_from_backup():
+    """If the live file was wiped (deploy/accident) but .bak has votes, restore once."""
+    try:
+        if os.path.isfile(BANNER_POOL_VOTES_FILE) and os.path.getsize(BANNER_POOL_VOTES_FILE) > 10:
+            live = load_json(BANNER_POOL_VOTES_FILE)
+            if _banner_pool_votes_has_data(live):
+                return
+    except OSError:
+        pass
+    if not os.path.isfile(BANNER_POOL_VOTES_BACKUP_FILE):
+        return
+    bak = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    if not _banner_pool_votes_has_data(bak):
+        return
+    try:
+        os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
+        shutil.copy2(BANNER_POOL_VOTES_BACKUP_FILE, BANNER_POOL_VOTES_FILE)
+        print(f'banner_pool_votes: restored from {BANNER_POOL_VOTES_BACKUP_FILE}')
+    except OSError as e:
+        print(f'banner_pool_votes restore failed: {e}')
+
+
 def _banner_pool_votes_migrate():
     target = BANNER_POOL_VOTES_FILE
     try:
         if os.path.isfile(target) and os.path.getsize(target) > 2:
+            _banner_pool_votes_try_restore_from_backup()
             return
     except OSError:
         pass
     legacy = _LEGACY_BANNER_POOL_VOTES_FILE
-    if not os.path.isfile(legacy) or os.path.normcase(legacy) == os.path.normcase(target):
-        return
-    try:
-        os.makedirs(os.path.dirname(target), exist_ok=True)
-        shutil.copy2(legacy, target)
-        print(f'banner_pool_votes: migrated {legacy} -> {target}')
-    except OSError as e:
-        print(f'banner_pool_votes migrate failed: {e}')
+    if os.path.isfile(legacy) and os.path.normcase(legacy) != os.path.normcase(target):
+        leg = load_json(legacy)
+        if _banner_pool_votes_has_data(leg):
+            try:
+                os.makedirs(os.path.dirname(target), exist_ok=True)
+                shutil.copy2(legacy, target)
+                print(f'banner_pool_votes: migrated {legacy} -> {target}')
+            except OSError as e:
+                print(f'banner_pool_votes migrate failed: {e}')
+    _banner_pool_votes_try_restore_from_backup()
 
 
 _banner_pool_votes_migrate()
@@ -13407,6 +13444,8 @@ def _bt_vote_normalize_choice(raw):
 def _banner_pool_votes_load():
     data = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
+        data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    if not isinstance(data, dict):
         data = {}
     if not isinstance(data.get('totals'), dict):
         data['totals'] = {}
@@ -13416,20 +13455,35 @@ def _banner_pool_votes_load():
         data['ballots'] = ballots
     changed = False
     for bkey, ballot in list(ballots.items()):
+        if not isinstance(ballot, dict) or 'choices' not in ballot:
+            continue
         norm = _bt_vote_normalize_ballot(ballot)
-        if ballot != norm:
-            ballots[bkey] = norm
-            changed = True
+        ballots[bkey] = norm
+        changed = True
     if changed:
         _banner_pool_votes_save(data)
     return data
 
 
-def _banner_pool_votes_save(data):
+def _banner_pool_votes_save(data, *, allow_clear=False):
+    """Persist votes atomically; keep .bak of last non-empty file (never auto-clear totals)."""
+    if not allow_clear and not _banner_pool_votes_has_data(data):
+        for path in (BANNER_POOL_VOTES_FILE, BANNER_POOL_VOTES_BACKUP_FILE):
+            prev = load_json(path)
+            if _banner_pool_votes_has_data(prev):
+                print('banner_pool_votes: refused to overwrite stored votes with empty data')
+                return
     os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
-    with open(BANNER_POOL_VOTES_FILE, 'w', encoding='utf-8') as f:
+    if os.path.isfile(BANNER_POOL_VOTES_FILE) and _banner_pool_votes_has_data(load_json(BANNER_POOL_VOTES_FILE)):
+        try:
+            shutil.copy2(BANNER_POOL_VOTES_FILE, BANNER_POOL_VOTES_BACKUP_FILE)
+        except OSError:
+            pass
+    tmp = BANNER_POOL_VOTES_FILE + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write('\n')
+    os.replace(tmp, BANNER_POOL_VOTES_FILE)
 
 
 def _bt_vote_choice_valid(choice):
@@ -13454,8 +13508,7 @@ def _bt_vote_ballot_key(client_id, gasha_id):
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
     data = _banner_pool_votes_load()
-    raw = data.get('totals') or {}
-    totals = {gid: g_tot for gid, g_tot in raw.items() if _bt_vote_banner_enabled(gid)}
+    totals = data.get('totals') or {}
     client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(request.args.get('client_id') or request.args.get('clientId') or ''))[:80]
     mine = {}
     if client_id:
@@ -13464,8 +13517,7 @@ def api_banner_timeline_votes():
             if not bkey.startswith(prefix):
                 continue
             gid = bkey[len(prefix):]
-            if _bt_vote_banner_enabled(gid):
-                mine[gid] = _bt_vote_ballot_choices(ballot)
+            mine[gid] = _bt_vote_ballot_choices(ballot)
     return jsonify({'totals': totals, 'mine': mine})
 
 

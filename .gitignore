@@ -6,6 +6,9 @@ venv/
 
 # Live banner pool vote totals (written at runtime; survive deploys in data/persistent/)
 data/banner_pool_votes.json
+data/persistent/banner_pool_votes.json
+data/persistent/banner_pool_votes.json.bak
 data/persistent/*
 !data/persistent/.gitkeep
+!data/persistent/README.md
 !data/persistent/banner_pool_votes.json.example
