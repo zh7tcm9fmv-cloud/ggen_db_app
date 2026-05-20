@@ -13301,9 +13301,9 @@ def _resolve_banner_pool_votes_file():
 
 
 BANNER_POOL_VOTES_FILE = _resolve_banner_pool_votes_file()
-BT_VOTE_MAX_PICKS = 2
 # Permanent premium pools — no community voting (Ver.1 / Ver.2).
 BT_VOTE_DISABLED_GASHA_IDS = frozenset({'2504100101', '2604300101'})
+BT_VOTE_POOL_EXCLUSIVE = frozenset({'all', 'skip'})
 
 
 def _bt_vote_gasha_allowed(gasha_id):
@@ -13331,14 +13331,72 @@ def _banner_pool_votes_migrate():
 _banner_pool_votes_migrate()
 
 
+def _bt_vote_normalize_ballot(ballot):
+    """Per-choice map: {choice_key: voted_at_ts}. Migrates legacy {choices: [...]}."""
+    if not isinstance(ballot, dict):
+        return {}
+    if 'choices' in ballot:
+        ts = int(ballot.get('ts') or time.time())
+        out = {}
+        for ch in ballot.get('choices') or []:
+            if isinstance(ch, str) and ch.strip():
+                out[ch.strip()] = ts
+        return out
+    out = {}
+    for k, v in ballot.items():
+        if k in ('ts', 'choices') or not isinstance(k, str):
+            continue
+        out[k] = int(v) if isinstance(v, (int, float)) else int(time.time())
+    return out
+
+
+def _bt_vote_ballot_choices(ballot):
+    return list(_bt_vote_normalize_ballot(ballot).keys())
+
+
+def _bt_vote_adjust_total(g_tot, choice, delta):
+    if not choice or not delta:
+        return
+    if delta > 0:
+        g_tot[choice] = int(g_tot.get(choice, 0)) + delta
+    else:
+        cur = int(g_tot.get(choice, 0)) + delta
+        if cur <= 0:
+            g_tot.pop(choice, None)
+        else:
+            g_tot[choice] = cur
+
+
+def _bt_vote_normalize_choice(raw):
+    if not isinstance(raw, str):
+        return None
+    chs = raw.strip()
+    if not _bt_vote_choice_valid(chs):
+        return None
+    if chs in BT_VOTE_POOL_EXCLUSIVE:
+        return chs
+    typ, ident = chs.split(':', 1)
+    return f'{typ}:{normalize_id(ident)}'
+
+
 def _banner_pool_votes_load():
     data = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
         data = {}
     if not isinstance(data.get('totals'), dict):
         data['totals'] = {}
-    if not isinstance(data.get('ballots'), dict):
-        data['ballots'] = {}
+    ballots = data.get('ballots')
+    if not isinstance(ballots, dict):
+        ballots = {}
+        data['ballots'] = ballots
+    changed = False
+    for bkey, ballot in list(ballots.items()):
+        norm = _bt_vote_normalize_ballot(ballot)
+        if ballot != norm:
+            ballots[bkey] = norm
+            changed = True
+    if changed:
+        _banner_pool_votes_save(data)
     return data
 
 
@@ -13373,7 +13431,17 @@ def api_banner_timeline_votes():
     data = _banner_pool_votes_load()
     raw = data.get('totals') or {}
     totals = {gid: g_tot for gid, g_tot in raw.items() if _bt_vote_gasha_allowed(gid)}
-    return jsonify({'totals': totals})
+    client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(request.args.get('client_id') or request.args.get('clientId') or ''))[:80]
+    mine = {}
+    if client_id:
+        prefix = f'{client_id}:'
+        for bkey, ballot in (data.get('ballots') or {}).items():
+            if not bkey.startswith(prefix):
+                continue
+            gid = bkey[len(prefix):]
+            if _bt_vote_gasha_allowed(gid):
+                mine[gid] = _bt_vote_ballot_choices(ballot)
+    return jsonify({'totals': totals, 'mine': mine})
 
 
 @app.route('/api/banner_timeline/vote', methods=['POST'])
@@ -13381,47 +13449,80 @@ def api_banner_timeline_vote():
     body = request.get_json(silent=True) or {}
     gasha_id = normalize_id(body.get('gasha_id') or body.get('gashaId') or '0')
     client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(body.get('client_id') or body.get('clientId') or ''))[:80]
-    raw_choices = body.get('choices') or body.get('selections') or []
-    if gasha_id == '0' or not client_id:
+    raw_choice = body.get('choice')
+    if raw_choice is None and body.get('choices'):
+        raw_list = body.get('choices') or []
+        raw_choice = raw_list[0] if isinstance(raw_list, list) and raw_list else None
+    choice = _bt_vote_normalize_choice(str(raw_choice or '').strip())
+    action = str(body.get('action') or 'toggle').strip().lower()
+    if action not in ('toggle', 'vote', 'remove'):
+        action = 'toggle'
+    if gasha_id == '0' or not client_id or not choice:
         return jsonify({'error': 'invalid_request'}), 400
     if not _bt_vote_gasha_allowed(gasha_id):
         return jsonify({'error': 'voting_disabled'}), 403
-    if not isinstance(raw_choices, list) or len(raw_choices) < 1 or len(raw_choices) > BT_VOTE_MAX_PICKS:
-        return jsonify({'error': 'invalid_choices'}), 400
-    choices = []
-    for ch in raw_choices:
-        chs = str(ch).strip()
-        if not _bt_vote_choice_valid(chs):
-            return jsonify({'error': 'invalid_choice'}), 400
-        if chs in ('all', 'skip'):
-            c = chs
-        else:
-            typ, ident = chs.split(':', 1)
-            c = f'{typ}:{normalize_id(ident)}'
-        if c not in choices:
-            choices.append(c)
-    if not choices:
-        return jsonify({'error': 'invalid_choices'}), 400
-    pool_exclusive = [c for c in choices if c in ('all', 'skip')]
-    if pool_exclusive and (len(choices) != 1 or len(pool_exclusive) != 1):
-        return jsonify({'error': 'invalid_choices'}), 400
     data = _banner_pool_votes_load()
     totals = data['totals']
     g_tot = totals.setdefault(gasha_id, {})
     ballots = data['ballots']
     bkey = _bt_vote_ballot_key(client_id, gasha_id)
-    prev = ballots.get(bkey, {}).get('choices') if isinstance(ballots.get(bkey), dict) else None
-    if isinstance(prev, list):
-        for old in prev:
-            if old in g_tot:
-                g_tot[old] = max(0, int(g_tot.get(old, 0)) - 1)
-                if g_tot[old] <= 0:
-                    del g_tot[old]
-    for ch in choices:
-        g_tot[ch] = int(g_tot.get(ch, 0)) + 1
-    ballots[bkey] = {'choices': choices, 'ts': int(time.time())}
+    ballot = _bt_vote_normalize_ballot(ballots.get(bkey))
+    already = choice in ballot
+    if action == 'toggle':
+        add = not already
+    elif action == 'vote':
+        add = True
+        if already:
+            return jsonify({
+                'ok': True,
+                'gasha_id': gasha_id,
+                'choice': choice,
+                'voted': True,
+                'mine': _bt_vote_ballot_choices(ballot),
+                'totals': g_tot,
+            })
+    else:
+        add = False
+        if not already:
+            return jsonify({
+                'ok': True,
+                'gasha_id': gasha_id,
+                'choice': choice,
+                'voted': False,
+                'mine': _bt_vote_ballot_choices(ballot),
+                'totals': g_tot,
+            })
+    now = int(time.time())
+    if add:
+        removed = []
+        if choice in BT_VOTE_POOL_EXCLUSIVE:
+            for old in _bt_vote_ballot_choices(ballot):
+                if old != choice:
+                    removed.append(old)
+            ballot = {choice: now}
+        else:
+            for old in list(ballot.keys()):
+                if old in BT_VOTE_POOL_EXCLUSIVE:
+                    removed.append(old)
+                    del ballot[old]
+            ballot[choice] = now
+        for old in removed:
+            _bt_vote_adjust_total(g_tot, old, -1)
+        _bt_vote_adjust_total(g_tot, choice, 1)
+    else:
+        if choice in ballot:
+            del ballot[choice]
+        _bt_vote_adjust_total(g_tot, choice, -1)
+    ballots[bkey] = ballot
     _banner_pool_votes_save(data)
-    return jsonify({'ok': True, 'gasha_id': gasha_id, 'choices': choices, 'totals': g_tot})
+    return jsonify({
+        'ok': True,
+        'gasha_id': gasha_id,
+        'choice': choice,
+        'voted': add,
+        'mine': _bt_vote_ballot_choices(ballot),
+        'totals': g_tot,
+    })
 
 
 @app.route('/api/supporter/<supporter_id>')
