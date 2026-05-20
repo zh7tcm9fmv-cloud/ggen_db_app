@@ -13286,6 +13286,96 @@ def api_banner_timeline():
     return jsonify(convert_image_urls(out))
 
 
+BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
+BT_VOTE_MAX_PICKS = 2
+
+
+def _banner_pool_votes_load():
+    data = load_json(BANNER_POOL_VOTES_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    if not isinstance(data.get('totals'), dict):
+        data['totals'] = {}
+    if not isinstance(data.get('ballots'), dict):
+        data['ballots'] = {}
+    return data
+
+
+def _banner_pool_votes_save(data):
+    os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
+    with open(BANNER_POOL_VOTES_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+
+
+def _bt_vote_choice_valid(choice):
+    if not isinstance(choice, str):
+        return False
+    c = choice.strip()
+    if c in ('all', 'skip'):
+        return True
+    if ':' not in c:
+        return False
+    typ, ident = c.split(':', 1)
+    if typ not in ('unit', 'character', 'supporter'):
+        return False
+    ident = normalize_id(ident)
+    return ident != '0'
+
+
+def _bt_vote_ballot_key(client_id, gasha_id):
+    return f'{client_id}:{gasha_id}'
+
+
+@app.route('/api/banner_timeline/votes')
+def api_banner_timeline_votes():
+    data = _banner_pool_votes_load()
+    return jsonify({'totals': data.get('totals') or {}})
+
+
+@app.route('/api/banner_timeline/vote', methods=['POST'])
+def api_banner_timeline_vote():
+    body = request.get_json(silent=True) or {}
+    gasha_id = normalize_id(body.get('gasha_id') or body.get('gashaId') or '0')
+    client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(body.get('client_id') or body.get('clientId') or ''))[:80]
+    raw_choices = body.get('choices') or body.get('selections') or []
+    if gasha_id == '0' or not client_id:
+        return jsonify({'error': 'invalid_request'}), 400
+    if not isinstance(raw_choices, list) or len(raw_choices) < 1 or len(raw_choices) > BT_VOTE_MAX_PICKS:
+        return jsonify({'error': 'invalid_choices'}), 400
+    choices = []
+    for ch in raw_choices:
+        chs = str(ch).strip()
+        if not _bt_vote_choice_valid(chs):
+            return jsonify({'error': 'invalid_choice'}), 400
+        if chs in ('all', 'skip'):
+            c = chs
+        else:
+            typ, ident = chs.split(':', 1)
+            c = f'{typ}:{normalize_id(ident)}'
+        if c not in choices:
+            choices.append(c)
+    if not choices:
+        return jsonify({'error': 'invalid_choices'}), 400
+    data = _banner_pool_votes_load()
+    totals = data['totals']
+    g_tot = totals.setdefault(gasha_id, {})
+    ballots = data['ballots']
+    bkey = _bt_vote_ballot_key(client_id, gasha_id)
+    prev = ballots.get(bkey, {}).get('choices') if isinstance(ballots.get(bkey), dict) else None
+    if isinstance(prev, list):
+        for old in prev:
+            if old in g_tot:
+                g_tot[old] = max(0, int(g_tot.get(old, 0)) - 1)
+                if g_tot[old] <= 0:
+                    del g_tot[old]
+    for ch in choices:
+        g_tot[ch] = int(g_tot.get(ch, 0)) + 1
+    ballots[bkey] = {'choices': choices, 'ts': int(time.time())}
+    _banner_pool_votes_save(data)
+    return jsonify({'ok': True, 'gasha_id': gasha_id, 'choices': choices, 'totals': g_tot})
+
+
 @app.route('/api/supporter/<supporter_id>')
 def get_supporter(supporter_id):
     try:
