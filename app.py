@@ -13357,6 +13357,9 @@ def api_banner_timeline_vote():
             choices.append(c)
     if not choices:
         return jsonify({'error': 'invalid_choices'}), 400
+    pool_exclusive = [c for c in choices if c in ('all', 'skip')]
+    if pool_exclusive and (len(choices) != 1 or len(pool_exclusive) != 1):
+        return jsonify({'error': 'invalid_choices'}), 400
     data = _banner_pool_votes_load()
     totals = data['totals']
     g_tot = totals.setdefault(gasha_id, {})
