@@ -13262,7 +13262,8 @@ def api_banner_timeline():
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
-            'vote_enabled': _bt_vote_gasha_allowed(gasha_id),
+            'vote_enabled': _bt_banner_vote_enabled(
+                gasha_id, featured_units, featured_chars, featured_supporters),
             'banner_url': banner_url,
             'schedule_id': sched,
             'start_ms': start_ms,
@@ -13308,6 +13309,30 @@ BT_VOTE_POOL_EXCLUSIVE = frozenset({'all', 'skip'})
 
 def _bt_vote_gasha_allowed(gasha_id):
     return normalize_id(gasha_id) not in BT_VOTE_DISABLED_GASHA_IDS
+
+
+def _bt_banner_vote_enabled(gasha_id, featured_units, featured_chars, featured_supporters):
+    """Voting only when the pool has revealed featured units/characters/supporters."""
+    if not _bt_vote_gasha_allowed(gasha_id):
+        return False
+    return bool(featured_units or featured_chars or featured_supporters)
+
+
+def _bt_vote_banner_enabled(gasha_id):
+    """Resolve vote_enabled from cached banner timeline rows when available."""
+    if not _bt_vote_gasha_allowed(gasha_id):
+        return False
+    gid = normalize_id(gasha_id)
+    for lc in ('EN', 'TW', 'HK', 'JA', 'JP'):
+        cached = get_cached_response(f'banner_tl_v5_{lc}')
+        if not isinstance(cached, dict):
+            continue
+        for row in cached.get('banners') or []:
+            if not isinstance(row, dict):
+                continue
+            if normalize_id(row.get('gasha_id')) == gid:
+                return row.get('vote_enabled') is not False
+    return True
 
 
 def _banner_pool_votes_migrate():
@@ -13430,7 +13455,7 @@ def _bt_vote_ballot_key(client_id, gasha_id):
 def api_banner_timeline_votes():
     data = _banner_pool_votes_load()
     raw = data.get('totals') or {}
-    totals = {gid: g_tot for gid, g_tot in raw.items() if _bt_vote_gasha_allowed(gid)}
+    totals = {gid: g_tot for gid, g_tot in raw.items() if _bt_vote_banner_enabled(gid)}
     client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(request.args.get('client_id') or request.args.get('clientId') or ''))[:80]
     mine = {}
     if client_id:
@@ -13439,7 +13464,7 @@ def api_banner_timeline_votes():
             if not bkey.startswith(prefix):
                 continue
             gid = bkey[len(prefix):]
-            if _bt_vote_gasha_allowed(gid):
+            if _bt_vote_banner_enabled(gid):
                 mine[gid] = _bt_vote_ballot_choices(ballot)
     return jsonify({'totals': totals, 'mine': mine})
 
@@ -13459,7 +13484,7 @@ def api_banner_timeline_vote():
         action = 'toggle'
     if gasha_id == '0' or not client_id or not choice:
         return jsonify({'error': 'invalid_request'}), 400
-    if not _bt_vote_gasha_allowed(gasha_id):
+    if not _bt_vote_gasha_allowed(gasha_id) or not _bt_vote_banner_enabled(gasha_id):
         return jsonify({'error': 'voting_disabled'}), 403
     data = _banner_pool_votes_load()
     totals = data['totals']
