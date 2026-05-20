@@ -1,4 +1,16 @@
 {
-  "totals": {},
-  "ballots": {}
+  "totals": {
+    "2605200301": {
+      "all": 1,
+      "character:1850001501": 1
+    }
+  },
+  "ballots": {
+    "v_cbx637gioo6mpek7u4w:2605200301": {
+      "all": 1779311664
+    },
+    "v_aykrci9625mpdr404f:2605200301": {
+      "character:1850001501": 1779312153
+    }
+  }
 }
