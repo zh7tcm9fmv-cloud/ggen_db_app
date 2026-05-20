@@ -4,5 +4,8 @@ __pycache__/
 venv/
 *.log
 
-# Live banner pool vote totals (written at runtime; do not deploy over production)
+# Live banner pool vote totals (written at runtime; survive deploys in data/persistent/)
 data/banner_pool_votes.json
+data/persistent/*
+!data/persistent/.gitkeep
+!data/persistent/banner_pool_votes.json.example

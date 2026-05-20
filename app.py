@@ -14,6 +14,7 @@ except ImportError:
 from flask import Flask, render_template, jsonify, request, make_response, session
 from werkzeug.exceptions import NotFound
 import json
+import shutil
 import re
 import math
 import unicodedata
@@ -13287,7 +13288,19 @@ def api_banner_timeline():
     return jsonify(convert_image_urls(out))
 
 
-BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
+_LEGACY_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
+_DEFAULT_PERSISTENT_VOTES_DIR = os.path.join(app_dir, 'data', 'persistent')
+
+
+def _resolve_banner_pool_votes_file():
+    """Votes live outside deployable paths so git/rsync deploys do not wipe totals."""
+    custom = (os.environ.get('GGEN_BANNER_VOTES_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
+    return os.path.join(_DEFAULT_PERSISTENT_VOTES_DIR, 'banner_pool_votes.json')
+
+
+BANNER_POOL_VOTES_FILE = _resolve_banner_pool_votes_file()
 BT_VOTE_MAX_PICKS = 2
 # Permanent premium pools — no community voting (Ver.1 / Ver.2).
 BT_VOTE_DISABLED_GASHA_IDS = frozenset({'2504100101', '2604300101'})
@@ -13295,6 +13308,27 @@ BT_VOTE_DISABLED_GASHA_IDS = frozenset({'2504100101', '2604300101'})
 
 def _bt_vote_gasha_allowed(gasha_id):
     return normalize_id(gasha_id) not in BT_VOTE_DISABLED_GASHA_IDS
+
+
+def _banner_pool_votes_migrate():
+    target = BANNER_POOL_VOTES_FILE
+    try:
+        if os.path.isfile(target) and os.path.getsize(target) > 2:
+            return
+    except OSError:
+        pass
+    legacy = _LEGACY_BANNER_POOL_VOTES_FILE
+    if not os.path.isfile(legacy) or os.path.normcase(legacy) == os.path.normcase(target):
+        return
+    try:
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        shutil.copy2(legacy, target)
+        print(f'banner_pool_votes: migrated {legacy} -> {target}')
+    except OSError as e:
+        print(f'banner_pool_votes migrate failed: {e}')
+
+
+_banner_pool_votes_migrate()
 
 
 def _banner_pool_votes_load():
