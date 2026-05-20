@@ -13849,23 +13849,56 @@ def _bt_vote_choice_valid(choice):
     return ident != '0'
 
 
-def _bt_vote_ballot_key(client_id, gasha_id):
-    return f'{client_id}:{gasha_id}'
+def _bt_vote_request_ip():
+    """Client IP behind Railway / CDN (first hop in X-Forwarded-For)."""
+    for hdr in ('CF-Connecting-IP', 'True-Client-IP', 'X-Real-IP', 'X-Forwarded-For'):
+        val = (request.headers.get(hdr) or '').strip()
+        if not val:
+            continue
+        if hdr == 'X-Forwarded-For':
+            val = val.split(',')[0].strip()
+        if val:
+            return val[:64]
+    ra = (request.remote_addr or '').strip()
+    return ra[:64] if ra else None
+
+
+def _bt_vote_ip_salt():
+    return (os.environ.get('GGEN_VOTE_IP_SALT') or os.environ.get('FLASK_SECRET_KEY') or 'ggen-vote-ip-v1').strip()
+
+
+def _bt_vote_voter_id():
+    """One ballot per hashed IP (not per browser localStorage id)."""
+    ip = _bt_vote_request_ip()
+    if not ip:
+        return None
+    digest = hashlib.sha256(f'{_bt_vote_ip_salt()}:{ip}'.encode('utf-8')).hexdigest()[:32]
+    return f'ip_{digest}'
+
+
+def _bt_vote_ballot_key(voter_id, gasha_id):
+    return f'{voter_id}:{gasha_id}'
+
+
+def _bt_vote_mine_for_voter(ballots, voter_id):
+    mine = {}
+    if not voter_id:
+        return mine
+    prefix = f'{voter_id}:'
+    for bkey, ballot in (ballots or {}).items():
+        if not bkey.startswith(prefix):
+            continue
+        gid = bkey[len(prefix):]
+        mine[gid] = _bt_vote_ballot_choices(ballot)
+    return mine
 
 
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
     data = _banner_pool_votes_load(hydrate=True)
     totals = data.get('totals') or {}
-    client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(request.args.get('client_id') or request.args.get('clientId') or ''))[:80]
-    mine = {}
-    if client_id:
-        prefix = f'{client_id}:'
-        for bkey, ballot in (data.get('ballots') or {}).items():
-            if not bkey.startswith(prefix):
-                continue
-            gid = bkey[len(prefix):]
-            mine[gid] = _bt_vote_ballot_choices(ballot)
+    voter_id = _bt_vote_voter_id()
+    mine = _bt_vote_mine_for_voter(data.get('ballots') or {}, voter_id)
     return jsonify({'totals': totals, 'mine': mine})
 
 
@@ -13873,7 +13906,7 @@ def api_banner_timeline_votes():
 def api_banner_timeline_vote():
     body = request.get_json(silent=True) or {}
     gasha_id = normalize_id(body.get('gasha_id') or body.get('gashaId') or '0')
-    client_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(body.get('client_id') or body.get('clientId') or ''))[:80]
+    voter_id = _bt_vote_voter_id()
     raw_choice = body.get('choice')
     if raw_choice is None and body.get('choices'):
         raw_list = body.get('choices') or []
@@ -13882,15 +13915,17 @@ def api_banner_timeline_vote():
     action = str(body.get('action') or 'toggle').strip().lower()
     if action not in ('toggle', 'vote', 'remove'):
         action = 'toggle'
-    if gasha_id == '0' or not client_id or not choice:
+    if gasha_id == '0' or not choice:
         return jsonify({'error': 'invalid_request'}), 400
+    if not voter_id:
+        return jsonify({'error': 'voter_ip_required'}), 403
     if not _bt_vote_gasha_allowed(gasha_id) or not _bt_vote_banner_enabled(gasha_id):
         return jsonify({'error': 'voting_disabled'}), 403
     data = _banner_pool_votes_load(hydrate=False)
     totals = data['totals']
     g_tot = totals.setdefault(gasha_id, {})
     ballots = data['ballots']
-    bkey = _bt_vote_ballot_key(client_id, gasha_id)
+    bkey = _bt_vote_ballot_key(voter_id, gasha_id)
     ballot = _bt_vote_normalize_ballot(ballots.get(bkey))
     already = choice in ballot
     if action == 'toggle':
