@@ -1,70 +1,68 @@
 # Banner vote persistence
 
-## Keep sync ON without Vim merge hell
+## Railway keeps committing `chore: snapshot…` over and over?
 
-Railway can save votes to GitHub **without touching your `main` branch**.
+That is usually a **deploy loop**:
 
-| Where | What gets updated |
-|-------|-------------------|
-| **`main`** | Only **you** (normal `git push` from your PC) |
-| **`banner-votes-data`** | Railway (one snapshot when the old container stops) |
+1. Container stops → app pushes votes to GitHub  
+2. GitHub commit triggers **another Railway deploy** (if your service watches that branch)  
+3. New container stops → push again → repeat  
 
-That way `git push origin main` does not need to merge Railway’s `chore:` commits.
+### Fix in Railway dashboard (important)
 
-## Railway variables
+1. Open your service → **Settings** → **Source** (GitHub).  
+2. Set **branch to deploy** = **`main` only** (not `banner-votes-data`, not “all branches”).  
+3. Save and redeploy once.
 
-| Variable | Value |
-|----------|--------|
-| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | PAT with **Contents: read and write** |
-| `GGEN_BANNER_VOTES_SYNC_MODE` | `shutdown` or `on` (default when token is set) |
-| `GGEN_BANNER_VOTES_GITHUB_REPO` | `zh7tcm9fmv-cloud/ggen_db_app` (optional) |
-| `GGEN_BANNER_VOTES_GITHUB_BRANCH` | `banner-votes-data` (optional — **default on Railway**) |
+Vote snapshots must use a **different branch** than the one that auto-deploys your site.
 
-Do **not** set the branch to `main`.
+### Fix in Railway variables
 
-After deploy, logs should show:
+| Variable | What to set |
+|----------|-------------|
+| `GGEN_BANNER_VOTES_SYNC_MODE` | `shutdown` (not `vote`) |
+| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | your PAT |
+| `GGEN_BANNER_VOTES_GITHUB_BRANCH` | **`banner-votes-data`** (recommended — set explicitly) |
+| `GGEN_BANNER_VOTES_GITHUB_BRANCH` empty | OK — on Railway it defaults to `banner-votes-data` |
+| `GGEN_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC` | `1800` (30 min, default) — blocks rapid repeat pushes |
+
+**Never** set `GGEN_BANNER_VOTES_GITHUB_BRANCH` to `main`.
+
+After deploy, logs must show:
 
 ```
 github_branch=banner-votes-data
 sync_mode=shutdown
 ```
 
-## Your PC — normal git (no merge from votes)
+### Stop the loop immediately
+
+1. Set `GGEN_BANNER_VOTES_SYNC_MODE=off` → redeploy (stops all GitHub pushes).  
+2. Fix deploy branch = `main` only (above).  
+3. Set `GGEN_BANNER_VOTES_SYNC_MODE=shutdown` again → redeploy.  
+
+Or leave sync `off` and use `scripts/snapshot_banner_votes.ps1` before you push code.
+
+## Your PC — `main` without vote merge spam
+
+Railway should only commit to **`banner-votes-data`**, not **`main`**.
 
 ```powershell
-git add .
-git commit -m "your update"
 git push origin main
 ```
 
-You should **not** need `git pull` first just because users voted.
+No `git pull` needed just because users voted.
 
-### One-time cleanup (old vote commits already on `main`)
-
-If GitHub `main` still has old `chore: sync` commits, fix once:
+One-time if old `chore` commits are still on `main`:
 
 ```powershell
 git pull origin main --no-edit
 git push origin main
 ```
 
-(`Esc` → `:wq` → `Enter` if Vim appears **one last time**.)
+## How votes survive deploy (sync on)
 
-### Optional: never get a merge commit on pull
-
-```powershell
-git config --global pull.rebase true
-```
-
-Then `git pull` rebases instead of opening Vim for a merge message. Use this for any repo you work on alone on `main`.
-
-## How votes survive deploy
-
-1. Users vote → saved on the running container.
-2. You push code → Railway redeploys.
-3. Old container stops → **one** push to **`banner-votes-data`** on GitHub.
-4. New container starts → loads votes from that branch (and the copy in git).
-
-## Turn sync off
-
-`GGEN_BANNER_VOTES_SYNC_MODE=off` — then commit `data/published/banner_pool_votes.json` yourself before deploy, or use `scripts/snapshot_banner_votes.ps1`.
+1. Users vote on the running container.  
+2. You deploy new code from **`main`**.  
+3. Old container stops → **one** snapshot to **`banner-votes-data`** (max once per 30 min by default).  
+4. New container loads votes from that branch.  

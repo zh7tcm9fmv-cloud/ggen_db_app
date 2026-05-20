@@ -13305,6 +13305,10 @@ _BANNER_VOTES_HYDRATE_INTERVAL_SEC = 300.0
 _BANNER_VOTES_SHUTDOWN_REGISTERED = False
 _BANNER_VOTES_SHUTDOWN_SYNC_DONE = False
 _BANNER_VOTES_LAST_PUSHED_COUNT = -1
+_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC = max(
+    60,
+    int(os.environ.get('GGEN_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC', '1800') or '1800'),
+)
 
 
 def _path_is_writable_dir(path):
@@ -13489,6 +13493,39 @@ def _banner_pool_votes_fetch_github():
         return None
 
 
+def _banner_pool_votes_github_secs_since_last_commit():
+    """Seconds since the vote file was last committed on the sync branch (None if unknown)."""
+    cfg = _banner_pool_votes_github_config()
+    if not cfg:
+        return None
+    token, repo, _path, branch = cfg
+    url = (
+        f'https://api.github.com/repos/{repo}/commits'
+        f'?path={quote(_banner_pool_votes_github_path())}&sha={quote(branch)}&per_page=1'
+    )
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+    }
+    try:
+        req = Request(url, headers=headers, method='GET')
+        with urlopen(req, timeout=12) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+        if not isinstance(rows, list) or not rows:
+            return None
+        commit = rows[0].get('commit') if isinstance(rows[0], dict) else None
+        if not isinstance(commit, dict):
+            return None
+        date_s = ((commit.get('committer') or commit.get('author')) or {}).get('date')
+        if not date_s:
+            return None
+        dt = datetime.fromisoformat(date_s.replace('Z', '+00:00'))
+        return max(0.0, (datetime.now(timezone.utc) - dt).total_seconds())
+    except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError, TypeError):
+        return None
+
+
 def _banner_pool_votes_push_github(data, *, retries=2):
     global _BANNER_VOTES_GITHUB_SHA
     cfg = _banner_pool_votes_github_config()
@@ -13603,6 +13640,15 @@ def _banner_pool_votes_flush_to_github(reason='shutdown'):
         return
     if _banner_pool_votes_sync_mode() == 'off' or not _banner_pool_votes_github_config():
         return
+    cfg = _banner_pool_votes_github_config()
+    since = _banner_pool_votes_github_secs_since_last_commit()
+    if since is not None and since < _BANNER_VOTES_MIN_PUSH_INTERVAL_SEC:
+        print(
+            'banner_pool_votes: skip GitHub push '
+            f'({int(since)}s since last commit on {cfg[3]}, min {_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC}s) '
+            f'— avoids deploy/commit loops'
+        )
+        return
     data = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
         data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
@@ -13628,7 +13674,6 @@ def _banner_pool_votes_register_shutdown_sync():
     if _banner_pool_votes_sync_mode() != 'shutdown':
         return
     _BANNER_VOTES_SHUTDOWN_REGISTERED = True
-    atexit.register(lambda: _banner_pool_votes_flush_to_github('exit'))
 
     def _term(signum, _frame):
         _banner_pool_votes_flush_to_github(f'signal:{signum}')
@@ -13637,6 +13682,7 @@ def _banner_pool_votes_register_shutdown_sync():
         signal.signal(signal.SIGTERM, _term)
     except (ValueError, OSError):
         pass
+    # atexit removed — it doubled pushes with SIGTERM and fired on worker reloads
 
 
 def _banner_pool_votes_after_save(data):
