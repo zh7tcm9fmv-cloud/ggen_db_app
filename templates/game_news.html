@@ -28,12 +28,22 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:0 1px 0 rgba(0,0,0,.4)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0;text-decoration:none;color:inherit}
-.header-brand:hover .brand-text{color:var(--accent-cyan)}
+.header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0;text-decoration:none;color:inherit;min-width:0}
+.header-brand:hover .brand-word-ggen{filter:brightness(1.12) drop-shadow(0 0 10px rgba(0,212,255,.35))}
+.header-brand:hover .brand-emblem{opacity:1;filter:drop-shadow(0 0 10px rgba(0,212,255,.5))}
 .brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .brand-logo img{width:100%;height:100%;object-fit:contain}
-.brand-text{font-size:22px;font-weight:700;line-height:1.1;font-family:'FOTK Yoon Gothic 780 JP','Noto Sans JP','Segoe UI',system-ui,sans-serif;letter-spacing:.055em;transition:var(--transition)}
-.brand-sub{font-size:14px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase}
+.brand-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand-title-row{display:flex;align-items:center;gap:10px}
+.brand-emblem{width:30px;height:30px;object-fit:contain;flex-shrink:0;opacity:.9;filter:drop-shadow(0 0 5px rgba(74,144,217,.4));transition:var(--transition)}
+.brand-text{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;column-gap:.45em;row-gap:.1em;line-height:1;font-size:22px;font-weight:800;font-family:'Inter','FOTK Yoon Gothic 780 JP','Noto Sans JP','Segoe UI',system-ui,sans-serif;letter-spacing:.06em}
+.brand-word{display:inline-block;transition:var(--transition);white-space:nowrap}
+.brand-word-ggen{background:linear-gradient(108deg,#f8fbff 0%,#d4ebff 38%,#00d4ff 70%,#5ba3e8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-word-db{font-size:.9em;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#7d94b8;background:linear-gradient(90deg,#9eb4d4 0%,#6a8ab8 100%);-webkit-background-clip:text;background-clip:text}
+.header-brand:hover .brand-word-db{background:linear-gradient(90deg,#c8e8ff 0%,#00d4ff 55%,#4a90d9 100%);-webkit-background-clip:text;background-clip:text}
+.brand-title-accent{height:2px;width:min(100%,248px);margin-top:4px;border-radius:1px;background:linear-gradient(90deg,rgba(0,212,255,.7) 0%,rgba(74,144,217,.35) 45%,transparent 100%);opacity:.8;transition:var(--transition)}
+.header-brand:hover .brand-title-accent{opacity:1;width:min(100%,268px)}
+.brand-sub{font-size:14px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;padding-left:40px}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .header-lang-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .header-lang-kofi-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:min(calc(100% - 32px),520px)}
@@ -101,7 +111,10 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
   .header-inner{padding:10px 12px;gap:8px;min-width:0}
   .header-brand{min-width:0}
   .brand-logo{width:44px;height:44px}
+  .brand-emblem{width:26px;height:26px}
   .brand-text{font-size:18px}
+  .brand-word-db{letter-spacing:.15em}
+  .brand-title-accent{width:min(100%,200px)}
   .brand-sub{display:none}
   .header-controls{flex-shrink:1;min-width:0}
   .header-lang-col{min-width:0;max-width:100%}
@@ -117,6 +130,8 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 @media(max-width:480px){
   .header-inner{padding:8px 10px}
   .brand-text{font-size:15px}
+  .brand-emblem{width:22px;height:22px}
+  .brand-word-db{letter-spacing:.11em;font-size:.85em}
   .brand-logo{width:38px;height:38px}
   .nav-tab{padding:10px 12px;font-size:14px}
 }
@@ -130,7 +145,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="bg-pattern"></div>
 <header class="app-header">
 <div class="header-inner">
-<a class="header-brand" href="/"><div class="brand-logo"><img id="brandLogoImg" alt="GGen" width="55" height="55" fetchpriority="high" decoding="async" src="{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" onerror="this.parentElement.innerHTML='<div style=\'font-size:25px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%\'>GG</div>'"></div><div><div class="brand-text">GGEN DATABASE</div><div class="brand-sub">SD Gundam G Generation</div></div></a>
+<a class="header-brand" href="/"><div class="brand-logo"><img id="brandLogoImg" alt="GGen" width="55" height="55" fetchpriority="high" decoding="async" src="{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" onerror="this.parentElement.innerHTML='<div style=\'font-size:25px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%\'>GG</div>'"></div><div class="brand-copy"><div class="brand-title-row"><img class="brand-emblem" src="/static/images/UI/brand-emblem-panel.png" alt="" width="30" height="30" decoding="async" aria-hidden="true"><h1 class="brand-text"><span class="brand-word brand-word-ggen">GGEN</span><span class="brand-word brand-word-db">DATABASE</span></h1></div><div class="brand-sub">SD Gundam G Generation</div><div class="brand-title-accent" aria-hidden="true"></div></a>
 <div class="header-controls"><div class="header-lang-col"><div class="header-lang-kofi-row"><div class="header-support-btns"><button type="button" class="alipayhk-header-btn" id="alipayhkHeaderBtn" onclick="openAlipayhkModal()"><img class="alipayhk-header-ic" src="/static/support/alipayhk_header_icon.png" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="alipayhkHeaderLabel">Support on AlipayHK</span></button><a class="kofi-header-link" id="kofiHeaderLink" href="https://ko-fi.com/E1E21WL8RV" target="_blank" rel="noopener noreferrer"><img class="kofi-header-ic" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="kofiHeaderLabel">Support on Ko-fi</span></a></div><div class="lang-selector"><button type="button" class="lang-btn" id="langBtn" onclick="toggleLangDropdown()"><span id="langLabel">EN</span><span class="lang-btn-caret" aria-hidden="true">▾</span></button><div class="lang-dropdown" id="langDropdown"></div></div></div></div></div>
 </div>
 </header>
