@@ -459,6 +459,7 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .bt-vote-mode-btn img{width:26px;height:26px;object-fit:contain;display:block}
 .bt-vote-mode-btn:hover,.bt-vote-mode-btn[aria-pressed="true"]{border-color:rgba(0,212,255,.65);box-shadow:0 0 0 1px rgba(0,212,255,.35),0 0 12px rgba(69,128,230,.25)}
 .bt-vote-mode-btn[aria-pressed="true"]{background:rgba(0,212,255,.12)}
+.bt-vote-mobile-bar{display:none}
 .bt-vote-submit-wrap{position:absolute;right:10px;bottom:10px;z-index:3}
 .bt-vote-submit{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:148px;min-height:52px;padding:10px 26px 12px;border:none;border-radius:0;background:transparent;cursor:pointer;transition:filter .2s ease}
 .bt-vote-submit-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;display:block}
@@ -498,6 +499,7 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-table .bt-th-combo{width:68%}
 .bt-feat-stack-cell{vertical-align:top;position:relative}
 #panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell{padding-bottom:52px}
+#panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell.bt-vote-row--disabled{padding-bottom:0!important}
 .bt-feat-stack{display:flex;flex-direction:column;align-items:stretch;gap:10px;width:100%;min-width:0}
 .bt-feat-block{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;min-width:0}
 .bt-feat-sub{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase}
@@ -577,6 +579,19 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-vtl-flow .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;margin:0;max-width:100%!important;width:100%!important}
 #panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(92px,min(126px,24vw),136px)!important;max-width:min(136px,42vw)!important;min-height:92px!important}
 @media (max-width:640px){ #panel-banner_timeline table.data-table.bt-table{min-width:520px}}
+@media (max-width:768px){
+#panel-banner_timeline .bt-vote-mobile-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:0 0 12px;padding:10px 12px;border:1px solid rgba(100,170,255,.35);border-radius:var(--radius-md);background:rgba(12,20,36,.92);position:sticky;top:8px;z-index:45;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#panel-banner_timeline .bt-vote-mobile-bar-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+#panel-banner_timeline .bt-vote-mobile-bar-k{font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase}
+#panel-banner_timeline .bt-vote-mobile-bar .bt-vote-mode-caption{margin:0;max-width:none;text-align:left;font-size:11px;line-height:1.35}
+#panel-banner_timeline .bt-vote-mobile-bar .bt-vote-mode-btn{flex-shrink:0;width:44px;height:44px;min-width:44px;min-height:44px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#panel-banner_timeline .bt-th-combo-vote-tools{display:none!important}
+#panel-banner_timeline .bt-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;max-width:100%}
+#panel-banner_timeline .bt-feat-stack-cell{overflow:visible}
+#panel-banner_timeline .bt-vote-submit-wrap{position:static;display:flex;justify-content:center;width:100%;margin-top:10px;padding:0 6px 6px;box-sizing:border-box}
+#panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell{padding-bottom:10px}
+#panel-banner_timeline .bt-vote-submit{width:100%;max-width:220px;min-width:0;min-height:48px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+}
 @media (prefers-reduced-motion:reduce){.bt-vtl-card .bt-vtl-body{opacity:1;transform:none;transition:none}}
 .bt-timeline-shell.bt-ig-shell{overflow:visible;padding:10px 0 32px;width:100%;max-width:960px;margin:0 auto;position:relative;touch-action:auto}
 .bt-ig-spine-line{position:absolute;left:50%;top:10px;bottom:20px;width:5px;margin-left:-2.5px;border-radius:999px;background:linear-gradient(180deg,rgba(96,106,126,.55),rgba(0,212,255,.42),rgba(201,169,98,.48));box-shadow:0 0 22px rgba(0,212,255,.16);z-index:0;pointer-events:none}

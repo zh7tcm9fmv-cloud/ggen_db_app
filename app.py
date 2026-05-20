@@ -13261,6 +13261,7 @@ def api_banner_timeline():
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
+            'vote_enabled': _bt_vote_gasha_allowed(gasha_id),
             'banner_url': banner_url,
             'schedule_id': sched,
             'start_ms': start_ms,
@@ -13288,6 +13289,12 @@ def api_banner_timeline():
 
 BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
 BT_VOTE_MAX_PICKS = 2
+# Permanent premium pools — no community voting (Ver.1 / Ver.2).
+BT_VOTE_DISABLED_GASHA_IDS = frozenset({'2504100101', '2604300101'})
+
+
+def _bt_vote_gasha_allowed(gasha_id):
+    return normalize_id(gasha_id) not in BT_VOTE_DISABLED_GASHA_IDS
 
 
 def _banner_pool_votes_load():
@@ -13330,7 +13337,9 @@ def _bt_vote_ballot_key(client_id, gasha_id):
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
     data = _banner_pool_votes_load()
-    return jsonify({'totals': data.get('totals') or {}})
+    raw = data.get('totals') or {}
+    totals = {gid: g_tot for gid, g_tot in raw.items() if _bt_vote_gasha_allowed(gid)}
+    return jsonify({'totals': totals})
 
 
 @app.route('/api/banner_timeline/vote', methods=['POST'])
@@ -13341,6 +13350,8 @@ def api_banner_timeline_vote():
     raw_choices = body.get('choices') or body.get('selections') or []
     if gasha_id == '0' or not client_id:
         return jsonify({'error': 'invalid_request'}), 400
+    if not _bt_vote_gasha_allowed(gasha_id):
+        return jsonify({'error': 'voting_disabled'}), 403
     if not isinstance(raw_choices, list) or len(raw_choices) < 1 or len(raw_choices) > BT_VOTE_MAX_PICKS:
         return jsonify({'error': 'invalid_choices'}), 400
     choices = []
