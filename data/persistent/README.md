@@ -1,84 +1,55 @@
 # Banner vote persistence
 
-Community totals live in `banner_pool_votes.json`. On **Railway free tier** (no volumes), the container disk is wiped on every deploy — you must use **GitHub sync** below.
+Community totals are in `banner_pool_votes.json`. On **Railway free tier**, the app disk is wiped on each deploy.
 
-The app never exposes a “reset votes” API. Totals only disappear when storage is not configured.
+## GitHub sync (default on Railway)
 
----
+Votes are **not** pushed to GitHub on every user tap. That flooded the deploy queue with `chore: sync banner pool votes` commits.
 
-## Railway free tier (recommended): GitHub sync
+**Default behaviour** (`GGEN_BANNER_VOTES_SYNC_MODE=shutdown`, automatic on Railway when a GitHub token is set):
 
-Votes are stored in your GitHub repo at:
+| When | What happens |
+|------|----------------|
+| User votes | Fast local file only |
+| Railway stops the old container (deploy/restart) | **One** snapshot commit to `data/published/banner_pool_votes.json` |
+| New container starts | Loads that file from git + GitHub |
 
-`data/published/banner_pool_votes.json`
-
-That file is **committed to git** (baseline on deploy) and **updated automatically** when someone votes, if you add a token.
-
-### Step 1 — Create a GitHub token
-
-1. GitHub → **Settings** → **Developer settings** → **Personal access tokens**
-2. **Fine-grained token** (recommended) or **Classic**
-3. Repository access: **only your app repo** (e.g. `ggen_db_app`)
-4. Permissions: **Contents** → **Read and write**
-5. Generate and copy the token (you will not see it again)
-
-### Step 2 — Add Railway variables
-
-Railway → your **Flask/API service** → **Variables**:
+Railway variables:
 
 | Variable | Value |
 |----------|--------|
-| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | paste the token |
-| `GGEN_BANNER_VOTES_GITHUB_REPO` | `your-github-username/your-repo-name` (optional if deploy already sets `GITHUB_REPOSITORY`) |
-| `GGEN_BANNER_VOTES_GITHUB_PATH` | `data/published/banner_pool_votes.json` (optional; this is the default) |
+| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | PAT with **Contents: read and write** |
+| `GGEN_BANNER_VOTES_GITHUB_REPO` | `zh7tcm9fmv-cloud/ggen_db_app` (optional if `GITHUB_REPOSITORY` is set) |
 
-Redeploy the service.
+Optional:
 
-### Step 3 — Confirm in logs
+| Variable | Values |
+|----------|--------|
+| `GGEN_BANNER_VOTES_SYNC_MODE` | `shutdown` (default on Railway), `off`, `vote` (not recommended) |
 
-Open the latest deploy log and look for:
+Logs after deploy should show: `sync_mode=shutdown`
 
-```
-banner_pool_votes: ... github_sync=on railway=yes
-```
+### Before you deploy code changes
 
-After a test vote, check your repo on GitHub — `data/published/banner_pool_votes.json` should update within a few seconds.
+1. Let the **current** Railway instance run until the deploy starts (so shutdown can snapshot votes), **or**
+2. Manually commit `data/published/banner_pool_votes.json` if you have a recent copy.
 
-### Step 4 — Commit the published file once
+If the process is killed without a graceful stop, the last window of votes may be lost.
 
-Push this repo including `data/published/banner_pool_votes.json` so the first deploy has the file in git. After that, the token keeps it updated when users vote.
+### Turn off GitHub sync entirely
 
----
+`GGEN_BANNER_VOTES_SYNC_MODE=off`
 
-## What happens on each deploy (free tier)
-
-1. New container starts (empty local disk).
-2. App loads `data/published/banner_pool_votes.json` from the git checkout.
-3. App fetches the latest copy from GitHub (API + raw URL).
-4. New votes are written locally and **synced to GitHub** before the API responds (on Railway).
-
-Redeploys no longer zero out totals **as long as `GGEN_BANNER_VOTES_GITHUB_TOKEN` is set**.
+Then commit `data/published/banner_pool_votes.json` yourself before each deploy.
 
 ---
 
-## Railway Pro (volumes) — optional
+## Railway Pro volumes (optional)
 
-If you later get Pro, you can mount a volume at `/data` instead. The app will prefer `/data/banner_pool_votes.json` when writable. GitHub sync still works as a backup.
-
-`GGEN_BANNER_VOTES_PATH=/data/banner_pool_votes.json`
-
----
-
-## Read-only fallback (no token)
-
-Without a token, the app only keeps votes until the next deploy, then restores whatever was last **committed** to `data/published/banner_pool_votes.json` in git. That is not live sync — use the token for production.
-
-Optional manual seed URL:
-
-`GGEN_BANNER_VOTES_IMPORT_URL=https://raw.githubusercontent.com/owner/repo/main/data/published/banner_pool_votes.json`
+Mount `/data` and set `GGEN_BANNER_VOTES_PATH=/data/banner_pool_votes.json`. GitHub snapshot on shutdown is still useful as backup.
 
 ---
 
 ## Manual reset only
 
-Delete or edit `data/published/banner_pool_votes.json` in GitHub (or the volume file) only when you intentionally want to clear community totals.
+Edit or delete `data/published/banner_pool_votes.json` in GitHub only when you intend to clear community totals.
