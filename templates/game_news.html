@@ -28,16 +28,16 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:0 1px 0 rgba(0,0,0,.4)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.header-brand{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0;text-decoration:none;color:inherit;min-width:0}
+.header-brand{display:flex;align-items:center;gap:0;cursor:pointer;flex-shrink:0;text-decoration:none;color:inherit;min-width:0}
 .header-brand:hover .brand-text{color:var(--accent-cyan)}.header-brand:hover .brand-title-row::before{opacity:.92}
 .brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .brand-logo img{width:100%;height:100%;object-fit:contain}
 .brand-copy{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;line-height:1.1}
-.brand-title-row{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 28px 6px;isolation:isolate}
-.brand-title-row::before{content:'';position:absolute;inset:-4px -4px;background:url('/static/images/UI/brand-emblem-panel.png') center center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
-.brand-text{position:relative;z-index:1;margin:0;font-size:22px;font-weight:700;font-family:'FOTK Yoon Gothic 780 JP','Noto Sans JP','Segoe UI',system-ui,sans-serif;letter-spacing:.055em;color:var(--text-primary);transition:var(--transition);white-space:nowrap;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8)}
-.brand-word{display:inline}.brand-word-db{font-weight:700;letter-spacing:.06em}
-.brand-sub{font-size:14px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0;padding:0;text-align:center}
+.brand-title-row{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 28px 6px 0;isolation:isolate}
+.brand-title-row::before{content:'';position:absolute;inset:-4px -4px -4px -10px;background:url('/static/images/UI/brand-emblem-panel.png') center center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
+.brand-text{position:relative;z-index:1;margin:0;font-size:22px;font-weight:800;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.055em;color:var(--text-primary);transition:var(--transition);white-space:nowrap;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8);font-synthesis:none;-webkit-font-smoothing:antialiased}
+.brand-word{display:inline}.brand-word-db{letter-spacing:.06em}
+.brand-sub{font-size:14px;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:500;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0;padding:0;text-align:center;font-synthesis:none}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .header-lang-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .header-lang-kofi-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:min(calc(100% - 32px),520px)}
@@ -105,8 +105,7 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
   .header-inner{padding:10px 12px;gap:8px;min-width:0}
   .header-brand{min-width:0}
   .brand-logo{width:44px;height:44px}
-  .header-brand{gap:6px}
-  .brand-title-row{min-height:36px;padding:0 22px 5px}
+  .brand-title-row{min-height:36px;padding:0 20px 5px 0}
   .brand-title-row::before{inset:-3px -3px;opacity:.75}
   .brand-text{font-size:18px}
   .brand-sub{display:block;font-size:11px;letter-spacing:.4px;line-height:1.2;margin-top:1px}
@@ -124,7 +123,7 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 @media(max-width:480px){
   .header-inner{padding:8px 10px}
   .brand-text{font-size:15px}
-  .brand-title-row{min-height:32px;padding:0 18px 4px}
+  .brand-title-row{min-height:32px;padding:0 16px 4px 0}
   .brand-sub{font-size:10px;letter-spacing:.2px}
   .brand-logo{width:38px;height:38px}
   .nav-tab{padding:10px 12px;font-size:14px}
