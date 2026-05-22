@@ -10013,6 +10013,103 @@ def game_news_page():
     return r
 
 
+# Official site information feed (All tab) — same source as the embedded Game News iframe.
+GAME_NEWS_LANG_TYPE = {'EN': 2, 'TW': 3, 'HK': 4, 'JP': 1}
+GAME_NEWS_TAB_ALL = 4
+GAME_NEWS_GL_WEB = 'https://web.gl.eternal.channel.or.jp'
+GAME_NEWS_JP_WEB = 'https://web.jp.eternal.channel.or.jp'
+_GAME_NEWS_HTTP_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (compatible; GGenDatabase/1.0)',
+    'Accept': 'application/json',
+    'Referer': 'https://web.gl.eternal.channel.or.jp/en/information/update.html',
+}
+_game_news_status_cache = {}
+_GAME_NEWS_STATUS_CACHE_TTL = 300
+
+
+def _game_news_lang_type(lc):
+    lc = validate_lang_code(lc)
+    display = 'JP' if lc == 'JA' else lc
+    return GAME_NEWS_LANG_TYPE.get(display, 2)
+
+
+def _game_news_item_ts(item):
+    try:
+        released = int(item.get('released_at') or 0)
+    except (TypeError, ValueError):
+        released = 0
+    try:
+        updated = int(item.get('updated_at') or 0)
+    except (TypeError, ValueError):
+        updated = 0
+    return max(released, updated)
+
+
+def _fetch_game_news_items(lang_code):
+    lang_type = _game_news_lang_type(lang_code)
+    web_base = GAME_NEWS_JP_WEB if lang_type == 1 else GAME_NEWS_GL_WEB
+    url = f'{web_base}/server_assets/api/information_{GAME_NEWS_TAB_ALL}_{lang_type}_0.json'
+    req = Request(url, headers=_GAME_NEWS_HTTP_HEADERS)
+    with urlopen(req, timeout=15) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+    items = data.get('information_list') or []
+    if not isinstance(items, list):
+        items = []
+    return items, bool(data.get('has_more'))
+
+
+def _game_news_status_payload(lang_code, last_seen_at=0):
+    lc = validate_lang_code(lang_code)
+    display = 'JP' if lc == 'JA' else lc
+    cache_key = display
+    now = time.time()
+    cached = _game_news_status_cache.get(cache_key)
+    if cached and cached[0] > now:
+        items, has_more, latest_at, fingerprint = cached[1]
+    else:
+        items, has_more = _fetch_game_news_items(lc)
+        latest_at = max((_game_news_item_ts(it) for it in items), default=0)
+        fingerprint = ','.join(
+            str(it.get('information_id'))
+            for it in items
+            if it.get('information_id') is not None
+        )
+        _game_news_status_cache[cache_key] = (
+            now + _GAME_NEWS_STATUS_CACHE_TTL,
+            (items, has_more, latest_at, fingerprint),
+        )
+    try:
+        seen_at = max(0, int(last_seen_at or 0))
+    except (TypeError, ValueError):
+        seen_at = 0
+    new_count = sum(1 for it in items if _game_news_item_ts(it) > seen_at)
+    return {
+        'lang': display,
+        'latest_at': latest_at,
+        'fingerprint': fingerprint,
+        'item_count': len(items),
+        'has_more': has_more,
+        'new_count': new_count,
+        'has_new': new_count > 0,
+    }
+
+
+@app.route('/api/game_news/status')
+def api_game_news_status():
+    """Unread Game News indicator — mirrors official NEW badges (released/updated timestamps)."""
+    lc = request.args.get('lang', DEFAULT_LANG)
+    last_seen = request.args.get('last_seen_at', '0')
+    try:
+        payload = _game_news_status_payload(lc, last_seen)
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, OSError) as exc:
+        return jsonify({'error': 'fetch_failed', 'detail': str(exc)}), 502
+    except Exception as exc:
+        return jsonify({'error': 'fetch_failed', 'detail': str(exc)}), 502
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=60'
+    return r
+
+
 _LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
 
 @app.route('/api/languages')

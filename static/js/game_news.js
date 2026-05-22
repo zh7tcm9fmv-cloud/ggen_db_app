@@ -205,6 +205,7 @@ async function gameNewsSelLang(l) {
   if (dd) dd.classList.remove('active');
   renderLangDD();
   applyGameNewsUi();
+  void markGameNewsSeenForLang(l);
 }
 
 async function loadLangs() {
@@ -268,7 +269,9 @@ window.addEventListener('storage', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadLangs();
+  loadLangs().then(() => {
+    void markGameNewsSeenForLang(S.lang || 'EN');
+  });
 });
 
 window.toggleLangDropdown = toggleLangDropdown;
