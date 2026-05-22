@@ -1936,6 +1936,39 @@ def supporter_leader_applies_to_unit(sid, uid, ld, lc, char_id=None):
     return False
 
 
+def _leader_skill_pct_from_desc(desc):
+    """Parse 'Increase all stats … by N%' from supporter leader skill text (EN / JA / TW)."""
+    s = str(desc or '').strip()
+    if not s:
+        return 0
+    m = re.search(r'by\s+(\d+)\s*[%％]', s, re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+    m = re.search(r'(\d+)\s*[%％]\s*上昇', s)
+    if m:
+        return int(m.group(1))
+    m = re.search(r'全能力值(\d+)\s*[%％]', s)
+    if m:
+        return int(m.group(1))
+    m = re.search(r'能力值(\d+)\s*[%％]', s)
+    if m:
+        return int(m.group(1))
+    return 0
+
+
+def _resolve_supporter_leader_skill_applies(ls):
+    """Separate leader-skill rows at the same LB tier are either/or — keep only the best match.
+
+    Example: 28% for IBO tag OR 44% for IBO + Alaya-Vijnana; a unit with both tags gets 44% only."""
+    matching = [x for x in (ls or []) if x.get('applies')]
+    if len(matching) <= 1:
+        return
+    best = max(matching, key=lambda x: _leader_skill_pct_from_desc(x.get('desc', '')))
+    for row in matching:
+        if row is not best:
+            row['applies'] = False
+
+
 def option_part_matches_unit(opid, uid, lc=None):
     """Whether an option part applies to this unit when browsing with unit_id filter.
 
@@ -13523,6 +13556,93 @@ def _banner_pool_votes_github_branch_safe(branch):
     return branch or 'main'
 
 
+def _banner_pool_votes_github_api_headers(token):
+    return {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+    }
+
+
+def _banner_pool_votes_github_branch_exists(token, repo, branch):
+    url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
+    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
+    try:
+        with urlopen(req, timeout=10) as resp:
+            return resp.status == 200
+    except HTTPError as e:
+        if e.code == 404:
+            return False
+        raise
+
+
+def _banner_pool_votes_github_default_branch(token, repo):
+    url = f'https://api.github.com/repos/{repo}'
+    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
+    with urlopen(req, timeout=10) as resp:
+        meta = json.loads(resp.read().decode('utf-8'))
+    branch = (meta.get('default_branch') or 'main').strip() if isinstance(meta, dict) else 'main'
+    return branch or 'main'
+
+
+def _banner_pool_votes_github_branch_tip_sha(token, repo, branch):
+    url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
+    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
+    with urlopen(req, timeout=10) as resp:
+        meta = json.loads(resp.read().decode('utf-8'))
+    if not isinstance(meta, dict):
+        return None
+    ref = str(meta.get('object', {}).get('sha') or '').strip()
+    return ref or None
+
+
+def _banner_pool_votes_ensure_github_branch():
+    """Create banner-votes-data (or configured branch) from default branch if missing."""
+    cfg = _banner_pool_votes_github_config()
+    if not cfg:
+        return False
+    token, repo, _path, branch = cfg
+    if branch in ('main', 'master'):
+        return True
+    try:
+        if _banner_pool_votes_github_branch_exists(token, repo, branch):
+            return True
+    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError) as e:
+        print(f'banner_pool_votes: GitHub branch check failed: {e}')
+        return False
+    base = _banner_pool_votes_github_default_branch(token, repo)
+    try:
+        sha = _banner_pool_votes_github_branch_tip_sha(token, repo, base)
+    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError) as e:
+        print(f'banner_pool_votes: GitHub base ref lookup failed ({base}): {e}')
+        return False
+    if not sha:
+        print(f'banner_pool_votes: GitHub base ref {base} has no SHA — cannot create branch {branch}')
+        return False
+    url = f'https://api.github.com/repos/{repo}/git/refs'
+    body = {'ref': f'refs/heads/{branch}', 'sha': sha}
+    req = Request(
+        url,
+        data=json.dumps(body).encode('utf-8'),
+        headers={**_banner_pool_votes_github_api_headers(token), 'Content-Type': 'application/json'},
+        method='POST',
+    )
+    try:
+        with urlopen(req, timeout=12) as resp:
+            resp.read()
+        print(f'banner_pool_votes: created GitHub branch {branch} from {base}')
+        return True
+    except HTTPError as e:
+        if e.code == 422:
+            # Race: branch created between check and POST.
+            return True
+        print(f'banner_pool_votes: failed to create GitHub branch {branch}: {e}')
+        return False
+    except (URLError, OSError, json.JSONDecodeError) as e:
+        print(f'banner_pool_votes: failed to create GitHub branch {branch}: {e}')
+        return False
+
+
 def _banner_pool_votes_bundled_snapshot():
     data = load_json(_PUBLISHED_BANNER_POOL_VOTES_FILE)
     return data if isinstance(data, dict) else None
@@ -13678,11 +13798,7 @@ def _banner_pool_votes_fetch_github():
         return None
     token, repo, path, branch = cfg
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-    }
+    headers = _banner_pool_votes_github_api_headers(token)
     try:
         req = Request(url, headers=headers, method='GET')
         with urlopen(req, timeout=10) as resp:
@@ -13693,7 +13809,19 @@ def _banner_pool_votes_fetch_github():
         data = json.loads(content)
         _BANNER_VOTES_GITHUB_SHA = meta.get('sha')
         return data if isinstance(data, dict) else None
-    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError) as e:
+    except HTTPError as e:
+        if e.code == 404:
+            if _banner_pool_votes_ensure_github_branch():
+                print(f'banner_pool_votes: vote file not on {branch} yet (first save pending)')
+            else:
+                print(
+                    f'banner_pool_votes: GitHub branch {branch} missing and could not be created — '
+                    'votes will reset on deploy until the token can create refs.'
+                )
+        else:
+            print(f'banner_pool_votes: GitHub fetch failed: {e}')
+        return None
+    except (URLError, OSError, json.JSONDecodeError, ValueError) as e:
         print(f'banner_pool_votes: GitHub fetch failed: {e}')
         return None
 
@@ -13737,13 +13865,12 @@ def _banner_pool_votes_push_github(data, *, retries=2):
     if not cfg:
         return False
     token, repo, path, branch = cfg
+    _banner_pool_votes_ensure_github_branch()
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
     payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
     headers = {
-        'Authorization': f'Bearer {token}',
-        'Accept': 'application/vnd.github+json',
+        **_banner_pool_votes_github_api_headers(token),
         'Content-Type': 'application/json',
-        'X-GitHub-Api-Version': '2022-11-28',
     }
     with _BANNER_VOTES_GITHUB_PUSH_LOCK:
         for attempt in range(retries + 1):
@@ -13767,6 +13894,10 @@ def _banner_pool_votes_push_github(data, *, retries=2):
                     _BANNER_VOTES_GITHUB_SHA = content['sha']
                 return True
             except HTTPError as e:
+                if e.code in (404, 422) and attempt < retries:
+                    _BANNER_VOTES_GITHUB_SHA = None
+                    if _banner_pool_votes_ensure_github_branch():
+                        continue
                 if e.code == 409 and attempt < retries:
                     _BANNER_VOTES_GITHUB_SHA = None
                     _banner_pool_votes_fetch_github()
@@ -14060,6 +14191,8 @@ def _banner_pool_votes_migrate():
 
 
 _banner_pool_votes_migrate()
+if _banner_pool_votes_github_config():
+    _banner_pool_votes_ensure_github_branch()
 _banner_pool_votes_hydrate_from_remote(force=True)
 _banner_pool_votes_register_shutdown_sync()
 _banner_pool_votes_storage_warning()
@@ -14353,6 +14486,8 @@ def get_supporter(supporter_id):
             tags = resolve_condition_tags(tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
             sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
             ls.append({'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid, 'applies': applies, 'same_group': same_group})
+        if for_uid_q and for_uid_key != '0':
+            _resolve_supporter_leader_skill_applies(ls)
         asks = []
         for a in supporter_active_map.get(supporter_id, []):
             an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), ''); ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')

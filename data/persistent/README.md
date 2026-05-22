@@ -48,9 +48,14 @@ If push is rejected: `git pull origin main --no-edit` then push again.
 5. New container deep-merges ballots from GitHub + bundled snapshot — your IP ballot should still be there.
 
 If you can vote again after deploy, check Railway logs for:
-- `banner_pool_votes: GitHub snapshot (debounced, …)` after voting
+- `banner_pool_votes: created GitHub branch banner-votes-data` (first boot only)
+- `banner_pool_votes: GitHub snapshot (debounced, …)` after voting (~45s wait)
+- `banner_pool_votes: GitHub snapshot (signal:15, …)` on deploy shutdown
+- `banner_pool_votes: GitHub push failed` or `branch missing and could not be created`
 - `GGEN_BANNER_VOTES_SYNC_MODE=off` (sync disabled)
 - missing `GGEN_BANNER_VOTES_GITHUB_TOKEN`
-- `GitHub fetch failed` (branch `banner-votes-data` missing or token scope wrong)
+
+Confirm the branch exists: `https://github.com/zh7tcm9fmv-cloud/ggen_db_app/tree/banner-votes-data`
+The app now auto-creates that branch on first boot if the token has **Contents + Metadata (ref)** write access.
 
 **Do not** set `GGEN_BANNER_VOTES_SYNC_MODE=off` unless you accept vote resets on deploy.

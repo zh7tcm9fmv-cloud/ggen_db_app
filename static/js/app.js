@@ -8713,12 +8713,13 @@ return 0;
 function _dcLeaderSkillPctAndFlags(supporters){
 let pct=0;
 (supporters||[]).forEach(s=>{
+let best=0;
 (s.leader_skills||[]).forEach(ls=>{
 if(ls.applies===false)return;
-const d=ls.desc||'';
-const v=_dcLeaderPctFromLeaderSkillDesc(d);
-if(v>0)pct+=v;
+const v=_dcLeaderPctFromLeaderSkillDesc(ls.desc||'');
+if(v>best)best=v;
 });
+pct+=best;
 });
 return{pct};
 }
