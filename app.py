@@ -2853,7 +2853,8 @@ def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, 
     """Structured trait tags set hc=True for the whole ability; vigor-normal baseline % must still use the unconditional bucket."""
     if _unit_vigor_normal_baseline_stat_line(part):
         return False
-    if ad is not None and detail_idx is not None and _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part):
+    if (not is_cond and ad is not None and detail_idx is not None
+            and _unit_vigor_pair_bare_first_line_unconditional(ad, detail_idx, part)):
         return False
     if _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
         return False
@@ -2922,6 +2923,80 @@ def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc):
     spc[atk_key] = spc.get(atk_key, 0) - wrong
     spb[atk_key] = spb.get(atk_key, 0) + hi_pct
     spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
+
+
+def _vigor_gate_tier_rank(gate_text):
+    g = (gate_text or '').lower()
+    raw = gate_text or ''
+    if 'supercharged' in g or '超一擊' in raw or '超一撃' in raw:
+        return 4
+    if re.search(r'\bmax\b', g) or '超強' in raw:
+        return 3
+    if 'high' in g or '強勢' in raw or '強気' in raw:
+        return 2
+    if 'normal' in g or '一般' in raw:
+        return 1
+    return 0
+
+
+def _parse_vigor_tier_atk_pcts_from_trait_text(txt):
+    """Extract ATK % per vigor gate from a trait blob (EN / JA / TW)."""
+    if not txt:
+        return []
+    t = txt.replace('\r', '')
+    out = []
+    for m in re.finditer(
+            r'when\s+vigor\s+is\s+([^,\n]+?)(?:[,\n]|$)(.*?)(?=when\s+vigor\s+is|\Z)',
+            t, re.IGNORECASE | re.DOTALL):
+        rank = _vigor_gate_tier_rank(m.group(1))
+        chunk = m.group(2)[:240]
+        m2 = re.search(
+            r'(?:increase(?:s)?\s+)?(?:own\s+)?(?:squad\s+)?(?:ms\s+)?atk\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        if m2:
+            out.append((rank, int(m2.group(1))))
+    for m in re.finditer(r'テンションが「([^」]+)」[^。\n]*?(?:攻撃力|攻擊力)が(\d+)%上昇', t):
+        rank = _vigor_gate_tier_rank(m.group(1))
+        out.append((rank, int(m.group(2))))
+    for m in re.finditer(r'戰意為([^，,\n]+)[，,][^\n]*?(?:攻擊力|攻击力)(?:提升|上升)(\d+)%', t):
+        rank = _vigor_gate_tier_rank(m.group(1))
+        out.append((rank, int(m.group(2))))
+    return out
+
+
+def _unit_adjust_vigor_condition_stat_buckets(ad, spb, spc):
+    """(Vigor conditions) ATK tiers stack in data but in-game only the highest met tier applies (CP on).
+
+    Sentence splitting can also mis-route a Max-tier line into the unconditional bucket; collapse any
+    summed vigor ATK % in spc to the top tier only."""
+    name = (ad.get('name') or '').strip()
+    if not name:
+        return
+    nl = name.lower()
+    if ('(vigor conditions)' not in nl and '氣勢條件' not in name and '气势条件' not in name
+            and 'テンション条件' not in name and '戦意條件' not in name and '战意条件' not in name):
+        return
+    chunks = []
+    for d2 in ad.get('details', []) or []:
+        if isinstance(d2, dict):
+            chunks.append(d2.get('text') or '')
+    blob = '\n'.join(chunks)
+    tiers = _parse_vigor_tier_atk_pcts_from_trait_text(blob)
+    if len(tiers) < 2:
+        return
+    by_rank = {}
+    for rank, pct in tiers:
+        by_rank[rank] = max(by_rank.get(rank, 0), pct)
+    tier_vals = sorted(set(by_rank.values()))
+    if len(tier_vals) < 2:
+        return
+    wrong = sum(tier_vals)
+    hi = max(tier_vals)
+    atk_key = 'Attack'
+    if spc.get(atk_key, 0) >= wrong:
+        spc[atk_key] = spc.get(atk_key, 0) - wrong + hi
+    elif spc.get(atk_key, 0) > hi:
+        spc[atk_key] = hi
 
 
 def _extract_stat_percent_unit_cjk(text):
@@ -7615,6 +7690,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     elif line_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
         _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+        _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, spb_crit, spc_crit)
     for s in UNIT_STAT_ORDER: spc[s] = spc.get(s, 0) + nxs.get(s, 0)
@@ -7722,6 +7798,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                     else:
                         bd[s] = bd.get(s, 0) + pct
         _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+        _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
 
     for ab in ac:
         if ab.get('ssp_only'):
@@ -15023,6 +15100,7 @@ def get_unit(unit_id):
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
             _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+            _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
 
         for ab in ac:
             if ab.get('ssp_only'):
