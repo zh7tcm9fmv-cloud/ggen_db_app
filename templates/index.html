@@ -505,10 +505,10 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .bt-vote-result-count{font-size:9px;color:var(--text-muted);font-variant-numeric:tabular-nums}
 .bt-vote-result-bar{height:8px;border-radius:999px;background:rgba(15,23,42,.9);border:1px solid rgba(100,170,255,.25);overflow:hidden}
 .bt-vote-result-bar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#1d4ed8 0%,#0ea5e9 55%,#22d3ee 100%);min-width:2px;transition:width .35s ease}
-.bt-vote-result-row--winner .bt-vote-result-bar{border-color:rgba(130,116,228,.34)}
-.bt-vote-result-row--winner .bt-vote-result-bar>i{background:linear-gradient(90deg,#5262d1 0%,#8274e4 18%,#c084fc 36%,#f0b0f0 52%,#cbfff8 68%,#9050e0 84%,#5262d1 100%);background-size:200% 100%;animation:btVoteWinnerBarGlow 4s ease-in-out infinite}
-@keyframes btVoteWinnerBarGlow{0%,100%{background-position:0% 50%;filter:brightness(1);box-shadow:none}50%{background-position:100% 50%;filter:brightness(1.06);box-shadow:0 0 8px rgba(130,116,228,.26)}}
-@media (prefers-reduced-motion:reduce){.bt-vote-result-row--winner .bt-vote-result-bar>i{animation:none}.bt-vote-result-row--winner .bt-vote-result-bar{border-color:rgba(130,116,228,.3)}.bt-vote-result-row--winner .bt-vote-result-bar>i{background-position:50% 50%}}
+.bt-vote-result-row--winner .bt-vote-result-bar{border-color:rgba(168,85,247,.52)}
+.bt-vote-result-row--winner .bt-vote-result-bar>i{background:linear-gradient(90deg,#4338ca 0%,#6366f1 16%,#9333ea 34%,#e879f9 50%,#22d3ee 66%,#818cf8 82%,#4338ca 100%);background-size:200% 100%;filter:saturate(1.18);animation:btVoteWinnerBarGlow 4s ease-in-out infinite}
+@keyframes btVoteWinnerBarGlow{0%,100%{background-position:0% 50%;filter:saturate(1.18) brightness(1.04);box-shadow:none}50%{background-position:100% 50%;filter:saturate(1.28) brightness(1.12);box-shadow:0 0 10px rgba(168,85,247,.38),0 0 4px rgba(34,211,238,.22)}}
+@media (prefers-reduced-motion:reduce){.bt-vote-result-row--winner .bt-vote-result-bar>i{animation:none;filter:saturate(1.22) brightness(1.08);box-shadow:0 0 6px rgba(168,85,247,.28)}.bt-vote-result-row--winner .bt-vote-result-bar{border-color:rgba(168,85,247,.48)}.bt-vote-result-row--winner .bt-vote-result-bar>i{background-position:50% 50%}}
 #panel-banner_timeline table.data-table.bt-table{table-layout:fixed;width:100%;min-width:520px}
 #panel-banner_timeline .bt-table .bt-th-banner{width:32%;min-width:180px}
 #panel-banner_timeline .bt-table .bt-th-combo{width:68%}
