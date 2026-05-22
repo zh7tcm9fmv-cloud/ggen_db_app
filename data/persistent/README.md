@@ -40,5 +40,7 @@ If push is rejected: `git pull origin main --no-edit` then push again.
 
 1. Users vote on the live container.
 2. You push code to `main` → Railway redeploys.
-3. Old container stops → one snapshot to branch `banner-votes-data`.
-4. New container loads votes from GitHub + `data/published/banner_pool_votes.json`.
+3. Old container stops → **always** snapshots to branch `banner-votes-data` (SIGTERM bypasses push cooldown).
+4. New container **deep-merges** ballots from GitHub + bundled snapshot (never picks one file by global total — per-pool votes are preserved).
+
+If totals drop after deploy, check Railway logs for `banner_pool_votes: GitHub snapshot on signal:15`. A missing line usually means the previous container never saved live votes.

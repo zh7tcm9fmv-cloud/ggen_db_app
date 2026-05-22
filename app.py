@@ -13434,22 +13434,130 @@ def _banner_pool_votes_bundled_snapshot():
     return data if isinstance(data, dict) else None
 
 
-def _banner_pool_votes_merge_snapshots(*snaps):
-    best = {}
+def _bt_vote_normalize_ballot(ballot):
+    """Per-choice map: {choice_key: voted_at_ts}. Migrates legacy {choices: [...]}."""
+    if not isinstance(ballot, dict):
+        return {}
+    if 'choices' in ballot:
+        ts = int(ballot.get('ts') or time.time())
+        out = {}
+        for ch in ballot.get('choices') or []:
+            if isinstance(ch, str) and ch.strip():
+                out[ch.strip()] = ts
+        return out
+    out = {}
+    for k, v in ballot.items():
+        if k in ('ts', 'choices') or not isinstance(k, str):
+            continue
+        out[k] = int(v) if isinstance(v, (int, float)) else int(time.time())
+    return out
+
+
+def _bt_vote_ballot_choices(ballot):
+    return list(_bt_vote_normalize_ballot(ballot).keys())
+
+
+def _banner_pool_votes_merge_ballots(a, b):
+    """Union two ballot maps; per choice keep the latest voted_at timestamp."""
+    na = _bt_vote_normalize_ballot(a)
+    nb = _bt_vote_normalize_ballot(b)
+    out = dict(na)
+    for choice, ts in nb.items():
+        out[choice] = max(int(out.get(choice, 0) or 0), int(ts or 0))
+    return out
+
+
+def _banner_pool_votes_parse_ballot_key(bkey):
+    if not isinstance(bkey, str) or ':' not in bkey:
+        return None, None
+    voter_id, gasha_id = bkey.rsplit(':', 1)
+    if not voter_id or not gasha_id:
+        return None, None
+    return voter_id, gasha_id
+
+
+def _banner_pool_votes_recompute_totals(ballots):
+    totals = {}
+    if not isinstance(ballots, dict):
+        return totals
+    for bkey, ballot in ballots.items():
+        _voter_id, gid = _banner_pool_votes_parse_ballot_key(bkey)
+        if not gid:
+            continue
+        g_tot = totals.setdefault(str(gid), {})
+        for choice in _bt_vote_ballot_choices(ballot):
+            g_tot[choice] = int(g_tot.get(choice, 0) or 0) + 1
+    return totals
+
+
+def _banner_pool_votes_deep_merge_snapshots(*snaps):
+    """Merge snapshots by unioning ballots, then recompute totals (never drop a pool's votes)."""
+    merged_ballots = {}
     for snap in snaps:
-        if isinstance(snap, dict):
-            best = _banner_pool_votes_pick_richer(best, snap)
-    return best
+        if not isinstance(snap, dict):
+            continue
+        for bkey, ballot in (snap.get('ballots') or {}).items():
+            if not isinstance(bkey, str):
+                continue
+            prev = merged_ballots.get(bkey)
+            merged_ballots[bkey] = (
+                _banner_pool_votes_merge_ballots(prev, ballot)
+                if prev is not None
+                else _bt_vote_normalize_ballot(ballot)
+            )
+    if not merged_ballots:
+        # Fall back to legacy whole-file pick when no ballot records exist.
+        best = {}
+        for snap in snaps:
+            if isinstance(snap, dict):
+                best = _banner_pool_votes_pick_richer(best, snap)
+        return best if isinstance(best, dict) else {}
+    return {'ballots': merged_ballots, 'totals': _banner_pool_votes_recompute_totals(merged_ballots)}
+
+
+def _banner_pool_votes_merge_snapshots(*snaps):
+    return _banner_pool_votes_deep_merge_snapshots(*snaps)
 
 
 def _banner_pool_votes_vote_count(data):
     if not isinstance(data, dict):
         return 0
+    ballots = data.get('ballots')
+    if isinstance(ballots, dict) and ballots:
+        return sum(
+            len(_bt_vote_ballot_choices(b))
+            for b in ballots.values()
+            if isinstance(b, dict)
+        )
     n = 0
     for g_tot in (data.get('totals') or {}).values():
         if isinstance(g_tot, dict):
             n += sum(max(0, int(v or 0)) for v in g_tot.values())
     return n
+
+
+def _banner_pool_votes_pool_total(data, gasha_id):
+    if not isinstance(data, dict):
+        return 0
+    g_tot = (data.get('totals') or {}).get(str(gasha_id))
+    if not isinstance(g_tot, dict):
+        return 0
+    return sum(max(0, int(v or 0)) for v in g_tot.values())
+
+
+def _banner_pool_votes_is_richer(merged, local):
+    """True if merged has strictly more recorded picks than local (any pool or overall)."""
+    if not isinstance(local, dict) or not _banner_pool_votes_has_data(local):
+        return _banner_pool_votes_has_data(merged)
+    if _banner_pool_votes_vote_count(merged) > _banner_pool_votes_vote_count(local):
+        return True
+    local_totals = local.get('totals') or {}
+    merged_totals = (merged or {}).get('totals') or {}
+    gasha_ids = set(local_totals.keys()) | set(merged_totals.keys())
+    for gid in gasha_ids:
+        if _banner_pool_votes_pool_total(merged, gid) > _banner_pool_votes_pool_total(local, gid):
+            return True
+    return False
 
 
 def _banner_pool_votes_pick_richer(a, b):
@@ -13622,21 +13730,20 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
         remote,
         raw_snap,
     )
-    if _banner_pool_votes_vote_count(merged) <= _banner_pool_votes_vote_count(local or {}):
-        return
-    try:
-        os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
-        tmp = BANNER_POOL_VOTES_FILE + '.tmp'
-        with open(tmp, 'w', encoding='utf-8') as f:
-            json.dump(merged, f, ensure_ascii=False, indent=2)
-            f.write('\n')
-        os.replace(tmp, BANNER_POOL_VOTES_FILE)
-        print(f'banner_pool_votes: hydrated ({_banner_pool_votes_vote_count(merged)} vote count)')
-    except OSError as e:
-        print(f'banner_pool_votes: hydrate write failed: {e}')
+    if _banner_pool_votes_is_richer(merged, local or {}):
+        try:
+            os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
+            tmp = BANNER_POOL_VOTES_FILE + '.tmp'
+            with open(tmp, 'w', encoding='utf-8') as f:
+                json.dump(merged, f, ensure_ascii=False, indent=2)
+                f.write('\n')
+            os.replace(tmp, BANNER_POOL_VOTES_FILE)
+            print(f'banner_pool_votes: hydrated ({_banner_pool_votes_vote_count(merged)} vote count)')
+        except OSError as e:
+            print(f'banner_pool_votes: hydrate write failed: {e}')
 
 
-def _banner_pool_votes_flush_to_github(reason='shutdown'):
+def _banner_pool_votes_flush_to_github(reason='shutdown', *, force=False):
     """One GitHub commit with the latest local snapshot (deploy / process exit)."""
     global _BANNER_VOTES_SHUTDOWN_SYNC_DONE, _BANNER_VOTES_LAST_PUSHED_COUNT
     if _BANNER_VOTES_SHUTDOWN_SYNC_DONE:
@@ -13645,7 +13752,11 @@ def _banner_pool_votes_flush_to_github(reason='shutdown'):
         return
     cfg = _banner_pool_votes_github_config()
     since = _banner_pool_votes_github_secs_since_last_commit()
-    if since is not None and since < _BANNER_VOTES_MIN_PUSH_INTERVAL_SEC:
+    if (
+        not force
+        and since is not None
+        and since < _BANNER_VOTES_MIN_PUSH_INTERVAL_SEC
+    ):
         print(
             'banner_pool_votes: skip GitHub push '
             f'({int(since)}s since last commit on {cfg[3]}, min {_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC}s) '
@@ -13655,6 +13766,9 @@ def _banner_pool_votes_flush_to_github(reason='shutdown'):
     data = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
         data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    remote = _banner_pool_votes_fetch_github() if _banner_pool_votes_use_github_api() else None
+    if isinstance(remote, dict):
+        data = _banner_pool_votes_merge_snapshots(data, remote)
     if not _banner_pool_votes_has_data(data):
         return
     n = _banner_pool_votes_vote_count(data)
@@ -13679,7 +13793,7 @@ def _banner_pool_votes_register_shutdown_sync():
     _BANNER_VOTES_SHUTDOWN_REGISTERED = True
 
     def _term(signum, _frame):
-        _banner_pool_votes_flush_to_github(f'signal:{signum}')
+        _banner_pool_votes_flush_to_github(f'signal:{signum}', force=True)
 
     try:
         signal.signal(signal.SIGTERM, _term)
@@ -13814,29 +13928,6 @@ print(
 )
 
 
-def _bt_vote_normalize_ballot(ballot):
-    """Per-choice map: {choice_key: voted_at_ts}. Migrates legacy {choices: [...]}."""
-    if not isinstance(ballot, dict):
-        return {}
-    if 'choices' in ballot:
-        ts = int(ballot.get('ts') or time.time())
-        out = {}
-        for ch in ballot.get('choices') or []:
-            if isinstance(ch, str) and ch.strip():
-                out[ch.strip()] = ts
-        return out
-    out = {}
-    for k, v in ballot.items():
-        if k in ('ts', 'choices') or not isinstance(k, str):
-            continue
-        out[k] = int(v) if isinstance(v, (int, float)) else int(time.time())
-    return out
-
-
-def _bt_vote_ballot_choices(ballot):
-    return list(_bt_vote_normalize_ballot(ballot).keys())
-
-
 def _bt_vote_adjust_total(g_tot, choice, delta):
     if not choice or not delta:
         return
@@ -13865,10 +13956,12 @@ def _bt_vote_normalize_choice(raw):
 def _banner_pool_votes_load(*, hydrate=False):
     if hydrate:
         _banner_pool_votes_hydrate_from_remote()
-    data = load_json(BANNER_POOL_VOTES_FILE)
-    if not isinstance(data, dict):
-        data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
-    data = _banner_pool_votes_merge_snapshots(data, _banner_pool_votes_bundled_snapshot())
+    raw = load_json(BANNER_POOL_VOTES_FILE)
+    if not isinstance(raw, dict):
+        raw = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    if not isinstance(raw, dict):
+        raw = {}
+    data = _banner_pool_votes_merge_snapshots(raw, _banner_pool_votes_bundled_snapshot())
     if not isinstance(data, dict):
         data = {}
     if not isinstance(data.get('totals'), dict):
@@ -13878,12 +13971,20 @@ def _banner_pool_votes_load(*, hydrate=False):
         ballots = {}
         data['ballots'] = ballots
     changed = False
+    if _banner_pool_votes_is_richer(data, raw):
+        data['totals'] = _banner_pool_votes_recompute_totals(ballots)
+        changed = True
     for bkey, ballot in list(ballots.items()):
         if not isinstance(ballot, dict) or 'choices' not in ballot:
             continue
         norm = _bt_vote_normalize_ballot(ballot)
         ballots[bkey] = norm
         changed = True
+    if ballots and not changed:
+        recomputed = _banner_pool_votes_recompute_totals(ballots)
+        if recomputed != data.get('totals'):
+            data['totals'] = recomputed
+            changed = True
     if changed:
         _banner_pool_votes_save(data)
     return data
