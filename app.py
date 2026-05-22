@@ -137,7 +137,7 @@ def convert_image_urls(obj):
         return obj
     if isinstance(obj, str):
         if obj.startswith('/static/images/'):
-            return IMAGE_CDN + '/images/' + obj[len('/static/images/'):]
+            return game_image_public_url(obj)
         return obj
     elif isinstance(obj, dict):
         return {k: convert_image_urls(v) for k, v in obj.items()}
@@ -146,12 +146,20 @@ def convert_image_urls(obj):
     return obj
 
 
+def _prefer_webp_game_path(path):
+    """Prefer .webp for raster game assets under /static/images/."""
+    if not isinstance(path, str) or not path.startswith('/static/images/'):
+        return path
+    return re.sub(r'\.(png|jpe?g)(?=($|[?#]))', '.webp', path, flags=re.I)
+
+
 def game_image_public_url(path):
     """Resolve /static/images/* to an absolute CDN URL when IMAGE_CDN and GAME_IMAGES_USE_CDN are set."""
     if not path or not isinstance(path, str):
         return path
     if not path.startswith('/static/images/'):
         return path
+    path = _prefer_webp_game_path(path)
     if IMAGE_CDN and GAME_IMAGES_USE_CDN:
         return IMAGE_CDN.rstrip('/') + '/images/' + path[len('/static/images/'):]
     return path
@@ -168,6 +176,8 @@ else:
 
 if IMAGE_CDN and not GAME_IMAGES_USE_CDN:
     print("  Image URLs: /static/images/* served from this app (GAME_IMAGES_USE_CDN=0). Remove it or set to 1 to use IMAGE_CDN for game assets.")
+elif IMAGE_CDN:
+    print(f"  Image CDN: {IMAGE_CDN}/images/* (WebP preferred)")
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes

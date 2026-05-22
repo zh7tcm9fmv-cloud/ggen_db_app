@@ -1,5 +1,5 @@
 const IMAGE_CDN = String(window.__GGEN_IMAGE_CDN__ || '').replace(/\/+$/, '');
-const GAME_IMAGES_USE_CDN = !!window.__GGEN_GAME_IMAGES_USE_CDN__;
+const GAME_IMAGES_USE_CDN = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!(IMAGE_CDN || window.__GGEN_GAME_IMAGES_USE_CDN__);
 const _imgUrlCache = new Map();
 const _imgUrlCacheMax = 8192;
 function imgUrl(path) {
@@ -11,8 +11,7 @@ function imgUrl(path) {
     else if (!path.startsWith('/static/images/')) out = path;
     else {
         const gamePath = path.replace(/\.(png|jpg|jpeg)(\?|#|$)/i, '.webp$2');
-        if (!GAME_IMAGES_USE_CDN) out = gamePath;
-        else if (IMAGE_CDN) out = IMAGE_CDN + '/images/' + gamePath.substring('/static/images/'.length);
+        if (IMAGE_CDN && GAME_IMAGES_USE_CDN) out = IMAGE_CDN + '/images/' + gamePath.substring('/static/images/'.length);
         else out = gamePath;
     }
     if (_imgUrlCache.size >= _imgUrlCacheMax) {
@@ -22,13 +21,8 @@ function imgUrl(path) {
     _imgUrlCache.set(path, out);
     return out;
 }
-/** Like imgUrl, but if IMAGE_CDN is set, always use it for /static/images/* (ignores GAME_IMAGES_USE_CDN). */
+/** Same as imgUrl — CDN + WebP when IMAGE_CDN is configured. */
 function imgUrlPreferCdn(path) {
-    if (!path) return '';
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (IMAGE_CDN && path.startsWith('/static/images/')) {
-        return IMAGE_CDN + '/images/' + path.substring('/static/images/'.length);
-    }
     return imgUrl(path);
 }
 function imgUrlWebp(path) {
