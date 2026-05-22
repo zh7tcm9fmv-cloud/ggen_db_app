@@ -13318,6 +13318,13 @@ _BANNER_VOTES_HYDRATE_INTERVAL_SEC = 300.0
 _BANNER_VOTES_SHUTDOWN_REGISTERED = False
 _BANNER_VOTES_SHUTDOWN_SYNC_DONE = False
 _BANNER_VOTES_LAST_PUSHED_COUNT = -1
+_BANNER_VOTES_LAST_ASYNC_PUSH = 0.0
+_BANNER_VOTES_DEBOUNCE_TIMER = None
+_BANNER_VOTES_DEBOUNCE_LOCK = threading.Lock()
+_BANNER_VOTES_PUSH_DEBOUNCE_SEC = max(
+    15,
+    int(os.environ.get('GGEN_BANNER_VOTES_PUSH_DEBOUNCE_SEC', '45') or '45'),
+)
 _BANNER_VOTES_MIN_PUSH_INTERVAL_SEC = max(
     60,
     int(os.environ.get('GGEN_BANNER_VOTES_MIN_PUSH_INTERVAL_SEC', '1800') or '1800'),
@@ -13753,13 +13760,77 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
             print(f'banner_pool_votes: hydrate write failed: {e}')
 
 
+def _banner_pool_votes_push_from_disk(*, reason='async', force=False):
+    """Read local vote file, merge remote, push to GitHub (banner-votes-data branch)."""
+    global _BANNER_VOTES_LAST_ASYNC_PUSH, _BANNER_VOTES_LAST_PUSHED_COUNT, _BANNER_VOTES_SHUTDOWN_SYNC_DONE
+    if _banner_pool_votes_sync_mode() == 'off' or not _banner_pool_votes_github_config():
+        return False
+    if not force:
+        since_push = time.time() - _BANNER_VOTES_LAST_ASYNC_PUSH
+        if since_push < _BANNER_VOTES_PUSH_DEBOUNCE_SEC:
+            return False
+    data = load_json(BANNER_POOL_VOTES_FILE)
+    if not isinstance(data, dict):
+        data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    remote = _banner_pool_votes_fetch_github() if _banner_pool_votes_use_github_api() else None
+    if isinstance(remote, dict):
+        data = _banner_pool_votes_merge_snapshots(data, remote)
+    if not _banner_pool_votes_has_data(data):
+        return False
+    n = _banner_pool_votes_vote_count(data)
+    if not force and n == _BANNER_VOTES_LAST_PUSHED_COUNT:
+        return False
+    ok = _banner_pool_votes_push_github(data)
+    if ok:
+        _BANNER_VOTES_LAST_ASYNC_PUSH = time.time()
+        _BANNER_VOTES_LAST_PUSHED_COUNT = n
+        _BANNER_VOTES_SHUTDOWN_SYNC_DONE = True
+        print(f'banner_pool_votes: GitHub snapshot ({reason}, {n} vote count)')
+    else:
+        print(f'banner_pool_votes: GitHub snapshot failed ({reason})')
+    return ok
+
+
+def _banner_pool_votes_cancel_debounced_push():
+    global _BANNER_VOTES_DEBOUNCE_TIMER
+    with _BANNER_VOTES_DEBOUNCE_LOCK:
+        if _BANNER_VOTES_DEBOUNCE_TIMER:
+            _BANNER_VOTES_DEBOUNCE_TIMER.cancel()
+            _BANNER_VOTES_DEBOUNCE_TIMER = None
+
+
+def _banner_pool_votes_schedule_debounced_push():
+    """Persist ballots to GitHub soon after votes (survives deploy if SIGTERM snapshot misses)."""
+    global _BANNER_VOTES_DEBOUNCE_TIMER
+    mode = _banner_pool_votes_sync_mode()
+    if mode == 'off' or not _banner_pool_votes_github_config():
+        return
+    if mode == 'vote':
+        threading.Thread(
+            target=lambda: _banner_pool_votes_push_from_disk(reason='vote', force=True),
+            daemon=True,
+        ).start()
+        return
+
+    def _run():
+        _banner_pool_votes_push_from_disk(reason='debounced', force=True)
+
+    with _BANNER_VOTES_DEBOUNCE_LOCK:
+        if _BANNER_VOTES_DEBOUNCE_TIMER:
+            _BANNER_VOTES_DEBOUNCE_TIMER.cancel()
+        _BANNER_VOTES_DEBOUNCE_TIMER = threading.Timer(_BANNER_VOTES_PUSH_DEBOUNCE_SEC, _run)
+        _BANNER_VOTES_DEBOUNCE_TIMER.daemon = True
+        _BANNER_VOTES_DEBOUNCE_TIMER.start()
+
+
 def _banner_pool_votes_flush_to_github(reason='shutdown', *, force=False):
     """One GitHub commit with the latest local snapshot (deploy / process exit)."""
     global _BANNER_VOTES_SHUTDOWN_SYNC_DONE, _BANNER_VOTES_LAST_PUSHED_COUNT
-    if _BANNER_VOTES_SHUTDOWN_SYNC_DONE:
+    if _BANNER_VOTES_SHUTDOWN_SYNC_DONE and not force:
         return
     if _banner_pool_votes_sync_mode() == 'off' or not _banner_pool_votes_github_config():
         return
+    _banner_pool_votes_cancel_debounced_push()
     cfg = _banner_pool_votes_github_config()
     since = _banner_pool_votes_github_secs_since_last_commit()
     if (
@@ -13773,25 +13844,7 @@ def _banner_pool_votes_flush_to_github(reason='shutdown', *, force=False):
             f'— avoids deploy/commit loops'
         )
         return
-    data = load_json(BANNER_POOL_VOTES_FILE)
-    if not isinstance(data, dict):
-        data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
-    remote = _banner_pool_votes_fetch_github() if _banner_pool_votes_use_github_api() else None
-    if isinstance(remote, dict):
-        data = _banner_pool_votes_merge_snapshots(data, remote)
-    if not _banner_pool_votes_has_data(data):
-        return
-    n = _banner_pool_votes_vote_count(data)
-    if n == _BANNER_VOTES_LAST_PUSHED_COUNT:
-        return
-    _BANNER_VOTES_SHUTDOWN_SYNC_DONE = True
-    ok = _banner_pool_votes_push_github(data)
-    if ok:
-        _BANNER_VOTES_LAST_PUSHED_COUNT = n
-        print(f'banner_pool_votes: GitHub snapshot on {reason} ({n} vote count)')
-    else:
-        _BANNER_VOTES_SHUTDOWN_SYNC_DONE = False
-        print(f'banner_pool_votes: GitHub snapshot failed on {reason}')
+    return _banner_pool_votes_push_from_disk(reason=reason, force=True)
 
 
 def _banner_pool_votes_register_shutdown_sync():
@@ -13813,10 +13866,7 @@ def _banner_pool_votes_register_shutdown_sync():
 
 
 def _banner_pool_votes_after_save(data):
-    if _banner_pool_votes_sync_mode() != 'vote':
-        return
-    if _banner_pool_votes_has_data(data) and _banner_pool_votes_github_config():
-        threading.Thread(target=_banner_pool_votes_push_github, args=(data,), daemon=True).start()
+    _banner_pool_votes_schedule_debounced_push()
 
 
 def _banner_pool_votes_storage_warning():
@@ -13824,12 +13874,23 @@ def _banner_pool_votes_storage_warning():
         return
     if (os.environ.get('GGEN_BANNER_VOTES_PATH') or '').strip():
         return
-    if _banner_pool_votes_sync_mode() != 'off':
+    if not (os.environ.get('GGEN_VOTE_IP_SALT') or '').strip():
+        print(
+            'banner_pool_votes: set GGEN_VOTE_IP_SALT to a fixed secret on Railway '
+            '(never change it) so your IP ballot survives redeploys.'
+        )
+    if _banner_pool_votes_sync_mode() == 'off':
+        print(
+            'banner_pool_votes: Railway has no persistent disk and sync is OFF — '
+            'votes reset on every deploy. Set GGEN_BANNER_VOTES_GITHUB_TOKEN + '
+            'GGEN_BANNER_VOTES_SYNC_MODE=shutdown.'
+        )
         return
-    print(
-        'banner_pool_votes: Railway has no persistent disk. Set GGEN_BANNER_VOTES_GITHUB_TOKEN '
-        'and sync_mode=shutdown (default) so votes save to branch banner-votes-data, not main.'
-    )
+    if not _banner_pool_votes_github_config():
+        print(
+            'banner_pool_votes: Railway has no persistent disk. Set GGEN_BANNER_VOTES_GITHUB_TOKEN '
+            'so ballots save to branch banner-votes-data after each vote (~45s debounce).'
+        )
 
 
 BANNER_POOL_VOTES_FILE = _resolve_banner_pool_votes_file()
@@ -14052,7 +14113,11 @@ def _bt_vote_request_ip():
 
 
 def _bt_vote_ip_salt():
-    return (os.environ.get('GGEN_VOTE_IP_SALT') or os.environ.get('FLASK_SECRET_KEY') or 'ggen-vote-ip-v1').strip()
+    explicit = (os.environ.get('GGEN_VOTE_IP_SALT') or '').strip()
+    if explicit:
+        return explicit
+    # Never tie vote identity to a rotating app secret — use a stable default.
+    return 'ggen-vote-ip-v1'
 
 
 def _bt_vote_voter_id():

@@ -443,13 +443,15 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .bt-root{min-height:120px}
 .bt-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-md);max-height:min(78vh,calc(100vh - 220px));position:relative;background:var(--bg-secondary)}
 #panel-banner_timeline .bt-table-wrap{max-height:none;overflow:visible;-webkit-overflow-scrolling:auto}
-#panel-banner_timeline .bt-table-wrap thead th{color:var(--text-secondary);cursor:default;top:0!important;text-transform:none;letter-spacing:0;font-size:14px;line-height:1.25;font-weight:700;-webkit-user-select:none;user-select:none;white-space:normal}
+#panel-banner_timeline .bt-table-wrap thead th{position:sticky;top:var(--list-thead-sticky-top);z-index:55;background:var(--bg-card);box-shadow:0 3px 4px -1px rgba(0,0,0,.45);background-clip:padding-box;color:var(--text-secondary);cursor:default;text-transform:none;letter-spacing:0;font-size:14px;line-height:1.25;font-weight:700;-webkit-user-select:none;user-select:none;white-space:normal}
 #panel-banner_timeline .bt-table-wrap thead th:hover{color:var(--text-secondary)!important}
 #panel-banner_timeline .bt-table-wrap table.data-table thead th:not(.sort-active){cursor:default}
 #panel-banner_timeline .bt-th-banner.bt-th-sortable{cursor:pointer;-webkit-user-select:none;user-select:none;text-decoration:none}
 #panel-banner_timeline .bt-th-banner.bt-th-sortable:hover{color:var(--accent-cyan)!important}
 #panel-banner_timeline .bt-sort-ind{font-size:11px;color:var(--accent-gold);margin-left:2px;font-weight:800}
-.bt-table thead .bt-th-combo{font-weight:700;padding:12px 8px;line-height:1.35;text-align:left;position:relative}
+.bt-table thead .bt-th-combo{font-weight:700;padding:12px 8px;line-height:1.35;text-align:left}
+#panel-banner_timeline .bt-table thead .bt-th-combo{position:sticky;top:var(--list-thead-sticky-top);z-index:56}
+#panel-banner_timeline .bt-table thead .bt-th-banner{position:sticky;top:var(--list-thead-sticky-top);z-index:56}
 .bt-th-combo-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
 .bt-th-combo-label{flex-shrink:0}
 .bt-th-combo-vote-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex:1;min-width:0;margin-left:auto}

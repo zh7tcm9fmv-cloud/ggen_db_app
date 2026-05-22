@@ -8,6 +8,9 @@
 | `GGEN_BANNER_VOTES_GITHUB_TOKEN` | PAT with **Contents: read and write** |
 | `GGEN_BANNER_VOTES_GITHUB_BRANCH` | `banner-votes-data` (not `main`) |
 | `GGEN_BANNER_VOTES_GITHUB_REPO` | `zh7tcm9fmv-cloud/ggen_db_app` (optional) |
+| `GGEN_VOTE_IP_SALT` | Fixed random string — **set once, never change** |
+
+Optional: `GGEN_BANNER_VOTES_PUSH_DEBOUNCE_SEC=45` (GitHub save delay after each vote; default 45s).
 
 **Source settings:** deploy branch = **`main` only** (so vote snapshots do not retrigger deploy loops).
 
@@ -38,9 +41,16 @@ If push is rejected: `git pull origin main --no-edit` then push again.
 
 ## Votes on deploy
 
-1. Users vote on the live container.
-2. You push code to `main` → Railway redeploys.
-3. Old container stops → **always** snapshots to branch `banner-votes-data` (SIGTERM bypasses push cooldown).
-4. New container **deep-merges** ballots from GitHub + bundled snapshot (never picks one file by global total — per-pool votes are preserved).
+1. Users vote on the live container (ballot keyed by hashed IP: `ip_…`).
+2. **~45s after a vote**, ballots auto-save to GitHub branch `banner-votes-data` (debounced).
+3. You push code to `main` → Railway redeploys.
+4. Old container SIGTERM → final snapshot to `banner-votes-data` (backup).
+5. New container deep-merges ballots from GitHub + bundled snapshot — your IP ballot should still be there.
 
-If totals drop after deploy, check Railway logs for `banner_pool_votes: GitHub snapshot on signal:15`. A missing line usually means the previous container never saved live votes.
+If you can vote again after deploy, check Railway logs for:
+- `banner_pool_votes: GitHub snapshot (debounced, …)` after voting
+- `GGEN_BANNER_VOTES_SYNC_MODE=off` (sync disabled)
+- missing `GGEN_BANNER_VOTES_GITHUB_TOKEN`
+- `GitHub fetch failed` (branch `banner-votes-data` missing or token scope wrong)
+
+**Do not** set `GGEN_BANNER_VOTES_SYNC_MODE=off` unless you accept vote resets on deploy.
