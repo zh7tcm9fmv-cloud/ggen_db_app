@@ -812,15 +812,43 @@ def entity_matches_source_category(acq_route, role_id, sf):
     return True
 
 
+BROWSE_FILTER_COMBINE_MODES = frozenset({'and', 'or', 'and_or'})
+
+
 def normalize_filter_combine_op(raw, default):
-    """browse filter combine mode: 'and' | 'or'. Invalid / missing uses default."""
+    """browse filter combine mode: 'and' | 'or' | 'and_or'. Invalid / missing uses default."""
     s = (raw or '').strip().lower()
-    if s == 'or':
-        return 'or'
-    if s == 'and':
-        return 'and'
+    if s in BROWSE_FILTER_COMBINE_MODES:
+        return s
     d = (default or 'and').strip().lower()
-    return d if d in ('and', 'or') else 'and'
+    return d if d in BROWSE_FILTER_COMBINE_MODES else 'and'
+
+
+def browse_combine_ordered_items(want):
+    if want is None:
+        return ()
+    if isinstance(want, str):
+        s = want.strip()
+        return (s,) if s else ()
+    if isinstance(want, (list, tuple)):
+        return tuple(want)
+    if isinstance(want, (frozenset, set)):
+        return tuple(sorted(str(x) for x in want if str(x).strip()))
+    return (want,)
+
+
+def apply_browse_combine_match(items, match_one, combine='and'):
+    """Multi-select combine: and = all · or = any · and_or = first required, any of rest."""
+    seq = browse_combine_ordered_items(items)
+    if not seq:
+        return True
+    if len(seq) == 1:
+        return match_one(seq[0])
+    if combine == 'or':
+        return any(match_one(x) for x in seq)
+    if combine == 'and_or':
+        return match_one(seq[0]) and any(match_one(x) for x in seq[1:])
+    return all(match_one(x) for x in seq)
 
 
 def browse_combo_from_character_args(args):
@@ -861,7 +889,7 @@ def parse_list_lineage_filter(val):
         return None
     if len(parts) == 1:
         return parts[0]
-    return frozenset(parts)
+    return tuple(parts)
 
 
 def parse_list_ability_filter(val):
@@ -1142,9 +1170,7 @@ def unit_matches_map_weapon_range_filter(uid, want_filter, combine='and'):
     have = collect_unit_map_weapon_range_types(uid)
     if not have:
         return False
-    if combine == 'or':
-        return any(x in have for x in want_filter)
-    return all(x in have for x in want_filter)
+    return apply_browse_combine_match(want_filter, lambda x: x in have, combine)
 
 
 def unit_weapon_range_non_map_filter_cache_fragment(expr, ssp_ex_only=False):
@@ -1667,9 +1693,7 @@ def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal
     got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, 'ssp_ex')
     if got is None:
         return False
-    if combine == 'or':
-        return any(got == int(x) for x in want_filter)
-    return all(got == int(x) for x in want_filter)
+    return apply_browse_combine_match(want_filter, lambda x: got == int(x), combine)
 
 
 def unit_matches_weapon_range_non_map_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map'):
@@ -1679,9 +1703,7 @@ def unit_matches_weapon_range_non_map_filter(uid, ld, lc, want_filter, stat_mode
     got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, ss)
     if got is None:
         return False
-    if combine == 'or':
-        return any(got == int(x) for x in want_filter)
-    return all(got == int(x) for x in want_filter)
+    return apply_browse_combine_match(want_filter, lambda x: got == int(x), combine)
 
 
 def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal'):
@@ -1706,12 +1728,7 @@ def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat
     if uid not in _memo:
         _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode)
     have = _memo[uid]
-    if combine == 'or':
-        return any(k in have for k in want_filter)
-    for k in want_filter:
-        if k not in have:
-            return False
-    return True
+    return apply_browse_combine_match(want_filter, lambda k: k in have, combine)
 
 
 def series_filter_cache_fragment(sid):
@@ -1738,16 +1755,16 @@ def _entity_matches_one_lineage(lin_map, eid, want_lid):
 
 
 def entity_matches_lineage(lin_map, eid, want_lid, combine='and'):
-    """combine 'and': every selected tag · 'or': any selected tag (multi-id only)."""
+    """combine 'and': every selected tag · 'or': any · 'and_or': first tag AND any of rest."""
     if want_lid is None:
         return True
-    if isinstance(want_lid, (frozenset, set, list, tuple)):
-        if not want_lid:
-            return True
-        if combine == 'or':
-            return any(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
-        return all(_entity_matches_one_lineage(lin_map, eid, w) for w in want_lid)
-    return _entity_matches_one_lineage(lin_map, eid, want_lid)
+    if isinstance(want_lid, str):
+        return _entity_matches_one_lineage(lin_map, eid, want_lid)
+    return apply_browse_combine_match(
+        want_lid,
+        lambda w: _entity_matches_one_lineage(lin_map, eid, w),
+        combine,
+    )
 
 
 def entity_matches_series(ser_set_id, want_series_id, lc, combine='or'):
@@ -1763,6 +1780,15 @@ def entity_matches_series(ser_set_id, want_series_id, lc, combine='or'):
         if not want_ids:
             return True
         entity_ids = {normalize_id(s.get('id', '')) for s in resolved if s.get('id')}
+        if combine == 'and_or':
+            ordered = browse_combine_ordered_items(want_series_id)
+            norms = [normalize_id(w) for w in ordered if str(w).strip()]
+            norms = [n for n in norms if n and n not in ('', '0')]
+            if not norms:
+                return True
+            if norms[0] not in entity_ids:
+                return False
+            return any(n in entity_ids for n in norms[1:])
         if combine == 'and':
             return want_ids.issubset(entity_ids)
         return not entity_ids.isdisjoint(want_ids)
@@ -1864,19 +1890,15 @@ def supporter_leader_tag_ids(sid, ld, lang_code):
 
 
 def supporter_matches_lineage_filter(sid, want_lid, ld, lang_code, combine='and'):
-    """combine 'and' / 'or' for multi-tag selection (leader skill tag resolution)."""
+    """combine 'and' / 'or' / 'and_or' for multi-tag selection (leader skill tag resolution)."""
     if want_lid is None:
         return True
-    if isinstance(want_lid, (frozenset, set, list, tuple)):
-        if not want_lid:
-            return True
-        wants = want_lid
-    else:
-        wants = (want_lid,)
     tag_ids = supporter_leader_tag_ids(sid, ld, lang_code)
-    if combine == 'or':
-        return any(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
-    return all(_tag_id_list_matches_lineage_want(tag_ids, w) for w in wants)
+    return apply_browse_combine_match(
+        want_lid,
+        lambda w: _tag_id_list_matches_lineage_want(tag_ids, w),
+        combine,
+    )
 
 
 def trait_condition_item_field_vectors(item):
@@ -2420,9 +2442,7 @@ def unit_matches_mechanism_filter(info, want_filter, uid=None, combine='and'):
     if not want_filter:
         return True
     have = collect_unit_mechanism_mids(info, uid)
-    if combine == 'or':
-        return not have.isdisjoint(want_filter)
-    return want_filter.issubset(have)
+    return apply_browse_combine_match(want_filter, lambda k: k in have, combine)
 
 
 def _is_conditional_stat_text(t):
@@ -10745,6 +10765,10 @@ def entity_matches_char_skills(cid, want_lid, top_combine='and'):
             return True
         if top_combine == 'or':
             return any(entity_matches_char_skills(cid, w, 'and') for w in want_lid)
+        if top_combine == 'and_or':
+            return entity_matches_char_skills(cid, want_lid[0], 'and') and any(
+                entity_matches_char_skills(cid, w, 'and') for w in want_lid[1:]
+            )
         return all(entity_matches_char_skills(cid, w, 'and') for w in want_lid)
     return _char_has_skill_id(cid, want_lid)
 
@@ -10785,6 +10809,10 @@ def entity_matches_char_abilities(cid, want_lid, top_combine='and'):
             return True
         if top_combine == 'or':
             return any(entity_matches_char_abilities(cid, w, 'and') for w in want_lid)
+        if top_combine == 'and_or':
+            return entity_matches_char_abilities(cid, want_lid[0], 'and') and any(
+                entity_matches_char_abilities(cid, w, 'and') for w in want_lid[1:]
+            )
         return all(entity_matches_char_abilities(cid, w, 'and') for w in want_lid)
     return _char_has_ability_id(cid, want_lid)
 
@@ -10818,6 +10846,10 @@ def entity_matches_unit_abilities_filter(uid, want_lid, top_combine='and'):
             return True
         if top_combine == 'or':
             return any(entity_matches_unit_abilities_filter(uid, w, 'and') for w in want_lid)
+        if top_combine == 'and_or':
+            return entity_matches_unit_abilities_filter(uid, want_lid[0], 'and') and any(
+                entity_matches_unit_abilities_filter(uid, w, 'and') for w in want_lid[1:]
+            )
         return all(entity_matches_unit_abilities_filter(uid, w, 'and') for w in want_lid)
     return _unit_has_ability_id(uid, want_lid)
 
@@ -11139,9 +11171,7 @@ def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal', comb
             return got >= req
         return got == req
 
-    if combine == 'or':
-        return any(_item_ok(item) for item in want_filter)
-    return all(_item_ok(item) for item in want_filter)
+    return apply_browse_combine_match(want_filter, _item_ok, combine)
 
 
 def unit_passes_browse_pool_filters(
