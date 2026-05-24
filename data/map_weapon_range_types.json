@@ -1,0 +1,13 @@
+{
+  "_comment": "MapWeaponRangeTypeIndex on m_weapon.json (MapWeaponRangeType enum)",
+  "field": "MapWeaponRangeTypeIndex",
+  "values": [
+    {"index": 0, "name": "None", "originalName": "MapWeaponRangeType_None"},
+    {"index": 1, "name": "AroundMyself", "originalName": "MapWeaponRangeType_AroundMyself"},
+    {"index": 2, "name": "ImpactRange", "originalName": "MapWeaponRangeType_ImpactRange"},
+    {"index": 3, "name": "SpecifyDirection", "originalName": "MapWeaponRangeType_SpecifyDirection"},
+    {"index": 4, "name": "MovingAttack", "originalName": "MapWeaponRangeType_MovingAttack"},
+    {"index": 5, "name": "WholeMap", "originalName": "MapWeaponRangeType_WholeMap"},
+    {"index": 6, "name": "FixedPosition", "originalName": "MapWeaponRangeType_FixedPosition"}
+  ]
+}
