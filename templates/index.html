@@ -483,7 +483,6 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .nav-tabs-shell--hidden-notice .nav-tabs-edge-chevron{color:var(--accent-cyan);opacity:1}
 }
 .bt-vote-mode-anchor .ui-notice-flare{top:-7px;right:-7px}
-.bt-vote-mobile-bar{display:none}
 .bt-vote-submit-wrap{position:absolute;right:10px;bottom:10px;z-index:3}
 .bt-vote-submit{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:148px;min-height:52px;padding:10px 26px 12px;border:none;border-radius:0;background:transparent;cursor:pointer;transition:filter .2s ease}
 .bt-vote-submit-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;display:block}
@@ -608,12 +607,9 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(110px,min(151px,29vw),163px)!important;max-width:min(163px,50vw)!important;min-height:110px!important}
 @media (max-width:640px){ #panel-banner_timeline table.data-table.bt-table{min-width:520px}}
 @media (max-width:768px){
-#panel-banner_timeline .bt-vote-mobile-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:0 0 12px;padding:10px 12px;border:1px solid rgba(100,170,255,.35);border-radius:var(--radius-md);background:rgba(12,20,36,.92);position:sticky;top:8px;z-index:45;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-#panel-banner_timeline .bt-vote-mobile-bar-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-#panel-banner_timeline .bt-vote-mobile-bar-k{font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase}
-#panel-banner_timeline .bt-vote-mobile-bar .bt-vote-mode-caption{margin:0;max-width:none;text-align:left;font-size:11px;line-height:1.35}
-#panel-banner_timeline .bt-vote-mobile-bar .bt-vote-mode-btn{flex-shrink:0;width:44px;height:44px;min-width:44px;min-height:44px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-#panel-banner_timeline .bt-th-combo-vote-tools{display:none!important}
+#panel-banner_timeline .bt-th-combo-vote-tools{gap:6px}
+#panel-banner_timeline .bt-th-combo .bt-vote-mode-caption{font-size:10px;line-height:1.3;max-width:min(180px,42vw);text-align:right}
+#panel-banner_timeline .bt-th-combo .bt-vote-mode-btn{width:44px;height:44px;min-width:44px;min-height:44px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 #panel-banner_timeline .bt-table-wrap{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;max-width:100%}
 #panel-banner_timeline .bt-table-wrap thead th,#panel-banner_timeline .bt-table thead .bt-th-combo,#panel-banner_timeline .bt-table thead .bt-th-banner{position:static;top:auto;z-index:auto;box-shadow:none;-webkit-backface-visibility:visible;backface-visibility:visible}
 #panel-banner_timeline .bt-feat-stack-cell{overflow:visible}
