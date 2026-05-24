@@ -1817,11 +1817,9 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .unit-debuff-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
 #unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
-#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(280px,92vw);max-width:min(320px,92vw);padding:0}
-.map-wrt-filter-list{display:flex;flex-direction:column;width:100%}
-.map-wrt-filter-row{width:100%;border:none;background:transparent;font:inherit;text-align:left;cursor:pointer;box-sizing:border-box}
-.map-wrt-filter-row.is-active{color:var(--accent-cyan);font-weight:700;background:rgba(0,212,255,.08)}
-.map-wrt-filter-lbl{flex:1;min-width:0}
+.map-wrt-filter-wrap .map-wrt-filter-panel.filter-dropdown-panel{padding:4px 0}
+.map-wrt-filter-row span{font-size:13px;font-weight:600;color:var(--text-primary)}
+.map-wrt-filter-row:has(input:checked) span{color:var(--accent-cyan)}
 .weapon-range-non-map-panel{min-width:min(96vw,420px)!important}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
@@ -1972,7 +1970,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel),
   .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel),
   .list-toolbar-left--browse>.source-filter-wrap:has(.filter-dropdown-panel),
-  .list-toolbar-left--browse>.debuff-filter-wrap:has(.filter-dropdown-panel),
+  .list-toolbar-left--browse>.map-wrt-filter-wrap:has(.filter-dropdown-panel),
   #panel-supporters .list-toolbar>.list-toolbar-left>.rarity-filter-wrap:has(.filter-dropdown-panel){
     width:max-content;
     max-width:100%;
@@ -2076,6 +2074,8 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .list-toolbar #rankUnitWeaponDebuffFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #unitWeaponRangeNonMapFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #rankUnitWeaponRangeNonMapFilterPanel .filter-panel-clear-wrap,
+  .list-toolbar #unitMapWeaponRangeFilterPanel .filter-panel-clear-wrap,
+  .list-toolbar #rankUnitMapWeaponRangeFilterPanel .filter-panel-clear-wrap,
   .list-toolbar #rankUnitMechanismFilterPanel .filter-panel-clear-wrap{
     flex-shrink:0;
     align-self:stretch;
