@@ -891,6 +891,15 @@
     "TargetRewardSetId": 0
   },
   {
+    "Id": 126054001,
+    "CampaignEffectTypeIndex": 2,
+    "Value": 150,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 0
+  },
+  {
     "Id": 425105001,
     "CampaignEffectTypeIndex": 5,
     "Value": 1,

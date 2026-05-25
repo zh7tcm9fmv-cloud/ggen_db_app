@@ -1086,6 +1086,12 @@
     "TargetId2": 0
   },
   {
+    "Id": 28002605400403,
+    "TransitionTypeIndex": 19,
+    "TargetId1": 2605400403,
+    "TargetId2": 0
+  },
+  {
     "Id": 29000000000001,
     "TransitionTypeIndex": 20,
     "TargetId1": 0,
@@ -1137,6 +1143,12 @@
     "Id": 32000000200005,
     "TransitionTypeIndex": 23,
     "TargetId1": 200005,
+    "TargetId2": 0
+  },
+  {
+    "Id": 32000000200006,
+    "TransitionTypeIndex": 23,
+    "TargetId1": 200006,
     "TargetId2": 0
   },
   {

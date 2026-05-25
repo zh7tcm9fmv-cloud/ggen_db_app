@@ -18000,19 +18000,19 @@
     "SortOrder": 0
   },
   {
-    "Id": 210001100202000004,
+    "Id": 210001100202000005,
     "MapStageId": 210001100202000000,
-    "MapStageConditionTypeIndex": 2,
-    "MapStageConditionGroupId": 1,
-    "IngameEventConditionTypeIndex": 2,
-    "IngameEventConditionParameterTypeAIndex": 0,
-    "ParameterValueA": "",
-    "IngameEventConditionParameterTypeBIndex": 6,
-    "ParameterValueB": "death",
+    "MapStageConditionTypeIndex": 1,
+    "MapStageConditionGroupId": 0,
+    "IngameEventConditionTypeIndex": 1,
+    "IngameEventConditionParameterTypeAIndex": 5,
+    "ParameterValueA": "3",
+    "IngameEventConditionParameterTypeBIndex": 0,
+    "ParameterValueB": "",
     "IngameEventConditionParameterTypeCIndex": 0,
     "ParameterValueC": "",
     "TargetValue": 0,
-    "ShortConditionSentenceLanguageId": 131000000000000104,
+    "ShortConditionSentenceLanguageId": 131000000000000103,
     "SortOrder": 0
   },
   {

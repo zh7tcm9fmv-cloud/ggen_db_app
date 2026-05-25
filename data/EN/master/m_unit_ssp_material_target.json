@@ -1,8 +1,8 @@
 [
   {
-    "Id": 200000000003,
-    "UnitBodyTypeIndex": 1,
-    "RoleTypeIndex": 4,
-    "BromideResourceId": 0
+    "ItemId": 200000000003,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 4,
+    "TargetId": 0
   }
 ]

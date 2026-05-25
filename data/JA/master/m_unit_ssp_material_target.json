@@ -1,8 +1,8 @@
 [
-  [
-    200000000003,
-    1,
-    4,
-    0
-  ]
+  {
+    "ItemId": 200000000003,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 4,
+    "TargetId": 0
+  }
 ]
