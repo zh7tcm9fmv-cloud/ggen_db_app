@@ -10139,6 +10139,16 @@ def _game_news_item_ts(item):
     return max(released, updated)
 
 
+def _game_news_content_fp(items):
+    """Stable id+timestamp fingerprint — detects new posts and edits below the feed max ts."""
+    parts = sorted(
+        f"{it.get('information_id')}:{_game_news_item_ts(it)}"
+        for it in items
+        if it.get('information_id') is not None
+    )
+    return '|'.join(parts)
+
+
 def _fetch_game_news_items(lang_code):
     lang_type = _game_news_lang_type(lang_code)
     web_base = GAME_NEWS_JP_WEB if lang_type == 1 else GAME_NEWS_GL_WEB
@@ -10152,14 +10162,14 @@ def _fetch_game_news_items(lang_code):
     return items, bool(data.get('has_more'))
 
 
-def _game_news_status_payload(lang_code, last_seen_at=0):
+def _game_news_status_payload(lang_code, last_seen_at=0, last_seen_fp=''):
     lc = validate_lang_code(lang_code)
     display = 'JP' if lc == 'JA' else lc
     cache_key = display
     now = time.time()
     cached = _game_news_status_cache.get(cache_key)
     if cached and cached[0] > now:
-        items, has_more, latest_at, fingerprint = cached[1]
+        items, has_more, latest_at, fingerprint, content_fp = cached[1]
     else:
         items, has_more = _fetch_game_news_items(lc)
         latest_at = max((_game_news_item_ts(it) for it in items), default=0)
@@ -10168,23 +10178,27 @@ def _game_news_status_payload(lang_code, last_seen_at=0):
             for it in items
             if it.get('information_id') is not None
         )
+        content_fp = _game_news_content_fp(items)
         _game_news_status_cache[cache_key] = (
             now + _GAME_NEWS_STATUS_CACHE_TTL,
-            (items, has_more, latest_at, fingerprint),
+            (items, has_more, latest_at, fingerprint, content_fp),
         )
     try:
         seen_at = max(0, int(last_seen_at or 0))
     except (TypeError, ValueError):
         seen_at = 0
+    seen_fp = (last_seen_fp or '').strip()
     new_count = sum(1 for it in items if _game_news_item_ts(it) > seen_at)
+    has_new = new_count > 0 or (bool(content_fp) and content_fp != seen_fp)
     return {
         'lang': display,
         'latest_at': latest_at,
         'fingerprint': fingerprint,
+        'content_fp': content_fp,
         'item_count': len(items),
         'has_more': has_more,
         'new_count': new_count,
-        'has_new': new_count > 0,
+        'has_new': has_new,
     }
 
 
@@ -10193,8 +10207,9 @@ def api_game_news_status():
     """Unread Game News indicator — mirrors official NEW badges (released/updated timestamps)."""
     lc = request.args.get('lang', DEFAULT_LANG)
     last_seen = request.args.get('last_seen_at', '0')
+    last_seen_fp = request.args.get('last_seen_fp', '')
     try:
-        payload = _game_news_status_payload(lc, last_seen)
+        payload = _game_news_status_payload(lc, last_seen, last_seen_fp)
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, OSError) as exc:
         return jsonify({'error': 'fetch_failed', 'detail': str(exc)}), 502
     except Exception as exc:
