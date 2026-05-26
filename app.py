@@ -301,7 +301,7 @@ UI_LABELS = {
         'restriction_recover_hp': 'Recovers {}% HP when used.',
         'restriction_recover_en': 'Recovers {}% EN when used.',
         'restriction_recover_mp': 'Recovers {} MP when used.',
-        'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Sortie Group {}',
+        'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Squad {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
         'restriction_applies_characters': 'Applies to Characters',
         'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Ground', 'terrain_amphibious': 'Amphibious', 'terrain_unknown': 'Unknown',
@@ -316,7 +316,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時恢復{}%HP。',
         'restriction_recover_en': '使用時恢復{}%EN。',
         'restriction_recover_mp': '使用時恢復{}MP。',
-        'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出擊群組 {}',
+        'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
         'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
@@ -331,7 +331,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時、HPを{}%回復する。',
         'restriction_recover_en': '使用時、ENを{}%回復する。',
         'restriction_recover_mp': '使用時、{}MP回復する。',
-        'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '出撃グループ {}',
+        'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
         'restriction_applies_characters': 'キャラクターに適用',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '不明',
@@ -4176,7 +4176,7 @@ def create_stage_map(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('Id') or item.get('id'))
         if sid == '0': continue
-        lookup[sid] = {'group1_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')), 'group2_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')), 'recommended_cp': safe_int(item.get('RecommendedCombatPower'), 0), 'terrain_type_index': normalize_id(item.get('StageTerrainTypeIndex') or item.get('stageTerrainTypeIndex')), 'battle_condition_set_id': normalize_id(item.get('StageBattleConditionSetId') or item.get('stageBattleConditionSetId')), 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+        lookup[sid] = {'group1_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')), 'group2_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')), 'group1_sortie_count': safe_int(item.get('Group1SortieCount') or item.get('group1SortieCount'), 0), 'group2_sortie_count': safe_int(item.get('Group2SortieCount') or item.get('group2SortieCount'), 0), 'recommended_cp': safe_int(item.get('RecommendedCombatPower'), 0), 'terrain_type_index': normalize_id(item.get('StageTerrainTypeIndex') or item.get('stageTerrainTypeIndex')), 'battle_condition_set_id': normalize_id(item.get('StageBattleConditionSetId') or item.get('stageBattleConditionSetId')), 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
     return lookup
 
 def create_eternal_stage_map(d):
@@ -15063,7 +15063,9 @@ def get_stage(stage_id):
         if is_special_event_stage:
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         sg = []
-        for gn, gk in [(1, 'group1_set_id'), (2, 'group2_set_id')]:
+        for gn, gk, ck in [(1, 'group1_set_id', 'group1_sortie_count'), (2, 'group2_set_id', 'group2_sortie_count')]:
+            if safe_int(sm.get(ck), 0) <= 0:
+                continue
             gid = sm.get(gk, '0')
             if gid != '0': sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
