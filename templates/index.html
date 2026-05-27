@@ -530,17 +530,17 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .bt-vote-result-row--winner .bt-vote-result-bar>i{background:linear-gradient(90deg,#4338ca 0%,#6366f1 16%,#9333ea 34%,#e879f9 50%,#22d3ee 66%,#818cf8 82%,#4338ca 100%);background-size:200% 100%;filter:saturate(1.18);animation:btVoteWinnerBarGlow 4s ease-in-out infinite}
 @keyframes btVoteWinnerBarGlow{0%,100%{background-position:0% 50%;filter:saturate(1.18) brightness(1.04);box-shadow:none}50%{background-position:100% 50%;filter:saturate(1.28) brightness(1.12);box-shadow:0 0 10px rgba(168,85,247,.38),0 0 4px rgba(34,211,238,.22)}}
 @media (prefers-reduced-motion:reduce){.bt-vote-result-row--winner .bt-vote-result-bar>i{animation:none;filter:saturate(1.22) brightness(1.08);box-shadow:0 0 6px rgba(168,85,247,.28)}.bt-vote-result-row--winner .bt-vote-result-bar{border-color:rgba(168,85,247,.48)}.bt-vote-result-row--winner .bt-vote-result-bar>i{background-position:50% 50%}}
-.bt-mobile-vote-bar{display:none}
+.bt-mobile-vote-bar{display:none!important}
 .bt-table:not(.bt-vote-mode-on) .bt-feat-block--vote-extras{display:none!important}
 .bt-table:not(.bt-vote-mode-on) .bt-vote-select{display:none!important}
 .bt-table:not(.bt-vote-mode-on) .bt-vote-tile.is-vote-selected{outline:none!important}
-#panel-banner_timeline,#panel-banner_timeline .bt-wrap,#panel-banner_timeline .bt-root,#panel-banner_timeline .bt-table-wrap{max-width:100%;min-width:0;box-sizing:border-box}
 #panel-banner_timeline table.data-table.bt-table{table-layout:fixed;width:100%;min-width:0}
-@media (min-width:993px){
+@media (min-width:769px){
 #panel-banner_timeline table.data-table.bt-table{min-width:520px}
-#panel-banner_timeline .bt-table .bt-th-banner{width:32%;min-width:180px}
-#panel-banner_timeline .bt-table .bt-th-combo{width:68%}
+#panel-banner_timeline .bt-table .bt-th-banner{min-width:180px}
 }
+#panel-banner_timeline .bt-table .bt-th-banner{width:32%;min-width:0}
+#panel-banner_timeline .bt-table .bt-th-combo{width:68%}
 .bt-feat-stack-cell{vertical-align:top;position:relative}
 #panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell{padding-bottom:10px}
 #panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell.bt-vote-row--disabled{padding-bottom:0!important}
@@ -622,26 +622,13 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .bt-vtl-strip-wrap{min-width:0}
 #panel-banner_timeline .bt-vtl-flow .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;margin:0;max-width:100%!important;width:100%!important}
 #panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(110px,min(151px,29vw),163px)!important;max-width:min(163px,50vw)!important;min-height:110px!important}
-@media (max-width:992px){
-#panel-banner_timeline,#panel-banner_timeline .bt-wrap,#panel-banner_timeline .bt-root{overflow-x:visible;overflow-y:visible}
-.bt-mobile-vote-bar{display:block;width:100%;box-sizing:border-box;margin:0 0 10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);position:sticky;top:calc(var(--list-thead-sticky-top) - 4px);z-index:57}
-.bt-mobile-vote-bar[hidden]{display:none!important}
-.bt-mobile-vote-bar-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-width:0}
-.bt-mobile-vote-bar-label{flex:0 1 auto;font-size:13px;font-weight:800;color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;min-width:0}
-.bt-mobile-vote-bar .bt-th-combo-vote-tools{flex:1 1 auto;justify-content:flex-end;min-width:0}
-.bt-mobile-vote-bar .bt-vote-mode-caption{flex:1;min-width:0;max-width:none;text-align:left;font-size:11px;line-height:1.35}
-.bt-mobile-vote-bar .bt-vote-mode-btn{width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0}
-.bt-th-combo-vote-tools--in-header{display:none!important}
-#panel-banner_timeline table.data-table.bt-table{min-width:0!important;display:block}
-#panel-banner_timeline .bt-table thead{display:none}
-#panel-banner_timeline .bt-table tbody,#panel-banner_timeline .bt-table tr,#panel-banner_timeline .bt-table td{display:block;width:100%!important;box-sizing:border-box}
-#panel-banner_timeline .bt-table tr{margin-bottom:14px;border:1px solid var(--border-color);border-radius:var(--radius-md);overflow:hidden;background:rgba(26,34,54,.35)}
-#panel-banner_timeline .bt-table td{border-bottom:none;padding:12px}
-#panel-banner_timeline .bt-table .bt-banner-cell{border-bottom:1px solid var(--border-color)}
-#panel-banner_timeline .bt-table-wrap{overflow:visible;max-width:100%;padding-right:0}
-#panel-banner_timeline .bt-feat-stack-cell{overflow:visible}
+@media (max-width:768px){
+#panel-banner_timeline .bt-th-combo-inner{flex-wrap:wrap;align-items:flex-start;row-gap:8px}
+#panel-banner_timeline .bt-th-combo-vote-tools{flex:1 1 100%;justify-content:flex-end;margin-left:0;min-width:0}
+#panel-banner_timeline .bt-vote-mode-caption{max-width:none;flex:1;text-align:left;font-size:11px}
+#panel-banner_timeline .bt-table thead .bt-th-combo{padding-right:12px}
+#panel-banner_timeline .bt-vote-mode-btn{width:44px;height:44px;min-width:44px;min-height:44px}
 #panel-banner_timeline .bt-vote-submit-wrap{position:static;display:flex;justify-content:center;width:100%;margin-top:10px;padding:0 6px 6px;box-sizing:border-box}
-#panel-banner_timeline .bt-table.bt-vote-mode-on .bt-feat-stack-cell{padding-bottom:10px}
 #panel-banner_timeline .bt-vote-submit{width:100%;max-width:220px;min-width:0;min-height:48px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 }
 @media (prefers-reduced-motion:reduce){.bt-vtl-card .bt-vtl-body{opacity:1;transform:none;transition:none}}
@@ -2918,7 +2905,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
-<div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div id="btMobileVoteBar" class="bt-mobile-vote-bar" hidden aria-label="Vote controls"></div><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
+<div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
 <nav aria-label="Site information">
