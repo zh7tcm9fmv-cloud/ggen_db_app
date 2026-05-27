@@ -15063,11 +15063,14 @@ def get_stage(stage_id):
         if is_special_event_stage:
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         sg = []
+        allow_empty_sortie_set = is_score_attack or is_tower_event_stage
         for gn, gk, ck in [(1, 'group1_set_id', 'group1_sortie_count'), (2, 'group2_set_id', 'group2_sortie_count')]:
             if safe_int(sm.get(ck), 0) <= 0:
                 continue
             gid = sm.get(gk, '0')
-            if gid != '0': sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
+            if gid == '0' and not allow_empty_sortie_set:
+                continue
+            sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
         md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
         # NPC dossier/unit % merge: single code path for every stage category below — no stage-id branches here.
