@@ -623,11 +623,20 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-vtl-flow .bt-strip{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:flex-start!important;justify-content:flex-start!important;margin:0;max-width:100%!important;width:100%!important}
 #panel-banner_timeline .bt-vtl-flow .bt-strip .lr-card{width:clamp(110px,min(151px,29vw),163px)!important;max-width:min(163px,50vw)!important;min-height:110px!important}
 @media (max-width:768px){
-#panel-banner_timeline .bt-th-combo-inner{flex-wrap:wrap;align-items:flex-start;row-gap:8px}
-#panel-banner_timeline .bt-th-combo-vote-tools{flex:1 1 100%;justify-content:flex-end;margin-left:0;min-width:0}
-#panel-banner_timeline .bt-vote-mode-caption{max-width:none;flex:1;text-align:left;font-size:11px}
-#panel-banner_timeline .bt-table thead .bt-th-combo{padding-right:12px}
-#panel-banner_timeline .bt-vote-mode-btn{width:44px;height:44px;min-width:44px;min-height:44px}
+#panel-banner_timeline .bt-th-combo-inner{flex-wrap:nowrap;align-items:center;gap:8px}
+#panel-banner_timeline .bt-th-combo-label{flex:0 1 auto;min-width:0}
+#panel-banner_timeline .bt-th-combo-vote-tools{flex:0 0 auto;justify-content:flex-end;margin-left:auto;min-width:0;gap:6px}
+#panel-banner_timeline .bt-table thead .bt-th-combo .bt-vote-mode-caption{display:none!important}
+#panel-banner_timeline .bt-table thead .bt-th-combo{padding:10px 8px}
+#panel-banner_timeline .bt-vote-mode-btn{width:40px;height:40px;min-width:40px;min-height:40px}
+#panel-banner_timeline .bt-table .bt-strip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;width:100%!important;max-width:100%!important}
+#panel-banner_timeline .bt-table .bt-strip .lr-card,#panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-thumb{width:100%!important;max-width:100%!important;min-width:0!important;min-height:104px!important;padding:6px 4px!important;box-sizing:border-box!important}
+#panel-banner_timeline .bt-table .bt-strip .lr-card .lr-card-name,#panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-thumb .lr-card-name{font-size:11px!important;line-height:1.15!important}
+#panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-ic{width:50px;height:50px}
+#panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-ic-wrap{min-height:50px;margin-top:2px}
+#panel-banner_timeline .bt-table .bt-strip .list-thumb-composite{width:58px!important;height:58px!important}
+#panel-banner_timeline .bt-table .bt-strip .bt-vote-select{width:28px;height:28px;max-width:28px;max-height:28px}
+#panel-banner_timeline .bt-table .bt-strip .bt-vote-thumb-target .bt-vote-select{width:28px;height:28px;max-width:28px;max-height:28px}
 #panel-banner_timeline .bt-vote-submit-wrap{position:static;display:flex;justify-content:center;width:100%;margin-top:10px;padding:0 6px 6px;box-sizing:border-box}
 #panel-banner_timeline .bt-vote-submit{width:100%;max-width:220px;min-width:0;min-height:48px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 }
