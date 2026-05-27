@@ -15740,6 +15740,12 @@ if __name__ == '__main__':
         os.makedirs(d, exist_ok=True)
     # Use another port when :5000 is already serving a different app/database preview.
     # PowerShell: $env:FLASK_PORT=5001; python app.py
+    # Auto-reload is off by default locally: debug reloader loads the full DB twice (~40s) on every save.
+    # PowerShell: $env:FLASK_USE_RELOADER=1; python app.py
     _run_port = int(os.environ.get('FLASK_PORT', os.environ.get('PORT', '5000')))
+    _flask_debug = os.environ.get('FLASK_DEBUG', '1') != '0'
+    _flask_reloader = os.environ.get('FLASK_USE_RELOADER', '0') == '1'
     print(f'Open in browser: http://127.0.0.1:{_run_port}')
-    app.run(debug=True, port=_run_port)
+    if _flask_debug and not _flask_reloader:
+        print('Local dev: auto-reload disabled (set FLASK_USE_RELOADER=1 to re-enable).')
+    app.run(debug=_flask_debug, use_reloader=_flask_reloader, port=_run_port)
