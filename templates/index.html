@@ -199,14 +199,15 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-ranking .ranking-head-view-wrap .ranking-dir-btn:hover{background:rgba(0,212,255,.06);border-left-color:rgba(0,212,255,.35)}
 .ranking-sort-row{display:flex;flex-wrap:wrap;flex:1 1 auto;align-items:flex-start;column-gap:8px;row-gap:6px;min-width:0;width:auto}
 .ranking-stat-pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center;position:relative;overflow:visible}
-#rankingStatPills.ranking-stat-pills{align-items:flex-end;padding:2px 2px 6px;gap:4px;--rank-dock-t:0.24s;--rank-dock-ease:cubic-bezier(0.22,1,0.36,1)}
-#rankingStatPills.ranking-stat-pills .ranking-stat-pill{transform-origin:bottom center}
+#rankingStatPills.ranking-stat-pills{align-items:flex-end;padding:2px 2px 6px;gap:4px;--rank-dock-t:0.24s;--rank-dock-ease:cubic-bezier(0.22,1,0.36,1);--rank-prox-min-scale:0.88;--rank-prox-max-scale:1.14;--rank-prox-min-y:1px;--rank-prox-max-y:-4px}
+#rankingStatPills.ranking-stat-pills .ranking-stat-pill{transform-origin:bottom center;transform:scale(var(--rank-prox-scale,1)) translateY(var(--rank-prox-y,0));filter:brightness(var(--rank-prox-bright,1))}
+#rankingStatPills.ranking-stat-pills.is-prox-active .ranking-stat-pill{transition:transform .12s linear,filter .15s ease,box-shadow .15s ease,color .15s ease,border-color .15s ease}
 @media(hover:hover) and (pointer:fine){
-#rankingStatPills.ranking-stat-pills .ranking-stat-pill{transition:transform var(--rank-dock-t) var(--rank-dock-ease),color var(--rank-dock-t) ease,border-color var(--rank-dock-t) ease,box-shadow var(--rank-dock-t) ease}
-#rankingStatPills.ranking-stat-pills:has(.ranking-stat-pill:hover) .ranking-stat-pill:not(:hover){transform:scale(0.88) translateY(1px)}
-#rankingStatPills.ranking-stat-pills .ranking-stat-pill:hover{transform:scale(1.14) translateY(-4px);z-index:3;box-shadow:0 8px 20px rgba(0,0,0,.35)}
-#rankingStatPills.ranking-stat-pills:has(.ranking-stat-pill:hover) .ranking-stat-pill:hover + .ranking-stat-pill,
-#rankingStatPills.ranking-stat-pills:has(.ranking-stat-pill:hover) .ranking-stat-pill:has(+ .ranking-stat-pill:hover){transform:scale(1.05) translateY(-2px);z-index:2}
+#rankingStatPills.ranking-stat-pills:not(.is-prox-active) .ranking-stat-pill{transition:transform var(--rank-dock-t) var(--rank-dock-ease),color var(--rank-dock-t) ease,border-color var(--rank-dock-t) ease,box-shadow var(--rank-dock-t) ease}
+#rankingStatPills.ranking-stat-pills:not(.is-prox-active):has(.ranking-stat-pill:hover) .ranking-stat-pill:not(:hover){transform:scale(0.88) translateY(1px)}
+#rankingStatPills.ranking-stat-pills:not(.is-prox-active) .ranking-stat-pill:hover{transform:scale(1.14) translateY(-4px);z-index:3;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+#rankingStatPills.ranking-stat-pills:not(.is-prox-active):has(.ranking-stat-pill:hover) .ranking-stat-pill:hover + .ranking-stat-pill,
+#rankingStatPills.ranking-stat-pills:not(.is-prox-active):has(.ranking-stat-pill:hover) .ranking-stat-pill:has(+ .ranking-stat-pill:hover){transform:scale(1.05) translateY(-2px);z-index:2}
 }
 .ranking-tail-controls{display:inline-flex;align-items:flex-start;gap:10px;margin-left:0}
 .ranking-view-toggle{display:inline-flex;align-items:center;gap:4px;padding:0;border-radius:var(--radius-sm);border:none;background:transparent}
