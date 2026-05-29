@@ -307,6 +307,8 @@ UI_LABELS = {
         'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Ground', 'terrain_amphibious': 'Amphibious', 'terrain_unknown': 'Unknown',
         'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions', 'none': 'None',
         'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
+        'difficulty_none': 'None', 'difficulty_hell': 'Hell', 'difficulty_inferno': 'Inferno',
+        'difficulty_challenge': 'Challenge', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -322,6 +324,8 @@ UI_LABELS = {
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
+        'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
+        'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
     },
     'JA': {
         'restriction_before_moving': '移動前のみ使用可能。',
@@ -337,6 +341,8 @@ UI_LABELS = {
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '不明',
         'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件', 'none': 'なし',
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
+        'difficulty_none': 'なし', 'difficulty_hell': 'ヘル', 'difficulty_inferno': 'インフェルノ',
+        'difficulty_challenge': 'チャレンジ', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
     }
 }
 UI_LABELS['HK'] = dict(UI_LABELS['TW'])
@@ -8079,8 +8085,54 @@ def resolve_stage_terrain_name(ti, lc='EN'):
     data = STAGE_TERRAIN_MAP.get(str(ti or '0'))
     return data.get(lc, data.get('EN', 'Unknown')) if data else get_ui_label(lc, 'terrain_unknown')
 
+# Eternal.Domain.Enums.StageDifficultyType — StageDifficultyTypeIndex in master JSON.
+STAGE_DIFFICULTY_TYPE = {
+    0: {'enum': 'None', 'code': 'none', 'label_key': 'difficulty_none'},
+    1: {'enum': 'Normal', 'code': 'normal', 'label_key': 'difficulty_normal'},
+    2: {'enum': 'Hard', 'code': 'hard', 'label_key': 'difficulty_hard'},
+    3: {'enum': 'Expert', 'code': 'expert', 'label_key': 'difficulty_expert'},
+    4: {'enum': 'Hell', 'code': 'hell', 'label_key': 'difficulty_hell'},
+    5: {'enum': 'Inferno', 'code': 'inferno', 'label_key': 'difficulty_inferno'},
+    6: {'enum': 'Challenge', 'code': 'challenge', 'label_key': 'difficulty_challenge'},
+    7: {'enum': 'Another', 'code': 'another', 'label_key': 'difficulty_another'},
+    8: {'enum': 'Another2', 'code': 'another2', 'label_key': 'difficulty_another2'},
+}
+
+# Eternal.Domain.Enums.WeaponTraitType — WeaponTraitTypeIndex in m_weapon_trait.json.
+# Note: game enum skips index 2 (None=0, RapidFire=1, PassiveTrait=3, …).
+WEAPON_TRAIT_TYPE = {
+    0: {'enum': 'None', 'code': 'none'},
+    1: {'enum': 'RapidFire', 'code': 'rapid_fire'},
+    3: {'enum': 'PassiveTrait', 'code': 'passive_trait'},
+    4: {'enum': 'SuicideAttack', 'code': 'suicide_attack'},
+    5: {'enum': 'SureHitAttack', 'code': 'sure_hit_attack'},
+    6: {'enum': 'DebuffClean', 'code': 'debuff_clean'},
+    7: {'enum': 'EnBasedBoost', 'code': 'en_based_boost'},
+    8: {'enum': 'EnDamage', 'code': 'en_damage'},
+    9: {'enum': 'MpDamage', 'code': 'mp_damage'},
+    10: {'enum': 'HpDrain', 'code': 'hp_drain'},
+    11: {'enum': 'EnDrain', 'code': 'en_drain'},
+    12: {'enum': 'Debuff', 'code': 'debuff'},
+    13: {'enum': 'PreemptiveAttack', 'code': 'preemptive_attack'},
+    14: {'enum': 'EnDamageRate', 'code': 'en_damage_rate'},
+}
+
+
+def resolve_weapon_trait_type_index(wtti):
+    """Map WeaponTraitTypeIndex to game enum name + stable code slug."""
+    i = safe_int(wtti, 0)
+    meta = WEAPON_TRAIT_TYPE.get(i) or WEAPON_TRAIT_TYPE.get(0)
+    return {'index': i, 'enum': meta['enum'], 'code': meta['code']}
+
 # Eternal Road (9050/9051/9052): always show English difficulty names in every locale.
 ETERNAL_STAGE_DIFFICULTY_LABELS_EN = {'normal': 'Normal', 'hard': 'Hard', 'expert': 'Expert'}
+
+
+def resolve_stage_difficulty_type_index(dti, lc='EN'):
+    """Map StageDifficultyTypeIndex (0–8) to code/name using game enum + UI labels."""
+    i = safe_int(dti, 1)
+    meta = STAGE_DIFFICULTY_TYPE.get(i) or STAGE_DIFFICULTY_TYPE.get(0)
+    return {'index': i, 'enum': meta['enum'], 'code': meta['code'], 'name': get_ui_label(lc, meta['label_key'])}
 
 
 def get_stage_difficulty(sid, lc='EN'):
@@ -8094,12 +8146,9 @@ def get_stage_difficulty(sid, lc='EN'):
     return {'code': 'unknown', 'name': 'Unknown'}
 
 def get_stage_difficulty_by_type_index(dti, lc='EN'):
-    """Normalizes StageDifficultyTypeIndex from m_map_stage / eternal road (1=normal, 2=hard, 3=expert)."""
-    i = safe_int(dti, 1)
-    if i == 1: return {'code': 'normal', 'name': get_ui_label(lc, 'difficulty_normal')}
-    if i == 2: return {'code': 'hard', 'name': get_ui_label(lc, 'difficulty_hard')}
-    if i == 3: return {'code': 'expert', 'name': get_ui_label(lc, 'difficulty_expert')}
-    return {'code': 'unknown', 'name': 'Unknown'}
+    """Normalizes StageDifficultyTypeIndex from m_map_stage and related tables."""
+    row = resolve_stage_difficulty_type_index(dti, lc)
+    return {'code': row['code'], 'name': row['name'], 'index': row['index'], 'enum': row['enum']}
 
 def resolve_stage_name_from_lang_m_stage(ld, stage_name_lang_id, stage_id):
     """m_stage master StageNameLanguageId + same-locale lang m_stage.json text rows."""
