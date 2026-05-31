@@ -146,11 +146,25 @@
     syncOverflowHints();
   }
 
+  function isGameNewsPage() {
+    return !!document.getElementById('gameNewsNavCurrent');
+  }
+
   function updateHomeAggregateNotice(show) {
     const home = document.getElementById('gameNewsNavHome');
     if (home) setNotice(home, show);
     const back = document.querySelector('.back a[href="/"], .wrap a[href="/"]');
     if (back && !home) setNotice(back, show);
+  }
+
+  /** Back/home link badge only when main-app nav would also show something unread. */
+  function mainAppHasUnreadNotices() {
+    return (
+      !!(state.gameNews && state.gameNews.has_new) ||
+      !!(state.latestRelease && state.latestRelease.has_new) ||
+      !!(state.whatsNew && state.whatsNew.has_new) ||
+      btUserNeedsVoteNotice()
+    );
   }
 
   function btVoteEnabledForBanner(b) {
@@ -225,13 +239,11 @@
   }
 
   function refreshHomeAggregate() {
-    const onGameNews = !!document.getElementById('gameNewsNavCurrent');
-    const any =
-      !!(state.gameNews && state.gameNews.has_new && !onGameNews) ||
-      !!(state.latestRelease && state.latestRelease.has_new) ||
-      !!(state.whatsNew && state.whatsNew.has_new) ||
-      btUserNeedsVoteNotice();
-    updateHomeAggregateNotice(any);
+    if (isGameNewsPage()) {
+      updateHomeAggregateNotice(false);
+      return;
+    }
+    updateHomeAggregateNotice(mainAppHasUnreadNotices());
   }
 
   async function bootstrapGameNews() {
@@ -253,6 +265,7 @@
         return;
       }
       const d = await r.json();
+      if (isGameNewsPage()) d.has_new = false;
       state.gameNews = d;
       updateGameNewsNotice(!!d.has_new);
       refreshHomeAggregate();
@@ -347,7 +360,7 @@
         at: Number(d.latest_at) || 0,
         fp: String(d.content_fp || d.fingerprint || ''),
       });
-      state.gameNews = d;
+      state.gameNews = Object.assign({}, d, { has_new: false });
       updateGameNewsNotice(false);
       refreshHomeAggregate();
     } catch (_) {}
@@ -408,12 +421,16 @@
       if (saved) state.lang = saved;
     }
     initRefreshListeners();
+    if (isGameNewsPage()) {
+      await markGameNewsSeenForLang(normalizeGameNewsLangKey(currentLang()));
+    }
     await Promise.all([
       bootstrapGameNews(),
       bootstrapLatestRelease(),
       bootstrapWhatsNew(),
       bootstrapBtVotes(state.lang),
     ]);
+    refreshHomeAggregate();
   }
 
   const api = {

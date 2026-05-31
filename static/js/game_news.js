@@ -269,9 +269,7 @@ window.addEventListener('storage', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadLangs().then(() => {
-    void markGameNewsSeenForLang(S.lang || 'EN');
-  });
+  loadLangs();
 });
 
 window.toggleLangDropdown = toggleLangDropdown;
