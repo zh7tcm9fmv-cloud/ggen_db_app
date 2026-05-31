@@ -18,5 +18,35 @@
     "Id": 25123001210702,
     "GameEventMultiTargetValueGroupId": 251230012107,
     "TargetValue": 300009
+  },
+  {
+    "Id": 26055003090101,
+    "GameEventMultiTargetValueGroupId": 260550030901,
+    "TargetValue": 126055001
+  },
+  {
+    "Id": 26055003090102,
+    "GameEventMultiTargetValueGroupId": 260550030901,
+    "TargetValue": 126055002
+  },
+  {
+    "Id": 26055003090103,
+    "GameEventMultiTargetValueGroupId": 260550030901,
+    "TargetValue": 126055003
+  },
+  {
+    "Id": 26055003100101,
+    "GameEventMultiTargetValueGroupId": 260550031001,
+    "TargetValue": 126055001
+  },
+  {
+    "Id": 26055003100102,
+    "GameEventMultiTargetValueGroupId": 260550031001,
+    "TargetValue": 126055002
+  },
+  {
+    "Id": 26055003100103,
+    "GameEventMultiTargetValueGroupId": 260550031001,
+    "TargetValue": 126055003
   }
 ]

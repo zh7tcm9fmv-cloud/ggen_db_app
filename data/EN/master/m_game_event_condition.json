@@ -7672,6 +7672,102 @@
     "TargetValue4": 0
   },
   {
+    "Id": 260550030101,
+    "GameEventConditionTypeIndex": 213,
+    "TargetValue1": 200013,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030301,
+    "GameEventConditionTypeIndex": 214,
+    "TargetValue1": 200013,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030401,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 1,
+    "TargetValue2": 200013,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030501,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 2,
+    "TargetValue2": 200013,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030601,
+    "GameEventConditionTypeIndex": 193,
+    "TargetValue1": 3,
+    "TargetValue2": 200013,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030701,
+    "GameEventConditionTypeIndex": 213,
+    "TargetValue1": 200013,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030801,
+    "GameEventConditionTypeIndex": 110,
+    "TargetValue1": 2105003,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550030901,
+    "GameEventConditionTypeIndex": 283,
+    "TargetValue1": 2101101,
+    "TargetValue2": 260550030901,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550031001,
+    "GameEventConditionTypeIndex": 282,
+    "TargetValue1": 2101101,
+    "TargetValue2": 260550031001,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550040101,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1850002000,
+    "TargetValue2": 1,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550040102,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1850002000,
+    "TargetValue2": 2,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 260550040103,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1850002000,
+    "TargetValue2": 3,
+    "TargetValue3": 0,
+    "TargetValue4": 0
+  },
+  {
     "Id": 300010200101,
     "GameEventConditionTypeIndex": 276,
     "TargetValue1": 101501,

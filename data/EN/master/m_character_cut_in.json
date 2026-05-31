@@ -3204,6 +3204,438 @@
     "OverrideCutInMilliseconds": 0
   },
   {
+    "Id": 1021000300001,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0001",
+    "QuoteLanguageId": 100701021000300001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300002,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0001",
+    "QuoteLanguageId": 100701021000300002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300003,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0002",
+    "QuoteLanguageId": 100701021000300003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300004,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0002",
+    "QuoteLanguageId": 100701021000300004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300005,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0003",
+    "QuoteLanguageId": 100701021000300005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300006,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0003",
+    "QuoteLanguageId": 100701021000300006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300007,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0004",
+    "QuoteLanguageId": 100701021000300007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000300008,
+    "CharacterCutInSetId": 1021000300,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00300_0004",
+    "QuoteLanguageId": 100701021000300008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400001,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0001",
+    "QuoteLanguageId": 100701021000400001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400002,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0001",
+    "QuoteLanguageId": 100701021000400002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400003,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0002",
+    "QuoteLanguageId": 100701021000400003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400004,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0002",
+    "QuoteLanguageId": 100701021000400004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400005,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0003",
+    "QuoteLanguageId": 100701021000400005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400006,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0003",
+    "QuoteLanguageId": 100701021000400006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400007,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0004",
+    "QuoteLanguageId": 100701021000400007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000400008,
+    "CharacterCutInSetId": 1021000400,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00400_0004",
+    "QuoteLanguageId": 100701021000400008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500001,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0001",
+    "QuoteLanguageId": 100701021000500001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500002,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0001",
+    "QuoteLanguageId": 100701021000500002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500003,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0002",
+    "QuoteLanguageId": 100701021000500003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500004,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0002",
+    "QuoteLanguageId": 100701021000500004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500005,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0003",
+    "QuoteLanguageId": 100701021000500005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500006,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0003",
+    "QuoteLanguageId": 100701021000500006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500007,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0004",
+    "QuoteLanguageId": 100701021000500007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000500008,
+    "CharacterCutInSetId": 1021000500,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00500_0004",
+    "QuoteLanguageId": 100701021000500008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600001,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0001",
+    "QuoteLanguageId": 100701021000600001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600002,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0001",
+    "QuoteLanguageId": 100701021000600002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600003,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0002",
+    "QuoteLanguageId": 100701021000600003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600004,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0002",
+    "QuoteLanguageId": 100701021000600004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600005,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0003",
+    "QuoteLanguageId": 100701021000600005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600006,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0003",
+    "QuoteLanguageId": 100701021000600006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600007,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0004",
+    "QuoteLanguageId": 100701021000600007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000600008,
+    "CharacterCutInSetId": 1021000600,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00600_0004",
+    "QuoteLanguageId": 100701021000600008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800001,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0001",
+    "QuoteLanguageId": 100701021000800001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800002,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0001",
+    "QuoteLanguageId": 100701021000800002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800003,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0002",
+    "QuoteLanguageId": 100701021000800003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800004,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0002",
+    "QuoteLanguageId": 100701021000800004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800005,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0003",
+    "QuoteLanguageId": 100701021000800005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800006,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0003",
+    "QuoteLanguageId": 100701021000800006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800007,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0004",
+    "QuoteLanguageId": 100701021000800007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000800008,
+    "CharacterCutInSetId": 1021000800,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00800_0004",
+    "QuoteLanguageId": 100701021000800008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900001,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0001",
+    "QuoteLanguageId": 100701021000900001,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900002,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0001",
+    "QuoteLanguageId": 100701021000900002,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900003,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0002",
+    "QuoteLanguageId": 100701021000900003,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900004,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0002",
+    "QuoteLanguageId": 100701021000900004,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900005,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0003",
+    "QuoteLanguageId": 100701021000900005,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900006,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0003",
+    "QuoteLanguageId": 100701021000900006,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900007,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0004",
+    "QuoteLanguageId": 100701021000900007,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
+    "Id": 1021000900008,
+    "CharacterCutInSetId": 1021000900,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0210c00900_0004",
+    "QuoteLanguageId": 100701021000900008,
+    "OverrideCutInMilliseconds": 0
+  },
+  {
     "Id": 1022000100001,
     "CharacterCutInSetId": 1022000100,
     "PlayTimingTypeIndex": 1,

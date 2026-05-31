@@ -2064,6 +2064,38 @@
     "value": "Increased ATK & Advantage: Principality of Zeon LV 5"
   },
   {
+    "id": 140100000101570300,
+    "value": "Fin Funnel Barrier & Psycho-Frame LV 3"
+  },
+  {
+    "id": 140100000101580201,
+    "value": "(Cnd: Tag) Increased MP LV 2"
+  },
+  {
+    "id": 140100000101590101,
+    "value": "(Cnd: Vigor) Increased MOV LV 1"
+  },
+  {
+    "id": 140100000101650101,
+    "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 1"
+  },
+  {
+    "id": 140100000101650102,
+    "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 2"
+  },
+  {
+    "id": 140100000101650103,
+    "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 3"
+  },
+  {
+    "id": 140100000101650104,
+    "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 4"
+  },
+  {
+    "id": 140100000101650105,
+    "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 5"
+  },
+  {
     "id": 140100000200010101,
     "value": "Increased Melee LV 1"
   },
@@ -4990,6 +5022,26 @@
   {
     "id": 140100000202590101,
     "value": "(Series conditions) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202600101,
+    "value": "(Series Conditions) Physical Ranged Weapon Max Range Up LV 1"
+  },
+  {
+    "id": 140100000202610100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202610104,
+    "value": "(Tag conditions)Increased ATK"
+  },
+  {
+    "id": 140100000202610105,
+    "value": "(Tag conditions)Increased DEF"
+  },
+  {
+    "id": 140100000202620100,
+    "value": "EX Character Ability"
   },
   {
     "id": 140100000300010101,
@@ -10212,6 +10264,26 @@
     "value": "Limiter OFF SSR (Underwater Use)"
   },
   {
+    "id": 140100000406600100,
+    "value": "Add-On Armor  SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406610100,
+    "value": "Limiter OFF  SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406620100,
+    "value": "Supplemental Space Parts SSR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
+    "id": 140100000406750101,
+    "value": "Add-On Armor SR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
+    "id": 140100000406760101,
+    "value": "Limiter OFF SR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -11458,6 +11530,38 @@
   {
     "id": 140100000511200501,
     "value": "Decreased DEF (All Units) LV 5"
+  },
+  {
+    "id": 140100000511210101,
+    "value": "(Battle conditions) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000511210201,
+    "value": "(Battle conditions) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000511210301,
+    "value": "(Battle conditions) Increased ATK LV 3"
+  },
+  {
+    "id": 140100000511210401,
+    "value": "(Battle conditions) Increased ATK LV 4"
+  },
+  {
+    "id": 140100000511210501,
+    "value": "(Battle conditions) Increased ATK LV 5"
+  },
+  {
+    "id": 140100000511220100,
+    "value": "(Battle conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511220200,
+    "value": "(Battle conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511230101,
+    "value": "(Vigor conditions) Critical Damage Boost 100%"
   },
   {
     "id": 140100000530010100,
@@ -13094,6 +13198,50 @@
   {
     "id": 140100000611770211,
     "value": "(Defeat Conditions) Beam Weapons Max Range Down [1 turn(s)] "
+  },
+  {
+    "id": 140100000611780101,
+    "value": "(Character conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611790101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611800101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611810101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611820101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611830101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611840101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611850101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611870101,
+    "value": "Guaranteed Bonus Action"
+  },
+  {
+    "id": 140100000611880101,
+    "value": "(Turn conditions) Increased MPLV 12"
+  },
+  {
+    "id": 140100000611890101,
+    "value": "Increased Critical Rate and DEF (All Units) "
   },
   {
     "id": 140100000699000101,

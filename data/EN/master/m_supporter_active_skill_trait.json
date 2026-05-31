@@ -300,6 +300,18 @@
     "EffectResourceId": "ef_mps_0002_001_enrecovery_ssr"
   },
   {
+    "Id": 1110000350,
+    "TraitTypeIndex": 3,
+    "Value": 40,
+    "DurationTurn": 0,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 160400001144000150,
+    "DescriptionLanguageId": 160500001144000150,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": true,
+    "EffectResourceId": "ef_mps_0001_005_hprecovery_ur"
+  },
+  {
     "Id": 1125000150,
     "TraitTypeIndex": 4,
     "Value": 40,

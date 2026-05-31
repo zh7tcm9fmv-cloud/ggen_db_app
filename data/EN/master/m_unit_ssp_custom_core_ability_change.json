@@ -470,6 +470,16 @@
     "AfterAbilityId": 1000202
   },
   {
+    "Id": 102100010001,
+    "BeforeAbilityId": 1000501,
+    "AfterAbilityId": 1000502
+  },
+  {
+    "Id": 102100020001,
+    "BeforeAbilityId": 1000401,
+    "AfterAbilityId": 1000402
+  },
+  {
     "Id": 102200010001,
     "BeforeAbilityId": 0,
     "AfterAbilityId": 1000202

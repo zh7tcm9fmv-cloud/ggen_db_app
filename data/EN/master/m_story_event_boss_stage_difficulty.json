@@ -229,5 +229,26 @@
     "ScheduleId": 2605201301,
     "RareBossAppearRate": 100,
     "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200013,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "ScheduleId": 2605501301,
+    "RareBossAppearRate": 50,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200013,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "ScheduleId": 2605501301,
+    "RareBossAppearRate": 75,
+    "RareBossDailyAppearCountLimit": 0
+  },
+  {
+    "StoryEventId": 200013,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "ScheduleId": 2605501301,
+    "RareBossAppearRate": 100,
+    "RareBossDailyAppearCountLimit": 0
   }
 ]

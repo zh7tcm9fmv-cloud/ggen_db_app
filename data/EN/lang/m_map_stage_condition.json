@@ -108,6 +108,10 @@
     "value": "Reach the target area."
   },
   {
+    "id": 131000000000000502,
+    "value": "Reach the target area with specified unit(s)."
+  },
+  {
     "id": 131000000000000601,
     "value": "Engage specified units in battle."
   }

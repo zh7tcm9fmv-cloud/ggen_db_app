@@ -715,6 +715,116 @@
     "StageId": 1700901
   },
   {
+    "ScenarioStageId": 2100104,
+    "SortOrder": 1,
+    "StageId": 2100101
+  },
+  {
+    "ScenarioStageId": 2100104,
+    "SortOrder": 2,
+    "StageId": 2100102
+  },
+  {
+    "ScenarioStageId": 2100104,
+    "SortOrder": 3,
+    "StageId": 2100103
+  },
+  {
+    "ScenarioStageId": 2100104,
+    "SortOrder": 4,
+    "StageId": 2100104
+  },
+  {
+    "ScenarioStageId": 2100201,
+    "SortOrder": 1,
+    "StageId": 2100201
+  },
+  {
+    "ScenarioStageId": 2100303,
+    "SortOrder": 1,
+    "StageId": 2100301
+  },
+  {
+    "ScenarioStageId": 2100303,
+    "SortOrder": 2,
+    "StageId": 2100302
+  },
+  {
+    "ScenarioStageId": 2100303,
+    "SortOrder": 3,
+    "StageId": 2100303
+  },
+  {
+    "ScenarioStageId": 2100403,
+    "SortOrder": 1,
+    "StageId": 2100401
+  },
+  {
+    "ScenarioStageId": 2100403,
+    "SortOrder": 2,
+    "StageId": 2100402
+  },
+  {
+    "ScenarioStageId": 2100403,
+    "SortOrder": 3,
+    "StageId": 2100403
+  },
+  {
+    "ScenarioStageId": 2100501,
+    "SortOrder": 1,
+    "StageId": 2100501
+  },
+  {
+    "ScenarioStageId": 2100603,
+    "SortOrder": 1,
+    "StageId": 2100601
+  },
+  {
+    "ScenarioStageId": 2100603,
+    "SortOrder": 2,
+    "StageId": 2100602
+  },
+  {
+    "ScenarioStageId": 2100603,
+    "SortOrder": 3,
+    "StageId": 2100603
+  },
+  {
+    "ScenarioStageId": 2100702,
+    "SortOrder": 1,
+    "StageId": 2100701
+  },
+  {
+    "ScenarioStageId": 2100702,
+    "SortOrder": 2,
+    "StageId": 2100702
+  },
+  {
+    "ScenarioStageId": 2100702,
+    "SortOrder": 3,
+    "StageId": 2100703
+  },
+  {
+    "ScenarioStageId": 2100801,
+    "SortOrder": 1,
+    "StageId": 2100801
+  },
+  {
+    "ScenarioStageId": 2100901,
+    "SortOrder": 1,
+    "StageId": 2100901
+  },
+  {
+    "ScenarioStageId": 2101001,
+    "SortOrder": 1,
+    "StageId": 2101001
+  },
+  {
+    "ScenarioStageId": 2101101,
+    "SortOrder": 1,
+    "StageId": 2101101
+  },
+  {
     "ScenarioStageId": 2200103,
     "SortOrder": 1,
     "StageId": 2200101

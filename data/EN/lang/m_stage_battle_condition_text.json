@@ -297,7 +297,7 @@
   },
   {
     "id": 130300000090100101,
-    "value": "Reach the target area.\nDestroy all enemy units."
+    "value": "Destroy all enemy units.\nReach the target area."
   },
   {
     "id": 130300000090100104,
@@ -649,6 +649,142 @@
   },
   {
     "id": 130300000170600304,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210010401,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210010404,
+    "value": "All of your units destroyed.\nGuest force Henry Boone destroyed."
+  },
+  {
+    "id": 130300000210020101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210020104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210030301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210030304,
+    "value": "All of your units destroyed.\nGuest force Borkh Crai destroyed."
+  },
+  {
+    "id": 130300000210040301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210040304,
+    "value": "All of your units destroyed.\nGuest force Borkh Crai destroyed."
+  },
+  {
+    "id": 130300000210050101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210050104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210060301,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210060304,
+    "value": "All of your units destroyed.\nGuest force Borkh Crai destroyed."
+  },
+  {
+    "id": 130300000210070201,
+    "value": "Defeat Henry Boone."
+  },
+  {
+    "id": 130300000210070204,
+    "value": "All of your units destroyed.\nGuest force Borkh Crai destroyed."
+  },
+  {
+    "id": 130300000210080101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210080104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210090101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210090104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210100101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210100104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210110101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300000210110104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300000210500101,
+    "value": "Defeat Henry Boone."
+  },
+  {
+    "id": 130300000210500104,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210500201,
+    "value": "Defeat Henry Boone."
+  },
+  {
+    "id": 130300000210500204,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210500301,
+    "value": "Defeat Henry Boone."
+  },
+  {
+    "id": 130300000210500304,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210600101,
+    "value": "Defeat Borkh Crai."
+  },
+  {
+    "id": 130300000210600104,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210600201,
+    "value": "Defeat Borkh Crai."
+  },
+  {
+    "id": 130300000210600204,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000210600301,
+    "value": "Defeat Borkh Crai."
+  },
+  {
+    "id": 130300000210600304,
     "value": "All of your units are destroyed.\nLimit: 3 turns."
   },
   {
@@ -2745,7 +2881,7 @@
   },
   {
     "id": 130300002190050201,
-    "value": "Guest force Heero Yuy (EW) reaches the target area.\nDestroy all enemy units."
+    "value": "Destroy all enemy units.\nGuest force Heero Yuy (EW) reaches the target area."
   },
   {
     "id": 130300002190050204,
@@ -4241,7 +4377,7 @@
   },
   {
     "id": 130300003700140302,
-    "value": "Setsuna F. Seiei reaches the target area.\nDestroy all enemy units."
+    "value": "Destroy all enemy units.\nGuest force Setsuna F. Seiei reaches the target area."
   },
   {
     "id": 130300003700140304,
@@ -4257,7 +4393,7 @@
   },
   {
     "id": 130300003700150202,
-    "value": "Setsuna F. Seiei reaches the target area.\nDestroy all enemy units."
+    "value": "Destroy all enemy units.\nGuest force Setsuna F. Seiei reaches the target area."
   },
   {
     "id": 130300003700150204,
@@ -6056,6 +6192,14 @@
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020001901,
+    "value": "Defeat Gundam Mk-IV."
+  },
+  {
+    "id": 130300009020001904,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -6185,6 +6329,14 @@
   },
   {
     "id": 130300009021001804,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021001901,
+    "value": "Defeat Gundam Mk-IV."
+  },
+  {
+    "id": 130300009021001904,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
@@ -6325,6 +6477,14 @@
   },
   {
     "id": 130300009022001804,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022001901,
+    "value": "Defeat Gundam Mk-IV."
+  },
+  {
+    "id": 130300009022001904,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
@@ -6477,6 +6637,14 @@
   },
   {
     "id": 130300009023001804,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023001901,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300009023001904,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {

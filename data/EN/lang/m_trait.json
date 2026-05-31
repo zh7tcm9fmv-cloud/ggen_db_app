@@ -1841,23 +1841,23 @@
   },
   {
     "id": 141200000100840101,
-    "value": "Increase DEF by 5% (up to 25%)"
+    "value": "Increase DEF by {0}% (up to 25%)"
   },
   {
     "id": 141200000100840201,
-    "value": "Increase DEF by 10% (up to 50%)\neach time you take damage from an enemy."
+    "value": "Increase DEF by {0}% (up to 50%)"
   },
   {
     "id": 141200000100840301,
-    "value": "Increase DEF by 15% (up to 75%)"
+    "value": "Increase DEF by {0}% (up to 75%)"
   },
   {
     "id": 141200000100840401,
-    "value": "Increase DEF by 20% (up to 100%)"
+    "value": "Increase DEF by {0}% (up to 100%)"
   },
   {
     "id": 141200000100840501,
-    "value": "Increase DEF by 25% (up to 125%)"
+    "value": "Increase DEF by {0}% (up to 125%)"
   },
   {
     "id": 141200000100850101,
@@ -2085,15 +2085,15 @@
   },
   {
     "id": 141200000100990101,
-    "value": "increase own ATK by 2% (up to 10%) at the end of combat."
+    "value": "increase own ATK by {0}% (up to 10%) at the end of combat."
   },
   {
     "id": 141200000100990201,
-    "value": "increase own ATK by 3% (up to 15%) at the end of combat."
+    "value": "increase own ATK by {0}% (up to 15%) at the end of combat."
   },
   {
     "id": 141200000100990301,
-    "value": "increase own ATK by 4% (up to 20%) at the end of combat."
+    "value": "increase own ATK by {0}% (up to 20%) at the end of combat."
   },
   {
     "id": 141200000101000101,
@@ -2938,6 +2938,46 @@
   {
     "id": 141200000101560503,
     "value": ""
+  },
+  {
+    "id": 141200000101570301,
+    "value": "When the enemy attacks with beam ranged weapons,\nReduce damage taken by 50%."
+  },
+  {
+    "id": 141200000101570302,
+    "value": "Increase own ACC and EVA by 5%."
+  },
+  {
+    "id": 141200000101570303,
+    "value": ""
+  },
+  {
+    "id": 141200000101580201,
+    "value": "When piloting character with specified tags,\nIncrease MP by 3."
+  },
+  {
+    "id": 141200000101590101,
+    "value": "When Vigor is MAX or higher,\nIncrease own MOV by 1."
+  },
+  {
+    "id": 141200000101650101,
+    "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 1."
+  },
+  {
+    "id": 141200000101650102,
+    "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 2."
+  },
+  {
+    "id": 141200000101650103,
+    "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 3."
+  },
+  {
+    "id": 141200000101650104,
+    "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 4."
+  },
+  {
+    "id": 141200000101650105,
+    "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 5."
   },
   {
     "id": 141200000200010101,
@@ -8218,6 +8258,50 @@
   {
     "id": 141200000202590101,
     "value": "When piloting units from specified series,\nChance Step +1 time"
+  },
+  {
+    "id": 141200000202600101,
+    "value": "When piloting units from specified series,\nThe max range of Physical ranged Weapon is increased by 1."
+  },
+  {
+    "id": 141200000202610101,
+    "value": "Support Attack/Counter +1 time(s)"
+  },
+  {
+    "id": 141200000202610102,
+    "value": "When piloting Nightingale (EX),\nincreases ATK and DEF by 7% for units bearing the above tags in the same squad (permanent)."
+  },
+  {
+    "id": 141200000202610103,
+    "value": ""
+  },
+  {
+    "id": 141200000202610104,
+    "value": "Increase ATK by 7%."
+  },
+  {
+    "id": 141200000202610105,
+    "value": "Increase DEF by 7%."
+  },
+  {
+    "id": 141200000202610106,
+    "value": "When piloting units with specified tags\nincrease MP by 3, and\nincrease damage dealt to enemies by 15%."
+  },
+  {
+    "id": 141200000202610107,
+    "value": ""
+  },
+  {
+    "id": 141200000202620101,
+    "value": "Support Defense +1 time(s)."
+  },
+  {
+    "id": 141200000202620102,
+    "value": "When piloting units with a specified tag and Vigor is Supercharged or higher,\nupon executing Support Defense,\nincrease own DEF by 20%."
+  },
+  {
+    "id": 141200000202620103,
+    "value": "When piloting units with specified tags\nreduce damage taken by 15%."
   },
   {
     "id": 141200000300010101,
@@ -14012,6 +14096,38 @@
     "value": "Increase ATK by 12%."
   },
   {
+    "id": 141200000406600101,
+    "value": "Increase Max HP by 5%."
+  },
+  {
+    "id": 141200000406600102,
+    "value": "Increase Max HP by 2%.\nwhen equipped to Gundam Mk-IV."
+  },
+  {
+    "id": 141200000406610101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406610102,
+    "value": "Increase ATK by 2%.\nwhen equipped to Gundam Mk-IV."
+  },
+  {
+    "id": 141200000406620101,
+    "value": "Increase Space terrain capability by 1 rank."
+  },
+  {
+    "id": 141200000406620102,
+    "value": ""
+  },
+  {
+    "id": 141200000406750101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406760101,
+    "value": "Increase ATK by 8%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -15338,6 +15454,46 @@
   {
     "id": 141200000511200501,
     "value": "Decrease enemy squad DEF by 50%."
+  },
+  {
+    "id": 141200000511210101,
+    "value": "In a one-on-one battle\nIncrease own ATK by 50%."
+  },
+  {
+    "id": 141200000511210201,
+    "value": "In a one-on-one battle\nIncrease own ATK by 100%."
+  },
+  {
+    "id": 141200000511210301,
+    "value": "In a one-on-one battle\nIncrease own ATK by 150%."
+  },
+  {
+    "id": 141200000511210401,
+    "value": "In a one-on-one battle\nIncrease own ATK by 200%."
+  },
+  {
+    "id": 141200000511210501,
+    "value": "In a one-on-one battle\nIncrease own ATK by 250%."
+  },
+  {
+    "id": 141200000511220101,
+    "value": "When executing a Support Attack/Counter or Support Defense during battle,\nincrease ATK and DEF by 50%."
+  },
+  {
+    "id": 141200000511220103,
+    "value": ""
+  },
+  {
+    "id": 141200000511220201,
+    "value": "When executing a Support Attack/Counter or Support Defense during battle, \nIncrease ATK and DEF by 100%"
+  },
+  {
+    "id": 141200000511220203,
+    "value": ""
+  },
+  {
+    "id": 141200000511230101,
+    "value": "When Vigor is High or Super High or higher,\nIncrease Critical Damage by 100%."
   },
   {
     "id": 141200000511360101,
@@ -17342,6 +17498,58 @@
   {
     "id": 141200000611770211,
     "value": "The max range of Beam Weapon is decrease by 1 [1 turn(s)] "
+  },
+  {
+    "id": 141200000611780101,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000611790101,
+    "value": "Increase ATK and DEF by 50%\nfor squad units piloted by Henry Boone"
+  },
+  {
+    "id": 141200000611800101,
+    "value": "Increase DEF by 50%."
+  },
+  {
+    "id": 141200000611810101,
+    "value": ""
+  },
+  {
+    "id": 141200000611820101,
+    "value": "Increase own ATK and DEF by 100%\nif Noct Gadishfrom your squad has survived."
+  },
+  {
+    "id": 141200000611830101,
+    "value": "Increase own ATK and DEF by 100%\nif Noct Gadishfrom your squad has survived."
+  },
+  {
+    "id": 141200000611840101,
+    "value": ""
+  },
+  {
+    "id": 141200000611850101,
+    "value": ""
+  },
+  {
+    "id": 141200000611860101,
+    "value": "Move away from the enemy."
+  },
+  {
+    "id": 141200000611870101,
+    "value": "Force your squad's Gundam Mk-IV to activate all Chance Steps, and get 1 Guaranteed Chance Step."
+  },
+  {
+    "id": 141200000611880101,
+    "value": "Increase squad's Gundam Mk-IV to MP by 12 at the start of every turn."
+  },
+  {
+    "id": 141200000611890101,
+    "value": ""
+  },
+  {
+    "id": 141200000611890102,
+    "value": "Increase squad Critical Rate and DEF by 30%."
   },
   {
     "id": 141200000699000101,

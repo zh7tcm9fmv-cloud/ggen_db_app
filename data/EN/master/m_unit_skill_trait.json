@@ -1,5 +1,17 @@
 [
   {
+    "Id": 111400045011,
+    "UnitSkillId": 111400045000,
+    "NameLanguageId": 141500111400045011,
+    "DescriptionLanguageId": 141600111400045011,
+    "ResourceId": "trait_11640101",
+    "TraitTypeIndex": 6,
+    "TraitValue": 20,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0
+  },
+  {
     "Id": 114400055011,
     "UnitSkillId": 114400055000,
     "NameLanguageId": 141500114400055011,

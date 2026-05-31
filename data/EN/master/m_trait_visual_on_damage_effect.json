@@ -624,6 +624,12 @@
     "IsDefender": true
   },
   {
+    "TraitId": 101570301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
     "TraitId": 200100101,
     "IsHitOnly": true,
     "IsAttacker": true,
@@ -4045,6 +4051,12 @@
   },
   {
     "TraitId": 202340202,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202620103,
     "IsHitOnly": true,
     "IsAttacker": false,
     "IsDefender": true

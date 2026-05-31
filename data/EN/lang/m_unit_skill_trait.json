@@ -1,5 +1,9 @@
 [
   {
+    "id": 141500111400045011,
+    "value": "Barrier Effect"
+  },
+  {
     "id": 141500114400055011,
     "value": "Zero EN"
   },
@@ -14,6 +18,10 @@
   {
     "id": 141500137000595012,
     "value": "Increased DEF"
+  },
+  {
+    "id": 141600111400045011,
+    "value": "Grants a barrier that absorbs damage up to 20% of this unit's Max HP."
   },
   {
     "id": 141600114400055011,

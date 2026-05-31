@@ -288,8 +288,44 @@
     "value": "Borkh Crai"
   },
   {
+    "id": 100100001021000101,
+    "value": "Borkh Crai"
+  },
+  {
     "id": 100100001021000200,
     "value": "Henry Boone"
+  },
+  {
+    "id": 100100001021000201,
+    "value": "Henry Boone"
+  },
+  {
+    "id": 100100001021000300,
+    "value": "Daba Soy"
+  },
+  {
+    "id": 100100001021000400,
+    "value": "Sana Nima"
+  },
+  {
+    "id": 100100001021000500,
+    "value": "Martin Hugger"
+  },
+  {
+    "id": 100100001021000600,
+    "value": "Saki Graham"
+  },
+  {
+    "id": 100100001021000700,
+    "value": "Noct Gadish"
+  },
+  {
+    "id": 100100001021000800,
+    "value": "Ray Hamilton"
+  },
+  {
+    "id": 100100001021000900,
+    "value": "Lester Carrot"
   },
   {
     "id": 100100001022000100,
@@ -904,11 +940,19 @@
     "value": "Amuro Ray"
   },
   {
+    "id": 100100001110000103,
+    "value": "Amuro Ray"
+  },
+  {
     "id": 100100001110000200,
     "value": "Char Aznable"
   },
   {
     "id": 100100001110000201,
+    "value": "Char Aznable"
+  },
+  {
+    "id": 100100001110000202,
     "value": "Char Aznable"
   },
   {
@@ -4196,8 +4240,44 @@
     "value": "Leader of an escort team attached to the Federation's Albatross transportation company. Because he caused problems with every superior officer he'd ever worked with, he was shipped off to the Gobi Desert and demoted to transportation duties.\nHe has a flexible mind, suggesting to a senior officer that they use the MS Pixy they were transporting to fight off an enemy attack. He is also trigger-happy, voluntarily fighting in solo battles that could have been avoided."
   },
   {
+    "id": 100200001021000101,
+    "value": "-"
+  },
+  {
     "id": 100200001021000200,
     "value": "Leader of Zeon's 17th Special Forces Team, also known as the Wolf Gar Team. He was once a member of Kycilia Zabi's Special Service, but was demoted after being accused of participating in an anti-Zabi coup d'etat after the Battle of Loum.\nHe has a calm personality and is a good analyst who gives clear instructions to his subordinates, but secretly he longs to fight stronger enemies. He is a skilled Efreet pilot."
+  },
+  {
+    "id": 100200001021000201,
+    "value": "-"
+  },
+  {
+    "id": 100200001021000300,
+    "value": "A member of an escort team attached to the Federation's Albatross transportation company.\nHe used to be a police officer in Hong Kong, but was drafted as an MS pilot.\nHe sympathizes deeply with his non-conformist superior officer, Borkh Crai of the Albatross company.\nHowever, he is weak-willed and cannot say no to the bureaucratic Noct Gadish."
+  },
+  {
+    "id": 100200001021000400,
+    "value": "A member of an escort team attached to the Federation's Albatross transportation company.\nHe used to work on a base in the Russian countryside, but deserted under enemy fire when the Zeon forces attacked.\nHe trusts his non-conformist superior officer Captain Borkh Crai of the Albatross company, and has become more optimistic since their meeting, even fighting alongside him on the front lines."
+  },
+  {
+    "id": 100200001021000500,
+    "value": "A member of Zeon's 17th Special Forces Team, also known as the Wolf Gar Team, and a high school friend of Henry Boone.\nLike Boone, he was accused of conspiracy during the attempted coup d'etat caused by anti-Zabi loyalists after the Battle of Loum.\nHe has a rough and boorish personality, but is highly considerate of others.\nHe favors battles with strong enemies, and has been called a \"soldier's soldier.\""
+  },
+  {
+    "id": 100200001021000600,
+    "value": "A member of Zeon's 17th Special Forces Team, also known as the Wolf Gar Team, who volunteered after her brother died in the Battle of Loum.\nShe joined the Wolf Gar Team in order to defeat as many Federation soldiers as possible.\nDespite her masculine and unyielding personality, she has great analytical skills and acts as a secretary for Captain Henry Boone.\nShe is the only member with no criminal past."
+  },
+  {
+    "id": 100200001021000700,
+    "value": "-"
+  },
+  {
+    "id": 100200001021000800,
+    "value": "A member of Zeon's 17th Special Forces Team, also known as the Wolf Gar Team, who was bullied at training school for his feminine features and killed a classmate who spread rumors that he was gay.\nHe has a hot temper but often backs down when confronted.\nHe is gifted as a mechanic and is highly valued within the Wolf Gar Team."
+  },
+  {
+    "id": 100200001021000900,
+    "value": "A member of Zeon's 17th Special Forces Team, also known as the Wolf Gar Team, he was imprisoned after committing armed robbery and murder in order to evacuate his family from a war zone.\nHe is a pragmatic man who doesn't overdo it in battle, though he often talks too much.\nBut he has strong skills as a pilot and achieved high grades at training school, as a result of which he was invited by Henry Boone to join the Wolf Gar Team."
   },
   {
     "id": 100200001022000100,
@@ -4812,11 +4892,19 @@
     "value": "Commander of the mobile suit forces of the Federation's Londo Bell task force. He is a Federation Forces ace pilot who has endured many battles since the One Year War.\nHis age has given him calmness, and the dark side seen during the Gryps Conflict has now all but worn off.\nHe is also considerate and measured in his actions, and has high battle skills and good intuition. This has made him a much better MS pilot and person.\nHe has a strong animosity towards his rival Char Aznable, leader of the reborn Neo Zeon, but he has decided to put an end to it with this battle."
   },
   {
+    "id": 100200001110000103,
+    "value": "Commander of the mobile suit forces of the Federation's Londo Bell task force. He is a Federation Forces ace pilot who has endured many battles since the One Year War.\nHis age has given him calmness, and the dark side seen during the Gryps Conflict has now all but worn off.\nHe is also considerate and measured in his actions, and has high battle skills and good intuition. This has made him a much better MS pilot and person.\nHe has a strong animosity towards his rival Char Aznable, leader of the reborn Neo Zeon, but he has decided to put an end to it with this battle."
+  },
+  {
     "id": 100200001110000200,
     "value": "Supreme leader of the reborn Neo Zeon forces. He is an ace pilot also known as the \"Red Comet.\"\nHe is the son of the Zeon founder Zeon Zum Deikun, and plans to purge the people who have remained behind to contaminate the Earth, thus forcing humanity to reform into Newtypes.\nDuring the Gryps Conflict, he fought under the name Quattro Bajeena and tried to reform humanity.\nBut after seeing how corrupt the Federation government and the other people of Earth were, he decided to take drastic action, reviving Neo Zeon and planning Earth's destruction by freezing it with a nuclear winter.\nHe has a long history with his arch-nemesis, Londo Bell ace pilot Amuro Ray, but he hopes that this war will put an end to their rivalry."
   },
   {
     "id": 100200001110000201,
+    "value": "Supreme leader of the reborn Neo Zeon forces. He is an ace pilot also known as the \"Red Comet.\"\nHe is the son of the Zeon founder Zeon Zum Deikun, and plans to purge the people who have remained behind to contaminate the Earth, thus forcing humanity to reform into Newtypes.\nDuring the Gryps Conflict, he fought under the name Quattro Bajeena and tried to reform humanity.\nBut after seeing how corrupt the Federation government and the other people of Earth were, he decided to take drastic action, reviving Neo Zeon and planning Earth's destruction by freezing it with a nuclear winter.\nHe has a long history with his arch-nemesis, Londo Bell ace pilot Amuro Ray, but he hopes that this war will put an end to their rivalry."
+  },
+  {
+    "id": 100200001110000202,
     "value": "Supreme leader of the reborn Neo Zeon forces. He is an ace pilot also known as the \"Red Comet.\"\nHe is the son of the Zeon founder Zeon Zum Deikun, and plans to purge the people who have remained behind to contaminate the Earth, thus forcing humanity to reform into Newtypes.\nDuring the Gryps Conflict, he fought under the name Quattro Bajeena and tried to reform humanity.\nBut after seeing how corrupt the Federation government and the other people of Earth were, he decided to take drastic action, reviving Neo Zeon and planning Earth's destruction by freezing it with a nuclear winter.\nHe has a long history with his arch-nemesis, Londo Bell ace pilot Amuro Ray, but he hopes that this war will put an end to their rivalry."
   },
   {
@@ -5629,7 +5717,7 @@
   },
   {
     "id": 100200001300001700,
-    "value": "A member of ZAFT's Creuset Team and the designated pilot of the Aegis Gundam.\nHis father is Patrick Zala, a member of the PLANT Supreme Council. His mother died in the \"Bloody Valentine\" incident.\nHe carries himself with a resolute demeanor, but is a kind and gentle young man who cares deeply for his friends deep down. He also enjoys tinkering with robotics as a hobby. He has given his fiancee Lacus Clyne many Haros, and gave Birdy to Kira Yamato to symbolize their friendship.\nHe and Kira have been friends since their days going to elementary school on the Moon together. After their reunion in Heliopolis, they ended up on opposing sides. Athrun bitterly resented having to fight his best friend.\nIt was when Nicol Amalfi was killed in action that Athrun became determined to take Kira down."
+    "value": "A member of ZAFT's Le Creuset Team and the designated pilot of the Aegis Gundam.\nHis father is Patrick Zala, a member of the PLANT Supreme Council. His mother died in the \"Bloody Valentine\" incident.\nHe carries himself with a resolute demeanor, but is a kind and gentle young man who cares deeply for his friends deep down. He also enjoys tinkering with robotics as a hobby. He has given his fiancee Lacus Clyne many Haros, and gave Birdy to Kira Yamato to symbolize their friendship.\nHe and Kira have been friends since their days going to elementary school on the Moon together. After their reunion in Heliopolis, they ended up on opposing sides. Athrun bitterly resented having to fight his best friend.\nIt was when Nicol Amarfi was killed in action that Athrun became determined to take Kira down."
   },
   {
     "id": 100200001300001701,
@@ -8104,8 +8192,44 @@
     "value": "Borkh Crai"
   },
   {
+    "id": 100300001021000101,
+    "value": "Borkh Crai"
+  },
+  {
     "id": 100300001021000200,
     "value": "Henry Boone"
+  },
+  {
+    "id": 100300001021000201,
+    "value": "Henry Boone"
+  },
+  {
+    "id": 100300001021000300,
+    "value": "Daba Soy"
+  },
+  {
+    "id": 100300001021000400,
+    "value": "Sana Nima"
+  },
+  {
+    "id": 100300001021000500,
+    "value": "Martin Hugger"
+  },
+  {
+    "id": 100300001021000600,
+    "value": "Saki Graham"
+  },
+  {
+    "id": 100300001021000700,
+    "value": "Noct Gadish"
+  },
+  {
+    "id": 100300001021000800,
+    "value": "Ray Hamilton"
+  },
+  {
+    "id": 100300001021000900,
+    "value": "Lester Carrot"
   },
   {
     "id": 100300001022000100,
@@ -8720,11 +8844,19 @@
     "value": "Amuro Ray"
   },
   {
+    "id": 100300001110000103,
+    "value": "Amuro Ray"
+  },
+  {
     "id": 100300001110000200,
     "value": "Char Aznable"
   },
   {
     "id": 100300001110000201,
+    "value": "Char Aznable"
+  },
+  {
+    "id": 100300001110000202,
     "value": "Char Aznable"
   },
   {
@@ -12012,8 +12144,44 @@
     "value": "Borkh Crai"
   },
   {
+    "id": 100400001021000101,
+    "value": "Borkh Crai"
+  },
+  {
     "id": 100400001021000200,
     "value": "Henry Boone"
+  },
+  {
+    "id": 100400001021000201,
+    "value": "Henry Boone"
+  },
+  {
+    "id": 100400001021000300,
+    "value": "Daba Soy"
+  },
+  {
+    "id": 100400001021000400,
+    "value": "Sana Nima"
+  },
+  {
+    "id": 100400001021000500,
+    "value": "Martin Hugger"
+  },
+  {
+    "id": 100400001021000600,
+    "value": "Saki Graham"
+  },
+  {
+    "id": 100400001021000700,
+    "value": "Noct Gadish"
+  },
+  {
+    "id": 100400001021000800,
+    "value": "Ray Hamilton"
+  },
+  {
+    "id": 100400001021000900,
+    "value": "Lester Carrot"
   },
   {
     "id": 100400001022000100,
@@ -12628,11 +12796,19 @@
     "value": "Amuro Ray"
   },
   {
+    "id": 100400001110000103,
+    "value": "Amuro Ray"
+  },
+  {
     "id": 100400001110000200,
     "value": "Char Aznable"
   },
   {
     "id": 100400001110000201,
+    "value": "Char Aznable"
+  },
+  {
+    "id": 100400001110000202,
     "value": "Char Aznable"
   },
   {
@@ -15856,8 +16032,40 @@
     "value": "Dammit!"
   },
   {
+    "id": 101100001021000101,
+    "value": "Dammit!"
+  },
+  {
     "id": 101100001021000200,
     "value": "It's not over! My fight's not over!"
+  },
+  {
+    "id": 101100001021000201,
+    "value": "It's not over! My fight's not over!"
+  },
+  {
+    "id": 101100001021000300,
+    "value": "Help me!"
+  },
+  {
+    "id": 101100001021000400,
+    "value": "I think...I just found my limit!"
+  },
+  {
+    "id": 101100001021000500,
+    "value": "Son of a bitch!"
+  },
+  {
+    "id": 101100001021000600,
+    "value": "It can't end like this!"
+  },
+  {
+    "id": 101100001021000800,
+    "value": "I don't wanna die!"
+  },
+  {
+    "id": 101100001021000900,
+    "value": "I need your help, Lieutenant!"
   },
   {
     "id": 101100001022000100,
@@ -16268,11 +16476,19 @@
     "value": "Oh no! Is this it...?!"
   },
   {
+    "id": 101100001110000103,
+    "value": "Oh no! Is this it...?!"
+  },
+  {
     "id": 101100001110000200,
     "value": "I'm losing power!"
   },
   {
     "id": 101100001110000201,
+    "value": "I'm losing power!"
+  },
+  {
+    "id": 101100001110000202,
     "value": "I'm losing power!"
   },
   {
@@ -18116,8 +18332,44 @@
     "value": "Hiroki Touchi"
   },
   {
+    "id": 101400001021000101,
+    "value": "Hiroki Touchi"
+  },
+  {
     "id": 101400001021000200,
     "value": "Masaki Terasoma"
+  },
+  {
+    "id": 101400001021000201,
+    "value": "Masaki Terasoma"
+  },
+  {
+    "id": 101400001021000300,
+    "value": "Shinya Takahashi"
+  },
+  {
+    "id": 101400001021000400,
+    "value": "Shota Yamamoto"
+  },
+  {
+    "id": 101400001021000500,
+    "value": "Kenta Miyake"
+  },
+  {
+    "id": 101400001021000600,
+    "value": "Mayumi Asano"
+  },
+  {
+    "id": 101400001021000700,
+    "value": "-"
+  },
+  {
+    "id": 101400001021000800,
+    "value": "Toshiyuki Toyonaga"
+  },
+  {
+    "id": 101400001021000900,
+    "value": "Yuichi Karasuma"
   },
   {
     "id": 101400001022000100,
@@ -18732,11 +18984,19 @@
     "value": "Toru Furuya"
   },
   {
+    "id": 101400001110000103,
+    "value": "Toru Furuya"
+  },
+  {
     "id": 101400001110000200,
     "value": "Shuichi Ikeda"
   },
   {
     "id": 101400001110000201,
+    "value": "Shuichi Ikeda"
+  },
+  {
+    "id": 101400001110000202,
     "value": "Shuichi Ikeda"
   },
   {

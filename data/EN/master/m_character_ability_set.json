@@ -1616,6 +1616,38 @@
     "ScheduleId": 2510309902
   },
   {
+    "CharacterId": 1021000101,
+    "SortOrder": 1,
+    "AbilityId": 2005002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2005003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000101,
+    "SortOrder": 2,
+    "AbilityId": 2000102,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000103,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000101,
+    "SortOrder": 3,
+    "AbilityId": 2005501,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2005502,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000101,
+    "SortOrder": 4,
+    "AbilityId": 2000201,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1021000200,
     "SortOrder": 1,
     "AbilityId": 2005003,
@@ -1646,6 +1678,230 @@
     "RequiredLevel": 80,
     "SpAbilityId": 2000201,
     "ScheduleId": 2510309902
+  },
+  {
+    "CharacterId": 1021000201,
+    "SortOrder": 1,
+    "AbilityId": 2001002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2001003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000201,
+    "SortOrder": 2,
+    "AbilityId": 2000102,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000103,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000201,
+    "SortOrder": 3,
+    "AbilityId": 2002801,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2002802,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000201,
+    "SortOrder": 4,
+    "AbilityId": 2000501,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000300,
+    "SortOrder": 1,
+    "AbilityId": 2001002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2001003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000300,
+    "SortOrder": 2,
+    "AbilityId": 2000202,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000203,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000300,
+    "SortOrder": 3,
+    "AbilityId": 2005501,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2005502,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000300,
+    "SortOrder": 4,
+    "AbilityId": 2000101,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000400,
+    "SortOrder": 1,
+    "AbilityId": 2010002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2010003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000400,
+    "SortOrder": 2,
+    "AbilityId": 2000402,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000403,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000400,
+    "SortOrder": 3,
+    "AbilityId": 2005501,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2005502,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000400,
+    "SortOrder": 4,
+    "AbilityId": 2000501,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000500,
+    "SortOrder": 1,
+    "AbilityId": 2010002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2010003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000500,
+    "SortOrder": 2,
+    "AbilityId": 2000202,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000203,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000500,
+    "SortOrder": 3,
+    "AbilityId": 2002801,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2002802,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000500,
+    "SortOrder": 4,
+    "AbilityId": 2000401,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000600,
+    "SortOrder": 1,
+    "AbilityId": 2012903,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2012903,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000600,
+    "SortOrder": 2,
+    "AbilityId": 2000203,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000203,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000600,
+    "SortOrder": 3,
+    "AbilityId": 2026001,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2026001,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000600,
+    "SortOrder": 4,
+    "AbilityId": 2000101,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000800,
+    "SortOrder": 1,
+    "AbilityId": 2010002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2010003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000800,
+    "SortOrder": 2,
+    "AbilityId": 2000402,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000403,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000800,
+    "SortOrder": 3,
+    "AbilityId": 2002801,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2002802,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000800,
+    "SortOrder": 4,
+    "AbilityId": 2000501,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000900,
+    "SortOrder": 1,
+    "AbilityId": 2001002,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2001003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000900,
+    "SortOrder": 2,
+    "AbilityId": 2000202,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000203,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000900,
+    "SortOrder": 3,
+    "AbilityId": 2002801,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2002802,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1021000900,
+    "SortOrder": 4,
+    "AbilityId": 2000101,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
   },
   {
     "CharacterId": 1022000100,
@@ -4832,6 +5088,38 @@
     "ScheduleId": 2510309902
   },
   {
+    "CharacterId": 1110000103,
+    "SortOrder": 1,
+    "AbilityId": 2010004,
+    "RequiredLevel": 1,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000103,
+    "SortOrder": 2,
+    "AbilityId": 2001804,
+    "RequiredLevel": 10,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000103,
+    "SortOrder": 3,
+    "AbilityId": 2026201,
+    "RequiredLevel": 45,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000103,
+    "SortOrder": 4,
+    "AbilityId": 2000401,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1110000200,
     "SortOrder": 1,
     "AbilityId": 2001003,
@@ -4894,6 +5182,38 @@
     "RequiredLevel": 80,
     "SpAbilityId": 2000301,
     "ScheduleId": 2510309902
+  },
+  {
+    "CharacterId": 1110000202,
+    "SortOrder": 1,
+    "AbilityId": 2012905,
+    "RequiredLevel": 1,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000202,
+    "SortOrder": 2,
+    "AbilityId": 2001805,
+    "RequiredLevel": 10,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000202,
+    "SortOrder": 3,
+    "AbilityId": 2026101,
+    "RequiredLevel": 45,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1110000202,
+    "SortOrder": 4,
+    "AbilityId": 2000201,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
   },
   {
     "CharacterId": 1110000400,

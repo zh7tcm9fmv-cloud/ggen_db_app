@@ -1,11 +1,19 @@
 [
   {
+    "id": 141300111400045000,
+    "value": "Unit Skills [Nu Gundam (Double Fin Funnels) (EX)]"
+  },
+  {
     "id": 141300114400055000,
     "value": "Unit Skills [Unicorn Gundam 03 Phenex (Destroy Mode) (EX)]"
   },
   {
     "id": 141300137000595000,
     "value": "Unit Skills [00 Raiser Final Battle Type (EX)]"
+  },
+  {
+    "id": 141400111400045000,
+    "value": "Applies to self and 1 ally within range.\nGrants a barrier that absorbs damage up to 20% of this unit's Max HP.\n(Once per battle)"
   },
   {
     "id": 141400114400055000,

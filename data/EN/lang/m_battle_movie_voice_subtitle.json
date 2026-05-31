@@ -2784,6 +2784,98 @@
     "value": "Time to set the score straight—once and for all!"
   },
   {
+    "id": 101000102100010019,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 101000102100010020,
+    "value": "I swear I'll take you down!"
+  },
+  {
+    "id": 101000102100010021,
+    "value": "You're not gettin' away!"
+  },
+  {
+    "id": 101000102100010022,
+    "value": "This time, the end will justify the means!"
+  },
+  {
+    "id": 101000102100010023,
+    "value": "I'll show you what I can do with the Pixy!"
+  },
+  {
+    "id": 101000102100010024,
+    "value": "This is it!"
+  },
+  {
+    "id": 101000102100010025,
+    "value": "Now!"
+  },
+  {
+    "id": 101000102100010026,
+    "value": "Take this!"
+  },
+  {
+    "id": 101000102100010027,
+    "value": "It's all over!"
+  },
+  {
+    "id": 101000102100010028,
+    "value": "Don't get ahead of yourself!"
+  },
+  {
+    "id": 101000102100010029,
+    "value": "You'll have to do better than that!"
+  },
+  {
+    "id": 101000102100010030,
+    "value": "I'm not gonna die here!"
+  },
+  {
+    "id": 101000102100010031,
+    "value": "Dammit...\nI guess I can't handle this thing..."
+  },
+  {
+    "id": 101000102100010032,
+    "value": "I see it! Right there!"
+  },
+  {
+    "id": 101000102100010033,
+    "value": "Who cares about your funnels?!"
+  },
+  {
+    "id": 101000102100010034,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 101000102100010035,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000102100010036,
+    "value": "Fly, GUND-Bits!"
+  },
+  {
+    "id": 101000102100010037,
+    "value": "This fist of mine burns red!\nI'll survive this, no matter what!"
+  },
+  {
+    "id": 101000102100010038,
+    "value": "Erupting! Burning Finger!"
+  },
+  {
+    "id": 101000102100010039,
+    "value": "Heat End!!!"
+  },
+  {
+    "id": 101000102100010040,
+    "value": "I'll make full use of this weapon!"
+  },
+  {
+    "id": 101000102100010041,
+    "value": "Hmph. I owe my life to this thing's performance."
+  },
+  {
     "id": 101000102100020001,
     "value": "This mission is still just a death sentence."
   },
@@ -2854,6 +2946,430 @@
   {
     "id": 101000102100020018,
     "value": "If I take down a big shot like you, I won't be an\noutcast anymore!"
+  },
+  {
+    "id": 101000102100020019,
+    "value": "I'll set it up from here!"
+  },
+  {
+    "id": 101000102100020020,
+    "value": "I hope you can put up a decent fight at least."
+  },
+  {
+    "id": 101000102100020021,
+    "value": "Hmm, now how should I respond?"
+  },
+  {
+    "id": 101000102100020022,
+    "value": "Let's play it fair and square!"
+  },
+  {
+    "id": 101000102100020023,
+    "value": "How's that?"
+  },
+  {
+    "id": 101000102100020024,
+    "value": "You let your guard down!"
+  },
+  {
+    "id": 101000102100020025,
+    "value": "Is that it?!"
+  },
+  {
+    "id": 101000102100020026,
+    "value": "You're goin' down!"
+  },
+  {
+    "id": 101000102100020027,
+    "value": "You can do better than that, right?"
+  },
+  {
+    "id": 101000102100020028,
+    "value": "This feels pretty good!"
+  },
+  {
+    "id": 101000102100020029,
+    "value": "That's it! That's the spirit!"
+  },
+  {
+    "id": 101000102100020030,
+    "value": "A rogue until the end, huh..."
+  },
+  {
+    "id": 101000102100020031,
+    "value": "So this is the Psycommu?"
+  },
+  {
+    "id": 101000102100020032,
+    "value": "I see it... Right there!"
+  },
+  {
+    "id": 101000102100020033,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 101000102100020034,
+    "value": "Trans-Am! This should do it!"
+  },
+  {
+    "id": 101000102100020035,
+    "value": "Now let's chase 'em down!"
+  },
+  {
+    "id": 101000102100020036,
+    "value": "This fist of mine burns red!\nIts roar tells me to seize victory!"
+  },
+  {
+    "id": 101000102100020037,
+    "value": "Eruptin'! Burnin' Finger!"
+  },
+  {
+    "id": 101000102100020038,
+    "value": "Hmph... Heat End!"
+  },
+  {
+    "id": 101000102100020039,
+    "value": "Let's have some fun, just you and me!"
+  },
+  {
+    "id": 101000102100020040,
+    "value": "Now that was a fight. Thank you."
+  },
+  {
+    "id": 101000102100030001,
+    "value": "I-I pull through...when I gotta, that is!"
+  },
+  {
+    "id": 101000102100030002,
+    "value": "Th-This fight's gone off the rails!"
+  },
+  {
+    "id": 101000102100030003,
+    "value": "I can do this! I'll prove it!"
+  },
+  {
+    "id": 101000102100030004,
+    "value": "How am I supposed to beat them?!"
+  },
+  {
+    "id": 101000102100030005,
+    "value": "This should do it!"
+  },
+  {
+    "id": 101000102100030006,
+    "value": "Let's do this!"
+  },
+  {
+    "id": 101000102100030007,
+    "value": "Damn you!"
+  },
+  {
+    "id": 101000102100030008,
+    "value": "Too slow!"
+  },
+  {
+    "id": 101000102100030009,
+    "value": "Ngh!"
+  },
+  {
+    "id": 101000102100030010,
+    "value": "N-No way!"
+  },
+  {
+    "id": 101000102100030011,
+    "value": "Aaargh!"
+  },
+  {
+    "id": 101000102100030012,
+    "value": "Help me!"
+  },
+  {
+    "id": 101000102100030013,
+    "value": "We only need to survive to win this!"
+  },
+  {
+    "id": 101000102100030014,
+    "value": "This is our chance to wipe 'em out all at once!"
+  },
+  {
+    "id": 101000102100040001,
+    "value": "I'll just have to trust Lieutenant Borkh and fight!"
+  },
+  {
+    "id": 101000102100040002,
+    "value": "I'll never desert the battlefield again!"
+  },
+  {
+    "id": 101000102100040003,
+    "value": "I have to do this, I have to!"
+  },
+  {
+    "id": 101000102100040004,
+    "value": "I need to calm down...\nThey can be destroyed!"
+  },
+  {
+    "id": 101000102100040005,
+    "value": "Got you!"
+  },
+  {
+    "id": 101000102100040006,
+    "value": "Now!"
+  },
+  {
+    "id": 101000102100040007,
+    "value": "Graaah!"
+  },
+  {
+    "id": 101000102100040008,
+    "value": "It's pointless!"
+  },
+  {
+    "id": 101000102100040009,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000102100040010,
+    "value": "Oh, no!"
+  },
+  {
+    "id": 101000102100040011,
+    "value": "Waaagh!"
+  },
+  {
+    "id": 101000102100040012,
+    "value": "I think...I just found my limit!"
+  },
+  {
+    "id": 101000102100040013,
+    "value": "I-I can't lose here!"
+  },
+  {
+    "id": 101000102100040014,
+    "value": "Okay! Time to end this!"
+  },
+  {
+    "id": 101000102100050001,
+    "value": "How about we let off some steam, huh?"
+  },
+  {
+    "id": 101000102100050002,
+    "value": "Stop blabbering.\nLet's see who's the strongest!"
+  },
+  {
+    "id": 101000102100050003,
+    "value": "You're no match for me, bastard!"
+  },
+  {
+    "id": 101000102100050004,
+    "value": "There's no way you're winning this!"
+  },
+  {
+    "id": 101000102100050005,
+    "value": "Small fry!"
+  },
+  {
+    "id": 101000102100050006,
+    "value": "Get lost!"
+  },
+  {
+    "id": 101000102100050007,
+    "value": "Chew on this!"
+  },
+  {
+    "id": 101000102100050008,
+    "value": "Idiot!"
+  },
+  {
+    "id": 101000102100050009,
+    "value": "Ugh!"
+  },
+  {
+    "id": 101000102100050010,
+    "value": "Dammit!"
+  },
+  {
+    "id": 101000102100050011,
+    "value": "Gwargh!"
+  },
+  {
+    "id": 101000102100050012,
+    "value": "Son of a bitch!"
+  },
+  {
+    "id": 101000102100050013,
+    "value": "All I need to do is kill you!"
+  },
+  {
+    "id": 101000102100050014,
+    "value": "All right, let's kick some ass!"
+  },
+  {
+    "id": 101000102100060001,
+    "value": "I'm taking out as many enemies as I can!"
+  },
+  {
+    "id": 101000102100060002,
+    "value": "Revenge is what brings me here!"
+  },
+  {
+    "id": 101000102100060003,
+    "value": "Everyone fights to avoid dying, but not me!"
+  },
+  {
+    "id": 101000102100060004,
+    "value": "I am here by choice—to avenge my brother."
+  },
+  {
+    "id": 101000102100060005,
+    "value": "This should do it!"
+  },
+  {
+    "id": 101000102100060006,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000102100060007,
+    "value": "So long!"
+  },
+  {
+    "id": 101000102100060008,
+    "value": "You're too slow!"
+  },
+  {
+    "id": 101000102100060009,
+    "value": "Goodness!"
+  },
+  {
+    "id": 101000102100060010,
+    "value": "Tch!"
+  },
+  {
+    "id": 101000102100060011,
+    "value": "Waaah!"
+  },
+  {
+    "id": 101000102100060012,
+    "value": "It can't end like this!"
+  },
+  {
+    "id": 101000102100060013,
+    "value": "It's nothing personal,\nbut I can't afford to lose here!"
+  },
+  {
+    "id": 101000102100060014,
+    "value": "I'll blow you apart in one shot!"
+  },
+  {
+    "id": 101000102100080001,
+    "value": "I-I have to do this!"
+  },
+  {
+    "id": 101000102100080002,
+    "value": "Seriously... Don't get too cocky!"
+  },
+  {
+    "id": 101000102100080003,
+    "value": "I'd rather not die today, thank you very much!"
+  },
+  {
+    "id": 101000102100080004,
+    "value": "Hahaha... Even I can win this one!"
+  },
+  {
+    "id": 101000102100080005,
+    "value": "Let's do this!"
+  },
+  {
+    "id": 101000102100080006,
+    "value": "How dare you!"
+  },
+  {
+    "id": 101000102100080007,
+    "value": "So long!"
+  },
+  {
+    "id": 101000102100080008,
+    "value": "Too slow!"
+  },
+  {
+    "id": 101000102100080009,
+    "value": "Whoa!"
+  },
+  {
+    "id": 101000102100080010,
+    "value": "N-No way..."
+  },
+  {
+    "id": 101000102100080011,
+    "value": "Waaagh!"
+  },
+  {
+    "id": 101000102100080012,
+    "value": "I don't wanna die!"
+  },
+  {
+    "id": 101000102100080013,
+    "value": "Heheh! I'm here in time to steal the spotlight!"
+  },
+  {
+    "id": 101000102100080014,
+    "value": "Time to win this and clear our squad's name!"
+  },
+  {
+    "id": 101000102100090001,
+    "value": "Sorry, I don't plan on dying here with you!"
+  },
+  {
+    "id": 101000102100090002,
+    "value": "Too easy!\nI deal with foes like you for breakfast!"
+  },
+  {
+    "id": 101000102100090003,
+    "value": "If I slip up, it doesn't mean you're good."
+  },
+  {
+    "id": 101000102100090004,
+    "value": "I'm going home, and you won't stop me!"
+  },
+  {
+    "id": 101000102100090005,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000102100090006,
+    "value": "Take that!"
+  },
+  {
+    "id": 101000102100090007,
+    "value": "Hiyaaah!"
+  },
+  {
+    "id": 101000102100090008,
+    "value": "Don't waste your time!"
+  },
+  {
+    "id": 101000102100090009,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000102100090010,
+    "value": "Wh-What?!"
+  },
+  {
+    "id": 101000102100090011,
+    "value": "Waaagh!"
+  },
+  {
+    "id": 101000102100090012,
+    "value": "I need your help, Lieutenant!"
+  },
+  {
+    "id": 101000102100090013,
+    "value": "Guess luck is on my side!"
+  },
+  {
+    "id": 101000102100090014,
+    "value": "I'll take you down to survive this!"
   },
   {
     "id": 101000102200010001,
@@ -8630,6 +9146,42 @@
   {
     "id": 101000111000020032,
     "value": "Sink!"
+  },
+  {
+    "id": 101000111000020033,
+    "value": "Nightingale, deploying!"
+  },
+  {
+    "id": 101000111000020034,
+    "value": "Rifle!"
+  },
+  {
+    "id": 101000111000020035,
+    "value": "You cursed ghost! Disappear from my sight already!"
+  },
+  {
+    "id": 101000111000020036,
+    "value": "With the Nightingale's mobility...!"
+  },
+  {
+    "id": 101000111000020037,
+    "value": "Nightingale... Such incredible firepower!"
+  },
+  {
+    "id": 101000111000020038,
+    "value": "Someone must bear the sins of humanity."
+  },
+  {
+    "id": 101000111000020039,
+    "value": "Hear the cry of the nightingale!"
+  },
+  {
+    "id": 101000111000020040,
+    "value": "Concentrating all firepower!"
+  },
+  {
+    "id": 101000111000020041,
+    "value": "Victory means nothing to me\nunless it's earned in a fair fight!"
   },
   {
     "id": 101000111000040001,

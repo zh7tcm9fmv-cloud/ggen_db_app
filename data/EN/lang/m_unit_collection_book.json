@@ -340,6 +340,10 @@
     "value": "A ground combat mobile suit developed by the Principality of Zeon's Earth Occupation Force, positioned in between the Gouf and the Dom.\nThough classified as a general-purpose machine, it excels in close combat, and like the Gouf it specializes in anti-MS fighting.\nThe completed prototype was found to perform favorably, though it was hard to produce.\nPlans for mass production were ultimately scrapped, leaving only eight units in existence.\nSome speculate that this was due to political reasons, such as the Earth Occupation Force's lack of authority and the fact that the homeland was already focusing on the development of a next-generation mainline MS.\nMost of the prototype units were assigned to special forces teams, while the others were used as testbeds for new weapons."
   },
   {
+    "id": 110200001021000400,
+    "value": "- About Gundam Pixy\nA Federation Forces prototype mobile suit secretly developed for ground combat.\nThis highly experimental machine was designed to gather data on anti-MS melee combat, and it omits features such as the Core Block system adopted in the RX-78, dramatically reducing its weight for the sake of maximum speed and maneuverability.\nIts armament consists primarily of easy-to-handle projectile weapons, as well as special beam daggers that boast high output despite their limited reach.\nIn addition to this close-quarters loadout, the machine has a special coating that gives it some stealth capability.\nThree units were produced, with the second scheduled for assignment to the White Base.\nDue to enemy interference, however, it never reached its destination.\n\n- About Efreet\nA ground combat mobile suit developed by the Principality of Zeon's Earth Occupation Force, positioned in between the Gouf and the Dom.\nThough classified as a general-purpose machine, it excels in close combat, and like the Gouf it specializes in anti-MS fighting.\nThe completed prototype was found to perform favorably, though it was hard to produce.\nPlans for mass production were ultimately scrapped, leaving only eight units in existence.\nSome speculate that this was due to political reasons, such as the Earth Occupation Force's lack of authority and the fact that the homeland was already focusing on the development of a next-generation mainline MS.\nMost of the prototype units were assigned to special forces teams, while the others were used as testbeds for new weapons."
+  },
+  {
     "id": 110200001022000100,
     "value": "A machine that the Earth Federation Force created specifically to test the EXAM system that a Zeon Newtype research facility developed. It is built based on a Gundam Ground Type but has since been modified and enhanced.\nThe unit is designed with compatibility with the EXAM system in mind, around the concept of solo assaults and high-mobility combat. It is equipped with a variety of mobility-enhancing features, multiple built-in weapons, and has undergone extensive tuning for it to excel in close quarters.\nOnly the unit number 1 has the GM-type head from initial testing installed on it."
   },
@@ -1121,11 +1125,15 @@
   },
   {
     "id": 110200001114000200,
-    "value": "Developed for the personal use of Char Aznable, the leader of the revived Neo Zeon, this prototype mobile suit for Newtypes was the culmination of all Zeon mobile suit research and development.\nIt was therefore a true symbol of the reborn Neo Zeon forces.\nThis machine greedily incorporates concepts from various machines of the Gryps Conflict era.\nThough gigantic compared to other MS, it boasts high mobility and operating time thanks to its propellant tanks and movable vernier binders, which double as funnel pods.\nIt also has the flexibility to adapt to anti-MS combat.\nIt has incredible responsiveness due to its partial use of psycho-frame, a material that incorporates computer chips with basic psycommu functionality.\nIt is armed with a large mega beam rifle that can fire both focused and diffuse beams, and five funnels in each of its funnel pods.\nThis remarkable machine has an unusually high level of balance"
+    "value": "Developed for the personal use of Char Aznable, the leader of the revived Neo Zeon, this prototype mobile suit for Newtypes was the culmination of all Zeon mobile suit research and development.\nIt was therefore a true symbol of the reborn Neo Zeon forces.\nThis machine greedily incorporates concepts from various machines of the Gryps Conflict era.\nThough gigantic compared to other MS, it boasts high mobility and operating time thanks to its propellant tanks and movable vernier binders, which double as funnel pods.\nIt also has the flexibility to adapt to anti-MS combat.\nIt has incredible responsiveness due to its partial use of Psycho-Frame, a material that incorporates computer chips with basic psycommu functionality.\nIt is armed with a large mega beam rifle that can fire both focused and diffuse beams, and five funnels in each of its funnel pods.\nThis remarkable machine has an unusually high level of balance."
   },
   {
     "id": 110200001114000300,
     "value": "A prototype mobile armor for Newtypes developed by the revived Neo Zeon. It was created at the same time as the Sazabi, the personal mobile suit of Neo Zeon's leader.\nAll piloting and weapon controls are handed by psycommu. The machine can perform all-range attacks with funnels and the wired psycommu beam cannons on its shoulders, making it a prototype for the huge Newtype mobile armor Alpha Azieru."
+  },
+  {
+    "id": 110200001114000450,
+    "value": "This is one of the prototype plans for the Federation Forces Newtype mobile suit Nu Gundam, personally designed by Amuro Ray of One Year War fame. The special fin funnel weapons mounted on its back are evenly divided between the left and right sides, improved its lopsided mass balance. Because the Nu Gundam's mobility is unchanged after launching the fin funnels, this makes it possible to achieve higher performance."
   },
   {
     "id": 110200001114000600,
@@ -3822,6 +3830,10 @@
   {
     "id": 110200001850001800,
     "value": "Appeared in the PlayStation game SD Gundam G Generation F.\nA prototype unit developed on Axis as part of an effort to create a mobile suit version of the Elmeth.\nOwing to the limitations of contemporary technology, miniaturizing the Psycommu System proved difficult, and the mobile suit is enormous as a result."
+  },
+  {
+    "id": 110200001850002000,
+    "value": "This machine was developed by the Federation's Augusta Laboratory, based on Gundam Mk-III design data secretly obtained from Anaheim, in order to help the Titans oppose Karaba.\nThis was the first Gundam type created by the Augusta Laboratory, and it had high performance worthy of the name.\nIts most distinctive feature, however, was the experimental installation of a quasi-psycommu remote weapon called an incom.\nThe functional data obtained from this machine was later used in the development of the Gundam Mk-V."
   },
   {
     "id": 110200001850002100,
