@@ -6327,6 +6327,8 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1219000150', '1370005950',
     # Narrative pickup: RecommendCharacterId 1144000102
     '1144000550',
+    # Nightingale (EX): RecommendCharacterId 1110000202
+    '1114000250',
 })
 
 

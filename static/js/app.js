@@ -5088,8 +5088,8 @@ return/同部隊|部隊內|same squad|in the same squad|in your squad|for each (
 function _scTraitLineImpliesPerSquadUnitFlatStack(raw){
 const s=String(raw||'');
 if(!/same squad|in the same squad|同部隊|部隊內/i.test(s))return false;
-if(/for units bearing|units bearing the above tags|上述標籤|上述のタグ|いずれかのタグを持つ機体/i.test(s))return true;
-if(/each (?:squad )?unit|各機体|各部隊/i.test(s))return true;
+// "for each … bearing" stacks per qualifying unit; "for units bearing" is receiver scope only (flat N% aura).
+if(/for each (?:unit |)bearing|each unit bearing|for each squad unit bearing|each squad unit bearing|for each Unit bearing|各機体|各部隊/i.test(s))return true;
 return false;
 }
 function _scParseSquadLineStats(txt){
@@ -7410,6 +7410,9 @@ if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Crit
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身受到的損傷減輕(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.dmgTaken+=isUnmet?0:v;b.items.push({label:`Damage Taken -${v}%`,val:v,key:'dmgTaken',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身MP增加(\d+)/);
+if(m){const v=parseInt(m[1],10);b.items.push({label:`MP +${v} (starting vigor)`,val:v,key:'mpBonus',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate,locked:true})}
 m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:Ranged|Melee|Awaken)\s+(?:and\s+(?:Ranged|Melee|Awaken)\s+)?by\s+(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%/);
 if(m){const v=parseInt(m[m.length-1],10);b.atkPct+=isUnmet?0:v;b.items.push({label:`Attack Stat +${v}%`,val:v,key:'atkPct',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,locked:true,src})}
@@ -7460,6 +7463,7 @@ b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">${it.attackRoleOnly?'(Attack-role pilots only)':'(Conditional)'}</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
 let inclTag=it.key==='atkPct'&&!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:(it.key==='atkPct'&&it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Not in stats — tags unmet)</span>`:'');
 if(it.key==='awakenFloor900')inclTag=!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Pilot Awaken ≥ 900)</span>`;
+if(it.key==='mpBonus')inclTag=!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in auto vigor)</span>`:` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Tags unmet)</span>`;
 const alwaysTag=it.alwaysActive?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Always active)</span>`:'';
 const spTag=` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(SP pilot stats)</span>`;
 if(it.key==='atkPct'||it.locked){
@@ -7651,14 +7655,10 @@ return 900+(p>0?F(base*p/100):0);
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
 const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:5,level:'high'},{min:12,level:'max'},{min:18,level:'super'}];
-function _dcCalcStartingVigor(){
-const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
-if(!cd||!cd.abilities)return 'medium';
+function _dcAccumMpBonusFromResolved(resolved,ud,cd){
+if(!resolved)return 0;
 let totalMp=0;
-cd.abilities.forEach(ab=>{
-const rab=_dcResolveCharAbilityForMode(ab);
-if(!rab)return;
-(rab.details||[]).forEach(ln=>{
+(resolved.details||[]).forEach(ln=>{
 const txt=(ln.text||'').replace(/\n/g,' ');
 let m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身MP增加(\d+)/);
@@ -7669,7 +7669,22 @@ const hasCond=condGroups.length>0;
 const condMet=!hasCond||_dcAbilityCondContextMeetsGroups(ud,cd,condGroups);
 if(condMet)totalMp+=v;
 });
+return totalMp;
+}
+function _dcCalcStartingVigor(){
+const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
+if(!cd&&!ud)return 'medium';
+let totalMp=0;
+if(cd&&cd.abilities){
+cd.abilities.forEach(ab=>{
+totalMp+=_dcAccumMpBonusFromResolved(_dcResolveCharAbilityForMode(ab),ud,cd);
 });
+}
+if(ud&&ud.abilities&&!ud._manual){
+ud.abilities.forEach(ab=>{
+totalMp+=_dcAccumMpBonusFromResolved(_dcResolveUnitAbilityForMode(ab),ud,cd);
+});
+}
 let level='medium';
 for(const t of DC_MP_THRESHOLDS){if(totalMp>=t.min)level=t.level}
 return level;
