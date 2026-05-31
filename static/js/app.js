@@ -3566,7 +3566,9 @@ terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
 finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,exSquadAtkPctExplicitZero:!!S.dc.exSquadAtkPctExplicitZero,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,supportCounterAtk:!!S.dc.supportCounterAtk,_supportCounterAtkPct:S.dc._supportCounterAtkPct|0,supportCntPairSnap:(function(){const m=S.dc._supportCntAtkPairSnapBySlot;if(!m)return null;const i=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);const v=m[i];return v?String(v):null})(),applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,
 unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
-grandOffensiveBuff:!!S.dc.grandOffensiveBuff
+grandOffensiveBuff:!!S.dc.grandOffensiveBuff,
+_pilotDmgCritExplicit:!!S.dc._pilotDmgCritExplicit,
+_squadCondFlatAdApply:(function(){const w=document.getElementById('dcSquadCondFlatAdWrap');const cb=document.getElementById('dcSquadCondFlatAdApply');if(!w||w.style.display==='none'||!cb)return undefined;return !!cb.checked})()
 }));
 }
 function _dcWriteAttackerToDc(slot,supportSnapSlotIdx){
@@ -3592,6 +3594,7 @@ S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.c
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
+S.dc._pilotDmgCritExplicit=!!slot._pilotDmgCritExplicit;
 _dcSyncSquadCondEffectiveFromState();
 if(S.dc.atkCharData)S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
 }
@@ -3702,7 +3705,7 @@ const backup=_dcReadAttackerFromDc();
 _dcWriteAttackerToDc(slot,slotIdx);
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
 S.dc._wpnCritDmgUp=wc;
-if(!(slot.atkCharData&&slot.atkCharData._manual)){
+if(!(slot.atkCharData&&slot.atkCharData._manual)&&!slot._pilotDmgCritExplicit){
 const d=_dcDerivePilotDmgCritForSlotContext(slot,wc);
 S.dc.dmgIncrease=d.dmgIncrease;
 S.dc.critDmgUp=d.critDmgUp;
@@ -4248,9 +4251,29 @@ const lv=w&&w.levels&&w.levels[0]?w.levels[0]:{};
 const atkLbl=(w&&w.attack_types&&w.attack_types[0]&&w.attack_types[0].label)||'Ranged';
 return{un:u?u.name:'',cn:c?c.name:'',uHP:fg('HP'),uATK:fg('Attack'),uDEF:fg('Defense'),uMOB:fg('Mobility'),cRNG:fc('Ranged'),cMEL:fc('Melee'),cAWK:fc('Awaken'),cDEF:fc('Defense'),cREA:fc('Reaction'),wPow:lv.power||0,wAcc:lv.accuracy||0,wCrit:lv.critical||0,wMin:w?w.min_range||1:1,wMax:w?w.max_range||10:10,wAttr:_dcNormalizeManualWeaponAttrId(w&&w.attribute_id),wAtk:atkLbl,wEx:!!(w&&w.is_ex)};
 }
-function _dcPackShareState(){
+/** Snap live DOM + derived fields into every attacker slot before share encode (must run before compression). */
+function _dcFinalizeAllSlotsBeforeShare(){
 onDcParamChange();
 _dcSnapActiveAttackerToSlot();
+const prevIdx=S.dc.atkSlotIndex|0;
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+onDcParamChange();
+_dcSnapActiveAttackerToSlot();
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=S.dc.atkSlots[i];
+if(!sl||!sl.atkUnit||!sl.atkChar)continue;
+sl.dmgIncrease=sl.dmgIncrease|0;
+sl.critDmgUp=sl.critDmgUp|0;
+sl._pilotDmgCritExplicit=true;
+if(i===prevIdx){
+const flatCb=document.getElementById('dcSquadCondFlatAdApply');
+if(flatCb)sl._squadCondFlatAdApply=!!flatCb.checked;
+}
+S.dc.atkSlots[i]=sl;
+}
+}
+function _dcPackShareState(){
+_dcFinalizeAllSlotsBeforeShare();
 const slots=(S.dc.atkSlots||[]).map(sl=>sl?JSON.parse(JSON.stringify(sl)):null);
 const slotArr=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
@@ -4264,18 +4287,23 @@ o.atkP=_dcAtkManualPackFromSlot(sl);
 o.u=sl.atkUnit;
 o.c=sl.atkChar;
 if(sl.atkUnitData&&!sl.atkUnitData._manual){
-const _pbPack=_dcPickBestWeaponIndices(sl.atkUnitData);
-if(sl.wpnIdx!==_pbPack.wpnIdx||sl.wpnLv!==_pbPack.wpnLv){o.wi=sl.wpnIdx;o.wl=sl.wpnLv}
+o.wi=sl.wpnIdx|0;
+o.wl=sl.wpnLv|0;
+o.di=sl.dmgIncrease|0;
+o.cu=sl.critDmgUp|0;
+o.pdc=1;
+o.v=_dcNormMpLevel(sl.mpLevel||'medium');
+const skOn=sl._activeSkills&&typeof sl._activeSkills==='object'?Object.keys(sl._activeSkills).filter(k=>sl._activeSkills[k]):[];
+if(skOn.length)o.sk=skOn;
+if(sl._squadCondFlatAdApply===false)o.scfa=0;
+else if(sl._squadCondFlatAdApply===true)o.scfa=1;
 }
 }
 if(sl.lbTier!==3)o.lb=sl.lbTier;
 if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;
 if((sl.charStatMode||'normal')!=='normal')o.cm=sl.charStatMode;
-if((sl.mpLevel||'medium')!=='medium')o.v=sl.mpLevel;
 if((sl.terrainMode||'normal')!=='normal')o.t=sl.terrainMode;
 if(sl.finalWpnPow)o.fwp=sl.finalWpnPow;
-if(sl.dmgIncrease)o.di=sl.dmgIncrease;
-if(sl.critDmgUp)o.cu=sl.critDmgUp;
 if((sl.exSquadAtkPct|0)>0)o.exa=sl.exSquadAtkPct;else if(sl.exSquadAtkPctExplicitZero)o.exa=0;
 if(_dcSlotShouldPackSquadCond(sl))o.sqc=sl.squadCondPct|0;
 if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
@@ -4323,7 +4351,8 @@ if(S.dc.dtuSpecial)D.dts=S.dc.dtuSpecial;
 if(S.dc.defending)D.def=1;
 if(S.dc.shield)D.sh=1;
 if(S.dc.defNpcMapBonusesOn===false)D.nmb=0;
-const out={v:1,a:S.dc.atkSlotIndex|0,S:slotArr};
+const out={v:1,a:S.dc.atkSlotIndex|0,S:slotArr,lg:S.lang||'EN'};
+if(S.dc.multiPctCompare)out.mpc=1;
 if(Object.keys(D).length)out.D=D;
 if(_dtm==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData._manual&&!S.dc.defCharData._manual&&!S.dc.defUnitData.error&&!S.dc.defCharData.error){
 out.defDb=1;
@@ -4375,14 +4404,20 @@ if(o.lb!==undefined){const n=parseInt(o.lb,10);if(!Number.isNaN(n)&&n>=0)slot.lb
 }
 const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')slot.unitStatMode=um;
 const cm=o.cm;if(cm==='normal'||cm==='sp')slot.charStatMode=cm;
-if(o.v)slot.mpLevel=o.v;
+if(o.v)slot.mpLevel=_dcNormMpLevel(o.v);
 else slot._dcNeedAutoMp=true;
+if(o.pdc)slot._pilotDmgCritExplicit=true;
+if(Array.isArray(o.sk)&&o.sk.length){
+slot._activeSkills={};
+o.sk.forEach(sid=>{const k=String(sid||'').trim();if(k)slot._activeSkills[k]=true});
+}
+if(o.scfa!==undefined)slot._squadCondFlatAdApply=!(o.scfa===0||o.scfa==='0');
 if(o.t==='halved'){slot.terrainMode='halved';slot.terrain=50}
 else if(o.t){slot.terrainMode=o.t;slot.terrain=0}
 else{slot.terrainMode='normal';slot.terrain=0}
 if(o.fwp!==undefined){const n=parseInt(o.fwp,10);if(Number.isFinite(n))slot.finalWpnPow=n}
-if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n)){slot.dmgIncrease=n;slot._dmgIncreasePacked=n}}
-if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critDmgUp=n;slot._critDmgUpPacked=n}}
+if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n)){slot.dmgIncrease=n;slot._dmgIncreasePacked=n;slot._pilotDmgCritExplicit=true}}
+if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critDmgUp=n;slot._critDmgUpPacked=n;slot._pilotDmgCritExplicit=true}}
 if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n)){slot.exSquadAtkPct=Math.min(20,Math.max(0,n));slot.exSquadAtkPctExplicitZero=(n===0)}}else slot.exSquadAtkPctExplicitZero=false;
 if(o.sqc!==undefined){const n=parseInt(o.sqc,10);if(Number.isFinite(n))slot.squadCondPct=Math.max(0,n);else slot.squadCondPct=0}
 else if(!o.atkM)slot._dcSquadCondShareMissing=1;
@@ -4425,6 +4460,16 @@ if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
 return slot;
 }
 async function _dcApplyPackedShareState(obj){
+if(obj.lg&&obj.lg!==S.lang&&S.languages&&S.languages.includes(obj.lg)){
+S.lang=obj.lg;
+persistLang(obj.lg);
+syncUiLangDocumentAttr();
+try{document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(_){}
+applyLang();
+_dcStagesCache=null;
+_dcStagesFetchLang=null;
+}
+if(obj.mpc===1)S.dc.multiPctCompare=true;
 const D=obj.D||{};
 const preset=document.getElementById('dcDefModePreset');
 const custom=document.getElementById('dcDefModeCustom');
@@ -4519,6 +4564,12 @@ const _dmbEl=document.getElementById('dcDefNpcMapBonusesOn');if(_dmbEl)_dmbEl.ch
 _dcUpdateDefNpcMapBonusesToggleUi();
 const _asl=S.dc.atkSlots[S.dc.atkSlotIndex|0];
 if(_asl&&_asl.atkUnitData&&_asl.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_asl));
+_dcUpdateSquadConditionGroupVisibility();
+const _actSl=S.dc.atkSlots[S.dc.atkSlotIndex|0];
+if(_actSl&&_actSl._squadCondFlatAdApply!==undefined){
+const _scfaEl=document.getElementById('dcSquadCondFlatAdApply');
+if(_scfaEl)_scfaEl.checked=!!_actSl._squadCondFlatAdApply;
+}
 _dcSyncAtkModeUiFromState();
 }
 async function _dcCheckUrlParams(){
@@ -7531,6 +7582,7 @@ const ci=document.getElementById('dcCritDmgUp');
 if(di)di.value=dmgDealt;
 if(ci)ci.value=critDmg+wCrit;
 S.dc._integratedWpnCritDmgUp=wCrit;
+S.dc._pilotDmgCritExplicit=true;
 onDcParamChange();
 }
 function _dcRenderPilotSkills(area,cd){
@@ -8448,7 +8500,11 @@ _dcUpdateDefNpcMapBonusesToggleUi();
 _dcRefreshCalcDependentUi();
 if(S.dc.atkSlots&&Array.isArray(S.dc.atkSlots)&&S.dc.atkSlots.length){
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
-if(si<S.dc.atkSlots.length)S.dc.atkSlots[si]=_dcReadAttackerFromDc();
+if(si<S.dc.atkSlots.length){
+const slSnap=_dcReadAttackerFromDc();
+slSnap._pilotDmgCritExplicit=true;
+S.dc.atkSlots[si]=slSnap;
+}
 }
 if(_sqPanelChg&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)renderDcAtkUnit();
 else _dcRefreshDcUnitAtkExOnly();
@@ -9650,8 +9706,6 @@ h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
 body.innerHTML=h+`<div class="dc-battle-stats-footer"><button type="button" class="dc-ctrl-btn dc-battle-stats-copy-btn" onclick="copyDcResultText()">📋 Copy Results</button><div id="dcBattleStatsCopyMsg" class="dc-battle-stats-copy-msg" aria-live="polite"></div></div>`;
 }
 async function _dcBuildShareUrl(){
-onDcParamChange();
-_dcSnapActiveAttackerToSlot();
 const packed=_dcPackShareState();
 const b64=await _dcEncodeSharePayload(packed);
 if(!b64)return'';
