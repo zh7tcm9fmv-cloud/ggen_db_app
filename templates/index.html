@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ggen-content-notices="manual">
 <head>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -79,7 +79,7 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .alipayhk-modal-qr{width:100%;max-width:340px;height:auto;display:block;margin:0 auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.35)}
 .alipayhk-modal-hint{margin:14px 0 0;font-size:14px;color:var(--text-muted);line-height:1.45}
 .lang-selector{position:relative;display:inline-block}.lang-btn{padding:4px 10px 4px 11px;background:linear-gradient(180deg,rgba(30,41,68,.95) 0%,rgba(13,19,33,.98) 100%);border:1px solid rgba(74,144,217,.5);border-radius:999px;color:var(--text-primary);font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:box-shadow .2s ease,border-color .2s ease,background .2s ease;display:inline-flex;align-items:center;justify-content:center;gap:4px;box-sizing:border-box;min-width:3.25em;box-shadow:0 0 0 1px rgba(0,212,255,.1),inset 0 1px 0 rgba(255,255,255,.07)}.lang-btn:hover{border-color:rgba(0,212,255,.55);box-shadow:0 0 0 1px rgba(0,212,255,.22),0 0 14px rgba(74,144,217,.22),inset 0 1px 0 rgba(255,255,255,.09)}.lang-btn:focus-visible{outline:2px solid rgba(0,212,255,.45);outline-offset:2px}.lang-btn-caret{display:inline-block;font-size:9px;line-height:1;opacity:.85;margin-left:1px;transform:translateY(1px)}
-.whats-new-btn{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(0,40,80,.35);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);max-width:100%}
+.whats-new-btn{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(0,40,80,.35);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);max-width:100%;position:relative}
 .whats-new-btn:hover{border-color:var(--accent-cyan);color:var(--text-primary);background:rgba(0,212,255,.08)}
 .whats-new-ic{width:20px;height:20px;object-fit:contain;flex-shrink:0}
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
@@ -3009,6 +3009,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_use_cdn if game_images_use_cdn is defined else false)) | tojson }};
 </script>
+<script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/app.js') }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>

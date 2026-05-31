@@ -10121,14 +10121,14 @@ def banner_timeline_page():
 
 @app.route('/about')
 def about_page():
-    r = make_response(render_template('about.html'))
+    r = make_response(render_template('about.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
 
 
 @app.route('/privacy-policy')
 def privacy_policy_page():
-    r = make_response(render_template('privacy.html'))
+    r = make_response(render_template('privacy.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
 
@@ -10142,7 +10142,7 @@ FEEDBACK_FORM_URL = (
 
 @app.route('/contact')
 def contact_page():
-    r = make_response(render_template('contact.html', feedback_form_url=FEEDBACK_FORM_URL))
+    r = make_response(render_template('contact.html', feedback_form_url=FEEDBACK_FORM_URL, image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
 
@@ -10268,6 +10268,116 @@ def api_game_news_status():
     r = jsonify(payload)
     r.headers['Cache-Control'] = 'public, max-age=60'
     return r
+
+
+def _whats_new_pending_signature():
+    """Language-neutral signature of pending master-data changes (for unread notices)."""
+    snap = load_whats_new_snapshot()
+    if not snap:
+        return [], ''
+    try:
+        cur = build_whats_new_snapshot_dict_from_master_dir(BASE_DIR)
+    except Exception:
+        cur = serialize_whats_new_snapshot()
+    if not cur:
+        return [], ''
+    old_units = set(snap.get('units') or [])
+    old_chars = set(snap.get('characters') or [])
+    sig = []
+    old_ua = snap.get('unit_abilities') or {}
+    new_ua = cur.get('unit_abilities') or {}
+    for uid in sorted(set(old_ua.keys()) | set(new_ua.keys())):
+        if uid not in old_units:
+            continue
+        if (old_ua.get(uid) or []) != (new_ua.get(uid) or []):
+            sig.append(['ua', uid])
+    old_uw = snap.get('unit_weapons') or {}
+    new_uw = cur.get('unit_weapons') or {}
+    for uid in sorted(set(old_uw.keys()) | set(new_uw.keys())):
+        if uid not in old_units:
+            continue
+        if (old_uw.get(uid) or []) != (new_uw.get(uid) or []):
+            sig.append(['uw', uid])
+    old_ca = snap.get('char_abilities') or {}
+    new_ca = cur.get('char_abilities') or {}
+    for cid in sorted(set(old_ca.keys()) | set(new_ca.keys())):
+        if cid not in old_chars:
+            continue
+        if (old_ca.get(cid) or []) != (new_ca.get(cid) or []):
+            sig.append(['ca', cid])
+    nu = cur.get('units') or []
+    nc = cur.get('characters') or []
+    nop = cur.get('option_parts') or []
+    for uid in sorted(set(nu) - old_units):
+        sig.append(['nu', uid])
+    for cid in sorted(set(nc) - old_chars):
+        sig.append(['nc', cid])
+    old_op = set(snap.get('option_parts') or [])
+    for oid in sorted(set(nop) - old_op):
+        sig.append(['nop', oid])
+    date_str = _whats_new_master_data_date()
+    content_fp = ''
+    if sig:
+        try:
+            raw = json.dumps({'d': date_str, 's': sig}, sort_keys=True, separators=(',', ':')).encode('utf-8')
+            content_fp = hashlib.sha256(raw).hexdigest()[:32]
+        except (TypeError, ValueError):
+            content_fp = ''
+    return sig, content_fp
+
+
+def _whats_new_status_payload(last_seen_fp=''):
+    sig, content_fp = _whats_new_pending_signature()
+    seen_fp = (last_seen_fp or '').strip()
+    has_new = bool(sig) and (not seen_fp or content_fp != seen_fp)
+    return {
+        'has_new': has_new,
+        'content_fp': content_fp,
+        'change_count': len(sig),
+        'master_data_date': _whats_new_master_data_date(),
+    }
+
+
+@app.route('/api/whats_new/status')
+def api_whats_new_status():
+    """Unread What's New indicator (pending master-data diff since snapshot)."""
+    last_seen_fp = request.args.get('last_seen_fp', '')
+    payload = _whats_new_status_payload(last_seen_fp)
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=120'
+    return r
+
+
+def _latest_release_content_status_payload(last_seen_at=0, last_seen_fp=''):
+    skip_sched = {'0', '9999990001'}
+    ws = jst_three_month_window_start_ms()
+    parts = []
+    latest_at = 0
+    for sid, sm in schedule_start_ms_by_id.items():
+        if sid in skip_sched:
+            continue
+        if ws > 0 and sm < ws:
+            continue
+        parts.append((str(sid), int(sm or 0)))
+        if sm and sm > latest_at:
+            latest_at = int(sm)
+    parts.sort()
+    content_fp = ''
+    if parts:
+        raw = ','.join('%s:%d' % (a, b) for a, b in parts).encode('utf-8')
+        content_fp = hashlib.sha256(raw).hexdigest()[:32]
+    try:
+        seen_at = int(last_seen_at or 0)
+    except (TypeError, ValueError):
+        seen_at = 0
+    seen_fp = (last_seen_fp or '').strip()
+    has_new = bool(content_fp) and (content_fp != seen_fp or latest_at > seen_at)
+    return {
+        'latest_at': latest_at,
+        'content_fp': content_fp,
+        'schedule_count': len(parts),
+        'has_new': has_new,
+    }
 
 
 _LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
@@ -13225,19 +13335,27 @@ def api_jp_mode_unlock():
 
 @app.route('/api/latest_release/status')
 def api_latest_release_status():
-    """Whether Latest Release requires a password and if this session is unlocked."""
+    """Latest Release session lock state plus unread recent-gasha indicator."""
+    last_seen = request.args.get('last_seen_at', '0')
+    last_seen_fp = request.args.get('last_seen_fp', '')
+    content = _latest_release_content_status_payload(last_seen, last_seen_fp)
     if not LATEST_RELEASE_PASSWORD:
-        return jsonify({
+        payload = {
             'password_required': False,
             'unlocked': True,
             'test_lock_schedule_id': LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID or None,
-        })
-    return jsonify({
-        'password_required': True,
-        'unlocked': session.get('lr_unlocked') is True,
-        # Lets you confirm the server loaded LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID from .env (not secret).
-        'test_lock_schedule_id': LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID or None,
-    })
+        }
+    else:
+        payload = {
+            'password_required': True,
+            'unlocked': session.get('lr_unlocked') is True,
+            # Lets you confirm the server loaded LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID from .env (not secret).
+            'test_lock_schedule_id': LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID or None,
+        }
+    payload.update(content)
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=120'
+    return r
 
 
 @app.route('/api/latest_release/unlock', methods=['POST'])

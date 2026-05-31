@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{% block title %}GGen Database{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/content_notices.css') }}">
 <style>
   :root { color-scheme: dark; }
   body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: #0b1220; color: #e2e8f0; margin: 0; line-height: 1.65; }
@@ -27,12 +28,12 @@
 <body>
 <div class="wrap">
 {% block content %}{% endblock %}
-<p class="back"><a href="/">← Back to GGen Database</a></p>
+<p class="back"><a class="ui-notice-anchor" href="/">← Back to GGen Database</a></p>
 <footer class="site-footer-links" role="contentinfo">
 <nav aria-label="Site information">
 <a href="/about">About</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>
-<a href="/game-news">Game News</a>
+<a class="ui-notice-anchor" href="/game-news">Game News</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>
 <a href="/privacy-policy">Privacy Policy</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>
@@ -41,5 +42,10 @@
 <p class="site-footer-disclaimer">This site is not affiliated with Bandai Namco Entertainment Inc. All game content, images, and materials are trademarks and copyrights of Bandai Namco Entertainment Inc. and its licensors.</p>
 </footer>
 </div>
+<script>
+window.__GGEN_IMAGE_CDN__ = '{{ image_cdn | default("", true) }}';
+window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else false) | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 </body>
 </html>
