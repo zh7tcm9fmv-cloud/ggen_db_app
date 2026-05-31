@@ -204,6 +204,60 @@
     "AttentionResourceId": "strategy_hint_0005"
   },
   {
+    "MapNpcId": 902000001902000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5112301,
+    "AttentionResourceId": "strategy_hint_0004"
+  },
+  {
+    "MapNpcId": 902000001902000002,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118801,
+    "AttentionResourceId": "strategy_hint_0001"
+  },
+  {
+    "MapNpcId": 902000001902000003,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000004,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000005,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000006,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000007,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000008,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902000001902000025,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
     "MapNpcId": 902100000102000021,
     "StrategyHintTypeIndex": 4,
     "StrategyHintTargetValue": 6102604,
@@ -394,6 +448,60 @@
     "StrategyHintTypeIndex": 4,
     "StrategyHintTargetValue": 6117702,
     "AttentionResourceId": "strategy_hint_0005"
+  },
+  {
+    "MapNpcId": 902100001902000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5112301,
+    "AttentionResourceId": "strategy_hint_0004"
+  },
+  {
+    "MapNpcId": 902100001902000002,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118801,
+    "AttentionResourceId": "strategy_hint_0001"
+  },
+  {
+    "MapNpcId": 902100001902000003,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000004,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000005,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000006,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000007,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000008,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902100001902000025,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
   },
   {
     "MapNpcId": 902200000102000021,
@@ -606,6 +714,60 @@
     "AttentionResourceId": "strategy_hint_0005"
   },
   {
+    "MapNpcId": 902200001902000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5112301,
+    "AttentionResourceId": "strategy_hint_0004"
+  },
+  {
+    "MapNpcId": 902200001902000002,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118801,
+    "AttentionResourceId": "strategy_hint_0001"
+  },
+  {
+    "MapNpcId": 902200001902000003,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000004,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000005,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000006,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000007,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000008,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902200001902000025,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
     "MapNpcId": 902300000102000021,
     "StrategyHintTypeIndex": 4,
     "StrategyHintTargetValue": 6102606,
@@ -814,6 +976,60 @@
     "StrategyHintTypeIndex": 4,
     "StrategyHintTargetValue": 6117702,
     "AttentionResourceId": "strategy_hint_0005"
+  },
+  {
+    "MapNpcId": 902300001902000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5112301,
+    "AttentionResourceId": "strategy_hint_0004"
+  },
+  {
+    "MapNpcId": 902300001902000002,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118801,
+    "AttentionResourceId": "strategy_hint_0001"
+  },
+  {
+    "MapNpcId": 902300001902000003,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000004,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118701,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000005,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000006,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000007,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000008,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 902300001902000025,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6118901,
+    "AttentionResourceId": "strategy_hint_0000"
   },
   {
     "MapNpcId": 905000000502000011,

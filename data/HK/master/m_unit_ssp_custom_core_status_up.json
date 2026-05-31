@@ -330,14 +330,29 @@
     "EffectValue": 1
   },
   {
+    "Id": 102100010002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 102100011002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 2
   },
   {
+    "Id": 102100020002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 102100021002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 2
+  },
+  {
+    "Id": 102100040002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
   },
   {
     "Id": 102200010002,

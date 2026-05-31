@@ -103,5 +103,10 @@
     "Id": 21,
     "WeaponAttributeTypes": "1,2",
     "AttackAttributeTypes": ""
+  },
+  {
+    "Id": 22,
+    "WeaponAttributeTypes": "1",
+    "AttackAttributeTypes": "1"
   }
 ]

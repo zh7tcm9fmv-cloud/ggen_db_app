@@ -86,5 +86,13 @@
     "ScheduleId": 2605201302,
     "MaxPhaseNumber": 7,
     "ReleaseConditionStageId": 3300703
+  },
+  {
+    "Id": 200013,
+    "ConsumeItemId": 222000130002,
+    "ConsumeItemCount": 5,
+    "ScheduleId": 2605501302,
+    "MaxPhaseNumber": 7,
+    "ReleaseConditionStageId": 2100702
   }
 ]

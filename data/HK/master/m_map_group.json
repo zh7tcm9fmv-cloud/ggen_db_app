@@ -252,6 +252,13 @@
     "MapGroupTypeIndex": 0
   },
   {
+    "Id": 210008001020000001,
+    "MapStageId": 21000800102000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 219000500202000001,
     "MapStageId": 219000500202000000,
     "GroupNumber": 1,
@@ -1127,6 +1134,13 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 9020000019020000001,
+    "MapStageId": 902000001902000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 9021000001020000001,
     "MapStageId": 902100000102000000,
     "GroupNumber": 1,
@@ -1143,6 +1157,13 @@
   {
     "Id": 9021000005020000001,
     "MapStageId": 902100000502000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 9021000019020000001,
+    "MapStageId": 902100001902000000,
     "GroupNumber": 1,
     "TeamNumber": 1,
     "MapGroupTypeIndex": 2
@@ -1169,6 +1190,13 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 9022000019020000001,
+    "MapStageId": 902200001902000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 9023000001020000001,
     "MapStageId": 902300000102000000,
     "GroupNumber": 1,
@@ -1185,6 +1213,13 @@
   {
     "Id": 9023000005020000001,
     "MapStageId": 902300000502000000,
+    "GroupNumber": 1,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 9023000019020000001,
+    "MapStageId": 902300001902000000,
     "GroupNumber": 1,
     "TeamNumber": 1,
     "MapGroupTypeIndex": 2

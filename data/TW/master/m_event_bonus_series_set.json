@@ -124,5 +124,11 @@
     "EventBonusRaritySetId": 20001222,
     "LimitBreakBonusItemDropUpRatePercent": 0,
     "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "Id": 20001309,
+    "EventBonusRaritySetId": 20001309,
+    "LimitBreakBonusItemDropUpRatePercent": 0,
+    "LimitBreakBonusDamageUpRatePercent": 0
   }
 ]

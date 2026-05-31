@@ -2742,6 +2742,12 @@
     "DamagedEffectId": "ef_mpd_0023_000_aadeshot"
   },
   {
+    "Id": 340051,
+    "WeaponEffectPrefabPairSetId": 340051,
+    "WeaponEffectId": "ef_mpa_0024_002_funnel_nugundam_double",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
     "Id": 350001,
     "WeaponEffectPrefabPairSetId": 350001,
     "WeaponEffectId": "ef_mpa_0025_002_funnel_newtypeusegmjuggler",
@@ -2956,6 +2962,12 @@
     "WeaponEffectPrefabPairSetId": 350036,
     "WeaponEffectId": "ef_mpa_0025_002_funnel_narrative_b",
     "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 350037,
+    "WeaponEffectPrefabPairSetId": 350037,
+    "WeaponEffectId": "ef_mpa_0025_002_funnel_mkiv",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
     "Id": 360001,
@@ -4020,10 +4032,34 @@
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
+    "Id": 900182,
+    "WeaponEffectPrefabPairSetId": 900182,
+    "WeaponEffectId": "ef_mpw_061_00_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900183,
+    "WeaponEffectPrefabPairSetId": 900183,
+    "WeaponEffectId": "ef_mpw_080_11_funnel_nightingale",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900184,
+    "WeaponEffectPrefabPairSetId": 900184,
+    "WeaponEffectId": "ef_mpw_080_12_funnel_nugundam_double",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
     "Id": 900185,
     "WeaponEffectPrefabPairSetId": 900180,
     "WeaponEffectId": "ef_mpa_094_01_medusaarrow",
     "DamagedEffectId": "ef_mpd_094_01_medusaarrow"
+  },
+  {
+    "Id": 900186,
+    "WeaponEffectPrefabPairSetId": 900186,
+    "WeaponEffectId": "ef_mpw_004_05_threelinemegabeam_nightingale",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
     "Id": 8000009,
@@ -7820,6 +7856,168 @@
   {
     "Id": 8006811,
     "WeaponEffectPrefabPairSetId": 80068,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8006901,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_aura_nightingale",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006902,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_beamrifle_nightingale",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 8006903,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_nightingale",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 8006904,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_nightingale",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_nightingale"
+  },
+  {
+    "Id": 8006905,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_nightingale_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006906,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_nightingale_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006907,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_nightingale_ex3",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006908,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberpose_nightingale",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006909,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_nightingale_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_nightingale_ex1"
+  },
+  {
+    "Id": 8006910,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_nightingale_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_nightingale_ex2"
+  },
+  {
+    "Id": 8006911,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_psychoframe_nightingale",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006912,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_lastfunnelhit",
+    "DamagedEffectId": "ef_mpd_1000_000_lastfunnelhit"
+  },
+  {
+    "Id": 8006913,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_nightingale",
+    "DamagedEffectId": "ef_mpd_1000_000_finishbeam_nightingale"
+  },
+  {
+    "Id": 8006914,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_bluebeam_nightingale",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8006915,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_lasthit_nightingale",
+    "DamagedEffectId": "ef_mpd_1000_000_lasthit_nightingale"
+  },
+  {
+    "Id": 8006916,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_bluebeamhit_nightingale",
+    "DamagedEffectId": "ef_mpd_1000_000_bluebeamhit_nightingale"
+  },
+  {
+    "Id": 8006917,
+    "WeaponEffectPrefabPairSetId": 80069,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007001,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_beamrifle_nugundam_ex1",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 8007002,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_beamrifle_nugundam_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamrifle_nugundam_ex2"
+  },
+  {
+    "Id": 8007003,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_missile_nugundam"
+  },
+  {
+    "Id": 8007004,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_nugundam",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007005,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_spark_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_spark_nugundam"
+  },
+  {
+    "Id": 8007006,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_bazooka_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_bazooka"
+  },
+  {
+    "Id": 8007007,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_bomb_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_bomb_nugundam"
+  },
+  {
+    "Id": 8007008,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_finalbeam_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_finalbeam_nugundam"
+  },
+  {
+    "Id": 8007009,
+    "WeaponEffectPrefabPairSetId": 80070,
+    "WeaponEffectId": "ef_mpa_1000_000_beamriflehit_nugundam",
+    "DamagedEffectId": "ef_mpd_1000_000_beamriflehit_nugundam"
+  },
+  {
+    "Id": 8007010,
+    "WeaponEffectPrefabPairSetId": 80070,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
   },

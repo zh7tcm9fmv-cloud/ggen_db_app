@@ -864,6 +864,42 @@
     "IsUsingMaxTraitValue": false
   },
   {
+    "Id": 111000035000,
+    "SupporterLeaderSkillContentSetId": 111000035000,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100250,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 111000035001,
+    "SupporterLeaderSkillContentSetId": 111000035001,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100300,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 111000035002,
+    "SupporterLeaderSkillContentSetId": 111000035002,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100330,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 111000035003,
+    "SupporterLeaderSkillContentSetId": 111000035003,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100360,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
     "Id": 112500015001,
     "SupporterLeaderSkillContentSetId": 112500015001,
     "NameLanguageId": 0,

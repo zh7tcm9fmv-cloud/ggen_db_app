@@ -1,5 +1,19 @@
 [
   {
+    "Id": 111400045000,
+    "NameLanguageId": 141300111400045000,
+    "DescriptionLanguageId": 141400111400045000,
+    "ResourceId": "trait_11630103",
+    "StartEffectResourceId": "ef_mpc_0093_01_durableshield",
+    "ActiveEffectResourceId": "ef_mpc_0093_01_durableshield_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 1,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 3,
+    "MultiTargetCount": 1
+  },
+  {
     "Id": 114400055000,
     "NameLanguageId": 141300114400055000,
     "DescriptionLanguageId": 141400114400055000,

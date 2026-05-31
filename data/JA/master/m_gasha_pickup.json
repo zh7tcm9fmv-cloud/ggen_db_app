@@ -1948,5 +1948,35 @@
     "GashaId": 2605400403,
     "SortOrder": 8,
     "GashaContentDetailId": 21300000250
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 1,
+    "GashaContentDetailId": 11114000250
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 2,
+    "GashaContentDetailId": 11114000450
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 3,
+    "GashaContentDetailId": 21110000350
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 4,
+    "GashaContentDetailId": 11021000110
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 5,
+    "GashaContentDetailId": 11021000210
+  },
+  {
+    "GashaId": 2605500301,
+    "SortOrder": 6,
+    "GashaContentDetailId": 21110000250
   }
 ]

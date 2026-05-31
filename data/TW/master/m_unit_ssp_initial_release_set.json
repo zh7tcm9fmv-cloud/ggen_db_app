@@ -564,6 +564,18 @@
     "TargetId": 101700120001
   },
   {
+    "Id": 1021000100,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 102100010001
+  },
+  {
+    "Id": 1021000200,
+    "SortOrder": 1,
+    "ReleaseFunctionTypeIndex": 6,
+    "TargetId": 102100020001
+  },
+  {
     "Id": 1022000100,
     "SortOrder": 1,
     "ReleaseFunctionTypeIndex": 6,

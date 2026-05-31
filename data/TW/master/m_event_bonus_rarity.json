@@ -870,5 +870,45 @@
     "DamageUpRatePercent": 10,
     "LimitBreakBonusItemDropUpRatePercent": 2,
     "LimitBreakBonusDamageUpRatePercent": 2
+  },
+  {
+    "EventBonusRaritySetId": 20001309,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001309,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001309,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 5,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001309,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 7,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 1
+  },
+  {
+    "EventBonusRaritySetId": 20001309,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 10,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2
   }
 ]
