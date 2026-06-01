@@ -9,10 +9,16 @@
     { key: 'page_speed', titleKey: 'feedback_q5_title', promptKey: 'feedback_q5_prompt', loKey: 'feedback_q5_lo', hiKey: 'feedback_q5_hi' },
     { key: 'mobile_experience', titleKey: 'feedback_q6_title', promptKey: 'feedback_q6_prompt', loKey: 'feedback_q6_lo', hiKey: 'feedback_q6_hi' },
     { key: 'functionality', titleKey: 'feedback_q7_title', promptKey: 'feedback_q7_prompt', loKey: 'feedback_q7_lo', hiKey: 'feedback_q7_hi' },
-    { key: 'trust', titleKey: 'feedback_q8_title', promptKey: 'feedback_q8_prompt', loKey: 'feedback_q8_lo', hiKey: 'feedback_q8_hi' }
+    { key: 'tool_usage', titleKey: 'feedback_q8_title', promptKey: 'feedback_q8_prompt', loKey: 'feedback_q8_lo', hiKey: 'feedback_q8_hi' }
   ];
 
-  var EN_FALLBACK = {
+  var LANG_STORAGE_KEY = 'ggen_lang';
+  var _pageLang = null;
+  var _pageLanguages = ['EN', 'TW', 'HK', 'JP'];
+
+  var EN_FALLBACK = (typeof global.GGEN_FEEDBACK_I18N !== 'undefined' && global.GGEN_FEEDBACK_I18N.EN)
+    ? global.GGEN_FEEDBACK_I18N.EN
+    : {
     feedback_title: 'How was your experience on our website?',
     feedback_intro: 'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Database.',
     feedback_q1_title: 'Overall Experience',
@@ -43,10 +49,10 @@
     feedback_q7_prompt: 'Did you encounter any bugs, broken links, or technical issues?',
     feedback_q7_lo: 'Many issues',
     feedback_q7_hi: 'No issues at all',
-    feedback_q8_title: 'Trust & Professionalism',
-    feedback_q8_prompt: 'How trustworthy and professional did the website feel?',
-    feedback_q8_lo: 'Not at all',
-    feedback_q8_hi: 'Extremely',
+    feedback_q8_title: 'Damage Simulator & Team Builder',
+    feedback_q8_prompt: 'How often do you use the Damage Simulator or Team Builder?',
+    feedback_q8_lo: 'Never',
+    feedback_q8_hi: 'Very often',
     feedback_device_label: 'I visited on',
     feedback_device_desktop: 'Desktop',
     feedback_device_mobile: 'Mobile',
@@ -63,12 +69,47 @@
     feedback_close: 'Close'
   };
 
+  function normalizeLang(code) {
+    var l = String(code || 'EN').trim().toUpperCase();
+    if (l === 'JA') return 'JP';
+    return l;
+  }
+
+  function readPersistedLang() {
+    try {
+      var s = localStorage.getItem(LANG_STORAGE_KEY);
+      return s && String(s).trim() ? normalizeLang(s) : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function persistPageLang(l) {
+    try {
+      if (l) localStorage.setItem(LANG_STORAGE_KEY, l === 'JP' ? 'JA' : String(l));
+    } catch (e) {}
+  }
+
+  function currentLang() {
+    if (global.S && global.S.lang) return normalizeLang(global.S.lang);
+    if (_pageLang) return _pageLang;
+    return readPersistedLang() || 'EN';
+  }
+
+  function feedbackPack(lang) {
+    var packs = global.GGEN_FEEDBACK_I18N || {};
+    var l = normalizeLang(lang);
+    if (l === 'JP') return packs.JP || packs.EN || EN_FALLBACK;
+    return packs[l] || packs.EN || EN_FALLBACK;
+  }
+
   function tr(key) {
     if (typeof global.t === 'function') {
       var v = global.t(key);
       if (v && v !== key) return v;
     }
-    return EN_FALLBACK[key] || key;
+    var pack = feedbackPack(currentLang());
+    return (pack && pack[key]) || EN_FALLBACK[key] || key;
   }
 
   function esc(s) {
@@ -154,7 +195,7 @@
       liked: (form.querySelector('[name="fb_liked"]') || {}).value || '',
       improve: (form.querySelector('[name="fb_improve"]') || {}).value || '',
       website: (form.querySelector('[name="fb_website"]') || {}).value || '',
-      lang: (global.S && global.S.lang) ? global.S.lang : 'EN',
+      lang: currentLang() === 'JP' ? 'JA' : currentLang(),
       page_url: global.location ? global.location.pathname + global.location.search : ''
     };
   }
@@ -280,6 +321,106 @@
     return wireForm(container);
   }
 
+  function applyContactPageShell() {
+    var title = document.getElementById('siteFeedbackPageTitle');
+    var intro = document.getElementById('siteFeedbackPageIntro');
+    if (title) title.textContent = tr('feedback_page_title');
+    if (intro) intro.textContent = tr('feedback_page_intro');
+    document.title = tr('feedback_page_doc_title');
+    var htmlLang = currentLang();
+    if (htmlLang === 'TW' || htmlLang === 'HK') document.documentElement.lang = 'zh-Hant';
+    else if (htmlLang === 'JP') document.documentElement.lang = 'ja';
+    else document.documentElement.lang = 'en';
+  }
+
+  function renderContactLangDropdown() {
+    var dd = document.getElementById('siteFeedbackLangDropdown');
+    if (!dd) return;
+    var lang = currentLang();
+    dd.innerHTML = _pageLanguages.map(function (l) {
+      return '<div class="site-feedback-lang-option' + (l === lang ? ' selected' : '') + '" data-lang="' + l + '" role="option">' + l + '</div>';
+    }).join('');
+  }
+
+  function setContactLang(l) {
+    l = normalizeLang(l);
+    if (_pageLanguages.indexOf(l) < 0) return;
+    _pageLang = l;
+    persistPageLang(l);
+    var lab = document.getElementById('siteFeedbackLangLabel');
+    if (lab) lab.textContent = l;
+    var dd = document.getElementById('siteFeedbackLangDropdown');
+    if (dd) dd.classList.remove('active');
+    applyContactPageShell();
+    var root = document.getElementById('siteFeedbackRoot');
+    if (root) refreshLabels(root);
+    renderContactLangDropdown();
+  }
+
+  function wireContactLangUi() {
+    var btn = document.getElementById('siteFeedbackLangBtn');
+    var dd = document.getElementById('siteFeedbackLangDropdown');
+    if (!btn || !dd || btn.dataset.fbLangWired === '1') return;
+    btn.dataset.fbLangWired = '1';
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      dd.classList.toggle('active');
+    });
+    dd.addEventListener('click', function (ev) {
+      var opt = ev.target.closest('[data-lang]');
+      if (!opt) return;
+      setContactLang(opt.getAttribute('data-lang'));
+    });
+    document.addEventListener('click', function (ev) {
+      if (!ev.target.closest('.site-feedback-lang-selector')) dd.classList.remove('active');
+    });
+  }
+
+  async function initContactPageLang() {
+    var root = document.getElementById('siteFeedbackRoot');
+    if (!root) return;
+    var saved = readPersistedLang();
+    try {
+      var r = await fetch('/api/languages');
+      var d = await r.json();
+      var langs = (d && d.languages) || ['EN'];
+      _pageLanguages = langs.map(function (l) {
+        var code = normalizeLang(l);
+        return code;
+      }).filter(function (l, i, a) { return l && a.indexOf(l) === i; });
+      var def = normalizeLang(d.default || 'EN');
+      _pageLang = saved && _pageLanguages.indexOf(saved) >= 0 ? saved : (_pageLanguages.indexOf(def) >= 0 ? def : _pageLanguages[0] || 'EN');
+    } catch (e) {
+      _pageLang = saved && _pageLanguages.indexOf(saved) >= 0 ? saved : 'EN';
+    }
+    var lab = document.getElementById('siteFeedbackLangLabel');
+    if (lab) lab.textContent = currentLang();
+    renderContactLangDropdown();
+    wireContactLangUi();
+    applyContactPageShell();
+  }
+
+  function refreshModalChrome() {
+    var title = document.getElementById('siteFeedbackTitleEl');
+    var closeBtn = document.getElementById('siteFeedbackCloseBtn');
+    if (title) {
+      title.innerHTML = '<img class="whats-new-ic" src="' + (typeof global.imgUrl === 'function' ? global.imgUrl('/static/images/UI/UI_Common_MenuIcon_Contact.webp') : '/static/images/UI/UI_Common_MenuIcon_Contact.webp') + '" alt=""> <span>' + esc(tr('feedback_title')) + '</span>';
+    }
+    if (closeBtn) closeBtn.setAttribute('aria-label', tr('feedback_close'));
+  }
+
+  function onLangChange() {
+    applyContactPageShell();
+    var ov = document.getElementById('siteFeedbackOverlay');
+    var body = document.getElementById('siteFeedbackBody');
+    if (ov && ov.classList.contains('active') && body) {
+      refreshModalChrome();
+      refreshLabels(body);
+    }
+    var root = document.getElementById('siteFeedbackRoot');
+    if (root && root.querySelector('#siteFeedbackForm')) refreshLabels(root);
+  }
+
   function refreshLabels(root) {
     if (!root) return;
     root.innerHTML = formHtml();
@@ -289,18 +430,13 @@
   function openModal() {
     var ov = document.getElementById('siteFeedbackOverlay');
     var body = document.getElementById('siteFeedbackBody');
-    var title = document.getElementById('siteFeedbackTitleEl');
-    var closeBtn = document.getElementById('siteFeedbackCloseBtn');
     if (!ov || !body) {
-      global.location.href = '/contact';
+      global.location.href = '/feedback';
       return;
     }
     var langDd = document.getElementById('langDropdown');
     if (langDd) langDd.classList.remove('active');
-    if (title) {
-      title.innerHTML = '<img class="whats-new-ic" src="' + (typeof global.imgUrl === 'function' ? global.imgUrl('/static/images/UI/UI_Common_MenuIcon_Contact.webp') : '/static/images/UI/UI_Common_MenuIcon_Contact.webp') + '" alt=""> <span>' + esc(tr('feedback_title')) + '</span>';
-    }
-    if (closeBtn) closeBtn.setAttribute('aria-label', tr('feedback_close'));
+    refreshModalChrome();
     renderInto(body);
     ov.classList.add('active');
     ov.setAttribute('aria-hidden', 'false');
@@ -317,7 +453,11 @@
 
   function initPageRoot() {
     var root = document.getElementById('siteFeedbackRoot');
-    if (root) renderInto(root);
+    if (root) {
+      initContactPageLang().then(function () {
+        renderInto(root);
+      });
+    }
   }
 
   global.GgenSiteFeedback = {
@@ -325,7 +465,8 @@
     refreshLabels: refreshLabels,
     openModal: openModal,
     closeModal: closeModal,
-    initPageRoot: initPageRoot
+    initPageRoot: initPageRoot,
+    onLangChange: onLangChange
   };
 
   global.openSupportFeedback = openModal;

@@ -5,11 +5,18 @@
 <style>.wrap{max-width:min(56rem,100%)}</style>
 {% endblock %}
 {% block content %}
-<h1>Feedback</h1>
-<p class="muted">How was your experience on our website? Rate us below — no external form required.</p>
+<div class="site-feedback-page-head">
+<h1 id="siteFeedbackPageTitle">Feedback</h1>
+<div class="site-feedback-lang-selector lang-selector">
+<button type="button" class="site-feedback-lang-btn lang-btn" id="siteFeedbackLangBtn" aria-haspopup="listbox" aria-expanded="false"><span id="siteFeedbackLangLabel">EN</span><span class="lang-btn-caret" aria-hidden="true">▾</span></button>
+<div class="site-feedback-lang-dropdown lang-dropdown" id="siteFeedbackLangDropdown" role="listbox"></div>
+</div>
+</div>
+<p class="muted" id="siteFeedbackPageIntro">How was your experience on our website? Rate us below — no external form required.</p>
 <div class="site-feedback-page" id="siteFeedbackRoot"></div>
 <p class="muted"><a href="/about">About</a> · <a href="/privacy-policy">Privacy Policy</a></p>
 {% endblock %}
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/feedback_i18n.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/site_feedback.js') }}" defer></script>
 {% endblock %}

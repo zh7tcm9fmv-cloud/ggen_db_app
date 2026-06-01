@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -10178,7 +10178,7 @@ def privacy_policy_page():
 
 _SITE_FEEDBACK_RATING_KEYS = (
     'overall', 'navigation', 'visual_design', 'content_quality',
-    'page_speed', 'mobile_experience', 'functionality', 'trust',
+    'page_speed', 'mobile_experience', 'functionality', 'tool_usage',
 )
 _SITE_FEEDBACK_DEVICES = frozenset({'desktop', 'mobile', 'tablet'})
 _SITE_FEEDBACK_RATE_LIMIT_SEC = 3600
@@ -10368,11 +10368,16 @@ def api_site_feedback_submit():
 
 
 @app.route('/contact')
-@app.route('/su')
+@app.route('/feedback')
 def contact_page():
     r = make_response(render_template('contact.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
+
+
+@app.route('/su')
+def contact_page_su_redirect():
+    return redirect('/feedback', code=301)
 
 
 @app.route('/game-news')
