@@ -15,6 +15,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
 <link rel="manifest" href="/static/site.webmanifest">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/content_notices.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}">
 <meta name="theme-color" content="#0a0e17">
 <meta name="apple-mobile-web-app-title" content="GGen Database">
 <style>
@@ -117,7 +118,7 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .site-footer-links .site-footer-sep{opacity:0.45;user-select:none}
 .site-footer-disclaimer{display:block;margin:10px auto 0;max-width:42rem;padding:0 8px;font-size:10px;line-height:1.45;color:var(--text-muted);opacity:0.92}
 @media(max-width:768px){
-  body{padding-left:max(env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));padding-right:max(env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));overflow-x:hidden;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+  body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);overflow-x:hidden;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
   .app-header{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding-left:0;padding-right:0}
   .header-inner{padding:10px 12px;gap:8px;min-width:0}
   .header-brand{min-width:0}

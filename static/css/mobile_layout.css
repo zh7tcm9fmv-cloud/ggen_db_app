@@ -1,0 +1,343 @@
+/**
+ * Mobile safe-area & layout — tuned for common viewports (iOS ~393×852, Android ~360×640).
+ * 16px page margins, notch/home-indicator insets, dvh-based overlays.
+ */
+@media (max-width: 768px) {
+  :root {
+    --mobile-page-gutter: 16px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+  }
+
+  html {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    /* Correct per-side safe areas (legacy rules used max(left,right) on both sides). */
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+  }
+
+  .app-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: var(--safe-top);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    padding-left: var(--mobile-page-gutter);
+    padding-right: var(--mobile-page-gutter);
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .header-brand {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .header-controls {
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: 46%;
+  }
+
+  .header-lang-col {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .header-lang-kofi-row {
+    max-width: 100%;
+    align-items: flex-start;
+    gap: 6px 8px;
+  }
+
+  .header-support-btns {
+    flex-direction: column;
+    align-items: stretch;
+    align-self: flex-start;
+    gap: 6px;
+    max-width: min(calc(100vw - 148px), 240px);
+    min-width: 0;
+  }
+
+  .header-lang-col .header-support-btns .alipayhk-header-btn,
+  .header-lang-col .header-support-btns .kofi-header-link {
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+    font-size: 10px;
+    padding: 4px 8px;
+    min-height: 28px;
+  }
+
+  .nav-tabs-shell {
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-tabs {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 6px var(--mobile-page-gutter) 0;
+    gap: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-tab {
+    flex-shrink: 0;
+    min-height: 44px;
+    overflow: visible;
+  }
+
+  .nav-tab .ui-notice-flare {
+    top: 0;
+    right: 4px;
+  }
+
+  .nav-tabs-shell--scroll-right .nav-tabs {
+    padding-right: calc(var(--mobile-page-gutter) + 38px);
+  }
+
+  .nav-tabs-shell--scroll-left .nav-tabs {
+    padding-left: calc(var(--mobile-page-gutter) + 38px);
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--mobile-page-gutter);
+    padding-bottom: max(var(--mobile-page-gutter), var(--safe-bottom));
+  }
+
+  .tab-panel.active {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .site-footer-links {
+    padding-left: var(--mobile-page-gutter);
+    padding-right: var(--mobile-page-gutter);
+    padding-bottom: max(28px, calc(var(--mobile-page-gutter) + var(--safe-bottom)));
+  }
+
+  .modal-overlay {
+    padding: 8px;
+    padding-top: max(8px, var(--safe-top));
+    padding-left: max(8px, var(--safe-left));
+    padding-right: max(8px, var(--safe-right));
+    padding-bottom: max(8px, var(--safe-bottom));
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 16px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .whats-new-overlay,
+  .tag-modal-overlay {
+    padding: max(var(--mobile-page-gutter), var(--safe-top))
+      max(var(--mobile-page-gutter), var(--safe-right))
+      max(var(--mobile-page-gutter), var(--safe-bottom))
+      max(var(--mobile-page-gutter), var(--safe-left));
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .whats-new-card {
+    max-height: min(calc(100dvh - var(--safe-top) - var(--safe-bottom) - 32px), 1200px);
+    min-height: min(320px, calc(100dvh - var(--safe-top) - var(--safe-bottom) - 48px));
+  }
+
+  .tag-modal-content {
+    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 24px);
+  }
+
+  .search-recall-fab {
+    right: max(var(--mobile-page-gutter), var(--safe-right));
+    bottom: calc(72px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  .search-spotlight-overlay {
+    padding: max(var(--mobile-page-gutter), var(--safe-top))
+      max(var(--mobile-page-gutter), var(--safe-right))
+      max(24px, calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px)))
+      max(var(--mobile-page-gutter), var(--safe-left));
+    box-sizing: border-box;
+  }
+
+  .search-spotlight-card {
+    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - var(--cmp-browser-inset-bottom, 0px) - 32px);
+  }
+
+  .banner-timeline-scroll-top-fab {
+    right: max(var(--mobile-page-gutter), var(--safe-right));
+    bottom: calc(var(--mobile-page-gutter) + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  .cmp-float {
+    padding-left: max(var(--mobile-page-gutter), var(--safe-left));
+    padding-right: max(var(--mobile-page-gutter), var(--safe-right));
+    padding-bottom: calc(10px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  .pagination-footer-links {
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch;
+    align-self: stretch;
+    box-sizing: border-box;
+  }
+
+  .pagination-footer-links .whats-new-btn {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .pagination-bar-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .list-grid-wrap,
+  .list-view-area {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .ui-notice-flare {
+    pointer-events: none;
+  }
+}
+
+/* iOS width reference (~393px) */
+@media (max-width: 393px) {
+  .brand-text {
+    font-size: 16px;
+  }
+
+  .brand-sub {
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+
+  .header-controls {
+    max-width: 48%;
+  }
+}
+
+/* Android width reference (~360px) */
+@media (max-width: 360px) {
+  .header-inner {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .header-support-btns {
+    max-width: min(calc(100vw - 132px), 188px);
+  }
+
+  .header-lang-col .header-support-btns .alipayhk-header-btn,
+  .header-lang-col .header-support-btns .kofi-header-link {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .nav-tab {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .main-content {
+    padding: 12px;
+    padding-bottom: max(12px, var(--safe-bottom));
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-text {
+    font-size: 14px;
+  }
+}
+
+/* Game News standalone page */
+@media (max-width: 768px) {
+  .game-news-main {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .game-news-stage {
+    min-height: calc(100dvh - var(--safe-top) - 120px);
+  }
+
+  .game-news-stage-inner {
+    min-height: calc(100dvh - var(--safe-top) - 180px);
+  }
+
+  .game-news-frame-wrap {
+    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
+  }
+
+  .game-news-frame-wrap iframe {
+    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
+    height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
+  }
+}
+
+/* Info / legal pages */
+@media (max-width: 768px) {
+  .wrap {
+    padding-left: max(var(--mobile-page-gutter, 16px), var(--safe-left));
+    padding-right: max(var(--mobile-page-gutter, 16px), var(--safe-right));
+    padding-bottom: max(3rem, calc(var(--mobile-page-gutter, 16px) + var(--safe-bottom)));
+    box-sizing: border-box;
+  }
+}
