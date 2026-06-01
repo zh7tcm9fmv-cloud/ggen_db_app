@@ -2982,7 +2982,7 @@ def _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
     return bool(_UNIT_BARE_UNCONDITIONAL_MS_STAT_PCT_LINE.match(p))
 
 
-def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad=None, detail_idx=None):
+def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad=None, detail_idx=None, hp_assumed_active=False):
     """Structured trait tags set hc=True for the whole ability; vigor-normal baseline % must still use the unconditional bucket."""
     if _unit_vigor_normal_baseline_stat_line(part):
         return False
@@ -2991,6 +2991,8 @@ def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, 
         return False
     if _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
         return False
+    if hp_assumed_active:
+        return bool(hc or ie)
     return bool(hc or ie or is_cond or ability_cond)
 
 
@@ -3012,6 +3014,13 @@ def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
         m2 = re.search(r'攻撃力が(\d+)%上昇', chunk)
         if m2:
             out.append((int(m.group(1)), int(m2.group(1))))
+    for m in re.finditer(r'when\s+hp\s+is\s+full\b', t, re.IGNORECASE):
+        chunk = t[m.end():m.end() + 220]
+        m2 = re.search(
+            r'(?:increase(?:s)?\s+)?(?:own\s+)?(?:squad\s+)?(?:ms\s+)?atk\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        if m2:
+            out.append((100, int(m2.group(1))))
     return out
 
 
@@ -7806,10 +7815,14 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             if not parts: parts = [txt]
             cond_prefix = False
             prev_enemy_tag_clause = False
+            hp_high_gate_active = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                     itc = False
+                    hp_high_gate_active = True
+                elif itc:
+                    hp_high_gate_active = False
                 if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
@@ -7824,7 +7837,10 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
-                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move))
+                if hp_assumed_active:
+                    hp_high_gate_active = False
+                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                 if enemy_adv_atk_def:
                     line_cond = True
                 if flat_move:
@@ -7906,10 +7922,14 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
             if not parts: parts = [txt]
             cond_prefix = False
             prev_enemy_tag_clause = False
+            hp_high_gate_active = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                     itc = False
+                    hp_high_gate_active = True
+                elif itc:
+                    hp_high_gate_active = False
                 if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
                 part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
@@ -7924,7 +7944,10 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 if itc and not part_stats and not flat_move:
                     cond_prefix = True
                 is_cond = itc or cond_prefix
-                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move))
+                if hp_assumed_active:
+                    hp_high_gate_active = False
+                line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                 if enemy_adv_atk_def:
                     line_cond = True
                 if flat_move:
@@ -15608,10 +15631,14 @@ def get_unit(unit_id):
                 if not parts: parts = [txt]
                 cond_prefix = False
                 prev_enemy_tag_clause = False
+                hp_high_gate_active = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
                     if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
                         itc = False
+                        hp_high_gate_active = True
+                    elif itc:
+                        hp_high_gate_active = False
                     if itc and _unit_vigor_normal_baseline_stat_line(part):
                         itc = False
                     part_stats = _extract_stat_percent_unit(part, skip_conditional=False)
@@ -15627,7 +15654,10 @@ def get_unit(unit_id):
                     if itc and not part_stats and not flat_move and not wpn_stats:
                         cond_prefix = True
                     is_cond = itc or cond_prefix
-                    line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di)
+                    hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move or wpn_stats))
+                    if hp_assumed_active:
+                        hp_high_gate_active = False
+                    line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                     if enemy_adv_atk_def:
                         line_cond = True
                     if flat_move:
