@@ -44,6 +44,10 @@
 .site-feedback-lang-option{padding:8px 18px;cursor:pointer;font-size:14px;font-weight:600;color:#cbd5e1;transition:background .15s ease,color .15s ease}
 .site-feedback-lang-option:hover{background:#1f2a42;color:#00d4ff}
 .site-feedback-lang-option.selected{color:#00d4ff}
+.site-feedback-block--tools .site-feedback-tool-row{margin-top:14px}
+.site-feedback-block--tools .site-feedback-tool-row:first-of-type{margin-top:8px}
+.site-feedback-block--tools .site-feedback-tool-row + .site-feedback-tool-row{margin-top:18px;padding-top:18px;border-top:1px solid rgba(148,163,184,.16)}
+.site-feedback-q-subtitle{margin:0;font-size:14px;font-weight:700;color:var(--text-primary,#e2e8f0);line-height:1.35}
 
 @media(max-width:640px){
   .site-feedback-radios,.site-feedback-scale-ends{width:min(100%,240px)}

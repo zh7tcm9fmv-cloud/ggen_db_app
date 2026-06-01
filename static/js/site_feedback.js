@@ -8,8 +8,12 @@
     { key: 'content_quality', titleKey: 'feedback_q4_title', promptKey: 'feedback_q4_prompt', loKey: 'feedback_q4_lo', hiKey: 'feedback_q4_hi' },
     { key: 'page_speed', titleKey: 'feedback_q5_title', promptKey: 'feedback_q5_prompt', loKey: 'feedback_q5_lo', hiKey: 'feedback_q5_hi' },
     { key: 'mobile_experience', titleKey: 'feedback_q6_title', promptKey: 'feedback_q6_prompt', loKey: 'feedback_q6_lo', hiKey: 'feedback_q6_hi' },
-    { key: 'functionality', titleKey: 'feedback_q7_title', promptKey: 'feedback_q7_prompt', loKey: 'feedback_q7_lo', hiKey: 'feedback_q7_hi' },
-    { key: 'tool_usage', titleKey: 'feedback_q8_title', promptKey: 'feedback_q8_prompt', loKey: 'feedback_q8_lo', hiKey: 'feedback_q8_hi' }
+    { key: 'functionality', titleKey: 'feedback_q7_title', promptKey: 'feedback_q7_prompt', loKey: 'feedback_q7_lo', hiKey: 'feedback_q7_hi' }
+  ];
+
+  var TOOL_USAGE_FIELDS = [
+    { key: 'damage_sim_usage', titleKey: 'feedback_q8_damage_title', promptKey: 'feedback_q8_damage_prompt', loKey: 'feedback_q8_lo', hiKey: 'feedback_q8_hi' },
+    { key: 'team_builder_usage', titleKey: 'feedback_q8_team_title', promptKey: 'feedback_q8_team_prompt', loKey: 'feedback_q8_lo', hiKey: 'feedback_q8_hi' }
   ];
 
   var LANG_STORAGE_KEY = 'ggen_lang';
@@ -49,8 +53,11 @@
     feedback_q7_prompt: 'Did you encounter any bugs, broken links, or technical issues?',
     feedback_q7_lo: 'Many issues',
     feedback_q7_hi: 'No issues at all',
-    feedback_q8_title: 'Damage Simulator & Team Builder',
-    feedback_q8_prompt: 'How often do you use the Damage Simulator or Team Builder?',
+    feedback_q8_section_title: 'Tool usage',
+    feedback_q8_damage_title: 'Damage Simulator',
+    feedback_q8_damage_prompt: 'How often do you use the Damage Simulator?',
+    feedback_q8_team_title: 'Team Builder',
+    feedback_q8_team_prompt: 'How often do you use the Team Builder?',
     feedback_q8_lo: 'Never',
     feedback_q8_hi: 'Very often',
     feedback_device_label: 'I visited on',
@@ -84,6 +91,11 @@
     }
   }
 
+  (function initSavedPageLang() {
+    var saved = readPersistedLang();
+    if (saved) _pageLang = saved;
+  })();
+
   function persistPageLang(l) {
     try {
       if (l) localStorage.setItem(LANG_STORAGE_KEY, l === 'JP' ? 'JA' : String(l));
@@ -97,19 +109,26 @@
   }
 
   function feedbackPack(lang) {
-    var packs = global.GGEN_FEEDBACK_I18N || {};
+    var packs = global.GGEN_FEEDBACK_I18N;
+    if (!packs) return EN_FALLBACK;
     var l = normalizeLang(lang);
     if (l === 'JP') return packs.JP || packs.EN || EN_FALLBACK;
     return packs[l] || packs.EN || EN_FALLBACK;
   }
 
   function tr(key) {
+    var pack = feedbackPack(currentLang());
+    if (pack && pack[key] != null && pack[key] !== '') return pack[key];
     if (typeof global.t === 'function') {
       var v = global.t(key);
       if (v && v !== key) return v;
     }
-    var pack = feedbackPack(currentLang());
-    return (pack && pack[key]) || EN_FALLBACK[key] || key;
+    var en = (global.GGEN_FEEDBACK_I18N && global.GGEN_FEEDBACK_I18N.EN) || EN_FALLBACK;
+    return (en && en[key]) || key;
+  }
+
+  function allRatingFields() {
+    return RATING_FIELDS.concat(TOOL_USAGE_FIELDS);
   }
 
   function esc(s) {
@@ -120,7 +139,7 @@
       .replace(/"/g, '&quot;');
   }
 
-  function ratingBlockHtml(field, idx) {
+  function scaleGroupHtml(field, ariaLabel) {
     var radios = '';
     for (var n = 1; n <= 5; n++) {
       var id = 'fb-' + field.key + '-' + n;
@@ -130,18 +149,40 @@
       radios += '</span>';
     }
     return ''
-      + '<section class="site-feedback-block" data-fb-field="' + esc(field.key) + '">'
-      + '<div class="site-feedback-q-num">' + (idx + 1) + '</div>'
-      + '<h3 class="site-feedback-q-title">' + esc(tr(field.titleKey)) + '</h3>'
-      + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
-      + '<div class="site-feedback-scale" role="group" aria-label="' + esc(tr(field.titleKey)) + '">'
+      + '<div class="site-feedback-scale" role="group" aria-label="' + esc(ariaLabel) + '">'
       + '<div class="site-feedback-radios">' + radios + '</div>'
       + '<div class="site-feedback-scale-ends">'
       + '<span class="site-feedback-scale-end site-feedback-scale-end--lo">' + esc(tr(field.loKey)) + '</span>'
       + '<span class="site-feedback-scale-end site-feedback-scale-end--hi">' + esc(tr(field.hiKey)) + '</span>'
       + '</div>'
-      + '</div>'
+      + '</div>';
+  }
+
+  function ratingBlockHtml(field, idx) {
+    return ''
+      + '<section class="site-feedback-block" data-fb-field="' + esc(field.key) + '">'
+      + '<div class="site-feedback-q-num">' + (idx + 1) + '</div>'
+      + '<h3 class="site-feedback-q-title">' + esc(tr(field.titleKey)) + '</h3>'
+      + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
+      + scaleGroupHtml(field, tr(field.titleKey))
       + '</section>';
+  }
+
+  function toolUsageSectionHtml(sectionNum) {
+    var h = ''
+      + '<section class="site-feedback-block site-feedback-block--tools" data-fb-field="tool_usage">'
+      + '<div class="site-feedback-q-num">' + sectionNum + '</div>'
+      + '<h3 class="site-feedback-q-title">' + esc(tr('feedback_q8_section_title')) + '</h3>';
+    for (var i = 0; i < TOOL_USAGE_FIELDS.length; i++) {
+      var field = TOOL_USAGE_FIELDS[i];
+      h += '<div class="site-feedback-tool-row" data-fb-field="' + esc(field.key) + '">'
+        + '<h4 class="site-feedback-q-subtitle">' + esc(tr(field.titleKey)) + '</h4>'
+        + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
+        + scaleGroupHtml(field, tr(field.titleKey))
+        + '</div>';
+    }
+    h += '</section>';
+    return h;
   }
 
   function formHtml() {
@@ -156,6 +197,9 @@
           + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="mobile"> ' + esc(tr('feedback_device_mobile')) + '</label>'
           + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="tablet"> ' + esc(tr('feedback_device_tablet')) + '</label>'
           + '</div>';
+      }
+      if (RATING_FIELDS[i].key === 'functionality') {
+        h += toolUsageSectionHtml(i + 2);
       }
     }
     h += '<section class="site-feedback-block site-feedback-block--open">'
@@ -180,8 +224,9 @@
 
   function collectPayload(form) {
     var ratings = {};
-    for (var i = 0; i < RATING_FIELDS.length; i++) {
-      var key = RATING_FIELDS[i].key;
+    var fields = allRatingFields();
+    for (var i = 0; i < fields.length; i++) {
+      var key = fields[i].key;
       var sel = form.querySelector('input[name="fb_' + key + '"]:checked');
       ratings[key] = sel ? parseInt(sel.value, 10) : null;
     }
@@ -201,8 +246,9 @@
   }
 
   function allRatingsPresent(ratings) {
-    for (var i = 0; i < RATING_FIELDS.length; i++) {
-      var v = ratings[RATING_FIELDS[i].key];
+    var fields = allRatingFields();
+    for (var i = 0; i < fields.length; i++) {
+      var v = ratings[fields[i].key];
       if (!(v >= 1 && v <= 5)) return false;
     }
     return true;
@@ -453,11 +499,15 @@
 
   function initPageRoot() {
     var root = document.getElementById('siteFeedbackRoot');
-    if (root) {
-      initContactPageLang().then(function () {
-        renderInto(root);
-      });
-    }
+    if (!root) return;
+    applyContactPageShell();
+    var lab = document.getElementById('siteFeedbackLangLabel');
+    if (lab) lab.textContent = currentLang();
+    wireContactLangUi();
+    initContactPageLang().then(function () {
+      applyContactPageShell();
+      renderInto(root);
+    });
   }
 
   global.GgenSiteFeedback = {
@@ -471,6 +521,11 @@
 
   global.openSupportFeedback = openModal;
   global.closeSupportFeedback = closeModal;
+  global.setFeedbackPageLang = setContactLang;
+
+  if (typeof global.mergeGgenFeedbackI18nIntoT === 'function') {
+    global.mergeGgenFeedbackI18nIntoT();
+  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initPageRoot);

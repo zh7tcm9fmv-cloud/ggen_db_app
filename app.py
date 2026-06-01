@@ -10178,7 +10178,7 @@ def privacy_policy_page():
 
 _SITE_FEEDBACK_RATING_KEYS = (
     'overall', 'navigation', 'visual_design', 'content_quality',
-    'page_speed', 'mobile_experience', 'functionality', 'tool_usage',
+    'page_speed', 'mobile_experience', 'functionality', 'damage_sim_usage', 'team_builder_usage',
 )
 _SITE_FEEDBACK_DEVICES = frozenset({'desktop', 'mobile', 'tablet'})
 _SITE_FEEDBACK_RATE_LIMIT_SEC = 3600
