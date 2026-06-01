@@ -10368,6 +10368,7 @@ def api_site_feedback_submit():
 
 
 @app.route('/contact')
+@app.route('/su')
 def contact_page():
     r = make_response(render_template('contact.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'

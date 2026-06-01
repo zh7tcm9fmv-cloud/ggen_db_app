@@ -181,22 +181,52 @@
     el.className = 'site-feedback-msg ' + (ok ? 'site-feedback-msg--ok' : 'site-feedback-msg--err');
   }
 
+  function preserveScrollHost(scrollHost) {
+    if (!scrollHost || typeof scrollHost.scrollTop !== 'number') return;
+    var top = scrollHost.scrollTop;
+    var left = scrollHost.scrollLeft;
+    var restore = function () {
+      scrollHost.scrollTop = top;
+      scrollHost.scrollLeft = left;
+    };
+    restore();
+    requestAnimationFrame(restore);
+    requestAnimationFrame(function () { requestAnimationFrame(restore); });
+  }
+
+  function wireRatingInputs(form, root) {
+    function blockFocusScroll(ev) {
+      ev.preventDefault();
+    }
+    form.querySelectorAll('.site-feedback-radio-label').forEach(function (label) {
+      label.addEventListener('mousedown', blockFocusScroll);
+      label.addEventListener('click', function () {
+        var id = label.getAttribute('for');
+        var radio = id ? document.getElementById(id) : null;
+        if (!radio) return;
+        var wasChecked = radio.checked;
+        form.querySelectorAll('input[name="' + radio.name + '"]').forEach(function (peer) {
+          peer.checked = false;
+        });
+        radio.checked = true;
+        if (!wasChecked) {
+          preserveScrollHost(root);
+          radio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    });
+    form.querySelectorAll('.site-feedback-radio').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        preserveScrollHost(root);
+      });
+    });
+  }
+
   function wireForm(root) {
     var form = root.querySelector('#siteFeedbackForm');
     if (!form || form.dataset.fbWired === '1') return form;
     form.dataset.fbWired = '1';
-    form.querySelectorAll('.site-feedback-radio').forEach(function (radio) {
-      radio.addEventListener('change', function () {
-        var scrollHost = root;
-        if (!scrollHost || typeof scrollHost.scrollTop !== 'number') return;
-        var top = scrollHost.scrollTop;
-        var left = scrollHost.scrollLeft;
-        requestAnimationFrame(function () {
-          scrollHost.scrollTop = top;
-          scrollHost.scrollLeft = left;
-        });
-      });
-    });
+    wireRatingInputs(form, root);
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var payload = collectPayload(form);
