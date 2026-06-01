@@ -59,3 +59,25 @@ Confirm the branch exists: `https://github.com/zh7tcm9fmv-cloud/ggen_db_app/tree
 The app now auto-creates that branch on first boot if the token has **Contents + Metadata (ref)** write access.
 
 **Do not** set `GGEN_BANNER_VOTES_SYNC_MODE=off` unless you accept vote resets on deploy.
+
+---
+
+## Site feedback (no Railway volume)
+
+The in-site feedback form posts to `/api/feedback`. Without a Railway volume, local file storage is ephemeral (lost on redeploy). Forward submissions to Google Sheets instead:
+
+| Variable | Value |
+|----------|--------|
+| `GGEN_FEEDBACK_SHEETS_URL` | Web app URL from Apps Script deployment |
+| `GGEN_FEEDBACK_SHEETS_SECRET` | Same random string as Script property `SECRET` |
+
+Setup script: `scripts/feedback_google_sheets_webapp.gs`
+
+1. New Google Sheet → Extensions → Apps Script → paste script → Save.
+2. Script properties → `SECRET` = long random string.
+3. Deploy → Web app → Execute as **Me**, access **Anyone** → copy URL.
+4. Add both Railway variables above.
+
+Logs after deploy should show `site_feedback: sheets=on`. Submissions appear as new rows in the sheet (same idea as Google Form responses, but the on-site form stays unchanged).
+
+Local dev still writes to `data/persistent/site_feedback.jsonl` when Sheets is not configured.

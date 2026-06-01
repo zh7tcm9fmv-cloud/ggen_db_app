@@ -1,7 +1,14 @@
 {% extends "info_page.html" %}
-{% block title %}Contact — GGen Database{% endblock %}
+{% block title %}Feedback — GGen Database{% endblock %}
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/site_feedback.css') }}">
+{% endblock %}
 {% block content %}
-<h1>Contact us</h1>
-<p><a href="{{ feedback_form_url }}" target="_blank" rel="noopener noreferrer">Feedback form</a> — same link as the Support/Feedback button in the app.</p>
+<h1>Feedback</h1>
+<p class="muted">How was your experience on our website? Rate us below — no external form required.</p>
+<div class="site-feedback-page" id="siteFeedbackRoot"></div>
 <p class="muted"><a href="/about">About</a> · <a href="/privacy-policy">Privacy Policy</a></p>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/site_feedback.js') }}" defer></script>
 {% endblock %}

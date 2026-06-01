@@ -10176,16 +10176,200 @@ def privacy_policy_page():
     return r
 
 
-# Same destination as Support/Feedback in static/js/app.js (SUPPORT_FEEDBACK_BASE_URL).
-FEEDBACK_FORM_URL = (
-    'https://docs.google.com/forms/d/e/1FAIpQLScGcQn662SpeZzGXJ4-TFTSlTaItvQv1A_EJruZgH1uid5nJw/'
-    'viewform?usp=send_form'
+_SITE_FEEDBACK_RATING_KEYS = (
+    'overall', 'navigation', 'visual_design', 'content_quality',
+    'page_speed', 'mobile_experience', 'functionality', 'trust',
 )
+_SITE_FEEDBACK_DEVICES = frozenset({'desktop', 'mobile', 'tablet'})
+_SITE_FEEDBACK_RATE_LIMIT_SEC = 3600
+_site_feedback_recent_by_ip = {}
+
+
+def _site_feedback_file_path():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'site_feedback.jsonl')
+    return os.path.join(app_dir, 'data', 'persistent', 'site_feedback.jsonl')
+
+
+def _site_feedback_submitter_id():
+    ip = _bt_vote_request_ip()
+    if not ip:
+        return None
+    digest = hashlib.sha256(f'ggen-feedback-ip-v1:{ip}'.encode('utf-8')).hexdigest()[:32]
+    return f'ip_{digest}'
+
+
+def _site_feedback_rate_limited(submitter_id):
+    if not submitter_id:
+        return False
+    now = int(time.time())
+    stale_before = now - (_SITE_FEEDBACK_RATE_LIMIT_SEC * 4)
+    for k, ts in list(_site_feedback_recent_by_ip.items()):
+        if ts < stale_before:
+            del _site_feedback_recent_by_ip[k]
+    last = _site_feedback_recent_by_ip.get(submitter_id, 0)
+    return (now - last) < _SITE_FEEDBACK_RATE_LIMIT_SEC
+
+
+def _site_feedback_sheets_url():
+    return (os.environ.get('GGEN_FEEDBACK_SHEETS_URL') or os.environ.get('GGEN_FEEDBACK_GOOGLE_SCRIPT_URL') or '').strip()
+
+
+def _site_feedback_sheets_secret():
+    return (os.environ.get('GGEN_FEEDBACK_SHEETS_SECRET') or '').strip()
+
+
+def _site_feedback_on_railway():
+    return bool((os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip())
+
+
+def _site_feedback_has_volume():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    return bool(vol)
+
+
+def _site_feedback_entry_for_remote(entry):
+    ratings = entry.get('ratings') if isinstance(entry.get('ratings'), dict) else {}
+    ts = entry.get('ts')
+    ts_iso = ''
+    if isinstance(ts, int) and ts > 0:
+        ts_iso = datetime.fromtimestamp(ts, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
+    row = {
+        'ts': ts,
+        'ts_iso': ts_iso,
+        'submitter_id': entry.get('submitter_id') or '',
+        'lang': entry.get('lang') or '',
+        'page_url': entry.get('page_url') or '',
+        'devices': ','.join(entry.get('devices') or []),
+        'liked': entry.get('liked') or '',
+        'improve': entry.get('improve') or '',
+        'ua': entry.get('ua') or '',
+    }
+    for key in _SITE_FEEDBACK_RATING_KEYS:
+        row[key] = ratings.get(key)
+    return row
+
+
+def _site_feedback_forward_to_sheets(entry):
+    url = _site_feedback_sheets_url()
+    if not url:
+        return True, 'skipped'
+    payload = _site_feedback_entry_for_remote(entry)
+    secret = _site_feedback_sheets_secret()
+    if secret:
+        payload['secret'] = secret
+    data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    req = Request(
+        url,
+        data=data,
+        headers={'Content-Type': 'application/json; charset=utf-8'},
+        method='POST',
+    )
+    try:
+        with urlopen(req, timeout=15) as resp:
+            body = resp.read().decode('utf-8', errors='replace')
+            if resp.status >= 400:
+                return False, f'http_{resp.status}: {body[:200]}'
+            try:
+                parsed = json.loads(body)
+                if isinstance(parsed, dict) and parsed.get('ok') is False:
+                    return False, str(parsed.get('error') or 'rejected')
+            except json.JSONDecodeError:
+                pass
+            return True, None
+    except HTTPError as e:
+        err_body = ''
+        try:
+            err_body = e.read().decode('utf-8', errors='replace')[:200]
+        except Exception:
+            pass
+        return False, f'http_{e.code}: {err_body or e.reason}'
+    except URLError as e:
+        return False, str(e.reason)
+    except Exception as e:
+        return False, str(e)
+
+
+def _site_feedback_append_entry(entry):
+    path = _site_feedback_file_path()
+    parent = os.path.dirname(path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    line = json.dumps(entry, ensure_ascii=False, separators=(',', ':'))
+    with open(path, 'a', encoding='utf-8') as fh:
+        fh.write(line + '\n')
+
+
+def _site_feedback_persist_entry(entry):
+    sheets_url = _site_feedback_sheets_url()
+    sheets_ok = False
+    if sheets_url:
+        ok, err = _site_feedback_forward_to_sheets(entry)
+        if not ok:
+            print(f'site_feedback: sheets forward failed: {err}')
+            return False
+        sheets_ok = True
+    try:
+        _site_feedback_append_entry(entry)
+    except OSError as e:
+        if not sheets_ok:
+            print(f'site_feedback: write failed: {e}')
+            return False
+        print(f'site_feedback: local backup skipped: {e}')
+    return True
+
+
+@app.route('/api/feedback', methods=['POST'])
+def api_site_feedback_submit():
+    body = request.get_json(silent=True) or {}
+    if (body.get('website') or '').strip():
+        return jsonify({'ok': True})
+    submitter_id = _site_feedback_submitter_id()
+    if not submitter_id:
+        return jsonify({'error': 'submitter_required'}), 403
+    if _site_feedback_rate_limited(submitter_id):
+        return jsonify({'error': 'rate_limited'}), 429
+    raw_ratings = body.get('ratings') if isinstance(body.get('ratings'), dict) else {}
+    ratings = {}
+    for key in _SITE_FEEDBACK_RATING_KEYS:
+        try:
+            val = int(raw_ratings.get(key))
+        except (TypeError, ValueError):
+            val = 0
+        if val < 1 or val > 5:
+            return jsonify({'error': 'invalid_ratings'}), 400
+        ratings[key] = val
+    devices = []
+    for d in body.get('devices') or []:
+        ds = str(d or '').strip().lower()
+        if ds in _SITE_FEEDBACK_DEVICES and ds not in devices:
+            devices.append(ds)
+    liked = str(body.get('liked') or '').strip()[:4000]
+    improve = str(body.get('improve') or '').strip()[:4000]
+    lang = validate_lang_code(str(body.get('lang') or 'EN'))
+    page_url = str(body.get('page_url') or '')[:500]
+    now = int(time.time())
+    entry = {
+        'ts': now,
+        'submitter_id': submitter_id,
+        'lang': lang,
+        'page_url': page_url,
+        'ratings': ratings,
+        'devices': devices,
+        'liked': liked,
+        'improve': improve,
+        'ua': (request.headers.get('User-Agent') or '')[:300],
+    }
+    if not _site_feedback_persist_entry(entry):
+        return jsonify({'error': 'storage_failed'}), 500
+    _site_feedback_recent_by_ip[submitter_id] = now
+    return jsonify({'ok': True})
 
 
 @app.route('/contact')
 def contact_page():
-    r = make_response(render_template('contact.html', feedback_form_url=FEEDBACK_FORM_URL, image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
+    r = make_response(render_template('contact.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
 
@@ -14653,6 +14837,15 @@ print(
     f'import_url={"set" if _banner_pool_votes_import_url() else "off"}',
     f'railway={"yes" if _banner_pool_votes_on_railway() else "no"}',
 )
+print(
+    'site_feedback:',
+    f'sheets={"on" if _site_feedback_sheets_url() else "off"}',
+    f'volume={"on" if _site_feedback_has_volume() else "off"}',
+    f'local_path={_site_feedback_file_path()}',
+    f'railway={"yes" if _site_feedback_on_railway() else "no"}',
+)
+if _site_feedback_on_railway() and not _site_feedback_sheets_url() and not _site_feedback_has_volume():
+    print('site_feedback: WARNING — set GGEN_FEEDBACK_SHEETS_URL or a Railway volume; otherwise submissions are lost on redeploy')
 
 
 def _bt_vote_adjust_total(g_tot, choice, delta):
