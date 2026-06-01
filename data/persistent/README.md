@@ -78,6 +78,18 @@ Setup script: `scripts/feedback_google_sheets_webapp.gs`
 3. Deploy → Web app → Execute as **Me**, access **Anyone** → copy URL.
 4. Add both Railway variables above.
 
+**Column layout (2025 form):** Q8 “Tool usage” is two ratings — `Q8 Damage Simulator usage` and `Q8 Team Builder usage` (1–5 each). Older sheets with a single “Tool usage” column should be reset before testing (see below).
+
+**Redeploy after script edits:** Apps Script → Deploy → Manage deployments → Edit → **New version** → Deploy (URL unchanged).
+
+**Wipe the sheet while testing**
+
+| Method | Steps |
+|--------|--------|
+| **Apps Script (recommended)** | Extensions → Apps Script → choose `wipeFeedbackSheetForTesting` → Run → allow access once → sheet cleared with fresh headers. |
+| **Manual in Sheets** | Select all data rows (not only cells) → Delete rows. Delete row 1 too so the tab is **completely empty** — the next submission writes the new header row automatically. |
+| **New tab** | Insert a new sheet tab, delete the old tab, rename the new one — point Apps Script at it if needed (script uses the active sheet). |
+
 Logs after deploy should show `site_feedback: sheets=on`. Submissions appear as new rows in the sheet (same idea as Google Form responses, but the on-site form stays unchanged).
 
 Local dev still writes to `data/persistent/site_feedback.jsonl` when Sheets is not configured.

@@ -235,6 +235,7 @@
   function mergeFeedbackI18nIntoT() {
     var T = global.T;
     if (!T) return;
+    Object.assign(T.EN, FEEDBACK_I18N.EN);
     Object.assign(T.TW, FEEDBACK_I18N.TW);
     Object.assign(T.HK, FEEDBACK_I18N.HK);
     Object.assign(T.JA, FEEDBACK_I18N.JP);

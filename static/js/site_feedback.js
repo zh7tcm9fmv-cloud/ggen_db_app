@@ -18,7 +18,13 @@
 
   var LANG_STORAGE_KEY = 'ggen_lang';
   var _pageLang = null;
+  var _appLang = null;
+  var _langLockedByUser = false;
   var _pageLanguages = ['EN', 'TW', 'HK', 'JP'];
+
+  function isStandaloneFeedbackPage() {
+    return !!document.getElementById('siteFeedbackLangBtn');
+  }
 
   var EN_FALLBACK = (typeof global.GGEN_FEEDBACK_I18N !== 'undefined' && global.GGEN_FEEDBACK_I18N.EN)
     ? global.GGEN_FEEDBACK_I18N.EN
@@ -102,9 +108,26 @@
     } catch (e) {}
   }
 
+  function readMainAppLangLabel() {
+    try {
+      var el = document.getElementById('langLabel');
+      if (el && el.textContent) return normalizeLang(el.textContent);
+    } catch (e) {}
+    return '';
+  }
+
   function currentLang() {
-    if (global.S && global.S.lang) return normalizeLang(global.S.lang);
-    if (_pageLang) return _pageLang;
+    if (isStandaloneFeedbackPage()) {
+      if (_pageLang) return normalizeLang(_pageLang);
+      var savedPage = readPersistedLang();
+      if (savedPage) return savedPage;
+    } else {
+      if (_appLang) return normalizeLang(_appLang);
+      if (global.S && global.S.lang) return normalizeLang(global.S.lang);
+      var fromLabel = readMainAppLangLabel();
+      if (fromLabel) return fromLabel;
+      if (_pageLang) return normalizeLang(_pageLang);
+    }
     return readPersistedLang() || 'EN';
   }
 
@@ -112,12 +135,13 @@
     var packs = global.GGEN_FEEDBACK_I18N;
     if (!packs) return EN_FALLBACK;
     var l = normalizeLang(lang);
-    if (l === 'JP') return packs.JP || packs.EN || EN_FALLBACK;
+    if (l === 'JP') return packs.JP || packs.JA || packs.EN || EN_FALLBACK;
+    if (l === 'JA') return packs.JP || packs.JA || packs.EN || EN_FALLBACK;
     return packs[l] || packs.EN || EN_FALLBACK;
   }
 
-  function tr(key) {
-    var pack = feedbackPack(currentLang());
+  function trKey(key, lang) {
+    var pack = feedbackPack(lang || currentLang());
     if (pack && pack[key] != null && pack[key] !== '') return pack[key];
     if (typeof global.t === 'function') {
       var v = global.t(key);
@@ -125,6 +149,10 @@
     }
     var en = (global.GGEN_FEEDBACK_I18N && global.GGEN_FEEDBACK_I18N.EN) || EN_FALLBACK;
     return (en && en[key]) || key;
+  }
+
+  function tr(key) {
+    return trKey(key, currentLang());
   }
 
   function allRatingFields() {
@@ -139,7 +167,7 @@
       .replace(/"/g, '&quot;');
   }
 
-  function scaleGroupHtml(field, ariaLabel) {
+  function scaleGroupHtml(field, ariaLabel, lang) {
     var radios = '';
     for (var n = 1; n <= 5; n++) {
       var id = 'fb-' + field.key + '-' + n;
@@ -152,62 +180,64 @@
       + '<div class="site-feedback-scale" role="group" aria-label="' + esc(ariaLabel) + '">'
       + '<div class="site-feedback-radios">' + radios + '</div>'
       + '<div class="site-feedback-scale-ends">'
-      + '<span class="site-feedback-scale-end site-feedback-scale-end--lo">' + esc(tr(field.loKey)) + '</span>'
-      + '<span class="site-feedback-scale-end site-feedback-scale-end--hi">' + esc(tr(field.hiKey)) + '</span>'
+      + '<span class="site-feedback-scale-end site-feedback-scale-end--lo">' + esc(trKey(field.loKey, lang)) + '</span>'
+      + '<span class="site-feedback-scale-end site-feedback-scale-end--hi">' + esc(trKey(field.hiKey, lang)) + '</span>'
       + '</div>'
       + '</div>';
   }
 
-  function ratingBlockHtml(field, idx) {
+  function ratingBlockHtml(field, idx, lang) {
     return ''
       + '<section class="site-feedback-block" data-fb-field="' + esc(field.key) + '">'
       + '<div class="site-feedback-q-num">' + (idx + 1) + '</div>'
-      + '<h3 class="site-feedback-q-title">' + esc(tr(field.titleKey)) + '</h3>'
-      + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
-      + scaleGroupHtml(field, tr(field.titleKey))
+      + '<h3 class="site-feedback-q-title">' + esc(trKey(field.titleKey, lang)) + '</h3>'
+      + '<p class="site-feedback-q-prompt">' + esc(trKey(field.promptKey, lang)) + '</p>'
+      + scaleGroupHtml(field, trKey(field.titleKey, lang), lang)
       + '</section>';
   }
 
-  function toolUsageSectionHtml(sectionNum) {
+  function toolUsageSectionHtml(sectionNum, lang) {
     var h = ''
       + '<section class="site-feedback-block site-feedback-block--tools" data-fb-field="tool_usage">'
       + '<div class="site-feedback-q-num">' + sectionNum + '</div>'
-      + '<h3 class="site-feedback-q-title">' + esc(tr('feedback_q8_section_title')) + '</h3>';
+      + '<h3 class="site-feedback-q-title">' + esc(trKey('feedback_q8_section_title', lang)) + '</h3>';
     for (var i = 0; i < TOOL_USAGE_FIELDS.length; i++) {
       var field = TOOL_USAGE_FIELDS[i];
       h += '<div class="site-feedback-tool-row" data-fb-field="' + esc(field.key) + '">'
-        + '<h4 class="site-feedback-q-subtitle">' + esc(tr(field.titleKey)) + '</h4>'
-        + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
-        + scaleGroupHtml(field, tr(field.titleKey))
+        + '<h4 class="site-feedback-q-subtitle">' + esc(trKey(field.titleKey, lang)) + '</h4>'
+        + '<p class="site-feedback-q-prompt">' + esc(trKey(field.promptKey, lang)) + '</p>'
+        + scaleGroupHtml(field, trKey(field.titleKey, lang), lang)
         + '</div>';
     }
     h += '</section>';
     return h;
   }
 
-  function formHtml() {
+  function formHtml(forLang) {
+    var lang = normalizeLang(forLang || currentLang());
+    function L(key) { return trKey(key, lang); }
     var h = '<form class="site-feedback-form" id="siteFeedbackForm" novalidate>';
-    h += '<p class="site-feedback-intro">' + esc(tr('feedback_intro')) + '</p>';
+    h += '<p class="site-feedback-intro">' + esc(L('feedback_intro')) + '</p>';
     for (var i = 0; i < RATING_FIELDS.length; i++) {
-      h += ratingBlockHtml(RATING_FIELDS[i], i);
+      h += ratingBlockHtml(RATING_FIELDS[i], i, lang);
       if (RATING_FIELDS[i].key === 'mobile_experience') {
-        h += '<div class="site-feedback-device-row" aria-label="' + esc(tr('feedback_device_label')) + '">'
-          + '<span class="site-feedback-q-prompt">' + esc(tr('feedback_device_label')) + '</span>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="desktop"> ' + esc(tr('feedback_device_desktop')) + '</label>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="mobile"> ' + esc(tr('feedback_device_mobile')) + '</label>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="tablet"> ' + esc(tr('feedback_device_tablet')) + '</label>'
+        h += '<div class="site-feedback-device-row" aria-label="' + esc(L('feedback_device_label')) + '">'
+          + '<span class="site-feedback-q-prompt">' + esc(L('feedback_device_label')) + '</span>'
+          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="desktop"> ' + esc(L('feedback_device_desktop')) + '</label>'
+          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="mobile"> ' + esc(L('feedback_device_mobile')) + '</label>'
+          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="tablet"> ' + esc(L('feedback_device_tablet')) + '</label>'
           + '</div>';
       }
       if (RATING_FIELDS[i].key === 'functionality') {
-        h += toolUsageSectionHtml(i + 2);
+        h += toolUsageSectionHtml(i + 2, lang);
       }
     }
     h += '<section class="site-feedback-block site-feedback-block--open">'
-      + '<h3 class="site-feedback-q-title">9. ' + esc(tr('feedback_liked_label')) + '</h3>'
+      + '<h3 class="site-feedback-q-title">9. ' + esc(L('feedback_liked_label')) + '</h3>'
       + '<textarea class="site-feedback-textarea" name="fb_liked" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
     h += '<section class="site-feedback-block site-feedback-block--open">'
-      + '<h3 class="site-feedback-q-title">10. ' + esc(tr('feedback_improve_label')) + '</h3>'
+      + '<h3 class="site-feedback-q-title">10. ' + esc(L('feedback_improve_label')) + '</h3>'
       + '<textarea class="site-feedback-textarea" name="fb_improve" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
     h += '<div class="site-feedback-honeypot" aria-hidden="true">'
@@ -215,8 +245,8 @@
       + '</div>';
     h += '<p class="site-feedback-msg" id="siteFeedbackMsg" hidden></p>';
     h += '<div class="site-feedback-actions">'
-      + '<button type="submit" class="site-feedback-submit" id="siteFeedbackSubmit">' + esc(tr('feedback_submit')) + '</button>'
-      + '<p class="site-feedback-note">' + esc(tr('feedback_privacy_note')) + '</p>'
+      + '<button type="submit" class="site-feedback-submit" id="siteFeedbackSubmit">' + esc(L('feedback_submit')) + '</button>'
+      + '<p class="site-feedback-note">' + esc(L('feedback_privacy_note')) + '</p>'
       + '</div>';
     h += '</form>';
     return h;
@@ -361,9 +391,9 @@
     return form;
   }
 
-  function renderInto(container) {
+  function renderInto(container, forLang) {
     if (!container) return null;
-    container.innerHTML = formHtml();
+    container.innerHTML = formHtml(forLang || currentLang());
     return wireForm(container);
   }
 
@@ -391,6 +421,7 @@
   function setContactLang(l) {
     l = normalizeLang(l);
     if (_pageLanguages.indexOf(l) < 0) return;
+    _langLockedByUser = true;
     _pageLang = l;
     persistPageLang(l);
     var lab = document.getElementById('siteFeedbackLangLabel');
@@ -399,7 +430,7 @@
     if (dd) dd.classList.remove('active');
     applyContactPageShell();
     var root = document.getElementById('siteFeedbackRoot');
-    if (root) refreshLabels(root);
+    if (root) refreshLabels(root, l);
     renderContactLangDropdown();
   }
 
@@ -425,19 +456,23 @@
   async function initContactPageLang() {
     var root = document.getElementById('siteFeedbackRoot');
     if (!root) return;
-    var saved = readPersistedLang();
+    var def = 'EN';
     try {
       var r = await fetch('/api/languages');
       var d = await r.json();
       var langs = (d && d.languages) || ['EN'];
       _pageLanguages = langs.map(function (l) {
-        var code = normalizeLang(l);
-        return code;
+        return normalizeLang(l);
       }).filter(function (l, i, a) { return l && a.indexOf(l) === i; });
-      var def = normalizeLang(d.default || 'EN');
-      _pageLang = saved && _pageLanguages.indexOf(saved) >= 0 ? saved : (_pageLanguages.indexOf(def) >= 0 ? def : _pageLanguages[0] || 'EN');
-    } catch (e) {
-      _pageLang = saved && _pageLanguages.indexOf(saved) >= 0 ? saved : 'EN';
+      def = normalizeLang(d.default || 'EN');
+    } catch (e) {}
+    if (!_langLockedByUser) {
+      var savedNow = readPersistedLang();
+      _pageLang = savedNow && _pageLanguages.indexOf(savedNow) >= 0
+        ? savedNow
+        : (_pageLanguages.indexOf(def) >= 0 ? def : _pageLanguages[0] || 'EN');
+    } else if (_pageLang && _pageLanguages.indexOf(_pageLang) < 0) {
+      _pageLang = _pageLanguages.indexOf(def) >= 0 ? def : _pageLanguages[0] || 'EN';
     }
     var lab = document.getElementById('siteFeedbackLangLabel');
     if (lab) lab.textContent = currentLang();
@@ -455,22 +490,29 @@
     if (closeBtn) closeBtn.setAttribute('aria-label', tr('feedback_close'));
   }
 
-  function onLangChange() {
+  function onLangChange(appLang) {
+    if (appLang) _appLang = normalizeLang(appLang);
     applyContactPageShell();
+    var lang = currentLang();
     var ov = document.getElementById('siteFeedbackOverlay');
     var body = document.getElementById('siteFeedbackBody');
     if (ov && ov.classList.contains('active') && body) {
       refreshModalChrome();
-      refreshLabels(body);
+      refreshLabels(body, lang);
     }
     var root = document.getElementById('siteFeedbackRoot');
-    if (root && root.querySelector('#siteFeedbackForm')) refreshLabels(root);
+    if (root && root.querySelector('#siteFeedbackForm')) refreshLabels(root, lang);
   }
 
-  function refreshLabels(root) {
+  function refreshLabels(root, forLang) {
     if (!root) return;
-    root.innerHTML = formHtml();
+    var lang = normalizeLang(forLang || currentLang());
+    root.innerHTML = formHtml(lang);
     wireForm(root);
+  }
+
+  function syncAppLang(l) {
+    _appLang = normalizeLang(l);
   }
 
   function openModal() {
@@ -483,7 +525,7 @@
     var langDd = document.getElementById('langDropdown');
     if (langDd) langDd.classList.remove('active');
     refreshModalChrome();
-    renderInto(body);
+    renderInto(body, currentLang());
     ov.classList.add('active');
     ov.setAttribute('aria-hidden', 'false');
     if (typeof global.applyBackgroundScrollLock === 'function') global.applyBackgroundScrollLock();
@@ -497,16 +539,40 @@
     if (typeof global.releaseBackgroundScrollLock === 'function') global.releaseBackgroundScrollLock();
   }
 
+  function ensureFeedbackI18nReady(cb) {
+    if (global.GGEN_FEEDBACK_I18N) {
+      cb();
+      return;
+    }
+    var existing = document.getElementById('ggenFeedbackI18nScript');
+    if (existing) {
+      existing.addEventListener('load', cb, { once: true });
+      existing.addEventListener('error', cb, { once: true });
+      return;
+    }
+    var s = document.createElement('script');
+    s.id = 'ggenFeedbackI18nScript';
+    s.src = '/static/js/feedback_i18n.js?v=3';
+    s.onload = cb;
+    s.onerror = cb;
+    document.head.appendChild(s);
+  }
+
   function initPageRoot() {
     var root = document.getElementById('siteFeedbackRoot');
     if (!root) return;
-    applyContactPageShell();
-    var lab = document.getElementById('siteFeedbackLangLabel');
-    if (lab) lab.textContent = currentLang();
-    wireContactLangUi();
-    initContactPageLang().then(function () {
+    ensureFeedbackI18nReady(function () {
+      if (typeof global.mergeGgenFeedbackI18nIntoT === 'function') {
+        global.mergeGgenFeedbackI18nIntoT();
+      }
       applyContactPageShell();
-      renderInto(root);
+      var lab = document.getElementById('siteFeedbackLangLabel');
+      if (lab) lab.textContent = currentLang();
+      wireContactLangUi();
+      initContactPageLang().then(function () {
+        applyContactPageShell();
+        renderInto(root, currentLang());
+      });
     });
   }
 
@@ -516,7 +582,8 @@
     openModal: openModal,
     closeModal: closeModal,
     initPageRoot: initPageRoot,
-    onLangChange: onLangChange
+    onLangChange: onLangChange,
+    syncAppLang: syncAppLang
   };
 
   global.openSupportFeedback = openModal;
@@ -527,9 +594,11 @@
     global.mergeGgenFeedbackI18nIntoT();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPageRoot);
-  } else {
-    initPageRoot();
+  if (document.getElementById('siteFeedbackRoot')) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPageRoot);
+    } else {
+      initPageRoot();
+    }
   }
 })(window);
