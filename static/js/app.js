@@ -410,7 +410,7 @@ function clearRankingBrowseFilters(which){if(which==='rankChar'){S.listRankCharS
 function refreshRankingFilterLabels(){updateRarityFilterButtonLabel('rankChar');updateRoleFilterButtonLabel('rankChar');updateSourceFilterButtonLabel('rankChar');updateLineageFilterButtonLabel('rankChar');updateSeriesFilterButtonLabel('rankChar');updateSkillBrowseFilterLabel('rankChar');updateAbilBrowseFilterLabel('rankChar');updateRarityFilterButtonLabel('rankUnit');updateRoleFilterButtonLabel('rankUnit');updateSourceFilterButtonLabel('rankUnit');updateLineageFilterButtonLabel('rankUnit');updateSeriesFilterButtonLabel('rankUnit');updateSkillBrowseFilterLabel('rankUnit');updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMapWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeNonMapFilterLabel();updateUnitMechanismFilterLabel();fillSourcePanel('rankChar');fillSourcePanel('rankUnit');syncRankListStatToggleUi()}
 function onRankingTabShown(){document.querySelectorAll('.ranking-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingMode===S.ranking.mode));const ch=document.getElementById('rankingCharToolbarHost'),un=document.getElementById('rankingUnitToolbarHost');if(ch)ch.style.display=S.ranking.mode==='characters'?'block':'none';if(un)un.style.display=S.ranking.mode==='units'?'block':'none';if(S.ranking.mode==='units')ensureRankUnitWeaponRangeNonMapFilterDom();syncRankingFiltersFromBrowse();invalidateRankingBrowseFilterPanels();refreshRankingFilterLabels();syncMapWeaponRangeFilterVisibility();renderRankingStatPills();syncRankListStatToggleUi();syncRankingViewModeUi();void loadRankingList(S.ranking.mode==='characters'?S.ranking.pageChar:S.ranking.pageUnit)}
 function resetEphemeralBrowseFilterDomState(){['char','unit','rankChar','rankUnit'].forEach(which=>{const rp=rarityPrefix(which);rarityKeysFor(which).forEach(k=>{const el=document.getElementById(rp+'Rarity'+k);if(el)el.checked=true});const ltEl=document.getElementById(rp+'RarityLT');if(ltEl)ltEl.checked=true;const rpf=rolePrefix(which);ROLE_LIST_IDS.forEach(id=>{const el=document.getElementById(rpf+'Role'+id);if(el)el.checked=true})})}
-document.addEventListener('DOMContentLoaded',async()=>{try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initBannerTimelineExtras();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
+document.addEventListener('DOMContentLoaded',async()=>{try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initBannerTimelineExtras();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -6239,14 +6239,16 @@ const id=item.getAttribute('data-tb-pick-id');
 if(id!=null&&id!=='')pickTbItem(id);
 });
 }
-function tbRenderPickerItemCell(r,t,th){
+function tbRenderPickerItemCell(r,t,th){return renderEntityPickerItemCell(r,t,th,'data-tb-pick-id')}
+function renderEntityPickerItemCell(r,t,th,pickIdAttr){
 const id=escAttr(String(r.id));
+const attr=pickIdAttr||'data-tb-pick-id';
 const thumb=renderListThumb(r,t,th,{pickerThumb:true});
 let role='';
-if((t==='unit'||t==='character')&&r.role_icon){
+if((t==='unit'||t==='char')&&r.role_icon){
 role=`<span class="tb-picker-role-inline" aria-hidden="true">${pictureRasterHtml(r.role_icon,{cls:'tb-picker-role-ic',loading:'eager',decoding:'async',alt:'',lazy:false})}</span>`;
 }
-return`<div class="tb-picker-item" role="button" tabindex="0" data-tb-pick-id="${id}">${thumb}${role}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
+return`<div class="tb-picker-item" role="button" tabindex="0" ${attr}="${id}">${thumb}${role}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
 }
 function _tbSortPickerEntityRows(rows){
 return(rows||[]).slice().sort((a,b)=>{
@@ -8566,7 +8568,32 @@ _dcPickerDebounce=null;
 const t=S._dcPickerType;
 if(t==='option_parts'||t==='supporter')_dcFilterDcPickerClientSide();
 else _dcDoPickerSearch();
-},100);
+},55);
+}
+function wireDcPickerBodyClicks(){
+const body=document.getElementById('dcPickerBody');
+if(!body||body.dataset.dcPickWired)return;
+body.dataset.dcPickWired='1';
+body.addEventListener('click',function(ev){
+const item=ev.target.closest('.tb-picker-item[data-dc-pick-id]');
+if(!item)return;
+const id=item.getAttribute('data-dc-pick-id');
+if(id!=null&&id!=='')pickDcItem(id);
+});
+body.addEventListener('keydown',function(ev){
+if(ev.key!=='Enter'&&ev.key!==' ')return;
+const item=ev.target.closest('.tb-picker-item[data-dc-pick-id]');
+if(!item||document.activeElement!==item)return;
+ev.preventDefault();
+const id=item.getAttribute('data-dc-pick-id');
+if(id!=null&&id!=='')pickDcItem(id);
+});
+}
+function _dcPickerEntityKind(type){
+return(type==='character'||type==='def_character')?'char':'unit';
+}
+function _dcPickerIsEntityType(type){
+return type==='unit'||type==='character'||type==='def_unit'||type==='def_character';
 }
 function _dcFilterDcPickerClientSide(){
 const qRaw=String(document.getElementById('dcPickerSearch').value||'').trim();
@@ -8614,12 +8641,13 @@ const ac=new AbortController();
 _dcPickerSearchAbort=ac;
 const myGen=++_dcPickerSearchGen;
 const base=(type==='character'||type==='def_character')?'/api/characters':'/api/units';
-body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
+const haveVisible=!!(S._dcPickerCache&&S._dcPickerCache.length);
+if(!haveVisible)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
 const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_dcPickerSearchGen)return;
-S._dcPickerCache=d.rows||[];
+S._dcPickerCache=_tbSortPickerEntityRows(d.rows||[]);
 renderDcPickerList();
 }catch(e){
 if(e&&e.name==='AbortError')return;
@@ -8639,6 +8667,13 @@ const meta=type==='option_parts'?((r.details||'').trim()+(r.tags&&r.tags.length?
 return`<div class="cmp-picker-item" onclick='pickDcItem(${JSON.stringify(String(r.id))})' style="padding:8px 12px;cursor:pointer">
 <div><div style="display:flex;align-items:center;gap:6px"><span style="color:${rc};font-weight:700;font-size:11px">${esc(r.rarity||'')}</span><span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span></div>${meta?`<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.35">${esc(meta)}</div>`:''}</div></div>`;
 }).join('');
+return;
+}
+if(_dcPickerIsEntityType(type)){
+const th=52;
+const kind=_dcPickerEntityKind(type);
+const cells=_tbSortPickerEntityRows(items).map(r=>renderEntityPickerItemCell(r,kind,th,'data-dc-pick-id')).join('');
+body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 return;
 }
 body.innerHTML=items.map(r=>{
