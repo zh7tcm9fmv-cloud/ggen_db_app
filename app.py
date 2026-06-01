@@ -6918,14 +6918,34 @@ UNIT_MECHANISM_MIDS_CACHE = {}
 UNIT_WEAPON_DEBUFF_KEYS_CACHE = {}
 
 
+def _unit_qualifies_as_transform_partner(alt_id):
+    """MainUnitId siblings are not always player-facing transform alts (e.g. ScheduleId 9999990001 shells)."""
+    uid = normalize_id(alt_id)
+    main_id = normalize_id(unit_info_map.get(uid, {}).get('main_unit_id', uid))
+    if main_id == '0':
+        main_id = uid
+    if uid == main_id:
+        return False
+    info = unit_info_map.get(uid)
+    if not info:
+        return False
+    sched = normalize_id(info.get('schedule_id', '0'))
+    if sched in ('0', '9999990001'):
+        return False
+    if uid in unit_list_playable_ids:
+        return True
+    # Some battle forms only define weapons on the alternate row (abilities live on the main id).
+    return uid in unit_weapon_map
+
+
 def build_unit_transform_partner_map():
-    """Each main unit id maps to its single transform alt and vice versa (m_unit.MainUnitId)."""
+    """Map each main unit id to its single in-game transform alternate (m_unit.MainUnitId), when valid."""
     main_to_alt = {}
     for u, row in unit_info_map.items():
         mid = normalize_id(row.get('main_unit_id', u))
         if mid == '0':
             mid = u
-        if u != mid:
+        if u != mid and _unit_qualifies_as_transform_partner(u):
             main_to_alt[mid] = u
     partner = {}
     for m, a in main_to_alt.items():
