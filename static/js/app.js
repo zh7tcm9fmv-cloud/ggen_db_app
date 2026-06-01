@@ -6250,6 +6250,15 @@ role=`<span class="tb-picker-role-inline" aria-hidden="true">${pictureRasterHtml
 }
 return`<div class="tb-picker-item" role="button" tabindex="0" ${attr}="${id}">${thumb}${role}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
 }
+function renderOptionPartPickerCell(r,th,pickIdAttr){
+const id=escAttr(String(r.id));
+const attr=pickIdAttr||'data-dc-pick-id';
+const sz=th||52;
+const thumb=r.thum
+?pictureRasterHtml(r.thum,{cls:'dc-picker-mod-thum',loading:'eager',decoding:'async',alt:'',extra:`style="width:${sz}px;height:${sz}px;object-fit:contain;flex-shrink:0"`,onerror:"this.style.display='none'",lazy:false})
+:`<div class="dc-picker-mod-thum dc-picker-mod-thum--ph" style="width:${sz}px;height:${sz}px" aria-hidden="true">⚙</div>`;
+return`<div class="tb-picker-item" role="button" tabindex="0" ${attr}="${id}">${thumb}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
+}
 function _tbSortPickerEntityRows(rows){
 return(rows||[]).slice().sort((a,b)=>{
 const ra=Number(a.rarity_sort);const rb=Number(b.rarity_sort);
@@ -8609,17 +8618,18 @@ let rows=!q?pool:pool.filter(r=>{
 const hay=[r.name,r.details,r.boost,(r.tags||[]).map(tg=>tg.name||'').join(' ')].filter(Boolean).join(' ').toLowerCase();
 return hay.includes(q);
 });
-S._dcPickerCache=rows;
+S._dcPickerCache=_tbSortPickerEntityRows(rows);
 renderDcPickerList();
 }
 async function _dcSupporterPickerSearch(qRaw){
 const myGen=++_dcPickerSearchGen;
 const body=document.getElementById('dcPickerBody');
-if(body)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
+const haveVisible=!!(S._dcPickerCache&&S._dcPickerCache.length);
+if(body&&!haveVisible)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
 const rows=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery(),qRaw);
 if(myGen!==_dcPickerSearchGen)return;
-S._dcPickerCache=rows;
+S._dcPickerCache=_tbSortPickerEntityRows(rows);
 renderDcPickerList();
 }catch(e){
 if(myGen!==_dcPickerSearchGen)return;
@@ -8659,23 +8669,24 @@ const items=S._dcPickerCache;
 const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
-const RARITY_COLORS={'UR':'#fbbf24','SSR':'#f97316','SR':'#a78bfa','R':'#60a5fa','N':'#94a3b8'};
-if(type==='option_parts'||type==='supporter'){
-body.innerHTML=items.map(r=>{
-const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
-const meta=type==='option_parts'?((r.details||'').trim()+(r.tags&&r.tags.length?(' · '+r.tags.map(tg=>tg.name).filter(Boolean).join(' · ')):'')):((r.boost||'').split('\n')[0]||'');
-return`<div class="cmp-picker-item" onclick='pickDcItem(${JSON.stringify(String(r.id))})' style="padding:8px 12px;cursor:pointer">
-<div><div style="display:flex;align-items:center;gap:6px"><span style="color:${rc};font-weight:700;font-size:11px">${esc(r.rarity||'')}</span><span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span></div>${meta?`<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.35">${esc(meta)}</div>`:''}</div></div>`;
-}).join('');
+const th=52;
+if(type==='supporter'){
+const cells=_tbSortPickerEntityRows(items).map(r=>renderEntityPickerItemCell(r,'supp',th,'data-dc-pick-id')).join('');
+body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
+return;
+}
+if(type==='option_parts'){
+const cells=_tbSortPickerEntityRows(items).map(r=>renderOptionPartPickerCell(r,th,'data-dc-pick-id')).join('');
+body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 return;
 }
 if(_dcPickerIsEntityType(type)){
-const th=52;
 const kind=_dcPickerEntityKind(type);
 const cells=_tbSortPickerEntityRows(items).map(r=>renderEntityPickerItemCell(r,kind,th,'data-dc-pick-id')).join('');
 body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 return;
 }
+const RARITY_COLORS={'UR':'#fbbf24','SSR':'#f97316','SR':'#a78bfa','R':'#60a5fa','N':'#94a3b8'};
 body.innerHTML=items.map(r=>{
 const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
 const rarBadge=`<span style="color:${rc};font-weight:600;font-size:11px;margin-right:4px">${esc(r.rarity||'')}</span>`;
