@@ -6257,7 +6257,16 @@ const sz=th||52;
 const thumb=r.thum
 ?pictureRasterHtml(r.thum,{cls:'dc-picker-mod-thum',loading:'eager',decoding:'async',alt:'',extra:`style="width:${sz}px;height:${sz}px;object-fit:contain;flex-shrink:0"`,onerror:"this.style.display='none'",lazy:false})
 :`<div class="dc-picker-mod-thum dc-picker-mod-thum--ph" style="width:${sz}px;height:${sz}px" aria-hidden="true">⚙</div>`;
-return`<div class="tb-picker-item" role="button" tabindex="0" ${attr}="${id}">${thumb}<span class="tb-picker-item-name">${esc(r.name||'')}</span></div>`;
+const details=String(r.details||'').trim();
+const meta=details?`<span class="tb-picker-item-meta">${esc(details)}</span>`:'';
+return`<div class="tb-picker-item tb-picker-item--rich" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-item-body"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${meta}</div></div>`;
+}
+function renderSupporterPickerCell(r,th,pickIdAttr){
+const id=escAttr(String(r.id));
+const attr=pickIdAttr||'data-dc-pick-id';
+const thumb=renderListThumb(r,'supp',th,{pickerThumb:true});
+const tags=(r.skill_tag_data&&r.skill_tag_data.length)?`<div class="tb-picker-item-tags detail-tags-row">${renderSkillTags(r.skill_tag_data)}</div>`:'';
+return`<div class="tb-picker-item tb-picker-item--rich" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-item-body"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${tags}</div></div>`;
 }
 function _tbSortPickerEntityRows(rows){
 return(rows||[]).slice().sort((a,b)=>{
@@ -8671,13 +8680,13 @@ const type=S._dcPickerType;
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
 const th=52;
 if(type==='supporter'){
-const cells=_tbSortPickerEntityRows(items).map(r=>renderEntityPickerItemCell(r,'supp',th,'data-dc-pick-id')).join('');
-body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
+const cells=_tbSortPickerEntityRows(items).map(r=>renderSupporterPickerCell(r,th,'data-dc-pick-id')).join('');
+body.innerHTML=`<div class="tb-picker-grid tb-picker-grid--rich">${cells}</div>`;
 return;
 }
 if(type==='option_parts'){
 const cells=_tbSortPickerEntityRows(items).map(r=>renderOptionPartPickerCell(r,th,'data-dc-pick-id')).join('');
-body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
+body.innerHTML=`<div class="tb-picker-option-list tb-picker-option-list--rich">${cells}</div>`;
 return;
 }
 if(_dcPickerIsEntityType(type)){
