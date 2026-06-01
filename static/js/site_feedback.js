@@ -52,7 +52,7 @@
     feedback_device_mobile: 'Mobile',
     feedback_device_tablet: 'Tablet',
     feedback_liked_label: 'What did you like most about the website?',
-    feedback_improve_label: 'What can we improve?',
+    feedback_improve_label: 'What new features would you like to see implemented?',
     feedback_submit: 'Submit feedback',
     feedback_submitting: 'Sending…',
     feedback_success: 'Thank you — your feedback was submitted.',
@@ -83,8 +83,10 @@
     var radios = '';
     for (var n = 1; n <= 5; n++) {
       var id = 'fb-' + field.key + '-' + n;
+      radios += '<span class="site-feedback-radio-cell">';
       radios += '<input class="site-feedback-radio" type="radio" name="fb_' + field.key + '" id="' + id + '" value="' + n + '">';
       radios += '<label class="site-feedback-radio-label" for="' + id + '" data-value="' + n + '">' + n + '</label>';
+      radios += '</span>';
     }
     return ''
       + '<section class="site-feedback-block" data-fb-field="' + esc(field.key) + '">'
@@ -92,9 +94,11 @@
       + '<h3 class="site-feedback-q-title">' + esc(tr(field.titleKey)) + '</h3>'
       + '<p class="site-feedback-q-prompt">' + esc(tr(field.promptKey)) + '</p>'
       + '<div class="site-feedback-scale" role="group" aria-label="' + esc(tr(field.titleKey)) + '">'
-      + '<span class="site-feedback-scale-end site-feedback-scale-end--lo">' + esc(tr(field.loKey)) + '</span>'
       + '<div class="site-feedback-radios">' + radios + '</div>'
+      + '<div class="site-feedback-scale-ends">'
+      + '<span class="site-feedback-scale-end site-feedback-scale-end--lo">' + esc(tr(field.loKey)) + '</span>'
       + '<span class="site-feedback-scale-end site-feedback-scale-end--hi">' + esc(tr(field.hiKey)) + '</span>'
+      + '</div>'
       + '</div>'
       + '</section>';
   }
@@ -181,6 +185,18 @@
     var form = root.querySelector('#siteFeedbackForm');
     if (!form || form.dataset.fbWired === '1') return form;
     form.dataset.fbWired = '1';
+    form.querySelectorAll('.site-feedback-radio').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        var scrollHost = root;
+        if (!scrollHost || typeof scrollHost.scrollTop !== 'number') return;
+        var top = scrollHost.scrollTop;
+        var left = scrollHost.scrollLeft;
+        requestAnimationFrame(function () {
+          scrollHost.scrollTop = top;
+          scrollHost.scrollLeft = left;
+        });
+      });
+    });
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var payload = collectPayload(form);
