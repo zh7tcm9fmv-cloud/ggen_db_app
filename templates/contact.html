@@ -17,6 +17,6 @@
 <p class="muted"><a href="/about">About</a> · <a href="/privacy-policy">Privacy Policy</a></p>
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/feedback_i18n.js') }}?v=3"></script>
+<script src="{{ url_for('static', filename='js/feedback_i18n.js') }}?v=3" defer></script>
 <script src="{{ url_for('static', filename='js/site_feedback.js') }}?v=3" defer></script>
 {% endblock %}

@@ -9654,6 +9654,17 @@ def _build_browse_list_performance_caches():
     print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
 
 
+def _schedule_browse_list_performance_caches():
+    """Build browse row caches in a background thread so gunicorn can serve pages during cold start."""
+    def _run():
+        try:
+            _build_browse_list_performance_caches()
+        except Exception as e:
+            print(f'Browse list perf caches: background build failed: {e}')
+
+    threading.Thread(target=_run, name='browse-perf-cache', daemon=True).start()
+
+
 def calculate_npc_character_self_bonus_pct(abilities, include_conditional_title_gated=False):
     """Non-EX pilot-stat % from map-NPC character abilities (SP kit when present).
 
@@ -10152,6 +10163,11 @@ def _serve_index():
         r.headers['Expires'] = '0'
     return r
 
+@app.route('/health')
+def health_check():
+    return jsonify({'ok': True})
+
+
 @app.route('/')
 def index(): 
     return _serve_index()
@@ -10302,22 +10318,24 @@ def _site_feedback_append_entry(entry):
 
 
 def _site_feedback_persist_entry(entry):
-    sheets_url = _site_feedback_sheets_url()
-    sheets_ok = False
-    if sheets_url:
-        ok, err = _site_feedback_forward_to_sheets(entry)
-        if not ok:
-            print(f'site_feedback: sheets forward failed: {err}')
-            return False
-        sheets_ok = True
+    local_ok = False
     try:
         _site_feedback_append_entry(entry)
+        local_ok = True
     except OSError as e:
-        if not sheets_ok:
-            print(f'site_feedback: write failed: {e}')
-            return False
-        print(f'site_feedback: local backup skipped: {e}')
-    return True
+        print(f'site_feedback: local write failed: {e}')
+
+    sheets_url = _site_feedback_sheets_url()
+    if sheets_url:
+        def _forward():
+            ok, err = _site_feedback_forward_to_sheets(entry)
+            if not ok:
+                print(f'site_feedback: sheets forward failed: {err}')
+
+        threading.Thread(target=_forward, name='site-feedback-sheets', daemon=True).start()
+        return True
+
+    return local_ok
 
 
 @app.route('/api/feedback', methods=['POST'])
@@ -13413,7 +13431,7 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
     return latest_release_schedule_content_locked(sid, sm)
 
 
-_build_browse_list_performance_caches()
+_schedule_browse_list_performance_caches()
 
 
 def eternal_stage_before_mstage_schedule_release(stage_id):
