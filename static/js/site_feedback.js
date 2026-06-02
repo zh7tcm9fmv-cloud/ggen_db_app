@@ -76,6 +76,7 @@
     feedback_mobile_optout_hint: 'Mobile experience skipped — desktop/PC only.',
     feedback_liked_label: 'What did you like most about the website?',
     feedback_improve_label: 'What new features would you like to see implemented?',
+    feedback_improve_prompt: 'Please describe the feature or issue in detail (what it should do, why it would be useful, and any specific requirements you have).',
     feedback_submit: 'Submit feedback',
     feedback_submitting: 'Sending…',
     feedback_success: 'Thank you — your feedback was submitted.',
@@ -344,6 +345,7 @@
       + '</section>';
     h += '<section class="site-feedback-block site-feedback-block--open" data-fb-open="feedback_improve_label">'
       + '<h3 class="site-feedback-q-title">10. ' + esc(L('feedback_improve_label')) + '</h3>'
+      + '<p class="site-feedback-q-prompt">' + esc(L('feedback_improve_prompt')) + '</p>'
       + '<textarea class="site-feedback-textarea" name="fb_improve" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
     h += '<div class="site-feedback-honeypot" aria-hidden="true">'

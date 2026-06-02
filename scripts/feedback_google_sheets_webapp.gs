@@ -15,7 +15,7 @@
  *       Team Builder         → team_builder_usage
  *   —   Devices (checkboxes) → devices
  *   Q9  What you liked       → liked
- *   Q10 New features         → improve
+ *   Q10 New features         → improve (title + free-text detail)
  *
  * Setup:
  * 1. Create a Google Sheet (e.g. "GGen site feedback").
