@@ -1522,15 +1522,21 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-result-multi-col .dc-result-item--cmp{display:flex;flex-direction:column;align-items:center;padding:10px 8px;margin:-6px -4px;border-radius:12px;box-sizing:border-box}
 .dc-dmg-cmp-delta{margin-top:6px;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;font-family:'RobotoMediumNumbers',monospace;line-height:1.2}
 .dc-dmg-cmp-delta.is-pos{color:#4ade80}
+.dc-dmg-cmp-delta.is-higher{color:#67e8f9}
 .dc-dmg-cmp-delta.is-neg{color:#f87171}
 .dc-dmg-cmp-delta.is-neu{color:#94a3b8}
+@keyframes dc-dmg-cmp-pulse-higher{0%,100%{box-shadow:0 0 0 0 rgba(103,232,249,.45),0 0 0 0 rgba(103,232,249,.08)}50%{box-shadow:0 0 0 3px rgba(103,232,249,.22),0 0 16px rgba(103,232,249,.12)}}
 @keyframes dc-dmg-cmp-pulse-pos{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5),0 0 0 0 rgba(74,222,128,.08)}50%{box-shadow:0 0 0 3px rgba(74,222,128,.25),0 0 18px rgba(74,222,128,.15)}}
 @keyframes dc-dmg-cmp-pulse-neg{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,.45),0 0 0 0 rgba(248,113,113,.06)}50%{box-shadow:0 0 0 3px rgba(248,113,113,.22),0 0 18px rgba(248,113,113,.12)}}
 @keyframes dc-dmg-cmp-pulse-neu{0%,100%{box-shadow:0 0 0 0 rgba(148,163,184,.35)}50%{box-shadow:0 0 0 2px rgba(148,163,184,.18)}}
+.dc-result-item--cmp-higher{outline:1px solid rgba(103,232,249,.42);animation:dc-dmg-cmp-pulse-higher 2.4s ease-in-out infinite}
 .dc-result-item--cmp-pos{outline:1px solid rgba(74,222,128,.45);animation:dc-dmg-cmp-pulse-pos 2.4s ease-in-out infinite}
 .dc-result-item--cmp-neg{outline:1px solid rgba(248,113,113,.42);animation:dc-dmg-cmp-pulse-neg 2.4s ease-in-out infinite}
 .dc-result-item--cmp-neu{outline:1px solid rgba(148,163,184,.35);animation:dc-dmg-cmp-pulse-neu 2.8s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.dc-result-item--cmp-pos,.dc-result-item--cmp-neg,.dc-result-item--cmp-neu{animation:none}}
+@media (prefers-reduced-motion:reduce){.dc-result-item--cmp-higher,.dc-result-item--cmp-pos,.dc-result-item--cmp-neg,.dc-result-item--cmp-neu{animation:none}}
+.dc-result-multi-grid--pct-compare .dc-result-val.is-dmg-worse{color:#94a3b8}
+.dc-result-multi-grid--pct-compare .dc-result-val.is-dmg-deficit{color:#f87171}
+.dc-result-multi-col.is-compare-best{border-color:rgba(74,222,128,.42);box-shadow:0 0 0 1px rgba(74,222,128,.18),0 0 14px rgba(74,222,128,.12)}
 .dc-result-multi-col .dc-result-row{margin-bottom:12px;gap:16px}
 .dc-result-multi-col .dc-result-val{font-size:26px}
 .dc-result-multi-col .dc-result-val.hit{font-size:22px}

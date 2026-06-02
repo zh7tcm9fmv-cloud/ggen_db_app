@@ -9509,7 +9509,7 @@ const finalHitRate=MN(100,MX(10,rawHit));
 return{finalHitRate,mobDiff,reaDiff,mobCorrection,baseHit,rawHit};
 }
 
-function _dcHtmlDcResultDamageBlock(r,dmgDeltas){
+function _dcHtmlDcResultDamageBlock(r,dmgDeltas,compareValTone){
 const npcHp=Math.max(0,r.npcHp|0);
 const hpRemN=Math.max(0,npcHp-r.normalDmg);
 const hpRemC=Math.max(0,npcHp-r.critDmg);
@@ -9519,13 +9519,19 @@ const sup=!!r.isSuperVigor;
 const critLbl=sup?t('dc_super_crit_dmg'):t('dc_crit_dmg');
 const hpCritLbl=sup?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit');
 const dn=dmgDeltas&&dmgDeltas.n,dc=dmgDeltas&&dmgDeltas.c;
-const showN=dn!=null&&Number.isFinite(dn);
-const showC=dc!=null&&Number.isFinite(dc);
-const clsN=showN?_dcDmgCompareItemPulseClass(dn):'';
-const clsC=showC?_dcDmgCompareItemPulseClass(dc):'';
-const deltaN=showN?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dn)}">${esc(_dcFmtPctDelta(dn))}</div>`:'';
-const deltaC=showC?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dc)}">${esc(_dcFmtPctDelta(dc))}</div>`:'';
-return`<div class="dc-result-row"><div class="dc-result-item${clsN}"><div class="dc-result-label dc-dmg-anch-n-lbl">${t('dc_normal_dmg')}</div><div class="dc-result-val normal dc-dmg-anch-n">${fmtN(r.normalDmg)}</div>${deltaN}</div><div class="dc-result-item${clsC}"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit dc-dmg-anch-c">${fmtN(r.critDmg)}</div>${deltaC}</div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
+const dtN=dmgDeltas&&(dmgDeltas.toneN||dmgDeltas.tone);
+const dtC=dmgDeltas&&(dmgDeltas.toneC||dmgDeltas.tone);
+const showN=dn!=null&&Number.isFinite(dn)&&Math.abs(dn)>=0.01;
+const showC=dc!=null&&Number.isFinite(dc)&&Math.abs(dc)>=0.01;
+const clsN=showN?_dcDmgCompareItemPulseClass(dn,dtN):'';
+const clsC=showC?_dcDmgCompareItemPulseClass(dc,dtC):'';
+const valToneN=compareValTone&&compareValTone.n;
+const valToneC=compareValTone&&compareValTone.c;
+const valExtraN=valToneN?` is-dmg-${valToneN}`:'';
+const valExtraC=valToneC?` is-dmg-${valToneC}`:'';
+const deltaN=showN?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dn,dtN)}">${esc(_dcFmtPctDelta(dn))}</div>`:'';
+const deltaC=showC?`<div class="dc-dmg-cmp-delta ${_dcDmgCompareDeltaToneClass(dc,dtC)}">${esc(_dcFmtPctDelta(dc))}</div>`:'';
+return`<div class="dc-result-row"><div class="dc-result-item${clsN}"><div class="dc-result-label dc-dmg-anch-n-lbl">${t('dc_normal_dmg')}</div><div class="dc-result-val normal dc-dmg-anch-n${valExtraN}">${fmtN(r.normalDmg)}</div>${deltaN}</div><div class="dc-result-item${clsC}"><div class="dc-result-label">${critLbl}</div><div class="dc-result-val crit dc-dmg-anch-c${valExtraC}">${fmtN(r.critDmg)}</div>${deltaC}</div><div class="dc-result-item"><div class="dc-result-label">${t('dc_hit_rate')}</div><div class="dc-result-val hit">${r.hitRate}%</div></div></div>
 <div class="dc-result-hp dc-result-hp--compact">
 <div class="dc-hp-mini dc-hp-mini--normal">
 <div class="dc-hp-mini-top"><span class="dc-hp-mini-tag">${t('dc_hp_remaining_normal')}</span><span class="dc-hp-mini-val"><span class="dc-hp-mini-fraction">${fmtN(hpRemN)}<span class="dc-hp-mini-sep">/</span>${fmtN(npcHp)}</span>${npcHp>0?`<span class="dc-hp-mini-pct">${pctN.toFixed(1)}%</span>`:''}</span></div>
@@ -9549,14 +9555,26 @@ const a=Math.abs(v);
 const d=a>=100?0:(a>=10?1:2);
 return`${v>=0?'+':''}${v.toFixed(d)}%`;
 }
-function _dcDmgCompareItemPulseClass(pct){
+function _dcDmgCompareValTone(dmg,bestDmg,isBase){
+if(dmg>=bestDmg)return'best';
+return isBase?'deficit':'worse';
+}
+function _dcDmgCompareDeltaTone(pct){
+if(pct==null||!Number.isFinite(pct)||Math.abs(pct)<0.01)return'neu';
+return pct>0?'above-base':'worse';
+}
+function _dcDmgCompareItemPulseClass(pct,tone){
 if(pct==null||!Number.isFinite(pct))return'';
-if(Math.abs(pct)<0.01)return' dc-result-item--cmp dc-result-item--cmp-neu';
+if(tone==='neu'||Math.abs(pct)<0.01)return' dc-result-item--cmp dc-result-item--cmp-neu';
+if(tone==='deficit'||tone==='worse')return' dc-result-item--cmp dc-result-item--cmp-neg';
+if(tone==='above-base')return' dc-result-item--cmp dc-result-item--cmp-higher';
 return pct>=0?' dc-result-item--cmp dc-result-item--cmp-pos':' dc-result-item--cmp dc-result-item--cmp-neg';
 }
-function _dcDmgCompareDeltaToneClass(pct){
+function _dcDmgCompareDeltaToneClass(pct,tone){
 if(pct==null||!Number.isFinite(pct))return'';
-if(Math.abs(pct)<0.01)return'is-neu';
+if(tone==='neu'||Math.abs(pct)<0.01)return'is-neu';
+if(tone==='deficit'||tone==='worse')return'is-neg';
+if(tone==='above-base')return'is-higher';
 return pct>=0?'is-pos':'is-neg';
 }
 function _dcSyncMultiPctCompareUi(canCompare){
@@ -9635,15 +9653,33 @@ let inner='';
 if(multi.length===1){
 inner=_dcHtmlDcResultDamageBlock(multi[0].result);
 }else{
+const bestNormal=Math.max(...multi.map(x=>x.result.normalDmg|0));
+const bestCrit=Math.max(...multi.map(x=>x.result.critDmg|0));
 inner='<div class="dc-result-multi-compare-canvas"><div class="dc-result-multi-grid'+(compareEnabled?' dc-result-multi-grid--pct-compare':'')+'">'+multi.map(m=>{
 const ud=m.slot.atkUnitData,cd=m.slot.atkCharData;
 const isBase=m.idx===primary.idx;
-const meta=compareEnabled&&!isBase?_dcBuildDamageCompareMeta(m.result,primary.result,m.idx,primary.idx,true):null;
-const dmgDeltas=meta?{n:meta.normalPct,c:meta.critPct}:null;
+let dmgDeltas=null;
+let compareValTone=null;
+if(compareEnabled){
+const nTone=_dcDmgCompareValTone(m.result.normalDmg|0,bestNormal,isBase);
+const cTone=_dcDmgCompareValTone(m.result.critDmg|0,bestCrit,isBase);
+compareValTone={n:nTone,c:cTone};
+if(isBase){
+if(nTone!=='best'||cTone!=='best'){
+const n=_dcPctDelta(m.result.normalDmg,bestNormal);
+const c=_dcPctDelta(m.result.critDmg,bestCrit);
+dmgDeltas={n,c,toneN:nTone!=='best'?'deficit':'neu',toneC:cTone!=='best'?'deficit':'neu'};
+}
+}else{
+const n=_dcPctDelta(m.result.normalDmg,primary.result.normalDmg);
+const c=_dcPctDelta(m.result.critDmg,primary.result.critDmg);
+dmgDeltas={n,c,toneN:_dcDmgCompareDeltaTone(n),toneC:_dcDmgCompareDeltaTone(c)};
+}
+}
 const baseCap=compareEnabled&&isBase?`<div class="dc-result-multi-base-cap"><span class="dc-result-base-text">Base</span></div>`:'';
 const head=`#${m.idx+1} · ${esc(ud.name||'Unit')} + ${esc(cd.name||'Pilot')}`;
-const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${dmgDeltas?' is-compare-target':''}`;
-return`<div class="${cls}" data-dc-slot="${m.idx}">${baseCap}<div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result,dmgDeltas)}</div>`;
+const cls=`dc-result-multi-col${isBase?' is-compare-base':''}${dmgDeltas?' is-compare-target':''}${compareEnabled&&compareValTone&&compareValTone.n==='best'?' is-compare-best':''}`;
+return`<div class="${cls}" data-dc-slot="${m.idx}">${baseCap}<div class="dc-result-multi-head">${head}</div>${_dcHtmlDcResultDamageBlock(m.result,dmgDeltas,compareValTone)}</div>`;
 }).join('')+'</div></div>';
 }
 _dcDetachDcMultiCompareObserver();
