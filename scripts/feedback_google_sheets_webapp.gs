@@ -7,7 +7,8 @@
  *   Q3  Visual design        → visual_design
  *   Q4  Content quality      → content_quality
  *   Q5  Page speed           → page_speed
- *   Q6  Mobile experience    → mobile_experience
+ *   —   Device(s)            → devices (required; desktop-only skips Q6)
+ *   Q6  Mobile experience    → mobile_experience (skipped if desktop/PC only)
  *   Q7  Functionality        → functionality
  *   Q8  Tool usage (two ratings in one section):
  *       Damage Simulator     → damage_sim_usage

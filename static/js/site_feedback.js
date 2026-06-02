@@ -68,16 +68,19 @@
     feedback_q8_team_prompt: 'How often do you use the Team Builder?',
     feedback_q8_lo: 'Never',
     feedback_q8_hi: 'Very often',
-    feedback_device_label: 'I visited on',
-    feedback_device_desktop: 'Desktop',
+    feedback_device_label: 'Which device(s) did you use?',
+    feedback_device_prompt: 'Select all that apply. Desktop/PC only skips the mobile experience question.',
+    feedback_device_desktop: 'Desktop/PC',
     feedback_device_mobile: 'Mobile',
     feedback_device_tablet: 'Tablet',
+    feedback_mobile_optout_hint: 'Mobile experience skipped — desktop/PC only.',
     feedback_liked_label: 'What did you like most about the website?',
     feedback_improve_label: 'What new features would you like to see implemented?',
     feedback_submit: 'Submit feedback',
     feedback_submitting: 'Sending…',
     feedback_success: 'Thank you — your feedback was submitted.',
-    feedback_err_required: 'Please rate every question from 1 to 5.',
+    feedback_err_required: 'Please rate every required question from 1 to 5.',
+    feedback_err_devices: 'Please select at least one device.',
     feedback_err_submit: 'Could not submit feedback. Please try again later.',
     feedback_err_rate_limit: 'You already submitted feedback recently. Please try again later.',
     feedback_privacy_note: 'Anonymous feedback only — no account required.',
@@ -198,6 +201,107 @@
       + '</section>';
   }
 
+  function devicesFromForm(form) {
+    var devices = [];
+    if (!form) return devices;
+    form.querySelectorAll('input[name="fb_device"]:checked').forEach(function (el) {
+      devices.push(el.value);
+    });
+    return devices;
+  }
+
+  function mobileExperienceRequired(devices) {
+    return devices.indexOf('mobile') >= 0 || devices.indexOf('tablet') >= 0;
+  }
+
+  function deviceSectionHtml(lang) {
+    return ''
+      + '<section class="site-feedback-block site-feedback-block--devices" data-fb-field="devices">'
+      + '<h3 class="site-feedback-q-title">' + esc(trKey('feedback_device_label', lang)) + '</h3>'
+      + '<p class="site-feedback-q-prompt">' + esc(trKey('feedback_device_prompt', lang)) + '</p>'
+      + '<div class="site-feedback-device-row" role="group" aria-label="' + esc(trKey('feedback_device_label', lang)) + '">'
+      + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="desktop"> ' + esc(trKey('feedback_device_desktop', lang)) + '</label>'
+      + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="mobile"> ' + esc(trKey('feedback_device_mobile', lang)) + '</label>'
+      + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="tablet"> ' + esc(trKey('feedback_device_tablet', lang)) + '</label>'
+      + '</div>'
+      + '<p class="site-feedback-device-hint" id="siteFeedbackDeviceHint" hidden>' + esc(trKey('feedback_mobile_optout_hint', lang)) + '</p>'
+      + '</section>';
+  }
+
+  function clearMobileExperienceAnswers(form) {
+    if (!form) return;
+    form.querySelectorAll('input[name="fb_mobile_experience"]').forEach(function (el) {
+      el.checked = false;
+    });
+  }
+
+  function renumberFeedbackForm(form, lang) {
+    if (!form) return;
+    var mobileRequired = mobileExperienceRequired(devicesFromForm(form));
+    var L = function (key) { return trKey(key, lang || currentLang()); };
+    var n = 0;
+    for (var i = 0; i < RATING_FIELDS.length; i++) {
+      var field = RATING_FIELDS[i];
+      if (field.key === 'mobile_experience') {
+        var wrap = form.querySelector('#siteFeedbackMobileQWrap');
+        if (wrap) {
+          wrap.hidden = !mobileRequired;
+          var block = wrap.querySelector('.site-feedback-block');
+          if (mobileRequired && block) {
+            n += 1;
+            var numEl = block.querySelector('.site-feedback-q-num');
+            if (numEl) numEl.textContent = n;
+          }
+        }
+        continue;
+      }
+      var block = form.querySelector('.site-feedback-block[data-fb-field="' + field.key + '"]');
+      if (block) {
+        n += 1;
+        var num = block.querySelector('.site-feedback-q-num');
+        if (num) num.textContent = n;
+      }
+      if (field.key === 'functionality') {
+        var tool = form.querySelector('.site-feedback-block[data-fb-field="tool_usage"]');
+        if (tool) {
+          n += 1;
+          var toolNum = tool.querySelector('.site-feedback-q-num');
+          if (toolNum) toolNum.textContent = n;
+        }
+      }
+    }
+    form.querySelectorAll('.site-feedback-block--open[data-fb-open]').forEach(function (block) {
+      n += 1;
+      var title = block.querySelector('.site-feedback-q-title');
+      if (title) title.textContent = n + '. ' + L(block.getAttribute('data-fb-open'));
+    });
+  }
+
+  function syncMobileExperienceVisibility(form, lang) {
+    if (!form) return;
+    var devices = devicesFromForm(form);
+    var mobileRequired = mobileExperienceRequired(devices);
+    var wrap = form.querySelector('#siteFeedbackMobileQWrap');
+    var hint = form.querySelector('#siteFeedbackDeviceHint');
+    if (wrap) {
+      if (!mobileRequired) clearMobileExperienceAnswers(form);
+      wrap.hidden = !mobileRequired;
+    }
+    if (hint) hint.hidden = !(devices.length > 0 && !mobileRequired);
+    renumberFeedbackForm(form, lang);
+  }
+
+  function wireDeviceInputs(form, root, lang) {
+    function onDeviceChange() {
+      syncMobileExperienceVisibility(form, lang);
+      preserveScrollHost(root);
+    }
+    form.querySelectorAll('input[name="fb_device"]').forEach(function (el) {
+      el.addEventListener('change', onDeviceChange);
+    });
+    syncMobileExperienceVisibility(form, lang);
+  }
+
   function toolUsageSectionHtml(sectionNum, lang) {
     var h = ''
       + '<section class="site-feedback-block site-feedback-block--tools" data-fb-field="tool_usage">'
@@ -221,24 +325,24 @@
     var h = '<form class="site-feedback-form" id="siteFeedbackForm" novalidate>';
     h += '<p class="site-feedback-intro">' + esc(L('feedback_intro')) + '</p>';
     for (var i = 0; i < RATING_FIELDS.length; i++) {
-      h += ratingBlockHtml(RATING_FIELDS[i], i, lang);
-      if (RATING_FIELDS[i].key === 'mobile_experience') {
-        h += '<div class="site-feedback-device-row" aria-label="' + esc(L('feedback_device_label')) + '">'
-          + '<span class="site-feedback-q-prompt">' + esc(L('feedback_device_label')) + '</span>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="desktop"> ' + esc(L('feedback_device_desktop')) + '</label>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="mobile"> ' + esc(L('feedback_device_mobile')) + '</label>'
-          + '<label class="site-feedback-device-opt"><input type="checkbox" name="fb_device" value="tablet"> ' + esc(L('feedback_device_tablet')) + '</label>'
-          + '</div>';
+      var field = RATING_FIELDS[i];
+      if (field.key === 'mobile_experience') {
+        h += deviceSectionHtml(lang);
+        h += '<div class="site-feedback-mobile-q-wrap" id="siteFeedbackMobileQWrap" hidden>';
+        h += ratingBlockHtml(field, 6, lang);
+        h += '</div>';
+        continue;
       }
+      h += ratingBlockHtml(RATING_FIELDS[i], i + 1, lang);
       if (RATING_FIELDS[i].key === 'functionality') {
-        h += toolUsageSectionHtml(i + 2, lang);
+        h += toolUsageSectionHtml(8, lang);
       }
     }
-    h += '<section class="site-feedback-block site-feedback-block--open">'
+    h += '<section class="site-feedback-block site-feedback-block--open" data-fb-open="feedback_liked_label">'
       + '<h3 class="site-feedback-q-title">9. ' + esc(L('feedback_liked_label')) + '</h3>'
       + '<textarea class="site-feedback-textarea" name="fb_liked" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
-    h += '<section class="site-feedback-block site-feedback-block--open">'
+    h += '<section class="site-feedback-block site-feedback-block--open" data-fb-open="feedback_improve_label">'
       + '<h3 class="site-feedback-q-title">10. ' + esc(L('feedback_improve_label')) + '</h3>'
       + '<textarea class="site-feedback-textarea" name="fb_improve" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
@@ -277,10 +381,14 @@
     };
   }
 
-  function allRatingsPresent(ratings) {
+  function allRatingsPresent(ratings, devices) {
+    if (!devices || !devices.length) return false;
+    var mobileRequired = mobileExperienceRequired(devices);
     var fields = allRatingFields();
     for (var i = 0; i < fields.length; i++) {
-      var v = ratings[fields[i].key];
+      var key = fields[i].key;
+      if (key === 'mobile_experience' && !mobileRequired) continue;
+      var v = ratings[key];
       if (!(v >= 1 && v <= 5)) return false;
     }
     return true;
@@ -346,11 +454,16 @@
     if (!form || form.dataset.fbWired === '1') return form;
     form.dataset.fbWired = '1';
     wireRatingInputs(form, root);
+    wireDeviceInputs(form, root, currentLang());
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var payload = collectPayload(form);
       if (payload.website) return;
-      if (!allRatingsPresent(payload.ratings)) {
+      if (!payload.devices.length) {
+        setMessage(form, tr('feedback_err_devices'), false);
+        return;
+      }
+      if (!allRatingsPresent(payload.ratings, payload.devices)) {
         setMessage(form, tr('feedback_err_required'), false);
         return;
       }
@@ -373,6 +486,7 @@
         if (res.ok && res.data && res.data.ok) {
           setMessage(form, tr('feedback_success'), true);
           form.reset();
+          syncMobileExperienceVisibility(form);
           if (btn) btn.disabled = true;
           return;
         }

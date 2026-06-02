@@ -10349,8 +10349,23 @@ def api_site_feedback_submit():
     if _site_feedback_rate_limited(submitter_id):
         return jsonify({'error': 'rate_limited'}), 429
     raw_ratings = body.get('ratings') if isinstance(body.get('ratings'), dict) else {}
+    devices = []
+    for d in body.get('devices') or []:
+        ds = str(d or '').strip().lower()
+        if ds in _SITE_FEEDBACK_DEVICES and ds not in devices:
+            devices.append(ds)
+    if not devices:
+        return jsonify({'error': 'devices_required'}), 400
+    desktop_only = (
+        'desktop' in devices
+        and 'mobile' not in devices
+        and 'tablet' not in devices
+    )
     ratings = {}
     for key in _SITE_FEEDBACK_RATING_KEYS:
+        if key == 'mobile_experience' and desktop_only:
+            ratings[key] = None
+            continue
         try:
             val = int(raw_ratings.get(key))
         except (TypeError, ValueError):
@@ -10358,11 +10373,6 @@ def api_site_feedback_submit():
         if val < 1 or val > 5:
             return jsonify({'error': 'invalid_ratings'}), 400
         ratings[key] = val
-    devices = []
-    for d in body.get('devices') or []:
-        ds = str(d or '').strip().lower()
-        if ds in _SITE_FEEDBACK_DEVICES and ds not in devices:
-            devices.append(ds)
     liked = str(body.get('liked') or '').strip()[:4000]
     improve = str(body.get('improve') or '').strip()[:4000]
     lang = validate_lang_code(str(body.get('lang') or 'EN'))
