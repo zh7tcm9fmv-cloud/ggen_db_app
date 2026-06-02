@@ -3762,7 +3762,7 @@ const exa=document.getElementById('dcExSquadAtkPct');if(exa)exa.value='';
 const sqc=document.getElementById('dcSquadCondPct');if(sqc)sqc.value='';
 const dmb=document.getElementById('dcDefNpcMapBonusesOn');if(dmb)dmb.checked=true;
 const acoa=document.getElementById('dcAtkCounterOwnAtk');if(acoa){acoa.checked=false}
-{const off=document.getElementById('dcAtkSupportCounterOff');const on=document.getElementById('dcAtkSupportCounterOn');if(off&&on){off.classList.add('active');on.classList.remove('active')}}
+{const tog=document.getElementById('dcAtkSupportCounterToggle');if(tog){tog.classList.remove('active');tog.setAttribute('aria-pressed','false')}}
 const aet=document.getElementById('dcAtkAdvantageEnemyTag');if(aet)aet.checked=true;
 const dtp=document.getElementById('dcDmgTakenDownPilot');if(dtp)dtp.value=0;
 const dtu=document.getElementById('dcDmgTakenDownUnit');if(dtu)dtu.value=0;
@@ -8473,11 +8473,14 @@ onDcParamChange();
 }
 function setDcSupportCounterAtk(v){
 S.dc.supportCounterAtk=!!v;
-const off=document.getElementById('dcAtkSupportCounterOff');
-const on=document.getElementById('dcAtkSupportCounterOn');
-if(off)off.classList.toggle('active',!v);
-if(on)on.classList.toggle('active',!!v);
+const tog=document.getElementById('dcAtkSupportCounterToggle');
+if(tog){tog.classList.toggle('active',!!v);tog.setAttribute('aria-pressed',v?'true':'false')}
 onDcParamChange();
+}
+function toggleDcSupportCounterAtk(){
+const wrap=document.getElementById('dcAtkSupportCounterWrap');
+if(wrap&&wrap.classList.contains('is-disabled'))return;
+setDcSupportCounterAtk(!S.dc.supportCounterAtk);
 }
 function onDcParamChange(){
 const fwpEl=document.getElementById('dcFinalWpnPow');
@@ -8504,7 +8507,7 @@ _dcSyncSquadCondEffectiveFromState();
 {const c=document.getElementById('dcDefNpcMapBonusesOn');if(c)S.dc.defNpcMapBonusesOn=!!c.checked}
 const _sqPanelChg=_prevScEffAtk!==(S.dc.squadCondAtkPct|0)||_prevScEffDef!==(S.dc.squadCondDefPct|0);
 {const c=document.getElementById('dcAtkCounterOwnAtk');if(c)S.dc.atkCounterOwnAtk=!!c.checked}
-{const wSc=document.getElementById('dcAtkSupportCounterWrap');const off=document.getElementById('dcAtkSupportCounterOff');if(!wSc||wSc.style.display==='none'){S.dc.supportCounterAtk=false}else if(off)S.dc.supportCounterAtk=!off.classList.contains('active')}
+{const wSc=document.getElementById('dcAtkSupportCounterWrap');const tog=document.getElementById('dcAtkSupportCounterToggle');if(!wSc||wSc.style.display==='none'){S.dc.supportCounterAtk=false}else if(tog)S.dc.supportCounterAtk=tog.classList.contains('active')}
 {const wAdv=document.getElementById('dcAtkAdvantageEnemyTagWrap');const a=document.getElementById('dcAtkAdvantageEnemyTag');if(a&&wAdv&&wAdv.style.display!=='none')S.dc.applyAdvantageEnemyTag=!!a.checked}
 _dcUpdateCounterOwnAtkUi();
 _dcUpdateSupportCounterAtkUi();
@@ -9142,10 +9145,9 @@ cb.disabled=false;
 }
 function _dcUpdateSupportCounterAtkUi(){
 const w=document.getElementById('dcAtkSupportCounterWrap');
-const off=document.getElementById('dcAtkSupportCounterOff');
-const on=document.getElementById('dcAtkSupportCounterOn');
+const tog=document.getElementById('dcAtkSupportCounterToggle');
 const lbl=document.getElementById('dcAtkSupportCounterLbl');
-if(!w||!off||!on)return;
+if(!w||!tog)return;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 const snapMap=S.dc._supportCntAtkPairSnapBySlot=S.dc._supportCntAtkPairSnapBySlot||{};
@@ -9156,21 +9158,25 @@ const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 const cid=cd&&!cd._manual?String(cd.id||''):'';
 if(!pilotOk||rawPct<=0){
 w.style.display='none';
+w.classList.remove('is-disabled');
 w.style.opacity='';
 snapMap[si]=null;
 S.dc.supportCounterAtk=false;
 S.dc._supportCounterAtkPct=0;
-off.classList.add('active');on.classList.remove('active');
-off.disabled=true;on.disabled=true;
+tog.classList.remove('active');
+tog.setAttribute('aria-pressed','false');
+tog.tabIndex=-1;
 return;
 }
 w.style.display='';
 if(!unitOk){
 S.dc.supportCounterAtk=false;
 snapMap[si]=null;
-off.classList.add('active');on.classList.remove('active');
-off.disabled=true;on.disabled=true;
+tog.classList.remove('active');
+tog.setAttribute('aria-pressed','false');
+w.classList.add('is-disabled');
 w.style.opacity='0.55';
+tog.tabIndex=-1;
 if(lbl){
 lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
 lbl.title='This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).';
@@ -9178,18 +9184,19 @@ lbl.title='This pilot\'s ATK boost applies only when piloting a Support-type (ro
 return;
 }
 w.style.opacity='';
+w.classList.remove('is-disabled');
 const kNow=`${cid}|${String(ud.id||'')}|${rawPct}`;
 const prev=snapMap[si]!=null?String(snapMap[si]):null;
 if(prev!==kNow)S.dc.supportCounterAtk=true;
 snapMap[si]=kNow;
-off.disabled=false;on.disabled=false;
+tog.tabIndex=0;
 if(lbl){
 lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
 lbl.title='Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Auto-On when you pair with a Support-role unit; turn Off to compare without the bonus.';
 }
 const onv=!!S.dc.supportCounterAtk;
-off.classList.toggle('active',!onv);
-on.classList.toggle('active',onv);
+tog.classList.toggle('active',onv);
+tog.setAttribute('aria-pressed',onv?'true':'false');
 }
 function _dcUpdateAdvantageEnemyTagUi(){
 const w=document.getElementById('dcAtkAdvantageEnemyTagWrap');
@@ -9724,7 +9731,7 @@ if(!multi||!multi.length){body.innerHTML='<div style="color:var(--text-muted)">C
 const activeIdx=S.dc.atkSlotIndex|0;
 const r0=(multi.find(m=>m.idx===activeIdx)||multi[0]).result;
 const compareEnabled=!!S.dc.multiPctCompare&&multi.length>1;
-let h='';
+let h='<div class="dc-battle-stats-attackers-grid">';
 multi.forEach(m=>{
 const r=m.result,sl=m.slot,ud=sl.atkUnitData,cd=sl.atkCharData;
 const wpns=ud?_dcNonMapWeapons(ud):[];
@@ -9736,7 +9743,7 @@ const vigLbl=_dcVigorLabel(mpL);
 const dmgPool=(r.userDmgIncreasePct|0)+(r.vigorDmgBonusPct|0);
 const baseDmgPool=(r0.userDmgIncreasePct|0)+(r0.vigorDmgBonusPct|0);
 const isAct=m.idx===activeIdx;
-h+=`<div class="dc-battle-stats-section"${isAct?' style="padding:10px;border-radius:8px;border:1px solid rgba(56,189,248,.35)"':''}><h3>Attacker ${m.idx+1}${isAct?' · active':''}</h3>`;
+h+=`<div class="dc-battle-stats-section${isAct?' dc-battle-stats-section--active':''}"><h3>Attacker ${m.idx+1}${isAct?' · active':''}</h3>`;
 if(compareEnabled&&!isAct){
 const nd=_dcPctDelta(r.normalDmg,r0.normalDmg),cdp=_dcPctDelta(r.critDmg,r0.critDmg);
 h+=_dcBattleStatsRow('Damage delta vs active',`Normal ${_dcFmtPctDelta(nd)} · ${r.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')} ${_dcFmtPctDelta(cdp)}`);
@@ -9758,6 +9765,7 @@ h+=_dcFormatBattleStatsOptionParts(sl.optionParts||[]);
 h+=_dcFormatBattleStatsSupporters(sl.supporters||[]);
 h+='</div>';
 });
+h+='</div>';
 h+=_dcRenderBattleStatsDefender(S.dc.defNpc,r0);
 body.innerHTML=h+`<div class="dc-battle-stats-footer"><button type="button" class="dc-ctrl-btn dc-battle-stats-copy-btn" onclick="copyDcResultText()">📋 Copy Results</button><div id="dcBattleStatsCopyMsg" class="dc-battle-stats-copy-msg" aria-live="polite"></div></div>`;
 }

@@ -1469,13 +1469,20 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-ctrl-btn{padding:5px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .dc-ctrl-btn.active{background:rgba(0,212,255,.1);color:var(--accent-cyan);border-color:var(--accent-cyan)}
 .dc-ctrl-btn:hover{border-color:var(--accent-cyan)}
+.dc-support-counter-row{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.dc-support-counter-row .dc-support-counter-label{flex:1;min-width:min(100%,200px);margin:0}
+.dc-support-counter-toggle{flex-shrink:0;margin-left:auto}
+.dc-support-counter-row.is-disabled .dc-support-counter-toggle{opacity:.65;pointer-events:none}
 .dc-result{padding:0 24px 24px}
 .dc-result-box{background:rgba(26,34,54,.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;text-align:center}
 .dc-battle-stats-overlay{position:fixed;inset:0;z-index:200;background:#0f172a;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 12px;overflow-y:auto;box-sizing:border-box}
-.dc-battle-stats-panel{position:relative;max-width:640px;width:100%;background:#1e293b;border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:0 24px 48px rgba(0,0,0,.55);margin:20px auto;opacity:1}
+.dc-battle-stats-panel{position:relative;max-width:min(1280px,96vw);width:100%;background:#1e293b;border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:0 24px 48px rgba(0,0,0,.55);margin:20px auto;opacity:1}
 .dc-battle-stats-title{font-size:18px;font-weight:800;color:var(--accent-cyan);margin:0 0 16px;padding-right:40px}
 .dc-battle-stats-body{font-size:13px;line-height:1.55;color:var(--text-primary)}
-.dc-battle-stats-section{margin-bottom:18px}
+.dc-battle-stats-attackers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;align-items:start;margin-bottom:18px}
+.dc-battle-stats-section{margin-bottom:18px;min-width:0;padding:10px;border-radius:8px;border:1px solid transparent;background:rgba(15,23,42,.35)}
+.dc-battle-stats-attackers-grid .dc-battle-stats-section{margin-bottom:0;height:100%;box-sizing:border-box}
+.dc-battle-stats-section--active{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.06)}
 .dc-battle-stats-section h3{font-size:12px;font-weight:700;color:var(--accent-gold);margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em}
 .dc-battle-stats-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.2)}
 .dc-battle-stats-row span:first-child{color:var(--text-secondary);flex:1;min-width:0}
@@ -2755,7 +2762,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Overrides computed weapon power after weapon level and all parsed weapon traits (distance / HP / MP / SSP Custom Core when SSP mode is on). Leave 0 or empty to use the value computed from the weapon.">Final weapon power</span></span><input type="number" class="dc-input-sm" id="dcFinalWpnPow" min="0" max="99999" value="" placeholder="Auto (—)" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Added to the damage increase pool on critical hits only (⑨).">Critical Damage Up %</span></span><input type="number" class="dc-input-sm" id="dcCritDmgUp" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label"><span class="dc-tip" title="Your side: abilities, skills, buffs to outgoing damage (⑨ damage increase pool).">Damage Dealt Up %</span></span><input type="number" class="dc-input-sm" id="dcDmgIncrease" min="0" max="500" value="0" oninput="onDcParamChange()" onchange="onDcParamChange()"><div id="dcDmgIncreaseEffectiveLine" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div><div id="dcDmgIncreaseVigorSub" style="display:none;margin-top:4px;font-size:11px;color:var(--accent-cyan);line-height:1.35" aria-hidden="true"></div></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcAtkSupportCounterWrap"><span class="dc-ctrl-label"><span class="dc-tip" id="dcAtkSupportCounterLbl" title="Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.">Support Attack/Counter — MS ATK %</span></span><div class="dc-ctrl-toggle"><button type="button" class="dc-ctrl-btn active" id="dcAtkSupportCounterOff" onclick="setDcSupportCounterAtk(false)">Off</button><button type="button" class="dc-ctrl-btn" id="dcAtkSupportCounterOn" onclick="setDcSupportCounterAtk(true)">On</button></div></div>
+<div class="dc-ctrl-group dc-support-counter-row" style="grid-column:1/-1;display:none" id="dcAtkSupportCounterWrap"><span class="dc-ctrl-label dc-support-counter-label"><span class="dc-tip" id="dcAtkSupportCounterLbl" title="Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.">Support Attack/Counter — MS ATK %</span></span><div class="conditional-toggle dc-dc-cond-toggle dc-support-counter-toggle"><div id="dcAtkSupportCounterToggle" class="toggle-clickable" role="switch" tabindex="0" aria-pressed="false" onclick="toggleDcSupportCounterAtk()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcSupportCounterAtk()}"><span class="toggle-switch"></span></div></div></div>
 <div class="dc-panel-section dc-atk-preset-only dc-squad-buff-section" id="dcAtkSquadBuffSection" style="grid-column:1/-1;display:none;margin-top:8px;padding-top:10px;border-top:1px solid var(--border-color)">
 <div class="dc-section-label" style="font-size:12px;margin-bottom:6px;color:var(--text-muted)" id="dcAtkSquadBuffSectionLbl">Squad buff</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
