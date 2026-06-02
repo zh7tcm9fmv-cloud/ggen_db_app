@@ -6930,16 +6930,14 @@ _BROWSE_LIST_CACHE_READY = threading.Event()
 
 
 def _browse_list_warming_guard(kind):
-    """Return 503 while browse row caches are still building (avoids O(n) stat recompute on cold start)."""
+    """Return 503 while browse row caches are empty (never run O(n) stat recompute on list APIs)."""
     cache = CHAR_BROWSE_LIST_ROW_CACHE if kind == 'char' else UNIT_BROWSE_LIST_ROW_CACHE
     if cache:
         return None
-    if _BROWSE_LIST_CACHE_BUILDING or not _BROWSE_LIST_CACHE_READY.is_set():
-        resp = jsonify({'error': 'warming_up', 'retry_after': 2})
-        resp.status_code = 503
-        resp.headers['Retry-After'] = '2'
-        return resp
-    return None
+    resp = jsonify({'error': 'warming_up', 'retry_after': 1})
+    resp.status_code = 503
+    resp.headers['Retry-After'] = '1'
+    return resp
 
 
 def _unit_qualifies_as_transform_partner(alt_id):
@@ -9670,22 +9668,44 @@ def _build_browse_list_performance_caches():
 
 
 def _schedule_browse_list_performance_caches():
-    """Build browse row caches in a background thread so gunicorn can serve pages during cold start."""
+    """Build browse row caches before the worker serves traffic (fast list APIs from first request)."""
     global _BROWSE_LIST_CACHE_BUILDING
-
-    def _run():
-        global _BROWSE_LIST_CACHE_BUILDING
-        try:
-            _build_browse_list_performance_caches()
-        except Exception as e:
-            print(f'Browse list perf caches: background build failed: {e}')
-        finally:
-            _BROWSE_LIST_CACHE_BUILDING = False
-            _BROWSE_LIST_CACHE_READY.set()
-
     _BROWSE_LIST_CACHE_BUILDING = True
     _BROWSE_LIST_CACHE_READY.clear()
-    threading.Thread(target=_run, name='browse-perf-cache', daemon=True).start()
+    try:
+        _build_browse_list_performance_caches()
+        _prewarm_default_browse_list_api_caches()
+    except Exception as e:
+        print(f'Browse list perf caches: build failed: {e}')
+    finally:
+        _BROWSE_LIST_CACHE_BUILDING = False
+        _BROWSE_LIST_CACHE_READY.set()
+
+
+def _prewarm_default_browse_list_api_caches():
+    """Seed in-memory API cache for default first-page lists (common first paint after deploy)."""
+    if not CHAR_BROWSE_LIST_ROW_CACHE or not UNIT_BROWSE_LIST_ROW_CACHE:
+        return
+    langs = [DEFAULT_LANG]
+    if DEFAULT_LANG not in (LANG_DATA or {}):
+        langs = list((LANG_DATA or {}).keys())[:1] or ['EN']
+    warmed = 0
+    for lc in langs:
+        for path in (
+            f'/api/characters?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc',
+            f'/api/units?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc',
+        ):
+            try:
+                with app.test_request_context(path):
+                    if path.startswith('/api/characters'):
+                        list_characters()
+                    else:
+                        list_units()
+                warmed += 1
+            except Exception as e:
+                print(f'Browse list prewarm skipped ({path}): {e}')
+    if warmed:
+        print(f'Browse list prewarm: {warmed} default API response(s) cached')
 
 
 def calculate_npc_character_self_bonus_pct(abilities, include_conditional_title_gated=False):
@@ -12540,14 +12560,8 @@ def list_characters():
             else:
                 totals, base_src = cr[('n', cond_list)]
         else:
-            raw = char_stat_map.get(cid, {}); t = lambda s: raw.get(s, (0,0,0)); grown = {s: calc_growth_char(t(s)[0], t(s)[1], ri) for s in CHAR_STAT_ORDER}
-            if sp_list and has_sp_char:
-                rv = lambda s: raw.get(s, (0,0,0)); grown_sp = {s: (rv(s)[2] if len(rv(s)) >= 3 else rv(s)[1]) for s in CHAR_STAT_ORDER}
-                totals = compute_char_stat_totals_sp_list_with_ex(cid, ri, ldc, grown_sp) if cond_list else compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp)
-                base_src = grown_sp
-            else:
-                totals = compute_char_stat_totals_detail_style(cid, ri, ldc, grown) if cond_list else compute_char_stat_totals_with_abilities(cid, ri, ldc, grown)
-                base_src = grown
+            totals = {s: 0 for s in CHAR_STAT_ORDER}
+            base_src = totals
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
@@ -12751,14 +12765,14 @@ def list_units():
                 continue
         _ld_f, _lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
         wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
-        if wmap is not None and uid in wmap:
-            trait_dk = wmap[uid]
-        else:
-            trait_dk = collect_unit_weapon_trait_only_debuff_keys(uid, _ld_f, _lc_f)
-        range_dk = collect_unit_weapon_range_debuff_keys(uid, _ld_f, _lc_f, stat_mode)
-        dk = frozenset(set(trait_dk) | set(range_dk))
-        _debuff_memo[uid] = dk
         if weapon_debuff_filter:
+            if wmap is not None and uid in wmap:
+                trait_dk = wmap[uid]
+            else:
+                trait_dk = frozenset()
+            range_dk = collect_unit_weapon_range_debuff_keys(uid, _ld_f, _lc_f, stat_mode)
+            dk = frozenset(set(trait_dk) | set(range_dk))
+            _debuff_memo[uid] = dk
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
                 continue
         if weapon_range_filter is not None:
@@ -12773,7 +12787,7 @@ def list_units():
         if map_weapon_range_filter is not None:
             if not id_seek and not unit_matches_map_weapon_range_filter(uid, map_weapon_range_filter, combine=_cbu['map_weapon_range_combine']):
                 continue
-        mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, collect_unit_mechanism_mids(info, uid)))
+        mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
         if mechanism_filter:
             if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
                 continue
@@ -12786,13 +12800,7 @@ def list_units():
                 sm = stat_mode if stat_mode != 'normal' else 'normal'
                 fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else ue['nc']
         else:
-            raw = unit_stat_map.get(uid, {})
-            if stat_mode == 'normal' and not cond_list:
-                fs = compute_unit_stats_no_cond(uid, info, raw, ldc)
-            else:
-                lb = _unit_max_lb_stat_block(uid, info, raw, ldc)
-                sm = stat_mode if stat_mode != 'normal' else 'normal'
-                fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else compute_unit_stats_no_cond(uid, info, raw, ldc)
+            fs = {'Attack': 0, 'Defense': 0, 'Mobility': 0, 'HP': 0, 'EN': 0, 'Move': 0}
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
@@ -13473,9 +13481,6 @@ def entity_hidden_by_lr_schedule_lock(schedule_id):
         return False
     sm = schedule_start_ms_by_id.get(sid, 0)
     return latest_release_schedule_content_locked(sid, sm)
-
-
-_schedule_browse_list_performance_caches()
 
 
 def eternal_stage_before_mstage_schedule_release(stage_id):
@@ -16214,6 +16219,9 @@ def serve_spa(path):
         except NotFound:
             return jsonify({'error': 'Not found'}), 404
     return _serve_index()
+
+# Build browse caches after all list-route helpers exist; blocks worker start until ready.
+_schedule_browse_list_performance_caches()
 
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:
