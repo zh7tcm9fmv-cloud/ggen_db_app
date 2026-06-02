@@ -6925,6 +6925,21 @@ CHAR_BROWSE_LIST_ROW_CACHE = {}
 UNIT_BROWSE_LIST_ROW_CACHE = {}
 UNIT_MECHANISM_MIDS_CACHE = {}
 UNIT_WEAPON_DEBUFF_KEYS_CACHE = {}
+_BROWSE_LIST_CACHE_BUILDING = False
+_BROWSE_LIST_CACHE_READY = threading.Event()
+
+
+def _browse_list_warming_guard(kind):
+    """Return 503 while browse row caches are still building (avoids O(n) stat recompute on cold start)."""
+    cache = CHAR_BROWSE_LIST_ROW_CACHE if kind == 'char' else UNIT_BROWSE_LIST_ROW_CACHE
+    if cache:
+        return None
+    if _BROWSE_LIST_CACHE_BUILDING or not _BROWSE_LIST_CACHE_READY.is_set():
+        resp = jsonify({'error': 'warming_up', 'retry_after': 2})
+        resp.status_code = 503
+        resp.headers['Retry-After'] = '2'
+        return resp
+    return None
 
 
 def _unit_qualifies_as_transform_partner(alt_id):
@@ -9656,12 +9671,20 @@ def _build_browse_list_performance_caches():
 
 def _schedule_browse_list_performance_caches():
     """Build browse row caches in a background thread so gunicorn can serve pages during cold start."""
+    global _BROWSE_LIST_CACHE_BUILDING
+
     def _run():
+        global _BROWSE_LIST_CACHE_BUILDING
         try:
             _build_browse_list_performance_caches()
         except Exception as e:
             print(f'Browse list perf caches: background build failed: {e}')
+        finally:
+            _BROWSE_LIST_CACHE_BUILDING = False
+            _BROWSE_LIST_CACHE_READY.set()
 
+    _BROWSE_LIST_CACHE_BUILDING = True
+    _BROWSE_LIST_CACHE_READY.clear()
     threading.Thread(target=_run, name='browse-perf-cache', daemon=True).start()
 
 
@@ -10165,7 +10188,14 @@ def _serve_index():
 
 @app.route('/health')
 def health_check():
-    return jsonify({'ok': True})
+    return jsonify({
+        'ok': True,
+        'browse_cache': {
+            'chars': len(CHAR_BROWSE_LIST_ROW_CACHE),
+            'units': len(UNIT_BROWSE_LIST_ROW_CACHE),
+            'building': _BROWSE_LIST_CACHE_BUILDING,
+        },
+    })
 
 
 @app.route('/')
@@ -12418,6 +12448,8 @@ def list_characters():
     ck = f"cl32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
+    warming = _browse_list_warming_guard('char')
+    if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     for cid, info in char_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -12615,6 +12647,8 @@ def list_units():
     ck = f"ul41_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
+    warming = _browse_list_warming_guard('unit')
+    if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
     _debuff_memo = {}
     mechanism_union = set()
