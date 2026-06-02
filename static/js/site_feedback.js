@@ -514,6 +514,7 @@
   }
 
   function applyContactPageShell() {
+    if (!isStandaloneFeedbackPage()) return;
     var title = document.getElementById('siteFeedbackPageTitle');
     var intro = document.getElementById('siteFeedbackPageIntro');
     var escHint = document.getElementById('siteFeedbackEscHint');
