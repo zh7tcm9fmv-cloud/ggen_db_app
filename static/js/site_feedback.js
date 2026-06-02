@@ -78,7 +78,7 @@
     feedback_err_required: 'Please rate every question from 1 to 5.',
     feedback_err_submit: 'Could not submit feedback. Please try again later.',
     feedback_err_rate_limit: 'You already submitted feedback recently. Please try again later.',
-    feedback_privacy_note: 'Anonymous feedback only — no account required. Do not include personal contact info unless you want us to see it in your comments.',
+    feedback_privacy_note: 'Anonymous feedback only — no account required.',
     feedback_close: 'Close'
   };
 

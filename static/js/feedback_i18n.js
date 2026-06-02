@@ -56,7 +56,7 @@
       feedback_err_required: 'Please rate every question from 1 to 5.',
       feedback_err_submit: 'Could not submit feedback. Please try again later.',
       feedback_err_rate_limit: 'You already submitted feedback recently. Please try again later.',
-      feedback_privacy_note: 'Anonymous feedback only — no account required. Do not include personal contact info unless you want us to see it in your comments.',
+      feedback_privacy_note: 'Anonymous feedback only — no account required.',
       feedback_close: 'Close'
     },
     TW: {
@@ -113,7 +113,7 @@
       feedback_err_required: '請為每題評分（1 至 5）。',
       feedback_err_submit: '無法提交意見，請稍後再試。',
       feedback_err_rate_limit: '您最近已提交過意見，請稍後再試。',
-      feedback_privacy_note: '僅接受匿名意見 — 無需帳號。除非您希望我們在留言中看到，否則請勿留下個人聯絡方式。',
+      feedback_privacy_note: '僅接受匿名意見 — 無需帳號。',
       feedback_close: '關閉'
     },
     HK: {
@@ -170,7 +170,7 @@
       feedback_err_required: '請為每題評分（1 至 5）。',
       feedback_err_submit: '無法提交意見，請稍後再試。',
       feedback_err_rate_limit: '您最近已提交過意見，請稍後再試。',
-      feedback_privacy_note: '僅接受匿名意見 — 無需帳號。除非您希望我們在留言中看到，否則請勿留下個人聯絡方式。',
+      feedback_privacy_note: '僅接受匿名意見 — 無需帳號。',
       feedback_close: '關閉'
     },
     JP: {
@@ -227,7 +227,7 @@
       feedback_err_required: 'すべての設問を 1 ～ 5 で評価してください。',
       feedback_err_submit: '送信できませんでした。しばらくしてから再度お試しください。',
       feedback_err_rate_limit: '最近すでに送信済みです。しばらくしてから再度お試しください。',
-      feedback_privacy_note: '匿名のフィードバックのみ — アカウント不要。コメントに個人情報を含めないでください（含めた場合は閲覧される可能性があります）。',
+      feedback_privacy_note: '匿名のフィードバックのみ — アカウント不要。',
       feedback_close: '閉じる'
     }
   };
