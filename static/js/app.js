@@ -7302,7 +7302,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div style="font-size:10px;color:var(--accent-cyan);margin-top:10px;line-height:1.35">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.</div>`)}
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div class="dc-support-counter-pilot-note" id="dcAtkSupportCounterPilotNote">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -8505,10 +8505,18 @@ const v=phen?(phen.flatPct|0):Math.max(0,cap|0);
 inp.value=String(v);S.dc.squadCondPct=v;}else{S.dc.squadCondPct=0;inp.value='0'}
 onDcParamChange();
 }
+function _dcSyncSupportCounterHighlight(){
+const w=document.getElementById('dcAtkSupportCounterWrap');
+const on=!!(w&&S.dc.supportCounterAtk&&!w.classList.contains('is-disabled')&&w.style.display!=='none');
+if(w)w.classList.toggle('is-active',on);
+const pilotNote=document.getElementById('dcAtkSupportCounterPilotNote');
+if(pilotNote)pilotNote.classList.toggle('is-highlighted',on);
+}
 function setDcSupportCounterAtk(v){
 S.dc.supportCounterAtk=!!v;
 const tog=document.getElementById('dcAtkSupportCounterToggle');
 if(tog){tog.classList.toggle('active',!!v);tog.setAttribute('aria-pressed',v?'true':'false')}
+_dcSyncSupportCounterHighlight();
 onDcParamChange();
 }
 function toggleDcSupportCounterAtk(){
@@ -9188,6 +9196,7 @@ S.dc._supportCounterAtkPct=0;
 tog.classList.remove('active');
 tog.setAttribute('aria-pressed','false');
 tog.tabIndex=-1;
+_dcSyncSupportCounterHighlight();
 return;
 }
 w.style.display='';
@@ -9203,6 +9212,7 @@ if(lbl){
 lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
 lbl.title='This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).';
 }
+_dcSyncSupportCounterHighlight();
 return;
 }
 w.style.opacity='';
@@ -9219,6 +9229,7 @@ lbl.title='Support-type MS + this pilot: MS ATK % while executing Support Attack
 const onv=!!S.dc.supportCounterAtk;
 tog.classList.toggle('active',onv);
 tog.setAttribute('aria-pressed',onv?'true':'false');
+_dcSyncSupportCounterHighlight();
 }
 function _dcUpdateAdvantageEnemyTagUi(){
 const w=document.getElementById('dcAtkAdvantageEnemyTagWrap');
