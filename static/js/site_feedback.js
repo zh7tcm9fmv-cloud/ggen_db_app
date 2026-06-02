@@ -29,6 +29,8 @@
   var EN_FALLBACK = (typeof global.GGEN_FEEDBACK_I18N !== 'undefined' && global.GGEN_FEEDBACK_I18N.EN)
     ? global.GGEN_FEEDBACK_I18N.EN
     : {
+    feedback_page_doc_title: 'Feedback — GGen Database',
+    feedback_esc_hint: 'Press Esc to return to the database.',
     feedback_title: 'How was your experience on our website?',
     feedback_intro: 'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Database.',
     feedback_q1_title: 'Overall Experience',
@@ -400,8 +402,10 @@
   function applyContactPageShell() {
     var title = document.getElementById('siteFeedbackPageTitle');
     var intro = document.getElementById('siteFeedbackPageIntro');
+    var escHint = document.getElementById('siteFeedbackEscHint');
     if (title) title.textContent = tr('feedback_page_title');
     if (intro) intro.textContent = tr('feedback_page_intro');
+    if (escHint) escHint.textContent = tr('feedback_esc_hint');
     document.title = tr('feedback_page_doc_title');
     var htmlLang = currentLang();
     if (htmlLang === 'TW' || htmlLang === 'HK') document.documentElement.lang = 'zh-Hant';
@@ -558,6 +562,22 @@
     document.head.appendChild(s);
   }
 
+  function wireFeedbackPageEsc() {
+    if (!isStandaloneFeedbackPage() || document.body.dataset.fbEscWired === '1') return;
+    document.body.dataset.fbEscWired = '1';
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Escape') return;
+      var dd = document.getElementById('siteFeedbackLangDropdown');
+      if (dd && dd.classList.contains('active')) {
+        ev.preventDefault();
+        dd.classList.remove('active');
+        return;
+      }
+      ev.preventDefault();
+      global.location.href = '/';
+    });
+  }
+
   function initPageRoot() {
     var root = document.getElementById('siteFeedbackRoot');
     if (!root) return;
@@ -569,6 +589,7 @@
       var lab = document.getElementById('siteFeedbackLangLabel');
       if (lab) lab.textContent = currentLang();
       wireContactLangUi();
+      wireFeedbackPageEsc();
       initContactPageLang().then(function () {
         applyContactPageShell();
         renderInto(root, currentLang());
