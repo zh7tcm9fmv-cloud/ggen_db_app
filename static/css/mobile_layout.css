@@ -221,15 +221,15 @@
   }
 
   .pagination-footer-links {
-    width: 100%;
+    width: auto;
     max-width: 100%;
-    align-items: stretch;
-    align-self: stretch;
+    align-items: center;
+    align-self: center;
     box-sizing: border-box;
   }
 
   .pagination-footer-links .whats-new-btn {
-    width: 100%;
+    width: auto;
     max-width: 100%;
     justify-content: center;
     box-sizing: border-box;
