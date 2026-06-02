@@ -1469,9 +1469,10 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-ctrl-btn{padding:5px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition)}
 .dc-ctrl-btn.active{background:rgba(0,212,255,.1);color:var(--accent-cyan);border-color:var(--accent-cyan)}
 .dc-ctrl-btn:hover{border-color:var(--accent-cyan)}
-.dc-support-counter-row{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.dc-support-counter-row .dc-support-counter-label{flex:1;min-width:min(100%,200px);margin:0}
-.dc-support-counter-toggle{flex-shrink:0;margin-left:auto}
+.dc-support-counter-row{flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;flex-wrap:wrap}
+.dc-support-counter-row .dc-support-counter-label{flex:0 1 auto;min-width:0;margin:0}
+.dc-support-counter-row .dc-support-counter-toggle.dc-dc-cond-toggle{justify-content:flex-start}
+.dc-support-counter-toggle{flex-shrink:0}
 .dc-support-counter-row.is-disabled .dc-support-counter-toggle{opacity:.65;pointer-events:none}
 .dc-result{padding:0 24px 24px}
 .dc-result-box{background:rgba(26,34,54,.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;text-align:center}
@@ -1684,6 +1685,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .dc-wpn-atk-icons{display:inline-flex;align-items:center;gap:3px;margin-right:8px;flex-shrink:0;vertical-align:middle}
 .dc-wpn-atk-type-icon{width:18px;height:18px;object-fit:contain;vertical-align:middle;display:inline-block;filter:brightness(1.15) saturate(1.2)}
 .dc-manual-atk-hint{font-size:11px;color:var(--text-muted);padding:4px 0 8px;line-height:1.35}
+.dc-damage-factors{margin:0 0 12px;padding:0}
 .dc-damage-factors-summary{cursor:pointer;font-size:13px;color:var(--accent-cyan);font-weight:600;list-style:none}
 .dc-damage-factors summary::-webkit-details-marker{display:none}
 .dc-damage-factors-body{padding:10px 0 4px}
@@ -1692,7 +1694,6 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 @media(max-width:768px){.dc-tab-panels{grid-template-columns:1fr!important}}
 @media(max-width:900px){
 #panel-calculator .dc-tab-wrap{padding:12px 10px!important}
-#panel-calculator .dc-damage-factors{padding-left:10px!important;padding-right:10px!important}
 }
 @media(max-width:520px){
 #panel-calculator .dc-stats-mini[style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important}
@@ -1705,8 +1706,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 #panel-calculator .dc-picked-controls .toggle-label--cp-short{display:inline;max-width:none;white-space:nowrap}
 }
 .dc-result--top{padding-left:0;padding-right:0}
-.dc-tab-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:0 0 16px}
-.dc-tab-header h2{margin:0}
+.dc-tab-header{display:flex;align-items:flex-start;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .dc-tab-header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .dc-credit-link{font-size:13px;font-weight:600;color:var(--accent-gold);text-decoration:none;white-space:nowrap;transition:var(--transition)}
 .dc-credit-link:hover{color:var(--accent-cyan);text-decoration:underline}
@@ -2661,10 +2661,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="tab-panel" id="panel-calculator">
 <div class="dc-tab-wrap" style="max-width:1400px;margin:0 auto;padding:24px">
 <div class="dc-tab-header">
-<h2 id="dcPageTitle" style="color:var(--accent-cyan);font-size:22px">Damage Simulator</h2>
 <div class="dc-tab-header-right"><a href="https://discordapp.com/users/390839232672956420" target="_blank" rel="noopener noreferrer" class="dc-credit-link">Credit:🔥Firered🔥</a><div class="dc-compare-switch-wrap"><button type="button" id="dcMultiPctCompareBtn" class="ranking-exp-switch dc-compare-switch" onclick="toggleDcMultiPctCompareMode()" title="% compare between attackers" disabled><span class="ranking-exp-switch-text">%</span><span class="ranking-exp-switch-track"><span class="ranking-exp-switch-thumb"></span></span></button></div></div>
 </div>
-<details class="dc-damage-factors" style="max-width:1400px;margin:0 auto 12px;padding:0 24px">
+<details class="dc-damage-factors">
 <summary class="dc-damage-factors-summary">What affects final damage? <span style="color:var(--text-muted);font-weight:400;font-size:12px">(hover labels for detail)</span></summary>
 <div class="dc-damage-factors-body">
 <ul class="dc-damage-factors-list">

@@ -425,7 +425,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.dc-stage-dd-wrap'))
 function fillLrLockTexts(){const t1=document.getElementById('lrLockTitleEl'),t2=document.getElementById('lrLockHintEl'),b=document.getElementById('lrUnlockBtn');if(t1)t1.textContent=t('lr_lock_title');if(t2)t2.textContent=t('lr_lock_hint');if(b)b.textContent=t('lr_unlock_btn')}
 function setNavTabText(id,txt){const el=document.getElementById(id);if(!el)return;const sp=el.querySelector('.nav-tab-label');if(sp)sp.textContent=txt;else el.textContent=txt}
 if(typeof globalThis.tbApplyLangStatic!=='function'){globalThis.tbApplyLangStatic=function(){}}
-function applyLang(){updateListViewToggleLabels();setNavTabText('navCharTab',t('tab_char'));setNavTabText('navUnitTab',t('tab_unit'));setNavTabText('navSuppTab',t('tab_supporter'));setNavTabText('navStageTab',t('tab_stage'));setNavTabText('navModTab',t('tab_mod'));setNavTabText('navCalcTab',t('dc_title'));setNavTabText('navTbTab',t('tab_team_builder'));tbApplyLangStatic();const _dcPt=document.getElementById('dcPageTitle');if(_dcPt)_dcPt.textContent=t('dc_title');setNavTabText('navLatestTab',t('tab_latest'));setNavTabText('navBannerTimelineTab',t('tab_banner_timeline'));setNavTabText('navGameNewsTab',t('tab_game_news'));const _nrl=document.getElementById('navRankingTabLabel');if(_nrl)_nrl.textContent=t('tab_ranking');const _rmc=document.getElementById('rankModeCharLbl');if(_rmc)_rmc.textContent=t('tab_char');const _rmu=document.getElementById('rankModeUnitLbl');if(_rmu)_rmu.textContent=t('tab_unit');const _rke=document.getElementById('rankEmptyText');if(_rke)_rke.textContent=S.ranking&&S.ranking.mode==='characters'?t('empty_char'):t('empty_unit');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const _rkcf=document.getElementById('rankCharFilter');if(_rkcf)_rkcf.placeholder=t('search_char');const _rkuf=document.getElementById('rankUnitFilter');if(_rkuf)_rkuf.placeholder=t('search_unit');const stgWrap=document.getElementById('stageSourceToggleWrap');if(stgWrap)stgWrap.setAttribute('aria-label',t('stage_source_group_aria'));const se=document.getElementById('stageSourceEternalBtn');if(se)se.textContent=t('stage_source_eternal');const stw=document.getElementById('stageSourceTowerBtn');if(stw)stw.textContent=t('stage_source_tower');const ssb=document.getElementById('stageSourceScoreBtn');if(ssb)ssb.textContent=t('stage_source_score');const ssp=document.getElementById('stageSourceSpecialBtn');if(ssp){const _ssl=t('stage_source_special');ssp.textContent=_ssl;ssp.title=_ssl;ssp.setAttribute('aria-label',_ssl)}const dpl=document.getElementById('dcDefPresetRadioLbl');if(dpl)dpl.textContent=t('dc_def_preset_mode');const dpt=document.getElementById('dcDefPresetTargetLbl');if(dpt)dpt.textContent=t('dc_def_preset_target_label');const _dcAph=document.getElementById('dcAtkPanelHeading');if(_dcAph)_dcAph.textContent=t('dc_panel_attacker_heading');const _dcDph=document.getElementById('dcDefPanelHeading');if(_dcDph)_dcDph.textContent=t('dc_panel_defender_heading');const _dcAps=document.getElementById('dcAtkParamsSectionLbl');if(_dcAps)_dcAps.textContent=t('dc_atk_params_section');const _dcDps=document.getElementById('dcDefParamsSectionLbl');if(_dcDps)_dcDps.textContent=t('dc_def_params_section');_dcApplyDcVigorButtonLabels();const dss=document.getElementById('dcStageSearch');if(dss){dss.placeholder=t('dc_stage_search_ph');dss.setAttribute('aria-label',t('dc_stage_search_ph'))}const dsl=document.getElementById('dcStageList');if(dsl)dsl.setAttribute('aria-label',t('dc_stage_list_aria'));const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;const rcsfs=document.getElementById('rankCharSkillFilterSearch'),rusfs=document.getElementById('rankUnitSkillFilterSearch'),rcafs=document.getElementById('rankCharAbilFilterSearch');if(rcsfs)rcsfs.placeholder=skPh;if(rusfs)rusfs.placeholder=skPh;if(rcafs)rcafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const _btsf=document.getElementById('bannerTimelineScrollTopFab');if(_btsf){_btsf.title=t('bt_scroll_top');_btsf.setAttribute('aria-label',t('bt_scroll_top'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage','rankPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn','rankCharBrowseFiltersClearBtn','rankUnitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();const _wbPruneHk=pruneUnitWeaponDebuffSelectionForLocale();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitWeaponRangeNonMapFilterLabel();if(_wbPruneHk&&S.currentTab==='units')loadUnits(S.units.page||1);updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp','rankChar','rankUnit'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit','rankChar','rankUnit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});['char','rankChar'].forEach(p=>updateAbilBrowseFilterLabel(p))}).catch(()=>{});;if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop();refreshFilterFooterI18n();syncNavTabsEdgeHintLabels();syncNavTabsOverflowHints();const _pdc=document.getElementById('panel-calculator');if(_pdc&&_pdc.classList.contains('active')){_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility();_dcRefreshCalcDependentUi()}if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.syncAppLang==='function')window.GgenSiteFeedback.syncAppLang(S.lang);if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.onLangChange==='function')window.GgenSiteFeedback.onLangChange(S.lang)}
+function applyLang(){updateListViewToggleLabels();setNavTabText('navCharTab',t('tab_char'));setNavTabText('navUnitTab',t('tab_unit'));setNavTabText('navSuppTab',t('tab_supporter'));setNavTabText('navStageTab',t('tab_stage'));setNavTabText('navModTab',t('tab_mod'));setNavTabText('navCalcTab',t('dc_title'));setNavTabText('navTbTab',t('tab_team_builder'));tbApplyLangStatic();setNavTabText('navLatestTab',t('tab_latest'));setNavTabText('navBannerTimelineTab',t('tab_banner_timeline'));setNavTabText('navGameNewsTab',t('tab_game_news'));const _nrl=document.getElementById('navRankingTabLabel');if(_nrl)_nrl.textContent=t('tab_ranking');const _rmc=document.getElementById('rankModeCharLbl');if(_rmc)_rmc.textContent=t('tab_char');const _rmu=document.getElementById('rankModeUnitLbl');if(_rmu)_rmu.textContent=t('tab_unit');const _rke=document.getElementById('rankEmptyText');if(_rke)_rke.textContent=S.ranking&&S.ranking.mode==='characters'?t('empty_char'):t('empty_unit');document.querySelectorAll('.whats-new-btn-label').forEach(el=>{el.textContent=t('whats_new_btn')});document.querySelectorAll('.btn-whats-new').forEach(el=>{el.title=t('whats_new_btn')});document.querySelectorAll('.support-feedback-btn-label').forEach(el=>{el.textContent=t('support_feedback_btn')});document.querySelectorAll('.btn-support-feedback').forEach(el=>{el.title=t('support_feedback_btn')});const _apL=document.getElementById('alipayhkHeaderLabel');if(_apL)_apL.textContent=t('support_alipayhk_btn');const _apB=document.getElementById('alipayhkHeaderBtn');if(_apB){_apB.title=t('support_alipayhk_btn');_apB.setAttribute('aria-label',t('support_alipayhk_btn'))}const _kL=document.getElementById('kofiHeaderLabel');if(_kL)_kL.textContent=t('support_kofi_btn');const _kA=document.getElementById('kofiHeaderLink');if(_kA){_kA.setAttribute('aria-label',t('support_kofi_btn'));_kA.title=t('support_kofi_btn')}const _aho=document.getElementById('alipayhkOverlay');if(_aho&&_aho.classList.contains('active')){const _mt=document.getElementById('alipayhkModalTitle');if(_mt)_mt.textContent=t('support_alipayhk_modal_title');const _mh=document.getElementById('alipayhkModalHint');if(_mh)_mh.textContent=t('support_alipayhk_modal_hint');const _mq=document.getElementById('alipayhkModalQr');if(_mq)_mq.setAttribute('alt',t('support_alipayhk_modal_hint'));const _mcb=document.getElementById('alipayhkModalCloseBtn');if(_mcb)_mcb.setAttribute('aria-label',t('whats_new_close'))}const wnc=document.getElementById('whatsNewCloseBtn');if(wnc)wnc.setAttribute('aria-label',t('whats_new_close'));fillLrLockTexts();document.getElementById('tagTabChar').textContent=t('tab_char');document.getElementById('tagTabUnit').textContent=t('tab_unit');const _tagAff=document.getElementById('tagTabAffinity');if(_tagAff)_tagAff.textContent=t('tag_tab_affinity');document.getElementById('charFilter').placeholder=t('search_char');document.getElementById('unitFilter').placeholder=t('search_unit');document.getElementById('suppFilter').placeholder=t('search_supporter');document.getElementById('stageFilter').placeholder=t('search_stage');document.getElementById('modFilter').placeholder=t('search_mod');const _rkcf=document.getElementById('rankCharFilter');if(_rkcf)_rkcf.placeholder=t('search_char');const _rkuf=document.getElementById('rankUnitFilter');if(_rkuf)_rkuf.placeholder=t('search_unit');const stgWrap=document.getElementById('stageSourceToggleWrap');if(stgWrap)stgWrap.setAttribute('aria-label',t('stage_source_group_aria'));const se=document.getElementById('stageSourceEternalBtn');if(se)se.textContent=t('stage_source_eternal');const stw=document.getElementById('stageSourceTowerBtn');if(stw)stw.textContent=t('stage_source_tower');const ssb=document.getElementById('stageSourceScoreBtn');if(ssb)ssb.textContent=t('stage_source_score');const ssp=document.getElementById('stageSourceSpecialBtn');if(ssp){const _ssl=t('stage_source_special');ssp.textContent=_ssl;ssp.title=_ssl;ssp.setAttribute('aria-label',_ssl)}const dpl=document.getElementById('dcDefPresetRadioLbl');if(dpl)dpl.textContent=t('dc_def_preset_mode');const dpt=document.getElementById('dcDefPresetTargetLbl');if(dpt)dpt.textContent=t('dc_def_preset_target_label');const _dcAph=document.getElementById('dcAtkPanelHeading');if(_dcAph)_dcAph.textContent=t('dc_panel_attacker_heading');const _dcDph=document.getElementById('dcDefPanelHeading');if(_dcDph)_dcDph.textContent=t('dc_panel_defender_heading');const _dcAps=document.getElementById('dcAtkParamsSectionLbl');if(_dcAps)_dcAps.textContent=t('dc_atk_params_section');const _dcDps=document.getElementById('dcDefParamsSectionLbl');if(_dcDps)_dcDps.textContent=t('dc_def_params_section');_dcApplyDcVigorButtonLabels();const dss=document.getElementById('dcStageSearch');if(dss){dss.placeholder=t('dc_stage_search_ph');dss.setAttribute('aria-label',t('dc_stage_search_ph'))}const dsl=document.getElementById('dcStageList');if(dsl)dsl.setAttribute('aria-label',t('dc_stage_list_aria'));const csfs=document.getElementById('charSkillFilterSearch'),usfs=document.getElementById('unitSkillFilterSearch'),cafs=document.getElementById('charAbilFilterSearch');const skPh=t('list_filter_search_placeholder');if(csfs)csfs.placeholder=skPh;if(usfs)usfs.placeholder=skPh;if(cafs)cafs.placeholder=skPh;const rcsfs=document.getElementById('rankCharSkillFilterSearch'),rusfs=document.getElementById('rankUnitSkillFilterSearch'),rcafs=document.getElementById('rankCharAbilFilterSearch');if(rcsfs)rcsfs.placeholder=skPh;if(rusfs)rusfs.placeholder=skPh;if(rcafs)rcafs.placeholder=skPh;document.querySelectorAll('.search-hint-popover').forEach(el=>{el.innerHTML=t('search_hint_html')});const srf=document.getElementById('searchRecallFab');if(srf){srf.title=t('search_recall');srf.setAttribute('aria-label',t('search_recall'))}const _btsf=document.getElementById('bannerTimelineScrollTopFab');if(_btsf){_btsf.title=t('bt_scroll_top');_btsf.setAttribute('aria-label',t('bt_scroll_top'))}const spi=document.getElementById('searchSpotlightInput');if(spi)spi.placeholder=t(getTabSearchPlaceholderKey());const stl=document.getElementById('searchSpotlightTitle');if(stl)stl.textContent=t('search_spotlight_title');const stb=document.getElementById('searchSpotlightTabLine');if(stb)stb.textContent=getTabNameForSpotlight();const shn=document.getElementById('searchSpotlightHint');if(shn)shn.innerHTML=t('search_hint_html');const sft=document.getElementById('searchSpotlightFoot');if(sft)sft.textContent=t('search_spotlight_foot');const scls=document.getElementById('searchSpotlightClose');if(scls)scls.setAttribute('aria-label',t('search_spotlight_close'));document.getElementById('charEmptyText').textContent=t('empty_char');document.getElementById('unitEmptyText').textContent=t('empty_unit');document.getElementById('suppEmptyText').textContent=t('empty_supporter');document.getElementById('stageEmptyText').textContent=t('empty_stage');document.getElementById('modEmptyText').textContent=t('empty_mod');const pp=t('per_page');['charPerPage','unitPerPage','suppPerPage','stagePerPage','modPerPage','rankPerPage'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=`<option value="25">25${pp}</option><option value="50" selected>50${pp}</option><option value="100">100${pp}</option>`});initToolbarFilterIcons();const _bfc=t('browse_filters_clear');['charBrowseFiltersClearBtn','unitBrowseFiltersClearBtn','rankCharBrowseFiltersClearBtn','rankUnitBrowseFiltersClearBtn'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=_bfc;b.title=_bfc;b.setAttribute('aria-label',_bfc)}});syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();const _wbPruneHk=pruneUnitWeaponDebuffSelectionForLocale();updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitWeaponRangeNonMapFilterLabel();if(_wbPruneHk&&S.currentTab==='units')loadUnits(S.units.page||1);updateUnitMechanismFilterLabel();updateModEffectFilterLabel();fillModEffectPanel();ensureBrowseFiltersMeta().then(()=>{['char','unit','supp','rankChar','rankUnit'].forEach(p=>updateLineageFilterButtonLabel(p));['char','unit','rankChar','rankUnit'].forEach(p=>{updateSeriesFilterButtonLabel(p);updateSkillBrowseFilterLabel(p)});['char','rankChar'].forEach(p=>updateAbilBrowseFilterLabel(p))}).catch(()=>{});;if(document.getElementById('tagModal').classList.contains('active')){if(S._tagModalMode==='series')updateSeriesModalTitle();else if(S._currentTagStr)updateTagModalTitle()};syncBrowseSearchWidths();scheduleSyncListTheadStickyTop();refreshFilterFooterI18n();syncNavTabsEdgeHintLabels();syncNavTabsOverflowHints();const _pdc=document.getElementById('panel-calculator');if(_pdc&&_pdc.classList.contains('active')){_dcUpdateExSquadAtkGroupVisibility();_dcUpdateSquadConditionGroupVisibility();_dcRefreshCalcDependentUi()}if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.syncAppLang==='function')window.GgenSiteFeedback.syncAppLang(S.lang);if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.onLangChange==='function')window.GgenSiteFeedback.onLangChange(S.lang)}
 function updateRoleFilterButtons(){updateRoleFilterButtonLabel('char');updateRoleFilterButtonLabel('unit')}
 const RARITY_LIST_KEYS=['UR','SSR','SR','R','N'];
 const RARITY_FILTER_ICONS={ULT:'/static/images/UI/UI_Common_Icon_ULT.webp',UR:'/static/images/Rarity/UI_Common_RarityIcon_UR.webp',SSR:'/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',SR:'/static/images/Rarity/UI_Common_RarityIcon_SR.webp',R:'/static/images/Rarity/UI_Common_RarityIcon_R.webp',N:'/static/images/Rarity/UI_Common_RarityIcon_N.webp'};
@@ -3732,6 +3732,7 @@ renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
 onDcParamChange();
+if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOptionPartAndSupporter();
 }
 function toggleDcAttackerSlot(){
 _dcSnapActiveAttackerToSlot();
@@ -3746,6 +3747,7 @@ renderDcAtkChar();renderDcOptionParts();renderDcSupporters();
 if(S.dc.atkUnitData&&S.dc.atkUnitData._manual)_dcFillManualAtkDomFromPack(_dcAtkManualPackFromSlot(_dcReadAttackerFromDc()));
 _dcSyncAtkModeUiFromState();
 onDcParamChange();
+if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOptionPartAndSupporter();
 }
 
 function initDmgCalc(){
@@ -5489,9 +5491,43 @@ if(seen.has(k))sl.optionParts=[];
 else seen.add(k);
 }
 }
+function _dcAutoFitContextValid(fitGen,slotIdx,unitId,charId){
+if(typeof S==='undefined'||!S.dc)return false;
+if(fitGen!=null&&fitGen!==(S.dc._dcAutoFitGen|0))return false;
+const curIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+if(curIdx!==slotIdx)return false;
+if(String(S.dc.atkUnit||'')!==String(unitId||''))return false;
+if(String(S.dc.atkChar||'')!==String(charId||''))return false;
+return true;
+}
+function _dcSlotNeedsAutoFit(sl){
+if(!sl||!sl.atkUnit||!sl.atkChar||!sl.atkUnitData||sl.atkUnitData._manual||!sl.atkCharData||sl.atkCharData._manual)return false;
+const hasOp=Array.isArray(sl.optionParts)&&sl.optionParts.length>0;
+const hasSup=Array.isArray(sl.supporters)&&sl.supporters.length>0;
+return !hasOp||!hasSup;
+}
+function _dcScheduleAutoFitOptionPartAndSupporter(){
+if(typeof S==='undefined'||!S.dc)return;
+S.dc._dcAutoFitGen=(S.dc._dcAutoFitGen|0)+1;
+const gen=S.dc._dcAutoFitGen;
+void dcAutoFitOptionPartAndSupporter(gen).then(()=>{
+if(gen!==(S.dc._dcAutoFitGen|0))return;
+renderDcAtkUnit();
+if(S.dc.atkCharData)renderDcAtkChar();
+renderDcOptionParts();
+renderDcSupporters();
+_dcSnapActiveAttackerToSlot();
+_dcSyncAtkModeUiFromState();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+else onDcParamChange();
+});
+}
 async function dcAutoFitOptionPartAndSupporter(fitGen){
 if(typeof S==='undefined'||!S.dc)return;
-if(S.dc._dcAutoFitBusy)return;
+if(S.dc._dcAutoFitBusy){
+S.dc._dcAutoFitQueuedGen=fitGen;
+return;
+}
 const ud=S.dc.atkUnitData;
 if(!ud||ud._manual||!S.dc.atkUnit||!S.dc.atkChar||!S.dc.atkCharData||S.dc.atkCharData._manual)return;
 S.dc._dcAutoFitBusy=true;
@@ -5503,7 +5539,7 @@ const supRows=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSuppor
 let bestSup=null,bestAtk=-1;
 const chunk=14;
 for(let i=0;i<supRows.length;i+=chunk){
-if(fitGen!=null&&fitGen!==(S.dc._dcAutoFitGen|0))return;
+if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
 const batch=supRows.slice(i,i+chunk);
 const resolved=await Promise.all(batch.map(async row=>{
 try{const d=await fetch(`/api/supporter/${encodeURIComponent(row.id)}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
@@ -5517,6 +5553,7 @@ const atk=(_dcStatTotalsForAutoRank(sl,[],d)||{}).atk|0;
 if(atk>bestAtk){bestAtk=atk;bestSup=d}
 }
 }
+if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
 if(bestSup){bestSup._dcLevel=100;bestSup._dcLbTier=3;S.dc.supporters=[bestSup]}
 else S.dc.supporters=[];
 const supFor=S.dc.supporters[0]||null;
@@ -5525,17 +5562,25 @@ const opRows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=AL
 const used=_dcCollectUsedSsrDcOptionPartIds(slotIdx);
 let bestOp=null,bestR=null;
 for(let k=0;k<opRows.length;k++){
-if(fitGen!=null&&fitGen!==(S.dc._dcAutoFitGen|0))return;
+if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
 const row=opRows[k];
 const id=String(row.id);
 if(used.has(id))continue;
 const ra=_dcRankOptionForAutoFill(sl,row,supFor);
 if(!bestR||_tbCompareRankAuto(ra,bestR)>0){bestR=ra;bestOp=row}
 }
+if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
 if(bestOp)S.dc.optionParts=[{id:bestOp.id,name:bestOp.name,details:bestOp.details||'',thum:bestOp.thum||'',tags:bestOp.tags||[]}];
 else S.dc.optionParts=[];
 }catch(_){}
-finally{S.dc._dcAutoFitBusy=false}
+finally{
+S.dc._dcAutoFitBusy=false;
+const queued=S.dc._dcAutoFitQueuedGen;
+if(queued!=null){
+S.dc._dcAutoFitQueuedGen=null;
+if(queued===(S.dc._dcAutoFitGen|0))void dcAutoFitOptionPartAndSupporter(queued);
+}
+}
 }
 function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
@@ -6941,18 +6986,7 @@ renderDcOptionParts();
 renderDcSupporters();
 _dcUpdateAdvantageEnemyTagUi();
 onDcParamChange();
-S.dc._dcAutoFitGen=(S.dc._dcAutoFitGen|0)+1;
-const _dcAfGenTf=S.dc._dcAutoFitGen;
-void dcAutoFitOptionPartAndSupporter(_dcAfGenTf).then(()=>{
-if(_dcAfGenTf!==(S.dc._dcAutoFitGen|0))return;
-renderDcAtkUnit();
-if(S.dc.atkCharData)renderDcAtkChar();
-renderDcOptionParts();
-renderDcSupporters();
-_dcSnapActiveAttackerToSlot();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
-else onDcParamChange();
-});
+_dcScheduleAutoFitOptionPartAndSupporter();
 }catch(_){}
 }
 function renderDcAtkUnit(){
@@ -8754,7 +8788,7 @@ S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.charCond
 }
 }else{
 S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;
-S.dc.supporters=[];
+S.dc.optionParts=[];S.dc.supporters=[];
 }
 _dcAutoSetVigor();
 if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
@@ -8764,19 +8798,7 @@ renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
-S.dc._dcAutoFitGen=(S.dc._dcAutoFitGen|0)+1;
-const _dcAfGen=S.dc._dcAutoFitGen;
-void dcAutoFitOptionPartAndSupporter(_dcAfGen).then(()=>{
-if(_dcAfGen!==(S.dc._dcAutoFitGen|0))return;
-renderDcAtkUnit();
-if(S.dc.atkCharData)renderDcAtkChar();
-renderDcOptionParts();
-renderDcSupporters();
-_dcSnapActiveAttackerToSlot();
-_dcSyncAtkModeUiFromState();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
-else onDcParamChange();
-});
+_dcScheduleAutoFitOptionPartAndSupporter();
 }catch(e){}
 }
 
