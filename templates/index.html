@@ -752,7 +752,10 @@ body:has(.search-recall-fab.visible):has(.cmp-float.visible) .scroll-top-fab,bod
 .stage-browse-thumb--grid .stage-browse-thumb__head .stage-browse-thumb__diff{font-size:9px;padding:3px 12px;border-radius:2px}
 .stage-browse-thumb--grid .stage-browse-thumb__subtitle{font-size:9px}
 .stage-browse-thumb--grid .stage-browse-thumb__head{min-height:58px;max-height:58px}
-.stage-diff-filter-panel.filter-dropdown-panel{width:max-content;min-width:12rem;max-width:min(220px,calc(100vw - 24px))}
+#stageDiffWrap.rarity-filter-wrap{width:max-content;max-width:100%;flex:0 0 auto;align-self:flex-start}
+#stageDiffFilterPanel.stage-diff-filter-panel.filter-dropdown-panel{width:max-content!important;min-width:0!important;max-width:min(220px,calc(100vw - 24px))!important;align-items:flex-start;box-sizing:border-box}
+#stageDiffFilterPanel .stage-diff-filter-row{width:100%;box-sizing:border-box}
+#stageDiffFilterPanel .filter-panel-clear-wrap{align-self:stretch;width:100%;box-sizing:border-box}
 .stage-diff-filter-panel .stage-diff-filter-row{align-items:center;gap:10px}
 .stage-diff-filter-panel .diff-pill,#stageDiffFilterLabel .diff-pill{display:inline-block;padding:3px 12px;border-radius:2px;font-weight:900;font-size:11px;line-height:1.35;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-align:center;min-width:4.75em;border:1px solid rgba(0,0,0,.22);box-shadow:0 1px 0 rgba(255,255,255,.15)}
 .stage-diff-filter-panel .diff-pill-normal,#stageDiffFilterLabel .diff-pill-normal{background:linear-gradient(180deg,#3b82f6 0%,#1d4ed8 100%)}
@@ -2120,14 +2123,18 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
     justify-self:start;
     overflow:visible;
   }
-  #panel-modifications .mod-effect-wrap:has(.filter-dropdown-panel){
+  #panel-modifications .mod-effect-wrap:has(.filter-dropdown-panel),
+  #panel-stages #stageDiffWrap:has(.filter-dropdown-panel){
     width:max-content;
     max-width:100%;
     overflow:visible;
+    flex:0 0 auto;
+    align-self:flex-start;
   }
-  /* Supporter / Modifications toolbars need visible overflow when dropdown anchored */
+  /* Supporter / Modifications / Stages toolbars need visible overflow when dropdown anchored */
   #panel-supporters .list-toolbar-left,
-  #panel-modifications .list-toolbar-left{
+  #panel-modifications .list-toolbar-left,
+  #panel-stages .list-toolbar-left{
     overflow:visible;
   }
   .list-toolbar-left--browse .rarity-filter-btn,
@@ -2154,6 +2161,17 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .list-cond-toggle{height:30px;width:40px;padding:2px}.list-cond-toggle .cp-wide{font-size:22px}
 
   /* --- Small-option filter lists (.filter-dropdown-panel): anchored under trigger; width ~= button; Clear scrolls with safe-area inset --- */
+  .list-toolbar #stageDiffFilterPanel.filter-dropdown-panel:not([hidden]){
+    position:absolute!important;
+    left:0!important;
+    right:auto!important;
+    top:calc(100% + 4px)!important;
+    transform:none!important;
+    width:max-content!important;
+    min-width:0!important;
+    max-width:min(220px,calc(100vw - 24px))!important;
+    align-items:flex-start;
+  }
   .list-toolbar .filter-dropdown-panel:not([hidden]){
     position:absolute;
     left:0;
@@ -2261,6 +2279,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 
   /* --- Filter panels: legacy max-width --- */
   .rarity-filter-panel,.role-filter-panel,.source-filter-panel{max-width:min(280px,calc(100vw - 24px))}
+  #stageDiffFilterPanel.stage-diff-filter-panel{max-width:min(220px,calc(100vw - 24px))!important}
   #unitWeaponRangeNonMapFilterPanel.rarity-filter-panel,#rankUnitWeaponRangeNonMapFilterPanel.rarity-filter-panel,#unitMapWeaponRangeFilterPanel.rarity-filter-panel,#rankUnitMapWeaponRangeFilterPanel.rarity-filter-panel{max-width:min(400px,calc(100vw - 24px))}
   .lineage-filter-panel,.series-filter-panel{left:0;right:0;width:auto;max-width:calc(100vw - 24px);transform:none}
   .skill-filter-panel{max-width:calc(100vw - 24px)}
