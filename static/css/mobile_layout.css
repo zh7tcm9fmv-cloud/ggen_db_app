@@ -248,13 +248,28 @@
     overflow-x: hidden;
   }
 
+  /* Horizontal scroll on .data-table-wrapper only — overflow-x here breaks viewport sticky thead */
   .list-view-area {
     max-width: 100%;
     min-width: 0;
-    overflow-x: auto;
+    overflow-x: visible;
     overflow-y: visible;
+  }
+
+  .list-view-area .data-table-wrapper {
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
+    max-width: 100%;
+  }
+
+  .list-view-area .data-table thead th {
+    position: sticky;
+    top: var(--list-thead-sticky-top);
+    z-index: 50;
+    background: var(--bg-card);
+    background-clip: padding-box;
+    box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.45);
   }
 
   .ui-notice-flare {
