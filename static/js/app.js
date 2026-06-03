@@ -1851,8 +1851,10 @@ function ensureDetailRankingToggleDom(type){
 const d=S.currentDetailData;
 const wrap=document.getElementById('detailStatsWrapper');
 if(!wrap)return;
-const host=wrap.parentElement;
+const host=wrap.closest('.detail-header');
 if(!host)return;
+const legacy=wrap.parentElement&&wrap.parentElement.querySelector('.detail-rank-toggle-btn');
+if(legacy&&legacy.parentElement!==host)legacy.remove();
 const exists=host.querySelector('.detail-rank-toggle-btn');
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){
 if(exists)exists.remove();
@@ -1860,7 +1862,7 @@ return
 }
 const html=renderDetailRankingToggle(d,type);
 if(exists){exists.outerHTML=html;return}
-host.insertAdjacentHTML('afterbegin',html);
+host.insertAdjacentHTML('beforeend',html);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
