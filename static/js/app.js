@@ -2332,18 +2332,108 @@ function fitStageMapToUnits(centerAfter){
   if(centerAfter)setTimeout(()=>{const cc=document.getElementById('stageMapGridWrap');if(cc){cc.scrollLeft=0;cc.scrollTop=0}},60)
 }
 
-// List table headers: sticky below the site header (viewport scroll) — offset synced from measured header height.
-function syncListTheadStickyTop(){
+// List table headers: desktop uses CSS sticky; mobile uses a fixed clone (CSS sticky breaks inside scroll containers).
+function browseTableStickyUsesFixedBar(){try{return window.matchMedia('(max-width:768px)').matches}catch(_){return false}}
+function getAppHeaderBottomPx(){
 const el=document.querySelector('.app-header');
-if(!el)return;
-const r=el.getBoundingClientRect();
-const top=Math.max(0,Math.round(r.bottom));
-document.documentElement.style.setProperty('--list-thead-sticky-top',top+'px')
+if(!el)return 0;
+return Math.max(0,Math.round(el.getBoundingClientRect().bottom))
+}
+function syncListTheadStickyTop(){
+document.documentElement.style.setProperty('--list-thead-sticky-top',getAppHeaderBottomPx()+'px')
+}
+const _BROWSE_STICKY_TABLES=[
+{tableId:'charTable',wrapId:'charTableWrap',theadId:'charThead'},
+{tableId:'unitTable',wrapId:'unitTableWrap',theadId:'unitThead'},
+{tableId:'suppTable',wrapId:'suppTableWrap',theadId:'suppThead'},
+{tableId:'stageTable',wrapId:'stageTableWrap',theadId:'stageThead'},
+{tableId:'modTable',wrapId:'modTableWrap',theadId:'modThead'}
+];
+const _browseStickyMount=new Map();
+function ensureBrowseStickyMount(cfg){
+let st=_browseStickyMount.get(cfg.tableId);
+if(st)return st;
+const table=document.getElementById(cfg.tableId);
+const wrap=document.getElementById(cfg.wrapId);
+if(!table||!wrap)return null;
+const bar=document.createElement('div');
+bar.className='browse-table-sticky-bar';
+bar.hidden=true;
+bar.setAttribute('aria-hidden','true');
+const inner=document.createElement('div');
+inner.className='browse-table-sticky-bar-inner';
+const cloneTable=document.createElement('table');
+cloneTable.className=table.className+' browse-table-sticky-clone';
+cloneTable.setAttribute('aria-hidden','true');
+const cloneThead=document.createElement('thead');
+cloneTable.appendChild(cloneThead);
+inner.appendChild(cloneTable);
+bar.appendChild(inner);
+document.body.appendChild(bar);
+st={...cfg,table,wrap,bar,inner,cloneTable,cloneThead};
+_browseStickyMount.set(cfg.tableId,st);
+return st
+}
+function syncBrowseStickyCloneRow(st){
+const srcThead=document.getElementById(st.theadId);
+const srcRow=srcThead&&srcThead.querySelector('tr');
+if(!srcRow)return;
+let cloneRow=st.cloneThead.querySelector('tr');
+if(!cloneRow){
+cloneRow=document.createElement('tr');
+st.cloneThead.appendChild(cloneRow)
+}
+const srcThs=srcRow.querySelectorAll('th');
+while(cloneRow.children.length>srcThs.length)cloneRow.lastChild.remove();
+srcThs.forEach((srcTh,i)=>{
+let cTh=cloneRow.children[i];
+if(!cTh){
+cTh=document.createElement('th');
+cTh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();srcTh.click()});
+cloneRow.appendChild(cTh)
+}
+cTh.className=srcTh.className;
+cTh.style.width=srcTh.offsetWidth+'px';
+cTh.style.minWidth=srcTh.style.minWidth;
+cTh.style.maxWidth=srcTh.style.maxWidth;
+cTh.innerHTML=srcTh.innerHTML
+});
+st.cloneTable.style.width=st.table.offsetWidth+'px'
+}
+function updateBrowseTableStickyHeaders(){
+const useBar=browseTableStickyUsesFixedBar();
+const pin=getAppHeaderBottomPx();
+syncListTheadStickyTop();
+_browseStickyMount.forEach(st=>{
+st.bar.hidden=true;
+st.table.classList.remove('is-browse-head-pinned');
+if(!useBar)return;
+const wrap=st.wrap;
+if(wrap.hidden||!st.table.offsetParent)return;
+const wrapRect=wrap.getBoundingClientRect();
+const thead=st.table.querySelector('thead');
+if(!thead)return;
+const theadRect=thead.getBoundingClientRect();
+syncBrowseStickyCloneRow(st);
+const pastHead=theadRect.top<pin-0.5;
+const tableInView=wrapRect.bottom>pin+20&&wrapRect.top<window.innerHeight;
+const show=pastHead&&tableInView;
+if(!show)return;
+st.bar.hidden=false;
+st.bar.style.top=pin+'px';
+st.bar.style.left=wrapRect.left+'px';
+st.bar.style.width=Math.max(0,Math.round(wrapRect.width))+'px';
+st.table.classList.add('is-browse-head-pinned')
+})
+}
+function initBrowseTableStickyHeaders(){
+_BROWSE_STICKY_TABLES.forEach(cfg=>ensureBrowseStickyMount(cfg));
+updateBrowseTableStickyHeaders()
 }
 let _listTheadStickyRaf=0;
 function scheduleSyncListTheadStickyTop(){
 if(_listTheadStickyRaf)return;
-_listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop()})
+_listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop();updateBrowseTableStickyHeaders()})
 }
 
 // iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & overlay using visual viewport.
@@ -2357,7 +2447,7 @@ document.documentElement.style.setProperty('--cmp-browser-inset-bottom',inset+'p
 }
 function initCmpSafeArea(){
 updateCmpBrowserInset();
-syncListTheadStickyTop();
+initBrowseTableStickyHeaders();
 const onVV=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
 const onResize=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
 const onScroll=()=>scheduleSyncListTheadStickyTop();
@@ -2912,12 +3002,18 @@ cb.onclick=function(e){e.stopPropagation();toggleCompare(cmpType,id,name,thum)};
 }
 
 const _origRenderUnitT=renderUnitT;
-renderUnitT=function(data){_origRenderUnitT(data);if(getListViewMode('units')==='table')setTimeout(()=>injectCompareCheckboxes('unitBody','unit'),0)};
+renderUnitT=function(data){_origRenderUnitT(data);if(getListViewMode('units')==='table')setTimeout(()=>{injectCompareCheckboxes('unitBody','unit');scheduleSyncListTheadStickyTop()},0);else scheduleSyncListTheadStickyTop()};
 const _origRenderCharT=renderCharT;
-renderCharT=function(data){_origRenderCharT(data);if(getListViewMode('characters')==='table')setTimeout(()=>injectCompareCheckboxes('charBody','character'),0)};
+renderCharT=function(data){_origRenderCharT(data);if(getListViewMode('characters')==='table')setTimeout(()=>{injectCompareCheckboxes('charBody','character');scheduleSyncListTheadStickyTop()},0);else scheduleSyncListTheadStickyTop()};
+const _origRenderSuppT=renderSuppT;
+renderSuppT=function(data){_origRenderSuppT(data);scheduleSyncListTheadStickyTop()};
+const _origRenderStageT=renderStageT;
+renderStageT=function(data){_origRenderStageT(data);scheduleSyncListTheadStickyTop()};
+const _origRenderModT=renderModT;
+renderModT=function(data){_origRenderModT(data);scheduleSyncListTheadStickyTop()};
 
 const _origBuildTableHeaders=buildTableHeaders;
-buildTableHeaders=function(){_origBuildTableHeaders();
+buildTableHeaders=function(){_origBuildTableHeaders();scheduleSyncListTheadStickyTop();
 ['charThead','unitThead'].forEach(id=>{
 const thead=document.getElementById(id);
 if(!thead)return;

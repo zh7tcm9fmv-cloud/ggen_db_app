@@ -1,10 +1,20 @@
 /**
- * Mobile safe-area & layout — tuned for common viewports (iOS ~393×852, Android ~360×640).
- * 16px page margins, notch/home-indicator insets, dvh-based overlays.
+ * Mobile layout — iOS / Android grid guidelines (stretch 4-column grid).
+ * Reference frames: iOS 393×852 (16px margin + 16px gutter), Android 360×640 (same grid).
+ * System chrome (status bar, home indicator) comes from env(safe-area-inset-*).
+ * App chrome height for sticky table headers is synced in JS (--list-thead-sticky-top).
  */
 @media (max-width: 768px) {
   :root {
-    --mobile-page-gutter: 16px;
+    --mobile-grid-margin: 16px;
+    --mobile-grid-gutter: 16px;
+    --mobile-grid-columns: 4;
+    --mobile-page-gutter: var(--mobile-grid-margin);
+    --mobile-grid-col: calc(
+      (100% - (var(--mobile-grid-columns) - 1) * var(--mobile-grid-gutter)) /
+        var(--mobile-grid-columns)
+    );
+    --mobile-touch-min: 44px;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
@@ -12,14 +22,14 @@
   }
 
   html {
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     max-width: 100%;
   }
 
   body {
     min-height: 100dvh;
-    overflow-x: hidden;
+    overflow-x: clip;
     min-width: 0;
     width: 100%;
     max-width: 100%;
@@ -141,8 +151,180 @@
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    padding: var(--mobile-page-gutter);
-    padding-bottom: max(var(--mobile-page-gutter), var(--safe-bottom));
+    padding: var(--mobile-grid-margin);
+    padding-bottom: max(var(--mobile-grid-margin), var(--safe-bottom));
+  }
+
+  .list-toolbar {
+    gap: var(--mobile-grid-gutter);
+    margin-bottom: var(--mobile-grid-gutter);
+  }
+
+  /* 4× stretch grid for filter chips (2 columns per row = span 2 of 4) */
+  .list-toolbar-left--browse {
+    display: grid;
+    grid-template-columns: repeat(var(--mobile-grid-columns), minmax(0, 1fr));
+    gap: var(--mobile-grid-gutter);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    align-items: start;
+    overflow: visible;
+  }
+
+  .list-toolbar-left--browse > .browse-toolbar-top-row,
+  .list-toolbar-left--browse > .list-stat-toggle-wrap,
+  #panel-ranking .list-toolbar-left--browse > .list-stat-toggle-wrap {
+    grid-column: 1 / -1;
+  }
+
+  .list-toolbar-left--browse > .rarity-filter-wrap,
+  .list-toolbar-left--browse > .role-filter-wrap,
+  .list-toolbar-left--browse > .source-filter-wrap,
+  .list-toolbar-left--browse > .lineage-filter-wrap,
+  .list-toolbar-left--browse > .series-filter-wrap,
+  .list-toolbar-left--browse > .skill-filter-wrap,
+  .list-toolbar-left--browse > .ability-filter-wrap,
+  .list-toolbar-left--browse > .terrain-filter-wrap,
+  .list-toolbar-left--browse > .debuff-filter-wrap,
+  .list-toolbar-left--browse > .mechanism-filter-wrap {
+    grid-column: span 2;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  #panel-supporters .list-toolbar > .list-toolbar-left,
+  #panel-modifications .list-toolbar > .list-toolbar-left,
+  #panel-stages .list-toolbar > .list-toolbar-left {
+    display: grid;
+    grid-template-columns: repeat(var(--mobile-grid-columns), minmax(0, 1fr));
+    gap: var(--mobile-grid-gutter);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  #panel-supporters .list-toolbar > .list-toolbar-left > .browse-toolbar-leading,
+  #panel-modifications .list-toolbar > .list-toolbar-left > .browse-toolbar-leading,
+  #panel-stages .list-toolbar > .list-toolbar-left > .browse-toolbar-leading,
+  #panel-stages .list-toolbar > .list-toolbar-left > .stage-source-toggle-wrap,
+  #panel-stages .list-toolbar > .list-toolbar-left > .rarity-filter-wrap {
+    grid-column: 1 / -1;
+  }
+
+  #panel-modifications .list-toolbar > .list-toolbar-left > .mod-effect-wrap {
+    grid-column: span 2;
+  }
+
+  .list-grid-wrap {
+    padding: var(--mobile-grid-gutter);
+    padding-bottom: calc(var(--mobile-grid-gutter) + 2px);
+    box-sizing: border-box;
+  }
+
+  .list-grid {
+    grid-template-columns: repeat(var(--mobile-grid-columns), minmax(0, 1fr));
+    gap: var(--mobile-grid-gutter);
+    align-items: stretch;
+  }
+
+  .list-grid-card {
+    padding: calc(var(--mobile-grid-gutter) * 0.625) calc(var(--mobile-grid-gutter) * 0.5);
+    gap: calc(var(--mobile-grid-gutter) * 0.5);
+    min-width: 0;
+  }
+
+  .list-grid-card-thumb .list-thumb-composite {
+    width: min(var(--mobile-grid-col), 72px) !important;
+    height: min(var(--mobile-grid-col), 72px) !important;
+    max-width: 100%;
+  }
+
+  .list-toolbar,
+  .list-toolbar > .list-view-area,
+  .tab-panel.active,
+  .main-content {
+    overflow: visible;
+  }
+
+  .list-view-area,
+  .list-view-area .data-table-wrapper {
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  /* CSS position:sticky on thead breaks on mobile (scroll-container ancestors); JS fixed clone handles freeze */
+  .list-view-area .data-table thead th {
+    position: static;
+    top: auto;
+    box-shadow: none;
+  }
+
+  .data-table.is-browse-head-pinned thead {
+    visibility: hidden;
+  }
+
+  .browse-table-sticky-bar {
+    position: fixed;
+    z-index: 90;
+    box-sizing: border-box;
+    pointer-events: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .browse-table-sticky-bar-inner {
+    overflow: hidden;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.45);
+  }
+
+  .browse-table-sticky-clone {
+    width: 100%;
+    margin: 0;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .browse-table-sticky-clone thead th {
+    position: static;
+    pointer-events: auto;
+    cursor: pointer;
+    background: var(--bg-card);
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .list-view-area .data-table-wrapper {
+    border-radius: var(--radius-md);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .data-table thead th,
+  .data-table tbody td {
+    padding-left: calc(var(--mobile-grid-gutter) * 0.25);
+    padding-right: calc(var(--mobile-grid-gutter) * 0.25);
+  }
+
+  .pagination-bar-wrap {
+    padding-top: var(--mobile-grid-gutter);
+    gap: var(--mobile-grid-gutter);
+  }
+
+  .rarity-filter-btn,
+  .role-filter-dd-btn,
+  .browse-filters-clear-btn {
+    min-height: var(--mobile-touch-min);
   }
 
   .tab-panel.active {
@@ -248,22 +430,6 @@
     overflow-x: hidden;
   }
 
-  /* Browse tables: match desktop — no overflow on wrapper (overflow-x:auto traps sticky thead in the box) */
-  .list-view-area {
-    max-width: 100%;
-    min-width: 0;
-    overflow: visible;
-  }
-
-  #panel-characters .list-view-area .data-table-wrapper,
-  #panel-units .list-view-area .data-table-wrapper,
-  #panel-supporters .list-view-area .data-table-wrapper,
-  #panel-stages .list-view-area .data-table-wrapper,
-  #panel-modifications .list-view-area .data-table-wrapper {
-    overflow: visible;
-    max-width: 100%;
-  }
-
   .ui-notice-flare {
     pointer-events: none;
   }
@@ -285,13 +451,8 @@
   }
 }
 
-/* Android width reference (~360px) */
+/* Android width reference (~360px) — keep 16px margin / gutter per platform grid */
 @media (max-width: 360px) {
-  .header-inner {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
   .header-support-btns {
     max-width: min(calc(100vw - 132px), 188px);
   }
@@ -307,11 +468,6 @@
     font-size: 13px;
   }
 
-  .main-content {
-    padding: 12px;
-    padding-bottom: max(12px, var(--safe-bottom));
-  }
-
   .brand-logo {
     width: 36px;
     height: 36px;
@@ -319,6 +475,22 @@
 
   .brand-text {
     font-size: 14px;
+  }
+
+  .list-grid-card-thumb .list-thumb-composite {
+    width: min(var(--mobile-grid-col), 64px) !important;
+    height: min(var(--mobile-grid-col), 64px) !important;
+  }
+}
+
+/* Narrow phones (still 4 columns; ~70px/col at 360px content width) */
+@media (max-width: 390px) {
+  .list-grid-card-name {
+    font-size: 12px;
+  }
+
+  .list-grid-card-stats {
+    font-size: 11px;
   }
 }
 
