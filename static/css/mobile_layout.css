@@ -242,11 +242,19 @@
     box-sizing: border-box;
   }
 
-  .list-grid-wrap,
-  .list-view-area {
+  .list-grid-wrap {
     max-width: 100%;
     min-width: 0;
     overflow-x: hidden;
+  }
+
+  .list-view-area {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
 
   .ui-notice-flare {

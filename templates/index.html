@@ -1934,6 +1934,29 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .list-grid-cmp-inner{display:inline-flex;align-items:center;justify-content:center;padding:0;margin:0;background:transparent;border:none;box-shadow:none}.list-grid-cmp-wrap .cmp-cb-grid{margin:0}
 @media(max-width:768px){.list-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}.list-view-toggle{order:0}.list-toolbar-right{flex-wrap:wrap;justify-content:flex-end}}
 
+/* --- Browse tables: phones & narrow tablets (table view) --- */
+@media (max-width: 1024px) {
+  .th-full{display:none}
+  .th-mob{display:inline}
+  #panel-characters .list-toolbar,#panel-units .list-toolbar,#panel-supporters .list-toolbar{overflow:visible}
+  #charTable,#unitTable,#suppTable{table-layout:fixed!important;width:100%!important;min-width:0!important}
+  #charTable .cmp-cb-cell,#unitTable .cmp-cb-cell{width:28px!important;min-width:28px!important;max-width:28px!important;padding:4px 2px!important}
+  #charTable .col-thum,#unitTable .col-thum,#suppTable .col-thum{width:48px!important;min-width:48px!important;max-width:48px!important;box-sizing:border-box!important}
+  #charTable .col-name,#unitTable .col-name{width:24%!important;min-width:3.25rem!important}
+  #charTable .col-stat,#unitTable .col-stat{width:10.5%!important;min-width:1.85rem!important;padding-left:2px!important;padding-right:2px!important;box-sizing:border-box!important;text-align:center}
+  #suppTable .col-name{width:26%!important;min-width:0!important}
+  #suppTable .col-tag{width:24%!important;min-width:0!important}
+  #suppTable .col-boost{width:32%!important;min-width:0!important}
+  #suppTable .col-skill{width:14%!important;min-width:2rem!important;text-align:center}
+  .list-view-area .data-table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;max-width:100%}
+  .data-table thead th{overflow:visible!important;text-overflow:clip;padding:8px 3px!important;font-size:11px!important;line-height:1.25!important;white-space:nowrap;text-transform:none!important;letter-spacing:0!important;vertical-align:middle}
+  .data-table thead th .sort-arrow{font-size:9px;margin-left:1px}
+  #suppTable thead th{white-space:normal;line-height:1.15;font-size:clamp(9px,2.4vw,12px)!important;padding:8px 3px!important;vertical-align:bottom}
+  #charTable tbody td.col-thum,#unitTable tbody td.col-thum,#suppTable tbody td.col-thum{overflow:hidden;vertical-align:middle;position:relative;z-index:0}
+  #charTable tbody td.col-thum .list-thumb-composite,#unitTable tbody td.col-thum .list-thumb-composite,#suppTable tbody td.col-thum .list-thumb-composite{margin-left:auto;margin-right:auto;max-width:100%;max-height:52px;width:auto;height:auto}
+  .data-table thead th{z-index:50}
+}
+
 /* --- Responsive stat column labels (full vs abbreviated) --- */
 .th-mob{display:none}
 
