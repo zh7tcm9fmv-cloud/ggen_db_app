@@ -15438,6 +15438,26 @@ def list_dc_targets():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify([])
 
+def _populate_stage_list_row_portraits(page_rows):
+    """Resolve browse-list portraits only for the current page (find_portrait is expensive)."""
+    for row in page_rows:
+        if row.get('content_locked'):
+            row['portrait'] = ''
+            row.pop('_thumb_rid', None)
+            row.pop('_portrait_duid', None)
+            continue
+        thumb_rid = row.pop('_thumb_rid', None)
+        if thumb_rid is not None:
+            row['portrait'] = special_event_stage_thumb_url(thumb_rid)
+            row.pop('_portrait_duid', None)
+            continue
+        duid = normalize_id(row.pop('_portrait_duid', '0'))
+        row['portrait'] = ''
+        if duid != '0':
+            uinfo = unit_info_map.get(duid, {})
+            row['portrait'] = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
+
+
 @app.route('/api/stages')
 def list_stages():
     try:
@@ -15451,7 +15471,7 @@ def list_stages():
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages9_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages10_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -15467,13 +15487,13 @@ def list_stages():
                 mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
-                portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id'))
                 rows.append({
                     '_sn_sort': (grp, pri, safe_int(sid, 0)),
                     'id': sid, 'stage_number': pri, 'name': sname,
                     'recommended_cp': sm.get('recommended_cp', 0),
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
-                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                    '_thumb_rid': ses.get('thumbnail_resource_id'),
                     'content_locked': False, 'stage_category': 'special_stage',
                 })
         elif cat == 'score_attack':
@@ -15490,16 +15510,14 @@ def list_stages():
                 boss_id = sas.get('boss_map_npc_id', '0')
                 nu = map_npc_unit_lookup.get(boss_id, []) if map_npc_unit_lookup else []
                 duid = nu[0].get('unit_id', '0') if nu else '0'
-                portrait = ''
-                if duid != '0':
-                    uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
                 sn_sort = sn
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': sn, 'name': sname,
                     'recommended_cp': sm.get('recommended_cp', 0),
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
-                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                    '_portrait_duid': duid,
                     'content_locked': False, 'stage_category': 'score_attack',
                 })
         elif cat == 'tower_stage':
@@ -15526,10 +15544,6 @@ def list_stages():
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
                 duid = normalize_id(tes.get('floor_bromide_unit_id'))
-                portrait = ''
-                if duid != '0':
-                    uinfo = unit_info_map.get(duid, {})
-                    portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
                 gsort = safe_int(tower_event_group_sort_map.get(gid, 9999), 9999)
                 sn_sort = gsort * 100000 + max(0, floor) * 10 + (safe_int(tid, 0) % 10)
                 tower_rows.append({
@@ -15537,7 +15551,8 @@ def list_stages():
                     'id': tid, 'stage_number': floor, 'name': sname,
                     'recommended_cp': sm.get('recommended_cp', 0),
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
-                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                    '_portrait_duid': duid,
                     'content_locked': False, 'stage_category': 'tower_stage', 'tower_side': side,
                 })
             dup_groups = {}
@@ -15572,9 +15587,7 @@ def list_stages():
                     if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
                 sm = stage_map.get(sid, {}); diff = get_stage_difficulty(sid, lc)
                 if df != 'all' and df != '' and diff['code'] != df: continue
-                duid = est.get('display_unit_id', '0'); portrait = ''
-                if vis and duid != '0':
-                    uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
+                duid = est.get('display_unit_id', '0')
                 sn_sort = safe_int(sn, 0)
                 if vis:
                     rows.append({
@@ -15582,7 +15595,8 @@ def list_stages():
                         'id': sid, 'stage_number': sn, 'name': sname,
                         'recommended_cp': sm.get('recommended_cp', 0),
                         'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
-                        'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+                        'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                        '_portrait_duid': duid,
                         'content_locked': False, 'stage_category': 'eternal',
                     })
                 else:
@@ -15600,6 +15614,7 @@ def list_stages():
             rows.sort(key=lambda x: (x['_sn_sort'], safe_int(x['id'], 0)))
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
+        _populate_stage_list_row_portraits(pr)
         for _r in pr: _r.pop('_sn_sort', None)
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
