@@ -350,6 +350,19 @@ UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 
 UNIT_ROLE_TYPE_LANG_MAP['HK'] = dict(UNIT_ROLE_TYPE_LANG_MAP['TW'])
 ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
 ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
+
+
+def resolve_role_label(role_id, lang_code=None):
+    """Localized Attack/Defense/Support badge text (from ROLE_NAME_MAP_CHARS / lang bundles)."""
+    rid = normalize_id(role_id, '0')
+    en_label = ROLE_MAP.get(rid, 'NPC')
+    if rid == '0':
+        return en_label
+    lc = (lang_code or DEFAULT_LANG).upper()
+    if lc == 'JP':
+        lc = 'JA'
+    m = ROLE_NAME_MAP_CHARS.get(lc) or ROLE_NAME_MAP_CHARS['EN']
+    return m.get(en_label, en_label)
 # Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types (EN: Space, Atmospheric, Land, Sea, Underwater).
 STAGE_TERRAIN_MAP = {
     '1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'},
@@ -2218,6 +2231,90 @@ WEAPON_ATTR_MAP = {
     '7': {'label': 'Beam/Physical/Special', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
     '8': {'label': 'Beam/Physical', 'icon': '/static/images/WeaponIcon/UI_Common_WeaponIcon_04.webp'},
 }
+# WeaponAttributeSetId -> ordered type keys (in-game pill order; matches client DC_WPN_ATTR_ID_KEYS).
+WEAPON_ATTR_SET_TYPE_KEYS = {
+    '1': ['physical'], '2': ['beam'], '3': ['special'],
+    '4': ['beam', 'physical'], '5': ['physical', 'special'],
+    '6': ['beam', 'special'], '7': ['beam', 'physical', 'special'],
+    '8': ['beam', 'physical'],
+}
+_WEAPON_ATTR_TYPE_EN_CANONICAL = {'physical': 'Physical', 'beam': 'Beam', 'special': 'Special'}
+_WEAPON_ATTR_TYPE_SET_ID = {'physical': '1', 'beam': '2', 'special': '3'}
+_WEAPON_ATTR_TRAIT_SHORT = {
+    'EN': {'physical': 'Physical', 'beam': 'Beam', 'special': 'Special'},
+    'TW': {'physical': '物理', 'beam': '光束', 'special': '特殊'},
+    'HK': {'physical': '物理', 'beam': '光束', 'special': '特殊'},
+    'JA': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
+    'JP': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
+}
+_WEAPON_ATTR_TRAIT_PARSE = {
+    'EN': {
+        'physical': re.compile(r'Increased Physical Damage', re.I),
+        'beam': re.compile(r'Increased Beam Damage', re.I),
+        'special': re.compile(r'Increased Special Damage', re.I),
+    },
+    'TW': {
+        'physical': re.compile(r'物理損傷'),
+        'beam': re.compile(r'光束損傷'),
+        'special': re.compile(r'特殊損傷'),
+    },
+    'HK': {
+        'physical': re.compile(r'物理損傷'),
+        'beam': re.compile(r'光束損傷'),
+        'special': re.compile(r'特殊損傷'),
+    },
+    'JA': {
+        'physical': re.compile(r'物理ダメージ'),
+        'beam': re.compile(r'ビームダメージ'),
+        'special': re.compile(r'特殊ダメージ'),
+    },
+    'JP': {
+        'physical': re.compile(r'物理ダメージ'),
+        'beam': re.compile(r'ビームダメージ'),
+        'special': re.compile(r'特殊ダメージ'),
+    },
+}
+
+
+def _build_weapon_attr_type_labels_from_lang(lang_dir, lang_code, weapon_text_map):
+    """Resolve beam/physical/special short labels from data/<LANG>/lang (m_weapon + m_weapon_trait)."""
+    lc = lang_code if lang_code in _WEAPON_ATTR_TRAIT_SHORT else DEFAULT_LANG
+    labels = {}
+    en_wtm = (LANG_DATA.get(DEFAULT_LANG) or {}).get('weapon_text_map', {}) if lc != DEFAULT_LANG else (weapon_text_map or {})
+    for key, en_val in _WEAPON_ATTR_TYPE_EN_CANONICAL.items():
+        lid = next((k for k, v in en_wtm.items() if v == en_val), None)
+        if lid:
+            tx = (weapon_text_map or {}).get(lid, '').strip()
+            if tx:
+                labels[key] = tx
+                continue
+        trait_path = os.path.join(lang_dir, 'm_weapon_trait.json') if lang_dir else ''
+        trait_data = load_json(trait_path) if trait_path else None
+        pat = (_WEAPON_ATTR_TRAIT_PARSE.get(lc) or {}).get(key)
+        if pat and trait_data:
+            for item in extract_data_list(trait_data):
+                v = str(item.get('value') or item.get('Value') or '').strip()
+                if pat.search(v):
+                    labels[key] = (_WEAPON_ATTR_TRAIT_SHORT.get(lc) or _WEAPON_ATTR_TRAIT_SHORT[DEFAULT_LANG])[key]
+                    break
+        if key not in labels:
+            sid = _WEAPON_ATTR_TYPE_SET_ID.get(key, '0')
+            labels[key] = WEAPON_ATTR_MAP.get(sid, {}).get('label', en_val)
+    return labels
+
+
+def resolve_weapon_attribute_label(attribute_set_id, ld):
+    """Localized <Beam>/<Physical>/… pill text for a WeaponAttributeSetId."""
+    ai = normalize_id(attribute_set_id)
+    keys = WEAPON_ATTR_SET_TYPE_KEYS.get(ai)
+    if not keys:
+        return WEAPON_ATTR_MAP.get(ai, {}).get('label', 'Unknown')
+    type_labels = (ld or {}).get('weapon_attr_type_labels') or {}
+    parts = [type_labels[k] for k in keys if type_labels.get(k)]
+    if parts:
+        return '/'.join(parts)
+    return WEAPON_ATTR_MAP.get(ai, {}).get('label', 'Unknown')
+
 MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp'
 # Wing Gundam Zero (EW): playable 1219000150 / MAP 121900015005; NPC shell 1219000151 / MAP 121900015105 (same after-move MAP treatment).
 MAP_WEAPON_AFTER_MOVE_PAIRS = frozenset({
@@ -2270,6 +2367,88 @@ ATTACK_ATTR_TYPES = {
     '6': [{'label': 'Melee', 'icon': '/static/images/UI/UI_Common_TypeIcon_Melee_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
     '7': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}, {'label': 'Melee', 'icon': '/static/images/UI/UI_Common_TypeIcon_Melee_S.webp'}, {'label': 'Awaken', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp'}],
 }
+# AttackAttributeSetId -> ordered type keys (Ranged/Melee/Awaken weapon-type icons).
+ATTACK_ATTR_SET_TYPE_KEYS = {
+    '1': ['ranged'], '2': ['melee'], '3': ['awaken'],
+    '4': ['ranged', 'melee'], '5': ['ranged', 'awaken'],
+    '6': ['melee', 'awaken'], '7': ['ranged', 'melee', 'awaken'],
+}
+_NAV_WEAPON_TYPES_LID = '101200000012110002'
+_ATTACK_ATTR_TYPE_EN_CANONICAL = {'ranged': 'Ranged', 'melee': 'Melee', 'awaken': 'Awaken'}
+_ATTACK_ATTR_TYPE_SHORT = {
+    'EN': {'ranged': 'Ranged', 'melee': 'Melee', 'awaken': 'Awaken'},
+    'TW': {'ranged': '射擊', 'melee': '格鬥', 'awaken': '覺醒'},
+    'HK': {'ranged': '射擊', 'melee': '格鬥', 'awaken': '覺醒'},
+    'JA': {'ranged': '射撃', 'melee': '格闘', 'awaken': '覚醒'},
+    'JP': {'ranged': '射撃', 'melee': '格闘', 'awaken': '覚醒'},
+}
+
+
+def _parse_nav_weapon_attack_type_labels(value, lang_code):
+    """Parse in-game 武裝類型 tutorial line (m_navigation_character #12110002)."""
+    v = str(value or '').strip()
+    if not v:
+        return None
+    parts = re.findall(r'「([^」]+)」', v)
+    if len(parts) >= 3:
+        return {'ranged': parts[0], 'melee': parts[1], 'awaken': parts[2]}
+    m = re.search(r':\s*(.+)', v, re.DOTALL)
+    if m:
+        tail = re.sub(r'\s+and\s+', ', ', m.group(1).strip(), flags=re.I)
+        tokens = [t.strip().rstrip('.') for t in re.split(r',\s*', tail) if t.strip()]
+        if len(tokens) >= 3:
+            return {'ranged': tokens[0], 'melee': tokens[1], 'awaken': tokens[2]}
+    return None
+
+
+def _build_weapon_attack_type_labels_from_lang(lang_dir, lang_code, weapon_text_map):
+    """Ranged/Melee/Awaken short labels from data/<LANG>/lang (navigation + m_weapon Melee)."""
+    lc = lang_code if lang_code in _ATTACK_ATTR_TYPE_SHORT else DEFAULT_LANG
+    labels = dict(_ATTACK_ATTR_TYPE_SHORT.get(lc) or _ATTACK_ATTR_TYPE_SHORT[DEFAULT_LANG])
+    nav_path = os.path.join(lang_dir, 'm_navigation_character.json') if lang_dir else ''
+    nav_data = load_json(nav_path) if nav_path else None
+    if nav_data:
+        for item in extract_data_list(nav_data):
+            lid = normalize_id(item.get('id') or item.get('Id'))
+            if lid == _NAV_WEAPON_TYPES_LID or lid.endswith('12110002'):
+                val = item.get('value') or item.get('Value') or ''
+                parsed = _parse_nav_weapon_attack_type_labels(val, lc)
+                if parsed:
+                    labels.update(parsed)
+                break
+    en_wtm = (LANG_DATA.get(DEFAULT_LANG) or {}).get('weapon_text_map', {}) if lc != DEFAULT_LANG else (weapon_text_map or {})
+    for key, en_val in _ATTACK_ATTR_TYPE_EN_CANONICAL.items():
+        if key != 'melee':
+            continue
+        lid = next((k for k, v in en_wtm.items() if v == en_val), None)
+        if lid:
+            tx = (weapon_text_map or {}).get(lid, '').strip()
+            if tx:
+                labels[key] = tx
+    return labels
+
+
+def resolve_attack_attribute_types(attack_set_id, ld):
+    """Localized weapon-type icons row (Ranged/Melee/Awaken) for AttackAttributeSetId."""
+    aid = normalize_id(attack_set_id)
+    base = ATTACK_ATTR_TYPES.get(aid)
+    if not base:
+        return []
+    keys = ATTACK_ATTR_SET_TYPE_KEYS.get(aid, [])
+    type_labels = (ld or {}).get('weapon_attack_type_labels') or {}
+    out = []
+    for i, item in enumerate(base):
+        key = keys[i] if i < len(keys) else None
+        entry = dict(item)
+        if key:
+            entry['key'] = key
+            lbl = type_labels.get(key)
+            if lbl:
+                entry['label'] = lbl
+        out.append(entry)
+    return out
+
+
 MP_CONSUMPTION_WEAPON_IDS = {'120000395006': 5}
 MP_CONSUMPTION_UNIT_EX = {'1330000750': 2}
 HP_CONSUMPTION_UNIT_EX = {'1501002250': 10}
@@ -5678,8 +5857,7 @@ def collect_unit_weapons_search_text(uid, ld, lang_code):
         wn = (ld.get('weapon_text_map', {}) or {}).get(wm.get('name_lang_id', '0'), '')
         if wn: parts.append(wn)
         ai = wm.get('attribute', '0')
-        ainfo = WEAPON_ATTR_MAP.get(ai, {})
-        lab = ainfo.get('label', '')
+        lab = resolve_weapon_attribute_label(ai, ld)
         if lab: parts.append(lab)
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid=wid, lang_code=lang_code, unit_id=uid)
         for ur in ws.get('usage_restrictions', []) or []:
@@ -6831,6 +7009,8 @@ for lang_code, paths in LANG_PATHS.items():
             if lid != '0' and val: stage_condition_text_map[lid] = str(val).replace("\\n", "\n")
     wtm2 = create_weapon_text_map(weapon_text_data); wtrm = create_weapon_trait_map(BASE_DIR, lang_dir)
     wcam = create_weapon_capability_map(BASE_DIR, lang_dir); wtdm = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
+    weapon_attr_type_labels = _build_weapon_attr_type_labels_from_lang(lang_dir, lang_code, wtm2)
+    weapon_attack_type_labels = _build_weapon_attack_type_labels_from_lang(lang_dir, lang_code, wtm2)
     mech_map = create_mechanism_map(mech_master or {}, mech_lang or {})
     op_text_map = create_lang_text_map(op_lang_data) if op_lang_data else {}
     
@@ -6915,7 +7095,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -8902,7 +9082,8 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
     for w in rows:
         wid = w.get('weapon_id', '0'); wm = weapon_info_map.get(wid, {}); wn = ld.get('weapon_text_map', {}).get(wm.get('name_lang_id', '0'), 'Unknown')
         ai = wm.get('attribute', '0'); wt = wm.get('weapon_type', '1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label': 'Unknown', 'icon': ''})
-        at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute', '0'), [])
+        attr_label = resolve_weapon_attribute_label(ai, ld)
+        at = resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, wtdm, wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates, wid=wid, unit_id=uid)
         if is_map_weapon_recovery_supply_mp(uid, wid, wt):
@@ -8937,7 +9118,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         is_dash = bool(ws.get('is_dash', False))
         if oer and not osr:
             is_dash = False
-        weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
+        weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
@@ -9835,13 +10016,13 @@ def get_npc_unit_display(uid, usr, lc):
     un = ld.get('unit_text_map', {}).get(lid, f"Unknown ({uid})") if lid else f"Unknown ({uid})"
     p = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits')
     oaid = safe_int(info.get('occupied_area_id'), 1)
-    return {'id': uid, 'name': un, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': ROLE_MAP.get(info.get('role', '0'), 'NPC'), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
+    return {'id': uid, 'name': un, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
 
 def get_npc_character_display(cid, csr, lc):
     ld = get_lang_data(lc); info = char_info_map.get(cid, {}); lid = ld.get('char_id_map', {}).get(cid, '')
     cn = ld.get('char_text_map', {}).get(lid, f"Unknown ({cid})") if lid else f"Unknown ({cid})"
     p = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
-    return {'id': cid, 'name': cn, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': ROLE_MAP.get(info.get('role', '0'), 'NPC'), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': csr, 'tags': resolve_tags(char_lin_map, cid, lc, 'character'), 'series': resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)}
+    return {'id': cid, 'name': cn, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': csr, 'tags': resolve_tags(char_lin_map, cid, lc, 'character'), 'series': resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)}
 
 def validate_lang_code(lc):
     lc = (lc or DEFAULT_LANG).upper()
@@ -12564,7 +12745,7 @@ def list_characters():
             base_src = totals
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        row = {'id': cid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'series': ser_list, 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds else None
@@ -12804,7 +12985,7 @@ def list_units():
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        urow = {'id': uid, 'name': name, 'role': ROLE_MAP.get(role_id,'NPC'), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
@@ -15738,7 +15919,7 @@ def get_character(char_id):
                 uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid_for_pair, 'images/unit_portraits')
                 uacq = uinfo.get('acquisition_route', '0')
                 uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
-                recommend_unit = {'id': rec_uid_for_pair, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': ROLE_MAP.get(urole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
+                recommend_unit = {'id': rec_uid_for_pair, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': resolve_role_label(urole, lc), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
         spbn_u, spbn_c, spbn_pair, spen, spen_pair, spbs_u, spbs_c, spbs_pair, spes, spes_pair, trait_pair_unit_ids = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)
         pair_ok, pair_units, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
         sne = []; swe = []; ssne = []; sswe = []
@@ -15808,7 +15989,7 @@ def get_character(char_id):
             has_conditional_passive = has_ex_slot_only
         else:
             has_conditional_passive = has_ex_stats
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []
@@ -16083,7 +16264,8 @@ def get_unit(unit_id):
             for wp in unit_weapon_map.get(unit_id, []):
                 wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
                 ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
-                at = ATTACK_ATTR_TYPES.get(wm.get('attack_attribute','0'), [])
+                attr_label = resolve_weapon_attribute_label(ai, ld)
+                at = resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
                 ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
                 ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
                 if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
@@ -16132,7 +16314,7 @@ def get_unit(unit_id):
                             break
                     if not siu:
                         siu = portrait or ''
-                weapons.append({'id': wid, 'name': wn, 'attribute': ainfo['label'], 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
             weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
@@ -16161,7 +16343,7 @@ def get_unit(unit_id):
                     if not cname:
                         cname = f'Unknown ({rec_cid})'
                     cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
-                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
+                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': resolve_role_label(crrole, lc), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
             mm = ld.get('mechanism_map', {})
             for mid in mids:
                 if mid == '2x2': continue
@@ -16185,14 +16367,14 @@ def get_unit(unit_id):
                     if not cname:
                         cname = f'Unknown ({rec_cid})'
                     cthum = find_list_thumb(cinfo.get('resource_ids', []), rec_cid, 'images/portraits')
-                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': ROLE_MAP.get(crrole, 'NPC'), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
+                    recommend_character = {'id': rec_cid, 'name': cname, 'rarity': RARITY_MAP.get(cri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(cri, ''), 'role': resolve_role_label(crrole, lc), 'role_icon': ROLE_ICON_MAP.get(crrole, ''), 'thum': cthum or '', 'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS}
         has_terrain_enh = bool(has_sp and ssp_core.get('terrain_upgrades'))
         skills = [] if view_ranking else [resolve_unit_skill(row['unit_skill_id'], ld, row['sort']) for row in unit_skill_set_lookup.get(unit_id, [])]
         _tpid = unit_transform_partner_map.get(unit_id)
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
             _muid = unit_id
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': ROLE_MAP.get(info.get('role','0'),"Unknown"), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
