@@ -1948,13 +1948,12 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   #suppTable .col-tag{width:24%!important;min-width:0!important}
   #suppTable .col-boost{width:32%!important;min-width:0!important}
   #suppTable .col-skill{width:14%!important;min-width:2rem!important;text-align:center}
-  .list-view-area .data-table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;max-width:100%}
+  /* Same scrollport as desktop: wrapper must stay overflow:visible or sticky thead pins inside the box (header in middle of screen) */
+  #panel-characters .list-view-area .data-table-wrapper,#panel-units .list-view-area .data-table-wrapper,#panel-supporters .list-view-area .data-table-wrapper,#panel-stages .list-view-area .data-table-wrapper,#panel-modifications .list-view-area .data-table-wrapper{overflow:visible;max-width:100%}
+  .list-view-area{overflow:visible}
   .data-table thead th{overflow:visible!important;text-overflow:clip;padding:8px 3px!important;font-size:11px!important;line-height:1.25!important;white-space:nowrap;text-transform:none!important;letter-spacing:0!important;vertical-align:middle}
   .data-table thead th .sort-arrow{font-size:9px;margin-left:1px}
   #suppTable thead th{white-space:normal;line-height:1.15;font-size:clamp(9px,2.4vw,12px)!important;padding:8px 3px!important;vertical-align:bottom}
-  /* Sticky below measured .app-header only (syncListTheadStickyTop) — not filter toolbar height */
-  .list-view-area .data-table thead th{position:sticky!important;top:var(--list-thead-sticky-top)!important;z-index:50!important;box-shadow:0 3px 4px -1px rgba(0,0,0,.45)!important;background:var(--bg-card)!important;background-clip:padding-box!important}
-  .list-view-area{overflow-x:visible;overflow-y:visible}
   #charTable tbody td.col-thum,#unitTable tbody td.col-thum,#suppTable tbody td.col-thum,#modTable tbody td.col-thum{overflow:visible;vertical-align:middle;text-align:center;padding:4px 2px!important}
   #charTable tbody td.col-thum .list-thumb-composite,#unitTable tbody td.col-thum .list-thumb-composite,#suppTable tbody td.col-thum .list-thumb-composite{width:48px!important;height:48px!important;max-width:48px;max-height:48px;display:block!important;margin-left:auto;margin-right:auto;flex-shrink:0}
   #modTable tbody td.col-thum .row-thum,#modTable tbody td.col-thum .row-thum-placeholder{width:48px!important;height:48px!important;display:block!important;margin-left:auto;margin-right:auto}
@@ -2236,15 +2235,6 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .th-full{display:none}
   .th-mob{display:inline}
 
-  /* Browse tables: keep sticky header above row thumbs; fit stat labels on narrow screens */
-  .list-view-area .data-table-wrapper{
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
-    max-width:100%;
-  }
-  .list-view-area{overflow-x:visible;overflow-y:visible}
-  .list-view-area .data-table thead th{position:sticky!important;top:var(--list-thead-sticky-top)!important;z-index:50!important;box-shadow:0 3px 4px -1px rgba(0,0,0,.45)!important;background:var(--bg-card)!important}
   #charTable tbody td.col-thum,#unitTable tbody td.col-thum,#suppTable tbody td.col-thum{overflow:visible;vertical-align:middle}
   #charTable tbody td.col-thum .list-thumb-composite,#unitTable tbody td.col-thum .list-thumb-composite,#suppTable tbody td.col-thum .list-thumb-composite{display:block!important;margin-left:auto;margin-right:auto}
   #charTable thead th.col-stat,#unitTable thead th.col-stat{text-transform:none;letter-spacing:0;line-height:1.2;text-align:center;vertical-align:middle;white-space:nowrap;overflow:visible}
