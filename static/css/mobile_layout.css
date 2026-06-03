@@ -275,21 +275,16 @@
     margin-right: 0;
   }
 
-  /* Must beat generic overflow:visible above — inner scroll + sticky thead (top: 0) */
-  .list-view-area .data-table-wrapper.browse-table-scroll {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    max-height: calc(100dvh - var(--list-thead-sticky-top, 112px) - 24px);
+  /* One page scroll — never clip the table in its own scroll box */
+  .list-view-area .data-table-wrapper {
+    overflow: visible !important;
+    max-height: none !important;
   }
 
-  .list-view-area .data-table-wrapper.browse-table-scroll > .data-table thead th {
+  .list-view-area .data-table-wrapper > .data-table thead th {
     position: sticky;
-    top: 0;
-    z-index: 35;
-    background: var(--bg-card);
-    box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.45);
-    background-clip: padding-box;
+    top: var(--list-thead-sticky-top);
+    z-index: 40;
   }
 
   html.cmp-mobile-pick #charTable .cmp-cb-cell,

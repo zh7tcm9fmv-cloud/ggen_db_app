@@ -1955,9 +1955,10 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   #suppTable .col-skill{width:14%!important;min-width:2rem!important;text-align:center}
   #panel-characters .list-view-area .data-table-wrapper,#panel-units .list-view-area .data-table-wrapper,#panel-supporters .list-view-area .data-table-wrapper,#panel-stages .list-view-area .data-table-wrapper,#panel-modifications .list-view-area .data-table-wrapper{max-width:100%}
   .list-view-area{overflow:visible}
-  /* Mobile/tablet table: scroll rows inside wrapper; header sticks to top of that box (not viewport — avoids float-in-middle bug) */
-  .data-table-wrapper.browse-table-scroll{overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;max-height:calc(100dvh - var(--list-thead-sticky-top, 112px) - 24px);border-radius:var(--radius-md)}
-  .data-table-wrapper.browse-table-scroll>.data-table thead th{position:sticky;top:0;z-index:35;background:var(--bg-card);box-shadow:0 3px 4px -1px rgba(0,0,0,.45);background-clip:padding-box}
+  /* Single page scroll — no nested table viewport (no double scrollbar) */
+  #panel-characters .list-view-area .data-table-wrapper,#panel-units .list-view-area .data-table-wrapper,#panel-supporters .list-view-area .data-table-wrapper,#panel-stages .list-view-area .data-table-wrapper,#panel-modifications .list-view-area .data-table-wrapper{overflow:visible!important;max-height:none!important}
+  #panel-characters .list-toolbar,#panel-units .list-toolbar,#panel-supporters .list-toolbar,#panel-stages .list-toolbar,#panel-modifications .list-toolbar,#panel-characters .list-view-area,#panel-units .list-view-area,#panel-supporters .list-view-area,#panel-stages .list-view-area,#panel-modifications .list-view-area{overflow:visible!important}
+  .list-view-area .data-table-wrapper>.data-table thead th{position:sticky;top:var(--list-thead-sticky-top);z-index:40}
   .data-table thead th{overflow:visible!important;text-overflow:clip;padding:8px 3px!important;font-size:11px!important;line-height:1.25!important;white-space:nowrap;text-transform:none!important;letter-spacing:0!important;vertical-align:middle}
   .data-table thead th .sort-arrow{font-size:9px;margin-left:1px}
   #suppTable thead th{white-space:normal;line-height:1.15;font-size:clamp(9px,2.4vw,12px)!important;padding:8px 3px!important;vertical-align:bottom}

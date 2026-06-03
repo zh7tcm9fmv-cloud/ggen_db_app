@@ -2344,7 +2344,7 @@ if(thead)thead.style.visibility='';
 });
 }
 
-// Browse table header: desktop = page scroll + viewport sticky; mobile/tablet = scroll inside wrapper + sticky top:0 (avoids Safari mid-table float).
+// Browse table header: one page scroll; thead sticky below site header (--list-thead-sticky-top).
 function getAppHeaderBottomPx(){
 const el=document.querySelector('.app-header');
 if(!el)return 0;
@@ -2354,27 +2354,20 @@ function syncListTheadStickyTop(){
 document.documentElement.style.setProperty('--list-thead-sticky-top',getAppHeaderBottomPx()+'px')
 }
 const _BROWSE_TABLE_WRAP_IDS=['charTableWrap','unitTableWrap','suppTableWrap','stageTableWrap','modTableWrap'];
-function syncBrowseTableScrollMode(){
+function cleanupBrowseTableLayout(){
 removeLegacyBrowseTableStickyBars();
-const mobile=browseListUsesMobileTableChrome();
-const vv=window.visualViewport;
-const inset=vv?Math.max(0,window.innerHeight-vv.height-vv.offsetTop):0;
 _BROWSE_TABLE_WRAP_IDS.forEach(id=>{
 const wrap=document.getElementById(id);
 if(!wrap)return;
-const on=mobile&&!wrap.hidden;
-wrap.classList.toggle('browse-table-scroll',on);
-if(on){
-const top=wrap.getBoundingClientRect().top;
-const h=Math.max(160,Math.floor(window.innerHeight-top-inset-12));
-wrap.style.maxHeight=h+'px';
-}else wrap.style.maxHeight='';
-})
+wrap.classList.remove('browse-table-scroll');
+wrap.style.maxHeight='';
+wrap.style.overflow='';
+});
 }
 let _listTheadStickyRaf=0;
 function scheduleSyncListTheadStickyTop(){
 if(_listTheadStickyRaf)return;
-_listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop();syncBrowseTableScrollMode()})
+_listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop();cleanupBrowseTableLayout()})
 }
 
 // iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & overlay using visual viewport.
@@ -2390,7 +2383,7 @@ function initCmpSafeArea(){
 removeLegacyBrowseTableStickyBars();
 updateCmpBrowserInset();
 syncListTheadStickyTop();
-syncBrowseTableScrollMode();
+cleanupBrowseTableLayout();
 const onVV=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
 const onResize=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
 const onScroll=()=>scheduleSyncListTheadStickyTop();
