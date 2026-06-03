@@ -409,9 +409,25 @@
     max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - var(--cmp-browser-inset-bottom, 0px) - 32px);
   }
 
+  .scroll-top-fab,
   .banner-timeline-scroll-top-fab {
     right: max(var(--mobile-page-gutter), var(--safe-right));
     bottom: calc(var(--mobile-page-gutter) + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  body:has(.search-recall-fab.visible) .scroll-top-fab,
+  body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
+    bottom: calc(88px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  body:has(.cmp-float.visible) .scroll-top-fab,
+  body:has(.cmp-float.visible) .banner-timeline-scroll-top-fab {
+    bottom: calc(64px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  body:has(.search-recall-fab.visible):has(.cmp-float.visible) .scroll-top-fab,
+  body:has(.search-recall-fab.visible):has(.cmp-float.visible) .banner-timeline-scroll-top-fab {
+    bottom: calc(132px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
   }
 
   .cmp-float {
