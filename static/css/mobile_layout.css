@@ -226,7 +226,7 @@
   }
 
   .list-grid {
-    grid-template-columns: repeat(var(--mobile-grid-columns), minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 152px), 1fr));
     gap: var(--mobile-grid-gutter);
     align-items: stretch;
   }
@@ -237,10 +237,18 @@
     min-width: 0;
   }
 
+  .list-grid-card-thumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    width: 100%;
+  }
+
   .list-grid-card-thumb .list-thumb-composite {
-    width: min(var(--mobile-grid-col), 72px) !important;
-    height: min(var(--mobile-grid-col), 72px) !important;
-    max-width: 100%;
+    width: 64px !important;
+    height: 64px !important;
+    flex-shrink: 0;
   }
 
   .list-toolbar,
@@ -250,64 +258,79 @@
     overflow: visible;
   }
 
-  .list-view-area,
-  .list-view-area .data-table-wrapper {
+  .list-view-area {
     max-width: 100%;
     min-width: 0;
     overflow: visible;
     box-sizing: border-box;
   }
 
-  /* CSS position:sticky on thead breaks on mobile (scroll-container ancestors); JS fixed clone handles freeze */
-  .list-view-area .data-table thead th {
-    position: static;
-    top: auto;
-    box-shadow: none;
-  }
-
-  .data-table.is-browse-head-pinned thead {
-    visibility: hidden;
-  }
-
-  .browse-table-sticky-bar {
-    position: fixed;
-    z-index: 90;
-    box-sizing: border-box;
-    pointer-events: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .browse-table-sticky-bar-inner {
-    overflow: hidden;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-top: none;
-    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-    box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.45);
-  }
-
-  .browse-table-sticky-clone {
-    width: 100%;
-    margin: 0;
-    table-layout: fixed;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .browse-table-sticky-clone thead th {
-    position: static;
-    pointer-events: auto;
-    cursor: pointer;
-    background: var(--bg-card);
-    box-shadow: none;
-    overflow: hidden;
-  }
-
   .list-view-area .data-table-wrapper {
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+    box-sizing: border-box;
     border-radius: var(--radius-md);
     margin-left: 0;
     margin-right: 0;
+  }
+
+  /* Must beat generic overflow:visible above — inner scroll + sticky thead (top: 0) */
+  .list-view-area .data-table-wrapper.browse-table-scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    max-height: calc(100dvh - var(--list-thead-sticky-top, 112px) - 24px);
+  }
+
+  .list-view-area .data-table-wrapper.browse-table-scroll > .data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 35;
+    background: var(--bg-card);
+    box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.45);
+    background-clip: padding-box;
+  }
+
+  html.cmp-mobile-pick #charTable .cmp-cb-cell,
+  html.cmp-mobile-pick #unitTable .cmp-cb-cell {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    overflow: visible !important;
+    vertical-align: middle !important;
+  }
+
+  html.cmp-mobile-pick #charTable .cmp-cb-cell .cmp-cb-inner,
+  html.cmp-mobile-pick #unitTable .cmp-cb-cell .cmp-cb-inner {
+    width: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    justify-content: center !important;
+  }
+
+  #charTable tbody td.col-thum,
+  #unitTable tbody td.col-thum,
+  #suppTable tbody td.col-thum {
+    overflow: visible !important;
+  }
+
+  #charTable tbody td.col-thum .list-thumb-composite,
+  #unitTable tbody td.col-thum .list-thumb-composite,
+  #suppTable tbody td.col-thum .list-thumb-composite {
+    width: 48px !important;
+    height: 48px !important;
+    flex-shrink: 0;
+    display: block !important;
+  }
+
+  #charTable tbody td.col-thum .list-thumb-icons,
+  #unitTable tbody td.col-thum .list-thumb-icons {
+    overflow: visible;
   }
 
   .data-table thead th,
@@ -478,8 +501,8 @@
   }
 
   .list-grid-card-thumb .list-thumb-composite {
-    width: min(var(--mobile-grid-col), 64px) !important;
-    height: min(var(--mobile-grid-col), 64px) !important;
+    width: 56px !important;
+    height: 56px !important;
   }
 }
 

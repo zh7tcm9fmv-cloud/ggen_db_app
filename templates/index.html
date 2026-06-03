@@ -1242,8 +1242,11 @@ min-width:0;
 justify-content:center !important;
 }
 }
-.cmp-cb-cell{width:32px;min-width:32px;max-width:32px;vertical-align:middle !important;padding:4px !important;cursor:pointer}
-.cmp-cb-cell .cmp-cb-inner{display:flex;align-items:center;justify-content:center;width:100%;min-height:21px}
+.cmp-cb-cell{width:32px;min-width:32px;max-width:32px;vertical-align:middle !important;padding:4px !important;cursor:pointer;box-sizing:border-box;text-align:center;overflow:visible}
+.cmp-cb-cell .cmp-cb-inner{display:flex;align-items:center;justify-content:center;width:100%;min-width:24px;min-height:21px;box-sizing:border-box;margin:0 auto}
+/* Legacy fixed-header clone (old mobile bundle) — hide and restore real thead */
+.browse-table-sticky-bar{display:none!important;visibility:hidden!important;pointer-events:none!important}
+.data-table.is-browse-head-pinned thead{visibility:visible!important}
 .cmp-cb,.cmp-cb-grid{cursor:pointer;flex-shrink:0;width:21px;height:21px;border:none;padding:0;margin:0;background:transparent center/contain no-repeat;background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Carousel_Nega.webp{% else %}/static/images/UI/UI_Common_Carousel_Nega.webp{% endif %}');appearance:none;-webkit-appearance:none;accent-color:transparent}
 .cmp-cb:checked,.cmp-cb-grid:checked{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Carousel_Posi.webp{% else %}/static/images/UI/UI_Common_Carousel_Posi.webp{% endif %}')}
 .cmp-cb:disabled,.cmp-cb-grid:disabled{opacity:.45;cursor:not-allowed}
@@ -1940,7 +1943,9 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   .th-mob{display:inline}
   #panel-characters .list-toolbar,#panel-units .list-toolbar,#panel-supporters .list-toolbar{overflow:visible}
   #charTable,#unitTable,#suppTable{table-layout:fixed!important;width:100%!important;min-width:0!important}
-  #charTable .cmp-cb-cell,#unitTable .cmp-cb-cell{width:28px!important;min-width:28px!important;max-width:28px!important;padding:4px 2px!important}
+  #charTable .cmp-cb-cell,#unitTable .cmp-cb-cell{width:28px!important;min-width:28px!important;max-width:28px!important;padding:4px 2px!important;box-sizing:border-box!important;text-align:center!important;overflow:visible!important}
+  html.cmp-mobile-pick #charTable .cmp-cb-cell .cmp-cb-inner,html.cmp-mobile-pick #unitTable .cmp-cb-cell .cmp-cb-inner{width:24px!important;min-width:24px!important;max-width:24px!important;margin-left:auto!important;margin-right:auto!important}
+  html.cmp-mobile-pick #charTable thead .cmp-cb-cell .cmp-cb-inner,html.cmp-mobile-pick #unitTable thead .cmp-cb-cell .cmp-cb-inner{font-size:14px;line-height:1;white-space:nowrap}
   #charTable .col-thum,#unitTable .col-thum,#suppTable .col-thum{width:48px!important;min-width:48px!important;max-width:48px!important;box-sizing:border-box!important}
   #charTable .col-name,#unitTable .col-name{width:24%!important;min-width:3.25rem!important}
   #charTable .col-stat,#unitTable .col-stat{width:10.5%!important;min-width:1.85rem!important;padding-left:2px!important;padding-right:2px!important;box-sizing:border-box!important;text-align:center}
@@ -1948,9 +1953,11 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
   #suppTable .col-tag{width:24%!important;min-width:0!important}
   #suppTable .col-boost{width:32%!important;min-width:0!important}
   #suppTable .col-skill{width:14%!important;min-width:2rem!important;text-align:center}
-  /* Same scrollport as desktop: wrapper must stay overflow:visible or sticky thead pins inside the box (header in middle of screen) */
-  #panel-characters .list-view-area .data-table-wrapper,#panel-units .list-view-area .data-table-wrapper,#panel-supporters .list-view-area .data-table-wrapper,#panel-stages .list-view-area .data-table-wrapper,#panel-modifications .list-view-area .data-table-wrapper{overflow:visible;max-width:100%}
+  #panel-characters .list-view-area .data-table-wrapper,#panel-units .list-view-area .data-table-wrapper,#panel-supporters .list-view-area .data-table-wrapper,#panel-stages .list-view-area .data-table-wrapper,#panel-modifications .list-view-area .data-table-wrapper{max-width:100%}
   .list-view-area{overflow:visible}
+  /* Mobile/tablet table: scroll rows inside wrapper; header sticks to top of that box (not viewport — avoids float-in-middle bug) */
+  .data-table-wrapper.browse-table-scroll{overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;max-height:calc(100dvh - var(--list-thead-sticky-top, 112px) - 24px);border-radius:var(--radius-md)}
+  .data-table-wrapper.browse-table-scroll>.data-table thead th{position:sticky;top:0;z-index:35;background:var(--bg-card);box-shadow:0 3px 4px -1px rgba(0,0,0,.45);background-clip:padding-box}
   .data-table thead th{overflow:visible!important;text-overflow:clip;padding:8px 3px!important;font-size:11px!important;line-height:1.25!important;white-space:nowrap;text-transform:none!important;letter-spacing:0!important;vertical-align:middle}
   .data-table thead th .sort-arrow{font-size:9px;margin-left:1px}
   #suppTable thead th{white-space:normal;line-height:1.15;font-size:clamp(9px,2.4vw,12px)!important;padding:8px 3px!important;vertical-align:bottom}
@@ -2626,7 +2633,7 @@ html:not(.cmp-mobile-pick) #cmpFloat{transform:translateY(100%)!important;visibi
 .tb-slot-rec-pilot:focus{outline:2px solid var(--accent-cyan);outline-offset:1px}
 .tb-slot-op-mini{font-size:9px;color:var(--text-muted);position:absolute;left:4px;top:30px;z-index:8;max-width:90%;line-height:1.2;text-shadow:0 1px 2px #000}
 </style>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/site_feedback.css') }}">
 </head>
 <body>
