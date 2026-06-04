@@ -1861,12 +1861,14 @@ const header=wrap.closest('.detail-header');
 if(!header)return;
 header.querySelectorAll('.detail-rank-toggle-btn').forEach(btn=>{if(!btn.closest('.detail-rank-toggle-slot'))btn.remove()});
 header.querySelectorAll('.detail-rank-toggle-slot').forEach(el=>el.remove());
-header.classList.remove('detail-header--has-rank-toggle');
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context))return;
 const btnHtml=renderDetailRankingToggle(d,type);
 if(!btnHtml)return;
-header.insertAdjacentHTML('beforeend',`<div class="detail-rank-toggle-slot">${btnHtml}</div>`);
-header.classList.add('detail-header--has-rank-toggle');
+const stack=header.querySelector('.detail-portrait-stack');
+const portraitWrap=stack&&stack.querySelector('.detail-portrait-wrap');
+const slotHtml=`<div class="detail-rank-toggle-slot">${btnHtml}</div>`;
+if(stack&&portraitWrap)portraitWrap.insertAdjacentHTML('afterend',slotHtml);
+else header.insertAdjacentHTML('beforeend',slotHtml);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
