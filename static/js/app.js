@@ -1868,9 +1868,9 @@ function renderScoreAttackMetaSection(d){
   if(!m&&!panelOnly)return'';
   const L=_stageMapEventLabel;
   if(!m&&panelOnly){
-    return`<div class="detail-section"><div class="section-title">${esc(L('sec_grand_offensive_panel','Grand Offensive')}</div>${renderGrandOffensivePanelBadges(panelOnly)}</div>`;
+    return`<div class="detail-section"><div class="section-title">${esc(L('sec_grand_offensive_panel','Grand Offensive'))}</div>${renderGrandOffensivePanelBadges(panelOnly)}</div>`;
   }
-  let html=`<div class="detail-section"><div class="section-title">${esc(L('sec_score_attack_meta','Score Attack')}</div>`;
+  let html=`<div class="detail-section"><div class="section-title">${esc(L('sec_score_attack_meta','Score Attack'))}</div>`;
   if(m.map_event_id&&String(m.map_event_id)!=='0'){
     const mev=m.map_event||{};
     const bits=[`${L('sa_map_event_id','Event')} ${esc(m.map_event_id)}`];
