@@ -25,6 +25,7 @@
     overflow-x: clip;
     width: 100%;
     max-width: 100%;
+    background-color: var(--bg-primary);
   }
 
   body {
@@ -34,6 +35,7 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    background-color: var(--bg-primary);
     /* Correct per-side safe areas (legacy rules used max(left,right) on both sides). */
     padding-left: var(--safe-left);
     padding-right: var(--safe-right);

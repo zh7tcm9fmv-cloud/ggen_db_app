@@ -2518,12 +2518,34 @@ _listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListThe
 }
 
 // iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & overlay using visual viewport.
+function syncVisualViewportBackdrop(){
+const pat=document.querySelector('.bg-pattern');
+const vv=window.visualViewport;
+const mobile=window.matchMedia('(max-width:768px)').matches;
+if(!pat)return;
+if(vv&&mobile){
+pat.style.top=`${vv.offsetTop}px`;
+pat.style.left=`${vv.offsetLeft}px`;
+pat.style.width=`${vv.width}px`;
+pat.style.height=`${vv.height}px`;
+pat.style.right='auto';
+pat.style.bottom='auto';
+}else{
+pat.style.removeProperty('top');
+pat.style.removeProperty('left');
+pat.style.removeProperty('width');
+pat.style.removeProperty('height');
+pat.style.removeProperty('right');
+pat.style.removeProperty('bottom');
+}
+}
 function updateCmpBrowserInset(){
 const vv=window.visualViewport;
 let inset=0;
 if(vv){
 inset=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
 }
+syncVisualViewportBackdrop();
 document.documentElement.style.setProperty('--cmp-browser-inset-bottom',inset+'px')
 }
 function initCmpSafeArea(){
@@ -2540,7 +2562,8 @@ window.visualViewport.addEventListener('scroll',onVV)
 }
 window.addEventListener('resize',onResize);
 window.addEventListener('orientationchange',onResize);
-window.addEventListener('scroll',onScroll,{passive:true})
+window.addEventListener('scroll',onScroll,{passive:true});
+window.addEventListener('pageshow',()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop()})
 }
 
 // Keep stage map "full picture" without manual zooming.
