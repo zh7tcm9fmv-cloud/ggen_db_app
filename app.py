@@ -16357,7 +16357,6 @@ def get_stage(stage_id):
             sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
         md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
-        map_objectives = []
         map_meta = None
         # NPC dossier/unit % merge: single code path for every stage category below — no stage-id branches here.
         mse = map_stage_lookup.get(stage_master_id)
@@ -16534,7 +16533,6 @@ def get_stage(stage_id):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
             md['reach_target_areas'] = rtp
             md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
-            map_objectives = resolve_map_stage_objectives(msid, lc)
             map_meta = {'map_id': mid, 'map_stage_id': msid}
         stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
         stage_rewards = resolve_stage_rewards(
@@ -16550,7 +16548,7 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
-        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'map_objectives': map_objectives, 'map_meta': map_meta, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': stage_cat, 'stage_master_id': stage_master_id, 'stage_rewards': stage_rewards, 'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side}
+        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': stage_cat, 'stage_master_id': stage_master_id, 'stage_rewards': stage_rewards, 'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side}
         if is_score_attack and sas:
             result['score_attack_meta'] = build_score_attack_stage_meta(stage_id, sas)
         gop = (map_event_panel_stage_by_stage or {}).get(normalize_id(stage_id))
