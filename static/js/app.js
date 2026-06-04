@@ -2112,6 +2112,19 @@ mnX=Math.min(mnX,bx);mxX=Math.max(mxX,bx+ww-1);mnY=Math.min(mnY,by);mxY=Math.max
 }
 return(mnX===999)?null:{mnX,mxX,mnY,mxY}
 }
+function _stageMapExtentsFromBuffAreas(md){
+  const ba=md&&md.buff_areas?md.buff_areas:null;
+  if(!ba)return null;
+  let mnX=999,mxX=-1,mnY=999,mxY=-1;
+  Object.keys(ba).forEach(k=>{
+    const p=k.split('_');
+    if(p.length<2)return;
+    const x=Number(p[0]),y=Number(p[1]);
+    if(!Number.isFinite(x)||!Number.isFinite(y))return;
+    mnX=Math.min(mnX,x);mxX=Math.max(mxX,x);mnY=Math.min(mnY,y);mxY=Math.max(mxY,y);
+  });
+  return(mnX===999)?null:{mnX,mxX,mnY,mxY};
+}
 function _stageMapMergeExtents(a,b){if(!a)return b;if(!b)return a;return{mnX:Math.min(a.mnX,b.mnX),mxX:Math.max(a.mxX,b.mxX),mnY:Math.min(a.mnY,b.mnY),mxY:Math.max(a.mxY,b.mxY)}}
 function _stageMapCellShowsUnitOrReach(md,occ,x,y){
   return!!(occ&&occ[`${x}_${y}`])||_stageMapHitReachTargetCell(md,x,y)
@@ -2145,7 +2158,8 @@ function _stageMapViewWindowClassic(md){
   let ext=null;
   if(mnX!==999)ext={mnX,mxX,mnY,mxY};
   const rt=_stageMapExtentsFromReachTargets(md);
-  const merged=_stageMapMergeExtents(ext,rt);
+  const bf=_stageMapExtentsFromBuffAreas(md);
+  const merged=_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf);
   if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
   const pad=2;
   return {
@@ -2171,7 +2185,8 @@ function _stageMapViewWindow905(md){
   let ext=null;
   if(mnX!==999)ext={mnX,mxX,mnY,mxY};
   const rt=_stageMapExtentsFromReachTargets(md);
-  const merged=_stageMapMergeExtents(ext,rt);
+  const bf=_stageMapExtentsFromBuffAreas(md);
+  const merged=_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf);
   const pad=1;
   let raw;
   if(merged)raw={
@@ -2243,6 +2258,11 @@ if(cx<mnx)mnx=cx;if(cx>mxx)mxx=cx;if(cy<mny)mny=cy;if(cy>mxy)mxy=cy;
 if(mnx===Infinity)return null;
 return{mnx,mxx,mny,mxy,fpw:mxx-mnx+1,fph:mxy-mny+1}
 }
+function _stageMapBuffAreaAt(md,x,y){
+  const ba=md&&md.buff_areas?md.buff_areas:null;
+  if(!ba)return null;
+  return ba[`${x}_${y}`]||null;
+}
 function renderStageMapGrid(md){
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
@@ -2258,10 +2278,16 @@ function renderStageMapGrid(md){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       const ck=`${x}_${y}`;
+      const buffArea=_stageMapBuffAreaAt(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
-      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_large?'large-fill':''}`:'';
+      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
+      if(buffArea){
+        if(buffArea.tint==='purple')cls+=' map-cell--buff-purple';
+        else if(buffArea.tint==='red')cls+=' map-cell--buff-red';
+        else cls+=' map-cell--buff-blue';
+      }
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
@@ -2277,10 +2303,11 @@ function renderStageMapGrid(md){
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
-        const sl=u.side==='enemy'?t('enemy'):t('ally');
+        const sl=u.side==='enemy'?t('enemy'):u.side==='gimmick'?esc(u.name||'Gimmick'):t('ally');
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
         const guestCls=u.is_guest_ally?'ally-guest':'';
         const friendlyCls=u.is_friendly_force?'friendly-force':'';
+        const gimmickCls=u.is_gimmick?'gimmick':'';
         const dir=String(u.direction||'0');
         const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
         const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
@@ -2295,7 +2322,11 @@ function renderStageMapGrid(md){
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
         const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+      }
+      if(buffArea&&buffArea.icon&&!(o&&o.origin)){
+        const bIcon=imgUrlWebp(imgUrlPreferCdn(buffArea.icon));
+        html+=`<img class="map-cell-buff-area-icon" src="${bIcon}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
       }
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`

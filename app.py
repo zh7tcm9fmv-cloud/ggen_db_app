@@ -4943,6 +4943,42 @@ def create_map_npc_buff_lookup(d):
         }
     return lk
 
+
+def create_map_gimmick_npc_unit_lookup(d):
+    """MapGimmickNpcId -> unit row (UnitId, MapNpcBuffId)."""
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        gid = normalize_id(item.get('MapGimmickNpcId') or item.get('mapGimmickNpcId'))
+        if gid == '0':
+            continue
+        lk[gid] = {
+            'unit_id': normalize_id(item.get('UnitId') or item.get('unitId')),
+            'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
+        }
+    return lk
+
+
+def create_map_gimmick_npc_by_map_stage(d):
+    """MapStageId -> list of gimmick NPC placements."""
+    bms = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        gid = normalize_id(item.get('Id') or item.get('id') or item.get('MapGimmickNpcId'))
+        msid = normalize_id(item.get('MapStageId') or item.get('mapStageId'))
+        if gid == '0' or msid == '0':
+            continue
+        bms.setdefault(msid, []).append({
+            'id': gid,
+            'map_stage_id': msid,
+            'x': safe_int(item.get('X'), 0),
+            'y': safe_int(item.get('Y'), 0),
+            'direction': normalize_id(item.get('InitDirectionTypeIndex') or item.get('initDirectionTypeIndex'), '1'),
+        })
+    return bms
+
 def create_map_npc_character_lookup(d):
     lk = {}
     for item in extract_data_list(d):
@@ -6302,6 +6338,8 @@ map_stage_data = load_json(os.path.join(BASE_DIR, "m_map_stage.json"))
 map_master_data = load_json(os.path.join(BASE_DIR, "m_map.json"))
 map_npc_data = load_json(os.path.join(BASE_DIR, "m_map_npc.json"))
 map_npc_buff_data = load_json(os.path.join(BASE_DIR, "m_map_npc_buff.json"))
+map_gimmick_npc_data = load_json(os.path.join(BASE_DIR, "m_map_gimmick_npc.json"))
+map_gimmick_npc_unit_data = load_json(os.path.join(BASE_DIR, "m_map_gimmick_npc_unit.json"))
 map_area_data = load_json(os.path.join(BASE_DIR, "m_map_area.json"))
 map_npc_unit_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit.json"))
 map_npc_character_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character.json"))
@@ -6404,6 +6442,8 @@ map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
 map_stage_reach_pin_areas_by_map_stage = create_map_stage_reach_pin_areas_map(map_area_data) if map_area_data else {}
 map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
+map_gimmick_npc_unit_lookup = create_map_gimmick_npc_unit_lookup(map_gimmick_npc_unit_data) if map_gimmick_npc_unit_data else {}
+map_gimmick_npc_by_map_stage = create_map_gimmick_npc_by_map_stage(map_gimmick_npc_data) if map_gimmick_npc_data else {}
 map_npc_strategy_hint_by_npc, _ = create_map_npc_strategy_hint_maps(
     load_json(os.path.join(BASE_DIR, "m_map_npc_strategy_hint.json")),
 )
@@ -8748,7 +8788,174 @@ def resolve_stage_conditions(sid, lc):
         elif ct == '3': defeat.append(txt)
     return victory, defeat
 
-def build_map_grid(w, h, u): return {'width': w, 'height': h, 'units': u}
+def build_map_grid(w, h, u, buff_areas=None):
+    md = {'width': w, 'height': h, 'units': u}
+    if buff_areas:
+        md['buff_areas'] = buff_areas
+    return md
+
+
+MAP_BUFF_AREA_TRAIT_ICON = {
+    ('buff', 'atk'): 'trait_10030100',
+    ('debuff', 'atk'): 'trait_10030200',
+    ('buff', 'def'): 'trait_10050100',
+    ('debuff', 'def'): 'trait_10050200',
+    ('buff', 'hp'): 'trait_10010400',
+    ('debuff', 'hp'): 'trait_10030200',
+}
+
+
+def _map_buff_trait_detail_lines(buff_id, lc):
+    bid = normalize_id(buff_id)
+    row = map_npc_buff_lookup.get(bid)
+    if not row:
+        return []
+    ld = get_lang_data(lc)
+    ltm = ld.get('lang_text_map', {}) or {}
+    trait_set_id = normalize_id(row.get('trait_set_id'))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    trait_ids = trait_set_traits_map.get(trait_set_id, trait_set_traits_map.get(lookup_id, []))
+    details = []
+    for tid in trait_ids:
+        t_data = trait_data_map.get(tid, {})
+        dlid = normalize_id(t_data.get('desc_lang_id'))
+        if dlid and dlid != '0':
+            tx = str(ltm.get(dlid, '') or '').strip()
+            if tx and tx not in details:
+                details.append(tx)
+    return details
+
+
+def _map_buff_area_is_debuff(detail_line, buff_type_index=0):
+    s = str(detail_line or '').strip()
+    if not s:
+        return False
+    low = s.lower()
+    if re.search(r'\b(decrease|decreased|reduce|reduced|lower)\b', low):
+        return True
+    if any(k in s for k in ('降低', '減少', '下降', '减少', '減少')):
+        return True
+    bti = safe_int(buff_type_index, 0)
+    if bti in (5, 6) and not re.search(r'\b(increase|increased)\b', low):
+        return True
+    return False
+
+
+def _map_buff_area_stat_kind(detail_line, buff_type_index=0):
+    s = str(detail_line or '').strip()
+    low = s.lower()
+    if re.search(r'(?<![a-z])hp(?![a-z])|\bhp\b|max hp', low) or any(k in s for k in ('體力', '体力', 'HP')):
+        return 'hp'
+    if re.search(r'(?<![a-z])def(?![a-z])|\bdefen[cs]e\b', low) or any(k in s for k in ('防禦', '防御')):
+        return 'def'
+    if re.search(r'(?<![a-z])atk(?![a-z])|\battack\b|critical', low) or any(k in s for k in ('攻擊', '攻撃', '爆擊', '暴击')):
+        return 'atk'
+    bti = safe_int(buff_type_index, 0)
+    if bti in (5, 6):
+        return 'atk'
+    if bti == 4:
+        return 'def'
+    if bti in (1, 2):
+        return 'hp'
+    return 'atk'
+
+
+def _map_buff_area_trait_icon_url(buff_id, lc):
+    bid = normalize_id(buff_id)
+    row = map_npc_buff_lookup.get(bid)
+    if not row:
+        return ''
+    details = _map_buff_trait_detail_lines(bid, lc)
+    first = _normalize_modifier_detail_line(details[0]) if details else ''
+    bti = safe_int(row.get('buff_type_index'), 0)
+    is_debuff = _map_buff_area_is_debuff(first, bti)
+    stat_k = _map_buff_area_stat_kind(first, bti)
+    polarity = 'debuff' if is_debuff else 'buff'
+    fname = MAP_BUFF_AREA_TRAIT_ICON.get((polarity, stat_k)) or MAP_BUFF_AREA_TRAIT_ICON.get((polarity, 'atk'), 'trait_10030100')
+    hit = find_trait_icon(fname)
+    if hit:
+        return f'/static/images/Trait/{hit}'
+    return f'/static/images/Trait/{fname}.webp'
+
+
+def _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
+    """Chebyshev range from 0-based map coordinates; returns 1-based cell keys for the stage map UI."""
+    rmin = max(0, safe_int(rng_min, 0))
+    rmax = max(rmin, safe_int(rng_max, 0))
+    if rmax <= 0:
+        return []
+    out = []
+    for y in range(max(0, height)):
+        for x in range(max(0, width)):
+            dist = max(abs(x - cx), abs(y - cy))
+            if rmin <= dist <= rmax:
+                out.append((x + 1, y + 1))
+    return out
+
+
+def build_map_buff_area_cells(buff_sources, width, height, lc):
+    """Merge map buff/debuff auras into per-cell tint + icon for the stage map."""
+    layers = {}
+    for src in buff_sources or []:
+        bid = normalize_id(src.get('buff_id', '0'))
+        if bid == '0':
+            continue
+        row = map_npc_buff_lookup.get(bid)
+        if not row:
+            continue
+        details = _map_buff_trait_detail_lines(bid, lc)
+        first = _normalize_modifier_detail_line(details[0]) if details else ''
+        bti = safe_int(row.get('buff_type_index'), 0)
+        is_debuff = _map_buff_area_is_debuff(first, bti)
+        icon = _map_buff_area_trait_icon_url(bid, lc)
+        cx = safe_int(src.get('x'), 0)
+        cy = safe_int(src.get('y'), 0)
+        for x1, y1 in _map_buff_range_cells_1based(
+            cx, cy, row.get('range_min'), row.get('range_max'), width, height,
+        ):
+            key = f'{x1}_{y1}'
+            cell = layers.setdefault(key, {'buff': False, 'debuff': False, 'icon_buff': '', 'icon_debuff': ''})
+            if is_debuff:
+                cell['debuff'] = True
+                if icon:
+                    cell['icon_debuff'] = icon
+            else:
+                cell['buff'] = True
+                if icon:
+                    cell['icon_buff'] = icon
+    out = {}
+    for key, cell in layers.items():
+        has_b = cell['buff']
+        has_d = cell['debuff']
+        if has_b and has_d:
+            tint = 'purple'
+            icon = cell['icon_debuff'] or cell['icon_buff']
+        elif has_d:
+            tint = 'red'
+            icon = cell['icon_debuff']
+        elif has_b:
+            tint = 'blue'
+            icon = cell['icon_buff']
+        else:
+            continue
+        if icon:
+            out[key] = {'tint': tint, 'icon': icon}
+    return out
+
+
+def get_gimmick_map_unit_display(unit_id, lc):
+    uid = normalize_id(unit_id)
+    if uid == '0':
+        return {'name': 'Gimmick', 'portrait': ''}
+    uinfo = unit_info_map.get(uid, {})
+    ulid = get_lang_data(lc).get('unit_id_map', {}).get(uid, '')
+    uname = get_lang_data(lc).get('unit_text_map', {}).get(ulid, '') if ulid else ''
+    if not uname:
+        uname = f'Unit {uid}'
+    portrait = find_portrait(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or find_list_thumb(
+        uinfo.get('resource_ids', []), uid, 'images/unit_portraits',
+    ) or ''
+    return {'name': uname, 'portrait': portrait}
 
 def get_ally_formation_offsets(dt):
     d = str(dt or '1')
@@ -15851,6 +16058,35 @@ def get_stage(stage_id):
                 uom.append(me); nd.append({'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'unit': up, 'character': cp})
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.webp', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
+            buff_sources = []
+            for npc in nt:
+                bid = normalize_id(npc.get('map_npc_buff_id', '0'))
+                if bid != '0':
+                    buff_sources.append({'x': npc.get('x', 0), 'y': npc.get('y', 0), 'buff_id': bid})
+            for gimmick in map_gimmick_npc_by_map_stage.get(normalize_id(msid), []):
+                gid = gimmick['id']
+                gu = map_gimmick_npc_unit_lookup.get(gid, {})
+                uid = gu.get('unit_id', '0')
+                bid = gu.get('map_npc_buff_id', '0')
+                if bid != '0':
+                    buff_sources.append({'x': gimmick['x'], 'y': gimmick['y'], 'buff_id': bid})
+                disp = get_gimmick_map_unit_display(uid, lc)
+                gimmick_me = {
+                    'npc_id': gid,
+                    'name': disp['name'],
+                    'portrait': disp['portrait'],
+                    'x': gimmick['x'],
+                    'y': gimmick['y'],
+                    'direction': gimmick.get('direction', '1'),
+                    'is_large': False,
+                    'side': 'gimmick',
+                    'is_gimmick': True,
+                    'is_initially_placed': True,
+                    'cells': [{'x': gimmick['x'], 'y': gimmick['y']}],
+                }
+                if uid != '0':
+                    gimmick_me['unit_id'] = uid
+                uom.append(gimmick_me)
             max_x = max_y = 0
             for u in uom:
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
@@ -15867,7 +16103,8 @@ def get_stage(stage_id):
                 pad = 2
                 w = max(w, max_x + 1 + pad)
                 h = max(h, max_y + 1 + pad)
-            md = build_map_grid(w, h, uom)
+            buff_areas = build_map_buff_area_cells(buff_sources, w, h, lc)
+            md = build_map_grid(w, h, uom, buff_areas=buff_areas)
             rtp = []
             if victory_lines_include_reach_target_area(vc):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
