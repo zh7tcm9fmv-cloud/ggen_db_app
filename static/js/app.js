@@ -1859,17 +1859,16 @@ const wrap=document.getElementById('detailStatsWrapper');
 if(!wrap)return;
 const header=wrap.closest('.detail-header');
 if(!header)return;
-const host=header.querySelector('.detail-portrait-wrap');
-if(!host)return;
-header.querySelectorAll('.detail-rank-toggle-btn').forEach(btn=>{if(btn.parentElement!==host)btn.remove()});
-const exists=host.querySelector('.detail-rank-toggle-btn');
-if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){
-if(exists)exists.remove();
-return
-}
-const html=renderDetailRankingToggle(d,type);
-if(exists){exists.outerHTML=html;return}
-host.insertAdjacentHTML('beforeend',html);
+const stack=header.querySelector('.detail-portrait-stack');
+const portraitWrap=stack&&stack.querySelector('.detail-portrait-wrap');
+header.querySelectorAll('.detail-rank-toggle-btn').forEach(btn=>{if(!btn.closest('.detail-rank-toggle-slot'))btn.remove()});
+header.querySelectorAll('.detail-rank-toggle-slot').forEach(el=>el.remove());
+if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context))return;
+const btnHtml=renderDetailRankingToggle(d,type);
+if(!btnHtml)return;
+const slotHtml=`<div class="detail-rank-toggle-slot">${btnHtml}</div>`;
+if(stack&&portraitWrap)portraitWrap.insertAdjacentHTML('afterend',slotHtml);
+else header.insertAdjacentHTML('afterbegin',slotHtml);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
@@ -2104,56 +2103,7 @@ function renderStageMapSection(d){
       </div>
     </div>
   </div>`:'';
-let gridBody='';
-if(S.stageMapExpanded&&md.width>0&&md.height>0){
-const win=_stageMapViewWindow(md);
-if(_stageMapUsePerfLite(md,win)){
-gridBody='<div class="stage-map-grid-loading"><div class="spinner"></div></div>';
-S._stageMapDeferGridPaint=true;
-}else gridBody=renderStageMapGrid(md);
-}
-return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${gridBody}</div></div>`
-}
-function paintStageMapGridNow(){
-const gridWrap=document.getElementById('stageMapGridWrap');
-const md=S.currentDetailData&&S.currentDetailData.map_data;
-if(!gridWrap||!md||!md.width||!md.height||!S.stageMapExpanded)return;
-gridWrap.innerHTML=renderStageMapGrid(md);
-if(S.stageMapAutoFit)fitStageMapToUnits(true);
-else applyStageMapZoomToDom(S.stageMapZoom||1);
-}
-function flushDeferredStageMapGridPaint(){
-if(!S._stageMapDeferGridPaint||!S.stageMapExpanded)return;
-S._stageMapDeferGridPaint=false;
-requestAnimationFrame(()=>{
-if(!S.stageMapExpanded||S.currentDetailType!=='stage')return;
-paintStageMapGridNow();
-});
-}
-function _stageMapViewportCellCount(win){if(!win)return 0;return Math.max(0,(win.maxX-win.minX+1)*(win.maxY-win.minY+1))}
-function _stageMapUsePerfLite(md,win){
-const cells=_stageMapViewportCellCount(win);
-const pool=md&&md.units?md.units:[];
-const vis=pool.filter(u=>_stageMapUnitVisible(u,pool)).length;
-return cells>=350||vis>=36
-}
-function applyStageMapZoomToDom(z){
-const grid=document.querySelector('#stageMapGridWrap .map-grid');
-if(!grid)return;
-const cellPx=Math.round(50*Math.max(.4,Math.min(1.4,Number(z||1))));
-grid.style.setProperty('--cell',cellPx+'px');
-}
-function syncStageMapViewportControls(){
-const host=document.getElementById('detailStageMapContainer');
-if(!host)return;
-const af=!!S.stageMapAutoFit;
-const zp=Math.round((S.stageMapZoom||1)*100);
-const cb=host.querySelector('.stage-map-viewport-af input');
-const rng=host.querySelector('.stage-map-viewport-zoom input[type=range]');
-const pct=host.querySelector('.stage-map-viewport-zoom-pct');
-if(cb)cb.checked=af;
-if(rng){rng.disabled=af;rng.value=String(zp)}
-if(pct)pct.textContent=zp+'%';
+return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
 }
 
 function _stageMapHitReachTargetCell(md,x,y){
@@ -2340,12 +2290,11 @@ function renderStageMapGrid(md){
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
-  const perfLite=_stageMapUsePerfLite(md,win);
   const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
   const cellPx=Math.round(50*z);
   const gapPx=_stageMapGridGapPx();
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
-  let html=`<div class="map-grid${perfLite?' map-grid--perf-lite':''}" style="--cell:${cellPx}px;grid-template-columns:repeat(${vw},var(--cell));">`;
+  let html=`<div class="map-grid" style="--cell:${cellPx}px;grid-template-columns:repeat(${vw},var(--cell));">`;
   for(let y=win.maxY;y>=win.minY;y--){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
@@ -2373,11 +2322,9 @@ function renderStageMapGrid(md){
       const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}${stackCellAttr}${reinfUnitAttr}`:'';
       const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
-      if(showBuffArea&&perfLite&&buffArea&&buffArea.name)cellTitle=`${buffArea.name} · ${cellTitle}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
-      const titleAttr=(!perfLite||o&&o.origin||showBuffArea)?` title="${esc(cellTitle)}"`:'';
-      html+=`<div class="map-cell ${cls}${clickCls}${originCls}"${titleAttr}${mapDataAttrs}>`;
+      html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='enemy'?t('enemy'):u.side==='gimmick'?esc(u.name||'Gimmick'):t('ally');
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
@@ -2397,11 +2344,11 @@ function renderStageMapGrid(md){
         const fpStyle=multiFp?` style="left:${2+dx}px;top:${2+dy}px;width:${fw}px;height:${fh}px;inset:auto;"`:'';
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
-        const hintPulse=u.has_strategy_hint?(perfLite?' npc-strategy-hint-mark':' npc-strategy-hint-pulse'):'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy" decoding="async"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
       }
-      if(showBuffArea&&!perfLite)html+=_stageMapBuffHoverPopoverHtml(buffArea);
-      if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon${perfLite?' map-stage-reach-flag-icon--static':''}" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
+      if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
+      if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`
     }
   }
@@ -2410,16 +2357,8 @@ function renderStageMapGrid(md){
 }
 function toggleStageMap(){
   S.stageMapExpanded=!S.stageMapExpanded;
-  if(!S.stageMapExpanded)S._stageMapDeferGridPaint=false;
   document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
-  if(S.stageMapExpanded){
-    if(S._stageMapDeferGridPaint)flushDeferredStageMapGridPaint();
-    else requestAnimationFrame(()=>{
-      if(!S.stageMapExpanded||S.currentDetailType!=='stage')return;
-      if(S.stageMapAutoFit)fitStageMapToUnits(true);
-      else applyStageMapZoomToDom(S.stageMapZoom||1);
-    });
-  }
+  if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100)
 }
 function setStageMapReinforcementOnly(on){
   S.stageMapReinforcementOnly=!!on;
@@ -2459,12 +2398,7 @@ function setStageMapZoom(z,fromSlider){
   S.stageMapZoom=Math.max(.4,Math.min(1.4,Number(z||1)));
   if(fromSlider)S.stageMapAutoFit=false;
   if(S.currentDetailType==='stage'){
-    if(S.stageMapExpanded&&document.querySelector('#stageMapGridWrap .map-grid')){
-      applyStageMapZoomToDom(S.stageMapZoom);
-      syncStageMapViewportControls();
-    }else{
-      document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
-    }
+    document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
   }
 }
 
@@ -2472,14 +2406,10 @@ function centerStageMapToUnits(){focusStageMap()}
 
 function setStageMapAutoFit(on){
   S.stageMapAutoFit=!!on;
-  if(S.currentDetailType!=='stage')return;
-  if(S.stageMapExpanded){
-    syncStageMapViewportControls();
-    if(S.stageMapAutoFit)fitStageMapToUnits(true);
-    else applyStageMapZoomToDom(S.stageMapZoom||1);
-    return;
+  if(S.currentDetailType==='stage'){
+    document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
+    if(S.stageMapExpanded&&S.stageMapAutoFit)setTimeout(()=>fitStageMapToUnits(true),60)
   }
-  document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
 }
 
 function fitStageMapToUnits(centerAfter){
@@ -2505,10 +2435,8 @@ function fitStageMapToUnits(centerAfter){
 
   // Slightly zoom out so edges aren't tight.
   S.stageMapZoom=Math.max(.4,Math.min(1.4,z*.98));
-  S.stageMapAutoFit=true;
-  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
-    applyStageMapZoomToDom(S.stageMapZoom);
-    syncStageMapViewportControls();
+  if(S.currentDetailType==='stage'){
+    document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
   }
   if(centerAfter)setTimeout(()=>{const cc=document.getElementById('stageMapGridWrap');if(cc){cc.scrollLeft=0;cc.scrollTop=0}},60)
 }
