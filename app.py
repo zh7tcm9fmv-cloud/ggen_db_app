@@ -8893,8 +8893,37 @@ def _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
     return out
 
 
+def _map_buff_area_effect_meta(buff_id, lc):
+    """Name, details, icon, and polarity for one MapNpcBuffId (stage map hover)."""
+    bid = normalize_id(buff_id)
+    row = map_npc_buff_lookup.get(bid)
+    if not row:
+        return None
+    trait_details = _map_buff_trait_detail_lines(bid, lc)
+    first = _normalize_modifier_detail_line(trait_details[0]) if trait_details else ''
+    bti = safe_int(row.get('buff_type_index'), 0)
+    is_debuff = _map_buff_area_is_debuff(first, bti)
+    icon = _map_buff_area_trait_icon_url(bid, lc)
+    mods = resolve_npc_modifiers(bid, lc)
+    if mods:
+        m0 = mods[0]
+        name = str(m0.get('name') or '').strip() or 'Modifier'
+        details = [str(x).strip() for x in (m0.get('details') or []) if str(x).strip()]
+        if m0.get('icon'):
+            icon = m0.get('icon')
+    else:
+        name = _npc_modifier_display_name(first, bti) if first else 'Modifier'
+        details = trait_details or []
+    return {
+        'is_debuff': is_debuff,
+        'icon': icon,
+        'name': name,
+        'details': details,
+    }
+
+
 def build_map_buff_area_cells(buff_sources, width, height, lc):
-    """Merge map buff/debuff auras into per-cell tint + icon for the stage map."""
+    """Merge map buff/debuff auras into per-cell tint + hover tooltip payload for the stage map."""
     layers = {}
     for src in buff_sources or []:
         bid = normalize_id(src.get('buff_id', '0'))
@@ -8903,43 +8932,63 @@ def build_map_buff_area_cells(buff_sources, width, height, lc):
         row = map_npc_buff_lookup.get(bid)
         if not row:
             continue
-        details = _map_buff_trait_detail_lines(bid, lc)
-        first = _normalize_modifier_detail_line(details[0]) if details else ''
-        bti = safe_int(row.get('buff_type_index'), 0)
-        is_debuff = _map_buff_area_is_debuff(first, bti)
-        icon = _map_buff_area_trait_icon_url(bid, lc)
+        meta = _map_buff_area_effect_meta(bid, lc)
+        if not meta:
+            continue
         cx = safe_int(src.get('x'), 0)
         cy = safe_int(src.get('y'), 0)
         for x1, y1 in _map_buff_range_cells_1based(
             cx, cy, row.get('range_min'), row.get('range_max'), width, height,
         ):
             key = f'{x1}_{y1}'
-            cell = layers.setdefault(key, {'buff': False, 'debuff': False, 'icon_buff': '', 'icon_debuff': ''})
-            if is_debuff:
+            cell = layers.setdefault(key, {'buff': False, 'debuff': False, 'effects': []})
+            if meta['is_debuff']:
                 cell['debuff'] = True
-                if icon:
-                    cell['icon_debuff'] = icon
             else:
                 cell['buff'] = True
-                if icon:
-                    cell['icon_buff'] = icon
+            cell['effects'].append(meta)
     out = {}
     for key, cell in layers.items():
         has_b = cell['buff']
         has_d = cell['debuff']
         if has_b and has_d:
             tint = 'purple'
-            icon = cell['icon_debuff'] or cell['icon_buff']
         elif has_d:
             tint = 'red'
-            icon = cell['icon_debuff']
         elif has_b:
             tint = 'blue'
-            icon = cell['icon_buff']
         else:
             continue
-        if icon:
-            out[key] = {'tint': tint, 'icon': icon}
+        effects = cell.get('effects') or []
+        names = []
+        details = []
+        icon = ''
+        for eff in effects:
+            nm = str(eff.get('name') or '').strip()
+            if nm and nm not in names:
+                names.append(nm)
+            for line in eff.get('details') or []:
+                ln = str(line).strip()
+                if ln and ln not in details:
+                    details.append(ln)
+            if not icon and eff.get('icon'):
+                icon = eff.get('icon')
+        if has_d:
+            for eff in effects:
+                if eff.get('is_debuff') and eff.get('icon'):
+                    icon = eff.get('icon')
+                    break
+        if not icon:
+            for eff in effects:
+                if eff.get('icon'):
+                    icon = eff.get('icon')
+                    break
+        out[key] = {
+            'tint': tint,
+            'icon': icon,
+            'name': ' · '.join(names) if names else 'Modifier',
+            'details': details,
+        }
     return out
 
 

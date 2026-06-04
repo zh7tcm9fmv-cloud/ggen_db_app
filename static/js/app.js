@@ -324,7 +324,7 @@ function suppTableHeaderLabel(i18nKey){const full=t(i18nKey);let mob='';if(S.lan
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab]||S._browsePrimed[tab])return;S._browsePrimed[tab]=1;if(tab==='characters')loadCharacters(1);else if(tab==='units')loadUnits(1);else if(tab==='supporters')loadSupporters(1);else if(tab==='stages')loadStages(1);else if(tab==='modifications')loadModifications(1)}
 const RANK_SORT_KEYS_CHAR=['Ranged','Melee','Awaken','Defense','Reaction'];
@@ -2071,15 +2071,23 @@ function renderStageMapSection(d){
   const hasReinf=stageMapHasReinforcementEnemies(md);
   if(!hasReinf&&S.stageMapReinforcementOnly)S.stageMapReinforcementOnly=false;
   const ro=!!S.stageMapReinforcementOnly;
+  const hasBuffAreas=!!(md.buff_areas&&Object.keys(md.buff_areas).length);
+  if(S.stageMapBuffAreasVisible===undefined)S.stageMapBuffAreasVisible=true;
+  const buffOn=S.stageMapBuffAreasVisible!==false;
   const reinfToggleLbl=t('stage_map_reinf_toggle');
-  const reinfRow=hasReinf?`<div class="stage-map-controls-row stage-map-controls-row--reinf">
-      <label class="stage-map-reinf-toggle">
+  const buffToggleLbl=t('stage_map_buff_toggle')!=='stage_map_buff_toggle'?t('stage_map_buff_toggle'):'Buff / Debuff';
+  const reinfToggleHtml=hasReinf?`<label class="stage-map-reinf-toggle stage-map-map-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="${escAttr(reinfToggleLbl)}" onchange="setStageMapReinforcementOnly(this.checked)">
         <span class="stage-map-reinf-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(reinfToggleLbl)}</span>
-      </label>
-    </div>`:'';
-  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${reinfRow}
+      </label>`:'';
+  const buffToggleHtml=hasBuffAreas?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-buff-toggle">
+        <input type="checkbox" class="stage-map-reinf-toggle-input" ${buffOn?'checked':''} role="switch" aria-checked="${buffOn?'true':'false'}" aria-label="${escAttr(buffToggleLbl)}" onchange="setStageMapBuffAreasVisible(this.checked)">
+        <span class="stage-map-reinf-slider stage-map-buff-slider" aria-hidden="true"></span>
+        <span class="stage-map-reinf-text">${esc(buffToggleLbl)}</span>
+      </label>`:'';
+  const togglesRow=(reinfToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${buffToggleHtml}</div>`:'';
+  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
         <div class="stage-map-viewport-quick">
@@ -2113,6 +2121,7 @@ mnX=Math.min(mnX,bx);mxX=Math.max(mxX,bx+ww-1);mnY=Math.min(mnY,by);mxY=Math.max
 return(mnX===999)?null:{mnX,mxX,mnY,mxY}
 }
 function _stageMapExtentsFromBuffAreas(md){
+  if(!_stageMapBuffAreasShown())return null;
   const ba=md&&md.buff_areas?md.buff_areas:null;
   if(!ba)return null;
   let mnX=999,mxX=-1,mnY=999,mxY=-1;
@@ -2263,6 +2272,18 @@ function _stageMapBuffAreaAt(md,x,y){
   if(!ba)return null;
   return ba[`${x}_${y}`]||null;
 }
+function _stageMapBuffAreasShown(){
+  return S.stageMapBuffAreasVisible!==false;
+}
+function _stageMapBuffHoverPopoverHtml(buffArea){
+  if(!buffArea)return '';
+  const details=(buffArea.details||[]).map(d=>{
+    const s=typeof d==='string'?d.trim():'';
+    return s?`<div class="map-cell-buff-hover-detail">${esc(s)}</div>`:'';
+  }).join('');
+  const icon=buffArea.icon?`<img class="map-cell-buff-hover-icon" src="${imgUrlWebp(imgUrlPreferCdn(buffArea.icon))}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:'';
+  return`<div class="map-cell-buff-hover" role="tooltip"><div class="map-cell-buff-hover-card">${icon}<div class="map-cell-buff-hover-body"><div class="map-cell-buff-hover-name">${esc(buffArea.name||'Modifier')}</div>${details}</div></div></div>`;
+}
 function renderStageMapGrid(md){
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
@@ -2283,7 +2304,9 @@ function renderStageMapGrid(md){
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
-      if(buffArea){
+      const showBuffArea=buffArea&&_stageMapBuffAreasShown();
+      if(showBuffArea){
+        cls+=' map-cell--buff-area';
         if(buffArea.tint==='purple')cls+=' map-cell--buff-purple';
         else if(buffArea.tint==='red')cls+=' map-cell--buff-red';
         else cls+=' map-cell--buff-blue';
@@ -2324,10 +2347,7 @@ function renderStageMapGrid(md){
         const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
         html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
       }
-      if(buffArea&&buffArea.icon&&!(o&&o.origin)){
-        const bIcon=imgUrlWebp(imgUrlPreferCdn(buffArea.icon));
-        html+=`<img class="map-cell-buff-area-icon" src="${bIcon}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
-      }
+      if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`
     }
@@ -2342,6 +2362,14 @@ function toggleStageMap(){
 }
 function setStageMapReinforcementOnly(on){
   S.stageMapReinforcementOnly=!!on;
+  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
+    const gridWrap=document.getElementById('stageMapGridWrap');
+    const md=S.currentDetailData&&S.currentDetailData.map_data;
+    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
+  }
+}
+function setStageMapBuffAreasVisible(on){
+  S.stageMapBuffAreasVisible=!!on;
   if(S.currentDetailType==='stage'&&S.stageMapExpanded){
     const gridWrap=document.getElementById('stageMapGridWrap');
     const md=S.currentDetailData&&S.currentDetailData.map_data;
