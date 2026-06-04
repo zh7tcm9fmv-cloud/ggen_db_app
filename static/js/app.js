@@ -1862,6 +1862,41 @@ function renderGrandOffensivePanelBadges(panel){
   if(tr||tv)pb.push(`${L('sa_panel_target','Target')}: ${esc(tr||tv)}${tr&&tv&&tr!==tv?` (${esc(tv)})`:''}`);
   return`<div class="stage-condition-item">${pb.filter(Boolean).map(b=>`<span class="stage-meta-badge" style="margin-right:6px">${b}</span>`).join('')}</div>`;
 }
+function renderMapObjectivesSection(d){
+  const rows=Array.isArray(d&&d.map_objectives)?d.map_objectives:[];
+  if(!rows.length)return'';
+  const L=(k,fb)=>{const v=t(k);return(v&&v!==k)?v:fb};
+  return`<div class="detail-section"><div class="section-title">${esc(L('sec_map_objectives','Map objectives'))}</div>${rows.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join('')}</div>`;
+}
+function _stageNpcStepOrder(n){return Math.max(0,Number(n&&n.step_order)||0)}
+function _stageMapUnitByNpcId(pool,npcId){
+  const id=String(npcId!=null?npcId:'');
+  return(pool||[]).find(u=>String(u.npc_id)===id)||null;
+}
+function _stageMapShowStepOrderForUnit(u,pool){
+  if(!S.stageMapReinforcementOnly||!u)return false;
+  const p=pool!=null?pool:(S.currentDetailData?.map_data?.units||[]);
+  if(!_stageMapEnemyIsReinforcementSpawn(u,p))return false;
+  return _stageNpcStepOrder(u)>0;
+}
+function _stageMapStepOrderLabel(so){
+  const L=(k,fb)=>{const v=t(k);return(v&&v!==k)?v:fb};
+  return`${L('stage_map_step_order','Step')} ${fmtN(so)}`;
+}
+function stageMapHasReinfStepOrders(md){
+  const pool=(md&&md.units)||[];
+  return pool.some(u=>_stageMapShowStepOrderForUnit(u,pool));
+}
+function _stageMapHitEventAreaCell(md,x,y){
+  const ar=(md&&Array.isArray(md.map_event_areas))?md.map_event_areas:[];
+  for(let i=0;i<ar.length;i++){
+    const a=ar[i];
+    const bx=Number(a.x)+1,by=Number(a.y)+1;
+    const ww=Math.max(1,Number(a.w)||1),hh=Math.max(1,Number(a.h)||1);
+    if(x>=bx&&x<bx+ww&&y>=by&&y<by+hh)return a;
+  }
+  return null;
+}
 function renderScoreAttackMetaSection(d){
   const m=d&&d.score_attack_meta;
   const panelOnly=d&&d.grand_offensive_panel;
@@ -1905,7 +1940,7 @@ function renderScoreAttackMetaSection(d){
   html+=`</div>`;
   return html;
 }
-function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div id="detailScoreAttackMeta">${(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderTowerRewardSection(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
+function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;const mm=d.map_meta;const mapMetaHtml=mm&&(mm.map_id||mm.map_stage_id)?`<span class="stage-meta-badge" style="margin-left:6px">Map ${esc(mm.map_id||'-')} · MS ${esc(mm.map_stage_id||'-')}</span>`:'';return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}${mapMetaHtml}</div><div id="detailMapObjectives">${renderMapObjectivesSection(d)}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div id="detailScoreAttackMeta">${(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderTowerRewardSection(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
 function renderProfileTitleShell(d){const name=esc(d&&d.name?d.name:'Profile Title');const img=(d&&d.image)?`<img src="${imgUrl(d.image)}" alt="${name}" loading="lazy" decoding="async" style="display:block;max-width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">`:'<div class="empty-state-text">No image</div>';return`<div class="modal-top-label">Profile Title</div><div class="modal-entity-id">ID: ${esc(d&&d.id?d.id:'-')}</div><div class="detail-body" style="margin-top:16px;"><div class="detail-section"><div class="section-title">${name}</div><div class="stage-condition-box" style="padding:18px;display:flex;justify-content:center;align-items:center;overflow:auto;">${img}</div></div></div>`}
 function renderOptionPartShell(d){
 const thumb=d.thum?imgTag(d.thum,{cls:'detail-portrait mod-detail-portrait',webp:true,alt:esc(d.name||''),onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>⚙</div>'"}) :'<div class="detail-portrait-placeholder">⚙</div>';
@@ -2002,7 +2037,7 @@ c.insertAdjacentHTML('beforeend',renderDetailInlineRankRadial(meta));
 kickDetailRankRadialAnimation(c.querySelector('.stat-inline-rank'));
 });
 }
-function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type==='stage'){const saHost=document.getElementById('detailScoreAttackMeta');if(saHost)saHost.innerHTML=(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights()}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}}
+function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type==='stage'){const saHost=document.getElementById('detailScoreAttackMeta');if(saHost)saHost.innerHTML=(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):'';const moHost=document.getElementById('detailMapObjectives');if(moHost)moHost.innerHTML=renderMapObjectivesSection(d)}if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights()}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}}
 function renderStatsWrapper(d,type){
 let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
@@ -2151,7 +2186,8 @@ function renderStageMapSection(d){
         <span class="stage-map-reinf-text">${esc(buffToggleLbl)}</span>
       </label>`:'';
   const togglesRow=(reinfToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${buffToggleHtml}</div>`:'';
-  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}
+  const stepHint=ro&&stageMapHasReinfStepOrders(md)?(()=>{const L=(k,fb)=>{const v=t(k);return(v&&v!==k)?v:fb};return`<p class="stage-map-reinf-step-hint">${esc(L('stage_map_reinf_step_hint','Reinforcement spawn order (Step) is shown on the map and in the enemy list below.'))}</p>`})():'';
+  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}${stepHint}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
         <div class="stage-map-viewport-quick">
@@ -2404,12 +2440,14 @@ function renderStageMapGrid(md){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       const ck=`${x}_${y}`;
       const buffArea=_stageMapBuffAreaAt(md,x,y);
+      const eventArea=!u?_stageMapHitEventAreaCell(md,x,y):null;
       const isPlayableTile=!u&&_stageMapHitPlayableCell(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
       if(isPlayableTile)cls+=' map-cell--playable';
+      if(eventArea)cls+=' map-cell--event-area';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
       if(showBuffArea){
         cls+=' map-cell--buff-area';
@@ -2419,7 +2457,9 @@ function renderStageMapGrid(md){
       }
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       if(u&&u.is_score_attack_boss)cls+=' map-cell--score-boss';
+      if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
+      const showStepOrder=u&&_stageMapShowStepOrderForUnit(u,pool);
       const originCls=(o&&o.origin)?' map-cell--unit-origin':'';
       const di=u?.npc_detail_index;
       const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
@@ -2430,6 +2470,9 @@ function renderStageMapGrid(md){
       const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
       if(u&&u.is_score_attack_boss){const bl=t('sa_boss');cellTitle+=` — ${bl!=='sa_boss'?bl:'Boss'}`}
+      if(u&&u.is_story_event_boss){const bl=t('stage_story_boss');cellTitle+=` — ${bl!=='stage_story_boss'?bl:'Story boss'}`}
+      if(showStepOrder)cellTitle+=` — ${_stageMapStepOrderLabel(_stageNpcStepOrder(u))}`;
+      if(eventArea)cellTitle+=` — ${t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area'}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
@@ -2454,6 +2497,7 @@ function renderStageMapGrid(md){
         const largeCls=u.is_large&&!multiFp?'large':'';
         const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
         html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
@@ -2491,17 +2535,33 @@ function toggleStageMap(){
   document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
   if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100)
 }
+function refreshStageMapAndNpcPanels(){
+  if(S.currentDetailType!=='stage'||!S.currentDetailData)return;
+  const d=S.currentDetailData;
+  const mapHost=document.getElementById('detailStageMapContainer');
+  if(mapHost)mapHost.innerHTML=renderStageMapSection(d);
+  const npcHost=document.getElementById('detailNpcContainer');
+  if(npcHost)npcHost.innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);
+  syncNpcUnitConditionHighlights();
+}
 function setStageMapReinforcementOnly(on){
   S.stageMapReinforcementOnly=!!on;
-  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
+  if(S.currentDetailType==='stage'){
     const gridWrap=document.getElementById('stageMapGridWrap');
     const md=S.currentDetailData&&S.currentDetailData.map_data;
-    if(gridWrap&&md&&md.width>0&&md.height>0){
+    if(S.stageMapExpanded&&gridWrap&&md&&md.width>0&&md.height>0){
       const sl=gridWrap.scrollLeft,st=gridWrap.scrollTop;
-      gridWrap.innerHTML=renderStageMapGrid(md);
-      gridWrap.scrollLeft=sl;
-      gridWrap.scrollTop=st;
+      const mapHost=document.getElementById('detailStageMapContainer');
+      if(mapHost)mapHost.innerHTML=renderStageMapSection(S.currentDetailData);
+      const newWrap=document.getElementById('stageMapGridWrap');
+      if(newWrap){newWrap.scrollLeft=sl;newWrap.scrollTop=st}
+    }else if(!S.stageMapExpanded){
+      const mapHost=document.getElementById('detailStageMapContainer');
+      if(mapHost)mapHost.innerHTML=renderStageMapSection(S.currentDetailData);
     }
+    const npcHost=document.getElementById('detailNpcContainer');
+    if(npcHost)npcHost.innerHTML=renderNpcDetails(S.currentDetailData.npc_details||[],S.currentDetailData.id,S._stageDetailUiRestore);
+    syncNpcUnitConditionHighlights();
   }
 }
 function setStageMapBuffAreasVisible(on){
@@ -2689,9 +2749,34 @@ const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--
 const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
 const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
 return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${inner}</button>`}
-function renderStageNpcCompactTile(n,idx){const u=n.unit,ch=n.character;const lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;const uid=u&&u.id,chid=ch&&ch.id;const npcKey=n.npc_id;const uHint=firstNpcStrategyHintIconFromUnit(u);const cHint=firstNpcStrategyHintIconFromCharacter(ch);return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb(u&&u.portrait,lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb(ch&&ch.portrait,lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div></div>`}
+function renderStageNpcCompactTile(n,idx){
+  const u=n.unit,ch=n.character;
+  let lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;
+  const uid=u&&u.id,chid=ch&&ch.id;
+  const npcKey=n.npc_id;
+  const pool=S.currentDetailData?.map_data?.units||[];
+  const mapU=_stageMapUnitByNpcId(pool,npcKey);
+  const pseudoU=mapU||{side:n.side,is_initially_placed:n.is_initially_placed,step_order:n.step_order};
+  const showStep=S.stageMapReinforcementOnly&&_stageMapShowStepOrderForUnit(pseudoU,pool);
+  const badges=[];
+  if(showStep)badges.push(`<span class="stage-npc-meta-badge stage-npc-meta-badge--step">${esc(_stageMapStepOrderLabel(_stageNpcStepOrder(n)))}</span>`);
+  if(n.is_story_event_boss)badges.push(`<span class="stage-npc-meta-badge stage-npc-meta-badge--boss">${esc(t('stage_story_boss')!=='stage_story_boss'?t('stage_story_boss'):'Story boss')}</span>`);
+  if(u&&u.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_unit_lv')!=='sa_unit_lv'?t('sa_unit_lv'):'Unit Lv')} ${fmtN(u.level)}</span>`);
+  if(ch&&ch.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_char_lv')!=='sa_char_lv'?t('sa_char_lv'):'Pilot Lv')} ${fmtN(ch.level)}</span>`);
+  const uHint=firstNpcStrategyHintIconFromUnit(u);
+  const cHint=firstNpcStrategyHintIconFromCharacter(ch);
+  const capBadges=badges.length?`<div class="stage-npc-compact-badges">${badges.join('')}</div>`:'';
+  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb(u&&u.portrait,lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb(ch&&ch.portrait,lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${capBadges}</div>`;
+}
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
-function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i}));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',!guests.length&&!friendly.length);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
+function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i}));const pool=S.currentDetailData?.map_data?.units||[];const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');let enemies=indexed.filter(o=>o.n.side==='enemy');if(S.stageMapReinforcementOnly){
+    enemies=enemies.filter(o=>{
+      const mapU=_stageMapUnitByNpcId(pool,o.n.npc_id);
+      return mapU&&_stageMapEnemyIsReinforcementSpawn(mapU,pool);
+    });
+    enemies.sort((a,b)=>_stageNpcStepOrder(a.n)-_stageNpcStepOrder(b.n));
+  }
+  const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',S.stageMapReinforcementOnly||(!guests.length&&!friendly.length));const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',S.stageMapReinforcementOnly?(t('stage_npc_reinf_tab')!=='stage_npc_reinf_tab'?t('stage_npc_reinf_tab'):'Reinforcements'):t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
 function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}return`<div class="tag-composite" onclick="event.stopPropagation();${onClick}" title="Click to view"><div class="tag-part-icon">${li?`<img class="tag-icon-fg" src="${imgUrl(li)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</div><div class="tag-part-value">${esc(tn)}</div></div>`}
 function renderTags(tags){if(!tags||!tags.length)return'';return`<div class="detail-tags-row" style="margin-top:12px;">${tags.map(createTagHtml).join('')}</div>`}
