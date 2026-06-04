@@ -1859,16 +1859,14 @@ const wrap=document.getElementById('detailStatsWrapper');
 if(!wrap)return;
 const header=wrap.closest('.detail-header');
 if(!header)return;
-const stack=header.querySelector('.detail-portrait-stack');
-const portraitWrap=stack&&stack.querySelector('.detail-portrait-wrap');
 header.querySelectorAll('.detail-rank-toggle-btn').forEach(btn=>{if(!btn.closest('.detail-rank-toggle-slot'))btn.remove()});
 header.querySelectorAll('.detail-rank-toggle-slot').forEach(el=>el.remove());
+header.classList.remove('detail-header--has-rank-toggle');
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context))return;
 const btnHtml=renderDetailRankingToggle(d,type);
 if(!btnHtml)return;
-const slotHtml=`<div class="detail-rank-toggle-slot">${btnHtml}</div>`;
-if(stack&&portraitWrap)portraitWrap.insertAdjacentHTML('afterend',slotHtml);
-else header.insertAdjacentHTML('afterbegin',slotHtml);
+header.insertAdjacentHTML('beforeend',`<div class="detail-rank-toggle-slot">${btnHtml}</div>`);
+header.classList.add('detail-header--has-rank-toggle');
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
@@ -2138,17 +2136,30 @@ function _stageMapMergeExtents(a,b){if(!a)return b;if(!b)return a;return{mnX:Mat
 function _stageMapCellShowsUnitOrReach(md,occ,x,y){
   return!!(occ&&occ[`${x}_${y}`])||_stageMapHitReachTargetCell(md,x,y)
 }
+function _stageMapCellShowsViewportContent(md,occ,x,y){
+  if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;
+  if(_stageMapBuffAreasShown()&&_stageMapBuffAreaAt(md,x,y))return true;
+  return false;
+}
 function _stageMapTrimViewportEmptyMargins(md,win,occ){
   if(!_stageMapExtentsFromReachTargets(md)&&(!occ||Object.keys(occ).length===0))return win;
   let {minX,maxX,minY,maxY}=win;
   const converge=36;
   for(let q=0;q<converge;q++){
     const bx=maxX,lx=minX,by=maxY,ty=minY;
-    let colUsed=x=>{for(let y=ty;y<=by;y++)if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;return false};
-    let rowUsed=y=>{for(let x=lx;x<=bx;x++)if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;return false};
+    let colUsed=x=>{for(let y=ty;y<=by;y++)if(_stageMapCellShowsViewportContent(md,occ,x,y))return true;return false};
+    let rowUsed=y=>{for(let x=lx;x<=bx;x++)if(_stageMapCellShowsViewportContent(md,occ,x,y))return true;return false};
     if(maxX>minX&&!colUsed(maxX))maxX--;else if(maxX>minX&&!colUsed(minX))minX++;else if(maxY>minY&&!rowUsed(maxY))maxY--;else if(maxY>minY&&!rowUsed(minY))minY++;else break
   }
   return{minX,maxX,minY,maxY}
+}
+function _stageMapShouldTrimViewport(md){
+  return!!(S.stageMapReinforcementOnly||stageMapHasReinforcementEnemies(md))
+}
+function _stageMapApplyViewportTrim(md,win){
+  if(!_stageMapShouldTrimViewport(md))return win;
+  const {occ}=_stageMapBuildOccupancyMap(md);
+  return _stageMapTrimViewportEmptyMargins(md,win,occ);
 }
 function _stage905MapViewportTuned(){return S.currentDetailType==='stage'&&String(S.currentDetailData&&S.currentDetailData.id||'')==='90520021'}
 function _stageMapViewWindowClassic(md){
@@ -2171,12 +2182,13 @@ function _stageMapViewWindowClassic(md){
   const merged=_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf);
   if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
   const pad=2;
-  return {
+  const win={
     minX:Math.max(1,merged.mnX-pad),
     maxX:Math.min(w,merged.mxX+pad),
     minY:Math.max(1,merged.mnY-pad),
     maxY:Math.min(h,merged.mxY+pad),
-  }
+  };
+  return _stageMapApplyViewportTrim(md,win);
 }
 function _stageMapViewWindow905(md){
   if(!md)return {minX:1,maxX:1,minY:1,maxY:1};
@@ -2205,7 +2217,7 @@ function _stageMapViewWindow905(md){
     maxY:Math.min(h,merged.mxY+pad),
   };
   else raw={minX:1,maxX:w,minY:1,maxY:h};
-  return _stageMapTrimViewportEmptyMargins(md,raw,occ)
+  return _stageMapApplyViewportTrim(md,raw)
 }
 function _stageMapViewWindow(md){
 return _stage905MapViewportTuned()?_stageMapViewWindow905(md):_stageMapViewWindowClassic(md)
@@ -2365,7 +2377,10 @@ function setStageMapReinforcementOnly(on){
   if(S.currentDetailType==='stage'&&S.stageMapExpanded){
     const gridWrap=document.getElementById('stageMapGridWrap');
     const md=S.currentDetailData&&S.currentDetailData.map_data;
-    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
+    if(gridWrap&&md&&md.width>0&&md.height>0){
+      gridWrap.innerHTML=renderStageMapGrid(md);
+      if(S.stageMapAutoFit)setTimeout(()=>fitStageMapToUnits(true),60);
+    }
   }
 }
 function setStageMapBuffAreasVisible(on){
