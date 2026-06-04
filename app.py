@@ -4414,9 +4414,165 @@ def create_map_event_score_attack_stage_map(score_data, stage_master):
             'stage_name_lang_id': snlid,
             'score_attack_row_id': normalize_id(item.get('Id') or item.get('id')),
             'score_attack_reward_id': normalize_id(item.get('MapEventScoreAttackRewardId') or item.get('mapEventScoreAttackRewardId')),
+            'map_event_id': normalize_id(item.get('MapEventId') or item.get('mapEventId')),
+            'evaluation_target_set_id': normalize_id(item.get('MapEventScoreAttackStageEvaluationTargetSetId') or item.get('mapEventScoreAttackStageEvaluationTargetSetId')),
             'list_seq': seq,
         }
     return lookup
+
+SCORE_ATTACK_EVAL_RANK_LABELS = {5: 'S', 4: 'A', 3: 'B', 2: 'C', 1: 'D'}
+
+def create_map_event_score_eval_lookup(target_data, standard_data):
+    std_by = {}
+    for item in extract_data_list(standard_data):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('MapEventScoreAttackScoreEvaluationStandardSetId') or item.get('mapEventScoreAttackScoreEvaluationStandardSetId'))
+        if sid == '0':
+            continue
+        std_by.setdefault(sid, []).append({
+            'evaluation_type_index': safe_int(item.get('EvaluationTypeIndex') or item.get('evaluationTypeIndex'), 0),
+            'threshold': safe_int(item.get('TargetValueThreshold') or item.get('targetValueThreshold'), 0),
+            'score': safe_int(item.get('Score') or item.get('score'), 0),
+        })
+    for arr in std_by.values():
+        arr.sort(key=lambda r: (-safe_int(r.get('evaluation_type_index'), 0), -safe_int(r.get('score'), 0)))
+    out = {}
+    for item in extract_data_list(target_data):
+        if not isinstance(item, dict):
+            continue
+        set_id = normalize_id(item.get('MapEventScoreAttackStageEvaluationTargetSetId') or item.get('mapEventScoreAttackStageEvaluationTargetSetId'))
+        std_id = normalize_id(item.get('MapEventScoreAttackScoreEvaluationStandardSetId') or item.get('mapEventScoreAttackScoreEvaluationStandardSetId'))
+        ttype = safe_int(item.get('TargetTypeIndex') or item.get('targetTypeIndex'), 0)
+        if set_id == '0' or std_id == '0':
+            continue
+        for row in std_by.get(std_id, []):
+            out.setdefault(set_id, []).append({'target_type_index': ttype, **row})
+    for arr in out.values():
+        arr.sort(key=lambda r: (-safe_int(r.get('evaluation_type_index'), 0), -safe_int(r.get('score'), 0)))
+    return out
+
+def create_map_event_panel_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        pid = normalize_id(item.get('Id') or item.get('id'))
+        if pid == '0':
+            continue
+        lk[pid] = {
+            'map_event_id': normalize_id(item.get('MapEventId') or item.get('mapEventId')),
+            'area_number': safe_int(item.get('AreaNumber') or item.get('areaNumber'), 0),
+            'panel_type_index': safe_int(item.get('MapEventPanelTypeIndex') or item.get('mapEventPanelTypeIndex'), 0),
+            'target_resource_id': normalize_id(item.get('TargetResourceId') or item.get('targetResourceId')),
+            'target_value': normalize_id(item.get('TargetValue') or item.get('targetValue')),
+            'consume_pp': safe_int(item.get('ConsumePpCount') or item.get('consumePpCount'), 0),
+            'coordinate_x': safe_int(item.get('CoordinateX') or item.get('coordinateX'), 0),
+            'coordinate_y': safe_int(item.get('CoordinateY') or item.get('coordinateY'), 0),
+        }
+    return lk
+
+def create_map_event_panel_stage_by_stage_lookup(panel_stage_data, panel_lookup):
+    by_stage = {}
+    for item in extract_data_list(panel_stage_data):
+        if not isinstance(item, dict):
+            continue
+        stid = normalize_id(item.get('StageId') or item.get('stageId'))
+        pid = normalize_id(item.get('MapEventPanelId') or item.get('mapEventPanelId'))
+        if stid == '0':
+            continue
+        panel = panel_lookup.get(pid, {}) if panel_lookup else {}
+        by_stage[stid] = {
+            'panel_id': pid,
+            'damage_up_percent': safe_int(item.get('DamageUpRatePercent') or item.get('damageUpRatePercent'), 0),
+            'rank': safe_int(item.get('Rank') or item.get('rank'), 0),
+            **panel,
+        }
+    return by_stage
+
+def create_map_event_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        mid = normalize_id(item.get('Id') or item.get('id'))
+        if mid == '0':
+            continue
+        lk[mid] = {
+            'partner_set_id': normalize_id(item.get('MapEventPartnerSetId') or item.get('mapEventPartnerSetId')),
+            'daily_stage_skip_limit': safe_int(item.get('DailyStageSkipLimit') or item.get('dailyStageSkipLimit'), 0),
+            'event_id': normalize_id(item.get('EventId') or item.get('eventId')),
+            'pp_config_id': normalize_id(item.get('MapEventPpConfigId') or item.get('mapEventPpConfigId')),
+        }
+    return lk
+
+def create_map_event_partners_by_event_lookup(map_event_data, partner_data, set_content_data):
+    partners = {}
+    for item in extract_data_list(partner_data):
+        if not isinstance(item, dict):
+            continue
+        pid = normalize_id(item.get('Id') or item.get('id'))
+        if pid == '0':
+            continue
+        partners[pid] = {
+            'unit_initial_level': safe_int(item.get('UnitInitialLevel') or item.get('unitInitialLevel'), 0),
+            'character_initial_level': safe_int(item.get('CharacterInitialLevel') or item.get('characterInitialLevel'), 0),
+            'unit_upgrade_group_id': normalize_id(item.get('UnitUpgradeGroupId') or item.get('unitUpgradeGroupId')),
+            'character_upgrade_group_id': normalize_id(item.get('CharacterUpgradeGroupId') or item.get('characterUpgradeGroupId')),
+        }
+    set_to_rows = {}
+    for item in extract_data_list(set_content_data):
+        if not isinstance(item, dict):
+            continue
+        psid = normalize_id(item.get('MapEventPartnerSetId') or item.get('mapEventPartnerSetId'))
+        pid = normalize_id(item.get('MapEventPartnerId') or item.get('mapEventPartnerId'))
+        prow = partners.get(pid)
+        if psid == '0' or not prow:
+            continue
+        set_to_rows.setdefault(psid, []).append({
+            'partner_id': pid,
+            'status_buff_percent': safe_int(item.get('StatusBuffPercent') or item.get('statusBuffPercent'), 0),
+            **prow,
+        })
+    by_event = {}
+    for item in extract_data_list(map_event_data):
+        if not isinstance(item, dict):
+            continue
+        meid = normalize_id(item.get('Id') or item.get('id'))
+        psid = normalize_id(item.get('MapEventPartnerSetId') or item.get('mapEventPartnerSetId'))
+        if meid == '0' or psid == '0':
+            continue
+        rows = set_to_rows.get(psid, [])
+        if rows:
+            by_event[meid] = rows
+    return by_event
+
+def build_score_attack_stage_meta(stage_id, sas):
+    sid = normalize_id(stage_id)
+    eval_set = normalize_id((sas or {}).get('evaluation_target_set_id', '0'))
+    eval_rows = []
+    for row in (map_event_score_eval_lookup.get(eval_set, []) if map_event_score_eval_lookup else []):
+        eti = safe_int(row.get('evaluation_type_index'), 0)
+        eval_rows.append({
+            'target_type_index': safe_int(row.get('target_type_index'), 0),
+            'evaluation_type_index': eti,
+            'rank_label': SCORE_ATTACK_EVAL_RANK_LABELS.get(eti, str(eti) if eti else '?'),
+            'score': safe_int(row.get('score'), 0),
+            'threshold': safe_int(row.get('threshold'), 0),
+        })
+    panel = (map_event_panel_stage_by_stage or {}).get(sid)
+    meid = normalize_id((sas or {}).get('map_event_id', '0'))
+    me = (map_event_lookup or {}).get(meid, {}) if map_event_lookup else {}
+    partners = (map_event_partners_by_event or {}).get(meid, []) if map_event_partners_by_event else []
+    return {
+        'map_event_id': meid,
+        'boss_map_npc_id': normalize_id((sas or {}).get('boss_map_npc_id', '0')),
+        'score_attack_reward_id': normalize_id((sas or {}).get('score_attack_reward_id', '0')),
+        'evaluation_targets': eval_rows,
+        'grand_offensive_panel': panel,
+        'map_event': me if me else None,
+        'guest_partners': partners,
+    }
 
 def create_map_event_score_attack_reward_map(d):
     lookup = {}
@@ -6372,6 +6528,13 @@ supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_ski
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
 map_event_score_attack_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage.json"))
 map_event_score_attack_reward_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_reward.json"))
+map_event_score_attack_eval_target_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage_evaluation_target_set.json"))
+map_event_score_attack_eval_standard_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_score_evaluation_standard_set.json"))
+map_event_panel_data = load_json(os.path.join(BASE_DIR, "m_map_event_panel.json"))
+map_event_panel_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_panel_stage.json"))
+map_event_data = load_json(os.path.join(BASE_DIR, "m_map_event.json"))
+map_event_partner_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner.json"))
+map_event_partner_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner_set_content.json"))
 special_event_stage_data = load_json(os.path.join(BASE_DIR, "m_special_event_stage.json"))
 tower_event_data = load_json(os.path.join(BASE_DIR, "m_tower_event.json"))
 tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_group.json"))
@@ -6456,6 +6619,11 @@ stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
 eternal_stage_map = create_eternal_stage_map(eternal_stage_data) if eternal_stage_data else {}
 map_event_score_attack_stage_map = create_map_event_score_attack_stage_map(map_event_score_attack_stage_data, stage_master_data) if map_event_score_attack_stage_data else {}
 map_event_score_attack_reward_map = create_map_event_score_attack_reward_map(map_event_score_attack_reward_data) if map_event_score_attack_reward_data else {}
+map_event_score_eval_lookup = create_map_event_score_eval_lookup(map_event_score_attack_eval_target_data, map_event_score_attack_eval_standard_data) if map_event_score_attack_eval_target_data and map_event_score_attack_eval_standard_data else {}
+map_event_panel_lookup = create_map_event_panel_lookup(map_event_panel_data) if map_event_panel_data else {}
+map_event_panel_stage_by_stage = create_map_event_panel_stage_by_stage_lookup(map_event_panel_stage_data, map_event_panel_lookup) if map_event_panel_stage_data else {}
+map_event_lookup = create_map_event_lookup(map_event_data) if map_event_data else {}
+map_event_partners_by_event = create_map_event_partners_by_event_lookup(map_event_data, map_event_partner_data, map_event_partner_set_content_data) if map_event_data and map_event_partner_data and map_event_partner_set_content_data else {}
 special_event_stage_map = create_special_event_stage_map(special_event_stage_data) if special_event_stage_data else {}
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
@@ -15995,7 +16163,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np13"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np14_sa1"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -16068,6 +16236,7 @@ def get_stage(stage_id):
                 nt, lc, merge_mode='conditional_title_gated')
             unit_cond_pct_by_uid = accumulate_npc_unit_condition_pct_by_unit(nt, lc)
             stage_unit_ids = _map_stage_deployed_unit_ids(nt)
+            score_boss_npc_id = normalize_id(sas.get('boss_map_npc_id', '0')) if (is_score_attack and sas) else '0'
             for npc in nt:
                 nid = npc['id']; nid_norm = normalize_id(nid)
                 nu = map_npc_unit_lookup.get(nid_norm, []) or []
@@ -16150,6 +16319,8 @@ def get_stage(stage_id):
                 friendly_icon = '/static/images/Stages/UI_GTower_Minimap_Icon_FriendlyArmy.webp' if is_friendly_force else None
                 has_h = npc_map_pulse_strategy_hint(up, cp, strategy_hint_entries)
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h}
+                if score_boss_npc_id != '0' and nid_norm == score_boss_npc_id:
+                    me['is_score_attack_boss'] = True
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
@@ -16222,6 +16393,11 @@ def get_stage(stage_id):
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
         result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': stage_cat, 'stage_master_id': stage_master_id, 'stage_rewards': stage_rewards, 'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side}
+        if is_score_attack and sas:
+            result['score_attack_meta'] = build_score_attack_stage_meta(stage_id, sas)
+        gop = (map_event_panel_stage_by_stage or {}).get(normalize_id(stage_id))
+        if gop and not result.get('score_attack_meta'):
+            result['grand_offensive_panel'] = gop
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
