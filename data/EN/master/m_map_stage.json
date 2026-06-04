@@ -4980,6 +4980,36 @@
     "MapId": 1999902
   },
   {
+    "Id": 907000201602000000,
+    "StageId": 90700216,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1999903
+  },
+  {
+    "Id": 907000201702000000,
+    "StageId": 90700217,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1999903
+  },
+  {
+    "Id": 907000201802000000,
+    "StageId": 90700218,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1330020
+  },
+  {
+    "Id": 907000201902000000,
+    "StageId": 90700219,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1060011
+  },
+  {
+    "Id": 907000202002000000,
+    "StageId": 90700220,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1907020
+  },
+  {
     "Id": 908000100302000000,
     "StageId": 90800103,
     "StageDifficultyTypeIndex": 1,

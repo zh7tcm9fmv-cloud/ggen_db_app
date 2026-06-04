@@ -588,6 +588,10 @@
     "value": "WEST TOWER 15F"
   },
   {
+    "id": 240210110004000001,
+    "value": "WEST TOWER 20F"
+  },
+  {
     "id": 240210200001000001,
     "value": "Mobile Suit Gundam Thunderbolt: December Sky"
   },
@@ -1246,6 +1250,10 @@
   {
     "id": 240310110003000001,
     "value": "Clear WEST TOWER 15F in Generation Tower"
+  },
+  {
+    "id": 240310110004000001,
+    "value": "Clear WEST TOWER 20F in Generation Tower"
   },
   {
     "id": 240310200001000001,

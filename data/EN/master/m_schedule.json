@@ -3816,6 +3816,24 @@
     "HideEndDatetime": true
   },
   {
+    "Id": 2605529101,
+    "StartDatetime": 1780282800000,
+    "EndDatetime": 1782917999000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2606101101,
+    "StartDatetime": 1780542000000,
+    "EndDatetime": 1782784799000,
+    "HideEndDatetime": false
+  },
+  {
+    "Id": 2606109901,
+    "StartDatetime": 1780542000000,
+    "EndDatetime": 4070880000000,
+    "HideEndDatetime": true
+  },
+  {
     "Id": 2606301501,
     "StartDatetime": 1781665200000,
     "EndDatetime": 1782788399000,

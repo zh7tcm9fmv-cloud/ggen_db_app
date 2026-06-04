@@ -53,7 +53,7 @@
   },
   {
     "id": 290200907001070101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗強尼·萊汀、德茲爾·薩比</material>。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[強尼·萊汀]、[德茲爾·薩比]</material>。"
   },
   {
     "id": 290200907001070201,
@@ -69,7 +69,7 @@
   },
   {
     "id": 290200907001080201,
-    "value": "此關卡的勝利條件為<material=MaterialName>白色基地 抵達目標區域</material>。"
+    "value": "此關卡的勝利條件為<material=MaterialName>[白色基地] 抵達目標區域</material>。"
   },
   {
     "id": 290200907001080202,
@@ -117,23 +117,23 @@
   },
   {
     "id": 290200907001100203,
-    "value": "重武裝鋼彈、豹式鋼彈為<material=MaterialName>持有「戰鬥開始之後的第3回合開始後， 自身攻擊力及防禦力提升200%」能力</material>的單位。"
+    "value": "重武裝鋼彈、豹式鋼彈為<material=MaterialName>持有【戰鬥開始之後的第3回合開始後， 自身攻擊力及防禦力提升200%】能力</material>的單位。"
   },
   {
     "id": 290200907001110101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌·大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌·大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有【自身戰意為「超一擊」以上時， 自身防禦力提升300%】能力</material>的單位。"
   },
   {
     "id": 290200907001110102,
-    "value": "正義鋼彈 為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身防禦力提升300%」能力</material>的單位。"
+    "value": "正義鋼彈 為<material=MaterialName>持有【自身戰意為「超一擊」以上時， 自身防禦力提升300%】能力</material>的單位。"
   },
   {
     "id": 290200907001110103,
-    "value": "自由鋼彈 (流星裝備)、正義鋼彈 (流星裝備)為<material=MaterialName>持有「自身戰意為「超一擊」以上時， 自身攻擊力提升300%」能力</material>的單位。"
+    "value": "自由鋼彈 (流星裝備)、正義鋼彈 (流星裝備)會在達成作戰目標後作為援軍出現，為<material=MaterialName>持有【自身戰意為「超一擊」以上時， 自身攻擊力提升300%】能力</material>的單位。"
   },
   {
     "id": 290200907001110201,
-    "value": "天帝鋼彈 為<material=MaterialName>持有「自身進行支援攻擊、支援反擊時，自身攻擊力提升100%」能力</material>的客座軍單位。"
+    "value": "天帝鋼彈 為<material=MaterialName>持有【自身進行支援攻擊、支援反擊時，自身攻擊力提升100%】能力</material>的客座軍單位。"
   },
   {
     "id": 290200907001110202,
@@ -193,7 +193,7 @@
   },
   {
     "id": 290200907001140201,
-    "value": "閃光鋼彈 為<material=MaterialName>持有「額外行動+4次」能力</material>的客座軍單位。"
+    "value": "閃光鋼彈 為<material=MaterialName>持有【「額外行動」+4次】能力</material>的客座軍單位。"
   },
   {
     "id": 290200907001140202,
@@ -245,7 +245,7 @@
   },
   {
     "id": 290200907001170101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克·吉爾達〕</material>。\n\n馬克·吉爾達為<material=MaterialName>持有「自身HP為0%以下時，\n自身HP恢復100%」能力</material>的角色。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克·吉爾達〕</material>。\n\n馬克·吉爾達 為<material=MaterialName>持有【自身HP為0%以下時，\n自身HP恢復100%】能力</material>的角色。"
   },
   {
     "id": 290200907001170201,
@@ -257,7 +257,7 @@
   },
   {
     "id": 290200907001170203,
-    "value": "NT試驗用吉姆欺敵型為<material=MaterialName>持有「無條件額外行動」能力</material>的單位。"
+    "value": "NT試驗用吉姆欺敵型 為<material=MaterialName>持有【無條件額外行動】能力</material>的單位。"
   },
   {
     "id": 290200907001180101,
@@ -281,7 +281,7 @@
   },
   {
     "id": 290200907001190101,
-    "value": "風靈鋼彈 (修改型) 為<material=MaterialName>持有「額外行動+2次」能力</material>的高能力值單位。"
+    "value": "風靈鋼彈 (修改型) 為<material=MaterialName>持有【「額外行動」+2次】能力</material>的高能力值單位。"
   },
   {
     "id": 290200907001190201,
@@ -289,7 +289,7 @@
   },
   {
     "id": 290200907001190202,
-    "value": "惡魔審判者為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
+    "value": "惡魔審判者 為<material=MaterialName>持有【提升敵方全體參數】能力</material>的單位。"
   },
   {
     "id": 290200907001190203,
@@ -301,7 +301,7 @@
   },
   {
     "id": 290200907001200201,
-    "value": "中性鋼彈為<material=MaterialName>持有「提升敵方全體參數」能力</material>的單位。"
+    "value": "中性鋼彈 為<material=MaterialName>持有【提升敵方全體參數】能力</material>的單位。"
   },
   {
     "id": 290200907001200202,
@@ -341,7 +341,7 @@
   },
   {
     "id": 290200907002060203,
-    "value": "塔莉亞·庫拉提絲 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "塔莉亞·庫拉提絲 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070201,
@@ -349,11 +349,11 @@
   },
   {
     "id": 290200907002070202,
-    "value": "哈曼·坎恩 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "哈曼·坎恩 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070203,
-    "value": "克雷米·托特 為<material=MaterialName>持有「特定單位的防禦力提升300%」能力</material>的角色。"
+    "value": "克雷米·托特 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070204,
@@ -413,7 +413,7 @@
   },
   {
     "id": 290200907002110201,
-    "value": "人魚鋼彈為<material=MaterialName>持有強力武裝效果及「無條件額外行動」能力，並具有高機動力</material>的單位。"
+    "value": "人魚鋼彈為<material=MaterialName>持有強力武裝效果及【無條件額外行動】能力，並具有高機動力</material>的單位。"
   },
   {
     "id": 290200907002110202,
@@ -425,11 +425,11 @@
   },
   {
     "id": 290200907002120101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威·諾亞]、[連恩‧艾姆]</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
   },
   {
     "id": 290200907002120102,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗哈薩威·諾亞、連恩‧艾姆</material>。\n\n潘娜洛普 為<material=MaterialName>持有「反擊時支援防禦」能力</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威·諾亞]、[連恩‧艾姆]</material>。\n\n潘娜洛普 為<material=MaterialName>持有【反擊時支援防禦】能力</material>的單位。"
   },
   {
     "id": 290200907002120201,
@@ -437,15 +437,15 @@
   },
   {
     "id": 290200907002130101,
-    "value": "大天王鋼彈 為<material=MaterialName>持有「無條件額外行動」能力</material>的高能力值單位。"
+    "value": "大天王鋼彈 為<material=MaterialName>持有【無條件額外行動】能力</material>的高能力值單位。"
   },
   {
     "id": 290200907002130201,
-    "value": "九龍鋼彈為<material=MaterialName>持有「無條件額外行動」能力及強力武裝效果</material>的客座軍單位。"
+    "value": "九龍鋼彈為<material=MaterialName>持有【無條件額外行動】能力及強力武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002130202,
-    "value": "約翰牛鋼彈 為<material=MaterialName>擁有強力MAP兵器及「自身進行支援攻擊、支援反擊時，自身攻擊力提升80%」能力</material>的單位。"
+    "value": "約翰牛鋼彈 為<material=MaterialName>擁有強力MAP兵器及【自身進行支援攻擊、支援反擊時，自身攻擊力提升80%】能力</material>的單位。"
   },
   {
     "id": 290200907002140101,
@@ -457,15 +457,15 @@
   },
   {
     "id": 290200907002140202,
-    "value": "華沙哥鋼彈破壞者 為<material=MaterialName>持有「每次造成損傷時，攻擊力提升」能力</material>的客座軍單位。"
+    "value": "華沙哥鋼彈破壞者 為<material=MaterialName>持有【每次造成損傷時，攻擊力提升】能力</material>的客座軍單位。"
   },
   {
     "id": 290200907002140203,
-    "value": "阿斯特龍鋼彈隱藏者 為<material=MaterialName>持有「每次受到損傷時，防禦力提升」能力</material>的客座軍單位。"
+    "value": "阿斯特龍鋼彈隱藏者 為<material=MaterialName>持有【每次受到損傷時，防禦力提升】能力</material>的客座軍單位。"
   },
   {
     "id": 290200907002150101,
-    "value": "神威鋼彈會在擊破閃光鋼彈 (超級模式)之後出現，為<material=MaterialName>能力值非常高並持有「敵方從距離自身2格以上的地方攻擊時，自身受到的損傷減輕50%」能力</material>的單位。"
+    "value": "神威鋼彈會在擊破閃光鋼彈 (超級模式)之後出現，為<material=MaterialName>能力值非常高並持有【敵方從距離自身2格以上的地方攻擊時，自身受到的損傷減輕50%】能力</material>的單位。"
   },
   {
     "id": 290200907002150201,
@@ -478,6 +478,74 @@
   {
     "id": 290200907002150203,
     "value": "腦波傳導型鋼彈、腦波傳導型鋼彈Mk-Ⅱ會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+  },
+  {
+    "id": 290200907002160103,
+    "value": "克羅諾斯、堅德拉會在達成作戰目標後作為援軍出現，為<material=MaterialName>能力值非常高</material>的單位。"
+  },
+  {
+    "id": 290200907002160201,
+    "value": "此關卡的敗北條件為<material=MaterialName>〔尤琳‧路歇爾〕被擊敗</material>。\n\n法爾西亞為<material=MaterialName>擁有強大武裝效果</material>的客座軍單位。"
+  },
+  {
+    "id": 290200907002160202,
+    "value": "賽達斯等部分敵軍為<material=MaterialName>會優先攻擊客座軍</material>的單位。"
+  },
+  {
+    "id": 290200907002170101,
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔哈囉〕</material>。\n\n哈囉 為<material=MaterialName>持有【「額外行動」+3次】能力</material>的高能力值單位。"
+  },
+  {
+    "id": 290200907002170202,
+    "value": "鳳凰鋼彈 (能力解放)、宗師鋼彈為<material=MaterialName>會對1架我軍單位使用MAP兵器</material>的單位。"
+  },
+  {
+    "id": 290200907002170203,
+    "value": "腦波傳導哈囉會<material=MaterialName>妨礙我軍單位移動</material>。"
+  },
+  {
+    "id": 290200907002180103,
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔塔莉亞·庫拉提絲〕</material>。\n\n智慧女神號為<material=MaterialName>會優先攻擊大天使號、且持有強力武裝</material>的單位。"
+  },
+  {
+    "id": 290200907002180201,
+    "value": "此關卡的敗北條件為<material=MaterialName>〔瑪琉·雷明斯〕等客座軍被擊敗</material>。\n\n大天使號 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+  },
+  {
+    "id": 290200907002180202,
+    "value": "曉 (不知火)為<material=MaterialName>持有【自身所屬部隊遭光束武裝攻擊時，受到的損傷減輕100%】能力及強力武裝效果</material>的客座軍單位。"
+  },
+  {
+    "id": 290200907002180204,
+    "value": "傳說鋼彈等部分敵軍為<material=MaterialName>會優先攻擊大天使號</material>的單位。"
+  },
+  {
+    "id": 290200907002190101,
+    "value": "希洛·唯 (EW版) 為<material=MaterialName>持有【自身所屬部隊的「莉莉娜·德利安 (EW版)」遭擊敗時，\n自身攻擊力、防禦力提升200%】能力</material>的角色。"
+  },
+  {
+    "id": 290200907002190202,
+    "value": "莉莉娜·德利安 (EW版) 為<material=MaterialName>會使用「HP修復 （範圍）」角色技能</material>的角色。"
+  },
+  {
+    "id": 290200907002190203,
+    "value": "死神鋼彈 (EW版/可變蝙翼)、重武裝鋼彈 (EW版/刺蝟彈庫)、沙漠鋼彈 (EW版/犰狳裝甲)、神龍鋼彈 (EW版/獠牙裝備)為<material=MaterialName>持有【逃生】能力</material>的單位。"
+  },
+  {
+    "id": 290200907002190204,
+    "value": "雙頭龍鋼彈 (EW版)為<material=MaterialName>擊敗特定單位時出現的高攻擊力</material>的友軍單位。"
+  },
+  {
+    "id": 290200907002200101,
+    "value": "哈斯蒙 為<material=MaterialName>持有【自身所屬部隊的「布魯曼」存活時，\n自身受到的損傷減輕100%】能力</material>的高能力值單位。"
+  },
+  {
+    "id": 290200907002200202,
+    "value": "蘭吉雷茲 (伊歐古機)為<material=MaterialName>會使用持有「防禦力減少」效果武裝</material>的第三軍單位。"
+  },
+  {
+    "id": 290200907002200203,
+    "value": "格雷茲 (破滅魔劍隊規格/阿麗安蘿德艦隊所屬機)會在達成作戰目標後作為援軍出現，為<material=MaterialName>持有「防禦力減少」效果武裝</material>的第三軍單位。"
   },
   {
     "id": 290300907001010201,
@@ -886,5 +954,73 @@
   {
     "id": 290300907002150203,
     "value": "留意MAP兵器的範圍。"
+  },
+  {
+    "id": 290300907002160103,
+    "value": "從克羅諾斯、堅德拉的砲火下保護客座軍。"
+  },
+  {
+    "id": 290300907002160201,
+    "value": "活用客座軍來打倒強大的敵人。"
+  },
+  {
+    "id": 290300907002160202,
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+  },
+  {
+    "id": 290300907002170101,
+    "value": "敵人將在最終回合展開行動，善用反擊來將其擊敗吧。"
+  },
+  {
+    "id": 290300907002170202,
+    "value": "誘使其發動移動型MAP兵器，有時能讓我方更有機會攻擊到敵人。"
+  },
+  {
+    "id": 290300907002170203,
+    "value": "活用中立單位的範圍效果來應對。"
+  },
+  {
+    "id": 290300907002180103,
+    "value": "利用曉 (不知火)的能力保護瑪琉·雷明斯。"
+  },
+  {
+    "id": 290300907002180201,
+    "value": "多編制一些能夠支援防禦的角色，以防客座軍遭到攻擊。"
+  },
+  {
+    "id": 290300907002180202,
+    "value": "活用客座軍，從敵人手中保護瑪琉·雷明斯吧。"
+  },
+  {
+    "id": 290300907002180204,
+    "value": "利用我軍耐久型單位來應對光束武裝以外的攻擊。"
+  },
+  {
+    "id": 290300907002190101,
+    "value": "活用作為援軍出現的友軍、中立單位的範圍效果來擊敗對手。"
+  },
+  {
+    "id": 290300907002190202,
+    "value": "試著將敵方引至技能範圍外，或將其擊敗，使HP歸零。"
+  },
+  {
+    "id": 290300907002190203,
+    "value": "留意擊破特定單位後將出現的增援。"
+  },
+  {
+    "id": 290300907002190204,
+    "value": "對高能力值的敵方單位造成損傷。"
+  },
+  {
+    "id": 290300907002200101,
+    "value": "全滅布魯曼後發動攻擊。"
+  },
+  {
+    "id": 290300907002200202,
+    "value": "活用第三軍擊敗哈斯蒙。"
+  },
+  {
+    "id": 290300907002200203,
+    "value": "利用格雷茲 (破滅魔劍隊規格/阿麗安蘿德艦隊所屬機)的MAP兵器，連帶對敵軍造成損傷。"
   }
 ]

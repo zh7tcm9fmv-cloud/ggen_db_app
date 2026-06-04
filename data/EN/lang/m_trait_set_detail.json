@@ -5012,6 +5012,22 @@
     "value": "(Cnd: Series) Chance Step Increase LV 1"
   },
   {
+    "id": 140100000202560100,
+    "value": "Affinity: Mobile Suit Gundam Wing LV 1"
+  },
+  {
+    "id": 140100000202560200,
+    "value": "Affinity: Mobile Suit Gundam Wing LV 2"
+  },
+  {
+    "id": 140100000202560300,
+    "value": "Affinity: Mobile Suit Gundam Wing LV 3"
+  },
+  {
+    "id": 140100000202560400,
+    "value": "Affinity: Mobile Suit Gundam Wing LV 4"
+  },
+  {
     "id": 140100000202570100,
     "value": "EX Character Ability"
   },
@@ -10360,6 +10376,10 @@
     "value": "Increased DEF LV 30"
   },
   {
+    "id": 140100000510025001,
+    "value": "Increased DEF LV 50"
+  },
+  {
     "id": 140100000510031001,
     "value": "Increased MOB LV 10"
   },
@@ -13244,6 +13264,38 @@
     "value": "Increased Critical Rate and DEF (All Units) "
   },
   {
+    "id": 140100000611920101,
+    "value": "(Defeat Conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611920111,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611920112,
+    "value": "(Defeat Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611930101,
+    "value": "(Defeat Conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000611930111,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611930112,
+    "value": "(Defeat Conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611970101,
+    "value": "(Unit conditions) HP Restoration"
+  },
+  {
+    "id": 140100000611980101,
+    "value": "(Unit conditions) Damage Reduced"
+  },
+  {
     "id": 140100000699000101,
     "value": "(Character conditions) Increased ATK LV 1"
   },
@@ -14134,6 +14186,54 @@
   {
     "id": 140100000700220100,
     "value": ""
+  },
+  {
+    "id": 140100000700380100,
+    "value": "Decreased ATK LV 1"
+  },
+  {
+    "id": 140100000700380200,
+    "value": "Decreased ATK LV 2"
+  },
+  {
+    "id": 140100000700380300,
+    "value": "Decreased ATK LV 3"
+  },
+  {
+    "id": 140100000700380400,
+    "value": "Decreased ATK LV 4"
+  },
+  {
+    "id": 140100000700380500,
+    "value": "Decreased ATK LV 5"
+  },
+  {
+    "id": 140100000700380600,
+    "value": "Decreased ATK LV 6"
+  },
+  {
+    "id": 140100000700380700,
+    "value": "Decreased ATK LV 7"
+  },
+  {
+    "id": 140100000700380800,
+    "value": "Decreased ATK LV 8"
+  },
+  {
+    "id": 140100000700380900,
+    "value": "Decreased ATK LV 9"
+  },
+  {
+    "id": 140100000700381000,
+    "value": "Decreased ATK LV10"
+  },
+  {
+    "id": 140100000700381500,
+    "value": "Decreased ATK LV15"
+  },
+  {
+    "id": 140100000700382000,
+    "value": "Decreased ATK LV20"
   },
   {
     "id": 140100000700400100,

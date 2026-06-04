@@ -7544,6 +7544,102 @@
     "value": "Preemptive Strike"
   },
   {
+    "id": 140700000700380101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380102,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380202,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380302,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380402,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380502,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380602,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380702,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380802,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700380901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700380902,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700381001,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700381002,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700381501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700381502,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
+    "id": 140700000700382001,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700382002,
+    "value": "Decreased ATK [1 turn] "
+  },
+  {
     "id": 140700000700400101,
     "value": "Absolute Hit"
   },
@@ -15178,6 +15274,102 @@
   {
     "id": 140800000700270101,
     "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000700380101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380102,
+    "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380202,
+    "value": "Inflict \"ATK Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380302,
+    "value": "Inflict \"ATK Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380402,
+    "value": "Inflict \"ATK Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380502,
+    "value": "Inflict \"ATK Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380602,
+    "value": "Inflict \"ATK Down 60%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380702,
+    "value": "Inflict \"ATK Down 70%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380802,
+    "value": "Inflict \"ATK Down 80%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700380901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700380902,
+    "value": "Inflict \"ATK Down 90%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700381001,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700381002,
+    "value": "Inflict \"ATK Down 100%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700381501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700381502,
+    "value": "Inflict \"ATK Down 150%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700382001,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700382002,
+    "value": "Inflict \"ATK Down 200%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000700400101,

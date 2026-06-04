@@ -488,6 +488,34 @@
     "CharacterSkillTraitId": 340230201
   },
   {
+    "Id": 3502401,
+    "CharacterSkillTraitId": 350240101
+  },
+  {
+    "Id": 3502402,
+    "CharacterSkillTraitId": 350240201
+  },
+  {
+    "Id": 3502403,
+    "CharacterSkillTraitId": 350240301
+  },
+  {
+    "Id": 3502404,
+    "CharacterSkillTraitId": 350240401
+  },
+  {
+    "Id": 3502405,
+    "CharacterSkillTraitId": 350240501
+  },
+  {
+    "Id": 3702601,
+    "CharacterSkillTraitId": 350240301
+  },
+  {
+    "Id": 3702601,
+    "CharacterSkillTraitId": 370260101
+  },
+  {
     "Id": 9000001,
     "CharacterSkillTraitId": 900000001
   },
@@ -498,5 +526,9 @@
   {
     "Id": 9000005,
     "CharacterSkillTraitId": 900000005
+  },
+  {
+    "Id": 9000008,
+    "CharacterSkillTraitId": 900000801
   }
 ]

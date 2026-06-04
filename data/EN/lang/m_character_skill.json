@@ -81,7 +81,7 @@
   },
   {
     "id": 140500000001600501,
-    "value": "High Speed LV1"
+    "value": "High Speed LV 1"
   },
   {
     "id": 140500000001600502,
@@ -213,7 +213,7 @@
   },
   {
     "id": 140500000002600404,
-    "value": "Force Guard LV4"
+    "value": "Force Guard LV 4"
   },
   {
     "id": 140500000002600405,
@@ -448,6 +448,34 @@
     "value": "Force Guard (Range) LV 2"
   },
   {
+    "id": 140500000350240101,
+    "value": "HP Repair (Range) LV 1"
+  },
+  {
+    "id": 140500000350240201,
+    "value": "HP Repair (Range) LV 2"
+  },
+  {
+    "id": 140500000350240301,
+    "value": "HP Repair (Range) LV 3"
+  },
+  {
+    "id": 140500000350240401,
+    "value": "HP Repair (Range) LV 4"
+  },
+  {
+    "id": 140500000350240501,
+    "value": "HP Repair (Range) LV 5"
+  },
+  {
+    "id": 140500000370260101,
+    "value": "HP Repair (Range) LV 3"
+  },
+  {
+    "id": 140500000900000801,
+    "value": "HP Repair (Range)"
+  },
+  {
     "id": 140600000001000601,
     "value": "Restore HP by 30%."
   },
@@ -680,6 +708,10 @@
     "value": "Characters piloting squad units within range\nReduce damage taken by 50% [1turn]."
   },
   {
+    "id": 140600000009000801,
+    "value": "Squad units within range\nRestore HP by 50%."
+  },
+  {
     "id": 140600000130140101,
     "value": "Characters piloting squad units within range\nIncrease MP by 3."
   },
@@ -894,5 +926,29 @@
   {
     "id": 140600000340230201,
     "value": "Characters piloting squad units within range\nReduce damage taken by 12% [1turn]."
+  },
+  {
+    "id": 140600000350240101,
+    "value": "Allies in range:\nRestore HP by 10%"
+  },
+  {
+    "id": 140600000350240201,
+    "value": "Allies in range:\nRestore HP by 15%"
+  },
+  {
+    "id": 140600000350240301,
+    "value": "Allies in range:\nRestore HP by 20%"
+  },
+  {
+    "id": 140600000350240401,
+    "value": "Allies in range:\nRestore HP by 25%"
+  },
+  {
+    "id": 140600000350240501,
+    "value": "Allies in range:\nRestore HP by 30%"
+  },
+  {
+    "id": 140600000370260101,
+    "value": "Restore HP to allies within range by 20%.\nFurther restore HP to allied units with the Wing Series tag\nwithin range by 5%."
   }
 ]

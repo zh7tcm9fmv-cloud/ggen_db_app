@@ -12895,6 +12895,11 @@
     "TargetId": 1219000500
   },
   {
+    "CharacterId": 1219000600,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000419
+  },
+  {
     "CharacterId": 1219000700,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -12963,6 +12968,11 @@
     "CharacterId": 1230000200,
     "AcquisitionMethodTypeIndex": 21,
     "TargetId": 11000314
+  },
+  {
+    "CharacterId": 1230000200,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000414
   },
   {
     "CharacterId": 1230000301,

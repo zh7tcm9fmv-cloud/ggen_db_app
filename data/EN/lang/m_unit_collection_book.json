@@ -1805,15 +1805,15 @@
   },
   {
     "id": 110200001211000800,
-    "value": "Gundam Heavyarms's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt has the same color scheme as it does in the TV series, but portions of its body are different.\nIts weapons have been moved around and changed up, and its main weapon, the Beam Gatling Gun, has been enlarged.\nWhen equipped with its Igel, a set of extra armaments, it gets weapon containers on its shoulders, extra Missile Pods on its legs, and drive units to help it maintain mobility with the extra weight added on."
+    "value": "Gundam Heavyarms's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt has the same color scheme as it does in the TV series, but portions of its body are different.\nIts weapons have been moved around and changed up, and its main weapon, the Beam Gatling Gun, has been enlarged.\nWhen equipped with its Eagle, a set of extra armaments, it gets weapon containers on its shoulders, extra Missile Pods on its legs, and drive units to help it maintain mobility with the extra weight added on."
   },
   {
     "id": 110200001211000900,
-    "value": "Gundam Sandrock's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely the same as Gundam Sandrock Custom EW.\nIts main weapon, Heat Shotels, have been enlarged, and a claw has been added to the tip of its shield.\nIt also has an extra set of armor called the Armadillo, which gives it reinforced defenses and improved thrust by virtue of its auxiliary boosters."
+    "value": "Gundam Sandrock's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely the same as Gundam Sandrock Custom (EW).\nIts main weapon, Heat Shotels, have been enlarged, and a claw has been added to the tip of its shield.\nIt also has an extra set of armor called the Armadillo, which gives it reinforced defenses and improved thrust by virtue of its auxiliary boosters."
   },
   {
     "id": 110200001211001000,
-    "value": "Shenlong Gundam's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely similar to Altron Gundam EW, but it uses the same tricolor coloring scheme as the TV series.\nSome of its weapons have been altered, such as its Dragon Fangs, which have been enlarged.\nIt also comes equipped with a solid Chinese-style broadsword called the Liaoya, which is potent enough to cleave Leos in half with a single swing."
+    "value": "Shenlong Gundam's design from the manga, Glory of the Losers.\nWhile it differs from the design of the same unit in the TV series, the two are treated as one and the same for the purposes of the manga.\nIt is largely similar to Altron Gundam (EW), but it uses the same tricolor coloring scheme as the TV series.\nSome of its weapons have been altered, such as its Dragon Fangs, which have been enlarged.\nIt also comes equipped with a solid Chinese-style broadsword called the Liaoya, which is potent enough to cleave Leos in half with a single swing."
   },
   {
     "id": 110200001211001100,
@@ -1849,7 +1849,7 @@
   },
   {
     "id": 110200001219000400,
-    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt now comes equipped with Gatling Guns on each arm and an increased number of Leg-Mounted Missile Pods for extra firepower.\nConversely, its Army Knife has been stripped, making it strictly a projectile user.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and TV version of the Custom, and is known to don a clown half-mask while on missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt now comes equipped with Double Gatling Gun on each arm and an increased number of Leg-Mounted Missile Pods for extra firepower.\nConversely, its Army Knife has been stripped, making it strictly a projectile user.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and TV version of the Custom, and is known to don a clown half-mask while on missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
   },
   {
     "id": 110200001219000500,
@@ -1861,7 +1861,7 @@
   },
   {
     "id": 110200001219000700,
-    "value": "The Mariemaia Army's primary Mobile Suit.\nDeveloped based on an old Alliance prototype, it was upgraded using Heavyarms data acquired by the Barton Foundation before being put into production.\nMade with Neo Titanium alloy, its armor is exceptionally durable compared to other varieties of mass-produced Mobile Suits.\nSpecced for mid- to long-range combat, it comes equipped with Double Gatling Guns and Missile Launchers.\nIt can also be armed with optional weapons including Bazookas and Beam Cannons.\nProduced in massive quantities to defend colonies and gain ground, this Mariemaia Army's mainstay was thrown into many fierce engagements with the Gundams.\nIt takes its name from the constellation Ophiuchus."
+    "value": "The Mariemaia Army's primary Mobile Suit.\nDeveloped based on an old Alliance prototype, it was upgraded using Gundam Heavyarms data acquired by the Barton Foundation before being put into production.\nMade with Neo Titanium alloy, its armor is exceptionally durable compared to other varieties of mass-produced Mobile Suits.\nSpecced for mid- to long-range combat, it comes equipped with Double Gatling Guns and Missile Launchers.\nIt can also be armed with optional weapons including Bazookas and Beam Cannons.\nProduced in massive quantities to defend colonies and gain ground, this Mariemaia Army's mainstay was thrown into many fierce engagements with the Gundams.\nIt takes its name from the constellation Ophiuchus."
   },
   {
     "id": 110200001230000100,
@@ -2881,11 +2881,11 @@
   },
   {
     "id": 110200001370009500,
-    "value": "The 0 Gundam equipped for live combat, delivered to the Ptolemaios for use in the final battle with the Innovators.\nIn place of its solar reactor, which was transferred to the 00 Gundam, it has been equipped with a GN Particle Condenser to allow it to fight for short periods of time.\nLasse Aeon piloted it into the final battle with the Innovators, but it ran out of power and was abandoned."
+    "value": "The 0 Gundam equipped for live combat, delivered to the Ptolemaios 2 for use in the final battle with the Innovators.\nIn place of its solar reactor, which was transferred to the 00 Gundam, it has been equipped with a GN Particle Condenser to allow it to fight for short periods of time.\nLasse Aeon piloted it into the final battle with the Innovators, but it ran out of power and was abandoned."
   },
   {
     "id": 110200001370009600,
-    "value": "The 0 Gundam equipped for live combat.\nAfter Lasse Aseon abandoned it, it was recovered by Ribbons Almark, who installed the solar reactor taken from the 00 Raiser's left shoulder and reactivated it.\nAfter the Reborns Gundam was heavily damaged in the battle with the 00 Raiser, Ribbons transferred to this Gundam and had a final confrontation with Setsuna F. Seiei in the Gundam Exia Repair II."
+    "value": "The 0 Gundam equipped for live combat.\nAfter Lasse Aeon abandoned it, it was recovered by Ribbons Almark, who installed the solar reactor taken from the 00 Raiser's left shoulder and reactivated it.\nAfter the Reborns Gundam was heavily damaged in the battle with the 00 Raiser, Ribbons transferred to this Gundam and had a final confrontation with Setsuna F. Seiei in the Gundam Exia Repair II."
   },
   {
     "id": 110200001370009700,

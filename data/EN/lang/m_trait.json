@@ -8224,6 +8224,38 @@
     "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
+    "id": 141200000202560101,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 5%\nand reduce damage taken by  5%."
+  },
+  {
+    "id": 141200000202560102,
+    "value": ""
+  },
+  {
+    "id": 141200000202560201,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 10%\nand reduce damage taken by  10%."
+  },
+  {
+    "id": 141200000202560202,
+    "value": ""
+  },
+  {
+    "id": 141200000202560301,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 15%\nand reduce damage taken by  15%."
+  },
+  {
+    "id": 141200000202560302,
+    "value": ""
+  },
+  {
+    "id": 141200000202560401,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 20%\nand reduce damage taken by  20%."
+  },
+  {
+    "id": 141200000202560402,
+    "value": ""
+  },
+  {
     "id": 141200000202570101,
     "value": "For each unit in the same squad with specified tags,\nincrease ATK by 3% (up to 15%)\nwhen piloting Atlas Gundam (EX)."
   },
@@ -14204,6 +14236,10 @@
     "value": "Increase DEF by 300%."
   },
   {
+    "id": 141200000510025001,
+    "value": "Increase DEF by 500%."
+  },
+  {
     "id": 141200000510031001,
     "value": "Increase Mobility by 100%."
   },
@@ -17093,7 +17129,7 @@
   },
   {
     "id": 141200000611120101,
-    "value": "When executing a Support Attack/Counter during battle, \nincrease ATK by 100%."
+    "value": "When executing a Support Attack/Counter or Support Defense during battle,\nincrease ATK by 100%."
   },
   {
     "id": 141200000611120201,
@@ -17101,7 +17137,7 @@
   },
   {
     "id": 141200000611130101,
-    "value": "When executing a Support Attack/Counter during battle, \nincrease DEF by 300%."
+    "value": "When executing a Support Attack/Counter or Support Defense during battle, \nincrease DEF by 300%."
   },
   {
     "id": 141200000611130201,
@@ -17417,11 +17453,11 @@
   },
   {
     "id": 141200000611610001,
-    "value": "When executing a Support Attack/Counter during battle, \nincrease ATK by 100%."
+    "value": "When executing a Support Attack/Counter or Support Defense during battle,\nincrease ATK by 100%."
   },
   {
     "id": 141200000611620001,
-    "value": "When executing a Support Attack/Counter during battle, \nincrease DEF by 300%."
+    "value": "When executing a Support Attack/Counter or Support Defense during battle,\nincrease DEF by 300%."
   },
   {
     "id": 141200000611630101,
@@ -17550,6 +17586,46 @@
   {
     "id": 141200000611890102,
     "value": "Increase squad Critical Rate and DEF by 30%."
+  },
+  {
+    "id": 141200000611920101,
+    "value": "When Relena Darlian (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%."
+  },
+  {
+    "id": 141200000611920102,
+    "value": ""
+  },
+  {
+    "id": 141200000611920111,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611920112,
+    "value": "Increase DEF by 200%."
+  },
+  {
+    "id": 141200000611930101,
+    "value": "When Heero Yuy (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%."
+  },
+  {
+    "id": 141200000611930102,
+    "value": ""
+  },
+  {
+    "id": 141200000611930111,
+    "value": "Increase ATK by 200%."
+  },
+  {
+    "id": 141200000611930112,
+    "value": "Increase DEF by 200%."
+  },
+  {
+    "id": 141200000611970101,
+    "value": "At the start of every turn, restores Hashmal HP by 100%"
+  },
+  {
+    "id": 141200000611980101,
+    "value": "As long as there is a surviving Pluma in the squad,\nReduce damage taken by 100%."
   },
   {
     "id": 141200000699000101,
@@ -18442,6 +18518,54 @@
   {
     "id": 141200000700220101,
     "value": ""
+  },
+  {
+    "id": 141200000700380102,
+    "value": "ATK Down 10%."
+  },
+  {
+    "id": 141200000700380202,
+    "value": "ATK Down 20%."
+  },
+  {
+    "id": 141200000700380302,
+    "value": "ATK Down 30%."
+  },
+  {
+    "id": 141200000700380402,
+    "value": "ATK Down 40%."
+  },
+  {
+    "id": 141200000700380502,
+    "value": "ATK Down 50%."
+  },
+  {
+    "id": 141200000700380602,
+    "value": "ATK Down 60%."
+  },
+  {
+    "id": 141200000700380702,
+    "value": "ATK Down 70%."
+  },
+  {
+    "id": 141200000700380802,
+    "value": "ATK Down 80%."
+  },
+  {
+    "id": 141200000700380902,
+    "value": "ATK Down 90%."
+  },
+  {
+    "id": 141200000700381002,
+    "value": "ATK Down 100%."
+  },
+  {
+    "id": 141200000700381502,
+    "value": "ATK Down 150%."
+  },
+  {
+    "id": 141200000700382002,
+    "value": "ATK Down 200%."
   },
   {
     "id": 141200000700400102,

@@ -16,5 +16,11 @@
     "TowerNameLanguageId": 250600000000110003,
     "LastFloorTowerEventStageId": 11000315,
     "ResourceId": "tower_event_200"
+  },
+  {
+    "Id": 110004,
+    "TowerNameLanguageId": 250600000000110004,
+    "LastFloorTowerEventStageId": 11000420,
+    "ResourceId": "tower_event_200"
   }
 ]

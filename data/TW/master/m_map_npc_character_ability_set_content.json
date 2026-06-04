@@ -17190,6 +17190,11 @@
     "AbilityId": 2001405
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700211112500161,
+    "SortOrder": 2,
+    "AbilityId": 2001802
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700211200100021,
     "SortOrder": 1,
     "AbilityId": 6101802
@@ -17285,9 +17290,19 @@
     "AbilityId": 6101702
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700213120000091,
+    "SortOrder": 2,
+    "AbilityId": 2002402
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700213120000121,
     "SortOrder": 1,
     "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700213120000121,
+    "SortOrder": 2,
+    "AbilityId": 2002402
   },
   {
     "MapNpcCharacterAbilitySetId": 90700213120000251,
@@ -17295,9 +17310,19 @@
     "AbilityId": 6103705
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700213120000251,
+    "SortOrder": 2,
+    "AbilityId": 2002401
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700213120000281,
     "SortOrder": 1,
     "AbilityId": 6102003
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700213120000281,
+    "SortOrder": 2,
+    "AbilityId": 2002401
   },
   {
     "MapNpcCharacterAbilitySetId": 90700214123000011,
@@ -17370,6 +17395,16 @@
     "AbilityId": 6103901
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700215108000361,
+    "SortOrder": 1,
+    "AbilityId": 2002302
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700215109500341,
+    "SortOrder": 1,
+    "AbilityId": 2011002
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700215120000011,
     "SortOrder": 1,
     "AbilityId": 2002402
@@ -17440,14 +17475,264 @@
     "AbilityId": 2003102
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700215133000151,
+    "SortOrder": 1,
+    "AbilityId": 2010402
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700215133000161,
     "SortOrder": 1,
     "AbilityId": 6102301
   },
   {
+    "MapNpcCharacterAbilitySetId": 90700215133000161,
+    "SortOrder": 2,
+    "AbilityId": 2010402
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700215133000171,
+    "SortOrder": 1,
+    "AbilityId": 2010402
+  },
+  {
     "MapNpcCharacterAbilitySetId": 90700215230000031,
     "SortOrder": 1,
     "AbilityId": 6101901
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216140000021,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216140000261,
+    "SortOrder": 1,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216140000261,
+    "SortOrder": 2,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216140000271,
+    "SortOrder": 1,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216140000291,
+    "SortOrder": 1,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216240000021,
+    "SortOrder": 1,
+    "AbilityId": 6101801
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700216240000022,
+    "SortOrder": 1,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217100100171,
+    "SortOrder": 1,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217100100172,
+    "SortOrder": 1,
+    "AbilityId": 2004703
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217120000121,
+    "SortOrder": 1,
+    "AbilityId": 2002402
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217120000121,
+    "SortOrder": 2,
+    "AbilityId": 6101901
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217185000011,
+    "SortOrder": 1,
+    "AbilityId": 6102201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700217299900011,
+    "SortOrder": 1,
+    "AbilityId": 6101801
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000011,
+    "SortOrder": 1,
+    "AbilityId": 2001902
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000011,
+    "SortOrder": 2,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000011,
+    "SortOrder": 3,
+    "AbilityId": 5103710
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000041,
+    "SortOrder": 1,
+    "AbilityId": 2001901
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000041,
+    "SortOrder": 2,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000051,
+    "SortOrder": 1,
+    "AbilityId": 2003102
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000051,
+    "SortOrder": 2,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000051,
+    "SortOrder": 3,
+    "AbilityId": 6103501
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000141,
+    "SortOrder": 1,
+    "AbilityId": 6103501
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000141,
+    "SortOrder": 2,
+    "AbilityId": 2003102
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218133000141,
+    "SortOrder": 3,
+    "AbilityId": 6101702
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218230000041,
+    "SortOrder": 1,
+    "AbilityId": 2001901
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700218230000041,
+    "SortOrder": 2,
+    "AbilityId": 6101901
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900011,
+    "SortOrder": 1,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900011,
+    "SortOrder": 2,
+    "AbilityId": 6108601
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900011,
+    "SortOrder": 3,
+    "AbilityId": 6119201
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900021,
+    "SortOrder": 1,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900022,
+    "SortOrder": 1,
+    "AbilityId": 6102001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900031,
+    "SortOrder": 1,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900032,
+    "SortOrder": 1,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900041,
+    "SortOrder": 1,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900051,
+    "SortOrder": 1,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700219121900061,
+    "SortOrder": 1,
+    "AbilityId": 6119301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143000011,
+    "SortOrder": 1,
+    "AbilityId": 2002002
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143000011,
+    "SortOrder": 2,
+    "AbilityId": 6109001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143000501,
+    "SortOrder": 1,
+    "AbilityId": 6101703
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143000541,
+    "SortOrder": 1,
+    "AbilityId": 6102005
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143100011,
+    "SortOrder": 1,
+    "AbilityId": 2016604
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143100011,
+    "SortOrder": 2,
+    "AbilityId": 6103501
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220143100011,
+    "SortOrder": 3,
+    "AbilityId": 6108601
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220243000141,
+    "SortOrder": 1,
+    "AbilityId": 6101701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220243000141,
+    "SortOrder": 2,
+    "AbilityId": 6103701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220243000141,
+    "SortOrder": 3,
+    "AbilityId": 6119801
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 90700220243000151,
+    "SortOrder": 1,
+    "AbilityId": 6119701
   },
   {
     "MapNpcCharacterAbilitySetId": 91010104200100021,

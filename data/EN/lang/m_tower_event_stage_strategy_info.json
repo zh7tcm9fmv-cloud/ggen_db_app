@@ -53,7 +53,7 @@
   },
   {
     "id": 290200907001070101,
-    "value": "The victory condition for this stage is to <material=MaterialName>defeat Johnny Ridden and Dozle Zabi</material>."
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat [Johnny Ridden] and [Dozle Zabi]</material>."
   },
   {
     "id": 290200907001070201,
@@ -69,7 +69,7 @@
   },
   {
     "id": 290200907001080201,
-    "value": "The victory condition for this stage is for <material=MaterialName>White Base  to reach the target area</material>."
+    "value": "The victory condition for this stage is for <material=MaterialName>[White Base]  to reach the target area</material>."
   },
   {
     "id": 290200907001080202,
@@ -129,7 +129,7 @@
   },
   {
     "id": 290200907001110103,
-    "value": "Freedom Gundam METEOR and Justice Gundam METEOR <material=MaterialName>have an ability with the When Vigor is Supercharged or higher, Increase ATK by 300%. effect</material>."
+    "value": "Freedom Gundam METEOR and Justice Gundam METEOR appear as reinforcements after mission objectives are met, and <material=MaterialName>have an ability with the When Vigor is Supercharged or higher, Increase ATK by 300%. effect</material>."
   },
   {
     "id": 290200907001110201,
@@ -425,11 +425,11 @@
   },
   {
     "id": 290200907002120101,
-    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nXi Gundam  has <material=MaterialName>high ATK </material>."
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat [Hathaway Noa] and [Lane Aim]</material>.\n\nXi Gundam  has <material=MaterialName>high ATK </material>."
   },
   {
     "id": 290200907002120102,
-    "value": "The victory condition for this stage is to <material=MaterialName>defeat Hathaway Noa and Lane Aim</material>.\n\nPenelope  <material=MaterialName>has an ability with the Support Defense (Counter) effect</material>."
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat [Hathaway Noa] and [Lane Aim]</material>.\n\nPenelope  <material=MaterialName>has an ability with the Support Defense (Counter) effect</material>."
   },
   {
     "id": 290200907002120201,
@@ -478,6 +478,74 @@
   {
     "id": 290200907002150203,
     "value": "Psycho Gundam and Psycho Gundam Mk-II are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907002160103,
+    "value": "Khronos and Zeydra appear as reinforcements after mission objectives are met, and has <material=MaterialName>very high stats</material>."
+  },
+  {
+    "id": 290200907002160201,
+    "value": "The defeat condition for this stage is for <material=MaterialName>Yurin L'Ciel to be defeated</material>.\n\nFarsia is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907002160202,
+    "value": "Zedas and certain enemy forces are units that <material=MaterialName>prioritize attacking the guest force</material>."
+  },
+  {
+    "id": 290200907002170101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Haro</material>.\n\nHaro is a unit with high stats that possesses <material=MaterialName> which has an ability with the Chance Step +3 time(s) effect </material>."
+  },
+  {
+    "id": 290200907002170202,
+    "value": "Phoenix Gundam (Power unleashed) and Master Gundam are units that <material=MaterialName>use MAP Weapons against one of your units</material>."
+  },
+  {
+    "id": 290200907002170203,
+    "value": "Psycho Haro <material=MaterialName>prevents your units from moving</material>."
+  },
+  {
+    "id": 290200907002180103,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Talia Gladys</material>.\n\nMinerva is a unit that <material=MaterialName>prioritizes attacking Archangel and is equipped with powerful weaponry</material>."
+  },
+  {
+    "id": 290200907002180201,
+    "value": "The defeat condition for this stage is the defeat of <material=MaterialName>Murrue Ramius and the guest force</material>.\n\nArchangel  is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907002180202,
+    "value": "Shiranui Akatsuki is a guest force unit that has the ability with the <material=MaterialName>Reduce damage taken from squad's beam weapons by 100%. effect and powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907002180204,
+    "value": "Legend Gundam and certain enemy forces are units that <material=MaterialName>prioritize attacking Archangel</material>."
+  },
+  {
+    "id": 290200907002190101,
+    "value": "Heero Yuy (EW)  <material=MaterialName>has an ability with the When Relena Darlian (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%. effect</material>."
+  },
+  {
+    "id": 290200907002190202,
+    "value": "Relena Darlian (EW)  <material=MaterialName>uses the HP Repair (Range) character skill</material>."
+  },
+  {
+    "id": 290200907002190203,
+    "value": "Gundam Deathscythe (EW / Rousette), Gundam Heavyarms (EW / Eagle), Gundam Sandrock (EW / Armadillo), and Shenlong Gundam (EW / Liaoya)  <material=MaterialName>have an ability with the Escape effect</material>."
+  },
+  {
+    "id": 290200907002190204,
+    "value": "Altron Gundam (EW) is a Friendly Force unit with <material=MaterialName>high ATK</material>. It will <material=MaterialName>appear once a certain unit is destroyed.</material>"
+  },
+  {
+    "id": 290200907002200101,
+    "value": "Hashmal is a unit with high stats that possesses <material=MaterialName> which has an ability with the As long as there is a surviving Pluma in the squad,\nReduce damage taken by 100%. effect </material>."
+  },
+  {
+    "id": 290200907002200202,
+    "value": "Reginlaze (Iok) is a Third Force unit that <material=MaterialName>uses a weapon with the “Decreased DEF” effect.</material>"
+  },
+  {
+    "id": 290200907002200203,
+    "value": "Graze (Dainsleif Team, Arianrhod Fleet) is a Third Force unit that <material=MaterialName>uses a weapon with the “Decreased DEF” effect.</material> It will <material=MaterialName>appear as reinforcements once the mission objective has been met.</material>"
   },
   {
     "id": 290300907001010201,
@@ -886,5 +954,73 @@
   {
     "id": 290300907002150203,
     "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907002160103,
+    "value": "Protect the guest force from attacks by Khronos and Zeydra."
+  },
+  {
+    "id": 290300907002160201,
+    "value": "Take out challenging enemies with the help of Guest Forces."
+  },
+  {
+    "id": 290300907002160202,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907002170101,
+    "value": "Since the targets do not move until the final turn, destroy them by utilizing Counter."
+  },
+  {
+    "id": 290300907002170202,
+    "value": "By making them fire mobility-type MAP Weapons, it is possible for attacks to land more easily."
+  },
+  {
+    "id": 290300907002170203,
+    "value": "Use neutral units' area effects to increase your chances of success."
+  },
+  {
+    "id": 290300907002180103,
+    "value": "Use the ability of Shiranui Akatsuki to protect Murrue Ramius."
+  },
+  {
+    "id": 290300907002180201,
+    "value": "Deploy many Support Defense characters to protect the guest force from incoming attacks."
+  },
+  {
+    "id": 290300907002180202,
+    "value": "Make use of guest forces to protect Murrue Ramius from enemy attacks."
+  },
+  {
+    "id": 290300907002180204,
+    "value": "Use your own Durability units to handle non-Beam Weapon attacks."
+  },
+  {
+    "id": 290300907002190101,
+    "value": "Utilize the area effects of Friendly Force and Neutral reinforcement units to destroy the enemy."
+  },
+  {
+    "id": 290300907002190202,
+    "value": "Lure enemies outside of skill range or make sure to defeat them during your turn."
+  },
+  {
+    "id": 290300907002190203,
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
+  },
+  {
+    "id": 290300907002190204,
+    "value": "Use a unit with high stats to deal damage."
+  },
+  {
+    "id": 290300907002200101,
+    "value": "Wipe out the Pluma before attacking."
+  },
+  {
+    "id": 290300907002200202,
+    "value": "Use Third Force units to defeat Hashmal."
+  },
+  {
+    "id": 290300907002200203,
+    "value": "Utilize Graze (Dainsleif Team, Arianrhod Fleet)'s MAP weapon to inflict damage on the enemy."
   }
 ]
