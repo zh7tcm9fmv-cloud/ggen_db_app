@@ -1542,7 +1542,7 @@ document.body.addEventListener('focusin',onDetailPrefetchIntentEvent,true);
 function syncUnitListDetailHighlight(){const id=S.listSelectedUnitId;const sid=id==null||id===''?'':String(id);document.querySelectorAll('[data-detail-type="unit"][data-detail-id]').forEach(el=>{el.classList.toggle('list-detail-active',!!sid&&String(el.getAttribute('data-detail-id'))===sid)})}
 function openUnitDetailFromTransform(uid){openDetail('unit',String(uid),{preserveUnitSpSsp:true})}
 async function openDetail(type,id,opts){opts=opts||{};if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');mc.className='modal-content';mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':(type==='profile_title'?'stage-detail':'stage-detail')))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{if(type==='supporter'){S.currentSupporterLevel=100;S.currentSupporterLbTier=3}const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp)S.conditionalPassiveActive=!!S.listUnitCond}}if(_pcp)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;S.currentDetailData=d;S.currentDetailType=type;if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id))updateDetailDynamicSections(type)}).catch(()=>{})}}if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}}catch(e){console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
-function closeModal(){if(/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(location.pathname)){if(S.currentTab==='ranking')syncHistoryToBrowsePath('/rk');else syncHistoryToBrowsePath('/')}if(_detailRankToggleResizeObs){_detailRankToggleResizeObs.disconnect();_detailRankToggleResizeObs=null}document.getElementById('detailModal').classList.remove('active');document.body.classList.remove('detail-modal-open');releaseBackgroundScrollLock();document.getElementById('modalContent').className='modal-content';S.currentDetailData=null;S.currentDetailType=null;S.conditionalPassiveActive=false;S.charSuperchargedExTier=0;S.spActive=false;S.sspActive=false;S.stageMapExpanded=false;S.stageMapReinforcementOnly=false;updateScrollTopFabVisibility()}
+function closeModal(){if(/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(location.pathname)){if(S.currentTab==='ranking')syncHistoryToBrowsePath('/rk');else syncHistoryToBrowsePath('/')}document.getElementById('detailModal').classList.remove('active');document.body.classList.remove('detail-modal-open');releaseBackgroundScrollLock();document.getElementById('modalContent').className='modal-content';S.currentDetailData=null;S.currentDetailType=null;S.conditionalPassiveActive=false;S.charSuperchargedExTier=0;S.spActive=false;S.sspActive=false;S.stageMapExpanded=false;S.stageMapReinforcementOnly=false;updateScrollTopFabVisibility()}
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 function _resolveStageNpcRow(npcId){
 const nid=String(npcId!=null?npcId:'').trim();
@@ -1625,30 +1625,7 @@ return`<div class="detail-back-strip"><button type="button" class="detail-back-b
 function renderRecommendUnitCard(d){const ctx=d&&d.detail_npc_context;if(ctx&&ctx.unit&&ctx.unit.id){const u=ctx.unit;const row={rarity:u.rarity||'N',thum:u.portrait||'',role_icon:u.role_icon||'',acquisition_icon:''};const thumb=renderListThumb(row,'unit',96,{npcDetailThumb:true});const nm=String(u.name||`Unit ${u.id}`);return`<div class="detail-rec-link-card" role="button" tabindex="0" onclick="openNpcCounterpartDetail('unit')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNpcCounterpartDetail('unit')}"><div class="detail-rec-link-label">${t('rec_unit_shortcut')}</div><div class="detail-rec-link-thumb-wrap">${thumb}</div><div class="detail-rec-link-name">${esc(nm)}</div></div>`}const ru=d.recommend_unit;if(!ru||!ru.id)return'';const row={rarity:ru.rarity,thum:ru.thum,role_icon:ru.role_icon,acquisition_icon:ru.acquisition_icon||''};const thumb=renderListThumb(row,'unit',96);const rk=d&&d.ranking_context?'1':'0';return`<div class="detail-rec-link-card" role="link" tabindex="0" data-detail-type="unit" data-detail-id="${escAttr(String(ru.id))}" onclick="openDetailFromRecommend('unit','${ru.id}',${rk})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetailFromRecommend('unit','${ru.id}',${rk})}"><div class="detail-rec-link-label">${t('rec_unit_shortcut')}</div><div class="detail-rec-link-thumb-wrap">${thumb}</div><div class="detail-rec-link-name">${esc(ru.name)}</div></div>`}
 function renderLimitedTimeBanner(d,kind){if(!d||!d.is_limited_time)return'';const cls=kind==='unit'?'detail-limited-banner--unit':'detail-limited-banner--character';const label=t('limited_label');return`<div class="detail-limited-banner-wrap"><div class="detail-limited-banner ${cls}" role="img" aria-label="${esc(label)}"><span class="detail-limited-banner-inner">${esc(label)}</span></div></div>`}
 function renderDetailRankingToggle(d,type){if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))||d.detail_npc_context)return'';const on=!!S.detailRankingOverlay;const ttl=on?'Hide ranking':'Show ranking';return`<button type="button" class="detail-rank-toggle-btn${on?' active':''}" title="${escAttr(ttl)}" aria-label="${escAttr(ttl)}" onclick="toggleDetailRankingOverlay()"><img class="detail-rank-toggle-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`}
-function toggleDetailRankingOverlay(){if(!S.currentDetailData||!(S.currentDetailType==='character'||S.currentDetailType==='unit')||!S.currentDetailData.ranking_available)return;S.detailRankingOverlay=!S.detailRankingOverlay;const b=document.querySelector('.detail-rank-toggle-btn');if(b)b.classList.toggle('active',!!S.detailRankingOverlay);updateDetailDynamicSections(S.currentDetailType);syncDetailRankToggleLayout()}
-let _detailRankToggleResizeObs=null;
-function syncDetailRankToggleLayout(){
-const header=document.querySelector('.modal-content.char-detail .detail-header,.modal-content.unit-detail .detail-header');
-if(!header)return;
-const slot=header.querySelector(':scope > .detail-rank-toggle-slot');
-const wrap=header.querySelector('.detail-portrait-wrap');
-if(!slot||!wrap){
-if(_detailRankToggleResizeObs){_detailRankToggleResizeObs.disconnect();_detailRankToggleResizeObs=null}
-return;
-}
-const left=Math.max(0,Math.round(wrap.offsetLeft));
-const top=Math.max(0,Math.round(wrap.offsetTop+wrap.offsetHeight-slot.offsetHeight));
-slot.style.left=`${left}px`;
-slot.style.top=`${top}px`;
-slot.style.right='auto';
-slot.style.bottom='auto';
-if(!_detailRankToggleResizeObs){
-_detailRankToggleResizeObs=new ResizeObserver(()=>syncDetailRankToggleLayout());
-_detailRankToggleResizeObs.observe(header);
-}
-const img=wrap.querySelector('img.detail-portrait');
-if(img&&!img.complete)img.addEventListener('load',syncDetailRankToggleLayout,{once:true});
-}
+function toggleDetailRankingOverlay(){if(!S.currentDetailData||!(S.currentDetailType==='character'||S.currentDetailType==='unit')||!S.currentDetailData.ranking_available)return;S.detailRankingOverlay=!S.detailRankingOverlay;const b=document.querySelector('.detail-rank-toggle-btn');if(b)b.classList.toggle('active',!!S.detailRankingOverlay);updateDetailDynamicSections(S.currentDetailType)}
 function charRoleIsDefense(role){const r=String(role||'').toLowerCase();return r==='defense'||r.includes('defense')}
 function charRoleIsSupport(role){const r=String(role||'').toLowerCase();return r==='support'||r.includes('support')}
 function _countCharActionPlusOne(txt,kind){const s=String(txt||'');const pick=(arr)=>arr.reduce((n,re)=>{const m=s.match(re);return n+(m?m.length:0)},0);if(kind==='chance')return pick([/chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)/g]);if(kind==='def')return pick([/support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d)/g]);return pick([/support\s*attack\s*\/\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援攻擊\s*[／/]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/支援攻撃\s*[／/]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d)/g])}
@@ -1884,14 +1861,13 @@ const header=wrap.closest('.detail-header');
 if(!header)return;
 header.querySelectorAll('.detail-rank-toggle-btn').forEach(btn=>{if(!btn.closest('.detail-rank-toggle-slot'))btn.remove()});
 header.querySelectorAll('.detail-rank-toggle-slot').forEach(el=>el.remove());
-if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){
-if(_detailRankToggleResizeObs){_detailRankToggleResizeObs.disconnect();_detailRankToggleResizeObs=null}
-return;
-}
+if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context))return;
 const btnHtml=renderDetailRankingToggle(d,type);
 if(!btnHtml)return;
-header.insertAdjacentHTML('beforeend',`<div class="detail-rank-toggle-slot">${btnHtml}</div>`);
-requestAnimationFrame(()=>{syncDetailRankToggleLayout();requestAnimationFrame(syncDetailRankToggleLayout)});
+const stack=header.querySelector('.detail-portrait-stack');
+const portraitWrap=stack?stack.querySelector(':scope > .detail-portrait-wrap'):null;
+if(portraitWrap)portraitWrap.insertAdjacentHTML('afterend',`<div class="detail-rank-toggle-slot">${btnHtml}</div>`);
+else header.insertAdjacentHTML('beforeend',`<div class="detail-rank-toggle-slot">${btnHtml}</div>`);
 }
 function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
@@ -2517,35 +2493,13 @@ if(_listTheadStickyRaf)return;
 _listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop();cleanupBrowseTableLayout()})
 }
 
-// iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & overlay using visual viewport.
-function syncVisualViewportBackdrop(){
-const pat=document.querySelector('.bg-pattern');
-const vv=window.visualViewport;
-const mobile=window.matchMedia('(max-width:768px)').matches;
-if(!pat)return;
-if(vv&&mobile){
-pat.style.top=`${vv.offsetTop}px`;
-pat.style.left=`${vv.offsetLeft}px`;
-pat.style.width=`${vv.width}px`;
-pat.style.height=`${vv.height}px`;
-pat.style.right='auto';
-pat.style.bottom='auto';
-}else{
-pat.style.removeProperty('top');
-pat.style.removeProperty('left');
-pat.style.removeProperty('width');
-pat.style.removeProperty('height');
-pat.style.removeProperty('right');
-pat.style.removeProperty('bottom');
-}
-}
+// iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & FAB using visual viewport.
 function updateCmpBrowserInset(){
 const vv=window.visualViewport;
 let inset=0;
 if(vv){
 inset=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
 }
-syncVisualViewportBackdrop();
 document.documentElement.style.setProperty('--cmp-browser-inset-bottom',inset+'px')
 }
 function initCmpSafeArea(){
