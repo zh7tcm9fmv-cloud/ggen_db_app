@@ -2125,6 +2125,30 @@ mnX=Math.min(mnX,bx);mxX=Math.max(mxX,bx+ww-1);mnY=Math.min(mnY,by);mxY=Math.max
 }
 return(mnX===999)?null:{mnX,mxX,mnY,mxY}
 }
+function _stageMapPlayableCellSet(md){
+  if(!md||!Array.isArray(md.playable_cells)||!md.playable_cells.length)return null;
+  if(!md._playableCellSet){
+    md._playableCellSet=new Set(md.playable_cells.map(c=>`${Number(c[0])}_${Number(c[1])}`));
+  }
+  return md._playableCellSet;
+}
+function _stageMapHitPlayableCell(md,x,y){
+  const s=_stageMapPlayableCellSet(md);
+  if(!s)return false;
+  return s.has(`${x-1}_${y-1}`);
+}
+function _stageMapExtentsFromPlayableCells(md){
+  const cells=md&&md.playable_cells;
+  if(!Array.isArray(cells)||!cells.length)return null;
+  let mnX=999,mxX=-1,mnY=999,mxY=-1;
+  cells.forEach(c=>{
+    const cx=Number(c[0])+1,cy=Number(c[1])+1;
+    if(!Number.isFinite(cx)||!Number.isFinite(cy))return;
+    if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;
+  });
+  if(mnX===999)return null;
+  return{mnX,mxX,mnY,mxY};
+}
 function _stageMapExtentsFromBuffAreas(md){
   if(!_stageMapBuffAreasShown())return null;
   const ba=md&&md.buff_areas?md.buff_areas:null;
@@ -2146,6 +2170,7 @@ function _stageMapCellShowsUnitOrReach(md,occ,x,y){
 function _stageMapCellShowsViewportContent(md,occ,x,y){
   if(_stageMapCellShowsUnitOrReach(md,occ,x,y))return true;
   if(_stageMapBuffAreasShown()&&_stageMapBuffAreaAt(md,x,y))return true;
+  if(_stageMapHitPlayableCell(md,x,y))return true;
   return false;
 }
 function _stageMapTrimViewportEmptyMargins(md,win,occ){
@@ -2186,7 +2211,8 @@ function _stageMapViewWindowClassic(md){
   if(mnX!==999)ext={mnX,mxX,mnY,mxY};
   const rt=_stageMapExtentsFromReachTargets(md);
   const bf=_stageMapExtentsFromBuffAreas(md);
-  const merged=_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf);
+  const pf=_stageMapExtentsFromPlayableCells(md);
+  const merged=_stageMapMergeExtents(_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf),pf);
   if(!merged)return {minX:1,maxX:w||1,minY:1,maxY:h||1};
   const pad=2;
   const win={
@@ -2214,7 +2240,8 @@ function _stageMapViewWindow905(md){
   if(mnX!==999)ext={mnX,mxX,mnY,mxY};
   const rt=_stageMapExtentsFromReachTargets(md);
   const bf=_stageMapExtentsFromBuffAreas(md);
-  const merged=_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf);
+  const pf=_stageMapExtentsFromPlayableCells(md);
+  const merged=_stageMapMergeExtents(_stageMapMergeExtents(_stageMapMergeExtents(ext,rt),bf),pf);
   const pad=1;
   let raw;
   if(merged)raw={
@@ -2227,7 +2254,7 @@ function _stageMapViewWindow905(md){
   return _stageMapApplyViewportTrim(md,raw)
 }
 function _stageMapViewWindow(md){
-return _stage905MapViewportTuned()?_stageMapViewWindow905(md):_stageMapViewWindowClassic(md)
+return _stageMapViewWindowClassic(md)
 }
 function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
@@ -2319,10 +2346,12 @@ function renderStageMapGrid(md){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
       const ck=`${x}_${y}`;
       const buffArea=_stageMapBuffAreaAt(md,x,y);
+      const isPlayableTile=!u&&_stageMapHitPlayableCell(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
+      if(isPlayableTile)cls+=' map-cell--playable';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
       if(showBuffArea){
         cls+=' map-cell--buff-area';

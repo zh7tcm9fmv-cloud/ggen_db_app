@@ -4661,6 +4661,55 @@ def create_map_master_lookup(d):
         if mid != '0': lk[mid] = {'width': safe_int(item.get('Width'), 0), 'height': safe_int(item.get('Height'), 0)}
     return lk
 
+_MAP_CHIP_COORD_RE = re.compile(r'\((\d+),(\d+)\)')
+
+def parse_map_chip_coordinate_list(raw):
+    if raw is None:
+        return []
+    return [(safe_int(a, 0), safe_int(b, 0)) for a, b in _MAP_CHIP_COORD_RE.findall(str(raw))]
+
+def create_map_chip_motif_lookup(d):
+    """Union of m_map_chip_motif CoordinateList per MapId — playable grid cells for stage maps."""
+    by_map = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        mid = normalize_id(item.get('MapId') or item.get('mapId'))
+        if mid == '0':
+            continue
+        cells = by_map.setdefault(mid, set())
+        for xy in parse_map_chip_coordinate_list(item.get('CoordinateList')):
+            cells.add(xy)
+    out = {}
+    for mid, cells in by_map.items():
+        if not cells:
+            continue
+        xs = [c[0] for c in cells]
+        ys = [c[1] for c in cells]
+        out[mid] = {
+            'cell_count': len(cells),
+            'min_x': min(xs),
+            'max_x': max(xs),
+            'min_y': min(ys),
+            'max_y': max(ys),
+            'playable_cells': [[x, y] for x, y in sorted(cells)],
+        }
+    return out
+
+def resolve_stage_map_dimensions(mi, chip_info, max_npc_x, max_npc_y, pad=2):
+    """Canonical stage map size: m_map Width/Height when present, else NPC/chip bounds."""
+    mw = safe_int((mi or {}).get('width'), 0)
+    mh = safe_int((mi or {}).get('height'), 0)
+    chip_w = chip_h = 0
+    if chip_info:
+        chip_w = safe_int(chip_info.get('max_x'), -1) + 1
+        chip_h = safe_int(chip_info.get('max_y'), -1) + 1
+    nx = max(0, safe_int(max_npc_x, 0)) + 1 + pad
+    ny = max(0, safe_int(max_npc_y, 0)) + 1 + pad
+    if mw > 0 and mh > 0:
+        return mw, mh
+    return max(nx, chip_w), max(ny, chip_h)
+
 def create_map_npc_lookup(d):
     lk, bms = {}, {}
     for item in extract_data_list(d):
@@ -6336,6 +6385,7 @@ stage_sortie_group_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sort
 stage_battle_condition_text_base_data = load_json(os.path.join(BASE_DIR, "m_stage_battle_condition_text.json"))
 map_stage_data = load_json(os.path.join(BASE_DIR, "m_map_stage.json"))
 map_master_data = load_json(os.path.join(BASE_DIR, "m_map.json"))
+map_chip_motif_data = load_json(os.path.join(BASE_DIR, "m_map_chip_motif.json"))
 map_npc_data = load_json(os.path.join(BASE_DIR, "m_map_npc.json"))
 map_npc_buff_data = load_json(os.path.join(BASE_DIR, "m_map_npc_buff.json"))
 map_gimmick_npc_data = load_json(os.path.join(BASE_DIR, "m_map_gimmick_npc.json"))
@@ -6439,6 +6489,7 @@ stage_condition_map = create_stage_condition_map(stage_battle_condition_text_bas
 map_stage_lookup = create_map_stage_lookup(map_stage_data) if map_stage_data else {}
 map_stage_meta_by_stage_id = create_map_stage_meta_by_stage_id(map_stage_data) if map_stage_data else {}
 map_master_lookup = create_map_master_lookup(map_master_data) if map_master_data else {}
+map_chip_motif_lookup = create_map_chip_motif_lookup(map_chip_motif_data) if map_chip_motif_data else {}
 map_npc_lookup, map_npc_by_map_stage = create_map_npc_lookup(map_npc_data) if map_npc_data else ({}, {})
 map_stage_reach_pin_areas_by_map_stage = create_map_stage_reach_pin_areas_map(map_area_data) if map_area_data else {}
 map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
@@ -8788,10 +8839,13 @@ def resolve_stage_conditions(sid, lc):
         elif ct == '3': defeat.append(txt)
     return victory, defeat
 
-def build_map_grid(w, h, u, buff_areas=None):
+def build_map_grid(w, h, u, buff_areas=None, playable_cells=None, playable_cell_count=0):
     md = {'width': w, 'height': h, 'units': u}
     if buff_areas:
         md['buff_areas'] = buff_areas
+    if playable_cells:
+        md['playable_cells'] = playable_cells
+        md['playable_cell_count'] = playable_cell_count or len(playable_cells)
     return md
 
 
@@ -16140,20 +16194,15 @@ def get_stage(stage_id):
             for u in uom:
                 for c in (u.get('cells') or [{'x': u.get('x', 0), 'y': u.get('y', 0)}]):
                     max_x = max(max_x, int(c.get('x', 0))); max_y = max(max_y, int(c.get('y', 0)))
-            mw, mh = safe_int(mi.get('width'), 0), safe_int(mi.get('height'), 0)
-            # 90520021 only: viewport clamp — unrelated to NPC stat parsing (same as every other stage).
-            # Other stages keep legacy padding past content so we do not change their viewport.
-            if normalize_id(stage_id) == '90520021':
-                if mw > 0:
-                    w = mw
-                if mh > 0:
-                    h = mh
-            else:
-                pad = 2
-                w = max(w, max_x + 1 + pad)
-                h = max(h, max_y + 1 + pad)
+            chip_info = map_chip_motif_lookup.get(mid)
+            w, h = resolve_stage_map_dimensions(mi, chip_info, max_x, max_y)
+            playable_cells = (chip_info or {}).get('playable_cells') or []
+            playable_cell_count = (chip_info or {}).get('cell_count') or len(playable_cells)
             buff_areas = build_map_buff_area_cells(buff_sources, w, h, lc)
-            md = build_map_grid(w, h, uom, buff_areas=buff_areas)
+            md = build_map_grid(
+                w, h, uom, buff_areas=buff_areas,
+                playable_cells=playable_cells, playable_cell_count=playable_cell_count,
+            )
             rtp = []
             if victory_lines_include_reach_target_area(vc):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
