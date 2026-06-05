@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meta Tier List — GGen Database</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tier_demo.css') }}">
+</head>
+<body class="tier-demo-page">
+<div class="tier-demo-shell">
+  <a class="tier-demo-back" href="/">← Back to GGen Database</a>
+
+  <header class="tier-demo-hero">
+    <h1>Meta Tier List</h1>
+    <p>
+      SSS → A rankings for gacha UR units, pilots, and supporters.
+      Peak EX damage and guaranteed-crit pilots (e.g. Shinn EX, Burning Gundam) are weighted above Chance Step alone.
+      References: <a href="https://appmedia.jp/ggene_78617135" target="_blank" rel="noopener">AppMedia</a> unit rankings &amp; community meta.
+    </p>
+  </header>
+
+  <div class="tier-demo-controls">
+    <nav class="tier-demo-tabs" aria-label="Category">
+      <button type="button" class="active" data-cat="units">Units (EX)</button>
+      <button type="button" data-cat="characters">Pilots</button>
+      <button type="button" data-cat="supporters">Supporters</button>
+    </nav>
+    <nav class="tier-demo-role-tabs" id="roleTabs" aria-label="Role filter">
+      <button type="button" class="active" data-role="Attack">Attack</button>
+      <button type="button" data-role="Defense">Defense</button>
+      <button type="button" data-role="Support">Support</button>
+    </nav>
+    <select id="tierMode" aria-label="Tier mode">
+      <option value="meta" selected>Meta tier (percentile)</option>
+      <option value="absolute">Absolute score tier</option>
+    </select>
+    <input id="tierSearch" type="search" placeholder="Search name…" aria-label="Search">
+  </div>
+
+  <p id="tierStatus" class="tier-demo-method" aria-live="polite">Loading…</p>
+
+  <div id="tierGrid" class="tier-demo-grid" aria-busy="true"></div>
+
+  <footer class="tier-demo-foot">
+    <p>
+      <strong>Scoring notes:</strong> Attack units favor range-5 or 7500+ EX burst (AppMedia: long range <em>or</em> one-shot power).
+      Shinn EX Supercharged EX grants <em>Guaranteed Critical</em> on turn 2 and pairs with any attack MS.
+      Limited-time picks get a pull-priority bump. Regenerate data with <code>python scripts/tier_rank_mockup.py</code>.
+    </p>
+    <p class="muted">Not affiliated with Bandai Namco. Game data may lag live patches.</p>
+  </footer>
+</div>
+<script src="{{ url_for('static', filename='js/tier_demo.js') }}" defer></script>
+</body>
+</html>

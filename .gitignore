@@ -16,3 +16,4 @@ data/persistent/*
 # Published vote snapshot (committed; synced to GitHub on Railway — survives free-tier deploys)
 !data/published/
 !data/published/banner_pool_votes.json
+!data/published/tier_mockup_v2.json

@@ -11005,6 +11005,78 @@ def about_page():
     return r
 
 
+@app.route('/tier-list')
+@app.route('/tier-demo')
+@app.route('/en/tier-list')
+def tier_demo_page():
+    """Meta tier list (precomputed JSON; linked from site footer)."""
+    r = make_response(render_template('tier_demo.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
+_PUBLISHED_TIER_MOCKUP_FILE = os.path.join(app_dir, 'data', 'published', 'tier_mockup_v2.json')
+
+
+def _tier_mockup_json_path():
+    """Production uses committed data/published/; local dev may use scripts/output/."""
+    if os.path.isfile(_PUBLISHED_TIER_MOCKUP_FILE):
+        return _PUBLISHED_TIER_MOCKUP_FILE
+    return os.path.join(app_dir, 'scripts', 'output', 'tier_mockup_v2.json')
+
+
+def _tier_mockup_thumb(entity_id, kind):
+    """List thumbnail for tier demo cards."""
+    eid = normalize_id(entity_id)
+    if kind == 'unit':
+        info = unit_info_map.get(eid, {})
+        return find_list_thumb(info.get('resource_ids', []), eid, 'images/unit_portraits')
+    if kind == 'character':
+        info = char_info_map.get(eid, {})
+        return find_list_thumb(info.get('resource_ids', []), eid, 'images/portraits')
+    if kind == 'supporter':
+        info = supporter_info_map.get(eid, {})
+        return find_list_thumb(info.get('resource_ids', []), eid, 'images/portraits')
+    return None
+
+
+def _tier_mockup_attach_thumbs(rows, kind):
+    for row in rows or []:
+        if isinstance(row, dict) and row.get('id'):
+            row['thumb'] = _tier_mockup_thumb(row['id'], kind)
+
+
+@app.route('/api/tier_mockup')
+def api_tier_mockup():
+    """Serve offline tier mockup JSON with portrait thumbnails."""
+    path = _tier_mockup_json_path()
+    if not os.path.isfile(path):
+        return jsonify({'error': 'tier_mockup_v2.json not found — run scripts/tier_rank_mockup.py'}), 404
+    with open(path, 'r', encoding='utf-8') as f:
+        payload = json.load(f)
+    for key in ('units_meta',):
+        buckets = payload.get(key) or {}
+        for tier_rows in buckets.values():
+            _tier_mockup_attach_thumbs(tier_rows, 'unit')
+    for key in ('characters_meta',):
+        buckets = payload.get(key) or {}
+        for tier_rows in buckets.values():
+            _tier_mockup_attach_thumbs(tier_rows, 'character')
+    for key in ('supporters_meta',):
+        buckets = payload.get(key) or {}
+        for tier_rows in buckets.values():
+            _tier_mockup_attach_thumbs(tier_rows, 'supporter')
+    for key in ('units_top30', 'characters_top30', 'supporters_all'):
+        kind = 'unit' if key.startswith('units') else ('character' if key.startswith('characters') else 'supporter')
+        _tier_mockup_attach_thumbs(payload.get(key), kind)
+    ex = payload.get('example_wing_zero')
+    if isinstance(ex, dict) and ex.get('id'):
+        ex['thumb'] = _tier_mockup_thumb(ex['id'], 'unit')
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
 @app.route('/privacy-policy')
 def privacy_policy_page():
     r = make_response(render_template('privacy.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
