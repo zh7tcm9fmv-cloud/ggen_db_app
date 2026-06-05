@@ -387,6 +387,12 @@ def get_latest_folder(base_path, prefix):
 
 def get_lang_paths(lang_code):
     config = LANG_CONFIG.get(lang_code, LANG_CONFIG[DEFAULT_LANG])
+    if lang_code == 'EN' and os.environ.get('GGEN_TIER_USE_BUNDLED_EN'):
+        _app_dir = os.path.dirname(os.path.abspath(__file__))
+        _bm = os.path.join(_app_dir, 'data', 'EN', 'master')
+        _bl = os.path.join(_app_dir, 'data', 'EN', 'lang')
+        if os.path.isdir(_bm) and os.path.isdir(_bl):
+            return _bm, _bl
     if IS_LOCAL:
         base_dir = get_latest_folder(config['root'], config['master_prefix'])
         lang_dir = get_latest_folder(config['root'], config['lang_prefix'])
@@ -11030,12 +11036,12 @@ def _tier_mockup_json_path():
 def _tier_scoring_guide():
     """How the 0–100 score is built (shown on /tier-list before the grid)."""
     return {
-        'version': 4,
+        'version': 5,
         'tier_modes': [
             {
                 'id': 'meta',
-                'label': 'Meta tier (merit)',
-                'detail': 'Merit score with hard SSS caps per role/rarity. UR Attack SSS needs top sim DPS, limited status, MAP-after-move, or bundled crit — permanent units like Atlas cannot SSS on breadth alone.',
+                'label': 'Meta tier',
+                'detail': 'Score percentiles within each role/rarity, with SSS gates for attackers. UR Attack SSS needs top sim DPS, limited banner, MAP-after-move, or bundled crit — permanent units like Atlas cannot SSS on breadth alone.',
             },
             {
                 'id': 'absolute',

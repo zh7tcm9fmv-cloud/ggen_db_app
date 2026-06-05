@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 os.chdir(ROOT)
+os.environ["GGEN_TIER_USE_BUNDLED_EN"] = "1"
 
 import app as A  # noqa: E402
 
@@ -26,11 +27,12 @@ LDC = LD
 
 TIER_ORDER = ("SSS", "SS", "S", "A")
 TIER_MIN_SCORE = {"SSS": 78, "SS": 70, "S": 62, "A": 0}
-MERIT_TIER_THRESHOLDS = {"SSS": 88, "SS": 74, "S": 62, "A": 0}
-MERIT_SSS_CAP = {
+META_TIER_PCTS = {"SSS": 0.08, "SS": 0.25, "S": 0.50}
+SSS_CAP = {
     "UR": {"Attack": 4, "Defense": 3, "Support": 3, "Supporter": 4},
     "SSR": {"Attack": 5, "Defense": 4, "Support": 4, "Supporter": 4},
 }
+REASON_LIMIT = 5
 LIMITED_SCORE_BONUS = 7.0
 LIMITED_META_BOOST = True
 
@@ -133,7 +135,7 @@ def apply_community_anchors(rows: list, meta_floor: dict, score_bump: dict | Non
 
 
 def assign_meta_tiers(rows: list, key: str = "is_tier_pool", group_fn=None) -> None:
-    """Legacy percentile tiers — kept for reference; use assign_merit_meta_tiers in production."""
+    """Legacy percentile tiers — kept for reference; use assign_gated_meta_tiers in production."""
     pool = [r for r in rows if r.get(key)]
     by_role = defaultdict(list)
     for r in pool:
@@ -158,233 +160,55 @@ def assign_meta_tiers(rows: list, key: str = "is_tier_pool", group_fn=None) -> N
                 r["tier_meta"] = "A"
 
 
-def _merit_from_sim_rank(sim_rank: int, n: int) -> float:
-    if n <= 0 or sim_rank <= 0:
-        return 0.0
-    if sim_rank == 1:
-        return 34.0
-    if sim_rank <= 3:
-        return 26.0
-    if sim_rank <= 5:
-        return 16.0
-    if sim_rank <= 8:
-        return 10.0
-    if sim_rank <= 12:
-        return 6.0
-    if sim_rank <= 18:
-        return 3.0
-    return 0.0
-
-
-def compute_attack_unit_merit(row: dict, peers: list) -> tuple[float, dict]:
-    """Meta pull priority — sim-validated peak DPS + limited/unique kit; penalizes permanent generalists."""
+def _attack_sss_eligible(row: dict, peers: list) -> bool:
+    """Permanent attackers need top sim burst or a unique kit — not terrain/team breadth alone."""
+    if row.get("community_anchor"):
+        return True
+    wpn = row.get("weapons") or {}
+    sub = row.get("subscores") or {}
     sim = row.get("sim_damage") or {}
     peak = int(sim.get("effective_peak") or 0)
+    if not peak:
+        return False
     sim_peaks = [int((p.get("sim_damage") or {}).get("effective_peak") or 0) for p in peers]
-    sim_rank, n = _rank_desc(peak, sim_peaks) if peak else (n + 1, len(peers))
-    wpn = row.get("weapons") or {}
-    ter = row.get("terrain_detail") or {}
-    sub = row.get("subscores") or {}
-    limited = bool(row.get("is_limited_time"))
-    crit = float(sub.get("crit_synergy") or 0) >= 8
-    notes: list[str] = []
-
-    merit = 38.0
-    sim_pts = _merit_from_sim_rank(sim_rank, n)
-    merit += sim_pts
-    med_sim = _pool_median([x for x in sim_peaks if x > 0])
-    if peak >= med_sim and med_sim > 0:
-        merit += 8.0
-        notes.append(f"sim peak above pool median ({med_sim:,})")
-    if sim_pts >= 26:
-        notes.append(f"damage-calc EX peak rank {sim_rank}/{n} (~{peak:,})")
-    elif peak:
-        notes.append(f"sim EX peak rank {sim_rank}/{n} (~{peak:,}) — not top-tier burst")
-
-    if limited:
-        merit += 14.0
-        notes.append("limited banner unit — meta pull priority")
-    if crit:
-        merit += 16.0
-        notes.append("bundled Guaranteed Critical pilot — spikes real damage")
+    sr, _ = _rank_desc(peak, sim_peaks)
+    if sr <= 3:
+        return True
     if wpn.get("map_after_move"):
-        merit += 20.0
-        notes.append("MAP after move — unique ER poke pattern")
-    elif wpn.get("has_map") and not wpn.get("map_after_move"):
-        merit += 4.0
-    if int(wpn.get("max_power") or 0) >= 8000:
-        merit += 6.0
-        notes.append(f"nominal EX power {wpn['max_power']}+")
-    if ter.get("space_ground_dual") and float(ter.get("er_stage_fit_pct") or 0) >= 82:
-        merit += 5.0
-
-    comp = float(row.get("score") or 0)
-    if not limited:
-        if sim_rank > 3:
-            merit = min(merit, 82.0)
-            notes.append("permanent gacha — SSS requires top-3 sim or unique MAP-after-move kit")
-        if sim_rank > 6:
-            merit = min(merit, 74.0)
-        if comp >= 94 and sim_rank > 8:
-            merit -= 8.0
-            notes.append(
-                "composite score inflated by breadth (terrain/team/supporter) without top-8 sim — merit adjusted"
-            )
-
-    if row.get("community_anchor"):
-        merit = max(merit, 90.0)
-        notes.append("community-verified meta anchor")
-
-    return round(max(0.0, merit), 1), {
-        "sim_rank": sim_rank, "sim_peak": peak, "limited": limited,
-        "crit_synergy": crit, "map_after_move": bool(wpn.get("map_after_move")),
-        "notes": notes,
-    }
+        return True
+    if float(sub.get("crit_synergy") or 0) >= 8:
+        return True
+    if row.get("is_limited_time") and sr <= 8:
+        return True
+    return False
 
 
-def compute_defense_unit_merit(row: dict, peers: list) -> tuple[float, dict]:
-    ssp = row.get("stats_ssp") or {}
+def _tier_sort_score(row: dict, peers: list) -> float:
+    """Meta sort key — down-ranks permanent attackers whose sim burst lags their composite score."""
+    sc = float(row.get("score") or 0)
+    if row.get("role") != "Attack":
+        return sc
+    sim = row.get("sim_damage") or {}
+    peak = int(sim.get("effective_peak") or 0)
+    if not peak:
+        return sc
+    sim_peaks = [int((p.get("sim_damage") or {}).get("effective_peak") or 0) for p in peers]
+    sr, _ = _rank_desc(peak, sim_peaks)
     wpn = row.get("weapons") or {}
     sub = row.get("subscores") or {}
-    limited = bool(row.get("is_limited_time"))
-    hp = float(ssp.get("HP") or 0)
-    df = float(ssp.get("DEF") or 0)
-    mob = float(ssp.get("MOV") or 0)
-    hps = [float((p.get("stats_ssp") or {}).get("HP") or 0) for p in peers]
-    dfs = [float((p.get("stats_ssp") or {}).get("DEF") or 0) for p in peers]
-    hr, _ = _rank_desc(hp, hps)
-    dr, _ = _rank_desc(df, dfs)
-    notes = []
-    merit = 40.0
-    if hr <= 5:
-        merit += 18.0
-        notes.append(f"HP rank {hr} — frontline bulk")
-    if dr <= 5:
-        merit += 14.0
-        notes.append(f"DEF rank {dr}")
-    if mob >= 5:
-        merit += 8.0
-    if int(wpn.get("max_def_debuff") or 0) >= 20:
-        merit += 10.0
-        notes.append("strong DEF debuff weapon")
-    if limited:
-        merit += 10.0
-    if not limited:
-        merit = min(merit, 78.0)
-    return round(merit, 1), {"hp_rank": hr, "def_rank": dr, "limited": limited, "notes": notes}
-
-
-def compute_support_unit_merit(row: dict, peers: list) -> tuple[float, dict]:
-    wpn = row.get("weapons") or {}
-    limited = bool(row.get("is_limited_time"))
-    deb = int(wpn.get("max_def_debuff") or 0)
-    debs = [int((p.get("weapons") or {}).get("max_def_debuff") or 0) for p in peers]
-    dr, _ = _rank_desc(deb, debs)
-    notes = []
-    merit = 38.0
-    if deb >= 25:
-        merit += 22.0
-        notes.append(f"DEF debuff {deb}% (rank {dr})")
-    elif deb >= 15:
-        merit += 12.0
-    if wpn.get("map_after_move"):
-        merit += 16.0
-        notes.append("MAP after move support")
-    elif wpn.get("has_map"):
-        merit += 6.0
-    if limited:
-        merit += 10.0
-    if not limited:
-        merit = min(merit, 76.0)
-    return round(merit, 1), {"debuff_rank": dr, "limited": limited, "notes": notes}
-
-
-def compute_character_merit(row: dict, peers: list) -> tuple[float, dict]:
-    sp = row.get("special") or {}
-    role = row.get("role", "")
-    limited = bool(row.get("is_limited_time"))
-    dmg_dealt = int(row.get("damage_dealt_bonus_pct") or 0)
-    notes = []
-    merit = 36.0
-    if role == "Attack":
-        if sp.get("guaranteed_crit"):
-            merit += 38.0
-            notes.append("Guaranteed Critical kit — intrinsic burst when assigned")
-        elif sp.get("supercharged_ex"):
-            merit += 14.0
-        if dmg_dealt >= 10:
-            merit += 12.0
-            notes.append(f"+{dmg_dealt}% Damage Dealt")
-        if sp.get("chance_step_x2") and not sp.get("guaranteed_crit"):
-            merit += 4.0
-    elif role == "Defense":
-        if sp.get("support_defense_x2"):
-            n = sum(1 for p in peers if (p.get("special") or {}).get("support_defense_x2"))
-            merit += 28.0 if n <= 20 else 18.0
-            notes.append("Support Defense ×2")
-        df = row.get("stats", {}).get("Defense", 0)
-        dfs = [p.get("stats", {}).get("Defense", 0) for p in peers]
-        dr, _ = _rank_desc(df, dfs)
-        if dr <= 8:
-            merit += 10.0
-    else:
-        if sp.get("support_attack_x2"):
-            merit += 26.0
-            notes.append("Support Attack ×2")
-    squad = sp.get("squad_buffs") or []
-    if squad:
-        best = max(squad, key=lambda b: b.get("atk_pct", 0) + b.get("def_pct", 0) * 0.5)
-        if best.get("atk_pct", 0) + best.get("def_pct", 0) >= 7:
-            merit += 8.0
-            notes.append("conditional squad-wide buff")
-    if limited:
-        merit += 8.0
-    return round(merit, 1), {"limited": limited, "notes": notes}
-
-
-def compute_supporter_merit(row: dict, peers: list) -> tuple[float, dict]:
-    prof = row.get("leader_profile") or {}
-    pct = int(prof.get("max_leader_pct") or 0)
-    qavg = float(prof.get("quality_avg") or 0)
-    ace = int(prof.get("ace_units_covered") or 0)
-    pcts = [int((p.get("leader_profile") or {}).get("max_leader_pct") or 0) for p in peers]
-    pr, _ = _rank_desc(pct, pcts)
-    qmed = _pool_median([float((p.get("leader_profile") or {}).get("quality_avg") or 0) for p in peers])
-    notes = []
-    merit = 30.0
-    merit += min(28, pct * 0.55)
-    if pr <= 3:
-        merit += 12.0
-        notes.append(f"leader {pct}% (rank {pr})")
-    if qavg >= qmed + 4:
-        merit += 14.0
-        notes.append(f"quality-weighted avg {qavg:.1f} vs median {qmed:.1f}")
-    if ace >= 5:
-        merit += 10.0
-        notes.append(f"buffs {ace} Ace Unit MS")
     if row.get("is_limited_time"):
-        merit += 6.0
-    return round(merit, 1), {"leader_rank": pr, "quality_avg": qavg, "ace_units": ace, "notes": notes}
+        return sc
+    if sr <= 3 or wpn.get("map_after_move") or float(sub.get("crit_synergy") or 0) >= 8:
+        return sc
+    if sr > 8:
+        return max(0.0, sc - 12.0)
+    if sr > 5:
+        return max(0.0, sc - 8.0)
+    return max(0.0, sc - 4.0)
 
 
-def compute_unit_meta_merit(row: dict, peers: list) -> tuple[float, dict]:
-    role = row.get("role", "")
-    if role == "Attack":
-        return compute_attack_unit_merit(row, peers)
-    if role == "Defense":
-        return compute_defense_unit_merit(row, peers)
-    return compute_support_unit_merit(row, peers)
-
-
-def _merit_to_tier(merit: float) -> str:
-    for t in TIER_ORDER:
-        if merit >= MERIT_TIER_THRESHOLDS[t]:
-            return t
-    return "A"
-
-
-def assign_merit_meta_tiers(rows: list, key: str = "is_tier_pool", group_fn=None) -> None:
-    """Meta tier from merit score + hard SSS caps — not raw composite percentile."""
+def assign_gated_meta_tiers(rows: list, key: str = "is_tier_pool", group_fn=None) -> None:
+    """Score-percentile meta tiers with attack SSS gates and per-group SSS caps."""
     groups: dict = defaultdict(list)
     for r in rows:
         if r.get(key):
@@ -394,83 +218,36 @@ def assign_merit_meta_tiers(rows: list, key: str = "is_tier_pool", group_fn=None
     for gk, lst in groups.items():
         rarity = gk[1] if isinstance(gk, tuple) and len(gk) > 1 else "UR"
         role = gk[0] if isinstance(gk, tuple) else str(gk)
-        for r in lst:
-            if r.get("role") == "Supporter" or "leader_profile" in r:
-                merit, detail = compute_supporter_merit(r, lst)
-            elif "stats" in r and "special" in r and r.get("role") in ("Attack", "Defense", "Support"):
-                merit, detail = compute_character_merit(r, lst)
-            else:
-                merit, detail = compute_unit_meta_merit(r, lst)
-            r["meta_merit"] = merit
-            r["meta_merit_detail"] = detail
-            r["tier_meta"] = _merit_to_tier(merit)
 
-        cap = MERIT_SSS_CAP.get(rarity, {}).get(role, 3)
-        lst.sort(key=lambda x: (-float(x.get("meta_merit") or 0), -float(x.get("score") or 0), x.get("name", "")))
-        sss_slots = 0
-        for r in lst:
-            m = float(r.get("meta_merit") or 0)
-            if m >= MERIT_TIER_THRESHOLDS["SSS"] and sss_slots < cap:
+        lst.sort(key=lambda x: (-_tier_sort_score(x, lst), x.get("name", "")))
+        n = len(lst)
+        if not n:
+            continue
+        t_sss = max(1, int(round(n * META_TIER_PCTS["SSS"])))
+        t_ss = max(t_sss, int(round(n * META_TIER_PCTS["SS"])))
+        t_s = max(t_ss, int(round(n * META_TIER_PCTS["S"])))
+
+        for i, r in enumerate(lst):
+            if i < t_sss:
                 r["tier_meta"] = "SSS"
-                sss_slots += 1
-            elif m >= MERIT_TIER_THRESHOLDS["SS"]:
+            elif i < t_ss:
                 r["tier_meta"] = "SS"
-            elif m >= MERIT_TIER_THRESHOLDS["S"]:
+            elif i < t_s:
                 r["tier_meta"] = "S"
             else:
                 r["tier_meta"] = "A"
 
+        if role == "Attack":
+            for r in lst:
+                if r.get("tier_meta") == "SSS" and not _attack_sss_eligible(r, lst):
+                    r["tier_meta"] = "SS"
 
-def build_tier_rationale(row: dict, peers: list) -> str:
-    """Long-form explanation of why this meta tier was assigned."""
-    role = row.get("role", "Unit")
-    rarity = row.get("rarity", "UR")
-    tier = row.get("tier_meta", "?")
-    merit = float(row.get("meta_merit") or 0)
-    detail = row.get("meta_merit_detail") or {}
-    comp = float(row.get("score") or 0)
-    notes = detail.get("notes") or []
-    lines = [
-        f"{row.get('name', '?')} is meta tier {tier} among {rarity} {role} "
-        f"(meta merit {merit:.0f}/100, composite score {comp:.1f}).",
-    ]
-    if role == "Attack":
-        sr = detail.get("sim_rank")
-        sp = detail.get("sim_peak")
-        if sr and sp:
-            lines.append(
-                f"Attack meta prioritizes damage-calc EX output (reference boss, bundled pilot): "
-                f"this MS ranks {sr}/{len(peers)} at ~{sp:,} simulated peak."
-            )
-        if detail.get("limited"):
-            lines.append("Limited availability raises pull priority — may not return soon.")
-        elif rarity == "UR":
-            lines.append(
-                "Permanent gacha UR units cannot reach SSS on breadth stats alone; "
-                "they need top-3 sim damage, MAP-after-move, or bundled crit synergy."
-            )
-        if detail.get("map_after_move"):
-            lines.append("MAP-after-move is treated as S-tier utility for Eternal Road — rare on attack EX.")
-        if detail.get("crit_synergy"):
-            lines.append("Bundled Guaranteed Critical materially raises real burst turns.")
-    elif "leader_profile" in row or role == "Supporter":
-        prof = row.get("leader_profile") or {}
-        skills = prof.get("leader_skills") or []
-        if skills:
-            lines.append(f"Leader value: {_format_leader_skill_line(skills[0])}.")
-        if prof.get("quality_avg"):
-            lines.append(
-                f"Quality-weighted coverage avg {prof.get('quality_avg')} — "
-                f"buffs strong MS, not just high unit count."
-            )
-    if notes:
-        lines.append("Merit factors: " + "; ".join(notes) + ".")
-    if float(row.get("score") or 0) >= 95 and merit < MERIT_TIER_THRESHOLDS["SSS"]:
-        lines.append(
-            "Composite score looks high from terrain/sortie/team pillars, but meta tier follows "
-            "merit gates so generalist units do not auto-promote to SSS."
-        )
-    return " ".join(lines)
+        cap = SSS_CAP.get(rarity, {}).get(role if role != "Supporter" else "Supporter", 4)
+        over = [r for r in lst if r.get("tier_meta") == "SSS"]
+        if len(over) > cap:
+            over.sort(key=lambda x: (-_tier_sort_score(x, lst), x.get("name", "")))
+            for r in over[cap:]:
+                r["tier_meta"] = "SS"
 
 
 def unit_name(uid: str) -> str:
@@ -1707,403 +1484,7 @@ def _top_n_label(rank: int, total: int) -> str:
     return ""
 
 
-def _tier_placement_note(row: dict, peers: list, label: str) -> str | None:
-    if not peers:
-        return None
-    tier = row.get("tier_meta") or row.get("tier") or "?"
-    scores = sorted((float(p.get("score") or 0) for p in peers), reverse=True)
-    sc = float(row.get("score") or 0)
-    sr, st = _rank_desc(sc, scores)
-    lbl = _top_n_label(sr, st)
-    med = _pool_median(scores)
-    gap = sc - med
-    gap_txt = f"{gap:+.1f} vs pool median {med:.1f}" if med else ""
-    parts = [f"Meta tier {tier} ({label})"]
-    if lbl:
-        parts.append(f"composite {sc:.1f} is {lbl}")
-    if gap_txt:
-        parts.append(gap_txt)
-    return " — ".join(parts)
-
-
-def _unit_attack_advantages(row: dict, peers: list) -> list[tuple[int, str]]:
-    out = []
-    wpn = row.get("weapons") or {}
-    sub = row.get("subscores") or {}
-    cov = row.get("coverage") or {}
-    ssp = row.get("stats_ssp") or {}
-    ter = row.get("terrain_detail") or {}
-    power = int(wpn.get("max_power") or 0)
-    rng = int(wpn.get("max_range") or 0)
-    sim = row.get("sim_damage") or {}
-    sim_peak = int(sim.get("effective_peak") or 0)
-    sim_norm = int(sim.get("normal_dmg") or 0)
-    sim_crit = int(sim.get("crit_dmg") or 0)
-    sim_peaks = [int((p.get("sim_damage") or {}).get("effective_peak") or 0) for p in peers]
-    sr, st = _rank_desc(sim_peak, sim_peaks) if sim_peak else (99, len(peers))
-    bundle = row.get("bundled_pilot_id") or sim.get("pilot_id") or ""
-    pilot_nm = char_name(bundle) if bundle else "bundled pilot"
-    pool_lbl = f"{row.get('rarity', 'UR')} {row.get('role', 'Attack')}"
-
-    if sim_peak > 0:
-        med_sim = _pool_median([x for x in sim_peaks if x > 0])
-        crit_note = ""
-        if sim.get("guaranteed_crit") and sim_crit > sim_norm:
-            crit_note = (
-                f" Guaranteed Critical path ~{sim_crit:,} (vs ~{sim_norm:,} normal) "
-                f"because {pilot_nm} is bundled with Supercharged EX."
-            )
-        elif sim_norm:
-            crit_note = f" Normal EX hit ~{sim_norm:,} on reference boss ({_SIM_REF_DEF_DEBUFF_PCT}% DEF debuff, bundled {pilot_nm})."
-        rank_note = _top_n_label(sr, st) or f"rank {sr}/{st}"
-        vs_med = ""
-        if med_sim and sim_peak > med_sim * 1.08:
-            vs_med = f" Beats pool median sim damage ({med_sim:,}) by {100.0 * (sim_peak / med_sim - 1):.0f}%."
-        elif med_sim and sim_peak < med_sim * 0.92 and power >= 8000:
-            vs_med = (
-                f" Nominal EX power {power} looks high but sim output ({sim_peak:,}) "
-                f"is below median ({med_sim:,}) — tier uses sim, not weapon sheet power alone."
-            )
-        out.append((98, (
-            f"Damage-calc peak ~{sim_peak:,} ({rank_note} among {len(peers)} {pool_lbl})."
-            f"{crit_note}{vs_med} Weapon: range {rng}, nominal power {power}."
-        )))
-
-    if wpn.get("map_after_move"):
-        n_map = sum(1 for p in peers if (p.get("weapons") or {}).get("map_after_move"))
-        out.append((94, (
-            f"MAP after moving — only {n_map}/{len(peers)} {pool_lbl} can poke then fire MAP safely; "
-            "strong for ER lanes where you cannot afford to end turn in enemy range."
-        )))
-    elif wpn.get("has_map"):
-        n_map = sum(1 for p in peers if (p.get("weapons") or {}).get("has_map"))
-        out.append((62, f"Has MAP weapon ({n_map}/{len(peers)} peers) for wave clear, but no after-move MAP bonus."))
-
-    if ter.get("space_ground_dual"):
-        fit = ter.get("er_stage_fit_pct", 0)
-        out.append((88, (
-            f"Space + Ground terrain (ER fit ~{fit:.0f}%): covers most Eternal Road stages "
-            "(51 Space + 22 Ground weighted) without needing Air/Sea/Water investment."
-        )))
-    elif float(ter.get("er_stage_fit_pct") or 0) < 55:
-        out.append((48, (
-            f"Terrain ER fit only ~{ter.get('er_stage_fit_pct', 0):.0f}% — "
-            "may need terrain-boost stages or swap to another MS on Space/Ground-heavy chapters."
-        )))
-
-    adj = float(cov.get("adj_pct") or 0)
-    adjs = [float((p.get("coverage") or {}).get("adj_pct") or 0) for p in peers]
-    armed = _pool_median(adjs)
-    if adj >= armed + 6:
-        out.append((72, (
-            f"ER sortie eligibility ~{adj:.0f}% (median {armed:.0f}% in pool) — "
-            "fewer tag restrictions when building Eternal Road teams."
-        )))
-    elif adj < armed - 10:
-        out.append((42, (
-            f"ER sortie only ~{adj:.0f}% vs pool median {armed:.0f}% — "
-            "tag requirements may block this MS on some stages."
-        )))
-
-    sups = row.get("top_supporters") or []
-    if sups:
-        s0 = sups[0]
-        sk = (s0.get("leader_skills") or [{}])[0] if isinstance(s0.get("leader_skills"), list) else {}
-        if sk:
-            buff = _format_leader_skill_line(sk)
-        else:
-            buff = f"+{s0.get('leader_pct', 0)}% leader"
-        out.append((68, (
-            f"Best UR supporter pairing: {s0['name']} ({buff}). "
-            "Supporter is fixed per ER squad; pilot can still be swapped on unrestricted stages."
-        )))
-
-    atk = float(ssp.get("ATK") or 0)
-    atks = [float((p.get("stats_ssp") or {}).get("ATK") or 0) for p in peers]
-    ar, at = _rank_desc(atk, atks)
-    if ar <= max(4, at // 12):
-        out.append((52, (
-            f"SSP ATK {int(atk)} ({_top_n_label(ar, at)}) — stat slice is secondary to sim burst for attackers, "
-            "but helps base damage formula scaling."
-        )))
-
-    place = _tier_placement_note(row, peers, pool_lbl)
-    if place:
-        out.append((35, place))
-
-    return out
-
-
-def _unit_defense_advantages(row: dict, peers: list) -> list[tuple[int, str]]:
-    out = []
-    wpn = row.get("weapons") or {}
-    ssp = row.get("stats_ssp") or {}
-    cov = row.get("coverage") or {}
-    ter = row.get("terrain_detail") or {}
-    move = float(ssp.get("MOV") or 0)
-    hp = float(ssp.get("HP") or 0)
-    df = float(ssp.get("DEF") or 0)
-    deb = int(wpn.get("max_def_debuff") or 0)
-    pool_lbl = f"{row.get('rarity', 'UR')} Defense"
-
-    if move >= 5:
-        n = sum(1 for p in peers if float((p.get("stats_ssp") or {}).get("MOV") or 0) >= 5)
-        out.append((82, (
-            f"MOV {int(move)} — {n}/{len(peers)} {pool_lbl} keep full step count; "
-            "lets this tank reposition for body-block or reach without losing an action."
-        )))
-    if deb >= 20:
-        dr, dt = _rank_desc(deb, [int((p.get("weapons") or {}).get("max_def_debuff") or 0) for p in peers])
-        out.append((78, (
-            f"Enemy DEF debuff up to {deb}% ({_top_n_label(dr, dt)}) — "
-            "softens targets for your attackers while this MS holds the front."
-        )))
-    hr, ht = _rank_desc(hp, [float((p.get("stats_ssp") or {}).get("HP") or 0) for p in peers])
-    if hr <= max(5, ht // 8):
-        out.append((74, f"SSP HP {int(hp)} ({_top_n_label(hr, ht)}) — primary bulk stat for stall/turtle ER lanes."))
-    dr2, dt2 = _rank_desc(df, [float((p.get("stats_ssp") or {}).get("DEF") or 0) for p in peers])
-    if dr2 <= 5:
-        out.append((70, f"SSP DEF {int(df)} ({_top_n_label(dr2, dt2)}) — reduces incoming hit severity in the damage formula."))
-
-    if ter.get("space_ground_dual"):
-        out.append((65, (
-            f"Space+Ground terrain (ER fit ~{ter.get('er_stage_fit_pct', 0):.0f}%) — "
-            "defender can be deployed on most ER maps without terrain penalty."
-        )))
-
-    adj = float(cov.get("adj_pct") or 0)
-    adjs = [float((p.get("coverage") or {}).get("adj_pct") or 0) for p in peers]
-    med = _pool_median(adjs)
-    if adj >= med + 8:
-        out.append((55, f"ER sortie ~{adj:.0f}% vs median {med:.0f}% — fewer tag locks when slotting this defender."))
-
-    bundle = row.get("bundled_pilot_id") or ""
-    if bundle:
-        out.append((50, f"Team score uses bundled pilot {char_name(bundle)}; swap Support Def ×2 pilots on open character stages."))
-
-    place = _tier_placement_note(row, peers, pool_lbl)
-    if place:
-        out.append((35, place))
-    return out
-
-
-def _unit_support_advantages(row: dict, peers: list) -> list[tuple[int, str]]:
-    out = []
-    wpn = row.get("weapons") or {}
-    deb = int(wpn.get("max_def_debuff") or 0)
-    rng = int(wpn.get("max_range") or 0)
-    pool_lbl = f"{row.get('rarity', 'UR')} Support"
-
-    if deb >= 25:
-        dr, dt = _rank_desc(deb, [int((p.get("weapons") or {}).get("max_def_debuff") or 0) for p in peers])
-        out.append((86, (
-            f"DEF debuff {deb}% at range {rng} ({_top_n_label(dr, dt)}) — "
-            "backline control: weaken boss DEF before your main attacker EX without moving into danger."
-        )))
-    elif deb >= 15 and rng >= 5:
-        out.append((72, f"Range-{rng} with {deb}% DEF debuff — safe support poke pattern for ER."))
-    if wpn.get("map_after_move"):
-        out.append((90, (
-            f"MAP after move — rare on {pool_lbl}; reposition then AoE debuff/clear in one turn."
-        )))
-    elif wpn.get("has_map"):
-        n = sum(1 for p in peers if (p.get("weapons") or {}).get("has_map"))
-        out.append((58, f"MAP weapon present ({n}/{len(peers)} peers) for wave control."))
-
-    bundle = row.get("bundled_pilot_id") or ""
-    if bundle:
-        fl, _ = char_analysis(bundle, deep=True)
-        if fl.get("support_attack_x2"):
-            out.append((76, (
-                f"Bundled {char_name(bundle)} has Support Attack ×2 — doubles support-strike damage "
-                "when this MS uses its support action."
-            )))
-
-    place = _tier_placement_note(row, peers, pool_lbl)
-    if place:
-        out.append((35, place))
-    return out
-
-
-def _character_advantages(row: dict, peers: list) -> list[tuple[int, str]]:
-    out = []
-    role = row.get("role", "")
-    sp = row.get("special") or {}
-    stats = row.get("stats") or {}
-    squad = sp.get("squad_buffs") or []
-    pool_lbl = f"{row.get('rarity', 'UR')} {role} pilot"
-    kit = row.get("kit_mode") or "ex"
-    dmg_dealt = int(row.get("damage_dealt_bonus_pct") or 0)
-
-    if role == "Attack":
-        primary = stats.get("Ranged", 0) + stats.get("Melee", 0) + stats.get("Awaken", 0)
-        primaries = [
-            p.get("stats", {}).get("Ranged", 0) + p.get("stats", {}).get("Melee", 0) + p.get("stats", {}).get("Awaken", 0)
-            for p in peers
-        ]
-        pr, pt = _rank_desc(primary, primaries)
-        if sp.get("guaranteed_crit"):
-            n = sum(1 for p in peers if (p.get("special") or {}).get("guaranteed_crit"))
-            out.append((99, (
-                f"Supercharged EX → Guaranteed Critical: assign this pilot on unrestricted stages "
-                f"for turn-2 super crit on whichever attack MS you slot — only {n}/{len(peers)} "
-                f"{pool_lbl}s have this kit. Tier scores intrinsic burst, not 'fits all units'."
-            )))
-        elif sp.get("supercharged_ex"):
-            out.append((78, (
-                "Supercharged EX offensive chain — strong burst when paired with short-range MS; "
-                "weighs higher than flat dossier stats in attack pilot scoring."
-            )))
-        if dmg_dealt >= 10:
-            out.append((88, (
-                f"+{dmg_dealt}% Damage Dealt ability — multiplies final hit in the damage formula "
-                f"more than raw Ranged/Melee/Awaken ({kit.upper()} growth)."
-            )))
-        lbl = _top_n_label(pr, pt)
-        if lbl and pr <= max(6, pt // 3):
-            out.append((52, (
-                f"Dossier offense {primary} (Ranged+Melee+Awaken, {kit.upper()}) — {lbl}; "
-                "secondary to burst skills for attack pilot rank."
-            )))
-        if sp.get("chance_step_x2") and not sp.get("guaranteed_crit"):
-            out.append((44, (
-                "Chance Step ×2 helps SP economy but ranks below Guaranteed Crit / Damage Dealt "
-                "for raw DPS pilot value."
-            )))
-
-    elif role == "Defense":
-        df = stats.get("Defense", 0)
-        dfs = [p.get("stats", {}).get("Defense", 0) for p in peers]
-        dr, dt = _rank_desc(df, dfs)
-        if dr <= 5:
-            out.append((72, f"Defense dossier {df} ({_top_n_label(dr, dt)}) — core stat for support-tank turns."))
-        if sp.get("support_defense_x2"):
-            n = sum(1 for p in peers if (p.get("special") or {}).get("support_defense_x2"))
-            out.append((84, (
-                f"Support Defense ×2 — only {n}/{len(peers)} {pool_lbl}s double support-defense potency; "
-                "slot on defense MS when stage allows character swap."
-            )))
-        if sp.get("chance_step_x2"):
-            out.append((62, "Chance Step ×2 sustains repeated support-defense actions in long ER fights."))
-
-    elif role == "Support":
-        if sp.get("support_attack_x2"):
-            n = sum(1 for p in peers if (p.get("special") or {}).get("support_attack_x2"))
-            out.append((86, (
-                f"Support Attack ×2 ({n}/{len(peers)} {pool_lbl}s) — doubles support-strike/debuff action "
-                "when assigned to a support MS."
-            )))
-        if sp.get("chance_step_x2"):
-            out.append((58, "Chance Step ×2 for extra support actions across multi-wave ER stages."))
-
-    best_squad = 0
-    best_buff = None
-    for b in squad:
-        val = b.get("atk_pct", 0) + b.get("def_pct", 0) * 0.5
-        if val > best_squad:
-            best_squad = val
-            best_buff = b
-    if best_buff and best_squad >= 7:
-        tags = ", ".join(best_buff.get("condition_tags") or []) or "conditional tags"
-        out.append((80, (
-            f"Squad buff +{best_buff.get('atk_pct', 0)}% ATK / +{best_buff.get('def_pct', 0)}% DEF "
-            f"when squad includes [{tags}] — stacks with UR supporter leader on matching MS."
-        )))
-
-    aff = sp.get("affinity_matches") or []
-    if aff:
-        out.append((54, (
-            f"Affinity passives ({len(aff)}) — extra stats when name/tag conditions match slotted MS; "
-            "niche but free value on tagged teams."
-        )))
-
-    place = _tier_placement_note(row, peers, pool_lbl)
-    if place:
-        out.append((35, place))
-    return out
-
-
-def _supporter_advantages(row: dict, peers: list) -> list[tuple[int, str]]:
-    out = []
-    prof = row.get("leader_profile") or {}
-    pct = int(prof.get("max_leader_pct") or 0)
-    cov = float(prof.get("matching_units_pct") or 0)
-    skills = prof.get("leader_skills") or supporter_leader_skill_rows(row.get("id", ""))
-
-    pcts = [int((p.get("leader_profile") or {}).get("max_leader_pct") or 0) for p in peers]
-    pr, pt = _rank_desc(pct, pcts)
-
-    if skills:
-        primary = skills[0]
-        buff_line = _format_leader_skill_line(primary)
-        rank_txt = _top_n_label(pr, pt) or f"rank {pr}/{pt}"
-        gap_txt = ""
-        if pr == 1 and pt > 1:
-            gap = pct - sorted(pcts, reverse=True)[1]
-            gap_txt = f" (+{gap}% higher leader % than the next UR supporter)."
-        out.append((97, (
-            f"Primary leader at LB3: {buff_line}.{gap_txt} "
-            f"This is {_top_n_label(pr, pt) or rank_txt} among {pt} UR supporters by leader percentage."
-        )))
-        if len(skills) > 1:
-            alt = skills[1]
-            out.append((82, (
-                f"Alternate LB3 leader option: {_format_leader_skill_line(alt)} — "
-                "game uses the best matching row when multiple tier-3 skills apply (not stacked)."
-            )))
-    elif pct:
-        out.append((80, f"Leader buff up to {pct}% (tier-3 LB skill)."))
-
-    qavg = float(prof.get("quality_avg") or 0)
-    qmed = _pool_median([float((p.get("leader_profile") or {}).get("quality_avg") or 0) for p in peers])
-    if qavg >= qmed + 3 and qavg >= 68:
-        out.append((93, (
-            f"Quality-weighted coverage: buffed units average composite score {qavg:.1f} "
-            f"(pool median {qmed:.1f}) — ranks strong MS, not just high unit count."
-        )))
-
-    ace_n = int(prof.get("ace_units_covered") or 0)
-    if ace_n >= 3:
-        out.append((91, (
-            f"Touches {ace_n} Ace Unit–tagged MS at avg score {prof.get('ace_quality_avg', 0)} — "
-            "Ace tag weighted 1.4× in supporter quality scoring."
-        )))
-    elif ace_n > 0:
-        out.append((76, f"Covers {ace_n} Ace Unit MS (avg quality {prof.get('ace_quality_avg', 0)})."))
-
-    covs = [float((p.get("leader_profile") or {}).get("matching_units_pct") or 0) for p in peers]
-    cmed = _pool_median(covs)
-    match_n = int(prof.get("matching_units") or 0)
-    if cov >= 25 and pct >= 30:
-        out.append((68, (
-            f"Wide comp: leader applies to ~{match_n} playable units ({cov:.0f}% of roster) at {pct}% — "
-            "flexible ER squad building."
-        )))
-    elif cov < 15 and pct >= 36:
-        targets = _format_leader_target((skills[0].get("tags") if skills else []), skills[0].get("separator") if skills else "default")
-        out.append((70, (
-            f"Elite specialist: high {pct}% leader but only ~{cov:.0f}% roster ({targets}) — "
-            "best-in-slot for those tag comps, not general-purpose."
-        )))
-    elif cov >= cmed + 8:
-        out.append((58, f"Roster reach ~{cov:.0f}% vs supporter median {cmed:.0f}%."))
-
-    if prof.get("high_tier_units", 0) >= 8:
-        out.append((66, (
-            f"Can buff {prof['high_tier_units']} units scoring 70+ composite — "
-            "leader value scales with meta unit strength."
-        )))
-
-    if row.get("is_limited_time") and pr <= max(5, pt // 4):
-        out.append((48, "Limited-time UR gacha — strong leader but may not return on a standard banner soon."))
-
-    place = _tier_placement_note(row, peers, "UR supporter")
-    if place:
-        out.append((35, place))
-    return out
-
-
-def _finalize_advantages(candidates: list[tuple[int, str]], limit: int = 7) -> list[str]:
+def _pick_reasons(candidates: list[tuple[int, str]], limit: int = REASON_LIMIT) -> list[str]:
     seen = set()
     out = []
     for _prio, text in sorted(candidates, key=lambda x: (-x[0], x[1])):
@@ -2116,19 +1497,190 @@ def _finalize_advantages(candidates: list[tuple[int, str]], limit: int = 7) -> l
     return out
 
 
-def _score_fallback_advantage(row: dict, peers: list, label: str) -> tuple[int, str] | None:
-    if not peers:
-        return None
-    scores = [float(p.get("score") or 0) for p in peers]
-    sr, st = _rank_desc(float(row.get("score") or 0), scores)
-    lbl = _top_n_label(sr, st)
-    if not lbl:
-        return None
-    return 25, f"Overall score {row.get('score')} — {lbl} among UR {label}"
+def _short_attack_reasons(row: dict, peers: list) -> list[str]:
+    out: list[tuple[int, str]] = []
+    wpn = row.get("weapons") or {}
+    ter = row.get("terrain_detail") or {}
+    cov = row.get("coverage") or {}
+    sim = row.get("sim_damage") or {}
+    sim_peak = int(sim.get("effective_peak") or 0)
+    sim_peaks = [int((p.get("sim_damage") or {}).get("effective_peak") or 0) for p in peers]
+    sr, st = _rank_desc(sim_peak, sim_peaks) if sim_peak else (0, len(peers))
+    pool = f"{row.get('rarity', 'UR')} Attack"
+
+    if sim_peak:
+        lbl = _top_n_label(sr, st) or f"#{sr} sim EX"
+        out.append((100, f"{lbl} — ~{sim_peak:,} hit ({pool}, bundled pilot)"))
+    if row.get("is_limited_time"):
+        out.append((92, "Limited banner — prioritize while available"))
+    if float((row.get("subscores") or {}).get("crit_synergy") or 0) >= 8:
+        out.append((90, "Bundled Guaranteed Critical pilot"))
+    if wpn.get("map_after_move"):
+        out.append((88, "MAP after move — rare safe poke on ER"))
+    elif wpn.get("has_map"):
+        out.append((58, "Has MAP for wave clear"))
+    if ter.get("space_ground_dual"):
+        out.append((72, f"Space + Ground terrain ({ter.get('er_stage_fit_pct', 0):.0f}% ER stages)"))
+    adj = float(cov.get("adj_pct") or 0)
+    if adj >= 75:
+        out.append((55, f"Wide ER sortie tags (~{adj:.0f}%)"))
+    elif adj < 55:
+        out.append((45, f"Narrow ER tags (~{adj:.0f}%)"))
+    sups = row.get("top_supporters") or []
+    if sups:
+        out.append((50, f"Best leader: {sups[0]['name']} ({sups[0].get('leader_pct', 0)}%)"))
+    if not row.get("is_limited_time") and sr > 8 and int(wpn.get("max_power") or 0) >= 8000:
+        out.append((42, f"High sheet power but only #{sr} sim — below SSS burst bar"))
+    sc = float(row.get("score") or 0)
+    out.append((20, f"Meta {row.get('tier_meta', '?')} · score {sc:.1f} vs {len(peers)} {pool}"))
+    return _pick_reasons(out)
+
+
+def _short_defense_reasons(row: dict, peers: list) -> list[str]:
+    out: list[tuple[int, str]] = []
+    wpn = row.get("weapons") or {}
+    ssp = row.get("stats_ssp") or {}
+    ter = row.get("terrain_detail") or {}
+    pool = f"{row.get('rarity', 'UR')} Defense"
+    hp = float(ssp.get("HP") or 0)
+    df = float(ssp.get("DEF") or 0)
+    mob = float(ssp.get("MOV") or 0)
+    deb = int(wpn.get("max_def_debuff") or 0)
+    hps = [float((p.get("stats_ssp") or {}).get("HP") or 0) for p in peers]
+    dfs = [float((p.get("stats_ssp") or {}).get("DEF") or 0) for p in peers]
+
+    hr, ht = _rank_desc(hp, hps)
+    dr, dt = _rank_desc(df, dfs)
+    if hr <= 5:
+        out.append((90, f"Top HP bulk — {int(hp)} ({_top_n_label(hr, ht) or f'#{hr}'})"))
+    if dr <= 5:
+        out.append((86, f"Top DEF — {int(df)} ({_top_n_label(dr, dt) or f'#{dr}'})"))
+    if mob >= 5:
+        out.append((78, f"MOV {int(mob)} — full reposition without losing step"))
+    if deb >= 20:
+        dbr, _ = _rank_desc(deb, [int((p.get("weapons") or {}).get("max_def_debuff") or 0) for p in peers])
+        out.append((74, f"{deb}% DEF debuff weapon ({_top_n_label(dbr, len(peers)) or f'#{dbr}'})"))
+    if ter.get("space_ground_dual"):
+        out.append((62, f"Space + Ground ({ter.get('er_stage_fit_pct', 0):.0f}% ER fit)"))
+    if row.get("is_limited_time"):
+        out.append((55, "Limited banner tank"))
+    sc = float(row.get("score") or 0)
+    out.append((20, f"Meta {row.get('tier_meta', '?')} · score {sc:.1f} vs {len(peers)} {pool}"))
+    return _pick_reasons(out)
+
+
+def _short_support_reasons(row: dict, peers: list) -> list[str]:
+    out: list[tuple[int, str]] = []
+    wpn = row.get("weapons") or {}
+    pool = f"{row.get('rarity', 'UR')} Support"
+    deb = int(wpn.get("max_def_debuff") or 0)
+    rng = int(wpn.get("max_range") or 0)
+
+    if deb >= 25:
+        dr, _ = _rank_desc(deb, [int((p.get("weapons") or {}).get("max_def_debuff") or 0) for p in peers])
+        out.append((92, f"{deb}% DEF debuff at range {rng} ({_top_n_label(dr, len(peers)) or f'#{dr}'})"))
+    elif deb >= 15:
+        out.append((72, f"Range-{rng} with {deb}% DEF debuff"))
+    if wpn.get("map_after_move"):
+        out.append((88, "MAP after move — rare on support MS"))
+    elif wpn.get("has_map"):
+        out.append((55, "Has MAP for backline control"))
+    bundle = row.get("bundled_pilot_id") or ""
+    if bundle:
+        fl, _ = char_analysis(bundle, deep=True)
+        if fl.get("support_attack_x2"):
+            out.append((70, f"Bundled {char_name(bundle)} — Support Attack ×2"))
+    if row.get("is_limited_time"):
+        out.append((50, "Limited banner support"))
+    sc = float(row.get("score") or 0)
+    out.append((20, f"Meta {row.get('tier_meta', '?')} · score {sc:.1f} vs {len(peers)} {pool}"))
+    return _pick_reasons(out)
+
+
+def _short_character_reasons(row: dict, peers: list) -> list[str]:
+    out: list[tuple[int, str]] = []
+    role = row.get("role", "")
+    sp = row.get("special") or {}
+    stats = row.get("stats") or {}
+    pool = f"{row.get('rarity', 'UR')} {role} pilot"
+    dmg_dealt = int(row.get("damage_dealt_bonus_pct") or 0)
+
+    if role == "Attack":
+        if sp.get("guaranteed_crit"):
+            n = sum(1 for p in peers if (p.get("special") or {}).get("guaranteed_crit"))
+            out.append((98, f"Guaranteed Critical — only {n}/{len(peers)} {pool}s"))
+        elif sp.get("supercharged_ex"):
+            out.append((82, "Supercharged EX burst kit"))
+        if dmg_dealt >= 10:
+            out.append((88, f"+{dmg_dealt}% Damage Dealt ability"))
+        primary = stats.get("Ranged", 0) + stats.get("Melee", 0) + stats.get("Awaken", 0)
+        pr, pt = _rank_desc(primary, [
+            p.get("stats", {}).get("Ranged", 0) + p.get("stats", {}).get("Melee", 0) + p.get("stats", {}).get("Awaken", 0)
+            for p in peers
+        ])
+        if pr <= 6:
+            out.append((50, f"Strong dossier offense ({_top_n_label(pr, pt) or f'#{pr}'})"))
+    elif role == "Defense":
+        if sp.get("support_defense_x2"):
+            n = sum(1 for p in peers if (p.get("special") or {}).get("support_defense_x2"))
+            out.append((90, f"Support Defense ×2 — {n}/{len(peers)} {pool}s"))
+        df = stats.get("Defense", 0)
+        dr, dt = _rank_desc(df, [p.get("stats", {}).get("Defense", 0) for p in peers])
+        if dr <= 8:
+            out.append((72, f"Defense {df} ({_top_n_label(dr, dt) or f'#{dr}'})"))
+    elif role == "Support":
+        if sp.get("support_attack_x2"):
+            n = sum(1 for p in peers if (p.get("special") or {}).get("support_attack_x2"))
+            out.append((88, f"Support Attack ×2 — {n}/{len(peers)} {pool}s"))
+
+    squad = sp.get("squad_buffs") or []
+    if squad:
+        best = max(squad, key=lambda b: b.get("atk_pct", 0) + b.get("def_pct", 0) * 0.5)
+        if best.get("atk_pct", 0) + best.get("def_pct", 0) >= 7:
+            tags = ", ".join((best.get("condition_tags") or [])[:2]) or "tag match"
+            out.append((68, f"Squad buff +{best.get('atk_pct', 0)}% ATK when [{tags}]"))
+    if row.get("is_limited_time"):
+        out.append((48, "Limited banner pilot"))
+    sc = float(row.get("score") or 0)
+    out.append((20, f"Meta {row.get('tier_meta', '?')} · score {sc:.1f} vs {len(peers)} {pool}"))
+    return _pick_reasons(out)
+
+
+def _short_supporter_reasons(row: dict, peers: list) -> list[str]:
+    out: list[tuple[int, str]] = []
+    prof = row.get("leader_profile") or {}
+    pct = int(prof.get("max_leader_pct") or 0)
+    skills = prof.get("leader_skills") or supporter_leader_skill_rows(row.get("id", ""))
+    pcts = [int((p.get("leader_profile") or {}).get("max_leader_pct") or 0) for p in peers]
+    pr, pt = _rank_desc(pct, pcts)
+
+    if skills:
+        out.append((98, f"Leader {pct}% — {_format_leader_skill_line(skills[0])}"))
+    elif pct:
+        out.append((85, f"Leader buff up to {pct}%"))
+    if pr <= 3:
+        out.append((90, f"{_top_n_label(pr, pt) or f'#{pr}'} leader % among {pt} UR supporters"))
+    qavg = float(prof.get("quality_avg") or 0)
+    qmed = _pool_median([float((p.get("leader_profile") or {}).get("quality_avg") or 0) for p in peers])
+    if qavg >= qmed + 3:
+        out.append((82, f"Buffs strong MS (quality avg {qavg:.1f} vs {qmed:.1f} median)"))
+    ace_n = int(prof.get("ace_units_covered") or 0)
+    if ace_n >= 3:
+        out.append((75, f"Covers {ace_n} Ace Unit MS"))
+    cov = float(prof.get("matching_units_pct") or 0)
+    if cov >= 25:
+        out.append((55, f"Wide tag reach (~{cov:.0f}% of roster)"))
+    elif pct >= 36 and cov < 15:
+        out.append((60, f"Elite specialist — high {pct}% but narrow roster fit"))
+    if row.get("is_limited_time"):
+        out.append((45, "Limited banner supporter"))
+    sc = float(row.get("score") or 0)
+    out.append((20, f"Meta {row.get('tier_meta', '?')} · score {sc:.1f} vs {len(peers)} UR supporters"))
+    return _pick_reasons(out)
 
 
 def enrich_rank_advantages(unit_rows: list, char_rows: list, supp_rows: list) -> None:
-    """Add comparative 'why ranked higher' notes vs same-role meta pool."""
+    """4-5 short bullets explaining why this card ranks above peers."""
     unit_peers = defaultdict(list)
     for r in unit_rows:
         if r.get("is_tier_pool"):
@@ -2144,43 +1696,28 @@ def enrich_rank_advantages(unit_rows: list, char_rows: list, supp_rows: list) ->
     for r in unit_rows:
         role = r.get("role", "")
         peers = unit_peers.get((role, r.get("rarity", ""))) or []
-        r["tier_rationale"] = build_tier_rationale(r, peers) if peers else ""
         if not peers:
-            r["rank_advantages"] = r.get("bullets", [])[:6]
+            r["rank_advantages"] = (r.get("bullets") or [])[:REASON_LIMIT]
             continue
         if role == "Attack":
-            adv = _unit_attack_advantages(r, peers)
+            r["rank_advantages"] = _short_attack_reasons(r, peers)
         elif role == "Defense":
-            adv = _unit_defense_advantages(r, peers)
+            r["rank_advantages"] = _short_defense_reasons(r, peers)
         else:
-            adv = _unit_support_advantages(r, peers)
-        fb = _score_fallback_advantage(r, peers, f"{role} EX")
-        if fb:
-            adv.append(fb)
-        r["rank_advantages"] = _finalize_advantages(adv)
+            r["rank_advantages"] = _short_support_reasons(r, peers)
 
     for r in char_rows:
         peers = char_peers.get((r.get("role", ""), r.get("rarity", ""))) or []
-        r["tier_rationale"] = build_tier_rationale(r, peers) if peers else ""
         if not peers:
-            r["rank_advantages"] = r.get("bullets", [])[:6]
+            r["rank_advantages"] = (r.get("bullets") or [])[:REASON_LIMIT]
             continue
-        adv = _character_advantages(r, peers)
-        fb = _score_fallback_advantage(r, peers, f"{r.get('role', '')} pilots")
-        if fb:
-            adv.append(fb)
-        r["rank_advantages"] = _finalize_advantages(adv)
+        r["rank_advantages"] = _short_character_reasons(r, peers)
 
     for r in supp_rows:
-        r["tier_rationale"] = build_tier_rationale(r, supp_peers) if supp_peers else ""
         if not supp_peers:
-            r["rank_advantages"] = r.get("bullets", [])[:6]
+            r["rank_advantages"] = (r.get("bullets") or [])[:REASON_LIMIT]
             continue
-        adv = _supporter_advantages(r, supp_peers)
-        fb = _score_fallback_advantage(r, supp_peers, "supporters")
-        if fb:
-            adv.append(fb)
-        r["rank_advantages"] = _finalize_advantages(adv)
+        r["rank_advantages"] = _short_supporter_reasons(r, supp_peers)
 
 
 def build_tag_ecosystem(unit_rows: list, char_rows: list, supp_rows: list) -> list:
@@ -2324,7 +1861,7 @@ def render_markdown(payload: dict) -> str:
 
 
 def main():
-    print("Tier mockup v4 — merit-based meta tiers...")
+    print("Tier mockup v5 — gated score meta tiers (data/EN)...")
     er = build_er_stage_weights()
     print(f"  ER stages: {len(er)}")
 
@@ -2359,7 +1896,7 @@ def main():
         if i and i % 50 == 0:
             print(f"    units {i}/{len(uids)}")
         unit_rows.append(score_unit(uid, er, pop_u))
-    assign_merit_meta_tiers(unit_rows, "is_tier_pool", lambda r: (r.get("role", "?"), r.get("rarity", "?")))
+    assign_gated_meta_tiers(unit_rows, "is_tier_pool", lambda r: (r.get("role", "?"), r.get("rarity", "?")))
     apply_community_anchors(unit_rows, COMMUNITY_UNIT_META_FLOOR, COMMUNITY_UNIT_SCORE_BUMP)
     unit_rows.sort(key=lambda r: (-r["score"], r["name"]))
     unit_by_id = {r["id"]: r for r in unit_rows}
@@ -2375,13 +1912,13 @@ def main():
         pop_c["reaction"].append(t.get("Reaction", 0))
     print(f"  Scoring {len(cids)} characters...")
     char_rows = [score_character(cid, pop_c) for cid in cids]
-    assign_merit_meta_tiers(char_rows, "is_tier_pool", lambda r: (r.get("role", "?"), r.get("rarity", "?")))
+    assign_gated_meta_tiers(char_rows, "is_tier_pool", lambda r: (r.get("role", "?"), r.get("rarity", "?")))
     apply_community_anchors(char_rows, COMMUNITY_CHAR_META_FLOOR, COMMUNITY_CHAR_SCORE_BUMP)
     char_rows.sort(key=lambda r: (-r["score"], r["name"]))
 
     sids = [s for s, info in A.supporter_info_map.items() if str(info.get("rarity")) == "5"]
     supp_rows = [score_supporter(sid, quality_index) for sid in sids]
-    assign_merit_meta_tiers(supp_rows, "is_tier_pool", lambda r: ("Supporter", r.get("rarity", "UR")))
+    assign_gated_meta_tiers(supp_rows, "is_tier_pool", lambda r: ("Supporter", r.get("rarity", "UR")))
     supp_rows.sort(key=lambda r: (-r["score"], r["name"]))
 
     print("  Building comparative rank advantages...")
@@ -2410,19 +1947,20 @@ def main():
             by_sm[r["tier_meta"]].append(r)
 
     payload = {
-        "version": 4,
+        "version": 5,
         "tier_bands": TIER_MIN_SCORE,
-        "merit_tier_thresholds": MERIT_TIER_THRESHOLDS,
-        "merit_sss_caps": MERIT_SSS_CAP,
+        "meta_tier_pcts": META_TIER_PCTS,
+        "sss_caps": SSS_CAP,
         "method": {
             "tiers": list(TIER_ORDER),
             "eternal_stages": len(er),
             "er_terrain_weights": ER_TERRAIN_STAGE_WEIGHTS,
             "includes": [
-                "Meta tier (v4): merit score + hard SSS caps — NOT composite-score percentile",
-                "UR Attack SSS: top sim damage, limited banner, MAP-after-move, or bundled crit — permanent units capped",
-                "Composite score still shown for stat breakdown; tier_rationale explains merit assignment",
-                "Units SSR+: damage-calc EX peak, ER sortie, terrain; Characters: intrinsic burst kit; Supporters: leader quality",
+                "Meta tier (v5): score percentiles within role/rarity + attack SSS gates",
+                "UR Attack SSS needs top-3 sim, MAP-after-move, bundled crit, or limited + top-8 sim",
+                "Permanent generalists (e.g. Atlas) cannot SSS on terrain/team breadth alone",
+                "Why ranked here: 4-5 short bullets vs same pool — no meta merit jargon",
+                "Data source: bundled data/EN master + lang",
             ],
             "limits": [
                 "No SP-per-stage budgeting", "No battle sim", "No owned-roster personalization",
