@@ -11030,12 +11030,12 @@ def _tier_mockup_json_path():
 def _tier_scoring_guide():
     """How the 0–100 score is built (shown on /tier-list before the grid)."""
     return {
-        'version': 3,
+        'version': 4,
         'tier_modes': [
             {
                 'id': 'meta',
-                'label': 'Meta tier',
-                'detail': 'Percentile within same role + rarity (UR and SSR ranked separately) — top ~8% SSS, ~25% SS, ~50% S.',
+                'label': 'Meta tier (merit)',
+                'detail': 'Merit score with hard SSS caps per role/rarity. UR Attack SSS needs top sim DPS, limited status, MAP-after-move, or bundled crit — permanent units like Atlas cannot SSS on breadth alone.',
             },
             {
                 'id': 'absolute',

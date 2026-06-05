@@ -143,13 +143,21 @@
   }
 
   function renderAdvantages(row) {
+    const rationale = row.tier_rationale || '';
     const items = (row.rank_advantages && row.rank_advantages.length)
       ? row.rank_advantages
       : (row.bullets || []);
-    if (!items.length) return '';
+    if (!rationale && !items.length) return '';
+    const merit = row.meta_merit != null ? `<p class="tier-card-merit">Meta merit ${esc(row.meta_merit)}</p>` : '';
+    const ratBlock = rationale
+      ? `<p class="tier-card-rationale">${esc(rationale)}</p>`
+      : '';
+    const list = items.length
+      ? `<ul class="tier-card-advantages">${items.slice(0, 7).map((b) => `<li>${esc(b)}</li>`).join('')}</ul>`
+      : '';
     return `<div class="tier-card-why">
       <div class="tier-card-why-title">Why ranked here</div>
-      <ul class="tier-card-advantages">${items.slice(0, 7).map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
+      ${merit}${ratBlock}${list}
     </div>`;
   }
 

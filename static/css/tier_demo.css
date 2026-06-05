@@ -313,6 +313,20 @@ body.tier-demo-page {
   line-height: 1.4;
 }
 
+.tier-card-merit {
+  font-size: 0.68rem;
+  color: #38bdf8;
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+}
+
+.tier-card-rationale {
+  font-size: 0.7rem;
+  color: #e2e8f0;
+  line-height: 1.55;
+  margin: 0 0 0.5rem;
+}
+
 .tier-card-advantages li::marker {
   color: #38bdf8;
 }
