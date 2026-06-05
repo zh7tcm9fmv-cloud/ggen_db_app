@@ -2,7 +2,35 @@
   'use strict';
 
   const TIERS = ['SSS', 'SS', 'S', 'A'];
-  const ROLE_MAP = { Attack: '1', Defense: '2', Support: '3' };
+
+  const UNIT_SUB_KEYS = {
+    Attack: [
+      { key: 'sortie', label: 'Sortie', max: 30 },
+      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'stats', label: 'Stats', max: 15 },
+      { key: 'weapons', label: 'Weapons', max: 34 },
+      { key: 'peak_damage', label: 'Peak EX', max: 20 },
+      { key: 'abilities', label: 'Abilities', max: 6 },
+      { key: 'team_synergy', label: 'Team', max: 18 },
+      { key: 'crit_synergy', label: 'Crit syn', max: 8 },
+    ],
+    Defense: [
+      { key: 'sortie', label: 'Sortie', max: 30 },
+      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'stats', label: 'Stats', max: 20 },
+      { key: 'weapons', label: 'Weapons', max: 14 },
+      { key: 'abilities', label: 'Abilities', max: 10 },
+      { key: 'team_synergy', label: 'Team', max: 18 },
+    ],
+    Support: [
+      { key: 'sortie', label: 'Sortie', max: 30 },
+      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'stats', label: 'Stats', max: 10 },
+      { key: 'weapons', label: 'Weapons', max: 14 },
+      { key: 'abilities', label: 'Abilities', max: 12 },
+      { key: 'team_synergy', label: 'Team', max: 18 },
+    ],
+  };
 
   let payload = null;
   let activeCategory = 'units';
@@ -24,13 +52,86 @@
     return `<span class="tier-chip ${cls}">${esc(label)}</span>`;
   }
 
+  function thumbHtml(row) {
+    const src = row.thumb || '';
+    const fallback = row.rarity_icon || row.role_icon || '';
+    if (src) {
+      const fb = fallback ? ` data-fallback="${esc(fallback)}"` : '';
+      return `<img class="tier-card-thumb" src="${esc(src)}" alt="" loading="lazy"${fb} onerror="window.__tierThumbFallback(this)">`;
+    }
+    if (fallback) {
+      return `<img class="tier-card-thumb fallback-icon" src="${esc(fallback)}" alt="" loading="lazy">`;
+    }
+    return '<div class="tier-card-thumb placeholder" aria-hidden="true">?</div>';
+  }
+
+  window.__tierThumbFallback = function (img) {
+    const fb = img.getAttribute('data-fallback');
+    if (fb && img.src !== fb) {
+      img.src = fb;
+      img.classList.add('fallback-icon');
+      img.removeAttribute('onerror');
+      return;
+    }
+    img.replaceWith((() => {
+      const d = document.createElement('div');
+      d.className = 'tier-card-thumb placeholder';
+      d.setAttribute('aria-hidden', 'true');
+      d.textContent = '?';
+      return d;
+    })());
+  };
+
+  function renderSubscores(row, kind) {
+    if (kind === 'units' && row.subscores) {
+      const defs = UNIT_SUB_KEYS[row.role] || UNIT_SUB_KEYS.Attack;
+      const rows = defs
+        .map((d) => {
+          const val = Number(row.subscores[d.key] || 0);
+          if (val <= 0) return '';
+          const pct = Math.min(100, (val / d.max) * 100);
+          return `<div class="tier-sub-row">
+            <span class="tier-sub-label">${esc(d.label)}</span>
+            <div class="tier-sub-bar"><span style="width:${pct.toFixed(0)}%"></span></div>
+            <span class="tier-sub-val">${val.toFixed(1)}</span>
+          </div>`;
+        })
+        .filter(Boolean)
+        .join('');
+      return rows ? `<div class="tier-card-subscores">${rows}</div>` : '';
+    }
+    if (kind === 'characters') {
+      const sp = row.special || {};
+      const parts = [];
+      if (sp.guaranteed_crit) parts.push('Guaranteed Crit');
+      if (sp.supercharged_ex && !sp.guaranteed_crit) parts.push('Supercharged EX');
+      if (sp.chance_step_x2) parts.push('Chance Step ×2');
+      if (sp.support_attack_x2) parts.push('Support Atk ×2');
+      if (sp.support_defense_x2) parts.push('Support Def ×2');
+      if (!parts.length) return '';
+      return `<div class="tier-card-subscores"><p class="tier-pillar-detail">${esc(parts.join(' · '))}</p></div>`;
+    }
+    if (kind === 'supporters' && row.leader_profile) {
+      const lp = row.leader_profile;
+      return `<div class="tier-card-subscores">
+        <div class="tier-sub-row">
+          <span class="tier-sub-label">Leader</span>
+          <div class="tier-sub-bar"><span style="width:${Math.min(100, lp.max_leader_pct || 0)}%"></span></div>
+          <span class="tier-sub-val">${lp.max_leader_pct || 0}%</span>
+        </div>
+        <div class="tier-sub-row">
+          <span class="tier-sub-label">Coverage</span>
+          <div class="tier-sub-bar"><span style="width:${Math.min(100, lp.matching_units_pct || 0)}%"></span></div>
+          <span class="tier-sub-val">${(lp.matching_units_pct || 0).toFixed(0)}%</span>
+        </div>
+      </div>`;
+    }
+    return '';
+  }
+
   function renderCard(row, kind) {
-    const thumb = row.thumb
-      ? `<img class="tier-card-thumb" src="${esc(row.thumb)}" alt="" loading="lazy">`
-      : `<div class="tier-card-thumb placeholder" aria-hidden="true">?</div>`;
     const chips = [];
     if (row.is_limited_time) chips.push(chip('limited', 'Limited'));
-    if (row.community_anchor) chips.push(chip('peak', 'Meta anchor'));
     if (kind === 'units' && row.weapons && row.weapons.max_power >= 7500) {
       chips.push(chip('peak', `EX ${row.weapons.max_power}`));
     }
@@ -57,7 +158,7 @@
     return `
       <article class="tier-card" data-id="${esc(row.id)}">
         <div class="tier-card-top">
-          ${thumb}
+          ${thumbHtml(row)}
           <div class="tier-card-meta">
             <h3 class="tier-card-name">${esc(row.name)}</h3>
             <p class="tier-card-sub">${esc(sub)}</p>
@@ -65,8 +166,54 @@
           </div>
         </div>
         <div class="tier-card-chips">${chips.join('')}</div>
+        ${renderSubscores(row, kind)}
         ${bulletHtml}
       </article>`;
+  }
+
+  function renderScoringGuide() {
+    const guide = payload && payload.scoring_guide;
+    const intro = $('#tierScoringIntro');
+    const modesEl = $('#tierScoringModes');
+    const pillarsEl = $('#tierScoringPillars');
+    const globalEl = $('#tierScoringGlobal');
+    if (!guide) {
+      intro.textContent = 'Scoring breakdown unavailable.';
+      return;
+    }
+
+    const catLabel = activeCategory === 'units' ? 'UR gacha units' : activeCategory === 'characters' ? 'pilots' : 'UR supporters';
+    intro.textContent = `Each ${catLabel} (${activeCategory === 'supporters' ? 'all roles' : activeRole}) earns up to 100 points from the pillars below, then limited-time bonuses may apply.`;
+
+    modesEl.innerHTML = (guide.tier_modes || [])
+      .map((m) => `<div class="tier-scoring-mode"><strong>${esc(m.label)}</strong>${esc(m.detail)}</div>`)
+      .join('');
+
+    let pillars = [];
+    if (activeCategory === 'units') {
+      pillars = (guide.units && guide.units[activeRole]) || [];
+    } else if (activeCategory === 'characters') {
+      pillars = (guide.characters && guide.characters[activeRole]) || [];
+    } else {
+      pillars = guide.supporters || [];
+    }
+
+    pillarsEl.innerHTML = pillars
+      .map(
+        (p) => `<div class="tier-pillar">
+          <div class="tier-pillar-head">
+            <span class="tier-pillar-label">${esc(p.label)}</span>
+            <span class="tier-pillar-max">max ${esc(p.max)}</span>
+          </div>
+          <p class="tier-pillar-detail">${esc(p.detail)}</p>
+        </div>`
+      )
+      .join('');
+
+    const mods = guide.global_modifiers || [];
+    globalEl.innerHTML = mods.length
+      ? `<strong>Global modifiers:</strong> ${mods.map((m) => `${esc(m.label)} (${esc(m.points)}) — ${esc(m.detail)}`).join(' · ')}`
+      : '';
   }
 
   function flattenMetaBuckets(buckets) {
@@ -90,14 +237,13 @@
       rows = flattenMetaBuckets(payload.supporters_meta || {});
     }
     const q = searchQuery.trim().toLowerCase();
-    if (q) {
-      rows = rows.filter((r) => (r.name || '').toLowerCase().includes(q));
-    }
+    if (q) rows = rows.filter((r) => (r.name || '').toLowerCase().includes(q));
     return rows;
   }
 
   function render() {
     if (!payload) return;
+    renderScoringGuide();
     const rows = currentRows();
     const byTier = { SSS: [], SS: [], S: [], A: [] };
     rows.forEach((r) => {
@@ -124,7 +270,7 @@
         </section>`;
     }).join('');
 
-    statusEl.textContent = `${rows.length} ${activeCategory} shown · ${tierMode === 'meta' ? 'meta percentile' : 'absolute score'} tiers`;
+    statusEl.textContent = `${rows.length} ${activeCategory} · ${tierMode === 'meta' ? 'meta percentile' : 'absolute score'} tiers`;
   }
 
   async function load() {
@@ -147,6 +293,11 @@
       const roleWrap = $('#roleTabs');
       roleWrap.style.display = activeCategory === 'supporters' ? 'none' : '';
       if (activeCategory === 'characters') {
+        activeRole = 'Attack';
+        document.querySelectorAll('.tier-demo-role-tabs button').forEach((b) => {
+          b.classList.toggle('active', b.dataset.role === 'Attack');
+        });
+      } else if (activeCategory === 'units') {
         activeRole = 'Attack';
         document.querySelectorAll('.tier-demo-role-tabs button').forEach((b) => {
           b.classList.toggle('active', b.dataset.role === 'Attack');

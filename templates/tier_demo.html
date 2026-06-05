@@ -12,12 +12,16 @@
 
   <header class="tier-demo-hero">
     <h1>Meta Tier List</h1>
-    <p>
-      SSS → A rankings for gacha UR units, pilots, and supporters.
-      Peak EX damage and guaranteed-crit pilots (e.g. Shinn EX, Burning Gundam) are weighted above Chance Step alone.
-      References: <a href="https://appmedia.jp/ggene_78617135" target="_blank" rel="noopener">AppMedia</a> unit rankings &amp; community meta.
-    </p>
+    <p>SSS → A rankings for gacha UR units, pilots, and supporters. Scores are capped at 100 before limited-time bonuses.</p>
   </header>
+
+  <section id="tierScoringPanel" class="tier-scoring-panel" aria-labelledby="tierScoringTitle">
+    <h2 id="tierScoringTitle" class="tier-scoring-title">How points are distributed</h2>
+    <p id="tierScoringIntro" class="tier-scoring-intro">Loading scoring breakdown…</p>
+    <div id="tierScoringModes" class="tier-scoring-modes"></div>
+    <div id="tierScoringPillars" class="tier-scoring-pillars"></div>
+    <div id="tierScoringGlobal" class="tier-scoring-global"></div>
+  </section>
 
   <div class="tier-demo-controls">
     <nav class="tier-demo-tabs" aria-label="Category">
@@ -37,16 +41,12 @@
     <input id="tierSearch" type="search" placeholder="Search name…" aria-label="Search">
   </div>
 
-  <p id="tierStatus" class="tier-demo-method" aria-live="polite">Loading…</p>
+  <p id="tierStatus" class="tier-demo-status" aria-live="polite"></p>
 
   <div id="tierGrid" class="tier-demo-grid" aria-busy="true"></div>
 
   <footer class="tier-demo-foot">
-    <p>
-      <strong>Scoring notes:</strong> Attack units favor range-5 or 7500+ EX burst (AppMedia: long range <em>or</em> one-shot power).
-      Shinn EX Supercharged EX grants <em>Guaranteed Critical</em> on turn 2 and pairs with any attack MS.
-      Limited-time picks get a pull-priority bump. Regenerate data with <code>python scripts/tier_rank_mockup.py</code>.
-    </p>
+    <p>Limited-time picks receive a pull-priority bump. Data is precomputed — regenerate with <code>python scripts/tier_rank_mockup.py</code> when game balance shifts.</p>
     <p class="muted">Not affiliated with Bandai Namco. Game data may lag live patches.</p>
   </footer>
 </div>

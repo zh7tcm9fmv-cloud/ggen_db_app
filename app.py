@@ -11025,25 +11025,135 @@ def _tier_mockup_json_path():
     return os.path.join(app_dir, 'scripts', 'output', 'tier_mockup_v2.json')
 
 
+def _tier_scoring_guide():
+    """How the 0–100 score is built (shown on /tier-list before the grid)."""
+    return {
+        'tier_modes': [
+            {
+                'id': 'meta',
+                'label': 'Meta tier',
+                'detail': 'Percentile within UR gacha pool per role — top ~8% SSS, ~25% SS, ~50% S.',
+            },
+            {
+                'id': 'absolute',
+                'label': 'Absolute tier',
+                'detail': 'Fixed score bands: SSS ≥78, SS ≥70, S ≥62, A below 62.',
+            },
+        ],
+        'global_modifiers': [
+            {'label': 'Limited-time bonus', 'points': '+7', 'detail': 'Units, pilots, and supporters only on limited banners.'},
+            {'label': 'Gacha EX baseline', 'points': '+3', 'detail': 'UR units from standard gacha (acquisition route 1).'},
+        ],
+        'units': {
+            'Attack': [
+                {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Weighted Eternal Road stage eligibility; tag-poor units penalized.'},
+                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Space / ground / sea adaptability at SSP.'},
+                {'key': 'stats', 'label': 'SSP stats', 'max': '~15', 'detail': 'ATK + MOB percentile vs SSR+ pool.'},
+                {'key': 'weapons', 'label': 'Weapons & range', 'max': '~14', 'detail': 'Range 5, MAP, MAP-after-move.'},
+                {'key': 'peak_damage', 'label': 'Peak EX burst', 'max': 20, 'detail': 'EX weapon power tiers (6500→8500+) and range-5 burst bonus.'},
+                {'key': 'abilities', 'label': 'Unit abilities', 'max': 6, 'detail': 'EN recovery, damage reduction passives.'},
+                {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Best UR pilot + supporter tag match for this MS.'},
+                {'key': 'crit_synergy', 'label': 'Crit pilot synergy', 'max': 8, 'detail': 'Top pilot grants Guaranteed Critical (e.g. Shinn EX).'},
+            ],
+            'Defense': [
+                {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Same Eternal Road weighting as attackers.'},
+                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Terrain set at SSP.'},
+                {'key': 'stats', 'label': 'SSP stats', 'max': '~20', 'detail': 'HP + DEF + MOB percentile.'},
+                {'key': 'weapons', 'label': 'Debuff & mobility', 'max': '~14', 'detail': 'DEF debuff weapons, MOV 5, range.'},
+                {'key': 'abilities', 'label': 'Survivability', 'max': 10, 'detail': 'Damage reduction, HP recovery.'},
+                {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Bundled pilot, Support Def ×2, leader tags.'},
+            ],
+            'Support': [
+                {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Same Eternal Road weighting.'},
+                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Terrain set at SSP.'},
+                {'key': 'stats', 'label': 'SSP stats', 'max': '~10', 'detail': 'DEF + MOB percentile.'},
+                {'key': 'weapons', 'label': 'Debuff reach', 'max': 14, 'detail': 'DEF debuff %, range 5, MAP.'},
+                {'key': 'abilities', 'label': 'Utility', 'max': 12, 'detail': 'Heal, DR passives.'},
+                {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Debuff pilots, second supporter overlap.'},
+            ],
+        },
+        'characters': {
+            'Attack': [
+                {'key': 'stats', 'label': 'Dossier offense', 'max': 35, 'detail': 'Ranged + Melee + Awaken percentile at UR growth.'},
+                {'key': 'guaranteed_crit', 'label': 'Guaranteed Critical', 'max': 32, 'detail': 'Supercharged EX chain — pairs with any attack MS.'},
+                {'key': 'supercharged_ex', 'label': 'Supercharged EX', 'max': 10, 'detail': 'Offensive EX ability without guaranteed crit.'},
+                {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 9, 'detail': 'Lower weight than peak burst for attack ranking.'},
+                {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Conditional +ATK/+DEF for matching MS tags.'},
+                {'key': 'affinity', 'label': 'Affinity abilities', 'max': 8, 'detail': 'Name-matched tag affinity passives.'},
+            ],
+            'Defense': [
+                {'key': 'stats', 'label': 'Dossier defense', 'max': 35, 'detail': 'Defense + Reaction percentile.'},
+                {'key': 'support_defense_x2', 'label': 'Support Defense ×2', 'max': 12, 'detail': 'Doubled support-defense potency.'},
+                {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 14, 'detail': 'CS economy for defenders.'},
+                {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Team-wide DEF/ATK for tag conditions.'},
+            ],
+            'Support': [
+                {'key': 'stats', 'label': 'Dossier + debuff', 'max': '~35', 'detail': 'Defense percentile + enemy DEF debuff potential.'},
+                {'key': 'support_attack_x2', 'label': 'Support Attack ×2', 'max': 12, 'detail': 'Doubled support-attack potency.'},
+                {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 14, 'detail': 'CS economy for supporters.'},
+                {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Conditional squad-wide buffs.'},
+            ],
+        },
+        'supporters': [
+            {'key': 'leader_pct', 'label': 'Leader skill %', 'max': '~90', 'detail': 'Highest tier-3 leader buff percentage on matching tags.'},
+            {'key': 'coverage', 'label': 'Unit coverage', 'max': 15, 'detail': 'Share of roster that receives the leader buff.'},
+        ],
+    }
+
+
 def _tier_mockup_thumb(entity_id, kind):
-    """List thumbnail for tier demo cards."""
+    """List thumbnail for tier list cards (same resolution chain as browse APIs)."""
     eid = normalize_id(entity_id)
     if kind == 'unit':
         info = unit_info_map.get(eid, {})
-        return find_list_thumb(info.get('resource_ids', []), eid, 'images/unit_portraits')
+        rids = info.get('resource_ids', [])
+        return (
+            find_list_thumb(rids, eid, 'images/unit_portraits')
+            or find_portrait(rids, eid, 'images/unit_portraits')
+        )
     if kind == 'character':
         info = char_info_map.get(eid, {})
-        return find_list_thumb(info.get('resource_ids', []), eid, 'images/portraits')
+        rids = info.get('resource_ids', [])
+        return (
+            find_list_thumb(rids, eid, 'images/portraits')
+            or find_portrait(rids, eid, 'images/portraits')
+        )
     if kind == 'supporter':
         info = supporter_info_map.get(eid, {})
-        return find_list_thumb(info.get('resource_ids', []), eid, 'images/portraits')
+        rid = info.get('resource_id')
+        return (
+            find_supporter_portrait(rid, eid)
+            or find_supporter_full_portrait(rid)
+            or find_list_thumb([rid] if rid else [], eid, 'images/portraits')
+            or find_portrait([rid] if rid else [], eid, 'images/portraits')
+        )
     return None
+
+
+def _tier_mockup_row_icons(row, kind):
+    """Fallback icons when portrait asset is missing or fails to load."""
+    eid = normalize_id(row.get('id', ''))
+    if kind == 'unit':
+        info = unit_info_map.get(eid, {})
+        return {
+            'rarity_icon': RARITY_ICON_MAP.get(str(info.get('rarity', '1')), ''),
+            'role_icon': ROLE_ICON_MAP.get(str(info.get('role', '1')), ''),
+        }
+    if kind == 'character':
+        info = char_info_map.get(eid, {})
+        return {
+            'rarity_icon': RARITY_ICON_MAP.get(str(info.get('rarity', '1')), ''),
+            'role_icon': ROLE_ICON_MAP.get(str(info.get('role', '0')), ''),
+        }
+    info = supporter_info_map.get(eid, {})
+    return {'rarity_icon': RARITY_ICON_MAP.get(str(info.get('rarity', '1')), ''), 'role_icon': ''}
 
 
 def _tier_mockup_attach_thumbs(rows, kind):
     for row in rows or []:
         if isinstance(row, dict) and row.get('id'):
-            row['thumb'] = _tier_mockup_thumb(row['id'], kind)
+            row['thumb'] = _tier_mockup_thumb(row['id'], kind) or ''
+            row.update(_tier_mockup_row_icons(row, kind))
 
 
 @app.route('/api/tier_mockup')
@@ -11071,7 +11181,10 @@ def api_tier_mockup():
         _tier_mockup_attach_thumbs(payload.get(key), kind)
     ex = payload.get('example_wing_zero')
     if isinstance(ex, dict) and ex.get('id'):
-        ex['thumb'] = _tier_mockup_thumb(ex['id'], 'unit')
+        ex['thumb'] = _tier_mockup_thumb(ex['id'], 'unit') or ''
+        ex.update(_tier_mockup_row_icons(ex, 'unit'))
+    payload['scoring_guide'] = payload.get('scoring_guide') or _tier_scoring_guide()
+    payload = convert_image_urls(payload)
     r = jsonify(payload)
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r

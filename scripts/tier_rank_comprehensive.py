@@ -111,7 +111,6 @@ def apply_community_anchors(rows: list, meta_floor: dict, score_bump: dict | Non
             bumped = min(100.0, r["score"] + score_bump[rid])
             r["score"] = round(bumped, 1)
             r["tier"] = score_to_tier(bumped)
-            r.setdefault("bullets", []).insert(0, "Community meta anchor (peak DPS / guide tier)")
         floor = meta_floor.get(rid)
         if floor and tier_rank_index(r.get("tier_meta", "A")) > tier_rank_index(floor):
             r["tier_meta"] = floor
@@ -1192,8 +1191,7 @@ def main():
             "includes": [
                 "Units: SSP LB3, weapons, ER sortie, top 3 pilots, top 3 UR supporters",
                 "Characters: dossier stats, Guaranteed Critical / Supercharged EX, Chance Step x2, Support Atk/Def x2, squad tag buffs",
-                "Attack DPS: peak EX weapon power weighted above Chance Step (AppMedia / community meta)",
-                "Community anchors: Burning, Destiny, Shinn EX, Wing Zero, Psycho Haro tier floors",
+                "Attack DPS: peak EX weapon power weighted above Chance Step",
                 "Supporters: leader tag % and unit coverage",
                 "Limited-time bonus on units/characters/supporters",
                 "Tag ecosystem index and banner pickup hints",
