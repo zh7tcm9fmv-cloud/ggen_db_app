@@ -1890,8 +1890,9 @@ def _tag_id_list_matches_lineage_want(tag_ids, want_lid):
 
 
 def supporter_leader_tag_ids(sid, ld, lang_code):
-    """Lineage tag ids from tier-3 leader skill conditions for one supporter."""
+    """Tag/series ids from tier-3 leader skill conditions (resolve_condition_tags — same as supporter API)."""
     out = []
+    seen = set()
     lsr = supporter_leader_map.get(sid, [])
     llk = ld.get('lineage_lookup', {})
     snm = ld.get('series_name_map', {})
@@ -1903,8 +1904,9 @@ def supporter_leader_tag_ids(sid, ld, lang_code):
         )
         for t in tags:
             tid = str(t.get('id', '')).strip()
-            if tid and tid != '0':
+            if tid and tid != '0' and tid not in seen:
                 out.append(tid)
+                seen.add(tid)
     return out
 
 

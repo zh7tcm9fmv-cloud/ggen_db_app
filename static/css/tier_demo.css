@@ -297,13 +297,20 @@ body.tier-demo-page {
 .tier-card-advantages {
   margin: 0;
   padding-left: 1rem;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: #cbd5e1;
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 .tier-card-advantages li {
-  margin: 0.2rem 0;
+  margin: 0.35rem 0;
+}
+
+.tier-leader-buff {
+  font-size: 0.66rem;
+  margin: 0.2rem 0 0.45rem;
+  color: #94a3b8;
+  line-height: 1.4;
 }
 
 .tier-card-advantages li::marker {

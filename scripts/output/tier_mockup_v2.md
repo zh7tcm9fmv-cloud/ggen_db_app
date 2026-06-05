@@ -92,33 +92,33 @@ Offline only — **not** on the website. SSS → A tiers.
 
 ## Supporters (UR meta)
 
-- **SSS** Otto Mitas & Nahel Argama (Londo Bell) (72.4) — Limited availability — UR gacha only; Leader 44% on Ace Unit
-- **SSS** Talia Gladys & Minerva (67.0) — Limited availability — UR gacha only; Leader 44% on Tough as Nails
-- **SSS** Lacus Clyne & Eternal (66.6) — Limited availability — UR gacha only; Leader 44% on One-Shot Killer
-- **SS** Rustal Elion & Skipjack-class Warship (61.0) — Leader 36% on Ace Unit; Covers 79 Ace Unit MS (avg score 68.0)
-- **SS** Sumeragi Lee Noriega & Ptolemaios 2 (58.7) — Limited availability — UR gacha only; Leader 44% on Shippujinrai
-- **SS** Marina Ismail & Ptolemaios 2 (57.0) — Leader 36% on Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
-- **SS** Rain Mikamura & Bud Carrier (57.0) — Leader 36% on Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
-- **SS** Kyoji Kasshu & Dark Gundam (Second Form) (56.0) — Leader 36% on Rival; Covers 15 Ace Unit MS (avg score 70.3)
-- **SS** Multa Azrael & Dominion (56.0) — Leader 36% on Rival; Covers 15 Ace Unit MS (avg score 70.3)
-- **SS** Beecha Oleg & Nahel Argama (55.6) — Leader 36% on Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
-- **S** Fraw Bow & White Base (55.6) — Leader 36% on Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
-- **S** Tiffa Adill & Freeden (55.2) — Leader 36% on One-Shot Killer; Covers 16 Ace Unit MS (avg score 69.2)
-- **S** Fa Yuiry & Argama (55.0) — Leader 36% on Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
-- **S** Kudelia Aina Bernstein & Isaribi (55.0) — Leader 36% on Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
-- **S** Kazahana Azure & Laurasia Class (53.1) — Leader 44% on SEED Series; Covers 15 Ace Unit MS (avg score 71.6)
-- **S** Bright Noa & Ra Cailum (51.9) — Limited availability — UR gacha only; Leader 44% on Newtype Machine
-- **S** Beltorchika Irma & Audhumla (51.8) — Leader 36% on Psycommu; Covers 14 Ace Unit MS (avg score 64.6)
-- **S** Bright Noa & White Base (51.4) — Leader 36% on Test Type; Covers 12 Ace Unit MS (avg score 67.5)
+- **SSS** Otto Mitas & Nahel Argama (Londo Bell) (72.4) — Limited availability — UR gacha only; +44% all stats to MS tagged Ace Unit
+- **SSS** Talia Gladys & Minerva (67.0) — Limited availability — UR gacha only; +44% all stats to MS tagged Tough as Nails
+- **SSS** Lacus Clyne & Eternal (66.6) — Limited availability — UR gacha only; +44% all stats to MS tagged One-Shot Killer
+- **SS** Rustal Elion & Skipjack-class Warship (61.0) — +36% all stats to MS tagged Ace Unit; Covers 79 Ace Unit MS (avg score 68.0)
+- **SS** Sumeragi Lee Noriega & Ptolemaios 2 (58.7) — Limited availability — UR gacha only; +44% all stats to MS tagged Shippujinrai
+- **SS** Marina Ismail & Ptolemaios 2 (57.0) — +36% all stats to MS tagged Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
+- **SS** Rain Mikamura & Bud Carrier (57.0) — +36% all stats to MS tagged Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
+- **SS** Kyoji Kasshu & Dark Gundam (Second Form) (56.0) — +36% all stats to MS tagged Rival; Covers 15 Ace Unit MS (avg score 70.3)
+- **SS** Multa Azrael & Dominion (56.0) — +36% all stats to MS tagged Rival; Covers 15 Ace Unit MS (avg score 70.3)
+- **SS** Beecha Oleg & Nahel Argama (55.6) — +36% all stats to MS tagged Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
+- **S** Fraw Bow & White Base (55.6) — +36% all stats to MS tagged Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
+- **S** Tiffa Adill & Freeden (55.2) — +36% all stats to MS tagged One-Shot Killer; Covers 16 Ace Unit MS (avg score 69.2)
+- **S** Fa Yuiry & Argama (55.0) — +36% all stats to MS tagged Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
+- **S** Kudelia Aina Bernstein & Isaribi (55.0) — +36% all stats to MS tagged Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
+- **S** Kazahana Azure & Laurasia Class (53.1) — +44% all stats to MS tagged SEED Series · MS from Mobile Suit Gundam SEED Astray; Alt leader: +28% all stats to MS tagged SEED Series
+- **S** Bright Noa & Ra Cailum (51.9) — Limited availability — UR gacha only; +44% all stats to MS tagged Newtype Machine
+- **S** Beltorchika Irma & Audhumla (51.8) — +36% all stats to MS tagged Psycommu; Covers 14 Ace Unit MS (avg score 64.6)
+- **S** Bright Noa & White Base (51.4) — +36% all stats to MS from Mobile Suit Gundam; Covers 12 Ace Unit MS (avg score 67.5)
 - … +3 more in JSON
-- **A** Vincent Pike & Spartan (51.0) — Leader 36% on Aerial Use, Underwater Use; Covers 18 Ace Unit MS (avg score 62.5)
-- **A** Cima Garahau & Lili Marleen (50.6) — Leader 36% on Test Type; Quality-weighted coverage: avg unit score 64.8, tag-weighted capture 26.4%
-- **A** Eyphar Sinapus & Albion (50.6) — Leader 36% on Test Type; Quality-weighted coverage: avg unit score 64.9, tag-weighted capture 25.7%
-- **A** Lalah Sune & Zanzibar (49.1) — Leader 36% on Mono-Eye; Covers 2 Ace Unit MS (avg score 59.8)
-- **A** Atra Mixta & Hotarubi (47.6) — Leader 44% on Alaya-Vijnana System; Covers 5 Ace Unit MS (avg score 68.8)
-- **A** Jamil Neate & Freeden II (45.7) — Leader 44% on Freeden; Covers 4 Ace Unit MS (avg score 73.7)
-- **A** Mineva Lao Zabi & Garencieres (45.6) — Leader 36% on Neo Zeon; Covers 10 Ace Unit MS (avg score 60.4)
-- **A** Grodek Ainoa & Diva (44.9) — Leader 36% on Rearm; Covers 13 Ace Unit MS (avg score 63.2)
+- **A** Vincent Pike & Spartan (51.0) — +36% all stats to MS tagged Aerial Use OR Underwater Use; Covers 18 Ace Unit MS (avg score 62.5)
+- **A** Cima Garahau & Lili Marleen (50.6) — +36% all stats to MS tagged Test Type · MS from Mobile Suit Gundam 0083: Stardust Memory; Quality-weighted coverage: avg unit score 64.8, tag-weighted capture 26.4%
+- **A** Eyphar Sinapus & Albion (50.6) — +36% all stats to MS tagged Test Type; Quality-weighted coverage: avg unit score 64.9, tag-weighted capture 25.7%
+- **A** Lalah Sune & Zanzibar (49.1) — +36% all stats to MS tagged Mono-Eye; Covers 2 Ace Unit MS (avg score 59.8)
+- **A** Atra Mixta & Hotarubi (47.6) — +44% all stats to MS tagged Alaya-Vijnana System · MS from Mobile Suit Gundam Iron-Blooded Orphans; Alt leader: +28% all stats to MS from Mobile Suit Gundam Iron-Blooded Orphans
+- **A** Jamil Neate & Freeden II (45.7) — +44% all stats to MS tagged Freeden · MS from After War Gundam X; Alt leader: +28% all stats to MS from After War Gundam X
+- **A** Mineva Lao Zabi & Garencieres (45.6) — +36% all stats to MS tagged Neo Zeon · MS from Mobile Suit Gundam Unicorn; Covers 10 Ace Unit MS (avg score 60.4)
+- **A** Grodek Ainoa & Diva (44.9) — +36% all stats to MS tagged Rearm · MS from Mobile Suit Gundam AGE; Covers 13 Ace Unit MS (avg score 63.2)
 - … +13 more in JSON
 
 ## Example: full team note (unit + pilots + supporter)

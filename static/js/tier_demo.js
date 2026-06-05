@@ -116,12 +116,17 @@
       const lp = row.leader_profile;
       const qualPct = Math.min(100, (lp.quality_avg || 0));
       const aceN = lp.ace_units_covered || 0;
+      const sk = (lp.leader_skills && lp.leader_skills[0]) || null;
+      const buffTxt = sk && sk.tag_names && sk.tag_names.length
+        ? `+${sk.pct || lp.max_leader_pct}% → ${sk.tag_names.join(sk.separator === 'and' ? ' + ' : ', ')}`
+        : (lp.tag_names && lp.tag_names.length ? lp.tag_names.join(', ') : '');
       return `<div class="tier-card-subscores">
         <div class="tier-sub-row">
           <span class="tier-sub-label">Leader</span>
           <div class="tier-sub-bar"><span style="width:${Math.min(100, lp.max_leader_pct || 0)}%"></span></div>
           <span class="tier-sub-val">${lp.max_leader_pct || 0}%</span>
         </div>
+        ${buffTxt ? `<p class="tier-pillar-detail tier-leader-buff">${esc(buffTxt)}</p>` : ''}
         <div class="tier-sub-row">
           <span class="tier-sub-label">Quality</span>
           <div class="tier-sub-bar"><span style="width:${qualPct}%"></span></div>
@@ -144,7 +149,7 @@
     if (!items.length) return '';
     return `<div class="tier-card-why">
       <div class="tier-card-why-title">Why ranked here</div>
-      <ul class="tier-card-advantages">${items.slice(0, 5).map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
+      <ul class="tier-card-advantages">${items.slice(0, 7).map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
     </div>`;
   }
 
