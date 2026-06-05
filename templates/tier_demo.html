@@ -12,7 +12,7 @@
 
   <header class="tier-demo-hero">
     <h1>Meta Tier List</h1>
-    <p>SSS → A rankings for gacha UR units, pilots, and supporters. Scores are capped at 100 before limited-time bonuses.</p>
+    <p>SSS → A rankings for SSR+ units and pilots plus UR supporters. UR uses SSP/EX kits; SSR uses SP stats. Scores cap at 100 before limited-time bonuses.</p>
   </header>
 
   <section id="tierScoringPanel" class="tier-scoring-panel" aria-labelledby="tierScoringTitle">
@@ -25,7 +25,7 @@
 
   <div class="tier-demo-controls">
     <nav class="tier-demo-tabs" aria-label="Category">
-      <button type="button" class="active" data-cat="units">Units (EX)</button>
+      <button type="button" class="active" data-cat="units">Units</button>
       <button type="button" data-cat="characters">Pilots</button>
       <button type="button" data-cat="supporters">Supporters</button>
     </nav>
@@ -34,6 +34,11 @@
       <button type="button" data-role="Defense">Defense</button>
       <button type="button" data-role="Support">Support</button>
     </nav>
+    <select id="rarityFilter" aria-label="Rarity filter">
+      <option value="UR" selected>UR only</option>
+      <option value="SSR">SSR only</option>
+      <option value="All">All SSR+</option>
+    </select>
     <select id="tierMode" aria-label="Tier mode">
       <option value="meta" selected>Meta tier (percentile)</option>
       <option value="absolute">Absolute score tier</option>

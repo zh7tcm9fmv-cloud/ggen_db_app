@@ -14,68 +14,72 @@ Offline only — **not** on the website. SSS → A tiers.
 
 ## Gacha UR (EX) units
 
-- **SSS** Destiny Gundam (EX) (100.0) — Community meta anchor (peak DPS / guide tier); Limited availability — prioritize while on banner
-- **SSS** Burning Gundam (EX) (96.9) — Community meta anchor (peak DPS / guide tier); Limited availability — prioritize while on banner
-- **SSS** Wing Gundam Zero (EW) (EX) (92.1) — Limited availability — prioritize while on banner; MAP after moving (safe poke)
-- **SSS** Psycho Haro (EX) (88.4) — Community meta anchor (peak DPS / guide tier); Reach 5
-- **SSS** 00 Raiser Final Battle Type (EX) (81.4) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SSS** Halphas Gundam (EX) (74.2) — Has MAP weapon; Reach 5
-- **SSS** Unicorn Gundam (Destroy Mode / Awakened) (EX) (73.7) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SS** Xi Gundam (EX) (89.3) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SS** Unicorn Gundam 03 Phenex (Destroy Mode) (EX) (88.2) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SS** Hi-Nu Gundam (EX) (87.7) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SS** Atlas Gundam (EX) (85.8) — Has MAP weapon; Reach 5
-- **SS** Banshee Norn (Destroy Mode) (EX) (80.5) — Limited availability — prioritize while on banner; Best pilot: Riddhe Marcenas (bundled)
-- **SS** Gundam GP03 (EX) (78.2) — Limited availability — prioritize while on banner; Has MAP weapon
-- **SS** Gundam Barbatos Lupus Rex (EX) (77.3) — Limited availability — prioritize while on banner; Best pilot: Mikazuki Augus (bundled)
-- **SS** Penelope (EX) (77.0) — Reach 5; Best pilot: Lane Aim (bundled)
-- … +4 more in JSON
-- **S** Gundam Double X (EX) (85.0) — Limited availability — prioritize while on banner; Has MAP weapon
-- **S** Strike Freedom Gundam (EX) (81.8) — Limited availability — prioritize while on banner; Reach 5
-- **S** Zeta Gundam (EX) (81.4) — Limited availability — prioritize while on banner; Reach 5
-- **S** Gundam Calibarn (Final Battle) (EX) (81.2) — Limited availability — prioritize while on banner; Reach 5
-- **S** Gundam Astray Red Frame Custom (EX) (79.8) — Limited availability — prioritize while on banner; Has MAP weapon
-- **S** Ex-S Gundam (EX) (78.8) — Limited availability — prioritize while on banner; Reach 5
-- **S** Gundam Aerial Rebuild (EX) (76.0) — Reach 5; Best pilot: Suletta Mercury (bundled)
-- **S** Justice Gundam (EX) (75.9) — Best pilot: Athrun Zala (bundled); Best UR supporter: Lacus Clyne & Eternal (44% — One-Shot Killer)
-- … +9 more in JSON
-- **A** Gundam AGE-1 Normal (EX) (74.0) — Has MAP weapon; Best pilot: Flit Asuno (bundled)
-- **A** Qubeley (ZZ) (EX) (73.5) — Limited availability — prioritize while on banner; Reach 5
-- **A** Gundam Kimaris Vidar (EX) (72.8) — Reach 5; Best pilot: Gaelio Bauduin (bundled)
-- **A** Unicorn Gundam (Destroy Mode) (EX) (71.4) — Peak EX power 7800 (top-tier burst DPS); Best pilot: Banagher Links (bundled)
-- **A** Gundam Full Armor (Thunderbolt) (EX) (71.2) — Has MAP weapon; Best pilot: Io Fleming (bundled)
-- **A** Neue Ziel (EX) (70.5) — Has MAP weapon; Reach 5
-- **A** Gundam Ez8 (EX) (70.3) — Best pilot: Shiro Amada (bundled); Best UR supporter: Talia Gladys & Minerva (44% — Tough as Nails)
-- **A** Gouf Custom (EX) (70.1) — Best pilot: Norris Packard (bundled); Best UR supporter: Lacus Clyne & Eternal (44% — One-Shot Killer)
-- … +27 more in JSON
+- **SSS** Atlas Gundam (EX) (100.0) — Has MAP weapon; Reach 5
+- **SSS** Burning Gundam (EX) (100.0) — Limited availability — prioritize while on banner; Reach 5
+- **SSS** Destiny Gundam (EX) (100.0) — Limited availability — prioritize while on banner; Reach 5
+- **SSS** Wing Gundam Zero (EW) (EX) (100.0) — Limited availability — prioritize while on banner; MAP after moving (safe poke)
+- **SSS** Vayeate Suivant (89.8) — Has MAP weapon; Reach 5
+- **SSS** WaDom (88.0) — Has MAP weapon; Reach 5
+- **SSS** Wing Gundam (EW) (87.6) — Has MAP weapon; Reach 5
+- **SSS** G-Falcon Leopard (87.1) — Has MAP weapon; Reach 5
+- … +29 more in JSON
+- **SS** Gundam Double X (EX) (100.0) — Limited availability — prioritize while on banner; Has MAP weapon
+- **SS** Hi-Nu Gundam (EX) (100.0) — Limited availability — prioritize while on banner; Has MAP weapon
+- **SS** Unicorn Gundam 03 Phenex (Destroy Mode) (EX) (100.0) — Limited availability — prioritize while on banner; Has MAP weapon
+- **SS** Xi Gundam (EX) (100.0) — Limited availability — prioritize while on banner; Has MAP weapon
+- **SS** Gundam Calibarn (Final Battle) (EX) (99.4) — Limited availability — prioritize while on banner; Reach 5
+- **SS** Gundam Astray Red Frame Custom (EX) (99.1) — Limited availability — prioritize while on banner; Has MAP weapon
+- **SS** Gundam Barbatos Lupus Rex (EX) (93.4) — Limited availability — prioritize while on banner; Sim EX hit ~67,558 (bundled pilot, 40% DEF debuff ref boss)
+- **SS** Penelope (EX) (81.6) — Reach 5; Bundled pilot: Lane Aim
+- … +71 more in JSON
+- **S** Strike Freedom Gundam (EX) (98.8) — Limited availability — prioritize while on banner; Reach 5
+- **S** Zeta Gundam (EX) (97.3) — Limited availability — prioritize while on banner; Reach 5
+- **S** Qubeley (ZZ) (EX) (96.4) — Limited availability — prioritize while on banner; Reach 5
+- **S** Ex-S Gundam (EX) (96.1) — Limited availability — prioritize while on banner; Reach 5
+- **S** Psycho Haro (EX) (91.1) — Reach 5; Sim EX hit ~80,426 (bundled pilot, 40% DEF debuff ref boss)
+- **S** Gundam AGE-1 Normal (EX) (90.9) — Has MAP weapon; Sim EX hit ~72,683 (bundled pilot, 40% DEF debuff ref boss)
+- **S** Neue Ziel (EX) (89.0) — Has MAP weapon; Reach 5
+- **S** Sazabi (EX) (88.8) — Reach 5; Sim EX hit ~63,403 (bundled pilot, 40% DEF debuff ref boss)
+- … +107 more in JSON
+- **A** Char's Zaku II (THE ORIGIN) (EX) (86.4) — Sim EX hit ~90,849 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Char Aznable (THE ORIGIN)
+- **A** Gundam Exia (EX) (85.3) — Sim EX hit ~62,396 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Setsuna F. Seiei
+- **A** Unicorn Gundam (Destroy Mode) (EX) (84.7) — Sim EX hit ~65,930 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Banagher Links
+- **A** Master Gundam (EX) (84.4) — Sim EX hit ~71,953 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Master Asia, Undefeated of the East
+- **A** Striker Custom (EX) (83.0) — Sim EX hit ~69,775 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Ittou Tsurugi
+- **A** Blue Destiny Unit-1 (EX) (82.5) — Sim EX hit ~74,155 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Yuu Kajima
+- **A** Zeong (EX) (82.5) — Reach 5; Sim EX hit ~63,813 (bundled pilot, 40% DEF debuff ref boss)
+- **A** Crossbone Gundam X1 Custom (EX) (81.9) — Sim EX hit ~61,714 (bundled pilot, 40% DEF debuff ref boss); Bundled pilot: Kincade Nau
+- … +220 more in JSON
 
 ## Characters (UR meta)
 
-- **SSS** Shinn Asuka (100.0) — Community meta anchor (peak DPS / guide tier); Limited availability
+- **SSS** Shinn Asuka (76.3) — Limited availability; Guaranteed Critical (Supercharged EX) — assign on unrestricted stages for burst turns
 - **SSS** Kou Uraki (52.3) — Limited availability; Support Defense ×2
 - **SSS** Riddhe Marcenas (50.9) — Limited availability; Support Defense ×2
-- **SSS** Kira Yamato (49.5) — Limited availability; Chance Step ×2
+- **SSS** Patrick Colasour (42.2) — Support Defense ×2
+- **SSS** Andrew Waldfeld (41.8) — Support Defense ×2
+- **SSS** Sergei Smirnov (41.7) — Support Defense ×2
 - **SSS** Char Aznable (34.1) — Limited availability; Support Attack ×2
 - **SSS** Anavel Gato (33.8) — Limited availability; Support Attack ×2
-- **SSS** Ple-Two (17.3) — 
+- … +8 more in JSON
 - **SS** Setsuna F. Seiei (50.5) — Limited availability; Supercharged EX offensive chain
-- **SS** Amuro Ray (48.4) — Limited availability; Chance Step ×2
-- **SS** Suletta Mercury (47.8) — Limited availability; Chance Step ×2
-- **SS** Hathaway Noa (47.1) — Limited availability; Chance Step ×2
 - **SS** Rondo Mina Sahaku (46.3) — Support Defense ×2
 - **SS** Io Fleming (45.9) — Support Defense ×2
-- **SS** Mikazuki Augus (44.7) — Limited availability; Chance Step ×2
-- **SS** Haman Karn (43.4) — Limited availability; Squad buff +4% ATK for Qubeley (ZZ) (EX), Neo Zeon
-- … +5 more in JSON
+- **SS** Norea Du Noc (41.1) — Support Defense ×2
+- **SS** Knight Sazabi (39.9) — Support Defense ×2
+- **SS** Odel Barnet (39.3) — Support Defense ×2
+- **SS** Daguza Mackle (39.1) — Support Defense ×2
+- **SS** Rakan Dahkaran (38.9) — Support Defense ×2
+- … +24 more in JSON
 - **S** Athrun Zala (45.8) — Support Defense ×2
 - **S** Seabook Arno (45.7) — Support Defense ×2
 - **S** Amuro Ray (45.6) — Support Defense ×2
 - **S** Suletta Mercury (44.9) — Support Defense ×2
 - **S** Judau Ashta (44.8) — Support Defense ×2
-- **S** Char Aznable (42.3) — Chance Step ×2
-- **S** Lowe Guele (41.1) — Limited availability; Chance Step ×2
-- **S** Kamille Bidan (40.9) — Limited availability
-- … +11 more in JSON
+- **S** Shin Matsunaga (38.9) — Support Defense ×2
+- **S** Command Gundam (38.8) — Support Defense ×2
+- **S** Beside Pain (38.7) — Support Defense ×2
+- … +39 more in JSON
 - **A** Amuro Ray (44.3) — Support Defense ×2
 - **A** Jona Basta (43.5) — Support Defense ×2
 - **A** Relena Darlian (EW) (43.4) — Support Defense ×2
@@ -84,44 +88,44 @@ Offline only — **not** on the website. SSS → A tiers.
 - **A** Lane Aim (42.8) — Support Defense ×2
 - **A** Tiffa Adill (42.8) — Support Defense ×2
 - **A** Mikazuki Augus (42.6) — Support Defense ×2
-- … +28 more in JSON
+- … +85 more in JSON
 
 ## Supporters (UR meta)
 
-- **SSS** Lacus Clyne & Eternal (49.1) — Limited availability — UR gacha only; Buffs tags: One-Shot Killer
-- **SSS** Talia Gladys & Minerva (48.8) — Limited availability — UR gacha only; Buffs tags: Tough as Nails
-- **SSS** Sumeragi Lee Noriega & Ptolemaios 2 (47.7) — Limited availability — UR gacha only; Buffs tags: Shippujinrai
-- **SS** Otto Mitas & Nahel Argama (Londo Bell) (47.5) — Limited availability — UR gacha only; Buffs tags: Ace Unit
-- **SS** Bright Noa & Ra Cailum (47.1) — Limited availability — UR gacha only; Buffs tags: Newtype Machine
-- **SS** Kazahana Azure & Laurasia Class (41.7) — Buffs tags: SEED Series; Up to 44% leader skill
-- **SS** Atra Mixta & Hotarubi (40.9) — Buffs tags: Alaya-Vijnana System; Up to 44% leader skill
-- **SS** Jamil Neate & Freeden II (40.4) — Buffs tags: Freeden; Up to 44% leader skill
-- **SS** Lalah Sune & Zanzibar (36.4) — Buffs tags: Mono-Eye; Up to 36% leader skill
-- **SS** Vincent Pike & Spartan (36.1) — Buffs tags: Aerial Use, Underwater Use; Up to 36% leader skill
-- **S** Bright Noa & White Base (35.2) — Buffs tags: Test Type; Up to 36% leader skill
-- **S** Claudia Peer & Beehive (35.2) — Buffs tags: Test Type; Up to 36% leader skill
-- **S** Marina Ismail & Ptolemaios 2 (35.2) — Buffs tags: Unstoppable; Up to 36% leader skill
-- **S** Rain Mikamura & Bud Carrier (35.2) — Buffs tags: Unstoppable; Up to 36% leader skill
-- **S** Tiffa Adill & Freeden (34.9) — Buffs tags: One-Shot Killer; Up to 36% leader skill
-- **S** Fa Yuiry & Argama (34.7) — Buffs tags: Lightning-Fast; Up to 36% leader skill
-- **S** Kudelia Aina Bernstein & Isaribi (34.7) — Buffs tags: Lightning-Fast; Up to 36% leader skill
-- **S** Beecha Oleg & Nahel Argama (34.6) — Buffs tags: Tough as Nails; Up to 36% leader skill
+- **SSS** Otto Mitas & Nahel Argama (Londo Bell) (72.4) — Limited availability — UR gacha only; Leader 44% on Ace Unit
+- **SSS** Talia Gladys & Minerva (67.0) — Limited availability — UR gacha only; Leader 44% on Tough as Nails
+- **SSS** Lacus Clyne & Eternal (66.6) — Limited availability — UR gacha only; Leader 44% on One-Shot Killer
+- **SS** Rustal Elion & Skipjack-class Warship (61.0) — Leader 36% on Ace Unit; Covers 79 Ace Unit MS (avg score 68.0)
+- **SS** Sumeragi Lee Noriega & Ptolemaios 2 (58.7) — Limited availability — UR gacha only; Leader 44% on Shippujinrai
+- **SS** Marina Ismail & Ptolemaios 2 (57.0) — Leader 36% on Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
+- **SS** Rain Mikamura & Bud Carrier (57.0) — Leader 36% on Unstoppable; Covers 30 Ace Unit MS (avg score 66.4)
+- **SS** Kyoji Kasshu & Dark Gundam (Second Form) (56.0) — Leader 36% on Rival; Covers 15 Ace Unit MS (avg score 70.3)
+- **SS** Multa Azrael & Dominion (56.0) — Leader 36% on Rival; Covers 15 Ace Unit MS (avg score 70.3)
+- **SS** Beecha Oleg & Nahel Argama (55.6) — Leader 36% on Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
+- **S** Fraw Bow & White Base (55.6) — Leader 36% on Tough as Nails; Covers 13 Ace Unit MS (avg score 70.9)
+- **S** Tiffa Adill & Freeden (55.2) — Leader 36% on One-Shot Killer; Covers 16 Ace Unit MS (avg score 69.2)
+- **S** Fa Yuiry & Argama (55.0) — Leader 36% on Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
+- **S** Kudelia Aina Bernstein & Isaribi (55.0) — Leader 36% on Lightning-Fast; Covers 20 Ace Unit MS (avg score 67.6)
+- **S** Kazahana Azure & Laurasia Class (53.1) — Leader 44% on SEED Series; Covers 15 Ace Unit MS (avg score 71.6)
+- **S** Bright Noa & Ra Cailum (51.9) — Limited availability — UR gacha only; Leader 44% on Newtype Machine
+- **S** Beltorchika Irma & Audhumla (51.8) — Leader 36% on Psycommu; Covers 14 Ace Unit MS (avg score 64.6)
+- **S** Bright Noa & White Base (51.4) — Leader 36% on Test Type; Covers 12 Ace Unit MS (avg score 67.5)
 - … +3 more in JSON
-- **A** Mineva Lao Zabi & Garencieres (34.2) — Buffs tags: Neo Zeon; Up to 36% leader skill
-- **A** Grodek Ainoa & Diva (34.0) — Buffs tags: Rearm; Up to 36% leader skill
-- **A** Beltorchika Irma & Audhumla (33.9) — Buffs tags: Psycommu; Up to 36% leader skill
-- **A** Cima Garahau & Lili Marleen (33.9) — Buffs tags: Test Type; Up to 36% leader skill
-- **A** Knight Amuro & Pegasus White Base (33.9) — Buffs tags: Specialized Unit, SD Gundam; Up to 36% leader skill
-- **A** Lucrezia Noin & Supersonic Transporter (33.9) — Buffs tags: Specialized Unit; Up to 36% leader skill
-- **A** Eledore Mathis & Hover Truck (33.8) — Buffs tags: Land, X-Rounder; Up to 36% leader skill
-- **A** Sumeragi Lee Noriega & Ptolemaios (33.8) — Buffs tags: —; Up to 36% leader skill
+- **A** Vincent Pike & Spartan (51.0) — Leader 36% on Aerial Use, Underwater Use; Covers 18 Ace Unit MS (avg score 62.5)
+- **A** Cima Garahau & Lili Marleen (50.6) — Leader 36% on Test Type; Quality-weighted coverage: avg unit score 64.8, tag-weighted capture 26.4%
+- **A** Eyphar Sinapus & Albion (50.6) — Leader 36% on Test Type; Quality-weighted coverage: avg unit score 64.9, tag-weighted capture 25.7%
+- **A** Lalah Sune & Zanzibar (49.1) — Leader 36% on Mono-Eye; Covers 2 Ace Unit MS (avg score 59.8)
+- **A** Atra Mixta & Hotarubi (47.6) — Leader 44% on Alaya-Vijnana System; Covers 5 Ace Unit MS (avg score 68.8)
+- **A** Jamil Neate & Freeden II (45.7) — Leader 44% on Freeden; Covers 4 Ace Unit MS (avg score 73.7)
+- **A** Mineva Lao Zabi & Garencieres (45.6) — Leader 36% on Neo Zeon; Covers 10 Ace Unit MS (avg score 60.4)
+- **A** Grodek Ainoa & Diva (44.9) — Leader 36% on Rearm; Covers 13 Ace Unit MS (avg score 63.2)
 - … +13 more in JSON
 
 ## Example: full team note (unit + pilots + supporter)
 ### Wing Gundam Zero (EW) (EX)
 - Pilot: **Heero Yuy (EW)** (fit 59.8) — Tag overlap (2); Same series as unit; Gacha bundled pilot (comes with unit)
-- Pilot: **Shinn Asuka** (fit 38.9) — Tag overlap (2); Guaranteed Critical (Supercharged EX) — universal attack pilot
 - Pilot: **Heero Yuy (EW)** (fit 26.5) — Tag overlap (2); Same series as unit; Support Attack ×2
+- Pilot: **Preventer Wind** (fit 22.8) — Tag overlap (1); Same series as unit; Support Attack ×2
 - Supporter: **Marina Ismail & Ptolemaios 2** — 36% on Unstoppable
 - Supporter: **Rain Mikamura & Bud Carrier** — 36% on Unstoppable
 - Supporter: **Knight Amuro & Pegasus White Base** — 36% on Specialized Unit, SD Gundam
@@ -143,24 +147,24 @@ Offline only — **not** on the website. SSS → A tiers.
 
 ## Recent banners (pickup tier hints)
 ### New Unit Featured Unit Assembly
-- Strike Freedom Gundam (EX): meta **S** score 81.8
-- Justice Gundam (EX): meta **S** score 75.9
-- Freedom Gundam (EX): meta **S** score 64.9
-- Gundam Astray Red Frame Flight Unit: meta **A** score 71.3
+- Strike Freedom Gundam (EX): meta **S** score 98.8
+- Justice Gundam (EX): meta **SS** score 80.3
+- Freedom Gundam (EX): meta **SS** score 69.3
+- Gundam Astray Red Frame Flight Unit: meta **SS** score 74.7
 ### New Unit Featured Unit Assembly
-- Zeta Gundam (EX): meta **S** score 81.4
-- The-O (EX): meta **A** score 57.2
+- Zeta Gundam (EX): meta **S** score 97.3
+- The-O (EX): meta **A** score 62.6
 ### Featured Unit Assembly
-- Nu Gundam (EX): meta **A** score 61.1
-- Unicorn Gundam (Destroy Mode) (EX): meta **A** score 71.4
-- Gundam Barbatos 6th Form (EX): meta **A** score 69.4
-- Zeta Gundam (EX): meta **S** score 81.4
+- Nu Gundam (EX): meta **S** score 66.7
+- Unicorn Gundam (Destroy Mode) (EX): meta **A** score 84.7
+- Gundam Barbatos 6th Form (EX): meta **A** score 75.1
+- Zeta Gundam (EX): meta **S** score 97.3
 ### New Unit Featured Unit Assembly
-- Gundam GP02A (EX): meta **S** score 66.8
-- Char's Zaku II (THE ORIGIN) (EX): meta **A** score 65.5
-- Gundam Ez8 (EX): meta **A** score 70.3
-- Gundam Mk-II Prototype unit 0: meta **A** score 51.9
+- Gundam GP02A (EX): meta **SS** score 72.6
+- Char's Zaku II (THE ORIGIN) (EX): meta **A** score 86.4
+- Gundam Ez8 (EX): meta **S** score 86.8
+- Gundam Mk-II Prototype unit 0: meta **S** score 57.3
 ### New Unit Featured Unit Assembly
-- Gundam Deathscythe Hell (EW) (EX): meta **A** score 67.0
-- Build Strike Gundam (Full Package) (EX): meta **S** score 67.3
-- Vayeate Suivant: meta **A** score 67.6
+- Gundam Deathscythe Hell (EW) (EX): meta **A** score 72.0
+- Build Strike Gundam (Full Package) (EX): meta **SS** score 72.4
+- Vayeate Suivant: meta **SSS** score 89.8

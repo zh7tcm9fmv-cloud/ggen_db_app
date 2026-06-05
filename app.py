@@ -11028,11 +11028,12 @@ def _tier_mockup_json_path():
 def _tier_scoring_guide():
     """How the 0–100 score is built (shown on /tier-list before the grid)."""
     return {
+        'version': 3,
         'tier_modes': [
             {
                 'id': 'meta',
                 'label': 'Meta tier',
-                'detail': 'Percentile within UR gacha pool per role — top ~8% SSS, ~25% SS, ~50% S.',
+                'detail': 'Percentile within same role + rarity (UR and SSR ranked separately) — top ~8% SSS, ~25% SS, ~50% S.',
             },
             {
                 'id': 'absolute',
@@ -11042,31 +11043,31 @@ def _tier_scoring_guide():
         ],
         'global_modifiers': [
             {'label': 'Limited-time bonus', 'points': '+7', 'detail': 'Units, pilots, and supporters only on limited banners.'},
-            {'label': 'Gacha EX baseline', 'points': '+3', 'detail': 'UR units from standard gacha (acquisition route 1).'},
+            {'label': 'Gacha EX baseline', 'points': '+3', 'detail': 'UR gacha units (acquisition route 1) only.'},
         ],
         'units': {
             'Attack': [
                 {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Weighted Eternal Road stage eligibility; tag-poor units penalized.'},
-                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Space / ground / sea adaptability at SSP.'},
-                {'key': 'stats', 'label': 'SSP stats', 'max': '~15', 'detail': 'ATK + MOB percentile vs SSR+ pool.'},
-                {'key': 'weapons', 'label': 'Weapons & range', 'max': '~14', 'detail': 'Range 5, MAP, MAP-after-move.'},
-                {'key': 'peak_damage', 'label': 'Peak EX burst', 'max': 20, 'detail': 'EX weapon power tiers (6500→8500+) and range-5 burst bonus.'},
+                {'key': 'terrain', 'label': 'ER terrain fit', 'max': 15, 'detail': 'Space (51 stages) + Ground (22) weighted heavily; Space+Ground dual +3 bonus. Air/Sea/Water are smaller bonuses.'},
+                {'key': 'stats', 'label': 'Final stats', 'max': '~14', 'detail': 'SSP for UR, SP for SSR — ATK + MOB percentile vs full SSR+ pool.'},
+                {'key': 'weapons', 'label': 'Weapons & range', 'max': '~34', 'detail': 'Range 5, MAP, MAP-after-move (sim-validated burst scored separately).'},
+                {'key': 'peak_damage', 'label': 'Peak EX burst (sim)', 'max': 20, 'detail': 'Damage-calc estimated EX hit with bundled pilot vs reference boss — not nominal weapon power alone.'},
                 {'key': 'abilities', 'label': 'Unit abilities', 'max': 6, 'detail': 'EN recovery, damage reduction passives.'},
-                {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Best UR pilot + supporter tag match for this MS.'},
-                {'key': 'crit_synergy', 'label': 'Crit pilot synergy', 'max': 8, 'detail': 'Top pilot grants Guaranteed Critical (e.g. Shinn EX).'},
+                {'key': 'team_synergy', 'label': 'Bundled pilot & supporter', 'max': 14, 'detail': 'Bundled pilot kit + UR supporter tag match only (pilots swappable on unrestricted stages).'},
+                {'key': 'crit_synergy', 'label': 'Bundled crit synergy', 'max': 8, 'detail': 'Bundled pilot grants Guaranteed Critical on this MS (e.g. Destiny + Shinn).'},
             ],
             'Defense': [
                 {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Same Eternal Road weighting as attackers.'},
-                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Terrain set at SSP.'},
-                {'key': 'stats', 'label': 'SSP stats', 'max': '~20', 'detail': 'HP + DEF + MOB percentile.'},
+                {'key': 'terrain', 'label': 'ER terrain fit', 'max': 15, 'detail': 'Space+Ground coverage prioritized; niche terrains bonus only.'},
+                {'key': 'stats', 'label': 'Final stats', 'max': '~20', 'detail': 'SSP/SP HP + DEF + MOB percentile.'},
                 {'key': 'weapons', 'label': 'Debuff & mobility', 'max': '~14', 'detail': 'DEF debuff weapons, MOV 5, range.'},
                 {'key': 'abilities', 'label': 'Survivability', 'max': 10, 'detail': 'Damage reduction, HP recovery.'},
                 {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Bundled pilot, Support Def ×2, leader tags.'},
             ],
             'Support': [
                 {'key': 'sortie', 'label': 'ER sortie coverage', 'max': 30, 'detail': 'Same Eternal Road weighting.'},
-                {'key': 'terrain', 'label': 'Terrain flexibility', 'max': 8, 'detail': 'Terrain set at SSP.'},
-                {'key': 'stats', 'label': 'SSP stats', 'max': '~10', 'detail': 'DEF + MOB percentile.'},
+                {'key': 'terrain', 'label': 'ER terrain fit', 'max': 15, 'detail': 'Space+Ground dual MS score highest for ER.'},
+                {'key': 'stats', 'label': 'Final stats', 'max': '~10', 'detail': 'SSP/SP DEF + MOB percentile.'},
                 {'key': 'weapons', 'label': 'Debuff reach', 'max': 14, 'detail': 'DEF debuff %, range 5, MAP.'},
                 {'key': 'abilities', 'label': 'Utility', 'max': 12, 'detail': 'Heal, DR passives.'},
                 {'key': 'team_synergy', 'label': 'Pilot & supporter fit', 'max': 18, 'detail': 'Debuff pilots, second supporter overlap.'},
@@ -11074,15 +11075,14 @@ def _tier_scoring_guide():
         },
         'characters': {
             'Attack': [
-                {'key': 'stats', 'label': 'Dossier offense', 'max': 35, 'detail': 'Ranged + Melee + Awaken percentile at UR growth.'},
-                {'key': 'guaranteed_crit', 'label': 'Guaranteed Critical', 'max': 32, 'detail': 'Supercharged EX chain — pairs with any attack MS.'},
-                {'key': 'supercharged_ex', 'label': 'Supercharged EX', 'max': 10, 'detail': 'Offensive EX ability without guaranteed crit.'},
-                {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 9, 'detail': 'Lower weight than peak burst for attack ranking.'},
+                {'key': 'burst', 'label': 'Burst / damage dealt', 'max': '~52', 'detail': 'Guaranteed Crit, Supercharged EX, and +Damage Dealt % — intrinsic kit only, not how many MS they can pilot.'},
+                {'key': 'stats', 'label': 'Dossier offense', 'max': '~18', 'detail': 'Ranged + Melee + Awaken percentile (UR EX kit or SSR SP kit).'},
+                {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 6, 'detail': 'Lower weight than burst for attack pilots.'},
                 {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Conditional +ATK/+DEF for matching MS tags.'},
                 {'key': 'affinity', 'label': 'Affinity abilities', 'max': 8, 'detail': 'Name-matched tag affinity passives.'},
             ],
             'Defense': [
-                {'key': 'stats', 'label': 'Dossier defense', 'max': 35, 'detail': 'Defense + Reaction percentile.'},
+                {'key': 'stats', 'label': 'Dossier defense', 'max': '~35', 'detail': 'Defense + Reaction percentile (SP/EX growth).'},
                 {'key': 'support_defense_x2', 'label': 'Support Defense ×2', 'max': 12, 'detail': 'Doubled support-defense potency.'},
                 {'key': 'chance_step', 'label': 'Chance Step ×2', 'max': 14, 'detail': 'CS economy for defenders.'},
                 {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Team-wide DEF/ATK for tag conditions.'},
@@ -11095,8 +11095,11 @@ def _tier_scoring_guide():
             ],
         },
         'supporters': [
-            {'key': 'leader_pct', 'label': 'Leader skill %', 'max': '~90', 'detail': 'Highest tier-3 leader buff percentage on matching tags.'},
-            {'key': 'coverage', 'label': 'Unit coverage', 'max': 15, 'detail': 'Share of roster that receives the leader buff.'},
+            {'key': 'leader_pct', 'label': 'Leader skill %', 'max': '~55', 'detail': 'Highest tier-3 leader buff percentage on matching tags.'},
+            {'key': 'quality_avg', 'label': 'Quality-weighted roster', 'max': 22, 'detail': 'Average composite score of units that receive the leader buff — not just raw count.'},
+            {'key': 'tag_capture', 'label': 'Tag-weighted capture', 'max': 14, 'detail': 'Ace Unit MS weighted 1.4×, Protagonist 1.1× when summing covered unit value.'},
+            {'key': 'ace_coverage', 'label': 'Ace Unit coverage', 'max': 10, 'detail': 'Bonus for buffing multiple high-scoring Ace Unit tagged MS.'},
+            {'key': 'high_tier', 'label': 'High-tier touch count', 'max': 6, 'detail': 'How many 70+ composite units the supporter can buff.'},
         ],
     }
 

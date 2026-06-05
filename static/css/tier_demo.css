@@ -279,15 +279,36 @@ body.tier-demo-page {
   color: #c4b5fd;
 }
 
-.tier-card-bullets {
-  margin: 0.45rem 0 0;
-  padding-left: 1rem;
-  font-size: 0.68rem;
-  color: var(--muted);
-  line-height: 1.4;
+.tier-card-why {
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border);
 }
 
-.tier-card-bullets li { margin: 0.15rem 0; }
+.tier-card-why-title {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  margin-bottom: 0.3rem;
+}
+
+.tier-card-advantages {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.68rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+
+.tier-card-advantages li {
+  margin: 0.2rem 0;
+}
+
+.tier-card-advantages li::marker {
+  color: #38bdf8;
+}
 
 .tier-demo-loading,
 .tier-demo-empty {

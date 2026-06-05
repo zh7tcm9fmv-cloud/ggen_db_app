@@ -6,7 +6,7 @@
   const UNIT_SUB_KEYS = {
     Attack: [
       { key: 'sortie', label: 'Sortie', max: 30 },
-      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'terrain', label: 'Terrain', max: 15 },
       { key: 'stats', label: 'Stats', max: 15 },
       { key: 'weapons', label: 'Weapons', max: 34 },
       { key: 'peak_damage', label: 'Peak EX', max: 20 },
@@ -16,7 +16,7 @@
     ],
     Defense: [
       { key: 'sortie', label: 'Sortie', max: 30 },
-      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'terrain', label: 'Terrain', max: 15 },
       { key: 'stats', label: 'Stats', max: 20 },
       { key: 'weapons', label: 'Weapons', max: 14 },
       { key: 'abilities', label: 'Abilities', max: 10 },
@@ -24,7 +24,7 @@
     ],
     Support: [
       { key: 'sortie', label: 'Sortie', max: 30 },
-      { key: 'terrain', label: 'Terrain', max: 8 },
+      { key: 'terrain', label: 'Terrain', max: 15 },
       { key: 'stats', label: 'Stats', max: 10 },
       { key: 'weapons', label: 'Weapons', max: 14 },
       { key: 'abilities', label: 'Abilities', max: 12 },
@@ -35,6 +35,7 @@
   let payload = null;
   let activeCategory = 'units';
   let activeRole = 'Attack';
+  let activeRarity = 'UR';
   let tierMode = 'meta';
   let searchQuery = '';
 
@@ -113,6 +114,8 @@
     }
     if (kind === 'supporters' && row.leader_profile) {
       const lp = row.leader_profile;
+      const qualPct = Math.min(100, (lp.quality_avg || 0));
+      const aceN = lp.ace_units_covered || 0;
       return `<div class="tier-card-subscores">
         <div class="tier-sub-row">
           <span class="tier-sub-label">Leader</span>
@@ -120,37 +123,34 @@
           <span class="tier-sub-val">${lp.max_leader_pct || 0}%</span>
         </div>
         <div class="tier-sub-row">
-          <span class="tier-sub-label">Coverage</span>
-          <div class="tier-sub-bar"><span style="width:${Math.min(100, lp.matching_units_pct || 0)}%"></span></div>
-          <span class="tier-sub-val">${(lp.matching_units_pct || 0).toFixed(0)}%</span>
+          <span class="tier-sub-label">Quality</span>
+          <div class="tier-sub-bar"><span style="width:${qualPct}%"></span></div>
+          <span class="tier-sub-val">avg ${lp.quality_avg || 0}</span>
+        </div>
+        <div class="tier-sub-row">
+          <span class="tier-sub-label">Ace MS</span>
+          <div class="tier-sub-bar"><span style="width:${Math.min(100, aceN * 8)}%"></span></div>
+          <span class="tier-sub-val">${aceN}</span>
         </div>
       </div>`;
     }
     return '';
   }
 
+  function renderAdvantages(row) {
+    const items = (row.rank_advantages && row.rank_advantages.length)
+      ? row.rank_advantages
+      : (row.bullets || []);
+    if (!items.length) return '';
+    return `<div class="tier-card-why">
+      <div class="tier-card-why-title">Why ranked here</div>
+      <ul class="tier-card-advantages">${items.slice(0, 5).map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
+    </div>`;
+  }
+
   function renderCard(row, kind) {
     const chips = [];
     if (row.is_limited_time) chips.push(chip('limited', 'Limited'));
-    if (kind === 'units' && row.weapons && row.weapons.max_power >= 7500) {
-      chips.push(chip('peak', `EX ${row.weapons.max_power}`));
-    }
-    if (kind === 'characters') {
-      const sp = row.special || {};
-      if (sp.guaranteed_crit) chips.push(chip('crit', 'Guaranteed Crit'));
-      if (sp.supercharged_ex && !sp.guaranteed_crit) chips.push(chip('crit', 'Supercharged EX'));
-      if (sp.chance_step_x2) chips.push(chip('', 'Chance Step ×2'));
-    }
-    if (kind === 'units' && row.top_pilots && row.top_pilots[0]) {
-      const p = row.top_pilots[0];
-      chips.push(chip('pilot', p.name.split(' ')[0]));
-      if (p.guaranteed_crit) chips.push(chip('crit', 'Crit pilot'));
-    }
-
-    const bullets = (row.bullets || []).slice(0, 2);
-    const bulletHtml = bullets.length
-      ? `<ul class="tier-card-bullets">${bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>`
-      : '';
 
     const tierLabel = tierMode === 'meta' ? row.tier_meta : row.tier;
     const sub = [row.role || kind.slice(0, -1), row.rarity || ''].filter(Boolean).join(' · ');
@@ -165,9 +165,9 @@
             <div class="tier-card-score">Score ${esc(row.score)} · ${esc(tierLabel)}</div>
           </div>
         </div>
-        <div class="tier-card-chips">${chips.join('')}</div>
+        ${chips.length ? `<div class="tier-card-chips">${chips.join('')}</div>` : ''}
         ${renderSubscores(row, kind)}
-        ${bulletHtml}
+        ${renderAdvantages(row)}
       </article>`;
   }
 
@@ -182,8 +182,9 @@
       return;
     }
 
-    const catLabel = activeCategory === 'units' ? 'UR gacha units' : activeCategory === 'characters' ? 'pilots' : 'UR supporters';
-    intro.textContent = `Each ${catLabel} (${activeCategory === 'supporters' ? 'all roles' : activeRole}) earns up to 100 points from the pillars below, then limited-time bonuses may apply.`;
+    const rarityNote = activeCategory === 'supporters' ? '' : ` · ${activeRarity === 'All' ? 'SSR+ pool' : activeRarity + ' only'}`;
+    const catLabel = activeCategory === 'units' ? 'units' : activeCategory === 'characters' ? 'pilots' : 'UR supporters';
+    intro.textContent = `Each ${catLabel} (${activeCategory === 'supporters' ? 'all roles' : activeRole}${rarityNote}) earns up to 100 points from the pillars below. Meta tiers compare within the same role and rarity band.`;
 
     modesEl.innerHTML = (guide.tier_modes || [])
       .map((m) => `<div class="tier-scoring-mode"><strong>${esc(m.label)}</strong>${esc(m.detail)}</div>`)
@@ -235,6 +236,9 @@
       if (activeRole !== 'All') rows = rows.filter((r) => r.role === activeRole);
     } else {
       rows = flattenMetaBuckets(payload.supporters_meta || {});
+    }
+    if (activeCategory !== 'supporters' && activeRarity !== 'All') {
+      rows = rows.filter((r) => r.rarity === activeRarity);
     }
     const q = searchQuery.trim().toLowerCase();
     if (q) rows = rows.filter((r) => (r.name || '').toLowerCase().includes(q));
@@ -291,7 +295,9 @@
       btn.classList.add('active');
       activeCategory = btn.dataset.cat;
       const roleWrap = $('#roleTabs');
+      const rf = $('#rarityFilter');
       roleWrap.style.display = activeCategory === 'supporters' ? 'none' : '';
+      rf.style.display = activeCategory === 'supporters' ? 'none' : '';
       if (activeCategory === 'characters') {
         activeRole = 'Attack';
         document.querySelectorAll('.tier-demo-role-tabs button').forEach((b) => {
@@ -314,6 +320,13 @@
       activeRole = btn.dataset.role;
       render();
     });
+  });
+
+  $('#rarityFilter').addEventListener('change', (e) => {
+    activeRarity = e.target.value;
+    const rf = $('#rarityFilter');
+    rf.style.display = activeCategory === 'supporters' ? 'none' : '';
+    render();
   });
 
   $('#tierMode').addEventListener('change', (e) => {
