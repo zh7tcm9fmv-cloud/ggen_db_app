@@ -8960,6 +8960,19 @@ def _game_item_icon_url(resource_id):
     return game_image_public_url(_game_images_webp_path(folder, rid))
 
 
+def _profile_title_icon_url(pid, pinfo=None):
+    """Profile title banner art under images/Item/profile_title_{id}.webp."""
+    pid = normalize_id(pid)
+    if pid == '0':
+        return ''
+    if pinfo is None:
+        pinfo = (profile_title_info_map or {}).get(pid, {})
+    brid = str((pinfo or {}).get('background_resource_id') or '').strip()
+    if not brid:
+        brid = f'profile_title_{pid}'
+    return game_image_public_url(_game_images_webp_path('Item', brid))
+
+
 def _resolve_profile_title_display_name(pid, lc):
     pinfo = (profile_title_info_map or {}).get(normalize_id(pid), {})
     if not pinfo:
@@ -9007,9 +9020,7 @@ def _decorate_reward_rows(rows, lc):
         elif rt == '30':
             pinfo = profile_title_info_map.get(tid, {})
             reward_name = _resolve_profile_title_display_name(tid, lc)
-            brid = str(pinfo.get('background_resource_id') or '').strip() if isinstance(pinfo, dict) else ''
-            if brid:
-                reward_icon = game_image_public_url(_game_images_webp_path('Item', brid))
+            reward_icon = _profile_title_icon_url(tid, pinfo)
         elif rt == '8':
             opinfo = option_part_reward_info_map.get(tid, {})
             nlid = normalize_id(opinfo.get('name_lang_id')) if isinstance(opinfo, dict) else '0'
@@ -14333,11 +14344,10 @@ def get_profile_title(profile_title_id):
         if not info:
             return jsonify({'error': 'Not found'}), 404
         name = _resolve_profile_title_display_name(pid, lc)
-        brid = str(info.get('background_resource_id') or '').strip()
         result = {
             'id': pid,
             'name': name,
-            'image': (game_image_public_url(_game_images_webp_path('Item', brid)) if brid else ''),
+            'image': _profile_title_icon_url(pid, info),
             'lang': lc,
         }
         return jsonify(convert_image_urls(result))
