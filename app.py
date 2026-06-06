@@ -2471,68 +2471,6 @@ ACQUISITION_ROUTE_ICONS = {
     '2': '',
     '3': '/static/images/UI/UI_Common_Icon_Source_Event.webp',
 }
-# Eternal.Domain.Enums — gacha & acquisition (dump2.2.0.cs)
-GASHA_TYPE_LABELS = {
-    'EN': {'0': 'None', '1': 'Normal', '2': 'Step-Up', '3': 'Re-Lottery', '4': 'Keep', '5': 'Give Back'},
-    'TW': {'0': '無', '1': '一般', '2': '階梯', '3': '重抽', '4': '保留', '5': '返還'},
-    'HK': {'0': '無', '1': '一般', '2': '階梯', '3': '重抽', '4': '保留', '5': '返還'},
-    'JA': {'0': 'なし', '1': '通常', '2': 'ステップアップ', '3': '引き直し', '4': 'キープ', '5': '返還'},
-    'JP': {'0': 'なし', '1': '通常', '2': 'ステップアップ', '3': '引き直し', '4': 'キープ', '5': '返還'},
-}
-GASHA_CURRENCY_LABELS = {
-    'EN': {'0': 'None', '1': 'Item', '2': 'Capital', '3': 'Diamond', '4': 'Paid Diamond', '5': 'Free'},
-    'TW': {'0': '無', '1': '道具', '2': '資金', '3': '鑽石', '4': '付費鑽石', '5': '免費'},
-    'HK': {'0': '無', '1': '道具', '2': '資金', '3': '鑽石', '4': '付費鑽石', '5': '免費'},
-    'JA': {'0': 'なし', '1': 'アイテム', '2': '資金', '3': 'ダイヤ', '4': '有償ダイヤ', '5': '無料'},
-    'JP': {'0': 'なし', '1': 'アイテム', '2': '資金', '3': 'ダイヤ', '4': '有償ダイヤ', '5': '無料'},
-}
-ACQUISITION_METHOD_TYPE_LABELS = {
-    'EN': {
-        '3': 'Eternal Road', '4': 'Enhance Material Stage', '6': 'Unit Development Diagram',
-        '7': 'Unit Assembly', '12': 'Scenario Series Complete', '13': 'Main Story Stage',
-        '14': 'G-Shop', '15': 'Event Shop', '16': 'Story Event', '17': 'Invasion Event',
-        '18': 'Character Scout', '19': 'Story Event Medal Gacha', '20': 'SD Story Event',
-        '21': 'Tower Event', '22': 'Invasion Challenge', '23': 'Panel Mission',
-        '24': 'Login Bonus', '25': 'Map Event', '26': 'Main Story Challenge',
-        '27': 'Main Scenario Challenge Series', '28': 'Present Box',
-    },
-    'TW': {
-        '3': '永恆之路', '4': '強化素材關卡', '6': '機體開發圖',
-        '7': '機體補給', '12': '劇情系列全通', '13': '主線關卡',
-        '14': 'G商店', '15': '活動商店', '16': '劇情活動', '17': '入侵活動',
-        '18': '角色招募', '19': '活動獎章轉蛋', '20': 'SD劇情活動',
-        '21': '爬塔活動', '22': '入侵挑戰', '23': '面板任務',
-        '24': '登入獎勵', '25': '地圖活動', '26': '主線挑戰',
-        '27': '主線挑戰系列', '28': '禮物箱',
-    },
-    'HK': {
-        '3': '永恆之路', '4': '強化素材關卡', '6': '機體開發圖',
-        '7': '機體補給', '12': '劇情系列全通', '13': '主線關卡',
-        '14': 'G商店', '15': '活動商店', '16': '劇情活動', '17': '入侵活動',
-        '18': '角色招募', '19': '活動獎章扭蛋', '20': 'SD劇情活動',
-        '21': '爬塔活動', '22': '入侵挑戰', '23': '面板任務',
-        '24': '登入獎勵', '25': '地圖活動', '26': '主線挑戰',
-        '27': '主線挑戰系列', '28': '禮物箱',
-    },
-    'JA': {
-        '3': 'エターナルロード', '4': '強化素材ステージ', '6': '機体開発図',
-        '7': '機体補給', '12': 'シナリオシリーズコンプリート', '13': 'メインストーリーステージ',
-        '14': 'Gショップ', '15': 'イベントショップ', '16': 'ストーリーイベント', '17': '侵攻イベント',
-        '18': 'キャラスカウト', '19': 'ストーリーイベントメダルガシャ', '20': 'SDストーリーイベント',
-        '21': 'タワーイベント', '22': '侵攻チャレンジ', '23': 'パネルミッション',
-        '24': 'ログインボーナス', '25': 'マップイベント', '26': 'メインストーリーチャレンジ',
-        '27': 'メインシナリオチャレンジシリーズ', '28': 'プレゼント',
-    },
-    'JP': {
-        '3': 'エターナルロード', '4': '強化素材ステージ', '6': '機体開発図',
-        '7': '機体補給', '12': 'シナリオシリーズコンプリート', '13': 'メインストーリーステージ',
-        '14': 'Gショップ', '15': 'イベントショップ', '16': 'ストーリーイベント', '17': '侵攻イベント',
-        '18': 'キャラスカウト', '19': 'ストーリーイベントメダルガシャ', '20': 'SDストーリーイベント',
-        '21': 'タワーイベント', '22': '侵攻チャレンジ', '23': 'パネルミッション',
-        '24': 'ログインボーナス', '25': 'マップイベント', '26': 'メインストーリーチャレンジ',
-        '27': 'メインシナリオチャレンジシリーズ', '28': 'プレゼント',
-    },
-}
 ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.webp'
 RARITY_ICON_MAP = {
     '1': '/static/images/Rarity/UI_Common_RarityIcon_N.webp',
@@ -6943,15 +6881,6 @@ ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
-unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
-character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
-gasha_master_data = load_json(os.path.join(BASE_DIR, "m_gasha.json"))
-gasha_entry_data = load_json(os.path.join(BASE_DIR, "m_gasha_entry.json"))
-gasha_entry_detail_data = load_json(os.path.join(BASE_DIR, "m_gasha_entry_detail.json"))
-gasha_pity_data = load_json(os.path.join(BASE_DIR, "m_gasha_pity_system_setting.json"))
-gasha_point_exchange_data = load_json(os.path.join(BASE_DIR, "m_gasha_point_exchange.json"))
-gasha_point_exchange_item_data = load_json(os.path.join(BASE_DIR, "m_gasha_point_exchange_item.json"))
-gasha_content_detail_data = load_json(os.path.join(BASE_DIR, "m_gasha_content_detail.json"))
 profile_title_data = load_json(os.path.join(BASE_DIR, "m_profile_title.json"))
 schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
 schedule_start_ms_by_id = {}
@@ -7015,78 +6944,6 @@ tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_sta
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
 reward_map = create_reward_map(reward_data) if reward_data else {}
 item_info_map = create_item_info_map(item_data) if item_data else {}
-gasha_master_by_id = {}
-for _gx in extract_data_list(gasha_master_data):
-    if not isinstance(_gx, dict):
-        continue
-    _gid = normalize_id(_gx.get('Id') or _gx.get('id'))
-    if _gid != '0':
-        gasha_master_by_id[_gid] = _gx
-gasha_entry_detail_by_id = {}
-for _ged in extract_data_list(gasha_entry_detail_data):
-    if not isinstance(_ged, dict):
-        continue
-    _geid = normalize_id(_ged.get('Id') or _ged.get('id'))
-    if _geid != '0':
-        gasha_entry_detail_by_id[_geid] = _ged
-gasha_entries_by_gasha_id = {}
-for _ge in extract_data_list(gasha_entry_data):
-    if not isinstance(_ge, dict):
-        continue
-    _ggid = normalize_id(_ge.get('GashaId') or _ge.get('gashaId'))
-    if _ggid == '0':
-        continue
-    gasha_entries_by_gasha_id.setdefault(_ggid, []).append(_ge)
-for _ggid in gasha_entries_by_gasha_id:
-    gasha_entries_by_gasha_id[_ggid].sort(
-        key=lambda x: (safe_int(x.get('SlotNumber') or x.get('slotNumber'), 0), safe_int(x.get('SortOrderInSlot') or x.get('sortOrderInSlot'), 0)))
-gasha_pity_by_gasha_id = {}
-for _gp in extract_data_list(gasha_pity_data):
-    if not isinstance(_gp, dict):
-        continue
-    _pgid = normalize_id(_gp.get('GashaId') or _gp.get('gashaId'))
-    if _pgid != '0':
-        gasha_pity_by_gasha_id[_pgid] = _gp
-gasha_point_exchange_by_gasha_id = {}
-for _gpe in extract_data_list(gasha_point_exchange_data):
-    if not isinstance(_gpe, dict):
-        continue
-    _peid = normalize_id(_gpe.get('Id') or _gpe.get('id'))
-    if _peid != '0':
-        gasha_point_exchange_by_gasha_id[_peid] = _gpe
-gasha_point_exchange_items_by_exchange_id = {}
-for _gpei in extract_data_list(gasha_point_exchange_item_data):
-    if not isinstance(_gpei, dict):
-        continue
-    _pex = normalize_id(_gpei.get('GashaPointExchangeId') or _gpei.get('gashaPointExchangeId'))
-    if _pex == '0':
-        continue
-    gasha_point_exchange_items_by_exchange_id.setdefault(_pex, []).append(_gpei)
-for _pex in gasha_point_exchange_items_by_exchange_id:
-    gasha_point_exchange_items_by_exchange_id[_pex].sort(key=lambda x: safe_int(x.get('SortOrder') or x.get('sortOrder'), 0))
-gasha_content_detail_by_id = {}
-for _gcd in extract_data_list(gasha_content_detail_data):
-    if not isinstance(_gcd, dict):
-        continue
-    _cdid = normalize_id(_gcd.get('Id') or _gcd.get('id'))
-    if _cdid != '0':
-        gasha_content_detail_by_id[_cdid] = _gcd
-unit_acq_methods_by_unit_id = {}
-for _uam in extract_data_list(unit_acquisition_method_data):
-    if not isinstance(_uam, dict):
-        continue
-    _uid = normalize_id(_uam.get('UnitId') or _uam.get('unitId'))
-    if _uid == '0':
-        continue
-    unit_acq_methods_by_unit_id.setdefault(_uid, []).append(_uam)
-char_acq_methods_by_char_id = {}
-for _cam in extract_data_list(character_acquisition_method_data):
-    if not isinstance(_cam, dict):
-        continue
-    _cid = normalize_id(_cam.get('CharacterId') or _cam.get('characterId'))
-    if _cid == '0':
-        continue
-    char_acq_methods_by_char_id.setdefault(_cid, []).append(_cam)
 profile_title_info_map = create_profile_title_info_map(profile_title_data) if profile_title_data else {}
 reward_set_rewards_map = {}
 for _rid, _rrow in (reward_map or {}).items():
@@ -7702,7 +7559,6 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage.json"))
     special_event_stage_lang_text = load_json(os.path.join(lang_dir, "m_special_event_stage.json"))
     item_lang_text = load_json(os.path.join(lang_dir, "m_item.json"))
-    gasha_lang_text = load_json(os.path.join(lang_dir, "m_gasha.json"))
     profile_title_lang_text = load_json(os.path.join(lang_dir, "m_profile_title.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
@@ -7722,7 +7578,6 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_text_map = create_lang_text_map(tower_stage_lang_text) if tower_stage_lang_text else {}
     special_event_stage_text_map = create_lang_text_map(special_event_stage_lang_text) if special_event_stage_lang_text else {}
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
-    gasha_text_map = create_lang_text_map(gasha_lang_text) if gasha_lang_text else {}
     profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
@@ -7840,7 +7695,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'gasha_text_map': gasha_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -14728,249 +14583,6 @@ def _option_part_acquisition_label(lc):
     return 'Acquisition method'
 
 
-def _gasha_type_label(gasha_type_index, lc):
-    ti = normalize_id(gasha_type_index) or '0'
-    return (GASHA_TYPE_LABELS.get(lc) or GASHA_TYPE_LABELS.get('EN', {})).get(ti, ti)
-
-
-def _gasha_currency_label(currency_type_index, lc):
-    ci = normalize_id(currency_type_index) or '0'
-    return (GASHA_CURRENCY_LABELS.get(lc) or GASHA_CURRENCY_LABELS.get('EN', {})).get(ci, ci)
-
-
-def _gasha_display_name(gasha_id, ld):
-    gid = normalize_id(gasha_id)
-    gx = gasha_master_by_id.get(gid, {})
-    nlid = normalize_id(gx.get('NameLanguageId') or gx.get('nameLanguageId') or '0')
-    if nlid != '0':
-        name = (ld.get('gasha_text_map') or {}).get(nlid, '')
-        if name:
-            return name.strip()
-    return f'Gasha {gid}' if gid != '0' else ''
-
-
-def _item_display_name(item_id, ld):
-    iid = normalize_id(item_id)
-    info = item_info_map.get(iid, {})
-    nlid = normalize_id(info.get('name_lang_id') if isinstance(info, dict) else '0')
-    if nlid != '0':
-        name = (ld.get('item_text_map') or {}).get(nlid, '')
-        if name:
-            return name.strip()
-    return ''
-
-
-def _resolve_gasha_content_detail_reward_name(content_detail_id, ld):
-    cdid = normalize_id(content_detail_id)
-    cd = gasha_content_detail_by_id.get(cdid, {})
-    if not cd:
-        return ''
-    rut = normalize_id(cd.get('RewardTargetId') or cd.get('rewardTargetId') or '0')
-    if rut == '0':
-        return ''
-    if rut in unit_info_map:
-        lid = (ld.get('unit_id_map') or {}).get(rut, '')
-        return (ld.get('unit_text_map') or {}).get(lid, '').strip() if lid else ''
-    if rut in char_info_map:
-        lid = (ld.get('char_id_map') or {}).get(rut, '')
-        return (ld.get('char_text_map') or {}).get(lid, '').strip() if lid else ''
-    if rut in supporter_info_map:
-        lid = (ld.get('supporter_id_map') or {}).get(rut, '')
-        return (ld.get('supporter_text_map') or {}).get(lid, '').strip() if lid else ''
-    return ''
-
-
-def _resolve_acquisition_method_text(typ, tid, lc, ld, detail_text=''):
-    typ = normalize_id(typ)
-    tid = normalize_id(tid)
-    labels = ACQUISITION_METHOD_TYPE_LABELS.get(lc) or ACQUISITION_METHOD_TYPE_LABELS.get('EN', {})
-    base = labels.get(typ, f'Type {typ}')
-    if typ == '3':
-        st_name = _find_eternal_stage_name(tid, ld)
-        if lc in ('TW', 'HK'):
-            return f'通關永恆之路專家關卡「{st_name}」獎勵' if st_name else base
-        if lc in ('JA', 'JP'):
-            return f'エターナルロードエキスパート「{st_name}」クリア報酬' if st_name else base
-        return f'Clear Eternal Road Expert Stage "{st_name}" reward' if st_name else base
-    if typ == '7':
-        gname = _gasha_display_name(tid, ld)
-        if lc in ('TW', 'HK'):
-            return f'機體補給「{gname}」' if gname else base
-        if lc in ('JA', 'JP'):
-            return f'機体補給「{gname}」' if gname else base
-        return f'Unit Assembly "{gname}"' if gname else base
-    if typ == '13':
-        st = stage_map.get(tid, {})
-        st_name = resolve_stage_name_from_lang_m_stage(ld, st.get('stage_name_lang_id') if isinstance(st, dict) else '0', tid)
-        if lc in ('TW', 'HK'):
-            return f'通關主線關卡「{st_name}」' if st_name and not st_name.startswith('Unknown') else base
-        if lc in ('JA', 'JP'):
-            return f'メインストーリー「{st_name}」クリア' if st_name and not st_name.startswith('Unknown') else base
-        return f'Clear Main Story Stage "{st_name}"' if st_name and not st_name.startswith('Unknown') else base
-    if typ == '14':
-        return base
-    if typ == '19':
-        if lc in ('TW', 'HK'):
-            return '劇情活動獎勵'
-        if lc in ('JA', 'JP'):
-            return 'ストーリーイベント報酬'
-        return 'Story Event Reward'
-    if typ == '21':
-        st_name = _find_tower_event_stage_name(tid, ld)
-        if lc in ('TW', 'HK'):
-            return f'通關關卡「{st_name}」' if st_name else base
-        if lc in ('JA', 'JP'):
-            return f'ステージ「{st_name}」クリア' if st_name else base
-        return f'Clear Stage "{st_name}"' if st_name else base
-    if typ == '22':
-        enemy_name = _extract_fierce_enemy_name(detail_text, lc)
-        if enemy_name:
-            if lc in ('TW', 'HK'):
-                return f'通關「猛敵來襲 Vs. {enemy_name}（挑戰）Lv.8」'
-            if lc in ('JA', 'JP'):
-                return f'猛敵来襲 Vs. {enemy_name}（チャレンジ）Lv.8 クリア'
-            return f'Clear Stage "Fierce Enemy Assault Vs. {enemy_name} (Challenge) Level 8"'
-        if lc in ('TW', 'HK'):
-            return '猛敵來襲（挑戰）Lv.8'
-        if lc in ('JA', 'JP'):
-            return '猛敵来襲（チャレンジ）Lv.8'
-        return 'Fierce Enemy Assault (Challenge) Level 8'
-    return base
-
-
-def _dedupe_preserve_order(items):
-    seen = set()
-    out = []
-    for m in items:
-        if m and m not in seen:
-            seen.add(m)
-            out.append(m)
-    return out
-
-
-def _build_entity_acquisition_methods(entity_id, entity_kind, lc, ld, detail_text=''):
-    methods = []
-    eid = normalize_id(entity_id)
-    rows = []
-    if entity_kind == 'unit':
-        rows = unit_acq_methods_by_unit_id.get(eid, [])
-    elif entity_kind == 'character':
-        rows = char_acq_methods_by_char_id.get(eid, [])
-    for row in rows:
-        if not isinstance(row, dict):
-            continue
-        typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
-        tid = normalize_id(row.get('TargetId') or row.get('targetId'))
-        methods.append(_resolve_acquisition_method_text(typ, tid, lc, ld, detail_text))
-    return _dedupe_preserve_order(methods)
-
-
-def _format_gasha_entry_line(entry_row, detail_row, ld, lc):
-    if not isinstance(detail_row, dict):
-        return ''
-    cur = normalize_id(detail_row.get('GashaCurrencyTypeIndex') or detail_row.get('gashaCurrencyTypeIndex'))
-    cost = safe_int(detail_row.get('RequiredCurrencyCount') or detail_row.get('requiredCurrencyCount'), 0)
-    rolls = safe_int(detail_row.get('OnceRollCount') or detail_row.get('onceRollCount'), 1)
-    item_tid = normalize_id(detail_row.get('TargetId') or detail_row.get('targetId') or '0')
-    ur_guaranteed = bool(entry_row.get('IsUrGuaranteed') or entry_row.get('isUrGuaranteed'))
-    ticket_name = _item_display_name(item_tid, ld) if cur == '1' and item_tid != '0' else ''
-    cur_label = _gasha_currency_label(cur, lc)
-    if lc in ('TW', 'HK'):
-        pull_word = '抽' if rolls == 1 else f'{rolls}抽'
-        if ticket_name:
-            body = f'{cost}× {ticket_name} · {pull_word}'
-        elif cur in ('3', '4'):
-            body = f'{cost:,} 鑽石 · {pull_word}'
-        elif cur == '5':
-            body = f'免費 · {pull_word}'
-        else:
-            body = f'{cur_label} {cost:,} · {pull_word}'
-        if ur_guaranteed:
-            body = f'UR 必得 — {body}'
-    elif lc in ('JA', 'JP'):
-        pull_word = f'{rolls}回' if rolls != 1 else '1回'
-        if ticket_name:
-            body = f'{ticket_name} ×{cost} · {pull_word}'
-        elif cur in ('3', '4'):
-            body = f'ダイヤ {cost:,} · {pull_word}'
-        elif cur == '5':
-            body = f'無料 · {pull_word}'
-        else:
-            body = f'{cur_label} {cost:,} · {pull_word}'
-        if ur_guaranteed:
-            body = f'UR確定 — {body}'
-    else:
-        pull_word = f'{rolls} pull' if rolls == 1 else f'{rolls} pulls'
-        if ticket_name:
-            body = f'{cost}× {ticket_name} · {pull_word}'
-        elif cur in ('3', '4'):
-            body = f'{cost:,} diamonds · {pull_word}'
-        elif cur == '5':
-            body = f'Free · {pull_word}'
-        else:
-            body = f'{cur_label} {cost:,} · {pull_word}'
-        if ur_guaranteed:
-            body = f'UR guaranteed — {body}'
-    if detail_row.get('IsShown') is False:
-        return ''
-    return body
-
-
-def _build_gasha_mechanics_payload(gasha_id, gx, ld, lc):
-    gid = normalize_id(gasha_id)
-    gtype = normalize_id((gx or {}).get('GashaTypeIndex') or (gx or {}).get('gashaTypeIndex') or '0')
-    pity_row = gasha_pity_by_gasha_id.get(gid)
-    pity = None
-    if pity_row:
-        pity = {
-            'fix_count': safe_int(pity_row.get('FixCount') or pity_row.get('fixCount'), 0),
-            'content_set_id': normalize_id(pity_row.get('GashaContentSetId') or pity_row.get('gashaContentSetId') or '0'),
-        }
-    entries = []
-    for ent in gasha_entries_by_gasha_id.get(gid, []):
-        if not isinstance(ent, dict):
-            continue
-        deid = normalize_id(ent.get('GashaEntryDetailId') or ent.get('gashaEntryDetailId'))
-        detail = gasha_entry_detail_by_id.get(deid, {})
-        label = _format_gasha_entry_line(ent, detail, ld, lc)
-        if not label:
-            continue
-        entries.append({
-            'slot': safe_int(ent.get('SlotNumber') or ent.get('slotNumber'), 0),
-            'label': label,
-            'currency_type_index': normalize_id(detail.get('GashaCurrencyTypeIndex') or detail.get('gashaCurrencyTypeIndex') or '0'),
-            'cost': safe_int(detail.get('RequiredCurrencyCount') or detail.get('requiredCurrencyCount'), 0),
-            'rolls': safe_int(detail.get('OnceRollCount') or detail.get('onceRollCount'), 1),
-            'is_ur_guaranteed': bool(ent.get('IsUrGuaranteed') or ent.get('isUrGuaranteed')),
-            'ticket_item_id': normalize_id(detail.get('TargetId') or detail.get('targetId') or '0') if normalize_id(detail.get('GashaCurrencyTypeIndex') or detail.get('gashaCurrencyTypeIndex')) == '1' else '0',
-            'ticket_item_name': _item_display_name(detail.get('TargetId') or detail.get('targetId'), ld) if normalize_id(detail.get('GashaCurrencyTypeIndex') or detail.get('gashaCurrencyTypeIndex')) == '1' else '',
-        })
-    exchange_row = gasha_point_exchange_by_gasha_id.get(gid)
-    point_exchange = None
-    if exchange_row:
-        badge = safe_int(exchange_row.get('BadgeDisplayPoint') or exchange_row.get('badgeDisplayPoint'), 0)
-        ex_items = []
-        for xi in gasha_point_exchange_items_by_exchange_id.get(gid, []):
-            if not isinstance(xi, dict):
-                continue
-            pt = safe_int(xi.get('Point') or xi.get('point'), 0)
-            tid = normalize_id(xi.get('TargetId') or xi.get('targetId') or '0')
-            reward_name = _resolve_gasha_content_detail_reward_name(tid, ld)
-            ex_items.append({'point': pt, 'name': reward_name or tid, 'target_id': tid})
-        point_exchange = {
-            'badge_point': badge,
-            'active': bool(ex_items),
-            'items': ex_items,
-        }
-    return {
-        'gasha_type_index': gtype,
-        'gasha_type_label': _gasha_type_label(gtype, lc),
-        'pity': pity,
-        'entries': entries,
-        'point_exchange': point_exchange,
-    }
-
-
 def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
     methods = []
     oid = normalize_id(opid)
@@ -14982,8 +14594,30 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
             continue
         typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
         tid = normalize_id(row.get('TargetId') or row.get('targetId'))
-        methods.append(_resolve_acquisition_method_text(typ, tid, lc, ld, detail_text))
-    return _dedupe_preserve_order(methods)
+        if typ == '3':
+            st_name = _find_eternal_stage_name(tid, ld)
+            methods.append(f'Clear Eternal Road Expert Stage "{st_name}" reward' if st_name else 'Eternal Road')
+        elif typ == '14':
+            methods.append('G-Shop')
+        elif typ == '19':
+            methods.append('Story Event Reward')
+        elif typ == '21':
+            st_name = _find_tower_event_stage_name(tid, ld)
+            methods.append(f'Clear Stage "{st_name}"' if st_name else 'Tower Event')
+        elif typ == '22':
+            enemy_name = _extract_fierce_enemy_name(detail_text, lc)
+            if enemy_name:
+                methods.append(f'Clear Stage "Fierce Enemy Assault Vs. {enemy_name} (Challenge) Level 8"')
+            else:
+                methods.append('Fierce Enemy Assault (Challenge) Level 8')
+    # Keep stable order while deduplicating.
+    seen = set()
+    out = []
+    for m in methods:
+        if m not in seen:
+            seen.add(m)
+            out.append(m)
+    return out
 
 
 def _option_part_detail_row(item, lc, variant_tag_id=''):
@@ -15679,7 +15313,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v6_{lc}'
+    ck = f'banner_tl_v5_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15846,7 +15480,6 @@ def api_banner_timeline():
                         featured_units.append(ui)
                         seen_u_set.add(rut)
 
-        mechanics = _build_gasha_mechanics_payload(gasha_id, gx, ld, lc)
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
@@ -15862,11 +15495,6 @@ def api_banner_timeline():
             'featured_units': featured_units,
             'featured_chars': featured_chars,
             'featured_supporters': featured_supporters,
-            'gasha_type_index': mechanics.get('gasha_type_index'),
-            'gasha_type_label': mechanics.get('gasha_type_label'),
-            'pity': mechanics.get('pity'),
-            'entries': mechanics.get('entries'),
-            'point_exchange': mechanics.get('point_exchange'),
         }
         rows_out.append(row)
 
@@ -18218,8 +17846,7 @@ def get_character(char_id):
             has_conditional_passive = has_ex_slot_only
         else:
             has_conditional_passive = has_ex_stats
-        acq_methods = _build_entity_acquisition_methods(char_id, 'character', lc, ld)
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'acquisition_method_label': _option_part_acquisition_label(lc), 'acquisition_methods': acq_methods, 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []
@@ -18604,8 +18231,7 @@ def get_unit(unit_id):
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
             _muid = unit_id
-        acq_methods = _build_entity_acquisition_methods(unit_id, 'unit', lc, ld)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'acquisition_method_label': _option_part_acquisition_label(lc), 'acquisition_methods': acq_methods, 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
