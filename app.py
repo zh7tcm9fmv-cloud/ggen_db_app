@@ -11006,6 +11006,11 @@ def banner_timeline_page():
     return _serve_index()
 
 
+@app.route('/ml')
+def master_league_page():
+    return _serve_index()
+
+
 @app.route('/about')
 def about_page():
     r = make_response(render_template('about.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
@@ -15104,6 +15109,361 @@ def api_banner_timeline():
 
     rows_out.sort(key=_sort_key)
     out = {'banners': rows_out}
+    set_cached_response(ck, out)
+    return jsonify(convert_image_urls(out))
+
+
+ML_LEAGUE_RANK_LABELS = {
+    'EN': {1: 'Master', 2: 'Diamond', 3: 'Platinum', 4: 'Gold', 5: 'Silver', 6: 'Bronze'},
+    'TW': {1: '大師', 2: '鑽石', 3: '白金', 4: '黃金', 5: '白銀', 6: '青銅'},
+    'HK': {1: '大師', 2: '鑽石', 3: '白金', 4: '黃金', 5: '白銀', 6: '青銅'},
+    'JA': {1: 'マスター', 2: 'ダイヤ', 3: 'プラチナ', 4: 'ゴールド', 5: 'シルバー', 6: 'ブロンズ'},
+    'JP': {1: 'マスター', 2: 'ダイヤ', 3: 'プラチナ', 4: 'ゴールド', 5: 'シルバー', 6: 'ブロンズ'},
+}
+ML_STAGE_TERRAIN_FLAG_ORDER = (
+    ('IsSpace', 'Space', '1'),
+    ('IsAtmospheric', 'Atmospheric', '2'),
+    ('IsGround', 'Ground', '3'),
+    ('IsSurface', 'Sea', '4'),
+    ('IsUnderwater', 'Underwater', '5'),
+)
+# CDN mirror: ggen_db_images/images/Master League (space → %20 in /static paths, same as Key%20Unit).
+ML_IMAGE_SUBDIR = 'Master%20League'
+
+
+def _ml_image_lang_suffix(lc):
+    return _banner_timeline_image_suffix(lc)
+
+
+def _ml_static_image_path(filename):
+    """Build /static/images/Master%20League/{filename}.webp for CDN rewrite via convert_image_urls."""
+    name = str(filename or '').strip()
+    if not name:
+        return ''
+    if not name.lower().endswith('.webp'):
+        name = name + '.webp'
+    return f'/static/images/{ML_IMAGE_SUBDIR}/{name}'
+
+
+def _ml_motif_image_path(key, rid, motif_id, lc):
+    """Resolve motif asset filename on the Master League CDN folder."""
+    rid = str(rid or '').strip()
+    if not rid:
+        return ''
+    suffix = _ml_image_lang_suffix(lc)
+    if key == 'logo':
+        return _ml_static_image_path(f'{rid}_{suffix}')
+    if key in ('top_background', 'battle_background'):
+        # ml_top_background / ml_battle_background are not in the CDN bundle; use season home art.
+        mid = normalize_id(motif_id)
+        if mid != '0':
+            return _ml_static_image_path(f'ml_homeimg_info_{mid}_{suffix}')
+    return _ml_static_image_path(rid)
+
+
+def _ml_master_file(lc, name):
+    lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG)
+    base = (lp or {}).get('base')
+    if base:
+        p = os.path.join(base, name)
+        if os.path.isfile(p):
+            return p
+    return os.path.join(app_dir, 'data', lc, 'master', name)
+
+
+def _ml_stage_terrain_icons(stage_row):
+    icons = []
+    if not isinstance(stage_row, dict):
+        return icons
+    primary = normalize_id(stage_row.get('StageTerrainTypeIndex') or stage_row.get('stageTerrainTypeIndex'))
+    active = set()
+    for flag, _label, ti in ML_STAGE_TERRAIN_FLAG_ORDER:
+        if stage_row.get(flag):
+            active.add(str(ti))
+    ordered = []
+    if primary and primary != '0':
+        ordered.append(primary)
+    for _flag, _label, ti in ML_STAGE_TERRAIN_FLAG_ORDER:
+        tis = str(ti)
+        if tis in active and tis not in ordered:
+            ordered.append(tis)
+    for ti in ordered:
+        terr = STAGE_TERRAIN_MAP.get(str(ti), {})
+        label = terr.get('EN', 'Unknown')
+        icon = TERRAIN_TYPE_ICON_MAP.get(label, '')
+        if icon:
+            icons.append({
+                'type_index': str(ti),
+                'label': label,
+                'icon': f'/static/images/Terrain/{icon}',
+            })
+    return icons
+
+
+def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_id_to_name, lc):
+    tid = normalize_id(target_id)
+    if tid == '0':
+        return ''
+    if safe_int(target_type, 0) == 1:
+        return series_id_to_name.get(tid, '')
+    return lineage_lookup.get(tid, lineage_lookup.get(tid.lstrip('0'), ''))
+
+
+@app.route('/api/master_league')
+def api_master_league():
+    """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    ck = f'master_league_v2_{lc}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify(convert_image_urls(cached))
+
+    ld = get_lang_data(lc)
+    lineage_lookup = (ld or {}).get('lineage_lookup') or {}
+    rank_labels = ML_LEAGUE_RANK_LABELS.get(lc, ML_LEAGUE_RANK_LABELS['EN'])
+
+    lang_dir = (LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG) or {}).get('lang')
+    event_lang = load_json(os.path.join(lang_dir, 'm_event.json')) if lang_dir else None
+    if not event_lang and os.path.isfile(os.path.join(app_dir, 'data', lc, 'lang', 'm_event.json')):
+        event_lang = load_json(os.path.join(app_dir, 'data', lc, 'lang', 'm_event.json'))
+    event_title_map = create_lang_text_map(event_lang) if event_lang else {}
+
+    m_series = load_json(_ml_master_file(lc, 'm_series.json'))
+    series_lang = load_json(os.path.join(lang_dir, 'm_series.json')) if lang_dir else None
+    if not series_lang and os.path.isfile(os.path.join(app_dir, 'data', lc, 'lang', 'm_series.json')):
+        series_lang = load_json(os.path.join(app_dir, 'data', lc, 'lang', 'm_series.json'))
+    series_lang_map = create_lang_text_map(series_lang) if series_lang else {}
+    series_id_to_name = {}
+    for row in extract_data_list(m_series):
+        if not isinstance(row, dict):
+            continue
+        sid = normalize_id(row.get('Id') or row.get('id'))
+        nlid = normalize_id(row.get('NameLanguageId') or row.get('nameLanguageId'))
+        if sid != '0':
+            series_id_to_name[sid] = series_lang_map.get(nlid, '')
+
+    m_league_event = load_json(_ml_master_file(lc, 'm_league_event.json'))
+    m_event = load_json(_ml_master_file(lc, 'm_event.json'))
+    m_stage = load_json(_ml_master_file(lc, 'm_stage.json'))
+    m_buff_target = load_json(_ml_master_file(lc, 'm_league_buff_target.json'))
+    m_status_buff = load_json(_ml_master_file(lc, 'm_stage_status_buff.json'))
+    m_rank_content = load_json(_ml_master_file(lc, 'm_league_rank_group_content.json'))
+    m_motif = load_json(_ml_master_file(lc, 'm_league_event_motif.json'))
+    m_ingame = load_json(_ml_master_file(lc, 'm_league_ingame_config_group.json'))
+    m_ingame_turn = load_json(_ml_master_file(lc, 'm_league_ingame_config_group_turn.json'))
+    m_ingame_rank = load_json(_ml_master_file(lc, 'm_league_ingame_config_group_rank.json'))
+
+    event_by_id = {}
+    for ex in extract_data_list(m_event):
+        if not isinstance(ex, dict):
+            continue
+        if safe_int(ex.get('EventTypeIndex') or ex.get('eventTypeIndex'), 0) != 6:
+            continue
+        eid = normalize_id(ex.get('Id') or ex.get('id'))
+        if eid != '0':
+            event_by_id[eid] = ex
+
+    stage_by_id = {}
+    for sx in extract_data_list(m_stage):
+        if not isinstance(sx, dict):
+            continue
+        sid = normalize_id(sx.get('Id') or sx.get('id'))
+        if sid != '0':
+            stage_by_id[sid] = sx
+
+    buff_pct_by_id = {}
+    for bx in extract_data_list(m_status_buff):
+        if not isinstance(bx, dict):
+            continue
+        bid = normalize_id(bx.get('Id') or bx.get('id'))
+        if bid == '0':
+            continue
+        pct = safe_int(bx.get('AttackBuffRatePercent') or bx.get('attackBuffRatePercent'), 0)
+        buff_pct_by_id[bid] = pct
+
+    buff_targets_by_set = {}
+    for row in extract_data_list(m_buff_target):
+        if not isinstance(row, dict):
+            continue
+        bset = normalize_id(row.get('LeagueBuffTargetSetId') or row.get('leagueBuffTargetSetId'))
+        if bset == '0':
+            continue
+        ttype = safe_int(row.get('LeagueBuffTargetTypeIndex') or row.get('leagueBuffTargetTypeIndex'), 0)
+        tid = normalize_id(row.get('TargetId') or row.get('targetId'))
+        name = _ml_resolve_buff_target_name(ttype, tid, lineage_lookup, series_id_to_name, lc)
+        buff_targets_by_set.setdefault(bset, []).append({
+            'type_index': ttype,
+            'target_id': tid,
+            'name': name,
+            'tag_type': 'series' if ttype == 1 else 'lineage',
+        })
+
+    rank_by_group = {}
+    for row in extract_data_list(m_rank_content):
+        if not isinstance(row, dict):
+            continue
+        gid = normalize_id(row.get('LeagueRankGroupId') or row.get('leagueRankGroupId'))
+        if gid == '0':
+            continue
+        rti = safe_int(row.get('LeagueRankTypeIndex') or row.get('leagueRankTypeIndex'), 0)
+        rank_by_group.setdefault(gid, []).append({
+            'rank_type_index': rti,
+            'rank_label': rank_labels.get(rti, str(rti)),
+            'target_score': safe_int(row.get('TargetScore') or row.get('targetScore'), 0),
+            'chest_rarity': safe_int(row.get('TreasureChestRarityTypeIndex') or row.get('treasureChestRarityTypeIndex'), 0),
+        })
+    for gid in rank_by_group:
+        rank_by_group[gid].sort(key=lambda x: x['rank_type_index'])
+
+    motif_by_id = {}
+    for mx in extract_data_list(m_motif):
+        if not isinstance(mx, dict):
+            continue
+        mid = normalize_id(mx.get('Id') or mx.get('id'))
+        if mid != '0':
+            motif_by_id[mid] = mx
+
+    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    seasons = []
+    active_event_id = None
+
+    for lx in extract_data_list(m_league_event):
+        if not isinstance(lx, dict):
+            continue
+        event_id = normalize_id(lx.get('EventId') or lx.get('eventId'))
+        if event_id == '0':
+            continue
+        season_num = safe_int(event_id, 0) - 300001
+        ev = event_by_id.get(event_id, {})
+        title_lid = normalize_id(ev.get('TitleLanguageId') or ev.get('titleLanguageId') or '0')
+        title = event_title_map.get(title_lid, '') if title_lid != '0' else f'Season {season_num}'
+
+        sched_id = normalize_id(ev.get('ScheduleId') or ev.get('scheduleId') or '0')
+        chall_sched_id = normalize_id(ev.get('ChallengeScheduleId') or ev.get('challengeScheduleId') or '0')
+        start_ms = schedule_start_ms_by_id.get(sched_id, 0) if sched_id != '0' else 0
+        end_ms = schedule_end_ms_by_id.get(sched_id, 0) if sched_id != '0' else 0
+        chall_start_ms = schedule_start_ms_by_id.get(chall_sched_id, 0) if chall_sched_id != '0' else 0
+        chall_end_ms = schedule_end_ms_by_id.get(chall_sched_id, 0) if chall_sched_id != '0' else 0
+
+        status = 'ended'
+        if start_ms and end_ms and start_ms <= now_ms < end_ms:
+            status = 'active'
+            if active_event_id is None:
+                active_event_id = event_id
+        elif start_ms and now_ms < start_ms:
+            status = 'upcoming'
+
+        buff_id = normalize_id(lx.get('BuffId') or lx.get('buffId') or '0')
+        buff_pct = buff_pct_by_id.get(buff_id, 0)
+        bset = normalize_id(lx.get('LeagueBuffTargetSetId') or lx.get('leagueBuffTargetSetId') or '0')
+        boost_tags = buff_targets_by_set.get(bset, [])
+
+        stage_id = normalize_id(lx.get('StageId') or lx.get('stageId') or '0')
+        stage_row = stage_by_id.get(stage_id, {})
+        terrain_primary = resolve_stage_terrain_name(
+            normalize_id(stage_row.get('StageTerrainTypeIndex') or stage_row.get('stageTerrainTypeIndex')), lc)
+        terrain_icons = _ml_stage_terrain_icons(stage_row)
+
+        rank_gid = normalize_id(lx.get('LeagueRankGroupId') or lx.get('leagueRankGroupId') or '0')
+        rank_tiers = rank_by_group.get(rank_gid, [])
+
+        motif_id = normalize_id(lx.get('MotifId') or lx.get('motifId') or '0')
+        motif = motif_by_id.get(motif_id) if motif_id != '0' else None
+        motif_images = {}
+        if motif:
+            for key, field in (
+                ('logo', 'EventLogoResourceId'),
+                ('top_background', 'TopBackgroundResourceId'),
+                ('battle_background', 'BattleBackgroundResourceId'),
+                ('stage_thumbnail', 'StageTopButtonImageResourceId'),
+            ):
+                rid = str((motif or {}).get(field) or (motif or {}).get(field[0].lower() + field[1:]) or '').strip()
+                url = _ml_motif_image_path(key, rid, motif_id, lc)
+                if url:
+                    motif_images[key] = url
+
+        seasons.append({
+            'event_id': event_id,
+            'season_number': season_num,
+            'title': title,
+            'status': status,
+            'schedule_id': sched_id,
+            'start_ms': start_ms or None,
+            'end_ms': end_ms or None,
+            'start_label': format_start_datetime_jst(start_ms) if start_ms else '-',
+            'end_label': format_start_datetime_jst(end_ms) if end_ms else '-',
+            'challenge_start_ms': chall_start_ms or None,
+            'challenge_end_ms': chall_end_ms or None,
+            'challenge_start_label': format_start_datetime_jst(chall_start_ms) if chall_start_ms else '-',
+            'challenge_end_label': format_start_datetime_jst(chall_end_ms) if chall_end_ms else '-',
+            'buff_id': buff_id,
+            'buff_percent': buff_pct,
+            'boost_tags': boost_tags,
+            'stage_id': stage_id,
+            'terrain_primary': terrain_primary,
+            'terrain_icons': terrain_icons,
+            'limit_turns': safe_int(lx.get('LimitTurnCount') or lx.get('limitTurnCount'), 5),
+            'challenge_threshold': safe_int(lx.get('LeagueChallengeModeEntryScoreThreshold') or lx.get('leagueChallengeModeEntryScoreThreshold'), 0),
+            'rank_group_id': rank_gid,
+            'rank_tiers': rank_tiers,
+            'motif_id': motif_id if motif_id != '0' else None,
+            'motif_images': motif_images,
+            'top_percentile_threshold': safe_int(lx.get('RankingTopPercentileDisplayScoreThreshold') or lx.get('rankingTopPercentileDisplayScoreThreshold'), 0),
+            'is_skip_shop_reset': bool(lx.get('IsSkipShopReset')),
+        })
+
+    seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+
+    ingame_cfg = {}
+    for row in extract_data_list(m_ingame):
+        if isinstance(row, dict):
+            ingame_cfg = {
+                'damage_bonus_rate': safe_int(row.get('DamageBonusRate'), 0),
+                'kill_bonus_rate': safe_int(row.get('KillBonusRate'), 0),
+                'victory_bonus_rate': safe_int(row.get('VictoryBonusRate'), 0),
+            }
+            break
+
+    turn_bonuses = []
+    for row in extract_data_list(m_ingame_turn):
+        if not isinstance(row, dict):
+            continue
+        turn_bonuses.append({
+            'turn': safe_int(row.get('Turn'), 0),
+            'bonus_rate': safe_int(row.get('BonusRate'), 0),
+        })
+    turn_bonuses.sort(key=lambda x: x['turn'])
+
+    rank_bonuses = []
+    for row in extract_data_list(m_ingame_rank):
+        if not isinstance(row, dict):
+            continue
+        rti = safe_int(row.get('LeagueRankTypeIndex'), 0)
+        rank_bonuses.append({
+            'rank_type_index': rti,
+            'rank_label': rank_labels.get(rti, str(rti)),
+            'bonus_value': safe_int(row.get('BonusValue'), 0),
+        })
+    rank_bonuses.sort(key=lambda x: x['rank_type_index'])
+
+    if active_event_id is None and seasons:
+        for s in reversed(seasons):
+            if s.get('status') == 'upcoming':
+                active_event_id = s['event_id']
+                break
+        if active_event_id is None:
+            active_event_id = seasons[-1]['event_id']
+
+    out = {
+        'lang': lc,
+        'active_event_id': active_event_id,
+        'seasons': seasons,
+        'scoring': {
+            'ingame': ingame_cfg,
+            'turn_bonuses': turn_bonuses,
+            'rank_bonuses': rank_bonuses,
+        },
+    }
     set_cached_response(ck, out)
     return jsonify(convert_image_urls(out))
 

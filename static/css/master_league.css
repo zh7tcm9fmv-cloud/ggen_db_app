@@ -1,0 +1,263 @@
+/* Master League — season boost card (in-game style) */
+#panel-master_league::before {
+  background-image: url('/static/images/Background/obg_013_garage.webp');
+}
+.ml-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 0 32px;
+  position: relative;
+  z-index: 1;
+}
+.ml-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.ml-season-select {
+  min-width: min(320px, 100%);
+  flex: 1 1 220px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 15px;
+}
+.ml-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ml-status-pill--active {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.45);
+}
+.ml-status-pill--upcoming {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+}
+.ml-status-pill--ended {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+/* Boost / terrain card */
+.ml-boost-card {
+  position: relative;
+  margin: 0 0 22px;
+  padding: 14px 18px 16px;
+  min-height: 168px;
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(120, 18, 28, 0.92) 0%, rgba(55, 8, 14, 0.97) 55%, rgba(35, 5, 10, 1) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(180, 190, 210, 0.55),
+    inset 0 0 0 3px rgba(40, 8, 12, 0.9),
+    0 8px 28px rgba(0, 0, 0, 0.55);
+  clip-path: polygon(
+    0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px)
+  );
+}
+.ml-boost-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--ml-boost-bg, none);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.38;
+  filter: sepia(0.35) saturate(2.2) hue-rotate(-18deg) brightness(0.75);
+  pointer-events: none;
+}
+.ml-boost-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 50% 45%, rgba(220, 50, 60, 0.35), transparent 68%);
+  pointer-events: none;
+}
+.ml-boost-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.ml-boost-stage-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+.ml-boost-stage-label {
+  font-size: clamp(17px, 2.4vw, 22px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85);
+  letter-spacing: 0.02em;
+}
+.ml-boost-terrain-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ml-boost-terrain-ic {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
+}
+.ml-boost-heading {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+  margin: 2px 0 4px;
+}
+.ml-boost-pct {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fecaca;
+  letter-spacing: 0.06em;
+  margin-top: -4px;
+}
+.ml-boost-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: min(520px, 100%);
+  margin-top: 4px;
+}
+.ml-boost-tag-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 14px 6px 22px;
+  background: linear-gradient(90deg, #f8fafc 0%, #e8edf3 100%);
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.ml-boost-tag-text {
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 800;
+  color: #1d4ed8;
+  text-align: left;
+  width: 100%;
+  line-height: 1.25;
+}
+.ml-boost-tag-link {
+  color: inherit;
+  text-decoration: none;
+}
+.ml-boost-tag-link:hover {
+  text-decoration: underline;
+}
+
+.ml-section {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.28);
+}
+.ml-section-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-cyan);
+}
+.ml-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px 16px;
+}
+.ml-meta-item {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ml-meta-k {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.ml-meta-v {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.ml-rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ml-rank-table th,
+.ml-rank-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+.ml-rank-table th {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ml-scoring-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.ml-motif-logo {
+  max-width: min(280px, 100%);
+  height: auto;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+.ml-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+.ml-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .ml-boost-card {
+    padding: 12px 12px 14px;
+    min-height: 150px;
+  }
+  .ml-boost-terrain-ic {
+    width: 24px;
+    height: 24px;
+  }
+}
