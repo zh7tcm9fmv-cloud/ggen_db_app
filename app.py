@@ -15181,32 +15181,6 @@ def _ml_emblem_icon_url(rank_type_index):
     return game_image_public_url(_game_images_webp_path('UI', res))
 
 
-def _ml_emblem_reward_row(rank_type_index, rank_label):
-    icon = _ml_emblem_icon_url(rank_type_index)
-    if not icon:
-        return None
-    return {
-        'reward_id': '0',
-        'reward_type_index': 'ml_emblem',
-        'target_id': '0',
-        'name': str(rank_label or '').strip(),
-        'description': '',
-        'count': 1,
-        'icon': icon,
-        'detail_type': '',
-        'detail_id': '',
-        'thumb_type': '',
-        'thumb': '',
-        'rarity': '',
-        'role_icon': '',
-        'acquisition_icon': '',
-        'lb_thumb_base': '',
-        'lb_thumb_limit_frame': '',
-        'lb_thumb_bottom_frame': '',
-        'lb_thumb_unit': '',
-    }
-
-
 def _ml_season_profile_title_id(event_id, rank_type_index):
     slot = ML_RANK_PROFILE_TITLE_SLOT.get(safe_int(rank_type_index, 0))
     if not slot:
@@ -15217,11 +15191,8 @@ def _ml_season_profile_title_id(event_id, rank_type_index):
     return f'103000{tag:02d}{slot:06d}'
 
 
-def _ml_compose_rank_tier_rewards(event_id, rank_type_index, rank_label, base_rewards, lc):
+def _ml_compose_rank_tier_rewards(event_id, rank_type_index, base_rewards, lc):
     out = []
-    emblem = _ml_emblem_reward_row(rank_type_index, rank_label)
-    if emblem:
-        out.append(emblem)
     pid = _ml_season_profile_title_id(event_id, rank_type_index)
     if pid and (profile_title_info_map or {}).get(normalize_id(pid)):
         title_rows = _decorate_reward_rows(
@@ -15412,7 +15383,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v12_{lc}'
+    ck = f'master_league_v13_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15598,9 +15569,10 @@ def api_master_league():
         for rt in rank_by_group.get(rank_gid, []):
             tier = dict(rt)
             rsid = tier.pop('reward_set_id', '0')
+            tier['emblem_icon'] = _ml_emblem_icon_url(tier.get('rank_type_index'))
             base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
             tier['rewards'] = _ml_compose_rank_tier_rewards(
-                event_id, tier.get('rank_type_index'), tier.get('rank_label'), base_rewards, lc)
+                event_id, tier.get('rank_type_index'), base_rewards, lc)
             rank_tiers.append(tier)
 
         srgid = safe_int(lx.get('LeagueSeasonRewardGroupId') or lx.get('leagueSeasonRewardGroupId'), 0)
