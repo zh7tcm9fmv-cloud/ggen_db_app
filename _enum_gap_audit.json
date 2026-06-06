@@ -1,0 +1,4268 @@
+{
+  "summary": {
+    "UNUSED": 138,
+    "MASTER_ONLY": 81,
+    "BOTH": 40,
+    "WEBSITE_ONLY": 2
+  },
+  "total": 261,
+  "master_files_total": 421,
+  "app_loads_count": 117,
+  "rows": [
+    {
+      "enum": "AIAttackConditionType",
+      "members": 6,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AIAttackDecisionType",
+      "members": 3,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AIAttackRuleParameterType",
+      "members": 6,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AIAttackRuleType",
+      "members": 15,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AICounterRuleType",
+      "members": 6,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AISupportActionRuleType",
+      "members": 4,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AIUseSkillType",
+      "members": 3,
+      "domain": "AI / NPC",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AbilityFrameType",
+      "members": 3,
+      "domain": "Abilities",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "AbilityFrameTypeIndex"
+      ],
+      "master_files": [
+        "m_ability.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AcquisitionMethodType",
+      "members": 22,
+      "domain": "Acquisition",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "option parts acquisition",
+      "master": true,
+      "master_fields": [
+        "AcquisitionMethodTypeIndex"
+      ],
+      "master_files": [
+        "m_character_acquisition_method.json",
+        "m_item_acquisition_method.json",
+        "m_ms_dock_unit_acquisition_method.json",
+        "m_option_parts_acquisition_method.json",
+        "m_unit_acquisition_method.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_character_acquisition_method.json",
+        "m_item_acquisition_method.json",
+        "m_ms_dock_unit_acquisition_method.json",
+        "m_unit_acquisition_method.json"
+      ]
+    },
+    {
+      "enum": "AdvFacialExpressionType",
+      "members": 11,
+      "domain": "ADV / Story",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AdvWindowDisplayType",
+      "members": 3,
+      "domain": "ADV / Story",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AppVersionType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AreaArrivalType",
+      "members": 2,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "AreaArrivalTypeIndex"
+      ],
+      "master_files": [
+        "m_map_area.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AreaEventType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AreaPositionType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "AreaPositionTypeIndex"
+      ],
+      "master_files": [
+        "m_map_area.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "AssetDownloadTimingType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "AssetDownloadTimingTypeIndex"
+      ],
+      "master_files": [
+        "m_character.json",
+        "m_scenario_stage_series.json",
+        "m_stage.json",
+        "m_supporter.json",
+        "m_unit.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_scenario_stage_series.json"
+      ]
+    },
+    {
+      "enum": "AttackAttributeType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "weapon_attr_type_labels",
+      "master": true,
+      "master_fields": [
+        "AttackAttributeTypeIndex"
+      ],
+      "master_files": [
+        "m_attack_attribute_set.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_attack_attribute_set.json"
+      ]
+    },
+    {
+      "enum": "BannerResourceType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "BannerResourceTypeIndex"
+      ],
+      "master_files": [
+        "m_appeal_banner.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "BattleSidePlacedType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "placement",
+      "master": true,
+      "master_fields": [
+        "BattleSidePlacedTypeIndex"
+      ],
+      "master_files": [
+        "m_map_stage_group_initial_placement.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "BattleSideType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "NPC side",
+      "master": true,
+      "master_fields": [
+        "BattleSideTypeIndex",
+        "BattleSidePlacedTypeIndex"
+      ],
+      "master_files": [
+        "m_map_npc.json",
+        "m_map_stage_group_initial_placement.json",
+        "m_tower_event_stage_strategy_info.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_tower_event_stage_strategy_info.json"
+      ]
+    },
+    {
+      "enum": "BuffDebuffType",
+      "members": 3,
+      "domain": "Buffs",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "BuffDebuffTypeIndex"
+      ],
+      "master_files": [
+        "m_trait_set_detail.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "BuffLabelColorType",
+      "members": 11,
+      "domain": "Buffs",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "BuffLabelColorTypeIndex"
+      ],
+      "master_files": [
+        "m_character_skill_trait.json",
+        "m_stage_event_area_skill_trait.json",
+        "m_supporter_active_skill_trait.json",
+        "m_trait_set_detail.json",
+        "m_unit_skill_trait.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_stage_event_area_skill_trait.json",
+        "m_supporter_active_skill_trait.json"
+      ]
+    },
+    {
+      "enum": "CampaignEffectCalcType",
+      "members": 3,
+      "domain": "Campaigns",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CampaignEffectCalcTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign_effect.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign_effect.json"
+      ]
+    },
+    {
+      "enum": "CampaignEffectTargetType",
+      "members": 5,
+      "domain": "Campaigns",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CampaignEffectTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign_effect.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign_effect.json"
+      ]
+    },
+    {
+      "enum": "CampaignEffectType",
+      "members": 12,
+      "domain": "Campaigns",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CampaignEffectTypeIndex",
+        "CampaignEffectCalcTypeIndex",
+        "CampaignEffectTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign_effect.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign_effect.json"
+      ]
+    },
+    {
+      "enum": "CampaignTargetType",
+      "members": 14,
+      "domain": "Campaigns",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CampaignTargetTypeIndex",
+        "CampaignTargetUserTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign.json",
+        "m_campaign_target_set_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign.json",
+        "m_campaign_target_set_content.json"
+      ]
+    },
+    {
+      "enum": "CampaignTargetUserType",
+      "members": 5,
+      "domain": "Campaigns",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CampaignTargetUserTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign.json"
+      ]
+    },
+    {
+      "enum": "CaptureLotteryResultType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterAcquisitionRouteType",
+      "members": 4,
+      "domain": "Characters",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "acquisition route icon/filter",
+      "master": true,
+      "master_fields": [
+        "CharacterAcquisitionRouteTypeIndex"
+      ],
+      "master_files": [
+        "m_character.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterCutInPlayTimingType",
+      "members": 9,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterMultiCutInType",
+      "members": 4,
+      "domain": "Characters",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CharacterMultiCutInTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterMultiRelationshipType",
+      "members": 3,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterOfferSlotType",
+      "members": 4,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterOfferType",
+      "members": 3,
+      "domain": "Characters",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CharacterOfferTypeIndex"
+      ],
+      "master_files": [
+        "m_character_offer.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_character_offer.json"
+      ]
+    },
+    {
+      "enum": "CharacterScoutListRegisterConditionType",
+      "members": 4,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterSkillRangeType",
+      "members": 3,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterSkillTargetType",
+      "members": 3,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterSkillTraitType",
+      "members": 32,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CharacterStatusType",
+      "members": 7,
+      "domain": "Characters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CoinType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CoinTypeIndex"
+      ],
+      "master_files": [
+        "m_coin_limit.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_coin_limit.json"
+      ]
+    },
+    {
+      "enum": "CollectionBookBonusBuffType",
+      "members": 34,
+      "domain": "Collection book",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CollectionBookRegisterRewardType",
+      "members": 3,
+      "domain": "Collection book",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CollectionBookType",
+      "members": 3,
+      "domain": "Collection book",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ComicReleaseConditionType",
+      "members": 3,
+      "domain": "Comic",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "ComicReleaseConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_comic_episode.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_comic_episode.json"
+      ]
+    },
+    {
+      "enum": "ComicScrambleAlgorithmType",
+      "members": 2,
+      "domain": "Comic",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ConditionType",
+      "members": 14,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "ConditionTypeIndex",
+        "IngameEventConditionTypeIndex",
+        "IngameEventConditionParameterTypeIndex",
+        "MapStageConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_character_scout_list.json",
+        "m_comic_episode.json",
+        "m_condition.json",
+        "m_game_event_condition.json",
+        "m_game_function_release_condition.json",
+        "m_home_battle_map_background.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_character_scout_list.json",
+        "m_comic_episode.json",
+        "m_condition.json",
+        "m_game_event_condition.json"
+      ]
+    },
+    {
+      "enum": "ConfigType",
+      "members": 187,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "ConfigTypeIndex",
+        "IngameCoefficientConfigTypeIndex"
+      ],
+      "master_files": [
+        "m_config.json",
+        "m_ingame_coefficient_config.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_config.json",
+        "m_ingame_coefficient_config.json"
+      ]
+    },
+    {
+      "enum": "CurrencyType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "CurrencyTypeIndex",
+        "LineupManualUpdateCurrencyTypeIndex",
+        "GashaCurrencyTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_entry_detail.json",
+        "m_shop.json",
+        "m_shop_currency_item_generate.json",
+        "m_shop_item.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_entry_detail.json",
+        "m_shop.json",
+        "m_shop_currency_item_generate.json",
+        "m_shop_item.json"
+      ]
+    },
+    {
+      "enum": "CustomCoreIconType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "CustomCoreReleaseFunctionType",
+      "members": 8,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "DestinationType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "DestinationTypeIndex"
+      ],
+      "master_files": [
+        "m_appeal_banner.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "DialogErrorType",
+      "members": 52,
+      "domain": "UI / Dialog",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "DialogType",
+      "members": 150,
+      "domain": "UI / Dialog",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "DirectionType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "NPC direction",
+      "master": true,
+      "master_fields": [
+        "DirectionTypeIndex",
+        "InitDirectionTypeIndex"
+      ],
+      "master_files": [
+        "m_league_stage_initial_position_group_set.json",
+        "m_map_gimmick_npc.json",
+        "m_map_npc.json",
+        "m_map_stage_group_initial_placement.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_league_stage_initial_position_group_set.json"
+      ]
+    },
+    {
+      "enum": "EnhanceMaterialStageType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "EnhanceMaterialStageTypeIndex"
+      ],
+      "master_files": [
+        "m_enhance_material_stage.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_enhance_material_stage.json"
+      ]
+    },
+    {
+      "enum": "EternalRoadStrategyInfoTabType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "EternalRoadStrategyInfoTabTypeIndex"
+      ],
+      "master_files": [
+        "m_eternal_road_stage_strategy_info.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_eternal_road_stage_strategy_info.json"
+      ]
+    },
+    {
+      "enum": "EventBannerOtherType",
+      "members": 4,
+      "domain": "Events",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "EventBannerOtherTypeIndex"
+      ],
+      "master_files": [
+        "m_event_banner_other.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_event_banner_other.json"
+      ]
+    },
+    {
+      "enum": "EventBonusTargetType",
+      "members": 4,
+      "domain": "Events",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "EventBonusTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_event_bonus.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_event_bonus.json"
+      ]
+    },
+    {
+      "enum": "EventType",
+      "members": 10,
+      "domain": "Events",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "event types",
+      "master": true,
+      "master_fields": [
+        "EventTypeIndex",
+        "MapEventBuffTargetTypeIndex",
+        "IngameEventConditionTypeIndex",
+        "IngameEventConditionParameterTypeIndex"
+      ],
+      "master_files": [
+        "m_event.json",
+        "m_event_banner_other.json",
+        "m_event_bonus.json",
+        "m_game_event_condition.json",
+        "m_map_area.json",
+        "m_map_event_navi_character_focus_panel.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_event_banner_other.json",
+        "m_event_bonus.json",
+        "m_game_event_condition.json",
+        "m_map_event_navi_character_focus_panel.json"
+      ]
+    },
+    {
+      "enum": "ExclusiveMaterialDisplayType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "FavoriteRegistrationType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "FormChangeType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "FunctionMaintenanceType",
+      "members": 21,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "FunctionTutorialType",
+      "members": 19,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "FunctionTutorialTypeIndex"
+      ],
+      "master_files": [
+        "m_function_tutorial.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_function_tutorial.json"
+      ]
+    },
+    {
+      "enum": "FunctionType",
+      "members": 60,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "FunctionTypeIndex",
+        "ReleaseFunctionTypeIndex",
+        "FunctionTutorialTypeIndex",
+        "GameFunctionTypeIndex"
+      ],
+      "master_files": [
+        "m_function_tips.json",
+        "m_function_tutorial.json",
+        "m_game_function_release.json",
+        "m_unit_ssp_custom_core_release_function_set_content.json",
+        "m_unit_ssp_initial_release_set.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_function_tips.json",
+        "m_function_tutorial.json",
+        "m_game_function_release.json",
+        "m_unit_ssp_initial_release_set.json"
+      ]
+    },
+    {
+      "enum": "GameEventConditionType",
+      "members": 214,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GameEventConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_game_event_condition.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_game_event_condition.json"
+      ]
+    },
+    {
+      "enum": "GameFunctionReleaseConditionType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GameFunctionType",
+      "members": 40,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "partial",
+      "master": true,
+      "master_fields": [
+        "GameFunctionTypeIndex"
+      ],
+      "master_files": [
+        "m_game_function_release.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_game_function_release.json"
+      ]
+    },
+    {
+      "enum": "GashaAppealBackgroundType",
+      "members": 3,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaAppealBackgroundTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_appeal_background.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_appeal_background.json"
+      ]
+    },
+    {
+      "enum": "GashaAppealDescriptionType",
+      "members": 4,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaAppealDescriptionTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_appeal_background.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_appeal_background.json"
+      ]
+    },
+    {
+      "enum": "GashaContainerDestroyAnimationType",
+      "members": 4,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaContainerDestroyAnimationTypeIndex",
+        "BonusGashaContainerDestroyAnimationTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_additional_attack_movie_setting.json",
+        "m_gasha_movie_setting.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_additional_attack_movie_setting.json",
+        "m_gasha_movie_setting.json"
+      ]
+    },
+    {
+      "enum": "GashaCurrencyType",
+      "members": 6,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaCurrencyTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_entry_detail.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_entry_detail.json"
+      ]
+    },
+    {
+      "enum": "GashaDetailDialogTabType",
+      "members": 3,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaEntryActiveControlType",
+      "members": 2,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaEntryTargetLabelType",
+      "members": 2,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaFooterLabelColorType",
+      "members": 3,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaFooterLabelDisplayType",
+      "members": 4,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaLimitCountOverrideType",
+      "members": 2,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaLimitRollCountResetType",
+      "members": 3,
+      "domain": "Gacha",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GashaPointExchangeItemType",
+      "members": 3,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaPointExchangeItemTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_point_exchange_item.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_gasha_point_exchange_item.json"
+      ]
+    },
+    {
+      "enum": "GashaType",
+      "members": 6,
+      "domain": "Gacha",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GashaTypeIndex",
+        "GashaContainerDestroyAnimationTypeIndex",
+        "MedalGashaViewTypeIndex",
+        "GashaCurrencyTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha.json",
+        "m_gasha_additional_attack_movie_setting.json",
+        "m_gasha_appeal_background.json",
+        "m_gasha_entry_detail.json",
+        "m_gasha_movie_setting.json",
+        "m_gasha_point_exchange_item.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_gasha_additional_attack_movie_setting.json",
+        "m_gasha_appeal_background.json",
+        "m_gasha_entry_detail.json",
+        "m_gasha_movie_setting.json"
+      ]
+    },
+    {
+      "enum": "GenderType",
+      "members": 4,
+      "domain": "Misc",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GeneralTutorialType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GeneralTutorialTypeIndex"
+      ],
+      "master_files": [
+        "m_general_tutorial_idx.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_general_tutorial_idx.json"
+      ]
+    },
+    {
+      "enum": "GiftAcquisitionRouteType",
+      "members": 10,
+      "domain": "Gifts / Presents",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GiftDurationType",
+      "members": 3,
+      "domain": "Gifts / Presents",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GiftFilterType",
+      "members": 18,
+      "domain": "Gifts / Presents",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GiftType",
+      "members": 45,
+      "domain": "Gifts / Presents",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GroupDetachmentDestinationCorrectionConditionType",
+      "members": 15,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GroupFormationCrewType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GroupFormationLinkType",
+      "members": 2,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GroupFormationSortieType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "GroupFormationType",
+      "members": 19,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GroupFormationTypeIndex"
+      ],
+      "master_files": [
+        "m_group_formation_idx.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_group_formation_idx.json"
+      ]
+    },
+    {
+      "enum": "GroupUnitType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "GroupUnitTypeIndex"
+      ],
+      "master_files": [
+        "m_map_group_npc.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_group_npc.json"
+      ]
+    },
+    {
+      "enum": "HelpCategoryType",
+      "members": 21,
+      "domain": "Help",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "HomeAnimationReleaseType",
+      "members": 4,
+      "domain": "Home / My Base",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "HomeAnimationReleaseTypeIndex"
+      ],
+      "master_files": [
+        "m_unit.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "HomeBattleMapBackgroundReleaseConditionType",
+      "members": 2,
+      "domain": "Home / My Base",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "HomeUnitStyleReleaseConditionType",
+      "members": 3,
+      "domain": "Home / My Base",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "HomeUnitStyleType",
+      "members": 16,
+      "domain": "Home / My Base",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "HomeUnitStyleTypeIndex"
+      ],
+      "master_files": [
+        "m_home_unit_style.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_home_unit_style.json"
+      ]
+    },
+    {
+      "enum": "InfoButtonType",
+      "members": 59,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "InfoButtonTypeIndex"
+      ],
+      "master_files": [
+        "m_info_button.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_info_button.json"
+      ]
+    },
+    {
+      "enum": "InformationBlockType",
+      "members": 15,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "InformationCategoryType",
+      "members": 11,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "InformationTabType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "IngameCoefficientConfigType",
+      "members": 56,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "comment only",
+      "master": true,
+      "master_fields": [
+        "IngameCoefficientConfigTypeIndex"
+      ],
+      "master_files": [
+        "m_ingame_coefficient_config.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_ingame_coefficient_config.json"
+      ]
+    },
+    {
+      "enum": "IngameEventAdditionalConditionParameterType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "IngameEventAdditionalConditionParameterTypeIndex"
+      ],
+      "master_files": [
+        "m_map_stage_additional_condition.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_stage_additional_condition.json"
+      ]
+    },
+    {
+      "enum": "IngameEventAdditionalConditionType",
+      "members": 8,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "IngameEventAdditionalConditionTypeIndex",
+        "IngameEventAdditionalConditionParameterTypeIndex"
+      ],
+      "master_files": [
+        "m_map_stage_additional_condition.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_stage_additional_condition.json"
+      ]
+    },
+    {
+      "enum": "IngameEventConditionParameterType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "IngameEventConditionParameterTypeIndex"
+      ],
+      "master_files": [
+        "m_map_area.json",
+        "m_map_stage_additional_condition.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_map_stage_additional_condition.json"
+      ]
+    },
+    {
+      "enum": "IngameEventConditionType",
+      "members": 14,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "IngameEventConditionTypeIndex",
+        "IngameEventConditionParameterTypeIndex"
+      ],
+      "master_files": [
+        "m_map_area.json",
+        "m_map_stage_additional_condition.json",
+        "m_map_stage_condition.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_map_stage_additional_condition.json"
+      ]
+    },
+    {
+      "enum": "IngameLoseTipsType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "IngameLoseTipsTypeIndex"
+      ],
+      "master_files": [
+        "m_ingame_lose_tips.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_ingame_lose_tips.json"
+      ]
+    },
+    {
+      "enum": "IngameUnitBuffType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "InitialTutorialApiType",
+      "members": 13,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "InitialTutorialApiTypeIndex"
+      ],
+      "master_files": [
+        "m_initial_tutorial_route.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_initial_tutorial_route.json"
+      ]
+    },
+    {
+      "enum": "InitialTutorialStepType",
+      "members": 36,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "InventorySizeExtensionType",
+      "members": 3,
+      "domain": "Inventory",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "InventoryType",
+      "members": 4,
+      "domain": "Inventory",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ItemType",
+      "members": 34,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "ItemTypeIndex",
+        "AcquireItemTypeIndex",
+        "GashaPointExchangeItemTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign_effect_target_item_type_set_content.json",
+        "m_gasha_point_exchange_item.json",
+        "m_item.json",
+        "m_item_limit_badge_display.json",
+        "m_unit_ssp_custom_core.json",
+        "m_unit_ssp_custom_core_available_material.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_campaign_effect_target_item_type_set_content.json",
+        "m_gasha_point_exchange_item.json",
+        "m_item_limit_badge_display.json",
+        "m_unit_ssp_custom_core_available_material.json"
+      ]
+    },
+    {
+      "enum": "KIdPermissionChangeType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "KIdPermissionManagementType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "KIdPermissionNameType",
+      "members": 10,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LanguageType",
+      "members": 7,
+      "domain": "System",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueBattleResultType",
+      "members": 4,
+      "domain": "Master League",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueEventBattleResultPlayTimingType",
+      "members": 3,
+      "domain": "Master League",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueEventCutInPlayTimingType",
+      "members": 4,
+      "domain": "Master League",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueMotifType",
+      "members": 3,
+      "domain": "Master League",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueSeasonStartAnimationColorType",
+      "members": 6,
+      "domain": "Master League",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "LeagueSlotType",
+      "members": 4,
+      "domain": "Master League",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "LeagueSlotTypeIndex"
+      ],
+      "master_files": [
+        "m_league_matching_group_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_league_matching_group_content.json"
+      ]
+    },
+    {
+      "enum": "LoginBonusVisualizationType",
+      "members": 3,
+      "domain": "Login bonus",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MainStageSelectMode",
+      "members": 2,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MaintenanceTimeDisplayType",
+      "members": 4,
+      "domain": "System",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapChipTraitType",
+      "members": 6,
+      "domain": "Map / Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapEventBuffTargetType",
+      "members": 3,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventBuffTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_panel_buff_rule.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_panel_buff_rule.json"
+      ]
+    },
+    {
+      "enum": "MapEventBuffTraitType",
+      "members": 28,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventBuffTraitTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_panel_trait_rule_set_content.json",
+        "m_map_event_panel_trait_set_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_panel_trait_rule_set_content.json",
+        "m_map_event_panel_trait_set_content.json"
+      ]
+    },
+    {
+      "enum": "MapEventNaviCharacterFocusPanelQuoteType",
+      "members": 5,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventNaviCharacterFocusPanelQuoteTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_navi_character_focus_panel.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_navi_character_focus_panel.json"
+      ]
+    },
+    {
+      "enum": "MapEventPanelConditionType",
+      "members": 3,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventPanelConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_partner_quote.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_partner_quote.json"
+      ]
+    },
+    {
+      "enum": "MapEventPanelType",
+      "members": 16,
+      "domain": "Map / Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "map event panel",
+      "master": true,
+      "master_fields": [
+        "MapEventPanelTypeIndex",
+        "MapEventPanelConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_panel.json",
+        "m_map_event_partner_quote.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_map_event_partner_quote.json"
+      ]
+    },
+    {
+      "enum": "MapEventPartnerQuoteTimingType",
+      "members": 8,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventPartnerQuoteTimingTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_partner_quote.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_partner_quote.json"
+      ]
+    },
+    {
+      "enum": "MapEventPartnerUnitCompleteUnlockType",
+      "members": 2,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapEventPartnerUnitCompleteUnlockTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_partner_unit_complete_unlock.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_event_partner_unit_complete_unlock.json"
+      ]
+    },
+    {
+      "enum": "MapEventScoreAttackStageEvaluationTargetType",
+      "members": 5,
+      "domain": "Map / Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapEventScoreAttackStageEvaluationType",
+      "members": 6,
+      "domain": "Map / Stages",
+      "status": "WEBSITE_ONLY",
+      "website": true,
+      "web_note": "score attack",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapGroupType",
+      "members": 2,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapGroupTypeIndex"
+      ],
+      "master_files": [
+        "m_map_group.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_group.json"
+      ]
+    },
+    {
+      "enum": "MapNPCAIType",
+      "members": 3,
+      "domain": "Map / Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapNpcStrategyHintType",
+      "members": 11,
+      "domain": "Map / Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapStageConditionType",
+      "members": 6,
+      "domain": "Map / Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "map conditions",
+      "master": true,
+      "master_fields": [
+        "MapStageConditionTypeIndex"
+      ],
+      "master_files": [
+        "m_map_stage_condition.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapWeaponRangeType",
+      "members": 7,
+      "domain": "Map / Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "MAP weapon filter",
+      "master": true,
+      "master_fields": [
+        "MapWeaponRangeTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MapWeaponTraitCategoryType",
+      "members": 3,
+      "domain": "Map / Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MapWeaponTraitCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueBattleResultSideType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueBattleResultType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueBuffTargetType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueIngameInitialPositionType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueOutgameCutInPlayTimingType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeaguePlayerSideType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueRankChangeType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueRankType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MasterLeagueScoreRatingType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MechanismType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "mechanisms",
+      "master": true,
+      "master_fields": [
+        "MechanismTypeIndex"
+      ],
+      "master_files": [
+        "m_mechanism.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MissionCategoryType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MissionCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_mission.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_mission.json"
+      ]
+    },
+    {
+      "enum": "MissionGroupCategoryType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MissionGroupCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_mission_group.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_mission_group.json"
+      ]
+    },
+    {
+      "enum": "MissionResetType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MissionResetTypeIndex"
+      ],
+      "master_files": [
+        "m_mission_group.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_mission_group.json"
+      ]
+    },
+    {
+      "enum": "MvpType",
+      "members": 4,
+      "domain": "Battle UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "MybaseAdditionalAssetType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "MybaseAdditionalAssetTypeIndex"
+      ],
+      "master_files": [
+        "m_mybase_additional_asset_resource_set_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_mybase_additional_asset_resource_set_content.json"
+      ]
+    },
+    {
+      "enum": "NavigationCharacterDisplayType",
+      "members": 4,
+      "domain": "UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "NavigationCharacterMotionType",
+      "members": 9,
+      "domain": "UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "NavigationCharacterSetType",
+      "members": 3,
+      "domain": "UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "NgWordLanguageType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "OsType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "OsTypeIndex"
+      ],
+      "master_files": [
+        "m_transition_web.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_transition_web.json"
+      ]
+    },
+    {
+      "enum": "OverrideBoolType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "PaymentShopItemUpdateCycleType",
+      "members": 4,
+      "domain": "Shop / Payment",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "PaymentShopLinkPlatformType",
+      "members": 4,
+      "domain": "Shop / Payment",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "PaymentShopType",
+      "members": 5,
+      "domain": "Shop / Payment",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "PaymentShopTypeIndex"
+      ],
+      "master_files": [
+        "m_payment_shop_item.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_payment_shop_item.json"
+      ]
+    },
+    {
+      "enum": "PlatformDeviceType",
+      "members": 4,
+      "domain": "System",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ProfileTitleRarityType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "ProfileTitleRarityTypeIndex"
+      ],
+      "master_files": [
+        "m_profile_title.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ProfileTitleType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "profile titles",
+      "master": true,
+      "master_fields": [
+        "ProfileTitleTypeIndex",
+        "ProfileTitleRarityTypeIndex"
+      ],
+      "master_files": [
+        "m_profile_title.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "QuestSecretConditionType",
+      "members": 5,
+      "domain": "Quests",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "RarityType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "RARITY_MAP",
+      "master": true,
+      "master_fields": [
+        "RarityTypeIndex",
+        "ProfileTitleRarityTypeIndex",
+        "TreasureChestRarityTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign_effect_target_rarity_type_set_content.json",
+        "m_character.json",
+        "m_character_rarity_max_level.json",
+        "m_character_skill.json",
+        "m_character_specialize_material_consume.json",
+        "m_event_bonus_rarity.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_campaign_effect_target_rarity_type_set_content.json",
+        "m_character_rarity_max_level.json",
+        "m_character_specialize_material_consume.json",
+        "m_event_bonus_rarity.json"
+      ]
+    },
+    {
+      "enum": "RequiredTensionType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ResearchTechnologyOriginType",
+      "members": 3,
+      "domain": "Research tech",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "RewardReasonType",
+      "members": 62,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "RewardType",
+      "members": 24,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "rewards",
+      "master": true,
+      "master_fields": [
+        "RewardTypeIndex"
+      ],
+      "master_files": [
+        "m_gasha_content_detail.json",
+        "m_payment_shop_item_set_image.json",
+        "m_reward.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_payment_shop_item_set_image.json"
+      ]
+    },
+    {
+      "enum": "RoleType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "RoleTypeIndex",
+        "TargetUnitRoleTypeIndex"
+      ],
+      "master_files": [
+        "m_character.json",
+        "m_character_skill_trait.json",
+        "m_unit.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SalesAppealDisplaySourceType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "SalesAppealDisplaySourceTypeIndex"
+      ],
+      "master_files": [
+        "m_sales_appeal_display_source_set_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_sales_appeal_display_source_set_content.json"
+      ]
+    },
+    {
+      "enum": "SalesAppealTargetType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "SalesAppealTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_sales_appeal.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_sales_appeal.json"
+      ]
+    },
+    {
+      "enum": "ScenarioStageStoryPlayTimingType",
+      "members": 3,
+      "domain": "Scenario",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ScreenType",
+      "members": 69,
+      "domain": "UI / Dialog",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SdStageSkipAnimationBackGroundType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "SdStageSkipAnimationBackGroundTypeIndex"
+      ],
+      "master_files": [
+        "m_stage.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ServerConfigType",
+      "members": 2,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ShopItemLabelType",
+      "members": 5,
+      "domain": "Shop / Payment",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ShopItemUpdateCycleType",
+      "members": 5,
+      "domain": "Shop / Payment",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "ShopType",
+      "members": 10,
+      "domain": "Shop / Payment",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "ShopTypeIndex",
+        "PaymentShopTypeIndex"
+      ],
+      "master_files": [
+        "m_payment_shop_item.json",
+        "m_shop.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_payment_shop_item.json",
+        "m_shop.json"
+      ]
+    },
+    {
+      "enum": "SizeType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "SizeTypeIndex"
+      ],
+      "master_files": [
+        "m_occupied_area.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_occupied_area.json"
+      ]
+    },
+    {
+      "enum": "SkillTargetType",
+      "members": 3,
+      "domain": "Skills",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SkillType",
+      "members": 4,
+      "domain": "Skills",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "AiUseSkillTypeIndex"
+      ],
+      "master_files": [
+        "m_map_npc_ai.json",
+        "m_map_npc_ai_preset.json",
+        "m_map_stage_own_ai.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_npc_ai.json",
+        "m_map_npc_ai_preset.json",
+        "m_map_stage_own_ai.json"
+      ]
+    },
+    {
+      "enum": "SortieRestrictionTargetType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "sortie restrictions",
+      "master": true,
+      "master_fields": [
+        "SortieRestrictionTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_stage_sortie_restriction_set.json",
+        "m_stage_sortie_restriction_set_content.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_stage_sortie_restriction_set.json"
+      ]
+    },
+    {
+      "enum": "SortieRestrictionType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "sortie restrictions",
+      "master": true,
+      "master_fields": [
+        "SortieRestrictionTypeIndex",
+        "SortieRestrictionTargetTypeIndex"
+      ],
+      "master_files": [
+        "m_stage_sortie_restriction.json",
+        "m_stage_sortie_restriction_set.json",
+        "m_stage_sortie_restriction_set_content.json",
+        "m_stage_sortie_restriction_set_group_content.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_stage_sortie_restriction.json",
+        "m_stage_sortie_restriction_set.json"
+      ]
+    },
+    {
+      "enum": "SortieTerrainType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "sortie terrain",
+      "master": true,
+      "master_fields": [
+        "SortieTerrainTypeIndex",
+        "RecommendedSortieTerrainTypeIndex"
+      ],
+      "master_files": [
+        "m_stage.json",
+        "m_stage_recommended_sortie_terrain_type.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SpecializeTargetType",
+      "members": 6,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageActionPointConsumeType",
+      "members": 4,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageAdditionalDisplayType",
+      "members": 2,
+      "domain": "Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "StageAdditionalDisplayTypeIndex"
+      ],
+      "master_files": [
+        "m_scenario_stage.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_scenario_stage.json"
+      ]
+    },
+    {
+      "enum": "StageBattleAdditionalConditionType",
+      "members": 8,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageBattleConditionCategoryType",
+      "members": 6,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageBattleConditionParameterType",
+      "members": 9,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageBattleMainConditionType",
+      "members": 24,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageCategoryType",
+      "members": 5,
+      "domain": "Stages",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "StageCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_stage.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageDifficultyType",
+      "members": 9,
+      "domain": "Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "STAGE_DIFFICULTY",
+      "master": true,
+      "master_fields": [
+        "StageDifficultyTypeIndex"
+      ],
+      "master_files": [
+        "m_enhance_material_stage.json",
+        "m_eternal_road_stage.json",
+        "m_invasion_event_stage.json",
+        "m_map_stage.json",
+        "m_scenario_stage.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_enhance_material_stage.json",
+        "m_invasion_event_stage.json",
+        "m_scenario_stage.json"
+      ]
+    },
+    {
+      "enum": "StageEventAreaSkillTraitType",
+      "members": 4,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageResultType",
+      "members": 6,
+      "domain": "Stages",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageScoreEvaluationType",
+      "members": 6,
+      "domain": "Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "stage score",
+      "master": true,
+      "master_fields": [
+        "StageScoreEvaluationTypeIndex"
+      ],
+      "master_files": [
+        "m_stage_score_evaluation_percent.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageTerrainType",
+      "members": 6,
+      "domain": "Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "stage terrain",
+      "master": true,
+      "master_fields": [
+        "StageTerrainTypeIndex"
+      ],
+      "master_files": [
+        "m_stage.json",
+        "m_stage_recommended_sortie_terrain_type.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StageType",
+      "members": 18,
+      "domain": "Stages",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "StageTypeIndex",
+        "SdStageSkipAnimationBackGroundTypeIndex",
+        "StageScoreEvaluationTypeIndex",
+        "StageTerrainTypeIndex"
+      ],
+      "master_files": [
+        "m_enhance_material_stage.json",
+        "m_eternal_road_stage.json",
+        "m_invasion_event_stage.json",
+        "m_map_stage.json",
+        "m_map_stage_condition.json",
+        "m_scenario_stage.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_enhance_material_stage.json",
+        "m_invasion_event_stage.json",
+        "m_scenario_stage.json"
+      ]
+    },
+    {
+      "enum": "StoreType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "StoreTypeIndex"
+      ],
+      "master_files": [
+        "m_store_product.json",
+        "m_webstore_payment_shop_item_additional_content.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_store_product.json",
+        "m_webstore_payment_shop_item_additional_content.json"
+      ]
+    },
+    {
+      "enum": "StoryEventBossDifficultyType",
+      "members": 5,
+      "domain": "Story events",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "StoryEventBossDifficultyTypeIndex"
+      ],
+      "master_files": [
+        "m_story_event_boss_stage.json",
+        "m_story_event_boss_stage_difficulty.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_story_event_boss_stage.json",
+        "m_story_event_boss_stage_difficulty.json"
+      ]
+    },
+    {
+      "enum": "StoryEventBossStageStatusType",
+      "members": 4,
+      "domain": "Story events",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StoryEventBromideInDirectionType",
+      "members": 3,
+      "domain": "Story events",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "StoryEventMedalGashaViewType",
+      "members": 4,
+      "domain": "Story events",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SubscriptionCommonDescriptionType",
+      "members": 10,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "SubscriptionCommonDescriptionTypeIndex"
+      ],
+      "master_files": [
+        "m_payment_shop_item_subscription_common_description.json",
+        "m_payment_shop_item_subscription_common_info.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_payment_shop_item_subscription_common_description.json",
+        "m_payment_shop_item_subscription_common_info.json"
+      ]
+    },
+    {
+      "enum": "SubscriptionStatusType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SupporterAcquisitionRouteType",
+      "members": 3,
+      "domain": "Supporters",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "supporter route",
+      "master": true,
+      "master_fields": [
+        "SupporterAcquisitionRouteTypeIndex"
+      ],
+      "master_files": [
+        "m_supporter.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SupporterActiveSkillRangeType",
+      "members": 3,
+      "domain": "Supporters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SupporterActiveSkillTraitType",
+      "members": 11,
+      "domain": "Supporters",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SupporterLeaderSkillTraitType",
+      "members": 11,
+      "domain": "Supporters",
+      "status": "WEBSITE_ONLY",
+      "website": true,
+      "web_note": "supporter leader",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "SuspendType",
+      "members": 5,
+      "domain": "Other / System UI",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TacticalTrainingType",
+      "members": 3,
+      "domain": "Tactical training",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "TacticalTrainingTypeIndex"
+      ],
+      "master_files": [
+        "m_tactical_training_stage.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_tactical_training_stage.json"
+      ]
+    },
+    {
+      "enum": "TargetAreaType",
+      "members": 3,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "target area",
+      "master": true,
+      "master_fields": [
+        "TargetAreaTypeIndex"
+      ],
+      "master_files": [
+        "m_map_area.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TargetUserType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "TargetUserTypeIndex",
+        "CampaignTargetUserTypeIndex"
+      ],
+      "master_files": [
+        "m_campaign.json",
+        "m_login_bonus.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_campaign.json",
+        "m_login_bonus.json"
+      ]
+    },
+    {
+      "enum": "TensionType",
+      "members": 6,
+      "domain": "Combat",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "TensionTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TerrainCapabilityType",
+      "members": 4,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "terrain capability",
+      "master": true,
+      "master_fields": [
+        "TerrainCapabilityTypeIndex"
+      ],
+      "master_files": [
+        "m_map_npc_unit_terrain_capability_extension.json",
+        "m_terrain_capability_correction.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_terrain_capability_correction.json"
+      ]
+    },
+    {
+      "enum": "TerrainType",
+      "members": 7,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "terrain labels",
+      "master": true,
+      "master_fields": [
+        "TerrainTypeIndex",
+        "TerrainCapabilityTypeIndex",
+        "StageTerrainTypeIndex",
+        "SortieTerrainTypeIndex"
+      ],
+      "master_files": [
+        "m_map_npc_unit_terrain_capability_extension.json",
+        "m_stage.json",
+        "m_stage_recommended_sortie_terrain_type.json",
+        "m_terrain_capability_correction.json",
+        "m_terrain_motif.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_terrain_capability_correction.json",
+        "m_terrain_motif.json"
+      ]
+    },
+    {
+      "enum": "TowerEventStageType",
+      "members": 4,
+      "domain": "Tower events",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "tower stages",
+      "master": true,
+      "master_fields": [
+        "TowerEventStageTypeIndex"
+      ],
+      "master_files": [
+        "m_tower_event_stage.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TowerEventTabType",
+      "members": 5,
+      "domain": "Tower events",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "TowerEventTabTypeIndex"
+      ],
+      "master_files": [
+        "m_tower_event_stage_strategy_info.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_tower_event_stage_strategy_info.json"
+      ]
+    },
+    {
+      "enum": "TraitActionTimingType",
+      "members": 22,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionAllyType",
+      "members": 3,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionAreaType",
+      "members": 4,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionGroupType",
+      "members": 2,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionHpType",
+      "members": 5,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionLeaderType",
+      "members": 3,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionMapBattleActionType",
+      "members": 9,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionParticipationType",
+      "members": 17,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionSelfType",
+      "members": 3,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitConditionTargetType",
+      "members": 11,
+      "domain": "Traits / Abilities",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "TraitType",
+      "members": 97,
+      "domain": "Traits / Abilities",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "TraitTypeIndex",
+        "MapWeaponTraitCategoryTypeIndex",
+        "WeaponTraitTypeIndex",
+        "MapEventBuffTraitTypeIndex"
+      ],
+      "master_files": [
+        "m_character_skill_trait.json",
+        "m_map_event_panel_trait_rule_set_content.json",
+        "m_map_event_panel_trait_set_content.json",
+        "m_stage_event_area_skill_trait.json",
+        "m_supporter_active_skill_trait.json",
+        "m_supporter_leader_skill_trait_content.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_map_event_panel_trait_rule_set_content.json",
+        "m_map_event_panel_trait_set_content.json",
+        "m_stage_event_area_skill_trait.json",
+        "m_supporter_active_skill_trait.json"
+      ]
+    },
+    {
+      "enum": "TransitionType",
+      "members": 58,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "TransitionTypeIndex"
+      ],
+      "master_files": [
+        "m_transition.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_transition.json"
+      ]
+    },
+    {
+      "enum": "TreasureChestRarityType",
+      "members": 9,
+      "domain": "Other / System UI",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "TreasureChestRarityTypeIndex"
+      ],
+      "master_files": [
+        "m_league_rank_group_content.json",
+        "m_league_season_reward_group_content.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitAcquisitionRouteType",
+      "members": 4,
+      "domain": "Units",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "UnitAcquisitionRouteTypeIndex"
+      ],
+      "master_files": [
+        "m_unit.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitBodyType",
+      "members": 4,
+      "domain": "Units",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "UnitBodyTypeIndex"
+      ],
+      "master_files": [
+        "m_unit.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitBromideBesideType",
+      "members": 6,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitBromideHeightType",
+      "members": 6,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitBromideSizeType",
+      "members": 4,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitDataViewBackGroundType",
+      "members": 4,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitDevelopmentRouteRuleVertexOffsetType",
+      "members": 10,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitFunctionType",
+      "members": 3,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitLeaveType",
+      "members": 3,
+      "domain": "Units",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "UnitLeaveTypeIndex"
+      ],
+      "master_files": [
+        "m_map_npc_setting.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_map_npc_setting.json"
+      ]
+    },
+    {
+      "enum": "UnitRimLightType",
+      "members": 4,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitSkillMultiTargetType",
+      "members": 2,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitSkillTraitType",
+      "members": 7,
+      "domain": "Units",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitStandbyType",
+      "members": 5,
+      "domain": "Units",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "UnitStandbyTypeIndex"
+      ],
+      "master_files": [
+        "m_map_event_partner_stage.json",
+        "m_map_npc.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_map_event_partner_stage.json"
+      ]
+    },
+    {
+      "enum": "UnitStatusType",
+      "members": 7,
+      "domain": "Units",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "UnitStatusTypeIndex"
+      ],
+      "master_files": [
+        "m_unit_ssp_custom_core_status_up.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "UnitType",
+      "members": 5,
+      "domain": "Units",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "UnitBodyTypeIndex",
+        "UnitLeaveTypeIndex",
+        "MapEventPartnerUnitCompleteUnlockTypeIndex",
+        "HomeUnitStyleTypeIndex"
+      ],
+      "master_files": [
+        "m_character_skill_trait.json",
+        "m_home_unit_style.json",
+        "m_map_event_partner_stage.json",
+        "m_map_event_partner_unit_complete_unlock.json",
+        "m_map_group_npc.json",
+        "m_map_npc.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_home_unit_style.json",
+        "m_map_event_partner_stage.json",
+        "m_map_event_partner_unit_complete_unlock.json",
+        "m_map_group_npc.json"
+      ]
+    },
+    {
+      "enum": "UserRecordType",
+      "members": 69,
+      "domain": "Other / System UI",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "UserRecordTypeIndex"
+      ],
+      "master_files": [
+        "m_profile_user_record.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_profile_user_record.json"
+      ]
+    },
+    {
+      "enum": "WarshipCruiseResultType",
+      "members": 3,
+      "domain": "Warship Cruise",
+      "status": "UNUSED",
+      "website": false,
+      "web_note": "",
+      "master": false,
+      "master_fields": [],
+      "master_files": [],
+      "app_loads_file": false,
+      "unloaded_files": []
+    },
+    {
+      "enum": "WeaponAttributeType",
+      "members": 5,
+      "domain": "Weapons",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "WeaponAttributeTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon_attribute_set.json"
+      ],
+      "app_loads_file": false,
+      "unloaded_files": [
+        "m_weapon_attribute_set.json"
+      ]
+    },
+    {
+      "enum": "WeaponEnhanceType",
+      "members": 5,
+      "domain": "Weapons",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "code reference",
+      "master": true,
+      "master_fields": [
+        "WeaponEnhanceTypeIndex"
+      ],
+      "master_files": [
+        "m_unit_ssp_custom_core_weapon_enhance_set.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "WeaponTraitType",
+      "members": 14,
+      "domain": "Weapons",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "weapon traits",
+      "master": true,
+      "master_fields": [
+        "WeaponTraitTypeIndex",
+        "MapWeaponTraitCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json",
+        "m_weapon_trait.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    },
+    {
+      "enum": "WeaponType",
+      "members": 4,
+      "domain": "Weapons",
+      "status": "BOTH",
+      "website": true,
+      "web_note": "weapon types",
+      "master": true,
+      "master_fields": [
+        "WeaponTypeIndex",
+        "MapWeaponRangeTypeIndex",
+        "WeaponAttributeTypeIndex",
+        "MapWeaponTraitCategoryTypeIndex"
+      ],
+      "master_files": [
+        "m_unit_ssp_custom_core_weapon_enhance_set.json",
+        "m_weapon.json",
+        "m_weapon_attribute_set.json",
+        "m_weapon_trait.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": [
+        "m_weapon_attribute_set.json"
+      ]
+    },
+    {
+      "enum": "WeaponWorkType",
+      "members": 5,
+      "domain": "Weapons",
+      "status": "MASTER_ONLY",
+      "website": false,
+      "web_note": "",
+      "master": true,
+      "master_fields": [
+        "WeaponWorkTypeIndex"
+      ],
+      "master_files": [
+        "m_weapon.json"
+      ],
+      "app_loads_file": true,
+      "unloaded_files": []
+    }
+  ]
+}
