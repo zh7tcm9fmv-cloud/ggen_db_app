@@ -4712,6 +4712,7 @@ def create_profile_title_info_map(d):
         lookup[pid] = {
             'background_resource_id': str(item.get('BackgroundResourceId') or item.get('backgroundResourceId') or '').strip(),
             'title_name_lang_id': normalize_id(item.get('TitleNameLanguageId') or item.get('titleNameLanguageId')),
+            'acquisition_route_lang_id': normalize_id(item.get('AcquisitionRouteLanguageId') or item.get('acquisitionRouteLanguageId')),
             'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId')),
         }
     return lookup
@@ -8959,10 +8960,25 @@ def _game_item_icon_url(resource_id):
     return game_image_public_url(_game_images_webp_path(folder, rid))
 
 
+def _resolve_profile_title_display_name(pid, lc):
+    pinfo = (profile_title_info_map or {}).get(normalize_id(pid), {})
+    if not pinfo:
+        return 'Profile Title'
+    ld = get_lang_data(lc)
+    tmap = ld.get('profile_title_text_map') or {}
+    for key in ('title_name_lang_id', 'acquisition_route_lang_id'):
+        tlid = normalize_id(pinfo.get(key)) if isinstance(pinfo, dict) else '0'
+        if tlid == '0':
+            continue
+        name = str(tmap.get(tlid) or '').strip()
+        if name:
+            return name
+    return 'Profile Title'
+
+
 def _decorate_reward_rows(rows, lc):
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
-    profile_title_text_map = ld.get('profile_title_text_map') or {}
     op_text_map = ld.get('op_text_map') or {}
     out = []
     for row in rows:
@@ -8990,11 +9006,7 @@ def _decorate_reward_rows(rows, lc):
             cacq = normalize_id(cinfo.get('acquisition_route', '0'))
         elif rt == '30':
             pinfo = profile_title_info_map.get(tid, {})
-            tlid = normalize_id(pinfo.get('title_name_lang_id')) if isinstance(pinfo, dict) else '0'
-            if tlid != '0':
-                reward_name = str(profile_title_text_map.get(tlid) or '').strip()
-            if not reward_name:
-                reward_name = f"Profile Title {tid}"
+            reward_name = _resolve_profile_title_display_name(tid, lc)
             brid = str(pinfo.get('background_resource_id') or '').strip() if isinstance(pinfo, dict) else ''
             if brid:
                 reward_icon = game_image_public_url(_game_images_webp_path('Item', brid))
@@ -14320,12 +14332,7 @@ def get_profile_title(profile_title_id):
         info = (profile_title_info_map or {}).get(pid)
         if not info:
             return jsonify({'error': 'Not found'}), 404
-        ld = get_lang_data(lc)
-        tmap = ld.get('profile_title_text_map') or {}
-        tlid = normalize_id(info.get('title_name_lang_id'))
-        name = str(tmap.get(tlid) or '').strip() if tlid and tlid != '0' else ''
-        if not name:
-            name = f"Profile Title {pid}"
+        name = _resolve_profile_title_display_name(pid, lc)
         brid = str(info.get('background_resource_id') or '').strip()
         result = {
             'id': pid,
@@ -15154,6 +15161,75 @@ ML_SEED_SERIES_SET_ID = '10000000000002000'
 ML_SERIES_SHOWCASE_PREFER = {
     ML_SEED_SERIES_SET_ID: ('1200003900', '1200005300', '1200005200', '1200002300'),
 }
+# League promotion emblems — CDN WebP under images/UI/ (Bronze=001 … Master=006).
+ML_RANK_EMBLEM_RESOURCE = {
+    6: 'UI_Event_ML_Emblem_001',
+    5: 'UI_Event_ML_Emblem_002',
+    4: 'UI_Event_ML_Emblem_003',
+    3: 'UI_Event_ML_Emblem_004',
+    2: 'UI_Event_ML_Emblem_005',
+    1: 'UI_Event_ML_Emblem_006',
+}
+# Gold=01 … Master=04 within each season's profile-title block.
+ML_RANK_PROFILE_TITLE_SLOT = {4: 1, 3: 2, 2: 3, 1: 4}
+
+
+def _ml_emblem_icon_url(rank_type_index):
+    res = ML_RANK_EMBLEM_RESOURCE.get(safe_int(rank_type_index, 0))
+    if not res:
+        return ''
+    return game_image_public_url(_game_images_webp_path('UI', res))
+
+
+def _ml_emblem_reward_row(rank_type_index, rank_label):
+    icon = _ml_emblem_icon_url(rank_type_index)
+    if not icon:
+        return None
+    return {
+        'reward_id': '0',
+        'reward_type_index': 'ml_emblem',
+        'target_id': '0',
+        'name': str(rank_label or '').strip(),
+        'description': '',
+        'count': 1,
+        'icon': icon,
+        'detail_type': '',
+        'detail_id': '',
+        'thumb_type': '',
+        'thumb': '',
+        'rarity': '',
+        'role_icon': '',
+        'acquisition_icon': '',
+        'lb_thumb_base': '',
+        'lb_thumb_limit_frame': '',
+        'lb_thumb_bottom_frame': '',
+        'lb_thumb_unit': '',
+    }
+
+
+def _ml_season_profile_title_id(event_id, rank_type_index):
+    slot = ML_RANK_PROFILE_TITLE_SLOT.get(safe_int(rank_type_index, 0))
+    if not slot:
+        return None
+    tag = safe_int(event_id, 0) - 300000
+    if tag <= 0:
+        return None
+    return f'103000{tag:02d}{slot:06d}'
+
+
+def _ml_compose_rank_tier_rewards(event_id, rank_type_index, rank_label, base_rewards, lc):
+    out = []
+    emblem = _ml_emblem_reward_row(rank_type_index, rank_label)
+    if emblem:
+        out.append(emblem)
+    pid = _ml_season_profile_title_id(event_id, rank_type_index)
+    if pid and (profile_title_info_map or {}).get(normalize_id(pid)):
+        title_rows = _decorate_reward_rows(
+            [{'reward_id': f'mlpt_{pid}', 'reward_type_index': '30', 'target_id': pid, 'count': 1}], lc)
+        if title_rows:
+            out.append(title_rows[0])
+    out.extend(base_rewards or [])
+    return out
 
 
 def _ml_series_set_id(series_id):
@@ -15336,7 +15412,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v10_{lc}'
+    ck = f'master_league_v12_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15522,7 +15598,9 @@ def api_master_league():
         for rt in rank_by_group.get(rank_gid, []):
             tier = dict(rt)
             rsid = tier.pop('reward_set_id', '0')
-            tier['rewards'] = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+            base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+            tier['rewards'] = _ml_compose_rank_tier_rewards(
+                event_id, tier.get('rank_type_index'), tier.get('rank_label'), base_rewards, lc)
             rank_tiers.append(tier)
 
         srgid = safe_int(lx.get('LeagueSeasonRewardGroupId') or lx.get('leagueSeasonRewardGroupId'), 0)
