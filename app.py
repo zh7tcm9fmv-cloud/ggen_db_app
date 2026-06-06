@@ -17395,7 +17395,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage6"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage7"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -17469,7 +17469,6 @@ def get_stage(stage_id):
                 nt, lc, merge_mode='conditional_title_gated')
             unit_cond_pct_by_uid = accumulate_npc_unit_condition_pct_by_unit(nt, lc)
             stage_unit_ids = _map_stage_deployed_unit_ids(nt)
-            score_boss_npc_id = normalize_id(sas.get('boss_map_npc_id', '0')) if (is_score_attack and sas) else '0'
             for npc in nt:
                 nid = npc['id']; nid_norm = normalize_id(nid)
                 nu = map_npc_unit_lookup.get(nid_norm, []) or []
@@ -17570,8 +17569,6 @@ def get_stage(stage_id):
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
                 if story_boss:
                     me['is_story_event_boss'] = True
-                if score_boss_npc_id != '0' and nid_norm == score_boss_npc_id:
-                    me['is_score_attack_boss'] = True
                 if ue:
                     umap_uid = normalize_id(ue.get('unit_id', '0'))
                     if umap_uid != '0':
@@ -17660,11 +17657,6 @@ def get_stage(stage_id):
             'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
             'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
         }
-        if is_score_attack and sas:
-            result['score_attack_meta'] = build_score_attack_stage_meta(stage_id, sas)
-        gop = (map_event_panel_stage_by_stage or {}).get(normalize_id(stage_id))
-        if gop and not result.get('score_attack_meta'):
-            result['grand_offensive_panel'] = gop
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500

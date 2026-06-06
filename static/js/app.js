@@ -1894,22 +1894,6 @@ function renderTowerRewardSection(d){
   html+=`</div>`;
   return html;
 }
-function _stageMapEventLabel(k,fb){const v=t(k);return(v&&v!==k)?v:fb}
-function renderGrandOffensivePanelBadges(panel){
-  if(!panel||!panel.panel_id)return'';
-  const L=_stageMapEventLabel;
-  const pb=[`${L('sa_panel','Map panel')} #${esc(panel.panel_id)}`];
-  if(panel.panel_type_index)pb.push(`${L('sa_panel_type','Type')} ${esc(panel.panel_type_index)}`);
-  if(panel.area_number>0)pb.push(`${L('sa_panel_area','Area')} ${fmtN(panel.area_number)}`);
-  if(panel.rank>0)pb.push(`${L('sa_panel_rank','Rank')} ${fmtN(panel.rank)}`);
-  if(panel.consume_pp)pb.push(`${L('sa_pp_cost','PP cost')}: ${fmtN(panel.consume_pp)}`);
-  if(panel.damage_up_percent>0)pb.push(`${L('sa_damage_up','Damage up')}: +${fmtN(panel.damage_up_percent)}%`);
-  if(panel.coordinate_x!=null&&panel.coordinate_y!=null)pb.push(`${L('sa_panel_coords','Map coords')}: (${fmtN(panel.coordinate_x)}, ${fmtN(panel.coordinate_y)})`);
-  const tr=panel.target_resource_id&&String(panel.target_resource_id)!=='0'?String(panel.target_resource_id):'';
-  const tv=panel.target_value&&String(panel.target_value)!=='0'?String(panel.target_value):'';
-  if(tr||tv)pb.push(`${L('sa_panel_target','Target')}: ${esc(tr||tv)}${tr&&tv&&tr!==tv?` (${esc(tv)})`:''}`);
-  return`<div class="stage-condition-item">${pb.filter(Boolean).map(b=>`<span class="stage-meta-badge" style="margin-right:6px">${b}</span>`).join('')}</div>`;
-}
 function _stageNpcStepOrder(n){return Math.max(0,Number(n&&n.step_order)||0)}
 function _stageMapUnitByNpcId(pool,npcId){
   const id=String(npcId!=null?npcId:'');
@@ -1939,50 +1923,7 @@ function _stageMapHitEventAreaCell(md,x,y){
   }
   return null;
 }
-function renderScoreAttackMetaSection(d){
-  const m=d&&d.score_attack_meta;
-  const panelOnly=d&&d.grand_offensive_panel;
-  if(!m&&!panelOnly)return'';
-  const L=_stageMapEventLabel;
-  if(!m&&panelOnly){
-    return`<div class="detail-section"><div class="section-title">${esc(L('sec_grand_offensive_panel','Grand Offensive'))}</div>${renderGrandOffensivePanelBadges(panelOnly)}</div>`;
-  }
-  let html=`<div class="detail-section"><div class="section-title">${esc(L('sec_score_attack_meta','Score Attack'))}</div>`;
-  if(m.map_event_id&&String(m.map_event_id)!=='0'){
-    const mev=m.map_event||{};
-    const bits=[`${L('sa_map_event_id','Event')} ${esc(m.map_event_id)}`];
-    if(mev.event_id&&String(mev.event_id)!=='0'&&String(mev.event_id)!==String(m.map_event_id))bits.push(`${L('sa_event_id','Campaign')} ${esc(mev.event_id)}`);
-    if(mev.daily_stage_skip_limit>0)bits.push(`${L('sa_daily_skip','Daily skip limit')}: ${fmtN(mev.daily_stage_skip_limit)}`);
-    if(mev.pp_config_id&&String(mev.pp_config_id)!=='0')bits.push(`${L('sa_pp_config','PP config')} ${esc(mev.pp_config_id)}`);
-    html+=`<div class="stage-condition-item">${bits.map(b=>`<span class="stage-meta-badge" style="margin-right:6px">${b}</span>`).join('')}</div>`;
-  }
-  if(m.boss_map_npc_id&&String(m.boss_map_npc_id)!=='0')html+=`<div class="stage-condition-item"><span class="stage-meta-badge">${esc(L('sa_boss_npc','Boss NPC'))} ${esc(m.boss_map_npc_id)}</span> <span class="stage-meta-badge" style="opacity:.8">${esc(L('sa_boss_map_hint','highlighted on map'))}</span></div>`;
-  const panel=m.grand_offensive_panel;
-  if(panel&&panel.panel_id)html+=renderGrandOffensivePanelBadges(panel);
-  const partners=Array.isArray(m.guest_partners)?m.guest_partners:[];
-  if(partners.length){
-    html+=`<div class="stage-condition-item" style="margin-top:6px"><strong>${esc(L('sa_guest_partners','Guest partners'))}</strong></div>`;
-    partners.forEach(p=>{
-      const row=[`#${esc(p.partner_id||'')}`,p.unit_initial_level?`${L('sa_unit_lv','Unit Lv')} ${fmtN(p.unit_initial_level)}`:'',p.character_initial_level?`${L('sa_char_lv','Pilot Lv')} ${fmtN(p.character_initial_level)}`:'',p.status_buff_percent?`+${fmtN(p.status_buff_percent)}% ${L('sa_status_buff','status')}`:''].filter(Boolean);
-      html+=`<div class="stage-condition-item">${row.map(x=>`<span class="stage-meta-badge" style="margin-right:6px">${x}</span>`).join('')}</div>`;
-    });
-  }
-  const targets=Array.isArray(m.evaluation_targets)?m.evaluation_targets:[];
-  if(targets.length){
-    html+=`<div class="stage-condition-item" style="margin-top:8px"><strong>${esc(L('sa_score_targets','Score rank thresholds'))}</strong></div>`;
-    html+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:6px">`;
-    targets.forEach(row=>{
-      const rank=esc(row.rank_label||'?');
-      const score=fmtN(row.score||0);
-      const th=row.threshold>0?` · ${L('sa_threshold','≤')} ${fmtN(row.threshold)}`:'';
-      html+=`<div class="stage-condition-box" style="padding:10px 12px"><div style="font-weight:700;font-size:18px">${rank}</div><div style="font-size:12px;opacity:.85">${score} pts${esc(th)}</div></div>`;
-    });
-    html+=`</div>`;
-  }
-  html+=`</div>`;
-  return html;
-}
-function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div id="detailScoreAttackMeta">${(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderTowerRewardSection(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
+function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderTowerRewardSection(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
 function renderProfileTitleShell(d){const name=esc(d&&d.name?d.name:'Profile Title');const img=(d&&d.image)?`<img src="${imgUrl(d.image)}" alt="${name}" loading="lazy" decoding="async" style="display:block;max-width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">`:'<div class="empty-state-text">No image</div>';return`<div class="modal-top-label">Profile Title</div><div class="detail-body" style="margin-top:16px;"><div class="detail-section"><div class="section-title">${name}</div><div class="stage-condition-box" style="padding:18px;display:flex;justify-content:center;align-items:center;overflow:auto;">${img}</div></div></div>`}
 function renderOptionPartShell(d){
 const thumb=d.thum?imgTag(d.thum,{cls:'detail-portrait mod-detail-portrait',webp:true,alt:esc(d.name||''),onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>⚙</div>'"}) :'<div class="detail-portrait-placeholder">⚙</div>';
@@ -2079,7 +2020,7 @@ c.insertAdjacentHTML('beforeend',renderDetailInlineRankRadial(meta));
 kickDetailRankRadialAnimation(c.querySelector('.stat-inline-rank'));
 });
 }
-function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type==='stage'){const saHost=document.getElementById('detailScoreAttackMeta');if(saHost)saHost.innerHTML=(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights()}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}}
+function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights()}else if(type==='unit'){document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}}
 function renderStatsWrapper(d,type){
 let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
@@ -2498,7 +2439,6 @@ function renderStageMapGrid(md){
         else cls+=' map-cell--buff-blue';
       }
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
-      if(u&&u.is_score_attack_boss)cls+=' map-cell--score-boss';
       if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
       const showStepOrder=u&&_stageMapShowSpawnOrderForUnit(u,pool);
@@ -2511,7 +2451,6 @@ function renderStageMapGrid(md){
       const mapDataAttrs=canMapClick?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}${stackCellAttr}${reinfUnitAttr}`:'';
       const clickCls=(o&&u&&(u.unit_id||u.npc_id))?' npc-clickable':'';
       let cellTitle=u?`${u.name} (${u.side}) @ ${x},${y}`:`${x},${y}`;
-      if(u&&u.is_score_attack_boss){const bl=t('sa_boss');cellTitle+=` — ${bl!=='sa_boss'?bl:'Boss'}`}
       if(u&&u.is_story_event_boss){const bl=t('stage_story_boss');cellTitle+=` — ${bl!=='stage_story_boss'?bl:'Story boss'}`}
       if(showStepOrder)cellTitle+=` — ${_stageMapSpawnOrderLabel(_stageNpcStepOrder(u))}`;
       if(eventArea)cellTitle+=` — ${t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area'}`;
