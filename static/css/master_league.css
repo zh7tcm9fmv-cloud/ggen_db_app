@@ -441,6 +441,9 @@
 .ml-reward-chip--clickable {
   cursor: pointer;
 }
+.ml-reward-chip--clickable > * {
+  pointer-events: none;
+}
 .ml-reward-chip--clickable:hover {
   border-color: var(--accent-cyan);
   background: rgba(56, 189, 248, 0.08);
