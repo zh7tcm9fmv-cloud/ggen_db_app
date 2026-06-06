@@ -309,6 +309,8 @@ UI_LABELS = {
         'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
         'difficulty_none': 'None', 'difficulty_hell': 'Hell', 'difficulty_inferno': 'Inferno',
         'difficulty_challenge': 'Challenge', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
+        'stage_score_type_1': 'Clear evaluation', 'stage_score_type_2': 'Damage taken', 'stage_score_type_3': 'Overkill',
+        'stage_score_type_4': 'Survivors', 'stage_score_type_5': 'Bonus',
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -326,6 +328,8 @@ UI_LABELS = {
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
         'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
         'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
+        'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
+        'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
     },
     'JA': {
         'restriction_before_moving': '移動前のみ使用可能。',
@@ -343,6 +347,8 @@ UI_LABELS = {
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
         'difficulty_none': 'なし', 'difficulty_hell': 'ヘル', 'difficulty_inferno': 'インフェルノ',
         'difficulty_challenge': 'チャレンジ', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
+        'stage_score_type_1': 'クリア評価', 'stage_score_type_2': '被ダメージ', 'stage_score_type_3': 'オーバーキル',
+        'stage_score_type_4': '生存数', 'stage_score_type_5': 'ボーナス',
     }
 }
 UI_LABELS['HK'] = dict(UI_LABELS['TW'])
@@ -4378,8 +4384,146 @@ def create_stage_map(d):
         if not isinstance(item, dict): continue
         sid = normalize_id(item.get('Id') or item.get('id'))
         if sid == '0': continue
-        lookup[sid] = {'group1_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')), 'group2_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')), 'group1_sortie_count': safe_int(item.get('Group1SortieCount') or item.get('group1SortieCount'), 0), 'group2_sortie_count': safe_int(item.get('Group2SortieCount') or item.get('group2SortieCount'), 0), 'recommended_cp': safe_int(item.get('RecommendedCombatPower'), 0), 'terrain_type_index': normalize_id(item.get('StageTerrainTypeIndex') or item.get('stageTerrainTypeIndex')), 'battle_condition_set_id': normalize_id(item.get('StageBattleConditionSetId') or item.get('stageBattleConditionSetId')), 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+        lookup[sid] = {
+            'group1_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')),
+            'group2_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')),
+            'group1_sortie_count': safe_int(item.get('Group1SortieCount') or item.get('group1SortieCount'), 0),
+            'group2_sortie_count': safe_int(item.get('Group2SortieCount') or item.get('group2SortieCount'), 0),
+            'recommended_cp': safe_int(item.get('RecommendedCombatPower'), 0),
+            'terrain_type_index': normalize_id(item.get('StageTerrainTypeIndex') or item.get('stageTerrainTypeIndex')),
+            'sortie_terrain_type_index': normalize_id(item.get('SortieTerrainTypeIndex') or item.get('sortieTerrainTypeIndex')),
+            'battle_condition_set_id': normalize_id(item.get('StageBattleConditionSetId') or item.get('stageBattleConditionSetId')),
+            'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
+            'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
+            'secret_clear_reward_set_id': normalize_id(item.get('SecretClearRewardSetId') or item.get('secretClearRewardSetId')),
+            'stage_drop_set_id': normalize_id(item.get('StageDropSetId') or item.get('stageDropSetId')),
+            'stage_score_evaluation_set_id': normalize_id(item.get('StageScoreEvaluationSetId') or item.get('stageScoreEvaluationSetId')),
+            'base_score': safe_int(item.get('BaseScore') or item.get('baseScore'), 0),
+        }
     return lookup
+
+
+def create_stage_drop_lookups(drop_data, content_data):
+    content_by_set = {}
+    for item in extract_data_list(content_data):
+        if not isinstance(item, dict):
+            continue
+        cset = normalize_id(item.get('StageDropContentSetId') or item.get('stageDropContentSetId'))
+        if cset == '0':
+            continue
+        content_by_set.setdefault(cset, []).append({
+            'weight': safe_int(item.get('Weight') or item.get('weight'), 0),
+            'reward_set_id': normalize_id(item.get('RewardSetId') or item.get('rewardSetId')),
+        })
+    for arr in content_by_set.values():
+        arr.sort(key=lambda r: (-safe_int(r.get('weight'), 0), r.get('reward_set_id', '')))
+    by_drop_set = {}
+    for item in extract_data_list(drop_data):
+        if not isinstance(item, dict):
+            continue
+        dsid = normalize_id(item.get('StageDropSetId') or item.get('stageDropSetId'))
+        if dsid == '0':
+            continue
+        by_drop_set.setdefault(dsid, []).append({
+            'lottery_count': safe_int(item.get('LotteryCount') or item.get('lotteryCount'), 1),
+            'content_set_id': normalize_id(item.get('StageDropContentSetId') or item.get('stageDropContentSetId')),
+        })
+    return by_drop_set, content_by_set
+
+
+def create_stage_score_eval_by_set(d):
+    by = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('StageScoreEvaluationSetId') or item.get('stageScoreEvaluationSetId'))
+        if sid == '0':
+            continue
+        by.setdefault(sid, []).append({
+            'step': safe_int(item.get('Step') or item.get('step'), 0),
+            'score': safe_int(item.get('Score') or item.get('score'), 0),
+        })
+    for arr in by.values():
+        arr.sort(key=lambda r: (-safe_int(r.get('step'), 0), -safe_int(r.get('score'), 0)))
+    return by
+
+
+def create_stage_score_eval_percent_list(d):
+    rows = []
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        ti = safe_int(item.get('StageScoreEvaluationTypeIndex') or item.get('stageScoreEvaluationTypeIndex'), 0)
+        if ti <= 0:
+            continue
+        rows.append({
+            'type_index': ti,
+            'percent': safe_int(item.get('Percent') or item.get('percent'), 0),
+        })
+    rows.sort(key=lambda r: safe_int(r.get('type_index'), 0))
+    return rows
+
+
+def create_stage_recommended_sortie_by_terrain(d):
+    by = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sti = normalize_id(item.get('StageTerrainTypeIndex') or item.get('stageTerrainTypeIndex'))
+        rti = normalize_id(item.get('RecommendedSortieTerrainTypeIndex') or item.get('recommendedSortieTerrainTypeIndex'))
+        if sti == '0' or rti == '0':
+            continue
+        by.setdefault(sti, []).append(rti)
+    return by
+
+
+def create_stage_reinforcement_area_by_stage(d):
+    by = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('StageId') or item.get('stageId'))
+        if sid == '0':
+            continue
+        by.setdefault(sid, []).append({
+            'x': safe_int(item.get('X') or item.get('x'), 0),
+            'y': safe_int(item.get('Y') or item.get('y'), 0),
+            'w': max(1, safe_int(item.get('Width') or item.get('width'), 1)),
+            'h': max(1, safe_int(item.get('Height') or item.get('height'), 1)),
+            'reinforcement_limit': safe_int(item.get('ReinforcementLimit') or item.get('reinforcementLimit'), 0),
+        })
+    return by
+
+
+def create_stage_event_area_skill_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        if sid == '0':
+            continue
+        lk[sid] = {
+            'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '').strip(),
+        }
+    return lk
+
+
+def create_map_stage_event_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        eid = normalize_id(item.get('Id') or item.get('id'))
+        if eid == '0':
+            continue
+        lk[eid] = {
+            'target_id': normalize_id(item.get('TargetId') or item.get('targetId')),
+            'event_type_index': safe_int(item.get('EventTypeIndex') or item.get('eventTypeIndex'), 0),
+        }
+    return lk
 
 def create_eternal_stage_map(d):
     lookup = {}
@@ -6649,6 +6793,14 @@ tower_event_stage_appeal_reward_data = load_json(os.path.join(BASE_DIR, "m_tower
 reward_data = load_json(os.path.join(BASE_DIR, "m_reward.json"))
 item_data = load_json(os.path.join(BASE_DIR, "m_item.json"))
 stage_master_data = load_json(os.path.join(BASE_DIR, "m_stage.json"))
+stage_drop_data = load_json(os.path.join(BASE_DIR, "m_stage_drop.json"))
+stage_drop_content_data = load_json(os.path.join(BASE_DIR, "m_stage_drop_content.json"))
+stage_score_evaluation_data = load_json(os.path.join(BASE_DIR, "m_stage_score_evaluation.json"))
+stage_score_evaluation_percent_data = load_json(os.path.join(BASE_DIR, "m_stage_score_evaluation_percent.json"))
+stage_recommended_sortie_terrain_data = load_json(os.path.join(BASE_DIR, "m_stage_recommended_sortie_terrain_type.json"))
+stage_reinforcement_area_data = load_json(os.path.join(BASE_DIR, "m_stage_reinforcement_area.json"))
+stage_event_area_skill_master_data = load_json(os.path.join(BASE_DIR, "m_stage_event_area_skill.json"))
+map_stage_event_data = load_json(os.path.join(BASE_DIR, "m_map_stage_event.json"))
 stage_sortie_set_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_content.json"))
 stage_sortie_group_content_data = load_json(os.path.join(BASE_DIR, "m_stage_sortie_restriction_set_group_content.json"))
 stage_battle_condition_text_base_data = load_json(os.path.join(BASE_DIR, "m_stage_battle_condition_text.json"))
@@ -6725,6 +6877,14 @@ supporter_growth_map = create_supporter_growth_map(supporter_growth_data) if sup
 supporter_leader_map = create_supporter_leader_skill_map(supporter_leader_data) if supporter_leader_data else {}
 supporter_active_map = create_supporter_active_skill_map(supporter_active_data) if supporter_active_data else {}
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
+stage_drop_by_set, stage_drop_content_by_set = create_stage_drop_lookups(stage_drop_data, stage_drop_content_data) if stage_drop_data and stage_drop_content_data else ({}, {})
+stage_score_eval_by_set = create_stage_score_eval_by_set(stage_score_evaluation_data) if stage_score_evaluation_data else {}
+stage_score_eval_percent_list = create_stage_score_eval_percent_list(stage_score_evaluation_percent_data) if stage_score_evaluation_percent_data else []
+stage_recommended_sortie_by_terrain = create_stage_recommended_sortie_by_terrain(stage_recommended_sortie_terrain_data) if stage_recommended_sortie_terrain_data else {}
+stage_reinforcement_area_by_stage = create_stage_reinforcement_area_by_stage(stage_reinforcement_area_data) if stage_reinforcement_area_data else {}
+stage_event_area_skill_lookup = create_stage_event_area_skill_lookup(stage_event_area_skill_master_data) if stage_event_area_skill_master_data else {}
+map_stage_event_lookup = create_map_stage_event_lookup(map_stage_event_data) if map_stage_event_data else {}
+STAGE_SCORE_EVAL_RANK_LABELS = {3: 'S', 2: 'A', 1: 'B'}
 eternal_stage_map = create_eternal_stage_map(eternal_stage_data) if eternal_stage_data else {}
 map_event_score_attack_stage_map = create_map_event_score_attack_stage_map(map_event_score_attack_stage_data, stage_master_data) if map_event_score_attack_stage_data else {}
 map_event_score_attack_reward_map = create_map_event_score_attack_reward_map(map_event_score_attack_reward_data) if map_event_score_attack_reward_data else {}
@@ -7348,6 +7508,7 @@ for lang_code, paths in LANG_PATHS.items():
     supporter_active_text = load_json(os.path.join(lang_dir, "m_supporter_active_skill.json"))
     stage_lang_text = load_json(os.path.join(lang_dir, "m_eternal_road_stage.json")); stage_battle_condition_text_lang = load_json(os.path.join(lang_dir, "m_stage_battle_condition_text.json"))
     map_stage_condition_lang = load_json(os.path.join(lang_dir, "m_map_stage_condition.json"))
+    stage_event_area_skill_lang = load_json(os.path.join(lang_dir, "m_stage_event_area_skill.json"))
     tower_event_lang_text = load_json(os.path.join(lang_dir, "m_tower_event.json"))
     tower_stage_group_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage_group.json"))
     tower_stage_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage.json"))
@@ -7386,6 +7547,21 @@ for lang_code, paths in LANG_PATHS.items():
             val = item.get('value') or item.get('Value') or item.get('text') or item.get('Text')
             if lid != '0' and val:
                 map_stage_condition_text_map[lid] = str(val).replace("\\n", "\n")
+    stage_event_area_skill_name_map = {}
+    stage_event_area_skill_desc_map = {}
+    if stage_event_area_skill_lang:
+        for item in extract_data_list(stage_event_area_skill_lang):
+            if not isinstance(item, dict):
+                continue
+            lid = normalize_id(item.get('id') or item.get('Id'))
+            val = item.get('value') or item.get('Value') or item.get('text') or item.get('Text')
+            if lid == '0' or not val:
+                continue
+            text = str(val).replace("\\n", "\n")
+            if str(lid).startswith('131200'):
+                stage_event_area_skill_desc_map[lid] = text
+            else:
+                stage_event_area_skill_name_map[lid] = text
     wtm2 = create_weapon_text_map(weapon_text_data); wtrm = create_weapon_trait_map(BASE_DIR, lang_dir)
     wcam = create_weapon_capability_map(BASE_DIR, lang_dir); wtdm = create_weapon_trait_detail_map(weapon_trait_base_data, lang_dir)
     weapon_attr_type_labels = _build_weapon_attr_type_labels_from_lang(lang_dir, lang_code, wtm2)
@@ -7474,7 +7650,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -9085,6 +9261,135 @@ def resolve_tower_appeal_rewards(stage_id, lc):
     reward_set_id = normalize_id(tes.get('first_clear_reward_set_id'))
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
 
+
+def _resolve_lang_text_from_maps(ld, lang_id, map_keys):
+    lid = normalize_id(lang_id)
+    if lid == '0':
+        return ''
+    for key in map_keys:
+        tm = (ld or {}).get(key, {}) or {}
+        if lid in tm:
+            return str(tm.get(lid) or '').strip()
+        for k, v in tm.items():
+            if str(k).endswith(lid):
+                return str(v or '').strip()
+    return ''
+
+
+def resolve_stage_secret_clear_rewards(stage_master_id, lc):
+    sm = (stage_map or {}).get(normalize_id(stage_master_id), {})
+    rsid = normalize_id(sm.get('secret_clear_reward_set_id', '0'))
+    if rsid == '0':
+        return []
+    return _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc)
+
+
+def resolve_stage_drop_pools(stage_master_id, lc):
+    sm = (stage_map or {}).get(normalize_id(stage_master_id), {})
+    dsid = normalize_id(sm.get('stage_drop_set_id', '0'))
+    if dsid == '0':
+        return []
+    pools = []
+    for drop_row in (stage_drop_by_set or {}).get(dsid, []):
+        cset = normalize_id(drop_row.get('content_set_id', '0'))
+        entries = []
+        for crow in (stage_drop_content_by_set or {}).get(cset, []):
+            rsid = normalize_id(crow.get('reward_set_id', '0'))
+            rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+            if not rewards:
+                continue
+            entries.append({
+                'weight': safe_int(crow.get('weight'), 0),
+                'rewards': rewards,
+            })
+        if entries:
+            pools.append({
+                'lottery_count': safe_int(drop_row.get('lottery_count'), 1),
+                'entries': entries,
+            })
+    return pools
+
+
+def resolve_stage_score_evaluation(stage_master_id, lc):
+    sm = (stage_map or {}).get(normalize_id(stage_master_id), {})
+    set_id = normalize_id(sm.get('stage_score_evaluation_set_id', '0'))
+    if set_id == '0':
+        return None
+    thresholds = []
+    for row in (stage_score_eval_by_set or {}).get(set_id, []):
+        step = safe_int(row.get('step'), 0)
+        thresholds.append({
+            'step': step,
+            'score': safe_int(row.get('score'), 0),
+            'rank_label': STAGE_SCORE_EVAL_RANK_LABELS.get(step, f'#{step}'),
+        })
+    weights = []
+    for row in (stage_score_eval_percent_list or []):
+        ti = safe_int(row.get('type_index'), 0)
+        label_key = f'stage_score_type_{ti}'
+        weights.append({
+            'type_index': ti,
+            'percent': safe_int(row.get('percent'), 0),
+            'label': get_ui_label(lc, label_key),
+        })
+    return {
+        'set_id': set_id,
+        'base_score': safe_int(sm.get('base_score'), 0),
+        'thresholds': thresholds,
+        'weights': weights,
+    }
+
+
+def resolve_recommended_sortie_terrain(stage_master_id, lc):
+    sm = (stage_map or {}).get(normalize_id(stage_master_id), {})
+    terrain_idx = normalize_id(sm.get('terrain_type_index', '0'))
+    sortie_idx = normalize_id(sm.get('sortie_terrain_type_index', '0'))
+    rec_names = []
+    for rti in (stage_recommended_sortie_by_terrain or {}).get(terrain_idx, []):
+        name = resolve_stage_terrain_name(rti, lc)
+        if name and name not in rec_names:
+            rec_names.append(name)
+    sortie_name = resolve_stage_terrain_name(sortie_idx, lc) if sortie_idx != '0' else ''
+    if not rec_names and not sortie_name:
+        return None
+    return {
+        'stage_terrain': resolve_stage_terrain_name(terrain_idx, lc),
+        'recommended': rec_names,
+        'sortie_terrain': sortie_name,
+    }
+
+
+def resolve_stage_event_area_skill(event_id, lc):
+    eid = normalize_id(event_id)
+    if eid == '0':
+        return None
+    mev = (map_stage_event_lookup or {}).get(eid, {})
+    skill_id = normalize_id(mev.get('target_id', '0'))
+    if skill_id == '0':
+        return None
+    skill = (stage_event_area_skill_lookup or {}).get(skill_id, {})
+    if not skill:
+        return None
+    ld = get_lang_data(lc)
+    name = _resolve_lang_text_from_maps(ld, skill.get('name_lang_id'), ('stage_event_area_skill_name_map', 'lang_text_map'))
+    desc = _resolve_lang_text_from_maps(ld, skill.get('desc_lang_id'), ('stage_event_area_skill_desc_map', 'lang_text_map'))
+    icon = find_trait_icon(skill.get('resource_id', '')) or ''
+    if not name and not desc:
+        return None
+    return {'id': skill_id, 'name': name, 'description': desc, 'icon': icon}
+
+
+def enrich_map_event_areas(areas, lc):
+    out = []
+    for area in (areas or []):
+        row = dict(area)
+        skill = resolve_stage_event_area_skill(row.get('event_id', '0'), lc)
+        if skill:
+            row['event_skill'] = skill
+        out.append(row)
+    return out
+
+
 def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_id='0'):
     sid = normalize_id(stage_id)
     cat = str(category or 'eternal')
@@ -9101,7 +9406,9 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
                     rew['description'] = (f"Score {score}" if not rew.get('description') else f"Score {score} - {rew.get('description')}")
                 out.append(rew)
         return out
-    reward_set_id = normalize_id(f"20{sid}0000")
+    sm = (stage_map or {}).get(sid, {})
+    fc = normalize_id(sm.get('first_clear_reward_set_id', '0'))
+    reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
 
 def special_event_stage_thumb_url(thumbnail_resource_id):
@@ -17088,7 +17395,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_np15_mapmeta1"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage6"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         if not vis:
@@ -17325,7 +17632,10 @@ def get_stage(stage_id):
             if victory_lines_include_reach_target_area(vc):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
             md['reach_target_areas'] = rtp
-            md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
+            md['map_event_areas'] = enrich_map_event_areas(
+                list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or []), lc,
+            )
+            md['reinforcement_areas'] = list((stage_reinforcement_area_by_stage or {}).get(normalize_id(stage_master_id), []) or [])
             map_meta = {'map_id': mid, 'map_stage_id': msid}
         stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
         stage_rewards = resolve_stage_rewards(
@@ -17341,7 +17651,21 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
-        result = {'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname, 'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait, 'recommended_cp': sm.get('recommended_cp', 0), 'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc), 'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta, 'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc, 'stage_category': stage_cat, 'stage_master_id': stage_master_id, 'stage_rewards': stage_rewards, 'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side}
+        result = {
+            'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
+            'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+            'recommended_cp': sm.get('recommended_cp', 0),
+            'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+            'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,
+            'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
+            'stage_category': stage_cat, 'stage_master_id': stage_master_id,
+            'stage_rewards': stage_rewards,
+            'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
+            'stage_drop_pools': resolve_stage_drop_pools(stage_master_id, lc),
+            'stage_score_evaluation': resolve_stage_score_evaluation(stage_master_id, lc),
+            'recommended_sortie_terrain': resolve_recommended_sortie_terrain(stage_master_id, lc),
+            'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
+        }
         if is_score_attack and sas:
             result['score_attack_meta'] = build_score_attack_stage_meta(stage_id, sas)
         gop = (map_event_panel_stage_by_stage or {}).get(normalize_id(stage_id))
