@@ -16,15 +16,15 @@
   margin-bottom: 12px;
 }
 .ml-toolbar {
-  grid-column: 1;
-  justify-self: start;
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   margin: 0;
 }
 .ml-toolbar-inner {
   display: inline-flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 8px;
   max-width: 100%;
 }
@@ -515,12 +515,13 @@
   }
   .ml-toolbar {
     grid-column: 1;
-    justify-self: stretch;
+    justify-self: end;
   }
   .ml-toolbar-inner {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-end;
   }
   .ml-page-header > .ml-hero {
     grid-column: 1;
