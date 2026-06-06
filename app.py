@@ -15213,7 +15213,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v2_{lc}'
+    ck = f'master_league_v3_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15306,11 +15306,13 @@ def api_master_league():
         if gid == '0':
             continue
         rti = safe_int(row.get('LeagueRankTypeIndex') or row.get('leagueRankTypeIndex'), 0)
+        rsid = normalize_id(row.get('RewardSetId') or row.get('rewardSetId') or '0')
         rank_by_group.setdefault(gid, []).append({
             'rank_type_index': rti,
             'rank_label': rank_labels.get(rti, str(rti)),
             'target_score': safe_int(row.get('TargetScore') or row.get('targetScore'), 0),
             'chest_rarity': safe_int(row.get('TreasureChestRarityTypeIndex') or row.get('treasureChestRarityTypeIndex'), 0),
+            'reward_set_id': rsid,
         })
     for gid in rank_by_group:
         rank_by_group[gid].sort(key=lambda x: x['rank_type_index'])
@@ -15365,7 +15367,12 @@ def api_master_league():
         terrain_icons = _ml_stage_terrain_icons(stage_row)
 
         rank_gid = normalize_id(lx.get('LeagueRankGroupId') or lx.get('leagueRankGroupId') or '0')
-        rank_tiers = rank_by_group.get(rank_gid, [])
+        rank_tiers = []
+        for rt in rank_by_group.get(rank_gid, []):
+            tier = dict(rt)
+            rsid = tier.pop('reward_set_id', '0')
+            tier['rewards'] = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+            rank_tiers.append(tier)
 
         motif_id = normalize_id(lx.get('MotifId') or lx.get('motifId') or '0')
         motif = motif_by_id.get(motif_id) if motif_id != '0' else None

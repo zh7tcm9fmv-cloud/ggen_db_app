@@ -1,41 +1,44 @@
-/* Master League — season boost card (in-game style) */
-#panel-master_league::before {
-  background-image: url('/static/images/Background/obg_013_garage.webp');
-}
+/* Master League */
 .ml-wrap {
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 8px 0 32px;
+  padding: 16px 0 40px;
   position: relative;
   z-index: 1;
 }
+
+/* Compact season picker */
 .ml-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.ml-toolbar-inner {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 100%;
 }
 .ml-season-select {
-  min-width: min(320px, 100%);
-  flex: 1 1 220px;
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-input);
-  color: var(--text-primary);
+  width: auto;
+  max-width: min(100%, 280px);
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 8px 36px 8px 14px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
 }
 .ml-status-pill {
   display: inline-flex;
   align-items: center;
   padding: 6px 12px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .ml-status-pill--active {
   background: rgba(34, 197, 94, 0.18);
@@ -53,13 +56,33 @@
   border: 1px solid var(--border-color);
 }
 
+/* Page layout */
+.ml-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ml-hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0 2px;
+}
+.ml-motif-logo {
+  display: block;
+  max-width: min(300px, 88vw);
+  height: auto;
+  margin: 0;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.55));
+}
+
 /* Boost / terrain card */
 .ml-boost-card {
   position: relative;
-  margin: 0 0 22px;
+  margin: 0;
   padding: 14px 18px 16px;
   min-height: 168px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(120, 18, 28, 0.92) 0%, rgba(55, 8, 14, 0.97) 55%, rgba(35, 5, 10, 1) 100%);
@@ -173,23 +196,25 @@
   text-decoration: underline;
 }
 
+/* Info panels */
 .ml-section {
-  margin-bottom: 22px;
   padding: 16px 18px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--bg-card, rgba(0, 0, 0, 0.28));
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 .ml-section-title {
-  margin: 0 0 12px;
-  font-size: 16px;
+  margin: 0 0 14px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--accent-cyan);
+  letter-spacing: 0.02em;
 }
 .ml-meta-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px 20px;
 }
 .ml-meta-item {
   font-size: 13px;
@@ -202,56 +227,153 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .ml-meta-v {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 600;
+  font-size: 14px;
 }
-.ml-rank-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+
+/* Rank tiers with rewards */
+.ml-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.ml-rank-table th,
-.ml-rank-table td {
-  padding: 8px 10px;
+.ml-rank-row {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm, 8px);
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+}
+.ml-rank-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
-  text-align: left;
 }
-.ml-rank-table th {
-  color: var(--text-muted);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.ml-rank-badge {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
 }
-.ml-scoring-list {
-  margin: 0;
-  padding-left: 1.2rem;
+.ml-rank-pts {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   font-size: 13px;
-  line-height: 1.55;
+}
+.ml-rank-pts-k {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.ml-rank-pts-v {
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+.ml-rank-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ml-rank-none {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Reward chips */
+.ml-reward-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.04);
+  max-width: 100%;
+}
+.ml-reward-chip--clickable {
+  cursor: pointer;
+}
+.ml-reward-chip--clickable:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.08);
+}
+.ml-reward-chip-ic {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.ml-reward-chip-ic--title {
+  width: auto;
+  max-width: 120px;
+  height: 36px;
+  padding: 2px 4px;
+}
+.ml-reward-chip-fallback {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.ml-reward-chip-name {
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-secondary);
+  line-height: 1.25;
+  min-width: 0;
+  word-break: break-word;
 }
-.ml-motif-logo {
-  max-width: min(280px, 100%);
-  height: auto;
-  margin-bottom: 12px;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+.ml-reward-chip-count {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-left: auto;
 }
+
+/* Scoring */
+.ml-section--scoring .ml-scoring-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ml-scoring-list li {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding: 4px 0;
+}
+
 .ml-empty {
   padding: 48px 20px;
   text-align: center;
   color: var(--text-muted);
 }
-.ml-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 160px;
-  color: var(--text-muted);
-}
 
 @media (max-width: 768px) {
+  .ml-wrap {
+    padding-top: 8px;
+  }
   .ml-boost-card {
     padding: 12px 12px 14px;
     min-height: 150px;
@@ -259,5 +381,21 @@
   .ml-boost-terrain-ic {
     width: 24px;
     height: 24px;
+  }
+  .ml-section {
+    padding: 14px 12px;
+  }
+  .ml-rank-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ml-meta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .ml-meta-grid {
+    grid-template-columns: 1fr;
   }
 }
