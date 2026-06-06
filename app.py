@@ -15161,7 +15161,7 @@ ML_SEED_SERIES_SET_ID = '10000000000002000'
 ML_SERIES_SHOWCASE_PREFER = {
     ML_SEED_SERIES_SET_ID: ('1200003900', '1200005300', '1200005200', '1200002300'),
 }
-# League promotion emblems — CDN WebP under images/UI/ (Bronze=001 … Master=006).
+# League promotion emblems — CDN WebP under images/Master League/ (Bronze=001 … Master=006).
 ML_RANK_EMBLEM_RESOURCE = {
     6: 'UI_Event_ML_Emblem_001',
     5: 'UI_Event_ML_Emblem_002',
@@ -15178,7 +15178,7 @@ def _ml_emblem_icon_url(rank_type_index):
     res = ML_RANK_EMBLEM_RESOURCE.get(safe_int(rank_type_index, 0))
     if not res:
         return ''
-    return game_image_public_url(_game_images_webp_path('UI', res))
+    return game_image_public_url(_game_images_webp_path(ML_IMAGE_SUBDIR, res))
 
 
 def _ml_season_profile_title_id(event_id, rank_type_index):
@@ -15383,7 +15383,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v13_{lc}'
+    ck = f'master_league_v14_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
