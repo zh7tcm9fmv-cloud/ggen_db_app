@@ -17632,10 +17632,7 @@ def get_stage(stage_id):
             if victory_lines_include_reach_target_area(vc):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
             md['reach_target_areas'] = rtp
-            md['map_event_areas'] = enrich_map_event_areas(
-                list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or []), lc,
-            )
-            md['reinforcement_areas'] = list((stage_reinforcement_area_by_stage or {}).get(normalize_id(stage_master_id), []) or [])
+            md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
             map_meta = {'map_id': mid, 'map_stage_id': msid}
         stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
         stage_rewards = resolve_stage_rewards(
@@ -17661,9 +17658,6 @@ def get_stage(stage_id):
             'stage_category': stage_cat, 'stage_master_id': stage_master_id,
             'stage_rewards': stage_rewards,
             'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
-            'stage_drop_pools': resolve_stage_drop_pools(stage_master_id, lc),
-            'stage_score_evaluation': resolve_stage_score_evaluation(stage_master_id, lc),
-            'recommended_sortie_terrain': resolve_recommended_sortie_terrain(stage_master_id, lc),
             'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
         }
         if is_score_attack and sas:

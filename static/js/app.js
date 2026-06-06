@@ -305,11 +305,11 @@ STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense'
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
 ROLE_LABELS.JA={'':'全タイプ','1':'攻撃型のみ','2':'耐久型のみ','3':'支援型のみ'};ROLE_LABELS.JP=ROLE_LABELS.JA;
-Object.assign(T.EN,{stage_source_tower:'GTower',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Reward',stage_secret_clear_rewards:'Secret clear',stage_addon_1_title:'First-clear & secret rewards',stage_addon_2_title:'Stage drops',stage_addon_3_title:'Score evaluation',stage_addon_4_label:'Recommended deploy',stage_addon_4_sortie:'Sortie terrain',stage_addon_6_toggle:'Deploy zones',stage_addon_6_limit:'Limit',stage_drop_lottery:'Lottery rolls',stage_drop_weight:'Weight',stage_score_eval_thresholds:'Rank thresholds',stage_score_eval_weights:'Score components',stage_score_base:'Base score',detail_back_stage:'Back to stage'});
-Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'獎勵',stage_first_clear_rewards:'首次通關報酬',stage_secret_clear_rewards:'隱藏通關',stage_addon_1_title:'首次／隱藏通關報酬',stage_addon_2_title:'關卡掉落',stage_addon_3_title:'分數評價',stage_addon_4_label:'建議出擊地形',stage_addon_4_sortie:'出擊地形',stage_addon_6_toggle:'增援部署區',stage_addon_6_limit:'上限',stage_drop_lottery:'抽選次數',stage_drop_weight:'權重',stage_score_eval_thresholds:'評價門檻',stage_score_eval_weights:'分數構成',stage_score_base:'基礎分數',detail_back_stage:'返回關卡'});
-Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'獎勵',stage_first_clear_rewards:'首次通關報酬',stage_secret_clear_rewards:'隱藏通關',stage_addon_1_title:'首次／隱藏通關報酬',stage_addon_2_title:'關卡掉落',stage_addon_3_title:'分數評價',stage_addon_4_label:'建議出擊地形',stage_addon_4_sortie:'出擊地形',stage_addon_6_toggle:'增援部署區',stage_addon_6_limit:'上限',stage_drop_lottery:'抽選次數',stage_drop_weight:'權重',stage_score_eval_thresholds:'評價門檻',stage_score_eval_weights:'分數構成',stage_score_base:'基礎分數',detail_back_stage:'返回關卡'});
-Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'報酬',stage_first_clear_rewards:'初回クリア報酬',stage_secret_clear_rewards:'隠しクリア',stage_addon_1_title:'初回／隠しクリア報酬',stage_addon_2_title:'ステージドロップ',stage_addon_3_title:'スコア評価',stage_addon_4_label:'推奨出撃地形',stage_addon_4_sortie:'出撃地形',stage_addon_6_toggle:'増援配置ゾーン',stage_addon_6_limit:'上限',stage_drop_lottery:'抽選回数',stage_drop_weight:'重み',stage_score_eval_thresholds:'評価ライン',stage_score_eval_weights:'スコア構成',stage_score_base:'基礎スコア',detail_back_stage:'ステージに戻る'});
-Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'報酬',stage_first_clear_rewards:'初回クリア報酬',stage_secret_clear_rewards:'隠しクリア',stage_addon_1_title:'初回／隠しクリア報酬',stage_addon_2_title:'ステージドロップ',stage_addon_3_title:'スコア評価',stage_addon_4_label:'推奨出撃地形',stage_addon_4_sortie:'出撃地形',stage_addon_6_toggle:'増援配置ゾーン',stage_addon_6_limit:'上限',stage_drop_lottery:'抽選回数',stage_drop_weight:'重み',stage_score_eval_thresholds:'評価ライン',stage_score_eval_weights:'スコア構成',stage_score_base:'基礎スコア',detail_back_stage:'ステージに戻る'});
+Object.assign(T.EN,{stage_source_tower:'GTower',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Reward',stage_secret_clear_rewards:'Secret clear',detail_back_stage:'Back to stage'});
+Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'獎勵',stage_first_clear_rewards:'首次通關報酬',stage_secret_clear_rewards:'隱藏通關',detail_back_stage:'返回關卡'});
+Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'獎勵',stage_first_clear_rewards:'首次通關報酬',stage_secret_clear_rewards:'隱藏通關',detail_back_stage:'返回關卡'});
+Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'報酬',stage_first_clear_rewards:'初回クリア報酬',stage_secret_clear_rewards:'隠しクリア',detail_back_stage:'ステージに戻る'});
+Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_rewards:'報酬',stage_first_clear_rewards:'初回クリア報酬',stage_secret_clear_rewards:'隠しクリア',detail_back_stage:'ステージに戻る'});
 Object.assign(T.EN,{sortie_group:'Squad {}',stage_sortie_unit_restrictions:'Unit Sortie Restrictions',stage_sortie_char_restrictions:'Character Sortie Restrictions',stage_sortie_no_limit:'No Limit'});
 Object.assign(T.TW,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'機體出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
 Object.assign(T.HK,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'機體出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
@@ -1883,54 +1883,17 @@ function invalidateEternalStageDetailCaches(stageId){const suf=':stage:'+String(
 function renderEternalStageLockedPanel(d){const needPw=d.password_required===true;const hint=needPw?t('er_stage_lock_hint'):t('er_stage_lock_wait');const form=needPw?`<div class="er-stage-lock-box" style="margin-top:0;border:none;background:transparent;padding:0"><p class="er-stage-lock-hint">${esc(hint)}</p><input type="password" id="erStageLockInput" autocomplete="current-password" maxlength="200" onkeydown="if(event.key==='Enter')submitEternalStageUnlock()" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:16px;box-sizing:border-box"><div style="margin-top:12px"><button type="button" class="lr-unlock-btn" onclick="submitEternalStageUnlock()">${esc(t('er_stage_unlock_btn'))}</button></div><div class="lr-lock-err" id="erStageLockErr"></div></div>`:`<div class="er-stage-lock-box" style="margin-top:0;border:none;background:transparent;padding:0"><p class="er-stage-lock-hint">${esc(hint)}</p></div>`;return`<div class="modal-top-label">${esc(t('er_stage_redacted_title'))}</div><div class="detail-body" style="margin-top:8px"><div class="er-stage-blackout"><div class="er-stage-blackout-inner"><div class="er-stage-blackout-icon" aria-hidden="true">🔒</div><div class="er-stage-blackout-title">${esc(t('er_stage_redacted_title'))}</div>${form}</div></div></div>`}
 async function submitEternalStageUnlock(){const id=S.currentDetailData&&S.currentDetailData.id;const err=document.getElementById('erStageLockErr');if(id==null||id==='')return;const inp=document.getElementById('erStageLockInput');const pw=inp?String(inp.value||''):'';if(err)err.textContent='';try{const r=await fetch('/api/eternal_stages/unlock',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});if(!r.ok){if(err)err.textContent=t('er_stage_pw_wrong');return}invalidateEternalStageDetailCaches(id);browseListJsonCacheClearPrefix('/api/stages');_dcStagesCache=null;_dcStagesFetchLang=null;const inn=document.getElementById('detailInner');const d=await fetchDetailPayload('stage',String(id));if(d.content_locked){if(err)err.textContent=d.password_required?t('er_stage_pw_wrong'):t('er_stage_lock_wait');if(inn)inn.innerHTML=renderEternalStageLockedPanel(d);return}S.currentDetailData=d;if(inn)inn.innerHTML=renderStageShell(d);updateDetailDynamicSections('stage');if(S.currentTab==='stages')loadStages(S.stages.page||1);const stgSel=document.getElementById('dcStageSelect');if(stgSel&&String(stgSel.value)===String(id))await onDcStageChange()}catch(e){if(err)err.textContent=String(e)}}
 function renderLimitBreakMaterialThumb(r){const base=r&&r.lb_thumb_base?String(r.lb_thumb_base):'';const unit=r&&r.lb_thumb_unit?String(r.lb_thumb_unit):'';const lim=r&&r.lb_thumb_limit_frame?String(r.lb_thumb_limit_frame):'';const bot=r&&r.lb_thumb_bottom_frame?String(r.lb_thumb_bottom_frame):'';if(!base||!unit||!lim||!bot)return'';return`<div style="width:54px;height:54px;position:relative;flex-shrink:0;overflow:hidden;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);"><img src="${imgUrl(base)}" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'"><img src="${imgUrl(unit)}" alt="${escAttr(r.name||'')}" loading="lazy" decoding="async" style="position:absolute;left:9%;top:9%;width:82%;height:82%;object-fit:contain;display:block;" onerror="this.style.display='none'"><img src="${imgUrl(lim)}" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'"><img src="${imgUrl(bot)}" alt="" loading="lazy" decoding="async" style="position:absolute;left:0;right:0;bottom:-5px;width:100%;height:72%;object-fit:cover;display:block;" onerror="this.style.display='none'"></div>`}
-function stageAddonTag(n){return`<span class="stage-addon-tag" title="Trial feature #${n}">#${n}</span>`}
-function renderStageAddonSection(n,title,inner){return`<div class="detail-section stage-addon stage-addon--${n}" data-stage-addon="${n}"><div class="section-title">${stageAddonTag(n)} ${esc(title)}</div>${inner}</div>`}
-function renderStageRewardGrid(rows){if(!rows||!rows.length)return`<div class="stage-condition-item">${esc(t('none'))}</div>`;return`<div class="stage-reward-grid">${rows.map(r=>{const clickable=!!(r.detail_type&&r.detail_id);const clickAttrs=clickable?` role="button" tabindex="0" onclick="openDetail('${escJs(String(r.detail_type))}','${escJs(String(r.detail_id))}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail('${escJs(String(r.detail_type))}','${escJs(String(r.detail_id))}')}"`:'';const rt=String(r.reward_type_index||'');const isProfileTitle=rt==='30';const lbThumbHtml=renderLimitBreakMaterialThumb(r);const thumbHtml=(r.thumb_type==='char'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N',role_icon:r.role_icon||'',acquisition_icon:r.acquisition_icon||''},'char',54):(r.thumb_type==='option_part'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N'},'unit',54,{pickerThumb:true}):(lbThumbHtml?lbThumbHtml:(isProfileTitle&&r.icon)?`<div style="width:176px;height:62px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${renderRewardItemIcon(r.icon,'max-width:170px;max-height:56px;object-fit:contain;display:block;')}</div>`:`<div style="width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${r.icon?renderRewardItemIcon(r.icon,'width:42px;height:42px;object-fit:contain;display:block;'):'<span style="font-size:12px;color:var(--text-muted)">ITEM</span>'}</div>`);return`<div class="ability-item${clickable?' detail-clickable-item':''}" style="display:flex;align-items:center;gap:10px;margin:0;${clickable?'cursor:pointer;':''}"${clickAttrs}>${thumbHtml}<div style="min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;"><div style="min-width:0;${isProfileTitle?'display:flex;align-items:center;gap:12px;':''}"><div style="font-size:13px;line-height:1.3;word-break:${isProfileTitle?'normal':'break-word'};">${esc(r.name||'')}</div>${r.description?`<div style="font-size:11px;opacity:.75;line-height:1.2;margin-top:2px;">${esc(r.description)}</div>`:''}</div><span class="stage-meta-badge" style="white-space:nowrap;">x${fmtN(r.count||0)}</span></div></div>`}).join('')}</div>`}
-function renderStageAddon1Rewards(d){
+function renderStageRewardGrid(rows){if(!rows||!rows.length)return`<div class="stage-condition-item">${esc(t('none'))}</div>`;return`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">${rows.map(r=>{const clickable=!!(r.detail_type&&r.detail_id);const clickAttrs=clickable?` role="button" tabindex="0" onclick="openDetail('${escJs(String(r.detail_type))}','${escJs(String(r.detail_id))}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail('${escJs(String(r.detail_type))}','${escJs(String(r.detail_id))}')}"`:'';const rt=String(r.reward_type_index||'');const isProfileTitle=rt==='30';const lbThumbHtml=renderLimitBreakMaterialThumb(r);const thumbHtml=(r.thumb_type==='char'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N',role_icon:r.role_icon||'',acquisition_icon:r.acquisition_icon||''},'char',54):(r.thumb_type==='option_part'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N'},'unit',54,{pickerThumb:true}):(lbThumbHtml?lbThumbHtml:(isProfileTitle&&r.icon)?`<div style="width:176px;height:62px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${renderRewardItemIcon(r.icon,'max-width:170px;max-height:56px;object-fit:contain;display:block;')}</div>`:`<div style="width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${r.icon?renderRewardItemIcon(r.icon,'width:42px;height:42px;object-fit:contain;display:block;'):'<span style="font-size:12px;color:var(--text-muted)">ITEM</span>'}</div>`);return`<div class="ability-item${clickable?' detail-clickable-item':''}" style="display:flex;align-items:center;gap:10px;margin:0;${clickable?'cursor:pointer;':''}"${clickAttrs}>${thumbHtml}<div style="min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;"><div style="min-width:0;${isProfileTitle?'display:flex;align-items:center;gap:12px;':''}"><div style="font-size:13px;line-height:1.3;word-break:${isProfileTitle?'normal':'break-word'};">${esc(r.name||'')}</div>${r.description?`<div style="font-size:11px;opacity:.75;line-height:1.2;margin-top:2px;">${esc(r.description)}</div>`:''}</div><span class="stage-meta-badge" style="white-space:nowrap;">x${fmtN(r.count||0)}</span></div></div>`}).join('')}</div>`}
+function renderTowerRewardSection(d){
   const first=Array.isArray(d.stage_rewards)?d.stage_rewards:(Array.isArray(d.tower_rewards)?d.tower_rewards:[]);
   const secret=Array.isArray(d.stage_secret_rewards)?d.stage_secret_rewards:[];
-  if(!first.length&&!secret.length)return'';
-  let inner='';
-  if(first.length)inner+=`<div class="stage-addon-subhead">${esc(t('stage_first_clear_rewards'))}</div>${renderStageRewardGrid(first)}`;
-  if(secret.length)inner+=`<div class="stage-addon-subhead" style="margin-top:${first.length?12:0}px">${esc(t('stage_secret_clear_rewards'))}</div>${renderStageRewardGrid(secret)}`;
-  return renderStageAddonSection(1,t('stage_addon_1_title'),inner);
+  if(!first.length&&!secret.length)return`<div class="detail-section"><div class="section-title">${esc(t('stage_first_clear_rewards'))}</div><div class="stage-condition-item">${esc(t('none'))}</div></div>`;
+  let html=`<div class="detail-section"><div class="section-title">${esc(t('stage_first_clear_rewards'))}</div>`;
+  html+=first.length?renderStageRewardGrid(first):`<div class="stage-condition-item">${esc(t('none'))}</div>`;
+  if(secret.length)html+=`<div class="stage-reward-subhead">${esc(t('stage_secret_clear_rewards'))}</div>${renderStageRewardGrid(secret)}`;
+  html+=`</div>`;
+  return html;
 }
-function renderStageAddon2Drops(d){
-  const pools=Array.isArray(d.stage_drop_pools)?d.stage_drop_pools:[];
-  if(!pools.length)return'';
-  let inner='';
-  pools.forEach((pool,pi)=>{
-    if(pi)inner+='<div style="height:10px"></div>';
-    if(pool.lottery_count>0)inner+=`<div class="stage-condition-item"><span class="stage-meta-badge">${esc(t('stage_drop_lottery'))}: ${fmtN(pool.lottery_count)}</span></div>`;
-    (pool.entries||[]).forEach((ent,ei)=>{
-      if(ei)inner+='<div style="height:8px"></div>';
-      if(ent.weight>0)inner+=`<div class="stage-condition-item" style="margin-bottom:6px"><span class="stage-meta-badge">${esc(t('stage_drop_weight'))}: ${fmtN(ent.weight)}</span></div>`;
-      inner+=renderStageRewardGrid(ent.rewards||[]);
-    });
-  });
-  return renderStageAddonSection(2,t('stage_addon_2_title'),inner);
-}
-function renderStageAddon3ScoreEval(d){
-  const ev=d.stage_score_evaluation;
-  if(!ev||!(ev.thresholds&&ev.thresholds.length))return'';
-  let inner='';
-  if(ev.base_score>0)inner+=`<div class="stage-condition-item"><span class="stage-meta-badge">${esc(t('stage_score_base'))}: ${fmtN(ev.base_score)}</span></div>`;
-  inner+=`<div class="stage-addon-subhead">${esc(t('stage_score_eval_thresholds'))}</div><div class="stage-score-eval-grid">${(ev.thresholds||[]).map(row=>`<div class="stage-condition-box" style="padding:10px 12px"><div style="font-weight:700;font-size:18px">${esc(row.rank_label||'?')}</div><div style="font-size:12px;opacity:.85">${fmtN(row.score||0)} pts</div></div>`).join('')}</div>`;
-  if(ev.weights&&ev.weights.length){
-    inner+=`<div class="stage-addon-subhead" style="margin-top:10px">${esc(t('stage_score_eval_weights'))}</div><div class="stage-condition-item">${ev.weights.map(w=>`<span class="stage-meta-badge" style="margin-right:6px;margin-bottom:4px;display:inline-block">${esc(w.label||('Type '+w.type_index))}: ${fmtN(w.percent||0)}%</span>`).join('')}</div>`;
-  }
-  return renderStageAddonSection(3,t('stage_addon_3_title'),inner);
-}
-function renderStageAddon4TerrainBadge(rec){
-  if(!rec)return'';
-  const bits=[];
-  (rec.recommended||[]).forEach(name=>bits.push(`<span class="stage-meta-badge stage-addon-terrain-badge">${esc(name)}</span>`));
-  if(rec.sortie_terrain)bits.push(`<span class="stage-meta-badge stage-addon-terrain-badge stage-addon-terrain-badge--sortie">${esc(t('stage_addon_4_sortie'))}: ${esc(rec.sortie_terrain)}</span>`);
-  if(!bits.length)return'';
-  return`<div class="stage-addon stage-addon--4 stage-addon-terrain-row" data-stage-addon="4">${stageAddonTag(4)}<span class="stage-addon-terrain-label">${esc(t('stage_addon_4_label'))}</span>${bits.join('')}</div>`;
-}
-function renderStageMStageAddons(d){return renderStageAddon1Rewards(d)+renderStageAddon2Drops(d)+renderStageAddon3ScoreEval(d)}
-function renderTowerRewardSection(d){return renderStageAddon1Rewards(d)}
 function _stageMapEventLabel(k,fb){const v=t(k);return(v&&v!==k)?v:fb}
 function renderGrandOffensivePanelBadges(panel){
   if(!panel||!panel.panel_id)return'';
@@ -1976,27 +1939,6 @@ function _stageMapHitEventAreaCell(md,x,y){
   }
   return null;
 }
-function _stageMapHitReinfDeployCell(md,x,y){
-  const ar=(md&&Array.isArray(md.reinforcement_areas))?md.reinforcement_areas:[];
-  for(let i=0;i<ar.length;i++){
-    const a=ar[i];
-    const bx=Number(a.x)+1,by=Number(a.y)+1;
-    const ww=Math.max(1,Number(a.w)||1),hh=Math.max(1,Number(a.h)||1);
-    if(x>=bx&&x<bx+ww&&y>=by&&y<by+hh)return a;
-  }
-  return null;
-}
-function _stageMapEventAreaTitle(eventArea){
-  if(!eventArea)return'';
-  const sk=eventArea.event_skill;
-  if(sk&&(sk.name||sk.description)){
-    let tt=sk.name||'';
-    if(sk.description)tt+=(tt?' — ':'')+sk.description;
-    return tt;
-  }
-  const fb=t('stage_map_event_area');
-  return(fb&&fb!=='stage_map_event_area')?fb:'Event area';
-}
 function renderScoreAttackMetaSection(d){
   const m=d&&d.score_attack_meta;
   const panelOnly=d&&d.grand_offensive_panel;
@@ -2040,7 +1982,7 @@ function renderScoreAttackMetaSection(d){
   html+=`</div>`;
   return html;
 }
-function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;const terrainAddon=renderStageAddon4TerrainBadge(d.recommended_sortie_terrain);return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div>${terrainAddon}<div id="detailScoreAttackMeta">${(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderStageMStageAddons(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
+function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const nameLine=(isSs||isTs)?`<div class="detail-name">${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:240px">${d.portrait?imgTag(d.portrait,{cls:'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\' style=\\'width:240px;height:240px;font-size:70px\\'>🗺️</div>'"}) :`<div class="detail-portrait-placeholder" style="width:240px;height:240px;font-size:70px">🗺️</div>`}</div><div class="detail-title-area">${nameLine}<div class="detail-meta"><span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span><span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span><span class="stage-meta-badge">${t('terrain')}: ${esc(d.terrain)}</span></div><div id="detailScoreAttackMeta">${(d.stage_category==='score_attack'||d.grand_offensive_panel)?renderScoreAttackMetaSection(d):''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div><div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderTowerRewardSection(d)}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
 function renderProfileTitleShell(d){const name=esc(d&&d.name?d.name:'Profile Title');const img=(d&&d.image)?`<img src="${imgUrl(d.image)}" alt="${name}" loading="lazy" decoding="async" style="display:block;max-width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">`:'<div class="empty-state-text">No image</div>';return`<div class="modal-top-label">Profile Title</div><div class="detail-body" style="margin-top:16px;"><div class="detail-section"><div class="section-title">${name}</div><div class="stage-condition-box" style="padding:18px;display:flex;justify-content:center;align-items:center;overflow:auto;">${img}</div></div></div>`}
 function renderOptionPartShell(d){
 const thumb=d.thum?imgTag(d.thum,{cls:'detail-portrait mod-detail-portrait',webp:true,alt:esc(d.name||''),onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>⚙</div>'"}) :'<div class="detail-portrait-placeholder">⚙</div>';
@@ -2270,44 +2212,24 @@ function renderStageMapSection(d){
   const hasReinf=stageMapHasReinforcementEnemies(md);
   if(!hasReinf&&S.stageMapReinforcementOnly)S.stageMapReinforcementOnly=false;
   const ro=!!S.stageMapReinforcementOnly;
-  if(!ro&&S.stageMapSpawnOrderVisible)S.stageMapSpawnOrderVisible=false;
-  const hasSpawnOrders=stageMapHasReinfSpawnOrders(md);
-  if(ro&&!hasSpawnOrders&&S.stageMapSpawnOrderVisible)S.stageMapSpawnOrderVisible=false;
-  const so=!!S.stageMapSpawnOrderVisible;
+  S.stageMapSpawnOrderVisible=false;
   const hasBuffAreas=!!(md.buff_areas&&Object.keys(md.buff_areas).length);
   if(S.stageMapBuffAreasVisible===undefined)S.stageMapBuffAreasVisible=true;
   const buffOn=S.stageMapBuffAreasVisible!==false;
-  const hasReinfDeploy=!!(md.reinforcement_areas&&md.reinforcement_areas.length);
-  if(S.stageMapReinfDeployVisible===undefined)S.stageMapReinfDeployVisible=true;
-  const reinfDeployOn=hasReinfDeploy&&S.stageMapReinfDeployVisible!==false;
   const reinfToggleLbl=t('stage_map_reinf_toggle');
-  const spawnOrderToggleLbl=(()=>{const v=t('stage_map_spawn_order_toggle');return(v&&v!=='stage_map_spawn_order_toggle')?v:'Spawn order'})();
   const buffToggleLbl=t('stage_map_buff_toggle');
   const reinfToggleHtml=hasReinf?`<label class="stage-map-reinf-toggle stage-map-map-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="${escAttr(reinfToggleLbl)}" onchange="setStageMapReinforcementOnly(this.checked)">
         <span class="stage-map-reinf-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(reinfToggleLbl)}</span>
       </label>`:'';
-  const spawnOrderToggleHtml=ro&&hasSpawnOrders?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-spawn-order-toggle">
-        <input type="checkbox" class="stage-map-reinf-toggle-input" ${so?'checked':''} role="switch" aria-checked="${so?'true':'false'}" aria-label="${escAttr(spawnOrderToggleLbl)}" onchange="setStageMapSpawnOrderVisible(this.checked)">
-        <span class="stage-map-reinf-slider stage-map-spawn-order-slider" aria-hidden="true"></span>
-        <span class="stage-map-reinf-text">${esc(spawnOrderToggleLbl)}</span>
-      </label>`:'';
   const buffToggleHtml=hasBuffAreas?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-buff-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${buffOn?'checked':''} role="switch" aria-checked="${buffOn?'true':'false'}" aria-label="${escAttr(buffToggleLbl)}" onchange="setStageMapBuffAreasVisible(this.checked)">
         <span class="stage-map-reinf-slider stage-map-buff-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(buffToggleLbl)}</span>
       </label>`:'';
-  const reinfDeployToggleLbl=t('stage_addon_6_toggle');
-  const reinfDeployToggleHtml=hasReinfDeploy?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-reinf-deploy-toggle">
-        <input type="checkbox" class="stage-map-reinf-toggle-input" ${reinfDeployOn?'checked':''} role="switch" aria-checked="${reinfDeployOn?'true':'false'}" aria-label="${escAttr(reinfDeployToggleLbl)}" onchange="setStageMapReinfDeployVisible(this.checked)">
-        <span class="stage-map-reinf-slider stage-map-reinf-deploy-slider" aria-hidden="true"></span>
-        <span class="stage-map-reinf-text">${stageAddonTag(6)} ${esc(reinfDeployToggleLbl)}</span>
-      </label>`:'';
-  const togglesRow=(reinfToggleHtml||spawnOrderToggleHtml||buffToggleHtml||reinfDeployToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${spawnOrderToggleHtml}${buffToggleHtml}${reinfDeployToggleHtml}</div>`:'';
-  const hasEventSkills=!!((md.map_event_areas||[]).some(a=>a&&a.event_skill&&(a.event_skill.name||a.event_skill.description)));
-  const eventSkillHint=hasEventSkills?`<p class="stage-map-addon-hint stage-addon stage-addon--5" data-stage-addon="5">${stageAddonTag(5)}<span>${esc(t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area')} — hover purple tiles for skill name</span></p>`:'';
-  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${eventSkillHint}${togglesRow}
+  const togglesRow=(reinfToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${buffToggleHtml}</div>`:'';
+  const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
         <div class="stage-map-viewport-quick">
@@ -2561,7 +2483,6 @@ function renderStageMapGrid(md){
       const ck=`${x}_${y}`;
       const buffArea=_stageMapBuffAreaAt(md,x,y);
       const eventArea=!u?_stageMapHitEventAreaCell(md,x,y):null;
-      const reinfDeploy=!u&&S.stageMapReinfDeployVisible!==false?_stageMapHitReinfDeployCell(md,x,y):null;
       const isPlayableTile=!u&&_stageMapHitPlayableCell(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
@@ -2569,7 +2490,6 @@ function renderStageMapGrid(md){
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
       if(isPlayableTile)cls+=' map-cell--playable';
       if(eventArea)cls+=' map-cell--event-area';
-      if(reinfDeploy)cls+=' map-cell--reinf-deploy';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
       if(showBuffArea){
         cls+=' map-cell--buff-area';
@@ -2594,8 +2514,7 @@ function renderStageMapGrid(md){
       if(u&&u.is_score_attack_boss){const bl=t('sa_boss');cellTitle+=` — ${bl!=='sa_boss'?bl:'Boss'}`}
       if(u&&u.is_story_event_boss){const bl=t('stage_story_boss');cellTitle+=` — ${bl!=='stage_story_boss'?bl:'Story boss'}`}
       if(showStepOrder)cellTitle+=` — ${_stageMapSpawnOrderLabel(_stageNpcStepOrder(u))}`;
-      if(eventArea)cellTitle+=` — ${_stageMapEventAreaTitle(eventArea)}`;
-      if(reinfDeploy){const lim=reinfDeploy.reinforcement_limit>0?` (${t('stage_addon_6_limit')} ${fmtN(reinfDeploy.reinforcement_limit)})`:'';cellTitle+=` — ${t('stage_addon_6_toggle')}${lim}`}
+      if(eventArea)cellTitle+=` — ${t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area'}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
@@ -2637,16 +2556,14 @@ const inner=el.querySelector('[data-stage-npc-group]');
 const key=inner?String(inner.getAttribute('data-stage-npc-group')||''):'';
 if(key)npcGroupsOpen[key]=!!el.open;
 });
-return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,spawnOrderVisible:!!S.stageMapSpawnOrderVisible,buffAreasVisible:S.stageMapBuffAreasVisible!==false,reinfDeployVisible:S.stageMapReinfDeployVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen};
+return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen};
 }
 function applyStageDetailUiState(ui){
 if(!ui)return;
 if(ui.mapExpanded!=null)S.stageMapExpanded=!!ui.mapExpanded;
 if(ui.reinforcementOnly!=null)S.stageMapReinforcementOnly=!!ui.reinforcementOnly;
-if(ui.spawnOrderVisible!=null)S.stageMapSpawnOrderVisible=!!ui.spawnOrderVisible;
-if(!S.stageMapReinforcementOnly)S.stageMapSpawnOrderVisible=false;
+S.stageMapSpawnOrderVisible=false;
 if(ui.buffAreasVisible!=null)S.stageMapBuffAreasVisible=!!ui.buffAreasVisible;
-if(ui.reinfDeployVisible!=null)S.stageMapReinfDeployVisible=!!ui.reinfDeployVisible;
 const z=Number(ui.mapZoom);
 if(!Number.isNaN(z))S.stageMapZoom=Math.max(0.25,Math.min(4,z));
 if(ui.mapAutoFit!=null)S.stageMapAutoFit=!!ui.mapAutoFit;
@@ -2702,15 +2619,6 @@ function setStageMapBuffAreasVisible(on){
     if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
   }
 }
-function setStageMapReinfDeployVisible(on){
-  S.stageMapReinfDeployVisible=!!on;
-  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
-    const gridWrap=document.getElementById('stageMapGridWrap');
-    const md=S.currentDetailData&&S.currentDetailData.map_data;
-    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
-  }
-}
-
 function _stageMapBounds(){
   const md=S.currentDetailData?.map_data||{};
   return _stageMapMergeExtents(_stageMapExtentsFromUnits(md,{allUnits:true}),_stageMapExtentsFromReachTargets(md))
