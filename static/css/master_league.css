@@ -79,9 +79,9 @@
 /* Boost / terrain card — in-game banner layout */
 .ml-boost-banner {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   margin: 10px 0 18px;
-  padding: 22px 0 26px;
+  padding: 0;
 }
 .ml-boost-banner > .ml-boost-card {
   position: relative;
@@ -130,38 +130,28 @@
 .ml-boost-banner > .ml-boost-portrait {
   position: absolute;
   top: 50%;
-  width: min(52%, 360px);
-  height: 148%;
+  width: 50%;
+  height: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(-46%);
-  z-index: 2;
+  transform: translateY(-50%);
+  z-index: 0;
   pointer-events: auto;
   cursor: pointer;
-  overflow: visible;
+  overflow: hidden;
 }
 .ml-boost-banner > .ml-boost-portrait--left {
-  left: max(-28px, -7%);
-  -webkit-mask-image:
-    linear-gradient(90deg, #000 0%, #000 8%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.35) 68%, transparent 94%),
-    linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(90deg, #000 0%, #000 8%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.35) 68%, transparent 94%),
-    linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-  mask-composite: intersect;
+  left: 0;
+  justify-content: flex-end;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
 }
 .ml-boost-banner > .ml-boost-portrait--right {
-  right: max(-28px, -7%);
-  -webkit-mask-image:
-    linear-gradient(270deg, #000 0%, #000 8%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.35) 68%, transparent 94%),
-    linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(270deg, #000 0%, #000 8%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.35) 68%, transparent 94%),
-    linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-  mask-composite: intersect;
+  right: 0;
+  justify-content: flex-start;
+  -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  mask-image: linear-gradient(270deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
 }
 .ml-boost-portrait::after {
   content: '';
@@ -185,12 +175,10 @@
   z-index: 1;
   width: auto;
   height: 100%;
-  min-height: 125%;
+  max-height: 100%;
   max-width: none;
   object-fit: contain;
   object-position: center center;
-  transform: scale(1.14);
-  transform-origin: center center;
   opacity: 0.76;
   filter:
     drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85))
@@ -199,6 +187,12 @@
     hue-rotate(-18deg)
     brightness(0.68)
     contrast(1.08);
+}
+.ml-boost-banner > .ml-boost-portrait--left .ml-boost-portrait-img {
+  object-position: right center;
+}
+.ml-boost-banner > .ml-boost-portrait--right .ml-boost-portrait-img {
+  object-position: left center;
 }
 .ml-boost-inner {
   position: relative;
@@ -476,18 +470,9 @@
     padding: 12px 0 12px;
     min-height: 172px;
   }
-  .ml-boost-banner {
-    padding: 18px 0 22px;
-  }
   .ml-boost-banner > .ml-boost-portrait {
-    width: min(46%, 220px);
-    height: 132%;
-  }
-  .ml-boost-banner > .ml-boost-portrait--left {
-    left: max(-18px, -5%);
-  }
-  .ml-boost-banner > .ml-boost-portrait--right {
-    right: max(-18px, -5%);
+    width: 50%;
+    height: 50%;
   }
   .ml-boost-card--portraits .ml-boost-inner {
     padding: 0 min(12%, 88px);
