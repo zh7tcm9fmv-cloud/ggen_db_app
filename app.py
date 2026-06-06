@@ -8940,6 +8940,25 @@ def _find_unit_thumb_by_display_name(unit_name, lc, expected_rarity=''):
             return thum
     return ''
 
+def _game_images_webp_path(folder_key, filename):
+    """Build /static/images/{folder}/{name}.webp for CDN rewrite."""
+    fname = str(filename or '').strip()
+    if not fname:
+        return ''
+    if not fname.lower().endswith('.webp'):
+        fname = f'{fname}.webp'
+    return f'/static/images/{folder_key}/{fname}'
+
+
+def _game_item_icon_url(resource_id):
+    """Item icon — exchange medals on Master League CDN; regular items on Item CDN."""
+    rid = str(resource_id or '').strip()
+    if not rid:
+        return ''
+    folder = 'Master%20League' if rid.startswith('event_exchange_item_') else 'Item'
+    return game_image_public_url(_game_images_webp_path(folder, rid))
+
+
 def _decorate_reward_rows(rows, lc):
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
@@ -8960,7 +8979,7 @@ def _decorate_reward_rows(rows, lc):
         lb_frames = None
         if rt == '10':
             reward_name = "Diamonds"
-            reward_icon = "/static/images/UI/UI_Common_Icon_Diamond_M.webp"
+            reward_icon = game_image_public_url('/static/images/UI/UI_Common_Icon_Diamond_M.webp')
         elif rt == '2':
             c = get_npc_character_display(tid, {}, lc)
             reward_name = str(c.get('name') or f"Character {tid}")
@@ -8978,7 +8997,7 @@ def _decorate_reward_rows(rows, lc):
                 reward_name = f"Profile Title {tid}"
             brid = str(pinfo.get('background_resource_id') or '').strip() if isinstance(pinfo, dict) else ''
             if brid:
-                reward_icon = f"/static/images/Item/{brid}.webp"
+                reward_icon = game_image_public_url(_game_images_webp_path('Item', brid))
         elif rt == '8':
             opinfo = option_part_reward_info_map.get(tid, {})
             nlid = normalize_id(opinfo.get('name_lang_id')) if isinstance(opinfo, dict) else '0'
@@ -8989,7 +9008,8 @@ def _decorate_reward_rows(rows, lc):
                 reward_name = f"Option Part {tid}"
             orid = str(opinfo.get('resource_id') or '').strip() if isinstance(opinfo, dict) else ''
             if orid:
-                reward_icon = f"/static/images/Option-Part (Modification)/Sprite/{orid}.webp"
+                reward_icon = game_image_public_url(
+                    _game_images_webp_path('Option-Part (Modification)/Sprite', orid))
         elif tid != '0':
             item = item_info_map.get(tid, {})
             nlid = normalize_id(item.get('name_lang_id'))
@@ -9003,7 +9023,7 @@ def _decorate_reward_rows(rows, lc):
                 reward_name = f"Item {tid}"
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
-                reward_icon = f"/static/images/Item/{rid_item}.webp"
+                reward_icon = _game_item_icon_url(rid_item)
             lb_thumb = ''
             if _is_limit_break_material_item_name(reward_name):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
@@ -14310,7 +14330,7 @@ def get_profile_title(profile_title_id):
         result = {
             'id': pid,
             'name': name,
-            'image': (f"/static/images/Item/{brid}.webp" if brid else ''),
+            'image': (game_image_public_url(_game_images_webp_path('Item', brid)) if brid else ''),
             'lang': lc,
         }
         return jsonify(convert_image_urls(result))
@@ -15316,7 +15336,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v8_{lc}'
+    ck = f'master_league_v10_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
