@@ -86,6 +86,7 @@
 .ml-boost-banner > .ml-boost-card {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 .ml-boost-card {
   position: relative;
@@ -127,70 +128,75 @@
   pointer-events: none;
   z-index: 1;
 }
-.ml-boost-banner > .ml-boost-portrait {
+.ml-boost-portraits {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ml-boost-card--portraits .ml-boost-portrait {
   position: absolute;
   top: 0;
   width: 50%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  z-index: 2;
+  overflow: hidden;
   pointer-events: auto;
   cursor: pointer;
-  overflow: hidden;
 }
-.ml-boost-banner > .ml-boost-portrait--left {
+.ml-boost-card--portraits .ml-boost-portrait--left {
   left: 0;
   justify-content: flex-end;
 }
-.ml-boost-banner > .ml-boost-portrait--right {
+.ml-boost-card--portraits .ml-boost-portrait--right {
   right: 0;
   justify-content: flex-start;
 }
-.ml-boost-portrait::after {
+.ml-boost-card--portraits .ml-boost-portrait::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
 }
-.ml-boost-banner > .ml-boost-portrait--left::after {
+.ml-boost-card--portraits .ml-boost-portrait--left::after {
   background:
-    linear-gradient(90deg, transparent 42%, rgba(72, 8, 14, 0.35) 72%, rgba(48, 4, 9, 0.62) 100%),
-    linear-gradient(180deg, rgba(48, 4, 9, 0.28) 0%, transparent 18%, transparent 82%, rgba(28, 2, 6, 0.22) 100%);
+    linear-gradient(90deg, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
+    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
 }
-.ml-boost-banner > .ml-boost-portrait--right::after {
+.ml-boost-card--portraits .ml-boost-portrait--right::after {
   background:
-    linear-gradient(270deg, transparent 42%, rgba(72, 8, 14, 0.35) 72%, rgba(48, 4, 9, 0.62) 100%),
-    linear-gradient(180deg, rgba(48, 4, 9, 0.28) 0%, transparent 18%, transparent 82%, rgba(28, 2, 6, 0.22) 100%);
+    linear-gradient(270deg, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
+    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
 }
-.ml-boost-banner > .ml-boost-portrait-img {
+.ml-boost-card--portraits .ml-boost-portrait-img {
   position: relative;
   z-index: 1;
   width: auto;
-  height: 108%;
-  max-height: none;
-  max-width: 118%;
-  min-width: 72%;
+  height: 96%;
+  max-width: 108%;
+  min-width: 78%;
   object-fit: contain;
-  object-position: center center;
-  opacity: 0.9;
+  object-position: center 12%;
+  opacity: 0.72;
   filter:
-    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85))
-    sepia(0.55)
-    saturate(2.4)
-    hue-rotate(-16deg)
-    brightness(0.62)
-    contrast(1.12);
+    drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55))
+    sepia(0.22)
+    saturate(1.45)
+    hue-rotate(-10deg)
+    brightness(0.88)
+    contrast(1.05);
 }
-.ml-boost-banner > .ml-boost-portrait--left .ml-boost-portrait-img {
-  object-position: right center;
-  margin-right: -6%;
+.ml-boost-card--portraits .ml-boost-portrait--left .ml-boost-portrait-img {
+  object-position: 72% 10%;
+  margin-right: -4%;
 }
-.ml-boost-banner > .ml-boost-portrait--right .ml-boost-portrait-img {
-  object-position: left center;
-  margin-left: -6%;
+.ml-boost-card--portraits .ml-boost-portrait--right .ml-boost-portrait-img {
+  object-position: 28% 10%;
+  margin-left: -4%;
 }
 .ml-boost-inner {
   position: relative;
@@ -202,15 +208,23 @@
   text-align: center;
   padding: 0 18px;
 }
+.ml-boost-card--portraits {
+  background:
+    linear-gradient(180deg, rgba(118, 16, 26, 0.92) 0%, rgba(62, 8, 14, 0.94) 48%, rgba(34, 4, 9, 0.96) 100%);
+}
 .ml-boost-card--portraits::before {
-  opacity: 0.28;
+  opacity: 0.18;
 }
 .ml-boost-card--portraits::after {
   background:
-    linear-gradient(90deg, rgba(18, 2, 5, 0.48) 0%, rgba(18, 2, 5, 0.04) 14%, rgba(18, 2, 5, 0.01) 50%, rgba(18, 2, 5, 0.04) 86%, rgba(18, 2, 5, 0.48) 100%),
-    radial-gradient(ellipse 38% 52% at 50% 40%, rgba(220, 45, 55, 0.16), transparent 64%);
+    radial-gradient(ellipse 46% 72% at 50% 44%, rgba(28, 4, 8, 0.82) 0%, rgba(28, 4, 8, 0.55) 42%, transparent 72%),
+    linear-gradient(90deg, rgba(18, 2, 5, 0.35) 0%, rgba(18, 2, 5, 0.02) 18%, transparent 50%, rgba(18, 2, 5, 0.02) 82%, rgba(18, 2, 5, 0.35) 100%),
+    radial-gradient(ellipse 38% 52% at 50% 40%, rgba(220, 45, 55, 0.12), transparent 64%);
+  z-index: 2;
 }
 .ml-boost-card--portraits .ml-boost-inner {
+  position: relative;
+  z-index: 3;
   padding: 10px min(11%, 92px) 12px;
   gap: 8px;
 }
@@ -519,9 +533,13 @@
     padding: 12px 0 12px;
     min-height: 172px;
   }
-  .ml-boost-banner > .ml-boost-portrait {
+  .ml-boost-card--portraits .ml-boost-portrait {
     width: 50%;
     height: 100%;
+  }
+  .ml-boost-card--portraits .ml-boost-portrait-img {
+    height: 92%;
+    opacity: 0.68;
   }
   .ml-boost-tag-strip {
     min-height: 30px;

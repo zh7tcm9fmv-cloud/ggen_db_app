@@ -15383,7 +15383,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v14_{lc}'
+    ck = f'master_league_v15_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15590,6 +15590,7 @@ def api_master_league():
                     'target_score': sm['target_score'],
                     'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
                 })
+            score_milestones.sort(key=lambda x: safe_int(x.get('target_score'), 0), reverse=True)
 
         motif_id = normalize_id(lx.get('MotifId') or lx.get('motifId') or '0')
         motif = motif_by_id.get(motif_id) if motif_id != '0' else None
