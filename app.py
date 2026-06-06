@@ -4317,8 +4317,48 @@ def create_supporter_info_map(m):
         if isinstance(item, dict):
             s = normalize_id(item.get('id') or item.get('Id'))
             if s != '0':
-                lookup[s] = {'rarity': normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1'), 'hp_add': int(item.get('MaxHpAdditionValue') or item.get('maxHpAdditionValue') or 0), 'atk_add': int(item.get('MaxAttackAdditionValue') or item.get('maxAttackAdditionValue') or 0), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''), 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')}
+                lookup[s] = {
+                    'rarity': normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1'),
+                    'hp_add': int(item.get('MaxHpAdditionValue') or item.get('maxHpAdditionValue') or 0),
+                    'atk_add': int(item.get('MaxAttackAdditionValue') or item.get('maxAttackAdditionValue') or 0),
+                    'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
+                    'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
+                    # supporter-addon #2 acquisition route
+                    'acquisition_route': normalize_id(item.get('SupporterAcquisitionRouteTypeIndex') or item.get('supporterAcquisitionRouteTypeIndex'), '0'),
+                    # supporter-addon #3 gacha obtained quote
+                    'gasha_quote_lang_id': normalize_id(item.get('GashaObtainedWordLanguageId') or item.get('gashaObtainedWordLanguageId'), '0'),
+                }
     return lookup
+
+def create_supporter_max_level_map(d):
+    """supporter-addon #1: rarity -> max level from m_supporter_level_limit.json"""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        ri = normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1')
+        lookup[ri] = int(item.get('MaxLevel') or item.get('maxLevel') or 100)
+    return lookup
+
+def create_supporter_combat_power_map(d):
+    """supporter-addon #4: (rarity, lb_step) -> combat power from m_supporter_combat_power.json"""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        ri = normalize_id(item.get('RarityIndex') or item.get('rarityIndex'), '1')
+        lb = int(item.get('LimitBreakStep') or item.get('limitBreakStep') or 0)
+        cp = int(item.get('CombatPower') or item.get('combatPower') or 0)
+        lookup[(ri, lb)] = cp
+    return lookup
+
+def supporter_max_level_for_rarity(rarity_id):
+    return supporter_max_level_map.get(normalize_id(rarity_id, '1'), 100)
+
+def supporter_combat_power_for(rarity_id, lb_tier):
+    ri = normalize_id(rarity_id, '1')
+    lb = max(0, min(3, int(lb_tier)))
+    return supporter_combat_power_map.get((ri, lb), 0)
 
 def create_supporter_growth_map(d):
     """(level, limit_break_step) -> ParameterCorrectionRateBasisPoint (10000=100%)"""
@@ -6775,6 +6815,9 @@ supporter_master = load_json(os.path.join(BASE_DIR, "m_supporter.json"))
 supporter_growth_data = load_json(os.path.join(BASE_DIR, "m_supporter_growth.json"))
 supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_skill_content.json"))
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
+# supporter-addon #1 #4
+supporter_level_limit_data = load_json(os.path.join(BASE_DIR, "m_supporter_level_limit.json"))
+supporter_combat_power_data = load_json(os.path.join(BASE_DIR, "m_supporter_combat_power.json"))
 eternal_stage_data = load_json(os.path.join(BASE_DIR, "m_eternal_road_stage.json"))
 map_event_score_attack_stage_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_stage.json"))
 map_event_score_attack_reward_data = load_json(os.path.join(BASE_DIR, "m_map_event_score_attack_reward.json"))
@@ -6876,6 +6919,8 @@ supporter_info_map = create_supporter_info_map(supporter_master) if supporter_ma
 supporter_growth_map = create_supporter_growth_map(supporter_growth_data) if supporter_growth_data else {}
 supporter_leader_map = create_supporter_leader_skill_map(supporter_leader_data) if supporter_leader_data else {}
 supporter_active_map = create_supporter_active_skill_map(supporter_active_data) if supporter_active_data else {}
+supporter_max_level_map = create_supporter_max_level_map(supporter_level_limit_data) if supporter_level_limit_data else {}
+supporter_combat_power_map = create_supporter_combat_power_map(supporter_combat_power_data) if supporter_combat_power_data else {}
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
 stage_drop_by_set, stage_drop_content_by_set = create_stage_drop_lookups(stage_drop_data, stage_drop_content_data) if stage_drop_data and stage_drop_content_data else ({}, {})
 stage_score_eval_by_set = create_stage_score_eval_by_set(stage_score_evaluation_data) if stage_score_evaluation_data else {}
@@ -14711,7 +14756,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -14768,7 +14813,10 @@ def list_supporters():
             if ask:
                 icf = find_trait_icon(ask[0].get('resource_id', ''))
                 if icf: aic = f"/static/images/Trait/{icf}"
-            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim})
+            # supporter-addon #2 acquisition route on browse list
+            acq = info.get('acquisition_route', '0')
+            acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or ''})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'series_tag', 'boost'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -15101,9 +15149,12 @@ def api_latest_release():
             continue
         ri = info.get('rarity', '1')
         thum = find_supporter_portrait(info.get('resource_id'), sid)
+        acq = info.get('acquisition_route', '0')
+        acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         ensure_group(sched)['items'].append({
             'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
             'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
+            'acquisition_icon': acq_icon or '',
         })
 
     out_list = []
@@ -15247,10 +15298,12 @@ def _banner_timeline_supporter_item(sid, ld):
         return None
     ri = info.get('rarity', '1')
     thum = find_supporter_portrait(info.get('resource_id'), sid)
+    acq = info.get('acquisition_route', '0')
+    acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
     return {
         'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
-        'role_icon': '', 'acquisition_icon': '',
+        'role_icon': '', 'acquisition_icon': acq_icon or '',
         'special_icons': [], 'is_ultimate': False,
         'is_limited_time': sid in LIMITED_TIME_SUPPORTER_IDS,
     }
@@ -17056,20 +17109,23 @@ def api_banner_timeline_vote():
 def get_supporter(supporter_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        level = min(100, max(1, int(request.args.get('level', 100))))
         lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
         for_uid_q = (request.args.get('for_unit_id') or '').strip()
         for_cid_q = (request.args.get('for_char_id') or '').strip()
         for_uid_key = normalize_id(for_uid_q) if for_uid_q else '0'
         for_cid_key = normalize_id(for_cid_q) if for_cid_q else '0'
-        ck = f"s3_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
-        cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
         ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
         if not info: return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
-        ri = info.get('rarity', '1'); lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
+        ri = info.get('rarity', '1')
+        # supporter-addon #1 level cap by rarity
+        max_level = supporter_max_level_for_rarity(ri)
+        level = min(max_level, max(1, int(request.args.get('level', max_level))))
+        ck = f"s4_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached: return jsonify(cached)
+        lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
         base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
         rate = supporter_growth_map.get((level, lb_tier), 10000)
         # Flat HP/ATK support: half-up on (base * rate / 10000) matches in-game; plain floor was −1 vs client when the product is fractional.
@@ -17097,7 +17153,23 @@ def get_supporter(supporter_id):
             icf = find_trait_icon(a.get('resource_id', ''))
             asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
         portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
-        result = {'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks, 'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc, 'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk, 'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS}
+        # supporter-addon #2 acquisition route icon
+        acq = info.get('acquisition_route', '0')
+        acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+        # supporter-addon #3 gacha obtained quote (text in lang m_supporter.json)
+        gasha_lid = info.get('gasha_quote_lang_id', '0')
+        gacha_quote = ld.get('supporter_text_map', {}).get(gasha_lid, '') if gasha_lid != '0' else ''
+        # supporter-addon #4 combat power contribution
+        combat_power = supporter_combat_power_for(ri, lb_tier)
+        result = {
+            'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri,
+            'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks,
+            'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc,
+            'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk,
+            'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS,
+            'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
+            'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
+        }
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
