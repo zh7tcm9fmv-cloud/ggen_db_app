@@ -141,19 +141,18 @@
   width: 50%;
   height: 100%;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
   overflow: hidden;
   pointer-events: auto;
   cursor: pointer;
 }
 .ml-boost-card--portraits .ml-boost-portrait--left {
   left: 0;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .ml-boost-card--portraits .ml-boost-portrait--right {
   right: 0;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 .ml-boost-card--portraits .ml-boost-portrait::after {
   content: '';
@@ -182,6 +181,7 @@
   object-fit: contain;
   object-position: center 12%;
   opacity: 0.72;
+  transform: scale(1.3);
   filter:
     drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55))
     sepia(0.22)
@@ -191,12 +191,14 @@
     contrast(1.05);
 }
 .ml-boost-card--portraits .ml-boost-portrait--left .ml-boost-portrait-img {
-  object-position: 72% 10%;
-  margin-right: -4%;
+  object-position: left 8%;
+  transform-origin: left center;
+  margin-left: -12%;
 }
 .ml-boost-card--portraits .ml-boost-portrait--right .ml-boost-portrait-img {
-  object-position: 28% 10%;
-  margin-left: -4%;
+  object-position: right 8%;
+  transform-origin: right center;
+  margin-right: -12%;
 }
 .ml-boost-inner {
   position: relative;
@@ -293,52 +295,6 @@
 }
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;
-}
-.ml-boost-tags--strips {
-  gap: 8px;
-  width: min(480px, 92%);
-  margin-top: 2px;
-}
-.ml-boost-tag-strip {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 34px;
-  padding: 6px 18px 6px 34px;
-  background: linear-gradient(180deg, #fff 0%, #f2f4f8 100%);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.65) inset,
-    0 2px 8px rgba(0, 0, 0, 0.35);
-  clip-path: polygon(16px 0, 100% 0, 100% 100%, 16px 100%, 0 50%);
-}
-.ml-boost-tag-strip::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 18px;
-  background: linear-gradient(135deg, #e8ecf2 0%, #fff 55%, #d8dee8 100%);
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
-}
-.ml-boost-tag-strip--clickable {
-  cursor: pointer;
-}
-.ml-boost-tag-strip--clickable:hover .ml-boost-tag-strip-text {
-  color: #1d4ed8;
-}
-.ml-boost-tag-strip-text {
-  font-size: clamp(13px, 1.9vw, 16px);
-  font-weight: 800;
-  color: #2563eb;
-  letter-spacing: 0.01em;
-  text-shadow: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 /* Info panels */
@@ -540,10 +496,7 @@
   .ml-boost-card--portraits .ml-boost-portrait-img {
     height: 92%;
     opacity: 0.68;
-  }
-  .ml-boost-tag-strip {
-    min-height: 30px;
-    padding: 5px 12px 5px 28px;
+    transform: scale(1.3);
   }
   .ml-boost-card--portraits .ml-boost-inner {
     padding: 0 min(12%, 88px);
