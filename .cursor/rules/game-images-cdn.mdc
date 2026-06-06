@@ -1,0 +1,40 @@
+---
+description: Game asset images — CDN + WebP conventions for static, JS, Python, and templates
+globs: app.py,static/js/app.js,templates/**/*.html,static/css/**
+alwaysApply: true
+---
+
+# Game images (CDN + WebP)
+
+When adding or changing game art under `/static/images/`:
+
+## Python (`app.py`)
+
+- Build paths as `/static/images/{folder}/{name}.webp` (use `Master%20League` for spaced folder names).
+- Resolve public URLs with `game_image_public_url()` or `_game_images_webp_path()` + `game_image_public_url()`.
+- API JSON must pass image fields through `convert_image_urls()` when returning to the client.
+- Do not hardcode absolute CDN hostnames in Python.
+
+## JavaScript (`static/js/app.js`)
+
+- Use `imgUrl(path)` or `imgUrlPreferCdn(path)` for any `/static/images/…` path (handles CDN + WebP).
+- For `<img>` tags in generated HTML, prefer `pictureRasterHtml()` so WebP→PNG→`/static` fallback works.
+- Do not embed raw `https://…github.io/ggen_db_images/…` URLs in JS.
+
+## Jinja templates (`templates/`)
+
+- Mirror the nav-tab pattern:
+
+```jinja
+{% if image_cdn %}{{ image_cdn }}/images/UI/Some_Asset.webp{% else %}/static/images/UI/Some_Asset.webp{% endif %}
+```
+
+- Prefer `.webp` filenames. Use `game_images_use_cdn` where a template already gates on both flags (e.g. `game_news.html`).
+
+## Folder lookup
+
+- Confirm the asset folder in `image_index.json` before choosing a path (e.g. `UI_Event_ML_TopRanking` lives under `images/Master League`, not `images/UI`).
+
+## New assets
+
+- Add expected filenames to the CDN repo (`ggen_db_images`) and `image_index.json` when introducing new game images.
