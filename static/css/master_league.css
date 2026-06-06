@@ -440,8 +440,10 @@
 }
 .ml-reward-chip--clickable {
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
-.ml-reward-chip--clickable > * {
+.ml-reward-chip--clickable * {
   pointer-events: none;
 }
 .ml-reward-chip--clickable:hover {
