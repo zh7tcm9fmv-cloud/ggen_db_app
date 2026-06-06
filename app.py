@@ -9003,7 +9003,7 @@ def _decorate_reward_rows(rows, lc):
                 reward_name = f"Item {tid}"
             rid_item = str(item.get('resource_id') or '').strip()
             if rid_item:
-                reward_icon = f"/static/images/Item/{rid_item}.png"
+                reward_icon = f"/static/images/Item/{rid_item}.webp"
             lb_thumb = ''
             if _is_limit_break_material_item_name(reward_name):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
@@ -15281,10 +15281,15 @@ def _ml_stage_terrain_icons(stage_row):
     ordered = []
     if primary and primary != '0':
         ordered.append(primary)
-    for _flag, _label, ti in ML_STAGE_TERRAIN_FLAG_ORDER:
-        tis = str(ti)
-        if tis in active and tis not in ordered:
-            ordered.append(tis)
+    # Universal ML stages (e.g. 90600101 Space) enable every terrain flag for sortie rules,
+    # but the boost banner only displays the primary terrain icon in-game.
+    if len(active) >= 3:
+        ordered = [primary] if primary and primary != '0' else []
+    else:
+        for _flag, _label, ti in ML_STAGE_TERRAIN_FLAG_ORDER:
+            tis = str(ti)
+            if tis in active and tis not in ordered:
+                ordered.append(tis)
     for ti in ordered:
         terr = STAGE_TERRAIN_MAP.get(str(ti), {})
         label = terr.get('EN', 'Unknown')
@@ -15311,7 +15316,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v5_{lc}'
+    ck = f'master_league_v8_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15481,7 +15486,10 @@ def api_master_league():
         buff_pct = buff_pct_by_id.get(buff_id, 0)
         bset = normalize_id(lx.get('LeagueBuffTargetSetId') or lx.get('leagueBuffTargetSetId') or '0')
         boost_tags = buff_targets_by_set.get(bset, [])
-        boost_portraits = _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id)
+        boost_portraits = (
+            _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id)
+            if status == 'upcoming' else []
+        )
 
         stage_id = normalize_id(lx.get('StageId') or lx.get('stageId') or '0')
         stage_row = stage_by_id.get(stage_id, {})

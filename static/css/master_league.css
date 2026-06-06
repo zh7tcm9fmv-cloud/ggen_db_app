@@ -119,30 +119,73 @@
 }
 .ml-boost-portrait {
   position: absolute;
-  bottom: -4px;
-  width: min(38%, 220px);
-  height: 88%;
+  bottom: -6px;
+  width: min(40%, 240px);
+  height: 92%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
+  overflow: hidden;
 }
 .ml-boost-portrait--left {
-  left: 2px;
+  left: 0;
+  -webkit-mask-image:
+    linear-gradient(90deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.55) 48%, transparent 82%),
+    linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.55) 48%, transparent 82%),
+    linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
 }
 .ml-boost-portrait--right {
-  right: 2px;
+  right: 0;
+  -webkit-mask-image:
+    linear-gradient(270deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.55) 48%, transparent 82%),
+    linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(270deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.55) 48%, transparent 82%),
+    linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+.ml-boost-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.ml-boost-portrait--left::after {
+  background:
+    linear-gradient(90deg, transparent 42%, rgba(72, 8, 14, 0.55) 72%, rgba(48, 4, 9, 0.92) 100%),
+    linear-gradient(180deg, rgba(48, 4, 9, 0.55) 0%, transparent 28%, transparent 72%, rgba(28, 2, 6, 0.35) 100%);
+}
+.ml-boost-portrait--right::after {
+  background:
+    linear-gradient(270deg, transparent 42%, rgba(72, 8, 14, 0.55) 72%, rgba(48, 4, 9, 0.92) 100%),
+    linear-gradient(180deg, rgba(48, 4, 9, 0.55) 0%, transparent 28%, transparent 72%, rgba(28, 2, 6, 0.35) 100%);
 }
 .ml-boost-portrait-img {
-  max-width: 100%;
+  position: relative;
+  z-index: 1;
+  max-width: 108%;
   max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
   object-position: bottom center;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75));
+  opacity: 0.76;
+  filter:
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85))
+    sepia(0.48)
+    saturate(2.1)
+    hue-rotate(-18deg)
+    brightness(0.68)
+    contrast(1.08);
 }
 .ml-boost-inner {
   position: relative;
@@ -152,7 +195,10 @@
   align-items: center;
   gap: 10px;
   text-align: center;
-  padding: 0 min(24%, 190px);
+  padding: 0 18px;
+}
+.ml-boost-card--portraits .ml-boost-inner {
+  padding: 0 min(26%, 200px);
 }
 .ml-boost-stage-row {
   display: flex;
@@ -404,11 +450,11 @@
     min-height: 172px;
   }
   .ml-boost-portrait {
-    width: min(34%, 150px);
-    height: 82%;
+    width: min(36%, 160px);
+    height: 84%;
   }
-  .ml-boost-inner {
-    padding: 0 min(20%, 120px);
+  .ml-boost-card--portraits .ml-boost-inner {
+    padding: 0 min(22%, 128px);
   }
   .ml-boost-terrain-ic {
     width: 24px;
