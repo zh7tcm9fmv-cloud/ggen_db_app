@@ -15129,6 +15129,104 @@ ML_STAGE_TERRAIN_FLAG_ORDER = (
 )
 # CDN mirror: ggen_db_images/images/Master League (space → %20 in /static paths, same as Key%20Unit).
 ML_IMAGE_SUBDIR = 'Master%20League'
+# Gundam SEED — fallback when a "SEED Series" lineage tag has no direct player-unit match.
+ML_SEED_SERIES_SET_ID = '10000000000002000'
+ML_SERIES_SHOWCASE_PREFER = {
+    ML_SEED_SERIES_SET_ID: ('1200003900', '1200005300', '1200005200', '1200002300'),
+}
+
+
+def _ml_series_set_id(series_id):
+    sid = normalize_id(series_id)
+    if sid == '0':
+        return '0'
+    if len(sid) >= 10:
+        return sid
+    return f'1000000000000{sid}'
+
+
+def _ml_showcase_unit_score(uid):
+    info = unit_info_map.get(uid, {}) if isinstance(unit_info_map, dict) else {}
+    r = safe_int(info.get('rarity'), 1)
+    u = safe_int(uid, 0)
+    main_gacha = 1 if 1200000000 <= u < 1210000000 else 0
+    player = 1 if str(uid).startswith('12') else 0
+    rids = info.get('resource_ids', []) if isinstance(info, dict) else []
+    has_art = 1 if find_portrait(rids, uid, 'images/unit_portraits') else 0
+    return (player, main_gacha, r, has_art, u)
+
+
+def _ml_pick_showcase_unit_for_tag(tag, used_ids, series_set_by_series_id):
+    ttype = safe_int(tag.get('type_index'), 0)
+    tid = normalize_id(tag.get('target_id'))
+    if tid == '0':
+        return None
+    cands = []
+    if ttype == 1:
+        set_id = series_set_by_series_id.get(tid, _ml_series_set_id(tid))
+        cands = [uid for uid, sid in (unit_ser_map or {}).items()
+                 if sid == set_id and str(uid).startswith('12') and uid not in used_ids]
+    elif ttype == 2:
+        cands = [uid for uid, lids in (unit_lin_map or {}).items()
+                 if tid in lids and str(uid).startswith('12') and uid not in used_ids]
+        cands = [u for u in cands if safe_int((unit_info_map.get(u) or {}).get('rarity'), 0) >= 4]
+        if not cands and tid == '1089':
+            cands = [uid for uid, sid in (unit_ser_map or {}).items()
+                     if sid == ML_SEED_SERIES_SET_ID and str(uid).startswith('12') and uid not in used_ids]
+    if not cands:
+        return None
+    if ttype == 2 and tid == '1089':
+        for prefer in ML_SERIES_SHOWCASE_PREFER.get(ML_SEED_SERIES_SET_ID, ()):
+            if prefer in cands:
+                return prefer
+    if ttype == 1:
+        set_id = series_set_by_series_id.get(tid, _ml_series_set_id(tid))
+        for prefer in ML_SERIES_SHOWCASE_PREFER.get(set_id, ()):
+            if prefer in cands:
+                return prefer
+    return max(cands, key=_ml_showcase_unit_score)
+
+
+def _ml_unit_portrait_payload(unit_id, lc):
+    uid = normalize_id(unit_id)
+    if uid == '0':
+        return None
+    info = unit_info_map.get(uid, {}) if isinstance(unit_info_map, dict) else {}
+    if not info:
+        return None
+    ld = get_lang_data(lc)
+    lid = (ld.get('unit_id_map') or {}).get(uid, '') if ld else ''
+    un = (ld.get('unit_text_map') or {}).get(lid, '') if lid else ''
+    if not un:
+        un = f'Unit {uid}'
+    portrait = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits') or ''
+    if not portrait:
+        return None
+    return {
+        'unit_id': uid,
+        'name': un,
+        'portrait': portrait,
+        'rarity': RARITY_MAP.get(normalize_id(info.get('rarity'), '1'), 'N'),
+    }
+
+
+def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
+    portraits = []
+    used = set()
+    sides = ('left', 'right')
+    for i, tag in enumerate(boost_tags or []):
+        if i >= len(sides):
+            break
+        uid = _ml_pick_showcase_unit_for_tag(tag, used, series_set_by_series_id)
+        if not uid:
+            continue
+        payload = _ml_unit_portrait_payload(uid, lc)
+        if not payload:
+            continue
+        payload['side'] = sides[i]
+        portraits.append(payload)
+        used.add(uid)
+    return portraits
 
 
 def _ml_image_lang_suffix(lc):
@@ -15213,7 +15311,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v3_{lc}'
+    ck = f'master_league_v5_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify(convert_image_urls(cached))
@@ -15234,6 +15332,7 @@ def api_master_league():
         series_lang = load_json(os.path.join(app_dir, 'data', lc, 'lang', 'm_series.json'))
     series_lang_map = create_lang_text_map(series_lang) if series_lang else {}
     series_id_to_name = {}
+    series_set_by_series_id = {}
     for row in extract_data_list(m_series):
         if not isinstance(row, dict):
             continue
@@ -15241,6 +15340,10 @@ def api_master_league():
         nlid = normalize_id(row.get('NameLanguageId') or row.get('nameLanguageId'))
         if sid != '0':
             series_id_to_name[sid] = series_lang_map.get(nlid, '')
+            set_id = normalize_id(row.get('SeriesSetId') or row.get('seriesSetId') or '0')
+            if set_id == '0':
+                set_id = _ml_series_set_id(sid)
+            series_set_by_series_id[sid] = set_id
 
     m_league_event = load_json(_ml_master_file(lc, 'm_league_event.json'))
     m_event = load_json(_ml_master_file(lc, 'm_event.json'))
@@ -15248,6 +15351,7 @@ def api_master_league():
     m_buff_target = load_json(_ml_master_file(lc, 'm_league_buff_target.json'))
     m_status_buff = load_json(_ml_master_file(lc, 'm_stage_status_buff.json'))
     m_rank_content = load_json(_ml_master_file(lc, 'm_league_rank_group_content.json'))
+    m_season_reward = load_json(_ml_master_file(lc, 'm_league_season_reward_group_content.json'))
     m_motif = load_json(_ml_master_file(lc, 'm_league_event_motif.json'))
     m_ingame = load_json(_ml_master_file(lc, 'm_league_ingame_config_group.json'))
     m_ingame_turn = load_json(_ml_master_file(lc, 'm_league_ingame_config_group_turn.json'))
@@ -15317,6 +15421,24 @@ def api_master_league():
     for gid in rank_by_group:
         rank_by_group[gid].sort(key=lambda x: x['rank_type_index'])
 
+    season_reward_by_group = {}
+    for row in extract_data_list(m_season_reward):
+        if not isinstance(row, dict):
+            continue
+        srgid = safe_int(row.get('LeagueSeasonRewardGroupId') or row.get('leagueSeasonRewardGroupId'), 0)
+        if srgid <= 0:
+            continue
+        rti = safe_int(row.get('LeagueRankTypeIndex') or row.get('leagueRankTypeIndex'), 0)
+        score = safe_int(row.get('TargetScore') or row.get('targetScore'), 0)
+        rsid = normalize_id(row.get('RewardSetId') or row.get('rewardSetId') or '0')
+        season_reward_by_group.setdefault(srgid, []).append({
+            'rank_type_index': rti,
+            'target_score': score,
+            'reward_set_id': rsid,
+        })
+    for srgid in season_reward_by_group:
+        season_reward_by_group[srgid].sort(key=lambda x: (x['rank_type_index'], x['target_score']))
+
     motif_by_id = {}
     for mx in extract_data_list(m_motif):
         if not isinstance(mx, dict):
@@ -15359,6 +15481,7 @@ def api_master_league():
         buff_pct = buff_pct_by_id.get(buff_id, 0)
         bset = normalize_id(lx.get('LeagueBuffTargetSetId') or lx.get('leagueBuffTargetSetId') or '0')
         boost_tags = buff_targets_by_set.get(bset, [])
+        boost_portraits = _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id)
 
         stage_id = normalize_id(lx.get('StageId') or lx.get('stageId') or '0')
         stage_row = stage_by_id.get(stage_id, {})
@@ -15373,6 +15496,22 @@ def api_master_league():
             rsid = tier.pop('reward_set_id', '0')
             tier['rewards'] = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
             rank_tiers.append(tier)
+
+        srgid = safe_int(lx.get('LeagueSeasonRewardGroupId') or lx.get('leagueSeasonRewardGroupId'), 0)
+        chall_threshold = safe_int(lx.get('LeagueChallengeModeEntryScoreThreshold') or lx.get('leagueChallengeModeEntryScoreThreshold'), 0)
+        score_floor = max(150000, chall_threshold) if chall_threshold > 0 else 0
+        score_milestones = []
+        if score_floor > 0 and srgid > 0:
+            for sm in season_reward_by_group.get(srgid, []):
+                if sm.get('rank_type_index') != 1:
+                    continue
+                if sm.get('target_score', 0) < score_floor:
+                    continue
+                rsid = sm.get('reward_set_id', '0')
+                score_milestones.append({
+                    'target_score': sm['target_score'],
+                    'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
+                })
 
         motif_id = normalize_id(lx.get('MotifId') or lx.get('motifId') or '0')
         motif = motif_by_id.get(motif_id) if motif_id != '0' else None
@@ -15406,13 +15545,15 @@ def api_master_league():
             'buff_id': buff_id,
             'buff_percent': buff_pct,
             'boost_tags': boost_tags,
+            'boost_portraits': boost_portraits,
             'stage_id': stage_id,
             'terrain_primary': terrain_primary,
             'terrain_icons': terrain_icons,
             'limit_turns': safe_int(lx.get('LimitTurnCount') or lx.get('limitTurnCount'), 5),
-            'challenge_threshold': safe_int(lx.get('LeagueChallengeModeEntryScoreThreshold') or lx.get('leagueChallengeModeEntryScoreThreshold'), 0),
+            'challenge_threshold': chall_threshold,
             'rank_group_id': rank_gid,
             'rank_tiers': rank_tiers,
+            'score_milestones': score_milestones,
             'motif_id': motif_id if motif_id != '0' else None,
             'motif_images': motif_images,
             'top_percentile_threshold': safe_int(lx.get('RankingTopPercentileDisplayScoreThreshold') or lx.get('rankingTopPercentileDisplayScoreThreshold'), 0),

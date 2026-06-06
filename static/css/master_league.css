@@ -76,23 +76,23 @@
   filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.55));
 }
 
-/* Boost / terrain card */
+/* Boost / terrain card — in-game banner layout */
 .ml-boost-card {
   position: relative;
   margin: 0;
-  padding: 14px 18px 16px;
-  min-height: 168px;
-  border-radius: var(--radius-md);
+  padding: 16px 0 14px;
+  min-height: 196px;
+  border-radius: 2px;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(120, 18, 28, 0.92) 0%, rgba(55, 8, 14, 0.97) 55%, rgba(35, 5, 10, 1) 100%);
+    linear-gradient(180deg, rgba(118, 16, 26, 0.97) 0%, rgba(62, 8, 14, 0.98) 48%, rgba(34, 4, 9, 1) 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(180, 190, 210, 0.55),
-    inset 0 0 0 3px rgba(40, 8, 12, 0.9),
-    0 8px 28px rgba(0, 0, 0, 0.55);
+    inset 0 0 0 1px rgba(196, 206, 220, 0.65),
+    inset 0 0 0 4px rgba(28, 6, 10, 0.95),
+    0 10px 28px rgba(0, 0, 0, 0.55);
   clip-path: polygon(
-    0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px,
-    100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px)
+    0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px)
   );
 }
 .ml-boost-card::before {
@@ -102,25 +102,57 @@
   background-image: var(--ml-boost-bg, none);
   background-size: cover;
   background-position: center;
-  opacity: 0.38;
-  filter: sepia(0.35) saturate(2.2) hue-rotate(-18deg) brightness(0.75);
+  opacity: 0.42;
+  filter: sepia(0.28) saturate(2.1) hue-rotate(-14deg) brightness(0.72);
   pointer-events: none;
+  z-index: 0;
 }
 .ml-boost-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 50% 45%, rgba(220, 50, 60, 0.35), transparent 68%);
+  background:
+    linear-gradient(90deg, rgba(18, 2, 5, 0.72) 0%, rgba(18, 2, 5, 0.08) 22%, rgba(18, 2, 5, 0.05) 50%, rgba(18, 2, 5, 0.08) 78%, rgba(18, 2, 5, 0.72) 100%),
+    radial-gradient(ellipse 55% 70% at 50% 42%, rgba(220, 45, 55, 0.28), transparent 70%);
   pointer-events: none;
+  z-index: 1;
+}
+.ml-boost-portrait {
+  position: absolute;
+  bottom: -4px;
+  width: min(38%, 220px);
+  height: 88%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.ml-boost-portrait--left {
+  left: 2px;
+}
+.ml-boost-portrait--right {
+  right: 2px;
+}
+.ml-boost-portrait-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75));
 }
 .ml-boost-inner {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   text-align: center;
+  padding: 0 min(24%, 190px);
 }
 .ml-boost-stage-row {
   display: flex;
@@ -165,35 +197,28 @@
 .ml-boost-tags {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   width: min(520px, 100%);
   margin-top: 4px;
 }
-.ml-boost-tag-bar {
-  position: relative;
+.ml-boost-tag-line {
   display: flex;
   align-items: center;
-  min-height: 34px;
-  padding: 6px 14px 6px 22px;
-  background: linear-gradient(90deg, #f8fafc 0%, #e8edf3 100%);
-  clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-}
-.ml-boost-tag-text {
-  font-size: clamp(14px, 2vw, 17px);
-  font-weight: 800;
-  color: #1d4ed8;
-  text-align: left;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
   width: 100%;
-  line-height: 1.25;
 }
-.ml-boost-tag-link {
-  color: inherit;
-  text-decoration: none;
+.ml-boost-tag-prefix {
+  font-size: clamp(14px, 2vw, 16px);
+  font-weight: 800;
+  color: #fecaca;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  white-space: nowrap;
 }
-.ml-boost-tag-link:hover {
-  text-decoration: underline;
+.ml-boost-tags .tag-composite {
+  flex-shrink: 0;
 }
 
 /* Info panels */
@@ -375,8 +400,15 @@
     padding-top: 8px;
   }
   .ml-boost-card {
-    padding: 12px 12px 14px;
-    min-height: 150px;
+    padding: 12px 0 12px;
+    min-height: 172px;
+  }
+  .ml-boost-portrait {
+    width: min(34%, 150px);
+    height: 82%;
+  }
+  .ml-boost-inner {
+    padding: 0 min(20%, 120px);
   }
   .ml-boost-terrain-ic {
     width: 24px;
