@@ -1499,7 +1499,7 @@ d.has_sp=hasSspKit;
 d.ranking_available=false;
 d.has_cond_stats=_npcEmbedHasUnitConditionCondStats(emb);
 d.mechanisms=[];
-for(const k of ['strategy_hint_move_icon','strategy_hint_stats_icon','strategy_hint_icon']){
+for(const k of ['strategy_hint_move_icon','strategy_hint_stats_icon','strategy_hint_atk_icon','strategy_hint_hp_icon','strategy_hint_en_icon','strategy_hint_def_icon','strategy_hint_mob_icon','strategy_hint_icon']){
 const v=emb&&emb[k];
 if(v!=null&&v!=='')d[k]=v;
 }
@@ -2156,7 +2156,11 @@ const isRankingView=!!(d&&d.view_ranking&&(type==='character'||type==='unit'));
 if(isRankingView){const ck=detailRankingCacheKey(type,d.id);if(!_detailRankingStatsCache.has(ck)&&!_detailRankingStatsInflight.has(ck))void ensureDetailRankingStats(type,d.id).then(()=>{if(S.currentDetailData&&String(S.currentDetailData.id)===String(d.id)&&S.currentDetailType===type)updateDetailDynamicSections(type)}).catch(()=>{});}
 const gridCls=isRankingView?'stats-grid stats-grid--ranking-list':'stats-grid';
 const mvHint=(type==='unit'&&d&&d.strategy_hint_move_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_move_icon)):'';
-const statsHint=(type==='unit'&&d&&d.strategy_hint_stats_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_stats_icon)):'';
+const atkHint=(type==='unit'&&d&&(d.strategy_hint_atk_icon||d.strategy_hint_stats_icon))?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_atk_icon||d.strategy_hint_stats_icon)):'';
+const hpHint=(type==='unit'&&d&&d.strategy_hint_hp_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_hp_icon)):'';
+const enHint=(type==='unit'&&d&&d.strategy_hint_en_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_en_icon)):'';
+const defHint=(type==='unit'&&d&&d.strategy_hint_def_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_def_icon)):'';
+const mobHint=(type==='unit'&&d&&d.strategy_hint_mob_icon)?imgUrlWebp(imgUrlPreferCdn(d.strategy_hint_mob_icon)):'';
 const ucGold=type==='unit'&&isCurrentDetailUnitConditionCpTarget();
 const body=sr.map((s,i)=>{
 const b=bs[i];const hcb=cp&&s.total>b.total;const hcp=cp&&s.total<b.total;let eb='';
@@ -2164,10 +2168,10 @@ if(hcp){const cpDelta=s.total-b.total;eb=`<div class="stat-card-bonus stat-card-
 else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}
 const cardHi=hcb?(ucGold?'has-cond-bonus--gold':'has-cond-bonus'):hcp?'has-cond-penalty':'';
 const valHi=hcb?(ucGold?'has-bonus-val--gold':'has-bonus-val'):hcp?'has-penalty-val':'';
-const atkStatHint=(type==='unit'&&s.name==='Attack'&&statsHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${statsHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
-const moveStatHint=(type==='unit'&&s.name==='Move'&&mvHint)?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${mvHint}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:'';
-const useSimpleStatCard=!isRankingView||(type==='unit'&&(s.name==='Move'||(s.name==='Attack'&&statsHint)));
-if(useSimpleStatCard)return`<div class="stat-card ${cardHi}"><div class="stat-card-label">${esc(tStat(s.name,type))}</div><div class="stat-card-value-row"><div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${atkStatHint}${moveStatHint}</div>${eb}</div>`;
+const statHintFor=(nm)=>{if(type!=='unit')return'';if(nm==='Attack'&&atkHint)return atkHint;if(nm==='HP'&&hpHint)return hpHint;if(nm==='EN'&&enHint)return enHint;if(nm==='Defense'&&defHint)return defHint;if(nm==='Mobility'&&mobHint)return mobHint;if(nm==='Move'&&mvHint)return mvHint;return''};
+const statHintImg=(nm)=>{const src=statHintFor(nm);return src?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${src}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:''};
+const useSimpleStatCard=!isRankingView||(type==='unit'&&!!statHintFor(s.name));
+if(useSimpleStatCard)return`<div class="stat-card ${cardHi}"><div class="stat-card-label">${esc(tStat(s.name,type))}</div><div class="stat-card-value-row"><div class="stat-card-value ${valHi}">${fmtN(s.total)}</div>${statHintImg(s.name)}</div>${eb}</div>`;
 const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;const w=loading?62:detailRankingBarWidth(meta);const splitPos=!loading;let posHtml='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')posHtml=`<span class="stat-rank-pos-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-rank-pos-total">${tt}</span>`;else posHtml=`<span class="stat-rank-pos-main">${fmtN(rk)}位 /</span><span class="stat-rank-pos-total">${fmtN(tt)}</span>`}
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${fmtN(s.total)}</div>${eb}</div>`
 }).join('');

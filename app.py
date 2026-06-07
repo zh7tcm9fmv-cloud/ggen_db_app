@@ -36,6 +36,8 @@ try:
 except ImportError:
     ZoneInfo = None  # pragma: no cover
 
+import game_enums
+
 app = Flask(__name__)
 # Trust Railway / CDN client IP headers (required for IP-based vote ballots).
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
@@ -4114,11 +4116,16 @@ def create_trait_data_map(d):
         if not isinstance(item, dict): continue
         tid = normalize_id(item.get('Id') or item.get('id'))
         if tid == '0': continue
+        tti = safe_int(item.get('TraitTypeIndex') or item.get('traitTypeIndex'), 0)
         lookup[tid] = {
             'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
             'active_cond_id': normalize_id(item.get('ActiveConditionSetId') or item.get('activeConditionSetId') or item.get('ActiveConditionId')),
             'target_cond_id': normalize_id(item.get('TargetConditionSetId') or item.get('targetConditionSetId') or item.get('TargetConditionId')),
             'boost_cond_id': normalize_id(item.get('TraitBoostConditionSetId') or item.get('traitBoostConditionSetId')),
+            'trait_type_index': tti,
+            'trait_type_key': game_enums.enum_key('TraitType', tti),
+            'trait_type_label': game_enums.enum_label('TraitType', tti),
+            'trait_value': safe_int(item.get('TraitValue') or item.get('traitValue'), 0),
         }
     return lookup
 
@@ -5198,7 +5205,13 @@ def create_map_npc_strategy_hint_maps(hint_data):
         typ = safe_int(item.get('StrategyHintTypeIndex') or item.get('strategyHintTypeIndex'), 0)
         tgt = normalize_id(item.get('StrategyHintTargetValue') or item.get('strategyHintTargetValue'), '0')
         rid = str(item.get('AttentionResourceId') or item.get('attentionResourceId') or '').strip()
-        by_npc.setdefault(npc_id, []).append({'type': typ, 'target': tgt, 'resource_id': rid})
+        by_npc.setdefault(npc_id, []).append({
+            'type': typ,
+            'type_key': game_enums.enum_key('MapNpcStrategyHintType', typ),
+            'type_label': game_enums.enum_label('MapNpcStrategyHintType', typ),
+            'target': tgt,
+            'resource_id': rid,
+        })
     return by_npc, npc_ids
 
 
@@ -5311,29 +5324,40 @@ def apply_map_npc_strategy_hints(npc_id, up, cp, hints):
 
         targetless = tgt in ('0', '', None)
 
-        # User-defined semantic mapping:
-        # 1=unit weapon, 3=unit ability, 4=character ability, 7=unit stats, 10=unit MOV stat
-        if typ == 7 and up:
-            up['strategy_hint_stats_icon'] = url
+        # MapNpcStrategyHintType: 5–9 = unit stat highlights, 10 = MOV (Eternal.Domain.Enums).
+        stat_field = game_enums.MAP_NPC_STAT_HINT_FIELDS.get(typ)
+        if stat_field and up:
+            up[stat_field] = url
+            if typ == game_enums.MAP_NPC_HINT_UNIT_ATTACK:
+                up['strategy_hint_stats_icon'] = url
             continue
-        if typ == 10 and up:
+        if typ == game_enums.MAP_NPC_HINT_UNIT_MOVEMENT and up:
             up['strategy_hint_move_icon'] = url
             continue
 
         matched = False
         if targetless:
-            if typ == 1:
+            if typ == game_enums.MAP_NPC_HINT_WEAPON:
                 matched = _assign_first_unit_weapon()
-            elif typ == 3:
+            elif typ == game_enums.MAP_NPC_HINT_CHARACTER_SKILL:
+                matched = _assign_first_char_skill()
+            elif typ == game_enums.MAP_NPC_HINT_UNIT_ABILITY:
                 matched = _assign_first_unit_ability()
-            elif typ == 4:
+            elif typ == game_enums.MAP_NPC_HINT_CHARACTER_ABILITY:
                 matched = _assign_first_char_ability()
         else:
-            if typ == 1:
+            if typ == game_enums.MAP_NPC_HINT_WEAPON:
                 matched = _assign_targeted_unit_weapon()
-            elif typ == 3:
+            elif typ == game_enums.MAP_NPC_HINT_CHARACTER_SKILL:
+                if cp:
+                    for sk in (cp.get('skills') or []):
+                        if isinstance(sk, dict) and normalize_id(sk.get('id')) == tgt:
+                            sk['strategy_hint_icon'] = url
+                            matched = True
+                            break
+            elif typ == game_enums.MAP_NPC_HINT_UNIT_ABILITY:
                 matched = _assign_targeted_unit_ability()
-            elif typ == 4:
+            elif typ == game_enums.MAP_NPC_HINT_CHARACTER_ABILITY:
                 matched = _assign_targeted_char_ability()
 
         # Fallback for inconsistent/legacy rows in master data.
@@ -6095,7 +6119,13 @@ def create_mechanism_map(bd, ld):
         nid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
         did = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
         rid = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
-        e = {'id': mid, 'resource_id': rid, 'name': lt.get(nid, "Unknown"), 'description': lt.get(did, "")}
+        mti = safe_int(item.get('MechanismTypeIndex') or item.get('mechanismTypeIndex'), 0)
+        e = {
+            'id': mid, 'resource_id': rid, 'name': lt.get(nid, "Unknown"), 'description': lt.get(did, ""),
+            'mechanism_type_index': mti,
+            'mechanism_type_key': game_enums.enum_key('MechanismType', mti),
+            'mechanism_type_label': game_enums.enum_label('MechanismType', mti),
+        }
         if mid != '0': lk.setdefault(mid, []).append(e)
         if sid != '0' and sid != mid: lk.setdefault(sid, []).append(e)
     return lk
@@ -6601,7 +6631,12 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                 continue
             if iv not in cond_nums:
                 cond_nums.append(iv)
+        tti = safe_int(t_data.get('trait_type_index'), 0)
         trait_info.append({
+            'trait_id': tid,
+            'trait_type_index': tti,
+            'trait_type_key': t_data.get('trait_type_key') or game_enums.enum_key('TraitType', tti),
+            'trait_type_label': t_data.get('trait_type_label') or game_enums.enum_label('TraitType', tti),
             'display_text': display_text,
             'en_text': en_text,
             'conditions': trait_conds,
@@ -11436,7 +11471,7 @@ def _tier_mockup_json_path():
 def _tier_scoring_guide():
     """How the 0–100 score is built (shown on /tier-list before the grid)."""
     return {
-        'version': 5,
+        'version': 6,
         'tier_modes': [
             {
                 'id': 'meta',
@@ -11502,6 +11537,12 @@ def _tier_scoring_guide():
                 {'key': 'squad_buffs', 'label': 'Squad tag buffs', 'max': 18, 'detail': 'Conditional squad-wide buffs.'},
             ],
         },
+        'axes_v1': [
+            {'key': 'stat', 'label': 'Stat', 'max': 100, 'detail': 'Final LB stats percentile (role-weighted ATK/DEF/HP/MOB).'},
+            {'key': 'damage', 'label': 'Damage', 'max': 100, 'detail': 'Weapon reach, MAP kit, and sim-verified peak EX burst for attackers.'},
+            {'key': 'ml_buff', 'label': 'ML buff fit', 'max': 100, 'detail': 'Tag/series overlap with Master League season buff targets (historical sets).'},
+            {'key': 'utility', 'label': 'Utility', 'max': 100, 'detail': 'TraitType-driven ability value — heals, DR, crit, MAP ammo, terrain fixes, etc.'},
+        ],
         'supporters': [
             {'key': 'leader_pct', 'label': 'Leader skill %', 'max': '~55', 'detail': 'Highest tier-3 leader buff percentage on matching tags.'},
             {'key': 'quality_avg', 'label': 'Quality-weighted roster', 'max': 22, 'detail': 'Average composite score of units that receive the leader buff — not just raw count.'},
@@ -11565,6 +11606,24 @@ def _tier_mockup_attach_thumbs(rows, kind):
         if isinstance(row, dict) and row.get('id'):
             row['thumb'] = _tier_mockup_thumb(row['id'], kind) or ''
             row.update(_tier_mockup_row_icons(row, kind))
+
+
+@app.route('/api/game_enums')
+def api_game_enums():
+    """Eternal.Domain.Enums registry (EN labels from dump OriginalName keys)."""
+    names = request.args.get('names', '').strip()
+    data = game_enums.payload()
+    if names:
+        wanted = {n.strip() for n in names.split(',') if n.strip()}
+        enums = data.get('enums') or {}
+        data = {
+            'version': data.get('version'),
+            'enum_count': len(wanted),
+            'enums': {k: v for k, v in enums.items() if k in wanted},
+        }
+    r = jsonify(data)
+    r.headers['Cache-Control'] = 'public, max-age=86400'
+    return r
 
 
 @app.route('/api/tier_mockup')
@@ -18207,7 +18266,14 @@ def get_unit(unit_id):
                 for rmm in mm.get(mid, []):
                     if rmm.get('id') == mid:
                         icf = find_mechanism_icon(rmm.get('resource_id', ''))
-                        mechs.append({'name': rmm.get('name', 'Unknown'), 'description': rmm.get('description', ''), 'icon': f"/static/images/mechanism/{icf}" if icf else ''})
+                        mechs.append({
+                            'name': rmm.get('name', 'Unknown'),
+                            'description': rmm.get('description', ''),
+                            'icon': f"/static/images/mechanism/{icf}" if icf else '',
+                            'mechanism_type_index': rmm.get('mechanism_type_index', 0),
+                            'mechanism_type_key': rmm.get('mechanism_type_key', ''),
+                            'mechanism_type_label': rmm.get('mechanism_type_label', ''),
+                        })
                         break
         else:
             rec_cid = normalize_id(info.get('recommend_character_id') or '0')

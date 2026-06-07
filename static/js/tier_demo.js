@@ -3,6 +3,13 @@
 
   const TIERS = ['SSS', 'SS', 'S', 'A'];
 
+  const UNIT_AXIS_KEYS = [
+    { key: 'stat', label: 'Stat' },
+    { key: 'damage', label: 'Dmg' },
+    { key: 'ml_buff', label: 'ML' },
+    { key: 'utility', label: 'Util' },
+  ];
+
   const UNIT_SUB_KEYS = {
     Attack: [
       { key: 'sortie', label: 'Sortie', max: 30 },
@@ -82,6 +89,24 @@
       return d;
     })());
   };
+
+  function renderAxes(row, kind) {
+    if (kind !== 'units' || !row.axes) return '';
+    const rows = UNIT_AXIS_KEYS.map((d) => {
+      const ax = row.axes[d.key] || {};
+      const val = Number(ax.score || 0);
+      if (val <= 0) return '';
+      const tier = ax.tier || '';
+      const pct = Math.min(100, val);
+      return `<div class="tier-axis-row">
+        <span class="tier-axis-label">${esc(d.label)}</span>
+        <div class="tier-axis-bar"><span style="width:${pct.toFixed(0)}%"></span></div>
+        <span class="tier-axis-val">${val.toFixed(0)}${tier ? ` · ${esc(tier)}` : ''}</span>
+      </div>`;
+    }).filter(Boolean).join('');
+    if (!rows) return '';
+    return `<div class="tier-card-axes"><div class="tier-card-axes-title">Axis breakdown</div>${rows}</div>`;
+  }
 
   function renderSubscores(row, kind) {
     if (kind === 'units' && row.subscores) {
@@ -172,6 +197,7 @@
           </div>
         </div>
         ${chips.length ? `<div class="tier-card-chips">${chips.join('')}</div>` : ''}
+        ${renderAxes(row, kind)}
         ${renderSubscores(row, kind)}
         ${renderAdvantages(row)}
       </article>`;
@@ -197,7 +223,9 @@
       .join('');
 
     let pillars = [];
-    if (activeCategory === 'units') {
+    if (activeCategory === 'units' && guide.axes_v1 && guide.axes_v1.length) {
+      pillars = guide.axes_v1.concat((guide.units && guide.units[activeRole]) || []);
+    } else if (activeCategory === 'units') {
       pillars = (guide.units && guide.units[activeRole]) || [];
     } else if (activeCategory === 'characters') {
       pillars = (guide.characters && guide.characters[activeRole]) || [];

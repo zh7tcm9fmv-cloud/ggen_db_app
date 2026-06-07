@@ -20,6 +20,7 @@ os.chdir(ROOT)
 os.environ["GGEN_TIER_USE_BUNDLED_EN"] = "1"
 
 import app as A  # noqa: E402
+import game_enums  # noqa: E402
 
 LC = "EN"
 LD = A.LANG_DATA[LC]
@@ -1206,6 +1207,145 @@ def top_supporters_for_unit(uid: str, limit: int = 3) -> list:
     return ranked[:limit]
 
 
+# --- Multi-axis tier v1 (stat / damage / ML buff / utility) ---
+
+AXIS_KEYS = ("stat", "damage", "ml_buff", "utility")
+_STAT_AXIS_CAP = {"1": 14.0, "2": 20.0, "3": 10.0}
+_DAMAGE_AXIS_CAP = {"1": 54.0, "2": 14.0, "3": 14.0}
+_ML_BUFF_SETS: dict | None = None
+
+
+def build_ml_buff_target_sets() -> dict:
+    """LeagueBuffTargetSetId → [{type_index, target_id}] from bundled EN master."""
+    path = ROOT / "data" / "EN" / "master" / "m_league_buff_target.json"
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    out = {}
+    for row in data if isinstance(data, list) else (data.get("data") or []):
+        if not isinstance(row, dict):
+            continue
+        bset = A.normalize_id(row.get("LeagueBuffTargetSetId") or row.get("leagueBuffTargetSetId"))
+        if bset == "0":
+            continue
+        ttype = int(row.get("LeagueBuffTargetTypeIndex") or row.get("leagueBuffTargetTypeIndex") or 0)
+        tid = A.normalize_id(row.get("TargetId") or row.get("targetId"))
+        out.setdefault(bset, []).append({"type_index": ttype, "target_id": tid})
+    return out
+
+
+def unit_lineage_tag_ids(uid: str) -> set:
+    ids = set()
+    for row in A.unit_lin_map.get(uid, []) or []:
+        if isinstance(row, (list, tuple)):
+            for tid in row:
+                nid = A.normalize_id(tid)
+                if nid != "0":
+                    ids.add(nid)
+        else:
+            nid = A.normalize_id(row)
+            if nid != "0":
+                ids.add(nid)
+    return ids
+
+
+def unit_series_ids(uid: str) -> set:
+    sset = A.unit_ser_map.get(uid, "")
+    ids = set()
+    if sset and str(sset) != "0":
+        for sid in (LDC.get("ser_set_map") or {}).get(sset, []):
+            nid = A.normalize_id(sid)
+            if nid != "0":
+                ids.add(nid)
+    return ids
+
+
+def ml_buff_fit_raw(uid: str, buff_sets: dict | None = None) -> float:
+    """How many ML seasons' buff targets this unit matches (tag or series)."""
+    buff_sets = buff_sets if buff_sets is not None else (_ML_BUFF_SETS or {})
+    if not buff_sets:
+        return 0.0
+    tags = unit_lineage_tag_ids(uid)
+    series = unit_series_ids(uid)
+    seasons = 0
+    for _set_id, targets in buff_sets.items():
+        for t in targets:
+            ti = int(t.get("type_index") or 0)
+            tid = t.get("target_id", "0")
+            if ti == 2 and tid in tags:
+                seasons += 1
+                break
+            if ti == 1 and tid in series:
+                seasons += 1
+                break
+    return float(seasons)
+
+
+def collect_unit_trait_type_indices(uid: str) -> list[int]:
+    seen = set()
+    out = []
+    for ab in A.unit_abil_map.get(uid, []) or []:
+        ab_id = str(ab.get("id", ""))
+        tsid = A.normalize_id(A.abil_link_map.get(ab_id, ab_id))
+        lookup_id = tsid[:-2] if len(tsid) > 2 else tsid
+        tids = A.trait_set_traits_map.get(tsid, []) or A.trait_set_traits_map.get(lookup_id, [])
+        for tid in tids:
+            tdata = A.trait_data_map.get(tid, {}) or {}
+            tti = int(tdata.get("trait_type_index") or 0)
+            if tti and tti not in seen:
+                seen.add(tti)
+                out.append(tti)
+    return out
+
+
+def utility_raw_score(uid: str) -> float:
+    return sum(game_enums.trait_utility_weight(tti) for tti in collect_unit_trait_type_indices(uid))
+
+
+def axis_stat_raw(role: str, stat_pts: float) -> float:
+    cap = _STAT_AXIS_CAP.get(role, 14.0)
+    return min(100.0, (float(stat_pts) / cap) * 100.0) if cap else 0.0
+
+
+def axis_damage_raw(role: str, wpn_pts: float, peak_pts: float) -> float:
+    cap = _DAMAGE_AXIS_CAP.get(role, 54.0)
+    pts = float(wpn_pts) + (float(peak_pts) if role == "1" else 0.0)
+    return min(100.0, (pts / cap) * 100.0) if cap else 0.0
+
+
+def finalize_unit_axes(unit_rows: list) -> None:
+    """Percentile-normalize ml_buff + utility; attach tier per axis."""
+    pools = {k: [] for k in AXIS_KEYS}
+    for r in unit_rows:
+        raw = r.get("axes_raw") or {}
+        for k in AXIS_KEYS:
+            pools[k].append(float(raw.get(k) or 0))
+    for r in unit_rows:
+        raw = r.pop("axes_raw", {}) or {}
+        axes = {}
+        for k in AXIS_KEYS:
+            if k in ("ml_buff", "utility"):
+                sc = percentile_rank(float(raw.get(k) or 0), pools[k]) * 100.0
+            else:
+                sc = float(raw.get(k) or 0)
+            sc = round(min(100.0, max(0.0, sc)), 1)
+            axes[k] = {"score": sc, "tier": score_to_tier(sc)}
+            if k == "utility":
+                ttypes = collect_unit_trait_type_indices(r.get("id", ""))
+                axes[k]["trait_types"] = [
+                    {
+                        "index": tti,
+                        "key": game_enums.enum_key("TraitType", tti),
+                        "label": game_enums.enum_label("TraitType", tti),
+                        "weight": game_enums.trait_utility_weight(tti),
+                    }
+                    for tti in sorted(ttypes, key=lambda x: -game_enums.trait_utility_weight(x))[:6]
+                ]
+            if k == "ml_buff" and raw.get("ml_buff_seasons") is not None:
+                axes[k]["season_matches"] = int(raw.get("ml_buff_seasons") or 0)
+        r["axes"] = axes
+
+
 # --- Unit scoring ---
 
 
@@ -1311,6 +1451,8 @@ def score_unit(uid: str, er_stages: list, pop: dict) -> dict:
             f"Space+Ground terrain (ER fit {ter_detail.get('er_stage_fit_pct', 0):.0f}%) — covers most stages"
         )
 
+    ml_seasons = ml_buff_fit_raw(uid)
+    util_raw = utility_raw_score(uid)
     return {
         "id": uid, "name": unit_name(uid), "role": A.ROLE_MAP.get(role, "?"),
         "rarity": A.RARITY_MAP.get(ri, "?"), "acquisition": acq,
@@ -1323,6 +1465,13 @@ def score_unit(uid: str, er_stages: list, pop: dict) -> dict:
             "peak_damage": round(peak_pts if role == "1" else 0, 1),
             "abilities": round(abil_pts, 1), "team_synergy": round(team_pts, 1),
             "crit_synergy": round(crit_synergy_pts, 1),
+        },
+        "axes_raw": {
+            "stat": axis_stat_raw(role, stat_pts),
+            "damage": axis_damage_raw(role, wpn_pts, peak_pts if role == "1" else 0),
+            "ml_buff": ml_seasons,
+            "ml_buff_seasons": int(ml_seasons),
+            "utility": util_raw,
         },
         "coverage": cov, "weapons": wpn, "stats_ssp": ssp, "stat_mode": stat_mode,
         "terrain_detail": ter_detail, "sim_damage": sim_dmg,
@@ -1861,7 +2010,10 @@ def render_markdown(payload: dict) -> str:
 
 
 def main():
-    print("Tier mockup v5 — gated score meta tiers (data/EN)...")
+    global _ML_BUFF_SETS
+    print("Tier mockup v6 — gated meta tiers + multi-axis v1 (data/EN)...")
+    _ML_BUFF_SETS = build_ml_buff_target_sets()
+    print(f"  ML buff target sets: {len(_ML_BUFF_SETS)}")
     er = build_er_stage_weights()
     print(f"  ER stages: {len(er)}")
 
@@ -1896,6 +2048,7 @@ def main():
         if i and i % 50 == 0:
             print(f"    units {i}/{len(uids)}")
         unit_rows.append(score_unit(uid, er, pop_u))
+    finalize_unit_axes(unit_rows)
     assign_gated_meta_tiers(unit_rows, "is_tier_pool", lambda r: (r.get("role", "?"), r.get("rarity", "?")))
     apply_community_anchors(unit_rows, COMMUNITY_UNIT_META_FLOOR, COMMUNITY_UNIT_SCORE_BUMP)
     unit_rows.sort(key=lambda r: (-r["score"], r["name"]))
@@ -1947,8 +2100,19 @@ def main():
             by_sm[r["tier_meta"]].append(r)
 
     payload = {
-        "version": 5,
+        "version": 6,
         "tier_bands": TIER_MIN_SCORE,
+        "axes_v1": {
+            "keys": list(AXIS_KEYS),
+            "labels": {
+                "stat": "Stat",
+                "damage": "Damage",
+                "ml_buff": "ML buff fit",
+                "utility": "Utility",
+            },
+            "ml_buff_sets": len(_ML_BUFF_SETS or {}),
+            "trait_type_source": "TraitType enum (game_enums.json)",
+        },
         "meta_tier_pcts": META_TIER_PCTS,
         "sss_caps": SSS_CAP,
         "method": {
@@ -1956,7 +2120,8 @@ def main():
             "eternal_stages": len(er),
             "er_terrain_weights": ER_TERRAIN_STAGE_WEIGHTS,
             "includes": [
-                "Meta tier (v5): score percentiles within role/rarity + attack SSS gates",
+                "Multi-axis v1: stat, damage, ML buff fit, utility (TraitType-driven)",
+                "Meta tier (v6): score percentiles within role/rarity + attack SSS gates",
                 "UR Attack SSS needs top-3 sim, MAP-after-move, bundled crit, or limited + top-8 sim",
                 "Permanent generalists (e.g. Atlas) cannot SSS on terrain/team breadth alone",
                 "Why ranked here: 4-5 short bullets vs same pool — no meta merit jargon",
