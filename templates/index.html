@@ -437,7 +437,7 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 }
 @media(max-width:768px) and (max-height:760px){
 .modal-content.char-detail{overflow-x:hidden;overflow-y:auto}
-.modal-content.char-detail .detail-header{overflow-x:hidden;overflow-y:visible}
+.modal-content.char-detail .detail-header{overflow:visible}
 }
 #panel-latest_release::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
 #panel-banner_timeline::before,#panel-master_league::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/Background/obg_013_garage.webp{% else %}/static/images/Background/obg_013_garage.webp{% endif %}')}
@@ -1010,6 +1010,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .header-stats-wrapper{margin-top:auto;padding-top:18px;display:flex;flex-direction:column}
 .modal-content.char-detail .detail-header>.detail-rank-toggle-slot,.modal-content.unit-detail .detail-header>.detail-rank-toggle-slot{position:absolute;left:28px;bottom:24px;z-index:25;display:flex;justify-content:flex-start;align-items:flex-end;margin:0;padding:0;pointer-events:none;width:auto}
 .modal-content.char-detail .detail-header>.detail-rank-toggle-slot .detail-rank-toggle-btn,.modal-content.unit-detail .detail-header>.detail-rank-toggle-slot .detail-rank-toggle-btn{pointer-events:auto}
+@media(min-width:769px){
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header:has(.detail-rank-toggle-btn){overflow:visible;padding-bottom:80px;z-index:2}
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header:has(.detail-rank-toggle-btn)>.detail-rank-toggle-slot{bottom:28px;z-index:30}
+}
 .modal-content.char-detail .header-stats-wrapper .lb-control-row,.modal-content.unit-detail .header-stats-wrapper .lb-control-row{overflow:visible;max-width:100%;min-width:0}
 .modal-content.char-detail .header-stats-wrapper .lb-btn-group,.modal-content.unit-detail .header-stats-wrapper .lb-btn-group{overflow:visible;flex-shrink:0;border-radius:var(--radius-sm);background-clip:padding-box}
 .modal-content.char-detail .header-stats-wrapper .lb-icon-btn.active,.modal-content.unit-detail .header-stats-wrapper .lb-icon-btn.active{box-shadow:none}
