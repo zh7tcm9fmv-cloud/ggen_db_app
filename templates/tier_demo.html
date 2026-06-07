@@ -12,11 +12,11 @@
 
   <header class="tier-demo-hero">
     <h1>Meta Tier List</h1>
-    <p>SSS → A rankings for SSR+ units and pilots plus UR supporters. UR uses SSP/EX kits; SSR uses SP stats. Scores cap at 100 before limited-time bonuses.</p>
+    <p>Four-axis unit rankings — stat, damage, ML buff fit, and utility — plus pilot and supporter tiers. No one tops every axis; scores reflect scenario strengths, not a perfect 100.</p>
   </header>
 
   <section id="tierScoringPanel" class="tier-scoring-panel" aria-labelledby="tierScoringTitle">
-    <h2 id="tierScoringTitle" class="tier-scoring-title">How points are distributed</h2>
+    <h2 id="tierScoringTitle" class="tier-scoring-title">How rankings work</h2>
     <p id="tierScoringIntro" class="tier-scoring-intro">Loading scoring breakdown…</p>
     <div id="tierScoringModes" class="tier-scoring-modes"></div>
     <div id="tierScoringPillars" class="tier-scoring-pillars"></div>
@@ -39,6 +39,13 @@
       <option value="SSR">SSR only</option>
       <option value="All">All SSR+</option>
     </select>
+    <select id="unitAxisView" aria-label="Unit axis view" style="display:none">
+      <option value="overall" selected>Overall meta tier</option>
+      <option value="stat">By stat axis</option>
+      <option value="damage">By damage axis</option>
+      <option value="ml_buff">By ML buff fit</option>
+      <option value="utility">By utility axis</option>
+    </select>
     <select id="tierMode" aria-label="Tier mode">
       <option value="meta" selected>Meta tier (percentile)</option>
       <option value="absolute">Absolute score tier</option>
@@ -51,7 +58,6 @@
   <div id="tierGrid" class="tier-demo-grid" aria-busy="true"></div>
 
   <footer class="tier-demo-foot">
-    <p>Limited-time picks receive a pull-priority bump. Data is precomputed — regenerate with <code>python scripts/tier_rank_mockup.py</code> when game balance shifts.</p>
     <p class="muted">Not affiliated with Bandai Namco. Game data may lag live patches.</p>
   </footer>
 </div>

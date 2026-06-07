@@ -44,6 +44,7 @@
   let activeRole = 'Attack';
   let activeRarity = 'UR';
   let tierMode = 'meta';
+  let unitAxisView = 'overall';
   let searchQuery = '';
 
   const $ = (sel) => document.querySelector(sel);
@@ -90,22 +91,63 @@
     })());
   };
 
-  function renderAxes(row, kind) {
+  function scoreCap() {
+    const cap = payload && payload.axes_v1 && payload.axes_v1.score_cap;
+    return Number(cap) > 0 ? Number(cap) : 92;
+  }
+
+  function axisBarPct(val) {
+    const cap = scoreCap();
+    return Math.min(100, (Number(val || 0) / cap) * 100);
+  }
+
+  function strongestAxis(row) {
+    if (!row.axes) return null;
+    let best = null;
+    UNIT_AXIS_KEYS.forEach((d) => {
+      const ax = row.axes[d.key] || {};
+      const sc = Number(ax.score || 0);
+      if (sc <= 0) return;
+      if (!best || sc > best.score) {
+        best = { label: d.label, score: sc, tier: ax.tier || '' };
+      }
+    });
+    return best;
+  }
+
+  function renderAxisStrip(row, highlightKey) {
+    if (!row.axes) return '';
+    const cells = UNIT_AXIS_KEYS.map((d) => {
+      const ax = row.axes[d.key] || {};
+      const val = Number(ax.score || 0);
+      const tier = ax.tier || '—';
+      const hi = highlightKey && d.key === highlightKey ? ' is-highlight' : '';
+      return `<div class="tier-axis-cell${hi}" title="${esc(d.label)}: ${val.toFixed(0)} (${tier})">
+        <span class="tier-axis-cell-label">${esc(d.label)}</span>
+        <span class="tier-axis-cell-tier">${esc(tier)}</span>
+        <span class="tier-axis-cell-score">${val > 0 ? val.toFixed(0) : '—'}</span>
+      </div>`;
+    }).join('');
+    return `<div class="tier-axis-strip">${cells}</div>`;
+  }
+
+  function renderAxes(row, kind, highlightKey) {
     if (kind !== 'units' || !row.axes) return '';
     const rows = UNIT_AXIS_KEYS.map((d) => {
       const ax = row.axes[d.key] || {};
       const val = Number(ax.score || 0);
       if (val <= 0) return '';
       const tier = ax.tier || '';
-      const pct = Math.min(100, val);
-      return `<div class="tier-axis-row">
+      const pct = axisBarPct(val);
+      const hi = highlightKey && d.key === highlightKey ? ' tier-axis-row--hi' : '';
+      return `<div class="tier-axis-row${hi}">
         <span class="tier-axis-label">${esc(d.label)}</span>
         <div class="tier-axis-bar"><span style="width:${pct.toFixed(0)}%"></span></div>
-        <span class="tier-axis-val">${val.toFixed(0)}${tier ? ` · ${esc(tier)}` : ''}</span>
+        <span class="tier-axis-val">${val.toFixed(0)} · ${esc(tier)}</span>
       </div>`;
     }).filter(Boolean).join('');
     if (!rows) return '';
-    return `<div class="tier-card-axes"><div class="tier-card-axes-title">Axis breakdown</div>${rows}</div>`;
+    return `<div class="tier-card-axes">${rows}</div>`;
   }
 
   function renderSubscores(row, kind) {
@@ -179,12 +221,32 @@
     </div>`;
   }
 
+  function rowTierLabel(row, kind) {
+    if (kind === 'units' && unitAxisView !== 'overall' && row.axes && row.axes[unitAxisView]) {
+      return row.axes[unitAxisView].tier || 'A';
+    }
+    return tierMode === 'meta' ? row.tier_meta : row.tier;
+  }
+
   function renderCard(row, kind) {
     const chips = [];
     if (row.is_limited_time) chips.push(chip('limited', 'Limited'));
 
-    const tierLabel = tierMode === 'meta' ? row.tier_meta : row.tier;
+    const tierLabel = rowTierLabel(row, kind);
     const sub = [row.role || kind.slice(0, -1), row.rarity || ''].filter(Boolean).join(' · ');
+    const highlightKey = kind === 'units' && unitAxisView !== 'overall' ? unitAxisView : '';
+    const strong = kind === 'units' ? strongestAxis(row) : null;
+
+    let scoreLine = '';
+    if (kind === 'units' && row.axes) {
+      const viewLabel = unitAxisView === 'overall'
+        ? 'Overall meta'
+        : (UNIT_AXIS_KEYS.find((d) => d.key === unitAxisView) || {}).label || 'Axis';
+      const strongTxt = strong ? ` · best ${esc(strong.label)} ${esc(strong.tier)}` : '';
+      scoreLine = `<div class="tier-card-score">${esc(viewLabel)} · ${esc(tierLabel)}${strongTxt}</div>`;
+    } else {
+      scoreLine = `<div class="tier-card-score">${esc(tierLabel)}${row.score != null ? ` · ${Number(row.score).toFixed(1)}` : ''}</div>`;
+    }
 
     return `
       <article class="tier-card" data-id="${esc(row.id)}">
@@ -193,12 +255,12 @@
           <div class="tier-card-meta">
             <h3 class="tier-card-name">${esc(row.name)}</h3>
             <p class="tier-card-sub">${esc(sub)}</p>
-            <div class="tier-card-score">Score ${esc(row.score)} · ${esc(tierLabel)}</div>
+            ${scoreLine}
           </div>
         </div>
         ${chips.length ? `<div class="tier-card-chips">${chips.join('')}</div>` : ''}
-        ${renderAxes(row, kind)}
-        ${renderSubscores(row, kind)}
+        ${kind === 'units' ? renderAxisStrip(row, highlightKey) : ''}
+        ${kind === 'units' ? renderAxes(row, kind, highlightKey) : renderSubscores(row, kind)}
         ${renderAdvantages(row)}
       </article>`;
   }
@@ -216,7 +278,11 @@
 
     const rarityNote = activeCategory === 'supporters' ? '' : ` · ${activeRarity === 'All' ? 'SSR+ pool' : activeRarity + ' only'}`;
     const catLabel = activeCategory === 'units' ? 'units' : activeCategory === 'characters' ? 'pilots' : 'UR supporters';
-    intro.textContent = `Each ${catLabel} (${activeCategory === 'supporters' ? 'all roles' : activeRole}${rarityNote}) earns up to 100 points from the pillars below. Meta tiers compare within the same role and rarity band.`;
+    if (activeCategory === 'units') {
+      intro.textContent = `Units are ranked on four independent axes — stat, damage, ML buff fit, and utility (${activeRole}${rarityNote}). Nobody tops every axis; switch the axis view to see who leads in each scenario. Overall meta tier is a summary, not a perfect score.`;
+    } else {
+      intro.textContent = `Each ${catLabel} (${activeCategory === 'supporters' ? 'all roles' : activeRole}${rarityNote}) is scored within the same role and rarity band. Scores reflect relative strength, not a perfect 100.`;
+    }
 
     modesEl.innerHTML = (guide.tier_modes || [])
       .map((m) => `<div class="tier-scoring-mode"><strong>${esc(m.label)}</strong>${esc(m.detail)}</div>`)
@@ -224,7 +290,7 @@
 
     let pillars = [];
     if (activeCategory === 'units' && guide.axes_v1 && guide.axes_v1.length) {
-      pillars = guide.axes_v1.concat((guide.units && guide.units[activeRole]) || []);
+      pillars = guide.axes_v1;
     } else if (activeCategory === 'units') {
       pillars = (guide.units && guide.units[activeRole]) || [];
     } else if (activeCategory === 'characters') {
@@ -245,10 +311,21 @@
       )
       .join('');
 
-    const mods = guide.global_modifiers || [];
-    globalEl.innerHTML = mods.length
-      ? `<strong>Global modifiers:</strong> ${mods.map((m) => `${esc(m.label)} (${esc(m.points)}) — ${esc(m.detail)}`).join(' · ')}`
-      : '';
+    if (activeCategory === 'units') {
+      globalEl.innerHTML = `<strong>Note:</strong> Axis scores top out below 100 — units excel in different scenarios, not across the board.`;
+    } else {
+      const mods = guide.global_modifiers || [];
+      globalEl.innerHTML = mods.length
+        ? `<strong>Global modifiers:</strong> ${mods.map((m) => `${esc(m.label)} (${esc(m.points)}) — ${esc(m.detail)}`).join(' · ')}`
+        : '';
+    }
+  }
+
+  function rowSortScore(row, kind) {
+    if (kind === 'units' && unitAxisView !== 'overall' && row.axes && row.axes[unitAxisView]) {
+      return Number(row.axes[unitAxisView].score || 0);
+    }
+    return Number(row.score || 0);
   }
 
   function flattenMetaBuckets(buckets) {
@@ -285,11 +362,11 @@
     const rows = currentRows();
     const byTier = { SSS: [], SS: [], S: [], A: [] };
     rows.forEach((r) => {
-      const t = tierMode === 'meta' ? r.tier_meta : r.tier;
+      const t = rowTierLabel(r, activeCategory);
       if (byTier[t]) byTier[t].push(r);
     });
     TIERS.forEach((t) => {
-      byTier[t].sort((a, b) => (b.score || 0) - (a.score || 0));
+      byTier[t].sort((a, b) => rowSortScore(b, activeCategory) - rowSortScore(a, activeCategory));
     });
 
     grid.innerHTML = TIERS.map((t) => {
@@ -308,7 +385,23 @@
         </section>`;
     }).join('');
 
-    statusEl.textContent = `${rows.length} ${activeCategory} · ${tierMode === 'meta' ? 'meta percentile' : 'absolute score'} tiers`;
+    let status = `${rows.length} ${activeCategory}`;
+    if (activeCategory === 'units' && unitAxisView !== 'overall') {
+      const axLabel = (UNIT_AXIS_KEYS.find((d) => d.key === unitAxisView) || {}).label || unitAxisView;
+      status += ` · ${axLabel} axis tiers`;
+    } else {
+      status += ` · ${tierMode === 'meta' ? 'overall meta' : 'absolute score'} tiers`;
+    }
+    statusEl.textContent = status;
+  }
+
+  function syncUnitAxisControl() {
+    const sel = $('#unitAxisView');
+    const tierSel = $('#tierMode');
+    if (!sel) return;
+    const show = activeCategory === 'units';
+    sel.style.display = show ? '' : 'none';
+    if (tierSel) tierSel.style.display = show && unitAxisView !== 'overall' ? 'none' : '';
   }
 
   async function load() {
@@ -317,6 +410,7 @@
       const res = await fetch('/api/tier_mockup');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       payload = await res.json();
+      syncUnitAxisControl();
       render();
     } catch (e) {
       grid.innerHTML = `<p class="tier-demo-empty">Failed to load tier data: ${esc(e.message)}</p>`;
@@ -343,6 +437,7 @@
           b.classList.toggle('active', b.dataset.role === 'Attack');
         });
       }
+      syncUnitAxisControl();
       render();
     });
   });
@@ -367,6 +462,15 @@
     tierMode = e.target.value;
     render();
   });
+
+  const unitAxisEl = $('#unitAxisView');
+  if (unitAxisEl) {
+    unitAxisEl.addEventListener('change', (e) => {
+      unitAxisView = e.target.value;
+      syncUnitAxisControl();
+      render();
+    });
+  }
 
   $('#tierSearch').addEventListener('input', (e) => {
     searchQuery = e.target.value;

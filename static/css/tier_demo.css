@@ -468,19 +468,57 @@ body.tier-demo-page {
   color: var(--muted);
 }
 
+.tier-axis-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.28rem;
+  margin-top: 0.4rem;
+}
+
+.tier-axis-cell {
+  text-align: center;
+  padding: 0.28rem 0.15rem;
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid transparent;
+}
+
+.tier-axis-cell.is-highlight {
+  border-color: rgba(251, 191, 36, 0.45);
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.tier-axis-cell-label {
+  display: block;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tier-axis-cell-tier {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-top: 0.1rem;
+}
+
+.tier-axis-cell-score {
+  display: block;
+  font-size: 0.58rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .tier-card-axes {
-  margin-top: 0.45rem;
-  padding-top: 0.35rem;
+  margin-top: 0.35rem;
+  padding-top: 0.3rem;
   border-top: 1px solid var(--border);
 }
 
-.tier-card-axes-title {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.28rem;
+.tier-axis-row--hi .tier-axis-label {
+  color: #fcd34d;
 }
 
 .tier-axis-row {

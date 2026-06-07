@@ -27,6 +27,8 @@ LD = A.LANG_DATA[LC]
 LDC = LD
 
 TIER_ORDER = ("SSS", "SS", "S", "A")
+# Display cap — no unit/pilot is perfect across every scenario.
+DISPLAY_SCORE_CAP = 92.0
 TIER_MIN_SCORE = {"SSS": 78, "SS": 70, "S": 62, "A": 0}
 META_TIER_PCTS = {"SSS": 0.08, "SS": 0.25, "S": 0.50}
 SSS_CAP = {
@@ -126,7 +128,7 @@ def apply_community_anchors(rows: list, meta_floor: dict, score_bump: dict | Non
     for r in rows:
         rid = r.get("id", "")
         if rid in score_bump:
-            bumped = min(100.0, r["score"] + score_bump[rid])
+            bumped = min(DISPLAY_SCORE_CAP, r["score"] + score_bump[rid])
             r["score"] = round(bumped, 1)
             r["tier"] = score_to_tier(bumped)
         floor = meta_floor.get(rid)
@@ -321,7 +323,7 @@ def is_limited_supporter(sid: str) -> bool:
 
 def apply_limited_bonus(score: float, limited: bool) -> float:
     if limited:
-        return min(100.0, score + LIMITED_SCORE_BONUS)
+        return min(DISPLAY_SCORE_CAP, score + LIMITED_SCORE_BONUS)
     return score
 
 
@@ -1304,13 +1306,13 @@ def utility_raw_score(uid: str) -> float:
 
 def axis_stat_raw(role: str, stat_pts: float) -> float:
     cap = _STAT_AXIS_CAP.get(role, 14.0)
-    return min(100.0, (float(stat_pts) / cap) * 100.0) if cap else 0.0
+    return min(DISPLAY_SCORE_CAP, (float(stat_pts) / cap) * DISPLAY_SCORE_CAP) if cap else 0.0
 
 
 def axis_damage_raw(role: str, wpn_pts: float, peak_pts: float) -> float:
     cap = _DAMAGE_AXIS_CAP.get(role, 54.0)
     pts = float(wpn_pts) + (float(peak_pts) if role == "1" else 0.0)
-    return min(100.0, (pts / cap) * 100.0) if cap else 0.0
+    return min(DISPLAY_SCORE_CAP, (pts / cap) * DISPLAY_SCORE_CAP) if cap else 0.0
 
 
 def finalize_unit_axes(unit_rows: list) -> None:
@@ -1325,10 +1327,10 @@ def finalize_unit_axes(unit_rows: list) -> None:
         axes = {}
         for k in AXIS_KEYS:
             if k in ("ml_buff", "utility"):
-                sc = percentile_rank(float(raw.get(k) or 0), pools[k]) * 100.0
+                sc = percentile_rank(float(raw.get(k) or 0), pools[k]) * DISPLAY_SCORE_CAP
             else:
                 sc = float(raw.get(k) or 0)
-            sc = round(min(100.0, max(0.0, sc)), 1)
+            sc = round(min(DISPLAY_SCORE_CAP, max(0.0, sc)), 1)
             axes[k] = {"score": sc, "tier": score_to_tier(sc)}
             if k == "utility":
                 ttypes = collect_unit_trait_type_indices(r.get("id", ""))
@@ -1423,7 +1425,7 @@ def score_unit(uid: str, er_stages: list, pop: dict) -> dict:
         team_pts += min(4, supporters[0]["fit_score"] * 0.10)
 
     total = sortie_pts + ter_pts + stat_pts + wpn_pts + abil_pts + team_pts + crit_synergy_pts + (3 if acq == "1" else 1)
-    total = apply_limited_bonus(min(100, total), limited)
+    total = apply_limited_bonus(min(DISPLAY_SCORE_CAP, total), limited)
 
     bullets = []
     if limited:
@@ -1523,7 +1525,7 @@ def score_character(cid: str, pop: dict) -> dict:
     aff_pts = min(8, len(flags["affinity_matches"]) * 4)
 
     total = stat_pts + special_pts + burst_pts + squad_pts + aff_pts
-    total = apply_limited_bonus(min(100, total), limited)
+    total = apply_limited_bonus(min(DISPLAY_SCORE_CAP, total), limited)
 
     bullets = []
     if limited:
@@ -1569,7 +1571,7 @@ def score_supporter(sid: str, quality_index: dict | None = None) -> dict:
     ace_pts = min(10, prof.get("ace_units_covered", 0) * 0.12 + prof.get("ace_quality_avg", 0) * 0.04)
     high_pts = min(6, prof.get("high_tier_units", 0) * 0.08)
     total = leader_pts + quality_pts + capture_pts + ace_pts + high_pts
-    total = apply_limited_bonus(min(100, total), limited)
+    total = apply_limited_bonus(min(DISPLAY_SCORE_CAP, total), limited)
     skill_lines = [_format_leader_skill_line(sk) for sk in prof.get("leader_skills") or []]
     bullets = []
     if skill_lines:
@@ -2110,6 +2112,7 @@ def main():
                 "ml_buff": "ML buff fit",
                 "utility": "Utility",
             },
+            "score_cap": DISPLAY_SCORE_CAP,
             "ml_buff_sets": len(_ML_BUFF_SETS or {}),
             "trait_type_source": "TraitType enum (game_enums.json)",
         },

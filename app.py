@@ -11538,10 +11538,10 @@ def _tier_scoring_guide():
             ],
         },
         'axes_v1': [
-            {'key': 'stat', 'label': 'Stat', 'max': 100, 'detail': 'Final LB stats percentile (role-weighted ATK/DEF/HP/MOB).'},
-            {'key': 'damage', 'label': 'Damage', 'max': 100, 'detail': 'Weapon reach, MAP kit, and sim-verified peak EX burst for attackers.'},
-            {'key': 'ml_buff', 'label': 'ML buff fit', 'max': 100, 'detail': 'Tag/series overlap with Master League season buff targets (historical sets).'},
-            {'key': 'utility', 'label': 'Utility', 'max': 100, 'detail': 'TraitType-driven ability value — heals, DR, crit, MAP ammo, terrain fixes, etc.'},
+            {'key': 'stat', 'label': 'Stat', 'max': 92, 'detail': 'Final LB stats (role-weighted ATK/DEF/HP/MOB). Independent axis — not combined with damage.'},
+            {'key': 'damage', 'label': 'Damage', 'max': 92, 'detail': 'Weapon reach, MAP kit, and sim-verified peak EX burst. Strong here ≠ strong everywhere.'},
+            {'key': 'ml_buff', 'label': 'ML buff fit', 'max': 92, 'detail': 'Tag/series overlap with Master League season buff targets across past seasons.'},
+            {'key': 'utility', 'label': 'Utility', 'max': 92, 'detail': 'TraitType-driven kit value — heals, DR, crit, MAP ammo, terrain fixes, etc.'},
         ],
         'supporters': [
             {'key': 'leader_pct', 'label': 'Leader skill %', 'max': '~55', 'detail': 'Highest tier-3 leader buff percentage on matching tags.'},
