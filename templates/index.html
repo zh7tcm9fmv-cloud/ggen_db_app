@@ -95,6 +95,10 @@ button,input,select,textarea,optgroup{font-family:inherit}
 #panel-banner_timeline .bt-gacha-bonus-lbl{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
 #panel-banner_timeline .bt-gacha-preview-btn{padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-card-hover);color:var(--accent-cyan);font-size:12px;font-weight:700;cursor:pointer;transition:var(--transition)}
 #panel-banner_timeline .bt-gacha-preview-btn:hover{border-color:var(--accent-cyan);background:rgba(0,212,255,.08)}
+.bt-gacha-preview-wrap--regular{flex-direction:column;align-items:stretch;width:100%}
+.bt-gacha-pick-row{display:flex;flex-wrap:wrap;gap:8px 12px;margin-bottom:8px}
+.bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
+.bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
 .unit-portrait-wrap{position:relative}
 .unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;backdrop-filter:blur(4px);transition:var(--transition)}
 .unit-lb-video-btn:hover{background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
@@ -102,6 +106,8 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .media-video-overlay.active{display:flex}
 .media-video-stage{position:relative;width:100%;height:100%;max-width:960px;max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
 .media-video-stage video{width:100%;max-height:100vh;object-fit:contain;background:#000}
+.media-video-stage video.media-video-loop-buffer{position:absolute;inset:12px;margin:auto;width:calc(100% - 24px);max-height:calc(100vh - 24px);object-fit:contain;background:#000;opacity:0;pointer-events:none;z-index:0}
+.media-video-stage video.media-video-loop-visible{opacity:1;z-index:1;position:relative}
 .media-video-close{position:absolute;top:12px;right:12px;z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
 .media-video-assault{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);z-index:3;padding:12px 28px;border-radius:999px;border:2px solid rgba(255,255,255,.6);background:rgba(200,40,40,.75);color:#fff;font-size:16px;font-weight:800;letter-spacing:.06em;cursor:pointer;text-transform:uppercase}
 .media-video-controls{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;display:flex;gap:10px}
@@ -922,12 +928,6 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-top-label{position:absolute;top:14px;left:28px;font-size:14px;font-weight:700;color:var(--accent-cyan);letter-spacing:1px;text-transform:uppercase;background:rgba(0,212,255,0.1);padding:4px 14px;border-radius:20px;border:1px solid rgba(0,212,255,0.3);z-index:100}
 .modal-entity-id{position:absolute;top:20px;right:60px;font-size:16px;font-weight:700;color:var(--text-muted);letter-spacing:1px;z-index:100}
 .modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:50%;color:var(--text-secondary);cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:1000}.modal-close:hover{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}
-.detail-nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:64px;padding:0;border:1px solid var(--border-color);border-radius:var(--radius-md);background:rgba(8,12,22,.72);color:var(--text-primary);font-size:28px;line-height:1;cursor:pointer;z-index:1001;display:flex;align-items:center;justify-content:center;transition:var(--transition);backdrop-filter:blur(6px)}
-.detail-nav-btn--prev{left:10px}
-.detail-nav-btn--next{right:10px}
-.detail-nav-btn:hover:not(:disabled){background:rgba(30,42,68,.92);border-color:var(--accent-cyan);color:#fff}
-.detail-nav-btn:disabled{opacity:.28;cursor:default}
-.detail-nav-btn[hidden]{display:none!important}
 .detail-back-strip{padding:52px 28px 0;background:rgba(0,0,0,0.12)}
 .detail-header.char-detail-header--tight-top,.detail-header.unit-detail-header--tight-top{padding-top:12px}
 .detail-back-btn{font-size:13px;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(148,163,184,.45);background:rgba(15,23,42,.55);color:var(--text-secondary);cursor:pointer;line-height:1.2}
@@ -3190,7 +3190,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p id="searchSpotlightFoot" class="search-spotlight-foot"></p>
 </div>
 </div>
-<div class="modal-overlay" id="detailModal" onclick="closeModalOverlay(event)"><div class="modal-content" id="modalContent"><button type="button" class="detail-nav-btn detail-nav-btn--prev" id="detailNavPrev" hidden onclick="event.stopPropagation();detailBrowseNavStep(-1)" aria-label="Previous">‹</button><button type="button" class="detail-nav-btn detail-nav-btn--next" id="detailNavNext" hidden onclick="event.stopPropagation();detailBrowseNavStep(1)" aria-label="Next">›</button><button class="modal-close" onclick="closeModal()">✕</button><div id="detailInner"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
+<div class="modal-overlay" id="detailModal" onclick="closeModalOverlay(event)"><div class="modal-content" id="modalContent"><button class="modal-close" onclick="closeModal()">✕</button><div id="detailInner"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
 <div class="tag-modal-overlay" id="tagModal" onclick="closeTagModal(event)"><div class="tag-modal-content"><div class="tag-modal-header"><div class="tag-modal-title-row"><div class="tag-modal-title" id="tagModalTitle">Tag Results</div><button class="modal-close" style="position:static;" onclick="closeTagModalForce()">✕</button></div><div class="tag-modal-nav"><button class="tag-nav-btn active" id="tagTabUnit" onclick="switchTagTarget('unit')">Units</button><button class="tag-nav-btn" id="tagTabChar" onclick="switchTagTarget('character')">Characters</button><button class="tag-nav-btn" id="tagTabAffinity" onclick="switchTagTarget('affinity')">Affinity</button></div></div><div class="tag-modal-body" id="tagModalBody"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
 <div class="tag-modal-overlay" id="skillModal" onclick="closeSkillModal(event)"><div class="tag-modal-content"><div class="tag-modal-header"><div class="tag-modal-title-row"><div class="tag-modal-title" id="skillModalTitle">Skill / Ability Reference</div><button class="modal-close" style="position:static;" onclick="closeSkillModalForce()">✕</button></div></div><div class="tag-modal-body" id="skillModalBody"><div class="loading-overlay"><div class="spinner"></div></div></div></div></div>
 <div class="cmp-float" id="cmpFloat">

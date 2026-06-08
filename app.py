@@ -15594,16 +15594,22 @@ def api_banner_timeline():
             'bonus_destroy_anim_index': safe_int(row.get('BonusGashaContainerDestroyAnimationTypeIndex') or row.get('bonusGashaContainerDestroyAnimationTypeIndex'), 0),
         }
 
-    # Standard gacha pull preview (random c01 sortie variant → c03 fall; optional c02/c04 bonus path).
+    # Standard gacha pull: c01 sortie → c02_1 → c02_2 cut-in → c02_3 → c04 reveal (no c03 fall).
     gacha_movie_settings['regular'] = {
         'id': 'regular',
+        'is_regular_pull': True,
         'bgm_resource_id': '',
         'bgm_delay_ms': 0,
-        'sortie_movie_ids': ['c01_a', 'c01_b', 'c01_c', 'c01_d'],
-        'fall_movie_id': 'c03_1',
-        'bonus_cutin_movie_id': 'c02_2_cutin_voice_only',
-        'bonus_special_movie_id': 'c04_1',
-        'should_use_special_assault_button': True,
+        'sortie_movie_ids': ['c01_a', 'c01_b', 'c01_c'],
+        'cutin_movie_ids': [
+            'c02_2',
+            'c02_2_cutin_voice_only',
+            'c02_2_cutin_newtype_lastshooting_voice_only',
+        ],
+        'reveal_movie_ids': ['c04_1', 'c04_2'],
+        'container_open_movie_id': 'c02_1',
+        'container_close_movie_id': 'c02_3',
+        'should_use_special_assault_button': False,
         'bonus_destroy_anim_index': 0,
     }
 
