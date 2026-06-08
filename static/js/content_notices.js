@@ -3,6 +3,9 @@
   const GAME_NEWS_SEEN_KEY = 'ggen_game_news_seen';
   const WHATS_NEW_SEEN_KEY = 'ggen_whats_new_seen';
   const LATEST_RELEASE_SEEN_KEY = 'ggen_latest_release_seen';
+  const PAGE_VISITS_KEY = 'ggen_page_visits';
+  /** Nav tabs that show a notice until the user opens the page once. Bump version to re-notify everyone. */
+  const PAGE_VISIT_NOTICES = [{ pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' }];
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';
   const BT_VOTE_DISABLED_GASHA_IDS = new Set(['2504100101', '2604300101']);
@@ -72,6 +75,62 @@
     if (!el) return;
     ensureNoticeFlare(el);
     el.classList.toggle('has-ui-notice', !!show);
+    el.classList.remove('has-ui-notice--page-visit');
+  }
+
+  function setPageVisitNotice(el, show) {
+    if (!el) return;
+    ensureNoticeFlare(el);
+    el.classList.toggle('has-ui-notice', !!show);
+    el.classList.toggle('has-ui-notice--page-visit', !!show);
+  }
+
+  function readPageVisits() {
+    try {
+      const row = JSON.parse(localStorage.getItem(PAGE_VISITS_KEY) || '{}');
+      return row && typeof row === 'object' ? row : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function writePageVisit(pageId, version) {
+    try {
+      const visits = readPageVisits();
+      visits[pageId] = String(version || '1');
+      localStorage.setItem(PAGE_VISITS_KEY, JSON.stringify(visits));
+    } catch (_) {}
+  }
+
+  function pageVisitEntry(pageId) {
+    return PAGE_VISIT_NOTICES.find((p) => p.pageId === pageId) || null;
+  }
+
+  function pageNeedsVisitNotice(entry) {
+    if (!entry) return false;
+    return String(readPageVisits()[entry.pageId] || '') !== String(entry.version || '1');
+  }
+
+  function bootstrapPageVisitNotices() {
+    PAGE_VISIT_NOTICES.forEach((entry) => {
+      const tab = document.getElementById(entry.tabId);
+      if (!tab) return;
+      setPageVisitNotice(tab, pageNeedsVisitNotice(entry));
+    });
+    syncOverflowHints();
+  }
+
+  function markPageVisitSeen(pageId) {
+    const entry = pageVisitEntry(pageId);
+    if (!entry) return;
+    writePageVisit(entry.pageId, entry.version);
+    setPageVisitNotice(document.getElementById(entry.tabId), false);
+    syncOverflowHints();
+    refreshHomeAggregate();
+  }
+
+  function hasUnreadPageVisitNotices() {
+    return PAGE_VISIT_NOTICES.some(pageNeedsVisitNotice);
   }
 
   function syncOverflowHints() {
@@ -163,7 +222,8 @@
       !!(state.gameNews && state.gameNews.has_new) ||
       !!(state.latestRelease && state.latestRelease.has_new) ||
       !!(state.whatsNew && state.whatsNew.has_new) ||
-      btUserNeedsVoteNotice()
+      btUserNeedsVoteNotice() ||
+      hasUnreadPageVisitNotices()
     );
   }
 
@@ -407,6 +467,7 @@
         ev.key === GAME_NEWS_SEEN_KEY ||
         ev.key === WHATS_NEW_SEEN_KEY ||
         ev.key === LATEST_RELEASE_SEEN_KEY ||
+        ev.key === PAGE_VISITS_KEY ||
         ev.key === 'ggen_bt_vote_notice_off'
       ) {
         void bootstrapAll();
@@ -430,6 +491,7 @@
       bootstrapWhatsNew(),
       bootstrapBtVotes(state.lang),
     ]);
+    bootstrapPageVisitNotices();
     refreshHomeAggregate();
   }
 
@@ -442,6 +504,8 @@
     markGameNewsSeenForLang,
     markLatestReleaseSeen,
     markWhatsNewSeen,
+    markPageVisitSeen,
+    bootstrapPageVisitNotices,
     updateBtVoteNotices,
     uiNoticeFlareHtml,
     ensureNoticeFlare,
@@ -452,6 +516,8 @@
     GAME_NEWS_SEEN_KEY,
     WHATS_NEW_SEEN_KEY,
     LATEST_RELEASE_SEEN_KEY,
+    PAGE_VISITS_KEY,
+    PAGE_VISIT_NOTICES,
     setLang(lang) {
       state.lang = lang;
     },
