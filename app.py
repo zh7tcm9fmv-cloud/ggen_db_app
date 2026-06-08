@@ -15594,12 +15594,12 @@ def api_banner_timeline():
             'bonus_destroy_anim_index': safe_int(row.get('BonusGashaContainerDestroyAnimationTypeIndex') or row.get('bonusGashaContainerDestroyAnimationTypeIndex'), 0),
         }
 
-    # Standard gacha pull preview (c01 sortie → c03 fall; optional c02/c04 bonus path).
+    # Standard gacha pull preview (random c01 sortie variant → c03 fall; optional c02/c04 bonus path).
     gacha_movie_settings['regular'] = {
         'id': 'regular',
         'bgm_resource_id': '',
         'bgm_delay_ms': 0,
-        'sortie_movie_id': 'c01_d',
+        'sortie_movie_ids': ['c01_a', 'c01_b', 'c01_c', 'c01_d'],
         'fall_movie_id': 'c03_1',
         'bonus_cutin_movie_id': 'c02_2_cutin_voice_only',
         'bonus_special_movie_id': 'c04_1',
