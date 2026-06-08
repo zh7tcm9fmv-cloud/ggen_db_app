@@ -114,6 +114,25 @@ JP_MODE_PASSWORD = (os.environ.get('JP_MODE_PASSWORD') or '').strip()
 # ═══════════════════════════════════════════════════════
 
 IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
+VIDEO_CDN = os.environ.get('VIDEO_CDN', '').rstrip('/')
+# Ripped assets often use Unity hash suffix + .m2v; override if you re-encode to .mp4 without hash.
+VIDEO_FILE_EXT = (os.environ.get('VIDEO_FILE_EXT') or 'm2v').lstrip('.')
+VIDEO_HASH_SUFFIX = os.environ.get('VIDEO_HASH_SUFFIX', '_40534656')
+VIDEO_UNIT_SUBDIR = (os.environ.get('VIDEO_UNIT_SUBDIR') or 'unit').strip('/')
+
+
+def resolve_unit_limit_break_movie_id(info):
+    """Max-LB UR cinematic resource id (eub_*), or '' when not applicable."""
+    if not info or info.get('is_ultimate'):
+        return ''
+    if info.get('is_not_lb_movie'):
+        return ''
+    if str(info.get('rarity', '1')) != '5':
+        return ''
+    bid = str(info.get('bromide_resource_id') or '').strip()
+    if not bid.endswith('u00150'):
+        return ''
+    return f'eub_{bid}'
 
 
 def _env_flag(val, default=False):
@@ -180,6 +199,8 @@ if IMAGE_CDN and not GAME_IMAGES_USE_CDN:
     print("  Image URLs: /static/images/* served from this app (GAME_IMAGES_USE_CDN=0). Remove it or set to 1 to use IMAGE_CDN for game assets.")
 elif IMAGE_CDN:
     print(f"  Image CDN: {IMAGE_CDN}/images/* (WebP preferred)")
+if VIDEO_CDN:
+    print(f"  Video CDN: {VIDEO_CDN}/gacha/*.{VIDEO_FILE_EXT}, {VIDEO_CDN}/{VIDEO_UNIT_SUBDIR}/*.{VIDEO_FILE_EXT}")
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
@@ -5851,7 +5872,9 @@ def create_unit_info_map(m):
                 main_uid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId') or uid)
                 if main_uid == '0':
                     main_uid = uid
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': main_uid}
+                _nlbr = item.get('IsNotLimitBreakReleasedMovie') if item.get('IsNotLimitBreakReleasedMovie') is not None else item.get('isNotLimitBreakReleasedMovie')
+                is_not_lb_movie = _nlbr is True or str(_nlbr).lower() == 'true' or _nlbr == 1 or str(_nlbr) == '1'
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': main_uid, 'is_not_lb_movie': is_not_lb_movie}
     return lookup
 
 def create_unit_status_map(d):
@@ -11461,6 +11484,10 @@ def _serve_index():
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
+        video_cdn=VIDEO_CDN or '',
+        video_file_ext=VIDEO_FILE_EXT,
+        video_hash_suffix=VIDEO_HASH_SUFFIX,
+        video_unit_subdir=VIDEO_UNIT_SUBDIR,
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
     ))
@@ -15429,7 +15456,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v5_{lc}'
+    ck = f'banner_tl_v6_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -15462,6 +15489,26 @@ def api_banner_timeline():
     m_pickup = load_json(_master_file('m_gasha_pickup.json'))
     m_content = load_json(_master_file('m_gasha_content_detail.json'))
     m_bonus = load_json(_master_file('m_gasha_content_detail_unit_bonus_character.json'))
+    m_gasha_movie = load_json(_master_file('m_gasha_movie_setting.json'))
+
+    gacha_movie_settings = {}
+    for row in extract_data_list(m_gasha_movie):
+        if not isinstance(row, dict):
+            continue
+        sid = normalize_id(row.get('Id') or row.get('id'))
+        if sid == '0':
+            continue
+        gacha_movie_settings[sid] = {
+            'id': sid,
+            'bgm_resource_id': str(row.get('GashaBgmResourceId') or row.get('gashaBgmResourceId') or '').strip(),
+            'bgm_delay_ms': safe_int(row.get('GashaBgmDelayMilliseconds') or row.get('gashaBgmDelayMilliseconds'), 0),
+            'sortie_movie_id': str(row.get('SortieMovieResourceId') or row.get('sortieMovieResourceId') or '').strip(),
+            'fall_movie_id': str(row.get('FallContainerMovieResourceId') or row.get('fallContainerMovieResourceId') or '').strip(),
+            'bonus_cutin_movie_id': str(row.get('BonusCutInMovieResourceId') or row.get('bonusCutInMovieResourceId') or '').strip(),
+            'bonus_special_movie_id': str(row.get('BonusSpecialMovieResourceId') or row.get('bonusSpecialMovieResourceId') or '').strip(),
+            'should_use_special_assault_button': row.get('ShouldUseSpecialAssaultButton') is True or str(row.get('ShouldUseSpecialAssaultButton') or '').lower() == 'true',
+            'bonus_destroy_anim_index': safe_int(row.get('BonusGashaContainerDestroyAnimationTypeIndex') or row.get('bonusGashaContainerDestroyAnimationTypeIndex'), 0),
+        }
 
     appeal_by_id = {}
     for row in extract_data_list(m_appeal):
@@ -15596,9 +15643,13 @@ def api_banner_timeline():
                         featured_units.append(ui)
                         seen_u_set.add(rut)
 
+        gms_id = safe_int(gx.get('GashaMovieSettingId') or gx.get('gashaMovieSettingId'), 0)
+        gms_key = normalize_id(gms_id) if gms_id != 0 else '0'
+
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
+            'gasha_movie_setting_id': gms_key if gms_key != '0' else '',
             'vote_enabled': _bt_banner_vote_enabled(
                 gasha_id, featured_units, featured_chars, featured_supporters),
             'banner_url': banner_url,
@@ -15621,7 +15672,7 @@ def api_banner_timeline():
         return (0, -int(sm))
 
     rows_out.sort(key=_sort_key)
-    out = {'banners': rows_out}
+    out = {'banners': rows_out, 'gacha_movie_settings': gacha_movie_settings}
     set_cached_response(ck, out)
     return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
 
@@ -18367,7 +18418,8 @@ def get_unit(unit_id):
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
             _muid = unit_id
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid}
+        _lb_movie_id = resolve_unit_limit_break_movie_id(info)
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:

@@ -82,6 +82,21 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .whats-new-btn{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(0,40,80,.35);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);max-width:100%;position:relative}
 .whats-new-btn:hover{border-color:var(--accent-cyan);color:var(--text-primary);background:rgba(0,212,255,.08)}
 .whats-new-ic{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+#panel-banner_timeline .bt-gacha-preview-wrap{margin-top:10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+#panel-banner_timeline .bt-gacha-bonus-lbl{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+#panel-banner_timeline .bt-gacha-preview-btn{padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-card-hover);color:var(--accent-cyan);font-size:12px;font-weight:700;cursor:pointer;transition:var(--transition)}
+#panel-banner_timeline .bt-gacha-preview-btn:hover{border-color:var(--accent-cyan);background:rgba(0,212,255,.08)}
+.unit-portrait-wrap{position:relative}
+.unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;backdrop-filter:blur(4px);transition:var(--transition)}
+.unit-lb-video-btn:hover{background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
+.media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
+.media-video-overlay.active{display:flex}
+.media-video-stage{position:relative;width:100%;height:100%;max-width:960px;max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
+.media-video-stage video{width:100%;max-height:100vh;object-fit:contain;background:#000}
+.media-video-close{position:absolute;top:12px;right:12px;z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
+.media-video-assault{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);z-index:3;padding:12px 28px;border-radius:999px;border:2px solid rgba(255,255,255,.6);background:rgba(200,40,40,.75);color:#fff;font-size:16px;font-weight:800;letter-spacing:.06em;cursor:pointer;text-transform:uppercase}
+.media-video-controls{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;display:flex;gap:10px}
+.media-video-controls button{padding:8px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.45);color:#fff;font-size:13px;cursor:pointer}
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
 .whats-new-overlay.active{display:flex}
 .whats-new-card{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:min(1400px,98vw);width:100%;max-height:min(92vh,1200px);min-height:320px;overflow:hidden;display:flex;flex-direction:column;position:relative}
@@ -3222,8 +3237,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="whats-new-body" id="whatsNewBody"></div>
 </div>
 </div>
+<div class="media-video-overlay" id="mediaVideoOverlay" aria-hidden="true" role="dialog" aria-modal="true" onclick="if(event.target===event.currentTarget)closeMediaVideoOverlay()">
+<div class="media-video-stage" onclick="event.stopPropagation()">
+<video id="mediaVideoEl" preload="none" playsinline webkit-playsinline onended="onMediaVideoEnded()"></video>
+<button type="button" class="media-video-close" onclick="closeMediaVideoOverlay()" aria-label="Close">✕</button>
+<button type="button" class="media-video-assault" id="gachaAssaultBtn" hidden onclick="onGachaAssaultTap()">Assault</button>
+<div class="media-video-controls" id="gachaVideoControls" hidden>
+<button type="button" onclick="gachaVideoSkip()">Skip</button>
+<button type="button" onclick="closeMediaVideoOverlay()">Close</button>
+</div>
+</div>
+</div>
 <script>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
+window.__GGEN_VIDEO_CDN__ = '{{ video_cdn }}';
+window.__GGEN_VIDEO_FILE_EXT__ = '{{ video_file_ext | default("m2v", true) }}';
+window.__GGEN_VIDEO_HASH_SUFFIX__ = '{{ video_hash_suffix | default("_40534656", true) }}';
+window.__GGEN_VIDEO_UNIT_SUBDIR__ = '{{ video_unit_subdir | default("unit", true) }}';
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_use_cdn if game_images_use_cdn is defined else false)) | tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
