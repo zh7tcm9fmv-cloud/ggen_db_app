@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session, redirect
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -11792,6 +11792,92 @@ def api_game_enums():
         }
     ck = f"game_enums_{data.get('version')}_{names or 'all'}"
     return jsonify_cacheable(data, ck, public=True, max_age=86400)
+
+
+_VIDEO_PROXY_FOLDERS = frozenset({'gacha'})
+
+
+def _video_proxy_allowed_folders():
+    out = set(_VIDEO_PROXY_FOLDERS)
+    sub = (VIDEO_UNIT_SUBDIR or 'unit').strip('/')
+    if sub:
+        out.add(sub)
+    return out
+
+
+def _video_proxy_safe_filename(name):
+    fname = os.path.basename(str(name or '').strip())
+    if not fname or fname != name or '..' in name:
+        return ''
+    if not re.fullmatch(r'[a-zA-Z0-9_.-]+\.(?:mp4|m2v)', fname, flags=re.IGNORECASE):
+        return ''
+    return fname
+
+
+def _video_proxy_content_type(filename):
+    low = str(filename or '').lower()
+    if low.endswith('.m2v'):
+        return 'video/mpeg'
+    return 'video/mp4'
+
+
+@app.route('/api/video/<folder>/<path:filename>', methods=['GET', 'HEAD'])
+def api_video_proxy(folder, filename):
+    """Stream game videos with HTTP Range (206) support for Chrome seek/loop."""
+    if not VIDEO_CDN:
+        raise NotFound()
+    folder = str(folder or '').strip('/')
+    if folder not in _video_proxy_allowed_folders():
+        raise NotFound()
+    fname = _video_proxy_safe_filename(filename)
+    if not fname:
+        raise NotFound()
+    upstream_url = f'{VIDEO_CDN}/{folder}/{fname}'
+    range_header = request.headers.get('Range')
+    upstream_headers = {
+        'User-Agent': 'ggen-db-video-proxy/1.0',
+        'Accept': '*/*',
+    }
+    if range_header:
+        upstream_headers['Range'] = range_header
+    method = 'HEAD' if request.method == 'HEAD' else 'GET'
+    req = Request(upstream_url, headers=upstream_headers, method=method)
+    try:
+        upstream = urlopen(req, timeout=120)
+    except HTTPError as e:
+        if e.code == 404:
+            raise NotFound()
+        return jsonify({'error': 'upstream_video'}), 502
+    except URLError:
+        return jsonify({'error': 'upstream_video'}), 502
+    ct = upstream.headers.get('Content-Type') or ''
+    if not ct or 'octet-stream' in ct.lower() or ct.lower().startswith('application/'):
+        ct = _video_proxy_content_type(fname)
+    out_headers = {
+        'Content-Type': ct,
+        'Accept-Ranges': 'bytes',
+        'Cache-Control': 'public, max-age=86400, immutable',
+    }
+    for hk in ('Content-Length', 'Content-Range', 'ETag'):
+        hv = upstream.headers.get(hk)
+        if hv:
+            out_headers[hk] = hv
+    status = upstream.status
+    if method == 'HEAD':
+        upstream.close()
+        return make_response('', status, out_headers)
+
+    def generate():
+        try:
+            while True:
+                chunk = upstream.read(65536)
+                if not chunk:
+                    break
+                yield chunk
+        finally:
+            upstream.close()
+
+    return Response(stream_with_context(generate()), status=status, headers=out_headers)
 
 
 @app.route('/api/tier_mockup')
