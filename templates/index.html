@@ -100,8 +100,16 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
 .bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
 .unit-portrait-wrap{position:relative}
-.unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;backdrop-filter:blur(4px);transition:var(--transition)}
-.unit-lb-video-btn:hover{background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
+.unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:44px;height:44px;padding:0;border:none;border-radius:50%;background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;isolation:isolate;overflow:visible;transition:transform .22s ease,filter .22s ease}
+.unit-lb-video-btn-lens{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.58),inset 0 -2px 5px rgba(0,0,0,.28),0 6px 18px rgba(0,0,0,.42);-webkit-backdrop-filter:blur(10px) saturate(175%) brightness(1.1);backdrop-filter:blur(10px) saturate(175%) brightness(1.1) url(#lbVideoGlassRefract)}
+.unit-lb-video-btn-shine{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.5) 0%,rgba(255,255,255,.12) 24%,transparent 54%)}
+.unit-lb-video-btn-rim{position:absolute;inset:0;border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),inset 0 -10px 16px rgba(0,212,255,.08)}
+.unit-lb-video-btn-icon{position:relative;z-index:1;font-size:13px;line-height:1;margin-left:2px;text-shadow:0 1px 4px rgba(0,0,0,.55);filter:drop-shadow(0 0 5px rgba(0,212,255,.28))}
+.unit-lb-video-btn:hover{transform:scale(1.07)}
+.unit-lb-video-btn:hover .unit-lb-video-btn-lens{border-color:rgba(0,212,255,.58);box-shadow:inset 0 1px 1px rgba(255,255,255,.68),inset 0 -2px 5px rgba(0,0,0,.22),0 8px 22px rgba(0,212,255,.32)}
+.unit-lb-video-btn:active{transform:scale(.96)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.unit-lb-video-btn-lens{background:rgba(10,14,26,.72)}}
+@media(prefers-reduced-motion:reduce){.unit-lb-video-btn{transition:none}.unit-lb-video-btn:hover,.unit-lb-video-btn:active{transform:none}}
 .media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
 .media-video-overlay.active{display:flex}
 .media-video-stage{position:relative;width:100%;height:100%;max-width:960px;max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
@@ -3280,6 +3288,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 </div>
+<svg id="lbVideoGlassSvg" aria-hidden="true" width="0" height="0" style="position:fixed;overflow:hidden;pointer-events:none"><defs><filter id="lbVideoGlassRefract" color-interpolation-filters="sRGB" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="lgBlur"/><feImage id="lbVideoGlassDispMap" href="" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lgDisp"/><feDisplacementMap in="lgBlur" in2="lgDisp" scale="11" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
 <script>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
 window.__GGEN_VIDEO_CDN__ = '{{ video_cdn }}';
