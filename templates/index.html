@@ -99,23 +99,9 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .bt-gacha-pick-row{display:flex;flex-wrap:wrap;gap:8px 12px;margin-bottom:8px}
 .bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
 .bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
-.unit-portrait-wrap{position:relative;overflow:visible}
-.modal-content.unit-detail .detail-portrait-stack{overflow:visible}
-.modal-content.unit-detail .unit-portrait-wrap{padding:0 8px 10px 0;box-sizing:border-box}
-#unitLbVideoBtnSlot{position:absolute;right:12px;bottom:36px;z-index:4;overflow:visible;pointer-events:none;padding:3px}
-#unitLbVideoBtnSlot .unit-lb-video-btn{position:static;pointer-events:auto}
-.unit-lb-video-btn{position:relative;width:44px;height:44px;padding:0;border:none;border-radius:50%;background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;isolation:isolate;transform:translateZ(0);transition:transform .24s cubic-bezier(.34,1.25,.64,1),filter .22s ease}
-.unit-lb-video-btn-lens{position:absolute;inset:0;border-radius:50%;background:transparent;border:none;box-shadow:0 4px 16px rgba(0,0,0,.12);-webkit-backdrop-filter:blur(14px) saturate(195%) brightness(1.28) url(#lbVideoGlassRefract);backdrop-filter:blur(14px) saturate(195%) brightness(1.28) url(#lbVideoGlassRefract)}
-.unit-lb-video-btn-tint{position:absolute;inset:0;border-radius:50%;pointer-events:none;border:1px solid rgba(255,255,255,.58);background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 52%,rgba(255,255,255,.04) 100%);box-shadow:inset 0 2px 3px rgba(255,255,255,.78),inset 0 -1px 2px rgba(255,255,255,.22)}
-.unit-lb-video-btn-edge{position:absolute;inset:-1px;border-radius:50%;pointer-events:none;opacity:.82;background:conic-gradient(from 200deg at 50% 50%,transparent 0deg,rgba(255,255,255,.72) 36deg,rgba(255,255,255,.18) 88deg,transparent 145deg,rgba(255,255,255,.32) 228deg,transparent 310deg);-webkit-mask:radial-gradient(circle,transparent 58%,#000 66%,#000 80%,transparent 86%);mask:radial-gradient(circle,transparent 58%,#000 66%,#000 80%,transparent 86%)}
-.unit-lb-video-btn-shine{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.92) 0%,rgba(255,255,255,.34) 14%,transparent 42%)}
-.unit-lb-video-btn-icon{position:relative;z-index:1;font-size:13px;line-height:1;margin-left:2px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.28);filter:drop-shadow(0 0 4px rgba(255,255,255,.4))}
-.unit-lb-video-btn:hover{transform:scale(1.05)}
-.unit-lb-video-btn:hover .unit-lb-video-btn-lens{box-shadow:0 6px 20px rgba(0,212,255,.22),0 2px 10px rgba(255,255,255,.14)}
-.unit-lb-video-btn:hover .unit-lb-video-btn-tint{border-color:rgba(255,255,255,.78);background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.3) 0%,rgba(255,255,255,.12) 52%,rgba(210,245,255,.08) 100%)}
-.unit-lb-video-btn:active{transform:scale(.98)}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.unit-lb-video-btn-lens{box-shadow:none}.unit-lb-video-btn-tint{background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.24),rgba(255,255,255,.1))}}
-@media(prefers-reduced-motion:reduce){.unit-lb-video-btn{transition:none}.unit-lb-video-btn:hover,.unit-lb-video-btn:active{transform:none}}
+.unit-portrait-wrap{position:relative}
+.unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;backdrop-filter:blur(4px);transition:var(--transition)}
+.unit-lb-video-btn:hover{background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
 .media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
 .media-video-overlay.active{display:flex}
 .media-video-stage{position:relative;width:100%;height:100%;max-width:960px;max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
@@ -3294,7 +3280,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 </div>
-<svg id="lbVideoGlassSvg" aria-hidden="true" width="0" height="0" style="position:fixed;overflow:hidden;pointer-events:none"><defs><filter id="lbVideoGlassRefract" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.55" result="lgBlur"/><feImage id="lbVideoGlassDispMap" href="" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lgDisp"/><feDisplacementMap in="lgBlur" in2="lgDisp" scale="22" xChannelSelector="R" yChannelSelector="G" result="lgRefract"/><feColorMatrix in="lgRefract" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.05 0"/></filter></defs></svg>
 <script>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
 window.__GGEN_VIDEO_CDN__ = '{{ video_cdn }}';
