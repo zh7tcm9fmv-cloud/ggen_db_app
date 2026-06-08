@@ -3463,8 +3463,9 @@ return !!S.cmpMobilePickMode;
 function _cmpSyncForTabChange(tab){
 if(tab!=='characters'&&tab!=='units'&&S.cmpMobilePickMode){
 S.cmpMobilePickMode=false;
-syncCmpMobilePickChrome();
+if(S.compareList.length){S.compareList=[];S.compareData=[];S.cmpLbByUnit={};}
 }
+syncCmpMobilePickChrome();
 updateCompareUI();
 }
 function syncCmpMobilePickChrome(){
@@ -3479,6 +3480,7 @@ scheduleSyncListTheadStickyTop();
 }
 function toggleCmpMobilePickMode(){
 S.cmpMobilePickMode=!S.cmpMobilePickMode;
+if(!S.cmpMobilePickMode&&S.compareList.length){S.compareList=[];S.compareData=[];S.cmpLbByUnit={};}
 syncCmpMobilePickChrome();
 updateCompareUI();
 }
@@ -3507,8 +3509,8 @@ const showBar=_cmpCompareFloatShouldShow(cnt);
 document.documentElement.classList.toggle('cmp-bar-open',showBar);
 if(bar){
 bar.classList.toggle('visible',showBar);
-bar.setAttribute('aria-hidden',showBar?'false':'true');
-bar.style.display=showBar?'':'none';
+if(showBar){bar.removeAttribute('hidden');bar.setAttribute('aria-hidden','false')}else{bar.setAttribute('hidden','');bar.setAttribute('aria-hidden','true');bar.classList.remove('visible')}
+bar.style.removeProperty('display');
 }
 document.getElementById('cmpFloatCount').textContent=`⚔ ${t('cmp_compare')} ${cnt}/3`;
 const btn=document.getElementById('cmpFloatBtn');

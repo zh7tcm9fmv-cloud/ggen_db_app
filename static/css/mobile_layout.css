@@ -160,7 +160,7 @@
   html.cmp-bar-open .main-content {
     padding-bottom: max(
       var(--mobile-grid-margin),
-      calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px) + 12px)
+      calc(var(--safe-bottom) + 56px + var(--cmp-browser-inset-bottom, 0px) + 12px)
     );
   }
 
@@ -429,13 +429,13 @@
     bottom: calc(88px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
   }
 
-  body:has(.cmp-float.visible) .scroll-top-fab,
-  body:has(.cmp-float.visible) .banner-timeline-scroll-top-fab {
+  html.cmp-bar-open .scroll-top-fab,
+  html.cmp-bar-open .banner-timeline-scroll-top-fab {
     bottom: calc(64px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
   }
 
-  body:has(.search-recall-fab.visible):has(.cmp-float.visible) .scroll-top-fab,
-  body:has(.search-recall-fab.visible):has(.cmp-float.visible) .banner-timeline-scroll-top-fab {
+  html.cmp-bar-open body:has(.search-recall-fab.visible) .scroll-top-fab,
+  html.cmp-bar-open body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
     bottom: calc(132px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
   }
 
@@ -451,7 +451,7 @@
     }
 
     html.cmp-bar-open {
-      scroll-padding-bottom: calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+      scroll-padding-bottom: calc(var(--safe-bottom) + 56px + var(--cmp-browser-inset-bottom, 0px));
     }
   }
 
