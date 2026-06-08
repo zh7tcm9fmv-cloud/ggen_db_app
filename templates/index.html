@@ -99,9 +99,14 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .bt-gacha-pick-row{display:flex;flex-wrap:wrap;gap:8px 12px;margin-bottom:8px}
 .bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
 .bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
-.unit-portrait-wrap{position:relative}
-.unit-lb-video-btn{position:absolute;right:8px;bottom:8px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;backdrop-filter:blur(4px);transition:var(--transition)}
-.unit-lb-video-btn:hover{background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
+.unit-portrait-wrap{position:relative;overflow:visible}
+.modal-content.unit-detail .detail-portrait-stack{overflow:visible}
+.modal-content.unit-detail .unit-portrait-wrap{padding:0 6px 8px 0;box-sizing:border-box}
+#unitLbVideoBtnSlot{position:absolute;right:10px;bottom:28px;z-index:4;line-height:0;padding:3px}
+.unit-lb-video-btn{position:relative;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:transform .22s cubic-bezier(.34,1.2,.64,1),background var(--transition),border-color var(--transition)}
+.unit-lb-video-btn:hover{transform:scale(1.05);background:rgba(0,212,255,.35);border-color:var(--accent-cyan)}
+.unit-lb-video-btn:active{transform:scale(.98)}
+@media(prefers-reduced-motion:reduce){.unit-lb-video-btn{transition:background var(--transition),border-color var(--transition)}.unit-lb-video-btn:hover,.unit-lb-video-btn:active{transform:none}}
 .media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
 .media-video-overlay.active{display:flex}
 .media-video-stage{position:relative;width:100%;height:100%;max-width:960px;max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
