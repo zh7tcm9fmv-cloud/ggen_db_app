@@ -170,19 +170,52 @@ def _load_lb_video_id_set():
     return ids
 
 
-def resolve_unit_limit_break_movie_id(info):
-    """Limit-break cinematic id (eub_* or uub_* from BromideResourceId), when listed in lb_video_ids.json."""
-    if not info or info.get('is_not_lb_movie'):
+def create_unit_weapon_lb_movie_map(d):
+    """Map unit id -> UnitBattleMovieId from the weapon-50 (max-LB EX) weapon row."""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        uid = normalize_id(item.get('UnitId') or item.get('unitId'))
+        wbm = str(item.get('WeaponBattleMovieId') or item.get('weaponBattleMovieId') or '').strip()
+        if wbm != '50':
+            continue
+        ubmid = str(item.get('UnitBattleMovieId') or item.get('unitBattleMovieId') or '').strip()
+        if uid != '0' and ubmid and ubmid != '0':
+            lookup[uid] = ubmid
+    return lookup
+
+
+def resolve_unit_limit_break_movie_id(info, unit_id=None):
+    """Limit-break cinematic id (eub_* or uub_*), preferring weapon-50 UnitBattleMovieId when manifest-listed."""
+    if not info:
         return ''
+    uid = normalize_id(unit_id) if unit_id is not None else ''
+    is_ult = bool(info.get('is_ultimate'))
+    if is_ult:
+        # Ultimate MLB cinematics only exist on the finalized form (unit id ends with 02).
+        if not uid.endswith('02'):
+            return ''
+    elif info.get('is_not_lb_movie'):
+        return ''
+    prefix = 'uub_' if is_ult else 'eub_'
+    raw_ids = []
+    w50 = str((unit_weapon_lb_movie_map.get(uid) if uid else '') or '').strip()
+    if w50:
+        raw_ids.append(w50)
     bid = str(info.get('bromide_resource_id') or '').strip()
-    if not bid:
-        return ''
-    prefix = 'uub_' if info.get('is_ultimate') else 'eub_'
-    movie_id = f'{prefix}{bid}'
+    if bid and bid not in raw_ids:
+        raw_ids.append(bid)
     known = _load_lb_video_id_set()
-    if known and movie_id not in known:
-        return ''
-    return movie_id
+    for raw in raw_ids:
+        if not raw:
+            continue
+        if is_ult and not str(raw).endswith('02'):
+            continue
+        movie_id = f'{prefix}{raw}'
+        if not known or movie_id in known:
+            return movie_id
+    return ''
 
 
 def _env_flag(val, default=False):
@@ -7298,6 +7331,7 @@ if option_parts_data:
         _sid = normalize_id(_op.get('SeriesId') or _op.get('seriesId'))
         option_part_series_map[_opid] = _sid if _sid != '0' else '0'
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
+unit_weapon_lb_movie_map = create_unit_weapon_lb_movie_map(unit_weapon_data)
 
 def _build_char_list_playable_ids():
     """Character ids that have at least one non-empty ability or skill (excludes story/NPC-only entries)."""
@@ -15506,7 +15540,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v6_{lc}'
+    ck = f'banner_tl_v7_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -15559,6 +15593,19 @@ def api_banner_timeline():
             'should_use_special_assault_button': row.get('ShouldUseSpecialAssaultButton') is True or str(row.get('ShouldUseSpecialAssaultButton') or '').lower() == 'true',
             'bonus_destroy_anim_index': safe_int(row.get('BonusGashaContainerDestroyAnimationTypeIndex') or row.get('bonusGashaContainerDestroyAnimationTypeIndex'), 0),
         }
+
+    # Standard gacha pull preview (c01 sortie → c03 fall; optional c02/c04 bonus path).
+    gacha_movie_settings['regular'] = {
+        'id': 'regular',
+        'bgm_resource_id': '',
+        'bgm_delay_ms': 0,
+        'sortie_movie_id': 'c01_d',
+        'fall_movie_id': 'c03_1',
+        'bonus_cutin_movie_id': 'c02_2_cutin_voice_only',
+        'bonus_special_movie_id': 'c04_1',
+        'should_use_special_assault_button': True,
+        'bonus_destroy_anim_index': 0,
+    }
 
     appeal_by_id = {}
     for row in extract_data_list(m_appeal):
@@ -18468,7 +18515,7 @@ def get_unit(unit_id):
         _muid = normalize_id(info.get('main_unit_id', unit_id))
         if _muid == '0':
             _muid = unit_id
-        _lb_movie_id = resolve_unit_limit_break_movie_id(info)
+        _lb_movie_id = resolve_unit_limit_break_movie_id(info, unit_id)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid
