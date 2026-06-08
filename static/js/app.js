@@ -2756,22 +2756,36 @@ if(_listTheadStickyRaf)return;
 _listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListTheadStickyTop();cleanupBrowseTableLayout()})
 }
 
-// iOS Safari: bottom toolbar / address bar overlaps fixed UI; shift compare bar & FAB using visual viewport.
+// iOS Safari / Liquid Glass: sync visual viewport (dvh + browser chrome) for fixed UI and scroll clearance.
+let _cmpBrowserInsetRaf=0;
 function updateCmpBrowserInset(){
 const vv=window.visualViewport;
 let inset=0;
+let dvhPx=window.innerHeight||0;
+let vvTop=0;
 if(vv){
-inset=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
+dvhPx=Math.max(0,Math.round(vv.height||0));
+vvTop=Math.max(0,Math.round(vv.offsetTop||0));
+const rawInset=window.innerHeight-vv.height-vvTop;
+// Large offsetTop usually means keyboard — don't treat as bottom toolbar chrome.
+inset=vvTop>80?0:Math.max(0,Math.round(rawInset));
 }
-document.documentElement.style.setProperty('--cmp-browser-inset-bottom',inset+'px')
+const root=document.documentElement.style;
+root.setProperty('--cmp-browser-inset-bottom',inset+'px');
+root.setProperty('--dvh',dvhPx+'px');
+root.setProperty('--visual-vv-offset-top',vvTop+'px');
+}
+function scheduleUpdateCmpBrowserInset(){
+if(_cmpBrowserInsetRaf)return;
+_cmpBrowserInsetRaf=requestAnimationFrame(()=>{_cmpBrowserInsetRaf=0;updateCmpBrowserInset()});
 }
 function initCmpSafeArea(){
 removeLegacyBrowseTableStickyBars();
 updateCmpBrowserInset();
 syncListTheadStickyTop();
 cleanupBrowseTableLayout();
-const onVV=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
-const onResize=()=>{updateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
+const onVV=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
+const onResize=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
 const onScroll=()=>scheduleSyncListTheadStickyTop();
 if(window.visualViewport){
 window.visualViewport.addEventListener('resize',onVV);

@@ -154,7 +154,10 @@
     min-width: 0;
     box-sizing: border-box;
     padding: var(--mobile-grid-margin);
-    padding-bottom: max(var(--mobile-grid-margin), var(--safe-bottom));
+    padding-bottom: max(
+      var(--mobile-grid-margin),
+      calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px) + 12px)
+    );
   }
 
   .list-toolbar {
@@ -436,6 +439,12 @@
     padding-left: max(var(--mobile-page-gutter), var(--safe-left));
     padding-right: max(var(--mobile-page-gutter), var(--safe-right));
     padding-bottom: calc(10px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    html {
+      scroll-padding-bottom: calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    }
   }
 
   .pagination-footer-links {
