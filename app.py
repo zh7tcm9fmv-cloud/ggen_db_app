@@ -135,32 +135,54 @@ else:
     elif 'github.io/ggen_db_videos' in VIDEO_CDN:
         # Pages is often unset; raw.githubusercontent.com serves the same tree.
         VIDEO_CDN = _DEFAULT_VIDEO_CDN
-# Browser playback: H.264 MP4. Filenames usually keep the Unity hash suffix (e.g. c01_d_40534656.mp4).
-# Set VIDEO_HASH_SUFFIX= (empty) if your uploads omit the hash.
+# Browser playback: H.264 MP4. Optional Unity hash suffix (e.g. c01_d_40534656.mp4).
+# Default: no suffix. Set VIDEO_HASH_SUFFIX=_40534656 if filenames still include the hash.
 _video_ext_env = _env_strip_quotes(os.environ.get('VIDEO_FILE_EXT'))
 VIDEO_FILE_EXT = (_video_ext_env or 'mp4').lstrip('.')
 _video_hash_env = _env_strip_quotes(os.environ.get('VIDEO_HASH_SUFFIX'))
-if _video_hash_env is None or _video_hash_env == '':
-    VIDEO_HASH_SUFFIX = '_40534656'
-elif str(_video_hash_env).lower() in ('0', 'false', 'off', 'no', 'none'):
+if _video_hash_env is None:
+    VIDEO_HASH_SUFFIX = ''
+elif _video_hash_env == '' or str(_video_hash_env).lower() in ('0', 'false', 'off', 'no', 'none'):
     VIDEO_HASH_SUFFIX = ''
 else:
     VIDEO_HASH_SUFFIX = _video_hash_env
 VIDEO_UNIT_SUBDIR = (_env_strip_quotes(os.environ.get('VIDEO_UNIT_SUBDIR')) or 'unit').strip('/')
 
+_APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+_LB_VIDEO_IDS_PATH = os.path.join(_APP_ROOT, 'data', 'lb_video_ids.json')
+_LB_VIDEO_IDS_CACHE = None
+
+
+def _load_lb_video_id_set():
+    global _LB_VIDEO_IDS_CACHE
+    if _LB_VIDEO_IDS_CACHE is not None:
+        return _LB_VIDEO_IDS_CACHE
+    ids = set()
+    try:
+        if os.path.isfile(_LB_VIDEO_IDS_PATH):
+            with open(_LB_VIDEO_IDS_PATH, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            if isinstance(raw, list):
+                ids = {str(x).strip() for x in raw if str(x).strip()}
+    except Exception:
+        ids = set()
+    _LB_VIDEO_IDS_CACHE = ids
+    return ids
+
 
 def resolve_unit_limit_break_movie_id(info):
-    """Max-LB UR cinematic resource id (eub_*), or '' when not applicable."""
-    if not info or info.get('is_ultimate'):
-        return ''
-    if info.get('is_not_lb_movie'):
-        return ''
-    if str(info.get('rarity', '1')) != '5':
+    """Limit-break cinematic id (eub_* or uub_* from BromideResourceId), when listed in lb_video_ids.json."""
+    if not info or info.get('is_not_lb_movie'):
         return ''
     bid = str(info.get('bromide_resource_id') or '').strip()
-    if not bid.endswith('u00150'):
+    if not bid:
         return ''
-    return f'eub_{bid}'
+    prefix = 'uub_' if info.get('is_ultimate') else 'eub_'
+    movie_id = f'{prefix}{bid}'
+    known = _load_lb_video_id_set()
+    if known and movie_id not in known:
+        return ''
+    return movie_id
 
 
 def _env_flag(val, default=False):
