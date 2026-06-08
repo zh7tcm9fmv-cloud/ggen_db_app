@@ -113,12 +113,40 @@ JP_MODE_PASSWORD = (os.environ.get('JP_MODE_PASSWORD') or '').strip()
 # IMAGE CDN CONFIGURATION & FILE INDEX
 # ═══════════════════════════════════════════════════════
 
+def _env_strip_quotes(val):
+    """Strip whitespace and optional wrapping quotes from Railway/env values."""
+    if val is None:
+        return None
+    s = str(val).strip()
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in '"\'':
+        s = s[1:-1].strip()
+    return s
+
+
 IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
-VIDEO_CDN = os.environ.get('VIDEO_CDN', '').rstrip('/')
-# Ripped assets often use Unity hash suffix + .m2v; override if you re-encode to .mp4 without hash.
-VIDEO_FILE_EXT = (os.environ.get('VIDEO_FILE_EXT') or 'm2v').lstrip('.')
-VIDEO_HASH_SUFFIX = os.environ.get('VIDEO_HASH_SUFFIX', '_40534656')
-VIDEO_UNIT_SUBDIR = (os.environ.get('VIDEO_UNIT_SUBDIR') or 'unit').strip('/')
+_DEFAULT_VIDEO_CDN = 'https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_videos/main'
+_video_cdn_env = _env_strip_quotes(os.environ.get('VIDEO_CDN'))
+if _video_cdn_env is None or _video_cdn_env == '':
+    VIDEO_CDN = _DEFAULT_VIDEO_CDN
+else:
+    VIDEO_CDN = _video_cdn_env.rstrip('/')
+    if VIDEO_CDN.lower() in ('0', 'false', 'off', 'no'):
+        VIDEO_CDN = ''
+    elif 'github.io/ggen_db_videos' in VIDEO_CDN:
+        # Pages is often unset; raw.githubusercontent.com serves the same tree.
+        VIDEO_CDN = _DEFAULT_VIDEO_CDN
+# Browser playback: H.264 MP4. Filenames usually keep the Unity hash suffix (e.g. c01_d_40534656.mp4).
+# Set VIDEO_HASH_SUFFIX= (empty) if your uploads omit the hash.
+_video_ext_env = _env_strip_quotes(os.environ.get('VIDEO_FILE_EXT'))
+VIDEO_FILE_EXT = (_video_ext_env or 'mp4').lstrip('.')
+_video_hash_env = _env_strip_quotes(os.environ.get('VIDEO_HASH_SUFFIX'))
+if _video_hash_env is None or _video_hash_env == '':
+    VIDEO_HASH_SUFFIX = '_40534656'
+elif str(_video_hash_env).lower() in ('0', 'false', 'off', 'no', 'none'):
+    VIDEO_HASH_SUFFIX = ''
+else:
+    VIDEO_HASH_SUFFIX = _video_hash_env
+VIDEO_UNIT_SUBDIR = (_env_strip_quotes(os.environ.get('VIDEO_UNIT_SUBDIR')) or 'unit').strip('/')
 
 
 def resolve_unit_limit_break_movie_id(info):

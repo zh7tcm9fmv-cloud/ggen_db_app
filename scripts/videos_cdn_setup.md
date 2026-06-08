@@ -70,13 +70,18 @@ Set env var (local `.env`, Railway, etc.):
 VIDEO_CDN=https://raw.githubusercontent.com/YOUR_USER/ggen_db_videos/main
 ```
 
-Optional (only if you enabled GitHub Pages and renamed files to `.mp4` without hash):
+Defaults (no extra env needed after MP4 upload):
+
+- `VIDEO_FILE_EXT=mp4`
+- `VIDEO_HASH_SUFFIX=_40534656` (same as ripped filenames, e.g. `c01_d_40534656.mp4`)
+
+If your MP4 files **omit** the hash suffix (e.g. `c01_d.mp4` only):
 
 ```
-VIDEO_CDN=https://YOUR_USER.github.io/ggen_db_videos
-VIDEO_FILE_EXT=mp4
 VIDEO_HASH_SUFFIX=
 ```
+
+The player tries `{id}{hash}.mp4`, then `{id}.mp4`, then legacy `.m2v` as fallback.
 
 If you already use `IMAGE_CDN` for images, keep that unchanged. Videos use `VIDEO_CDN` only.
 
@@ -91,9 +96,9 @@ If buttons do not appear, `VIDEO_CDN` is empty or files are missing/wrong path o
 
 | Feature | CDN path |
 |---------|----------|
-| Gacha clip `c01_d` (ripped) | `{VIDEO_CDN}/gacha/c01_d_40534656.m2v` |
-| Max-LB movie `eub_g4000u00150` (ripped) | `{VIDEO_CDN}/unit/eub_g4000u00150_40534656.m2v` |
-| Same after MP4 re-encode | `{VIDEO_CDN}/gacha/c01_d.mp4` (set `VIDEO_FILE_EXT=mp4`, `VIDEO_HASH_SUFFIX=`) |
+| Gacha clip `c01_d` (MP4) | `{VIDEO_CDN}/gacha/c01_d_40534656.mp4` |
+| Max-LB movie `eub_g4000u00150` (MP4) | `{VIDEO_CDN}/unit/eub_g4000u00150_40534656.mp4` |
+| Without hash suffix | `{VIDEO_CDN}/gacha/c01_d.mp4` (set `VIDEO_HASH_SUFFIX=`) |
 
 ## 7. Optional: same org as images
 
