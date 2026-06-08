@@ -3522,6 +3522,64 @@ def set_cached_response(cache_key, data):
             del _api_cache[k]
     _api_cache[cache_key] = data
 
+# HTTP ETag / browser cache for stable JSON APIs (O(1) tag from cache_key — no body hash).
+_API_ETAG_ENABLED = os.environ.get('API_ETAG_ENABLED', '1').strip().lower() not in ('0', 'false', 'no', 'off')
+_API_ETAG_SALT = None
+
+
+def _api_etag_salt():
+    global _API_ETAG_SALT
+    if _API_ETAG_SALT is None:
+        _API_ETAG_SALT = (os.environ.get('API_ETAG_SALT') or '').strip() or _app_js_bundle_version_tag()
+    return _API_ETAG_SALT
+
+
+def _api_etag_from_cache_key(cache_key):
+    digest = hashlib.sha256(f'{_api_etag_salt()}:{cache_key}'.encode('utf-8')).hexdigest()[:32]
+    return f'W/"{digest}"'
+
+
+def _api_if_none_match_matches(if_none_match, etag):
+    if not if_none_match or not etag:
+        return False
+    want = etag[3:-1] if etag.startswith('W/"') and etag.endswith('"') else str(etag).strip('"')
+    for part in str(if_none_match).split(','):
+        p = part.strip()
+        if p.startswith('W/'):
+            p = p[2:].strip()
+        p = p.strip('"')
+        if p == want:
+            return True
+    return False
+
+
+def _api_cache_control_header(*, public=True, max_age=3600, private=False):
+    if private or not public:
+        return f'private, max-age={int(max_age)}, must-revalidate'
+    return f'public, max-age={int(max_age)}, stale-while-revalidate=86400'
+
+
+def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=False, convert_images=False):
+    """JSON with ETag derived from cache_key. 304 skips serializing the body."""
+    if convert_images:
+        data = convert_image_urls(data)
+    if not _API_ETAG_ENABLED or not cache_key:
+        return jsonify(data)
+    etag = _api_etag_from_cache_key(cache_key)
+    if _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = _api_cache_control_header(public=public, max_age=max_age, private=private)
+        if private or not public:
+            resp.headers['Vary'] = 'Cookie'
+        return resp
+    resp = jsonify(data)
+    resp.headers['ETag'] = etag
+    resp.headers['Cache-Control'] = _api_cache_control_header(public=public, max_age=max_age, private=private)
+    if private or not public:
+        resp.headers['Vary'] = 'Cookie'
+    return resp
+
 # ═══════════════════════════════════════════════════════
 # IMAGE FINDING FUNCTIONS (using IMAGE_INDEX)
 # ═══════════════════════════════════════════════════════
@@ -11621,9 +11679,8 @@ def api_game_enums():
             'enum_count': len(wanted),
             'enums': {k: v for k, v in enums.items() if k in wanted},
         }
-    r = jsonify(data)
-    r.headers['Cache-Control'] = 'public, max-age=86400'
-    return r
+    ck = f"game_enums_{data.get('version')}_{names or 'all'}"
+    return jsonify_cacheable(data, ck, public=True, max_age=86400)
 
 
 @app.route('/api/tier_mockup')
@@ -11654,10 +11711,8 @@ def api_tier_mockup():
         ex['thumb'] = _tier_mockup_thumb(ex['id'], 'unit') or ''
         ex.update(_tier_mockup_row_icons(ex, 'unit'))
     payload['scoring_guide'] = payload.get('scoring_guide') or _tier_scoring_guide()
-    payload = convert_image_urls(payload)
-    r = jsonify(payload)
-    r.headers['Cache-Control'] = 'public, max-age=300'
-    return r
+    ck = f"tier_mockup_v2_{int(os.path.getmtime(path))}"
+    return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
 
 
 @app.route('/privacy-policy')
@@ -14740,7 +14795,8 @@ def get_option_part(option_part_id):
         row = _option_part_detail_row(item, lc, variant_tag_id=variant_tag_id)
         if not row:
             return jsonify({'error': 'Not found'}), 404
-        return jsonify(convert_image_urls(row))
+        ck = f"op_{normalize_id(option_part_id)}_{lc}_v{variant_tag_id}"
+        return jsonify_cacheable(row, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'error': str(e)}), 500
@@ -14761,7 +14817,8 @@ def get_profile_title(profile_title_id):
             'image': _profile_title_icon_url(pid, info),
             'lang': lc,
         }
-        return jsonify(convert_image_urls(result))
+        ck = f"pt_{pid}_{lc}"
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'error': str(e)}), 500
@@ -15375,7 +15432,7 @@ def api_banner_timeline():
     ck = f'banner_tl_v5_{lc}'
     cached = get_cached_response(ck)
     if cached:
-        return jsonify(convert_image_urls(cached))
+        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
 
     ld = get_lang_data(lc)
     lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG)
@@ -15384,7 +15441,7 @@ def api_banner_timeline():
     if not base or not os.path.isdir(base):
         out = {'banners': []}
         set_cached_response(ck, out)
-        return jsonify(convert_image_urls(out))
+        return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
 
     def _master_file(name):
         p = os.path.join(base, name)
@@ -15566,7 +15623,7 @@ def api_banner_timeline():
     rows_out.sort(key=_sort_key)
     out = {'banners': rows_out}
     set_cached_response(ck, out)
-    return jsonify(convert_image_urls(out))
+    return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
 
 
 ML_LEAGUE_RANK_LABELS = {
@@ -15815,7 +15872,7 @@ def api_master_league():
     ck = f'master_league_v16_{lc}'
     cached = get_cached_response(ck)
     if cached:
-        return jsonify(convert_image_urls(cached))
+        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
 
     ld = get_lang_data(lc)
     lineage_lookup = (ld or {}).get('lineage_lookup') or {}
@@ -16121,7 +16178,7 @@ def api_master_league():
         },
     }
     set_cached_response(ck, out)
-    return jsonify(convert_image_urls(out))
+    return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
 
 
 _LEGACY_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
@@ -17183,7 +17240,8 @@ def get_supporter(supporter_id):
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
         ck = f"s4_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
         base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
         rate = supporter_growth_map.get((level, lb_tier), 10000)
@@ -17229,7 +17287,8 @@ def get_supporter(supporter_id):
             'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
             'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
         }
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -17237,6 +17296,10 @@ def get_supporter(supporter_id):
 def list_dc_targets():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f"dc_targets_v1_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600)
         ld = get_lang_data(lc); rows = []
         diff_order_map = {1: 0, 2: 1, 3: 2}
         for sid, est in eternal_stage_map.items():
@@ -17275,7 +17338,8 @@ def list_dc_targets():
             return (cat_ord, row.get('difficulty_order', 99), safe_int(row['id'], 0))
 
         rows.sort(key=_dc_targets_sort_key)
-        return jsonify(rows)
+        set_cached_response(ck, rows)
+        return jsonify_cacheable(rows, ck, private=True, max_age=3600)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify([])
 
@@ -17528,7 +17592,8 @@ def get_stage(stage_id):
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
         ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage7"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         if not vis:
             result = {
                 'content_locked': True,
@@ -17536,7 +17601,8 @@ def get_stage(stage_id):
                 'id': stage_id,
                 'lang': lc,
             }
-            set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+            set_cached_response(ck, result)
+            return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
         sn = est.get('stage_number', 0)
         if is_score_attack:
             sname = resolve_stage_name_from_lang_m_stage(ld, est.get('stage_name_lang_id', '0'), stage_id)
@@ -17788,7 +17854,8 @@ def get_stage(stage_id):
             'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
             'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
         }
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -17799,7 +17866,8 @@ def get_character(char_id):
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         ck = f"c_{char_id}_{lc}_r12_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -17910,7 +17978,8 @@ def get_character(char_id):
             result['abilities'] = []
             result['skills'] = []
             result['view_ranking'] = True
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -17925,7 +17994,8 @@ def get_unit(unit_id):
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
         ck = f"u_{unit_id}_{lc}_ssp14_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -18305,7 +18375,8 @@ def get_unit(unit_id):
             result['weapon_passive_pct'] = {k: {'Accuracy': 0, 'Critical': 0, 'Power': 0} for k in ('sp', 'ssp', 'sp_cond', 'ssp_cond')}
             result['ability_passive_crit_dmg_pct'] = {'no_cond': 0, 'cond_only': 0, 'ssp_no_cond': 0, 'ssp_cond_only': 0}
             result['view_ranking'] = True
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
