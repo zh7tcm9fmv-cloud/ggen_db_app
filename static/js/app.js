@@ -436,7 +436,7 @@ function clearRankingBrowseFilters(which){if(which==='rankChar'){S.listRankCharS
 function refreshRankingFilterLabels(){updateRarityFilterButtonLabel('rankChar');updateRoleFilterButtonLabel('rankChar');updateSourceFilterButtonLabel('rankChar');updateLineageFilterButtonLabel('rankChar');updateSeriesFilterButtonLabel('rankChar');updateSkillBrowseFilterLabel('rankChar');updateAbilBrowseFilterLabel('rankChar');updateRarityFilterButtonLabel('rankUnit');updateRoleFilterButtonLabel('rankUnit');updateSourceFilterButtonLabel('rankUnit');updateLineageFilterButtonLabel('rankUnit');updateSeriesFilterButtonLabel('rankUnit');updateSkillBrowseFilterLabel('rankUnit');updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMapWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeNonMapFilterLabel();updateUnitMechanismFilterLabel();fillSourcePanel('rankChar');fillSourcePanel('rankUnit');syncRankListStatToggleUi()}
 function onRankingTabShown(){document.querySelectorAll('.ranking-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingMode===S.ranking.mode));const ch=document.getElementById('rankingCharToolbarHost'),un=document.getElementById('rankingUnitToolbarHost');if(ch)ch.style.display=S.ranking.mode==='characters'?'block':'none';if(un)un.style.display=S.ranking.mode==='units'?'block':'none';if(S.ranking.mode==='units')ensureRankUnitWeaponRangeNonMapFilterDom();syncRankingFiltersFromBrowse();invalidateRankingBrowseFilterPanels();refreshRankingFilterLabels();syncMapWeaponRangeFilterVisibility();renderRankingStatPills();syncRankListStatToggleUi();syncRankingViewModeUi();void loadRankingList(S.ranking.mode==='characters'?S.ranking.pageChar:S.ranking.pageUnit)}
 function resetEphemeralBrowseFilterDomState(){['char','unit','rankChar','rankUnit'].forEach(which=>{const rp=rarityPrefix(which);rarityKeysFor(which).forEach(k=>{const el=document.getElementById(rp+'Rarity'+k);if(el)el.checked=true});const ltEl=document.getElementById(rp+'RarityLT');if(ltEl)ltEl.checked=true;const rpf=rolePrefix(which);ROLE_LIST_IDS.forEach(id=>{const el=document.getElementById(rpf+'Role'+id);if(el)el.checked=true})})}
-document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initScrollTopFab();initBannerTimelineExtras();initCmpSafeArea();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}updateCompareUI()});
+document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initScrollTopFab();initBannerTimelineExtras();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}updateCompareUI()});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -744,7 +744,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');scheduleBrowseListReload('characters')}else if(which==='rankChar'){const se=document.getElementById('rankCharSkillFilterSearch'),grid=document.getElementById('rankCharSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('rankChar',se.value||'');scheduleRankingListReload()}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');scheduleBrowseListReload('units')}else if(which==='rankUnit'){const se=document.getElementById('rankUnitSkillFilterSearch'),grid=document.getElementById('rankUnitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('rankUnit',se.value||'');scheduleRankingListReload()}else scheduleBrowseListReload('supporters')}
-function switchTab(tab){S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){syncHistoryToBrowsePath('/new');tryLoadLatestRelease()}else if(tab==='banner_timeline'){armScrollTopFabBaseline();syncHistoryToBrowsePath('/tl');loadBannerTimeline()}else if(tab==='master_league'){armScrollTopFabBaseline();syncHistoryToBrowsePath('/ml');loadMasterLeague()}else if(tab==='calculator'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else if(tab==='ranking'){if(/^\/(?:u|c|s|es|op)\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/rk');onRankingTabShown()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='banner_timeline'&&/^\/banners\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='master_league'&&/^\/ml\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');if(tab!=='ranking'&&/^\/rk\/?$/.test(location.pathname))syncHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab);if(tab==='stages')syncStageSourceToolbar()}syncMainTabShortPath(tab);armScrollTopFabBaseline();updateScrollTopFabVisibility();_cmpSyncForTabChange(tab)}
+function switchTab(tab,opts){opts=opts||{};const _prevTab=S.currentTab;if(!opts.fromPopstate&&!opts.skipHistory){const _dm=document.getElementById('detailModal');if(_dm&&_dm.classList.contains('active'))closeModalDomOnly()}S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){tryLoadLatestRelease()}else if(tab==='banner_timeline'){armScrollTopFabBaseline();loadBannerTimeline()}else if(tab==='master_league'){armScrollTopFabBaseline();loadMasterLeague()}else if(tab==='calculator'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else if(tab==='ranking'){if(/^\/(?:u|c|s|es|op)\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/rk');onRankingTabShown()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='banner_timeline'&&/^\/banners\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='master_league'&&/^\/ml\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='ranking'&&/^\/rk\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');applyListViewVisibility(tab);primeBrowseTabIfNeeded(tab);if(tab==='stages')syncStageSourceToolbar()}armScrollTopFabBaseline();updateScrollTopFabVisibility();_cmpSyncForTabChange(tab);if(!opts.skipHistory&&!S._historyApplyingPopstate&&_prevTab!==tab)pushHistoryToBrowsePath(MAIN_TAB_PATH_SHORT[tab]||'/');}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;if(inp.value.trim()){wrap.classList.add('hint-suppressed');wrap.classList.remove('show-hint')}else{wrap.classList.remove('hint-suppressed')}}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);inp.addEventListener('mouseenter',()=>{if(!inp.value.trim())wrap.classList.add('show-hint')});inp.addEventListener('mouseleave',()=>{wrap.classList.remove('show-hint')});refresh()})}
 function getActiveSearchInput(){if(S.currentTab==='ranking'){const id=S.ranking.mode==='characters'?'rankCharFilter':'rankUnitFilter';return document.getElementById(id)}const m={characters:'charFilter',units:'unitFilter',supporters:'suppFilter',stages:'stageFilter',modifications:'modFilter'};const id=m[S.currentTab];return id?document.getElementById(id):null}
@@ -1235,7 +1235,78 @@ return (qs?'?'+qs:'')+(location.hash||'')
 return (location.search||'')+(location.hash||'')
 }
 }
-function syncHistoryToBrowsePath(path){try{const tail=_browseHistoryQueryTailForPath(path);history.replaceState(history.state||{},'',path+tail)}catch(_){}}
+function syncHistoryToBrowsePath(path,extra){replaceHistoryToBrowsePath(path,extra)}
+function _historyBrowseUrl(path){return path+_browseHistoryQueryTailForPath(path)}
+function _historyPathNorm(path){
+const pathOnly=String(path||'/').split('#')[0];
+const qMark=pathOnly.indexOf('?');
+const pathnameRaw=qMark>=0?pathOnly.slice(0,qMark):pathOnly;
+return(pathnameRaw||'/').replace(/\/+$/,'')||'/';
+}
+function _historyUrlsEqual(path){
+try{return(location.pathname+location.search+location.hash)===_historyBrowseUrl(path)}catch(_){return false}
+}
+function _historyBuildState(path,extra){return Object.assign({ggenNav:1,path:_historyPathNorm(path)},extra||{})}
+function replaceHistoryToBrowsePath(path,extra){
+if(S._historyApplyingPopstate)return;
+try{if(_historyUrlsEqual(path))return;history.replaceState(_historyBuildState(path,extra),'',_historyBrowseUrl(path))}catch(_){}
+}
+function pushHistoryToBrowsePath(path,extra){
+if(S._historyApplyingPopstate)return;
+try{
+const url=_historyBrowseUrl(path);
+if((location.pathname+location.search+location.hash)===url)return;
+history.pushState(_historyBuildState(path,extra),'',url);
+}catch(_){}
+}
+function _historyIsDetailPath(path){return/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(_historyPathNorm(path||location.pathname))}
+function closeModalDomOnly(){
+const m=document.getElementById('detailModal');
+if(m)m.classList.remove('active');
+document.body.classList.remove('detail-modal-open');
+releaseBackgroundScrollLock();
+const mc=document.getElementById('modalContent');
+if(mc)mc.className='modal-content';
+S.currentDetailData=null;
+S.currentDetailType=null;
+S.conditionalPassiveActive=false;
+S.charSuperchargedExTier=0;
+S.spActive=false;
+S.sspActive=false;
+S.stageMapExpanded=false;
+S.stageMapReinforcementOnly=false;
+S.stageMapSpawnOrderVisible=false;
+S._stageDetailUiRestore=null;
+updateScrollTopFabVisibility();
+}
+function _detailTabForType(type){
+if(type==='unit')return'units';
+if(type==='character')return'characters';
+if(type==='supporter')return'supporters';
+if(type==='stage'||type==='profile_title')return'stages';
+return'characters';
+}
+function applyBrowseRouteFromLocation(opts){
+opts=opts||{};
+const parsed=parseBrowseShortPath(location.pathname);
+if(parsed&&parsed.kind==='latest_release'){switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
+if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();switchTab(parsed.tab,{skipHistory:true,fromPopstate:!!opts.fromPopstate});return true}
+if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
+if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail(t,id,{skipHistory:true});return true}
+if(!parsed){closeModalDomOnly();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate})}
+return false;
+}
+function initBrowseHistory(){
+if(S._browseHistoryInit)return;
+S._browseHistoryInit=1;
+try{replaceHistoryToBrowsePath(_historyPathNorm(location.pathname||'/'),{ggenLanding:1})}catch(_){}
+window.addEventListener('popstate',()=>{
+if(S._historyIgnorePopstate){S._historyIgnorePopstate=false;return}
+S._historyApplyingPopstate=true;
+S._historyModalPushed=false;
+try{applyBrowseRouteFromLocation({fromPopstate:true,skipHistory:true})}finally{S._historyApplyingPopstate=false}
+});
+}
 const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
 const MAIN_TAB_PATH_SHORT={characters:'/c',units:'/u',supporters:'/s',latest_release:'/new',stages:'/st',master_league:'/ml',calculator:'/cal',team_builder:'/tb',modifications:'/op',banner_timeline:'/tl',ranking:'/rk'};
 function syncMainTabQueryParam(tab){
@@ -1243,12 +1314,13 @@ try{
 const u=new URL(location.href);
 const code=MAIN_TAB_URL_SHORT[tab];
 if(code)u.searchParams.set('tab',code);else u.searchParams.delete('tab');
-history.replaceState(history.state||{},'',u.pathname+u.search+u.hash);
+history.replaceState(_historyBuildState(u.pathname+u.search+u.hash,{ggenNav:1,path:_historyPathNorm(u.pathname)}),'',u.pathname+u.search+u.hash);
 }catch(_){}
 }
-function syncMainTabShortPath(tab){
+function syncMainTabShortPath(tab,mode){
 const p=MAIN_TAB_PATH_SHORT[tab]||'/';
-syncHistoryToBrowsePath(p);
+if(mode==='push')pushHistoryToBrowsePath(p);
+else replaceHistoryToBrowsePath(p);
 }
 function urlTabParamBlocksBrowseShortPath(te){
 if(te==null||te==='')return false;
@@ -1263,7 +1335,7 @@ const path=(location.pathname||'').replace(/\/$/,'');
 const stageFromPath=parseBrowseShortPath(location.pathname);
 if(stageFromPath&&stageFromPath.kind==='detail'&&stageFromPath.type==='stage'&&(raw==='ER'||raw==='stages')){
 switchTab('stages');
-openDetail('stage',stageFromPath.id,{skipHistoryReplace:true});
+openDetail('stage',stageFromPath.id,{skipHistory:true});
 try{window.scrollTo(0,0)}catch(_){}
 return
 }
@@ -1275,7 +1347,7 @@ if(/^\/op\/[^/]+$/.test(path)){
 const parsed=parseBrowseShortPath(location.pathname);
 if(parsed&&parsed.kind==='option_part'){
 switchTab('modifications');
-openDetail('option_part',parsed.id,{skipHistoryReplace:true});try{window.scrollTo(0,0)}catch(_){}
+openDetail('option_part',parsed.id,{skipHistory:true});try{window.scrollTo(0,0)}catch(_){}
 }
 return;
 }
@@ -1325,11 +1397,8 @@ return null;
 function applyBrowseShortPathOnLoad(){
 const parsed=parseBrowseShortPath(location.pathname);
 if(!parsed)return false;
-if(parsed.kind==='latest_release'){switchTab('latest_release');tryLoadLatestRelease();return true}
-if(parsed.kind==='main_tab'){switchTab(parsed.tab);return true}
-if(parsed.kind==='option_part'){switchTab('modifications');openDetail('option_part',parsed.id,{skipHistoryReplace:true});try{window.scrollTo(0,0)}catch(_){}return true}
-if(parsed.kind==='detail'){const t=parsed.type,id=parsed.id;if(t==='unit')switchTab('units');else if(t==='character')switchTab('characters');else if(t==='supporter')switchTab('supporters');else if(t==='stage'||t==='profile_title')switchTab('stages');openDetail(t,id,{skipHistoryReplace:true});return true}
-return false;
+applyBrowseRouteFromLocation({skipHistory:true});
+return true;
 }
 function detailPrefetchKey(type,id,opts){
 opts=opts||{};
@@ -1688,8 +1757,21 @@ root.addEventListener('keydown',onRewardDetailKey,true);
 document.body.addEventListener('click',onRewardDetailClick);
 document.body.addEventListener('keydown',onRewardDetailKey);
 }
-async function openDetail(type,id,opts){opts=opts||{};if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)S._stageDetailUiRestore=captureStageDetailUiState();mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp)S.conditionalPassiveActive=!!S.listUnitCond}}if(_pcp)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;S.currentDetailData=d;S.currentDetailType=type;if(type==='supporter'){S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id))updateDetailDynamicSections(type)}).catch(()=>{})}}if(!opts.skipHistoryReplace){const _bp=browseShortPathForDetailType(type,id);if(_bp)syncHistoryToBrowsePath(_bp)}}catch(e){console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
-function closeModal(){if(/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(location.pathname)){if(S.currentTab==='ranking')syncHistoryToBrowsePath('/rk');else syncHistoryToBrowsePath('/')}document.getElementById('detailModal').classList.remove('active');document.body.classList.remove('detail-modal-open');releaseBackgroundScrollLock();document.getElementById('modalContent').className='modal-content';S.currentDetailData=null;S.currentDetailType=null;S.conditionalPassiveActive=false;S.charSuperchargedExTier=0;S.spActive=false;S.sspActive=false;S.stageMapExpanded=false;S.stageMapReinforcementOnly=false;S.stageMapSpawnOrderVisible=false;S._stageDetailUiRestore=null;updateScrollTopFabVisibility()}
+async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||!!opts.skipHistoryReplace||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)S._stageDetailUiRestore=captureStageDetailUiState();mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);if(!skipHistory){const _bp=browseShortPathForDetailType(type,id);if(_bp){pushHistoryToBrowsePath(_bp,{ggenDetail:1});S._historyModalPushed=true}}return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);if(!skipHistory){const _bp=browseShortPathForDetailType(type,id);if(_bp){pushHistoryToBrowsePath(_bp,{ggenDetail:1});S._historyModalPushed=true}}return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp)S.conditionalPassiveActive=!!S.listUnitCond}}if(_pcp)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;S.currentDetailData=d;S.currentDetailType=type;if(type==='supporter'){S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id))updateDetailDynamicSections(type)}).catch(()=>{})}}if(!skipHistory){const _bp=browseShortPathForDetailType(type,id);if(_bp){pushHistoryToBrowsePath(_bp,{ggenDetail:1});S._historyModalPushed=true}}}catch(e){console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Failed: ${esc(e.message)}</div></div>`}}
+function closeModal(){
+const m=document.getElementById('detailModal');
+const wasOpen=!!(m&&m.classList.contains('active'));
+const onDetail=_historyIsDetailPath(location.pathname);
+closeModalDomOnly();
+if(!wasOpen||!onDetail||S._historyApplyingPopstate)return;
+if(S._historyModalPushed||(history.state&&history.state.ggenDetail)){
+S._historyModalPushed=false;
+history.back();
+return;
+}
+if(S.currentTab==='ranking')replaceHistoryToBrowsePath('/rk');
+else replaceHistoryToBrowsePath(MAIN_TAB_PATH_SHORT[S.currentTab]||'/');
+}
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 function _resolveStageNpcRow(npcId){
 const nid=String(npcId!=null?npcId:'').trim();
