@@ -2941,20 +2941,12 @@ _listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListThe
 let _cmpBrowserInsetRaf=0;
 function updateCmpBrowserInset(){
 const vv=window.visualViewport;
-let inset=0;
 let dvhPx=window.innerHeight||0;
-let vvTop=0;
-if(vv){
-dvhPx=Math.max(0,Math.round(vv.height||0));
-vvTop=Math.max(0,Math.round(vv.offsetTop||0));
-const rawInset=window.innerHeight-vv.height-vvTop;
-// Large offsetTop usually means keyboard — don't treat as bottom toolbar chrome.
-inset=vvTop>80?0:Math.max(0,Math.round(rawInset));
-}
+if(vv){dvhPx=Math.max(0,Math.round(vv.height||0))}
 const root=document.documentElement.style;
-root.setProperty('--cmp-browser-inset-bottom',inset+'px');
+root.setProperty('--cmp-browser-inset-bottom','0px');
 root.setProperty('--dvh',dvhPx+'px');
-root.setProperty('--visual-vv-offset-top',vvTop+'px');
+root.setProperty('--visual-vv-offset-top','0px');
 }
 function scheduleUpdateCmpBrowserInset(){
 if(_cmpBrowserInsetRaf)return;
@@ -2962,11 +2954,15 @@ _cmpBrowserInsetRaf=requestAnimationFrame(()=>{_cmpBrowserInsetRaf=0;updateCmpBr
 }
 function initCmpSafeArea(){
 removeLegacyBrowseTableStickyBars();
+S.cmpMobilePickMode=false;
+if(S.compareList&&S.compareList.length){S.compareList=[];S.compareData=[];S.cmpLbByUnit={};}
 updateCmpBrowserInset();
 syncListTheadStickyTop();
 cleanupBrowseTableLayout();
-const onVV=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
-const onResize=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();syncCmpMobilePickChrome();updateCompareUI()};
+syncCmpMobilePickChrome();
+updateCompareUI();
+const onVV=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop()};
+const onResize=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();updateCompareUI()};
 const onScroll=()=>scheduleSyncListTheadStickyTop();
 if(window.visualViewport){
 window.visualViewport.addEventListener('resize',onVV);
@@ -3501,7 +3497,6 @@ tr.classList.toggle('cmp-is-selected',selectedIds.has(String(cb.dataset.cmpId)))
 })
 }
 function updateCompareUI(){
-updateCmpBrowserInset();
 document.documentElement.classList.toggle('cmp-page-active',_cmpCompareTabActive());
 const bar=document.getElementById('cmpFloat');
 const cnt=S.compareList.length;

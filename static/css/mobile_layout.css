@@ -160,7 +160,7 @@
   html.cmp-bar-open .main-content {
     padding-bottom: max(
       var(--mobile-grid-margin),
-      calc(var(--safe-bottom) + 56px + var(--cmp-browser-inset-bottom, 0px) + 12px)
+      calc(var(--safe-bottom) + 56px + 12px)
     );
   }
 
@@ -403,46 +403,46 @@
 
   .search-recall-fab {
     right: max(var(--mobile-page-gutter), var(--safe-right));
-    bottom: calc(72px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    bottom: calc(72px + var(--safe-bottom));
   }
 
   .search-spotlight-overlay {
     padding: max(var(--mobile-page-gutter), var(--safe-top))
       max(var(--mobile-page-gutter), var(--safe-right))
-      max(24px, calc(var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px)))
+      max(24px, var(--safe-bottom))
       max(var(--mobile-page-gutter), var(--safe-left));
     box-sizing: border-box;
   }
 
   .search-spotlight-card {
-    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - var(--cmp-browser-inset-bottom, 0px) - 32px);
+    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 32px);
   }
 
   .scroll-top-fab,
   .banner-timeline-scroll-top-fab {
     right: max(var(--mobile-page-gutter), var(--safe-right));
-    bottom: calc(var(--mobile-page-gutter) + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    bottom: calc(var(--mobile-page-gutter) + var(--safe-bottom));
   }
 
   body:has(.search-recall-fab.visible) .scroll-top-fab,
   body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
-    bottom: calc(88px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    bottom: calc(88px + var(--safe-bottom));
   }
 
   html.cmp-bar-open .scroll-top-fab,
   html.cmp-bar-open .banner-timeline-scroll-top-fab {
-    bottom: calc(64px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    bottom: calc(64px + var(--safe-bottom));
   }
 
   html.cmp-bar-open body:has(.search-recall-fab.visible) .scroll-top-fab,
   html.cmp-bar-open body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
-    bottom: calc(132px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    bottom: calc(132px + var(--safe-bottom));
   }
 
   .cmp-float {
     padding-left: max(var(--mobile-page-gutter), var(--safe-left));
     padding-right: max(var(--mobile-page-gutter), var(--safe-right));
-    padding-bottom: calc(10px + var(--safe-bottom) + var(--cmp-browser-inset-bottom, 0px));
+    padding-bottom: calc(10px + var(--safe-bottom));
   }
 
   @supports (-webkit-touch-callout: none) {
@@ -451,7 +451,7 @@
     }
 
     html.cmp-bar-open {
-      scroll-padding-bottom: calc(var(--safe-bottom) + 56px + var(--cmp-browser-inset-bottom, 0px));
+      scroll-padding-bottom: calc(var(--safe-bottom) + 56px);
     }
   }
 
