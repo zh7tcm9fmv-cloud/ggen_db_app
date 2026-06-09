@@ -10,5 +10,5 @@
 @keyframes ui-notice-flare-pulse-soft{0%,100%{transform:scale(1);filter:drop-shadow(0 0 4px rgba(255,40,40,.7))}50%{transform:scale(1.06);filter:drop-shadow(0 0 7px rgba(255,55,55,.88))}}
 @media (prefers-reduced-motion:reduce){.has-ui-notice .ui-notice-flare-img,.has-ui-notice--page-visit .ui-notice-flare-img{animation:none}}
 .whats-new-btn.ui-notice-anchor,.site-footer-links a.ui-notice-anchor{position:relative}
-.whats-new-btn .ui-notice-flare{top:-5px;right:-5px;width:20px;height:20px}
-.site-footer-links a .ui-notice-flare{top:-2px;right:-10px;width:18px;height:18px}
+.whats-new-btn .ui-notice-flare{top:-5px;right:0;width:20px;height:20px}
+.site-footer-links a .ui-notice-flare{top:-2px;right:0;width:18px;height:18px}
