@@ -99,15 +99,12 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .bt-gacha-pick-row{display:flex;flex-wrap:wrap;gap:8px 12px;margin-bottom:8px}
 .bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
 .bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
-.unit-portrait-wrap{position:relative;overflow:visible;width:100%;box-sizing:border-box}
-.unit-portrait-frame{display:block;width:100%;box-sizing:border-box}
-.unit-portrait-art{display:block;width:100%;min-width:0;box-sizing:border-box}
+.unit-portrait-wrap{position:relative;overflow:visible}
 .modal-content.unit-detail .detail-portrait-stack{overflow:visible}
-.modal-content.unit-detail .unit-portrait-wrap:not(.unit-portrait-wrap--has-lb-video){padding:0 6px 8px 0}
+.modal-content.unit-detail .unit-portrait-wrap:not(.unit-portrait-wrap--has-lb-video){padding:0 6px 8px 0;box-sizing:border-box}
 .unit-portrait-wrap--has-lb-video .unit-portrait-frame{display:flex;flex-direction:column;border:2px solid var(--border-color);border-radius:var(--radius-md);background:rgba(13,19,33,0.8);box-sizing:border-box;width:100%;overflow:visible}
-.unit-portrait-wrap--has-lb-video .unit-portrait-art{flex:0 0 auto;padding:0;width:100%}
-.unit-portrait-wrap--has-lb-video .unit-portrait-frame .detail-portrait,.unit-portrait-wrap--has-lb-video .unit-portrait-frame .detail-portrait-placeholder{border:none;background:transparent;border-radius:0;width:100%;max-width:100%;height:auto;object-fit:contain;display:block}
-.unit-portrait-wrap--has-lb-video #unitLbVideoBtnSlot{position:static;flex:0 0 auto;display:flex;justify-content:flex-end;align-items:center;min-height:54px;padding:0 4px 4px;box-sizing:border-box;line-height:0;pointer-events:none;z-index:2}
+.unit-portrait-wrap--has-lb-video .unit-portrait-frame>.detail-portrait,.unit-portrait-wrap--has-lb-video .unit-portrait-frame>.detail-portrait-placeholder{border:none;background:transparent;border-radius:0}
+.unit-portrait-wrap--has-lb-video #unitLbVideoBtnSlot{flex:0 0 auto;display:flex;justify-content:flex-end;align-items:center;min-height:52px;padding:0 4px 4px;box-sizing:border-box;line-height:0;pointer-events:none;z-index:2}
 #unitLbVideoBtnSlot .unit-lb-video-btn{pointer-events:auto}
 @media(max-width:768px){
 .modal-content.unit-detail .unit-portrait-wrap:not(.unit-portrait-wrap--has-lb-video){padding:0 0 2px 0}
