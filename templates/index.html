@@ -104,6 +104,13 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .modal-content.unit-detail .unit-portrait-wrap{padding:0 6px 8px 0;box-sizing:border-box}
 #unitLbVideoBtnSlot{position:absolute;right:10px;bottom:28px;z-index:4;line-height:0;padding:4px;pointer-events:none}
 #unitLbVideoBtnSlot .unit-lb-video-btn{pointer-events:auto}
+@media(max-width:768px){
+#unitLbVideoBtnSlot{right:2px;bottom:8px;padding:0}
+.unit-lb-video-btn{width:32px;height:32px;border:none;border-radius:0;background:transparent;box-shadow:none}
+.unit-lb-video-btn:hover,.unit-lb-video-btn:active,.unit-lb-video-btn:focus-visible{border:none;background:transparent;box-shadow:none;transform:none;outline:none}
+.unit-lb-video-btn-icon{width:28px;height:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.92)) drop-shadow(0 0 10px rgba(34,211,238,.72))}
+.modal-content.unit-detail .unit-portrait-wrap{padding:0 0 2px 0}
+}
 @media(prefers-reduced-motion:reduce){.unit-lb-video-btn:hover,.unit-lb-video-btn:active{transform:none}}
 .media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
 .media-video-overlay.active{display:flex}
@@ -1069,7 +1076,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .unit-lb-video-btn:active{transform:translateY(0)}
 .detail-rank-toggle-btn.active{border-color:rgba(103,232,249,1);background:linear-gradient(145deg,rgba(14,56,78,.96),rgba(10,30,54,.94));box-shadow:0 8px 24px rgba(0,0,0,.52),0 0 28px rgba(34,211,238,.52),inset 0 0 0 1px rgba(186,230,253,.42)}
 .detail-rank-toggle-icon,.unit-lb-video-btn-icon{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(34,211,238,.5))}
-@media(max-width:768px){.detail-rank-toggle-btn,.unit-lb-video-btn{width:48px;height:48px}.detail-rank-toggle-icon,.unit-lb-video-btn-icon{width:30px;height:30px}}
+@media(max-width:768px){.detail-rank-toggle-btn{width:48px;height:48px}.detail-rank-toggle-icon{width:30px;height:30px}}
 .stat-inline-rank{--rad-size:74px;position:relative;margin-top:6px;width:var(--rad-size);height:var(--rad-size);display:grid;place-items:center;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .stat-inline-rank::after{content:'';position:absolute;inset:9px;border-radius:50%;pointer-events:none;opacity:0}
 .stat-inline-rank.leak-shadow-soft::after{animation:leakShadowPulseSoft 3.8s ease-in-out infinite}
