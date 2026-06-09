@@ -102,6 +102,8 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .unit-portrait-wrap{position:relative;overflow:visible}
 .modal-content.unit-detail .detail-portrait-stack{overflow:visible}
 .modal-content.unit-detail .unit-portrait-wrap{padding:0 6px 8px 0;box-sizing:border-box}
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn){padding-bottom:26px}
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitLbVideoBtnSlot{bottom:4px;right:8px}
 #unitLbVideoBtnSlot{position:absolute;right:10px;bottom:28px;z-index:4;line-height:0;padding:4px;pointer-events:none}
 #unitLbVideoBtnSlot .unit-lb-video-btn{pointer-events:auto}
 @media(prefers-reduced-motion:reduce){.unit-lb-video-btn:hover,.unit-lb-video-btn:active{transform:none}}
