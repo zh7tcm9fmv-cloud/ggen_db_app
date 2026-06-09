@@ -2996,12 +2996,21 @@ _listTheadStickyRaf=requestAnimationFrame(()=>{_listTheadStickyRaf=0;syncListThe
 let _cmpBrowserInsetRaf=0;
 function updateCmpBrowserInset(){
 const vv=window.visualViewport;
-let dvhPx=window.innerHeight||0;
-if(vv){dvhPx=Math.max(0,Math.round(vv.height||0))}
+const layoutH=Math.max(0,Math.round(window.innerHeight||0));
+let visualH=layoutH;
+let offsetTop=0;
+let insetBottom=0;
+if(vv){
+visualH=Math.max(0,Math.round(vv.height||0));
+offsetTop=Math.max(0,Math.round(vv.offsetTop||0));
+insetBottom=Math.max(0,layoutH-visualH-offsetTop);
+}
 const root=document.documentElement.style;
-root.setProperty('--cmp-browser-inset-bottom','0px');
-root.setProperty('--dvh',dvhPx+'px');
-root.setProperty('--app-vh',dvhPx+'px');
+root.setProperty('--layout-vh',layoutH+'px');
+root.setProperty('--visual-vv-offset-top',offsetTop+'px');
+root.setProperty('--cmp-browser-inset-bottom',insetBottom+'px');
+root.setProperty('--dvh',visualH+'px');
+root.setProperty('--app-vh',visualH+'px');
 }
 function scheduleUpdateCmpBrowserInset(){
 if(_cmpBrowserInsetRaf)return;
@@ -3021,7 +3030,7 @@ syncCmpMobilePickChrome();
 updateCompareUI();
 const onVV=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop()};
 const onResize=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop();updateCompareUI()};
-const onScroll=()=>scheduleSyncListTheadStickyTop();
+const onScroll=()=>{scheduleUpdateCmpBrowserInset();scheduleSyncListTheadStickyTop()};
 if(window.visualViewport){
 window.visualViewport.addEventListener('resize',onVV);
 window.visualViewport.addEventListener('scroll',onVV)

@@ -457,15 +457,26 @@
   @supports (-webkit-touch-callout: none) {
     html {
       scroll-padding-bottom: var(--safe-bottom);
+      min-height: var(--layout-vh, 100vh);
     }
 
     html.cmp-bar-open:has(#cmpFloat.visible) {
       scroll-padding-bottom: calc(var(--safe-bottom) + 56px);
     }
 
+    body {
+      min-height: var(--layout-vh, 100vh);
+    }
+
+    .app-header {
+      top: var(--visual-vv-offset-top, 0px);
+    }
+
     .bg-pattern {
-      height: var(--app-vh, 100dvh);
-      max-height: var(--app-vh, 100dvh);
+      top: calc(-1 * var(--visual-vv-offset-top, 0px));
+      height: calc(var(--layout-vh, 100vh) + var(--visual-vv-offset-top, 0px));
+      min-height: calc(var(--layout-vh, 100vh) + var(--visual-vv-offset-top, 0px));
+      max-height: none;
     }
   }
 
