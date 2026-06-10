@@ -9859,17 +9859,23 @@ def _map_buff_area_trait_icon_url(buff_id, lc):
 
 
 def _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
-    """Chebyshev range from 0-based map coordinates; returns 1-based cell keys for the stage map UI."""
+    """Orthogonal (+) range from 0-based map coordinates; returns 1-based cell keys for the stage map UI."""
     rmin = max(0, safe_int(rng_min, 0))
     rmax = max(rmin, safe_int(rng_max, 0))
     if rmax <= 0:
         return []
     out = []
-    for y in range(max(0, height)):
-        for x in range(max(0, width)):
-            dist = max(abs(x - cx), abs(y - cy))
-            if rmin <= dist <= rmax:
-                out.append((x + 1, y + 1))
+    seen = set()
+    for d in range(rmin, rmax + 1):
+        for ox, oy in ((d, 0), (-d, 0), (0, d), (0, -d)):
+            x, y = cx + ox, cy + oy
+            if x < 0 or y < 0 or x >= max(0, width) or y >= max(0, height):
+                continue
+            key = (x + 1, y + 1)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(key)
     return out
 
 
