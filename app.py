@@ -5665,6 +5665,22 @@ def create_map_npc_buff_lookup(d):
     return lk
 
 
+def create_occupied_area_lookup(d):
+    lk = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        oid = normalize_id(item.get('Id') or item.get('id'))
+        if oid == '0':
+            continue
+        lk[oid] = {
+            'id': oid,
+            'pivot_square_size': max(1, safe_int(item.get('PivotSquareSize') or item.get('pivotSquareSize'), 1)),
+            'forward_area': max(0, safe_int(item.get('ForwardArea') or item.get('forwardArea'), 0)),
+        }
+    return lk
+
+
 def create_map_gimmick_npc_unit_lookup(d):
     """MapGimmickNpcId -> unit row (UnitId, MapNpcBuffId)."""
     lk = {}
@@ -7093,6 +7109,7 @@ map_master_data = load_json(os.path.join(BASE_DIR, "m_map.json"))
 map_chip_motif_data = load_json(os.path.join(BASE_DIR, "m_map_chip_motif.json"))
 map_npc_data = load_json(os.path.join(BASE_DIR, "m_map_npc.json"))
 map_npc_buff_data = load_json(os.path.join(BASE_DIR, "m_map_npc_buff.json"))
+occupied_area_data = load_json(os.path.join(BASE_DIR, "m_occupied_area.json"))
 map_gimmick_npc_data = load_json(os.path.join(BASE_DIR, "m_map_gimmick_npc.json"))
 map_gimmick_npc_unit_data = load_json(os.path.join(BASE_DIR, "m_map_gimmick_npc_unit.json"))
 map_area_data = load_json(os.path.join(BASE_DIR, "m_map_area.json"))
@@ -7219,6 +7236,7 @@ map_stage_conditions_by_map_stage = create_map_stage_conditions_by_map_stage(map
 map_stage_event_areas_by_map_stage = create_map_stage_event_areas_by_map_stage(map_stage_event_area_data) if map_stage_event_area_data else {}
 map_npc_terrain_extension_lookup = create_map_npc_terrain_extension_lookup(map_npc_unit_terrain_extension_data) if map_npc_unit_terrain_extension_data else {}
 map_npc_buff_lookup = create_map_npc_buff_lookup(map_npc_buff_data) if map_npc_buff_data else {}
+occupied_area_lookup = create_occupied_area_lookup(occupied_area_data) if occupied_area_data else {}
 map_gimmick_npc_unit_lookup = create_map_gimmick_npc_unit_lookup(map_gimmick_npc_unit_data) if map_gimmick_npc_unit_data else {}
 map_gimmick_npc_by_map_stage = create_map_gimmick_npc_by_map_stage(map_gimmick_npc_data) if map_gimmick_npc_data else {}
 map_npc_strategy_hint_by_npc, _ = create_map_npc_strategy_hint_maps(
@@ -9879,8 +9897,8 @@ def _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
     return out
 
 
-def _map_buff_range_cells_from_footprint(cells_0based, rng_min, rng_max, width, height):
-    """Union of orthogonal (+) buff rings from each cell in a multi-block unit footprint."""
+def _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, height):
+    """Union of orthogonal (+) buff rings from each cell (1×1 / 2×2 units)."""
     seen = set()
     out = []
     for cell in cells_0based or []:
@@ -9892,6 +9910,92 @@ def _map_buff_range_cells_from_footprint(cells_0based, rng_min, rng_max, width, 
             seen.add(key)
             out.append(key)
     return out
+
+
+def _map_buff_range_cells_warship_enhancement(cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height):
+    """Enhancement area for warships: full-width forward/rear band + rear-pivot perpendicular arms (in-game shape)."""
+    footprint = cells_0based or []
+    if not footprint:
+        return []
+    fp_set = {(safe_int(c.get('x'), 0), safe_int(c.get('y'), 0)) for c in footprint}
+    xs = [x for x, _y in fp_set]
+    ys = [y for _x, y in fp_set]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    oaid = normalize_id(occupied_area_id)
+    oa_row = occupied_area_lookup.get(oaid, {})
+    pivot = max(1, safe_int(oa_row.get('pivot_square_size'), 2))
+    rmin = max(0, safe_int(rng_min, 0))
+    rmax = max(rmin, safe_int(rng_max, 0))
+    if rmax <= 0:
+        return []
+    buff = set()
+    d = str(direction or '1')
+    if d in ('1', '3'):
+        rear_cols = (
+            range(min_x, min_x + pivot)
+            if d == '1'
+            else range(max_x - pivot + 1, max_x + 1)
+        )
+        for dist in range(rmin, rmax + 1):
+            if d == '1':
+                band_x = (max_x + dist, min_x - dist)
+            else:
+                band_x = (min_x - dist, max_x + dist)
+            for bx in band_x:
+                for y in range(min_y, max_y + 1):
+                    buff.add((bx, y))
+        for dist in range(rmin, rmax + 1):
+            for x in rear_cols:
+                buff.add((x, min_y - dist))
+                buff.add((x, max_y + dist))
+    else:
+        rear_rows = (
+            range(min_y, min_y + pivot)
+            if d == '2'
+            else range(max_y - pivot + 1, max_y + 1)
+        )
+        for dist in range(rmin, rmax + 1):
+            if d == '2':
+                band_y = (max_y + dist, min_y - dist)
+            else:
+                band_y = (min_y - dist, max_y + dist)
+            for by in band_y:
+                for x in range(min_x, max_x + 1):
+                    buff.add((x, by))
+        for dist in range(rmin, rmax + 1):
+            for y in rear_rows:
+                buff.add((min_x - dist, y))
+                buff.add((max_x + dist, y))
+    buff -= fp_set
+    out = []
+    seen = set()
+    for x, y in buff:
+        if x < 0 or y < 0 or x >= max(0, width) or y >= max(0, height):
+            continue
+        key = (x + 1, y + 1)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(key)
+    return out
+
+
+def _map_buff_range_cells_for_footprint(cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height):
+    """Pick buff geometry: warship band+pivot arms (OccupiedAreaId ≥3) or per-cell cross union."""
+    oaid = safe_int(occupied_area_id, 1)
+    if oaid >= 3 and cells_0based and len(cells_0based) > 1:
+        return _map_buff_range_cells_warship_enhancement(
+            cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height,
+        )
+    if cells_0based and len(cells_0based) > 1:
+        return _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, height)
+    if cells_0based:
+        c0 = cells_0based[0]
+        return _map_buff_range_cells_1based(
+            safe_int(c0.get('x'), 0), safe_int(c0.get('y'), 0), rng_min, rng_max, width, height,
+        )
+    return []
 
 
 def _map_buff_area_effect_meta(buff_id, lc):
@@ -9938,8 +10042,14 @@ def build_map_buff_area_cells(buff_sources, width, height, lc):
             continue
         footprint = src.get('footprint')
         if footprint:
-            cell_iter = _map_buff_range_cells_from_footprint(
-                footprint, row.get('range_min'), row.get('range_max'), width, height,
+            cell_iter = _map_buff_range_cells_for_footprint(
+                footprint,
+                src.get('direction', '1'),
+                src.get('occupied_area_id', 1),
+                row.get('range_min'),
+                row.get('range_max'),
+                width,
+                height,
             )
         else:
             cx = safe_int(src.get('x'), 0)
@@ -11231,9 +11341,9 @@ def get_warship_2x3_cells(x, y):
 
 
 def get_warship_footprint_cells(x, y, direction):
-    """Orient warship rectangle from DirectionTypeIndex (Right = horizontal 3×2; else vertical 2×3)."""
+    """Warship OccupiedAreaId 3: 3×2 when facing left/right; 2×3 when facing up/down (anchor = top-left)."""
     d = str(direction or '1')
-    if d == '1':
+    if d in ('1', '3'):
         return get_warship_2x3_cells(x, y)
     return get_warship_3x2_cells(x, y)
 
@@ -18097,10 +18207,17 @@ def get_stage(stage_id):
             for npc in nt:
                 bid = normalize_id(npc.get('map_npc_buff_id', '0'))
                 if bid != '0':
+                    npc_oaid = 1
+                    nu_b = map_npc_unit_lookup.get(normalize_id(npc['id']), []) or []
+                    if nu_b:
+                        uid_b = normalize_id(nu_b[0].get('unit_id', '0'))
+                        npc_oaid = safe_int((unit_info_map.get(uid_b) or {}).get('occupied_area_id'), 1)
                     buff_sources.append({
                         'x': npc.get('x', 0),
                         'y': npc.get('y', 0),
                         'buff_id': bid,
+                        'direction': normalize_id(npc.get('direction', '1'), '1'),
+                        'occupied_area_id': npc_oaid,
                         'footprint': get_map_npc_unit_footprint_cells(
                             npc['id'], npc.get('x', 0), npc.get('y', 0), npc.get('direction'),
                         ),
@@ -18111,10 +18228,13 @@ def get_stage(stage_id):
                 uid = gu.get('unit_id', '0')
                 bid = gu.get('map_npc_buff_id', '0')
                 if bid != '0':
+                    gimmick_oaid = safe_int((unit_info_map.get(normalize_id(uid)) or {}).get('occupied_area_id'), 1)
                     buff_sources.append({
                         'x': gimmick['x'],
                         'y': gimmick['y'],
                         'buff_id': bid,
+                        'direction': normalize_id(gimmick.get('direction', '1'), '1'),
+                        'occupied_area_id': gimmick_oaid,
                         'footprint': get_map_npc_unit_footprint_cells(
                             gid, gimmick['x'], gimmick['y'], gimmick.get('direction'),
                         ),

@@ -2814,7 +2814,7 @@ function renderStageMapGrid(md){
         const gimmickCls=u.is_gimmick?'gimmick':'';
         const dir=String(u.direction||'0');
         const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
-        const rotStyle=dir!=='0'?` style="transform:rotate(${rot}deg);"`:'';
+        const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
         const bbox=_stageMapFootprintBBox(u,w,h);
         const multiFp=bbox&&(bbox.fpw>1||bbox.fph>1);
         const stride=cellPx+gapPx;

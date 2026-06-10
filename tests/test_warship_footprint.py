@@ -20,7 +20,7 @@ def _warship_footprint_cells(x, y, direction):
             {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1}, {'x': x + 2, 'y': y + 1},
         ]
 
-    if d == '1':
+    if d in ('1', '3'):
         return cells_2x3()
     return cells_3x2()
 
@@ -32,19 +32,17 @@ def _footprint_bbox(cells):
 
 
 class TestWarshipFootprint(unittest.TestCase):
-    def test_right_is_horizontal_3x2(self):
-        cells = _warship_footprint_cells(4, 9, 1)
-        self.assertEqual(len(cells), 6)
-        self.assertEqual(_footprint_bbox(cells), (3, 2))
+    def test_left_right_are_horizontal_3x2(self):
+        for d in ('1', '3'):
+            cells = _warship_footprint_cells(4, 9, d)
+            self.assertEqual(len(cells), 6)
+            self.assertEqual(_footprint_bbox(cells), (3, 2))
 
-    def test_left_is_vertical_2x3(self):
-        cells = _warship_footprint_cells(16, 9, 3)
-        self.assertEqual(len(cells), 6)
-        self.assertEqual(_footprint_bbox(cells), (2, 3))
-
-    def test_up_is_vertical_2x3(self):
-        cells = _warship_footprint_cells(10, 5, 2)
-        self.assertEqual(_footprint_bbox(cells), (2, 3))
+    def test_up_down_are_vertical_2x3(self):
+        for d in ('2', '4'):
+            cells = _warship_footprint_cells(10, 5, d)
+            self.assertEqual(len(cells), 6)
+            self.assertEqual(_footprint_bbox(cells), (2, 3))
 
 
 if __name__ == '__main__':
