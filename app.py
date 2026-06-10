@@ -11320,7 +11320,8 @@ def get_warship_footprint_cells(x, y, direction, for_buff=False):
     ay = safe_int(y, 0)
     d = str(direction or '1')
     if d in ('1', '3'):
-        ox = ax - 2 if d == '1' else ax - 1
+        # m_map_npc (x,y) is the rear pivot: west faces −x (ox = ax − ForwardArea), east faces +x (ox = ax).
+        ox = ax if d == '1' else ax - 1
         return get_warship_2x3_cells(ox, ay)
     oy = ay - 2 if d == '2' else ay - 1
     return get_warship_3x2_cells(ax, oy)

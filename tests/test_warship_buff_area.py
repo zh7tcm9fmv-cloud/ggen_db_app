@@ -54,8 +54,8 @@ class TestWarshipBuffArea(unittest.TestCase):
 
     def test_minerva_east_same_shape(self):
         footprint = [
-            {'x': 2, 'y': 9}, {'x': 3, 'y': 9}, {'x': 4, 'y': 9},
-            {'x': 2, 'y': 10}, {'x': 3, 'y': 10}, {'x': 4, 'y': 10},
+            {'x': 4, 'y': 9}, {'x': 5, 'y': 9}, {'x': 6, 'y': 9},
+            {'x': 4, 'y': 10}, {'x': 5, 'y': 10}, {'x': 6, 'y': 10},
         ]
         cells = _stepped_rect_1based(footprint, 1, 2, 24, 24)
         self.assertEqual(len(cells), 24)
