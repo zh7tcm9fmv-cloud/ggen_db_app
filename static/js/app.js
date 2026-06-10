@@ -917,6 +917,43 @@ let _mediaVideoControlsIdleTimer=0;
 let _mediaVideoMuted=false;
 let _mediaVideoPreMuteVolume=0.5;
 let _mediaVideoOrientationLocked=false;
+let _mediaVideoPseudoFs=false;
+function _mediaVideoInExpandedView(){
+  return _mediaVideoInFullscreen()||_mediaVideoPseudoFs;
+}
+function _mediaVideoPreferPseudoFullscreen(){
+  if(!_mediaVideoIsPortraitMobile())return false;
+  const ua=String(navigator.userAgent||'');
+  if(/iPad|iPhone|iPod/i.test(ua))return true;
+  if(typeof navigator.maxTouchPoints==='number'&&navigator.maxTouchPoints>1&&/MacIntel|iPad/.test(String(navigator.platform||'')))return true;
+  return false;
+}
+function _enterMediaVideoPseudoFullscreen(){
+  const ov=_mediaVideoOverlay();
+  const stage=_mediaVideoStageEl();
+  if(!ov||!stage||_mediaVideoPseudoFs)return;
+  _mediaVideoPseudoFs=true;
+  ov.classList.add('media-video-overlay--pseudo-fs');
+  document.documentElement.classList.add('media-video-pseudo-fs-lock');
+  void _lockMediaVideoLandscape(stage);
+  stage.style.removeProperty('width');
+  stage.style.removeProperty('height');
+  _syncMediaVideoToolbarLabels();
+  _showMediaVideoControlsTemporarily();
+}
+function _exitMediaVideoPseudoFullscreen(){
+  if(!_mediaVideoPseudoFs)return;
+  _mediaVideoPseudoFs=false;
+  const ov=_mediaVideoOverlay();
+  const stage=_mediaVideoStageEl();
+  if(ov)ov.classList.remove('media-video-overlay--pseudo-fs');
+  document.documentElement.classList.remove('media-video-pseudo-fs-lock');
+  if(stage){
+    _unlockMediaVideoLandscape(stage);
+    _applyMediaVideoStageSize();
+  }
+  _syncMediaVideoToolbarLabels();
+}
 function _mediaVideoViewportSize(){
   const pad=_MEDIA_VIDEO_VIEWPORT_PAD;
   const vv=window.visualViewport;
@@ -1035,7 +1072,7 @@ function toggleMediaVideoMute(){
 function _applyMediaVideoStageSize(){
   const stage=_mediaVideoStageEl();
   if(!stage)return;
-  if(_mediaVideoInFullscreen()){
+  if(_mediaVideoInExpandedView()){
     stage.style.removeProperty('width');
     stage.style.removeProperty('height');
     return;
@@ -1057,14 +1094,21 @@ function _setMediaVideoControlsVisible(visible){
   if(!ov)return;
   ov.classList.toggle('is-controls-visible',!!visible);
 }
+function _mediaVideoDesktopAutoHide(){
+  try{return window.matchMedia('(hover:hover) and (pointer:fine)').matches}catch(_){return false}
+}
 function _mediaVideoToolbarHasFocus(){
   const tb=document.getElementById('mediaVideoToolbar');
   return!!(tb&&tb.matches(':focus-within'));
 }
+function _mediaVideoCloseHasFocus(){
+  const btn=document.querySelector('.media-video-close');
+  return!!(btn&&btn.matches(':focus-visible'));
+}
 function _scheduleMediaVideoControlsHide(){
   clearTimeout(_mediaVideoControlsIdleTimer);
   _mediaVideoControlsIdleTimer=setTimeout(()=>{
-    if(_mediaVideoToolbarHasFocus()){
+    if(_mediaVideoToolbarHasFocus()||_mediaVideoCloseHasFocus()){
       _scheduleMediaVideoControlsHide();
       return;
     }
@@ -1081,26 +1125,49 @@ function _hideMediaVideoControls(){
   clearTimeout(_mediaVideoControlsIdleTimer);
   _setMediaVideoControlsVisible(false);
 }
+function _mediaVideoIsChromeTarget(el){
+  return!!(el&&el.closest&&el.closest('.media-video-close,.media-video-toolbar,.media-video-controls,.media-video-assault,.media-video-toolbar-btn,#mediaVideoVolume'));
+}
+function _bindMediaVideoCloseBtn(){
+  const btn=document.querySelector('.media-video-close');
+  if(!btn||btn._mediaVideoCloseBound)return;
+  btn._mediaVideoCloseBound=1;
+  btn.addEventListener('pointerup',(e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    closeMediaVideoOverlay();
+  });
+  btn.addEventListener('mouseenter',()=>_showMediaVideoControlsTemporarily());
+  btn.addEventListener('focusin',()=>_showMediaVideoControlsTemporarily());
+}
 function _bindMediaVideoControlsAutoHide(){
   if(window._mediaVideoControlsHideBound)return;
   window._mediaVideoControlsHideBound=1;
+  _bindMediaVideoCloseBtn();
   const onActivity=(e)=>{
     const ov=_mediaVideoOverlay();
     if(!ov||!ov.classList.contains('active'))return;
-    if(e&&e.type==='pointermove'){
-      const t=e.target;
+    const t=e.target;
+    const move=e&&(e.type==='pointermove'||e.type==='mousemove');
+    if(move){
       if(!t||!ov.contains(t))return;
+      _showMediaVideoControlsTemporarily();
+      return;
     }
+    if(e&&e.type==='pointerdown'&&t&&t.closest&&t.closest('.media-video-close'))return;
+    if(!move&&_mediaVideoIsChromeTarget(t))return;
     _showMediaVideoControlsTemporarily();
   };
-  document.addEventListener('pointermove',onActivity,{passive:true});
-  document.addEventListener('pointerdown',onActivity,{passive:true});
   const ovEl=document.getElementById('mediaVideoOverlay');
   if(ovEl){
+    ovEl.addEventListener('pointerdown',onActivity,{passive:true});
+    ovEl.addEventListener('pointermove',onActivity,{passive:true});
+    ovEl.addEventListener('mousemove',onActivity,{passive:true});
     ovEl.addEventListener('mouseenter',onActivity);
   }
   const tb=document.getElementById('mediaVideoToolbar');
   if(tb){
+    tb.addEventListener('mouseenter',()=>_showMediaVideoControlsTemporarily());
     tb.addEventListener('focusin',()=>_showMediaVideoControlsTemporarily());
     tb.addEventListener('focusout',()=>_scheduleMediaVideoControlsHide());
   }
@@ -1113,7 +1180,7 @@ function _applyMediaVideoPrefsToVideos(){
 }
 function _syncMediaVideoToolbarLabels(){
   const fs=document.getElementById('mediaVideoFullscreenBtn');
-  const inFs=!!(document.fullscreenElement||document.webkitFullscreenElement);
+  const inFs=_mediaVideoInExpandedView();
   if(fs){
     fs.title=inFs?(t('video_exit_fullscreen')!=='video_exit_fullscreen'?t('video_exit_fullscreen'):'Exit fullscreen'):(t('video_fullscreen')!=='video_fullscreen'?t('video_fullscreen'):'Fullscreen');
     fs.setAttribute('aria-label',fs.title);
@@ -1136,7 +1203,8 @@ function _showMediaVideoToolbar(on){
   if(on){
     _applyMediaVideoPrefsUi();
     _refreshMediaVideoStageLayout();
-    _hideMediaVideoControls();
+    if(_mediaVideoDesktopAutoHide())_hideMediaVideoControls();
+    else _showMediaVideoControlsTemporarily();
   }else{
     _hideMediaVideoControls();
   }
@@ -1152,18 +1220,42 @@ function toggleMediaVideoFullscreen(){
   const stage=_mediaVideoStageEl();
   if(!stage)return;
   _showMediaVideoControlsTemporarily();
-  const inFs=!!(document.fullscreenElement||document.webkitFullscreenElement);
-  if(inFs){
+  if(_mediaVideoInExpandedView()){
+    _exitMediaVideoPseudoFullscreen();
     _unlockMediaVideoLandscape(stage);
-    const exit=document.exitFullscreen||document.webkitExitFullscreen;
-    if(exit)exit.call(document);
+    const nativeFs=!!(document.fullscreenElement||document.webkitFullscreenElement);
+    if(nativeFs){
+      const exit=document.exitFullscreen||document.webkitExitFullscreen;
+      if(exit)exit.call(document);
+    }
+    return;
+  }
+  const portraitMobile=_mediaVideoIsPortraitMobile();
+  if(portraitMobile){
+    if(_mediaVideoPreferPseudoFullscreen()){
+      _enterMediaVideoPseudoFullscreen();
+      return;
+    }
+    const req=stage.requestFullscreen||stage.webkitRequestFullscreen;
+    if(req){
+      Promise.resolve(req.call(stage))
+        .then(()=>{
+          void _lockMediaVideoLandscape(stage);
+          _syncMediaVideoToolbarLabels();
+          _applyMediaVideoStageSize();
+        })
+        .catch(()=>_enterMediaVideoPseudoFullscreen());
+      return;
+    }
+    _enterMediaVideoPseudoFullscreen();
     return;
   }
   const req=stage.requestFullscreen||stage.webkitRequestFullscreen;
   if(!req)return;
-  Promise.resolve(req.call(stage)).then(()=>_lockMediaVideoLandscape(stage)).catch(function(){});
+  Promise.resolve(req.call(stage)).catch(function(){});
 }
 function _exitMediaVideoFullscreenIfNeeded(){
+  _exitMediaVideoPseudoFullscreen();
   const stage=_mediaVideoStageEl();
   const fs=document.fullscreenElement||document.webkitFullscreenElement;
   if(!fs||!stage||fs!==stage)return;
@@ -1240,7 +1332,7 @@ function _videoMediaErrKind(v){const c=v&&v.error?v.error.code:0;if(c===3||c===4
 function _probeVideoCdnUrl(url){const t0=performance.now();return fetch(url,{method:'HEAD',cache:'force-cache'}).then(r=>{const ms=Math.max(0,Math.round(performance.now()-t0));return{ok:r.ok,ms,size:Number(r.headers.get('content-length')||0),status:r.status}}).catch(()=>({ok:false,ms:Math.max(0,Math.round(performance.now()-t0)),size:0,status:0}))}
 function _formatVideoPerfLine(probe,codec){if(!probe||!probe.ok)return'';const size=probe.size>0?_fmtVideoBytes(probe.size):'—';const key=codec?'video_perf_codec':'video_perf_loaded';return t(key).replace('{size}',size).replace('{ms}',String(probe.ms))}
 function _invokeVideoOnReady(st){if(!st||!st._videoOnReady)return;const fn=st._videoOnReady;st._videoOnReady=null;fn()}
-function stopMediaVideoPlayback(){const v=_mediaVideoEl();const pre=_mediaVideoPreloadEl();_gachaClipAdvanceLock=false;_clearLbLoopRecovery();_unbindLbRepeatListener();_exitMediaVideoFullscreenIfNeeded();if(v){_resetMediaVideoStage(v);try{v.pause()}catch(_){}v.loop=false;v.removeAttribute('loop');v.preload='none';v.removeAttribute('src');v.load()}if(pre){try{pre.pause()}catch(_){}pre.hidden=true;pre.loop=false;pre.removeAttribute('loop');pre.removeAttribute('src');pre.load()}if(_gachaPullState){_gachaPullState=null}_setMediaVideoLoading(false);_setMediaVideoStatus('');const ov=_mediaVideoOverlay();if(ov){ov.classList.remove('active','is-controls-visible');ov.setAttribute('aria-hidden','true')}const stage=_mediaVideoStageEl();if(stage){stage.style.removeProperty('width');stage.style.removeProperty('height');_unlockMediaVideoLandscape(stage)}_hideMediaVideoControls();const assault=document.getElementById('gachaAssaultBtn');if(assault)assault.hidden=true;const ctrl=document.getElementById('gachaVideoControls');if(ctrl)ctrl.hidden=true}
+function stopMediaVideoPlayback(){const v=_mediaVideoEl();const pre=_mediaVideoPreloadEl();_gachaClipAdvanceLock=false;_clearLbLoopRecovery();_unbindLbRepeatListener();_exitMediaVideoFullscreenIfNeeded();if(v){_resetMediaVideoStage(v);try{v.pause()}catch(_){}v.loop=false;v.removeAttribute('loop');v.preload='none';v.removeAttribute('src');v.load()}if(pre){try{pre.pause()}catch(_){}pre.hidden=true;pre.loop=false;pre.removeAttribute('loop');pre.removeAttribute('src');pre.load()}if(_gachaPullState){_gachaPullState=null}_setMediaVideoLoading(false);_setMediaVideoStatus('');const ov=_mediaVideoOverlay();if(ov){ov.classList.remove('active','is-controls-visible','media-video-overlay--pseudo-fs');ov.setAttribute('aria-hidden','true')}document.documentElement.classList.remove('media-video-pseudo-fs-lock');_mediaVideoPseudoFs=false;const stage=_mediaVideoStageEl();if(stage){stage.style.removeProperty('width');stage.style.removeProperty('height');_unlockMediaVideoLandscape(stage)}_hideMediaVideoControls();const assault=document.getElementById('gachaAssaultBtn');if(assault)assault.hidden=true;const ctrl=document.getElementById('gachaVideoControls');if(ctrl)ctrl.hidden=true}
 function _gachaClipCandidatesAt(index){const st=_gachaPullState;if(!st||!st.queue||index<0||index>=st.queue.length)return[];const clip=st.queue[index];return _videoUrlCandidates(clip.folder||'gacha',clip.id||clip)}
 function _clearGachaPreload(){const st=_gachaPullState;if(st){st._preloadedClipIndex=null;st._preloadedClipUrl=''}const pre=_mediaVideoPreloadEl();if(pre){try{pre.pause()}catch(_){}pre.removeAttribute('src');pre.load()}}
 function _preloadGachaClipAt(index){const st=_gachaPullState;if(!st||st.mode!=='gacha'||index>=st.queue.length)return;_clearGachaPreload();const candidates=_gachaClipCandidatesAt(index);if(!candidates.length)return;const pre=_mediaVideoPreloadEl();if(!pre)return;st._preloadedClipIndex=index;st._preloadedClipUrl=candidates[0];pre.src=candidates[0];pre.load()}
