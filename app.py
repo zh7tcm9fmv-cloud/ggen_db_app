@@ -11314,16 +11314,16 @@ def get_warship_2x3_cells(x, y):
 def get_warship_footprint_cells(x, y, direction, for_buff=False):
     """Warship OccupiedAreaId 3: 3×2 (2 rows × 3 cols) when facing east/west; 2×3 when facing up/down.
 
-    Map (x, y) from m_map_npc is the pivot anchor. Display tiles sit one row north (+y) of the buff anchor."""
+    Map (x, y) from m_map_npc is the pivot anchor. Occupied tiles use the buff anchor; the icon
+    is rendered one row north via get_warship_map_origin()."""
     ax = safe_int(x, 0)
     ay = safe_int(y, 0)
     d = str(direction or '1')
-    y_off = 0 if for_buff else 1
     if d in ('1', '3'):
         ox = ax - 2 if d == '1' else ax - 1
-        return get_warship_2x3_cells(ox, ay + y_off)
+        return get_warship_2x3_cells(ox, ay)
     oy = ay - 2 if d == '2' else ay - 1
-    return get_warship_3x2_cells(ax, oy + y_off)
+    return get_warship_3x2_cells(ax, oy)
 
 
 def get_warship_map_origin(x, y, direction):
@@ -18189,7 +18189,7 @@ def get_stage(stage_id):
                         me['unit_id'] = umap_uid
                         me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
                 me['cells'] = get_map_npc_unit_footprint_cells(
-                    nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'))
+                    nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'), for_buff=True)
                 if safe_int(me.get('occupied_area_id'), 1) >= 3:
                     me['map_origin'] = get_warship_map_origin(
                         npc.get('x', 0), npc.get('y', 0), npc.get('direction'))

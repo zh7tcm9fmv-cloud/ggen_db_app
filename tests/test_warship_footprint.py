@@ -3,19 +3,10 @@
 import unittest
 
 
-def _warship_footprint_cells(x, y, direction, for_buff=False):
-    """Mirror of app.get_warship_footprint_cells — keep in sync."""
+def _warship_footprint_cells(x, y, direction):
     ax = int(x)
     ay = int(y)
     d = str(direction or '1')
-    y_off = 0 if for_buff else 1
-
-    def cells_3x2(ox, oy):
-        return [
-            {'x': ox, 'y': oy}, {'x': ox + 1, 'y': oy},
-            {'x': ox, 'y': oy + 1}, {'x': ox + 1, 'y': oy + 1},
-            {'x': ox, 'y': oy + 2}, {'x': ox + 1, 'y': oy + 2},
-        ]
 
     def cells_2x3(ox, oy):
         return [
@@ -25,9 +16,13 @@ def _warship_footprint_cells(x, y, direction, for_buff=False):
 
     if d in ('1', '3'):
         ox = ax - 2 if d == '1' else ax - 1
-        return cells_2x3(ox, ay + y_off)
+        return cells_2x3(ox, ay)
     oy = ay - 2 if d == '2' else ay - 1
-    return cells_3x2(ax, oy + y_off)
+    return [
+        {'x': ax, 'y': oy}, {'x': ax + 1, 'y': oy},
+        {'x': ax, 'y': oy + 1}, {'x': ax + 1, 'y': oy + 1},
+        {'x': ax, 'y': oy + 2}, {'x': ax + 1, 'y': oy + 2},
+    ]
 
 
 def _warship_map_origin(x, y, direction):
@@ -52,21 +47,16 @@ def _footprint_bbox(cells):
 
 
 class TestWarshipFootprint(unittest.TestCase):
-    def test_archangel_west_display_one_row_north_of_buff(self):
-        """Display footprint is one row above buff anchor (EN Y=9 → ship rows 10–11)."""
-        display = _warship_footprint_cells(16, 9, 3)
-        buff = _warship_footprint_cells(16, 9, 3, for_buff=True)
-        self.assertEqual(_footprint_bbox(display)[1], 10)
-        self.assertEqual(_footprint_bbox(buff)[1], 9)
+    def test_archangel_west_cells_match_buff_anchor(self):
+        """Occupied tiles y=9–10 (1-based 10–11); icon origin one row north at y=10."""
+        cells = _warship_footprint_cells(16, 9, 3)
+        self.assertEqual(_footprint_bbox(cells), (15, 9, 3, 2))
         self.assertEqual(_warship_map_origin(16, 9, 3), {'x': 15, 'y': 10})
 
-    def test_minerva_east_display_one_row_north_of_buff(self):
-        display = _warship_footprint_cells(4, 9, 1)
-        buff = _warship_footprint_cells(4, 9, 1, for_buff=True)
-        min_x, min_y, w, h = _footprint_bbox(display)
-        self.assertEqual((min_x, min_y, w, h), (2, 10, 3, 2))
-        self.assertIn({'x': 4, 'y': 10}, display)
-        self.assertIn({'x': 4, 'y': 9}, buff)
+    def test_minerva_east_cells_match_buff_anchor(self):
+        cells = _warship_footprint_cells(4, 9, 1)
+        self.assertEqual(_footprint_bbox(cells), (2, 9, 3, 2))
+        self.assertIn({'x': 4, 'y': 9}, cells)
         self.assertEqual(_warship_map_origin(4, 9, 1), {'x': 4, 'y': 10})
 
 

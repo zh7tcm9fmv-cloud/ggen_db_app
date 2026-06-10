@@ -2805,7 +2805,9 @@ function renderStageMapGrid(md){
       const isStackedEnemyTile=enemyStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
-      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''} ${u.is_large?'large-fill':''}`:'';
+      let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''}`:'';
+      const wshipMulti=Number(u.occupied_area_id)>=3&&Array.isArray(u.cells)&&u.cells.length>1;
+      if(u&&u.is_large&&!wshipMulti)cls+=' large-fill';
       if(isPlayableTile)cls+=' map-cell--playable';
       if(eventArea)cls+=' map-cell--event-area';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
