@@ -2843,10 +2843,15 @@ function _stageMapBuildOccupancyMap(md){
   });
   return {occ,w,h};
 }
+function _stageMapIsHaroUnit(u){
+if(!u)return false;
+const uid=String(u.unit_id||'');
+return uid==='1850001210'||uid==='1850001300'||uid==='1850001350';
+}
 function _normalizeStageMapUnitFootprints(units,_w,_h){
 if(!Array.isArray(units))return;
 units.forEach(u=>{
-if(!u)return;
+if(!u||_stageMapIsHaroUnit(u))return;
 const ax=Math.floor(Number(u.x)||0),ay=Math.floor(Number(u.y)||0);
 const cl=u.cells;
 const n=Array.isArray(cl)?cl.length:0;

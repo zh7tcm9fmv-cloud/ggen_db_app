@@ -6188,12 +6188,24 @@ def minkowski_map_coords_with_2x2_footprint(coords):
     return out
 
 
+def is_haro_map_unit(unit_id):
+    """Haro units use OccupiedAreaId 2 in data but occupy a single map tile on the stage map."""
+    uid = normalize_id(unit_id, '0')
+    if uid == '0':
+        return False
+    info = unit_info_map.get(uid) or {}
+    model = str(info.get('model') or '').upper()
+    return model.startswith('HARO')
+
+
 def augment_map_coords_for_occupied_area_2(coords, unit_id):
     """Add tiles for 2×2 units (m_unit OccupiedAreaId 2): each row gets (max_x + 1, y) if missing."""
     if not coords:
         return coords
     uid = normalize_id(unit_id) if unit_id else '0'
     if uid == '0':
+        return coords
+    if is_haro_map_unit(uid):
         return coords
     info = unit_info_map.get(uid) or {}
     if safe_int(info.get('occupied_area_id'), 1) != 2:
@@ -6214,6 +6226,8 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
 def augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id):
     """MAP dash line weapons: duplicate a single-column shooting path at x+1 for 2×2 units (two lanes)."""
     if not scc or len(scc) < 2:
+        return scc, False
+    if is_haro_map_unit(unit_id):
         return scc, False
     uid = normalize_id(unit_id) if unit_id else '0'
     if uid == '0':
@@ -9953,20 +9967,26 @@ def _map_buff_range_cells_stepped_rect(cells_0based, rng_min, rng_max, width, he
 
 
 def _map_buff_range_cells_for_footprint(cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height):
-    """Pick buff geometry: stepped rect for warships (OccupiedAreaId ≥3) or per-cell cross union."""
+    """Pick buff geometry: stepped ring when range > 1 tile; warships always stepped; else cross."""
+    if not cells_0based:
+        return []
     oaid = safe_int(occupied_area_id, 1)
-    if oaid >= 3 and cells_0based and len(cells_0based) > 1:
+    rmin = max(0, safe_int(rng_min, 0))
+    rmax = max(rmin, safe_int(rng_max, 0))
+    if oaid >= 3 and len(cells_0based) > 1:
         return _map_buff_range_cells_stepped_rect(
             cells_0based, rng_min, rng_max, width, height,
         )
-    if cells_0based and len(cells_0based) > 1:
-        return _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, height)
-    if cells_0based:
-        c0 = cells_0based[0]
-        return _map_buff_range_cells_1based(
-            safe_int(c0.get('x'), 0), safe_int(c0.get('y'), 0), rng_min, rng_max, width, height,
+    if rmax > 1:
+        return _map_buff_range_cells_stepped_rect(
+            cells_0based, rng_min, rng_max, width, height,
         )
-    return []
+    if len(cells_0based) > 1:
+        return _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, height)
+    c0 = cells_0based[0]
+    return _map_buff_range_cells_1based(
+        safe_int(c0.get('x'), 0), safe_int(c0.get('y'), 0), rng_min, rng_max, width, height,
+    )
 
 
 def _map_buff_area_effect_meta(buff_id, lc):
@@ -11294,6 +11314,20 @@ def get_large_unit_cells(x, y):
     return [{'x': x, 'y': y}, {'x': x + 1, 'y': y}, {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1}]
 
 
+def get_map_unit_footprint_cells(unit_id, x, y, direction=None, for_buff=False):
+    """Footprint from m_unit OccupiedAreaId (Haro excluded — single tile despite OccupiedAreaId 2)."""
+    uid = normalize_id(unit_id, '0')
+    if uid == '0':
+        return [{'x': x, 'y': y}]
+    info = unit_info_map.get(uid, {})
+    occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
+    if occupied_area_id == 2 and not is_haro_map_unit(uid):
+        return get_large_unit_cells(x, y)
+    if occupied_area_id == 3:
+        return get_warship_footprint_cells(x, y, direction, for_buff=for_buff)
+    return [{'x': x, 'y': y}]
+
+
 def get_warship_3x2_cells(x, y):
     """Warship footprint for OccupiedAreaId 3 facing up/down: width 2 (x), height 3 (y)."""
     return [
@@ -11364,16 +11398,10 @@ def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None, for_buff=Fals
     uid = normalize_id((nu[0] or {}).get('unit_id', '0'), '0')
     if uid == '0':
         return [{'x': x, 'y': y}]
-    info = unit_info_map.get(uid, {})
-    occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
-    if occupied_area_id == 2:
-        return get_large_unit_cells(x, y)
-    if occupied_area_id == 3:
-        if direction is None:
-            npc_entry = map_npc_lookup.get(nid_norm, {})
-            direction = npc_entry.get('direction', '1')
-        return get_warship_footprint_cells(x, y, direction, for_buff=for_buff)
-    return [{'x': x, 'y': y}]
+    if direction is None and safe_int((unit_info_map.get(uid) or {}).get('occupied_area_id'), 1) == 3:
+        npc_entry = map_npc_lookup.get(nid_norm, {})
+        direction = npc_entry.get('direction', '1')
+    return get_map_unit_footprint_cells(uid, x, y, direction, for_buff=for_buff)
 
 
 def is_large_map_npc(npc_id, npc_entry=None):
@@ -11389,6 +11417,8 @@ def is_large_map_npc(npc_id, npc_entry=None):
     if uid == '905100000102000002': return False
     if uid == '1095003400': return False
     ui = unit_info_map.get(uid, {})
+    if is_haro_map_unit(uid):
+        return False
     oaid = safe_int(ui.get('occupied_area_id'), 1)
     return oaid in (2, 3)
 

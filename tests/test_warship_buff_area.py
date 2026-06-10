@@ -60,6 +60,15 @@ class TestWarshipBuffArea(unittest.TestCase):
         cells = _stepped_rect_1based(footprint, 1, 2, 24, 24)
         self.assertEqual(len(cells), 24)
 
+    def test_single_tile_stepped_range_2(self):
+        """1×1 gimmick (Dritte Guarder) range 1–2 — diamond step ring, not thin cross arms."""
+        footprint = [{'x': 11, 'y': 15}]
+        cells = _stepped_rect_1based(footprint, 1, 2, 30, 30)
+        self.assertEqual(len(cells), 12)
+        self.assertNotIn((12, 16), cells)
+        self.assertIn((13, 15), cells)
+        self.assertIn((11, 15), cells)
+
 
 if __name__ == '__main__':
     unittest.main()
