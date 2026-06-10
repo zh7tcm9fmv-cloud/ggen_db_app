@@ -127,13 +127,12 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .media-video-status.is-error{color:#ffb4b4;border:1px solid rgba(255,100,100,.35)}
 .media-video-spinner{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:2;pointer-events:none;color:#fff;font-size:14px;letter-spacing:.04em;background:rgba(0,0,0,.35)}
 .media-video-overlay.is-loading .media-video-spinner{display:flex}
-.media-video-toolbar{position:absolute;right:12px;bottom:12px;z-index:4;display:none;flex-direction:row;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);transition:background .15s ease}
+.media-video-toolbar{position:absolute;right:12px;bottom:12px;z-index:4;display:none;flex-direction:row;align-items:center;gap:10px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease,background .15s ease}
 .media-video-overlay.active .media-video-toolbar{display:flex}
-.media-video-toolbar:hover,.media-video-toolbar:focus-within{background:rgba(0,0,0,.62)}
+.media-video-overlay.active.is-controls-visible .media-video-toolbar{opacity:1;visibility:visible;pointer-events:auto}
+.media-video-overlay.active.is-controls-visible .media-video-toolbar:hover,.media-video-overlay.active.is-controls-visible .media-video-toolbar:focus-within{background:rgba(0,0,0,.62)}
 .media-video-toolbar-btn{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .media-video-toolbar-btn:hover{background:rgba(255,255,255,.12)}
-.media-video-toolbar-sliders{display:flex;flex-direction:row;align-items:center;gap:10px;max-width:0;opacity:0;overflow:hidden;pointer-events:none;transition:max-width .2s ease,opacity .15s ease}
-.media-video-stage:hover .media-video-toolbar-sliders,.media-video-toolbar:hover .media-video-toolbar-sliders,.media-video-toolbar:focus-within .media-video-toolbar-sliders{max-width:min(72vw,320px);opacity:1;pointer-events:auto}
 .media-video-toolbar-slider{display:flex;flex-direction:row;align-items:center;gap:6px;color:#ddd;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;user-select:none;white-space:nowrap}
 .media-video-toolbar-slider input[type=range]{width:min(28vw,96px);height:4px;margin:0;padding:0;accent-color:var(--accent-cyan,#5ec8e8);cursor:pointer}
 .media-video-toolbar-slider span{opacity:.85;min-width:2.2em}
@@ -3319,17 +3318,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="media-video-status" id="mediaVideoStatus" hidden></div>
 <button type="button" class="media-video-close" onclick="closeMediaVideoOverlay()" aria-label="Close">✕</button>
 <div class="media-video-toolbar" id="mediaVideoToolbar" onclick="event.stopPropagation()">
-<button type="button" class="media-video-toolbar-btn" id="mediaVideoFullscreenBtn" onclick="toggleMediaVideoFullscreen()" aria-label="Fullscreen" title="Fullscreen">⛶</button>
-<div class="media-video-toolbar-sliders">
 <label class="media-video-toolbar-slider" title="Volume">
 <span aria-hidden="true">Vol</span>
 <input type="range" id="mediaVideoVolume" min="0" max="100" step="1" value="50" aria-label="Volume" oninput="onMediaVideoVolumeInput(this.value)">
 </label>
-<label class="media-video-toolbar-slider" title="Player size">
-<span aria-hidden="true">Size</span>
-<input type="range" id="mediaVideoSize" min="50" max="100" step="5" value="100" aria-label="Player size" oninput="onMediaVideoSizeInput(this.value)">
-</label>
-</div>
+<button type="button" class="media-video-toolbar-btn" id="mediaVideoFullscreenBtn" onclick="toggleMediaVideoFullscreen()" aria-label="Fullscreen" title="Fullscreen">⛶</button>
 </div>
 <button type="button" class="media-video-assault" id="gachaAssaultBtn" hidden onclick="onGachaAssaultTap()">Assault</button>
 <div class="media-video-controls" id="gachaVideoControls" hidden>

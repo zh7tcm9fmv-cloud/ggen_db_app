@@ -896,10 +896,12 @@ let _lbLoopRecoveryTimer=0;
 let _lbTimeUpdateBound=null;
 const _LB_REPEAT_LEAD=0.05;
 const _MEDIA_VIDEO_PREFS_KEY='ggen_media_video_prefs';
-const _MEDIA_VIDEO_DEFAULT_PREFS={volume:0.5,sizePct:100};
+const _MEDIA_VIDEO_DEFAULT_PREFS={volume:0.5};
 const _MEDIA_VIDEO_VIEWPORT_PAD=24;
 const _MEDIA_VIDEO_FALLBACK_ASPECT=2796/1290;
+const _MEDIA_VIDEO_CONTROLS_IDLE_MS=2500;
 let _mediaVideoPrefsCache=null;
+let _mediaVideoControlsIdleTimer=0;
 function _mediaVideoViewportSize(){
   const pad=_MEDIA_VIDEO_VIEWPORT_PAD;
   const vv=window.visualViewport;
@@ -937,10 +939,8 @@ function _loadMediaVideoPrefs(){
     if(!raw)return{..._MEDIA_VIDEO_DEFAULT_PREFS};
     const o=JSON.parse(raw);
     const vol=Number(o.volume);
-    const sz=Number(o.sizePct);
     return{
       volume:Number.isFinite(vol)?Math.max(0,Math.min(1,vol)):_MEDIA_VIDEO_DEFAULT_PREFS.volume,
-      sizePct:Number.isFinite(sz)?Math.max(50,Math.min(100,sz)):_MEDIA_VIDEO_DEFAULT_PREFS.sizePct,
     };
   }catch(_){return{..._MEDIA_VIDEO_DEFAULT_PREFS}}
 }
@@ -959,11 +959,9 @@ function _applyMediaVideoVolumeToEl(v,vol){
   v.volume=n;
   v.muted=n<=0;
 }
-function _applyMediaVideoStageSize(pct){
+function _applyMediaVideoStageSize(){
   const stage=_mediaVideoStageEl();
   if(!stage)return;
-  const p=Math.max(50,Math.min(100,Number(pct)||100));
-  stage.style.setProperty('--media-video-size-pct',String(p));
   if(_mediaVideoInFullscreen()){
     stage.style.removeProperty('width');
     stage.style.removeProperty('height');
@@ -971,8 +969,7 @@ function _applyMediaVideoStageSize(pct){
   }
   const v=_mediaVideoEl();
   const {maxW,ar}=_mediaVideoMaxStageFit(v);
-  const scale=p/100;
-  const w=Math.max(1,Math.round(maxW*scale));
+  const w=Math.max(1,maxW);
   const h=Math.max(1,Math.round(w/ar));
   stage.style.width=w+'px';
   stage.style.height=h+'px';
@@ -980,13 +977,66 @@ function _applyMediaVideoStageSize(pct){
 function _refreshMediaVideoStageLayout(){
   const ov=_mediaVideoOverlay();
   if(!ov||!ov.classList.contains('active'))return;
-  _applyMediaVideoStageSize(_mediaVideoPrefs().sizePct);
+  _applyMediaVideoStageSize();
+}
+function _setMediaVideoControlsVisible(visible){
+  const ov=_mediaVideoOverlay();
+  if(!ov)return;
+  ov.classList.toggle('is-controls-visible',!!visible);
+}
+function _mediaVideoToolbarHasFocus(){
+  const tb=document.getElementById('mediaVideoToolbar');
+  return!!(tb&&tb.matches(':focus-within'));
+}
+function _scheduleMediaVideoControlsHide(){
+  clearTimeout(_mediaVideoControlsIdleTimer);
+  _mediaVideoControlsIdleTimer=setTimeout(()=>{
+    if(_mediaVideoToolbarHasFocus()){
+      _scheduleMediaVideoControlsHide();
+      return;
+    }
+    _setMediaVideoControlsVisible(false);
+  },_MEDIA_VIDEO_CONTROLS_IDLE_MS);
+}
+function _showMediaVideoControlsTemporarily(){
+  const ov=_mediaVideoOverlay();
+  if(!ov||!ov.classList.contains('active'))return;
+  _setMediaVideoControlsVisible(true);
+  _scheduleMediaVideoControlsHide();
+}
+function _hideMediaVideoControls(){
+  clearTimeout(_mediaVideoControlsIdleTimer);
+  _setMediaVideoControlsVisible(false);
+}
+function _bindMediaVideoControlsAutoHide(){
+  if(window._mediaVideoControlsHideBound)return;
+  window._mediaVideoControlsHideBound=1;
+  const onActivity=(e)=>{
+    const ov=_mediaVideoOverlay();
+    if(!ov||!ov.classList.contains('active'))return;
+    if(e&&e.type==='pointermove'){
+      const t=e.target;
+      if(!t||!ov.contains(t))return;
+    }
+    _showMediaVideoControlsTemporarily();
+  };
+  document.addEventListener('pointermove',onActivity,{passive:true});
+  document.addEventListener('pointerdown',onActivity,{passive:true});
+  const ovEl=document.getElementById('mediaVideoOverlay');
+  if(ovEl){
+    ovEl.addEventListener('mouseenter',onActivity);
+  }
+  const tb=document.getElementById('mediaVideoToolbar');
+  if(tb){
+    tb.addEventListener('focusin',()=>_showMediaVideoControlsTemporarily());
+    tb.addEventListener('focusout',()=>_scheduleMediaVideoControlsHide());
+  }
 }
 function _applyMediaVideoPrefsToVideos(){
   const vol=_mediaVideoPrefs().volume;
   _applyMediaVideoVolumeToEl(_mediaVideoEl(),vol);
   _applyMediaVideoVolumeToEl(_mediaVideoPreloadEl(),vol);
-  _applyMediaVideoStageSize(_mediaVideoPrefs().sizePct);
+  _applyMediaVideoStageSize();
 }
 function _syncMediaVideoToolbarLabels(){
   const fs=document.getElementById('mediaVideoFullscreenBtn');
@@ -998,30 +1048,32 @@ function _syncMediaVideoToolbarLabels(){
   }
   const vol=document.getElementById('mediaVideoVolume');
   if(vol)vol.setAttribute('aria-label',t('video_volume_aria')!=='video_volume_aria'?t('video_volume_aria'):'Volume');
-  const sz=document.getElementById('mediaVideoSize');
-  if(sz)sz.setAttribute('aria-label',t('video_size_aria')!=='video_size_aria'?t('video_size_aria'):'Player size');
 }
 function _applyMediaVideoPrefsUi(){
   const p=_mediaVideoPrefs();
   const vol=document.getElementById('mediaVideoVolume');
   if(vol)vol.value=String(Math.round(p.volume*100));
-  const sz=document.getElementById('mediaVideoSize');
-  if(sz)sz.value=String(Math.round(p.sizePct));
   _applyMediaVideoPrefsToVideos();
   _syncMediaVideoToolbarLabels();
 }
-function _showMediaVideoToolbar(on){if(on){_applyMediaVideoPrefsUi();_refreshMediaVideoStageLayout()}}
+function _showMediaVideoToolbar(on){
+  if(on){
+    _applyMediaVideoPrefsUi();
+    _refreshMediaVideoStageLayout();
+    _hideMediaVideoControls();
+  }else{
+    _hideMediaVideoControls();
+  }
+}
 function onMediaVideoVolumeInput(val){
   const pct=Math.max(0,Math.min(100,Number(val)||0));
   _persistMediaVideoPrefs({volume:pct/100});
-}
-function onMediaVideoSizeInput(val){
-  const pct=Math.max(50,Math.min(100,Number(val)||100));
-  _persistMediaVideoPrefs({sizePct:pct});
+  _showMediaVideoControlsTemporarily();
 }
 function toggleMediaVideoFullscreen(){
   const stage=_mediaVideoStageEl();
   if(!stage)return;
+  _showMediaVideoControlsTemporarily();
   const inFs=!!(document.fullscreenElement||document.webkitFullscreenElement);
   if(inFs){
     const exit=document.exitFullscreen||document.webkitExitFullscreen;
@@ -1043,7 +1095,8 @@ function _bindMediaVideoFullscreenListener(){
   document._mediaVideoFsBound=1;
   const onFs=()=>{
     _syncMediaVideoToolbarLabels();
-    _applyMediaVideoStageSize(_mediaVideoPrefs().sizePct);
+    _applyMediaVideoStageSize();
+    _showMediaVideoControlsTemporarily();
   };
   document.addEventListener('fullscreenchange',onFs);
   document.addEventListener('webkitfullscreenchange',onFs);
@@ -1061,6 +1114,7 @@ function _bindMediaVideoResizeListener(){
 }
 _bindMediaVideoFullscreenListener();
 _bindMediaVideoResizeListener();
+_bindMediaVideoControlsAutoHide();
 function _bindMediaVideoMetadataListener(){
   const v=_mediaVideoEl();
   if(!v||v._mediaVideoMetaBound)return;
@@ -1101,7 +1155,7 @@ function _videoMediaErrKind(v){const c=v&&v.error?v.error.code:0;if(c===3||c===4
 function _probeVideoCdnUrl(url){const t0=performance.now();return fetch(url,{method:'HEAD',cache:'force-cache'}).then(r=>{const ms=Math.max(0,Math.round(performance.now()-t0));return{ok:r.ok,ms,size:Number(r.headers.get('content-length')||0),status:r.status}}).catch(()=>({ok:false,ms:Math.max(0,Math.round(performance.now()-t0)),size:0,status:0}))}
 function _formatVideoPerfLine(probe,codec){if(!probe||!probe.ok)return'';const size=probe.size>0?_fmtVideoBytes(probe.size):'—';const key=codec?'video_perf_codec':'video_perf_loaded';return t(key).replace('{size}',size).replace('{ms}',String(probe.ms))}
 function _invokeVideoOnReady(st){if(!st||!st._videoOnReady)return;const fn=st._videoOnReady;st._videoOnReady=null;fn()}
-function stopMediaVideoPlayback(){const v=_mediaVideoEl();const pre=_mediaVideoPreloadEl();_gachaClipAdvanceLock=false;_clearLbLoopRecovery();_unbindLbRepeatListener();_exitMediaVideoFullscreenIfNeeded();if(v){_resetMediaVideoStage(v);try{v.pause()}catch(_){}v.loop=false;v.removeAttribute('loop');v.preload='none';v.removeAttribute('src');v.load()}if(pre){try{pre.pause()}catch(_){}pre.hidden=true;pre.loop=false;pre.removeAttribute('loop');pre.removeAttribute('src');pre.load()}if(_gachaPullState){_gachaPullState=null}_setMediaVideoLoading(false);_setMediaVideoStatus('');const ov=_mediaVideoOverlay();if(ov){ov.classList.remove('active');ov.setAttribute('aria-hidden','true')}const stage=_mediaVideoStageEl();if(stage){stage.style.removeProperty('width');stage.style.removeProperty('height')}const assault=document.getElementById('gachaAssaultBtn');if(assault)assault.hidden=true;const ctrl=document.getElementById('gachaVideoControls');if(ctrl)ctrl.hidden=true}
+function stopMediaVideoPlayback(){const v=_mediaVideoEl();const pre=_mediaVideoPreloadEl();_gachaClipAdvanceLock=false;_clearLbLoopRecovery();_unbindLbRepeatListener();_exitMediaVideoFullscreenIfNeeded();if(v){_resetMediaVideoStage(v);try{v.pause()}catch(_){}v.loop=false;v.removeAttribute('loop');v.preload='none';v.removeAttribute('src');v.load()}if(pre){try{pre.pause()}catch(_){}pre.hidden=true;pre.loop=false;pre.removeAttribute('loop');pre.removeAttribute('src');pre.load()}if(_gachaPullState){_gachaPullState=null}_setMediaVideoLoading(false);_setMediaVideoStatus('');const ov=_mediaVideoOverlay();if(ov){ov.classList.remove('active','is-controls-visible');ov.setAttribute('aria-hidden','true')}const stage=_mediaVideoStageEl();if(stage){stage.style.removeProperty('width');stage.style.removeProperty('height')}_hideMediaVideoControls();const assault=document.getElementById('gachaAssaultBtn');if(assault)assault.hidden=true;const ctrl=document.getElementById('gachaVideoControls');if(ctrl)ctrl.hidden=true}
 function _gachaClipCandidatesAt(index){const st=_gachaPullState;if(!st||!st.queue||index<0||index>=st.queue.length)return[];const clip=st.queue[index];return _videoUrlCandidates(clip.folder||'gacha',clip.id||clip)}
 function _clearGachaPreload(){const st=_gachaPullState;if(st){st._preloadedClipIndex=null;st._preloadedClipUrl=''}const pre=_mediaVideoPreloadEl();if(pre){try{pre.pause()}catch(_){}pre.removeAttribute('src');pre.load()}}
 function _preloadGachaClipAt(index){const st=_gachaPullState;if(!st||st.mode!=='gacha'||index>=st.queue.length)return;_clearGachaPreload();const candidates=_gachaClipCandidatesAt(index);if(!candidates.length)return;const pre=_mediaVideoPreloadEl();if(!pre)return;st._preloadedClipIndex=index;st._preloadedClipUrl=candidates[0];pre.src=candidates[0];pre.load()}
