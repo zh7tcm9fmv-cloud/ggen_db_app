@@ -2718,14 +2718,12 @@ function _normalizeStageMapUnitFootprints(units,_w,_h){
 if(!Array.isArray(units))return;
 units.forEach(u=>{
 if(!u)return;
-const uid=u.unit_id!=null?String(u.unit_id):'';
 const ax=Math.floor(Number(u.x)||0),ay=Math.floor(Number(u.y)||0);
 const cl=u.cells;
 const n=Array.isArray(cl)?cl.length:0;
 const oa=u.occupied_area_id!=null?Math.floor(Number(u.occupied_area_id)):NaN;
 const mk=(dx,dy)=>({x:ax+dx,y:ay+dy});
-if(Number.isFinite(oa)&&oa===3&&uid.startsWith('2')&&n<6)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1),mk(0,2),mk(1,2)];
-else if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
+if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
 });
 }
 function _stageMapGridGapPx(){return 2}
@@ -2816,7 +2814,7 @@ function renderStageMapGrid(md){
         const gimmickCls=u.is_gimmick?'gimmick':'';
         const dir=String(u.direction||'0');
         const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
-        const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
+        const rotStyle=dir!=='0'?` style="transform:rotate(${rot}deg);"`:'';
         const bbox=_stageMapFootprintBBox(u,w,h);
         const multiFp=bbox&&(bbox.fpw>1||bbox.fph>1);
         const stride=cellPx+gapPx;

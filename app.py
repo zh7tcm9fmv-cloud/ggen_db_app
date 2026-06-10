@@ -9879,6 +9879,21 @@ def _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
     return out
 
 
+def _map_buff_range_cells_from_footprint(cells_0based, rng_min, rng_max, width, height):
+    """Union of orthogonal (+) buff rings from each cell in a multi-block unit footprint."""
+    seen = set()
+    out = []
+    for cell in cells_0based or []:
+        cx = safe_int(cell.get('x'), 0)
+        cy = safe_int(cell.get('y'), 0)
+        for key in _map_buff_range_cells_1based(cx, cy, rng_min, rng_max, width, height):
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(key)
+    return out
+
+
 def _map_buff_area_effect_meta(buff_id, lc):
     """Name, details, icon, and polarity for one MapNpcBuffId (stage map hover)."""
     bid = normalize_id(buff_id)
@@ -9921,11 +9936,18 @@ def build_map_buff_area_cells(buff_sources, width, height, lc):
         meta = _map_buff_area_effect_meta(bid, lc)
         if not meta:
             continue
-        cx = safe_int(src.get('x'), 0)
-        cy = safe_int(src.get('y'), 0)
-        for x1, y1 in _map_buff_range_cells_1based(
-            cx, cy, row.get('range_min'), row.get('range_max'), width, height,
-        ):
+        footprint = src.get('footprint')
+        if footprint:
+            cell_iter = _map_buff_range_cells_from_footprint(
+                footprint, row.get('range_min'), row.get('range_max'), width, height,
+            )
+        else:
+            cx = safe_int(src.get('x'), 0)
+            cy = safe_int(src.get('y'), 0)
+            cell_iter = _map_buff_range_cells_1based(
+                cx, cy, row.get('range_min'), row.get('range_max'), width, height,
+            )
+        for x1, y1 in cell_iter:
             key = f'{x1}_{y1}'
             cell = layers.setdefault(key, {'buff': False, 'debuff': False, 'effects': []})
             if meta['is_debuff']:
@@ -11209,9 +11231,9 @@ def get_warship_2x3_cells(x, y):
 
 
 def get_warship_footprint_cells(x, y, direction):
-    """Orient warship rectangle from DirectionTypeIndex (3/4 = horizontal 3×2, else vertical 2×3)."""
+    """Orient warship rectangle from DirectionTypeIndex (Right = horizontal 3×2; else vertical 2×3)."""
     d = str(direction or '1')
-    if d in ('3', '4'):
+    if d == '1':
         return get_warship_2x3_cells(x, y)
     return get_warship_3x2_cells(x, y)
 
@@ -11229,7 +11251,7 @@ def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
     occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
     if occupied_area_id == 2:
         return get_large_unit_cells(x, y)
-    if occupied_area_id == 3 and uid.startswith('2'):
+    if occupied_area_id == 3:
         if direction is None:
             npc_entry = map_npc_lookup.get(nid_norm, {})
             direction = npc_entry.get('direction', '1')
@@ -11250,7 +11272,8 @@ def is_large_map_npc(npc_id, npc_entry=None):
     if uid == '905100000102000002': return False
     if uid == '1095003400': return False
     ui = unit_info_map.get(uid, {})
-    return safe_int(ui.get('occupied_area_id'), 1) == 2
+    oaid = safe_int(ui.get('occupied_area_id'), 1)
+    return oaid in (2, 3)
 
 def get_npc_unit_display(uid, usr, lc):
     uid = normalize_id(uid, '0')
@@ -18053,7 +18076,7 @@ def get_stage(stage_id):
                 has_h = npc_map_pulse_strategy_hint(up, cp, strategy_hint_entries)
                 step_ord = safe_int(npc.get('step_order'), 0)
                 story_boss = bool(npc.get('is_story_event_boss'))
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'direction': normalize_id(npc.get('direction', '1'), '1'), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
                 if story_boss:
                     me['is_story_event_boss'] = True
                 if ue:
@@ -18074,14 +18097,28 @@ def get_stage(stage_id):
             for npc in nt:
                 bid = normalize_id(npc.get('map_npc_buff_id', '0'))
                 if bid != '0':
-                    buff_sources.append({'x': npc.get('x', 0), 'y': npc.get('y', 0), 'buff_id': bid})
+                    buff_sources.append({
+                        'x': npc.get('x', 0),
+                        'y': npc.get('y', 0),
+                        'buff_id': bid,
+                        'footprint': get_map_npc_unit_footprint_cells(
+                            npc['id'], npc.get('x', 0), npc.get('y', 0), npc.get('direction'),
+                        ),
+                    })
             for gimmick in map_gimmick_npc_by_map_stage.get(normalize_id(msid), []):
                 gid = gimmick['id']
                 gu = map_gimmick_npc_unit_lookup.get(gid, {})
                 uid = gu.get('unit_id', '0')
                 bid = gu.get('map_npc_buff_id', '0')
                 if bid != '0':
-                    buff_sources.append({'x': gimmick['x'], 'y': gimmick['y'], 'buff_id': bid})
+                    buff_sources.append({
+                        'x': gimmick['x'],
+                        'y': gimmick['y'],
+                        'buff_id': bid,
+                        'footprint': get_map_npc_unit_footprint_cells(
+                            gid, gimmick['x'], gimmick['y'], gimmick.get('direction'),
+                        ),
+                    })
                 disp = get_gimmick_map_unit_display(uid, lc)
                 gimmick_me = {
                     'npc_id': gid,

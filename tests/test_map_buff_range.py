@@ -51,6 +51,23 @@ class TestMapBuffRangeCells(unittest.TestCase):
             self.assertLessEqual(x, 3)
             self.assertLessEqual(y, 3)
 
+    def test_footprint_union_is_fat_cross_not_square(self):
+        footprint = [
+            {'x': 16, 'y': 9}, {'x': 17, 'y': 9},
+            {'x': 16, 'y': 10}, {'x': 17, 'y': 10},
+            {'x': 16, 'y': 11}, {'x': 17, 'y': 11},
+        ]
+        seen = set()
+        for cell in footprint:
+            for key in _cross_cells_1based(cell['x'], cell['y'], 1, 2, 24, 24):
+                seen.add(key)
+        self.assertNotIn((15, 8), seen)
+        self.assertNotIn((20, 8), seen)
+        self.assertIn((18, 8), seen)
+        self.assertIn((18, 13), seen)
+        self.assertIn((15, 10), seen)
+        self.assertIn((20, 10), seen)
+
 
 if __name__ == '__main__':
     unittest.main()
