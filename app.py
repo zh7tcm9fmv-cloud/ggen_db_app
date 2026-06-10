@@ -6189,7 +6189,7 @@ def minkowski_map_coords_with_2x2_footprint(coords):
 
 
 def is_haro_map_unit(unit_id):
-    """Haro units use OccupiedAreaId 2 in data but occupy a single map tile on the stage map."""
+    """True for Haro family units (OccupiedAreaId 2 in m_unit)."""
     uid = normalize_id(unit_id, '0')
     if uid == '0':
         return False
@@ -6204,8 +6204,6 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
         return coords
     uid = normalize_id(unit_id) if unit_id else '0'
     if uid == '0':
-        return coords
-    if is_haro_map_unit(uid):
         return coords
     info = unit_info_map.get(uid) or {}
     if safe_int(info.get('occupied_area_id'), 1) != 2:
@@ -6226,8 +6224,6 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
 def augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id):
     """MAP dash line weapons: duplicate a single-column shooting path at x+1 for 2×2 units (two lanes)."""
     if not scc or len(scc) < 2:
-        return scc, False
-    if is_haro_map_unit(unit_id):
         return scc, False
     uid = normalize_id(unit_id) if unit_id else '0'
     if uid == '0':
@@ -11315,13 +11311,13 @@ def get_large_unit_cells(x, y):
 
 
 def get_map_unit_footprint_cells(unit_id, x, y, direction=None, for_buff=False):
-    """Footprint from m_unit OccupiedAreaId (Haro excluded — single tile despite OccupiedAreaId 2)."""
+    """Footprint from m_unit OccupiedAreaId (2×2 large, 3 warship oriented)."""
     uid = normalize_id(unit_id, '0')
     if uid == '0':
         return [{'x': x, 'y': y}]
     info = unit_info_map.get(uid, {})
     occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
-    if occupied_area_id == 2 and not is_haro_map_unit(uid):
+    if occupied_area_id == 2:
         return get_large_unit_cells(x, y)
     if occupied_area_id == 3:
         return get_warship_footprint_cells(x, y, direction, for_buff=for_buff)
@@ -11417,8 +11413,6 @@ def is_large_map_npc(npc_id, npc_entry=None):
     if uid == '905100000102000002': return False
     if uid == '1095003400': return False
     ui = unit_info_map.get(uid, {})
-    if is_haro_map_unit(uid):
-        return False
     oaid = safe_int(ui.get('occupied_area_id'), 1)
     return oaid in (2, 3)
 
@@ -18233,8 +18227,14 @@ def get_stage(stage_id):
                         me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
                 me['cells'] = get_map_npc_unit_footprint_cells(
                     nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'), for_buff=False)
-                if len(me['cells']) > 1:
+                npc_oaid = safe_int(me.get('occupied_area_id'), 1)
+                if npc_oaid >= 3 and len(me['cells']) > 1:
                     me['map_origin'] = get_map_unit_icon_origin(me['cells'], npc.get('direction'))
+                elif npc_oaid == 2:
+                    me['map_origin'] = {
+                        'x': safe_int(npc.get('x'), 0),
+                        'y': safe_int(npc.get('y'), 0),
+                    }
                 me['npc_detail_index'] = len(nd)
                 nd_row = {'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'step_order': step_ord, 'unit': up, 'character': cp}
                 if story_boss:

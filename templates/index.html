@@ -127,17 +127,21 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .media-video-status.is-error{color:#ffb4b4;border:1px solid rgba(255,100,100,.35)}
 .media-video-spinner{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:2;pointer-events:none;color:#fff;font-size:14px;letter-spacing:.04em;background:rgba(0,0,0,.35)}
 .media-video-overlay.is-loading .media-video-spinner{display:flex}
-.media-video-toolbar{position:absolute;right:12px;bottom:12px;z-index:4;display:none;flex-direction:row;align-items:center;gap:10px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease,background .15s ease}
+.media-video-toolbar{position:absolute;right:12px;bottom:12px;z-index:4;display:none;flex-direction:row;align-items:flex-end;gap:8px;padding:0;border:none;background:transparent;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease}
 .media-video-overlay.active .media-video-toolbar{display:flex}
 .media-video-overlay.active.is-controls-visible .media-video-toolbar{opacity:1;visibility:visible;pointer-events:auto}
-.media-video-overlay.active.is-controls-visible .media-video-toolbar:hover,.media-video-overlay.active.is-controls-visible .media-video-toolbar:focus-within{background:rgba(0,0,0,.62)}
-.media-video-toolbar-btn{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.media-video-toolbar-btn{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.45);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .media-video-toolbar-btn:hover{background:rgba(255,255,255,.12)}
-.media-video-toolbar-slider{display:flex;flex-direction:row;align-items:center;gap:6px;color:#ddd;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;user-select:none;white-space:nowrap}
-.media-video-toolbar-slider input[type=range]{width:min(28vw,96px);height:4px;margin:0;padding:0;accent-color:var(--accent-cyan,#5ec8e8);cursor:pointer}
-.media-video-toolbar-slider span{opacity:.85;min-width:2.2em}
+.media-video-volume-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.media-video-volume-pop{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;padding:8px 6px;border-radius:10px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.18);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
+.media-video-volume-wrap:hover .media-video-volume-pop,.media-video-volume-wrap:focus-within .media-video-volume-pop{opacity:1;visibility:visible;pointer-events:auto}
+.media-video-volume-pop input[type=range]{writing-mode:vertical-lr;direction:rtl;width:28px;height:88px;margin:0;padding:0;accent-color:var(--accent-cyan,#5ec8e8);cursor:pointer}
 .media-video-stage:fullscreen,.media-video-stage:-webkit-full-screen{width:100vw;height:100vh;max-width:none;max-height:none;padding:0}
 .media-video-stage:fullscreen video,.media-video-stage:-webkit-full-screen video{width:100%;height:100%;max-height:100vh;object-fit:contain}
+@media(orientation:portrait){
+.media-video-stage.media-video-stage--landscape-fs:fullscreen,.media-video-stage.media-video-stage--landscape-fs:-webkit-full-screen{position:fixed;top:50%;left:50%;width:100vh;height:100vw;max-width:none;max-height:none;margin:0;transform:translate(-50%,-50%) rotate(90deg);transform-origin:center center}
+.media-video-stage.media-video-stage--landscape-fs:fullscreen video,.media-video-stage.media-video-stage--landscape-fs:-webkit-full-screen video{width:100%;height:100%;object-fit:contain}
+}
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
 .whats-new-overlay.active{display:flex}
 .whats-new-card{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:min(1400px,98vw);width:100%;max-height:min(92vh,1200px);min-height:320px;overflow:hidden;display:flex;flex-direction:column;position:relative}
@@ -540,8 +544,6 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .nav-tabs-edge-hint--left{left:0;justify-content:flex-start;padding:0 22px 0 8px;background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%)}
 .nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right:not([hidden]){opacity:1;pointer-events:auto}
 .nav-tabs-shell--scroll-left .nav-tabs-edge-hint--left:not([hidden]){opacity:1;pointer-events:auto}
-.nav-tabs-shell--scroll-right .nav-tabs{padding-right:46px}
-.nav-tabs-shell--scroll-left .nav-tabs{padding-left:46px}
 .nav-tabs-edge-flare-wrap{position:relative;width:26px;height:26px;flex-shrink:0;display:none}
 .nav-tabs-edge-hint--right .nav-tabs-edge-flare-wrap{margin-right:2px}
 .nav-tabs-edge-hint--left .nav-tabs-edge-flare-wrap{margin-left:2px}
@@ -2554,15 +2556,15 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
   .filter-input{font-size:16px}
   .filter-select{font-size:16px}
   .data-table-wrapper{-webkit-overflow-scrolling:touch}
-  .nav-tabs{-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
-  .nav-tab{scroll-snap-align:start}
+  .nav-tabs{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x}
+  .nav-tabs-shell{min-height:48px}
   .modal-content{-webkit-overflow-scrolling:touch}
   html{scroll-padding-bottom:env(safe-area-inset-bottom,0px);min-height:var(--layout-vh,100vh);background-color:var(--bg-primary)}
   html.cmp-bar-open:has(#cmpFloat.visible){scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 56px)}
   html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
   html.cmp-bar-open:has(#cmpFloat.visible) .site-footer-links{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
   body{min-height:var(--layout-vh,100vh);background-color:var(--bg-primary)}
-  .app-header{top:var(--visual-vv-offset-top,0px)}
+  .app-header{top:0}
   .bg-pattern{
     top:calc(-1 * var(--visual-vv-offset-top,0px));
     height:calc(var(--layout-vh,100vh) + var(--visual-vv-offset-top,0px));
@@ -3318,16 +3320,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="media-video-status" id="mediaVideoStatus" hidden></div>
 <button type="button" class="media-video-close" onclick="closeMediaVideoOverlay()" aria-label="Close">✕</button>
 <div class="media-video-toolbar" id="mediaVideoToolbar" onclick="event.stopPropagation()">
-<label class="media-video-toolbar-slider" title="Volume">
-<span aria-hidden="true">Vol</span>
+<div class="media-video-volume-wrap" id="mediaVideoVolumeWrap">
+<div class="media-video-volume-pop">
 <input type="range" id="mediaVideoVolume" min="0" max="100" step="1" value="50" aria-label="Volume" oninput="onMediaVideoVolumeInput(this.value)">
-</label>
+</div>
+<button type="button" class="media-video-toolbar-btn" id="mediaVideoMuteBtn" onclick="toggleMediaVideoMute()" aria-label="Mute" title="Mute">🔊</button>
+</div>
 <button type="button" class="media-video-toolbar-btn" id="mediaVideoFullscreenBtn" onclick="toggleMediaVideoFullscreen()" aria-label="Fullscreen" title="Fullscreen">⛶</button>
 </div>
 <button type="button" class="media-video-assault" id="gachaAssaultBtn" hidden onclick="onGachaAssaultTap()">Assault</button>
 <div class="media-video-controls" id="gachaVideoControls" hidden>
 <button type="button" id="gachaVideoSkipBtn" onclick="gachaVideoSkip()">Skip</button>
-<button type="button" id="gachaVideoCloseBtn" onclick="closeMediaVideoOverlay()">Close</button>
 </div>
 </div>
 </div>

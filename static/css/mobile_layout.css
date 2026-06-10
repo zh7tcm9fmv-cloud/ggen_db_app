@@ -140,14 +140,6 @@
     right: 4px;
   }
 
-  .nav-tabs-shell--scroll-right .nav-tabs {
-    padding-right: calc(var(--mobile-page-gutter) + 38px);
-  }
-
-  .nav-tabs-shell--scroll-left .nav-tabs {
-    padding-left: calc(var(--mobile-page-gutter) + 38px);
-  }
-
   .main-content {
     width: 100%;
     max-width: 100%;
@@ -469,7 +461,7 @@
     }
 
     .app-header {
-      top: var(--visual-vv-offset-top, 0px);
+      top: 0;
     }
 
     .bg-pattern {
