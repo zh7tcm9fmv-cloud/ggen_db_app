@@ -18230,11 +18230,6 @@ def get_stage(stage_id):
                 npc_oaid = safe_int(me.get('occupied_area_id'), 1)
                 if npc_oaid >= 3 and len(me['cells']) > 1:
                     me['map_origin'] = get_map_unit_icon_origin(me['cells'], npc.get('direction'))
-                elif npc_oaid == 2:
-                    me['map_origin'] = {
-                        'x': safe_int(npc.get('x'), 0),
-                        'y': safe_int(npc.get('y'), 0),
-                    }
                 me['npc_detail_index'] = len(nd)
                 nd_row = {'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'step_order': step_ord, 'unit': up, 'character': cp}
                 if story_boss:

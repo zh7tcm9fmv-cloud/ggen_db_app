@@ -3003,6 +3003,9 @@ if(side!=='enemy')return true;
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
+function _stageMapIsWarshipUnit(u){
+return!!u&&Math.floor(Number(u.occupied_area_id)||0)===3;
+}
 function _stageMapMinimapIconRot(u){
 const dir=String(u.direction||'0');
 if(dir==='0')return 0;
@@ -3013,12 +3016,6 @@ if(dir==='3')return 0;
 if(dir==='1')return 180;
 if(dir==='2')return 90;
 if(dir==='4')return 270;
-}
-if(side==='enemy'){
-if(dir==='1')return 0;
-if(dir==='3')return 180;
-if(dir==='2')return 270;
-if(dir==='4')return 90;
 }
 if(dir==='3')return 90;
 if(dir==='2')return 180;
@@ -3064,7 +3061,6 @@ const n=Array.isArray(cl)?cl.length:0;
 const oa=u.occupied_area_id!=null?Math.floor(Number(u.occupied_area_id)):NaN;
 const mk=(dx,dy)=>({x:ax+dx,y:ay+dy});
 if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
-if(Number.isFinite(oa)&&oa===2&&(!u.map_origin||u.map_origin.x==null))u.map_origin={x:ax,y:ay};
 });
 }
 function _stageMapGridGapPx(){return 2}
@@ -3119,7 +3115,7 @@ function renderStageMapGrid(md){
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''}`:'';
-      const wshipMulti=!!u&&Number(u.occupied_area_id)>=3&&Array.isArray(u.cells)&&u.cells.length>1;
+      const wshipMulti=_stageMapIsWarshipUnit(u)&&Array.isArray(u?.cells)&&u.cells.length>1;
       if(u&&u.is_large&&!wshipMulti)cls+=' large-fill';
       if(isPlayableTile)cls+=' map-cell--playable';
       if(eventArea)cls+=' map-cell--event-area';
@@ -3157,10 +3153,10 @@ function renderStageMapGrid(md){
         const gimmickCls=u.is_gimmick?'gimmick':'';
         const dir=String(u.direction||'0');
         const bbox=_stageMapFootprintBBox(u,w,h);
-        const wshipMulti=!!u&&Number(u.occupied_area_id)>=3&&Array.isArray(u.cells)&&u.cells.length>1;
+        const wshipMulti=_stageMapIsWarshipUnit(u)&&Array.isArray(u.cells)&&u.cells.length>1;
         const multiFp=wshipMulti&&bbox&&(bbox.fpw>1||bbox.fph>1);
         const rot=_stageMapMinimapIconRot(u);
-        const rotStyle=(isAllyLoc||(multiFp&&dir!=='0'))?` style="transform:rotate(${rot}deg);"`:'';
+        const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
         const stride=cellPx+gapPx;
         const dx=bbox?(bbox.mnx-x)*stride:0;
         const dy=bbox?(y-bbox.mxy)*stride:0;
