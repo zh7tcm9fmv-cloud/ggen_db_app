@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Scan ggen_db_videos/gacha for gasha_*.mp4; write data/gasha_pull_video_ids.json."""
+"""Scan ggen_db_videos/unit for gasha_*.mp4; write data/gasha_pull_video_ids.json."""
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'gasha_pull_video_ids.json'
-DEFAULT_VIDEOS = ROOT.parent / 'ggen_db_videos' / 'gacha'
+DEFAULT_VIDEOS = ROOT.parent / 'ggen_db_videos' / 'unit'
 
 
 def main():
