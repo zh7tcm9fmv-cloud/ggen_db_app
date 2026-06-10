@@ -11311,18 +11311,19 @@ def get_warship_2x3_cells(x, y):
     ]
 
 
-def get_warship_footprint_cells(x, y, direction):
+def get_warship_footprint_cells(x, y, direction, for_buff=False):
     """Warship OccupiedAreaId 3: 3×2 (2 rows × 3 cols) when facing east/west; 2×3 when facing up/down.
 
-    Map (x, y) from m_map_npc is the pivot anchor (ForwardArea + PivotSquareSize corner), not the bow."""
+    Map (x, y) from m_map_npc is the pivot anchor. Display tiles sit one row north (+y) of the buff anchor."""
     ax = safe_int(x, 0)
     ay = safe_int(y, 0)
     d = str(direction or '1')
+    y_off = 0 if for_buff else 1
     if d in ('1', '3'):
         ox = ax - 2 if d == '1' else ax - 1
-        return get_warship_2x3_cells(ox, ay)
+        return get_warship_2x3_cells(ox, ay + y_off)
     oy = ay - 2 if d == '2' else ay - 1
-    return get_warship_3x2_cells(ax, oy)
+    return get_warship_3x2_cells(ax, oy + y_off)
 
 
 def get_warship_map_origin(x, y, direction):
@@ -11331,17 +11332,17 @@ def get_warship_map_origin(x, y, direction):
     ay = safe_int(y, 0)
     d = str(direction or '1')
     if d == '3':
-        return {'x': ax - 1, 'y': ay}
+        return {'x': ax - 1, 'y': ay + 1}
     if d == '1':
-        return {'x': ax, 'y': ay}
+        return {'x': ax, 'y': ay + 1}
     if d == '2':
-        return {'x': ax, 'y': ay - 1}
-    if d == '4':
         return {'x': ax, 'y': ay}
-    return {'x': ax, 'y': ay}
+    if d == '4':
+        return {'x': ax, 'y': ay + 1}
+    return {'x': ax, 'y': ay + 1}
 
 
-def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
+def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None, for_buff=False):
     """Map NPC footprint from m_unit OccupiedAreaId (warship id-prefix '2' + area 3 => oriented 2×3 / 3×2)."""
     nid_norm = normalize_id(npc_id)
     nu = map_npc_unit_lookup.get(nid_norm) or []
@@ -11358,7 +11359,7 @@ def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
         if direction is None:
             npc_entry = map_npc_lookup.get(nid_norm, {})
             direction = npc_entry.get('direction', '1')
-        return get_warship_footprint_cells(x, y, direction)
+        return get_warship_footprint_cells(x, y, direction, for_buff=for_buff)
     return [{'x': x, 'y': y}]
 
 
@@ -18215,7 +18216,7 @@ def get_stage(stage_id):
                         'direction': normalize_id(npc.get('direction', '1'), '1'),
                         'occupied_area_id': npc_oaid,
                         'footprint': get_map_npc_unit_footprint_cells(
-                            npc['id'], npc.get('x', 0), npc.get('y', 0), npc.get('direction'),
+                            npc['id'], npc.get('x', 0), npc.get('y', 0), npc.get('direction'), for_buff=True,
                         ),
                     })
             for gimmick in map_gimmick_npc_by_map_stage.get(normalize_id(msid), []):
@@ -18232,7 +18233,7 @@ def get_stage(stage_id):
                         'direction': normalize_id(gimmick.get('direction', '1'), '1'),
                         'occupied_area_id': gimmick_oaid,
                         'footprint': get_map_npc_unit_footprint_cells(
-                            gid, gimmick['x'], gimmick['y'], gimmick.get('direction'),
+                            gid, gimmick['x'], gimmick['y'], gimmick.get('direction'), for_buff=True,
                         ),
                     })
                 disp = get_gimmick_map_unit_display(uid, lc)
