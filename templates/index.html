@@ -2067,6 +2067,18 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .unit-debuff-item{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;line-height:1.3;text-align:center;color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased}
 .unit-debuff-item span{display:block;width:100%;white-space:normal;word-break:break-word;hyphens:auto;color:inherit;-webkit-text-fill-color:inherit}
 .unit-debuff-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
+.unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:8px;text-align:left;padding:8px 10px}
+.unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word}
+.map-wrt-filter-icon{display:block;flex-shrink:0;line-height:0}
+.map-wrt-filter-icon-grid{display:grid;grid-template-columns:repeat(var(--mwrt-cols,5),var(--mwrt-cell,7px));grid-template-rows:repeat(var(--mwrt-rows,5),var(--mwrt-cell,7px));gap:0}
+.map-wrt-filter-icon-cell{position:relative;width:var(--mwrt-cell,7px);height:var(--mwrt-cell,7px);display:block;overflow:visible;line-height:0}
+.map-wrt-filter-icon-cell>img:first-child{width:100%;height:100%;display:block;object-fit:fill}
+.map-wrt-filter-icon-mkr{position:absolute;inset:-22%;display:flex;align-items:center;justify-content:center;pointer-events:none;line-height:0}
+.map-wrt-filter-icon-mkr img{width:145%;height:145%;object-fit:contain;display:block}
+.map-wrt-filter-icon-mkr--sel img{width:165%;height:165%}
+.map-wrt-filter-icon-mkr--step img{width:120%;height:120%}
+.map-wrt-filter-icon--toolbar .map-wrt-filter-icon-grid{--mwrt-cell:6px}
+.map-wrt-filter-toolbar-label{display:inline-flex;align-items:center;gap:6px;max-width:min(220px,48vw)}
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
 #unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel,#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
 .weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,420px)!important}
