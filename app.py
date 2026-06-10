@@ -11314,8 +11314,7 @@ def get_warship_2x3_cells(x, y):
 def get_warship_footprint_cells(x, y, direction, for_buff=False):
     """Warship OccupiedAreaId 3: 3×2 (2 rows × 3 cols) when facing east/west; 2×3 when facing up/down.
 
-    Map (x, y) from m_map_npc is the pivot anchor. Occupied tiles use the buff anchor; the icon
-    is rendered one row north via get_warship_map_origin()."""
+    Map (x, y) from m_map_npc is the pivot anchor. Icon placement uses get_map_unit_icon_origin()."""
     ax = safe_int(x, 0)
     ay = safe_int(y, 0)
     d = str(direction or '1')
@@ -11326,20 +11325,33 @@ def get_warship_footprint_cells(x, y, direction, for_buff=False):
     return get_warship_3x2_cells(ax, oy)
 
 
-def get_warship_map_origin(x, y, direction):
-    """0-based grid cell for the unit icon (matches in-game strategy map coordinates)."""
-    ax = safe_int(x, 0)
-    ay = safe_int(y, 0)
+def get_map_unit_icon_origin(cells, direction):
+    """0-based grid cell for a multi-cell unit icon (bow corner of the footprint bbox)."""
+    if not cells:
+        return None
+    xs = [safe_int(c.get('x'), 0) for c in cells]
+    ys = [safe_int(c.get('y'), 0) for c in cells]
+    mn_x, mx_x = min(xs), max(xs)
+    mn_y, mx_y = min(ys), max(ys)
     d = str(direction or '1')
-    if d == '3':
-        return {'x': ax - 1, 'y': ay + 1}
     if d == '1':
-        return {'x': ax, 'y': ay + 1}
+        return {'x': mx_x, 'y': mx_y}
+    if d == '3':
+        return {'x': mn_x, 'y': mx_y}
     if d == '2':
-        return {'x': ax, 'y': ay}
+        return {'x': mn_x, 'y': mx_y}
     if d == '4':
-        return {'x': ax, 'y': ay + 1}
-    return {'x': ax, 'y': ay + 1}
+        return {'x': mn_x, 'y': mn_y}
+    return {'x': mn_x, 'y': mx_y}
+
+
+def get_warship_map_origin(x, y, direction):
+    """0-based grid cell for the warship icon (matches in-game strategy map coordinates)."""
+    cells = get_warship_footprint_cells(x, y, direction)
+    origin = get_map_unit_icon_origin(cells, direction)
+    if origin:
+        return origin
+    return {'x': safe_int(x, 0), 'y': safe_int(y, 0)}
 
 
 def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None, for_buff=False):
@@ -18190,9 +18202,8 @@ def get_stage(stage_id):
                         me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
                 me['cells'] = get_map_npc_unit_footprint_cells(
                     nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'), for_buff=True)
-                if safe_int(me.get('occupied_area_id'), 1) >= 3:
-                    me['map_origin'] = get_warship_map_origin(
-                        npc.get('x', 0), npc.get('y', 0), npc.get('direction'))
+                if len(me['cells']) > 1:
+                    me['map_origin'] = get_map_unit_icon_origin(me['cells'], npc.get('direction'))
                 me['npc_detail_index'] = len(nd)
                 nd_row = {'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'step_order': step_ord, 'unit': up, 'character': cp}
                 if story_boss:
