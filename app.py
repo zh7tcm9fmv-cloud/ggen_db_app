@@ -9912,8 +9912,8 @@ def _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, hei
     return out
 
 
-def _map_buff_range_cells_warship_enhancement(cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height):
-    """Enhancement area for warships: full-width forward/rear band + rear-pivot perpendicular arms (in-game shape)."""
+def _map_buff_range_cells_stepped_rect(cells_0based, rng_min, rng_max, width, height):
+    """Stepped enhancement ring around a multi-block footprint (in-game warship / Archangel pattern)."""
     footprint = cells_0based or []
     if not footprint:
         return []
@@ -9922,52 +9922,23 @@ def _map_buff_range_cells_warship_enhancement(cells_0based, direction, occupied_
     ys = [y for _x, y in fp_set]
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
-    oaid = normalize_id(occupied_area_id)
-    oa_row = occupied_area_lookup.get(oaid, {})
-    pivot = max(1, safe_int(oa_row.get('pivot_square_size'), 2))
     rmin = max(0, safe_int(rng_min, 0))
     rmax = max(rmin, safe_int(rng_max, 0))
     if rmax <= 0:
         return []
     buff = set()
-    d = str(direction or '1')
-    if d in ('1', '3'):
-        rear_cols = (
-            range(min_x, min_x + pivot)
-            if d == '1'
-            else range(max_x - pivot + 1, max_x + 1)
-        )
-        for dist in range(rmin, rmax + 1):
-            if d == '1':
-                band_x = (max_x + dist, min_x - dist)
-            else:
-                band_x = (min_x - dist, max_x + dist)
-            for bx in band_x:
-                for y in range(min_y, max_y + 1):
-                    buff.add((bx, y))
-        for dist in range(rmin, rmax + 1):
-            for x in rear_cols:
-                buff.add((x, min_y - dist))
-                buff.add((x, max_y + dist))
-    else:
-        rear_rows = (
-            range(min_y, min_y + pivot)
-            if d == '2'
-            else range(max_y - pivot + 1, max_y + 1)
-        )
-        for dist in range(rmin, rmax + 1):
-            if d == '2':
-                band_y = (max_y + dist, min_y - dist)
-            else:
-                band_y = (min_y - dist, max_y + dist)
-            for by in band_y:
-                for x in range(min_x, max_x + 1):
-                    buff.add((x, by))
-        for dist in range(rmin, rmax + 1):
-            for y in rear_rows:
-                buff.add((min_x - dist, y))
-                buff.add((max_x + dist, y))
-    buff -= fp_set
+    for dy in range(rmin, rmax + 1):
+        span = rmax - dy
+        for y in (min_y - dy, max_y + dy):
+            for x in range(min_x - span, max_x + span + 1):
+                if (x, y) not in fp_set:
+                    buff.add((x, y))
+    for dx in range(rmin, rmax + 1):
+        span = rmax - dx
+        for x in (min_x - dx, max_x + dx):
+            for y in range(min_y - span, max_y + span + 1):
+                if (x, y) not in fp_set:
+                    buff.add((x, y))
     out = []
     seen = set()
     for x, y in buff:
@@ -9982,11 +9953,11 @@ def _map_buff_range_cells_warship_enhancement(cells_0based, direction, occupied_
 
 
 def _map_buff_range_cells_for_footprint(cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height):
-    """Pick buff geometry: warship band+pivot arms (OccupiedAreaId ≥3) or per-cell cross union."""
+    """Pick buff geometry: stepped rect for warships (OccupiedAreaId ≥3) or per-cell cross union."""
     oaid = safe_int(occupied_area_id, 1)
     if oaid >= 3 and cells_0based and len(cells_0based) > 1:
-        return _map_buff_range_cells_warship_enhancement(
-            cells_0based, direction, occupied_area_id, rng_min, rng_max, width, height,
+        return _map_buff_range_cells_stepped_rect(
+            cells_0based, rng_min, rng_max, width, height,
         )
     if cells_0based and len(cells_0based) > 1:
         return _map_buff_range_cells_cross_union(cells_0based, rng_min, rng_max, width, height)
@@ -11341,11 +11312,17 @@ def get_warship_2x3_cells(x, y):
 
 
 def get_warship_footprint_cells(x, y, direction):
-    """Warship OccupiedAreaId 3: 3×2 when facing left/right; 2×3 when facing up/down (anchor = top-left)."""
+    """Warship OccupiedAreaId 3: 3×2 (2 rows × 3 cols) when facing east/west; 2×3 when facing up/down.
+
+    Map (x, y) is the bow (front) top corner; footprint extends rearward from there."""
+    ax = safe_int(x, 0)
+    ay = safe_int(y, 0)
     d = str(direction or '1')
     if d in ('1', '3'):
-        return get_warship_2x3_cells(x, y)
-    return get_warship_3x2_cells(x, y)
+        ox = ax - 2 if d == '1' else ax
+        return get_warship_2x3_cells(ox, ay)
+    oy = ay - 2 if d == '2' else ay
+    return get_warship_3x2_cells(ax, oy)
 
 
 def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
