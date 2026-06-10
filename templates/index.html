@@ -113,10 +113,10 @@ button,input,select,textarea,optgroup{font-family:inherit}
 @media(prefers-reduced-motion:reduce){.unit-lb-video-btn:hover,.unit-lb-video-btn:active,.unit-gacha-pull-video-btn:hover,.unit-gacha-pull-video-btn:active{transform:none}.unit-gacha-pull-video-btn::before{animation:none}}
 .media-video-overlay{position:fixed;inset:0;background:#000;z-index:650;display:none;align-items:center;justify-content:center}
 .media-video-overlay.active{display:flex}
-.media-video-stage{position:relative;width:100%;height:100%;max-width:min(calc(var(--media-video-size-pct,100)*9.6px),100vw);max-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
-.media-video-stage video{width:100%;max-height:100vh;object-fit:contain;background:#000}
-.media-video-stage.media-video-stage--ping{min-height:min(56.25vw,100vh)}
-.media-video-stage.media-video-stage--ping video{position:absolute;inset:0;margin:auto;width:100%;max-height:100%;object-fit:contain;background:#000}
+.media-video-stage{--media-video-landscape-w:2796;--media-video-landscape-h:1290;position:relative;width:min(calc(var(--media-video-size-pct,100)/100*(100vw - 24px)),calc(var(--media-video-size-pct,100)/100*(100vh - 24px)*var(--media-video-landscape-w)/var(--media-video-landscape-h)));aspect-ratio:var(--media-video-landscape-w)/var(--media-video-landscape-h);max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);height:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:border-box}
+.media-video-stage video{width:100%;height:100%;object-fit:contain;background:#000}
+.media-video-stage.media-video-stage--ping{position:relative}
+.media-video-stage.media-video-stage--ping video{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:contain;background:#000}
 .media-video-stage video.media-video-loop-buffer{opacity:0;visibility:hidden;pointer-events:none;z-index:0}
 .media-video-stage video.media-video-loop-visible{opacity:1;visibility:visible;z-index:1}
 .media-video-close{position:absolute;top:12px;right:12px;z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
@@ -127,13 +127,16 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .media-video-status.is-error{color:#ffb4b4;border:1px solid rgba(255,100,100,.35)}
 .media-video-spinner{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:2;pointer-events:none;color:#fff;font-size:14px;letter-spacing:.04em;background:rgba(0,0,0,.35)}
 .media-video-overlay.is-loading .media-video-spinner{display:flex}
-.media-video-toolbar{position:absolute;right:58px;top:50%;transform:translateY(-50%);z-index:4;display:none;flex-direction:column;align-items:center;gap:14px;padding:10px 8px;border-radius:var(--radius-sm);background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18)}
+.media-video-toolbar{position:absolute;right:12px;bottom:12px;z-index:4;display:none;flex-direction:row;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);transition:background .15s ease}
 .media-video-overlay.active .media-video-toolbar{display:flex}
-.media-video-toolbar-btn{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.media-video-toolbar:hover,.media-video-toolbar:focus-within{background:rgba(0,0,0,.62)}
+.media-video-toolbar-btn{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .media-video-toolbar-btn:hover{background:rgba(255,255,255,.12)}
-.media-video-toolbar-slider{display:flex;flex-direction:column;align-items:center;gap:4px;color:#ddd;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;user-select:none}
-.media-video-toolbar-slider input[type=range]{writing-mode:vertical-lr;direction:rtl;width:28px;height:108px;margin:0;padding:0;accent-color:var(--accent-cyan,#5ec8e8);cursor:pointer}
-.media-video-toolbar-slider span{opacity:.85}
+.media-video-toolbar-sliders{display:flex;flex-direction:row;align-items:center;gap:10px;max-width:0;opacity:0;overflow:hidden;pointer-events:none;transition:max-width .2s ease,opacity .15s ease}
+.media-video-stage:hover .media-video-toolbar-sliders,.media-video-toolbar:hover .media-video-toolbar-sliders,.media-video-toolbar:focus-within .media-video-toolbar-sliders{max-width:min(72vw,320px);opacity:1;pointer-events:auto}
+.media-video-toolbar-slider{display:flex;flex-direction:row;align-items:center;gap:6px;color:#ddd;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;user-select:none;white-space:nowrap}
+.media-video-toolbar-slider input[type=range]{width:min(28vw,96px);height:4px;margin:0;padding:0;accent-color:var(--accent-cyan,#5ec8e8);cursor:pointer}
+.media-video-toolbar-slider span{opacity:.85;min-width:2.2em}
 .media-video-stage:fullscreen,.media-video-stage:-webkit-full-screen{width:100vw;height:100vh;max-width:none;max-height:none;padding:0}
 .media-video-stage:fullscreen video,.media-video-stage:-webkit-full-screen video{width:100%;height:100%;max-height:100vh;object-fit:contain}
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
@@ -3317,6 +3320,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button type="button" class="media-video-close" onclick="closeMediaVideoOverlay()" aria-label="Close">✕</button>
 <div class="media-video-toolbar" id="mediaVideoToolbar" onclick="event.stopPropagation()">
 <button type="button" class="media-video-toolbar-btn" id="mediaVideoFullscreenBtn" onclick="toggleMediaVideoFullscreen()" aria-label="Fullscreen" title="Fullscreen">⛶</button>
+<div class="media-video-toolbar-sliders">
 <label class="media-video-toolbar-slider" title="Volume">
 <span aria-hidden="true">Vol</span>
 <input type="range" id="mediaVideoVolume" min="0" max="100" step="1" value="50" aria-label="Volume" oninput="onMediaVideoVolumeInput(this.value)">
@@ -3325,6 +3329,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span aria-hidden="true">Size</span>
 <input type="range" id="mediaVideoSize" min="50" max="100" step="5" value="100" aria-label="Player size" oninput="onMediaVideoSizeInput(this.value)">
 </label>
+</div>
 </div>
 <button type="button" class="media-video-assault" id="gachaAssaultBtn" hidden onclick="onGachaAssaultTap()">Assault</button>
 <div class="media-video-controls" id="gachaVideoControls" hidden>
