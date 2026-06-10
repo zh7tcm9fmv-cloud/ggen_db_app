@@ -150,7 +150,9 @@ VIDEO_UNIT_SUBDIR = (_env_strip_quotes(os.environ.get('VIDEO_UNIT_SUBDIR')) or '
 
 _APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 _LB_VIDEO_IDS_PATH = os.path.join(_APP_ROOT, 'data', 'lb_video_ids.json')
+_GASHA_PULL_VIDEO_IDS_PATH = os.path.join(_APP_ROOT, 'data', 'gasha_pull_video_ids.json')
 _LB_VIDEO_IDS_CACHE = None
+_GASHA_PULL_VIDEO_IDS_CACHE = None
 
 
 def _load_lb_video_id_set():
@@ -168,6 +170,30 @@ def _load_lb_video_id_set():
         ids = set()
     _LB_VIDEO_IDS_CACHE = ids
     return ids
+
+
+def _load_gasha_pull_video_id_set():
+    global _GASHA_PULL_VIDEO_IDS_CACHE
+    if _GASHA_PULL_VIDEO_IDS_CACHE is not None:
+        return _GASHA_PULL_VIDEO_IDS_CACHE
+    ids = set()
+    try:
+        if os.path.isfile(_GASHA_PULL_VIDEO_IDS_PATH):
+            with open(_GASHA_PULL_VIDEO_IDS_PATH, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            if isinstance(raw, list):
+                ids = {str(x).strip() for x in raw if str(x).strip()}
+    except Exception:
+        ids = set()
+    _GASHA_PULL_VIDEO_IDS_CACHE = ids
+    return ids
+
+
+def _parse_koma_resource_id(item):
+    if not isinstance(item, dict):
+        return ''
+    kid = str(item.get('KomaResourceId') or item.get('komaResourceId') or '').strip()
+    return '' if kid in ('', '0') else kid
 
 
 def create_unit_weapon_lb_movie_map(d):
@@ -215,6 +241,20 @@ def resolve_unit_limit_break_movie_id(info, unit_id=None):
         movie_id = f'{prefix}{raw}'
         if not known or movie_id in known:
             return movie_id
+    return ''
+
+
+def resolve_unit_gacha_pull_movie_id(info):
+    """Gacha pull cinematic id (gasha_*), from KomaResourceId when listed in gasha_pull_video_ids.json."""
+    if not info:
+        return ''
+    koma = str(info.get('koma_resource_id') or '').strip()
+    if not koma:
+        return ''
+    movie_id = f'gasha_{koma}'
+    known = _load_gasha_pull_video_id_set()
+    if not known or movie_id in known:
+        return movie_id
     return ''
 
 
@@ -5940,8 +5980,10 @@ def create_unit_info_map(m):
                 acq = normalize_id(item.get('UnitAcquisitionRouteTypeIndex') or item.get('unitAcquisitionRouteTypeIndex'), '0')
                 bid = str(item.get('BromideResourceId') or item.get('bromideResourceId') or '').strip()
                 if bid == '0': bid = ''
+                koma_id = _parse_koma_resource_id(item)
                 rids = []
                 if bid: rids.append(bid)
+                if koma_id and koma_id not in rids: rids.append(koma_id)
                 for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId','IconResourceId','iconResourceId']:
                     rv = str(item.get(rk) or '').strip()
                     if rv and rv != '0' and rv not in rids: rids.append(rv)
@@ -5957,7 +5999,7 @@ def create_unit_info_map(m):
                     main_uid = uid
                 _nlbr = item.get('IsNotLimitBreakReleasedMovie') if item.get('IsNotLimitBreakReleasedMovie') is not None else item.get('isNotLimitBreakReleasedMovie')
                 is_not_lb_movie = _nlbr is True or str(_nlbr).lower() == 'true' or _nlbr == 1 or str(_nlbr) == '1'
-                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': main_uid, 'is_not_lb_movie': is_not_lb_movie}
+                lookup[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or item.get('modelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': acq, 'bromide_resource_id': bid, 'koma_resource_id': koma_id, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'body_type': body_type, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': main_uid, 'is_not_lb_movie': is_not_lb_movie}
     return lookup
 
 def create_unit_status_map(d):
@@ -7717,8 +7759,10 @@ for lang_code, paths in LANG_PATHS.items():
                     is_ult = ult_raw is True or str(ult_raw).lower() == 'true' or ult_raw == 1 or str(ult_raw) == '1'
                     bid = str(item.get('BromideResourceId') or item.get('bromideResourceId') or '').strip()
                     if bid == '0': bid = ''
+                    koma_id = _parse_koma_resource_id(item)
                     rids = []
                     if bid: rids.append(bid)
+                    if koma_id and koma_id not in rids: rids.append(koma_id)
                     for rk in ['ResourceId','resourceId','CutInResourceId','cutInResourceId']:
                         rv = str(item.get(rk) or '').strip()
                         if rv and rv != '0' and rv not in rids: rids.append(rv)
@@ -7731,7 +7775,7 @@ for lang_code, paths in LANG_PATHS.items():
                     _muid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId') or uid)
                     if _muid == '0':
                         _muid = uid
-                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': _muid}
+                    unit_info_map[uid] = {'rarity': normalize_id(item.get('RarityTypeIndex'),'1'), 'role': normalize_id(item.get('RoleTypeIndex'),'0'), 'model': str(item.get('ModelNumber') or ''), 'series_set': normalize_id(item.get('SeriesSetId') or item.get('seriesSetId')), 'terrain_set': normalize_id(item.get('TerrainCapabilitySetId') or item.get('terrainCapabilitySetId')), 'mechanism_set_id': normalize_id(item.get('MechanismSetId') or item.get('mechanismSetId')), 'profile_lang_id': normalize_id(item.get('ProfileLanguageId') or item.get('profileLanguageId') or '0'), 'is_ultimate': is_ult, 'acquisition_route': normalize_id(item.get('UnitAcquisitionRouteTypeIndex'),'0'), 'bromide_resource_id': bid, 'koma_resource_id': koma_id, 'resource_ids': rids, 'recommend_character_id': rec_cid, 'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'), 'occupied_area_id': occupied_area_id, 'main_unit_id': _muid}
                     added += 1
             if added: print(f"  +{added} units from {lang_code}")
     
@@ -18608,7 +18652,8 @@ def get_unit(unit_id):
         if _muid == '0':
             _muid = unit_id
         _lb_movie_id = resolve_unit_limit_break_movie_id(info, unit_id)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id}
+        _gacha_pull_movie_id = resolve_unit_gacha_pull_movie_id(info)
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
