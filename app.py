@@ -15690,7 +15690,6 @@ def api_banner_timeline():
         'cutin_movie_ids': [
             'c02_2',
             'c02_2_cutin_voice_only',
-            'c02_2_cutin_newtype_lastshooting_voice_only',
             'c02_2_cutin_sayra_voice_only',
         ],
         'reveal_movie_ids': ['c04_1', 'c04_2'],
