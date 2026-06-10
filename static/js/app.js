@@ -2691,18 +2691,46 @@ if(side!=='enemy')return true;
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
+function _stageMapMinimapIconRot(u){
+const dir=String(u.direction||'0');
+if(dir==='0')return 0;
+const p=String(u.portrait||'');
+const side=String(u.side||'').toLowerCase();
+if(p.includes('UI_GTower_Minimap_Icon_GuestArmy.webp')||(side==='guest'&&u.is_guest_ally)){
+if(dir==='3')return 0;
+if(dir==='1')return 180;
+if(dir==='2')return 90;
+if(dir==='4')return 270;
+}
+if(side==='enemy'){
+if(dir==='1')return 0;
+if(dir==='3')return 180;
+if(dir==='2')return 270;
+if(dir==='4')return 90;
+}
+if(dir==='3')return 90;
+if(dir==='2')return 180;
+if(dir==='1')return 270;
+return 0;
+}
 function _stageMapBuildOccupancyMap(md){
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
   units.forEach(u=>{
     if(u.cells&&u.cells.length){
       let oc=null;
+      if(u.map_origin&&u.map_origin.x!=null&&u.map_origin.y!=null){
+        const mx=Number(u.map_origin.x),my=Number(u.map_origin.y);
+        if(Number.isFinite(mx)&&Number.isFinite(my))oc={x:mx+1,y:my+1};
+      }
+      if(!oc){
       u.cells.forEach(c=>{
         const cx=Number(c.x)+1,cy=Number(c.y)+1;
         if(cx<1||cy<1||cx>w||cy>h)return;
         if(!oc)oc={x:cx,y:cy};
         else{if(cy>oc.y||(cy===oc.y&&cx<oc.x))oc={x:cx,y:cy}}
       });
+      }
       u.cells.forEach(c=>{
         const cx=Number(c.x)+1,cy=Number(c.y)+1;
         if(cx>=1&&cy>=1&&cx<=w&&cy<=h)occ[`${cx}_${cy}`]={unit:u,origin:!!(oc&&cx===oc.x&&cy===oc.y)}
@@ -2813,10 +2841,10 @@ function renderStageMapGrid(md){
         const friendlyCls=u.is_friendly_force?'friendly-force':'';
         const gimmickCls=u.is_gimmick?'gimmick':'';
         const dir=String(u.direction||'0');
-        const rot=(dir==='3')?90:(dir==='2')?180:(dir==='1')?270:0; // swapped 2/4 mapping (4 is default)
-        const rotStyle=isAllyLoc?` style="transform:rotate(${rot}deg);"`:'';
         const bbox=_stageMapFootprintBBox(u,w,h);
         const multiFp=bbox&&(bbox.fpw>1||bbox.fph>1);
+        const rot=_stageMapMinimapIconRot(u);
+        const rotStyle=(isAllyLoc||(multiFp&&dir!=='0'))?` style="transform:rotate(${rot}deg);"`:'';
         const stride=cellPx+gapPx;
         const dx=bbox?(bbox.mnx-x)*stride:0;
         const dy=bbox?(y-bbox.mxy)*stride:0;

@@ -37,19 +37,19 @@ class TestWarshipBuffArea(unittest.TestCase):
     def test_archangel_west_stepped_cross(self):
         """Archangel at (16,9) facing west, range 1–2 — 6×7 stepped ring from in-game screenshot."""
         footprint = [
-            {'x': 16, 'y': 9}, {'x': 17, 'y': 9}, {'x': 18, 'y': 9},
-            {'x': 16, 'y': 10}, {'x': 17, 'y': 10}, {'x': 18, 'y': 10},
+            {'x': 15, 'y': 9}, {'x': 16, 'y': 9}, {'x': 17, 'y': 9},
+            {'x': 15, 'y': 10}, {'x': 16, 'y': 10}, {'x': 17, 'y': 10},
         ]
         cells = _stepped_rect_1based(footprint, 1, 2, 24, 24)
         row_w = {}
         for x, y in cells:
             row_w.setdefault(y, []).append(x)
-        self.assertEqual(sorted(row_w[8]), [17, 18, 19])
-        self.assertEqual(sorted(row_w[9]), [16, 17, 18, 19, 20])
-        self.assertEqual(sorted(row_w[10]), [15, 16, 20, 21])
-        self.assertEqual(sorted(row_w[13]), [17, 18, 19])
-        self.assertNotIn((16, 8), cells)
-        self.assertNotIn((22, 8), cells)
+        self.assertEqual(sorted(row_w[8]), [16, 17, 18])
+        self.assertEqual(sorted(row_w[9]), [15, 16, 17, 18, 19])
+        self.assertEqual(sorted(row_w[10]), [14, 15, 19, 20])
+        self.assertEqual(sorted(row_w[13]), [16, 17, 18])
+        self.assertNotIn((15, 8), cells)
+        self.assertNotIn((21, 8), cells)
         self.assertEqual(len(cells), 24)
 
     def test_minerva_east_same_shape(self):

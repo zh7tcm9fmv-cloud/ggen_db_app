@@ -11314,15 +11314,31 @@ def get_warship_2x3_cells(x, y):
 def get_warship_footprint_cells(x, y, direction):
     """Warship OccupiedAreaId 3: 3×2 (2 rows × 3 cols) when facing east/west; 2×3 when facing up/down.
 
-    Map (x, y) is the bow (front) top corner; footprint extends rearward from there."""
+    Map (x, y) from m_map_npc is the pivot anchor (ForwardArea + PivotSquareSize corner), not the bow."""
     ax = safe_int(x, 0)
     ay = safe_int(y, 0)
     d = str(direction or '1')
     if d in ('1', '3'):
-        ox = ax - 2 if d == '1' else ax
+        ox = ax - 2 if d == '1' else ax - 1
         return get_warship_2x3_cells(ox, ay)
-    oy = ay - 2 if d == '2' else ay
+    oy = ay - 2 if d == '2' else ay - 1
     return get_warship_3x2_cells(ax, oy)
+
+
+def get_warship_map_origin(x, y, direction):
+    """0-based grid cell for the unit icon (matches in-game strategy map coordinates)."""
+    ax = safe_int(x, 0)
+    ay = safe_int(y, 0)
+    d = str(direction or '1')
+    if d == '3':
+        return {'x': ax - 1, 'y': ay}
+    if d == '1':
+        return {'x': ax, 'y': ay}
+    if d == '2':
+        return {'x': ax, 'y': ay - 1}
+    if d == '4':
+        return {'x': ax, 'y': ay}
+    return {'x': ax, 'y': ay}
 
 
 def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None):
@@ -18173,6 +18189,9 @@ def get_stage(stage_id):
                         me['occupied_area_id'] = safe_int(upui.get('occupied_area_id'), 1)
                 me['cells'] = get_map_npc_unit_footprint_cells(
                     nid, npc.get('x', 0), npc.get('y', 0), npc.get('direction'))
+                if safe_int(me.get('occupied_area_id'), 1) >= 3:
+                    me['map_origin'] = get_warship_map_origin(
+                        npc.get('x', 0), npc.get('y', 0), npc.get('direction'))
                 me['npc_detail_index'] = len(nd)
                 nd_row = {'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'step_order': step_ord, 'unit': up, 'character': cp}
                 if story_boss:

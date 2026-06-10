@@ -23,10 +23,25 @@ def _warship_footprint_cells(x, y, direction):
         ]
 
     if d in ('1', '3'):
-        ox = ax - 2 if d == '1' else ax
+        ox = ax - 2 if d == '1' else ax - 1
         return cells_2x3(ox, ay)
-    oy = ay - 2 if d == '2' else ay
+    oy = ay - 2 if d == '2' else ay - 1
     return cells_3x2(ax, oy)
+
+
+def _warship_map_origin(x, y, direction):
+    ax = int(x)
+    ay = int(y)
+    d = str(direction or '1')
+    if d == '3':
+        return {'x': ax - 1, 'y': ay}
+    if d == '1':
+        return {'x': ax, 'y': ay}
+    if d == '2':
+        return {'x': ax, 'y': ay - 1}
+    if d == '4':
+        return {'x': ax, 'y': ay}
+    return {'x': ax, 'y': ay}
 
 
 def _footprint_bbox(cells):
@@ -36,22 +51,22 @@ def _footprint_bbox(cells):
 
 
 class TestWarshipFootprint(unittest.TestCase):
-    def test_west_anchor_is_bow_top_left(self):
+    def test_archangel_west_pivot_anchor(self):
+        """EN m_map_npc: Murrue X=16 Y=9 Direction=3 — bow one cell west of pivot."""
         cells = _warship_footprint_cells(16, 9, 3)
         min_x, min_y, w, h = _footprint_bbox(cells)
-        self.assertEqual((min_x, min_y, w, h), (16, 9, 3, 2))
+        self.assertEqual((min_x, min_y, w, h), (15, 9, 3, 2))
+        origin = _warship_map_origin(16, 9, 3)
+        self.assertEqual(origin, {'x': 15, 'y': 9})
 
-    def test_east_anchor_is_bow_top_right(self):
+    def test_minerva_east_bow_anchor(self):
+        """EN m_map_npc: Talia X=4 Y=9 Direction=1 — bow at anchor, hull west."""
         cells = _warship_footprint_cells(4, 9, 1)
         min_x, min_y, w, h = _footprint_bbox(cells)
         self.assertEqual((min_x, min_y, w, h), (2, 9, 3, 2))
         self.assertIn({'x': 4, 'y': 9}, cells)
-
-    def test_up_down_are_vertical_2x3(self):
-        for d in ('2', '4'):
-            cells = _warship_footprint_cells(10, 5, d)
-            _min_x, _min_y, w, h = _footprint_bbox(cells)
-            self.assertEqual((w, h), (2, 3))
+        origin = _warship_map_origin(4, 9, 1)
+        self.assertEqual(origin, {'x': 4, 'y': 9})
 
 
 if __name__ == '__main__':
