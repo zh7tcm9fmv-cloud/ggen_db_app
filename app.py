@@ -11320,8 +11320,7 @@ def get_warship_footprint_cells(x, y, direction, for_buff=False):
     ay = safe_int(y, 0)
     d = str(direction or '1')
     if d in ('1', '3'):
-        # m_map_npc (x,y) is the rear pivot: west faces −x (ox = ax − ForwardArea), east faces +x (ox = ax).
-        ox = ax if d == '1' else ax - 1
+        ox = ax - 2 if d == '1' else ax - 1
         return get_warship_2x3_cells(ox, ay)
     oy = ay - 2 if d == '2' else ay - 1
     return get_warship_3x2_cells(ax, oy)
@@ -11336,9 +11335,8 @@ def get_map_unit_icon_origin(cells, direction):
     mn_x, mx_x = min(xs), max(xs)
     mn_y, mx_y = min(ys), max(ys)
     d = str(direction or '1')
-    if d == '1':
-        return {'x': mx_x, 'y': mx_y}
-    if d == '3':
+    # Horizontal ships: icon anchors northwest corner of footprint (renderStageMapGrid dy/dx math).
+    if d in ('1', '3'):
         return {'x': mn_x, 'y': mx_y}
     if d == '2':
         return {'x': mn_x, 'y': mx_y}

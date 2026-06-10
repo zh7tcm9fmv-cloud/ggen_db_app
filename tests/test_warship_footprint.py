@@ -17,7 +17,7 @@ def _warship_footprint_cells(x, y, direction, for_buff=False):
         ]
 
     if d in ('1', '3'):
-        ox = ax if d == '1' else ax - 1
+        ox = ax - 2 if d == '1' else ax - 1
         return cells_2x3(ox, ay)
     oy = ay - 2 if d == '2' else ay - 1
     return [
@@ -35,9 +35,7 @@ def _map_unit_icon_origin(cells, direction):
     mn_x, mx_x = min(xs), max(xs)
     mn_y, mx_y = min(ys), max(ys)
     d = str(direction or '1')
-    if d == '1':
-        return {'x': mx_x, 'y': mx_y}
-    if d == '3':
+    if d in ('1', '3'):
         return {'x': mn_x, 'y': mx_y}
     if d == '2':
         return {'x': mn_x, 'y': mx_y}
@@ -68,9 +66,9 @@ class TestWarshipFootprint(unittest.TestCase):
 
     def test_stage_11000418_minerva_east(self):
         cells = _warship_footprint_cells(4, 9, 1)
-        self.assertEqual(_footprint_bbox(cells), (4, 9, 3, 2))
+        self.assertEqual(_footprint_bbox(cells), (2, 9, 3, 2))
         origin = _map_unit_icon_origin(cells, 1)
-        self.assertEqual(origin, {'x': 6, 'y': 10})
+        self.assertEqual(origin, {'x': 2, 'y': 10})
         _assert_icon_matches_cells(self, cells, 1)
 
     def test_stage_90520014_ptolemy_down(self):
