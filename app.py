@@ -245,13 +245,13 @@ def resolve_unit_limit_break_movie_id(info, unit_id=None):
 
 
 def resolve_unit_gacha_pull_movie_id(info):
-    """Gacha pull cinematic id (gasha_*), from KomaResourceId when listed in gasha_pull_video_ids.json."""
+    """Gacha pull cinematic id (gasha_*), from BromideResourceId when listed in gasha_pull_video_ids.json."""
     if not info:
         return ''
-    koma = str(info.get('koma_resource_id') or '').strip()
-    if not koma:
+    bid = str(info.get('bromide_resource_id') or '').strip()
+    if not bid or bid == '0':
         return ''
-    movie_id = f'gasha_{koma}'
+    movie_id = f'gasha_{bid}'
     known = _load_gasha_pull_video_id_set()
     if not known or movie_id in known:
         return movie_id
