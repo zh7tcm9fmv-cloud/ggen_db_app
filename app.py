@@ -8004,7 +8004,8 @@ def _unit_qualifies_as_transform_partner(alt_id):
     if not info:
         return False
     sched = normalize_id(info.get('schedule_id', '0'))
-    if sched in ('0', '9999990001'):
+    # ScheduleId 0 is the normal default for playable alts; only exclude placeholder shells.
+    if sched == '9999990001':
         return False
     if uid in unit_list_playable_ids:
         return True
