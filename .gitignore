@@ -3,6 +3,7 @@ __pycache__/
 .env
 venv/
 *.log
+.magicpath-work/
 
 # Live banner pool vote totals (written at runtime; survive deploys in data/persistent/)
 data/banner_pool_votes.json
