@@ -493,6 +493,26 @@ UI_LABELS = {
         'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
         'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
     },
+    'HK': {
+        'restriction_before_moving': '僅限移動前使用。',
+        'restriction_tension_max': '戰意Max以上時可使用。',
+        'restriction_mp': '消耗{}MP時可使用。',
+        'restriction_hp': '消耗{}%HP時可使用。',
+        'restriction_recover_hp': '使用時恢復{}%HP。',
+        'restriction_recover_en': '使用時恢復{}%EN。',
+        'restriction_recover_mp': '使用時恢復{}MP。',
+        'map_weapon_designate_spots': '最多可指定{}個位置。',
+        'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
+        'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
+        'restriction_applies_characters': '適用於角色',
+        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地面', 'terrain_amphibious': '水中', 'terrain_unknown': '未知',
+        'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
+        'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
+        'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
+        'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
+        'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
+        'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
+    },
     'JA': {
         'restriction_before_moving': '移動前のみ使用可能。',
         'restriction_tension_max': 'テンションMax以上で使用可能。',
@@ -514,9 +534,12 @@ UI_LABELS = {
         'stage_score_type_4': '生存数', 'stage_score_type_5': 'ボーナス',
     }
 }
-UI_LABELS['HK'] = dict(UI_LABELS['TW'])
-UNIT_ROLE_TYPE_LANG_MAP = {'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'}, 'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'}, 'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'}}
-UNIT_ROLE_TYPE_LANG_MAP['HK'] = dict(UNIT_ROLE_TYPE_LANG_MAP['TW'])
+UNIT_ROLE_TYPE_LANG_MAP = {
+    'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'},
+    'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
+    'HK': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
+    'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'},
+}
 ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
 ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
 
@@ -534,14 +557,12 @@ def resolve_role_label(role_id, lang_code=None):
     return m.get(en_label, en_label)
 # Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types (EN: Space, Atmospheric, Land, Sea, Underwater).
 STAGE_TERRAIN_MAP = {
-    '1': {'EN': 'Space', 'TW': '宇宙', 'JA': '宇宙'},
-    '2': {'EN': 'Atmospheric', 'TW': '空中', 'JA': '空中'},
-    '3': {'EN': 'Ground', 'TW': '地上', 'JA': '地上'},
-    '4': {'EN': 'Sea', 'TW': '水面', 'JA': '水上'},
-    '5': {'EN': 'Amphibious', 'TW': '水陸', 'JA': '水陸'},
+    '1': {'EN': 'Space', 'TW': '宇宙', 'HK': '宇宙', 'JA': '宇宙'},
+    '2': {'EN': 'Atmospheric', 'TW': '空中', 'HK': '空中', 'JA': '空中'},
+    '3': {'EN': 'Ground', 'TW': '地上', 'HK': '地面', 'JA': '地上'},
+    '4': {'EN': 'Sea', 'TW': '水面', 'HK': '水面', 'JA': '水上'},
+    '5': {'EN': 'Amphibious', 'TW': '水陸', 'HK': '水中', 'JA': '水陸'},
 }
-for _tid in STAGE_TERRAIN_MAP:
-    STAGE_TERRAIN_MAP[_tid]['HK'] = STAGE_TERRAIN_MAP[_tid]['TW']
 
 def get_ui_label(lang_code, key):
     labels = UI_LABELS.get(lang_code, UI_LABELS[DEFAULT_LANG])
