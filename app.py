@@ -2490,7 +2490,7 @@ def resolve_weapon_attribute_label(attribute_set_id, ld):
     return WEAPON_ATTR_MAP.get(ai, {}).get('label', 'Unknown')
 
 MAP_WEAPON_ICON = '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp'
-# Wing Gundam Zero (EW): playable 1219000150 / MAP 121900015005; NPC shell 1219000151 / MAP 121900015105 (same after-move MAP treatment).
+# Legacy fallback when MapWeaponCanUseAfterMove is absent; prefer m_weapon_status.MapWeaponCanUseAfterMove.
 MAP_WEAPON_AFTER_MOVE_PAIRS = frozenset({
     ('1219000150', '121900015005'),
     ('1219000151', '121900015105'),
@@ -2522,13 +2522,29 @@ def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
     return bool(u and w and (u, w) in MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS)
 
 
+def _weapon_status_map_can_use_after_move(wid):
+    """True when m_weapon_status.MapWeaponCanUseAfterMove is set for this weapon."""
+    w = normalize_id(wid) if wid else '0'
+    if w == '0':
+        return False
+    wsm = globals().get('weapon_status_map') or {}
+    wm = (globals().get('weapon_info_map') or {}).get(w) or {}
+    wsid = normalize_id(wm.get('weapon_status_id') or w)
+    ws = wsm.get(wsid) or wsm.get(w)
+    return bool(ws and ws.get('map_can_use_after_move'))
+
+
 def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
     wts = str(wt) if wt is not None else ''
     if wts != '3':
         return False
-    u = normalize_id(unit_id) if unit_id else ''
     w = normalize_id(wid) if wid else ''
-    return bool(u and w and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
+    if not w:
+        return False
+    if _weapon_status_map_can_use_after_move(w):
+        return True
+    u = normalize_id(unit_id) if unit_id else ''
+    return bool(u and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
@@ -6181,7 +6197,10 @@ def create_weapon_status_map(d):
             sr = str(item.get('MapWeaponShootingRange') or item.get('mapWeaponShootingRange') or '')
             sc = [{'x': int(x), 'y': int(y)} for x, y in re.findall(r'\((-?\d+),\s*(-?\d+)\)', sr)]
             id2 = bool(co and sc and len(co) == len(sc) and ({(c['x'], c['y']) for c in co} == {(c['x'], c['y']) for c in sc}))
-            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2}
+            map_after = item.get('MapWeaponCanUseAfterMove')
+            if map_after is None:
+                map_after = item.get('mapWeaponCanUseAfterMove')
+            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after)}
     return lookup
 
 MAP_FOOTPRINT_2X2_DXDY = ((0, 0), (1, 0), (0, -1), (1, -1))
