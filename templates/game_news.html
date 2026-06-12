@@ -21,7 +21,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 @font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% else %}/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:normal;font-style:normal;font-display:swap}
 @font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
-:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-modal:#141c2e;--border-color:#2a3654;--text-primary:#e8eaf0;--text-secondary:#8896b3;--text-muted:#5a6a8a;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;color-scheme:dark}
+:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-modal:#141c2e;--border-color:#2a3654;--text-primary:#e8eaf0;--text-secondary:#8896b3;--text-muted:#5a6a8a;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;color-scheme:dark}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%;height:100%}
 html.page-scroll-lock{overflow:hidden!important;height:100%;overscroll-behavior:none}
@@ -33,19 +33,19 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .header-brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:0;text-decoration:none;color:inherit;min-width:0}
 .header-brand:hover .brand-text{color:var(--accent-cyan)}.header-brand:hover .brand-title-row::before{opacity:.92}
 .brand-logo{width:55px;height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
-.brand-logo img{width:100%;height:100%;object-fit:contain}
+.brand-logo img{width:100%;height:100%;object-fit:contain;object-position:calc(50% + var(--brand-logo-optical-x)) calc(50% + var(--brand-logo-optical-y))}
 .brand-copy{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;line-height:1.1}
 .brand-title-row{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 12px 6px 12px;isolation:isolate}
-.brand-title-row::before{content:'';position:absolute;left:50%;top:50%;width:100px;height:54px;transform:translate(-50%,-58%);background:url('/static/images/UI/brand-emblem-panel.png') center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
-.brand-text{position:relative;z-index:1;margin:0;font-size:22px;font-weight:normal;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.055em;color:var(--text-primary);transition:var(--transition);white-space:nowrap;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8);font-synthesis:none;-webkit-font-smoothing:antialiased}
-.brand-word{display:inline-block}.brand-word-db{letter-spacing:.06em}
+.brand-title-row::before{content:'';position:absolute;left:50%;top:50%;width:100px;height:54px;transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-58%);background:url('/static/images/UI/brand-emblem-panel.png') center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
+.brand-text{position:relative;z-index:1;margin:0;font-size:22px;font-weight:normal;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.055em;color:var(--text-primary);transition:var(--transition);white-space:nowrap;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8);font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x))}
+.brand-word{display:inline-block}.brand-word-ggen{margin-right:1px}.brand-word-db{letter-spacing:.06em}.brand-word-db.brand-frame-3{margin-left:1px}
 @keyframes brand-title-nudge-l{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
 @keyframes brand-title-nudge-r{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
 @keyframes brand-title-nudge-r-far{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 .brand-frame-1,.brand-frame-2,.brand-frame-3{transition:transform .2s ease-out}
 @media(hover:hover){.header-brand:hover .brand-frame-1{animation:brand-title-nudge-l .4s ease-in-out}.header-brand:hover .brand-frame-2{animation:brand-title-nudge-r .4s ease-in-out .1s}.header-brand:hover .brand-frame-3{animation:brand-title-nudge-r-far .4s ease-in-out .2s}}
 @media(prefers-reduced-motion:reduce){.header-brand:hover .brand-frame-1,.header-brand:hover .brand-frame-2,.header-brand:hover .brand-frame-3{animation:none}}
-.brand-sub{font-size:14px;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:500;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0;padding:0;text-align:center;font-synthesis:none}
+.brand-sub{font-size:14px;font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:500;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0;padding:0;text-align:center;font-synthesis:none;transform:translateX(calc(var(--brand-title-optical-x)*.65))}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .header-lang-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .header-lang-kofi-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:min(calc(100% - 32px),520px)}
