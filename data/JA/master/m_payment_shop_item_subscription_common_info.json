@@ -6,7 +6,8 @@
     "DescriptionLanguageId": 193100000000000006,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000006
+    "HeaderDescriptionLanguageId": 193400000000000006,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000002,
@@ -15,7 +16,8 @@
     "DescriptionLanguageId": 193100000000000008,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000008
+    "HeaderDescriptionLanguageId": 193400000000000008,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000003,
@@ -24,7 +26,8 @@
     "DescriptionLanguageId": 193100000000000007,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000007
+    "HeaderDescriptionLanguageId": 193400000000000007,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000004,
@@ -33,7 +36,8 @@
     "DescriptionLanguageId": 193100000000000001,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000001
+    "HeaderDescriptionLanguageId": 193400000000000001,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000005,
@@ -42,7 +46,8 @@
     "DescriptionLanguageId": 193100000000000002,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000002
+    "HeaderDescriptionLanguageId": 193400000000000002,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000006,
@@ -51,7 +56,8 @@
     "DescriptionLanguageId": 193100000000000003,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000003
+    "HeaderDescriptionLanguageId": 193400000000000003,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000007,
@@ -60,7 +66,8 @@
     "DescriptionLanguageId": 193100000000000004,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000004
+    "HeaderDescriptionLanguageId": 193400000000000004,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 100000008,
@@ -69,6 +76,7 @@
     "DescriptionLanguageId": 193100000000000005,
     "Priority": 1,
     "ScheduleId": 0,
-    "HeaderDescriptionLanguageId": 193400000000000005
+    "HeaderDescriptionLanguageId": 193400000000000005,
+    "Unknown_Col_7": 0
   }
 ]

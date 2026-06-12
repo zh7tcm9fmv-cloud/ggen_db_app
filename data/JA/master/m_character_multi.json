@@ -1,0 +1,13 @@
+[
+  {
+    "CharacterId": 1336000700,
+    "CharacterMultiRelationshipTypeIndex": 2,
+    "MainResourceId": "g3360c00700",
+    "MainCutInResourceId": "g3360c00401",
+    "MainCharacterCutInSetId": 1336000700,
+    "SubCutInResourceId": "g3360c00500",
+    "SubCharacterCutInSetId": 1336000700,
+    "MainNameLanguageId": 100400001336000400,
+    "SubNameLanguageId": 0
+  }
+]
