@@ -1218,6 +1218,34 @@
     "ScheduleId": 2512409901
   },
   {
+    "CharacterId": 1336000200,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2606209901
+  },
+  {
+    "CharacterId": 1336000300,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2606209901
+  },
+  {
+    "CharacterId": 1336000500,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2606209901
+  },
+  {
+    "CharacterId": 1336000600,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2606209901
+  },
+  {
     "CharacterId": 1370000101,
     "RegisterConditionTypeIndex": 2,
     "TargetId": 37000603,

@@ -4216,6 +4216,158 @@
     "value": "All of your units are destroyed."
   },
   {
+    "id": 130300003360010201,
+    "value": "Defeat [???]."
+  },
+  {
+    "id": 130300003360010204,
+    "value": "Guest force Edmond Du Clos is defeated."
+  },
+  {
+    "id": 130300003360020201,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360020204,
+    "value": "All of your units are destroyed.\nSven Cal Bayang and Guest force destroyed."
+  },
+  {
+    "id": 130300003360030101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360030104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360040201,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360040202,
+    "value": "Destroy 5 enemies."
+  },
+  {
+    "id": 130300003360040204,
+    "value": "All of your units are destroyed.\nSven Cal Bayang and Guest force destroyed."
+  },
+  {
+    "id": 130300003360040205,
+    "value": "All of your units are destroyed.\nSven Cal Bayang and Guest force destroyed."
+  },
+  {
+    "id": 130300003360050201,
+    "value": "Defeat Shams Couza."
+  },
+  {
+    "id": 130300003360050204,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360060101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360060104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360070201,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360070202,
+    "value": "Destroy 5 enemies."
+  },
+  {
+    "id": 130300003360070204,
+    "value": "All of your units destroyed.\nGuest force Sol Lyne Lange destroyed."
+  },
+  {
+    "id": 130300003360070205,
+    "value": "All of your units destroyed.\nGuest force Sol Lyne Lange destroyed."
+  },
+  {
+    "id": 130300003360080101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360080104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360090101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360090104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360100101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360100104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360110101,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 130300003360110104,
+    "value": "All of your units are destroyed."
+  },
+  {
+    "id": 130300003360500101,
+    "value": "Defeat Sven Cal Bayang."
+  },
+  {
+    "id": 130300003360500104,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003360500201,
+    "value": "Defeat Sven Cal Bayang."
+  },
+  {
+    "id": 130300003360500204,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003360500301,
+    "value": "Defeat Sven Cal Bayang."
+  },
+  {
+    "id": 130300003360500304,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003360600101,
+    "value": "Defeat Selene McGriff & Sol Lyne Lange."
+  },
+  {
+    "id": 130300003360600104,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003360600201,
+    "value": "Defeat Selene McGriff & Sol Lyne Lange."
+  },
+  {
+    "id": 130300003360600204,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003360600301,
+    "value": "Defeat Selene McGriff & Sol Lyne Lange."
+  },
+  {
+    "id": 130300003360600304,
+    "value": "All of your units are destroyed.\nLimit: 3 turns."
+  },
+  {
     "id": 130300003700010301,
     "value": "Defeat Patrick Colasour."
   },

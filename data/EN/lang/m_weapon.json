@@ -12872,6 +12872,26 @@
     "value": "Assault Mode SSP"
   },
   {
+    "id": 120100130600031001,
+    "value": "Red Flame"
+  },
+  {
+    "id": 120100130600031002,
+    "value": "75mm Anti-Air Automatic Vulcan Turret System \"Igelstellung\""
+  },
+  {
+    "id": 120100130600031003,
+    "value": "150 Gerbera Straight"
+  },
+  {
+    "id": 120100130600031080,
+    "value": "150 Gerbera Straight"
+  },
+  {
+    "id": 120100130600031090,
+    "value": "Red Flame SSP"
+  },
+  {
     "id": 120100130700011001,
     "value": "Beam Saber"
   },
@@ -12914,6 +12934,30 @@
   {
     "id": 120100130700021090,
     "value": "Super Cavitating Torpedo Launcher SSP"
+  },
+  {
+    "id": 120100130700031001,
+    "value": "Tactical Arms Sword Form"
+  },
+  {
+    "id": 120100130700031002,
+    "value": "75mm Anti-Air Automatic Vulcan Turret System \"Igelstellung\""
+  },
+  {
+    "id": 120100130700031003,
+    "value": "Tactical Arms Gatling Form"
+  },
+  {
+    "id": 120100130700031004,
+    "value": "Lohengrin Launcher"
+  },
+  {
+    "id": 120100130700031005,
+    "value": "Lohengrin Launcher"
+  },
+  {
+    "id": 120100130700031090,
+    "value": "Tactical Arms Gatling Form SSP"
   },
   {
     "id": 120100130700040001,
@@ -13784,6 +13828,34 @@
     "value": "Fatum-01 SSP"
   },
   {
+    "id": 120100133000285001,
+    "value": "MA-M02G Super Lacerta Beam Saber"
+  },
+  {
+    "id": 120100133000285002,
+    "value": "RQM55 Shining Edge Beam Boomerang"
+  },
+  {
+    "id": 120100133000285003,
+    "value": "MA-M1911 High-Energy Beam Rifle"
+  },
+  {
+    "id": 120100133000285004,
+    "value": "MA-6J Hyper Fortis Beam Cannon"
+  },
+  {
+    "id": 120100133000285005,
+    "value": "Fatum-01"
+  },
+  {
+    "id": 120100133000285006,
+    "value": "Fatum-01"
+  },
+  {
+    "id": 120100133000285007,
+    "value": "MR-Q15A Griffon Beam Blade EX"
+  },
+  {
     "id": 120100133000290001,
     "value": "MMI-GAU2 Picus 76mm CIWS Autocannon"
   },
@@ -14410,6 +14482,170 @@
   {
     "id": 120100133300010090,
     "value": "MMI-710 Excalibur Laser Anti-Ship Sword SSP"
+  },
+  {
+    "id": 120100133600010001,
+    "value": "MR-Q10 Fragarach 3 Beam Blade"
+  },
+  {
+    "id": 120100133600010002,
+    "value": "M8F-SB1 Beam Rifle Shorty"
+  },
+  {
+    "id": 120100133600010003,
+    "value": "MAU-M3E4 2-Barrel Linear Gun"
+  },
+  {
+    "id": 120100133600010004,
+    "value": "175mm Grenade Launcher"
+  },
+  {
+    "id": 120100133600010005,
+    "value": "M8F-SB1 Beam Rifle Shorty"
+  },
+  {
+    "id": 120100133600010090,
+    "value": "M8F-SB1 Beam Rifle Shorty SSP"
+  },
+  {
+    "id": 120100133600015001,
+    "value": "MR-Q10 Fragarach 3 Beam Blade"
+  },
+  {
+    "id": 120100133600015002,
+    "value": "M8F-SB1 Beam Rifle Shorty"
+  },
+  {
+    "id": 120100133600015003,
+    "value": "MAU-M3E4 2-Barrel Linear Gun"
+  },
+  {
+    "id": 120100133600015004,
+    "value": "175mm Grenade Launcher"
+  },
+  {
+    "id": 120100133600015005,
+    "value": "M8F-SB1 Beam Rifle Shorty"
+  },
+  {
+    "id": 120100133600015006,
+    "value": "MR-Q10 Fragarach 3 Beam Blade EX"
+  },
+  {
+    "id": 120100133600020001,
+    "value": "Boule de Lune"
+  },
+  {
+    "id": 120100133600020002,
+    "value": "Orage de Lune"
+  },
+  {
+    "id": 120100133600020003,
+    "value": "Beam Gun KSM71/J"
+  },
+  {
+    "id": 120100133600020004,
+    "value": "Flash Mine"
+  },
+  {
+    "id": 120100133600020090,
+    "value": "Boule de Lune SSP"
+  },
+  {
+    "id": 120100133600030001,
+    "value": "ES05A Beam Saber"
+  },
+  {
+    "id": 120100133600030002,
+    "value": "Mk.315 Stiletto Rocket-Propelled Anti-Armor Penetrator"
+  },
+  {
+    "id": 120100133600030003,
+    "value": "M7G2 Retractable Beam Gun"
+  },
+  {
+    "id": 120100133600030004,
+    "value": "M443 Scorpion Mobile Railgun"
+  },
+  {
+    "id": 120100133600030090,
+    "value": "M443 Scorpion Mobile Railgun SSP"
+  },
+  {
+    "id": 120100133600040001,
+    "value": "M9009B Composite Bayonet-Equipped Beam Rifle"
+  },
+  {
+    "id": 120100133600040002,
+    "value": "M9009B Composite Bayonet-Equipped Beam Rifle (High Power 2-Tube Launcher)"
+  },
+  {
+    "id": 120100133600040003,
+    "value": "350mm Gun Launcher"
+  },
+  {
+    "id": 120100133600040004,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100133600040090,
+    "value": "Barrage SSP"
+  },
+  {
+    "id": 120100133600050001,
+    "value": "M68 Cattus 500mm Recoilless Cannon"
+  },
+  {
+    "id": 120100133600050002,
+    "value": "MMI-M8A3 76mm Heavy Assault Machine Gun"
+  },
+  {
+    "id": 120100133600050003,
+    "value": "M68 Pardus Triple Short-Range Guided Missile Launcher"
+  },
+  {
+    "id": 120100133600050090,
+    "value": "M68 Cattus 500mm Recoilless Rifle SSP"
+  },
+  {
+    "id": 120100133600060001,
+    "value": "Laser Torch"
+  },
+  {
+    "id": 120100133600060002,
+    "value": "Beam Gun KSM71/J"
+  },
+  {
+    "id": 120100133600060090,
+    "value": "Beam Gun KSM71/J SSP"
+  },
+  {
+    "id": 120100133600070001,
+    "value": "ES01 Beam Saber"
+  },
+  {
+    "id": 120100133600070002,
+    "value": "40mm Autocannon CIWS \"Igelstellung II\""
+  },
+  {
+    "id": 120100133600070003,
+    "value": "MX703G Beam Rifle"
+  },
+  {
+    "id": 120100133600070090,
+    "value": "MX703G Beam Rifle SSP"
+  },
+  {
+    "id": 120100133600080001,
+    "value": "Beam Fang System"
+  },
+  {
+    "id": 120100133600080002,
+    "value": "Kerberos Wizard Twin-Head-Mounted Retractable Section Built-In Beam Cannon"
+  },
+  {
+    "id": 120100133600080090,
+    "value": "Kerberos Wizard Twin-Head-Mounted Retractable Section Built-In Beam Cannon SSP"
   },
   {
     "id": 120100133900015001,

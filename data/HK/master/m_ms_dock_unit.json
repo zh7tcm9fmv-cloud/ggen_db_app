@@ -400,6 +400,16 @@
     "ScheduleId": 2512409901
   },
   {
+    "Id": 1336000200,
+    "ResourceId": "g3360u00200",
+    "NameLanguageId": 110100001336000200,
+    "ProfileLanguageId": 110200001336000200,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3360,
+    "ModelNumber": "GSX-401FW",
+    "ScheduleId": 2606209901
+  },
+  {
     "Id": 1370000100,
     "ResourceId": "g3700u00100",
     "NameLanguageId": 110100001370000100,

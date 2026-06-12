@@ -2370,6 +2370,108 @@
     "MapId": 1330022
   },
   {
+    "Id": 336000100202000000,
+    "StageId": 33600102,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336001
+  },
+  {
+    "Id": 336000200202000000,
+    "StageId": 33600202,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336002
+  },
+  {
+    "Id": 336000300102000000,
+    "StageId": 33600301,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336000400202000000,
+    "StageId": 33600402,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336000500202000000,
+    "StageId": 33600502,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336000600102000000,
+    "StageId": 33600601,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336000700202000000,
+    "StageId": 33600702,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336000800102000000,
+    "StageId": 33600801,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336002
+  },
+  {
+    "Id": 336000900102000000,
+    "StageId": 33600901,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336001000102000000,
+    "StageId": 33601001,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336001100102000000,
+    "StageId": 33601101,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336005000102000000,
+    "StageId": 33605001,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336005000202000000,
+    "StageId": 33605002,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336005000302000000,
+    "StageId": 33605003,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336003
+  },
+  {
+    "Id": 336006000102000000,
+    "StageId": 33606001,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336006000202000000,
+    "StageId": 33606002,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
+    "Id": 336006000302000000,
+    "StageId": 33606003,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1336005
+  },
+  {
     "Id": 370000100302000000,
     "StageId": 37000103,
     "StageDifficultyTypeIndex": 1,

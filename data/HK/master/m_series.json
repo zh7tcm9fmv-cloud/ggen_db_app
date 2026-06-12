@@ -715,6 +715,17 @@
     "FilterNameLanguageId": 200300000000003330
   },
   {
+    "Id": 3360,
+    "WorldId": 0,
+    "NameLanguageId": 200100000000003360,
+    "DescriptionLanguageId": 200200000000003360,
+    "ResourceId": "series_3360",
+    "SortOrder": 15900,
+    "ScheduleId": 2606209901,
+    "ScenarioStageSeriesId": 0,
+    "FilterNameLanguageId": 200300000000003360
+  },
+  {
     "Id": 3390,
     "WorldId": 0,
     "NameLanguageId": 200100000000003390,

@@ -164,6 +164,10 @@
     "value": "Legend Gundam"
   },
   {
+    "id": 110100001336000200,
+    "value": "Stargazer"
+  },
+  {
     "id": 110100001370000100,
     "value": "Gundam Exia"
   },
@@ -370,6 +374,10 @@
   {
     "id": 110200001330005200,
     "value": "A general-purpose ZAFT Mobile Suit developed as the successor to the Providence Gundam.\nBoasting supremely high performance courtesy of the hybrid-nuclear Hyper Deuterion System, it possesses even higher performance than other Second Stage Series suits.\nIt carries forward the Providence Gundam's DRAGOON System, with a more powerful Beam Cannon and the ability to have the two large DRAGOONs form spike-like beam blades to penetrate enemy defenses.\nThe Legend is also installed with a next-generation control system that even pilots lacking finely-honed spatial awareness skills can handle.\nWith defensive capabilities that include the Solidus Fulgor beam shield generators on its hands, the Legend has a staggeringly high level of overall performance."
+  },
+  {
+    "id": 110200001336000200,
+    "value": "A planetary exploration mobile suit belonging to the Deep Space Survey and Development Organization (DSSD).\nDSSD is a joint venture between PLANT, the Earth Alliance, and the neutral nation blocs.\nThe Stargazer Plan aimed to survey orbital regions beyond Mars, and this was a non-combat machine developed as part of that.\nThe ring structure affixed to its back catches solar winds and converts them for propulsion, known as the Voiture Lumiere system, granting it semi-permanent acceleration.\nIt has a self-interactive double-row distributed processing AI unit and micromachinery technology for self-repair that automatically handles all its maintenance, making it a unit designed to be deployed unmanned.\nWhen DSSD's Troya Station came under attack by the Earth Alliance special forces unit Phantom Pain, Selene McGriff and Sol Lyne Lange piloted this unit to fight them.\nIt lacks any dedicated weapons since it was not intended for combat, but when the Voiture Lumiere activates, it is capable of using the ring-shaped beam formed around itself as a blade."
   },
   {
     "id": 110200001370000100,

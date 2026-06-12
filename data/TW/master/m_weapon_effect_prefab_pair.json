@@ -840,6 +840,12 @@
     "DamagedEffectId": "ef_mpd_0015_001_cmnslashhit"
   },
   {
+    "Id": 250016,
+    "WeaponEffectPrefabPairSetId": 250016,
+    "WeaponEffectId": "ef_mpa_0017_008_bigsword",
+    "DamagedEffectId": "ef_mpd_0015_001_cmnslashhit"
+  },
+  {
     "Id": 260001,
     "WeaponEffectPrefabPairSetId": 260001,
     "WeaponEffectId": "ef_mpa_0018_001_blow",
@@ -1882,6 +1888,42 @@
     "WeaponEffectPrefabPairSetId": 290151,
     "WeaponEffectId": "ef_mpa_0023_004_beammusket",
     "DamagedEffectId": "ef_mpd_0002_004_beamcanon_mercury"
+  },
+  {
+    "Id": 290152,
+    "WeaponEffectPrefabPairSetId": 290152,
+    "WeaponEffectId": "ef_mpa_0023_005_beamrifleshorty",
+    "DamagedEffectId": "ef_mpd_0023_001_beamrifleshorty"
+  },
+  {
+    "Id": 290153,
+    "WeaponEffectPrefabPairSetId": 290153,
+    "WeaponEffectId": "ef_mpa_0023_000_twinrailgun",
+    "DamagedEffectId": "ef_mpd_0023_000_twinrailgun"
+  },
+  {
+    "Id": 290154,
+    "WeaponEffectPrefabPairSetId": 290154,
+    "WeaponEffectId": "ef_mpa_0023_000_beamslash_stargazer",
+    "DamagedEffectId": "ef_mpd_0023_000_beamslash_stargazer"
+  },
+  {
+    "Id": 290155,
+    "WeaponEffectPrefabPairSetId": 290155,
+    "WeaponEffectId": "ef_mpa_0023_005_hyperfortisbeam",
+    "DamagedEffectId": "ef_mpd_0023_005_hyperfortisbeam"
+  },
+  {
+    "Id": 290156,
+    "WeaponEffectPrefabPairSetId": 290156,
+    "WeaponEffectId": "ef_mpa_0023_000_fatum",
+    "DamagedEffectId": "ef_mpd_0023_000_fatum"
+  },
+  {
+    "Id": 290157,
+    "WeaponEffectPrefabPairSetId": 290157,
+    "WeaponEffectId": "ef_mpa_0023_000_gatlingform",
+    "DamagedEffectId": "ef_mpd_0023_000_gatlingform"
   },
   {
     "Id": 310001,
@@ -4032,6 +4074,12 @@
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
+    "Id": 900181,
+    "WeaponEffectPrefabPairSetId": 900181,
+    "WeaponEffectId": "ef_mpw_095_01_multilockon_strikenoir",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
     "Id": 900182,
     "WeaponEffectPrefabPairSetId": 900182,
     "WeaponEffectId": "ef_mpw_061_00_tackle",
@@ -4059,6 +4107,24 @@
     "Id": 900186,
     "WeaponEffectPrefabPairSetId": 900186,
     "WeaponEffectId": "ef_mpw_004_05_threelinemegabeam_nightingale",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900187,
+    "WeaponEffectPrefabPairSetId": 900187,
+    "WeaponEffectId": "ef_mpw_090_08_sweepsword",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900188,
+    "WeaponEffectPrefabPairSetId": 900188,
+    "WeaponEffectId": "ef_mpw_004_00_threelinemegabeam_lohengrin",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900189,
+    "WeaponEffectPrefabPairSetId": 900189,
+    "WeaponEffectId": "ef_mpw_096_00_flashmine",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -8020,6 +8086,156 @@
     "WeaponEffectPrefabPairSetId": 80070,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007101,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_infinitejustice_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007102,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_infinitejustice_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007103,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_infinitejustice_ex3",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007104,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_beamshield_infinitejustice",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007105,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_shieldhit_infinitejustice",
+    "DamagedEffectId": "ef_mpd_1000_000_shieldhit_infinitejustice"
+  },
+  {
+    "Id": 8007106,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_vernier_infinitejustice",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007107,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberslash_infinitejustice_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaberslash_infinitejustice_ex1"
+  },
+  {
+    "Id": 8007108,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberslash_infinitejustice_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaberslash_infinitejustice_ex2"
+  },
+  {
+    "Id": 8007109,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_wireattack",
+    "DamagedEffectId": "ef_mpd_1000_000_wireattack"
+  },
+  {
+    "Id": 8007110,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_infinitejustice_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_infinitejustice"
+  },
+  {
+    "Id": 8007111,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_infinitejustice_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_infinitejustice"
+  },
+  {
+    "Id": 8007112,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_infinitejustice_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_infinitejustice_ex1"
+  },
+  {
+    "Id": 8007113,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_infinitejustice_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_infinitejustice_ex2"
+  },
+  {
+    "Id": 8007114,
+    "WeaponEffectPrefabPairSetId": 80071,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007201,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_bulcan_strikenoir",
+    "DamagedEffectId": "ef_mpd_1000_000_bulcan_strikenoir"
+  },
+  {
+    "Id": 8007202,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_rotation_strikenoir",
+    "DamagedEffectId": "ef_mpd_1000_000_rotation_strikenoir"
+  },
+  {
+    "Id": 8007203,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_strikenoir_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007204,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_strikenoir_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007205,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_strikenoir_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_strikenoir_ex1"
+  },
+  {
+    "Id": 8007206,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_strikenoir_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_strikenoir_ex2"
+  },
+  {
+    "Id": 8007207,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_strikenoir_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_strikenoir_ex1"
+  },
+  {
+    "Id": 8007208,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_strikenoir_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_strikenoir_ex2"
+  },
+  {
+    "Id": 8007209,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_strikenoir_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_strikenoir_ex1"
+  },
+  {
+    "Id": 8007210,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_strikenoir_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_strikenoir_ex2"
+  },
+  {
+    "Id": 8007211,
+    "WeaponEffectPrefabPairSetId": 80072,
+    "WeaponEffectId": "ef_mpa_1000_000_blow_strikenoir",
+    "DamagedEffectId": "ef_mpd_1000_000_blow_strikenoir"
   },
   {
     "Id": 99999990,

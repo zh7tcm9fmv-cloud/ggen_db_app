@@ -469,7 +469,7 @@
   },
   {
     "id": 110200001031002300,
-    "value": "A variant of the MSM-04 Acguy, designated Mobility Type. In standard platoon formation, it takes the vanguard position and is responsible for scouting ahead and escorting allies.\nAs it forgoes large optional equipment, this variant remains closest to the standard specifications of the MSM-04, arguably making the preservation of the original mobility its distinguishing feature.\nIts optional equipment prioritizes ally support, and both Units A and B carry shields.\nUnit A equips a tinbe shield, repurposed from a section of MSM-03 Gogg armor; Unit B equips a cross shield, named according to its shape.\nUnit A's loadout also includes a heat blade, repurposed from a heat hawk blade, as a close-combat weapon and a periscope mission pack on the back.\nUnit B, meanwhile, is equipped with a mission pack for spare magazines on the back.\nEssentially, both Units A and B of the Mobility Type are designed to fulfill a support role within the platoon."
+    "value": "A variant of the MSM-04 Acguy, designated Mobility Type. In standard platoon formation, it takes the vanguard position and is responsible for scouting ahead and escorting allies.\nAs it forgoes large optional equipment, this variant remains closest to the standard specifications of the MSM-04, arguably making the preservation of the original mobility its distinguishing feature.\nIts optional equipment prioritizes ally support, and both Units A and B carry shields.\nUnit A equips a tinbe shield, repurposed from a section of MSM-03 Gogg head armor; Unit B equips a cross shield, named according to its shape.\nUnit A's loadout also includes a heat blade, repurposed from a heat hawk blade, as a close-combat weapon and a periscope mission pack on the back.\nUnit B, meanwhile, is equipped with a mission pack for spare magazines on the back.\nEssentially, both Units A and B of the Mobility Type are designed to fulfill a support role within the platoon."
   },
   {
     "id": 110200001031002400,
@@ -781,7 +781,7 @@
   },
   {
     "id": 110200001080003800,
-    "value": "A huge transformable mobile armor for Newtypes developed by the Murasame Laboratory, the Japanese branch of the Federation Forces' Newtype Laboratories.\nDesigned to capture and defend bases, this formidable machine boasts wide-ranging firepower and is protected by I-Field generators.\nIts main form is the so-called mobile fortress, which is capable of flight thanks to the Minovsky craft system.\nVulnerable points such as joints are covered in armor, giving it robust defenses worthy of the fortress description.\nIn MS form, it can demonstrate its maximum firepower, and can use its bare hands to fight other mobile suits in close combat situations.\nThis makes it a useful form for anti-MS battle.\nIts most distinctive feature is the psycommu system used to control the machine and its various weapons, and registered Newtype pilots can even use the system to control the machine from the outside.\nHowever, this system also forces the pilot to fight, placing a huge burden on their psyche."
+    "value": "A huge transformable mobile armor for Newtypes developed by the Murasame Laboratory, the Japanese branch of the Federation Forces' Newtype Laboratories.\nDesigned to capture and defend bases, this formidable machine boasts wide-ranging firepower and is protected by I-Field generators.\nIts main form is the so-called mobile fortress, which is capable of flight thanks to the Minovsky craft system.\nVulnerable points such as joints are covered in armor, giving it robust defenses worthy of the fortress title.\nIn MS form, it can demonstrate its maximum firepower, and can use its bare hands to fight other mobile suits in close combat situations.\nThis makes it a useful form for anti-MS battle.\nIts most distinctive feature is the psycommu system used to control the machine and its various weapons, and registered Newtype pilots can even use the system to control the machine from the outside.\nHowever, this system also forces the pilot to fight, placing a huge burden on their psyche."
   },
   {
     "id": 110200001080004000,
@@ -2352,12 +2352,20 @@
     "value": "A ZAFT prototype transforming Mobile Suit.\nThis was developed based on the Aegis Gundam that ZAFT stole from the Earth Alliance Forces.\nIt has three modes: Mobile Suit form, assault Mobile Armor form, and Mobile Armor cruise mode.\nIts backpack is its main body.\nWhen Mobile Suit parts get destroyed in battle, it is capable of swapping in new parts and regenerating ad infinitum, allowing it to stay in the fight.\nBecause this machine was designed to fulfill nearly the same purpose as the METEORS, it is capable of attaching itself to any unit with connectors, Alliance or ZAFT, and taking control of the machine.\nIt is also equipped with a laser-acceleration system called the Lightcraft Propulsion that allows it to receive lasers from GENESIS Alpha that ignite its propellant and accelerate it drastically."
   },
   {
+    "id": 110200001306000300,
+    "value": "One of the Gundam Astray Red Frame's upgraded forms.\nAfter getting damaged in a fight against the Regenerate Gundam, the Red Frame was equipped with a set of high- output power cylinder-loaded arms developed by Jean Carry.\nThis enabled it to independently wield the giant katana known as the 150 Gerbera Straight.\nIt has a Full Power mode where the shoulder armor opens up and all the cylinders are freed.\nThis unit challenged the Regenerate again at GENESIS Alpha, where it fought alongside the Serpent Tail mercenary band led by Gai Murakumo, and scored an overwhelming victory."
+  },
+  {
     "id": 110200001307000100,
     "value": "The Gundam Astray Blue Frame, equipped with the Full Weapon option set.\nThis is a form designed for fighting long engagements against large numbers of enemies.\nIt primarily uses solid-ammo weaponry like the M68 Cattus 500mm Recoilless Rifle and multiple sets of Missile Pods.\nThis allows it to make maximum use of energy-intensive Beam Weapons."
   },
   {
     "id": 110200001307000200,
     "value": "The Gundam Astray Blue Frame, equipped with the Scale System option set.\nEquipped all over its form with scale motors, a propulsion system that uses microvibrations, giving it impressive mobility in water.\nIts head is equipped with an underwater sensor, and its main weapon is the Super Cavitating Torpedoes."
+  },
+  {
+    "id": 110200001307000300,
+    "value": "The Gundam Astray Blue Frame Second L, equipped with the Lohengrin Launcher option set.\nThis is its form when equipped with the Lohengrin Launcher, a miniaturized version of the Positron Cannons fitted on warships like Archangel-class ships.\nMost of the time, it keeps the barrel split into two halves resting at its sides, and it combines the two halves when firing.\nThe launcher is incredibly powerful, but in order to cut back on its immense energy consumption, firing it requires the activation of a nuclear engine.\nHowever, due to the unit's lack of a Neutron Jammer Canceler, there are very few situations in which it is actually fieldable."
   },
   {
     "id": 110200001307000400,
@@ -2513,7 +2521,7 @@
   },
   {
     "id": 110200001330002800,
-    "value": "A ZGMF-X series Mobile Suit developed by ZAFT, and the successor to the Justice Gundam.\nThis suit is capable of extremely high output due to its nuclear-powered hybrid Hyper Deuterion System, and it reuses Second Stage Series technology based on the Justice Gundam for an overall improvement in design.\nFor the lifter unit on the back, this unit uses the Fatum-01, an improved version of the Fatum-00, that utilizes variable wings and includes Beam Blades to increase both attack power and maneuverability.\nThe armaments include a Griffon Beam Blade mounted on each leg, and the Beam Carry Shield compound weapon with two types of melee weapons.\nAll these enhance its close-quarters combat capabilities.\nThe suit was originally developed by ZAFT, but its design data was stolen by the secret Clyne Faction organization Terminal.\nIt was adjusted based on the assumption that Athrun Zala would pilot it, based on Kira Yamato's suggestions during its development."
+    "value": "A ZGMF-X series mobile suit developed by ZAFT, and the successor to the Justice Gundam.\nThis suit is capable of extremely high output due to its nuclear-powered hybrid Hyper Deuterion System, and it reuses Second Stage Series technology based on the Justice Gundam for an overall improvement in design.\nFor the lifter unit on the back, this unit uses the Fatum-01, an improved version of the Fatum-00 that utilizes variable wings and includes Beam Blades to increase both attack power and maneuverability.\nThe armaments include a Griffon Beam Blade mounted on each leg, and the Carrier Beam Shield compound weapon with two types of melee weapons.\nAll these enhance its close-quarters combat capabilities.\nThe suit was originally developed by ZAFT, but its design data was stolen by the secret Clyne Faction organization Terminal.\nIt was adjusted with assumption that Athrun Zala would pilot it, based on Kira Yamato's suggestions during its development."
   },
   {
     "id": 110200001330003000,
@@ -2618,6 +2626,38 @@
   {
     "id": 110200001333000100,
     "value": "One of the Impulse Gundam's parts-swapped configurations.\nIt uses the Destiny Silhouette, an all-purpose armament developed to be able to handle any situation in a battle.\nParts of the suit itself also have added improvements.\nIt has all the features of the Force, Sword, and Blast Silhouettes combined, along with a Beam Shield generator on the back of its hand for defense, giving it incredible offensive and defensive capabilities.\nHowever, its heavy equipment is taxing on the machine.\nIt uses Beam Weapons like the Telescopic Barrel Extension Type Beam Turret, which requires multiple deuterium recharges in a single battle.\nDue to this, development and production were suspended after producing just four prototypes.\nInstead, its name and concepts were carried over to the newly-developed Destiny Gundams."
+  },
+  {
+    "id": 110200001336000100,
+    "value": "A replica Strike Gundam belonging to the Earth Alliance special forces unit Phantom Pain.\nIt is based on the Actaeon Project, the remade plans for the first generation GAT-X series.\nIt comes equipped with the Noir Striker, a unit developed for the Strike E, based on the Strike Gundam.\nIt uses Variable Phase Shift Armor and an improved power unit called a Power Extender, improving its defenses and extending its uptime.\nIt also has better handling due to improvements in the OS and interface.\nIts superior rapid-fire capabilities and handling lend themselves well to the Beam Rifle Shorty that serves just as well up close as from afar.\nThe Fragarach 3 Beam Blade, a large sword that doubles as its wings, give it considerable improvements in melee combat as well."
+  },
+  {
+    "id": 110200001336000200,
+    "value": "A planetary exploration mobile suit belonging to the Deep Space Survey and Development Organization (DSSD).\nDSSD is a joint venture between PLANT, the Earth Alliance, and the neutral nation blocs.\nThe Stargazer Plan aimed to survey orbital regions beyond Mars, and this was a non-combat machine developed as part of that.\nThe ring structure affixed to its back catches solar winds and converts them for propulsion, known as the Voiture Lumiere system, granting it semi-permanent acceleration.\nIt has a self-interactive double-row distributed processing AI unit and micromachinery technology for self-repair that automatically handles all its maintenance, making it a unit designed to be deployed unmanned.\nWhen DSSD's Troya Station came under attack by the Earth Alliance special forces unit Phantom Pain, Selene McGriff and Sol Lyne Lange piloted this unit to fight them.\nIt lacks any dedicated weapons since it was not intended for combat, but when the Voiture Lumiere activates, it is capable of using the ring-shaped beam formed around itself as a blade."
+  },
+  {
+    "id": 110200001336000300,
+    "value": "A replicated Duel Gundam belonging to the Earth Alliance special forces unit Phantom Pain.\nIt is based on the Actaeon Project, the remade plans for the first generation GAT-X series.\nIt is a completely overhauled version of the Duel Gundam Assault Shroud.\nIt uses a redesigned version of the Fortestra, the Alliance's strengthened armor based on data from the ZAFT-made Assault Shroud armor.\nThe Fortestra itself is made from Phase Shift Armor materials, giving it greatly improved defenses.\nIt has throwing weapons stored in its shoulders called Stiletto Rocket-Propelled Anti-Armor Penetrators, and a retractable Beam Gun with easy handling that make it highly specialized for close-quarters engagements."
+  },
+  {
+    "id": 110200001336000400,
+    "value": "A replica Buster Gundam belonging to the Earth Alliance special forces unit Phantom Pain.\nIt is based on the Actaeon Project, the remade plans for the first generation GAT-X series.\nIt is a completely overhauled version of the Buster Gundam.\nIts head has high-definition sensors and various cameras that work in tandem with an advanced fire control system, giving it drastically improved precision in gunfights.\nIts 350mm Gun Launcher and 94mm High-Energy Beam Cannon have been moved to its shoulders, and it now wears a Composite Bayonet-Equipped Beam Rifle at its waist, allowing it to handle close-range engagements when needed instead of focusing solely on long-range bombardments."
+  },
+  {
+    "id": 110200001336000500,
+    "value": "An improved GINN used by anti-Natural militants.\nIt has the same performance as a regular GINN, though it has floodlights affixed all over for night combat.\nFor armaments, it has a Cattus 500mm Recoilless Cannon, a 76mm Heavy Assault Machine Gun, as well as a D-Type Missile Pod in its chest.\nIn the direct aftermath of \"Break the World,\" these units launched an indiscriminate attack on the South American city of Fortaleza and destroyed it."
+  },
+  {
+    "id": 110200001336000600,
+    "value": "A multipurpose mobile suit belonging to the Deep Space Survey and Development Organization (DSSD).\nThis is a unit developed with assistance from Orb technicians and the Junk Guild, based on an Orb forces Astray-type suit.\nIt has a high-precision sensor in its head protected by a special visor, and an electromagnetic propulsion system that is the precursor to the Voiture Lumiere on its back.\nIt uses a small beam gun with solid handling, and also wields a repurposed industrial beam torch.\nDSSD employs these in space for labor and self-defense.\nWhen the special forces Phantom Pain's Joaquin Team attacked Troya Station, these were used to intercept them."
+  },
+  {
+    "id": 110200001336000700,
+    "value": "A derivative of the 105 Dagger, the Earth Alliance's mass production mobile suit.\nIt is the primary suit of the special forces unit Phantom Pain, who took a regular 105 Dagger and gave it minor changes and a black-and-grey custom color scheme.\nIt uses an improved Aile Striker pack in its standard loadout, enabling flight in atmosphere and making it capable of handing many different combat situations.\nIt does have additional Striker Packs for even more versatility.\nIn addition to a beam rifle that can also fire solid ammo and a beam saber, it has anti-personnel suppression autocannons loaded on its feet."
+  },
+  {
+    "id": 110200001336000800,
+    "value": "A derivative of the BuCUE, a quadrupedal ZAFT ground mobile suit.\nThis is an improved version of the BuCUE that affixes new armaments to the rear turret and employs the Wizard System.\nThe unit uses the Kerberos Wizard, developed for quadrupedal suit use, and its heads utilize Beam Fangs designed to work with this system.\nIt has improved mobility due to additional thrusters, and the beam cannons and Beam Fangs affixed to its three heads make it a formidable opponent in close-range combat.\nMultiple units were fielded in western Eurasia, and they took part in an attack on the landship Bonaparte while it was transporting the Destroy Gundam."
   },
   {
     "id": 110200001339000150,

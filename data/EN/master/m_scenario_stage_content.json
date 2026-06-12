@@ -5190,6 +5190,116 @@
     "StageId": 33002501
   },
   {
+    "ScenarioStageId": 33600102,
+    "SortOrder": 1,
+    "StageId": 33600101
+  },
+  {
+    "ScenarioStageId": 33600102,
+    "SortOrder": 2,
+    "StageId": 33600102
+  },
+  {
+    "ScenarioStageId": 33600102,
+    "SortOrder": 3,
+    "StageId": 33600103
+  },
+  {
+    "ScenarioStageId": 33600202,
+    "SortOrder": 1,
+    "StageId": 33600201
+  },
+  {
+    "ScenarioStageId": 33600202,
+    "SortOrder": 2,
+    "StageId": 33600202
+  },
+  {
+    "ScenarioStageId": 33600202,
+    "SortOrder": 3,
+    "StageId": 33600203
+  },
+  {
+    "ScenarioStageId": 33600301,
+    "SortOrder": 1,
+    "StageId": 33600301
+  },
+  {
+    "ScenarioStageId": 33600402,
+    "SortOrder": 1,
+    "StageId": 33600401
+  },
+  {
+    "ScenarioStageId": 33600402,
+    "SortOrder": 2,
+    "StageId": 33600402
+  },
+  {
+    "ScenarioStageId": 33600402,
+    "SortOrder": 3,
+    "StageId": 33600403
+  },
+  {
+    "ScenarioStageId": 33600402,
+    "SortOrder": 4,
+    "StageId": 33600404
+  },
+  {
+    "ScenarioStageId": 33600502,
+    "SortOrder": 1,
+    "StageId": 33600501
+  },
+  {
+    "ScenarioStageId": 33600502,
+    "SortOrder": 2,
+    "StageId": 33600502
+  },
+  {
+    "ScenarioStageId": 33600601,
+    "SortOrder": 1,
+    "StageId": 33600601
+  },
+  {
+    "ScenarioStageId": 33600702,
+    "SortOrder": 1,
+    "StageId": 33600701
+  },
+  {
+    "ScenarioStageId": 33600702,
+    "SortOrder": 2,
+    "StageId": 33600702
+  },
+  {
+    "ScenarioStageId": 33600702,
+    "SortOrder": 3,
+    "StageId": 33600703
+  },
+  {
+    "ScenarioStageId": 33600702,
+    "SortOrder": 4,
+    "StageId": 33600704
+  },
+  {
+    "ScenarioStageId": 33600801,
+    "SortOrder": 1,
+    "StageId": 33600801
+  },
+  {
+    "ScenarioStageId": 33600901,
+    "SortOrder": 1,
+    "StageId": 33600901
+  },
+  {
+    "ScenarioStageId": 33601001,
+    "SortOrder": 1,
+    "StageId": 33601001
+  },
+  {
+    "ScenarioStageId": 33601101,
+    "SortOrder": 1,
+    "StageId": 33601101
+  },
+  {
     "ScenarioStageId": 37000103,
     "SortOrder": 1,
     "StageId": 37000101

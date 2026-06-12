@@ -2817,7 +2817,7 @@
   },
   {
     "id": 150100171300002000,
-    "value": "R BuCuE 450mm 2-Barrel Railgun Limit Break Material"
+    "value": "R BuCUE 450mm 2-Barrel Railgun Limit Break Material"
   },
   {
     "id": 150100171300002100,
@@ -2953,7 +2953,7 @@
   },
   {
     "id": 150100171300004700,
-    "value": "R BuCuE 400mm 13-Shot Missile Pod Limit Break Material"
+    "value": "R BuCUE 400mm 13-Shot Missile Pod Limit Break Material"
   },
   {
     "id": 150100171304000110,
@@ -3056,12 +3056,20 @@
     "value": "SSR Regenerate Gundam Limit Break Material"
   },
   {
+    "id": 150100171306000310,
+    "value": "SSR Gundam Astray Red Frame \"Powered Red\" Limit Break Material"
+  },
+  {
     "id": 150100171307000110,
     "value": "SR Gundam Astray Blue Frame Full Weapon Limit Break Material"
   },
   {
     "id": 150100171307000210,
     "value": "SR Gundam Astray Blue Frame Scale System Limit Break Material"
+  },
+  {
+    "id": 150100171307000310,
+    "value": "SSR Gundam Astray Blue Frame Second L Lohengrin Launcher Limit Break Material"
   },
   {
     "id": 150100171307000410,
@@ -3228,6 +3236,10 @@
     "value": "SSR Infinite Justice Gundam Limit Break Material"
   },
   {
+    "id": 150100171330002850,
+    "value": "UR Infinite Justice Gundam (EX) Limit Break Material"
+  },
+  {
     "id": 150100171330003000,
     "value": "R Gunner ZAKU Warrior Limit Break Material"
   },
@@ -3330,6 +3342,42 @@
   {
     "id": 150100171333000100,
     "value": "SSR Destiny Impulse Limit Break Material"
+  },
+  {
+    "id": 150100171336000100,
+    "value": "SSR Strike Noir Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171336000150,
+    "value": "UR Strike Noir Gundam (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171336000200,
+    "value": "SSR Stargazer Limit Break Material"
+  },
+  {
+    "id": 150100171336000300,
+    "value": "SR Blu Duel Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171336000400,
+    "value": "SR Verde Buster Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171336000500,
+    "value": "N GINN Insurgent Type Limit Break Material"
+  },
+  {
+    "id": 150100171336000600,
+    "value": "SR Civilian Astray DSSD Custom Limit Break Material"
+  },
+  {
+    "id": 150100171336000700,
+    "value": "R 105 Slaughter Dagger Limit Break Material"
+  },
+  {
+    "id": 150100171336000800,
+    "value": "SR Kerberos BuCUE Hound Limit Break Material"
   },
   {
     "id": 150100171339000150,
@@ -4840,6 +4888,10 @@
     "value": "Development Material (SEED DESTINY)"
   },
   {
+    "id": 150100180000003360,
+    "value": "Development Material (Stargazer)"
+  },
+  {
     "id": 150100180000003700,
     "value": "Development Material (00)"
   },
@@ -5248,6 +5300,14 @@
     "value": "Infinite Justice Gundam (METEOR) Technical Journal"
   },
   {
+    "id": 150100181336000100,
+    "value": "Strike Noir Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181336000200,
+    "value": "Stargazer's Technical Journal"
+  },
+  {
     "id": 150100181370001900,
     "value": "GN Arms Type-E's Technical Journal"
   },
@@ -5476,6 +5536,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (5/31/2026 JST)"
   },
   {
+    "id": 150100191100000012,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (6/12/2026 JST)"
+  },
+  {
     "id": 150100191200000001,
     "value": "SR or Higher Guaranteed Unit Assembly Ticket"
   },
@@ -5674,6 +5738,14 @@
   {
     "id": 150100222000130002,
     "value": "Unit Assembly Medal(CROSS DIMENSION 0079)"
+  },
+  {
+    "id": 150100222000140001,
+    "value": "Boss Challenge Ticket(Stargazer)"
+  },
+  {
+    "id": 150100222000140002,
+    "value": "Unit Assembly Medal(Stargazer)"
   },
   {
     "id": 150100222100010001,
@@ -8673,7 +8745,7 @@
   },
   {
     "id": 150200171300002000,
-    "value": "An item used to perform Limit Break on R BuCuE 450mm 2-Barrel Railgun"
+    "value": "An item used to perform Limit Break on R BuCUE 450mm 2-Barrel Railgun"
   },
   {
     "id": 150200171300002100,
@@ -8809,7 +8881,7 @@
   },
   {
     "id": 150200171300004700,
-    "value": "An item used to perform Limit Break on R BuCuE 400mm 13-Shot Missile Pod"
+    "value": "An item used to perform Limit Break on R BuCUE 400mm 13-Shot Missile Pod"
   },
   {
     "id": 150200171304000110,
@@ -8912,12 +8984,20 @@
     "value": "An item used to perform Limit Break on SSR Regenerate Gundam"
   },
   {
+    "id": 150200171306000310,
+    "value": "An item used to perform Limit Break on SSR Gundam Astray Red Frame \"Powered Red\""
+  },
+  {
     "id": 150200171307000110,
     "value": "An item used to perform Limit Break on SR Gundam Astray Blue Frame Full Weapon"
   },
   {
     "id": 150200171307000210,
     "value": "An item used to perform Limit Break on SR Gundam Astray Blue Frame Scale System"
+  },
+  {
+    "id": 150200171307000310,
+    "value": "An item used to perform Limit Break on SSR Gundam Astray Blue Frame Second L Lohengrin Launcher"
   },
   {
     "id": 150200171307000410,
@@ -9084,6 +9164,10 @@
     "value": "An item used to perform Limit Break on SSR Infinite Justice Gundam"
   },
   {
+    "id": 150200171330002850,
+    "value": "An item used to perform Limit Break on UR Infinite Justice Gundam (EX)"
+  },
+  {
     "id": 150200171330003000,
     "value": "An item used to perform Limit Break on R Gunner ZAKU Warrior"
   },
@@ -9186,6 +9270,42 @@
   {
     "id": 150200171333000100,
     "value": "An item used to perform Limit Break on SSR Destiny Impulse"
+  },
+  {
+    "id": 150200171336000100,
+    "value": "An item used to perform Limit Break on SSR Strike Noir Gundam"
+  },
+  {
+    "id": 150200171336000150,
+    "value": "An item used to perform Limit Break on UR Strike Noir Gundam (EX)"
+  },
+  {
+    "id": 150200171336000200,
+    "value": "An item used to perform Limit Break on SSR Stargazer"
+  },
+  {
+    "id": 150200171336000300,
+    "value": "An item used to perform Limit Break on SR Blu Duel Gundam"
+  },
+  {
+    "id": 150200171336000400,
+    "value": "An item used to perform Limit Break on SR Verde Buster Gundam"
+  },
+  {
+    "id": 150200171336000500,
+    "value": "An item used to perform Limit Break on N GINN Insurgent Type"
+  },
+  {
+    "id": 150200171336000600,
+    "value": "An item used to perform Limit Break on SR Civilian Astray DSSD Custom"
+  },
+  {
+    "id": 150200171336000700,
+    "value": "An item used to perform Limit Break on R 105 Slaughter Dagger"
+  },
+  {
+    "id": 150200171336000800,
+    "value": "An item used to perform Limit Break on SR Kerberos BuCUE Hound"
   },
   {
     "id": 150200171339000150,
@@ -10696,6 +10816,10 @@
     "value": "Material required for developing units that appear in the Development Diagram of [Mobile Suit Gundam SEED Destiny]."
   },
   {
+    "id": 150200180000003360,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam SEED C.E. 73 -Stargazer-] diagram."
+  },
+  {
     "id": 150200180000003700,
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam 00] diagram."
   },
@@ -11104,6 +11228,14 @@
     "value": "Material required to develop Infinite Justice Gundam (METEOR) appearing in the Development Diagram."
   },
   {
+    "id": 150200181336000100,
+    "value": "Material required to develop Strike Noir Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181336000200,
+    "value": "Material required to develop Stargazer appearing in the Development Diagram."
+  },
+  {
     "id": 150200181370001900,
     "value": "Material required to develop GN Arms Type-E appearing in the Development Diagram."
   },
@@ -11332,6 +11464,10 @@
     "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Nightingale (EX) and Nu Gundam (Double Fin Funnels) (EX)."
   },
   {
+    "id": 150200191100000012,
+    "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Infinite Justice Gundam (EX) and Strike Noir Gundam (EX)."
+  },
+  {
     "id": 150200191200000001,
     "value": "A ticket that lets you use the SR or Higher Guaranteed Unit Assembly."
   },
@@ -11530,6 +11666,14 @@
   {
     "id": 150200222000130002,
     "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam: Cross Dimension 0079\".\nCan be used in the Medal Unit Assembly."
+  },
+  {
+    "id": 150200222000140001,
+    "value": "A ticket needed to challenge the boss in story event \"Mobile Suit Gundam SEED C.E. 73 -Stargazer-\"."
+  },
+  {
+    "id": 150200222000140002,
+    "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam SEED C.E. 73 -Stargazer-\".\nCan be used in the Medal Unit Assembly."
   },
   {
     "id": 150200222100010001,

@@ -1,0 +1,4520 @@
+[
+  {
+    "Id": 1001000100,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001000200,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001000300,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001000300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001000500,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001200,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001300,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001400,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001500,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001700,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001800,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001900,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001001900,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002000,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002200,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002500,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002600,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002800,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001002900,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1001003000,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1007000100,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1007000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1007000600,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1008000300,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000200,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000500,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000600,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013000900,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013001100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013001200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1013001400,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000100,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000500,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000700,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000800,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017000900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017001000,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017001100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1017001200,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000100,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000200,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000400,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000600,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1022000700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000200,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000400,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000500,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000700,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000800,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031000900,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001400,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001500,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001600,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001700,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031001800,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002300,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002400,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002500,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002600,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002700,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002800,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031002900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031003000,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031003100,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031003200,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031003300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1031003400,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000300,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000400,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000700,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000800,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060000900,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001000,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001200,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001300,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001500,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001600,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060001800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1060002300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000400,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000600,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000700,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080000900,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001000,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001100,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001300,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001400,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001500,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001600,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001800,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080001900,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002000,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002100,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002300,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080002800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003100,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003300,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003400,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080003800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080004000,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080004200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1080004300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1083000100,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1083000400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1083000400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1083000600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000500,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000700,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095000900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001000,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001100,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001700,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095001900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002000,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002200,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002300,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002800,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095002800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003600,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003700,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095003700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095004000,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095004200,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095004300,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1095004500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1098000400,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1098000700,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1098000800,
+    "UnitBodyTypeIndex": 450,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1098000900,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1098001000,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000100,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000500,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000600,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110000900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1110001000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000100,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000200,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114001000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1114001000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1115000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1115000100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1115000200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000200,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125000900,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001100,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001200,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001500,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125001900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125002900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125003900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125004900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125005300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125005500,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125006000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1125006000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133000100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133000500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133000700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133000900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133001100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133001500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1133001500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000400,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000500,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000700,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001000,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1144001900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150000100,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150000200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150000500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150000600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1150001000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200000300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200000500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200001900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200002900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003800,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200003900,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200004700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200004800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200004900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200005000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200005100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200005200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1200005300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000600,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000800,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210001900,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002100,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002200,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002300,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002600,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002700,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210002900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210003300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210003400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210003500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210003500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1210003600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211000300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211000500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211000800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211001000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211001100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1211001100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000400,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000600,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1219000700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000600,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230001700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230002800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003000,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230003900,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004000,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004300,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230004800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230005000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230005100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230005200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1230005300,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000500,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000800,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300000900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001700,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300001900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002000,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002100,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002200,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002300,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002400,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002500,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002600,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002600,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002900,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300002900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003100,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003200,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003300,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003400,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003500,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003600,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300003900,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004600,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004700,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1300004700,
+    "UnitBodyTypeIndex": 90000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000200,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000700,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000800,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304000900,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304001000,
+    "UnitBodyTypeIndex": 28000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1304001100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000100,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000200,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000500,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000700,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1305000900,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1308000100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1308000300,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1308000400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1308000600,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1310000100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1310000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1310000200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1310000300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1310000400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000800,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330000900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330001900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002200,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330002800,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330003900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004500,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004600,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004800,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330004800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330005100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330005100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330005200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330005500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330006700,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1330006900,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000100,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000200,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000300,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000400,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000600,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000700,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1336000800,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370000300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370000500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370000900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370001900,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002600,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370002900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370003000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370003100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370003200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370003400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370003800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004800,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370004900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005700,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370005900,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370006100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370006200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370006400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370006600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370007000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370007200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370007800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370007900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370007900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370008900,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009100,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370009900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370010800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370011000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1370011100,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1379000300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1379001900,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400000100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400000200,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400000300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400000500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400001500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400001600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400001800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400001900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002100,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002400,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002600,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400002900,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400003600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004000,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004300,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004700,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400004800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400006400,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400006700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400006700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1400007400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1408000500,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1409000200,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1409000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000300,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430000900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001000,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430001900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002100,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002500,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002600,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002800,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430002900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003200,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003400,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003600,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003800,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430003900,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004000,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004000,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004200,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004300,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004400,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004700,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430004800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430005100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430005100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430005200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430005500,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430005800,
+    "UnitBodyTypeIndex": 400000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006600,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006800,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430006900,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430007200,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430007700,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1430007800,
+    "UnitBodyTypeIndex": 600000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000100,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000200,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000300,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000400,
+    "UnitBodyTypeIndex": 1100,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000500,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000600,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000800,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431000900,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431001100,
+    "UnitBodyTypeIndex": 7500,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431001200,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431001400,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431001500,
+    "UnitBodyTypeIndex": 15000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1431001600,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1500000100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1500000200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1500000300,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1500000400,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000100,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000400,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000500,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000600,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000700,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000700,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000800,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000800,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501000900,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001000,
+    "UnitBodyTypeIndex": 150000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001100,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001200,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001300,
+    "UnitBodyTypeIndex": 225000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001300,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001400,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001600,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001800,
+    "UnitBodyTypeIndex": 300000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501001900,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501002000,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501002400,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501002500,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1501003400,
+    "UnitBodyTypeIndex": 500000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1763000200,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1850001500,
+    "UnitBodyTypeIndex": 3600,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 1850001800,
+    "UnitBodyTypeIndex": 50000,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  }
+]

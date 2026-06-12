@@ -228,6 +228,14 @@
     "value": "HP Restoration / EN Restoration"
   },
   {
+    "id": 160400001330000450,
+    "value": "EN Restoration"
+  },
+  {
+    "id": 160400001336000150,
+    "value": "HP Restoration"
+  },
+  {
     "id": 160400001370000150,
     "value": "HP Restoration"
   },
@@ -544,6 +552,14 @@
     "value": "Allies in range:\nRestore HP by 20%\nRestore EN by 25%"
   },
   {
+    "id": 160500001330000450,
+    "value": "Allies in range:\nRestore EN by 50%"
+  },
+  {
+    "id": 160500001336000150,
+    "value": "Allies in range:\nRestore HP by 35%"
+  },
+  {
     "id": 160500001370000150,
     "value": "Allies in range:\nRestore HP by 40%"
   },
@@ -850,6 +866,10 @@
   {
     "id": 160900001330000250,
     "value": "This is the moment of truth! I hope you're ready!"
+  },
+  {
+    "id": 160900001330000450,
+    "value": "This is wrong! We can't keep killing each other!"
   },
   {
     "id": 160900001370000150,

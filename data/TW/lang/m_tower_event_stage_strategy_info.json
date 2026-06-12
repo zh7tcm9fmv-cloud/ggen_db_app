@@ -17,7 +17,7 @@
   },
   {
     "id": 290200907001040101,
-    "value": "亞贊·蓋伯、丹尼搭乘的單位<material=MaterialName>攻擊力受中立單位的範圍效果影響而提升。</material>"
+    "value": "亞贊‧蓋伯、丹尼搭乘的單位<material=MaterialName>攻擊力受中立單位的範圍效果影響而提升。</material>"
   },
   {
     "id": 290200907001040201,
@@ -45,7 +45,7 @@
   },
   {
     "id": 290200907001060203,
-    "value": "格雷茲·艾因為<material=MaterialName>提升騎兵型搜魔鋼彈攻擊力 </material>的單位。"
+    "value": "格雷茲‧艾因為<material=MaterialName>提升騎兵型搜魔鋼彈攻擊力 </material>的單位。"
   },
   {
     "id": 290200907001060204,
@@ -53,15 +53,15 @@
   },
   {
     "id": 290200907001070101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[強尼·萊汀]、[德茲爾·薩比]</material>。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[強尼‧萊汀]、[德茲爾‧薩比]</material>。"
   },
   {
     "id": 290200907001070201,
-    "value": "薩克Ⅱ（真·松永專用）、傑爾古格 (阿納貝爾·卡多專用)為<material=MaterialName>可支援攻擊／支援反擊</material>的單位。\n\n面對會支援攻擊的單位，從其射程外攻擊就不會觸發支援攻擊。"
+    "value": "薩克Ⅱ（真‧松永專用）、傑爾古格 (阿納貝爾‧卡多專用)為<material=MaterialName>可支援攻擊／支援反擊</material>的單位。\n\n面對會支援攻擊的單位，從其射程外攻擊就不會觸發支援攻擊。"
   },
   {
     "id": 290200907001070202,
-    "value": "薩克Ⅱ改為<material=MaterialName>提升高機動型薩克Ⅱ（強尼·萊汀專用）、薩克Ⅱ (德茲爾·薩比專用機)防禦力</material>的單位，每回合會作為援軍大量出現。"
+    "value": "薩克Ⅱ改為<material=MaterialName>提升高機動型薩克Ⅱ（強尼‧萊汀專用）、薩克Ⅱ (德茲爾‧薩比專用機)防禦力</material>的單位，每回合會作為援軍大量出現。"
   },
   {
     "id": 290200907001070203,
@@ -77,11 +77,11 @@
   },
   {
     "id": 290200907001080203,
-    "value": "古夫烈焰型 (海涅·威斯坦弗斯專用)、古夫烈焰型、薩克Ⅰ (雷霆宙域版)、魚乾號為<material=MaterialName>會優先攻擊白色基地</material>的單位。"
+    "value": "古夫烈焰型 (海涅‧威斯坦弗斯專用)、古夫烈焰型、薩克Ⅰ (雷霆宙域版)、魚乾號為<material=MaterialName>會優先攻擊白色基地</material>的單位。"
   },
   {
     "id": 290200907001080204,
-    "value": "里克·德姆、杜班烏爾夫、傑爾古格M為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
+    "value": "里克‧德姆、杜班烏爾夫、傑爾古格M為<material=MaterialName>會優先攻擊薩拉米斯</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907001080205,
@@ -121,7 +121,7 @@
   },
   {
     "id": 290200907001110101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌·大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有【自身戰意為「超一擊」以上時， 自身防禦力提升300%】能力</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗煌‧大和等敵軍</material>。\n\n自由鋼彈 為<material=MaterialName>持有【自身戰意為「超一擊」以上時， 自身防禦力提升300%】能力</material>的單位。"
   },
   {
     "id": 290200907001110102,
@@ -137,7 +137,7 @@
   },
   {
     "id": 290200907001110202,
-    "value": "拉克絲·克萊因 為<material=MaterialName>會使用「MP提升（範圍） LV3」角色技能</material>的角色。"
+    "value": "拉克絲‧克萊因 為<material=MaterialName>會使用「MP提升（範圍） LV3」角色技能</material>的角色。"
   },
   {
     "id": 290200907001110203,
@@ -217,11 +217,11 @@
   },
   {
     "id": 290200907001150202,
-    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\nα·阿基爾為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>我軍單位抵達目標區域</material>。\n\nα‧阿基爾為<material=MaterialName>阻礙我軍單位抵達目標區域</material>的單位。"
   },
   {
     "id": 290200907001150203,
-    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
+    "value": "畢格‧薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位。"
   },
   {
     "id": 290200907001150204,
@@ -245,7 +245,7 @@
   },
   {
     "id": 290200907001170101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克·吉爾達〕</material>。\n\n馬克·吉爾達 為<material=MaterialName>持有【自身HP為0%以下時，\n自身HP恢復100%】能力</material>的角色。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔馬克‧吉爾達〕</material>。\n\n馬克‧吉爾達 為<material=MaterialName>持有【自身HP為0%以下時，\n自身HP恢復100%】能力</material>的角色。"
   },
   {
     "id": 290200907001170201,
@@ -265,7 +265,7 @@
   },
   {
     "id": 290200907001180201,
-    "value": "此關卡的敗北條件為<material=MaterialName>〔布萊特·諾亞〕被擊敗</material>。\n拉·凱拉姆(U.C.0096)為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "此關卡的敗北條件為<material=MaterialName>〔布萊特‧諾亞〕被擊敗</material>。\n拉‧凱拉姆(U.C.0096)為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907001180202,
@@ -277,7 +277,7 @@
   },
   {
     "id": 290200907001180204,
-    "value": "漢摩拉比【MA型態】、亞席瑪【MA型態】、蓋布蘭【MA型態】、安克夏【MA型態】、獵犬【MA型態】為<material=MaterialName>會優先攻擊布萊特·諾亞</material>的單位。"
+    "value": "漢摩拉比【MA型態】、亞席瑪【MA型態】、蓋布蘭【MA型態】、安克夏【MA型態】、獵犬【MA型態】為<material=MaterialName>會優先攻擊布萊特‧諾亞</material>的單位。"
   },
   {
     "id": 290200907001190101,
@@ -285,7 +285,7 @@
   },
   {
     "id": 290200907001190201,
-    "value": "米奧琳涅·連布蘭為<material=MaterialName>會使用「攻擊爆裂（範圍）」角色技能</material>的角色。"
+    "value": "米奧琳涅‧連布蘭為<material=MaterialName>會使用「攻擊爆裂（範圍）」角色技能</material>的角色。"
   },
   {
     "id": 290200907001190202,
@@ -309,7 +309,7 @@
   },
   {
     "id": 290200907002010201,
-    "value": "拉·凱拉姆 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
+    "value": "拉‧凱拉姆 為<material=MaterialName>擁有攻擊強化區域「攻擊力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002020201,
@@ -341,19 +341,19 @@
   },
   {
     "id": 290200907002060203,
-    "value": "塔莉亞·庫拉提絲 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
+    "value": "塔莉亞‧庫拉提絲 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070201,
-    "value": "畢格·薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
+    "value": "畢格‧薩姆 會作為第三軍單位登場，為<material=MaterialName>擁有廣範圍MAP兵器</material>的單位，會在關卡大量出現。"
   },
   {
     "id": 290200907002070202,
-    "value": "哈曼·坎恩 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
+    "value": "哈曼‧坎恩 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070203,
-    "value": "克雷米·托特 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
+    "value": "克雷米‧托特 為<material=MaterialName>持有【特定單位的防禦力提升300%】能力</material>的角色。"
   },
   {
     "id": 290200907002070204,
@@ -377,7 +377,7 @@
   },
   {
     "id": 290200907002090202,
-    "value": "含威達 (尼歐·羅安那克專用機)在內的複數單位<material=MaterialName>會在第2回合作為援軍出現。</material>"
+    "value": "含威達 (尼歐‧羅安那克專用機)在內的複數單位<material=MaterialName>會在第2回合作為援軍出現。</material>"
   },
   {
     "id": 290200907002090203,
@@ -393,7 +393,7 @@
   },
   {
     "id": 290200907002100101,
-    "value": "獨角獸鋼彈 (毀滅模式 / 覺醒)、報喪女妖·命運女神 (毀滅模式)為<material=MaterialName>會優先攻擊新吉翁克</material>的單位。"
+    "value": "獨角獸鋼彈 (毀滅模式 / 覺醒)、報喪女妖‧命運女神 (毀滅模式)為<material=MaterialName>會優先攻擊新吉翁克</material>的單位。"
   },
   {
     "id": 290200907002100201,
@@ -405,7 +405,7 @@
   },
   {
     "id": 290200907002100203,
-    "value": "擬·阿卡馬 (隆德·貝爾)為<material=MaterialName>提升敵方全體攻擊力</material>的單位。"
+    "value": "擬‧阿卡馬 (隆德‧貝爾)為<material=MaterialName>提升敵方全體攻擊力</material>的單位。"
   },
   {
     "id": 290200907002110101,
@@ -425,11 +425,11 @@
   },
   {
     "id": 290200907002120101,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威·諾亞]、[連恩‧艾姆]</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威‧諾亞]、[連恩‧艾姆]</material>。\n\nΞ鋼彈 為<material=MaterialName>高攻擊力 </material>的單位。"
   },
   {
     "id": 290200907002120102,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威·諾亞]、[連恩‧艾姆]</material>。\n\n潘娜洛普 為<material=MaterialName>持有【反擊時支援防禦】能力</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗[哈薩威‧諾亞]、[連恩‧艾姆]</material>。\n\n潘娜洛普 為<material=MaterialName>持有【反擊時支援防禦】能力</material>的單位。"
   },
   {
     "id": 290200907002120201,
@@ -453,7 +453,7 @@
   },
   {
     "id": 290200907002140201,
-    "value": "蒂法·安迪爾 為<material=MaterialName>會使用「威力抵禦（範圍）」角色技能</material>的角色。"
+    "value": "蒂法‧安迪爾 為<material=MaterialName>會使用「威力抵禦（範圍）」角色技能</material>的角色。"
   },
   {
     "id": 290200907002140202,
@@ -505,15 +505,15 @@
   },
   {
     "id": 290200907002180103,
-    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔塔莉亞·庫拉提絲〕</material>。\n\n智慧女神號為<material=MaterialName>會優先攻擊大天使號、且持有強力武裝</material>的單位。"
+    "value": "此關卡的勝利條件為<material=MaterialName>擊敗〔塔莉亞‧庫拉提絲〕</material>。\n\n智慧女神號為<material=MaterialName>會優先攻擊大天使號、且持有強力武裝</material>的單位。"
   },
   {
     "id": 290200907002180201,
-    "value": "此關卡的敗北條件為<material=MaterialName>〔瑪琉·雷明斯〕等客座軍被擊敗</material>。\n\n大天使號 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
+    "value": "此關卡的敗北條件為<material=MaterialName>〔瑪琉‧雷明斯〕等客座軍被擊敗</material>。\n\n大天使號 為<material=MaterialName>擁有強化區域「防禦力提升」範圍效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002180202,
-    "value": "曉 (不知火)為<material=MaterialName>持有【自身所屬部隊遭光束武裝攻擊時，受到的損傷減輕100%】能力及強力武裝效果</material>的客座軍單位。"
+    "value": "曉 (不知火)為<material=MaterialName>持有【發起戰鬥的敵方使用光束武裝攻擊時，自身受到的損傷減輕100%】能力及強力武裝效果</material>的客座軍單位。"
   },
   {
     "id": 290200907002180204,
@@ -521,11 +521,11 @@
   },
   {
     "id": 290200907002190101,
-    "value": "希洛·唯 (EW版) 為<material=MaterialName>持有【自身所屬部隊的「莉莉娜·德利安 (EW版)」遭擊敗時，\n自身攻擊力、防禦力提升200%】能力</material>的角色。"
+    "value": "希洛‧唯 (EW版) 為<material=MaterialName>持有【自身所屬部隊的「莉莉娜‧德利安 (EW版)」遭擊敗時，\n自身攻擊力、防禦力提升200%】能力</material>的角色。"
   },
   {
     "id": 290200907002190202,
-    "value": "莉莉娜·德利安 (EW版) 為<material=MaterialName>會使用「HP修復 （範圍）」角色技能</material>的角色。"
+    "value": "莉莉娜‧德利安 (EW版) 為<material=MaterialName>會使用「HP修復 （範圍）」角色技能</material>的角色。"
   },
   {
     "id": 290200907002190203,
@@ -589,7 +589,7 @@
   },
   {
     "id": 290300907001060203,
-    "value": "優先擊破格雷茲·艾因。"
+    "value": "優先擊破格雷茲‧艾因。"
   },
   {
     "id": 290300907001060204,
@@ -665,7 +665,7 @@
   },
   {
     "id": 290300907001110202,
-    "value": "優先擊破拉克絲·克萊因。"
+    "value": "優先擊破拉克絲‧克萊因。"
   },
   {
     "id": 290300907001110203,
@@ -789,7 +789,7 @@
   },
   {
     "id": 290300907001180202,
-    "value": "活用客座軍，從敵人手中保護布萊特·諾亞吧。"
+    "value": "活用客座軍，從敵人手中保護布萊特‧諾亞吧。"
   },
   {
     "id": 290300907001180203,
@@ -805,7 +805,7 @@
   },
   {
     "id": 290300907001190201,
-    "value": "優先擊破米奧琳涅·連布蘭。"
+    "value": "優先擊破米奧琳涅‧連布蘭。"
   },
   {
     "id": 290300907001190202,
@@ -829,7 +829,7 @@
   },
   {
     "id": 290300907002010201,
-    "value": "在拉·凱拉姆附近發動攻擊。"
+    "value": "在拉‧凱拉姆附近發動攻擊。"
   },
   {
     "id": 290300907002020201,
@@ -861,7 +861,7 @@
   },
   {
     "id": 290300907002060203,
-    "value": "優先擊破塔莉亞·庫拉提絲。"
+    "value": "優先擊破塔莉亞‧庫拉提絲。"
   },
   {
     "id": 290300907002070201,
@@ -869,11 +869,11 @@
   },
   {
     "id": 290300907002070202,
-    "value": "優先擊破哈曼·坎恩。"
+    "value": "優先擊破哈曼‧坎恩。"
   },
   {
     "id": 290300907002070203,
-    "value": "優先擊破克雷米·托特。"
+    "value": "優先擊破克雷米‧托特。"
   },
   {
     "id": 290300907002080202,
@@ -981,7 +981,7 @@
   },
   {
     "id": 290300907002180103,
-    "value": "利用曉 (不知火)的能力保護瑪琉·雷明斯。"
+    "value": "利用曉 (不知火)的能力保護瑪琉‧雷明斯。"
   },
   {
     "id": 290300907002180201,
@@ -989,7 +989,7 @@
   },
   {
     "id": 290300907002180202,
-    "value": "活用客座軍，從敵人手中保護瑪琉·雷明斯吧。"
+    "value": "活用客座軍，從敵人手中保護瑪琉‧雷明斯吧。"
   },
   {
     "id": 290300907002180204,

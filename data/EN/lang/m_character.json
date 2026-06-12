@@ -2176,6 +2176,34 @@
     "value": "Yuna Roma Seiran"
   },
   {
+    "id": 100100001336000100,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100100001336000101,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100100001336000200,
+    "value": "Mudie Holcroft"
+  },
+  {
+    "id": 100100001336000300,
+    "value": "Shams Couza"
+  },
+  {
+    "id": 100100001336000500,
+    "value": "Sol Lyne Lange"
+  },
+  {
+    "id": 100100001336000600,
+    "value": "Edmond Du Clos"
+  },
+  {
+    "id": 100100001336000700,
+    "value": "Selene McGriff & Sol Lyne Lange"
+  },
+  {
     "id": 100100001339000100,
     "value": "Lowe Guele"
   },
@@ -3718,6 +3746,18 @@
   {
     "id": 100100002330000500,
     "value": "Extended"
+  },
+  {
+    "id": 100100002336000100,
+    "value": "DSSD Security Guard"
+  },
+  {
+    "id": 100100002336000200,
+    "value": "Phantom Pain Soldier"
+  },
+  {
+    "id": 100100002336000300,
+    "value": "Earth Alliance Soldier"
   },
   {
     "id": 100100002370000300,
@@ -6077,7 +6117,7 @@
   },
   {
     "id": 100200001330001803,
-    "value": "A pilot of FAITH, assigned to the Minerva.\nWorking as Cagalli Yula Athha's guard after the war, Gilbert Dullindal demanded his return to ZAFT.\nHe then became a member of the FAITH special forces group, taking a post on the Minerva with his Saviour Gundam.\nWhile he worked to lead a squadron of the Minerva's Mobile Suits, he made his escape from the ship after harboring doubts about Dullindal's much-touted justice.\nCritically injured after being shot down by Shinn Asuka during the course of his escape, he was picked up by the Archangel and reunited with Kira Yamato.\nWith the Infinite Justice Gundam brought by Lacus Clyne standing before him, he quashed his doubts about fighting and vowed to join Kira and the crew in defeating Dullindal."
+    "value": "A pilot of FAITH, assigned to the Minerva.\nWorking as Cagalli Yula Athha's guard after the war, Gilbert Dullindal demanded his return to ZAFT.\nHe then became a member of the FAITH special forces group, taking a post on the Minerva with his Saviour Gundam.\nWhile he worked to lead a squadron of the Minerva's mobile suits, he made his escape from the ship after harboring doubts about Dullindal's much-touted justice.\nCritically injured after being shot down by Shinn Asuka during the course of his escape, he was picked up by the Archangel and reunited with Kira Yamato.\nWith the Infinite Justice Gundam brought by Lacus Clyne standing before him, he quashed his doubts about fighting and vowed to join Kira and the crew in defeating Dullindal."
   },
   {
     "id": 100200001330001804,
@@ -6126,6 +6166,34 @@
   {
     "id": 100200001330002800,
     "value": ""
+  },
+  {
+    "id": 100200001336000100,
+    "value": "Pilot of the Strike Noir, and member of the Earth Alliance special forces unit Phantom Pain.\nSven was a normal boy who loved using a telescope to look out at the stars. Unfortunately, his parents died in an accident, and he was raised at a Blue Cosmos-run care facility.\nThere, he was ingrained with anti-Coordinator beliefs, and underwent harsh training to become a soldier.\nHe is now a coldhearted weapon of war who willingly executes any order given to him.\nA member of an esteemed group of non-Extended pilots who have received no mental conditioning or physical modifications, he forms part of a three-person mobile suit squadron with Mudie Holcroft and Shams Couza, both also raised in a similar environment.\nTogether, they have executed countless missions."
+  },
+  {
+    "id": 100200001336000101,
+    "value": "Pilot of the Strike Noir, and member of the Earth Alliance special forces unit Phantom Pain.\nSven was a normal boy who loved using a telescope to look out at the stars. Unfortunately, his parents died in an accident, and he was raised at a Blue Cosmos-run care facility.\nThere, he was ingrained with anti-Coordinator beliefs, and underwent harsh training to become a soldier.\nHe is now a coldhearted weapon of war who willingly executes any order given to him.\nA member of an esteemed group of non-Extended pilots who have received no mental conditioning or physical modifications, he forms part of a three-person mobile suit squadron with Mudie Holcroft and Shams Couza, both also raised in a similar environment.\nTogether, they have executed countless missions."
+  },
+  {
+    "id": 100200001336000200,
+    "value": "Pilot of the Blu Duel, and member of the Earth Alliance special forces unit Phantom Pain.\nMudie lost her parents at a young age.\nTaken in by a Blue Cosmos-run care facility, she was ingrained with anti-Coordinator beliefs, and underwent harsh training to become a soldier.\nHer personality is eccentric and high-energy, like her appearance suggests.\nThough generally disinterested in others, she has a profound disgust of Coordinators, and fights mercilessly to exterminate them.\nA member of an esteemed group of non-Extended pilots who have received no mental conditioning or physical modifications, she forms part of a three-person mobile suit squadron with Sven Cal Bayang and Shams Couza.\nTogether, they have executed countless missions."
+  },
+  {
+    "id": 100200001336000300,
+    "value": "Pilot of the Verde Buster, and member of the Earth Alliance special forces unit Phantom Pain.\nShams lost his parents at a young age.\nTaken in by a Blue Cosmos-run care facility, he was ingrained with anti-Coordinator beliefs, and underwent harsh training to become a soldier.\nHe is sarcastic, foulmouthed, and prone to looking at things cynically, but also has enough social skills to avoid making more enemies than necessary.\nHe does his best to mingle with other less-celebrated soldiers.\nA member of an esteemed group of non-Extended pilots who have received no mental conditioning or physical modifications, he became blinded with anti-Coordinator rage after witnessing his comrade Mudie Holcroft die in combat."
+  },
+  {
+    "id": 100200001336000500,
+    "value": "An engineer affiliated with the Deep Space Survey and Development Organization (DSSD).\nHe is a Coordinator acting as a test pilot for a planetary exploration mobile suit and a core member of the Stargazer Project, whose goal is to explore beyond Mars' orbit.\nSol lost his parents at a young age, and was taken in by his uncle, Edmond Du Clos.\nHe has something of a sibling relationship with Selene McGriff, who also lost her parents.\nHe worked on development of the planetary exploration mobile suit that would come to be known the as Stargazer at the Fortaleza R&D Center in South America.\nHowever, environmental damage from the \"Break the World\" incident led him to flee to space.\nFrom there, he continued development at the DSSD's space-based Troya Station.\nWhen the station came under attack by the Earth Alliance special forces unit Phantom Pain, he sortied in the Stargazer with Selene."
+  },
+  {
+    "id": 100200001336000600,
+    "value": "Vice-Chairman of Security at a development center belonging to the Deep Space Survey and Development Organization (DSSD).\nFormerly a major in the Earth Alliance's ground army, Edmond led a tank platoon in the previous war.\nCaring and responsible, he took in Sol Lyne Lange after his parents perished in an accident, as Sol's mother was his older sister.\nAfter the war, Edmond left the army and moved to DSSD, where he worked security at their Fortaleza R&D Center in South America.\nDuring the chaos of the \"Break the World\" incident, he helped Selene McGriff make it to a spacebound shuttle.\nHe then piloted a linear-gun tank with former subordinate Reyes to fight against a rampaging GINN."
+  },
+  {
+    "id": 100200001336000700,
+    "value": "- About Selene McGriff\nAn engineer affiliated with the Deep Space Survey and Development Organization (DSSD).\nSelene is a Coordinator working on the development of a mobile suit for planetary exploration, and a core member of the Stargazer Project, whose goal is to explore beyond Mars' orbit.\nThough calm, collected, and a quick decision-maker, Selene will stop at nothing to make her dream of colonizing space a reality, and frequently loses sight of her surroundings in pursuit of her goals.\nShe worked on development of the planetary exploration mobile suit that would come to be known as the Stargazer at the Fortaleza R&D Center in South America.\nHowever, environmental damage from the \"Break the World\" incident led her to flee to space.\nFrom there, she continued development at the DSSD's space-based Troya Station, where she eventually sortied in the Stargazer herself during an attack by the Earth Alliance Phantom Pain special forces unit.\n\n- About Sol Lyne Lange\nAn engineer affiliated with the Deep Space Survey and Development Organization (DSSD).\nHe is a Coordinator acting as a test pilot for a planetary exploration mobile suit and a core member of the Stargazer Project, whose goal is to explore beyond Mars' orbit.\nSol lost his parents at a young age, and was taken in by his uncle, Edmond Du Clos.\nHe has something of a sibling relationship with Selene McGriff, who also lost her parents.\nHe worked on development of the planetary exploration mobile suit that would come to be known the as Stargazer at the Fortaleza R&D Center in South America.\nHowever, environmental damage from the \"Break the World\" incident led him to flee to space.\nFrom there, he continued development at the DSSD's space-based Troya Station.\nWhen the station came under attack by the Earth Alliance special forces unit Phantom Pain, he sortied in the Stargazer with Selene."
   },
   {
     "id": 100200001339000100,
@@ -7669,6 +7737,18 @@
   },
   {
     "id": 100200002330000500,
+    "value": "-"
+  },
+  {
+    "id": 100200002336000100,
+    "value": "-"
+  },
+  {
+    "id": 100200002336000200,
+    "value": "-"
+  },
+  {
+    "id": 100200002336000300,
     "value": "-"
   },
   {
@@ -10080,6 +10160,34 @@
     "value": "Yuna Roma Seiran"
   },
   {
+    "id": 100300001336000100,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100300001336000101,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100300001336000200,
+    "value": "Mudie Holcroft"
+  },
+  {
+    "id": 100300001336000300,
+    "value": "Shams Couza"
+  },
+  {
+    "id": 100300001336000500,
+    "value": "Sol Lyne Lange"
+  },
+  {
+    "id": 100300001336000600,
+    "value": "Edmond Du Clos"
+  },
+  {
+    "id": 100300001336000700,
+    "value": "Selene McGriff & Sol Lyne Lange"
+  },
+  {
     "id": 100300001339000100,
     "value": "Lowe Guele"
   },
@@ -11622,6 +11730,18 @@
   {
     "id": 100300002330000500,
     "value": "Extended"
+  },
+  {
+    "id": 100300002336000100,
+    "value": "DSSD Security Guard"
+  },
+  {
+    "id": 100300002336000200,
+    "value": "Phantom Pain Soldier"
+  },
+  {
+    "id": 100300002336000300,
+    "value": "Earth Alliance Soldier"
   },
   {
     "id": 100300002370000300,
@@ -14032,6 +14152,34 @@
     "value": "Yuna Roma Seiran"
   },
   {
+    "id": 100400001336000100,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100400001336000101,
+    "value": "Sven Cal Bayang"
+  },
+  {
+    "id": 100400001336000200,
+    "value": "Mudie Holcroft"
+  },
+  {
+    "id": 100400001336000300,
+    "value": "Shams Couza"
+  },
+  {
+    "id": 100400001336000500,
+    "value": "Sol Lyne Lange"
+  },
+  {
+    "id": 100400001336000600,
+    "value": "Edmond Du Clos"
+  },
+  {
+    "id": 100400001336000700,
+    "value": "Selene McGriff & Sol Lyne Lange"
+  },
+  {
     "id": 100400001339000100,
     "value": "Lowe Guele"
   },
@@ -15574,6 +15722,18 @@
   {
     "id": 100400002330000500,
     "value": "Extended"
+  },
+  {
+    "id": 100400002336000100,
+    "value": "DSSD Security Guard"
+  },
+  {
+    "id": 100400002336000200,
+    "value": "Phantom Pain Soldier"
+  },
+  {
+    "id": 100400002336000300,
+    "value": "Earth Alliance Soldier"
   },
   {
     "id": 100400002370000300,
@@ -17248,6 +17408,10 @@
     "value": "I'm going down... Urgh!"
   },
   {
+    "id": 101100001330001804,
+    "value": "I'm going down... Urgh!"
+  },
+  {
     "id": 101100001330001806,
     "value": "This is the result of my weakness...!"
   },
@@ -17266,6 +17430,34 @@
   {
     "id": 101100001330002600,
     "value": "Sorry, this is as far as I go..."
+  },
+  {
+    "id": 101100001336000100,
+    "value": "Rgh...\nI should have been more careful...!"
+  },
+  {
+    "id": 101100001336000101,
+    "value": "Rgh...\nI should have been more careful...!"
+  },
+  {
+    "id": 101100001336000200,
+    "value": "You'll pay for this...!"
+  },
+  {
+    "id": 101100001336000300,
+    "value": "Is this it?!\nMan, I must've run out of luck...!"
+  },
+  {
+    "id": 101100001336000500,
+    "value": "There's still something I have to do...!"
+  },
+  {
+    "id": 101100001336000600,
+    "value": "Heh... Guess I've been losing my touch..."
+  },
+  {
+    "id": 101100001336000700,
+    "value": "Forgive me...\nThis unit is lost because of me..."
   },
   {
     "id": 101100001339000100,
@@ -20220,6 +20412,34 @@
     "value": ""
   },
   {
+    "id": 101400001336000100,
+    "value": "Daisuke Ono"
+  },
+  {
+    "id": 101400001336000101,
+    "value": "Daisuke Ono"
+  },
+  {
+    "id": 101400001336000200,
+    "value": "Rina Satoh"
+  },
+  {
+    "id": 101400001336000300,
+    "value": "Mamoru Miyano"
+  },
+  {
+    "id": 101400001336000500,
+    "value": "Jun Fukuyama"
+  },
+  {
+    "id": 101400001336000600,
+    "value": "Jouji Nakata"
+  },
+  {
+    "id": 101400001336000700,
+    "value": "Sayaka Oohara / Jun Fukuyama"
+  },
+  {
     "id": 101400001339000100,
     "value": "Masaya Onosaka"
   },
@@ -21770,6 +21990,18 @@
   {
     "id": 101400002330000500,
     "value": ""
+  },
+  {
+    "id": 101400002336000100,
+    "value": "-"
+  },
+  {
+    "id": 101400002336000200,
+    "value": "-"
+  },
+  {
+    "id": 101400002336000300,
+    "value": "-"
   },
   {
     "id": 101400002370000300,

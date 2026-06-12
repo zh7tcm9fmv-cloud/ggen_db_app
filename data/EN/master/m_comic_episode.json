@@ -7,7 +7,9 @@
     "Priority": 1000,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010002,
@@ -17,7 +19,9 @@
     "Priority": 999,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010003,
@@ -27,7 +31,9 @@
     "Priority": 998,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010004,
@@ -37,7 +43,9 @@
     "Priority": 997,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010005,
@@ -47,7 +55,9 @@
     "Priority": 996,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010006,
@@ -57,7 +67,9 @@
     "Priority": 995,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 305000010007,
@@ -67,7 +79,9 @@
     "Priority": 994,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010001,
@@ -77,7 +91,9 @@
     "Priority": 1000,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010002,
@@ -87,7 +103,9 @@
     "Priority": 999,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010003,
@@ -97,7 +115,9 @@
     "Priority": 998,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010004,
@@ -107,7 +127,9 @@
     "Priority": 997,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010005,
@@ -117,7 +139,9 @@
     "Priority": 996,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010006,
@@ -127,7 +151,9 @@
     "Priority": 995,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 306000010007,
@@ -137,7 +163,9 @@
     "Priority": 994,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 999000010001,
@@ -147,7 +175,9 @@
     "Priority": 1000,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2601543101
+    "ScheduleId": 2601543101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 999000010002,
@@ -157,7 +187,9 @@
     "Priority": 999,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2601543101
+    "ScheduleId": 2601543101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   },
   {
     "Id": 999000010003,
@@ -167,6 +199,8 @@
     "Priority": 998,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0,
-    "ScheduleId": 2601543101
+    "ScheduleId": 2601543101,
+    "Unknown_Col_8": 0,
+    "Unknown_Col_9": 0
   }
 ]

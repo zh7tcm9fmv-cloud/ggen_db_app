@@ -1008,6 +1008,34 @@
     "ScheduleId": 0
   },
   {
+    "Id": 23360101,
+    "UnitDevelopmentDiagramId": 233601,
+    "CompleteRate": 25,
+    "RewardSetId": 26000023360101,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 23360102,
+    "UnitDevelopmentDiagramId": 233601,
+    "CompleteRate": 50,
+    "RewardSetId": 26000023360102,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 23360103,
+    "UnitDevelopmentDiagramId": 233601,
+    "CompleteRate": 75,
+    "RewardSetId": 26000023360103,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 23360104,
+    "UnitDevelopmentDiagramId": 233601,
+    "CompleteRate": 100,
+    "RewardSetId": 26000023360104,
+    "ScheduleId": 0
+  },
+  {
     "Id": 24310101,
     "UnitDevelopmentDiagramId": 243101,
     "CompleteRate": 25,

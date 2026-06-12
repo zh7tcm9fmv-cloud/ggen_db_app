@@ -543,5 +543,50 @@
     "Id": 20001309,
     "EventBonusTargetTypeIndex": 3,
     "TargetId": 20001309
+  },
+  {
+    "Id": 20001401,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001401
+  },
+  {
+    "Id": 20001402,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001402
+  },
+  {
+    "Id": 20001403,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001403
+  },
+  {
+    "Id": 20001404,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001404
+  },
+  {
+    "Id": 20001405,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001405
+  },
+  {
+    "Id": 20001406,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001406
+  },
+  {
+    "Id": 20001407,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001407
+  },
+  {
+    "Id": 20001409,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001409
+  },
+  {
+    "Id": 20001410,
+    "EventBonusTargetTypeIndex": 2,
+    "TargetId": 20001410
   }
 ]

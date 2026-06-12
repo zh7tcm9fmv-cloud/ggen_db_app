@@ -4,20 +4,29 @@
     "NameLanguageId": 350100000000003050,
     "CoverThumbnailResourceId": "comic_cover_3050",
     "Priority": 1010,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_5": 1,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 3060,
     "NameLanguageId": 350100000000003060,
     "CoverThumbnailResourceId": "comic_cover_3060",
     "Priority": 1000,
-    "ScheduleId": 2602103101
+    "ScheduleId": 2602103101,
+    "Unknown_Col_5": 1,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0
   },
   {
     "Id": 9990,
     "NameLanguageId": 350100000000009990,
     "CoverThumbnailResourceId": "comic_cover_9990",
     "Priority": 9990,
-    "ScheduleId": 2601543101
+    "ScheduleId": 2601543101,
+    "Unknown_Col_5": 1,
+    "Unknown_Col_6": 0,
+    "Unknown_Col_7": 0
   }
 ]

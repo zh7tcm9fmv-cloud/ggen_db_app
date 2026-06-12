@@ -403,6 +403,19 @@
     "EventTopDisplayPriority": 26055002
   },
   {
+    "Id": 200014,
+    "EventTypeIndex": 2,
+    "ResourceId": "se_banner_200014",
+    "ScheduleId": 2606201302,
+    "ChallengeScheduleId": 2606201301,
+    "EventBonusSetId": 200014,
+    "PickupRewardSetId": 36200014000000,
+    "TitleLanguageId": 250100000000200014,
+    "PointItemId": 222000140001,
+    "ShopId": 0,
+    "EventTopDisplayPriority": 26062001
+  },
+  {
     "Id": 210001,
     "EventTypeIndex": 4,
     "ResourceId": "me_banner_210001",

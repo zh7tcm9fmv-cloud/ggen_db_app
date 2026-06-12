@@ -1373,11 +1373,11 @@
   },
   {
     "id": 140100000100770100,
-    "value": "Increased Max HP & EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery (Self) & Increased Max HP LV 1"
   },
   {
     "id": 140100000100770200,
-    "value": "Increased Max HP & EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery (Self) & Increased Max HP LV 2"
   },
   {
     "id": 140100000100780100,
@@ -1385,47 +1385,47 @@
   },
   {
     "id": 140100000100780200,
-    "value": "EN Recovery & Increased Max EN (Single Unit) LV 2"
+    "value": "EN Recovery (Self) & Increased Max EN LV 2"
   },
   {
     "id": 140100000100790100,
-    "value": "Increased ATK & EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery (Self) & Increased ATK LV 1"
   },
   {
     "id": 140100000100790200,
-    "value": "Increased ATK & EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery (Self) & Increased ATK LV 2"
   },
   {
     "id": 140100000100790300,
-    "value": "Increased ATK & EN Recovery (Single Unit) LV 3"
+    "value": "EN Recovery (Self) & Increased ATK LV 3"
   },
   {
     "id": 140100000100800100,
-    "value": "Increased DEF & EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery (Self) & Increased DEF LV 1"
   },
   {
     "id": 140100000100800200,
-    "value": "Increased DEF & EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery (Self) & Increased DEF LV 2"
   },
   {
     "id": 140100000100800300,
-    "value": "Increased DEF & EN Recovery (Single Unit) LV3"
+    "value": "EN Recovery (Self) & Increased DEF LV 3"
   },
   {
     "id": 140100000100810100,
-    "value": "EN Recovery & Increased MOB (Single Unit) LV 1"
+    "value": "EN Recovery (Self) & Increased MOB LV 1"
   },
   {
     "id": 140100000100810200,
-    "value": "EN Recovery & Increased MOB (Single Unit) LV 2"
+    "value": "EN Recovery (Self) & Increased MOB LV 2"
   },
   {
     "id": 140100000100810300,
-    "value": "EN Recovery & Increased MOB (Single Unit) LV 3"
+    "value": "EN Recovery (Self) & Increased MOB LV 3"
   },
   {
     "id": 140100000100810400,
-    "value": "EN Recovery & Increased MOB (Single Unit) LV 4"
+    "value": "EN Recovery (Self) & Increased MOB LV 4"
   },
   {
     "id": 140100000100820201,
@@ -2074,6 +2074,10 @@
   {
     "id": 140100000101590101,
     "value": "(Cnd: Vigor) Increased MOV LV 1"
+  },
+  {
+    "id": 140100000101600300,
+    "value": "(Vigor conditions) Increased ATK & Critical Rate LV 3"
   },
   {
     "id": 140100000101650101,
@@ -5058,6 +5062,34 @@
   {
     "id": 140100000202620100,
     "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202630100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202640100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202650101,
+    "value": "(Series conditions) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202660101,
+    "value": "(Series conditions) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202670100,
+    "value": "Affinity: Mobile Suit Gundam SEED DESTINY LV 1"
+  },
+  {
+    "id": 140100000202670200,
+    "value": "Affinity: Mobile Suit Gundam SEED DESTINY LV 2"
+  },
+  {
+    "id": 140100000202780100,
+    "value": "Increased Defense & Reaction LV 1"
   },
   {
     "id": 140100000300010101,
@@ -10300,6 +10332,14 @@
     "value": "Limiter OFF SR (Mobile Suit Gundam: Cross Dimension 0079)"
   },
   {
+    "id": 140100000406800101,
+    "value": "Add-On Armor SR (Mobile Suit Gundam SEED C.E. 73 -Stargazer-)"
+  },
+  {
+    "id": 140100000406810101,
+    "value": "Limiter OFF SR (Mobile Suit Gundam SEED C.E. 73 -Stargazer-)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -11584,6 +11624,22 @@
     "value": "(Vigor conditions) Critical Damage Boost 100%"
   },
   {
+    "id": 140100000511241001,
+    "value": "HP Restoration (Single Unit)"
+  },
+  {
+    "id": 140100000511250101,
+    "value": "Increased MOB"
+  },
+  {
+    "id": 140100000511260101,
+    "value": "(Deals Damage Condition) Increased Mobility"
+  },
+  {
+    "id": 140100000511270101,
+    "value": "Advantage: Blu Duel Gundam"
+  },
+  {
     "id": 140100000530010100,
     "value": "(HP conditions) Increased ATK, DEF & MOB "
   },
@@ -11797,123 +11853,123 @@
   },
   {
     "id": 140100000610060101,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 1"
+    "value": "Physical Damage Reduced LV 1"
   },
   {
     "id": 140100000610060201,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 2"
+    "value": "Physical Damage Reduced LV 2"
   },
   {
     "id": 140100000610060301,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 3"
+    "value": "Physical Damage Reduced LV 3"
   },
   {
     "id": 140100000610060401,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 4"
+    "value": "Physical Damage Reduced LV 4"
   },
   {
     "id": 140100000610060501,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 5"
+    "value": "Physical Damage Reduced LV 5"
   },
   {
     "id": 140100000610060601,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 6"
+    "value": "Physical Damage Reduced LV 6"
   },
   {
     "id": 140100000610060701,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 7"
+    "value": "Physical Damage Reduced LV 7"
   },
   {
     "id": 140100000610060801,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 8"
+    "value": "Physical Damage Reduced LV 8"
   },
   {
     "id": 140100000610060901,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 9"
+    "value": "Physical Damage Reduced LV 9"
   },
   {
     "id": 140100000610061001,
-    "value": "(Weapon conditions) Physical Damage Reduced LV 10"
+    "value": "Physical Damage Reduced LV 10"
   },
   {
     "id": 140100000610070101,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 1"
+    "value": "Beam Damage Reduced LV 1"
   },
   {
     "id": 140100000610070201,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 2"
+    "value": "Beam Damage Reduced LV 2"
   },
   {
     "id": 140100000610070301,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 3"
+    "value": "Beam Damage Reduced LV 3"
   },
   {
     "id": 140100000610070401,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 4"
+    "value": "Beam Damage Reduced LV 4"
   },
   {
     "id": 140100000610070501,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 5"
+    "value": "Beam Damage Reduced LV 5"
   },
   {
     "id": 140100000610070601,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 6"
+    "value": "Beam Damage Reduced LV 6"
   },
   {
     "id": 140100000610070701,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 7"
+    "value": "Beam Damage Reduced LV 7"
   },
   {
     "id": 140100000610070801,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 8"
+    "value": "Beam Damage Reduced LV 8"
   },
   {
     "id": 140100000610070901,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 9"
+    "value": "Beam Damage Reduced LV 9"
   },
   {
     "id": 140100000610071001,
-    "value": "(Weapon conditions) Beam Damage Reduced LV 10"
+    "value": "Beam Damage Reduced LV 10"
   },
   {
     "id": 140100000610080101,
-    "value": "(Weapon conditions) Special Damage Reduced LV 1"
+    "value": "Special Damage Reduced LV 1"
   },
   {
     "id": 140100000610080201,
-    "value": "(Weapon conditions) Special Damage Reduced LV 2"
+    "value": "Special Damage Reduced LV 2"
   },
   {
     "id": 140100000610080301,
-    "value": "(Weapon conditions) Special Damage Reduced LV 3"
+    "value": "Special Damage Reduced LV 3"
   },
   {
     "id": 140100000610080401,
-    "value": "(Weapon conditions) Special Damage Reduced LV 4"
+    "value": "Special Damage Reduced LV 4"
   },
   {
     "id": 140100000610080501,
-    "value": "(Weapon conditions) Special Damage Reduced LV 5"
+    "value": "Special Damage Reduced LV 5"
   },
   {
     "id": 140100000610080601,
-    "value": "(Weapon conditions) Special Damage Reduced LV 6"
+    "value": "Special Damage Reduced LV 6"
   },
   {
     "id": 140100000610080701,
-    "value": "(Weapon conditions) Special Damage Reduced LV 7"
+    "value": "Special Damage Reduced LV 7"
   },
   {
     "id": 140100000610080801,
-    "value": "(Weapon conditions) Special Damage Reduced LV 8"
+    "value": "Special Damage Reduced LV 8"
   },
   {
     "id": 140100000610080901,
-    "value": "(Weapon conditions) Special Damage Reduced LV 9"
+    "value": "Special Damage Reduced LV 9"
   },
   {
     "id": 140100000610081001,
-    "value": "(Weapon conditions) Special Damage Reduced LV 10"
+    "value": "Special Damage Reduced LV 10"
   },
   {
     "id": 140100000610090101,
@@ -13264,6 +13320,14 @@
     "value": "Increased Critical Rate and DEF (All Units) "
   },
   {
+    "id": 140100000611900101,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000611910101,
+    "value": "(Unit conditions) Increased DEF"
+  },
+  {
     "id": 140100000611920101,
     "value": "(Defeat Conditions) Increased ATK & DEF"
   },
@@ -13288,12 +13352,32 @@
     "value": "(Defeat Conditions) Increased DEF"
   },
   {
+    "id": 140100000611940101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000611950101,
+    "value": "Increased DEF"
+  },
+  {
     "id": 140100000611970101,
     "value": "(Unit conditions) HP Restoration"
   },
   {
     "id": 140100000611980101,
     "value": "(Unit conditions) Damage Reduced"
+  },
+  {
+    "id": 140100000612140101,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000612150101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000612160101,
+    "value": "(Character conditions) Increased DEF"
   },
   {
     "id": 140100000699000101,
@@ -14185,7 +14269,7 @@
   },
   {
     "id": 140100000700220100,
-    "value": ""
+    "value": "Weapons Max Range Down LV 1"
   },
   {
     "id": 140100000700380100,

@@ -113,5 +113,10 @@
     "EventBonusSeriesSetId": 20001309,
     "SeriesId": 10,
     "SortOrder": 2
+  },
+  {
+    "EventBonusSeriesSetId": 20001409,
+    "SeriesId": 3360,
+    "SortOrder": 1
   }
 ]
