@@ -461,6 +461,7 @@ UI_LABELS = {
         'restriction_recover_hp': 'Recovers {}% HP when used.',
         'restriction_recover_en': 'Recovers {}% EN when used.',
         'restriction_recover_mp': 'Recovers {} MP when used.',
+        'map_weapon_designate_spots': 'Can designate up to {} spots.',
         'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Squad {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
         'restriction_applies_characters': 'Applies to Characters',
@@ -480,6 +481,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時恢復{}%HP。',
         'restriction_recover_en': '使用時恢復{}%EN。',
         'restriction_recover_mp': '使用時恢復{}MP。',
+        'map_weapon_designate_spots': '最多可指定{}個位置。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
         'restriction_applies_characters': '適用於角色',
@@ -499,6 +501,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時、HPを{}%回復する。',
         'restriction_recover_en': '使用時、ENを{}%回復する。',
         'restriction_recover_mp': '使用時、{}MP回復する。',
+        'map_weapon_designate_spots': '最大{}箇所まで指定できる。',
         'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
         'restriction_applies_characters': 'キャラクターに適用',
@@ -6200,7 +6203,14 @@ def create_weapon_status_map(d):
             map_after = item.get('MapWeaponCanUseAfterMove')
             if map_after is None:
                 map_after = item.get('mapWeaponCanUseAfterMove')
-            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after)}
+            impact_max = item.get('MapWeaponImpactPointMaxSelectCount')
+            if impact_max is None:
+                impact_max = item.get('mapWeaponImpactPointMaxSelectCount')
+            try:
+                impact_max = int(impact_max or 0)
+            except (TypeError, ValueError):
+                impact_max = 0
+            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after), 'map_impact_point_max_select_count': max(0, impact_max)}
     return lookup
 
 MAP_FOOTPRINT_2X2_DXDY = ((0, 0), (1, 0), (0, -1), (1, -1))
@@ -6570,6 +6580,12 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         if not tl: tl = list(btl)
         levels.append({'level':lv,'power':fp,'en':fe,'accuracy':fa,'critical':fc,'ammo':ma,'traits':tl})
     wts = str(wt) if wt is not None else ''
+    map_impact_n = int(ws.get('map_impact_point_max_select_count', 0) or 0)
+    if wts == '3' and map_impact_n > 0:
+        spot_txt = get_ui_label(lang_code, 'map_weapon_designate_spots').format(map_impact_n)
+        for lev in levels:
+            if spot_txt not in lev['traits']:
+                lev['traits'].append(spot_txt)
     if wts != '3':
         for lev in levels:
             lev['ammo'] = 0
@@ -6604,7 +6620,8 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         if ct and ct != "None": rest.append(ct)
     if after_move_map:
         mpc_am = pat_mpc if pat_mpc > 0 else mpc
-        rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc_am))
+        if mpc_am > 0:
+            rest.append(get_ui_label(lang_code, 'restriction_mp').format(mpc_am))
     mc = ws.get('map_coords', []); scc = ws.get('shooting_coords', []); isd = ws.get('is_dash', False)
     map_dash_dual_wide = False
     map_dash_dual_end_coords = []
