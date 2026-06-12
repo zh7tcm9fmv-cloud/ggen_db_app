@@ -1891,7 +1891,7 @@ return'characters';
 function applyBrowseRouteFromLocation(opts){
 opts=opts||{};
 const parsed=parseBrowseShortPath(location.pathname);
-if(parsed&&parsed.kind==='latest_release'){switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
+if(parsed&&parsed.kind==='latest_release'){closeModalDomOnly();switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
 if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();switchTab(parsed.tab,{skipHistory:true,fromPopstate:!!opts.fromPopstate});return true}
 if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
 if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail(t,id,{skipHistory:true});return true}
@@ -2432,9 +2432,13 @@ async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.s
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
-closeModalDomOnly();
 if(!wasOpen||S._historyApplyingPopstate)return;
+closeModalDomOnly();
+if(S._historyModalPushed){
 S._historyModalPushed=false;
+try{history.back()}catch(_){}
+return;
+}
 if(_historyIsDetailPath(location.pathname)||(history.state&&history.state.ggenDetail)){
 const browsePath=S.currentTab==='ranking'?'/rk':(MAIN_TAB_PATH_SHORT[S.currentTab]||'/');
 replaceHistoryToBrowsePath(browsePath);
