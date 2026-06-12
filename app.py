@@ -244,16 +244,30 @@ def resolve_unit_limit_break_movie_id(info, unit_id=None):
     return ''
 
 
-def resolve_unit_gacha_pull_movie_id(info):
-    """Gacha pull cinematic id (gasha_*), from BromideResourceId when listed in gasha_pull_video_ids.json."""
+_GASHA_PULL_BROMIDE_RE = re.compile(r'^g\d+u\d+$', re.I)
+
+
+def resolve_unit_gacha_pull_movie_id(info, unit_id=None):
+    """Gacha pull cinematic id (gasha_*), from BromideResourceId.
+
+    Confirmed ids live in gasha_pull_video_ids.json (CDN scan). When a video is uploaded
+    ahead of manifest sync, infer gasha_{bromide} when weapon-50 UnitBattleMovieId matches
+    bromide (same id family as LB cinematics).
+    """
     if not info:
         return ''
     bid = str(info.get('bromide_resource_id') or '').strip()
-    if not bid or bid == '0':
+    if not bid or bid == '0' or not _GASHA_PULL_BROMIDE_RE.match(bid):
         return ''
     movie_id = f'gasha_{bid}'
     known = _load_gasha_pull_video_id_set()
-    if not known or movie_id in known:
+    if known and movie_id in known:
+        return movie_id
+    uid = normalize_id(unit_id) if unit_id is not None else ''
+    w50 = str((unit_weapon_lb_movie_map.get(uid) if uid else '') or '').strip()
+    if w50 == bid:
+        return movie_id
+    if not known:
         return movie_id
     return ''
 
@@ -18850,7 +18864,7 @@ def get_unit(unit_id):
         if _muid == '0':
             _muid = unit_id
         _lb_movie_id = resolve_unit_limit_break_movie_id(info, unit_id)
-        _gacha_pull_movie_id = resolve_unit_gacha_pull_movie_id(info)
+        _gacha_pull_movie_id = resolve_unit_gacha_pull_movie_id(info, unit_id)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid

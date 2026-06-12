@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Scan ggen_db_videos/unit for gasha_*.mp4; write data/gasha_pull_video_ids.json."""
+"""Scan ggen_db_videos/unit for gasha_*.mp4; write data/gasha_pull_video_ids.json.
+
+The app also infers gasha pull ids from master data when weapon-50 UnitBattleMovieId
+matches BromideResourceId, so this manifest can lag behind CDN uploads.
+"""
 import json
 import sys
 from pathlib import Path
