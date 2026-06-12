@@ -6585,7 +6585,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         spot_txt = get_ui_label(lang_code, 'map_weapon_designate_spots').format(map_impact_n)
         for lev in levels:
             if spot_txt not in lev['traits']:
-                lev['traits'].append(spot_txt)
+                lev['traits'].insert(0, spot_txt)
     if wts != '3':
         for lev in levels:
             lev['ammo'] = 0
