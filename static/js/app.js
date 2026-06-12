@@ -9046,20 +9046,25 @@ const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
 if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
 return 0;
 }
-/** Pilot skills: passive total (API — trait% on growth base) + floor(base×skill%/100) for active skills. In-game does not use a single floor on (trait+skill) together; that can be +1 vs passive + separate skill floor (e.g. Awaken Boost). */
+/** Active pilot skill % on growth base: in-game RoundUp (ceil), not floor — e.g. Melee 793 +20% → +159 not +158. */
+function _dcPilotActiveSkillPctBonus(base,pct){
+const b=Math.max(0,Number(base)||0);
+const p=Math.max(0,Number(pct)||0);
+if(b<=0||p<=0)return 0;
+return Math.ceil(b*p/100);
+}
+/** Pilot skills: passive total (API — trait% on growth base) + ceil(base×skill%/100) for active skills. Passive and skill % are floored/ceiled separately, not one combined floor on (trait+skill). */
 function _dcPilotSkillAdjustedStat(stats,statName,pct){
-const F=Math.floor;
 const p=Math.max(0,Number(pct)||0);
 const ent=_dcFindStatEntry(stats,statName);
-if(!ent)return F(_dcFindStat(stats,statName)*(1+p/100));
+if(!ent)return Math.floor(_dcFindStat(stats,statName)*(1+p/100));
 if(p<=0)return Math.round(Number(ent.total)||0);
 const base=Math.max(0,Number(ent.base)||0);
 const passiveTotal=Math.round(Number(ent.total)||0);
-return passiveTotal+F(base*p/100);
+return passiveTotal+_dcPilotActiveSkillPctBonus(base,p);
 }
-/** When an MS sets pilot Awaken to 900 if below 900, use 900 + floor(base×skill%) instead of passiveTotal + floor(base×skill%). */
+/** When an MS sets pilot Awaken to 900 if below 900, use 900 + ceil(base×skill%) instead of passiveTotal + ceil(base×skill%). */
 function _dcPilotAwakenAdjustedForDc(stats,skPctAwaken){
-const F=Math.floor;
 const ud=S.dc.atkUnitData;
 const p=Math.max(0,Number(skPctAwaken)||0);
 const ent=_dcFindStatEntry(stats,'Awaken');
@@ -9068,7 +9073,7 @@ if(!_dcUnitGrantsPilotAwakenFloor900(ud))return _dcPilotSkillAdjustedStat(stats,
 const base=Math.max(0,Number(ent.base)||0);
 const passiveTotal=Math.round(Number(ent.total)||0);
 if(passiveTotal>=900)return _dcPilotSkillAdjustedStat(stats,'Awaken',p);
-return 900+(p>0?F(base*p/100):0);
+return 900+(p>0?_dcPilotActiveSkillPctBonus(base,p):0);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
