@@ -30,9 +30,23 @@ def _playable_char_faction_map(A, lc):
     return out
 
 
-def _count_tag(A, char_map, tag, lc):
+def _count_tag_factions(A, char_map, tag, lc):
     keys = A._resolve_affinity_canonical_keys_for_tag(tag, lc)
     return sum(1 for fs in char_map.values() if keys & fs)
+
+
+def _count_tag(A, char_map, tag, lc):
+    """Count playable characters matching tag (same rules as /api/tag_affinity)."""
+    del char_map
+    ld = A.get_lang_data(lc)
+    tl = [tag.lower()]
+    n = 0
+    for cid in A.char_list_playable_ids:
+        if not A.browse_entity_has_resolved_lineage_tags(A.char_lin_map, cid, lc, 'character'):
+            continue
+        if A._character_has_affinity_tag_match(cid, tl, 'or', ld, lc):
+            n += 1
+    return n
 
 
 def main():
@@ -45,6 +59,8 @@ def main():
     langs = ('EN', 'TW', 'HK', 'JA')
 
     A._ensure_affinity_lineage_canonical()
+    for cid in A.char_list_playable_ids:
+        A._scan_character_ex_affinity_meta(cid)
 
     for lc in langs:
         ld = A.get_lang_data(lc)
@@ -78,7 +94,7 @@ def main():
                 for k in keys:
                     if k in affinity_factions:
                         orphan_factions.discard(k)
-            n_chars = _count_tag(A, char_map, tag, lc)
+            n_chars = _count_tag_factions(A, char_map, tag, lc)
             _ = n_chars  # informational only; some factions have passives but no playable pilots yet
 
         for f in char_factions:
@@ -99,10 +115,11 @@ def main():
     char_map_en = _playable_char_faction_map(A, 'EN')
 
     checks = [
-        ('Zeon', 49),
-        ('Neo Zeon', 26),
-        ('EFSF (U.C.)', 50),
+        ('Zeon', 54),
+        ('Neo Zeon', 30),
+        ('EFSF (U.C.)', 58),
         ('Gundam', 0),
+        ('Orb', 14),
     ]
     for tag, expected in checks:
         actual = _count_tag(A, char_map_en, tag, 'EN')
@@ -112,6 +129,12 @@ def main():
     if not A._character_has_affinity_tag_match('1001000100', ['efsf (u.c.)'], 'or', A.get_lang_data('EN'), 'EN'):
         errors.append('EN regression: Amuro Ray (1001000100) EX ability must match EFSF (U.C.) affinity')
 
+    if not A._character_has_affinity_tag_match('1330001804', ['orb'], 'or', A.get_lang_data('EN'), 'EN'):
+        errors.append('EN regression: Athrun Zala (1330001804) EX Orb tag affinity must match Orb')
+
+    if A._character_affinity_ex_pair_unit_id_for_tags('1330001804', ['orb'], 'or', 'EN') != '1330002850':
+        errors.append('EN regression: Athrun EX pair highlight unit must be Infinite Justice Gundam (EX)')
+
     neo_only_ids = [cid for cid, fs in char_map_en.items() if fs == {'neo zeon'}]
     for cid in neo_only_ids:
         if A._character_has_affinity_tag_match(cid, ['zeon'], 'or', A.get_lang_data('EN'), 'EN'):
@@ -119,8 +142,8 @@ def main():
 
     # JA UC EFSF tag must resolve via lineage id → EN canonical key
     ja_efsf = _count_tag(A, _playable_char_faction_map(A, 'JA'), '地球連邦軍(宇宙世紀)', 'JA')
-    if ja_efsf != 50:
-        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 50')
+    if ja_efsf != 58:
+        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 58')
 
     if warnings:
         print('warnings:')

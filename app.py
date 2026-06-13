@@ -12871,10 +12871,11 @@ _AFFINITY_FACTION_LV_RE = re.compile(
     re.IGNORECASE,
 )
 _AFFINITY_LINEAGE_CANONICAL = None
-_AFFINITY_PILOTING_EFFECT_RE = re.compile(
-    r'piloting units with specified tags[\s\S]{0,160}increase damage dealt to enemies[\s\S]{0,120}reduce damage taken',
+_AFFINITY_PILOTING_TAG_RE = re.compile(
+    r'piloting units with specified tags',
     re.IGNORECASE,
 )
+_CHAR_EX_AFFINITY_SCAN_CACHE = {}
 
 
 def _name_indicates_affinity_ability(ab_name):
@@ -12962,18 +12963,123 @@ def _resolve_affinity_canonical_keys_for_tag(tag_name, lc):
     return keys
 
 
-def _trait_detail_implies_piloting_affinity_effect(text):
-    """Same in-combat tag buff as Affinity: … (piloting tagged units → dmg up / taken down)."""
+def _trait_detail_implies_piloting_tag_affinity(text):
+    """EX / trait row: piloting units with specified lineage tags (any buff variant)."""
     if not text:
         return False
-    if _AFFINITY_PILOTING_EFFECT_RE.search(str(text)):
-        return True
     blob = str(text)
-    if '指定' in blob and 'タグ' in blob and '与ダメ' in blob and '被ダメ' in blob:
+    if _AFFINITY_PILOTING_TAG_RE.search(blob):
         return True
-    if '指定' in blob and '標籤' in blob and ('傷害' in blob or '损伤' in blob):
+    if '指定' in blob and ('タグ' in blob or '標籤' in blob or '标签' in blob):
+        if re.search(r'(?:piloting|パイロット|驾驶|搭乘|操縦)', blob, re.IGNORECASE):
+            return True
+    return False
+
+
+def _is_playable_unit_entity_id(uid):
+    uid = normalize_id(uid)
+    if not uid or uid == '0':
+        return False
+    return uid in unit_info_map
+
+
+def _collect_detail_playable_unit_ids(detail):
+    if not isinstance(detail, dict):
+        return []
+    ids, seen = [], set()
+
+    def _add(conds):
+        for c in conds or []:
+            if not isinstance(c, dict) or c.get('type') != 'unit':
+                continue
+            uid = normalize_id(c.get('id'))
+            if not _is_playable_unit_entity_id(uid) or uid in seen:
+                continue
+            seen.add(uid)
+            ids.append(uid)
+
+    _add(detail.get('conditions'))
+    for g in detail.get('condition_groups') or []:
+        if isinstance(g, dict):
+            _add(g.get('conditions'))
+    return ids
+
+
+def _detail_is_unit_specific_piloting(text):
+    if not text:
+        return False
+    blob = str(text)
+    low = blob.lower()
+    if _trait_detail_implies_piloting_tag_affinity(blob):
+        return False
+    if re.search(r'\b(?:when\s+)?piloting\b', low):
+        return True
+    if re.search(r'(?:パイロット|驾驶|搭乘|操縦)', blob):
         return True
     return False
+
+
+def _factions_for_playable_unit_ids(unit_ids, lc=DEFAULT_LANG):
+    keys = set()
+    for uid in unit_ids or []:
+        tag_names = [t.get('name', '') for t in resolve_tags(unit_lin_map, uid, 'EN', 'unit') if t.get('name')]
+        keys.update(_canonical_keys_for_lineage_tag_names(tag_names, lc))
+    return keys
+
+
+def _build_ex_ability_entry_for_scan(aid, ld_en):
+    abnm = ld_en.get('abil_name_map', {}) or {}
+    an = _resolved_ability_name_for_tag_scan(aid, abnm)
+    if not is_ex_ability(an):
+        return None
+    try:
+        bab = build_ability_entry(
+            aid, abnm, abil_link_map, trait_set_traits_map, trait_data_map,
+            ld_en.get('lang_text_map', {}), ld_en.get('lang_text_map', {}),
+            trait_condition_raw_map, ld_en.get('lineage_lookup', {}),
+            ld_en.get('series_name_map', {}), ability_resource_map,
+            ld_en.get('abil_desc_map', {}), lang_code='EN')
+    except Exception:
+        return None
+    return bab if bab.get('is_ex') else None
+
+
+def _scan_character_ex_affinity_meta(cid):
+    cached = _CHAR_EX_AFFINITY_SCAN_CACHE.get(cid)
+    if cached is not None:
+        return cached
+    ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    tag_factions = set()
+    pair_unit_ids = []
+    pair_seen = set()
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == cid]
+    for ab in fa:
+        bid = normalize_id(ab.get('AbilityId', ''))
+        spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
+        for aid in (bid, spid):
+            if not aid or aid in ('0', 'None'):
+                continue
+            bab = _build_ex_ability_entry_for_scan(aid, ld_en)
+            if not bab:
+                continue
+            for d in bab.get('details') or []:
+                tx = d.get('text')
+                if _trait_detail_implies_piloting_tag_affinity(tx):
+                    names = _collect_detail_lineage_tag_names(d)
+                    if names:
+                        tag_factions.update(_canonical_keys_for_lineage_tag_names(names, 'EN'))
+                elif _detail_is_unit_specific_piloting(tx):
+                    for uid in _collect_detail_playable_unit_ids(d):
+                        if uid not in pair_seen:
+                            pair_seen.add(uid)
+                            pair_unit_ids.append(uid)
+    meta = {
+        'tag_factions': tag_factions,
+        'pair_unit_ids': pair_unit_ids,
+        'has_ex_pair': bool(pair_unit_ids),
+    }
+    _CHAR_EX_AFFINITY_SCAN_CACHE[cid] = meta
+    return meta
 
 
 def _collect_detail_lineage_tag_names(detail):
@@ -13010,29 +13116,48 @@ def _canonical_keys_for_lineage_tag_names(tag_names, lc=DEFAULT_LANG):
 
 def _factions_from_ex_piloting_affinity_ability(aid, ld_en):
     """UR/EX rows: faction lives on trait conditions, not in the EX ability title."""
-    abnm = ld_en.get('abil_name_map', {}) or {}
-    an = _resolved_ability_name_for_tag_scan(aid, abnm)
-    if _extract_affinity_faction_from_ability_name(an):
-        return set()
-    if not is_ex_ability(an):
-        return set()
-    try:
-        bab = build_ability_entry(
-            aid, abnm, abil_link_map, trait_set_traits_map, trait_data_map,
-            ld_en.get('lang_text_map', {}), ld_en.get('lang_text_map', {}),
-            trait_condition_raw_map, ld_en.get('lineage_lookup', {}),
-            ld_en.get('series_name_map', {}), ability_resource_map,
-            ld_en.get('abil_desc_map', {}), lang_code='EN')
-    except Exception:
-        return set()
-    if not bab.get('is_ex'):
+    bab = _build_ex_ability_entry_for_scan(aid, ld_en)
+    if not bab:
         return set()
     keys = set()
     for d in bab.get('details') or []:
-        if not _trait_detail_implies_piloting_affinity_effect(d.get('text')):
+        if not _trait_detail_implies_piloting_tag_affinity(d.get('text')):
             continue
-        keys.update(_canonical_keys_for_lineage_tag_names(_collect_detail_lineage_tag_names(d), 'EN'))
+        names = _collect_detail_lineage_tag_names(d)
+        if not names:
+            continue
+        keys.update(_canonical_keys_for_lineage_tag_names(names, 'EN'))
     return keys
+
+
+def _character_ex_pair_unit_ids(cid):
+    return list(_scan_character_ex_affinity_meta(cid).get('pair_unit_ids') or [])
+
+
+def _character_has_ex_unit_pair_ability(cid):
+    return bool(_scan_character_ex_affinity_meta(cid).get('has_ex_pair'))
+
+
+def _character_affinity_ex_pair_unit_id_for_tags(cid, tag_tokens_lc, op, lc=DEFAULT_LANG):
+    """Best EX paired unit to highlight when opening from an affinity tag modal."""
+    pair_ids = _character_ex_pair_unit_ids(cid)
+    if not pair_ids:
+        return ''
+    match_keys = set()
+    for t in tag_tokens_lc or []:
+        if not t or not str(t).strip():
+            continue
+        match_keys.update(_resolve_affinity_canonical_keys_for_tag(t, lc))
+    if not match_keys:
+        return pair_ids[0]
+    for uid in pair_ids:
+        unit_keys = _factions_for_playable_unit_ids([uid], lc)
+        if op == 'and':
+            if match_keys <= unit_keys:
+                return uid
+        elif match_keys & unit_keys:
+            return uid
+    return pair_ids[0]
 
 
 def _character_affinity_faction_set(cid, ld=None):
@@ -13049,6 +13174,7 @@ def _character_affinity_faction_set(cid, ld=None):
             if f:
                 factions.add(f)
             factions.update(_factions_from_ex_piloting_affinity_ability(aid, ld_en))
+    factions.update(_scan_character_ex_affinity_meta(cid).get('tag_factions') or set())
     return factions
 
 
@@ -13068,10 +13194,29 @@ def _affinity_ability_name_matches_tags(ab_name, tag_tokens_lc, op, lc=DEFAULT_L
     return any(t == faction for t in match_keys)
 
 
+def _canonical_affinity_faction_keys():
+    keys = set(_ensure_affinity_lineage_canonical().values())
+    ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    for name in (ld_en.get('abil_name_map') or {}).values():
+        if not isinstance(name, str):
+            continue
+        f = _extract_affinity_faction_from_ability_name(name)
+        if f:
+            keys.add(f)
+    return keys
+
+
+def _unit_lineage_canonical_keys(uid, lc=DEFAULT_LANG):
+    keys = set()
+    for t in resolve_tags(unit_lin_map, uid, 'EN', 'unit'):
+        name = t.get('name', '')
+        if name:
+            keys.update(_resolve_affinity_canonical_keys_for_tag(name, lc))
+    return keys
+
+
 def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld, lc=DEFAULT_LANG):
     factions = _character_affinity_faction_set(cid, ld)
-    if not factions:
-        return False
     match_keys = set()
     for t in tag_tokens_lc:
         if not t or not str(t).strip():
@@ -13080,8 +13225,24 @@ def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld, lc=DEFAULT_LAN
     if not match_keys:
         return False
     if op == 'and':
-        return all(t in factions for t in match_keys)
-    return any(t in factions for t in match_keys)
+        if all(t in factions for t in match_keys):
+            return True
+    elif any(t in factions for t in match_keys):
+        return True
+    pair_ids = _character_ex_pair_unit_ids(cid)
+    if not pair_ids:
+        return False
+    allowed = _canonical_affinity_faction_keys()
+    if not (match_keys & allowed):
+        return False
+    for uid in pair_ids:
+        unit_keys = _unit_lineage_canonical_keys(uid, lc)
+        if op == 'and':
+            if match_keys <= unit_keys:
+                return True
+        elif match_keys & unit_keys:
+            return True
+    return False
 
 @app.route('/api/tag_affinity')
 def get_tag_affinity():
@@ -13095,7 +13256,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v6_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v7_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -13123,7 +13284,18 @@ def get_tag_affinity():
                 thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
                 acq = info.get('acquisition_route', '0')
                 acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-                results[ri2].append({'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '', 'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''), 'acquisition_icon': acq_icon or ''})
+                entry = {
+                    'id': cid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'),
+                    'rarity_sort': RARITY_SORT.get(ri, 4), 'thum': thum or '',
+                    'acquisition_route': acq, 'role_icon': ROLE_ICON_MAP.get(ri2, ''),
+                    'acquisition_icon': acq_icon or '',
+                }
+                if _character_has_ex_unit_pair_ability(cid):
+                    entry['affinity_ex_pair'] = True
+                    pair_uid = _character_affinity_ex_pair_unit_id_for_tags(cid, tl, op, lc)
+                    if pair_uid:
+                        entry['affinity_ex_pair_unit_id'] = pair_uid
+                results[ri2].append(entry)
             for r in results:
                 results[r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
         else:
