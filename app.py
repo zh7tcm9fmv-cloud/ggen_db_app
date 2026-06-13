@@ -12871,6 +12871,10 @@ _AFFINITY_FACTION_LV_RE = re.compile(
     re.IGNORECASE,
 )
 _AFFINITY_LINEAGE_CANONICAL = None
+_AFFINITY_PILOTING_EFFECT_RE = re.compile(
+    r'piloting units with specified tags[\s\S]{0,160}increase damage dealt to enemies[\s\S]{0,120}reduce damage taken',
+    re.IGNORECASE,
+)
 
 
 def _name_indicates_affinity_ability(ab_name):
@@ -12958,6 +12962,79 @@ def _resolve_affinity_canonical_keys_for_tag(tag_name, lc):
     return keys
 
 
+def _trait_detail_implies_piloting_affinity_effect(text):
+    """Same in-combat tag buff as Affinity: … (piloting tagged units → dmg up / taken down)."""
+    if not text:
+        return False
+    if _AFFINITY_PILOTING_EFFECT_RE.search(str(text)):
+        return True
+    blob = str(text)
+    if '指定' in blob and 'タグ' in blob and '与ダメ' in blob and '被ダメ' in blob:
+        return True
+    if '指定' in blob and '標籤' in blob and ('傷害' in blob or '损伤' in blob):
+        return True
+    return False
+
+
+def _collect_detail_lineage_tag_names(detail):
+    if not isinstance(detail, dict):
+        return []
+    names, seen = [], set()
+
+    def _add(conds):
+        for c in conds or []:
+            if not isinstance(c, dict):
+                continue
+            if c.get('type') not in ('unit', 'group', 'character'):
+                continue
+            n = (c.get('name') or '').strip()
+            if n and n not in seen:
+                seen.add(n)
+                names.append(n)
+
+    _add(detail.get('conditions'))
+    for g in detail.get('condition_groups') or []:
+        if isinstance(g, dict):
+            _add(g.get('conditions'))
+    return names
+
+
+def _canonical_keys_for_lineage_tag_names(tag_names, lc=DEFAULT_LANG):
+    keys = set()
+    for tn in tag_names or []:
+        if not tn or not str(tn).strip():
+            continue
+        keys.update(_resolve_affinity_canonical_keys_for_tag(str(tn).strip(), lc))
+    return keys
+
+
+def _factions_from_ex_piloting_affinity_ability(aid, ld_en):
+    """UR/EX rows: faction lives on trait conditions, not in the EX ability title."""
+    abnm = ld_en.get('abil_name_map', {}) or {}
+    an = _resolved_ability_name_for_tag_scan(aid, abnm)
+    if _extract_affinity_faction_from_ability_name(an):
+        return set()
+    if not is_ex_ability(an):
+        return set()
+    try:
+        bab = build_ability_entry(
+            aid, abnm, abil_link_map, trait_set_traits_map, trait_data_map,
+            ld_en.get('lang_text_map', {}), ld_en.get('lang_text_map', {}),
+            trait_condition_raw_map, ld_en.get('lineage_lookup', {}),
+            ld_en.get('series_name_map', {}), ability_resource_map,
+            ld_en.get('abil_desc_map', {}), lang_code='EN')
+    except Exception:
+        return set()
+    if not bab.get('is_ex'):
+        return set()
+    keys = set()
+    for d in bab.get('details') or []:
+        if not _trait_detail_implies_piloting_affinity_effect(d.get('text')):
+            continue
+        keys.update(_canonical_keys_for_lineage_tag_names(_collect_detail_lineage_tag_names(d), 'EN'))
+    return keys
+
+
 def _character_affinity_faction_set(cid, ld=None):
     factions = set()
     ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
@@ -12971,6 +13048,7 @@ def _character_affinity_faction_set(cid, ld=None):
             f = _resolve_affinity_canonical_key_for_ability(aid, ld_en)
             if f:
                 factions.add(f)
+            factions.update(_factions_from_ex_piloting_affinity_ability(aid, ld_en))
     return factions
 
 
@@ -13017,7 +13095,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v5_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v6_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)

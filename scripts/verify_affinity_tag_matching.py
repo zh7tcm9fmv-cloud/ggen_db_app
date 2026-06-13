@@ -82,8 +82,8 @@ def main():
             _ = n_chars  # informational only; some factions have passives but no playable pilots yet
 
         for f in char_factions:
-            if f not in affinity_factions and lc == 'EN':
-                errors.append(f'EN: character affinity faction not in EN titles: {f!r}')
+            if f not in affinity_factions and lc == 'EN' and f in set(A._ensure_affinity_lineage_canonical().values()):
+                errors.append(f'EN: canonical affinity faction missing from EN titles: {f!r}')
 
         if orphan_factions and lc == 'EN':
             for f in sorted(orphan_factions):
@@ -99,15 +99,18 @@ def main():
     char_map_en = _playable_char_faction_map(A, 'EN')
 
     checks = [
-        ('Zeon', 47),
+        ('Zeon', 49),
         ('Neo Zeon', 26),
-        ('EFSF (U.C.)', 43),
+        ('EFSF (U.C.)', 50),
         ('Gundam', 0),
     ]
     for tag, expected in checks:
         actual = _count_tag(A, char_map_en, tag, 'EN')
         if actual != expected:
             errors.append(f'EN regression {tag}: got {actual}, expected {expected}')
+
+    if not A._character_has_affinity_tag_match('1001000100', ['efsf (u.c.)'], 'or', A.get_lang_data('EN'), 'EN'):
+        errors.append('EN regression: Amuro Ray (1001000100) EX ability must match EFSF (U.C.) affinity')
 
     neo_only_ids = [cid for cid, fs in char_map_en.items() if fs == {'neo zeon'}]
     for cid in neo_only_ids:
@@ -116,8 +119,8 @@ def main():
 
     # JA UC EFSF tag must resolve via lineage id → EN canonical key
     ja_efsf = _count_tag(A, _playable_char_faction_map(A, 'JA'), '地球連邦軍(宇宙世紀)', 'JA')
-    if ja_efsf != 43:
-        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 43')
+    if ja_efsf != 50:
+        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 50')
 
     if warnings:
         print('warnings:')
