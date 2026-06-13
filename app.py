@@ -12860,9 +12860,17 @@ def _resolved_ability_name_for_tag_scan(abil_id, abnm):
     return abnm.get(trait_set_id, abnm.get(lookup_id, abnm.get(abil_id, '')))
 
 # Localized "Affinity: …" trait titles in m_trait_set_detail (tag modal Affinity tab).
-# TW/HK use 契合度; JP アフィニティ; some builds use 親和 / 亲和. Keep in sync with
+# TW/HK use 契合度; JP 相性; some builds use 親和 / 亲和 / アフィニティ. Keep in sync with
 # scripts/verify_affinity_trait_titles.py when adding a new official prefix.
-_AFFINITY_TITLE_MARKERS_CJK = frozenset(('親和', '亲和', 'アフィニティ', '契合度'))
+_AFFINITY_TITLE_MARKERS_CJK = frozenset(('親和', '亲和', 'アフィニティ', '契合度', '相性'))
+_AFFINITY_FACTION_LV_RE = re.compile(
+    r'^(?:'
+    r'Affinity:\s*(?P<en>.+?)\s+LV\s*\d'
+    r'|(?:契合度|親和|亲和|アフィニティ|相性)[：:]\s*(?P<cjk>.+?)\s*LV\s*\d'
+    r')',
+    re.IGNORECASE,
+)
+_AFFINITY_LINEAGE_CANONICAL = None
 
 
 def _name_indicates_affinity_ability(ab_name):
@@ -12871,17 +12879,88 @@ def _name_indicates_affinity_ability(ab_name):
     n = ab_name.lower()
     if 'affinity' in n:
         return True
+    if '相性：' in ab_name or '相性:' in ab_name:
+        return True
     return any(m in ab_name for m in _AFFINITY_TITLE_MARKERS_CJK)
 
-def _affinity_ability_name_matches_tags(ab_name, tag_tokens_lc, op):
-    if not ab_name or not _name_indicates_affinity_ability(ab_name):
-        return False
-    nl = ab_name.lower()
-    if op == 'and':
-        return all(t in nl for t in tag_tokens_lc)
-    return any(t in nl for t in tag_tokens_lc)
 
-def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld):
+def _normalize_affinity_faction_key(s):
+    """Canonical faction key for tag ↔ affinity title comparison (spacing/parens)."""
+    if not s:
+        return ''
+    out = str(s).strip().lower()
+    out = re.sub(r'\s+\(', '(', out)
+    out = re.sub(r'\(\s+', '(', out)
+    out = re.sub(r'\s+\)', ')', out)
+    out = re.sub(r'\s+', ' ', out)
+    return out.strip()
+
+
+def _extract_affinity_faction_from_ability_name(ab_name):
+    if not ab_name or not _name_indicates_affinity_ability(ab_name):
+        return ''
+    m = _AFFINITY_FACTION_LV_RE.match(str(ab_name).strip())
+    if not m:
+        return ''
+    faction = (m.group('en') or m.group('cjk') or '').strip()
+    return _normalize_affinity_faction_key(faction)
+
+
+def _ensure_affinity_lineage_canonical():
+    """Map lineage id → normalized EN affinity faction (stable across locales)."""
+    global _AFFINITY_LINEAGE_CANONICAL
+    if _AFFINITY_LINEAGE_CANONICAL is not None:
+        return _AFFINITY_LINEAGE_CANONICAL
+    ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    en_factions = set()
+    for name in (ld_en.get('abil_name_map') or {}).values():
+        if not isinstance(name, str):
+            continue
+        f = _extract_affinity_faction_from_ability_name(name)
+        if f:
+            en_factions.add(f)
+    mapping = {}
+    for rid, en_tag_name in (ld_en.get('lineage_list') or []):
+        rid_n = normalize_id(rid)
+        if not rid_n or rid_n == '0':
+            continue
+        norm_tag = _normalize_affinity_faction_key(en_tag_name)
+        if norm_tag in en_factions:
+            mapping[rid_n] = norm_tag
+    _AFFINITY_LINEAGE_CANONICAL = mapping
+    return mapping
+
+
+def _resolve_affinity_canonical_key_for_ability(aid, ld_en=None):
+    """Canonical faction key from EN ability title (locale-agnostic matching)."""
+    if ld_en is None:
+        ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    abnm = ld_en.get('abil_name_map', {}) or {}
+    an = _resolved_ability_name_for_tag_scan(aid, abnm)
+    return _extract_affinity_faction_from_ability_name(an)
+
+
+def _resolve_affinity_canonical_keys_for_tag(tag_name, lc):
+    """Expand a clicked lineage tag label to canonical affinity faction key(s)."""
+    keys = set()
+    if not tag_name or not str(tag_name).strip():
+        return keys
+    keys.add(_normalize_affinity_faction_key(tag_name))
+    ld = get_lang_data(lc)
+    tag_cmp = _normalize_affinity_faction_key(tag_name)
+    canon_map = _ensure_affinity_lineage_canonical()
+    for rid, val in (ld.get('lineage_list') or []):
+        if _normalize_affinity_faction_key(val) != tag_cmp:
+            continue
+        canon = canon_map.get(normalize_id(rid))
+        if canon:
+            keys.add(canon)
+    return keys
+
+
+def _character_affinity_faction_set(cid, ld=None):
+    factions = set()
+    ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == cid]
     for ab in fa:
         bid = normalize_id(ab.get('AbilityId', ''))
@@ -12889,10 +12968,42 @@ def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld):
         for aid in (bid, spid):
             if not aid or aid in ('0', 'None'):
                 continue
-            an = _resolved_ability_name_for_tag_scan(aid, ld['abil_name_map'])
-            if _affinity_ability_name_matches_tags(an, tag_tokens_lc, op):
-                return True
-    return False
+            f = _resolve_affinity_canonical_key_for_ability(aid, ld_en)
+            if f:
+                factions.add(f)
+    return factions
+
+
+def _affinity_ability_name_matches_tags(ab_name, tag_tokens_lc, op, lc=DEFAULT_LANG):
+    faction = _extract_affinity_faction_from_ability_name(ab_name)
+    if not faction:
+        return False
+    match_keys = set()
+    for t in tag_tokens_lc:
+        if not t or not str(t).strip():
+            continue
+        match_keys.update(_resolve_affinity_canonical_keys_for_tag(t, lc))
+    if not match_keys:
+        return False
+    if op == 'and':
+        return all(t == faction for t in match_keys)
+    return any(t == faction for t in match_keys)
+
+
+def _character_has_affinity_tag_match(cid, tag_tokens_lc, op, ld, lc=DEFAULT_LANG):
+    factions = _character_affinity_faction_set(cid, ld)
+    if not factions:
+        return False
+    match_keys = set()
+    for t in tag_tokens_lc:
+        if not t or not str(t).strip():
+            continue
+        match_keys.update(_resolve_affinity_canonical_keys_for_tag(t, lc))
+    if not match_keys:
+        return False
+    if op == 'and':
+        return all(t in factions for t in match_keys)
+    return any(t in factions for t in match_keys)
 
 @app.route('/api/tag_affinity')
 def get_tag_affinity():
@@ -12906,7 +13017,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v4_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v5_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)
@@ -12924,7 +13035,7 @@ def get_tag_affinity():
                     continue
                 if not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
                     continue
-                if not _character_has_affinity_tag_match(cid, tl, op, ld):
+                if not _character_has_affinity_tag_match(cid, tl, op, ld, lc):
                     continue
                 lid = ld.get('char_id_map', {}).get(cid, '')
                 name = ld.get('char_text_map', {}).get(lid, '') if lid else ''

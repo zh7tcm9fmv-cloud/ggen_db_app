@@ -7,6 +7,7 @@ Official TW/HK strings use the prefix 契合度 (not 親和). Run after importin
 
 Requires bundled data under data/<LANG>/lang/m_trait_set_detail.json (repo copy).
 Marker list must match app._AFFINITY_TITLE_MARKERS_CJK and the 'affinity' substring rule.
+Faction extraction must match app._extract_affinity_faction_from_ability_name.
 """
 from __future__ import annotations
 
@@ -26,12 +27,14 @@ def _name_indicates_affinity_ability(ab_name):
     n = ab_name.lower()
     if 'affinity' in n:
         return True
-    markers = frozenset(('親和', '亲和', 'アフィニティ', '契合度'))
+    markers = frozenset(('親和', '亲和', 'アフィニティ', '契合度', '相性'))
     return any(m in ab_name for m in markers)
 
 
 def main():
     root = _repo_root()
+    sys.path.insert(0, root)
+    import app as A  # noqa: WPS433
     langs = ('TW', 'HK')
     errors = []
     checked = 0
@@ -54,6 +57,9 @@ def main():
             checked += 1
             if not _name_indicates_affinity_ability(v):
                 errors.append(f'{lang}: not detected: {v[:72]!r}…' if len(v) > 72 else f'{lang}: not detected: {v!r}')
+                continue
+            if not A._extract_affinity_faction_from_ability_name(v):
+                errors.append(f'{lang}: no faction parsed: {v[:72]!r}…' if len(v) > 72 else f'{lang}: no faction parsed: {v!r}')
     if errors:
         print('verify_affinity_trait_titles: FAILED', file=sys.stderr)
         for e in errors[:40]:
@@ -61,7 +67,7 @@ def main():
         if len(errors) > 40:
             print(f'... and {len(errors) - 40} more', file=sys.stderr)
         sys.exit(1)
-    print(f'verify_affinity_trait_titles: ok ({checked} 契合度 titles checked across {", ".join(langs)})')
+    print(f'verify_affinity_trait_titles: ok ({checked} CJK affinity titles checked across {", ".join(langs)})')
 
 
 if __name__ == '__main__':

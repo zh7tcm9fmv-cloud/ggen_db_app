@@ -872,7 +872,7 @@ def char_special_flags(cid: str, *, deep: bool = False) -> dict:
         if tokens:
             for bab in build_char_abilities(cid):
                 if A._name_indicates_affinity_ability(bab.get("name") or ""):
-                    if A._affinity_ability_name_matches_tags(bab.get("name") or "", tokens, "or"):
+                    if A._affinity_ability_name_matches_tags(bab.get("name") or "", tokens, "or", A.DEFAULT_LANG):
                         affinities.append(bab.get("name") or "Affinity")
         squad = parse_squad_buffs(cid)
         extras = char_offensive_extras(cid)
