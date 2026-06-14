@@ -5110,6 +5110,7 @@ def create_main_stage_challenge_map(d):
             'group1_sortie_restriction_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')),
             'group2_sortie_restriction_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')),
             'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
+            'secret_clear_reward_set_id': normalize_id(item.get('SecretClearRewardSetId') or item.get('secretClearRewardSetId')),
             'recommended_combat_power': safe_int(item.get('RecommendedCombatPower') or item.get('recommendedCombatPower'), 0),
         }
     return lookup
@@ -9897,8 +9898,14 @@ def _resolve_lang_text_from_maps(ld, lang_id, map_keys):
 
 
 def resolve_stage_secret_clear_rewards(stage_master_id, lc):
-    sm = (stage_map or {}).get(normalize_id(stage_master_id), {})
-    rsid = normalize_id(sm.get('secret_clear_reward_set_id', '0'))
+    sid = normalize_id(stage_master_id)
+    # Challenge stages override secret-clear rewards via m_main_stage_challenge (items),
+    # not the legacy unit pickup rows still present on m_stage.
+    mc = (main_stage_challenge_map or {}).get(sid, {})
+    rsid = normalize_id(mc.get('secret_clear_reward_set_id', '0'))
+    if rsid == '0':
+        sm = (stage_map or {}).get(sid, {})
+        rsid = normalize_id(sm.get('secret_clear_reward_set_id', '0'))
     if rsid == '0':
         return []
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc)
@@ -18570,7 +18577,7 @@ def list_stages():
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages12_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages13_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -18597,7 +18604,10 @@ def list_stages():
                 diff = get_stage_difficulty_by_type_index(dti, lc)
                 mc_cp = safe_int(mc.get('recommended_combat_power'), 0)
                 rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
-                sn_sort = safe_int(series_id, 0) * 100000 + sn * 100 + (1 if is_hard else 0)
+                sn_sort = safe_int(series_id, 0) * 100000 + (1000 if is_hard else 0) + sn
+                sc_row = (main_stage_series_challenge_map or {}).get(series_id, {})
+                main_series_id = normalize_id(sc_row.get('main_stage_series_id', '0'))
+                series_icon = find_series_icon(main_series_id) if main_series_id != '0' else ''
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': sn, 'name': sname,
@@ -18607,6 +18617,7 @@ def list_stages():
                     '_thumb_rid': thumb_rid,
                     'content_locked': False, 'stage_category': 'challenge_stage',
                     'challenge_series_id': series_id, 'challenge_series_name': series_name,
+                    'challenge_series_icon': series_icon,
                     'challenge_is_hard': is_hard,
                     'has_capturable_units': len(capt) > 0,
                     'capturable_pickup_unit_ids': [x for x in pickup_ids if x != '0'],
