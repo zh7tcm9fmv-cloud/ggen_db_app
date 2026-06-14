@@ -5137,6 +5137,7 @@ def _challenge_stage_is_hard(thumbnail_resource_id):
 
 
 _CHALLENGE_HARD_MISSION_CONDITION_TYPES = frozenset({273, 276, 281})
+_ETERNAL_EXPERT_MISSION_CONDITION_TYPES = frozenset({228, 229, 230, 263})
 
 
 def create_game_event_condition_map(d):
@@ -5172,8 +5173,17 @@ def create_challenge_hard_stage_id_set(scenario_stage_lookup, challenge_stage_lo
     return out
 
 
-def create_challenge_hard_missions_by_stage(mission_rows, condition_lookup, hard_stage_ids, group_sort_lookup):
-    by_stage = {sid: [] for sid in hard_stage_ids}
+def create_eternal_expert_stage_id_set(eternal_stage_lookup):
+    out = set()
+    for sid, est in (eternal_stage_lookup or {}).items():
+        if safe_int((est or {}).get('stage_difficulty_type_index'), 1) == 3:
+            out.add(normalize_id(sid))
+    return out
+
+
+def create_missions_by_target_stage(mission_rows, condition_lookup, stage_ids, group_sort_lookup, condition_types):
+    allowed = frozenset(condition_types or ())
+    by_stage = {sid: [] for sid in stage_ids}
     for item in extract_data_list(mission_rows):
         if not isinstance(item, dict):
             continue
@@ -5181,10 +5191,10 @@ def create_challenge_hard_missions_by_stage(mission_rows, condition_lookup, hard
         if not cond:
             continue
         ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
-        if ctype not in _CHALLENGE_HARD_MISSION_CONDITION_TYPES:
+        if ctype not in allowed:
             continue
         sid = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
-        if sid not in hard_stage_ids:
+        if sid not in stage_ids:
             continue
         by_stage[sid].append(item)
     for sid, rows in by_stage.items():
@@ -5193,6 +5203,15 @@ def create_challenge_hard_missions_by_stage(mission_rows, condition_lookup, hard
             safe_int(m.get('Id') or m.get('id'), 0),
         ))
     return by_stage
+
+
+def merge_missions_by_stage_indexes(*indexes):
+    out = {}
+    for idx in indexes:
+        for sid, rows in (idx or {}).items():
+            if rows:
+                out[sid] = list(rows)
+    return out
 
 def create_capturable_units_by_stage(d):
     lookup = {}
@@ -7542,9 +7561,18 @@ main_stage_challenge_npc_character_override_by_stage = create_main_stage_challen
 game_event_condition_map = create_game_event_condition_map(game_event_condition_data) if game_event_condition_data else {}
 mission_group_sort_map = create_mission_group_sort_map(mission_group_data) if mission_group_data else {}
 challenge_hard_stage_ids = create_challenge_hard_stage_id_set(scenario_stage_map, main_scenario_stage_challenge_map)
-challenge_hard_missions_by_stage = create_challenge_hard_missions_by_stage(
+eternal_expert_stage_ids = create_eternal_expert_stage_id_set(eternal_stage_map)
+_challenge_hard_missions_by_stage = create_missions_by_target_stage(
     mission_data, game_event_condition_map, challenge_hard_stage_ids, mission_group_sort_map,
+    _CHALLENGE_HARD_MISSION_CONDITION_TYPES,
 ) if mission_data and game_event_condition_map else {}
+_eternal_expert_missions_by_stage = create_missions_by_target_stage(
+    mission_data, game_event_condition_map, eternal_expert_stage_ids, mission_group_sort_map,
+    _ETERNAL_EXPERT_MISSION_CONDITION_TYPES,
+) if mission_data and game_event_condition_map else {}
+stage_missions_by_stage = merge_missions_by_stage_indexes(
+    _challenge_hard_missions_by_stage, _eternal_expert_missions_by_stage,
+)
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
@@ -10133,9 +10161,9 @@ def resolve_mission_title(ld, mission_row):
     return f'Mission {mid}' if mid != '0' else 'Mission'
 
 
-def resolve_challenge_hard_missions(stage_id, lc):
+def resolve_stage_missions(stage_id, lc):
     sid = normalize_id(stage_id)
-    rows = (challenge_hard_missions_by_stage or {}).get(sid, [])
+    rows = (stage_missions_by_stage or {}).get(sid, [])
     if not rows:
         return []
     ld = get_lang_data(lc)
@@ -18982,7 +19010,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else ('ch' if is_challenge_stage else 'er')))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage8"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage9"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -19286,6 +19314,11 @@ def get_stage(stage_id):
         _challenge_series_id = normalize_id(est.get('challenge_series_id', '0')) if is_challenge_stage else '0'
         challenge_series_layout = (main_stage_series_challenge_layout_map or {}).get(_challenge_series_id, {}) if is_challenge_stage else {}
         _ch_hard = _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False
+        _er_expert = (
+            not is_score_attack and not is_special_event_stage and not is_tower_event_stage
+            and not is_challenge_stage and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
+        )
+        _show_stage_missions = _ch_hard or _er_expert
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
@@ -19303,7 +19336,7 @@ def get_stage(stage_id):
             'challenge_series_name': challenge_series_name,
             'challenge_is_hard': _ch_hard,
             'challenge_series_layout': challenge_series_layout,
-            'challenge_missions': resolve_challenge_hard_missions(stage_id, lc) if _ch_hard else [],
+            'stage_missions': resolve_stage_missions(stage_id, lc) if _show_stage_missions else [],
         }
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
