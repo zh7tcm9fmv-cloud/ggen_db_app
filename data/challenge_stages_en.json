@@ -1,0 +1,661 @@
+{
+  "stage_count": 36,
+  "sca_thumbnails": [
+    "sca_0010_02_094",
+    "sca_0010_03_086",
+    "sca_0010_04_085",
+    "sca_0010_05_004",
+    "sca_0010_06_092",
+    "sca_0010_07_049",
+    "sca_0010_08_026",
+    "sca_0010_09_037",
+    "sca_0010_10_031",
+    "sca_0010_11_001",
+    "sca_0010_12_054",
+    "sca_0010_13_005",
+    "sca_0010_14_050",
+    "sca_3000_01_018",
+    "sca_3000_02_020",
+    "sca_3000_03_058",
+    "sca_3000_04_037",
+    "sca_3000_05_009",
+    "sca_3000_06_012",
+    "sca_3000_07_045",
+    "sca_3000_08_015",
+    "sca_3000_09_035",
+    "sca_3000_10_062",
+    "sca_3000_11_013",
+    "sca_3000_12_067",
+    "sca_3000_13_005",
+    "sca_3000_14_002",
+    "sca_3000_15_051",
+    "sca_3000_16_152",
+    "sca_3000_17_021"
+  ],
+  "thum_map_bg_thumbnails": [
+    "thum_map_bg_0006_01",
+    "thum_map_bg_0023_01",
+    "thum_map_bg_0026_01",
+    "thum_map_bg_0036_01",
+    "thum_map_bg_0037_01",
+    "thum_map_bg_0055_02"
+  ],
+  "cdn_paths": {
+    "sca": [
+      "images/Stages/sca_0010_02_094.webp",
+      "images/Stages/sca_0010_03_086.webp",
+      "images/Stages/sca_0010_04_085.webp",
+      "images/Stages/sca_0010_05_004.webp",
+      "images/Stages/sca_0010_06_092.webp",
+      "images/Stages/sca_0010_07_049.webp",
+      "images/Stages/sca_0010_08_026.webp",
+      "images/Stages/sca_0010_09_037.webp",
+      "images/Stages/sca_0010_10_031.webp",
+      "images/Stages/sca_0010_11_001.webp",
+      "images/Stages/sca_0010_12_054.webp",
+      "images/Stages/sca_0010_13_005.webp",
+      "images/Stages/sca_0010_14_050.webp",
+      "images/Stages/sca_3000_01_018.webp",
+      "images/Stages/sca_3000_02_020.webp",
+      "images/Stages/sca_3000_03_058.webp",
+      "images/Stages/sca_3000_04_037.webp",
+      "images/Stages/sca_3000_05_009.webp",
+      "images/Stages/sca_3000_06_012.webp",
+      "images/Stages/sca_3000_07_045.webp",
+      "images/Stages/sca_3000_08_015.webp",
+      "images/Stages/sca_3000_09_035.webp",
+      "images/Stages/sca_3000_10_062.webp",
+      "images/Stages/sca_3000_11_013.webp",
+      "images/Stages/sca_3000_12_067.webp",
+      "images/Stages/sca_3000_13_005.webp",
+      "images/Stages/sca_3000_14_002.webp",
+      "images/Stages/sca_3000_15_051.webp",
+      "images/Stages/sca_3000_16_152.webp",
+      "images/Stages/sca_3000_17_021.webp"
+    ],
+    "thum_map_bg": [
+      "images/Stages/thum_map_bg_0006_01.webp",
+      "images/Stages/thum_map_bg_0023_01.webp",
+      "images/Stages/thum_map_bg_0026_01.webp",
+      "images/Stages/thum_map_bg_0036_01.webp",
+      "images/Stages/thum_map_bg_0037_01.webp",
+      "images/Stages/thum_map_bg_0055_02.webp"
+    ]
+  },
+  "stages": [
+    {
+      "id": "100202",
+      "stage_number": 1,
+      "series_challenge_id": 10,
+      "name": "Gundam Destruction Order",
+      "thumbnail_resource_id": "sca_0010_02_094",
+      "lane": "main",
+      "recommended_cp": 100000,
+      "group1_sortie": 1,
+      "group2_sortie": 5,
+      "capturable_count": 0,
+      "capturable_pickup_unit_ids": [],
+      "has_capturable_units": false
+    },
+    {
+      "id": "101501",
+      "stage_number": 1,
+      "series_challenge_id": 10,
+      "name": "Mobile Suit Gundam HARD STAGE 1",
+      "thumbnail_resource_id": "thum_map_bg_0023_01",
+      "lane": "alternate",
+      "recommended_cp": 240000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 3,
+      "capturable_pickup_unit_ids": [
+        "1001002800"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100303",
+      "stage_number": 2,
+      "series_challenge_id": 10,
+      "name": "Fly! Gundam",
+      "thumbnail_resource_id": "sca_0010_03_086",
+      "lane": "main",
+      "recommended_cp": 115000,
+      "group1_sortie": 2,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001003100"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101601",
+      "stage_number": 2,
+      "series_challenge_id": 10,
+      "name": "Mobile Suit Gundam HARD STAGE 2",
+      "thumbnail_resource_id": "thum_map_bg_0006_01",
+      "lane": "alternate",
+      "recommended_cp": 245000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001000100"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100402",
+      "stage_number": 3,
+      "series_challenge_id": 10,
+      "name": "Garma's Fate",
+      "thumbnail_resource_id": "sca_0010_04_085",
+      "lane": "main",
+      "recommended_cp": 135000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001003300"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101701",
+      "stage_number": 3,
+      "series_challenge_id": 10,
+      "name": "Mobile Suit Gundam HARD STAGE 3",
+      "thumbnail_resource_id": "thum_map_bg_0026_01",
+      "lane": "alternate",
+      "recommended_cp": 250000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001700"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100502",
+      "stage_number": 4,
+      "series_challenge_id": 10,
+      "name": "Sayla's Agony",
+      "thumbnail_resource_id": "sca_0010_05_004",
+      "lane": "main",
+      "recommended_cp": 140000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001000900"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100603",
+      "stage_number": 5,
+      "series_challenge_id": 10,
+      "name": "Ramba Ral's Attack!",
+      "thumbnail_resource_id": "sca_0010_06_092",
+      "lane": "main",
+      "recommended_cp": 145000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001000900"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100703",
+      "stage_number": 6,
+      "series_challenge_id": 10,
+      "name": "Black Tri-Stars",
+      "thumbnail_resource_id": "sca_0010_07_049",
+      "lane": "main",
+      "recommended_cp": 150000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001001200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100802",
+      "stage_number": 7,
+      "series_challenge_id": 10,
+      "name": "Soldiers of Sorrow",
+      "thumbnail_resource_id": "sca_0010_08_026",
+      "lane": "main",
+      "recommended_cp": 170000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001300"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "100902",
+      "stage_number": 8,
+      "series_challenge_id": 10,
+      "name": "Tragedy in Jaburo",
+      "thumbnail_resource_id": "sca_0010_09_037",
+      "lane": "main",
+      "recommended_cp": 175000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001002000"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101003",
+      "stage_number": 9,
+      "series_challenge_id": 10,
+      "name": "A Fateful Encounter",
+      "thumbnail_resource_id": "sca_0010_10_031",
+      "lane": "main",
+      "recommended_cp": 180000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1001001400"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101103",
+      "stage_number": 10,
+      "series_challenge_id": 10,
+      "name": "Fear! Mobile Big Zam",
+      "thumbnail_resource_id": "sca_0010_11_001",
+      "lane": "main",
+      "recommended_cp": 200000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001400"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101203",
+      "stage_number": 11,
+      "series_challenge_id": 10,
+      "name": "Shining Universe",
+      "thumbnail_resource_id": "sca_0010_12_054",
+      "lane": "main",
+      "recommended_cp": 210000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001500"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101303",
+      "stage_number": 12,
+      "series_challenge_id": 10,
+      "name": "Space Fortress A Baoa Qu",
+      "thumbnail_resource_id": "sca_0010_13_005",
+      "lane": "main",
+      "recommended_cp": 215000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001500"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "101402",
+      "stage_number": 13,
+      "series_challenge_id": 10,
+      "name": "Encounters in Space",
+      "thumbnail_resource_id": "sca_0010_14_050",
+      "lane": "main",
+      "recommended_cp": 220000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1001001500"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000103",
+      "stage_number": 1,
+      "series_challenge_id": 3000,
+      "name": "Its Name: Gundam",
+      "thumbnail_resource_id": "sca_3000_01_018",
+      "lane": "main",
+      "recommended_cp": 130000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002300"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001801",
+      "stage_number": 1,
+      "series_challenge_id": 3000,
+      "name": "Mobile Suit Gundam SEED HARD STAGE 1",
+      "thumbnail_resource_id": "thum_map_bg_0036_01",
+      "lane": "alternate",
+      "recommended_cp": 235000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 3,
+      "capturable_pickup_unit_ids": [
+        "1300003500"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000202",
+      "stage_number": 2,
+      "series_challenge_id": 3000,
+      "name": "Silent Run",
+      "thumbnail_resource_id": "sca_3000_02_020",
+      "lane": "main",
+      "recommended_cp": 133000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001901",
+      "stage_number": 2,
+      "series_challenge_id": 3000,
+      "name": "Mobile Suit Gundam SEED HARD STAGE 2",
+      "thumbnail_resource_id": "thum_map_bg_0055_02",
+      "lane": "alternate",
+      "recommended_cp": 245000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300001800"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000303",
+      "stage_number": 3,
+      "series_challenge_id": 3000,
+      "name": "The Fading Light",
+      "thumbnail_resource_id": "sca_3000_03_058",
+      "lane": "main",
+      "recommended_cp": 135000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30002001",
+      "stage_number": 3,
+      "series_challenge_id": 3000,
+      "name": "Mobile Suit Gundam SEED HARD STAGE 3",
+      "thumbnail_resource_id": "thum_map_bg_0037_01",
+      "lane": "alternate",
+      "recommended_cp": 250000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300002400"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000403",
+      "stage_number": 4,
+      "series_challenge_id": 3000,
+      "name": "The Awakening Sword",
+      "thumbnail_resource_id": "sca_3000_04_037",
+      "lane": "main",
+      "recommended_cp": 140000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000503",
+      "stage_number": 5,
+      "series_challenge_id": 3000,
+      "name": "Stars Falling in Space",
+      "thumbnail_resource_id": "sca_3000_05_009",
+      "lane": "main",
+      "recommended_cp": 145000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000603",
+      "stage_number": 6,
+      "series_challenge_id": 3000,
+      "name": "Beyond the Clouds of Sand",
+      "thumbnail_resource_id": "sca_3000_06_012",
+      "lane": "main",
+      "recommended_cp": 150000,
+      "group1_sortie": 3,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300002000"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000703",
+      "stage_number": 7,
+      "series_challenge_id": 3000,
+      "name": "The Turning Point",
+      "thumbnail_resource_id": "sca_3000_07_045",
+      "lane": "main",
+      "recommended_cp": 170000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300003100"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000802",
+      "stage_number": 8,
+      "series_challenge_id": 3000,
+      "name": "Flashing Blades",
+      "thumbnail_resource_id": "sca_3000_08_015",
+      "lane": "main",
+      "recommended_cp": 175000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300002900"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30000904",
+      "stage_number": 9,
+      "series_challenge_id": 3000,
+      "name": "Beyond Your Gaze",
+      "thumbnail_resource_id": "sca_3000_09_035",
+      "lane": "main",
+      "recommended_cp": 180000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300003000"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001003",
+      "stage_number": 10,
+      "series_challenge_id": 3000,
+      "name": "The Descending Sword",
+      "thumbnail_resource_id": "sca_3000_10_062",
+      "lane": "main",
+      "recommended_cp": 185000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300003100"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001103",
+      "stage_number": 11,
+      "series_challenge_id": 3000,
+      "name": "Gunfire of Determination",
+      "thumbnail_resource_id": "sca_3000_11_013",
+      "lane": "main",
+      "recommended_cp": 190000,
+      "group1_sortie": 4,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300001700"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001203",
+      "stage_number": 12,
+      "series_challenge_id": 3000,
+      "name": "Into the Dawn Skies",
+      "thumbnail_resource_id": "sca_3000_12_067",
+      "lane": "main",
+      "recommended_cp": 210000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300001700"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001304",
+      "stage_number": 13,
+      "series_challenge_id": 3000,
+      "name": "Spiral of Encounters",
+      "thumbnail_resource_id": "sca_3000_13_005",
+      "lane": "main",
+      "recommended_cp": 215000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300001700"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001403",
+      "stage_number": 14,
+      "series_challenge_id": 3000,
+      "name": "A Place for the Soul",
+      "thumbnail_resource_id": "sca_3000_14_002",
+      "lane": "main",
+      "recommended_cp": 220000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300002200"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001503",
+      "stage_number": 15,
+      "series_challenge_id": 3000,
+      "name": "The Nightmare Reborn",
+      "thumbnail_resource_id": "sca_3000_15_051",
+      "lane": "main",
+      "recommended_cp": 225000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 1,
+      "capturable_pickup_unit_ids": [
+        "1300004000"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001604",
+      "stage_number": 16,
+      "series_challenge_id": 3000,
+      "name": "The Final Light",
+      "thumbnail_resource_id": "sca_3000_16_152",
+      "lane": "main",
+      "recommended_cp": 225000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300004000"
+      ],
+      "has_capturable_units": true
+    },
+    {
+      "id": "30001704",
+      "stage_number": 17,
+      "series_challenge_id": 3000,
+      "name": "To a Future that Never Ends",
+      "thumbnail_resource_id": "sca_3000_17_021",
+      "lane": "main",
+      "recommended_cp": 230000,
+      "group1_sortie": 5,
+      "group2_sortie": 5,
+      "capturable_count": 2,
+      "capturable_pickup_unit_ids": [
+        "1300002700"
+      ],
+      "has_capturable_units": true
+    }
+  ]
+}

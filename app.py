@@ -4146,7 +4146,7 @@ _LANG_DISPLAY_FALLBACK_KEYS = (
     'series_name_map', 'lang_text_map', 'lineage_lookup',
     'abil_name_map', 'abil_desc_map',
     'supporter_leader_text_map', 'supporter_active_text_map',
-    'stage_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
+    'stage_text_map', 'scenario_stage_text_map', 'scenario_stage_series_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
     'stage_master_text_map', 'stage_condition_text_map', 'map_stage_condition_text_map',
     'weapon_text_map', 'op_text_map',
 )
@@ -5062,6 +5062,162 @@ def create_special_event_stage_map(d):
         }
     return lookup
 
+def create_scenario_stage_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        if sid == '0':
+            continue
+        lookup[sid] = {
+            'scenario_stage_series_id': normalize_id(item.get('ScenarioStageSeriesId') or item.get('scenarioStageSeriesId')),
+            'thumbnail_resource_id': str(item.get('ThumbnailResourceId') or item.get('thumbnailResourceId') or '').strip(),
+            'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
+            'title_name_lang_id': normalize_id(item.get('TitleNameLanguageId') or item.get('titleNameLanguageId')),
+            'stage_number': safe_int(item.get('StageNumber') or item.get('stageNumber'), 0),
+        }
+    return lookup
+
+def create_main_stage_series_challenge_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        if cid == '0':
+            continue
+        lookup[cid] = {
+            'id': cid,
+            'main_stage_series_id': normalize_id(item.get('MainStageSeriesId') or item.get('mainStageSeriesId')),
+            'bromide_resource_id': str(item.get('BromideResourceId') or item.get('bromideResourceId') or '').strip(),
+            'recommended_combat_power': safe_int(item.get('RecommendedCombatPower') or item.get('recommendedCombatPower'), 0),
+        }
+    return lookup
+
+def create_main_stage_challenge_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('Id') or item.get('StageId') or item.get('stageId'))
+        if sid == '0':
+            continue
+        lookup[sid] = {
+            'stage_id': sid,
+            'group1_sortie_count': safe_int(item.get('Group1SortieCount') or item.get('group1SortieCount'), 0),
+            'group2_sortie_count': safe_int(item.get('Group2SortieCount') or item.get('group2SortieCount'), 0),
+            'group1_sortie_restriction_set_id': normalize_id(item.get('Group1SortieRestrictionSetId') or item.get('group1SortieRestrictionSetId')),
+            'group2_sortie_restriction_set_id': normalize_id(item.get('Group2SortieRestrictionSetId') or item.get('group2SortieRestrictionSetId')),
+            'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
+            'recommended_combat_power': safe_int(item.get('RecommendedCombatPower') or item.get('recommendedCombatPower'), 0),
+        }
+    return lookup
+
+def create_main_scenario_stage_challenge_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('ScenarioStageId') or item.get('scenarioStageId') or item.get('Id') or item.get('id'))
+        if sid == '0':
+            continue
+        lookup[sid] = {
+            'scenario_stage_id': sid,
+            'main_stage_series_challenge_id': normalize_id(item.get('MainStageSeriesChallengeId') or item.get('mainStageSeriesChallengeId')),
+            'stage_number': safe_int(item.get('StageNumber') or item.get('stageNumber'), 0),
+            'main_stage_challenge_id': normalize_id(item.get('MainStageChallengeId') or item.get('mainStageChallengeId')),
+        }
+    return lookup
+
+def create_capturable_units_by_stage(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('StageId') or item.get('stageId'))
+        uid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId'))
+        if sid == '0' or uid == '0':
+            continue
+        lookup.setdefault(sid, []).append({
+            'main_unit_id': uid,
+            'is_pickup': bool(item.get('IsStageSelectPickupCaptureUnit') or item.get('isStageSelectPickupCaptureUnit')),
+            'default_capture_rate_permil': safe_int(item.get('DefaultCaptureRatePermil') or item.get('defaultCaptureRatePermil'), 0),
+            'leader_killed_capture_rate_permil': safe_int(item.get('LeaderKilledCaptureRatePermil') or item.get('leaderKilledCaptureRatePermil'), 0),
+        })
+    return lookup
+
+def create_main_stage_challenge_npc_unit_override_by_stage(d):
+    """MainStageChallengeId -> MapNpcId -> [unit rows] (same shape as map_npc_unit_lookup values)."""
+    by_stage = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('MainStageChallengeId') or item.get('mainStageChallengeId'))
+        nid = normalize_id(item.get('MapNpcId') or item.get('mapNpcId'))
+        if sid == '0' or nid == '0':
+            continue
+        row = {
+            'number': safe_int(item.get('Number'), 0),
+            'unit_id': normalize_id(item.get('UnitId') or item.get('unitId')),
+            'level': safe_int(item.get('Level'), 0),
+            'hp': safe_int(item.get('Hp'), 0),
+            'en': safe_int(item.get('En'), 0),
+            'attack': safe_int(item.get('Attack'), 0),
+            'defense': safe_int(item.get('Defense'), 0),
+            'mobility': safe_int(item.get('Mobility'), 0),
+            'movement': safe_int(item.get('Movement'), 0),
+            'ability_set_id': normalize_id(item.get('MapNpcUnitAbilitySetId') or item.get('mapNpcUnitAbilitySetId')),
+            'weapon_set_id': normalize_id(item.get('MapNpcUnitWeaponSetId') or item.get('mapNpcUnitWeaponSetId')),
+        }
+        by_stage.setdefault(sid, {}).setdefault(nid, []).append(row)
+    for stage_rows in by_stage.values():
+        for rows in stage_rows.values():
+            rows.sort(key=lambda x: x['number'])
+    return by_stage
+
+def create_main_stage_challenge_npc_character_override_by_stage(d):
+    """MainStageChallengeId -> MapNpcId -> [character rows] (same shape as map_npc_character_lookup values)."""
+    by_stage = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('MainStageChallengeId') or item.get('mainStageChallengeId'))
+        nid = normalize_id(item.get('MapNpcId') or item.get('mapNpcId'))
+        if sid == '0' or nid == '0':
+            continue
+        row = {
+            'number': safe_int(item.get('Number'), 0),
+            'character_id': normalize_id(item.get('CharacterId') or item.get('characterId')),
+            'level': safe_int(item.get('Level'), 0),
+            'ranged': safe_int(item.get('Ranged'), 0),
+            'melee': safe_int(item.get('Melee'), 0),
+            'defense': safe_int(item.get('Defense'), 0),
+            'reaction': safe_int(item.get('Reaction'), 0),
+            'awaken': safe_int(item.get('Awaken'), 0),
+            'ability_set_id': normalize_id(item.get('MapNpcCharacterAbilitySetId') or item.get('mapNpcCharacterAbilitySetId')),
+            'skill_set_id': normalize_id(item.get('MapNpcCharacterSkillSetId') or item.get('mapNpcCharacterSkillSetId')),
+        }
+        by_stage.setdefault(sid, {}).setdefault(nid, []).append(row)
+    for stage_rows in by_stage.values():
+        for rows in stage_rows.values():
+            rows.sort(key=lambda x: x['number'])
+    return by_stage
+
+def create_main_stage_series_challenge_layout_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('MainStageSeriesChallengeId') or item.get('mainStageSeriesChallengeId'))
+        if sid == '0':
+            continue
+        lookup[sid] = {
+            'logo_offset_x': safe_int(item.get('LogoOffsetX') or item.get('logoOffsetX'), 0),
+            'bromide_scale_percent': safe_int(item.get('BromideScalePercent') or item.get('bromideScalePercent'), 100),
+        }
+    return lookup
+
 def create_tower_event_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -5687,6 +5843,28 @@ def npc_map_pulse_strategy_hint(up, cp, hint_rows_from_master):
     if hint_rows_from_master:
         return True
     return npc_payload_has_strategy_hint_attention(up, cp)
+
+
+def _resolve_map_npc_unit_rows(map_npc_id, challenge_stage_id=None):
+    """Base m_map_npc_unit rows, or challenge override rows when present."""
+    nid = normalize_id(map_npc_id)
+    if challenge_stage_id:
+        sid = normalize_id(challenge_stage_id)
+        ostage = (main_stage_challenge_npc_unit_override_by_stage or {}).get(sid, {})
+        if nid in ostage:
+            return ostage[nid]
+    return map_npc_unit_lookup.get(nid, []) or map_npc_unit_lookup.get(map_npc_id, [])
+
+
+def _resolve_map_npc_character_rows(map_npc_id, challenge_stage_id=None):
+    """Base m_map_npc_character rows, or challenge override rows when present."""
+    nid = normalize_id(map_npc_id)
+    if challenge_stage_id:
+        sid = normalize_id(challenge_stage_id)
+        ostage = (main_stage_challenge_npc_character_override_by_stage or {}).get(sid, {})
+        if nid in ostage:
+            return ostage[nid]
+    return map_npc_character_lookup.get(nid, []) or map_npc_character_lookup.get(map_npc_id, [])
 
 
 def create_map_npc_unit_lookup(d):
@@ -7167,6 +7345,14 @@ map_event_data = load_json(os.path.join(BASE_DIR, "m_map_event.json"))
 map_event_partner_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner.json"))
 map_event_partner_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner_set_content.json"))
 special_event_stage_data = load_json(os.path.join(BASE_DIR, "m_special_event_stage.json"))
+main_stage_series_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_stage_series_challenge.json"))
+main_scenario_stage_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_scenario_stage_challenge.json"))
+main_stage_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_stage_challenge.json"))
+scenario_stage_data = load_json(os.path.join(BASE_DIR, "m_scenario_stage.json"))
+capturable_unit_data = load_json(os.path.join(BASE_DIR, "m_capturable_unit.json"))
+main_stage_series_challenge_layout_data = load_json(os.path.join(BASE_DIR, "m_main_stage_series_challenge_layout_adjustment.json"))
+main_stage_challenge_npc_unit_override_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_main_stage_challenge_override.json"))
+main_stage_challenge_npc_character_override_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character_main_stage_challenge_override.json"))
 tower_event_data = load_json(os.path.join(BASE_DIR, "m_tower_event.json"))
 tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_group.json"))
 tower_event_stage_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage.json"))
@@ -7278,6 +7464,14 @@ map_event_panel_stage_by_stage = create_map_event_panel_stage_by_stage_lookup(ma
 map_event_lookup = create_map_event_lookup(map_event_data) if map_event_data else {}
 map_event_partners_by_event = create_map_event_partners_by_event_lookup(map_event_data, map_event_partner_data, map_event_partner_set_content_data) if map_event_data and map_event_partner_data and map_event_partner_set_content_data else {}
 special_event_stage_map = create_special_event_stage_map(special_event_stage_data) if special_event_stage_data else {}
+scenario_stage_map = create_scenario_stage_map(scenario_stage_data) if scenario_stage_data else {}
+main_stage_series_challenge_map = create_main_stage_series_challenge_map(main_stage_series_challenge_data) if main_stage_series_challenge_data else {}
+main_stage_challenge_map = create_main_stage_challenge_map(main_stage_challenge_data) if main_stage_challenge_data else {}
+main_scenario_stage_challenge_map = create_main_scenario_stage_challenge_map(main_scenario_stage_challenge_data) if main_scenario_stage_challenge_data else {}
+capturable_units_by_stage = create_capturable_units_by_stage(capturable_unit_data) if capturable_unit_data else {}
+main_stage_series_challenge_layout_map = create_main_stage_series_challenge_layout_map(main_stage_series_challenge_layout_data) if main_stage_series_challenge_layout_data else {}
+main_stage_challenge_npc_unit_override_by_stage = create_main_stage_challenge_npc_unit_override_by_stage(main_stage_challenge_npc_unit_override_data) if main_stage_challenge_npc_unit_override_data else {}
+main_stage_challenge_npc_character_override_by_stage = create_main_stage_challenge_npc_character_override_by_stage(main_stage_challenge_npc_character_override_data) if main_stage_challenge_npc_character_override_data else {}
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
@@ -7901,6 +8095,8 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_group_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage_group.json"))
     tower_stage_lang_text = load_json(os.path.join(lang_dir, "m_tower_event_stage.json"))
     special_event_stage_lang_text = load_json(os.path.join(lang_dir, "m_special_event_stage.json"))
+    scenario_stage_lang_text = load_json(os.path.join(lang_dir, "m_scenario_stage.json"))
+    scenario_stage_series_lang_text = load_json(os.path.join(lang_dir, "m_scenario_stage_series.json"))
     item_lang_text = load_json(os.path.join(lang_dir, "m_item.json"))
     profile_title_lang_text = load_json(os.path.join(lang_dir, "m_profile_title.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
@@ -7920,6 +8116,8 @@ for lang_code, paths in LANG_PATHS.items():
     tower_stage_group_text_map = create_lang_text_map(tower_stage_group_lang_text) if tower_stage_group_lang_text else {}
     tower_stage_text_map = create_lang_text_map(tower_stage_lang_text) if tower_stage_lang_text else {}
     special_event_stage_text_map = create_lang_text_map(special_event_stage_lang_text) if special_event_stage_lang_text else {}
+    scenario_stage_text_map = create_lang_text_map(scenario_stage_lang_text) if scenario_stage_lang_text else {}
+    scenario_stage_series_text_map = create_lang_text_map(scenario_stage_series_lang_text) if scenario_stage_series_lang_text else {}
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
     profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
@@ -8038,7 +8236,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -9795,10 +9993,69 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
                     rew['description'] = (f"Score {score}" if not rew.get('description') else f"Score {score} - {rew.get('description')}")
                 out.append(rew)
         return out
+    if cat == 'challenge_stage':
+        mc = (main_stage_challenge_map or {}).get(sid, {})
+        fc = normalize_id(mc.get('first_clear_reward_set_id', '0'))
+        if fc != '0':
+            return _decorate_reward_rows(_resolve_reward_rows_from_set_id(fc), lc)
+        return []
     sm = (stage_map or {}).get(sid, {})
     fc = normalize_id(sm.get('first_clear_reward_set_id', '0'))
     reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
+
+def challenge_stage_thumb_url(thumbnail_resource_id):
+    """m_scenario_stage.ThumbnailResourceId → PNG under images/Stages (CDN WebP via convert_image_urls / imgTag)."""
+    rid = str(thumbnail_resource_id or '').strip()
+    if not rid or rid == '0':
+        return ''
+    return f'/static/images/Stages/{rid}.png'
+
+def resolve_scenario_stage_name(ld, title_lang_id, stage_id):
+    lid = normalize_id(title_lang_id)
+    txt = (ld.get('scenario_stage_text_map') or {}).get(lid, '')
+    if txt:
+        return str(txt).strip()
+    return f"Unknown ({stage_id})"
+
+def resolve_challenge_series_name(ld, series_challenge_id):
+    sc = (main_stage_series_challenge_map or {}).get(normalize_id(series_challenge_id), {})
+    sid = normalize_id(sc.get('main_stage_series_id', '0'))
+    if sid == '0':
+        return ''
+    snm = ld.get('series_name_map') or {}
+    name = snm.get(sid)
+    if name:
+        return str(name).strip()
+    series_lang_id = normalize_id(f"130200000000{sid.zfill(6)}")
+    return str((ld.get('scenario_stage_series_text_map') or {}).get(series_lang_id, '') or '').strip()
+
+def resolve_challenge_capturable_units(stage_id, lc):
+    ld = get_lang_data(lc)
+    out = []
+    for cu in (capturable_units_by_stage or {}).get(normalize_id(stage_id), []):
+        uid = normalize_id(cu.get('main_unit_id', '0'))
+        if uid == '0':
+            continue
+        uinfo = unit_info_map.get(uid, {}) or {}
+        ulid = (ld.get('unit_id_map') or {}).get(uid, '')
+        uname = (ld.get('unit_text_map') or {}).get(ulid, '') if ulid else ''
+        if not uname:
+            uname = f"Unknown ({uid})"
+        uri = uinfo.get('rarity', '1')
+        out.append({
+            'unit_id': uid,
+            'name': uname,
+            'thum': find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or '',
+            'rarity': RARITY_MAP.get(uri, 'N'),
+            'rarity_icon': RARITY_ICON_MAP.get(uri, ''),
+            'role_icon': ROLE_ICON_MAP.get(uinfo.get('role', '0'), ''),
+            'acquisition_icon': ACQUISITION_ROUTE_ICONS.get(uinfo.get('acquisition_route', '0'), ''),
+            'is_pickup': bool(cu.get('is_pickup')),
+            'capture_rate_percent': round(safe_int(cu.get('default_capture_rate_permil'), 0) / 10.0, 1),
+        })
+    out.sort(key=lambda x: (0 if x.get('is_pickup') else 1, x.get('name') or ''))
+    return out
 
 def special_event_stage_thumb_url(thumbnail_resource_id):
     """m_special_event_stage.ThumbnailResourceId → PNG path under images/Stages/Sp_stage_thum.
@@ -10739,7 +10996,7 @@ def _npc_map_try_apply_pilot_named_squad_ms_from_detail(txt, keys, pilot_tgt_by_
     return True
 
 
-def _map_stage_deployed_character_ids(npc_entries):
+def _map_stage_deployed_character_ids(npc_entries, challenge_stage_id=None):
     ids = set()
     if not npc_entries:
         return ids
@@ -10747,8 +11004,7 @@ def _map_stage_deployed_character_ids(npc_entries):
         nid = npc.get('id')
         if not nid:
             continue
-        nid_n = normalize_id(nid)
-        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
+        nc = _resolve_map_npc_character_rows(nid, challenge_stage_id=challenge_stage_id)
         if not nc:
             continue
         cid = normalize_id(nc[0].get('character_id', '0'))
@@ -10757,7 +11013,7 @@ def _map_stage_deployed_character_ids(npc_entries):
     return ids
 
 
-def _map_stage_deployed_unit_ids(npc_entries):
+def _map_stage_deployed_unit_ids(npc_entries, challenge_stage_id=None):
     ids = set()
     if not npc_entries:
         return ids
@@ -10765,8 +11021,7 @@ def _map_stage_deployed_unit_ids(npc_entries):
         nid = npc.get('id')
         if not nid:
             continue
-        nid_n = normalize_id(nid)
-        nu = map_npc_unit_lookup.get(nid_n, []) or map_npc_unit_lookup.get(nid, [])
+        nu = _resolve_map_npc_unit_rows(nid, challenge_stage_id=challenge_stage_id)
         if not nu:
             continue
         uid = normalize_id(nu[0].get('unit_id', '0'))
@@ -10822,15 +11077,14 @@ def _resolve_unit_ids_on_stage_from_fragment(fragment, ldc, stage_unit_ids):
     return out
 
 
-def accumulate_npc_unit_condition_pct_by_unit(npc_entries, lc):
+def accumulate_npc_unit_condition_pct_by_unit(npc_entries, lc, challenge_stage_id=None):
     """MS stat % from \"(Unit conditions)\" pilot traits keyed by target UnitId on this stage."""
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
     unit_pct = {}
     ld = get_lang_data(lc) or {}
-    stage_uids = _map_stage_deployed_unit_ids(npc_entries)
+    stage_uids = _map_stage_deployed_unit_ids(npc_entries, challenge_stage_id=challenge_stage_id)
     for npc in npc_entries:
-        nid_n = normalize_id(npc.get('id'))
-        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(npc.get('id'), [])
+        nc = _resolve_map_npc_character_rows(npc.get('id'), challenge_stage_id=challenge_stage_id)
         if not nc:
             continue
         cabs = resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc)
@@ -11045,11 +11299,11 @@ def _merge_map_npc_unit_stat_pct_from_abilities(
                 carry_cond = False
 
 
-def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc, merge_mode='unconditional'):
+def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc, merge_mode='unconditional', challenge_stage_id=None):
     """Per stage with m_map_npc placement: squad-wide % from all NPCs' unit + character abilities + each NPC's own non-squad lines.
 
-    ``get_stage`` uses this path for Eternal, Tower (via ``stage_master_id``), Score Attack, and Special Event —
-    identical rules everywhere; fixes validated on one eternal stage (e.g. 90520021) apply to all.
+    ``get_stage`` uses this path for Eternal, Tower (via ``stage_master_id``), Score Attack, Special Event, and
+    Challenge Stages (via ``challenge_stage_id`` override rows) — identical rules everywhere.
 
     Returns (squad_total, per_npc_self_rows, squad_by_source, pilot_char_ms_pct) where
     squad_by_source[nid] is the squad-wide % parsed from that NPC's abilities only, and pilot_char_ms_pct
@@ -11062,25 +11316,24 @@ def accumulate_npc_map_unit_stat_bonuses(npc_entries, lc, merge_mode='unconditio
     unconditional stat lines (e.g. \"Increase DEF by 15%.\\nWhen ...\").
 
     ``merge_mode='conditional_title_gated'`` parses only CP / unit-condition / Supercharged EX title kits.
-  """
+    """
     keys = ['HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move']
     squad = {k: 0 for k in keys}
     per_npc = {}
     squad_by_source = {}
     pilot_char_ms_pct = {}
     ld = get_lang_data(lc) or {}
-    stage_cids = _map_stage_deployed_character_ids(npc_entries)
+    stage_cids = _map_stage_deployed_character_ids(npc_entries, challenge_stage_id=challenge_stage_id)
     for npc in npc_entries:
         nid = npc['id']
-        nid_n = normalize_id(nid)
-        nu = map_npc_unit_lookup.get(nid_n, []) or map_npc_unit_lookup.get(nid, [])
+        nu = _resolve_map_npc_unit_rows(nid, challenge_stage_id=challenge_stage_id)
         if not nu:
             continue
         _merge_map_npc_unit_stat_pct_from_abilities(
             resolve_npc_unit_abilities(nu[0].get('ability_set_id', '0'), lc, nu[0].get('unit_id', '0')),
             nid, squad, per_npc, squad_by_source, pilot_char_ms_pct, ld, stage_cids,
             merge_mode=merge_mode, from_character=False)
-        nc = map_npc_character_lookup.get(nid_n, []) or map_npc_character_lookup.get(nid, [])
+        nc = _resolve_map_npc_character_rows(nid, challenge_stage_id=challenge_stage_id)
         if nc:
             _merge_map_npc_unit_stat_pct_from_abilities(
                 resolve_npc_character_abilities(nc[0].get('ability_set_id', '0'), lc),
@@ -18248,7 +18501,10 @@ def _populate_stage_list_row_portraits(page_rows):
             continue
         thumb_rid = row.pop('_thumb_rid', None)
         if thumb_rid is not None:
-            row['portrait'] = special_event_stage_thumb_url(thumb_rid)
+            if row.get('stage_category') == 'challenge_stage':
+                row['portrait'] = challenge_stage_thumb_url(thumb_rid)
+            else:
+                row['portrait'] = special_event_stage_thumb_url(thumb_rid)
             row.pop('_portrait_duid', None)
             continue
         duid = normalize_id(row.pop('_portrait_duid', '0'))
@@ -18268,14 +18524,46 @@ def list_stages():
         tower_side = (request.args.get('tower_side') or 'ALL').strip().upper()
         if tower_side not in ('ALL', 'E', 'W'):
             tower_side = 'ALL'
-        if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage'): cat = 'eternal'
+        if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages10_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages11_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
-        if cat == 'special_stage':
+        if cat == 'challenge_stage':
+            for sid, ch in (main_scenario_stage_challenge_map or {}).items():
+                ssc = (scenario_stage_map or {}).get(sid, {})
+                mc = (main_stage_challenge_map or {}).get(sid, {})
+                sn = safe_int(ch.get('stage_number'), 0)
+                sname = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
+                series_id = normalize_id(ch.get('main_stage_series_challenge_id', '0'))
+                series_name = resolve_challenge_series_name(ld, series_id)
+                capt = (capturable_units_by_stage or {}).get(sid, [])
+                pickup_ids = [normalize_id(c.get('main_unit_id')) for c in capt if c.get('is_pickup')]
+                if sq:
+                    searchable = f"{sid} {sname} {sn} {series_name}".lower()
+                    if not search_row_matches_query(sq, searchable, None, entity_id=sid):
+                        continue
+                sm = stage_map.get(sid, {})
+                dti = safe_int(ssc.get('stage_difficulty_type_index'), safe_int(sm.get('stage_difficulty_type_index'), 1))
+                diff = get_stage_difficulty_by_type_index(dti, lc)
+                mc_cp = safe_int(mc.get('recommended_combat_power'), 0)
+                rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
+                sn_sort = safe_int(series_id, 0) * 100000 + sn * 100 + (1 if str(ssc.get('thumbnail_resource_id') or '').startswith('thum_map_bg_') else 0)
+                rows.append({
+                    '_sn_sort': sn_sort,
+                    'id': sid, 'stage_number': sn, 'name': sname,
+                    'recommended_cp': rec_cp,
+                    'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+                    'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                    '_thumb_rid': ssc.get('thumbnail_resource_id'),
+                    'content_locked': False, 'stage_category': 'challenge_stage',
+                    'challenge_series_id': series_id, 'challenge_series_name': series_name,
+                    'has_capturable_units': len(capt) > 0,
+                    'capturable_pickup_unit_ids': [x for x in pickup_ids if x != '0'],
+                })
+        elif cat == 'special_stage':
             for sid, ses in (special_event_stage_map or {}).items():
                 sname = resolve_special_event_stage_name(ld, ses.get('stage_name_lang_id', '0'), sid)
                 pri = safe_int(ses.get('priority'), 0)
@@ -18429,23 +18717,33 @@ def get_stage(stage_id):
         sas = map_event_score_attack_stage_map.get(stage_id) if map_event_score_attack_stage_map else None
         ses = special_event_stage_map.get(stage_id) if special_event_stage_map else None
         tes = tower_event_stage_map.get(stage_id) if tower_event_stage_map else None
+        ch = main_scenario_stage_challenge_map.get(stage_id) if main_scenario_stage_challenge_map else None
         est_er = eternal_stage_map.get(stage_id)
         if sas:
             is_score_attack = True
             is_special_event_stage = False
             is_tower_event_stage = False
+            is_challenge_stage = False
         elif ses:
             is_score_attack = False
             is_special_event_stage = True
             is_tower_event_stage = False
+            is_challenge_stage = False
         elif tes:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = True
+            is_challenge_stage = False
+        elif ch:
+            is_score_attack = False
+            is_special_event_stage = False
+            is_tower_event_stage = False
+            is_challenge_stage = True
         elif est_er:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
+            is_challenge_stage = False
         else:
             return jsonify({'error': f'Stage {stage_id} not found'}), 404
         stage_master_id = stage_id
@@ -18481,10 +18779,28 @@ def get_stage(stage_id):
                 'stage_difficulty_type_index': safe_int(mmeta.get('stage_difficulty_type_index'), 1),
             }
             vis = True
+        elif is_challenge_stage:
+            ssc = (scenario_stage_map or {}).get(stage_id, {})
+            mc = (main_stage_challenge_map or {}).get(stage_id, {})
+            mmeta = map_stage_meta_by_stage_id.get(stage_id, {}) if map_stage_meta_by_stage_id else {}
+            est = {
+                'stage_number': safe_int(ch.get('stage_number'), 0),
+                'title_name_lang_id': ssc.get('title_name_lang_id', '0'),
+                'thumbnail_resource_id': ssc.get('thumbnail_resource_id', ''),
+                'stage_difficulty_type_index': safe_int(ssc.get('stage_difficulty_type_index'), safe_int(mmeta.get('stage_difficulty_type_index'), 1)),
+                'display_unit_id': '0',
+                'challenge_series_id': normalize_id(ch.get('main_stage_series_challenge_id', '0')),
+                'group1_sortie_count': safe_int(mc.get('group1_sortie_count'), 0),
+                'group2_sortie_count': safe_int(mc.get('group2_sortie_count'), 0),
+                'group1_sortie_restriction_set_id': normalize_id(mc.get('group1_sortie_restriction_set_id', '0')),
+                'group2_sortie_restriction_set_id': normalize_id(mc.get('group2_sortie_restriction_set_id', '0')),
+                'recommended_combat_power': safe_int(mc.get('recommended_combat_power'), 0),
+            }
+            vis = True
         else:
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
-        ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else 'er'))
+        ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else ('ch' if is_challenge_stage else 'er')))
         ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage7"
         cached = get_cached_response(ck)
         if cached:
@@ -18527,9 +18843,11 @@ def get_stage(stage_id):
                 if len(_dup_ids) > 1 and safe_int(stage_id, 0) == max(_dup_ids):
                     if 'rerun' not in sname.lower():
                         sname = f"{sname} (Rerun)"
+        elif is_challenge_stage:
+            sname = resolve_scenario_stage_name(ld, est.get('title_name_lang_id', '0'), stage_id)
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
-        if is_score_attack or is_special_event_stage or is_tower_event_stage:
+        if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage:
             diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc)
         else:
             diff = get_stage_difficulty(stage_id, lc)
@@ -18538,15 +18856,29 @@ def get_stage(stage_id):
             uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
         if is_special_event_stage:
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
+        elif is_challenge_stage:
+            portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
         sg = []
         allow_empty_sortie_set = is_score_attack or is_tower_event_stage
-        for gn, gk, ck in [(1, 'group1_set_id', 'group1_sortie_count'), (2, 'group2_set_id', 'group2_sortie_count')]:
-            if safe_int(sm.get(ck), 0) <= 0:
-                continue
-            gid = sm.get(gk, '0')
-            if gid == '0' and not allow_empty_sortie_set:
-                continue
-            sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
+        if is_challenge_stage:
+            for gn, gk, ck in [
+                (1, 'group1_sortie_restriction_set_id', 'group1_sortie_count'),
+                (2, 'group2_sortie_restriction_set_id', 'group2_sortie_count'),
+            ]:
+                if safe_int(est.get(ck), 0) <= 0:
+                    continue
+                gid = est.get(gk, '0')
+                if gid == '0':
+                    continue
+                sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
+        else:
+            for gn, gk, ck in [(1, 'group1_set_id', 'group1_sortie_count'), (2, 'group2_set_id', 'group2_sortie_count')]:
+                if safe_int(sm.get(ck), 0) <= 0:
+                    continue
+                gid = sm.get(gk, '0')
+                if gid == '0' and not allow_empty_sortie_set:
+                    continue
+                sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         vc, dc = resolve_stage_conditions(stage_master_id, lc)
         md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
         map_meta = None
@@ -18556,15 +18888,17 @@ def get_stage(stage_id):
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
             mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
             uom = []; nt = map_npc_by_map_stage.get(msid, [])
-            squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(nt, lc)
+            _challenge_sid = stage_id if is_challenge_stage else None
+            squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(
+                nt, lc, challenge_stage_id=_challenge_sid)
             squad_tb_c, self_tb_c, _, pilot_char_ms_pct_tb_c = accumulate_npc_map_unit_stat_bonuses(
-                nt, lc, merge_mode='conditional_title_gated')
-            unit_cond_pct_by_uid = accumulate_npc_unit_condition_pct_by_unit(nt, lc)
-            stage_unit_ids = _map_stage_deployed_unit_ids(nt)
+                nt, lc, merge_mode='conditional_title_gated', challenge_stage_id=_challenge_sid)
+            unit_cond_pct_by_uid = accumulate_npc_unit_condition_pct_by_unit(nt, lc, challenge_stage_id=_challenge_sid)
+            stage_unit_ids = _map_stage_deployed_unit_ids(nt, challenge_stage_id=_challenge_sid)
             for npc in nt:
                 nid = npc['id']; nid_norm = normalize_id(nid)
-                nu = map_npc_unit_lookup.get(nid_norm, []) or []
-                nc = map_npc_character_lookup.get(nid_norm, []) or map_npc_character_lookup.get(nid, [])
+                nu = _resolve_map_npc_unit_rows(nid_norm, challenge_stage_id=_challenge_sid)
+                nc = _resolve_map_npc_character_rows(nid_norm, challenge_stage_id=_challenge_sid)
                 ue = nu[0] if nu else None; ce = nc[0] if nc else None
                 bst_side_ty = normalize_id(npc.get('battle_side_type', '2'), '2')
                 dn = f"NPC {nid}"; dp = ''; il = False; up = None; cp = None
@@ -18683,7 +19017,7 @@ def get_stage(stage_id):
                 bid = normalize_id(npc.get('map_npc_buff_id', '0'))
                 if bid != '0':
                     npc_oaid = 1
-                    nu_b = map_npc_unit_lookup.get(normalize_id(npc['id']), []) or []
+                    nu_b = _resolve_map_npc_unit_rows(normalize_id(npc['id']), challenge_stage_id=_challenge_sid)
                     if nu_b:
                         uid_b = normalize_id(nu_b[0].get('unit_id', '0'))
                         npc_oaid = safe_int((unit_info_map.get(uid_b) or {}).get('occupied_area_id'), 1)
@@ -18750,7 +19084,7 @@ def get_stage(stage_id):
             md['reach_target_areas'] = rtp
             md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
             map_meta = {'map_id': mid, 'map_stage_id': msid}
-        stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else 'eternal')))
+        stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else ('challenge_stage' if is_challenge_stage else 'eternal'))))
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
@@ -18764,10 +19098,16 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
+        mc_cp = safe_int(est.get('recommended_combat_power'), 0) if is_challenge_stage else 0
+        rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
+        capturable_units = resolve_challenge_capturable_units(stage_id, lc) if is_challenge_stage else []
+        challenge_series_name = resolve_challenge_series_name(ld, est.get('challenge_series_id', '0')) if is_challenge_stage else ''
+        _challenge_series_id = normalize_id(est.get('challenge_series_id', '0')) if is_challenge_stage else '0'
+        challenge_series_layout = (main_stage_series_challenge_layout_map or {}).get(_challenge_series_id, {}) if is_challenge_stage else {}
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
-            'recommended_cp': sm.get('recommended_cp', 0),
+            'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
             'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
@@ -18775,6 +19115,11 @@ def get_stage(stage_id):
             'stage_rewards': stage_rewards,
             'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
             'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
+            'has_capturable_units': len(capturable_units) > 0,
+            'capturable_units': capturable_units,
+            'challenge_series_id': est.get('challenge_series_id', '0') if is_challenge_stage else '',
+            'challenge_series_name': challenge_series_name,
+            'challenge_series_layout': challenge_series_layout,
         }
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
