@@ -10077,6 +10077,26 @@ def resolve_challenge_series_name(ld, series_challenge_id):
     series_lang_id = normalize_id(f"130200000000{sid.zfill(6)}")
     return str((ld.get('scenario_stage_series_text_map') or {}).get(series_lang_id, '') or '').strip()
 
+def list_challenge_series_filter_options(lc):
+    ld = get_lang_data(lc)
+    out = []
+    for cid in sorted((main_stage_series_challenge_map or {}).keys(), key=lambda x: safe_int(x, 0)):
+        nid = normalize_id(cid)
+        if nid == '0':
+            continue
+        sc_row = (main_stage_series_challenge_map or {}).get(nid, {})
+        main_sid = normalize_id(sc_row.get('main_stage_series_id', '0'))
+        out.append({
+            'id': nid,
+            'main_series_id': main_sid,
+            'name': resolve_challenge_series_name(ld, nid),
+            'icon': find_series_icon(main_sid) if main_sid != '0' else '',
+        })
+    return out
+
+def _valid_challenge_series_filter_ids():
+    return {normalize_id(k) for k in (main_stage_series_challenge_map or {}).keys() if normalize_id(k) != '0'}
+
 def resolve_challenge_capturable_units(stage_id, lc):
     ld = get_lang_data(lc)
     out = []
@@ -18572,12 +18592,13 @@ def list_stages():
         if tower_side not in ('ALL', 'E', 'W'):
             tower_side = 'ALL'
         challenge_series = (request.args.get('challenge_series') or 'ALL').strip()
-        if challenge_series not in ('ALL', '10', '3000'):
+        _challenge_series_ids = _valid_challenge_series_filter_ids()
+        if challenge_series != 'ALL' and normalize_id(challenge_series) not in _challenge_series_ids:
             challenge_series = 'ALL'
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages13_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages14_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -18764,6 +18785,8 @@ def list_stages():
         _populate_stage_list_row_portraits(pr)
         for _r in pr: _r.pop('_sn_sort', None)
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
+        if cat == 'challenge_stage':
+            result['challenge_series_options'] = list_challenge_series_filter_options(lc)
         set_cached_response(ck, result); return jsonify(convert_image_urls(result))
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
