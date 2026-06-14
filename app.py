@@ -472,6 +472,7 @@ UI_LABELS = {
         'difficulty_challenge': 'Challenge', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
         'stage_score_type_1': 'Clear evaluation', 'stage_score_type_2': 'Damage taken', 'stage_score_type_3': 'Overkill',
         'stage_score_type_4': 'Survivors', 'stage_score_type_5': 'Bonus',
+        'reward_diamonds': 'Diamonds',
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -492,6 +493,7 @@ UI_LABELS = {
         'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
         'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
         'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
+        'reward_diamonds': '鑽石',
     },
     'HK': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -512,6 +514,7 @@ UI_LABELS = {
         'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
         'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
         'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
+        'reward_diamonds': '鑽石',
     },
     'JA': {
         'restriction_before_moving': '移動前のみ使用可能。',
@@ -532,7 +535,8 @@ UI_LABELS = {
         'difficulty_challenge': 'チャレンジ', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
         'stage_score_type_1': 'クリア評価', 'stage_score_type_2': '被ダメージ', 'stage_score_type_3': 'オーバーキル',
         'stage_score_type_4': '生存数', 'stage_score_type_5': 'ボーナス',
-    }
+        'reward_diamonds': 'ダイヤ',
+    },
 }
 UNIT_ROLE_TYPE_LANG_MAP = {
     'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'},
@@ -9899,7 +9903,7 @@ def _decorate_reward_rows(rows, lc):
         lb_frames = None
         cri = crole = cacq = ori = uri = urole = uacq = ''
         if rt == '10':
-            reward_name = "Diamonds"
+            reward_name = get_ui_label(lc, 'reward_diamonds')
             reward_icon = game_image_public_url('/static/images/UI/UI_Common_Icon_Diamond_M.webp')
         elif rt == '2':
             c = get_npc_character_display(tid, {}, lc)
