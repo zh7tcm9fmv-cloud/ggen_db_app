@@ -9752,6 +9752,31 @@ def _resolve_profile_title_display_name(pid, lc):
     return 'Profile Title'
 
 
+def _resolve_unit_reward_display(unit_id, lc):
+    """RewardType 3 (Unit) → name, portrait thumb, rarity/role/acquisition badges."""
+    uid = normalize_id(unit_id)
+    if uid == '0':
+        return {}
+    ld = get_lang_data(lc)
+    uinfo = unit_info_map.get(uid, {}) or {}
+    ulid = (ld.get('unit_id_map') or {}).get(uid, '')
+    uname = str((ld.get('unit_text_map') or {}).get(ulid, '') or '').strip()
+    if not uname:
+        uname = f"Unit {uid}"
+    uri = normalize_id(uinfo.get('rarity', '1'))
+    urole = normalize_id(uinfo.get('role', '0'))
+    uacq = normalize_id(uinfo.get('acquisition_route', '0'))
+    thumb = find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
+    return {
+        'name': uname,
+        'icon': thumb,
+        'thumb': thumb,
+        'rarity': RARITY_MAP.get(uri, 'N'),
+        'role_icon': ROLE_ICON_MAP.get(urole, ''),
+        'acquisition_icon': ACQUISITION_ROUTE_ICONS.get(uacq, ''),
+    }
+
+
 def _decorate_reward_rows(rows, lc):
     ld = get_lang_data(lc)
     item_text_map = ld.get('item_text_map') or {}
@@ -9769,6 +9794,7 @@ def _decorate_reward_rows(rows, lc):
         reward_desc = ''
         lb_thumb = ''
         lb_frames = None
+        cri = crole = cacq = ori = uri = urole = uacq = ''
         if rt == '10':
             reward_name = "Diamonds"
             reward_icon = game_image_public_url('/static/images/UI/UI_Common_Icon_Diamond_M.webp')
@@ -9796,6 +9822,13 @@ def _decorate_reward_rows(rows, lc):
             if orid:
                 reward_icon = game_image_public_url(
                     _game_images_webp_path('Option-Part (Modification)/Sprite', orid))
+        elif rt == '3':
+            udisp = _resolve_unit_reward_display(tid, lc)
+            reward_name = str(udisp.get('name') or f"Unit {tid}")
+            reward_icon = str(udisp.get('icon') or '')
+            uri = normalize_id((unit_info_map.get(tid, {}) or {}).get('rarity', '1'))
+            urole = normalize_id((unit_info_map.get(tid, {}) or {}).get('role', '0'))
+            uacq = normalize_id((unit_info_map.get(tid, {}) or {}).get('acquisition_route', '0'))
         elif tid != '0':
             item = item_info_map.get(tid, {})
             nlid = normalize_id(item.get('name_lang_id'))
@@ -9826,17 +9859,17 @@ def _decorate_reward_rows(rows, lc):
             'description': reward_desc,
             'count': cnt,
             'icon': reward_icon,
-            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ''))),
-            'detail_id': (tid if rt in ('2', '8', '30') else ''),
-            'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else '')),
-            'thumb': (reward_icon if rt in ('2', '8') else ''),
-            'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else '')),
-            'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else ''),
-            'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else ''),
-            'lb_thumb_base': (lb_frames.get('base', '') if rt not in ('2', '8', '30') and lb_frames else ''),
-            'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '8', '30') and lb_frames else ''),
-            'lb_thumb_bottom_frame': (lb_frames.get('bottom_frame', '') if rt not in ('2', '8', '30') and lb_frames else ''),
-            'lb_thumb_unit': (lb_thumb if rt not in ('2', '8', '30') else ''),
+            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ('unit' if rt == '3' else '')))),
+            'detail_id': (tid if rt in ('2', '8', '30', '3') else ''),
+            'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else ('unit' if rt == '3' else ''))),
+            'thumb': (reward_icon if rt in ('2', '8', '3') else ''),
+            'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else (RARITY_MAP.get(uri, 'N') if rt == '3' else ''))),
+            'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else (ROLE_ICON_MAP.get(urole, '') if rt == '3' else '')),
+            'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else (ACQUISITION_ROUTE_ICONS.get(uacq, '') if rt == '3' else '')),
+            'lb_thumb_base': (lb_frames.get('base', '') if rt not in ('2', '3', '8', '30') and lb_frames else ''),
+            'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '3', '8', '30') and lb_frames else ''),
+            'lb_thumb_bottom_frame': (lb_frames.get('bottom_frame', '') if rt not in ('2', '3', '8', '30') and lb_frames else ''),
+            'lb_thumb_unit': (lb_thumb if rt not in ('2', '3', '8', '30') else ''),
         })
     return out
 
@@ -9997,12 +10030,19 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
         mc = (main_stage_challenge_map or {}).get(sid, {})
         fc = normalize_id(mc.get('first_clear_reward_set_id', '0'))
         if fc != '0':
-            return _decorate_reward_rows(_resolve_reward_rows_from_set_id(fc), lc)
+            rows = _decorate_reward_rows(_resolve_reward_rows_from_set_id(fc), lc)
+            # Capital (type 5) rows are unused placeholders in challenge data — omit from display.
+            return [r for r in rows if normalize_id(r.get('reward_type_index')) != '5']
         return []
     sm = (stage_map or {}).get(sid, {})
     fc = normalize_id(sm.get('first_clear_reward_set_id', '0'))
     reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
+
+def _challenge_stage_is_hard(thumbnail_resource_id):
+    """Hard challenge lanes use thum_map_bg_* map banners instead of sca_* unit art."""
+    return str(thumbnail_resource_id or '').strip().startswith('thum_map_bg_')
+
 
 def challenge_stage_thumb_url(thumbnail_resource_id):
     """m_scenario_stage.ThumbnailResourceId → PNG under images/Stages (CDN WebP via convert_image_urls / imgTag)."""
@@ -18524,10 +18564,13 @@ def list_stages():
         tower_side = (request.args.get('tower_side') or 'ALL').strip().upper()
         if tower_side not in ('ALL', 'E', 'W'):
             tower_side = 'ALL'
+        challenge_series = (request.args.get('challenge_series') or 'ALL').strip()
+        if challenge_series not in ('ALL', '10', '3000'):
+            challenge_series = 'ALL'
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages11_{cat}_{tower_side}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages12_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached: return jsonify(cached)
         ld = get_lang_data(lc); rows = []
@@ -18538,7 +18581,11 @@ def list_stages():
                 sn = safe_int(ch.get('stage_number'), 0)
                 sname = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
                 series_id = normalize_id(ch.get('main_stage_series_challenge_id', '0'))
+                if challenge_series != 'ALL' and series_id != normalize_id(challenge_series):
+                    continue
                 series_name = resolve_challenge_series_name(ld, series_id)
+                thumb_rid = ssc.get('thumbnail_resource_id')
+                is_hard = _challenge_stage_is_hard(thumb_rid)
                 capt = (capturable_units_by_stage or {}).get(sid, [])
                 pickup_ids = [normalize_id(c.get('main_unit_id')) for c in capt if c.get('is_pickup')]
                 if sq:
@@ -18550,16 +18597,17 @@ def list_stages():
                 diff = get_stage_difficulty_by_type_index(dti, lc)
                 mc_cp = safe_int(mc.get('recommended_combat_power'), 0)
                 rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
-                sn_sort = safe_int(series_id, 0) * 100000 + sn * 100 + (1 if str(ssc.get('thumbnail_resource_id') or '').startswith('thum_map_bg_') else 0)
+                sn_sort = safe_int(series_id, 0) * 100000 + sn * 100 + (1 if is_hard else 0)
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': sn, 'name': sname,
                     'recommended_cp': rec_cp,
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
                     'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
-                    '_thumb_rid': ssc.get('thumbnail_resource_id'),
+                    '_thumb_rid': thumb_rid,
                     'content_locked': False, 'stage_category': 'challenge_stage',
                     'challenge_series_id': series_id, 'challenge_series_name': series_name,
+                    'challenge_is_hard': is_hard,
                     'has_capturable_units': len(capt) > 0,
                     'capturable_pickup_unit_ids': [x for x in pickup_ids if x != '0'],
                 })
@@ -19119,6 +19167,7 @@ def get_stage(stage_id):
             'capturable_units': capturable_units,
             'challenge_series_id': est.get('challenge_series_id', '0') if is_challenge_stage else '',
             'challenge_series_name': challenge_series_name,
+            'challenge_is_hard': _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False,
             'challenge_series_layout': challenge_series_layout,
         }
         set_cached_response(ck, result)
