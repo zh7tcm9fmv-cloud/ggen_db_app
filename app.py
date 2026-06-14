@@ -12875,7 +12875,7 @@ _AFFINITY_PILOTING_TAG_RE = re.compile(
     r'piloting units with specified tags',
     re.IGNORECASE,
 )
-_CHAR_EX_AFFINITY_SCAN_CACHE = {}
+_CHAR_AFFINITY_SCAN_CACHE = {}
 
 
 def _name_indicates_affinity_ability(ab_name):
@@ -13027,13 +13027,10 @@ def _factions_for_playable_unit_ids(unit_ids, lc=DEFAULT_LANG):
     return keys
 
 
-def _build_ex_ability_entry_for_scan(aid, ld_en):
+def _build_ability_entry_for_affinity_scan(aid, ld_en):
     abnm = ld_en.get('abil_name_map', {}) or {}
-    an = _resolved_ability_name_for_tag_scan(aid, abnm)
-    if not is_ex_ability(an):
-        return None
     try:
-        bab = build_ability_entry(
+        return build_ability_entry(
             aid, abnm, abil_link_map, trait_set_traits_map, trait_data_map,
             ld_en.get('lang_text_map', {}), ld_en.get('lang_text_map', {}),
             trait_condition_raw_map, ld_en.get('lineage_lookup', {}),
@@ -13041,14 +13038,30 @@ def _build_ex_ability_entry_for_scan(aid, ld_en):
             ld_en.get('abil_desc_map', {}), lang_code='EN')
     except Exception:
         return None
-    return bab if bab.get('is_ex') else None
 
 
-def _scan_character_ex_affinity_meta(cid):
-    cached = _CHAR_EX_AFFINITY_SCAN_CACHE.get(cid)
+def _factions_from_piloting_tag_ability(aid, ld_en):
+    """Any ability row whose details pilot tagged units (Newtype, EX, etc.)."""
+    bab = _build_ability_entry_for_affinity_scan(aid, ld_en)
+    if not bab:
+        return set()
+    keys = set()
+    for d in bab.get('details') or []:
+        if not _trait_detail_implies_piloting_tag_affinity(d.get('text')):
+            continue
+        names = _collect_detail_lineage_tag_names(d)
+        if not names:
+            continue
+        keys.update(_canonical_keys_for_lineage_tag_names(names, 'EN'))
+    return keys
+
+
+def _scan_character_affinity_meta(cid):
+    cached = _CHAR_AFFINITY_SCAN_CACHE.get(cid)
     if cached is not None:
         return cached
     ld_en = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    abnm = ld_en.get('abil_name_map', {}) or {}
     tag_factions = set()
     pair_unit_ids = []
     pair_seen = set()
@@ -13059,16 +13072,18 @@ def _scan_character_ex_affinity_meta(cid):
         for aid in (bid, spid):
             if not aid or aid in ('0', 'None'):
                 continue
-            bab = _build_ex_ability_entry_for_scan(aid, ld_en)
+            bab = _build_ability_entry_for_affinity_scan(aid, ld_en)
             if not bab:
                 continue
+            an = _resolved_ability_name_for_tag_scan(aid, abnm)
+            is_ex_row = bool(bab.get('is_ex') and is_ex_ability(an))
             for d in bab.get('details') or []:
                 tx = d.get('text')
                 if _trait_detail_implies_piloting_tag_affinity(tx):
                     names = _collect_detail_lineage_tag_names(d)
                     if names:
                         tag_factions.update(_canonical_keys_for_lineage_tag_names(names, 'EN'))
-                elif _detail_is_unit_specific_piloting(tx):
+                elif is_ex_row and _detail_is_unit_specific_piloting(tx):
                     for uid in _collect_detail_playable_unit_ids(d):
                         if uid not in pair_seen:
                             pair_seen.add(uid)
@@ -13078,8 +13093,13 @@ def _scan_character_ex_affinity_meta(cid):
         'pair_unit_ids': pair_unit_ids,
         'has_ex_pair': bool(pair_unit_ids),
     }
-    _CHAR_EX_AFFINITY_SCAN_CACHE[cid] = meta
+    _CHAR_AFFINITY_SCAN_CACHE[cid] = meta
     return meta
+
+
+def _scan_character_ex_affinity_meta(cid):
+    """Backward-compatible alias (EX pair metadata lives in unified scan)."""
+    return _scan_character_affinity_meta(cid)
 
 
 def _collect_detail_lineage_tag_names(detail):
@@ -13115,19 +13135,8 @@ def _canonical_keys_for_lineage_tag_names(tag_names, lc=DEFAULT_LANG):
 
 
 def _factions_from_ex_piloting_affinity_ability(aid, ld_en):
-    """UR/EX rows: faction lives on trait conditions, not in the EX ability title."""
-    bab = _build_ex_ability_entry_for_scan(aid, ld_en)
-    if not bab:
-        return set()
-    keys = set()
-    for d in bab.get('details') or []:
-        if not _trait_detail_implies_piloting_tag_affinity(d.get('text')):
-            continue
-        names = _collect_detail_lineage_tag_names(d)
-        if not names:
-            continue
-        keys.update(_canonical_keys_for_lineage_tag_names(names, 'EN'))
-    return keys
+    """Deprecated alias — piloting-tag scan now covers all ability rows."""
+    return _factions_from_piloting_tag_ability(aid, ld_en)
 
 
 def _character_ex_pair_unit_ids(cid):
@@ -13173,8 +13182,7 @@ def _character_affinity_faction_set(cid, ld=None):
             f = _resolve_affinity_canonical_key_for_ability(aid, ld_en)
             if f:
                 factions.add(f)
-            factions.update(_factions_from_ex_piloting_affinity_ability(aid, ld_en))
-    factions.update(_scan_character_ex_affinity_meta(cid).get('tag_factions') or set())
+    factions.update(_scan_character_affinity_meta(cid).get('tag_factions') or set())
     return factions
 
 
@@ -13256,7 +13264,7 @@ def get_tag_affinity():
         if not ts:
             return jsonify({'1': [], '2': [], '3': []})
         tl = [t.strip().lower() for t in ts.split(',') if t.strip()]
-        ck = f"tag_affinity_v7_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
+        ck = f"tag_affinity_v8_{source}_{ts}_{op}_{lc}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify(cached)

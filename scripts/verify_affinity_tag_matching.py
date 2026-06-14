@@ -60,7 +60,7 @@ def main():
 
     A._ensure_affinity_lineage_canonical()
     for cid in A.char_list_playable_ids:
-        A._scan_character_ex_affinity_meta(cid)
+        A._scan_character_affinity_meta(cid)
 
     for lc in langs:
         ld = A.get_lang_data(lc)
@@ -115,11 +115,12 @@ def main():
     char_map_en = _playable_char_faction_map(A, 'EN')
 
     checks = [
-        ('Zeon', 54),
-        ('Neo Zeon', 30),
-        ('EFSF (U.C.)', 58),
+        ('Zeon', 57),
+        ('Neo Zeon', 31),
+        ('EFSF (U.C.)', 60),
         ('Gundam', 0),
-        ('Orb', 14),
+        ('Orb', 15),
+        ('NT-D', 9),
     ]
     for tag, expected in checks:
         actual = _count_tag(A, char_map_en, tag, 'EN')
@@ -132,6 +133,9 @@ def main():
     if not A._character_has_affinity_tag_match('1330001804', ['orb'], 'or', A.get_lang_data('EN'), 'EN'):
         errors.append('EN regression: Athrun Zala (1330001804) EX Orb tag affinity must match Orb')
 
+    if not A._character_has_affinity_tag_match('1125000100', ['nt-d'], 'or', A.get_lang_data('EN'), 'EN'):
+        errors.append('EN regression: char 1125000100 Newtype (UC) piloting-tag ability must match NT-D affinity')
+
     if A._character_affinity_ex_pair_unit_id_for_tags('1330001804', ['orb'], 'or', 'EN') != '1330002850':
         errors.append('EN regression: Athrun EX pair highlight unit must be Infinite Justice Gundam (EX)')
 
@@ -142,8 +146,8 @@ def main():
 
     # JA UC EFSF tag must resolve via lineage id → EN canonical key
     ja_efsf = _count_tag(A, _playable_char_faction_map(A, 'JA'), '地球連邦軍(宇宙世紀)', 'JA')
-    if ja_efsf != 58:
-        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 58')
+    if ja_efsf != 60:
+        errors.append(f'JA regression EFSF UC: got {ja_efsf}, expected 60')
 
     if warnings:
         print('warnings:')
