@@ -4148,7 +4148,7 @@ _LANG_DISPLAY_FALLBACK_KEYS = (
     'supporter_leader_text_map', 'supporter_active_text_map',
     'stage_text_map', 'scenario_stage_text_map', 'scenario_stage_series_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
     'stage_master_text_map', 'stage_condition_text_map', 'map_stage_condition_text_map',
-    'weapon_text_map', 'op_text_map',
+    'weapon_text_map', 'op_text_map', 'mission_text_map',
 )
 
 
@@ -5130,6 +5130,69 @@ def create_main_scenario_stage_challenge_map(d):
             'main_stage_challenge_id': normalize_id(item.get('MainStageChallengeId') or item.get('mainStageChallengeId')),
         }
     return lookup
+
+def _challenge_stage_is_hard(thumbnail_resource_id):
+    """Hard challenge lanes use thum_map_bg_* map banners instead of sca_* unit art."""
+    return str(thumbnail_resource_id or '').strip().startswith('thum_map_bg_')
+
+
+_CHALLENGE_HARD_MISSION_CONDITION_TYPES = frozenset({273, 276, 281})
+
+
+def create_game_event_condition_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        if cid == '0':
+            continue
+        lookup[cid] = item
+    return lookup
+
+
+def create_mission_group_sort_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        gid = normalize_id(item.get('Id') or item.get('id'))
+        if gid == '0':
+            continue
+        lookup[gid] = safe_int(item.get('SortOrder') or item.get('sortOrder'), 0)
+    return lookup
+
+
+def create_challenge_hard_stage_id_set(scenario_stage_lookup, challenge_stage_lookup):
+    out = set()
+    for sid in (challenge_stage_lookup or {}):
+        ssc = (scenario_stage_lookup or {}).get(normalize_id(sid), {})
+        if _challenge_stage_is_hard(ssc.get('thumbnail_resource_id')):
+            out.add(normalize_id(sid))
+    return out
+
+
+def create_challenge_hard_missions_by_stage(mission_rows, condition_lookup, hard_stage_ids, group_sort_lookup):
+    by_stage = {sid: [] for sid in hard_stage_ids}
+    for item in extract_data_list(mission_rows):
+        if not isinstance(item, dict):
+            continue
+        cond = (condition_lookup or {}).get(normalize_id(item.get('GameEventConditionId') or item.get('gameEventConditionId')), {})
+        if not cond:
+            continue
+        ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
+        if ctype not in _CHALLENGE_HARD_MISSION_CONDITION_TYPES:
+            continue
+        sid = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
+        if sid not in hard_stage_ids:
+            continue
+        by_stage[sid].append(item)
+    for sid, rows in by_stage.items():
+        rows.sort(key=lambda m: (
+            safe_int((group_sort_lookup or {}).get(normalize_id(m.get('MissionGroupId') or m.get('missionGroupId')), 0), 0),
+            safe_int(m.get('Id') or m.get('id'), 0),
+        ))
+    return by_stage
 
 def create_capturable_units_by_stage(d):
     lookup = {}
@@ -7354,6 +7417,9 @@ capturable_unit_data = load_json(os.path.join(BASE_DIR, "m_capturable_unit.json"
 main_stage_series_challenge_layout_data = load_json(os.path.join(BASE_DIR, "m_main_stage_series_challenge_layout_adjustment.json"))
 main_stage_challenge_npc_unit_override_data = load_json(os.path.join(BASE_DIR, "m_map_npc_unit_main_stage_challenge_override.json"))
 main_stage_challenge_npc_character_override_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character_main_stage_challenge_override.json"))
+mission_data = load_json(os.path.join(BASE_DIR, "m_mission.json"))
+mission_group_data = load_json(os.path.join(BASE_DIR, "m_mission_group.json"))
+game_event_condition_data = load_json(os.path.join(BASE_DIR, "m_game_event_condition.json"))
 tower_event_data = load_json(os.path.join(BASE_DIR, "m_tower_event.json"))
 tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_group.json"))
 tower_event_stage_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage.json"))
@@ -7473,6 +7539,12 @@ capturable_units_by_stage = create_capturable_units_by_stage(capturable_unit_dat
 main_stage_series_challenge_layout_map = create_main_stage_series_challenge_layout_map(main_stage_series_challenge_layout_data) if main_stage_series_challenge_layout_data else {}
 main_stage_challenge_npc_unit_override_by_stage = create_main_stage_challenge_npc_unit_override_by_stage(main_stage_challenge_npc_unit_override_data) if main_stage_challenge_npc_unit_override_data else {}
 main_stage_challenge_npc_character_override_by_stage = create_main_stage_challenge_npc_character_override_by_stage(main_stage_challenge_npc_character_override_data) if main_stage_challenge_npc_character_override_data else {}
+game_event_condition_map = create_game_event_condition_map(game_event_condition_data) if game_event_condition_data else {}
+mission_group_sort_map = create_mission_group_sort_map(mission_group_data) if mission_group_data else {}
+challenge_hard_stage_ids = create_challenge_hard_stage_id_set(scenario_stage_map, main_scenario_stage_challenge_map)
+challenge_hard_missions_by_stage = create_challenge_hard_missions_by_stage(
+    mission_data, game_event_condition_map, challenge_hard_stage_ids, mission_group_sort_map,
+) if mission_data and game_event_condition_map else {}
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
@@ -8100,6 +8172,7 @@ for lang_code, paths in LANG_PATHS.items():
     scenario_stage_series_lang_text = load_json(os.path.join(lang_dir, "m_scenario_stage_series.json"))
     item_lang_text = load_json(os.path.join(lang_dir, "m_item.json"))
     profile_title_lang_text = load_json(os.path.join(lang_dir, "m_profile_title.json"))
+    mission_lang_text = load_json(os.path.join(lang_dir, "m_mission.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
@@ -8121,6 +8194,7 @@ for lang_code, paths in LANG_PATHS.items():
     scenario_stage_series_text_map = create_lang_text_map(scenario_stage_series_lang_text) if scenario_stage_series_lang_text else {}
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
     profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
+    mission_text_map = create_lang_text_map(mission_lang_text) if mission_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
     for item in extract_data_list(stage_battle_condition_text_lang):
@@ -8237,7 +8311,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'mission_text_map': mission_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -10046,9 +10120,34 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
     reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
 
-def _challenge_stage_is_hard(thumbnail_resource_id):
-    """Hard challenge lanes use thum_map_bg_* map banners instead of sca_* unit art."""
-    return str(thumbnail_resource_id or '').strip().startswith('thum_map_bg_')
+def resolve_mission_title(ld, mission_row):
+    mtm = ld.get('mission_text_map') or {}
+    for key in ('OverrideTitleLanguageId', 'TitleLanguageId'):
+        lid = normalize_id(mission_row.get(key, '0'))
+        if lid == '0':
+            continue
+        txt = str(mtm.get(lid, '') or '').strip()
+        if txt:
+            return txt
+    mid = normalize_id(mission_row.get('Id') or mission_row.get('id'))
+    return f'Mission {mid}' if mid != '0' else 'Mission'
+
+
+def resolve_challenge_hard_missions(stage_id, lc):
+    sid = normalize_id(stage_id)
+    rows = (challenge_hard_missions_by_stage or {}).get(sid, [])
+    if not rows:
+        return []
+    ld = get_lang_data(lc)
+    out = []
+    for m in rows:
+        rsid = normalize_id(m.get('RewardSetId') or m.get('rewardSetId', '0'))
+        out.append({
+            'id': normalize_id(m.get('Id') or m.get('id')),
+            'title': resolve_mission_title(ld, m),
+            'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
+        })
+    return out
 
 
 def challenge_stage_thumb_url(thumbnail_resource_id):
@@ -18883,7 +18982,7 @@ def get_stage(stage_id):
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else ('ch' if is_challenge_stage else 'er')))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage7"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage8"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -19186,6 +19285,7 @@ def get_stage(stage_id):
         challenge_series_name = resolve_challenge_series_name(ld, est.get('challenge_series_id', '0')) if is_challenge_stage else ''
         _challenge_series_id = normalize_id(est.get('challenge_series_id', '0')) if is_challenge_stage else '0'
         challenge_series_layout = (main_stage_series_challenge_layout_map or {}).get(_challenge_series_id, {}) if is_challenge_stage else {}
+        _ch_hard = _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
@@ -19201,8 +19301,9 @@ def get_stage(stage_id):
             'capturable_units': capturable_units,
             'challenge_series_id': est.get('challenge_series_id', '0') if is_challenge_stage else '',
             'challenge_series_name': challenge_series_name,
-            'challenge_is_hard': _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False,
+            'challenge_is_hard': _ch_hard,
             'challenge_series_layout': challenge_series_layout,
+            'challenge_missions': resolve_challenge_hard_missions(stage_id, lc) if _ch_hard else [],
         }
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
