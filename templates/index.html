@@ -805,8 +805,6 @@ html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .s
 .stage-browse-thumb--special .stage-browse-thumb__stripes{opacity:.32;background:repeating-linear-gradient(-45deg,rgba(0,0,0,.12) 0 5px,rgba(80,160,255,.14) 5px 10px)}
 .stage-browse-thumb--special .stage-browse-thumb__bg{background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(90,160,255,.2),transparent 58%),radial-gradient(ellipse 120% 80% at 20% 80%,rgba(0,0,0,.25),transparent 50%)}
 .stage-browse-thumb--special .stage-browse-thumb__ui,.stage-browse-thumb--tower .stage-browse-thumb__ui{text-shadow:0 1px 4px rgba(0,0,0,.65)}
-.stage-browse-thumb--capturable .stage-browse-thumb__portrait{box-shadow:0 0 0 2px rgba(251,191,36,.85),0 0 14px rgba(251,191,36,.35)}
-.stage-browse-thumb__capture-badge{position:absolute;top:8px;right:8px;z-index:4;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#1a1200;background:linear-gradient(135deg,#fcd34d,#f59e0b);box-shadow:0 1px 6px rgba(0,0,0,.35)}
 .stage-capturable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .stage-capturable-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;border:1px solid var(--border-color);background:rgba(255,255,255,.03)}
 .stage-capturable-card--pickup{border-color:rgba(251,191,36,.65);background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(255,255,255,.03));box-shadow:0 0 0 1px rgba(251,191,36,.2) inset}
@@ -836,11 +834,16 @@ html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .s
 .stage-browse-thumb--grid .stage-browse-thumb__head .stage-browse-thumb__diff{font-size:9px;padding:3px 12px;border-radius:2px}
 .stage-browse-thumb--grid .stage-browse-thumb__subtitle{font-size:9px}
 .stage-browse-thumb--grid .stage-browse-thumb__head{min-height:58px;max-height:58px}
-.stage-browse-thumb__hard-badge{position:absolute;top:8px;left:8px;z-index:5;display:inline-block;padding:2px 8px;font-size:8px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;line-height:1.35;border-radius:2px;color:#fff;background:#ff9a3d;border:1px solid rgba(0,0,0,.22);box-shadow:0 1px 0 rgba(255,255,255,.2);pointer-events:none;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.stage-browse-thumb--grid .stage-browse-thumb__hard-badge{font-size:9px;padding:3px 10px}
+.stage-browse-thumb__hard-badge{display:inline-block;padding:2px 8px;font-size:8px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;line-height:1.35;border-radius:2px;color:#fff;background:#ff9a3d;border:1px solid rgba(0,0,0,.22);box-shadow:0 1px 0 rgba(255,255,255,.2);pointer-events:none}
+.stage-browse-thumb__head--hard{padding-top:2px;gap:3px}
+.stage-browse-thumb__hard-badge--inline{position:static;display:inline-block;margin:0 0 2px;max-width:100%}
+.stage-browse-thumb--grid .stage-browse-thumb__hard-badge--inline{font-size:9px;padding:3px 10px}
 #stageChallengeSeriesWrap.rarity-filter-wrap{width:max-content;max-width:100%;flex:0 0 auto;align-self:flex-start}
-#stageChallengeSeriesWrap .browse-series-grid{grid-template-columns:1fr}
-#stageChallengeSeriesWrap .list-filter-tag-item{width:100%}
+#stageChallengeSeriesFilterPanel.stage-challenge-series-filter-panel{width:max-content!important;min-width:0!important;max-width:min(340px,calc(100vw - 24px))!important;padding:4px 0}
+#stageChallengeSeriesFilterPanel .stage-challenge-series-row{align-items:center;gap:10px;padding:6px 12px;width:100%;box-sizing:border-box}
+#stageChallengeSeriesFilterPanel .stage-challenge-series-row-label{display:inline-flex;align-items:center;gap:8px;min-width:0;flex:1}
+#stageChallengeSeriesFilterPanel .stage-challenge-series-row .series-filter-opt-icon{width:24px;height:24px;flex-shrink:0}
+#stageChallengeSeriesFilterPanel .stage-challenge-series-row .filter-long-label{white-space:normal;line-height:1.25;font-size:13px;font-weight:600}
 #stageDiffWrap.rarity-filter-wrap,#stageChallengeSeriesWrap.rarity-filter-wrap{width:max-content;max-width:100%;flex:0 0 auto;align-self:flex-start}
 #stageDiffFilterPanel.stage-diff-filter-panel.filter-dropdown-panel{width:max-content!important;min-width:0!important;max-width:min(220px,calc(100vw - 24px))!important;align-items:flex-start;box-sizing:border-box}
 #stageDiffFilterPanel .stage-diff-filter-row{width:100%;box-sizing:border-box}
