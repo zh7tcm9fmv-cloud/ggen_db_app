@@ -2834,9 +2834,8 @@ function renderStageCapturableSection(d){
   const cards=rows.map(u=>{
     const pickup=!!u.is_pickup;
     const thumb=u.thum?renderListThumb({thum:u.thum,rarity:u.rarity||'N',role_icon:u.role_icon||'',acquisition_icon:u.acquisition_icon||''},'unit',54):`<div style="width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;">🤖</div>`;
-    const rate=(u.capture_rate_percent!=null&&u.capture_rate_percent!=='')?`<div style="font-size:11px;opacity:.75;margin-top:2px;">${esc(String(u.capture_rate_percent))}%</div>`:'';
     const pickupTag=pickup?`<div class="stage-capturable-pickup-tag">${esc(t('stage_capturable_pickup'))}</div>`:'';
-    return`<div class="stage-capturable-card${pickup?' stage-capturable-card--pickup':''} detail-clickable-item" data-detail-type="unit" data-detail-id="${escAttr(String(u.unit_id))}" onclick="openDetail('unit','${escJs(String(u.unit_id))}')">${thumb}<div style="min-width:0"><div style="font-size:13px;line-height:1.3;word-break:break-word;">${esc(u.name||'')}</div>${pickupTag}${rate}</div></div>`;
+    return`<div class="stage-capturable-card${pickup?' stage-capturable-card--pickup':''} detail-clickable-item" data-detail-type="unit" data-detail-id="${escAttr(String(u.unit_id))}" onclick="openDetail('unit','${escJs(String(u.unit_id))}')">${thumb}<div style="min-width:0"><div style="font-size:13px;line-height:1.3;word-break:break-word;">${esc(u.name||'')}</div>${pickupTag}</div></div>`;
   }).join('');
   return`<div class="detail-section"><div class="section-title">${esc(t('stage_capturable_units'))}</div><div class="stage-capturable-grid">${cards}</div></div>`;
 }

@@ -10250,7 +10250,6 @@ def resolve_challenge_capturable_units(stage_id, lc):
             'role_icon': ROLE_ICON_MAP.get(uinfo.get('role', '0'), ''),
             'acquisition_icon': ACQUISITION_ROUTE_ICONS.get(uinfo.get('acquisition_route', '0'), ''),
             'is_pickup': bool(cu.get('is_pickup')),
-            'capture_rate_percent': round(safe_int(cu.get('default_capture_rate_permil'), 0) / 10.0, 1),
         })
     out.sort(key=lambda x: (0 if x.get('is_pickup') else 1, x.get('name') or ''))
     return out
