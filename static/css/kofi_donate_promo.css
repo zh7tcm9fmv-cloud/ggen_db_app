@@ -34,15 +34,57 @@
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
 }
-.kofi-donate-promo.is-visible.is-entering .kofi-donate-promo-panel{
-  animation:kofi-promo-panel-enter var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards;
-  will-change:transform,opacity,filter,clip-path;
-}
 .kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
   opacity:1;
   transform:scale(1) translate3d(0,0,0);
-  filter:blur(0);
-  clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
+  filter:none;
+  clip-path:none;
+}
+/* Touch / iOS — transform + opacity only (blur + clip-path keyframes often skip on Safari) */
+@media (hover:none),(pointer:coarse){
+  .kofi-donate-promo.is-visible.is-entering .kofi-donate-promo-panel{
+    -webkit-animation:kofi-promo-panel-enter-touch var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards;
+    animation:kofi-promo-panel-enter-touch var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards;
+    will-change:transform,opacity;
+  }
+}
+@-webkit-keyframes kofi-promo-panel-enter-touch{
+  0%{opacity:0;transform:scale(.82) translate3d(0,16px,0)}
+  100%{opacity:1;transform:scale(1) translate3d(0,0,0)}
+}
+@keyframes kofi-promo-panel-enter-touch{
+  0%{opacity:0;transform:scale(.82) translate3d(0,16px,0)}
+  100%{opacity:1;transform:scale(1) translate3d(0,0,0)}
+}
+/* Desktop — full blur + clip-path morph */
+@media (hover:hover) and (pointer:fine){
+  .kofi-donate-promo.is-visible.is-entering .kofi-donate-promo-panel{
+    -webkit-animation:kofi-promo-panel-enter var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards;
+    animation:kofi-promo-panel-enter var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards;
+    will-change:transform,opacity,filter,clip-path;
+  }
+  .kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
+    filter:blur(0);
+    clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
+  }
+}
+@-webkit-keyframes kofi-promo-panel-enter{
+  0%{
+    opacity:0;
+    transform:scale(.74) translate3d(0,14px,0);
+    filter:blur(16px);
+    clip-path:inset(40% 36% 40% 36% round 28px);
+  }
+  55%{
+    opacity:.92;
+    filter:blur(4px);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1) translate3d(0,0,0);
+    filter:blur(0);
+    clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
+  }
 }
 @keyframes kofi-promo-panel-enter{
   0%{
@@ -135,8 +177,21 @@
   will-change:transform,opacity;
 }
 .kofi-donate-promo.is-text-ready .kofi-promo-slot-inner{
+  -webkit-animation:kofi-promo-slot-in var(--kofi-promo-slot-duration) cubic-bezier(.22,1,.36,1) forwards;
   animation:kofi-promo-slot-in var(--kofi-promo-slot-duration) cubic-bezier(.22,1,.36,1) forwards;
+  -webkit-animation-delay:var(--kofi-slot-delay,0s);
   animation-delay:var(--kofi-slot-delay,0s);
+}
+/* Fallback: never leave text hidden if Safari skips the slot animation trigger */
+.kofi-donate-promo.is-visible.is-text-fallback .kofi-promo-slot-inner{
+  -webkit-animation:none;
+  animation:none;
+  transform:translate3d(0,0,0);
+  opacity:1;
+}
+@-webkit-keyframes kofi-promo-slot-in{
+  0%{transform:translate3d(0,108%,0);opacity:0}
+  100%{transform:translate3d(0,0,0);opacity:1}
 }
 @keyframes kofi-promo-slot-in{
   0%{transform:translate3d(0,108%,0);opacity:0}
@@ -156,20 +211,20 @@
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
   will-change:transform,opacity;
+  -webkit-animation:kofi-promo-kofi-ring 1.75s cubic-bezier(.22,.61,.36,1) infinite;
   animation:kofi-promo-kofi-ring 1.75s cubic-bezier(.22,.61,.36,1) infinite;
 }
+@-webkit-keyframes kofi-promo-kofi-ring{
+  0%{opacity:.95;-webkit-transform:scale(1);transform:scale(1)}
+  100%{opacity:0;-webkit-transform:scale(1.22);transform:scale(1.22)}
+}
 @keyframes kofi-promo-kofi-ring{
-  0%{
-    opacity:.95;
-    transform:scale(1);
-  }
-  100%{
-    opacity:0;
-    transform:scale(1.22);
-  }
+  0%{opacity:.95;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.22)}
 }
 @media (prefers-reduced-motion:reduce){
   .kofi-donate-promo-panel,#kofiHeaderLink.kofi-donate-promo-target-highlight::after,.kofi-promo-slot-inner{
+    -webkit-animation:none!important;
     animation:none!important;
   }
   .kofi-donate-promo{
