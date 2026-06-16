@@ -1,24 +1,26 @@
 /**
  * Ko-fi donate promo — Maria + speech bubble near #kofiHeaderLink.
- * Shows 2 minutes after page load. Hidden for 24h after close (X) or Ko-fi header click.
+ * Shows 2 minutes after page load. Snoozed for 24h after close (X) or Ko-fi header click
+ * on the same page visit — a full reload clears the snooze.
  */
 (function (global) {
   'use strict';
 
   var KOFI_PROMO_DELAY_MS = 120000;
   var KOFI_PROMO_SNOOZE_MS = 24 * 60 * 60 * 1000;
-  var KOFI_PROMO_SNOOZE_KEY = 'ggen_kofi_promo_snooze_until';
   var LEGACY_KEYS = [
     'ggen_kofi_donate_promo_v1',
     'ggen_kofi_donate_promo_v2',
     'ggen_kofi_donate_promo_v3',
     'ggen_kofi_promo_engaged_ms_v2',
+    'ggen_kofi_promo_snooze_until',
   ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
   var PROMO_TEXT_FALLBACK =
     'Thank you for visiting! If you\u2019ve found our website useful, please consider donating to help us keep it free and accessible.';
 
   var _shown = false;
+  var _snoozedUntil = 0;
   var _showTimer = null;
   var _resizeTimer = null;
 
@@ -62,21 +64,11 @@
 
   function isSnoozed() {
     if (forceShowFromQuery()) return false;
-    try {
-      var until = parseInt(global.localStorage.getItem(KOFI_PROMO_SNOOZE_KEY) || '0', 10);
-      return until > global.Date.now();
-    } catch (_) {
-      return false;
-    }
+    return _snoozedUntil > global.Date.now();
   }
 
   function snoozePromo() {
-    try {
-      global.localStorage.setItem(
-        KOFI_PROMO_SNOOZE_KEY,
-        String(global.Date.now() + KOFI_PROMO_SNOOZE_MS)
-      );
-    } catch (_) {}
+    _snoozedUntil = global.Date.now() + KOFI_PROMO_SNOOZE_MS;
     cancelShowTimer();
   }
 
