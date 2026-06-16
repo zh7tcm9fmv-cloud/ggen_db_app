@@ -2958,6 +2958,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/master_league.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/site_feedback.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/kofi_donate_promo.css') }}">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -3398,6 +3399,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 </div>
+<svg class="kofi-donate-promo-connector" id="kofiDonatePromoConnector" hidden aria-hidden="true"><line id="kofiDonatePromoLine" x1="0" y1="0" x2="0" y2="0"></line><circle id="kofiDonatePromoDot" cx="0" cy="0" r="4"></circle></svg>
+<div id="kofiDonatePromo" class="kofi-donate-promo" hidden aria-hidden="true" role="complementary" aria-labelledby="kofiDonatePromoText">
+<div class="kofi-donate-promo-panel">
+<button type="button" class="kofi-donate-promo-close" aria-label="Close">{{ ui_close_icon() }}</button>
+<div class="kofi-donate-promo-maria-wrap"><img class="kofi-donate-promo-maria" alt="" width="72" height="72" loading="lazy" decoding="async" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_TacticalTraining_Logo_maria.webp{% else %}/static/images/UI/UI_TacticalTraining_Logo_maria.webp{% endif %}"></div>
+<div class="kofi-donate-promo-copy"><div class="kofi-donate-promo-bubble"><p id="kofiDonatePromoText" class="kofi-donate-promo-text">Thank you for visiting! If you&rsquo;ve found our website useful, please consider donating to help us keep it free and accessible.</p><a id="kofiDonatePromoCta" class="kofi-donate-promo-cta" href="https://ko-fi.com/E1E21WL8RV" target="_blank" rel="noopener noreferrer"><img class="kofi-donate-promo-cta-ic" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" width="16" height="16" loading="lazy" decoding="async"><span class="kofi-donate-promo-cta-label">Support on Ko-fi</span></a></div></div>
+</div>
+</div>
 <script>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
 window.__GGEN_VIDEO_CDN__ = '{{ video_cdn }}';
@@ -3408,6 +3417,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_us
 </script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/app.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/kofi_donate_promo.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/feedback_i18n.js') }}?v=5" defer></script>
 <script src="{{ url_for('static', filename='js/site_feedback.js') }}?v=5" defer></script>
 </body>

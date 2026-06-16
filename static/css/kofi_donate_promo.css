@@ -1,0 +1,185 @@
+/* Ko-fi donate promo — Maria + comic bubble pointing at header Ko-fi link */
+.kofi-donate-promo{
+  position:fixed;
+  z-index:105;
+  max-width:min(360px,calc(100vw - 24px));
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px) scale(.98);
+  transition:opacity .35s ease,transform .35s ease,visibility .35s;
+}
+.kofi-donate-promo.is-visible{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+.kofi-donate-promo-connector{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:104;
+  overflow:visible;
+}
+.kofi-donate-promo-connector line{
+  stroke:rgba(0,212,255,.45);
+  stroke-width:2;
+  stroke-dasharray:6 5;
+  animation:kofi-donate-promo-dash 1.4s linear infinite;
+}
+.kofi-donate-promo-connector circle{
+  fill:rgba(69,128,230,.85);
+  filter:drop-shadow(0 0 6px rgba(0,212,255,.55));
+  animation:kofi-donate-promo-dot-pulse 2.4s ease-in-out infinite;
+}
+@keyframes kofi-donate-promo-dash{
+  to{stroke-dashoffset:-22}
+}
+@keyframes kofi-donate-promo-dot-pulse{
+  0%,100%{r:4;opacity:.85}
+  50%{r:5.5;opacity:1}
+}
+.kofi-donate-promo-panel{
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  padding:12px 12px 14px 10px;
+  background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98));
+  border:1px solid rgba(0,212,255,.28);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg),0 0 24px rgba(69,128,230,.12);
+  animation:kofi-donate-promo-panel-pulse 3.2s ease-in-out infinite;
+}
+@keyframes kofi-donate-promo-panel-pulse{
+  0%,100%{box-shadow:var(--shadow-lg),0 0 0 0 rgba(0,212,255,0)}
+  50%{box-shadow:var(--shadow-lg),0 0 0 2px rgba(0,212,255,.1),0 0 20px rgba(69,128,230,.16)}
+}
+.kofi-donate-promo-close{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:none;
+  border-radius:var(--radius-sm);
+  background:rgba(0,0,0,.35);
+  color:var(--text-secondary);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  z-index:2;
+}
+.kofi-donate-promo-close:hover{
+  color:var(--text-primary);
+  background:rgba(0,212,255,.12);
+  border:1px solid rgba(0,212,255,.25);
+}
+.kofi-donate-promo-close .ui-close-icon svg{
+  width:14px;
+  height:14px;
+}
+.kofi-donate-promo-maria-wrap{
+  flex:0 0 72px;
+  width:72px;
+  align-self:flex-end;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));
+}
+.kofi-donate-promo-maria{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+.kofi-donate-promo-copy{
+  flex:1;
+  min-width:0;
+  padding-right:22px;
+}
+.kofi-donate-promo-bubble{
+  position:relative;
+  padding:10px 12px 12px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px 12px 12px 4px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.kofi-donate-promo-bubble::before{
+  content:'';
+  position:absolute;
+  top:-9px;
+  right:28px;
+  width:16px;
+  height:16px;
+  background:rgba(0,0,0,.28);
+  border-top:1px solid rgba(255,255,255,.08);
+  border-left:1px solid rgba(255,255,255,.08);
+  transform:rotate(45deg);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.kofi-donate-promo-text{
+  margin:0;
+  font-size:13px;
+  line-height:1.45;
+  color:var(--text-primary);
+  font-weight:600;
+}
+.kofi-donate-promo-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:10px;
+  padding:6px 12px;
+  border-radius:var(--radius-sm);
+  background:rgba(69,128,230,.18);
+  border:1px solid rgba(69,128,230,.5);
+  color:#e8f0ff!important;
+  font-size:12px;
+  font-weight:700;
+  text-decoration:none!important;
+  box-shadow:0 0 0 1px rgba(69,128,230,.35);
+  transition:var(--transition);
+}
+.kofi-donate-promo-cta:hover{
+  border-color:rgba(0,212,255,.55);
+  box-shadow:0 0 0 1px rgba(0,212,255,.4),0 0 12px rgba(69,128,230,.22);
+  background:rgba(69,128,230,.28);
+}
+.kofi-donate-promo-cta-ic{
+  width:16px;
+  height:16px;
+  object-fit:contain;
+}
+#kofiHeaderLink.kofi-donate-promo-target-highlight{
+  animation:kofi-donate-promo-target-ring 2.8s ease-in-out infinite;
+}
+@keyframes kofi-donate-promo-target-ring{
+  0%,100%{box-shadow:0 0 0 1px rgba(69,128,230,.4),0 2px 8px rgba(0,0,0,.25)}
+  50%{box-shadow:0 0 0 2px rgba(0,212,255,.55),0 0 14px rgba(69,128,230,.35),0 2px 8px rgba(0,0,0,.25)}
+}
+@media (prefers-reduced-motion:reduce){
+  .kofi-donate-promo-panel,.kofi-donate-promo-connector line,.kofi-donate-promo-connector circle,#kofiHeaderLink.kofi-donate-promo-target-highlight{
+    animation:none;
+  }
+  .kofi-donate-promo{
+    transition:none;
+  }
+}
+@media (max-width:768px){
+  .kofi-donate-promo{
+    max-width:min(320px,calc(100vw - 20px));
+  }
+  .kofi-donate-promo-maria-wrap{
+    flex-basis:64px;
+    width:64px;
+  }
+  .kofi-donate-promo-text{
+    font-size:12px;
+  }
+}
