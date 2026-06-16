@@ -78,7 +78,7 @@
   function splitPromoLines(text) {
     var t = String(text || '').trim();
     if (!t) return [''];
-    var m = t.match(/^(.+?[.!?])\s+(.+)$/);
+    var m = t.match(/^(.+?[.!?！？。])\s*(.+)$/s);
     if (m) return [m[1], m[2]];
     return [t];
   }
