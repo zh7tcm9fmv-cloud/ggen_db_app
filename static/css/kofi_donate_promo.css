@@ -172,12 +172,12 @@
 .kofi-promo-slot-line{
   display:block;
   overflow:hidden;
-  height:1.45em;
 }
 .kofi-promo-slot-inner{
   display:block;
-  transform:translateY(115%);
+  transform:translateY(110%);
   opacity:0;
+  will-change:transform,opacity;
 }
 .kofi-donate-promo.is-text-ready .kofi-promo-slot-inner{
   animation:kofi-promo-slot-in .54s cubic-bezier(.22,1,.36,1) forwards;
