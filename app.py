@@ -14410,6 +14410,34 @@ def _unit_base_terrain_levels(info):
     return {tn: _terrain_tier_norm(td.get(tn, 1)) for tn in UNIT_TERRAIN_NAMES}
 
 
+def _precompute_unit_terrain_filter_tokens_present():
+    """Terrain grid tokens (Name:Level) that match at least one unit."""
+    out = set()
+    for _uid, info in unit_info_map.items():
+        levels = _unit_base_terrain_levels(info)
+        for name in UNIT_TERRAIN_NAMES:
+            lv = _terrain_tier_norm(levels.get(name, 1))
+            out.add(f'{name}:{lv}')
+    return frozenset(out)
+
+
+def _precompute_weapon_range_values_present(subset):
+    ld = LANG_DATA.get('EN')
+    if not ld:
+        return frozenset()
+    out = set()
+    for uid in unit_info_map:
+        got = unit_weapon_subset_max_range(uid, ld, 'EN', 'normal', subset)
+        if got is not None and int(got) > 0:
+            out.add(str(int(got)))
+    return frozenset(out)
+
+
+UNIT_TERRAIN_FILTER_TOKENS_PRESENT = _precompute_unit_terrain_filter_tokens_present()
+WEAPON_RANGE_SSP_EX_VALUES_PRESENT = _precompute_weapon_range_values_present('ssp_ex')
+WEAPON_RANGE_NON_MAP_VALUES_PRESENT = _precompute_weapon_range_values_present('non_map')
+
+
 def resolve_npc_map_terrain(unit_id, map_npc_id, lc):
     uid = normalize_id(unit_id, '0')
     info = unit_info_map.get(uid, {}) if uid != '0' else {}
@@ -15643,7 +15671,7 @@ def list_units():
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
