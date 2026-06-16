@@ -1,13 +1,12 @@
 /**
  * Ko-fi donate promo — Maria mascot + speech bubble pointing at #kofiHeaderLink.
- * Preview: KOFI_PROMO_DELAY_MS = 0, KOFI_PROMO_PREVIEW = true.
- * Production: 2 min on site; defers while a detail modal is open.
+ * Live: KOFI_PROMO_DELAY_MS = 120000; defers while a detail modal is open.
  */
 (function (global) {
   'use strict';
 
-  var KOFI_PROMO_DELAY_MS = 0;
-  var KOFI_PROMO_PREVIEW = true;
+  var KOFI_PROMO_DELAY_MS = 120000;
+  var KOFI_PROMO_PREVIEW = false;
   var KOFI_PROMO_DEFER_AFTER_DETAIL_MS = 500;
   var KOFI_PROMO_STORAGE_KEY = 'ggen_kofi_donate_promo_v1';
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
